@@ -17,6 +17,7 @@ interface TechCard {
   highlights: string[];
   group: TechGroup;
   time: string;
+  roles?: string[];
 }
 
 interface GroupMeta {
@@ -49,10 +50,10 @@ interface FilterChip {
 })
 export class HubHome {
 
-  readonly searchTerm   = signal('');
-  readonly activeFilter = signal<FilterGroup>('all');
+  readonly searchTerm = signal('');
+  readonly activeRole = signal<FilterGroup>('all');
 
-  readonly filterChips: FilterChip[] = [
+  readonly roleChips: FilterChip[] = [
     { id: 'all',          label: 'All',          icon: '🌐' },
     { id: 'architecture', label: 'Architecture', icon: '🏗️' },
     { id: 'frontend',     label: 'Frontend',     icon: '🖥️' },
@@ -586,7 +587,7 @@ export class HubHome {
     const role = this.activeRole();
 
     return this.allTechs.filter(t => {
-      const matchesRole = role === 'all' || t.roles.includes(role);
+      const matchesRole = role === 'all' || (t.roles ?? []).includes(role);
       if (!q) return matchesRole;
       const matchesSearch =
         t.name.toLowerCase().includes(q) ||
