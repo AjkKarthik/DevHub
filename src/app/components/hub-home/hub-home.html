@@ -157,7 +157,7 @@
     }
   </div>
 
-  <!-- ── Live Now spotlight ─────────────────────────────────────────────────── -->
+  <!-- ── Live Now carousel ─────────────────────────────────────────────────── -->
   @if (liveCards().length > 0) {
     <section class="live-section">
       <div class="live-inner">
@@ -166,7 +166,9 @@
           <span class="live-label">Live Now</span>
           <span class="live-sub">Full content available — start exploring today</span>
         </div>
-        <div class="live-grid">
+      </div>
+      <div class="carousel-track-wrap">
+        <div class="carousel-track">
           @for (t of liveCards(); track t.name) {
             <a class="live-card" [routerLink]="t.route">
               <div class="live-card-top" [style.background]="t.gradient">
@@ -174,6 +176,23 @@
                 <div class="live-card-info">
                   <h3 class="live-card-name" [title]="t.name">{{ t.name }}</h3>
                   @if (t.sub) { <span class="live-card-sub" [title]="t.sub">{{ t.sub }}</span> }
+                </div>
+                <span class="live-card-badge">{{ t.topics }} pages · {{ t.time }}</span>
+              </div>
+              <div class="live-card-body">
+                <p class="live-card-tagline">{{ t.tagline }}</p>
+                <span class="live-card-cta">Start learning →</span>
+              </div>
+            </a>
+          }
+          <!-- duplicate set for seamless loop -->
+          @for (t of liveCards(); track 'd-' + t.name) {
+            <a class="live-card" [routerLink]="t.route" aria-hidden="true" tabindex="-1">
+              <div class="live-card-top" [style.background]="t.gradient">
+                <span class="live-card-icon">{{ t.icon }}</span>
+                <div class="live-card-info">
+                  <h3 class="live-card-name">{{ t.name }}</h3>
+                  @if (t.sub) { <span class="live-card-sub">{{ t.sub }}</span> }
                 </div>
                 <span class="live-card-badge">{{ t.topics }} pages · {{ t.time }}</span>
               </div>
