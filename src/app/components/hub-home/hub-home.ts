@@ -1,8 +1,8 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-export type TechGroup   = 'frontend' | 'backend' | 'data' | 'architecture' | 'cloud' | 'fundamentals' | 'ai';
-export type FilterGroup = 'all' | TechGroup;
+export type TechGroup  = 'frontend' | 'backend' | 'data' | 'architecture' | 'cloud' | 'fundamentals' | 'ai';
+export type RoleFilter = 'all' | 'frontend' | 'backend' | 'devops' | 'architect';
 
 interface TechCard {
   name: string;
@@ -35,8 +35,8 @@ interface LearningPath {
   gradient: string;
 }
 
-interface FilterChip {
-  id: FilterGroup;
+interface RoleChip {
+  id: RoleFilter;
   label: string;
   icon: string;
 }
@@ -51,17 +51,46 @@ interface FilterChip {
 export class HubHome {
 
   readonly searchTerm = signal('');
-  readonly activeRole = signal<FilterGroup>('all');
+  readonly activeRole = signal<RoleFilter>('all');
 
-  readonly roleChips: FilterChip[] = [
-    { id: 'all',          label: 'All',          icon: '🌐' },
-    { id: 'architecture', label: 'Architecture', icon: '🏗️' },
-    { id: 'frontend',     label: 'Frontend',     icon: '🖥️' },
-    { id: 'backend',      label: 'Backend',      icon: '⚙️' },
-    { id: 'data',         label: 'Data',         icon: '🗄️' },
-    { id: 'cloud',        label: 'Cloud & DevOps', icon: '☁️' },
-    { id: 'fundamentals', label: 'Fundamentals', icon: '🔢' },
-    { id: 'ai',           label: 'AI',           icon: '🤖' },
+  // ── Progress tracker (localStorage) ────────────────────────────────────────
+  private readonly STORAGE_KEY = 'devhub-completed';
+  readonly completed = signal<Set<string>>(this.loadCompleted());
+
+  private loadCompleted(): Set<string> {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      return new Set(raw ? JSON.parse(raw) : []);
+    } catch { return new Set(); }
+  }
+
+  readonly completedCount  = computed(() => this.completed().size);
+  readonly progressPercent = computed(() =>
+    Math.round((this.completedCount() / this.allTechs.length) * 100)
+  );
+
+  toggleCompleted(name: string): void {
+    const next = new Set(this.completed());
+    next.has(name) ? next.delete(name) : next.add(name);
+    this.completed.set(next);
+    try { localStorage.setItem(this.STORAGE_KEY, JSON.stringify([...next])); } catch {}
+  }
+
+  isCompleted(name: string): boolean {
+    return this.completed().has(name);
+  }
+
+  // ── What's New (last 3 available topics by array order) ────────────────────
+  readonly whatsNew = [
+    { name: 'Angular', route: '/angular', label: '45 pages · just updated' },
+  ];
+
+  readonly roleChips: RoleChip[] = [
+    { id: 'all',       label: 'All Topics', icon: '🌐' },
+    { id: 'frontend',  label: 'Frontend',   icon: '🖥️' },
+    { id: 'backend',   label: 'Backend',    icon: '⚙️' },
+    { id: 'devops',    label: 'DevOps',     icon: '☁️' },
+    { id: 'architect', label: 'Architect',  icon: '🏗️' },
   ];
 
   readonly groupMeta: GroupMeta[] = [
@@ -587,7 +616,7 @@ export class HubHome {
     const role = this.activeRole();
 
     return this.allTechs.filter(t => {
-      const matchesRole = role === 'all' || (t.roles ?? []).includes(role);
+      const matchesRole = role === 'all' || !t.roles || t.roles.includes(role);
       if (!q) return matchesRole;
       const matchesSearch =
         t.name.toLowerCase().includes(q) ||
@@ -616,7 +645,11 @@ export class HubHome {
   readonly hasResults  = computed(() => this.allTechsFiltered().length > 0);
   readonly totalCount  = computed(() => this.allTechs.length);
   readonly matchCount  = computed(() => this.allTechsFiltered().length);
-  readonly isFiltered  = computed(() => this.searchTerm().trim().length > 0 || this.activeRole() !== 'all');
+  readonly isFiltered = computed(() => this.searchTerm().trim().length > 0 || this.activeRole() !== 'all');
+
+  scrollToSection(cls: string): void {
+    document.querySelector('.' + cls)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   clearFilters(): void {
     this.searchTerm.set('');
