@@ -168,7 +168,7 @@
         </div>
       </div>
       <div class="carousel-track-wrap">
-        <div class="carousel-track">
+        <div class="carousel-track" [class.no-scroll]="liveCards().length < 3">
           @for (t of liveCards(); track t.name) {
             <a class="live-card" [routerLink]="t.route">
               <div class="live-card-top" [style.background]="t.gradient">
@@ -185,22 +185,24 @@
               </div>
             </a>
           }
-          <!-- duplicate set for seamless loop -->
-          @for (t of liveCards(); track 'd-' + t.name) {
-            <a class="live-card" [routerLink]="t.route" aria-hidden="true" tabindex="-1">
-              <div class="live-card-top" [style.background]="t.gradient">
-                <span class="live-card-icon">{{ t.icon }}</span>
-                <div class="live-card-info">
-                  <h3 class="live-card-name">{{ t.name }}</h3>
-                  @if (t.sub) { <span class="live-card-sub">{{ t.sub }}</span> }
+          <!-- duplicate set for seamless loop — only when enough cards to fill the viewport -->
+          @if (liveCards().length >= 3) {
+            @for (t of liveCards(); track 'd-' + t.name) {
+              <a class="live-card" [routerLink]="t.route" aria-hidden="true" tabindex="-1">
+                <div class="live-card-top" [style.background]="t.gradient">
+                  <span class="live-card-icon">{{ t.icon }}</span>
+                  <div class="live-card-info">
+                    <h3 class="live-card-name">{{ t.name }}</h3>
+                    @if (t.sub) { <span class="live-card-sub">{{ t.sub }}</span> }
+                  </div>
+                  <span class="live-card-badge">{{ t.topics }} pages · {{ t.time }}</span>
                 </div>
-                <span class="live-card-badge">{{ t.topics }} pages · {{ t.time }}</span>
-              </div>
-              <div class="live-card-body">
-                <p class="live-card-tagline">{{ t.tagline }}</p>
-                <span class="live-card-cta">Start learning →</span>
-              </div>
-            </a>
+                <div class="live-card-body">
+                  <p class="live-card-tagline">{{ t.tagline }}</p>
+                  <span class="live-card-cta">Start learning →</span>
+                </div>
+              </a>
+            }
           }
         </div>
       </div>

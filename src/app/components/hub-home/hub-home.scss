@@ -526,6 +526,12 @@
   100% { transform: translateX(-50%); }
 }
 
+.carousel-track.no-scroll {
+  animation: none;
+  flex-wrap: wrap;
+  width: auto;
+}
+
 .live-card {
   display: flex;
   flex-direction: column;
