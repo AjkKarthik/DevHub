@@ -647,6 +647,10 @@ export class HubHome {
   readonly matchCount  = computed(() => this.allTechsFiltered().length);
   readonly isFiltered = computed(() => this.searchTerm().trim().length > 0 || this.activeRole() !== 'all');
 
+  scrollToSection(cls: string): void {
+    document.querySelector('.' + cls)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   clearFilters(): void {
     this.searchTerm.set('');
     this.activeRole.set('all');
