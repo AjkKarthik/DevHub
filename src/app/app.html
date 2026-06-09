@@ -46,7 +46,7 @@
   <nav class="left-nav" [class.open]="navOpen()" aria-label="Main navigation">
 
     <!-- Back to hub -->
-    <a routerLink="/" class="nav-hub-back" (click)="closeNav()">
+    <a routerLink="/" class="nav-hub-back">
       ← All Technologies
     </a>
 
@@ -56,57 +56,130 @@
       <span class="nav-progress-label">{{ progress.count() }}/{{ progress.total }} topics done</span>
     </div>
 
+    <!-- ── C# Navigation ──────────────────────────────────────────── -->
+    @if (currentSection() === 'csharp') {
+
+    <a routerLink="/csharp" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">🏠 C# Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Fundamentals</p>
+      <a routerLink="/csharp/basics" routerLinkActive="active"><span class="nl-text">Variables &amp; Types</span>@if(progress.isDone('csharp-basics')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/fields" routerLinkActive="active"><span class="nl-text">Fields &amp; Constants</span>@if(progress.isDone('csharp-fields')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/methods" routerLinkActive="active"><span class="nl-text">Methods</span>@if(progress.isDone('csharp-methods')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/type-conversion" routerLinkActive="active"><span class="nl-text">Type Conversion</span>@if(progress.isDone('csharp-type-conversion')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/constructors" routerLinkActive="active"><span class="nl-text">Constructors</span>@if(progress.isDone('csharp-constructors')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/properties-indexers" routerLinkActive="active"><span class="nl-text">Properties &amp; Indexers</span>@if(progress.isDone('csharp-properties-indexers')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/namespaces" routerLinkActive="active"><span class="nl-text">Namespaces</span>@if(progress.isDone('csharp-namespaces')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Object-Oriented</p>
+      <a routerLink="/csharp/oop" routerLinkActive="active"><span class="nl-text">Classes &amp; OOP</span>@if(progress.isDone('csharp-oop')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/inheritance" routerLinkActive="active"><span class="nl-text">Inheritance &amp; Overriding</span>@if(progress.isDone('csharp-inheritance')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/abstract-interfaces" routerLinkActive="active"><span class="nl-text">Abstract &amp; Interfaces</span>@if(progress.isDone('csharp-abstract-interfaces')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/static-enums" routerLinkActive="active"><span class="nl-text">Static, Partial &amp; Enums</span>@if(progress.isDone('csharp-static-enums')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/structures" routerLinkActive="active"><span class="nl-text">Structures</span>@if(progress.isDone('csharp-structures')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/system-object" routerLinkActive="active"><span class="nl-text">System.Object</span>@if(progress.isDone('csharp-system-object')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Types &amp; Patterns</p>
+      <a routerLink="/csharp/records" routerLinkActive="active"><span class="nl-text">Records &amp; Structs</span>@if(progress.isDone('csharp-records')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/generics" routerLinkActive="active"><span class="nl-text">Generics</span>@if(progress.isDone('csharp-generics')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/null-safety" routerLinkActive="active"><span class="nl-text">Null Safety</span>@if(progress.isDone('csharp-null-safety')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/pattern-matching" routerLinkActive="active"><span class="nl-text">Pattern Matching</span>@if(progress.isDone('csharp-pattern-matching')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/extension-methods" routerLinkActive="active"><span class="nl-text">Extension Methods</span>@if(progress.isDone('csharp-extension-methods')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/tuples" routerLinkActive="active"><span class="nl-text">Tuples &amp; Anonymous Types</span>@if(progress.isDone('csharp-tuples')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Collections &amp; Data</p>
+      <a routerLink="/csharp/arrays" routerLinkActive="active"><span class="nl-text">Arrays</span>@if(progress.isDone('csharp-arrays')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/collections" routerLinkActive="active"><span class="nl-text">Collections</span>@if(progress.isDone('csharp-collections')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/linq" routerLinkActive="active"><span class="nl-text">LINQ</span>@if(progress.isDone('csharp-linq')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/strings-datetime" routerLinkActive="active"><span class="nl-text">Strings, DateTime &amp; Math</span>@if(progress.isDone('csharp-strings-datetime')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/io-serialization" routerLinkActive="active"><span class="nl-text">I/O &amp; Serialization</span>@if(progress.isDone('csharp-io-serialization')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Memory &amp; Resources</p>
+      <a routerLink="/csharp/gc-disposable" routerLinkActive="active"><span class="nl-text">GC &amp; IDisposable</span>@if(progress.isDone('csharp-gc-disposable')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Async &amp; Concurrency</p>
+      <a routerLink="/csharp/delegates" routerLinkActive="active"><span class="nl-text">Delegates &amp; Events</span>@if(progress.isDone('csharp-delegates')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/threading" routerLinkActive="active"><span class="nl-text">Threading</span>@if(progress.isDone('csharp-threading')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/tasks" routerLinkActive="active"><span class="nl-text">Tasks</span>@if(progress.isDone('csharp-tasks')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/async" routerLinkActive="active"><span class="nl-text">async / await</span>@if(progress.isDone('csharp-async')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/exceptions" routerLinkActive="active"><span class="nl-text">Exceptions</span>@if(progress.isDone('csharp-exceptions')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">What's New</p>
+      <a routerLink="/csharp/whats-new-9-10" routerLinkActive="active"><span class="nl-text">C# 9 &amp; 10 (.NET 5-6)</span>@if(progress.isDone('csharp-whats-new-9-10')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/whats-new-11-12" routerLinkActive="active"><span class="nl-text">C# 11 &amp; 12 (.NET 7-8)</span>@if(progress.isDone('csharp-whats-new-11-12')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/whats-new-latest" routerLinkActive="active"><span class="nl-text">🆕 C# 13+ (.NET 9-11)</span>@if(progress.isDone('csharp-whats-new-latest')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    } <!-- end csharp nav -->
+
+    <!-- ── Angular Navigation ─────────────────────────────────────── -->
+    @if (currentSection() === 'angular') {
+
     <div class="nav-group">
       <p class="nav-group-label">🅰️ Angular</p>
-      <a routerLink="/angular" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeNav()">
+      <a routerLink="/angular" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
         <span class="nl-text">🏠 Angular Home</span>
       </a>
-      <a routerLink="/counter" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/counter" routerLinkActive="active">
         <span class="nl-text">Signals &amp; State</span>
         @if (progress.isDone('counter')) {<span class="nl-done">✓</span>}
         @if (diff('counter'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/templates" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/templates" routerLinkActive="active">
         <span class="nl-text">Template Syntax</span>
         @if (progress.isDone('templates')) {<span class="nl-done">✓</span>}
         @if (diff('templates'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/directives" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/directives" routerLinkActive="active">
         <span class="nl-text">Directives</span>
         @if (progress.isDone('directives')) {<span class="nl-done">✓</span>}
         @if (diff('directives'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/lifecycle" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/lifecycle" routerLinkActive="active">
         <span class="nl-text">Lifecycle Hooks</span>
         @if (progress.isDone('lifecycle')) {<span class="nl-done">✓</span>}
         @if (diff('lifecycle'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/pipes" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/pipes" routerLinkActive="active">
         <span class="nl-text">Pipes</span>
         @if (progress.isDone('pipes')) {<span class="nl-done">✓</span>}
         @if (diff('pipes'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/di" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/di" routerLinkActive="active">
         <span class="nl-text">Dependency Injection</span>
         @if (progress.isDone('di')) {<span class="nl-done">✓</span>}
         @if (diff('di'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/parent-child" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/parent-child" routerLinkActive="active">
         <span class="nl-text">Input / Output</span>
         @if (progress.isDone('parent-child')) {<span class="nl-done">✓</span>}
         @if (diff('parent-child'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/content-projection" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/content-projection" routerLinkActive="active">
         <span class="nl-text">Content Projection</span>
         @if (progress.isDone('content-projection')) {<span class="nl-done">✓</span>}
         @if (diff('content-projection'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/change-detection" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/change-detection" routerLinkActive="active">
         <span class="nl-text">Change Detection</span>
         @if (progress.isDone('change-detection')) {<span class="nl-done">✓</span>}
         @if (diff('change-detection'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/animations" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/animations" routerLinkActive="active">
         <span class="nl-text">Animations</span>
         @if (progress.isDone('animations')) {<span class="nl-done">✓</span>}
         @if (diff('animations'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
@@ -115,42 +188,42 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Forms</p>
-      <a routerLink="/forms" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/forms" routerLinkActive="active">
         <span class="nl-text">Template vs Reactive</span>
         @if (progress.isDone('forms')) {<span class="nl-done">✓</span>}
         @if (diff('forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/form-array" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/form-array" routerLinkActive="active">
         <span class="nl-text">FormArray</span>
         @if (progress.isDone('form-array')) {<span class="nl-done">✓</span>}
         @if (diff('form-array'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/todo" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/todo" routerLinkActive="active">
         <span class="nl-text">Todo (guarded)</span>
         @if (progress.isDone('todo')) {<span class="nl-done">✓</span>}
         @if (diff('todo'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/zod-forms" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/zod-forms" routerLinkActive="active">
         <span class="nl-text">Zod Validation</span>
         @if (progress.isDone('zod-forms')) {<span class="nl-done">✓</span>}
         @if (diff('zod-forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/custom-validators" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/custom-validators" routerLinkActive="active">
         <span class="nl-text">Custom Validators</span>
         @if (progress.isDone('custom-validators')) {<span class="nl-done">✓</span>}
         @if (diff('custom-validators'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/cva" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/cva" routerLinkActive="active">
         <span class="nl-text">Control Value Accessor</span>
         @if (progress.isDone('cva')) {<span class="nl-done">✓</span>}
         @if (diff('cva'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/dynamic-forms" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/dynamic-forms" routerLinkActive="active">
         <span class="nl-text">Dynamic Forms</span>
         @if (progress.isDone('dynamic-forms')) {<span class="nl-done">✓</span>}
         @if (diff('dynamic-forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/wizard-form" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/wizard-form" routerLinkActive="active">
         <span class="nl-text">Wizard Form</span>
         @if (progress.isDone('wizard-form')) {<span class="nl-done">✓</span>}
         @if (diff('wizard-form'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
@@ -159,42 +232,42 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced</p>
-      <a routerLink="/http" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/http" routerLinkActive="active">
         <span class="nl-text">HTTP Client</span>
         @if (progress.isDone('http')) {<span class="nl-done">✓</span>}
         @if (diff('http'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/routing" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/routing" routerLinkActive="active">
         <span class="nl-text">Routing</span>
         @if (progress.isDone('routing')) {<span class="nl-done">✓</span>}
         @if (diff('routing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/defer" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/defer" routerLinkActive="active">
         <span class="nl-text">&#64;defer Blocks</span>
         @if (progress.isDone('defer')) {<span class="nl-done">✓</span>}
         @if (diff('defer'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/store" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/store" routerLinkActive="active">
         <span class="nl-text">Signal Store</span>
         @if (progress.isDone('store')) {<span class="nl-done">✓</span>}
         @if (diff('store'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/rxjs" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/rxjs" routerLinkActive="active">
         <span class="nl-text">RxJS Operators</span>
         @if (progress.isDone('rxjs')) {<span class="nl-done">✓</span>}
         @if (diff('rxjs'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/testing" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/testing" routerLinkActive="active">
         <span class="nl-text">Testing</span>
         @if (progress.isDone('testing')) {<span class="nl-done">✓</span>}
         @if (diff('testing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/route-resolvers" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/route-resolvers" routerLinkActive="active">
         <span class="nl-text">Route Resolvers</span>
         @if (progress.isDone('route-resolvers')) {<span class="nl-done">✓</span>}
         @if (diff('route-resolvers'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/preloading" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/preloading" routerLinkActive="active">
         <span class="nl-text">Preloading</span>
         @if (progress.isDone('preloading')) {<span class="nl-done">✓</span>}
         @if (diff('preloading'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
@@ -203,37 +276,37 @@
 
     <div class="nav-group">
       <p class="nav-group-label">UI &amp; Visualisation</p>
-      <a routerLink="/material" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/material" routerLinkActive="active">
         <span class="nl-text">Angular Material</span>
         @if (progress.isDone('material')) {<span class="nl-done">✓</span>}
         @if (diff('material'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/charts" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/charts" routerLinkActive="active">
         <span class="nl-text">Charts (Chart.js)</span>
         @if (progress.isDone('charts')) {<span class="nl-done">✓</span>}
         @if (diff('charts'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/cdk" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/cdk" routerLinkActive="active">
         <span class="nl-text">Angular CDK</span>
         @if (progress.isDone('cdk')) {<span class="nl-done">✓</span>}
         @if (diff('cdk'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/ag-grid" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/ag-grid" routerLinkActive="active">
         <span class="nl-text">AG Grid</span>
         @if (progress.isDone('ag-grid')) {<span class="nl-done">✓</span>}
         @if (diff('ag-grid'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/tanstack-query" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/tanstack-query" routerLinkActive="active">
         <span class="nl-text">TanStack Query</span>
         @if (progress.isDone('tanstack-query')) {<span class="nl-done">✓</span>}
         @if (diff('tanstack-query'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/date-fns" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/date-fns" routerLinkActive="active">
         <span class="nl-text">date-fns</span>
         @if (progress.isDone('date-fns')) {<span class="nl-done">✓</span>}
         @if (diff('date-fns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/tailwind" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/tailwind" routerLinkActive="active">
         <span class="nl-text">Tailwind CSS</span>
         @if (progress.isDone('tailwind')) {<span class="nl-done">✓</span>}
         @if (diff('tailwind'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
@@ -242,27 +315,27 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Modern APIs</p>
-      <a routerLink="/resource-api" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/resource-api" routerLinkActive="active">
         <span class="nl-text">resource() API</span>
         @if (progress.isDone('resource-api')) {<span class="nl-done">✓</span>}
         @if (diff('resource-api'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/ngrx-signals" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/ngrx-signals" routerLinkActive="active">
         <span class="nl-text">NgRx Signals</span>
         @if (progress.isDone('ngrx-signals')) {<span class="nl-done">✓</span>}
         @if (diff('ngrx-signals'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/destroy-ref" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/destroy-ref" routerLinkActive="active">
         <span class="nl-text">DestroyRef</span>
         @if (progress.isDone('destroy-ref')) {<span class="nl-done">✓</span>}
         @if (diff('destroy-ref'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/linked-signal" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/linked-signal" routerLinkActive="active">
         <span class="nl-text">linkedSignal()</span>
         @if (progress.isDone('linked-signal')) {<span class="nl-done">✓</span>}
         @if (diff('linked-signal'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/zoneless" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/zoneless" routerLinkActive="active">
         <span class="nl-text">Zoneless Angular</span>
         @if (progress.isDone('zoneless')) {<span class="nl-done">✓</span>}
         @if (diff('zoneless'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
@@ -271,12 +344,12 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Testing</p>
-      <a routerLink="/e2e" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/e2e" routerLinkActive="active">
         <span class="nl-text">E2E (Playwright)</span>
         @if (progress.isDone('e2e')) {<span class="nl-done">✓</span>}
         @if (diff('e2e'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/harnesses" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/harnesses" routerLinkActive="active">
         <span class="nl-text">Harnesses</span>
         @if (progress.isDone('harnesses')) {<span class="nl-done">✓</span>}
         @if (diff('harnesses'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
@@ -285,27 +358,27 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Platform</p>
-      <a routerLink="/ng-image" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/ng-image" routerLinkActive="active">
         <span class="nl-text">NgOptimizedImage</span>
         @if (progress.isDone('ng-image')) {<span class="nl-done">✓</span>}
         @if (diff('ng-image'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/web-workers" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/web-workers" routerLinkActive="active">
         <span class="nl-text">Web Workers</span>
         @if (progress.isDone('web-workers')) {<span class="nl-done">✓</span>}
         @if (diff('web-workers'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/pwa" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/pwa" routerLinkActive="active">
         <span class="nl-text">PWA / Service Worker</span>
         @if (progress.isDone('pwa')) {<span class="nl-done">✓</span>}
         @if (diff('pwa'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/i18n" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/i18n" routerLinkActive="active">
         <span class="nl-text">i18n</span>
         @if (progress.isDone('i18n')) {<span class="nl-done">✓</span>}
         @if (diff('i18n'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
-      <a routerLink="/ssr" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/ssr" routerLinkActive="active">
         <span class="nl-text">SSR + Hydration</span>
         @if (progress.isDone('ssr')) {<span class="nl-done">✓</span>}
         @if (diff('ssr'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
@@ -314,22 +387,24 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Reference</p>
-      <a routerLink="/cheatsheet" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/cheatsheet" routerLinkActive="active">
         <span class="nl-text">📋 Cheat Sheet</span>
       </a>
-      <a routerLink="/errors" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/errors" routerLinkActive="active">
         <span class="nl-text">🐛 Common Errors</span>
       </a>
-      <a routerLink="/whats-new" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/whats-new" routerLinkActive="active">
         <span class="nl-text">🆕 What's New</span>
       </a>
-      <a routerLink="/mini-projects" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/mini-projects" routerLinkActive="active">
         <span class="nl-text">🚀 Mini Projects</span>
       </a>
-      <a routerLink="/learning-paths" routerLinkActive="active" (click)="closeNav()">
+      <a routerLink="/angular/learning-paths" routerLinkActive="active">
         <span class="nl-text">🗺 Learning Paths</span>
       </a>
     </div>
+
+    } <!-- end angular nav -->
 
   </nav>
   } <!-- end @if (showLeftNav()) -->

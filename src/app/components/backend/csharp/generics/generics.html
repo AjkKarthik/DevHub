@@ -1,0 +1,82 @@
+<div class="page">
+
+  <!-- ── Header ─────────────────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <div class="page-icon">C#</div>
+    <div>
+      <h1 class="page-title">Generics</h1>
+      <p class="page-sub">Write type-safe, reusable code for any type — with constraints, covariance, and contravariance.</p>
+    </div>
+  </div>
+
+  <!-- ── Meta bar ───────────────────────────────────────────────────────────── -->
+  <app-page-meta
+    [readingTime]="25"
+    difficulty="intermediate"
+    since=".NET 7+"
+    tech="csharp"
+    [hidePlayground]="true"
+  />
+
+  <!-- ── Quick Reference ────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="demo-section-header">
+      <h2>Quick Reference</h2>
+      <p class="demo-section-sub">Essential generic constraints, keywords, and operators at a glance.</p>
+    </div>
+    <app-quick-ref [items]="quickRef" />
+  </section>
+
+  <!-- ── Theory ─────────────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="demo-section-header">
+      <h2>Core Concepts</h2>
+      <p class="demo-section-sub">The theory behind generics — why they exist and how constraints, variance, and method vs class generics work.</p>
+    </div>
+    <app-theory-block [sections]="theory" />
+  </section>
+
+  <!-- ── Code Examples ──────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="demo-section-header">
+      <h2>Code Examples</h2>
+      <p class="demo-section-sub">Generic classes, methods, constraints, and covariance/contravariance with practical C# code.</p>
+    </div>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <!-- ── Quiz ───────────────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="demo-section-header">
+      <h2>Knowledge Check</h2>
+      <p class="demo-section-sub">Test your understanding of C# generics.</p>
+    </div>
+    <app-quiz-block [items]="quiz" />
+  </section>
+
+  <!-- ── Q & A ──────────────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="demo-section-header">
+      <h2>Interview Q&amp;A</h2>
+      <p class="demo-section-sub">Common generics questions you might face in a C# interview.</p>
+    </div>
+    <app-qna-block [items]="qna" />
+  </section>
+
+  <!-- ── Challenge ──────────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="demo-section-header">
+      <h2>Challenge</h2>
+      <p class="demo-section-sub">Put generics and constraints into practice by building a real functional pattern.</p>
+    </div>
+    <app-challenge-block [item]="challenge" />
+  </section>
+
+  <!-- ── Page Complete ──────────────────────────────────────────────────────── -->
+  <app-page-complete
+    route="csharp-generics"
+    nextRoute="/csharp/collections"
+    nextLabel="Collections"
+  />
+
+</div>

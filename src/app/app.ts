@@ -52,7 +52,17 @@ export class App {
   );
 
   showLeftNav = computed(() => this.currentUrl() !== '/');
-  showSidebar = computed(() => !['/','','/angular'].includes(this.currentUrl()));
+  showSidebar = computed(() => {
+    const url = this.currentUrl();
+    return !['/','','/angular','/csharp'].includes(url);
+  });
+
+  currentSection = computed<'angular' | 'csharp' | 'hub'>(() => {
+    const url = this.currentUrl();
+    if (url.startsWith('/angular')) return 'angular';
+    if (url.startsWith('/csharp'))  return 'csharp';
+    return 'hub';
+  });
 
   toggleNav()  { this.navOpen.update(v => !v); }
   closeNav()   { this.navOpen.set(false); }

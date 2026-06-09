@@ -1,0 +1,117 @@
+<div class="cs-home">
+
+  <!-- ── Header ── -->
+  <section class="cs-header">
+    <div class="cs-header__icon">🟣</div>
+    <div class="cs-header__text">
+      <h1 class="cs-header__title">C# Language</h1>
+      <p class="cs-header__subtitle">
+        A modern, strongly-typed language for production backends —
+        from basics to async patterns and beyond.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Meta bar ── -->
+  <div class="cs-meta-bar">
+    <span class="cs-meta-bar__chip">
+      <span class="cs-meta-bar__chip-icon">📚</span>
+      11 Topics
+    </span>
+    <span class="cs-meta-bar__divider" aria-hidden="true"></span>
+    <span class="cs-meta-bar__chip">
+      <span class="cs-meta-bar__chip-icon">📊</span>
+      Beginner to Advanced
+    </span>
+    <span class="cs-meta-bar__divider" aria-hidden="true"></span>
+    <span class="cs-meta-bar__chip">
+      <span class="cs-meta-bar__chip-icon">⚙️</span>
+      .NET 8+
+    </span>
+  </div>
+
+  <!-- ── Learning path hint ── -->
+  <div class="cs-path-hint">
+    <span class="cs-path-hint__label">💡 Learning Path</span>
+    <span class="cs-path-hint__text">
+      New to C#? Start with
+      <a routerLink="/csharp/basics" class="cs-path-hint__link">Variables &amp; Types</a>,
+      then follow the path:
+      <strong>Basics → OOP → Collections → LINQ → async/await</strong>
+    </span>
+  </div>
+
+  <!-- ── Topic grid ── -->
+  <section class="topic-grid" aria-label="C# Topics">
+    @for (t of topics; track t.route) {
+      <article class="topic-card">
+
+        <div class="topic-card__top">
+          <span class="card-badge card-badge--{{ t.badge | lowercase }}">{{ t.badge }}</span>
+          <span class="card-time">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            {{ t.time }}
+          </span>
+        </div>
+
+        <h2 class="card-title">{{ t.title }}</h2>
+        <p class="card-desc">{{ t.description }}</p>
+
+        <ul class="card-points" aria-label="Key points">
+          @for (pt of t.keyPoints; track pt) {
+            <li>{{ pt }}</li>
+          }
+        </ul>
+
+        <div class="topic-card__footer">
+          <span class="card-difficulty card-difficulty--{{ t.difficulty }}">
+            {{ t.difficulty | titlecase }}
+          </span>
+          <a [routerLink]="t.route" class="card-cta" [attr.aria-label]="'Explore ' + t.title">
+            Explore →
+          </a>
+        </div>
+
+      </article>
+    }
+  </section>
+
+  <!-- ── Coming soon ── -->
+  <section class="coming-soon" aria-label="Upcoming topics">
+    <h2 class="coming-soon__heading">What's Coming Next</h2>
+    <p class="coming-soon__sub">
+      More advanced topics are on the roadmap. Here's what's planned:
+    </p>
+    <ul class="coming-soon__list">
+      <li>
+        <span class="coming-soon__tag">Framework</span>
+        ASP.NET Core — routing, middleware, minimal APIs, filters
+      </li>
+      <li>
+        <span class="coming-soon__tag">Data</span>
+        Entity Framework Core — DbContext, migrations, queries, relationships
+      </li>
+      <li>
+        <span class="coming-soon__tag">Architecture</span>
+        Dependency Injection — service lifetimes, IServiceCollection, factories
+      </li>
+      <li>
+        <span class="coming-soon__tag">Testing</span>
+        Testing with xUnit — arrange/act/assert, mocking with Moq, integration tests
+      </li>
+      <li>
+        <span class="coming-soon__tag">Performance</span>
+        Memory &amp; Span — stackalloc, ArrayPool, Memory&lt;T&gt;, unsafe context
+      </li>
+      <li>
+        <span class="coming-soon__tag">Advanced</span>
+        Source Generators &amp; Reflection — emit, roslyn analyzers, compile-time code generation
+      </li>
+    </ul>
+  </section>
+
+</div>

@@ -1,0 +1,47 @@
+<div class="page">
+
+  <!-- ── Header ── -->
+  <div class="page-header">
+    <div class="page-header__icon">
+      <span class="cs-badge">C#</span>
+    </div>
+    <div class="page-header__text">
+      <h1>LINQ</h1>
+      <p class="subtitle">
+        Language-integrated queries — filter, transform, group, and aggregate collections
+        with composable, readable operators.
+      </p>
+    </div>
+  </div>
+
+  <app-page-meta
+    [readingTime]="35"
+    difficulty="intermediate"
+    since=".NET 6+"
+    tech="csharp"
+    [hidePlayground]="true"
+  />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <!-- ── Code Examples ── -->
+  <section class="section">
+    <h2 class="section__title">Code Examples</h2>
+    <app-code-block [tabs]="tabs" />
+  </section>
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-page-complete
+    route="csharp-linq"
+    nextRoute="/csharp/async"
+    nextLabel="async / await"
+  />
+
+</div>
