@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 export type TechGroup  = 'frontend' | 'backend' | 'data' | 'architecture' | 'cloud' | 'fundamentals' | 'ai';
@@ -52,6 +52,38 @@ export class HubHome {
 
   readonly searchTerm = signal('');
   readonly activeRole = signal<RoleFilter>('all');
+
+  // ── Progress tracker (localStorage) ────────────────────────────────────────
+  private readonly STORAGE_KEY = 'devhub-completed';
+  readonly completed = signal<Set<string>>(this.loadCompleted());
+
+  private loadCompleted(): Set<string> {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      return new Set(raw ? JSON.parse(raw) : []);
+    } catch { return new Set(); }
+  }
+
+  readonly completedCount  = computed(() => this.completed().size);
+  readonly progressPercent = computed(() =>
+    Math.round((this.completedCount() / this.allTechs.length) * 100)
+  );
+
+  toggleCompleted(name: string): void {
+    const next = new Set(this.completed());
+    next.has(name) ? next.delete(name) : next.add(name);
+    this.completed.set(next);
+    try { localStorage.setItem(this.STORAGE_KEY, JSON.stringify([...next])); } catch {}
+  }
+
+  isCompleted(name: string): boolean {
+    return this.completed().has(name);
+  }
+
+  // ── What's New (last 3 available topics by array order) ────────────────────
+  readonly whatsNew = [
+    { name: 'Angular', route: '/angular', label: '45 pages · just updated' },
+  ];
 
   readonly roleChips: RoleChip[] = [
     { id: 'all',       label: 'All Topics', icon: '🌐' },

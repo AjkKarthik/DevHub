@@ -17,7 +17,40 @@
       <div class="stat-sep"></div>
       <div class="stat"><span class="stat-n">45+</span><span class="stat-l">Live Pages</span></div>
     </div>
+    <div class="hero-cta-row">
+      <a class="hero-cta-btn" routerLink="/angular">Start with Angular →</a>
+      <a class="hero-cta-btn hero-cta-btn--outline" routerLink="/angular" fragment="learning-paths">View Learning Paths</a>
+    </div>
   </section>
+
+  <!-- ── What's New banner ──────────────────────────────────────────────────── -->
+  @if (whatsNew.length > 0) {
+    <div class="whats-new-bar">
+      <span class="wn-label">🆕 What's New</span>
+      @for (item of whatsNew; track item.name) {
+        <a class="wn-item" [routerLink]="item.route">
+          <strong>{{ item.name }}</strong>
+          <span class="wn-meta">{{ item.label }}</span>
+        </a>
+      }
+    </div>
+  }
+
+  <!-- ── Progress tracker ───────────────────────────────────────────────────── -->
+  <div class="progress-bar-wrap">
+    <div class="progress-inner">
+      <div class="progress-info">
+        <span class="progress-label">Your Progress</span>
+        <span class="progress-count">{{ completedCount() }} / {{ totalCount() }} topics completed</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" [style.width.%]="progressPercent()"></div>
+      </div>
+      @if (completedCount() > 0) {
+        <span class="progress-pct">{{ progressPercent() }}%</span>
+      }
+    </div>
+  </div>
 
   <!-- ── About ─────────────────────────────────────────────────────────────── -->
   <section class="about-strip">
@@ -193,6 +226,15 @@
                 } @else {
                   <span class="card-cta disabled">Coming Soon</span>
                 }
+                @if (t.available) {
+                  <button
+                    type="button"
+                    class="card-complete"
+                    [class.done]="isCompleted(t.name)"
+                    (click)="toggleCompleted(t.name)"
+                    [attr.aria-label]="isCompleted(t.name) ? 'Mark incomplete' : 'Mark complete'"
+                  >{{ isCompleted(t.name) ? '✓ Done' : 'Mark done' }}</button>
+                }
               </div>
             </div>
           }
@@ -268,5 +310,24 @@
       <span>Test your knowledge with quizzes and coding challenges.</span>
     </div>
   </section>
+
+  <!-- ── Footer ────────────────────────────────────────────────────────────── -->
+  <footer class="hub-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">DevHub</span>
+        <span class="footer-tagline">Free, hands-on learning for every developer.</span>
+      </div>
+      <div class="footer-links">
+        <a class="footer-link" routerLink="/angular">Angular</a>
+        <a class="footer-link" routerLink="/cheatsheet">Cheatsheet</a>
+        <a class="footer-link" routerLink="/learning-paths">Learning Paths</a>
+        <a class="footer-link" href="https://github.com/AjkKarthik/DevHub" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="footer-meta">
+        Built with <span class="footer-heart">♥</span> using Angular {{ '22' }} · Open source · Free forever
+      </div>
+    </div>
+  </footer>
 
 </div>
