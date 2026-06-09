@@ -1,8 +1,8 @@
 import { Component, signal, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-export type TechGroup   = 'frontend' | 'backend' | 'data' | 'architecture' | 'cloud' | 'fundamentals' | 'ai';
-export type FilterGroup = 'all' | TechGroup;
+export type TechGroup  = 'frontend' | 'backend' | 'data' | 'architecture' | 'cloud' | 'fundamentals' | 'ai';
+export type RoleFilter = 'all' | 'frontend' | 'backend' | 'devops' | 'architect';
 
 interface TechCard {
   name: string;
@@ -35,8 +35,8 @@ interface LearningPath {
   gradient: string;
 }
 
-interface FilterChip {
-  id: FilterGroup;
+interface RoleChip {
+  id: RoleFilter;
   label: string;
   icon: string;
 }
@@ -51,17 +51,14 @@ interface FilterChip {
 export class HubHome {
 
   readonly searchTerm = signal('');
-  readonly activeRole = signal<FilterGroup>('all');
+  readonly activeRole = signal<RoleFilter>('all');
 
-  readonly roleChips: FilterChip[] = [
-    { id: 'all',          label: 'All',          icon: '🌐' },
-    { id: 'architecture', label: 'Architecture', icon: '🏗️' },
-    { id: 'frontend',     label: 'Frontend',     icon: '🖥️' },
-    { id: 'backend',      label: 'Backend',      icon: '⚙️' },
-    { id: 'data',         label: 'Data',         icon: '🗄️' },
-    { id: 'cloud',        label: 'Cloud & DevOps', icon: '☁️' },
-    { id: 'fundamentals', label: 'Fundamentals', icon: '🔢' },
-    { id: 'ai',           label: 'AI',           icon: '🤖' },
+  readonly roleChips: RoleChip[] = [
+    { id: 'all',       label: 'All Topics', icon: '🌐' },
+    { id: 'frontend',  label: 'Frontend',   icon: '🖥️' },
+    { id: 'backend',   label: 'Backend',    icon: '⚙️' },
+    { id: 'devops',    label: 'DevOps',     icon: '☁️' },
+    { id: 'architect', label: 'Architect',  icon: '🏗️' },
   ];
 
   readonly groupMeta: GroupMeta[] = [
@@ -587,7 +584,7 @@ export class HubHome {
     const role = this.activeRole();
 
     return this.allTechs.filter(t => {
-      const matchesRole = role === 'all' || (t.roles ?? []).includes(role);
+      const matchesRole = role === 'all' || !t.roles || t.roles.includes(role);
       if (!q) return matchesRole;
       const matchesSearch =
         t.name.toLowerCase().includes(q) ||
@@ -616,7 +613,7 @@ export class HubHome {
   readonly hasResults  = computed(() => this.allTechsFiltered().length > 0);
   readonly totalCount  = computed(() => this.allTechs.length);
   readonly matchCount  = computed(() => this.allTechsFiltered().length);
-  readonly isFiltered  = computed(() => this.searchTerm().trim().length > 0 || this.activeRole() !== 'all');
+  readonly isFiltered = computed(() => this.searchTerm().trim().length > 0 || this.activeRole() !== 'all');
 
   clearFilters(): void {
     this.searchTerm.set('');
