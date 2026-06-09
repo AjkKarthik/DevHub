@@ -1,0 +1,143 @@
+<div class="page">
+  <h2>Input / Output Signals (Parent ↔ Child)</h2>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <!-- ── Demo 1: input() / output() ──────────────────────────────────────── -->
+  <section class="demo-section">
+    <h3>Demo 1 — input() &amp; output()</h3>
+    <div class="demo-split">
+      <div class="demo-live">
+        <div class="card controls">
+          <p class="demo-label">Parent controls — passed down as inputs to every child card</p>
+          <label>
+            Accent colour
+            <input type="color" [formControl]="colorControl" />
+            <span>{{ colorControl.value }}</span>
+          </label>
+          <label>
+            Button label
+            <input type="text" [formControl]="labelControl" placeholder="Button label" />
+          </label>
+        </div>
+
+        <div class="grid">
+          @for (card of cards; track card.title) {
+            <app-child-card
+              [title]="card.title"
+              [description]="card.description"
+              [accentColor]="colorControl.value!"
+              [label]="labelControl.value!"
+              (cardClicked)="onChildClicked($event)"
+            />
+          }
+        </div>
+
+        <div class="card">
+          <p class="demo-label">output() event log — events bubble up here from children</p>
+          <div class="log">
+            @for (entry of clickLog(); track entry) {
+              <div class="log-row">{{ entry }}</div>
+            } @empty {
+              <div class="log-empty">Click a card button to see events bubble up here.</div>
+            }
+          </div>
+        </div>
+      </div>
+      <app-code-block [tabs]="ioTabs" />
+    </div>
+  </section>
+
+  <!-- ── Demo 2: model() two-way binding ─────────────────────────────────── -->
+  <section class="demo-section">
+    <h3>Demo 2 — model() two-way binding</h3>
+    <div class="demo-split">
+      <div class="demo-live">
+        <div class="model-box">
+          <div class="model-side parent-side">
+            <span class="side-label">Parent</span>
+            <p class="model-val">parentQty = <strong>{{ parentQty() }}</strong></p>
+            <div class="btn-row">
+              <button type="button" (click)="resetQty()">Reset to 0</button>
+              <button type="button" (click)="setQty10()">Set to 10</button>
+            </div>
+          </div>
+          <div class="model-arrow">⟷</div>
+          <div class="model-side child-side">
+            <span class="side-label">Child A</span>
+            <app-model-counter #counterRef [(count)]="parentQty" />
+          </div>
+        </div>
+
+        <p class="hint">Changing the counter in the child updates <code>parentQty</code> in the parent, and resetting from the parent updates the child — both directions sync automatically.</p>
+
+        <div class="model-box model-box--gap">
+          <div class="model-side parent-side">
+            <span class="side-label">Same signal</span>
+            <p class="model-val">parentQty = <strong>{{ parentQty() }}</strong></p>
+          </div>
+          <div class="model-arrow">⟷</div>
+          <div class="model-side child-side">
+            <span class="side-label">Child B (same binding)</span>
+            <app-model-counter [(count)]="parentQty" />
+          </div>
+        </div>
+        <p class="hint">Two children bound to the same signal — changing either one updates both.</p>
+      </div>
+      <app-code-block [tabs]="modelTabs" />
+    </div>
+  </section>
+
+  <!-- ── Demo 3: viewChild() ─────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <h3>Demo 3 — viewChild() &amp; viewChildren()</h3>
+    <div class="demo-split">
+      <div class="demo-live">
+        <div class="vc-box">
+          <div class="vc-child">
+            <span class="side-label">Child (#counterRef)</span>
+            <app-model-counter #counterRef [(count)]="parentQty" />
+          </div>
+          <div class="vc-reads">
+            <p class="side-label">Parent reads child via viewChild()</p>
+            <div class="watch-row">
+              <span class="watch-key">counterRef()?.count()</span>
+              <span class="watch-val">{{ childCountValue() }}</span>
+            </div>
+            <div class="watch-row">
+              <span class="watch-key">allCounters().length</span>
+              <span class="watch-val">{{ allCounters().length }}</span>
+            </div>
+            <div class="watch-row">
+              <span class="watch-key">allCounterValues()</span>
+              <span class="watch-val">{{ allCounterValues() | json }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card--gap">
+          <p class="demo-label">effect() log — fires reactively when child signal changes</p>
+          <div class="log">
+            @for (e of watchLog(); track e) {
+              <div class="log-row">{{ e }}</div>
+            } @empty {
+              <div class="log-empty">Interact with the counter above…</div>
+            }
+          </div>
+        </div>
+      </div>
+      <app-code-block [tabs]="viewChildTabs" />
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/parent-child" nextRoute="/lifecycle" nextLabel="Lifecycle" />
+</div>

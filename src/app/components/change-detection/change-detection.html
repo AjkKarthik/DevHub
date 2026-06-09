@@ -1,0 +1,55 @@
+<div class="page">
+  <h1>Change Detection</h1>
+  <p class="subtitle">Default vs OnPush strategy, ChangeDetectorRef, and why signals make OnPush effortless.</p>
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Default vs OnPush — Live Render Counter</h2>
+    <div class="demo-card">
+      <p class="muted">Watch the render counts. Default checks on every CD cycle; OnPush only on reference change.</p>
+      <div class="controls">
+        <button type="button" (click)="sharedCount.update(n => n + 1)">Trigger CD (count: {{ sharedCount() }})</button>
+        <button type="button" (click)="mutateObject()">Mutate object (same ref)</button>
+        <button type="button" (click)="replaceObject()">Replace object (new ref)</button>
+      </div>
+      <div class="cd-grid">
+        <app-default-cd [obj]="mutableObj" />
+        <app-onpush-cd  [obj]="mutableObj" />
+      </div>
+      <div class="log-box">
+        @for (entry of renderLog(); track entry) {
+          <div class="log-entry">{{ entry }}</div>
+        } @empty {
+          <div class="empty-log">Click buttons above to see log</div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>OnPush Rules</h2>
+    <div class="demo-card">
+      <div role="list" class="rules-list">
+        <div role="listitem" class="rule-row green"><span>✅</span><span><strong>New @Input() reference</strong> — replace array/object, don't mutate</span></div>
+        <div role="listitem" class="rule-row green"><span>✅</span><span><strong>Event inside component</strong> — any DOM event on this component's template</span></div>
+        <div role="listitem" class="rule-row green"><span>✅</span><span><strong>async pipe emits</strong> — Observable emits via | async</span></div>
+        <div role="listitem" class="rule-row green"><span>✅</span><span><strong>signal() changes</strong> — Angular 17+ auto-tracks signal reads in templates</span></div>
+        <div role="listitem" class="rule-row green"><span>✅</span><span><strong>markForCheck()</strong> — manual schedule via ChangeDetectorRef</span></div>
+        <div role="listitem" class="rule-row red"><span>❌</span><span><strong>Mutating @Input() object</strong> — same reference, OnPush won't detect it</span></div>
+        <div role="listitem" class="rule-row red"><span>❌</span><span><strong>setTimeout outside zone</strong> — use NgZone.run() or markForCheck()</span></div>
+      </div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/change-detection" nextRoute="/defer" nextLabel="Defer" />
+</div>

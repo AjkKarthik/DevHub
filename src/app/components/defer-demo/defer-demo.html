@@ -1,0 +1,72 @@
+<div class="page">
+  <h2>&#64;defer — Deferred Loading</h2>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="17" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <div class="concept">
+    <h3>Key Concepts</h3>
+    <ul>
+      <li><code>&#64;defer</code> — splits a component into its own lazy JS chunk, downloaded only when triggered</li>
+      <li><code>on viewport</code> — loads when the placeholder scrolls into view</li>
+      <li><code>on interaction</code> — loads on first click or keydown inside the placeholder</li>
+      <li><code>on idle</code> — loads when the browser is idle (the default)</li>
+      <li><code>when expr</code> — loads when a signal or expression becomes truthy</li>
+      <li><code>&#64;placeholder</code> — shown before trigger; <code>&#64;loading</code> — shown while downloading; <code>&#64;error</code> — shown on failure</li>
+    </ul>
+    <app-code-block [tabs]="deferTabs" />
+  </div>
+
+  <!-- on viewport -->
+  <div class="card">
+    <h3>on viewport — loads when scrolled into view</h3>
+    <p class="hint">Open DevTools → Network to see the <code>heavy-chart</code> chunk download when you scroll here.</p>
+
+    @defer (on viewport) {
+      <app-heavy-chart />
+    } @placeholder {
+      <div class="placeholder">📊 Chart will load when visible</div>
+    } @loading (minimum 400ms) {
+      <div class="loading">⏳ Loading chart bundle…</div>
+    } @error {
+      <div class="error-box">Failed to load chart.</div>
+    }
+  </div>
+
+  <!-- on interaction -->
+  <div class="card">
+    <h3>on interaction — loads on first click</h3>
+
+    @defer (on interaction) {
+      <app-heavy-chart />
+    } @placeholder {
+      <div class="placeholder clickable" tabindex="0" role="button">🖱 Click here to load the chart</div>
+    } @loading (minimum 300ms) {
+      <div class="loading">⏳ Loading…</div>
+    }
+  </div>
+
+  <!-- when (signal trigger) -->
+  <div class="card">
+    <h3>when — programmatic trigger via a signal</h3>
+    <button type="button" (click)="showOnDemand.set(true)" [disabled]="showOnDemand()">
+      {{ showOnDemand() ? 'Chart loaded' : 'Load chart now' }}
+    </button>
+
+    @defer (when showOnDemand()) {
+      <app-heavy-chart />
+    } @placeholder {
+      <div class="placeholder">Chart not loaded yet — click the button above</div>
+    }
+  </div>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/defer" nextRoute="/linked-signal" nextLabel="Linked Signal" />
+</div>

@@ -1,0 +1,8 @@
+.page { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 2rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { color: #666; margin-bottom: 2rem; font-size: 1.05rem; }
+h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+.demo-section { margin-bottom: 2.5rem; }
+.locator-list { display: flex; flex-direction: column; gap: .5rem; }
+.loc-row { display: flex; align-items: center; gap: .75rem; padding: .65rem 1rem; border-radius: 8px; font-size: .85rem; border: 1px solid transparent; code { font-family: monospace; font-size: .82rem; } .loc-why { margin-left: auto; font-size: .78rem; color: #6b7280; } &.best  { background: #d1fae5; border-color: #6ee7b7; } &.good  { background: #dbeafe; border-color: #93c5fd; } &.ok    { background: #fef9c3; border-color: #fde047; } &.avoid { background: #fee2e2; border-color: #fca5a5; } }
+.loc-badge { font-size: .7rem; font-weight: 800; min-width: 50px; text-align: center; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,.1); }

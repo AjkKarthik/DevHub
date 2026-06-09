@@ -1,0 +1,12 @@
+.page { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 2rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { color: #666; margin-bottom: 2rem; font-size: 1.05rem; }
+h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+.demo-section { margin-bottom: 2.5rem; }
+.comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; @media (max-width: 640px) { grid-template-columns: 1fr; } }
+.cmp-col { border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column; gap: .75rem; &.bad { background: #fef2f2; border: 1px solid #fca5a5; } &.good { background: #f0fdf4; border: 1px solid #6ee7b7; } }
+.cmp-title { font-size: .9rem; font-weight: 700; color: #1f2937; }
+pre { background: #1e1e2e; border-radius: 8px; padding: .75rem; margin: 0; code { color: #a5f3fc; font-size: .78rem; font-family: monospace; line-height: 1.6; } }
+.cmp-issues, .cmp-goods { display: flex; flex-direction: column; gap: .25rem; }
+.issue { font-size: .8rem; color: #991b1b; }
+.good-item { font-size: .8rem; color: #065f46; }

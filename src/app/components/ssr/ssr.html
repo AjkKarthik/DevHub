@@ -1,0 +1,42 @@
+<div class="page">
+  <h1>SSR + Hydration</h1>
+  <p class="subtitle">Server-side rendering for faster first paint and better SEO — with Angular's built-in hydration to avoid layout flash.</p>
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="4" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Current platform</h2>
+    <div class="demo-card">
+      <div class="platform-display">
+        <div class="platform-icon">{{ isBrowser ? '🌐' : '🖥️' }}</div>
+        <div class="platform-label">Running on: <strong>{{ platform() }}</strong></div>
+      </div>
+      <p>In SSR, this component renders on the <strong>Server</strong> first (HTML sent to browser), then Angular hydrates on the <strong>Browser</strong>. The platform value above would show "Server" in the server log and "Browser" once hydrated.</p>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>SSR lifecycle</h2>
+    <div class="flow">
+      <div class="flow-step"><span class="flow-num">1</span><span>User requests <code>/posts</code></span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="flow-num">2</span><span>Express server runs Angular SSR — fetches data, renders HTML</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="flow-num">3</span><span>Full HTML sent to browser — visible immediately (no blank screen)</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="flow-num">4</span><span>Angular JS bundle loads — hydration reuses server HTML (no re-render)</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step done"><span class="flow-num">✓</span><span>Interactive — click handlers and signals active</span></div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/ssr" nextRoute="/pwa" nextLabel="Pwa" />
+</div>

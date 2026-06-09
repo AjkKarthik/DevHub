@@ -1,0 +1,71 @@
+<div class="page">
+  <h1>Angular Animations</h1>
+  <p class="subtitle">trigger, state, transition, animate, keyframes, and stagger — all driven by signals.</p>
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>state-based: open / close</h2>
+    <div class="demo-card">
+      <button type="button" class="btn" (click)="isOpen.set(!isOpen())">
+        {{ isOpen() ? 'Close panel' : 'Open panel' }}
+      </button>
+      <div [@openClose]="isOpen() ? 'open' : 'closed'" class="panel">
+        <p>This panel slides open and closed using a state-based trigger.</p>
+        <p>State: <code>openClose</code> — <code>height: '*'</code> means "natural height".</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>:enter / :leave (fadeSlide)</h2>
+    <div class="demo-card">
+      <button type="button" class="btn" (click)="showBanner.set(!showBanner())">
+        {{ showBanner() ? 'Hide' : 'Show' }} banner
+      </button>
+      @if (showBanner()) {
+        <div class="banner" @fadeSlide>
+          I fade and slide in on :enter, and back out on :leave!
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>keyframes — pulse</h2>
+    <div class="demo-card">
+      <button type="button" class="btn" (click)="triggerPulse()">Pulse!</button>
+      <div class="pulse-box" [@pulse]="pulseState()">
+        ★ Pulse me ★
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>stagger — list items</h2>
+    <div class="demo-card">
+      <div class="list-controls">
+        <button type="button" class="btn" (click)="addItem()">+ Add fruit</button>
+      </div>
+      <div class="stagger-list" [@listAnim]="items().length">
+        @for (item of items(); track item) {
+          <div class="list-item">
+            {{ item }}
+            <button type="button" class="remove-btn" (click)="removeItem($index)">×</button>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/animations" nextRoute="/cdk" nextLabel="Cdk" />
+</div>

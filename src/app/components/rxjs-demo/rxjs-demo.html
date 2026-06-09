@@ -1,0 +1,67 @@
+<div class="page">
+  <h1>RxJS Operators</h1>
+  <p class="subtitle">switchMap, debounceTime, combineLatest, Subject, BehaviorSubject, scan — the operators every Angular dev needs.</p>
+  <app-page-meta [readingTime]="18" difficulty="advanced" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>switchMap + debounceTime — Live Search</h2>
+    <div class="demo-card">
+      <p class="muted">Type 2+ characters. switchMap cancels the previous HTTP call when you type again. debounceTime waits 400ms.</p>
+      <input class="search-input" placeholder="Search Pokémon..." [value]="searchQuery()" (input)="onSearch($any($event.target).value)" />
+      <div role="list" class="results-list">
+        @for (r of searchResults$ | async; track r.name) {
+          <div role="listitem" class="result-item">{{ r.name }}</div>
+        } @empty {
+          <div class="empty">Type to search…</div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>BehaviorSubject — Theme Toggle</h2>
+    <div class="demo-card">
+      <button type="button" class="btn" (click)="toggleTheme()">Toggle theme</button>
+      <div class="theme-box" [class.dark]="theme() === 'dark'">
+        Current theme: <strong>{{ theme() }}</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>combineLatest — Live Total</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Qty
+          <input type="number" min="1" [value]="qty()" (input)="setQty(+$any($event.target).value)" style="width:70px" />
+        </label>
+        <label>Price ($)
+          <input type="number" min="0" step="0.01" [value]="price()" (input)="setPrice(+$any($event.target).value)" style="width:90px" />
+        </label>
+      </div>
+      <div class="total-box">Total: <strong>${{ total() }}</strong></div>
+      <p class="muted">combineLatest re-emits whenever qty OR price changes.</p>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>scan — Accumulating State</h2>
+    <div class="demo-card">
+      <button type="button" class="btn" (click)="doClick()">Click me!</button>
+      <div class="count-display">Total clicks: <strong>{{ clickCount() }}</strong></div>
+      <p class="muted">scan accumulates a running total across emissions — like Array.reduce for streams.</p>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/rxjs" nextRoute="/di" nextLabel="Di" />
+</div>

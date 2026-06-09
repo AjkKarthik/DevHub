@@ -1,0 +1,272 @@
+<div class="hub">
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-eyebrow">Interactive Learning Hub</div>
+    <h1 class="hero-title">Learn. Build. Ship.</h1>
+    <p class="hero-sub">
+      One place to learn every technology in the modern development stack —
+      from HTML basics to distributed system design.
+    </p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-n">{{ totalCount() }}</span><span class="stat-l">Topics</span></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><span class="stat-n">7</span><span class="stat-l">Domains</span></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><span class="stat-n">5</span><span class="stat-l">Learning Paths</span></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><span class="stat-n">45+</span><span class="stat-l">Live Pages</span></div>
+    </div>
+  </section>
+
+  <!-- ── About ─────────────────────────────────────────────────────────────── -->
+  <section class="about-strip">
+    <div class="about-inner">
+
+      <div class="about-what">
+        <h2 class="about-heading">What is DevHub?</h2>
+        <p>
+          DevHub is a free, hands-on reference hub for software developers at every level.
+          Each topic goes beyond syntax — it explains <strong>when to use it</strong>,
+          <strong>what the trade-offs are</strong>, and <strong>how it fits the bigger picture</strong>.
+          Whether you're building your first API or deciding between microservices and a monolith,
+          every page is written to be useful right now.
+        </p>
+      </div>
+
+      <div class="about-pillars">
+        <div class="pillar">
+          <span class="pillar-icon">📖</span>
+          <div>
+            <strong>Learn by doing</strong>
+            <span>Interactive demos, live code and quizzes — not just slides.</span>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar-icon">⚖️</span>
+          <div>
+            <strong>Trade-offs, not just tutorials</strong>
+            <span>Every page covers when to use a technology and when not to.</span>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar-icon">🗺️</span>
+          <div>
+            <strong>Ordered learning paths</strong>
+            <span>Cards in each domain run from foundational to advanced.</span>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar-icon">⏱️</span>
+          <div>
+            <strong>Time estimates per topic</strong>
+            <span>Each card shows roughly how long the content takes to cover.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-howto">
+        <h3 class="howto-heading">How to use this hub</h3>
+        <div class="howto-steps">
+          <div class="howto-step">
+            <span class="step-num">1</span>
+            <div><strong>Pick your role</strong> — use the filter chips to see only the topics relevant to what you're building or learning today.</div>
+          </div>
+          <div class="howto-step">
+            <span class="step-num">2</span>
+            <div><strong>Follow a learning path</strong> — scroll to the Learning Paths section for a curated sequence that takes you from start to production-ready.</div>
+          </div>
+          <div class="howto-step">
+            <span class="step-num">3</span>
+            <div><strong>Use it as a reference</strong> — come back any time for cheat sheets, decision guides and code examples mid-project.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Filter bar ─────────────────────────────────────────────────────────── -->
+  <div class="filter-bar">
+    <div class="filter-inner">
+
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Search topics, technologies, concepts…"
+          [value]="searchTerm()"
+          (input)="searchTerm.set($any($event.target).value)"
+        />
+        @if (searchTerm()) {
+          <button type="button" class="search-clear" (click)="searchTerm.set('')" aria-label="Clear search">✕</button>
+        }
+      </div>
+
+      <div class="role-chips">
+        @for (r of roleChips; track r.id) {
+          <button
+            type="button" class="role-chip"
+            [class.active]="activeRole() === r.id"
+            (click)="activeRole.set(r.id)"
+          >{{ r.icon }} {{ r.label }}</button>
+        }
+      </div>
+
+    </div>
+
+    @if (isFiltered()) {
+      <div class="filter-status">
+        <span>{{ matchCount() }} of {{ totalCount() }} topics match</span>
+        <button type="button" class="clear-link" (click)="clearFilters()">Clear filters</button>
+      </div>
+    }
+  </div>
+
+  <!-- ── Live Now spotlight ─────────────────────────────────────────────────── -->
+  @if (liveCards().length > 0) {
+    <section class="live-section">
+      <div class="live-inner">
+        <div class="live-header">
+          <span class="live-dot"></span>
+          <span class="live-label">Live Now</span>
+          <span class="live-sub">Full content available — start exploring today</span>
+        </div>
+        <div class="live-grid">
+          @for (t of liveCards(); track t.name) {
+            <a class="live-card" [routerLink]="t.route">
+              <div class="live-card-top" [style.background]="t.gradient">
+                <span class="live-card-icon">{{ t.icon }}</span>
+                <div class="live-card-info">
+                  <h3 class="live-card-name" [title]="t.name">{{ t.name }}</h3>
+                  @if (t.sub) { <span class="live-card-sub" [title]="t.sub">{{ t.sub }}</span> }
+                </div>
+                <span class="live-card-badge">{{ t.topics }} pages · {{ t.time }}</span>
+              </div>
+              <div class="live-card-body">
+                <p class="live-card-tagline">{{ t.tagline }}</p>
+                <span class="live-card-cta">Start learning →</span>
+              </div>
+            </a>
+          }
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- ── Tech groups ────────────────────────────────────────────────────────── -->
+  @for (g of groupMeta; track g.key) {
+    @if (filteredGroups()[g.key].length > 0) {
+      <section class="hub-group">
+        <div class="group-header">
+          <span class="group-icon">{{ g.icon }}</span>
+          <div class="group-header-text">
+            <h2 class="group-title">{{ g.title }}</h2>
+            <p class="group-sub">{{ g.sub }}</p>
+          </div>
+          <span class="group-count">{{ filteredGroups()[g.key].length }} topics</span>
+        </div>
+        <div class="tech-grid">
+          @for (t of filteredGroups()[g.key]; track t.name) {
+            <div class="tech-card" [id]="cardId(t.name)" [class.unavailable]="!t.available">
+              <div class="card-top" [style.background]="t.gradient" [class.dark-text]="t.textDark">
+                <span class="card-icon">{{ t.icon }}</span>
+                <div class="card-title-wrap">
+                  <h3 class="card-name" [title]="t.name">{{ t.name }}</h3>
+                  @if (t.sub) { <span class="card-sub" [title]="t.sub">{{ t.sub }}</span> }
+                </div>
+                @if (t.available) {
+                  <span class="card-badge available">{{ t.topics }} pages</span>
+                } @else {
+                  <span class="card-badge soon">Soon</span>
+                }
+              </div>
+              <div class="card-body">
+                <p class="card-tagline">{{ t.tagline }}</p>
+                <span class="card-time">⏱ {{ t.time }}</span>
+                <div class="card-highlights">@for (h of t.highlights; track h) {<div class="ch-item">{{ h }}</div>}</div>
+              </div>
+              <div class="card-footer">
+                @if (t.available) {
+                  <a class="card-cta" [routerLink]="t.route">Explore {{ t.name }} →</a>
+                } @else {
+                  <span class="card-cta disabled">Coming Soon</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  }
+
+  <!-- ── No results ─────────────────────────────────────────────────────────── -->
+  @if (!hasResults()) {
+    <div class="no-results">
+      <span class="no-results-icon">😕</span>
+      <p>No topics match <strong>"{{ searchTerm() }}"</strong>.</p>
+      <button type="button" class="no-results-btn" (click)="clearFilters()">Clear filters</button>
+    </div>
+  }
+
+  <!-- ── Learning Paths ─────────────────────────────────────────────────────── -->
+  <section class="paths-section">
+    <div class="paths-inner">
+      <div class="paths-heading-row">
+        <div>
+          <h2 class="paths-heading">Learning Paths</h2>
+          <p class="paths-sub">Not sure where to start? Follow a curated sequence for your role — each step builds on the last.</p>
+        </div>
+      </div>
+      <div class="paths-grid">
+        @for (p of learningPaths; track p.name) {
+          <div class="path-card">
+            <div class="path-top" [style.background]="p.gradient">
+              <span class="path-icon">{{ p.icon }}</span>
+              <h3 class="path-name">{{ p.name }}</h3>
+            </div>
+            <div class="path-body">
+              <p class="path-desc">{{ p.description }}</p>
+              <div class="path-steps">
+                @for (step of p.steps; track step; let last = $last) {
+                  @if (stepRoute(step)) {
+                    <a class="path-step path-step--live" [routerLink]="stepRoute(step)">{{ step }}</a>
+                  } @else {
+                    <button type="button" class="path-step path-step--soon" (click)="scrollToCard(step)">{{ step }}</button>
+                  }
+                  @if (!last) { <span class="path-arrow">→</span> }
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Feature strip ──────────────────────────────────────────────────────── -->
+  <section class="feature-strip">
+    <div class="feature">
+      <span class="feature-icon">🏗️</span>
+      <strong>Architect-first</strong>
+      <span>Every topic covers trade-offs and when to use what — not just syntax.</span>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">⚡</span>
+      <strong>Live Demos</strong>
+      <span>Interactive examples you can run and modify in the browser.</span>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">📋</span>
+      <strong>Cheat Sheets</strong>
+      <span>Searchable quick-reference cards for every technology.</span>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🧪</span>
+      <strong>Quiz &amp; Challenges</strong>
+      <span>Test your knowledge with quizzes and coding challenges.</span>
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,14 @@
+.page { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 2rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { color: #666; margin-bottom: 2rem; font-size: 1.05rem; }
+h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+.demo-section { margin-bottom: 2.5rem; }
+.demo-card { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.muted { color: #888; font-size: .85rem; }
+.controls { display: flex; gap: .5rem; flex-wrap: wrap; button { padding: .4rem 1rem; background: #6366f1; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: .85rem; &:hover { background: #4f46e5; } } }
+.cd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; @media(max-width:600px){grid-template-columns:1fr;} }
+.log-box { background: #1e1e2e; border-radius: 8px; padding: .75rem; max-height: 180px; overflow-y: auto; }
+.log-entry { font-family: monospace; font-size: .78rem; color: #cdd6f4; padding: .12rem 0; }
+.empty-log { color: #555; font-size: .82rem; }
+.rules-list { display: flex; flex-direction: column; gap: .4rem; }
+.rule-row { display: flex; gap: .75rem; align-items: flex-start; padding: .6rem .9rem; border-radius: 8px; font-size: .88rem; &.green { background: #f0fdf4; } &.red { background: #fef2f2; } }

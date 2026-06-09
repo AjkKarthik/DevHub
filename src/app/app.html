@@ -1,0 +1,371 @@
+<!-- ── Top header ─────────────────────────────────────────────────────────── -->
+<header>
+  <div class="header-left">
+    @if (showLeftNav()) {
+      <button type="button" class="nav-toggle" (click)="toggleNav()"
+              [attr.aria-expanded]="navOpen()" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    }
+    <a routerLink="/" class="logo">
+      <span class="logo-mark">&lt;/&gt;</span>
+      <span class="logo-text">Dev<strong>Hub</strong></span>
+    </a>
+  </div>
+
+  <div class="header-right">
+    <!-- Search trigger -->
+    <button type="button" class="hdr-btn hdr-search" (click)="search.openSearch()" title="Search (Ctrl+K)">
+      <span class="hdr-search-icon">🔍</span>
+      <span class="hdr-search-label">Search</span>
+      <kbd>Ctrl K</kbd>
+    </button>
+
+    <!-- Dark mode toggle -->
+    <button type="button" class="hdr-btn hdr-dark" (click)="darkMode.toggle()" [title]="darkMode.dark() ? 'Light mode' : 'Dark mode'">
+      {{ darkMode.dark() ? '☀️' : '🌙' }}
+    </button>
+
+    <!-- Auth -->
+    <div class="auth-toggle">
+      @if (auth.isLoggedIn()) {
+        <span class="user">{{ auth.user()?.name }}</span>
+        <button type="button" (click)="auth.logout()">Log out</button>
+      } @else {
+        <button type="button" class="login" (click)="auth.login()">Log in</button>
+      }
+    </div>
+  </div>
+</header>
+
+<!-- ── Shell: left nav + main ─────────────────────────────────────────────── -->
+<div class="shell" [class.nav-collapsed]="!navOpen()" [class.hub-mode]="!showLeftNav()">
+
+  <!-- Left navigation -->
+  @if (showLeftNav()) {
+  <nav class="left-nav" [class.open]="navOpen()" aria-label="Main navigation">
+
+    <!-- Back to hub -->
+    <a routerLink="/" class="nav-hub-back" (click)="closeNav()">
+      ← All Technologies
+    </a>
+
+    <!-- Progress bar -->
+    <div class="nav-progress">
+      <div class="nav-progress-bar" [style.width.%]="progress.pct()"></div>
+      <span class="nav-progress-label">{{ progress.count() }}/{{ progress.total }} topics done</span>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">🅰️ Angular</p>
+      <a routerLink="/angular" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeNav()">
+        <span class="nl-text">🏠 Angular Home</span>
+      </a>
+      <a routerLink="/counter" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Signals &amp; State</span>
+        @if (progress.isDone('counter')) {<span class="nl-done">✓</span>}
+        @if (diff('counter'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/templates" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Template Syntax</span>
+        @if (progress.isDone('templates')) {<span class="nl-done">✓</span>}
+        @if (diff('templates'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/directives" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Directives</span>
+        @if (progress.isDone('directives')) {<span class="nl-done">✓</span>}
+        @if (diff('directives'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/lifecycle" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Lifecycle Hooks</span>
+        @if (progress.isDone('lifecycle')) {<span class="nl-done">✓</span>}
+        @if (diff('lifecycle'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/pipes" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Pipes</span>
+        @if (progress.isDone('pipes')) {<span class="nl-done">✓</span>}
+        @if (diff('pipes'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/di" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Dependency Injection</span>
+        @if (progress.isDone('di')) {<span class="nl-done">✓</span>}
+        @if (diff('di'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/parent-child" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Input / Output</span>
+        @if (progress.isDone('parent-child')) {<span class="nl-done">✓</span>}
+        @if (diff('parent-child'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/content-projection" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Content Projection</span>
+        @if (progress.isDone('content-projection')) {<span class="nl-done">✓</span>}
+        @if (diff('content-projection'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/change-detection" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Change Detection</span>
+        @if (progress.isDone('change-detection')) {<span class="nl-done">✓</span>}
+        @if (diff('change-detection'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/animations" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Animations</span>
+        @if (progress.isDone('animations')) {<span class="nl-done">✓</span>}
+        @if (diff('animations'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Forms</p>
+      <a routerLink="/forms" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Template vs Reactive</span>
+        @if (progress.isDone('forms')) {<span class="nl-done">✓</span>}
+        @if (diff('forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/form-array" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">FormArray</span>
+        @if (progress.isDone('form-array')) {<span class="nl-done">✓</span>}
+        @if (diff('form-array'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/todo" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Todo (guarded)</span>
+        @if (progress.isDone('todo')) {<span class="nl-done">✓</span>}
+        @if (diff('todo'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/zod-forms" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Zod Validation</span>
+        @if (progress.isDone('zod-forms')) {<span class="nl-done">✓</span>}
+        @if (diff('zod-forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/custom-validators" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Custom Validators</span>
+        @if (progress.isDone('custom-validators')) {<span class="nl-done">✓</span>}
+        @if (diff('custom-validators'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/cva" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Control Value Accessor</span>
+        @if (progress.isDone('cva')) {<span class="nl-done">✓</span>}
+        @if (diff('cva'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/dynamic-forms" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Dynamic Forms</span>
+        @if (progress.isDone('dynamic-forms')) {<span class="nl-done">✓</span>}
+        @if (diff('dynamic-forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/wizard-form" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Wizard Form</span>
+        @if (progress.isDone('wizard-form')) {<span class="nl-done">✓</span>}
+        @if (diff('wizard-form'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Advanced</p>
+      <a routerLink="/http" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">HTTP Client</span>
+        @if (progress.isDone('http')) {<span class="nl-done">✓</span>}
+        @if (diff('http'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/routing" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Routing</span>
+        @if (progress.isDone('routing')) {<span class="nl-done">✓</span>}
+        @if (diff('routing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/defer" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">&#64;defer Blocks</span>
+        @if (progress.isDone('defer')) {<span class="nl-done">✓</span>}
+        @if (diff('defer'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/store" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Signal Store</span>
+        @if (progress.isDone('store')) {<span class="nl-done">✓</span>}
+        @if (diff('store'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/rxjs" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">RxJS Operators</span>
+        @if (progress.isDone('rxjs')) {<span class="nl-done">✓</span>}
+        @if (diff('rxjs'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/testing" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Testing</span>
+        @if (progress.isDone('testing')) {<span class="nl-done">✓</span>}
+        @if (diff('testing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/route-resolvers" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Route Resolvers</span>
+        @if (progress.isDone('route-resolvers')) {<span class="nl-done">✓</span>}
+        @if (diff('route-resolvers'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/preloading" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Preloading</span>
+        @if (progress.isDone('preloading')) {<span class="nl-done">✓</span>}
+        @if (diff('preloading'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">UI &amp; Visualisation</p>
+      <a routerLink="/material" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Angular Material</span>
+        @if (progress.isDone('material')) {<span class="nl-done">✓</span>}
+        @if (diff('material'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/charts" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Charts (Chart.js)</span>
+        @if (progress.isDone('charts')) {<span class="nl-done">✓</span>}
+        @if (diff('charts'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/cdk" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Angular CDK</span>
+        @if (progress.isDone('cdk')) {<span class="nl-done">✓</span>}
+        @if (diff('cdk'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/ag-grid" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">AG Grid</span>
+        @if (progress.isDone('ag-grid')) {<span class="nl-done">✓</span>}
+        @if (diff('ag-grid'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/tanstack-query" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">TanStack Query</span>
+        @if (progress.isDone('tanstack-query')) {<span class="nl-done">✓</span>}
+        @if (diff('tanstack-query'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/date-fns" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">date-fns</span>
+        @if (progress.isDone('date-fns')) {<span class="nl-done">✓</span>}
+        @if (diff('date-fns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/tailwind" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Tailwind CSS</span>
+        @if (progress.isDone('tailwind')) {<span class="nl-done">✓</span>}
+        @if (diff('tailwind'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Modern APIs</p>
+      <a routerLink="/resource-api" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">resource() API</span>
+        @if (progress.isDone('resource-api')) {<span class="nl-done">✓</span>}
+        @if (diff('resource-api'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/ngrx-signals" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">NgRx Signals</span>
+        @if (progress.isDone('ngrx-signals')) {<span class="nl-done">✓</span>}
+        @if (diff('ngrx-signals'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/destroy-ref" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">DestroyRef</span>
+        @if (progress.isDone('destroy-ref')) {<span class="nl-done">✓</span>}
+        @if (diff('destroy-ref'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/linked-signal" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">linkedSignal()</span>
+        @if (progress.isDone('linked-signal')) {<span class="nl-done">✓</span>}
+        @if (diff('linked-signal'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/zoneless" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Zoneless Angular</span>
+        @if (progress.isDone('zoneless')) {<span class="nl-done">✓</span>}
+        @if (diff('zoneless'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Testing</p>
+      <a routerLink="/e2e" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">E2E (Playwright)</span>
+        @if (progress.isDone('e2e')) {<span class="nl-done">✓</span>}
+        @if (diff('e2e'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/harnesses" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Harnesses</span>
+        @if (progress.isDone('harnesses')) {<span class="nl-done">✓</span>}
+        @if (diff('harnesses'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Platform</p>
+      <a routerLink="/ng-image" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">NgOptimizedImage</span>
+        @if (progress.isDone('ng-image')) {<span class="nl-done">✓</span>}
+        @if (diff('ng-image'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/web-workers" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">Web Workers</span>
+        @if (progress.isDone('web-workers')) {<span class="nl-done">✓</span>}
+        @if (diff('web-workers'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/pwa" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">PWA / Service Worker</span>
+        @if (progress.isDone('pwa')) {<span class="nl-done">✓</span>}
+        @if (diff('pwa'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/i18n" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">i18n</span>
+        @if (progress.isDone('i18n')) {<span class="nl-done">✓</span>}
+        @if (diff('i18n'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/ssr" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">SSR + Hydration</span>
+        @if (progress.isDone('ssr')) {<span class="nl-done">✓</span>}
+        @if (diff('ssr'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/cheatsheet" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">📋 Cheat Sheet</span>
+      </a>
+      <a routerLink="/errors" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">🐛 Common Errors</span>
+      </a>
+      <a routerLink="/whats-new" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">🆕 What's New</span>
+      </a>
+      <a routerLink="/mini-projects" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">🚀 Mini Projects</span>
+      </a>
+      <a routerLink="/learning-paths" routerLinkActive="active" (click)="closeNav()">
+        <span class="nl-text">🗺 Learning Paths</span>
+      </a>
+    </div>
+
+  </nav>
+  } <!-- end @if (showLeftNav()) -->
+
+  <!-- Mobile overlay -->
+  @if (navOpen()) {
+    <div class="nav-overlay" (click)="closeNav()"></div>
+  }
+
+  <!-- Main content area -->
+  <div class="main-area">
+    <main>
+      <app-breadcrumb />
+      <div class="content-grid" [class.has-sidebar]="showSidebar()">
+        <div class="content-main">
+          <router-outlet />
+        </div>
+        @if (showSidebar()) {
+          <aside class="content-aside">
+            <app-page-sidebar />
+          </aside>
+        }
+      </div>
+    </main>
+
+    <footer>
+      @if (showLeftNav()) {
+        Angular 22 &mdash; Standalone &bull; Signals &bull; Material &bull; Lazy Routing &bull; Guards &bull; Interceptors
+      } @else {
+        Dev Learning Hub &mdash; Angular &bull; TypeScript &bull; JavaScript &bull; C# &bull; Node.js &bull; CSS &bull; SQL
+      }
+    </footer>
+  </div>
+
+</div>
+
+<!-- Global overlays (always in DOM) -->
+<app-search />
+<app-back-to-top />

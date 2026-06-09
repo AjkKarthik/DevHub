@@ -1,0 +1,49 @@
+<div class="page">
+  <h1 class="page-title">🐛 Common Angular Errors</h1>
+  <p class="page-sub">Error codes, root causes, and step-by-step fixes for the most frequent Angular issues.</p>
+
+  <!-- Filter tabs -->
+  <div class="err-tabs">
+    @for (t of tags; track t) {
+      <button type="button" class="err-tab" [class.active]="activeTag() === t"
+              (click)="activeTag.set(t)">
+        {{ tagLabel(t) }}
+      </button>
+    }
+  </div>
+
+  <!-- Error cards -->
+  <div class="err-list">
+    @for (e of filtered; track e.code + e.title) {
+      <div class="err-card" [class]="'err-card--' + e.tag">
+        <div class="err-header">
+          <span class="err-code">{{ e.code }}</span>
+          <span class="err-title">{{ e.title }}</span>
+          <span class="err-tag">{{ e.tag }}</span>
+        </div>
+
+        <div class="err-body">
+          <div class="err-section">
+            <span class="err-label">Cause</span>
+            <p>{{ e.cause }}</p>
+          </div>
+          <div class="err-section">
+            <span class="err-label">Fix</span>
+            <p>{{ e.fix }}</p>
+          </div>
+
+          <div class="err-code-pair">
+            <div class="err-code-block">
+              <p class="code-label bad">❌ Bad</p>
+              <app-code-block [tabs]="[{label:'Bad', language:'typescript', code: e.example}]" />
+            </div>
+            <div class="err-code-block">
+              <p class="code-label good">✅ Fix</p>
+              <app-code-block [tabs]="[{label:'Fix', language:'typescript', code: e.solution}]" />
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

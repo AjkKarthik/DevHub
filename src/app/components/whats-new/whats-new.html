@@ -1,0 +1,30 @@
+<div class="page">
+  <h1 class="page-title">🆕 What's New in Angular</h1>
+  <p class="page-sub">A timeline of major features from Angular v14 through v22.</p>
+
+  <div class="timeline">
+    @for (r of releases; track r.version) {
+      <div class="release">
+        <!-- Version badge + date -->
+        <div class="release-header">
+          <span class="release-badge">{{ r.version }}</span>
+          <span class="release-date">{{ r.date }}</span>
+          <span class="release-headline">{{ r.headline }}</span>
+        </div>
+
+        <!-- Feature list -->
+        <div class="features">
+          @for (f of r.features; track f.title) {
+            <div class="feature">
+              <h3 class="feature-title">{{ f.title }}</h3>
+              <p class="feature-desc">{{ f.description }}</p>
+              @if (f.code) {
+                <app-code-block [tabs]="[{label:'Example', language:'typescript', code: f.code}]" />
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="page">
+  <h1>resource() API</h1>
+  <p class="subtitle">Angular's built-in reactive async primitive — signal-aware data fetching with loading, error, and status signals.</p>
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="19" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Live demo — fetch post by ID</h2>
+    <div class="demo-card">
+      <div class="controls">
+        @for (id of [1,2,3,4,5]; track id) {
+          <button type="button" class="btn" [class.active]="selectedId() === id" (click)="selectedId.set(id)">
+            Post {{ id }}
+          </button>
+        }
+      </div>
+      <div class="status-row">
+        Status: <span class="status-badge">{{ postResource.status() }}</span>
+      </div>
+      @if (postResource.isLoading()) {
+        <div class="loading">Loading…</div>
+      }
+      @if (postResource.error()) {
+        <div class="error-box">Error: {{ postResource.error() }}</div>
+      }
+      @if (postResource.value(); as post) {
+        <div class="post-card">
+          <strong>#{{ post.id }} — {{ post.title }}</strong>
+          <p>{{ post.body }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/resource-api" nextRoute="/destroy-ref" nextLabel="Destroy Ref" />
+</div>

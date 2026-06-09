@@ -1,0 +1,64 @@
+<div class="page">
+  <h1>Testing Angular</h1>
+  <p class="subtitle">TestBed for unit tests, @testing-library/angular for user-centric tests, HttpTestingController for services, and signal-aware assertions.</p>
+  <app-page-meta [readingTime]="15" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Live — Component Under Test</h2>
+    <p class="hint">This is the actual <code>CounterUnderTest</code> component embedded here. The code tabs show how you'd write tests for it.</p>
+    <div class="demo-card">
+      <app-counter-under-test label="Product Reviews" />
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Testing strategy matrix</h2>
+    <table class="matrix">
+      <thead>
+        <tr><th>What to test</th><th>Tool</th><th>Key assertion</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Component rendering + interaction</td><td>@testing-library/angular</td><td>screen.getByText, userEvent.click</td></tr>
+        <tr><td>Signal state + computed</td><td>TestBed + direct property access</td><td>comp.count() / comp.double()</td></tr>
+        <tr><td>HTTP services</td><td>HttpTestingController</td><td>req.flush(mockData)</td></tr>
+        <tr><td>Output events</td><td>TestBed subscribe</td><td>comp.changed.subscribe</td></tr>
+        <tr><td>Forms / validators</td><td>TestBed + form.setValue</td><td>form.valid, control.errors</td></tr>
+        <tr><td>Async observables</td><td>fakeAsync + tick</td><td>expect after tick(600)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="demo-section">
+    <h2>Key testing-library principles</h2>
+    <div class="principle-list">
+      <div class="principle">
+        <strong>Query by role, not selector</strong>
+        <p>getByRole('button', name:) — matches what screen readers see. More resilient to markup changes.</p>
+      </div>
+      <div class="principle">
+        <strong>user-event over fireEvent</strong>
+        <p>userEvent.click/type simulates real browser events including focus, blur, keyboard. fireEvent is too low-level.</p>
+      </div>
+      <div class="principle">
+        <strong>Test behaviour, not implementation</strong>
+        <p>Don't access component internals — test what the user sees and does. Refactoring internal state shouldn't break tests.</p>
+      </div>
+      <div class="principle">
+        <strong>Signals read immediately</strong>
+        <p>Unlike markForCheck, signal reads are synchronous — no detectChanges needed between signal read and assertion.</p>
+      </div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/testing" nextRoute="/harnesses" nextLabel="Harnesses" />
+</div>

@@ -1,0 +1,40 @@
+<div class="page">
+  <h1>AG Grid</h1>
+  <p class="subtitle">The industry-standard data grid — sorting, filtering, custom renderers, row selection, and CSV export.</p>
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Employee Grid</h2>
+    <div class="demo-card">
+      <div class="toolbar">
+        <input class="filter-input" placeholder="Quick filter…" (input)="applyFilter($any($event.target).value)" />
+        <button type="button" class="btn" (click)="exportCsv()">⬇ Export CSV</button>
+        @if (selectedCount() > 0) {
+          <span class="selection-badge">{{ selectedCount() }} selected</span>
+        }
+      </div>
+      <ag-grid-angular
+        [theme]="theme"
+        [rowData]="rowData()"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        rowSelection="multiple"
+        (gridReady)="onGridReady($event)"
+        (selectionChanged)="onSelectionChanged()"
+        class="grid"
+      />
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/ag-grid" nextRoute="/tanstack-query" nextLabel="Tanstack Query" />
+</div>

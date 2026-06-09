@@ -1,0 +1,158 @@
+<div class="page">
+  <h1>Preloading Strategies</h1>
+  <p class="subtitle">Silently prefetch lazy-loaded route bundles in the background — eliminating navigation delay without sacrificing initial load time.</p>
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <!-- ── Demo 1: Strategy simulator ──────────────────────────────────────── -->
+  <section class="demo-section">
+    <h2>Demo 1 — Strategy Simulator</h2>
+    <p class="hint">Pick a strategy then click Simulate to watch routes preload in real time.</p>
+
+    <div class="strategy-picker">
+      @for (s of strategyOptions; track s.value) {
+        <button type="button"
+                class="strat-btn"
+                [class.active]="strategy() === s.value"
+                (click)="setStrategy(s.value)">{{ s.label }}</button>
+      }
+    </div>
+
+    <p class="strat-desc">{{ strategyLabel() }}</p>
+
+    <div class="route-grid">
+      @for (r of routes(); track r.path) {
+        <div class="route-card" [class]="'status-' + r.status">
+          <span class="rc-path">{{ r.path }}</span>
+          <span class="rc-label">{{ r.label }}</span>
+          <div class="rc-badges">
+            @if (r.eager) { <span class="badge badge-eager">eager</span> }
+            @if (!r.eager) { <span class="badge badge-lazy">lazy</span> }
+            @if (r.preloadFlag) { <span class="badge badge-flag">data.preload=true</span> }
+            @if (r.visibleInViewport && !r.eager) { <span class="badge badge-vp">in viewport</span> }
+          </div>
+          <div class="rc-status">
+            @if (r.status === 'eager')      { <span class="st-eager">● bundled</span> }
+            @if (r.status === 'lazy')       { <span class="st-lazy">○ not loaded</span> }
+            @if (r.status === 'preloading') { <span class="st-loading">⟳ preloading…</span> }
+            @if (r.status === 'loaded')     { <span class="st-done">✓ preloaded</span> }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="sim-controls">
+      <button type="button" class="sim-btn" (click)="simulate()" [disabled]="simulating()">
+        {{ simulating() ? 'Simulating…' : '▶ Simulate page load' }}
+      </button>
+      <button type="button" class="reset-btn" (click)="resetRoutes()">Reset</button>
+    </div>
+  </section>
+
+  <!-- ── Demo 2: Resolver vs no resolver ─────────────────────────────────── -->
+  <section class="demo-section">
+    <h2>Demo 2 — Route Resolver: With vs Without</h2>
+    <div class="resolver-split">
+
+      <!-- WITH resolver -->
+      <div class="resolver-box">
+        <p class="box-title">With Resolver</p>
+        <p class="box-desc">Angular runs the resolver BEFORE activating the component. Component renders with data immediately.</p>
+        <div class="nav-area">
+          @if (resolverState() === 'idle') {
+            <div class="nav-placeholder">[ Not navigated yet ]</div>
+          }
+          @if (resolverState() === 'resolving') {
+            <div class="nav-resolving">
+              <span class="spinner">⟳</span> Router is resolving data… (component not shown yet)
+            </div>
+          }
+          @if (resolverState() === 'done' && resolvedPost()) {
+            <div class="post-card">
+              <div class="post-id">#{{ resolvedPost()!.id }}</div>
+              <div class="post-title">{{ resolvedPost()!.title }}</div>
+              <div class="post-body">{{ resolvedPost()!.body }}</div>
+            </div>
+          }
+        </div>
+        <div class="btn-row">
+          <button type="button" class="sim-btn" (click)="navigateWithResolver()" [disabled]="resolverState() === 'resolving'">
+            Navigate to /posts/42
+          </button>
+          <button type="button" class="reset-btn" (click)="resetResolver()">Reset</button>
+        </div>
+      </div>
+
+      <!-- WITHOUT resolver -->
+      <div class="resolver-box">
+        <p class="box-title">Without Resolver</p>
+        <p class="box-desc">Component activates immediately. Data loads inside the component — shows empty state then fills in.</p>
+        <div class="nav-area">
+          @if (!noResolverPost() && !noResolverLoading()) {
+            <div class="nav-placeholder">[ Not navigated yet ]</div>
+          }
+          @if (noResolverLoading() || noResolverPost()) {
+            <div class="post-card">
+              <div class="post-id">#42</div>
+              @if (noResolverLoading()) {
+                <div class="post-title loading-bar">Loading title…</div>
+                <div class="post-body loading-bar">Loading body…</div>
+              } @else {
+                <div class="post-title">{{ noResolverPost()!.title }}</div>
+                <div class="post-body">{{ noResolverPost()!.body }}</div>
+              }
+            </div>
+          }
+        </div>
+        <div class="btn-row">
+          <button type="button" class="sim-btn" (click)="navigateWithoutResolver()" [disabled]="noResolverLoading()">
+            Navigate to /posts/42
+          </button>
+          <button type="button" class="reset-btn" (click)="resetNoResolver()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Static comparison ─────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <h2>Strategy comparison</h2>
+    <div class="comparison">
+      <div class="comp-card">
+        <div class="comp-title">NoPreloading (default)</div>
+        <div class="timeline">
+          <div class="tl-bar init">Initial bundle loads</div>
+          <div class="tl-bar gap">… user navigates …</div>
+          <div class="tl-bar lazy">Lazy bundle fetches NOW ← user waits</div>
+        </div>
+      </div>
+      <div class="comp-card good">
+        <div class="comp-title">PreloadAllModules</div>
+        <div class="timeline">
+          <div class="tl-bar init">Initial bundle loads</div>
+          <div class="tl-bar preload">Lazy bundles preloaded in background</div>
+          <div class="tl-bar fast">… user navigates → instant ✓</div>
+        </div>
+      </div>
+      <div class="comp-card best">
+        <div class="comp-title">SelectivePreload / Quicklink</div>
+        <div class="timeline">
+          <div class="tl-bar init">Initial bundle loads</div>
+          <div class="tl-bar preload">Only marked/visible routes preloaded</div>
+          <div class="tl-bar fast">Best of both worlds — fast + no wasted bandwidth ✓</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/preloading" nextRoute="/route-resolvers" nextLabel="Route Resolvers" />
+</div>

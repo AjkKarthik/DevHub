@@ -1,0 +1,41 @@
+<div class="page">
+  <h1>Zoneless Angular</h1>
+  <p class="subtitle">Remove Zone.js, reduce bundle size, and let signals drive all change detection — maximum performance with minimal overhead.</p>
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="18" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Signal-driven rendering (no Zone.js needed)</h2>
+    <div class="demo-card">
+      <div class="counter-display">
+        <div class="big-num">{{ count() }}</div>
+        <div class="label">count</div>
+      </div>
+      <div class="counter-display">
+        <div class="big-num">{{ double() }}</div>
+        <div class="label">double (computed)</div>
+      </div>
+      <div class="controls">
+        <button type="button" class="btn" (click)="increment()">+ Increment via signal</button>
+        <button type="button" class="btn-outline" (click)="runOutsideZone()">Run outside zone</button>
+      </div>
+      @if (zoneLog().length > 0) {
+        <div class="log-box">
+          @for (entry of zoneLog(); track entry) {
+            <div class="log-entry">{{ entry }}</div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/zoneless" nextRoute="/store" nextLabel="Store" />
+</div>

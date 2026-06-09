@@ -1,0 +1,83 @@
+<div class="page">
+  <h1>date-fns</h1>
+  <p class="subtitle">Lightweight date manipulation — format, parse, date math, relative time, and a mini calendar built from scratch.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>format + Custom Format String</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Date <input type="date" [value]="selectedDate()" (change)="selectedDate.set($any($event.target).value)" /></label>
+        <label>Format <input [value]="formatStr()" (input)="formatStr.set($any($event.target).value)" placeholder="MMMM do, yyyy" style="width:180px" /></label>
+      </div>
+      <div class="result-box">{{ formatted() }}</div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Date Math — add / subtract</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Base date <input type="date" [value]="baseDate()" (change)="baseDate.set($any($event.target).value)" /></label>
+        <label>Add
+          <input type="number" [value]="addAmount()" (input)="addAmount.set(+$any($event.target).value)" style="width:70px" />
+        </label>
+        <label>Unit
+          <select (change)="addUnit.set($any($event.target).value)">
+            <option value="days">days</option>
+            <option value="months">months</option>
+          </select>
+        </label>
+      </div>
+      <div class="result-box">Result: <strong>{{ afterAdd() }}</strong></div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Relative Time — formatDistance</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Birthday <input type="date" [value]="birthday()" (change)="birthday.set($any($event.target).value)" /></label>
+      </div>
+      <div class="result-box">{{ birthdayAge() }}</div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Mini Calendar — built with date-fns</h2>
+    <div class="demo-card">
+      <div class="cal-nav">
+        <button type="button" (click)="prevMonth()">‹</button>
+        <strong>{{ calTitle() }}</strong>
+        <button type="button" (click)="nextMonth()">›</button>
+      </div>
+      <div class="cal-grid">
+        @for (dow of ['Su','Mo','Tu','We','Th','Fr','Sa']; track dow) {
+          <div class="cal-header">{{ dow }}</div>
+        }
+        @for (blank of [].constructor(firstDow()); track $index) {
+          <div></div>
+        }
+        @for (day of calDays(); track day.getTime()) {
+          <div class="cal-day"
+            [class.today]="isToday(day)"
+            [class.weekend]="isWeekendDay(day)">
+            {{ day.getDate() }}
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/date-fns" nextRoute="/zod-forms" nextLabel="Zod Forms" />
+</div>

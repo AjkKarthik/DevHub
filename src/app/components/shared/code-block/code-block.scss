@@ -1,0 +1,109 @@
+.code-block {
+  margin: 1rem 0;
+}
+
+.toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  background: #1e1e2e;
+  color: #cdd6f4;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+  transition: background 0.15s;
+
+  &:hover { background: #2a2a3e; }
+  .icon { font-size: 0.65rem; opacity: 0.7; }
+}
+
+.panel {
+  margin-top: 6px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #2d2d3f;
+}
+
+.tabs {
+  display: flex;
+  background: #181825;
+  border-bottom: 1px solid #2d2d3f;
+  overflow-x: auto;
+
+  button {
+    padding: 0.4rem 1rem;
+    background: none;
+    border: none;
+    color: #6c7086;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s;
+
+    &:hover  { color: #cdd6f4; }
+    &.active { color: #cdd6f4; border-bottom-color: #89b4fa; }
+  }
+}
+
+.code-wrap {
+  background: #1e1e2e;
+  overflow-x: auto;
+  position: relative;
+}
+
+.copy-btn {
+  position: absolute; top: .5rem; right: .6rem;
+  padding: .2rem .6rem;
+  background: rgba(255,255,255,.08); color: #9399b2;
+  border: 1px solid rgba(255,255,255,.12); border-radius: 5px;
+  font-size: .72rem; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: all .15s; z-index: 2;
+  &:hover { background: rgba(255,255,255,.15); color: #cdd6f4; }
+  &.copied { background: #1e3a2f; color: #a6e3a1; border-color: #a6e3a1; }
+}
+
+pre {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+code {
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  tab-size: 2;
+}
+
+/* Catppuccin-inspired token colours */
+:host ::ng-deep .hljs                { color: #cdd6f4; background: transparent; }
+:host ::ng-deep .hljs-keyword        { color: #cba6f7; }
+:host ::ng-deep .hljs-built_in       { color: #89b4fa; }
+:host ::ng-deep .hljs-type           { color: #f5c2e7; }
+:host ::ng-deep .hljs-literal        { color: #fab387; }
+:host ::ng-deep .hljs-number         { color: #fab387; }
+:host ::ng-deep .hljs-string         { color: #a6e3a1; }
+:host ::ng-deep .hljs-comment        { color: #585b70; font-style: italic; }
+:host ::ng-deep .hljs-title          { color: #89b4fa; }
+:host ::ng-deep .hljs-title.class_   { color: #f5c2e7; }
+:host ::ng-deep .hljs-attr           { color: #89dceb; }
+:host ::ng-deep .hljs-variable       { color: #cdd6f4; }
+:host ::ng-deep .hljs-punctuation    { color: #cdd6f4; }
+:host ::ng-deep .hljs-operator       { color: #89dceb; }
+:host ::ng-deep .hljs-tag            { color: #f38ba8; }
+:host ::ng-deep .hljs-name           { color: #f38ba8; }
+:host ::ng-deep .hljs-selector-tag   { color: #f38ba8; }
+:host ::ng-deep .hljs-selector-class { color: #a6e3a1; }
+:host ::ng-deep .hljs-property       { color: #89dceb; }
+:host ::ng-deep .hljs-params         { color: #cdd6f4; }
+:host ::ng-deep .hljs-meta           { color: #f5c2e7; }
+:host ::ng-deep .hljs-subst          { color: #cdd6f4; }
+:host ::ng-deep .hljs-symbol         { color: #fab387; }
+:host ::ng-deep .hljs-deletion       { color: #f38ba8; }
+:host ::ng-deep .hljs-addition       { color: #a6e3a1; }

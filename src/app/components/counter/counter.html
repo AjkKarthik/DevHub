@@ -1,0 +1,166 @@
+<div class="page">
+  <h2>Signals &amp; State</h2>
+  <app-page-meta [readingTime]="10" difficulty="beginner" since="16" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <!-- CONCEPT + CODE -->
+  <div class="concept">
+    <h3>Key Concepts</h3>
+    <ul>
+      <li><code>signal(value)</code> — creates a reactive value. Read it by calling it: <code>count()</code></li>
+      <li><code>signal.set(v)</code> — replace the value; <code>signal.update(fn)</code> — derive from current</li>
+      <li><code>computed(() =&gt; ...)</code> — derived value, recalculates when its signal deps change</li>
+      <li><code>effect(() =&gt; ...)</code> — side effect that re-runs whenever any read signal changes</li>
+      <li><code>&#64;if / &#64;else if / &#64;else</code> — new block-based control flow (replaces <code>*ngIf</code>)</li>
+      <li><code>&#64;for (x of list; track x.id)</code> — replaces <code>*ngFor</code></li>
+    </ul>
+    <app-code-block [tabs]="signalTabs" />
+  </div>
+
+
+  <!-- LIVE DEMO: counter -->
+  <div class="card demo">
+    <h3 class="demo-label">Live Demo</h3>
+    <div class="counter-display" [class.negative]="isNegative()" [class.zero]="isZero()">
+      {{ count() }}
+    </div>
+
+    <p class="derived">Doubled: <strong>{{ doubled() }}</strong></p>
+
+    <div class="controls">
+      <button type="button" (click)="decrement()">− {{ step() }}</button>
+      <button type="button" (click)="reset()" class="reset">Reset</button>
+      <button type="button" (click)="increment()">+ {{ step() }}</button>
+    </div>
+
+    <label class="step-label">
+      Step size:
+      <input type="number" [value]="step()" (input)="setStep($event)" min="1" max="100" />
+    </label>
+  </div>
+
+  <!-- LIVE DEMO: effect() log -->
+  <div class="card">
+    <h3>effect() log <span class="hint">— re-runs automatically on every count change</span></h3>
+    <ul class="log">
+      @for (entry of history(); track entry) {
+        <li>{{ entry }}</li>
+      } @empty {
+        <li class="empty">No changes yet — click the buttons above.</li>
+      }
+    </ul>
+  </div>
+
+  <!-- LIVE DEMO: @if / @else -->
+  <div class="card">
+    <h3>&#64;if / &#64;else in action</h3>
+    @if (isNegative()) {
+      <p class="msg negative">Count is negative</p>
+    } @else if (isZero()) {
+      <p class="msg zero">Count is zero (starting point)</p>
+    } @else {
+      <p class="msg positive">Count is positive — doubled value is {{ doubled() }}</p>
+    }
+  </div>
+  <!-- DEMO: Shopping Cart with Signals -->
+  <div class="pattern-demo">
+    <div class="pattern-header">
+      <h3>Pattern Demo — Shopping Cart</h3>
+      <p class="pattern-sub">All derived values (total, count, isEmpty) are <code>computed()</code> signals. Template re-renders only what changed.</p>
+    </div>
+
+    <div class="demo-split">
+      <div class="demo-left">
+        <div class="product-grid">
+          @for (p of cartProducts(); track p.id) {
+            <div class="product-card">
+              <div class="product-name">{{ p.name }}</div>
+              <div class="product-price">\${{ p.price.toFixed(2) }}</div>
+              <button type="button" class="add-btn" (click)="cartAdd(p)">Add to cart</button>
+            </div>
+          }
+        </div>
+
+        <div class="cart-panel" [class.empty]="cartIsEmpty()">
+          <h4>Cart
+            <span class="cart-badge" [class.hidden]="cartIsEmpty()">{{ cartCount() }}</span>
+          </h4>
+
+          @if (cartIsEmpty()) {
+            <p class="cart-empty">Cart is empty — add some products above.</p>
+          } @else {
+            <div class="cart-items">
+              @for (item of cartItems(); track item.id) {
+                <div class="cart-row">
+                  <span class="cart-name">{{ item.name }}</span>
+                  <span class="cart-qty">× {{ item.qty }}</span>
+                  <span class="cart-line">\${{ (item.price * item.qty).toFixed(2) }}</span>
+                  <button type="button" class="remove-btn" (click)="cartRemove(item.id)">✕</button>
+                </div>
+              }
+            </div>
+            <div class="cart-total">
+              Total: <strong>\${{ cartTotal().toFixed(2) }}</strong>
+              <button type="button" class="clear-btn" (click)="cartClear()">Clear</button>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="demo-right">
+        <app-code-block [tabs]="cartCodeTabs" />
+      </div>
+    </div>
+  </div>
+
+  <!-- DEMO: Readonly signals -->
+  <div class="pattern-demo">
+    <div class="pattern-header">
+      <h3>Pattern Demo — Readonly Signals (Auth State)</h3>
+      <p class="pattern-sub">Expose signals as <code>asReadonly()</code> to force mutations through service methods only.</p>
+    </div>
+
+    <div class="demo-split">
+      <div class="demo-left">
+        @if (authUser()) {
+          <div class="auth-card logged-in">
+            <div class="auth-avatar">{{ authUser()!.name.charAt(0).toUpperCase() }}</div>
+            <div>
+              <p class="auth-name">{{ authUser()!.name }}</p>
+              <p class="auth-role">{{ authUser()!.role }}</p>
+            </div>
+            <button type="button" class="auth-btn logout" (click)="authLogout()">Log out</button>
+          </div>
+        } @else {
+          <div class="auth-card logged-out">
+            <p class="auth-hint">Not logged in</p>
+            <div class="login-choices">
+              <button type="button" class="auth-btn" (click)="authLogin('admin')">Log in as Admin</button>
+              <button type="button" class="auth-btn" (click)="authLogin('viewer')">Log in as Viewer</button>
+            </div>
+          </div>
+        }
+
+        <div class="signal-watch">
+          <div class="watch-row"><span>isLoggedIn()</span><code [class.true]="authIsLoggedIn()">{{ authIsLoggedIn() }}</code></div>
+          <div class="watch-row"><span>user()</span><code>{{ authUser() | json }}</code></div>
+          <div class="watch-row"><span>isAdmin()</span><code [class.true]="authIsAdmin()">{{ authIsAdmin() }}</code></div>
+        </div>
+      </div>
+
+      <div class="demo-right">
+        <app-code-block [tabs]="readonlyCodeTabs" />
+      </div>
+    </div>
+  </div>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/counter" nextRoute="/templates" nextLabel="Templates" />
+</div>

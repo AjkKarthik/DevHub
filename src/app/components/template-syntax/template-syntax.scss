@@ -1,0 +1,102 @@
+.page { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 2rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { color: #666; margin-bottom: 2rem; font-size: 1.05rem; }
+h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+
+.demo-section { margin-bottom: 2.5rem; }
+
+.demo-card {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  align-items: center;
+  label { display: flex; gap: .4rem; align-items: center; font-size: .9rem; }
+  input[type="text"], input[type="password"] { padding: .35rem .6rem; border: 1px solid #ccc; border-radius: 6px; }
+  input[type="range"] { width: 100px; }
+  button {
+    padding: .4rem 1rem;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    &:hover { background: #4f46e5; }
+  }
+}
+
+.output {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #eee;
+  p { margin: .3rem 0; font-size: .95rem; }
+  strong { color: #4f46e5; }
+}
+
+.demo-input {
+  padding: .35rem .6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: .9rem;
+  width: 100%;
+  max-width: 280px;
+}
+
+.mouse-area {
+  height: 80px;
+  background: #ede9fe;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem;
+  color: #4f46e5;
+  cursor: crosshair;
+  margin-bottom: .5rem;
+}
+
+.key-log { display: flex; flex-direction: column; gap: .25rem; }
+.log-entry {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  font-family: monospace;
+  font-size: .8rem;
+  padding: .2rem .5rem;
+  border-radius: 4px;
+}
+
+.styled-box {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  background: #f3f4f6;
+  border: 2px solid transparent;
+  transition: all .2s;
+  &.is-active { border-color: #6366f1; }
+  &.is-highlight { background: #fef9c3; }
+}
+
+.user-card {
+  background: #ede9fe;
+  padding: .75rem;
+  border-radius: 8px;
+  code { font-family: monospace; font-size: .8rem; white-space: pre-wrap; }
+}
+
+.muted { color: #888; font-size: .9rem; }
+
+.timer {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6366f1;
+  font-family: monospace;
+}

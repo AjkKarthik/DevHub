@@ -1,0 +1,97 @@
+.page { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 2rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { color: #666; margin-bottom: 2rem; font-size: 1.05rem; }
+h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+
+.demo-section { margin-bottom: 2.5rem; }
+
+.demo-card {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+  label { display: flex; gap: .4rem; align-items: center; font-size: .9rem; }
+  input, select { padding: .35rem .6rem; border: 1px solid #ccc; border-radius: 6px; }
+  button {
+    padding: .4rem 1rem;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: .9rem;
+    &:hover { background: #4f46e5; }
+  }
+}
+
+.muted { color: #888; font-size: .85rem; margin: 0; }
+
+.product-list { display: flex; flex-direction: column; gap: .4rem; }
+
+.product-item {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: .6rem .9rem;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  cursor: pointer;
+  transition: all .15s;
+  background: #fff;
+  &:hover { border-color: #6366f1; background: #f5f3ff; }
+  &.selected { border-color: #6366f1; background: #ede9fe; }
+}
+
+.product-id {
+  font-family: monospace;
+  font-size: .8rem;
+  color: #888;
+  flex: 0 0 40px;
+}
+
+.product-name { font-weight: 500; }
+
+.product-detail {
+  background: #ede9fe;
+  border-radius: 8px;
+  padding: .75rem 1rem;
+  font-size: .9rem;
+  line-height: 1.6;
+  code { font-family: monospace; font-size: .85rem; }
+}
+
+.routes-list { display: flex; flex-direction: column; gap: .4rem; }
+
+.route-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .5rem .75rem;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  flex-wrap: wrap;
+}
+
+.route-path { font-family: monospace; font-size: .85rem; flex: 0 0 160px; color: #4f46e5; }
+.route-desc { font-size: .85rem; color: #555; flex: 1; }
+
+.route-badge {
+  padding: .15rem .5rem;
+  border-radius: 4px;
+  font-size: .72rem;
+  font-weight: 600;
+  background: #fee2e2;
+  color: #991b1b;
+  &.lazy { background: #dcfce7; color: #166534; }
+}

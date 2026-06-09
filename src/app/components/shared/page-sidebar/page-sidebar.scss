@@ -1,0 +1,166 @@
+.sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-section {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 10px;
+  padding: 1rem 1rem .9rem;
+}
+
+.section-title {
+  margin: 0 0 .65rem;
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text3, #6b7280);
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  .icon { font-size: .9rem; }
+}
+
+// ── Key APIs ───────────────────────────────────────────────────────────────
+.api-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.api-pill {
+  display: inline-block;
+  background: var(--surface2, #f3f4f6);
+  color: var(--text, #1f2937);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: .75rem;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+// ── Related Topics ─────────────────────────────────────────────────────────
+.related-list {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.related-link {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .35rem .5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text2, #374151);
+  font-size: .85rem;
+  font-weight: 500;
+  transition: background .13s, color .13s;
+
+  .link-arrow { color: var(--text3, #9ca3af); font-size: .8rem; transition: color .13s, transform .15s; }
+
+  &:hover {
+    background: var(--surface2, #f5f3ff);
+    color: var(--accent, #4f46e5);
+    .link-arrow { color: var(--accent, #4f46e5); transform: translateX(3px); }
+  }
+}
+
+// ── Quick Tip ──────────────────────────────────────────────────────────────
+.tip-section {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+:host-context(body.dark) .tip-section {
+  background: #2d1f00;
+  border-color: #78350f;
+}
+
+.tip-text {
+  margin: 0;
+  font-size: .83rem;
+  color: var(--text2, #78350f);
+  line-height: 1.6;
+}
+
+// ── External link list (shared by Docs + Resources) ───────────────────────
+.ext-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.ext-link {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .35rem .5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: .84rem;
+  font-weight: 500;
+  transition: background .13s, color .13s;
+
+  .ext-icon { font-size: .8rem; flex-shrink: 0; transition: transform .15s; }
+  .ext-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  &:hover .ext-icon { transform: translate(2px, -2px); }
+}
+
+.docs-link {
+  color: #4338ca;
+  background: #eef2ff;
+  &:hover { background: #e0e7ff; color: #3730a3; }
+}
+:host-context(body.dark) .docs-link {
+  color: #a5b4fc;
+  background: #1e1b4b;
+  &:hover { background: #312e81; color: #c7d2fe; }
+}
+
+.resource-link {
+  color: var(--text2, #374151);
+  &:hover { background: var(--surface2, #f5f3ff); color: var(--accent, #4f46e5); }
+}
+
+// ── Resource badges ────────────────────────────────────────────────────────
+.badge {
+  font-size: .65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .05em; padding: 1px 6px; border-radius: 4px;
+  flex-shrink: 0; line-height: 1.6;
+}
+
+.badge-docs  { background: #dbeafe; color: #1d4ed8; }
+.badge-video { background: #fee2e2; color: #b91c1c; }
+.badge-blog  { background: #dcfce7; color: #166534; }
+.badge-tool  { background: #fef9c3; color: #854d0e; }
+
+// ── Common Gotchas ─────────────────────────────────────────────────────────
+.gotcha-section {
+  background: #fff7f7;
+  border-color: #fecaca;
+}
+:host-context(body.dark) .gotcha-section {
+  background: #1a0000;
+  border-color: #7f1d1d;
+}
+
+.gotcha-list { display: flex; flex-direction: column; gap: .55rem; }
+
+.gotcha-item {
+  font-size: .82rem;
+  color: var(--text2, #7f1d1d);
+  line-height: 1.55;
+  padding-left: 1.1rem;
+  position: relative;
+  &::before {
+    content: '▸'; position: absolute; left: 0; top: 0;
+    color: #ef4444; font-size: .7rem; line-height: 1.8;
+  }
+}

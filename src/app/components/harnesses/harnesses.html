@@ -1,0 +1,47 @@
+<div class="page">
+  <h1>Component Harnesses</h1>
+  <p class="subtitle">Test component behaviour through a stable, semantic API — no querySelector, no internal DOM knowledge required.</p>
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="9" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Harness vs direct DOM — comparison</h2>
+    <div class="comparison-grid">
+      <div class="cmp-col bad">
+        <div class="cmp-title">Without harness</div>
+        <pre><code>// Fragile — breaks if class changes
+const btn = fixture.debugElement
+  .query(By.css('.mat-mdc-button'));
+btn.nativeElement.click();</code></pre>
+        <div class="cmp-issues">
+          <div class="issue">✗ Coupled to Material internals</div>
+          <div class="issue">✗ Breaks on Material updates</div>
+          <div class="issue">✗ Needs manual detectChanges</div>
+        </div>
+      </div>
+      <div class="cmp-col good">
+        <div class="cmp-title">With harness</div>
+        <pre><code>// Stable — semantic API
+const btn = await loader.getHarness(
+  MatButtonHarness.with(&#123; text: 'Submit' &#125;)
+);
+await btn.click();</code></pre>
+        <div class="cmp-goods">
+          <div class="good-item">✓ Survives Material version bumps</div>
+          <div class="good-item">✓ Readable and semantic</div>
+          <div class="good-item">✓ Auto change detection</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/harnesses" nextRoute="/e2e" nextLabel="E2e" />
+</div>

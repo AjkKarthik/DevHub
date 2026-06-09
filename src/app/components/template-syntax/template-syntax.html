@@ -1,0 +1,166 @@
+<div class="page">
+  <h1>Template Syntax</h1>
+  <p class="subtitle">Angular's declarative template language — interpolation, bindings, pipes, and control flow.</p>
+  <app-page-meta [readingTime]="10" difficulty="beginner" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <!-- Interpolation -->
+  <section class="demo-section">
+    <h2>Interpolation <code>{{ '{' }}{{ '{' }} expr {{ '}' }}{{ '}' }}</code></h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Greeting <input [value]="greeting()" (input)="greeting.set($any($event.target).value)" /></label>
+        <label>App Name <input [value]="appName()" (input)="appName.set($any($event.target).value)" /></label>
+        <button (click)="count.update(n => n + 1)">Increment ({{ count() }})</button>
+      </div>
+      <div class="output">
+        <p>Expression: <strong>{{ expression() }}</strong></p>
+        <p>Math: <strong>{{ count() * 2 + 10 }}</strong></p>
+        <p>Ternary: <strong>{{ count() > 5 ? 'Big number!' : 'Small number' }}</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Property binding -->
+  <section class="demo-section">
+    <h2>Property Binding <code>[property]</code></h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label><input type="checkbox" (change)="isDisabled.set($any($event.target).checked)" /> Disabled</label>
+        <label>Width (px)
+          <input type="range" min="60" max="300" [value]="imageWidth()" (input)="imageWidth.set(+$any($event.target).value)" />
+          {{ imageWidth() }}
+        </label>
+        <label>Input type
+          <select (change)="inputType.set($any($event.target).value)">
+            <option value="text">text</option>
+            <option value="password">password</option>
+          </select>
+        </label>
+      </div>
+      <div class="output">
+        <img src="ng-logo.svg" [width]="imageWidth()" alt="Angular logo" />
+        <input [type]="inputType()" [disabled]="isDisabled()" placeholder="Type here..." class="demo-input" />
+        <p>Type: <code>{{ inputType() }}</code> | Disabled: <code>{{ isDisabled() }}</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Event binding -->
+  <section class="demo-section">
+    <h2>Event Binding <code>(event)</code></h2>
+    <div class="demo-card">
+      <div class="output">
+        <div class="mouse-area" (mousemove)="onMouseMove($event)">
+          Move mouse here — X: {{ mousePos().x }}, Y: {{ mousePos().y }}
+        </div>
+        <input placeholder="Press keys here" (keyup)="onKeyup($event)" class="demo-input" />
+        <div role="list" class="key-log">
+          @for (entry of keyLog(); track entry) {
+            <div role="listitem" class="log-entry">{{ entry }}</div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two-way binding -->
+  <section class="demo-section">
+    <h2>Two-way Binding <code>[(ngModel)]</code></h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Text <input [(ngModel)]="twoWayText" placeholder="Type something" /></label>
+        <label>Color <input type="color" [(ngModel)]="twoWayColor" /></label>
+      </div>
+      <div class="output" [style.color]="twoWayColor">
+        <p>Live value: <strong>{{ twoWayText || '(empty)' }}</strong></p>
+        <p>Color: <strong>{{ twoWayColor }}</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Template ref variable -->
+  <section class="demo-section">
+    <h2>Template Reference Variables <code>#ref</code></h2>
+    <div class="demo-card">
+      <div class="controls">
+        <input #myInput type="text" placeholder="Type, then click Read" class="demo-input" />
+        <button (click)="refOutput.set(myInput.value)">Read value</button>
+        <button (click)="myInput.select()">Select all</button>
+      </div>
+      <div class="output">
+        <p>Captured value: <strong>{{ refOutput() || '(click Read)' }}</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Class & style binding -->
+  <section class="demo-section">
+    <h2>Class &amp; Style Binding</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label><input type="checkbox" (change)="isActive.set($any($event.target).checked)" /> Active</label>
+        <label><input type="checkbox" (change)="isHighlight.set($any($event.target).checked)" /> Highlight</label>
+        <label>Font size
+          <input type="range" min="12" max="36" [value]="fontSize()" (input)="fontSize.set(+$any($event.target).value)" />
+          {{ fontSize() }}px
+        </label>
+        <label>Color <input type="color" [value]="textColor()" (input)="textColor.set($any($event.target).value)" /></label>
+      </div>
+      <div class="output">
+        <div
+          class="styled-box"
+          [class.is-active]="isActive()"
+          [class.is-highlight]="isHighlight()"
+          [style.fontSize.px]="fontSize()"
+          [style.color]="textColor()"
+        >
+          This box responds to your choices above.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Safe navigation -->
+  <section class="demo-section">
+    <h2>Safe Navigation &amp; Nullish Coalescing</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <button (click)="toggleUser()">{{ user() ? 'Remove User' : 'Create User' }}</button>
+      </div>
+      <div class="output">
+        <p>Name (safe nav): <strong>{{ user()?.name ?? 'No user' }}</strong></p>
+        <p>City (deep safe nav): <strong>{{ user()?.address?.city ?? 'No city' }}</strong></p>
+        @if (user()) {
+          <div class="user-card">
+            <p>&#64;if branch — user exists:</p>
+            <code>{{ user() | json }}</code>
+          </div>
+        } @else {
+          <p class="muted">User is null — &#64;else branch shown</p>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Async pipe -->
+  <section class="demo-section">
+    <h2>Async Pipe</h2>
+    <div class="demo-card">
+      <div class="output">
+        <p>Live timer Observable: <strong class="timer">{{ timer$ | async }}</strong></p>
+        <p class="muted">AsyncPipe subscribes automatically and unsubscribes on destroy.</p>
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/templates" nextRoute="/parent-child" nextLabel="Parent Child" />
+</div>

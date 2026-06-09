@@ -1,0 +1,139 @@
+<div class="page">
+  <h2>Template-Driven vs Reactive Forms</h2>
+  <app-page-meta [readingTime]="14" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <div class="concept">
+    <h3>When to use which?</h3>
+    <table>
+      <thead><tr><th scope="col">Feature</th><th scope="col">Template-Driven</th><th scope="col">Reactive</th></tr></thead>
+      <tbody>
+        <tr><td>Setup</td><td>FormsModule + ngModel</td><td>ReactiveFormsModule + FormBuilder</td></tr>
+        <tr><td>Validation</td><td>HTML attributes</td><td>Validators array — fully type-safe</td></tr>
+        <tr><td>Testing</td><td>Harder (needs DOM)</td><td>Easier (pure TS objects)</td></tr>
+        <tr><td>Dynamic fields</td><td>Tricky</td><td>FormArray — straightforward</td></tr>
+        <tr><td>Best for</td><td>Simple, small forms</td><td>Complex / data-heavy forms</td></tr>
+      </tbody>
+    </table>
+    <app-code-block [tabs]="formsTabs" />
+  </div>
+
+  <div class="two-col">
+
+    <!-- REACTIVE FORM -->
+    <div class="card">
+      <h3>Reactive Form</h3>
+      <form [formGroup]="reactiveForm" (ngSubmit)="submitReactive()">
+        <div class="field">
+          <label>Name</label>
+          <input formControlName="name" placeholder="Your name" />
+          @if (rf['name'].touched && rf['name'].errors?.['required'])  { <span class="err">Name is required.</span> }
+          @if (rf['name'].touched && rf['name'].errors?.['minlength']) { <span class="err">At least 2 characters.</span> }
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input formControlName="email" type="email" placeholder="you@example.com" />
+          @if (rf['email'].touched && rf['email'].errors?.['required']) { <span class="err">Email is required.</span> }
+          @if (rf['email'].touched && rf['email'].errors?.['email'])    { <span class="err">Must be a valid email.</span> }
+        </div>
+        <button type="submit" [disabled]="reactiveForm.invalid">Submit (Reactive)</button>
+      </form>
+    </div>
+
+    <!-- TEMPLATE-DRIVEN FORM -->
+    <div class="card">
+      <h3>Template-Driven Form</h3>
+      <form #templateForm="ngForm" (ngSubmit)="submitTemplate()">
+        <div class="field">
+          <label>Name</label>
+          <input name="name" [(ngModel)]="templateModel.name" required minlength="2"
+            #nameField="ngModel" placeholder="Your name" />
+          @if (nameField.touched && nameField.errors?.['required'])  { <span class="err">Name is required.</span> }
+          @if (nameField.touched && nameField.errors?.['minlength']) { <span class="err">At least 2 characters.</span> }
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input name="email" type="email" [(ngModel)]="templateModel.email" required email
+            #emailField="ngModel" placeholder="you@example.com" />
+          @if (emailField.touched && emailField.errors?.['required']) { <span class="err">Email is required.</span> }
+          @if (emailField.touched && emailField.errors?.['email'])    { <span class="err">Must be a valid email.</span> }
+        </div>
+        <button type="submit" [disabled]="templateForm.invalid">Submit (Template)</button>
+      </form>
+    </div>
+
+  </div>
+
+  @if (submitted()) {
+    <div class="result card">
+      <h3>Submitted via {{ submitted()!.source }}</h3>
+      <p>Name: <strong>{{ submitted()!.name }}</strong></p>
+      <p>Email: <strong>{{ submitted()!.email }}</strong></p>
+      <button type="button" (click)="reset()">Reset</button>
+    </div>
+  }
+  <!-- PATTERN DEMO: Cross-field password validation -->
+  <div class="pattern-demo">
+    <div class="pattern-header">
+      <h3>Pattern Demo — Cross-field Validation (Password Confirm)</h3>
+      <p class="pattern-sub">The validator is applied to the <code>FormGroup</code>, not a single control. It can compare any two fields.</p>
+    </div>
+    <div class="demo-split">
+      <div class="demo-left">
+        <form [formGroup]="passwordForm" (ngSubmit)="submitPassword()" novalidate>
+          <div class="field">
+            <label>Password</label>
+            <input formControlName="password" type="password" placeholder="Min 6 characters" />
+            @if (pf['password'].touched && pf['password'].errors?.['required'])   { <span class="err">Required.</span> }
+            @if (pf['password'].touched && pf['password'].errors?.['minlength'])  { <span class="err">Min 6 characters.</span> }
+          </div>
+          <div class="field">
+            <label>Confirm Password</label>
+            <input formControlName="confirm" type="password" placeholder="Repeat password" />
+            @if (pf['confirm'].touched && pf['confirm'].errors?.['required']) { <span class="err">Required.</span> }
+            @if (passwordForm.errors?.['mismatch'] && pf['confirm'].touched)  { <span class="err">Passwords do not match.</span> }
+          </div>
+          <div class="field">
+            <label>Username</label>
+            <input formControlName="username" placeholder="Choose a username" />
+            @if (pf['username'].touched && pf['username'].errors?.['required'])  { <span class="err">Required.</span> }
+            @if (pf['username'].touched && pf['username'].errors?.['minlength']) { <span class="err">Min 3 characters.</span> }
+          </div>
+
+          <div class="form-status-row">
+            <span class="status-chip" [class.valid]="passwordForm.valid">
+              Form: {{ passwordForm.valid ? 'Valid ✓' : 'Invalid ✗' }}
+            </span>
+            <span class="status-chip" [class.valid]="!passwordForm.errors?.['mismatch']">
+              Match: {{ passwordForm.errors?.['mismatch'] ? 'No ✗' : 'Yes ✓' }}
+            </span>
+          </div>
+
+          <div class="btn-row">
+            <button type="submit" [disabled]="passwordForm.invalid">Register</button>
+            <button type="button" class="reset-btn" (click)="resetPasswordForm()">Reset</button>
+          </div>
+        </form>
+
+        @if (passwordSubmitted()) {
+          <div class="success-box">
+            Registered as <strong>{{ passwordSubmitted()!.username }}</strong>!
+          </div>
+        }
+      </div>
+      <div class="demo-right">
+        <app-code-block [tabs]="crossFieldCodeTabs" />
+      </div>
+    </div>
+  </div>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/forms" nextRoute="/form-array" nextLabel="Form Array" />
+</div>

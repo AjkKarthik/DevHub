@@ -1,0 +1,17 @@
+<div class="child-wrapper">
+  <div class="child-header">
+    <span class="badge">Child component mounted at {{ mountedAt() }}</span>
+    <span class="timer-badge">Timer: {{ timerCount() }}s</span>
+  </div>
+  <div class="props">
+    <span>text: <strong>"{{ text }}"</strong></span>
+    <span>number: <strong>{{ number }}</strong></span>
+  </div>
+  <div role="list" class="log-list">
+    @for (entry of log(); track entry) {
+      <div role="listitem" class="log-entry">{{ entry }}</div>
+    } @empty {
+      <div class="empty">No hooks fired yet. Change the inputs above.</div>
+    }
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="page">
+  <h1>TanStack Query</h1>
+  <p class="subtitle">Server-state management with caching, background refetching, mutations, and reactive query keys — built for Angular with signals.</p>
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="17" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Posts — injectQuery</h2>
+    <div class="demo-card">
+      @if (postsQuery.isLoading()) {
+        <div class="loading">Loading posts…</div>
+      }
+      @if (postsQuery.isError()) {
+        <div class="error-box">Error: {{ postsQuery.error()?.message }}</div>
+      }
+      @if (postsQuery.data(); as posts) {
+        <ul class="post-list">
+          @for (p of posts; track p.id) {
+            <li class="post-item" [class.selected]="selectedId() === p.id" (click)="selectedId.set(p.id)">
+              <strong>#{{ p.id }}</strong> {{ p.title }}
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </section>
+
+  @if (selectedId() !== null) {
+    <section class="demo-section">
+      <h2>Post detail — conditional query (enabled)</h2>
+      <div class="demo-card">
+        @if (detailQuery.isLoading()) { <div class="loading">Fetching post {{ selectedId() }}…</div> }
+        @if (detailQuery.data(); as post) {
+          <div class="detail-box">
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.body }}</p>
+            <button class="btn-sm" (click)="selectedId.set(null)">Close</button>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <section class="demo-section">
+    <h2>Create Post — injectMutation</h2>
+    <div class="demo-card">
+      <div class="mutation-form">
+        <input
+          class="input"
+          placeholder="Post title…"
+          [value]="newTitle()"
+          (input)="newTitle.set($any($event.target).value)"
+          (keydown.enter)="submitPost()" />
+        <button class="btn" (click)="submitPost()" [disabled]="createMutation.isPending()">
+          {{ createMutation.isPending() ? 'Creating…' : 'Create Post' }}
+        </button>
+      </div>
+      @if (createMutation.isSuccess()) {
+        <div class="success-box">Created! Server returned id: {{ createMutation.data()?.id }}</div>
+      }
+      @if (createMutation.isError()) {
+        <div class="error-box">Error: {{ createMutation.error()?.message }}</div>
+      }
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Why TanStack Query?</h2>
+    <div class="why-grid">
+      <div class="why-card"><strong>Caching</strong><p>Deduplicated fetches — multiple components sharing the same queryKey share one request.</p></div>
+      <div class="why-card"><strong>Stale-while-revalidate</strong><p>Returns cached data instantly, then refetches in the background when staleTime expires.</p></div>
+      <div class="why-card"><strong>Reactive keys</strong><p>Query key is a function — reads signals, so changing selectedId() automatically re-fetches.</p></div>
+      <div class="why-card"><strong>Mutations</strong><p>invalidateQueries on success keeps UI in sync without manual state management.</p></div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/tanstack-query" nextRoute="/date-fns" nextLabel="Date Fns" />
+</div>

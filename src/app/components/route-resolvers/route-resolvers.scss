@@ -1,0 +1,117 @@
+.page { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 2rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { color: #666; margin-bottom: 2rem; font-size: 1.05rem; }
+h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: .75rem; }
+.demo-section { margin-bottom: 2.5rem; }
+.hint { font-size: .85rem; color: #666; margin-bottom: .75rem; }
+
+// ── Post picker ──────────────────────────────────────────────────────────────
+.post-picker {
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem;
+}
+.picker-label { font-size: .82rem; font-weight: 600; color: #6b7280; }
+.pick-btn {
+  padding: .28rem .7rem; border-radius: 16px; border: 2px solid #d1d5db;
+  background: #fff; color: #374151; font-size: .82rem; cursor: pointer; font-weight: 600;
+  &.active { border-color: #6366f1; background: #eef2ff; color: #4338ca; }
+  &:hover:not(.active) { border-color: #9ca3af; }
+}
+
+// ── Resolver split ────────────────────────────────────────────────────────────
+.resolver-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  @media (max-width: 700px) { grid-template-columns: 1fr; }
+}
+
+.resolver-box {
+  background: #fafafa; border: 1px solid #e5e7eb; border-radius: 12px;
+  padding: 1rem; display: flex; flex-direction: column; gap: .75rem;
+}
+
+.box-header { display: flex; flex-direction: column; gap: .2rem; }
+.box-badge {
+  font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; width: fit-content;
+  &.badge-with    { background: #d1fae5; color: #065f46; }
+  &.badge-without { background: #fee2e2; color: #991b1b; }
+}
+.box-sub { font-size: .8rem; color: #6b7280; }
+
+.phase-track { display: flex; flex-direction: column; gap: .2rem; }
+.phase {
+  display: flex; align-items: center; gap: .5rem; font-size: .8rem; color: #9ca3af;
+  padding: .35rem .6rem; border-radius: 6px; border: 1px solid transparent;
+  &.active { color: #4338ca; background: #eef2ff; border-color: #c7d2fe; font-weight: 600; }
+}
+.ph-num {
+  min-width: 1.4rem; height: 1.4rem; border-radius: 50%; background: #e5e7eb; color: #6b7280;
+  display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 800;
+  .phase.active & { background: #6366f1; color: #fff; }
+}
+.phase-arrow { font-size: .9rem; color: #d1d5db; padding-left: .7rem; }
+
+.nav-area {
+  min-height: 100px; background: #fff; border: 1px dashed #d1d5db;
+  border-radius: 8px; padding: .75rem; display: flex; align-items: center; justify-content: center;
+}
+
+.idle-msg { color: #9ca3af; font-size: .82rem; font-style: italic; text-align: center; }
+
+.resolving-msg {
+  display: flex; align-items: center; gap: .5rem; color: #d97706; font-size: .85rem; font-weight: 600;
+}
+.spin-icon { font-size: 1.1rem; display: inline-block; animation: spin .7s linear infinite; }
+@keyframes spin { to { rotate: 1turn; } }
+
+.post-card {
+  width: 100%; display: flex; flex-direction: column; gap: .35rem;
+}
+.post-meta  { font-size: .72rem; color: #9ca3af; font-family: monospace; }
+.post-title { font-size: .9rem; font-weight: 700; color: #1f2937; }
+.post-body  { font-size: .8rem; color: #4b5563; line-height: 1.45; }
+.post-tag   { font-size: .72rem; font-weight: 600; color: #059669; margin-top: .2rem; &.warn { color: #d97706; } }
+
+.skeleton { background: #e5e7eb; color: transparent; border-radius: 4px; min-height: 14px; }
+
+.btn-row {
+  display: flex; gap: .4rem; flex-wrap: wrap;
+  &--gap { margin-top: .75rem; }
+}
+.nav-btn {
+  padding: .4rem 1rem; border-radius: 6px; border: none;
+  background: #4f46e5; color: #fff; font-size: .84rem; font-weight: 600; cursor: pointer;
+  &:hover:not(:disabled) { background: #4338ca; }
+  &:disabled { opacity: .55; cursor: not-allowed; }
+}
+.reset-btn {
+  padding: .4rem .85rem; border-radius: 6px; border: 1px solid #d1d5db;
+  background: #fff; color: #374151; font-size: .84rem; cursor: pointer;
+  &:hover { background: #f5f5f5; }
+}
+
+// ── Parallel resolvers ────────────────────────────────────────────────────────
+.parallel-list {
+  display: flex; flex-direction: column; gap: .4rem; max-width: 480px;
+}
+.par-row {
+  display: flex; align-items: center; gap: .75rem; padding: .5rem .85rem;
+  background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;
+  font-size: .85rem;
+  &.done { background: #f0fdf4; border-color: #6ee7b7; }
+}
+.par-name { font-family: monospace; font-weight: 600; color: #374151; flex: 1; }
+.par-ms   { font-size: .75rem; color: #9ca3af; }
+.par-spin { color: #d97706; font-size: .78rem; font-weight: 600; }
+.par-done { color: #059669; font-size: .78rem; font-weight: 700; }
+
+.all-done {
+  margin-top: .6rem; padding: .5rem .9rem; background: #d1fae5; border-radius: 8px;
+  color: #065f46; font-size: .85rem; font-weight: 700; max-width: 480px;
+}
+
+// ── Flow timeline ─────────────────────────────────────────────────────────────
+.timeline { display: flex; flex-direction: column; align-items: flex-start; gap: .25rem; max-width: 520px; }
+.tl-step { display: flex; align-items: flex-start; gap: .75rem; background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: .65rem 1rem; width: 100%; box-sizing: border-box; &.done { background: #d1fae5; border-color: #6ee7b7; } }
+.tl-num { min-width: 1.6rem; height: 1.6rem; background: #6366f1; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 800; flex-shrink: 0; }
+.tl-step.done .tl-num { background: #16a34a; }
+.tl-text { font-size: .87rem; color: #374151; padding-top: .1rem; code { background: #ede9fe; color: #4f46e5; padding: 0 .3rem; border-radius: 4px; } }
+.tl-arrow { font-size: 1.2rem; color: #9ca3af; padding-left: .8rem; }

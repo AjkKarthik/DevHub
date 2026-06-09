@@ -1,0 +1,41 @@
+<div class="page">
+  <h1>Web Workers</h1>
+  <p class="subtitle">Offload CPU-intensive work to a background thread — keep the UI responsive during heavy computation.</p>
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Main thread vs Worker — UI responsiveness</h2>
+    <div class="demo-card">
+      <p>Both buttons calculate the sum of 0…500,000,000. Watch the counter above to see if the UI stays responsive.</p>
+      <div class="counter-display">UI tick counter: <strong>{{ uiCounter() }}</strong></div>
+      @if (mainBlocked()) {
+        <div class="blocked-warn">Main thread BLOCKED — UI frozen during computation!</div>
+      }
+      <div class="controls">
+        <button type="button" class="btn btn-danger" (click)="runOnMainThread()" [disabled]="running()">
+          Run on main thread (blocks UI)
+        </button>
+        <button type="button" class="btn" (click)="runInWorker()" [disabled]="running()">
+          Run in Web Worker (UI stays responsive)
+        </button>
+      </div>
+      @if (running() && !mainBlocked()) {
+        <div class="loading">Worker computing… UI counter keeps ticking ✓</div>
+      }
+      @if (result() !== null) {
+        <div class="result-box">Result: {{ result() }}</div>
+      }
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/web-workers" nextRoute="/ng-image" nextLabel="Ng Image" />
+</div>

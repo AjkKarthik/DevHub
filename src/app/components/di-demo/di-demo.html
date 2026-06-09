@@ -1,0 +1,98 @@
+<div class="page">
+  <h1>Dependency Injection</h1>
+  <p class="subtitle">Angular's DI system — singleton services, component-scoped providers, InjectionToken, and hierarchical resolution.</p>
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <!-- Root singleton vs scoped -->
+  <section class="demo-section">
+    <h2>Root Singleton vs Component-Scoped Service</h2>
+    <div class="demo-card">
+      <div class="di-grid">
+        <!-- Shared (root) service -->
+        <div class="di-box">
+          <div class="di-label">SharedCounterService <span class="badge green">providedIn: 'root'</span></div>
+          <p class="di-desc">Same instance everywhere in the app. All components share state.</p>
+          <div class="counter-display">{{ shared.count() }}</div>
+          <div class="counter-btns">
+            <button (click)="shared.decrement()">−</button>
+            <button (click)="shared.reset()">Reset</button>
+            <button (click)="shared.increment()">+</button>
+          </div>
+        </div>
+        <!-- Scoped service -->
+        <div class="di-box">
+          <div class="di-label">ScopedCounterService <span class="badge purple">providers: [...]</span></div>
+          <p class="di-desc">New instance per component. Destroyed with the component.</p>
+          <div class="counter-display">{{ scoped.count() }}</div>
+          <div class="counter-btns">
+            <button (click)="scoped.reset()">Reset</button>
+            <button (click)="scoped.increment()">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- InjectionToken -->
+  <section class="demo-section">
+    <h2>InjectionToken</h2>
+    <div class="demo-card">
+      <p class="muted">APP_CONFIG token injected — factory runs once and provides these values:</p>
+      <div class="output">
+        <div role="list" class="config-list">
+          <div role="listitem" class="config-row">
+            <span class="config-key">apiUrl</span>
+            <span class="config-val">{{ config.apiUrl }}</span>
+          </div>
+          <div role="listitem" class="config-row">
+            <span class="config-key">maxRetries</span>
+            <span class="config-val">{{ config.maxRetries }}</span>
+          </div>
+          <div role="listitem" class="config-row">
+            <span class="config-key">theme</span>
+            <span class="config-val">{{ config.theme }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DI resolution visual -->
+  <section class="demo-section">
+    <h2>Hierarchical DI Resolution</h2>
+    <div class="demo-card">
+      <div class="hierarchy">
+        <div class="h-level root">
+          <strong>Root Injector (Platform)</strong>
+          <span class="h-badge">providedIn: 'root' services live here</span>
+        </div>
+        <div class="h-connector">↓ walks up if not found</div>
+        <div class="h-level app">
+          <strong>App Component Injector</strong>
+          <span class="h-badge">providers: [] in AppComponent</span>
+        </div>
+        <div class="h-connector">↓</div>
+        <div class="h-level feature">
+          <strong>Feature Component Injector</strong>
+          <span class="h-badge">providers: [ScopedService] — overrides root for subtree</span>
+        </div>
+        <div class="h-connector">↓</div>
+        <div class="h-level child">
+          <strong>Child Component</strong>
+          <span class="h-badge">inject(ScopedService) → gets FEATURE instance, not root</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/di" nextRoute="/content-projection" nextLabel="Content Projection" />
+</div>

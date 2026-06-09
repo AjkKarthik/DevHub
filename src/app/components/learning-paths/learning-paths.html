@@ -1,0 +1,29 @@
+<div class="page">
+  <h1 class="page-title">🗺 Learning Paths</h1>
+  <p class="page-sub">Structured curriculum for every skill level — click any topic to open it.</p>
+
+  <div class="paths-grid">
+    @for (path of paths; track path.id) {
+      <div class="path-card" [style.--path-color]="path.color">
+        <div class="path-header">
+          <span class="path-icon">{{ path.icon }}</span>
+          <div>
+            <h2 class="path-title">{{ path.title }}</h2>
+            <p class="path-sub">{{ path.subtitle }}</p>
+          </div>
+          <span class="path-dur">{{ path.duration }}</span>
+        </div>
+
+        <ol class="path-steps">
+          @for (step of path.steps; track step.route; let i = $index) {
+            <li class="path-step">
+              <span class="step-num">{{ i + 1 }}</span>
+              <a [routerLink]="'/' + step.route" class="step-link">{{ step.label }}</a>
+              <span class="step-why">{{ step.why }}</span>
+            </li>
+          }
+        </ol>
+      </div>
+    }
+  </div>
+</div>

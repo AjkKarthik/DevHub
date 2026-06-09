@@ -1,0 +1,79 @@
+<div class="page">
+  <h1>Control Value Accessor</h1>
+  <p class="subtitle">Build a custom form control (star rating widget) that works natively with Reactive Forms and <code>formControlName</code>.</p>
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Star Rating — reactive form</h2>
+    <div class="demo-card">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field">
+          <label>Product name</label>
+          <input formControlName="productName" class="input" placeholder="Enter product name" />
+          @if (form.get('productName')?.invalid && form.get('productName')?.touched) {
+            <span class="error">Product name is required</span>
+          }
+        </div>
+
+        <div class="field">
+          <label>Your rating</label>
+          <!-- Works exactly like a native input -->
+          <app-star-rating formControlName="rating" />
+          @if (ratingCtrl?.invalid && (submitted() || ratingCtrl?.touched)) {
+            <span class="error">Please select a rating (1–5)</span>
+          }
+        </div>
+
+        <div class="field">
+          <label>Review (optional)</label>
+          <textarea formControlName="description" class="input" rows="3" placeholder="Write your review…"></textarea>
+        </div>
+
+        <div class="field-row">
+          <button type="submit" class="btn">Submit Review</button>
+          <button type="button" class="btn-outline" (click)="form.reset({ rating: 0 })">Reset</button>
+        </div>
+
+        @if (submitted() && form.valid) {
+          <div class="success-box">
+            Review submitted! Rating: {{ form.value.rating }}/5 for "{{ form.value.productName }}"
+          </div>
+        }
+      </form>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>How CVA wires up</h2>
+    <div class="info-cards">
+      <div class="info-card">
+        <h3>writeValue(val)</h3>
+        <p>Called by Angular to push a value INTO your component. Use when programmatic patchValue/setValue is called.</p>
+      </div>
+      <div class="info-card">
+        <h3>registerOnChange(fn)</h3>
+        <p>Angular passes a callback. Call it whenever the user changes the value to notify the form.</p>
+      </div>
+      <div class="info-card">
+        <h3>registerOnTouched(fn)</h3>
+        <p>Angular passes a callback. Call it when the user blurs/interacts to mark the control as touched.</p>
+      </div>
+      <div class="info-card">
+        <h3>setDisabledState(b)</h3>
+        <p>Called when the form control is programmatically disabled. Update your component's visual state.</p>
+      </div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/cva" nextRoute="/routing" nextLabel="Routing" />
+</div>

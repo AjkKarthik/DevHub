@@ -1,0 +1,114 @@
+<div class="page">
+  <h1>Directives</h1>
+  <p class="subtitle">Angular directives — NgClass, NgStyle, and custom attribute/structural directives.</p>
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <!-- NgClass demo -->
+  <section class="demo-section">
+    <h2>NgClass — Dynamic CSS Classes</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Theme
+          <select (change)="theme.set($any($event.target).value)">
+            <option value="default">Default</option>
+            <option value="success">Success</option>
+            <option value="warning">Warning</option>
+            <option value="danger">Danger</option>
+          </select>
+        </label>
+        <label><input type="checkbox" (change)="isBold.set($any($event.target).checked)" /> Bold</label>
+        <label><input type="checkbox" (change)="isItalic.set($any($event.target).checked)" /> Italic</label>
+        <label><input type="checkbox" (change)="hasShadow.set($any($event.target).checked)" /> Shadow</label>
+      </div>
+      <div class="output">
+        <div class="theme-box" [ngClass]="ngClassObj">
+          This box's classes are controlled by NgClass.
+          <br /><small>Current classes: {{ ngClassObj | json }}</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NgStyle demo -->
+  <section class="demo-section">
+    <h2>NgStyle — Dynamic Inline Styles</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Font size
+          <input type="range" min="12" max="40" [value]="textFontSize()" (input)="textFontSize.set(+$any($event.target).value)" />
+          {{ textFontSize() }}px
+        </label>
+        <label>Opacity
+          <input type="range" min="0" max="1" step="0.05" [value]="textOpacity()" (input)="textOpacity.set(+$any($event.target).value)" />
+          {{ textOpacity() | number:'1.2-2' }}
+        </label>
+        <label>Text color <input type="color" [value]="textColor()" (input)="textColor.set($any($event.target).value)" /></label>
+        <label>BG color <input type="color" [value]="bgColor()" (input)="bgColor.set($any($event.target).value)" /></label>
+        <label>Letter spacing
+          <input type="range" min="0" max="10" [value]="letterSpacing()" (input)="letterSpacing.set(+$any($event.target).value)" />
+          {{ letterSpacing() }}px
+        </label>
+      </div>
+      <div class="output">
+        <div class="ngstyle-box" [ngStyle]="ngStyleObj">
+          Text styled entirely by NgStyle — adjust the controls above!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Repeat structural directive demo -->
+  <section class="demo-section">
+    <h2>Custom Structural Directive — <code>*appRepeat</code></h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Repeat count
+          <input type="range" min="1" max="8" [value]="repeatCount()" (input)="repeatCount.set(+$any($event.target).value)" />
+          {{ repeatCount() }}
+        </label>
+      </div>
+      <div class="output">
+        <div role="list" class="repeat-list">
+          @for (n of repeatRange(); track n) {
+            <div role="listitem" class="repeat-item">Row {{ n }}</div>
+          }
+        </div>
+        <p class="muted">*appRepeat renders its template N times, exposing the index via <code>let-n</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom attribute directive demo — real [appHighlight] directive -->
+  <section class="demo-section">
+    <h2>Custom Attribute Directive — <code>[appHighlight]</code></h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Highlight colour
+          <input type="color" [value]="highlightColor()" (input)="highlightColor.set($any($event.target).value)" />
+          <span class="color-val">{{ highlightColor() }}</span>
+        </label>
+      </div>
+      <div class="output">
+        <p class="muted">Hover over any row — the <code>appHighlight</code> directive listens to <code>mouseenter</code>/<code>mouseleave</code> via <code>@HostListener</code> and applies the colour via <code>Renderer2</code>.</p>
+        <div role="list" class="highlight-list">
+          @for (item of highlightItems; track item) {
+            <div role="listitem" class="highlight-row" [appHighlight]="highlightColor()">
+              {{ item }}
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/directives" nextRoute="/pipes" nextLabel="Pipes" />
+</div>

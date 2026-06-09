@@ -1,0 +1,91 @@
+<div class="page">
+  <h1>Lifecycle Hooks</h1>
+  <p class="subtitle">Angular calls specific methods at predictable points — ngOnInit, ngOnChanges, ngOnDestroy, ViewChild, and modern afterRender hooks.</p>
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <!-- ngOnChanges + ngOnInit + ngOnDestroy demo -->
+  <section class="demo-section">
+    <h2>ngOnChanges, ngOnInit &amp; ngOnDestroy</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Text input
+          <input [value]="inputText()" (input)="inputText.set($any($event.target).value)" placeholder="Change me" />
+        </label>
+        <label>Number input
+          <input type="number" [value]="inputNumber()" (input)="inputNumber.set(+$any($event.target).value)" />
+        </label>
+        <button type="button" (click)="showChild.set(!showChild())">
+          {{ showChild() ? 'Unmount child (ngOnDestroy)' : 'Mount child (ngOnInit)' }}
+        </button>
+      </div>
+
+      @if (showChild()) {
+        <app-tracked-child [text]="inputText()" [number]="inputNumber()" />
+      } @else {
+        <div class="unmounted">Child is unmounted — subscription cancelled, timer cleared.</div>
+      }
+    </div>
+  </section>
+
+  <!-- ViewChild + afterNextRender demo -->
+  <section class="demo-section">
+    <h2>ViewChild &amp; afterNextRender</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <button type="button" (click)="doFocus()">Focus input via ViewChild</button>
+      </div>
+      <div class="output">
+        <input #focusInput type="text" placeholder="Click button to focus me" class="demo-input" />
+        <div #measuredBox class="measured-box">
+          This div is measured after render.
+        </div>
+        <p>Measured dimensions (via afterNextRender):
+          <strong>{{ boxSize().width }}px × {{ boxSize().height }}px</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- effect() reactive tracking demo -->
+  <section class="demo-section">
+    <h2>effect() — Reactive Side Effects</h2>
+    <div class="demo-card">
+      <p class="muted">effect() re-runs automatically whenever any signal it reads changes — no subscription, no ngOnChanges needed.</p>
+      <div class="controls">
+        <label>Name
+          <input type="text" [value]="effectName()" (input)="effectName.set($any($event.target).value)" />
+        </label>
+        <label>Count
+          <input type="number" class="input-narrow" [value]="effectCount()" (input)="effectCount.set(+$any($event.target).value)" />
+        </label>
+        <label>Theme
+          <select (change)="effectTheme.set($any($event.target).value)">
+            <option value="light">light</option>
+            <option value="dark">dark</option>
+          </select>
+        </label>
+      </div>
+      <div class="output">
+        <p class="label">effect() ran with these values:</p>
+        <div role="list" class="effect-log">
+          @for (entry of effectLog(); track entry; let i = $index) {
+            <div role="listitem" class="effect-entry" [class.latest]="i === 0">{{ entry }}</div>
+          } @empty {
+            <div class="effect-empty">Change any control above to trigger the effect.</div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/lifecycle" nextRoute="/directives" nextLabel="Directives" />
+</div>

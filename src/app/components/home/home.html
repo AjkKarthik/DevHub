@@ -1,0 +1,129 @@
+<section class="hero">
+  <img src="ng-logo.svg" alt="Angular" class="hero-logo" />
+  <h1>Angular 22 Learning Template</h1>
+  <p class="subtitle">
+    45 hands-on pages covering every pattern you'll use in real Angular apps.
+    Each page shows the concept, the code, and a live interactive demo.
+  </p>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">45</span><span class="stat-label">pages</span></div>
+    <div class="stat"><span class="stat-num">12</span><span class="stat-label">categories</span></div>
+    <div class="stat"><span class="stat-num">100+</span><span class="stat-label">live demos</span></div>
+  </div>
+</section>
+
+<section class="topics">
+  <div class="topics-header">
+    <h2>What's inside</h2>
+    <div class="filters">
+      @for (f of filters; track f) {
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="activeFilter() === f"
+          (click)="setFilter(f)">
+          {{ f }}
+          <span class="count">{{ counts()[f] ?? 0 }}</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="grid">
+    @for (topic of topics(); track topic.route) {
+      <div class="card" [class.expanded]="expandedCard() === topic.route">
+        <a class="card-main" [routerLink]="topic.route">
+          <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
+          <h3>{{ topic.title }}</h3>
+          <p>{{ topic.description }}</p>
+        </a>
+        <div class="card-footer">
+          <button type="button" class="key-points-btn" (click)="toggleCard(topic.route, $event)">
+            {{ expandedCard() === topic.route ? '▲ Hide key points' : '▼ Key points' }}
+          </button>
+          <a class="arrow-link" [routerLink]="topic.route">Explore →</a>
+        </div>
+        @if (expandedCard() === topic.route) {
+          <div class="key-points">
+            @for (pt of topic.keyPoints; track pt) {
+              <div class="key-point">{{ pt }}</div>
+            }
+          </div>
+        }
+      </div>
+    }
+    @empty {
+      <p class="no-results">No topics in this category.</p>
+    }
+  </div>
+</section>
+
+<section class="roadmap">
+  <h2>Recommended learning path</h2>
+  <div class="path-groups">
+    <div class="path-group">
+      <h3 class="group-label core">① Core Angular</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/counter"><strong>Signals & State</strong></a> — start here; everything builds on this</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/templates"><strong>Template Syntax</strong></a> — interpolation, binding, control flow</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/directives"><strong>Directives</strong></a> — NgClass, NgStyle, custom attribute & structural</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/lifecycle"><strong>Lifecycle Hooks</strong></a> — ngOnInit, ngOnDestroy, ViewChild, afterNextRender</span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/pipes"><strong>Pipes</strong></a> — built-in pipes + custom truncate + async pipe</span></li>
+        <li><span class="step-num">6</span><span><a routerLink="/parent-child"><strong>Input / Output</strong></a> — modern signal-based parent-child data flow</span></li>
+        <li><span class="step-num">7</span><span><a routerLink="/content-projection"><strong>Content Projection</strong></a> — ng-content, multi-slot, ng-template</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label forms">② Forms</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/forms"><strong>Template vs Reactive</strong></a> — side-by-side comparison</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/form-array"><strong>FormArray</strong></a> — dynamic add/remove fields</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/todo"><strong>Todo (guarded)</strong></a> — toggle login to see the route guard</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/custom-validators"><strong>Custom Validators</strong></a> — sync, async, cross-field</span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/zod-forms"><strong>Zod Validation</strong></a> — schema-first runtime validation</span></li>
+        <li><span class="step-num">6</span><span><a routerLink="/cva"><strong>Control Value Accessor</strong></a> — custom form control (star rating)</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label arch">③ Architecture</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/di"><strong>Dependency Injection</strong></a> — singleton vs scoped, InjectionToken</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/store"><strong>Signal Store</strong></a> — shopping cart, pure signal store, no NgRx</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/routing"><strong>Routing</strong></a> — params, guards, lazy loading, programmatic nav</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/http"><strong>HTTP Client</strong></a> — HttpClient, interceptor, GET + POST</span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/rxjs"><strong>RxJS Operators</strong></a> — switchMap, BehaviorSubject, combineLatest</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label perf">④ Performance</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/defer"><strong>&#64;defer Blocks</strong></a> — lazy-load on scroll, click, or signal</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/change-detection"><strong>Change Detection</strong></a> — Default vs OnPush side-by-side</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label ui">⑤ UI & Visualisation</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/material"><strong>Angular Material</strong></a> — real Material components</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/cdk"><strong>Angular CDK</strong></a> — drag & drop, virtual scroll, clipboard</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/animations"><strong>Animations</strong></a> — trigger, keyframes, stagger</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/charts"><strong>Charts (Chart.js)</strong></a> — bar, line, doughnut with live data</span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/tailwind"><strong>Tailwind CSS</strong></a> — class binding, dark mode, @apply</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label third">⑥ Third-party Libraries</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/ag-grid"><strong>AG Grid</strong></a> — enterprise data grid, CSV export</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/tanstack-query"><strong>TanStack Query</strong></a> — server state, caching, mutations</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/date-fns"><strong>date-fns</strong></a> — format, date math, relative time</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/testing"><strong>Testing</strong></a> — TestBed, @testing-library, signal assertions</span></li>
+      </ol>
+    </div>
+  </div>
+</section>

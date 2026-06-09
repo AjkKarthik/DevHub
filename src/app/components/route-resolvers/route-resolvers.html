@@ -1,0 +1,172 @@
+<div class="page">
+  <h1>Route Resolvers + Named Outlets</h1>
+  <p class="subtitle">Pre-fetch data before a component renders with ResolveFn, and render multiple independent router views with named outlets.</p>
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="3" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <!-- ── Demo 1: With vs Without resolver ────────────────────────────────── -->
+  <section class="demo-section">
+    <h2>Demo 1 — Resolver vs No Resolver</h2>
+    <p class="hint">Choose a post and simulate navigation both ways to feel the difference.</p>
+
+    <div class="post-picker">
+      <span class="picker-label">Post to load:</span>
+      @for (p of [1,2,3]; track p) {
+        <button type="button" class="pick-btn" [class.active]="selectedPostId() === p" (click)="selectedPostId.set(p)">
+          Post #{{ p }}
+        </button>
+      }
+    </div>
+
+    <div class="resolver-split">
+      <!-- With resolver -->
+      <div class="resolver-box">
+        <div class="box-header">
+          <span class="box-badge badge-with">With resolver</span>
+          <span class="box-sub">Component waits — renders with data ready</span>
+        </div>
+
+        <div class="phase-track">
+          <div class="phase" [class.active]="resolverState() === 'resolving'">
+            <span class="ph-num">1</span> Router resolves data…
+          </div>
+          <div class="phase-arrow">↓</div>
+          <div class="phase" [class.active]="resolverState() === 'active'">
+            <span class="ph-num">2</span> Component activates with data
+          </div>
+        </div>
+
+        <div class="nav-area">
+          @if (resolverState() === 'idle') {
+            <span class="idle-msg">Click "Navigate" to simulate</span>
+          }
+          @if (resolverState() === 'resolving') {
+            <div class="resolving-msg">
+              <span class="spin-icon">⟳</span>
+              Resolver running… (component not shown yet)
+            </div>
+          }
+          @if (resolverState() === 'active' && resolvedPost()) {
+            <div class="post-card">
+              <div class="post-meta">Post #{{ resolvedPost()!.id }} · by {{ resolvedPost()!.author }}</div>
+              <div class="post-title">{{ resolvedPost()!.title }}</div>
+              <div class="post-body">{{ resolvedPost()!.body }}</div>
+              <div class="post-tag">✓ Data was available immediately on render</div>
+            </div>
+          }
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="nav-btn" (click)="navigateWithResolver()" [disabled]="resolverState() === 'resolving'">
+            Navigate →
+          </button>
+          <button type="button" class="reset-btn" (click)="resetResolver()">Reset</button>
+        </div>
+      </div>
+
+      <!-- Without resolver -->
+      <div class="resolver-box">
+        <div class="box-header">
+          <span class="box-badge badge-without">Without resolver</span>
+          <span class="box-sub">Component renders immediately, loads data inside</span>
+        </div>
+
+        <div class="phase-track">
+          <div class="phase" [class.active]="noResolverState() !== 'idle'">
+            <span class="ph-num">1</span> Component activates immediately
+          </div>
+          <div class="phase-arrow">↓</div>
+          <div class="phase" [class.active]="noResolverState() === 'active-loading'">
+            <span class="ph-num">2</span> Component fetches data (shows spinner)
+          </div>
+        </div>
+
+        <div class="nav-area">
+          @if (noResolverState() === 'idle') {
+            <span class="idle-msg">Click "Navigate" to simulate</span>
+          }
+          @if (noResolverState() !== 'idle') {
+            <div class="post-card">
+              <div class="post-meta">Post #{{ selectedPostId() }}</div>
+              @if (noResolverState() === 'active-loading') {
+                <div class="post-title skeleton">Loading title…</div>
+                <div class="post-body skeleton">Loading content…</div>
+                <div class="post-tag warn">⏳ Component showed before data arrived</div>
+              }
+              @if (noResolverState() === 'active-loaded' && noResolverPost()) {
+                <div class="post-title">{{ noResolverPost()!.title }}</div>
+                <div class="post-body">{{ noResolverPost()!.body }}</div>
+                <div class="post-tag">Data arrived after component rendered</div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="nav-btn" (click)="navigateWithoutResolver()" [disabled]="noResolverState() === 'active-loading'">
+            Navigate →
+          </button>
+          <button type="button" class="reset-btn" (click)="resetNoResolver()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Demo 2: Parallel resolvers ──────────────────────────────────────── -->
+  <section class="demo-section">
+    <h2>Demo 2 — Multiple Resolvers Run in Parallel</h2>
+    <p class="hint">Angular starts all resolvers on a route simultaneously — the route activates when ALL complete.</p>
+
+    @if (parallelLog().length === 0) {
+      <p class="idle-msg">Click the button to simulate three parallel resolvers.</p>
+    } @else {
+      <div class="parallel-list">
+        @for (r of parallelLog(); track r.resolver) {
+          <div class="par-row" [class.done]="r.done">
+            <span class="par-name">{{ r.resolver }}</span>
+            <span class="par-ms">~{{ r.ms }}ms</span>
+            @if (!r.done) { <span class="par-spin">⟳ running</span> }
+            @if (r.done)  { <span class="par-done">✓ resolved</span> }
+          </div>
+        }
+      </div>
+      @if (parallelState() === 'done') {
+        <div class="all-done">✓ All resolvers done — component activates now</div>
+      }
+    }
+
+    <div class="btn-row btn-row--gap">
+      <button type="button" class="nav-btn" (click)="runParallelResolvers()" [disabled]="parallelState() === 'running'">
+        {{ parallelState() === 'running' ? 'Running…' : '▶ Run resolvers' }}
+      </button>
+      <button type="button" class="reset-btn" (click)="resetParallel()">Reset</button>
+    </div>
+  </section>
+
+  <!-- ── Static flow ───────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <h2>How resolvers work — flow</h2>
+    <div class="timeline">
+      <div class="tl-step"><div class="tl-num">1</div><div class="tl-text">User navigates to <code>/posts/5</code></div></div>
+      <div class="tl-arrow">↓</div>
+      <div class="tl-step"><div class="tl-num">2</div><div class="tl-text">Router runs <code>postResolver</code> — fetches post #5</div></div>
+      <div class="tl-arrow">↓</div>
+      <div class="tl-step"><div class="tl-num">3</div><div class="tl-text">Resolver resolves (Promise completes / Observable emits)</div></div>
+      <div class="tl-arrow">↓</div>
+      <div class="tl-step"><div class="tl-num">4</div><div class="tl-text"><code>PostDetail</code> component activates with data already available</div></div>
+      <div class="tl-arrow">↓</div>
+      <div class="tl-step done"><div class="tl-num">✓</div><div class="tl-text">No loading spinner needed — component renders with full data</div></div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/route-resolvers" nextRoute="/http" nextLabel="Http" />
+</div>

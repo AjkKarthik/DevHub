@@ -1,0 +1,49 @@
+<div class="page">
+  <h1>linkedSignal()</h1>
+  <p class="subtitle">A writable signal that resets to a computed default when its source changes — perfect for dependent dropdowns and derived-but-editable state.</p>
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="19" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Dependent dropdowns</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Country
+          <select (change)="selectedCountry.set($any($event.target).value)">
+            @for (c of countries; track c) { <option [value]="c">{{ c }}</option> }
+          </select>
+        </label>
+        <label>City
+          <select (change)="selectedCity.set($any($event.target).value)">
+            @for (c of cities(); track c) { <option [value]="c">{{ c }}</option> }
+          </select>
+        </label>
+      </div>
+      <div class="result-box">Selected: {{ selectedCity() }}, {{ selectedCountry() }}</div>
+      <p class="hint">Change the country — city resets to the first option automatically via linkedSignal().</p>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Editable computed total</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Qty <input type="number" [value]="qty()" (input)="qty.set(+$any($event.target).value)" style="width:70px" /></label>
+        <label>Price <input type="number" [value]="price()" (input)="price.set(+$any($event.target).value)" style="width:70px" /></label>
+        <label>Total (editable!) <input type="number" [value]="total()" (input)="total.set(+$any($event.target).value)" style="width:90px" /></label>
+      </div>
+      <div class="result-box">{{ summary() }}</div>
+      <p class="hint">Edit Total manually — then change Qty or Price to see it reset to the computed value.</p>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/linked-signal" nextRoute="/resource-api" nextLabel="Resource Api" />
+</div>

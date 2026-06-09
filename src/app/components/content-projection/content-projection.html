@@ -1,0 +1,78 @@
+<div class="page">
+  <h1>Content Projection</h1>
+  <p class="subtitle">ng-content, multi-slot projection, ng-template, and ng-container — building truly reusable components.</p>
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Multi-slot Card — header / body / footer slots</h2>
+    <div class="demo-card">
+      <p class="muted">The card component uses three named <code>ng-content</code> slots selected by attribute.</p>
+      <app-cp-card>
+        <span card-header>&#128179; Order Summary</span>
+        <div card-body>
+          <p>2× Angular Pro Course — <strong>$198</strong></p>
+          <p>1× TypeScript Mastery — <strong>$49</strong></p>
+          <hr />
+          <p><strong>Total: $247</strong></p>
+        </div>
+        <div card-footer>
+          <button type="button" class="btn">Cancel</button>
+          <button type="button" class="btn btn-primary">Checkout</button>
+        </div>
+      </app-cp-card>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Alert Component — single slot</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Alert type
+          <select (change)="alertType.set($any($event.target).value)">
+            <option value="info">Info</option>
+            <option value="success">Success</option>
+            <option value="warning">Warning</option>
+            <option value="danger">Danger</option>
+          </select>
+        </label>
+      </div>
+      <app-cp-alert [type]="alertType()">
+        <strong>{{ alertType() | titlecase }} message.</strong>
+        The content between the component tags is projected via <code>ng-content</code>.
+        You can put <em>any HTML</em> here — even other components.
+      </app-cp-alert>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>ng-container — no DOM wrapper</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <button type="button" class="btn btn-primary" (click)="showGroup.update(v => !v)">
+          Toggle content ({{ showGroup() ? 'visible' : 'hidden' }})
+        </button>
+      </div>
+      <div class="output">
+        @if (showGroup()) {
+          <ng-container>
+            <p>&#9989; This paragraph is inside ng-container — no wrapper div in the DOM.</p>
+            <p>&#9989; Same ng-container, second child. Inspect the DOM to confirm no wrapper.</p>
+          </ng-container>
+        } @else {
+          <p class="muted">Content hidden. ng-container itself also disappears from DOM.</p>
+        }
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/content-projection" nextRoute="/change-detection" nextLabel="Change Detection" />
+</div>

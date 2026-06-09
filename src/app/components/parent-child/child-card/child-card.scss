@@ -1,0 +1,11 @@
+.child-card {
+  border: 2px solid #4f6ef7; border-radius: 8px; padding: 1rem;
+  display: flex; flex-direction: column; gap: 0.5rem; transition: border-color 0.2s;
+  h4 { margin: 0; font-size: 0.95rem; transition: color 0.2s; }
+  p  { margin: 0; font-size: 0.82rem; color: #666; flex: 1; }
+  button {
+    padding: 0.4rem 1rem; color: #fff; border: none; border-radius: 6px;
+    font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: background 0.2s;
+    &:hover { opacity: 0.85; }
+  }
+}

@@ -1,0 +1,46 @@
+.page { max-width: 860px; margin: 0 auto; padding: 1.5rem; }
+h2 { color: #dd0031; }
+
+.concept {
+  background: #fff8f0; border-left: 4px solid #dd0031;
+  padding: 1rem 1.25rem; border-radius: 4px; margin-bottom: 1.5rem;
+  h3 { margin-top: 0; }
+  li { margin-bottom: 0.4rem; }
+  code { background: #eee; padding: 2px 5px; border-radius: 3px; font-size: 0.85rem; }
+}
+
+.layout {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+
+.card {
+  border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.25rem;
+  h3 { margin-top: 0; display: flex; align-items: center; gap: 0.5rem; }
+}
+
+/* list-row replaces li — avoids linter warning about @for inside <ul> */
+.catalogue .list-row {
+  display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0; border-bottom: 1px solid #f0f0f0;
+  .name  { flex: 1; font-size: 0.9rem; }
+  .price { font-size: 0.85rem; color: #555; min-width: 36px; text-align: right; }
+  button { padding: 0.3rem 0.75rem; background: #dd0031; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; white-space: nowrap; &:hover { background: #b80028; } }
+}
+
+.cart .list-row {
+  display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0; border-bottom: 1px solid #f0f0f0;
+  .name  { flex: 1; font-size: 0.875rem; }
+  .price { font-size: 0.85rem; color: #555; min-width: 40px; text-align: right; }
+  .remove { background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.85rem; padding: 2px 5px; border-radius: 4px; &:hover { background: #ffeaea; color: #c00; } }
+}
+
+.qty-controls {
+  display: flex; align-items: center; gap: 4px;
+  button { width: 24px; height: 24px; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; &:hover { background: #f0f0f0; } }
+  span   { min-width: 20px; text-align: center; font-size: 0.875rem; font-weight: 600; }
+}
+
+.badge     { display: inline-block; background: #dd0031; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; }
+.total     { font-size: 1rem; margin-top: 0.75rem; text-align: right; strong { color: #dd0031; } }
+.clear-btn { margin-top: 0.5rem; width: 100%; padding: 0.45rem; border: 1px solid #ccc; border-radius: 6px; background: #fff; cursor: pointer; color: #666; &:hover { background: #f0f0f0; } }
+.empty     { color: #aaa; font-style: italic; }

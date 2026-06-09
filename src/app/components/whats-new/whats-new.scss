@@ -1,0 +1,47 @@
+.page-title { font-size: 1.75rem; font-weight: 800; margin-bottom: .25rem; }
+.page-sub { color: var(--text3, #888); margin-bottom: 1.75rem; }
+
+.timeline {
+  display: flex; flex-direction: column; gap: 2.5rem;
+}
+
+.release {
+  border-left: 3px solid #4f46e5;
+  padding-left: 1.5rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute; left: -7px; top: 12px;
+    width: 11px; height: 11px; border-radius: 50%;
+    background: #4f46e5; border: 2px solid var(--bg, #fafafa);
+  }
+}
+
+.release-header {
+  display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+  margin-bottom: 1.1rem;
+}
+.release-badge {
+  font-size: .8rem; font-weight: 800;
+  background: #4f46e5; color: #fff;
+  padding: .2rem .7rem; border-radius: 6px; white-space: nowrap;
+}
+.release-date {
+  font-size: .78rem; color: var(--text3, #888); white-space: nowrap;
+}
+.release-headline {
+  font-size: .9rem; font-weight: 600; color: var(--text, #1a1a1a);
+}
+
+.features {
+  display: flex; flex-direction: column; gap: 1.25rem;
+}
+
+.feature {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e8e8e8);
+  border-radius: 10px; padding: 1rem; overflow: hidden;
+}
+.feature-title { font-size: 1rem; font-weight: 700; margin-bottom: .3rem; color: var(--text, #1a1a1a); }
+.feature-desc  { font-size: .88rem; color: var(--text2, #555); margin-bottom: .75rem; line-height: 1.5; }

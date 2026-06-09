@@ -1,0 +1,90 @@
+<div class="page">
+  <h1>Angular CDK</h1>
+  <p class="subtitle">Official primitives from the Angular team — Drag & Drop, Virtual Scroll, Clipboard, and Breakpoint Observer.</p>
+  <app-page-meta [readingTime]="14" difficulty="intermediate" since="6" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Drag & Drop — Kanban Board</h2>
+    <div class="demo-card">
+      <p class="muted">Drag tasks between columns. Powered by <code>cdkDropList</code> and <code>cdkDrag</code>.</p>
+      <div class="kanban">
+        <div class="kanban-col">
+          <div class="kanban-header todo-header">To Do ({{ todo().length }})</div>
+          <div cdkDropList id="todo-list" [cdkDropListData]="todo()"
+               [cdkDropListConnectedTo]="['done-list']"
+               (cdkDropListDropped)="dropTodo($event)" class="drop-zone">
+            @for (item of todo(); track item) {
+              <div cdkDrag class="drag-item">
+                <span class="drag-handle">⠿</span> {{ item }}
+              </div>
+            }
+          </div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-header done-header">Done ({{ done().length }})</div>
+          <div cdkDropList id="done-list" [cdkDropListData]="done()"
+               [cdkDropListConnectedTo]="['todo-list']"
+               (cdkDropListDropped)="dropDone($event)" class="drop-zone done-zone">
+            @for (item of done(); track item) {
+              <div cdkDrag class="drag-item done-item">
+                <span class="drag-handle">⠿</span> {{ item }}
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Virtual Scroll — 10,000 items</h2>
+    <div class="demo-card">
+      <p class="muted">Only the visible rows are in the DOM — scroll performance stays constant regardless of list size.</p>
+      <cdk-virtual-scroll-viewport itemSize="40" class="virtual-viewport">
+        @for (item of bigList; track item.id) {
+          <div class="virtual-row">
+            <span class="virtual-id">#{{ item.id }}</span> {{ item.label }}
+          </div>
+        }
+      </cdk-virtual-scroll-viewport>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Clipboard API</h2>
+    <div class="demo-card">
+      <div class="copy-row">
+        <code class="copy-code">{{ codeToCopy }}</code>
+        <button type="button" class="btn" [class.copied]="copied()" (click)="copy()">
+          {{ copied() ? '✓ Copied!' : 'Copy' }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Breakpoint Observer</h2>
+    <div class="demo-card">
+      <div class="bp-box" [class.mobile]="isMobile()">
+        @if (isMobile()) {
+          📱 Mobile viewport detected (≤ 768px)
+        } @else {
+          🖥️ Desktop viewport (> 768px)
+        }
+      </div>
+      <p class="muted">Resize the browser to see the breakpoint switch.</p>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/cdk" nextRoute="/material" nextLabel="Material" />
+</div>

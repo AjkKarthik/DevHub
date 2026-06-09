@@ -1,0 +1,81 @@
+<div class="page">
+  <h1>Tailwind CSS</h1>
+  <p class="subtitle">Utility-first styling for Angular — class binding, responsive breakpoints, dark mode, @apply patterns, and live component gallery.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Dark mode toggle</h2>
+    <div class="demo-card" [class.dark-card]="darkMode()">
+      <div class="dark-toggle-row">
+        <span>Mode: <strong>{{ darkMode() ? 'Dark' : 'Light' }}</strong></span>
+        <button class="btn" (click)="darkMode.set(!darkMode())">Toggle dark mode</button>
+      </div>
+      <p class="dark-body">This card's background, text, and border change — simulating what Tailwind's <code>dark:</code> variant does when the <code>.dark</code> class is on <code>&lt;html&gt;</code>.</p>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Component gallery — utility classes in action</h2>
+
+    <div class="gallery-grid">
+      <div class="gallery-card">
+        <h3>Buttons</h3>
+        <div class="btn-row">
+          <button class="tw-btn-primary">Primary</button>
+          <button class="tw-btn-secondary">Secondary</button>
+          <button class="tw-btn-danger">Danger</button>
+          <button class="tw-btn-primary" disabled>Disabled</button>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <h3>Badges</h3>
+        <div class="badge-row">
+          <span class="badge badge-blue">New</span>
+          <span class="badge badge-green">Active</span>
+          <span class="badge badge-yellow">Pending</span>
+          <span class="badge badge-red">Error</span>
+          <span class="badge badge-gray">Archived</span>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <h3>Alert variants</h3>
+        <div class="alerts">
+          <div class="alert alert-info">Info: Your data has been saved.</div>
+          <div class="alert alert-success">Success: Action completed.</div>
+          <div class="alert alert-warning">Warning: Rate limit approaching.</div>
+          <div class="alert alert-error">Error: Request failed.</div>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <h3>Tabs (signal-driven)</h3>
+        <div class="tab-list">
+          @for (t of ['Overview','Details','Settings']; track t; let i = $index) {
+            <button class="tab-btn" [class.active]="activeTab() === i" (click)="activeTab.set(i)">{{ t }}</button>
+          }
+        </div>
+        <div class="tab-content">
+          @switch (activeTab()) {
+            @case (0) { <p>Overview tab content — summary and stats.</p> }
+            @case (1) { <p>Details tab — full breakdown and metadata.</p> }
+            @case (2) { <p>Settings tab — configure preferences here.</p> }
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/tailwind" nextRoute="/charts" nextLabel="Charts" />
+</div>

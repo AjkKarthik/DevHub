@@ -1,0 +1,68 @@
+<div class="page">
+  <h1>Custom Validators</h1>
+  <p class="subtitle">Sync validators, async validators with debounce, and cross-field validation — all built from scratch.</p>
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Registration Form — All Validator Types Live</h2>
+    <div class="demo-card">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="val-form">
+
+        <div class="field">
+          <label for="uname">Username <small>(try: admin, angular, karthik)</small></label>
+          <div class="input-row">
+            <input id="uname" formControlName="username" placeholder="Pick a username" />
+            @if (username.pending) { <span class="badge pending">Checking…</span> }
+            @if (username.valid && !username.pending && username.value) { <span class="badge ok">✓ Available</span> }
+          </div>
+          @if (username.touched && username.errors) {
+            @for (err of getErrors(username); track err) {
+              <p class="err">{{ err }}</p>
+            }
+            @if (username.errors['usernameTaken']) {
+              <p class="err">{{ username.errors['usernameTaken'] }}</p>
+            }
+          }
+        </div>
+
+        <div class="field">
+          <label for="pwd">Password <small>(8+ chars, uppercase, number, special)</small></label>
+          <input id="pwd" formControlName="password" type="password" placeholder="Enter password" />
+          @if (password.touched && password.errors) {
+            @for (err of getErrors(password); track err) {
+              <p class="err">{{ err }}</p>
+            }
+          }
+        </div>
+
+        <div class="field">
+          <label for="conf">Confirm Password</label>
+          <input id="conf" formControlName="confirm" type="password" placeholder="Repeat password" />
+          @if (form.errors?.['passwordMismatch'] && confirm.touched) {
+            <p class="err">{{ form.errors?.['passwordMismatch'] }}</p>
+          }
+        </div>
+
+        <button type="submit" class="submit-btn">Register</button>
+      </form>
+
+      @if (result()) {
+        <div class="success-box">
+          <strong>✅ All validators passed!</strong>
+          <pre>{{ result() | json }}</pre>
+        </div>
+      }
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/custom-validators" nextRoute="/dynamic-forms" nextLabel="Dynamic Forms" />
+</div>

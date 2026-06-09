@@ -1,0 +1,38 @@
+<div class="page">
+  <h1>NgOptimizedImage</h1>
+  <p class="subtitle">Built-in Angular directive that automatically adds lazy loading, prevents layout shift, and integrates with CDN image loaders.</p>
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="15" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Live demo — optimized image</h2>
+    <div class="demo-card">
+      <p>Using <code>ngSrc</code> with explicit <code>width</code> and <code>height</code> — no layout shift.</p>
+      <div class="img-wrapper">
+        <img
+          ngSrc="https://picsum.photos/seed/angular/800/400"
+          width="800"
+          height="400"
+          alt="Demo image"
+          style="max-width:100%; border-radius:8px"
+        />
+      </div>
+      <div class="attrs-list">
+        <div class="attr"><span class="attr-k">ngSrc</span><span class="attr-v">picsum.photos/…/800/400</span></div>
+        <div class="attr"><span class="attr-k">width</span><span class="attr-v">800</span></div>
+        <div class="attr"><span class="attr-k">height</span><span class="attr-v">400</span></div>
+        <div class="attr"><span class="attr-k">loading</span><span class="attr-v">lazy (auto)</span></div>
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/ng-image" nextRoute="/todo" nextLabel="Todo" />
+</div>

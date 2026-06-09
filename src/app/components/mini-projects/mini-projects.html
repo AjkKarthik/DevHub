@@ -1,0 +1,49 @@
+<div class="page">
+  <h1 class="page-title">🚀 Mini Projects</h1>
+  <p class="page-sub">End-to-end walkthroughs applying everything you've learned.</p>
+
+  <!-- Project selector -->
+  <div class="proj-tabs">
+    @for (p of projects; track p.id) {
+      <button type="button" class="proj-tab" [class.active]="active() === p.id"
+              (click)="active.set(p.id)">
+        <span class="proj-tab-icon">{{ p.icon }}</span>
+        <span class="proj-tab-label">{{ p.title }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Active project -->
+  <div class="proj-detail">
+    <div class="proj-hero">
+      <span class="proj-hero-icon">{{ activeProject.icon }}</span>
+      <div>
+        <h2 class="proj-title">{{ activeProject.title }}</h2>
+        <p class="proj-desc">{{ activeProject.description }}</p>
+        <div class="proj-tags">
+          @for (tag of activeProject.tags; track tag) {
+            <span class="proj-tag">{{ tag }}</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-steps">
+      @for (step of activeProject.steps; track step.title; let i = $index) {
+        <div class="proj-step">
+          <div class="step-marker">
+            <span class="step-num">{{ i + 1 }}</span>
+            @if (i < activeProject.steps.length - 1) {
+              <div class="step-line"></div>
+            }
+          </div>
+          <div class="step-content">
+            <h3 class="step-title">{{ step.title }}</h3>
+            <p class="step-desc">{{ step.description }}</p>
+            <app-code-block [tabs]="[{label: step.title, language: step.language, code: step.code}]" />
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

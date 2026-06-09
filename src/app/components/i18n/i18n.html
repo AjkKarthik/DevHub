@@ -1,0 +1,39 @@
+<div class="page">
+  <h1>i18n — Internationalisation</h1>
+  <p class="subtitle">Runtime language switching with a custom translation map — plus coverage of Transloco and Angular's built-in i18n.</p>
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Live language switcher</h2>
+    <div class="demo-card">
+      <div class="lang-btns">
+        @for (l of langs; track l) {
+          <button type="button" class="lang-btn" [class.active]="lang() === l" (click)="lang.set(l)">
+            {{ l.toUpperCase() }}
+          </button>
+        }
+      </div>
+      <div class="translations">
+        <div class="tr-row"><span class="tr-key">greeting</span><span class="tr-val">{{ t()['greeting'] }}</span></div>
+        <div class="tr-row"><span class="tr-key">farewell</span><span class="tr-val">{{ t()['farewell'] }}</span></div>
+        <div class="tr-row"><span class="tr-key">tagline</span><span class="tr-val">{{ t()['tagline'] }}</span></div>
+        <div class="tr-row">
+          <span class="tr-key">count msg</span>
+          <span class="tr-val">{{ countMsg() }}</span>
+          <input type="number" class="count-input" [value]="msgCount()" (input)="msgCount.set(+$any($event.target).value)" min="0" />
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/i18n" nextRoute="/web-workers" nextLabel="Web Workers" />
+</div>

@@ -1,0 +1,105 @@
+<div class="page">
+  <h1>Routing &amp; Navigation</h1>
+  <p class="subtitle">Angular Router — route params, query params, programmatic navigation, guards, and lazy loading.</p>
+  <app-page-meta [readingTime]="14" difficulty="intermediate" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <!-- Programmatic navigation -->
+  <section class="demo-section">
+    <h2>Programmatic Navigation</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <button (click)="navigateTo('/')">Go Home</button>
+        <button (click)="navigateTo('/counter')">Go to Counter</button>
+        <button (click)="navigateTo('/todo')">Go to Todo (guarded)</button>
+        <button (click)="navigateTo('/charts')">Go to Charts</button>
+      </div>
+      <p class="muted">Click any button — the router navigates programmatically via <code>router.navigate()</code>.</p>
+    </div>
+  </section>
+
+  <!-- Query params -->
+  <section class="demo-section">
+    <h2>Query Parameters</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Page
+          <input type="number" min="1" [value]="currentPage()" (input)="currentPage.set(+$any($event.target).value)" style="width:70px" />
+        </label>
+        <label>Filter
+          <select (change)="currentFilter.set($any($event.target).value)">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="archived">Archived</option>
+          </select>
+        </label>
+        <button (click)="navigateWithQuery()">Apply to URL</button>
+      </div>
+      <p class="muted">Sets <code>?page={{ currentPage() }}&filter={{ currentFilter() }}</code> in the URL bar.</p>
+    </div>
+  </section>
+
+  <!-- Route params simulation -->
+  <section class="demo-section">
+    <h2>Route Parameters</h2>
+    <div class="demo-card">
+      <p class="muted">Select a product to simulate <code>/products/:id</code> navigation:</p>
+      <div role="list" class="product-list">
+        @for (p of products; track p.id) {
+          <div role="listitem" class="product-item"
+            [class.selected]="selectedProduct()?.id === p.id"
+            (click)="openProduct(p.id)">
+            <span class="product-id">{{ p.id }}</span>
+            <span class="product-name">{{ p.name }}</span>
+          </div>
+        }
+      </div>
+      @if (selectedProduct()) {
+        <div class="product-detail">
+          <strong>Route would be:</strong> <code>/products/{{ selectedProduct()!.id }}</code>
+          <br />
+          <strong>Name:</strong> {{ selectedProduct()!.name }}
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Route guard info -->
+  <section class="demo-section">
+    <h2>Route Guard — canActivate</h2>
+    <div class="demo-card">
+      <p>The <code>/todo</code> route in this app is protected by <code>authGuard</code>. Try navigating to it:</p>
+      <div class="controls">
+        <button (click)="navigateTo('/todo')">Navigate to /todo</button>
+      </div>
+      <p class="muted">If you're not logged in, the guard redirects to <code>/?blocked=auth</code>. Log in via the nav bar to access it.</p>
+    </div>
+  </section>
+
+  <!-- Route structure overview -->
+  <section class="demo-section">
+    <h2>This App's Routes</h2>
+    <div class="demo-card">
+      <div role="list" class="routes-list">
+        @for (r of appRoutes; track r.path) {
+          <div role="listitem" class="route-row">
+            <code class="route-path">{{ r.path }}</code>
+            <span class="route-desc">{{ r.desc }}</span>
+            @if (r.guard) { <span class="route-badge">guarded</span> }
+            @if (r.lazy) { <span class="route-badge lazy">lazy</span> }
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/routing" nextRoute="/preloading" nextLabel="Preloading" />
+</div>

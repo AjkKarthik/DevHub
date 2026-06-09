@@ -1,0 +1,31 @@
+<div class="code-block">
+  <button type="button" class="toggle-btn" (click)="toggle()">
+    <span class="icon">{{ visible() ? '▲' : '▼' }}</span>
+    {{ visible() ? 'Hide Code' : 'View Code' }}
+  </button>
+
+  @if (visible()) {
+    <div class="panel">
+      <!-- Tabs -->
+      @if (tabs().length > 1) {
+        <div class="tabs">
+          @for (tab of tabs(); track tab.label; let i = $index) {
+            <button
+              type="button"
+              [class.active]="active() === i"
+              (click)="selectTab(i)"
+            >{{ tab.label }}</button>
+          }
+        </div>
+      }
+
+      <!-- Code -->
+      <div class="code-wrap">
+        <button type="button" class="copy-btn" (click)="copy()" [class.copied]="copied()">
+          {{ copied() ? '✓ Copied!' : '⎘ Copy' }}
+        </button>
+        <pre><code class="hljs" [innerHTML]="highlighted()"></code></pre>
+      </div>
+    </div>
+  }
+</div>

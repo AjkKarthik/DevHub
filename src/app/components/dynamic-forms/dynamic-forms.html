@@ -1,0 +1,70 @@
+<div class="page">
+  <h1>Dynamic / Schema-driven Forms</h1>
+  <p class="subtitle">Build a complete form from a JSON schema at runtime — one template loop handles every field type.</p>
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Live — form built from schema</h2>
+    <div class="demo-card">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        @for (field of schema; track field.key) {
+          <div class="field">
+            <label [for]="field.key">
+              {{ field.label }}
+              @if (field.required) { <span class="req">*</span> }
+            </label>
+            @switch (field.type) {
+              @case ('text') {
+                <input [id]="field.key" type="text" class="input" [formControlName]="field.key" [placeholder]="field.placeholder ?? ''" />
+              }
+              @case ('email') {
+                <input [id]="field.key" type="email" class="input" [formControlName]="field.key" [placeholder]="field.placeholder ?? ''" />
+              }
+              @case ('number') {
+                <input [id]="field.key" type="number" class="input" [formControlName]="field.key" [placeholder]="field.placeholder ?? ''" />
+              }
+              @case ('textarea') {
+                <textarea [id]="field.key" class="input" rows="3" [formControlName]="field.key" [placeholder]="field.placeholder ?? ''"></textarea>
+              }
+              @case ('checkbox') {
+                <label class="checkbox-label">
+                  <input type="checkbox" [formControlName]="field.key" /> {{ field.label }}
+                </label>
+              }
+              @case ('select') {
+                <select [id]="field.key" class="input" [formControlName]="field.key">
+                  <option value="">Select…</option>
+                  @for (opt of field.options; track opt.value) {
+                    <option [value]="opt.value">{{ opt.label }}</option>
+                  }
+                </select>
+              }
+            }
+            @if (isInvalid(field.key)) {
+              <span class="error">{{ field.label }} is required</span>
+            }
+          </div>
+        }
+        <button type="submit" class="btn">Submit</button>
+      </form>
+
+      @if (result()) {
+        <div class="result-section">
+          <h3>Submitted value:</h3>
+          <pre>{{ result() | json }}</pre>
+        </div>
+      }
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/dynamic-forms" nextRoute="/wizard-form" nextLabel="Wizard Form" />
+</div>

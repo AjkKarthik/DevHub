@@ -1,0 +1,146 @@
+<div class="page">
+  <h1>Zod + Reactive Forms</h1>
+  <p class="subtitle">Runtime schema validation with Zod, integrated with Angular Reactive Forms — type-safe, schema-first form validation.</p>
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <!-- Live field validation -->
+  <section class="demo-section">
+    <h2>Live Field Validation with Zod</h2>
+    <div class="demo-card">
+      <div class="live-row">
+        <div class="live-item">
+          <label>Email
+            <input [value]="liveEmail()" (input)="liveEmail.set($any($event.target).value)" placeholder="you@example.com" />
+          </label>
+          <span [class.ok]="emailResult().startsWith('✅')" [class.err]="emailResult().startsWith('❌')" class="live-result">
+            {{ emailResult() }}
+          </span>
+        </div>
+        <div class="live-item">
+          <label>Number (0–100)
+            <input [value]="liveNumber()" (input)="liveNumber.set($any($event.target).value)" placeholder="42" />
+          </label>
+          <span [class.ok]="numberResult().startsWith('✅')" [class.err]="numberResult().startsWith('❌')" class="live-result">
+            {{ numberResult() }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Signup form -->
+  <section class="demo-section">
+    <h2>Signup Form — Zod Validated on Submit</h2>
+    <div class="demo-card">
+      <form [formGroup]="signupForm" (ngSubmit)="submitSignup()" class="zod-form">
+        <div class="field-row">
+          <div class="field">
+            <label for="su-name">Full name</label>
+            <input id="su-name" formControlName="name" placeholder="John Doe" />
+            @if (getZodError('name')) { <span class="field-err">{{ getZodError('name') }}</span> }
+          </div>
+          <div class="field">
+            <label for="su-email">Email</label>
+            <input id="su-email" formControlName="email" type="email" placeholder="john@example.com" />
+            @if (getZodError('email')) { <span class="field-err">{{ getZodError('email') }}</span> }
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="su-age">Age</label>
+            <input id="su-age" formControlName="age" type="number" placeholder="18" />
+            @if (getZodError('age')) { <span class="field-err">{{ getZodError('age') }}</span> }
+          </div>
+          <div class="field">
+            <label for="su-pwd">Password</label>
+            <input id="su-pwd" formControlName="password" [type]="showPassword() ? 'text' : 'password'" placeholder="Min 8 chars..." />
+            <button type="button" class="toggle-pwd" (click)="showPassword.update(v => !v)">
+              {{ showPassword() ? 'Hide' : 'Show' }}
+            </button>
+            @if (getZodError('password')) { <span class="field-err">{{ getZodError('password') }}</span> }
+          </div>
+        </div>
+        <div class="field">
+          <label for="su-confirm">Confirm password</label>
+          <input id="su-confirm" formControlName="confirm" type="password" placeholder="Repeat password" />
+          @if (getZodError('confirm')) { <span class="field-err">{{ getZodError('confirm') }}</span> }
+        </div>
+        <button type="submit" class="submit-btn">Create Account</button>
+      </form>
+
+      @if (signupResult()) {
+        <div class="success-box">
+          <strong>✅ Valid!</strong>
+          <pre>{{ signupResult() | json }}</pre>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Product form -->
+  <section class="demo-section">
+    <h2>Product Form — Zod Schema with enum &amp; array</h2>
+    <div class="demo-card">
+      <form [formGroup]="productForm" (ngSubmit)="submitProduct()" class="zod-form">
+        <div class="field-row">
+          <div class="field">
+            <label for="p-title">Title</label>
+            <input id="p-title" formControlName="title" placeholder="Product name (min 3 chars)" />
+          </div>
+          <div class="field">
+            <label for="p-price">Price</label>
+            <input id="p-price" formControlName="price" type="number" placeholder="29.99" />
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="p-cat">Category</label>
+            <select id="p-cat" formControlName="category">
+              @for (cat of categories; track cat) {
+                <option [value]="cat">{{ cat | titlecase }}</option>
+              }
+            </select>
+          </div>
+          <div class="field">
+            <label for="p-stock">In Stock</label>
+            <input id="p-stock" formControlName="inStock" type="checkbox" class="checkbox" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="p-tags">Tags (comma-separated)</label>
+          <input id="p-tags" formControlName="tags" placeholder="angular, typescript, frontend" />
+        </div>
+        <button type="submit" class="submit-btn">Validate Product</button>
+      </form>
+
+      @if (productErrors().length > 0) {
+        <div class="error-box">
+          <strong>Validation errors:</strong>
+          <div role="list">
+            @for (e of productErrors(); track e) {
+              <div role="listitem" class="err-item">• {{ e }}</div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (productResult()) {
+        <div class="success-box">
+          <strong>✅ Valid product!</strong>
+          <pre>{{ productResult() | json }}</pre>
+        </div>
+      }
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/zod-forms" nextRoute="/testing" nextLabel="Testing" />
+</div>

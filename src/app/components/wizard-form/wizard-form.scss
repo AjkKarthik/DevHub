@@ -1,0 +1,25 @@
+.page { max-width: 720px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 2rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { color: #666; margin-bottom: 2rem; font-size: 1.05rem; }
+h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+h3 { font-size: 1rem; font-weight: 700; margin: 0 0 1rem; color: #1f2937; }
+.demo-section { margin-bottom: 2.5rem; }
+.wizard-card { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 16px; padding: 2rem; }
+.stepper { display: flex; align-items: center; margin-bottom: 2rem; }
+.step-item { display: flex; flex-direction: column; align-items: center; gap: .3rem; }
+.step-circle { width: 36px; height: 36px; border-radius: 50%; background: #e5e7eb; color: #6b7280; display: flex; align-items: center; justify-content: center; font-size: .9rem; font-weight: 700; transition: background .2s, color .2s; }
+.step-item.active .step-circle { background: #6366f1; color: #fff; }
+.step-item.done   .step-circle { background: #22c55e; color: #fff; }
+.step-label { font-size: .7rem; color: #6b7280; white-space: nowrap; }
+.step-item.active .step-label { color: #6366f1; font-weight: 600; }
+.step-connector { flex: 1; height: 2px; background: #e5e7eb; margin: 0 .5rem; margin-bottom: 1.1rem; transition: background .2s; &.done { background: #22c55e; } }
+.step-form { min-height: 180px; }
+.field { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .85rem; label { font-size: .85rem; font-weight: 500; } }
+.input { padding: .45rem .75rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: .9rem; font-family: inherit; &:focus { outline: 2px solid #6366f1; } }
+.checkbox-label { display: flex; align-items: center; gap: .5rem; font-size: .9rem; }
+.wizard-nav { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+.btn { padding: .5rem 1.5rem; background: #6366f1; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: .9rem; &:hover { background: #4f46e5; } }
+.btn-success { background: #16a34a; &:hover { background: #15803d; } }
+.btn-outline { padding: .5rem 1.5rem; background: #fff; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; font-size: .9rem; &:hover { background: #f9fafb; } &:disabled { opacity: .4; cursor: not-allowed; } }
+.review pre { background: #1e1e2e; color: #a5f3fc; padding: 1rem; border-radius: 8px; font-size: .8rem; overflow: auto; }
+.success-box { background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; padding: .75rem 1rem; color: #166534; font-weight: 600; margin-top: 1rem; }

@@ -1,0 +1,248 @@
+<div class="page">
+  <h1 class="cs-title">Angular Cheat Sheet</h1>
+  <p class="cs-sub">Quick reference for signals, routing, forms, HTTP, DI, templates, pipes, RxJS, CLI, and testing.</p>
+
+  <!-- Search bar -->
+  <div class="cs-search-wrap">
+    <span class="cs-search-icon">🔍</span>
+    <input
+      type="text"
+      class="cs-search"
+      placeholder="Search APIs, directives, operators… (e.g. switchMap, @defer, FormArray)"
+      [value]="searchTerm()"
+      (input)="searchTerm.set($any($event.target).value)"
+    />
+    @if (searchTerm().length > 0) {
+      <button type="button" class="cs-clear" (click)="searchTerm.set('')" aria-label="Clear search">✕</button>
+    }
+  </div>
+
+  <!-- Search results -->
+  @if (searchTerm().length >= 2) {
+    @if (filteredEntries().length > 0) {
+      <div class="cs-results-header">
+        {{ filteredEntries().length }} result{{ filteredEntries().length === 1 ? '' : 's' }}
+        for &ldquo;{{ searchTerm() }}&rdquo;
+      </div>
+      <div class="cs-results-grid">
+        @for (e of filteredEntries(); track e.name) {
+          <div class="cs-result-card" (click)="jumpTo(e.section)" role="button" tabindex="0"
+               (keydown.enter)="jumpTo(e.section)">
+            <span class="cs-result-section">{{ e.sectionLabel }}</span>
+            <strong class="cs-result-name">{{ e.name }}</strong>
+            <span class="cs-result-desc">{{ e.desc }}</span>
+            @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="cs-no-results">No results for &ldquo;{{ searchTerm() }}&rdquo;</p>
+    }
+  } @else {
+    <!-- Tab bar -->
+    <div class="cs-tabs" role="tablist">
+      @for (s of sections; track s.key) {
+        <button type="button" class="cs-tab" role="tab"
+                [class.active]="active() === s.key"
+                [attr.aria-selected]="active() === s.key"
+                (click)="active.set(s.key)">
+          <span aria-hidden="true">{{ s.icon }}</span> {{ s.label }}
+        </button>
+      }
+    </div>
+
+    <!-- Section content -->
+    <div class="cs-body">
+      @switch (active()) {
+
+        @case ('signals') {
+          <div class="cs-section-header">
+            <h2>⚡ Signals API</h2>
+            <p class="cs-intro">Angular 16+ reactive primitives — write less, do more, no Zone.js required.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of signalsEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <app-code-block [tabs]="[{label:'TypeScript', language:'typescript', code: signalsCode}]" />
+        }
+
+        @case ('router') {
+          <div class="cs-section-header">
+            <h2>🔀 Router API</h2>
+            <p class="cs-intro">Route definitions, guards, resolvers, lazy loading, and navigation.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of routerEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <app-code-block [tabs]="[{label:'TypeScript', language:'typescript', code: routerCode}]" />
+        }
+
+        @case ('forms') {
+          <div class="cs-section-header">
+            <h2>📝 Forms</h2>
+            <p class="cs-intro">Reactive and template-driven forms — validation, FormArray, and custom validators.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of formsEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <app-code-block [tabs]="[{label:'TypeScript', language:'typescript', code: formsCode}]" />
+        }
+
+        @case ('http') {
+          <div class="cs-section-header">
+            <h2>🌐 HTTP Client</h2>
+            <p class="cs-intro">provideHttpClient, functional interceptors, toSignal, and error handling.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of httpEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <app-code-block [tabs]="[{label:'TypeScript', language:'typescript', code: httpCode}]" />
+        }
+
+        @case ('di') {
+          <div class="cs-section-header">
+            <h2>💉 DI &amp; Providers</h2>
+            <p class="cs-intro">Dependency injection, InjectionToken, provider patterns, and DestroyRef.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of diEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <app-code-block [tabs]="[{label:'TypeScript', language:'typescript', code: diCode}]" />
+        }
+
+        @case ('template') {
+          <div class="cs-section-header">
+            <h2>🎯 Template Syntax</h2>
+            <p class="cs-intro">Control flow (&#64;if, &#64;for, &#64;switch), &#64;defer, bindings, and content projection.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of templateEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <app-code-block [tabs]="[{label:'Template', language:'html', code: templateCode}]" />
+        }
+
+        @case ('pipes') {
+          <div class="cs-section-header">
+            <h2>🧩 Pipes</h2>
+            <p class="cs-intro">Built-in pipes for formatting data, plus custom pipe pattern.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of pipesEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <div class="cs-table-wrap">
+            <table class="cs-table">
+              <thead><tr><th>Pipe</th><th>Input type</th><th>Example output</th></tr></thead>
+              <tbody>
+                <tr><td>date</td><td>Date | string</td><td>01/06/2026</td></tr>
+                <tr><td>currency</td><td>number</td><td>$9.99</td></tr>
+                <tr><td>number</td><td>number</td><td>3.14</td></tr>
+                <tr><td>percent</td><td>number</td><td>75%</td></tr>
+                <tr><td>uppercase</td><td>string</td><td>HELLO</td></tr>
+                <tr><td>titlecase</td><td>string</td><td>Hello World</td></tr>
+                <tr><td>json</td><td>any</td><td>&#123; "id": 1 &#125;</td></tr>
+                <tr><td>slice</td><td>Array | string</td><td>[1, 2] or "bc"</td></tr>
+                <tr><td>async</td><td>Observable | Promise</td><td>unwrapped value</td></tr>
+                <tr><td>keyvalue</td><td>object | Map</td><td>&#123; key, value &#125;</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <app-code-block [tabs]="[{label:'Template', language:'html', code: pipesCode}]" />
+        }
+
+        @case ('rxjs') {
+          <div class="cs-section-header">
+            <h2>🌊 RxJS Operators</h2>
+            <p class="cs-intro">Most-used operators organised by category — creation, transform, filter, combine, error.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of rxjsEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <app-code-block [tabs]="[{label:'TypeScript', language:'typescript', code: rxjsCode}]" />
+        }
+
+        @case ('cli') {
+          <div class="cs-section-header">
+            <h2>💻 CLI Commands</h2>
+            <p class="cs-intro">Most-used <code>ng</code> commands for generating, building, and testing.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of cliEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <app-code-block [tabs]="[{label:'Shell', language:'bash', code: cliCode}]" />
+        }
+
+        @case ('testing') {
+          <div class="cs-section-header">
+            <h2>🧪 Testing</h2>
+            <p class="cs-intro">TestBed, ComponentFixture, fakeAsync, HttpTestingController, and signal assertions.</p>
+          </div>
+          <div class="entry-grid">
+            @for (e of testingEntries; track e.name) {
+              <div class="entry-card">
+                <code class="entry-name">{{ e.name }}</code>
+                <span class="entry-desc">{{ e.desc }}</span>
+                @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+              </div>
+            }
+          </div>
+          <app-code-block [tabs]="[{label:'TypeScript', language:'typescript', code: testingCode}]" />
+        }
+
+      }
+    </div>
+  }
+</div>

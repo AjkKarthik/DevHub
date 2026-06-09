@@ -1,0 +1,68 @@
+<div class="sidebar-panel">
+
+  <!-- Key APIs -->
+  <div class="sidebar-section">
+    <h4 class="section-title"><span class="icon">⚡</span> Key APIs</h4>
+    <div class="api-pills">
+      @for (api of data().apis; track api) {
+        <code class="api-pill">{{ api }}</code>
+      }
+    </div>
+  </div>
+
+  <!-- Related Topics -->
+  <div class="sidebar-section">
+    <h4 class="section-title"><span class="icon">🔗</span> Related Topics</h4>
+    <nav class="related-list">
+      @for (link of data().related; track link.route) {
+        <a [routerLink]="link.route" class="related-link">
+          <span class="link-arrow">→</span>{{ link.label }}
+        </a>
+      }
+    </nav>
+  </div>
+
+  <!-- Quick Tip -->
+  <div class="sidebar-section tip-section">
+    <h4 class="section-title"><span class="icon">💡</span> Quick Tip</h4>
+    <p class="tip-text">{{ data().tip }}</p>
+  </div>
+
+  <!-- Angular Official Docs -->
+  <div class="sidebar-section">
+    <h4 class="section-title"><span class="icon">📖</span> Angular Docs</h4>
+    <div class="ext-link-list">
+      @for (doc of data().docs; track doc.url) {
+        <a [href]="doc.url" target="_blank" rel="noopener noreferrer" class="ext-link docs-link">
+          <span class="ext-icon">↗</span>
+          <span class="ext-label">{{ doc.label }}</span>
+        </a>
+      }
+    </div>
+  </div>
+
+  <!-- More Resources -->
+  <div class="sidebar-section">
+    <h4 class="section-title"><span class="icon">🌐</span> More Resources</h4>
+    <div class="ext-link-list">
+      @for (res of data().resources; track res.url) {
+        <a [href]="res.url" target="_blank" rel="noopener noreferrer" class="ext-link resource-link">
+          <span class="ext-icon">↗</span>
+          <span class="ext-label">{{ res.label }}</span>
+          <span class="badge badge-{{ res.badge }}">{{ res.badge }}</span>
+        </a>
+      }
+    </div>
+  </div>
+
+  <!-- Common Gotchas -->
+  <div class="sidebar-section gotcha-section">
+    <h4 class="section-title"><span class="icon">⚠️</span> Common Gotchas</h4>
+    <div class="gotcha-list">
+      @for (g of data().gotchas; track g) {
+        <div class="gotcha-item">{{ g }}</div>
+      }
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,170 @@
+<div class="page">
+  <h1>Pipes</h1>
+  <p class="subtitle">Transform data in templates — date, currency, number, case, slice, JSON, async, and custom pipes.</p>
+  <app-page-meta [readingTime]="10" difficulty="beginner" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <!-- Date pipe -->
+  <section class="demo-section">
+    <h2>Date Pipe</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Format string
+          <input [value]="customFormat()" (input)="customFormat.set($any($event.target).value)" class="mono-input" />
+        </label>
+      </div>
+      <div class="output">
+        <div role="list" class="pipe-list">
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>now | date</code></span>
+            <span class="pipe-result">{{ now | date }}</span>
+          </div>
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>now | date:'shortDate'</code></span>
+            <span class="pipe-result">{{ now | date:'shortDate' }}</span>
+          </div>
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>now | date:'shortTime'</code></span>
+            <span class="pipe-result">{{ now | date:'shortTime' }}</span>
+          </div>
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>now | date:'fullDate'</code></span>
+            <span class="pipe-result">{{ now | date:'fullDate' }}</span>
+          </div>
+          <div role="listitem" class="pipe-row highlight">
+            <span class="pipe-expr"><code>now | date:'{{ customFormat() }}'</code></span>
+            <span class="pipe-result">{{ now | date:customFormat() }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Currency / Number / Percent -->
+  <section class="demo-section">
+    <h2>Currency, Number &amp; Percent Pipes</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Amount
+          <input type="number" [value]="amount()" (input)="amount.set(+$any($event.target).value)" />
+        </label>
+        <label>Currency
+          <select (change)="currencyCode.set($any($event.target).value)">
+            <option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option><option>INR</option>
+          </select>
+        </label>
+        <label>Percent (0–1)
+          <input type="range" min="0" max="1" step="0.01" [value]="percent()" (input)="percent.set(+$any($event.target).value)" />
+          {{ percent() | number:'1.2-2' }}
+        </label>
+      </div>
+      <div class="output">
+        <div role="list" class="pipe-list">
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>amount | currency</code></span>
+            <span class="pipe-result">{{ amount() | currency }}</span>
+          </div>
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>amount | currency:currencyCode</code></span>
+            <span class="pipe-result">{{ amount() | currency:currencyCode() }}</span>
+          </div>
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>amount | number:'1.0-0'</code></span>
+            <span class="pipe-result">{{ amount() | number:'1.0-0' }}</span>
+          </div>
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>amount | number:'1.2-4'</code></span>
+            <span class="pipe-result">{{ amount() | number:'1.2-4' }}</span>
+          </div>
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>percent | percent:'1.1-2'</code></span>
+            <span class="pipe-result">{{ percent() | percent:'1.1-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case pipes -->
+  <section class="demo-section">
+    <h2>Case Pipes</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Text <input [value]="rawText()" (input)="rawText.set($any($event.target).value)" style="width:300px" /></label>
+      </div>
+      <div class="output">
+        <div role="list" class="pipe-list">
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>| uppercase</code></span>
+            <span class="pipe-result">{{ rawText() | uppercase }}</span>
+          </div>
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>| lowercase</code></span>
+            <span class="pipe-result">{{ rawText() | lowercase }}</span>
+          </div>
+          <div role="listitem" class="pipe-row">
+            <span class="pipe-expr"><code>| titlecase</code></span>
+            <span class="pipe-result">{{ rawText() | titlecase }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slice pipe -->
+  <section class="demo-section">
+    <h2>Slice Pipe</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>From
+          <input type="number" [value]="sliceFrom()" (input)="sliceFrom.set(+$any($event.target).value)" style="width:70px" />
+        </label>
+        <label>To
+          <input type="number" [value]="sliceTo()" (input)="sliceTo.set(+$any($event.target).value)" style="width:70px" />
+        </label>
+      </div>
+      <div class="output">
+        <p>Full array: <code>{{ fruits | json }}</code></p>
+        <p>Sliced <code>[{{ sliceFrom() }}:{{ sliceTo() }}]</code>: <strong>{{ fruits | slice:sliceFrom():sliceTo() | json }}</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Async + Custom pipe -->
+  <section class="demo-section">
+    <h2>Async Pipe &amp; Custom Truncate</h2>
+    <div class="demo-card">
+      <div class="controls">
+        <label>Truncate at
+          <input type="range" min="10" max="100" [value]="truncateAt()" (input)="truncateAt.set(+$any($event.target).value)" />
+          {{ truncateAt() }}
+        </label>
+      </div>
+      <div class="output">
+        <p>Live timer: <strong class="timer">{{ timer$ | async }}</strong></p>
+        <p>Long text: <em>{{ longText() | truncate:truncateAt() }}</em></p>
+        <p>Chained: <em>{{ longText() | truncate:40 | uppercase }}</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- JSON pipe -->
+  <section class="demo-section">
+    <h2>JSON Pipe (debug tool)</h2>
+    <div class="demo-card">
+      <div class="output">
+        <pre class="json-out">{{ obj() | json }}</pre>
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/pipes" nextRoute="/forms" nextLabel="Forms" />
+</div>

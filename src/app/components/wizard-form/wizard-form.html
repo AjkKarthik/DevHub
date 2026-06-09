@@ -1,0 +1,81 @@
+<div class="page">
+  <h1>Multi-step Wizard Form</h1>
+  <p class="subtitle">Split complex forms into validated steps — each step independently validated before advancing.</p>
+
+  <app-page-meta [readingTime]="18" difficulty="advanced" since="2" />
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+  <app-code-block [tabs]="tabs" />
+
+  <section class="demo-section">
+    <h2>Registration Wizard</h2>
+    <div class="wizard-card">
+      <div class="stepper">
+        @for (s of steps; track s.label; let i = $index) {
+          <div class="step-item" [class.active]="step() === i" [class.done]="step() > i">
+            <div class="step-circle">{{ step() > i ? '✓' : s.icon }}</div>
+            <span class="step-label">{{ s.label }}</span>
+          </div>
+          @if (!$last) { <div class="step-connector" [class.done]="step() > i"></div> }
+        }
+      </div>
+
+      @switch (step()) {
+        @case (0) {
+          <form [formGroup]="step0" class="step-form">
+            <h3>Personal Info</h3>
+            <div class="field"><label>First name</label><input class="input" formControlName="firstName" /></div>
+            <div class="field"><label>Last name</label><input class="input" formControlName="lastName" /></div>
+            <div class="field"><label>Date of birth</label><input class="input" type="date" formControlName="dob" /></div>
+          </form>
+        }
+        @case (1) {
+          <form [formGroup]="step1" class="step-form">
+            <h3>Account Setup</h3>
+            <div class="field"><label>Username</label><input class="input" formControlName="username" /></div>
+            <div class="field"><label>Email</label><input class="input" type="email" formControlName="email" /></div>
+            <div class="field"><label>Password</label><input class="input" type="password" formControlName="password" /></div>
+          </form>
+        }
+        @case (2) {
+          <form [formGroup]="step2" class="step-form">
+            <h3>Preferences</h3>
+            <div class="field"><label>Theme</label>
+              <select class="input" formControlName="theme"><option value="light">Light</option><option value="dark">Dark</option></select>
+            </div>
+            <div class="field"><label>Language</label>
+              <select class="input" formControlName="language"><option value="en">English</option><option value="es">Spanish</option><option value="fr">French</option></select>
+            </div>
+            <label class="checkbox-label"><input type="checkbox" formControlName="notifications" /> Email notifications</label>
+          </form>
+        }
+        @case (3) {
+          <div class="step-form review">
+            <h3>Review your details</h3>
+            <pre>{{ allValues | json }}</pre>
+            @if (submitted()) {
+              <div class="success-box">Registration complete!</div>
+            }
+          </div>
+        }
+      }
+
+      <div class="wizard-nav">
+        <button type="button" class="btn-outline" (click)="back()" [disabled]="step() === 0">← Back</button>
+        @if (step() < 3) {
+          <button type="button" class="btn" (click)="next()">Next →</button>
+        } @else {
+          <button type="button" class="btn btn-success" (click)="submit()">Submit</button>
+        }
+      </div>
+    </div>
+  </section>
+  <app-before-after [items]="beforeAfter" />
+  <app-common-mistakes [items]="mistakes" />
+  <app-version-badge [items]="versionItems" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="/wizard-form" nextRoute="/cva" nextLabel="Cva" />
+</div>
