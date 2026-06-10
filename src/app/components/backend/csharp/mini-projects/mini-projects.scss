@@ -1,0 +1,108 @@
+.page-title { font-size: 1.75rem; font-weight: 800; margin-bottom: .25rem; }
+.page-sub { color: var(--text3, #888); margin-bottom: 1.5rem; }
+
+.proj-tabs {
+  display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.75rem;
+}
+.proj-tab {
+  display: flex; align-items: center; gap: .4rem;
+  padding: .45rem 1.1rem; border: 1.5px solid var(--border, #e0e0e0);
+  border-radius: 10px; background: var(--surface, #fff);
+  font-size: .85rem; font-weight: 600; cursor: pointer;
+  color: var(--text2, #444); transition: all .15s;
+  &:hover  { border-color: #7c3aed; color: #7c3aed; }
+  &.active { border-color: #7c3aed; background: #7c3aed; color: #fff; }
+}
+.proj-tab-icon  { font-size: 1rem; }
+
+.proj-hero {
+  display: flex; align-items: flex-start; gap: 1rem;
+  background: var(--surface, #fff); border: 1px solid var(--border, #e8e8e8);
+  border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
+}
+.proj-hero-icon { font-size: 2.5rem; line-height: 1; }
+.proj-title { font-size: 1.25rem; font-weight: 800; color: var(--text, #1a1a1a); margin-bottom: .3rem; }
+.proj-desc  { font-size: .9rem; color: var(--text2, #555); margin-bottom: .6rem; line-height: 1.5; }
+
+.proj-meta { display: flex; align-items: center; gap: .75rem; margin-bottom: .6rem; }
+.proj-badge {
+  font-size: .72rem; font-weight: 800; padding: 2px 10px; border-radius: 10px;
+  &.diff-beginner     { background: #dcfce7; color: #15803d; }
+  &.diff-intermediate { background: #fef3c7; color: #b45309; }
+  &.diff-advanced     { background: #fee2e2; color: #b91c1c; }
+}
+.proj-time { font-size: .78rem; font-weight: 600; color: var(--text3, #777); }
+
+.proj-tags  { display: flex; flex-wrap: wrap; gap: .35rem; }
+.proj-tag {
+  font-size: .72rem; font-weight: 700; padding: 2px 10px; border-radius: 10px;
+  background: #f5f3ff; color: #6b21a8; border: 1px solid #ddd6fe;
+}
+
+.proj-learn {
+  background: #f5f3ff; border: 1px solid #ddd6fe;
+  border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 2rem;
+}
+.learn-title { font-size: .95rem; font-weight: 800; color: #6b21a8; margin-bottom: .5rem; }
+.learn-list {
+  margin: 0; padding-left: 1.25rem;
+  li { font-size: .85rem; color: var(--text2, #555); line-height: 1.6; }
+}
+
+.proj-steps {
+  display: flex; flex-direction: column; gap: 0;
+}
+
+.proj-step {
+  display: flex; gap: 1.25rem; align-items: flex-start;
+}
+
+.step-marker {
+  display: flex; flex-direction: column; align-items: center; flex-shrink: 0;
+}
+.step-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #7c3aed; color: #fff;
+  font-size: .8rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; z-index: 1;
+}
+.step-line {
+  width: 2px; flex: 1; min-height: 2rem;
+  background: linear-gradient(to bottom, #7c3aed, #ddd6fe);
+  margin: .25rem 0;
+}
+
+.step-content {
+  flex: 1; min-width: 0; padding-bottom: 1.75rem;
+}
+.step-title { font-size: 1.05rem; font-weight: 800; color: var(--text, #1a1a1a); margin-bottom: .3rem; margin-top: .2rem; }
+.step-desc  { font-size: .88rem; color: var(--text2, #555); margin-bottom: .75rem; line-height: 1.5; }
+
+.proj-stretch {
+  background: var(--surface, #fff); border: 1.5px dashed #7c3aed;
+  border-radius: 12px; padding: 1rem 1.25rem; margin-top: .5rem;
+}
+.stretch-title { font-size: .95rem; font-weight: 800; color: #7c3aed; margin-bottom: .5rem; }
+.stretch-list {
+  margin: 0; padding-left: 1.25rem;
+  li { font-size: .85rem; color: var(--text2, #555); line-height: 1.6; }
+}
+
+:host-context(body.dark) {
+  .proj-tab {
+    &:hover  { border-color: #a78bfa; color: #a78bfa; }
+    &.active { border-color: #7c3aed; background: #7c3aed; color: #fff; }
+  }
+  .proj-tag   { background: rgba(124, 58, 237, .15); color: #c4b5fd; border-color: rgba(124, 58, 237, .4); }
+  .proj-learn { background: rgba(124, 58, 237, .1); border-color: rgba(124, 58, 237, .35); }
+  .learn-title { color: #c4b5fd; }
+  .proj-badge {
+    &.diff-beginner     { background: rgba(22, 163, 74, .2);  color: #86efac; }
+    &.diff-intermediate { background: rgba(217, 119, 6, .2);  color: #fcd34d; }
+    &.diff-advanced     { background: rgba(220, 38, 38, .2);  color: #fca5a5; }
+  }
+  .step-line { background: linear-gradient(to bottom, #7c3aed, rgba(124, 58, 237, .25)); }
+  .proj-stretch  { border-color: #a78bfa; }
+  .stretch-title { color: #a78bfa; }
+}

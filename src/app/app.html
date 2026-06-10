@@ -50,10 +50,15 @@
       ← All Technologies
     </a>
 
-    <!-- Progress bar -->
+    <!-- Progress bar (per-section) -->
     <div class="nav-progress">
-      <div class="nav-progress-bar" [style.width.%]="progress.pct()"></div>
-      <span class="nav-progress-label">{{ progress.count() }}/{{ progress.total }} topics done</span>
+      @if (currentSection() === 'csharp') {
+        <div class="nav-progress-bar" [style.width.%]="progress.csharpPct()"></div>
+        <span class="nav-progress-label">{{ progress.csharpCount() }}/{{ progress.csharpTotal }} topics done</span>
+      } @else {
+        <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
+        <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
+      }
     </div>
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
@@ -125,9 +130,20 @@
     </div>
 
     <div class="nav-group">
+      <p class="nav-group-label">Practice</p>
+      <a routerLink="/csharp/quiz-practice" routerLinkActive="active"><span class="nl-text">🧪 Quiz Practice</span></a>
+      <a routerLink="/csharp/interview-prep" routerLinkActive="active"><span class="nl-text">🎤 Interview Prep</span></a>
+      <a routerLink="/csharp/mini-projects" routerLinkActive="active"><span class="nl-text">🚀 Mini Projects</span></a>
+    </div>
+
+    <div class="nav-group">
       <p class="nav-group-label">Reference</p>
       <a routerLink="/csharp/cheatsheet" routerLinkActive="active"><span class="nl-text">📋 C# Cheat Sheet</span></a>
       <a routerLink="/csharp/errors" routerLinkActive="active"><span class="nl-text">⚠️ Common C# Errors</span></a>
+      <a routerLink="/csharp/design-patterns" routerLinkActive="active"><span class="nl-text">🧩 Design Patterns</span></a>
+      <a routerLink="/csharp/decision-guides" routerLinkActive="active"><span class="nl-text">⚖️ Decision Guides</span></a>
+      <a routerLink="/csharp/glossary" routerLinkActive="active"><span class="nl-text">📖 Glossary</span></a>
+      <a routerLink="/csharp/learning-paths" routerLinkActive="active"><span class="nl-text">🗺 Learning Paths</span></a>
     </div>
 
     } <!-- end csharp nav -->
@@ -392,6 +408,19 @@
     </div>
 
     <div class="nav-group">
+      <p class="nav-group-label">Practice</p>
+      <a routerLink="/angular/quiz-practice" routerLinkActive="active">
+        <span class="nl-text">🧪 Quiz Practice</span>
+      </a>
+      <a routerLink="/angular/interview-prep" routerLinkActive="active">
+        <span class="nl-text">🎤 Interview Prep</span>
+      </a>
+      <a routerLink="/angular/mini-projects" routerLinkActive="active">
+        <span class="nl-text">🚀 Mini Projects</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
       <p class="nav-group-label">Reference</p>
       <a routerLink="/angular/cheatsheet" routerLinkActive="active">
         <span class="nl-text">📋 Cheat Sheet</span>
@@ -402,8 +431,14 @@
       <a routerLink="/angular/whats-new" routerLinkActive="active">
         <span class="nl-text">🆕 What's New</span>
       </a>
-      <a routerLink="/angular/mini-projects" routerLinkActive="active">
-        <span class="nl-text">🚀 Mini Projects</span>
+      <a routerLink="/angular/design-patterns" routerLinkActive="active">
+        <span class="nl-text">🧩 Design Patterns</span>
+      </a>
+      <a routerLink="/angular/decision-guides" routerLinkActive="active">
+        <span class="nl-text">⚖️ Decision Guides</span>
+      </a>
+      <a routerLink="/angular/glossary" routerLinkActive="active">
+        <span class="nl-text">📖 Glossary</span>
       </a>
       <a routerLink="/angular/learning-paths" routerLinkActive="active">
         <span class="nl-text">🗺 Learning Paths</span>

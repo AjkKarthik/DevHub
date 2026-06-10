@@ -1,0 +1,81 @@
+<div class="dp-page">
+  <header class="dp-header">
+    <div class="dp-icon">🧩</div>
+    <div>
+      <h1 class="dp-title">Angular Design Patterns</h1>
+      <p class="dp-subtitle">
+        The 12 patterns you actually meet in signals-era Angular — standalone components,
+        signal stores, DI tokens, and lazy architecture, with when to reach for each one
+        and when to walk away.
+      </p>
+    </div>
+  </header>
+
+  <nav class="dp-filters" aria-label="Filter by category">
+    @for (cat of categories; track cat) {
+      <button
+        type="button"
+        class="dp-chip"
+        [class.active]="activeCategory() === cat"
+        (click)="setCategory(cat)">
+        {{ cat }}
+      </button>
+    }
+  </nav>
+
+  <div class="dp-list">
+    @for (pattern of filtered(); track pattern.name) {
+      <article class="dp-card" [class.open]="isExpanded(pattern.name)">
+        <button
+          type="button"
+          class="dp-card-head"
+          (click)="toggle(pattern.name)"
+          [attr.aria-expanded]="isExpanded(pattern.name)">
+          <div class="dp-card-headline">
+            <h2 class="dp-name">{{ pattern.name }}</h2>
+            <span class="dp-badge" [attr.data-cat]="pattern.category">{{ pattern.category }}</span>
+          </div>
+          <p class="dp-intent">{{ pattern.intent }}</p>
+          <span class="dp-chevron" aria-hidden="true">▾</span>
+        </button>
+
+        @if (isExpanded(pattern.name)) {
+          <div class="dp-card-body">
+            <div class="dp-cols">
+              <section class="dp-use">
+                <h3>✅ When to use</h3>
+                <ul>
+                  @for (item of pattern.whenToUse; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              </section>
+              <section class="dp-avoid">
+                <h3>🚫 When NOT to use</h3>
+                <ul>
+                  @for (item of pattern.whenNotToUse; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              </section>
+            </div>
+
+            <section class="dp-example">
+              <h3>Example</h3>
+              <pre><code>{{ pattern.example }}</code></pre>
+            </section>
+
+            <section class="dp-pitfalls">
+              <h3>⚠️ Common pitfalls</h3>
+              <ul>
+                @for (item of pattern.pitfalls; track item) {
+                  <li>{{ item }}</li>
+                }
+              </ul>
+            </section>
+          </div>
+        }
+      </article>
+    }
+  </div>
+</div>

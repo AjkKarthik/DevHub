@@ -1,0 +1,87 @@
+$accent: #7c3aed;
+$tint: #f5f3ff;
+
+.page-title { font-size: 1.75rem; font-weight: 800; margin-bottom: .25rem; }
+.page-sub { color: var(--text3, #888); margin-bottom: 1.25rem; }
+
+.gl-search {
+  width: 100%; max-width: 420px;
+  padding: .6rem .9rem;
+  border: 1.5px solid var(--border, #e0e0e0);
+  border-radius: 10px;
+  background: var(--surface, #fff);
+  color: var(--text, #222);
+  font-size: .9rem;
+  margin-bottom: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .15);
+  }
+}
+
+.gl-alpha {
+  display: flex; flex-wrap: wrap; gap: .25rem;
+  margin-bottom: 1.5rem;
+}
+
+.gl-letter {
+  width: 2rem; height: 2rem;
+  border: 1.5px solid var(--border, #e0e0e0);
+  border-radius: 8px;
+  background: var(--surface, #fff);
+  color: var(--text2, #444);
+  font-size: .78rem; font-weight: 700;
+  cursor: pointer; transition: all .15s;
+
+  &:hover:not(:disabled) { border-color: $accent; background: $tint; color: $accent; }
+  &:disabled { opacity: .3; cursor: default; }
+}
+
+.gl-empty { color: var(--text3, #888); font-style: italic; }
+
+.gl-group { margin-bottom: 1.75rem; scroll-margin-top: 1rem; }
+
+.gl-heading {
+  font-size: 1.1rem; font-weight: 800;
+  color: $accent;
+  border-bottom: 2px solid $tint;
+  padding-bottom: .3rem;
+  margin: 0 0 .75rem;
+}
+
+.gl-terms {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: .75rem;
+}
+
+.gl-term {
+  border: 1.5px solid var(--border, #e8e8e8);
+  border-radius: 10px;
+  background: var(--surface, #fff);
+  padding: .8rem 1rem;
+  transition: border-color .15s;
+
+  &:hover { border-color: $accent; }
+}
+
+.gl-name { font-size: .92rem; font-weight: 700; margin: 0 0 .3rem; color: var(--text, #222); }
+.gl-def { font-size: .82rem; color: var(--text2, #555); margin: 0; line-height: 1.5; }
+
+.gl-see {
+  display: inline-block;
+  margin-top: .45rem;
+  font-size: .78rem; font-weight: 600;
+  color: $accent; text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}
+
+:host-context(body.dark) {
+  .gl-letter:hover:not(:disabled) { background: rgba(124, 58, 237, .15); }
+  .gl-heading { border-bottom-color: rgba(124, 58, 237, .3); color: #c4b5fd; }
+  .gl-search:focus { box-shadow: 0 0 0 3px rgba(124, 58, 237, .3); }
+  .gl-see { color: #c4b5fd; }
+}

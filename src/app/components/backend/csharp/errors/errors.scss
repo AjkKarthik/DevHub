@@ -31,11 +31,12 @@ $badge-cast:      #ca8a04;
   gap: 1.25rem;
   margin-bottom: 1.75rem;
 
-  h1 {
+  .cs-err-title {
     font-size: 1.875rem;
-    font-weight: 700;
+    font-weight: 800;
     margin: 0 0 0.25rem;
-    color: $cs-text;
+    color: #111827;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -236,13 +237,13 @@ $badge-cast:      #ca8a04;
   }
 }
 
-// ── Dark mode ──────────────────────────────────────────────────────────────────
-@media (prefers-color-scheme: dark) {
+// ── Dark mode (site toggle via body.dark, NOT OS preference) ──────────────────
+:host-context(body.dark) {
   .cs-errors {
     color: #e4e4e7;
   }
 
-  .cs-err-header h1 {
+  .cs-err-header .cs-err-title {
     color: #f4f4f5;
   }
 

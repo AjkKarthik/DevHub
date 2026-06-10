@@ -82,10 +82,11 @@ export class HubHome {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'Angular',          route: '/angular',          label: '45 pages · just updated' },
-    { name: 'C# · 35 topics',   route: '/csharp',           label: 'New · full language coverage' },
-    { name: 'C# Cheat Sheet',   route: '/csharp/cheatsheet', label: 'New · quick-reference' },
-    { name: 'Common C# Errors', route: '/csharp/errors',    label: 'New · fixes & explanations' },
+    { name: 'Angular',            route: '/angular',                label: '50 pages · just updated' },
+    { name: 'C# · 42 topics',     route: '/csharp',                 label: 'New · full language coverage' },
+    { name: 'Quiz Practice',      route: '/csharp/quiz-practice',   label: 'New · C# & Angular quizzes' },
+    { name: 'Interview Prep',     route: '/csharp/interview-prep',  label: 'New · 100+ Q&A both hubs' },
+    { name: 'Design Patterns',    route: '/csharp/design-patterns', label: 'New · C# & Angular patterns' },
   ];
 
   readonly roleChips: RoleChip[] = [
@@ -203,7 +204,7 @@ export class HubHome {
       group: 'frontend', name: 'Angular', time: '~20 hrs',
       tagline: 'Modern component framework with signals, routing & reactive forms.',
       icon: '🅰️', gradient: 'linear-gradient(135deg, #c3002f 0%, #7a0019 100%)',
-      textDark: false, route: '/angular', available: true, topics: 45,
+      textDark: false, route: '/angular', available: true, topics: 50,
 
       highlights: [
         '45 hands-on pages with live demos',
@@ -269,15 +270,15 @@ export class HubHome {
     },
     {
       group: 'backend', name: 'C#', time: '~20 hrs',
-      tagline: 'Microsoft\'s powerful OOP language — 35 topics from basics to .NET 11.',
+      tagline: 'Microsoft\'s powerful OOP language — 42 topics from basics to .NET 11.',
       icon: 'C#', gradient: 'linear-gradient(135deg, #512bd4 0%, #311a8a 100%)',
-      textDark: false, route: '/csharp', available: true, topics: 35,
+      textDark: false, route: '/csharp', available: true, topics: 42,
       roles: ['backend', 'architect'],
       highlights: [
-        '33 language topics + Cheat Sheet & Errors guide',
-        'LINQ, async/await, generics, pattern matching',
+        '33 language topics + 9 practice & reference pages',
+        'Design patterns, decision guides & glossary',
+        'Quiz practice + 55-question interview prep',
         'C# 9–13 & .NET 8–11 coverage',
-        'Challenges, quizzes & interview Q&A per topic',
       ],
     },
     {

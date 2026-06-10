@@ -10,6 +10,13 @@ export class ProgressService {
   readonly total = 45;
   readonly pct   = computed(() => Math.round((this._done().size / this.total) * 100));
 
+  // ── Per-section progress (C# keys are prefixed 'csharp-') ──────────────────
+  readonly csharpTotal  = 33;
+  readonly csharpCount  = computed(() => [...this._done()].filter(r => r.startsWith('csharp-')).length);
+  readonly csharpPct    = computed(() => Math.round((this.csharpCount() / this.csharpTotal) * 100));
+  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-')).length);
+  readonly angularPct   = computed(() => Math.round((this.angularCount() / this.total) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

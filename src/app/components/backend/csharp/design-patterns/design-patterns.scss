@@ -1,0 +1,289 @@
+// ── C# Design Patterns page — purple accent ───────────────────────────────────
+
+$accent:       #7c3aed;
+$accent-tint:  #f5f3ff;
+$accent-dark:  #6b21a8;
+$border:       #e4e4e7;
+$text:         #18181b;
+$muted:        #71717a;
+$code-bg:      #1e1b2e;
+
+.dp-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  color: $text;
+  font-family: inherit;
+}
+
+// ── Header ─────────────────────────────────────────────────────────────────────
+.dp-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.dp-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, $accent-tint, #ddd6fe);
+  font-size: 1.75rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba($accent, 0.25);
+}
+
+.dp-title {
+  font-size: 1.875rem;
+  font-weight: 800;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.dp-subtitle {
+  color: $muted;
+  font-size: 0.9375rem;
+  margin: 0;
+  max-width: 42rem;
+}
+
+// ── Category filter chips ──────────────────────────────────────────────────────
+.dp-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dp-chip {
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px;
+  border: 1.5px solid $border;
+  background: #fff;
+  color: $muted;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: $accent;
+    color: $accent;
+  }
+
+  &.active {
+    background: $accent;
+    border-color: $accent;
+    color: #fff;
+  }
+}
+
+// ── Pattern cards ──────────────────────────────────────────────────────────────
+.dp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.dp-card {
+  border: 1px solid $border;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: rgba($accent, 0.45);
+  }
+
+  &.open {
+    border-color: $accent;
+    box-shadow: 0 4px 16px rgba($accent, 0.12);
+  }
+}
+
+.dp-card-head {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 1rem 2.75rem 1rem 1.25rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+.dp-card-headline {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.dp-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.dp-badge {
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: $accent-tint;
+  color: $accent-dark;
+
+  &[data-cat='Creational']  { background: #ecfdf5; color: #047857; }
+  &[data-cat='Structural']  { background: #eff6ff; color: #1d4ed8; }
+  &[data-cat='Behavioral']  { background: #fff7ed; color: #c2410c; }
+}
+
+.dp-intent {
+  margin: 0.375rem 0 0;
+  color: $muted;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.dp-chevron {
+  position: absolute;
+  top: 1rem;
+  right: 1.125rem;
+  color: $muted;
+  font-size: 0.875rem;
+  transition: transform 0.2s ease;
+
+  .dp-card.open & {
+    transform: rotate(180deg);
+    color: $accent;
+  }
+}
+
+// ── Expanded body ──────────────────────────────────────────────────────────────
+.dp-card-body {
+  padding: 0 1.25rem 1.25rem;
+  border-top: 1px solid $border;
+
+  h3 {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 1.125rem 0 0.5rem;
+    color: $text;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  li {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: $text;
+  }
+}
+
+.dp-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dp-use li::marker   { color: #16a34a; }
+.dp-avoid li::marker { color: #dc2626; }
+
+.dp-example {
+  pre {
+    margin: 0;
+    padding: 1rem 1.125rem;
+    background: $code-bg;
+    border-radius: 10px;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: #e4e0f5;
+    white-space: pre;
+  }
+}
+
+.dp-pitfalls {
+  margin-top: 0.25rem;
+  padding: 0.875rem 1rem 1rem;
+  background: $accent-tint;
+  border-left: 3px solid $accent;
+  border-radius: 0 10px 10px 0;
+  margin-top: 1.125rem;
+
+  h3 { margin-top: 0; color: $accent-dark; }
+  li::marker { color: $accent; }
+}
+
+// ── Dark mode ──────────────────────────────────────────────────────────────────
+:host-context(body.dark) {
+  .dp-page { color: #e4e4e7; }
+  .dp-title { color: #fafafa; }
+  .dp-subtitle, .dp-intent { color: #a1a1aa; }
+
+  .dp-chip {
+    background: #1f1f23;
+    border-color: #3f3f46;
+    color: #a1a1aa;
+
+    &:hover { border-color: $accent; color: #c4b5fd; }
+    &.active { background: $accent; border-color: $accent; color: #fff; }
+  }
+
+  .dp-card {
+    background: #18181b;
+    border-color: #3f3f46;
+
+    &:hover { border-color: rgba($accent, 0.6); }
+    &.open  { border-color: $accent; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4); }
+  }
+
+  .dp-name { color: #fafafa; }
+  .dp-chevron { color: #a1a1aa; }
+
+  .dp-badge {
+    background: rgba($accent, 0.18);
+    color: #c4b5fd;
+
+    &[data-cat='Creational']  { background: rgba(4, 120, 87, 0.2);  color: #6ee7b7; }
+    &[data-cat='Structural']  { background: rgba(29, 78, 216, 0.2); color: #93c5fd; }
+    &[data-cat='Behavioral']  { background: rgba(194, 65, 12, 0.2); color: #fdba74; }
+  }
+
+  .dp-card-body {
+    border-top-color: #3f3f46;
+    h3 { color: #e4e4e7; }
+    li { color: #d4d4d8; }
+  }
+
+  .dp-pitfalls {
+    background: rgba($accent, 0.1);
+    border-left-color: $accent;
+    h3 { color: #c4b5fd; }
+  }
+}

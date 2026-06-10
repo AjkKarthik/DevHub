@@ -1,0 +1,65 @@
+<div class="iv-page">
+  <div class="iv-header">
+    <div class="iv-icon">🎯</div>
+    <div>
+      <h1 class="iv-title">C# Interview Prep</h1>
+      <p class="iv-subtitle">Real interview questions on types, OOP, generics, LINQ, async/await, memory, records, and modern C# — with concise, technically precise answers.</p>
+    </div>
+  </div>
+
+  <div class="iv-filters">
+    <div class="iv-filter-row">
+      <span class="iv-filter-label">Difficulty</span>
+      <div class="iv-chips">
+        @for (l of levels; track l) {
+          <button
+            type="button"
+            class="iv-chip iv-chip--level"
+            [class.active]="activeLevel() === l"
+            (click)="setLevel(l)">{{ l }}</button>
+        }
+      </div>
+    </div>
+    <div class="iv-filter-row">
+      <span class="iv-filter-label">Topic</span>
+      <div class="iv-chips">
+        @for (t of topics; track t) {
+          <button
+            type="button"
+            class="iv-chip"
+            [class.active]="activeTopic() === t"
+            (click)="setTopic(t)">{{ t }}</button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="iv-toolbar">
+    <span class="iv-count">Showing {{ filtered().length }} of {{ questions.length }} questions</span>
+    <button type="button" class="iv-toggle-all" (click)="toggleAll()">
+      {{ allOpen() ? 'Hide all' : 'Show all answers' }}
+    </button>
+  </div>
+
+  <div class="iv-list">
+    @for (entry of filtered(); track entry.index) {
+      <div class="iv-card" [class.open]="isOpen(entry.index)">
+        <button type="button" class="iv-card-head" (click)="toggle(entry.index)">
+          <span class="iv-q">{{ entry.item.q }}</span>
+          <span class="iv-badges">
+            <span class="iv-badge iv-badge--topic">{{ entry.item.topic }}</span>
+            <span class="iv-badge iv-badge--{{ entry.item.level }}">{{ entry.item.level }}</span>
+            <span class="iv-chevron" aria-hidden="true">{{ isOpen(entry.index) ? '▾' : '▸' }}</span>
+          </span>
+        </button>
+        @if (isOpen(entry.index)) {
+          <div class="iv-answer">
+            <p>{{ entry.item.a }}</p>
+          </div>
+        }
+      </div>
+    } @empty {
+      <div class="iv-empty">No questions match the selected filters.</div>
+    }
+  </div>
+</div>

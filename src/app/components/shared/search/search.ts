@@ -26,7 +26,7 @@ const DIFF_LABEL: Record<string, string> = { beginner: 'Beginner', intermediate:
         @if (svc.results().length) {
           <div class="search-results" role="listbox">
             @for (r of svc.results(); track r.route; let i = $index) {
-              <a class="search-result" [routerLink]="'/' + r.route" (click)="close()"
+              <a class="search-result" [routerLink]="url(r.route)" (click)="close()"
                  role="option" [attr.tabindex]="0"
                  (keydown.enter)="navigate(r.route)"
                  (keydown.arrowdown)="focusResult(i + 1)"
@@ -103,7 +103,15 @@ export class SearchComponent {
 
   close() { this.svc.closeSearch(); }
 
-  navigate(route: string) { this.router.navigate(['/' + route]); this.close(); }
+  // Index keys are bare ('counter') or prefixed ('csharp-basics');
+  // actual URLs live under /angular/ and /csharp/ respectively.
+  url(route: string) {
+    return route.startsWith('csharp-')
+      ? '/csharp/' + route.slice('csharp-'.length)
+      : '/angular/' + route;
+  }
+
+  navigate(route: string) { this.router.navigate([this.url(route)]); this.close(); }
 
   focusResult(i: number) {
     const items = this.el.nativeElement.querySelectorAll('.search-result') as NodeListOf<HTMLElement>;

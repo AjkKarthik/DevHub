@@ -1,0 +1,106 @@
+<div class="qp-page">
+  <div class="qp-header">
+    <div class="qp-header-icon">🧠</div>
+    <div>
+      <h1 class="qp-title">C# Quiz Practice</h1>
+      <p class="qp-subtitle">Test yourself on Types, OOP, Generics, LINQ, Async, Collections, Pattern Matching and Memory/GC.</p>
+    </div>
+  </div>
+
+  @switch (phase()) {
+    @case ('setup') {
+      <div class="qp-setup">
+        <h2 class="qp-section-title">Pick a topic</h2>
+        <div class="qp-chips">
+          @for (t of topics; track t) {
+            <button type="button" class="qp-chip" [class.active]="selectedTopic() === t" (click)="selectedTopic.set(t)">
+              {{ t }} <span class="qp-chip-count">{{ poolSize(t) }}</span>
+            </button>
+          }
+        </div>
+
+        <h2 class="qp-section-title">Number of questions</h2>
+        <div class="qp-chips">
+          @for (c of counts; track c) {
+            <button type="button" class="qp-chip" [class.active]="selectedCount() === c" (click)="selectedCount.set(c)">
+              {{ c }}
+            </button>
+          }
+        </div>
+
+        <button type="button" class="qp-primary-btn" (click)="start()">▶ Start practice</button>
+        <p class="qp-hint">Questions are shuffled every run. If a topic has fewer questions than you selected, you get all of them.</p>
+      </div>
+    }
+
+    @case ('quiz') {
+      @if (current(); as q) {
+        <div class="qp-quiz">
+          <div class="qp-progress-row">
+            <span class="qp-progress-label">Q {{ index() + 1 }}/{{ questions().length }}</span>
+            <span class="qp-topic-badge">{{ q.topic }}</span>
+          </div>
+          <div class="qp-progress-track">
+            <div class="qp-progress-fill" [style.width.%]="((index() + (answered() ? 1 : 0)) / questions().length) * 100"></div>
+          </div>
+
+          <h2 class="qp-question">{{ q.q }}</h2>
+
+          <div class="qp-options">
+            @for (opt of q.options; track $index) {
+              <button type="button" class="qp-option"
+                [class.correct]="answered() && $index === q.answer"
+                [class.wrong]="answered() && picked() === $index && $index !== q.answer"
+                [class.dimmed]="answered() && picked() !== $index && $index !== q.answer"
+                [disabled]="answered()"
+                (click)="pick($index)">
+                <span class="qp-option-letter">{{ ['A','B','C','D'][$index] }}</span>
+                <span class="qp-option-text">{{ opt }}</span>
+                @if (answered() && $index === q.answer) { <span class="qp-mark">✓</span> }
+                @if (answered() && picked() === $index && $index !== q.answer) { <span class="qp-mark">✗</span> }
+              </button>
+            }
+          </div>
+
+          @if (answered()) {
+            <div class="qp-explanation" [class.was-correct]="picked() === q.answer">
+              <strong>{{ picked() === q.answer ? 'Correct!' : 'Not quite.' }}</strong>
+              {{ q.explanation }}
+            </div>
+            <button type="button" class="qp-primary-btn" (click)="next()">
+              {{ isLast() ? 'See results →' : 'Next question →' }}
+            </button>
+          }
+        </div>
+      }
+    }
+
+    @case ('result') {
+      <div class="qp-result">
+        <div class="qp-score-card">
+          <div class="qp-score-big">{{ score() }}<span class="qp-score-total">/{{ questions().length }}</span></div>
+          <div class="qp-percent">{{ percentage() }}%</div>
+          <p class="qp-result-msg">{{ resultMessage() }}</p>
+        </div>
+
+        <h2 class="qp-section-title">Per-topic breakdown</h2>
+        <div class="qp-breakdown">
+          @for (row of breakdown(); track row.topic) {
+            <div class="qp-breakdown-row">
+              <span class="qp-breakdown-topic">{{ row.topic }}</span>
+              <div class="qp-breakdown-track">
+                <div class="qp-breakdown-fill" [style.width.%]="(row.correct / row.total) * 100"></div>
+              </div>
+              <span class="qp-breakdown-score">{{ row.correct }}/{{ row.total }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="qp-actions">
+          <button type="button" class="qp-primary-btn" (click)="tryAgain()">↺ Try again</button>
+          <button type="button" class="qp-secondary-btn" (click)="newSettings()">⚙ New settings</button>
+        </div>
+      </div>
+    }
+  }
+</div>
