@@ -4,6 +4,11 @@ This file is the source of truth for how DevHub is built. **Read it before makin
 Update it whenever a convention, structure, or wiring step changes** so any future session
 can continue consistently.
 
+**Task tracking lives in [TODO.md](TODO.md).** At the start of a session, read it to see
+what's in progress / next up. As you work: move items to In Progress, check them off when
+done (with date), and add any newly discovered tasks there. If a session ends mid-task,
+record exactly where things stand under In Progress before stopping.
+
 ## What is DevHub
 
 A free, hands-on learning hub for developers (Angular, C#, and more technologies coming).
