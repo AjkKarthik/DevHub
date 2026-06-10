@@ -19,7 +19,7 @@
     difficulty="intermediate"
     since=".NET 6+"
     tech="csharp"
-    [hidePlayground]="true"
+   
   />
 
   <app-quick-ref [items]="quickRef" />
@@ -32,11 +32,11 @@
     <app-code-block [tabs]="tabs" />
   </section>
 
+  <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
 
   <app-qna-block [items]="qna" />
-
-  <app-challenge-block [item]="challenge" />
 
   <app-page-complete
     route="csharp-linq"

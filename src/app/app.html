@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -65,63 +65,63 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Fundamentals</p>
-      <a routerLink="/csharp/basics" routerLinkActive="active"><span class="nl-text">Variables &amp; Types</span>@if(progress.isDone('csharp-basics')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/fields" routerLinkActive="active"><span class="nl-text">Fields &amp; Constants</span>@if(progress.isDone('csharp-fields')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/methods" routerLinkActive="active"><span class="nl-text">Methods</span>@if(progress.isDone('csharp-methods')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/type-conversion" routerLinkActive="active"><span class="nl-text">Type Conversion</span>@if(progress.isDone('csharp-type-conversion')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/constructors" routerLinkActive="active"><span class="nl-text">Constructors</span>@if(progress.isDone('csharp-constructors')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/properties-indexers" routerLinkActive="active"><span class="nl-text">Properties &amp; Indexers</span>@if(progress.isDone('csharp-properties-indexers')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/namespaces" routerLinkActive="active"><span class="nl-text">Namespaces</span>@if(progress.isDone('csharp-namespaces')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/basics" routerLinkActive="active"><span class="nl-text">Variables &amp; Types</span>@if(progress.isDone('csharp-basics')){<span class="nl-done">✓</span>}@if(diff('csharp-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/fields" routerLinkActive="active"><span class="nl-text">Fields &amp; Constants</span>@if(progress.isDone('csharp-fields')){<span class="nl-done">✓</span>}@if(diff('csharp-fields');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/methods" routerLinkActive="active"><span class="nl-text">Methods</span>@if(progress.isDone('csharp-methods')){<span class="nl-done">✓</span>}@if(diff('csharp-methods');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/type-conversion" routerLinkActive="active"><span class="nl-text">Type Conversion</span>@if(progress.isDone('csharp-type-conversion')){<span class="nl-done">✓</span>}@if(diff('csharp-type-conversion');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/constructors" routerLinkActive="active"><span class="nl-text">Constructors</span>@if(progress.isDone('csharp-constructors')){<span class="nl-done">✓</span>}@if(diff('csharp-constructors');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/properties-indexers" routerLinkActive="active"><span class="nl-text">Properties &amp; Indexers</span>@if(progress.isDone('csharp-properties-indexers')){<span class="nl-done">✓</span>}@if(diff('csharp-properties-indexers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/namespaces" routerLinkActive="active"><span class="nl-text">Namespaces</span>@if(progress.isDone('csharp-namespaces')){<span class="nl-done">✓</span>}@if(diff('csharp-namespaces');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Object-Oriented</p>
-      <a routerLink="/csharp/oop" routerLinkActive="active"><span class="nl-text">Classes &amp; OOP</span>@if(progress.isDone('csharp-oop')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/inheritance" routerLinkActive="active"><span class="nl-text">Inheritance &amp; Overriding</span>@if(progress.isDone('csharp-inheritance')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/abstract-interfaces" routerLinkActive="active"><span class="nl-text">Abstract &amp; Interfaces</span>@if(progress.isDone('csharp-abstract-interfaces')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/static-enums" routerLinkActive="active"><span class="nl-text">Static, Partial &amp; Enums</span>@if(progress.isDone('csharp-static-enums')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/structures" routerLinkActive="active"><span class="nl-text">Structures</span>@if(progress.isDone('csharp-structures')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/system-object" routerLinkActive="active"><span class="nl-text">System.Object</span>@if(progress.isDone('csharp-system-object')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/oop" routerLinkActive="active"><span class="nl-text">Classes &amp; OOP</span>@if(progress.isDone('csharp-oop')){<span class="nl-done">✓</span>}@if(diff('csharp-oop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/inheritance" routerLinkActive="active"><span class="nl-text">Inheritance &amp; Overriding</span>@if(progress.isDone('csharp-inheritance')){<span class="nl-done">✓</span>}@if(diff('csharp-inheritance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/abstract-interfaces" routerLinkActive="active"><span class="nl-text">Abstract &amp; Interfaces</span>@if(progress.isDone('csharp-abstract-interfaces')){<span class="nl-done">✓</span>}@if(diff('csharp-abstract-interfaces');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/static-enums" routerLinkActive="active"><span class="nl-text">Static, Partial &amp; Enums</span>@if(progress.isDone('csharp-static-enums')){<span class="nl-done">✓</span>}@if(diff('csharp-static-enums');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/structures" routerLinkActive="active"><span class="nl-text">Structures</span>@if(progress.isDone('csharp-structures')){<span class="nl-done">✓</span>}@if(diff('csharp-structures');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/system-object" routerLinkActive="active"><span class="nl-text">System.Object</span>@if(progress.isDone('csharp-system-object')){<span class="nl-done">✓</span>}@if(diff('csharp-system-object');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Types &amp; Patterns</p>
-      <a routerLink="/csharp/records" routerLinkActive="active"><span class="nl-text">Records &amp; Structs</span>@if(progress.isDone('csharp-records')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/generics" routerLinkActive="active"><span class="nl-text">Generics</span>@if(progress.isDone('csharp-generics')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/null-safety" routerLinkActive="active"><span class="nl-text">Null Safety</span>@if(progress.isDone('csharp-null-safety')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/pattern-matching" routerLinkActive="active"><span class="nl-text">Pattern Matching</span>@if(progress.isDone('csharp-pattern-matching')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/extension-methods" routerLinkActive="active"><span class="nl-text">Extension Methods</span>@if(progress.isDone('csharp-extension-methods')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/tuples" routerLinkActive="active"><span class="nl-text">Tuples &amp; Anonymous Types</span>@if(progress.isDone('csharp-tuples')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/records" routerLinkActive="active"><span class="nl-text">Records &amp; Structs</span>@if(progress.isDone('csharp-records')){<span class="nl-done">✓</span>}@if(diff('csharp-records');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/generics" routerLinkActive="active"><span class="nl-text">Generics</span>@if(progress.isDone('csharp-generics')){<span class="nl-done">✓</span>}@if(diff('csharp-generics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/null-safety" routerLinkActive="active"><span class="nl-text">Null Safety</span>@if(progress.isDone('csharp-null-safety')){<span class="nl-done">✓</span>}@if(diff('csharp-null-safety');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/pattern-matching" routerLinkActive="active"><span class="nl-text">Pattern Matching</span>@if(progress.isDone('csharp-pattern-matching')){<span class="nl-done">✓</span>}@if(diff('csharp-pattern-matching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/extension-methods" routerLinkActive="active"><span class="nl-text">Extension Methods</span>@if(progress.isDone('csharp-extension-methods')){<span class="nl-done">✓</span>}@if(diff('csharp-extension-methods');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/tuples" routerLinkActive="active"><span class="nl-text">Tuples &amp; Anonymous Types</span>@if(progress.isDone('csharp-tuples')){<span class="nl-done">✓</span>}@if(diff('csharp-tuples');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Collections &amp; Data</p>
-      <a routerLink="/csharp/arrays" routerLinkActive="active"><span class="nl-text">Arrays</span>@if(progress.isDone('csharp-arrays')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/collections" routerLinkActive="active"><span class="nl-text">Collections</span>@if(progress.isDone('csharp-collections')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/linq" routerLinkActive="active"><span class="nl-text">LINQ</span>@if(progress.isDone('csharp-linq')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/strings-datetime" routerLinkActive="active"><span class="nl-text">Strings, DateTime &amp; Math</span>@if(progress.isDone('csharp-strings-datetime')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/io-serialization" routerLinkActive="active"><span class="nl-text">I/O &amp; Serialization</span>@if(progress.isDone('csharp-io-serialization')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/arrays" routerLinkActive="active"><span class="nl-text">Arrays</span>@if(progress.isDone('csharp-arrays')){<span class="nl-done">✓</span>}@if(diff('csharp-arrays');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/collections" routerLinkActive="active"><span class="nl-text">Collections</span>@if(progress.isDone('csharp-collections')){<span class="nl-done">✓</span>}@if(diff('csharp-collections');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/linq" routerLinkActive="active"><span class="nl-text">LINQ</span>@if(progress.isDone('csharp-linq')){<span class="nl-done">✓</span>}@if(diff('csharp-linq');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/strings-datetime" routerLinkActive="active"><span class="nl-text">Strings, DateTime &amp; Math</span>@if(progress.isDone('csharp-strings-datetime')){<span class="nl-done">✓</span>}@if(diff('csharp-strings-datetime');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/io-serialization" routerLinkActive="active"><span class="nl-text">I/O &amp; Serialization</span>@if(progress.isDone('csharp-io-serialization')){<span class="nl-done">✓</span>}@if(diff('csharp-io-serialization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Memory &amp; Resources</p>
-      <a routerLink="/csharp/gc-disposable" routerLinkActive="active"><span class="nl-text">GC &amp; IDisposable</span>@if(progress.isDone('csharp-gc-disposable')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/gc-disposable" routerLinkActive="active"><span class="nl-text">GC &amp; IDisposable</span>@if(progress.isDone('csharp-gc-disposable')){<span class="nl-done">✓</span>}@if(diff('csharp-gc-disposable');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Async &amp; Concurrency</p>
-      <a routerLink="/csharp/delegates" routerLinkActive="active"><span class="nl-text">Delegates &amp; Events</span>@if(progress.isDone('csharp-delegates')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/threading" routerLinkActive="active"><span class="nl-text">Threading</span>@if(progress.isDone('csharp-threading')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/tasks" routerLinkActive="active"><span class="nl-text">Tasks</span>@if(progress.isDone('csharp-tasks')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/async" routerLinkActive="active"><span class="nl-text">async / await</span>@if(progress.isDone('csharp-async')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/exceptions" routerLinkActive="active"><span class="nl-text">Exceptions</span>@if(progress.isDone('csharp-exceptions')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/delegates" routerLinkActive="active"><span class="nl-text">Delegates &amp; Events</span>@if(progress.isDone('csharp-delegates')){<span class="nl-done">✓</span>}@if(diff('csharp-delegates');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/threading" routerLinkActive="active"><span class="nl-text">Threading</span>@if(progress.isDone('csharp-threading')){<span class="nl-done">✓</span>}@if(diff('csharp-threading');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/tasks" routerLinkActive="active"><span class="nl-text">Tasks</span>@if(progress.isDone('csharp-tasks')){<span class="nl-done">✓</span>}@if(diff('csharp-tasks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/async" routerLinkActive="active"><span class="nl-text">async / await</span>@if(progress.isDone('csharp-async')){<span class="nl-done">✓</span>}@if(diff('csharp-async');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/exceptions" routerLinkActive="active"><span class="nl-text">Exceptions</span>@if(progress.isDone('csharp-exceptions')){<span class="nl-done">✓</span>}@if(diff('csharp-exceptions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">What's New</p>
-      <a routerLink="/csharp/whats-new-9-10" routerLinkActive="active"><span class="nl-text">C# 9 &amp; 10 (.NET 5-6)</span>@if(progress.isDone('csharp-whats-new-9-10')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/whats-new-11-12" routerLinkActive="active"><span class="nl-text">C# 11 &amp; 12 (.NET 7-8)</span>@if(progress.isDone('csharp-whats-new-11-12')){<span class="nl-done">✓</span>}</a>
-      <a routerLink="/csharp/whats-new-latest" routerLinkActive="active"><span class="nl-text">🆕 C# 13+ (.NET 9-11)</span>@if(progress.isDone('csharp-whats-new-latest')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/csharp/whats-new-9-10" routerLinkActive="active"><span class="nl-text">C# 9 &amp; 10 (.NET 5-6)</span>@if(progress.isDone('csharp-whats-new-9-10')){<span class="nl-done">✓</span>}@if(diff('csharp-whats-new-9-10');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/whats-new-11-12" routerLinkActive="active"><span class="nl-text">C# 11 &amp; 12 (.NET 7-8)</span>@if(progress.isDone('csharp-whats-new-11-12')){<span class="nl-done">✓</span>}@if(diff('csharp-whats-new-11-12');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/whats-new-latest" routerLinkActive="active"><span class="nl-text">🆕 C# 13+ (.NET 9-11)</span>@if(progress.isDone('csharp-whats-new-latest')){<span class="nl-done">✓</span>}@if(diff('csharp-whats-new-latest');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     } <!-- end csharp nav -->
@@ -431,8 +431,10 @@
     </main>
 
     <footer>
-      @if (showLeftNav()) {
+      @if (currentSection() === 'angular') {
         Angular 22 &mdash; Standalone &bull; Signals &bull; Material &bull; Lazy Routing &bull; Guards &bull; Interceptors
+      } @else if (currentSection() === 'csharp') {
+        C# &amp; .NET &mdash; OOP &bull; Generics &bull; LINQ &bull; async/await &bull; Pattern Matching &bull; .NET 8–11
       } @else {
         Dev Learning Hub &mdash; Angular &bull; TypeScript &bull; JavaScript &bull; C# &bull; Node.js &bull; CSS &bull; SQL
       }

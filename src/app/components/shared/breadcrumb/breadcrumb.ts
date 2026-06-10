@@ -3,8 +3,6 @@ import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, startWith } from 'rxjs';
 
-interface Crumb { label: string; path: string; }
-
 const ROUTE_LABELS: Record<string, string> = {
   '':                   'Home',
   'counter':            'Signals & State',
@@ -54,52 +52,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'ssr':                'SSR + Hydration',
 };
 
-const SECTION_LABELS: Record<string, string> = {
-  'counter':            'Core',
-  'template-syntax':    'Core',
-  'directives':         'Core',
-  'lifecycle':          'Core',
-  'pipes':              'Core',
-  'di':                 'Core',
-  'parent-child':       'Core',
-  'content-projection': 'Core',
-  'change-detection':   'Core',
-  'animations':         'Core',
-  'forms':              'Forms',
-  'form-array':         'Forms',
-  'todo':               'Forms',
-  'zod-forms':          'Forms',
-  'custom-validators':  'Forms',
-  'cva':                'Forms',
-  'dynamic-forms':      'Forms',
-  'wizard-form':        'Forms',
-  'http':               'Advanced',
-  'routing':            'Advanced',
-  'defer':              'Advanced',
-  'store':              'Advanced',
-  'rxjs':               'Advanced',
-  'testing':            'Advanced',
-  'route-resolvers':    'Advanced',
-  'preloading':         'Advanced',
-  'material':           'UI',
-  'charts':             'UI',
-  'cdk':                'UI',
-  'ag-grid':            'UI',
-  'tanstack-query':     'UI',
-  'date-fns':           'UI',
-  'tailwind':           'UI',
-  'resource-api':       'Modern APIs',
-  'ngrx-signals':       'Modern APIs',
-  'destroy-ref':        'Modern APIs',
-  'linked-signal':      'Modern APIs',
-  'zoneless':           'Modern APIs',
-  'e2e':                'Testing',
-  'harnesses':          'Testing',
-  'ng-image':           'Platform',
-  'web-workers':        'Platform',
-  'pwa':                'Platform',
-  'i18n':               'Platform',
-  'ssr':                'Platform',
+const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
+  'angular': { label: 'Angular', path: '/angular' },
+  'csharp':  { label: 'C#',     path: '/csharp'  },
 };
 
 @Component({
@@ -107,19 +62,25 @@ const SECTION_LABELS: Record<string, string> = {
   standalone: true,
   imports: [RouterLink],
   template: `
-    @if (crumbs().length > 1) {
+    @if (segments().length > 0) {
       <nav class="breadcrumb" aria-label="breadcrumb">
         <a routerLink="/" class="bc-home" title="Home">
           <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h4a1 1 0 001-1v-3h2v3a1 1 0 001 1h4a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
           </svg>
         </a>
-        @if (section()) {
+        @if (techSection()) {
           <span class="bc-sep">›</span>
-          <span class="bc-section">{{ section() }}</span>
+          @if (segments().length > 1) {
+            <a [routerLink]="techSection()!.path" class="bc-section-link">{{ techSection()!.label }}</a>
+          } @else {
+            <span class="bc-current">{{ techSection()!.label }}</span>
+          }
         }
-        <span class="bc-sep">›</span>
-        <span class="bc-current">{{ currentLabel() }}</span>
+        @if (segments().length > 1) {
+          <span class="bc-sep">›</span>
+          <span class="bc-current">{{ pageLabel() }}</span>
+        }
       </nav>
     }`,
   styles: [`
@@ -142,12 +103,15 @@ const SECTION_LABELS: Record<string, string> = {
       &:hover { background: #f0f0ff; color: #4338ca; }
     }
     .bc-sep { color: #d1d5db; font-size: .9rem; }
-    .bc-section {
-      color: #9ca3af;
-      font-size: .78rem;
+    .bc-section-link {
+      color: #6366f1;
+      font-size: .82rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .04em;
+      text-decoration: none;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: background .12s;
+      &:hover { background: #f0f0ff; color: #4338ca; }
     }
     .bc-current {
       color: #374151;
@@ -159,39 +123,24 @@ const SECTION_LABELS: Record<string, string> = {
 export class BreadcrumbComponent {
   private router = inject(Router);
 
-  private routeKey = toSignal(
+  segments = toSignal(
     this.router.events.pipe(
       filter(e => e instanceof NavigationEnd),
       startWith(null),
-      map(() => this.router.url.replace(/\?.*/, '').split('/').filter(Boolean)[0] ?? ''),
+      map(() => this.router.url.replace(/\?.*/, '').split('/').filter(Boolean)),
     ),
-    { initialValue: '' },
+    { initialValue: [] as string[] },
   );
 
-  crumbs = toSignal(
-    this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd),
-      startWith(null),
-      map(() => {
-        const segments = this.router.url.replace(/\?.*/, '').split('/').filter(Boolean);
-        const crumbs: Crumb[] = [{ label: 'Home', path: '/' }];
-        segments.forEach((seg, i) => {
-          const path = '/' + segments.slice(0, i + 1).join('/');
-          crumbs.push({ label: ROUTE_LABELS[seg] ?? seg, path });
-        });
-        return crumbs;
-      }),
-    ),
-    { initialValue: [] as Crumb[] },
-  );
-
-  currentLabel = () => {
-    const key = this.routeKey();
-    return ROUTE_LABELS[key] ?? key;
+  techSection = () => {
+    const segs = this.segments();
+    return segs.length > 0 ? (TECH_SECTIONS[segs[0]] ?? null) : null;
   };
 
-  section = () => {
-    const key = this.routeKey();
-    return SECTION_LABELS[key] ?? null;
+  pageLabel = () => {
+    const segs = this.segments();
+    if (segs.length < 2) return '';
+    const key = segs[segs.length - 1];
+    return ROUTE_LABELS[key] ?? key;
   };
 }

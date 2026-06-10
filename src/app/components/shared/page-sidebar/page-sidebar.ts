@@ -1595,17 +1595,29 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
   imports: [RouterLink],
   templateUrl: './page-sidebar.html',
   styleUrl: './page-sidebar.scss',
+  host: {
+    '[class.section-angular]': 'section() === "angular"',
+    '[class.section-csharp]':  'section() === "csharp"',
+  },
 })
 export class PageSidebarComponent {
   private router = inject(Router);
 
-  private routeKey = toSignal(
+  private currentUrl = toSignal(
     this.router.events.pipe(
       filter(e => e instanceof NavigationEnd),
-      map(() => this.router.url.replace(/^\//, '').split('?')[0].replace(/^(angular|csharp)\//, '')),
-      startWith(this.router.url.replace(/^\//, '').split('?')[0].replace(/^(angular|csharp)\//, ''))
+      map(() => this.router.url),
+      startWith(this.router.url)
     ),
-    { initialValue: this.router.url.replace(/^\//, '').split('?')[0].replace(/^(angular|csharp)\//, '') }
+    { initialValue: this.router.url }
+  );
+
+  private routeKey = computed(() =>
+    this.currentUrl().replace(/^\//, '').split('?')[0].replace(/^(angular|csharp)\//, '')
+  );
+
+  section = computed<'angular' | 'csharp'>(() =>
+    this.currentUrl().startsWith('/csharp') ? 'csharp' : 'angular'
   );
 
   data = computed<SidebarData>(() => SIDEBAR_MAP[this.routeKey()] ?? DEFAULT);

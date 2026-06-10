@@ -10,7 +10,10 @@ import { Component, input } from '@angular/core';
       @if (since()) {
         <span class="pm-since" [class]="'pm-since--' + tech()">{{ since() }}</span>
       }
-      @if (!hidePlayground()) {
+      @if (tech() === 'csharp' || tech() === 'dotnet') {
+        <a class="pm-play pm-play--csharp" href="https://dotnetfiddle.net/" target="_blank" rel="noopener">▶ .NET Fiddle</a>
+        <a class="pm-play pm-play--sharplab" href="https://sharplab.io/" target="_blank" rel="noopener">⚗ SharpLab</a>
+      } @else if (!hidePlayground()) {
         @if (stackblitzUrl()) {
           <a class="pm-play" [href]="stackblitzUrl()" target="_blank" rel="noopener">▶ Playground</a>
         } @else {
@@ -47,10 +50,13 @@ import { Component, input } from '@angular/core';
       &--python  { background: #ca8a04; }
     }
     .pm-play {
-      margin-left: auto;
       font-size: .78rem; font-weight: 600; color: #0ea5e9;
-      text-decoration: none; display: flex; align-items: center; gap: .25rem;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .25rem;
+      padding: 2px 8px; border-radius: 20px; border: 1px solid currentColor;
       &:hover { text-decoration: underline; }
+      &:first-of-type { margin-left: auto; }
+      &--csharp   { color: #7c3aed; border-color: #7c3aed; }
+      &--sharplab { color: #0891b2; border-color: #0891b2; }
     }
   `],
 })

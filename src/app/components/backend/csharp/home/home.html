@@ -1,117 +1,124 @@
-<div class="cs-home">
+<section class="hero">
+  <div class="hero-logo">C#</div>
+  <h1>C# Language Hub</h1>
+  <p class="subtitle">
+    {{ filters.length - 1 }} categories, {{ topics().length !== 33 ? 33 : topics().length }} topics covering the full C# language —
+    from fundamentals to async patterns, generics, and the latest .NET 10/11 features.
+  </p>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">33</span><span class="stat-label">topics</span></div>
+    <div class="stat"><span class="stat-num">7</span><span class="stat-label">categories</span></div>
+    <div class="stat"><span class="stat-num">.NET 8–11</span><span class="stat-label">coverage</span></div>
+  </div>
+</section>
 
-  <!-- ── Header ── -->
-  <section class="cs-header">
-    <div class="cs-header__icon">🟣</div>
-    <div class="cs-header__text">
-      <h1 class="cs-header__title">C# Language</h1>
-      <p class="cs-header__subtitle">
-        A modern, strongly-typed language for production backends —
-        from basics to async patterns and beyond.
-      </p>
+<section class="topics">
+  <div class="topics-header">
+    <h2>What's inside</h2>
+    <div class="filters">
+      @for (f of filters; track f) {
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="activeFilter() === f"
+          (click)="setFilter(f)">
+          {{ f }}
+          <span class="count">{{ counts()[f] ?? 0 }}</span>
+        </button>
+      }
     </div>
-  </section>
-
-  <!-- ── Meta bar ── -->
-  <div class="cs-meta-bar">
-    <span class="cs-meta-bar__chip">
-      <span class="cs-meta-bar__chip-icon">📚</span>
-      11 Topics
-    </span>
-    <span class="cs-meta-bar__divider" aria-hidden="true"></span>
-    <span class="cs-meta-bar__chip">
-      <span class="cs-meta-bar__chip-icon">📊</span>
-      Beginner to Advanced
-    </span>
-    <span class="cs-meta-bar__divider" aria-hidden="true"></span>
-    <span class="cs-meta-bar__chip">
-      <span class="cs-meta-bar__chip-icon">⚙️</span>
-      .NET 8+
-    </span>
   </div>
 
-  <!-- ── Learning path hint ── -->
-  <div class="cs-path-hint">
-    <span class="cs-path-hint__label">💡 Learning Path</span>
-    <span class="cs-path-hint__text">
-      New to C#? Start with
-      <a routerLink="/csharp/basics" class="cs-path-hint__link">Variables &amp; Types</a>,
-      then follow the path:
-      <strong>Basics → OOP → Collections → LINQ → async/await</strong>
-    </span>
-  </div>
-
-  <!-- ── Topic grid ── -->
-  <section class="topic-grid" aria-label="C# Topics">
-    @for (t of topics; track t.route) {
-      <article class="topic-card">
-
-        <div class="topic-card__top">
-          <span class="card-badge card-badge--{{ t.badge | lowercase }}">{{ t.badge }}</span>
-          <span class="card-time">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-            {{ t.time }}
-          </span>
+  <div class="grid">
+    @for (topic of topics(); track topic.route) {
+      <div class="card" [class.expanded]="expandedCard() === topic.route">
+        <a class="card-main" [routerLink]="topic.route">
+          <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
+          <h3>{{ topic.title }}</h3>
+          <p>{{ topic.description }}</p>
+        </a>
+        <div class="card-footer">
+          <button type="button" class="key-points-btn" (click)="toggleCard(topic.route, $event)">
+            {{ expandedCard() === topic.route ? '▲ Hide key points' : '▼ Key points' }}
+          </button>
+          <a class="arrow-link" [routerLink]="topic.route">Explore →</a>
         </div>
-
-        <h2 class="card-title">{{ t.title }}</h2>
-        <p class="card-desc">{{ t.description }}</p>
-
-        <ul class="card-points" aria-label="Key points">
-          @for (pt of t.keyPoints; track pt) {
-            <li>{{ pt }}</li>
-          }
-        </ul>
-
-        <div class="topic-card__footer">
-          <span class="card-difficulty card-difficulty--{{ t.difficulty }}">
-            {{ t.difficulty | titlecase }}
-          </span>
-          <a [routerLink]="t.route" class="card-cta" [attr.aria-label]="'Explore ' + t.title">
-            Explore →
-          </a>
-        </div>
-
-      </article>
+        @if (expandedCard() === topic.route) {
+          <div class="key-points">
+            @for (pt of topic.keyPoints; track pt) {
+              <div class="key-point">{{ pt }}</div>
+            }
+          </div>
+        }
+      </div>
     }
-  </section>
+    @empty {
+      <p class="no-results">No topics in this category.</p>
+    }
+  </div>
+</section>
 
-  <!-- ── Coming soon ── -->
-  <section class="coming-soon" aria-label="Upcoming topics">
-    <h2 class="coming-soon__heading">What's Coming Next</h2>
-    <p class="coming-soon__sub">
-      More advanced topics are on the roadmap. Here's what's planned:
-    </p>
-    <ul class="coming-soon__list">
-      <li>
-        <span class="coming-soon__tag">Framework</span>
-        ASP.NET Core — routing, middleware, minimal APIs, filters
-      </li>
-      <li>
-        <span class="coming-soon__tag">Data</span>
-        Entity Framework Core — DbContext, migrations, queries, relationships
-      </li>
-      <li>
-        <span class="coming-soon__tag">Architecture</span>
-        Dependency Injection — service lifetimes, IServiceCollection, factories
-      </li>
-      <li>
-        <span class="coming-soon__tag">Testing</span>
-        Testing with xUnit — arrange/act/assert, mocking with Moq, integration tests
-      </li>
-      <li>
-        <span class="coming-soon__tag">Performance</span>
-        Memory &amp; Span — stackalloc, ArrayPool, Memory&lt;T&gt;, unsafe context
-      </li>
-      <li>
-        <span class="coming-soon__tag">Advanced</span>
-        Source Generators &amp; Reflection — emit, roslyn analyzers, compile-time code generation
-      </li>
-    </ul>
-  </section>
+<section class="roadmap">
+  <h2>Recommended learning path</h2>
+  <div class="path-groups">
+    <div class="path-group">
+      <h3 class="group-label foundations">① Foundations</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/csharp/basics"><strong>Variables & Types</strong></a> — start here; types, operators, control flow</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/csharp/fields"><strong>Fields & Constants</strong></a> — readonly, static, const</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/csharp/methods"><strong>Methods</strong></a> — overloads, ref/out, local functions</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/csharp/constructors"><strong>Constructors</strong></a> — chaining, primary constructors (C# 12)</span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/csharp/properties-indexers"><strong>Properties & Indexers</strong></a> — auto-props, init, required</span></li>
+      </ol>
+    </div>
 
-</div>
+    <div class="path-group">
+      <h3 class="group-label oop">② Object-Oriented</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/csharp/oop"><strong>OOP & Classes</strong></a> — encapsulation, polymorphism</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/csharp/inheritance"><strong>Inheritance</strong></a> — virtual/override, sealed</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/csharp/abstract-interfaces"><strong>Abstract & Interfaces</strong></a> — contracts vs implementation</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/csharp/static-enums"><strong>Static, Partial & Enums</strong></a> — [Flags], Enum.TryParse</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label modern">③ Modern C#</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/csharp/records"><strong>Records & Structs</strong></a> — immutability, with expressions</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/csharp/generics"><strong>Generics</strong></a> — constraints, covariance, INumber&lt;T&gt;</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/csharp/pattern-matching"><strong>Pattern Matching</strong></a> — switch expressions, list patterns</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/csharp/null-safety"><strong>Null Safety</strong></a> — nullable reference types, ??=</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label data">④ Data & Collections</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/csharp/collections"><strong>Collections</strong></a> — List, Dictionary, Span&lt;T&gt;</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/csharp/linq"><strong>LINQ</strong></a> — deferred execution, GroupBy, Join</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/csharp/strings-datetime"><strong>Strings & DateTime</strong></a> — StringBuilder, DateOnly</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/csharp/io-serialization"><strong>I/O & JSON</strong></a> — async file I/O, System.Text.Json</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label async">⑤ Async & Concurrency</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/csharp/async"><strong>async / await</strong></a> — Task&lt;T&gt;, CancellationToken, ValueTask</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/csharp/delegates"><strong>Delegates & Events</strong></a> — Func, Action, lambdas</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/csharp/tasks"><strong>Tasks & Parallel</strong></a> — WhenAll, Parallel.ForEach</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/csharp/threading"><strong>Threading</strong></a> — lock, Interlocked, concurrent collections</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label whats-new">⑥ What's New</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/csharp/whats-new-9-10"><strong>C# 9 & 10</strong></a> — records, global usings, file-scoped ns</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/csharp/whats-new-11-12"><strong>C# 11 & 12</strong></a> — required, raw strings, primary ctors</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/csharp/whats-new-latest"><strong>C# 13+ & .NET 10/11</strong></a> — params Span, LINQ CountBy</span></li>
+      </ol>
+    </div>
+  </div>
+</section>

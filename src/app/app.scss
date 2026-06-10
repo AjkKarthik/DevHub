@@ -301,6 +301,15 @@ main {
   body.dark &.active { background: var(--danger); color: #fff; }
 }
 
+// C# section — purple active state
+.left-nav.section-csharp a {
+  &:hover { background: #f5f3ff; color: #7c3aed; }
+  &.active { background: #7c3aed; color: #fff; }
+
+  body.dark &:hover { background: #2e1065; color: #c4b5fd; }
+  body.dark &.active { background: #6d28d9; color: #fff; }
+}
+
 .nl-text {
   flex: 1;
   overflow: hidden;

@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <app-page-meta [readingTime]="35" difficulty="intermediate" since=".NET 6+" tech="csharp" [hidePlayground]="true" />
+  <app-page-meta [readingTime]="35" difficulty="intermediate" since=".NET 6+" tech="csharp" />
 
   <app-quick-ref [items]="quickRef" />
 
@@ -83,9 +83,9 @@
     <p class="at-note">* <code>private protected</code> — derived classes in the <em>same assembly</em> only.</p>
   </section>
 
-  <app-qna-block [items]="qna" />
-  <app-quiz-block [items]="quiz" />
   <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
 
   <app-page-complete route="csharp-oop" nextRoute="/csharp/records" nextLabel="Records &amp; Structs" />
 
