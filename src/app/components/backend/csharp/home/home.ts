@@ -18,9 +18,10 @@ const BADGE_CSS: Record<string, string> = {
   Advanced:     'advanced',
   Safety:       'safety',
   'What\'s New': 'whats-new',
+  'Reference':   'reference',
 };
 
-const GROUP_ORDER = ['All', 'Foundations', 'OOP', 'Modern', 'Data', 'Async', 'Safety', 'Advanced', 'What\'s New'];
+const GROUP_ORDER = ['All', 'Foundations', 'OOP', 'Modern', 'Data', 'Async', 'Safety', 'Advanced', 'What\'s New', 'Reference'];
 
 const ALL_TOPICS: CsharpTopic[] = [
   // ── Foundations ──
@@ -137,6 +138,14 @@ const ALL_TOPICS: CsharpTopic[] = [
   { title: "What's New in C# 13+ & .NET 10/11", route: '/csharp/whats-new-latest', badge: "What's New",
     description: 'C# 13 features, .NET 10 LINQ additions (CountBy, AggregateBy), TimeProvider, and C# 14 extension blocks preview.',
     keyPoints: ['params ReadOnlySpan<T> (C# 13)', 'CountBy/AggregateBy LINQ operators (.NET 9)', 'C# 14 extension blocks coming'] },
+
+  // ── Reference ──
+  { title: 'C# Cheat Sheet',       route: '/csharp/cheatsheet', badge: 'Reference',
+    description: 'Quick-reference cards for types, OOP, LINQ, async/await, pattern matching, collections, and generics — searchable by keyword.',
+    keyPoints: ['8 sections covering the full language', 'Search across all entries instantly', 'Code snippets with version tags'] },
+  { title: 'Common C# Errors',     route: '/csharp/errors',     badge: 'Reference',
+    description: 'Root causes and fixes for the most frequent C# compiler errors, runtime exceptions, NullReference, async deadlocks, and LINQ pitfalls.',
+    keyPoints: ['CS8600/CS8602 nullable warnings explained', 'async deadlock patterns and how to avoid them', 'LINQ InvalidOperationException and KeyNotFoundException'] },
 ];
 
 @Component({

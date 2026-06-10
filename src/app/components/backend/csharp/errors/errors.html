@@ -1,0 +1,47 @@
+<div class="cs-errors">
+  <div class="cs-err-header">
+    <div class="cs-err-icon">⚠️</div>
+    <div>
+      <h1>Common C# Errors</h1>
+      <p class="cs-err-subtitle">Root causes and fixes for the most frequent C# compiler errors, runtime exceptions, and async pitfalls.</p>
+    </div>
+  </div>
+
+  <div class="err-tags">
+    @for (t of tags; track t) {
+      <button class="err-tag" [class.active]="activeTag() === t" (click)="activeTag.set(t)" type="button">{{ t }}</button>
+    }
+  </div>
+
+  <div class="err-list">
+    @for (e of filtered(); track e.code) {
+      <div class="err-card">
+        <div class="err-card-head">
+          <span class="err-code">{{ e.code }}</span>
+          <span class="err-title">{{ e.title }}</span>
+          <span class="err-badge err-badge--{{ e.tag }}">{{ e.tag }}</span>
+        </div>
+        <div class="err-body">
+          <div class="err-section">
+            <span class="err-label">🔍 Cause</span>
+            <p>{{ e.cause }}</p>
+          </div>
+          <div class="err-section">
+            <span class="err-label">✅ Fix</span>
+            <p>{{ e.fix }}</p>
+          </div>
+          <div class="err-cols">
+            <div>
+              <span class="err-label err-label--bad">❌ Problem</span>
+              <pre class="err-pre err-pre--bad"><code>{{ e.example }}</code></pre>
+            </div>
+            <div>
+              <span class="err-label err-label--good">✅ Solution</span>
+              <pre class="err-pre err-pre--good"><code>{{ e.solution }}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

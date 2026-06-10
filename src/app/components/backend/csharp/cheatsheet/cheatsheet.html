@@ -1,0 +1,38 @@
+<div class="cs-cheatsheet">
+  <div class="cs-header">
+    <div class="cs-header-icon">C#</div>
+    <div>
+      <h1>C# Cheat Sheet</h1>
+      <p class="cs-subtitle">Quick-reference for types, OOP, LINQ, async/await, pattern matching, and more.</p>
+    </div>
+  </div>
+
+  <div class="cs-search-wrap">
+    <input class="cs-search" type="text" placeholder="Search entries…"
+      [value]="searchTerm()" (input)="searchTerm.set($any($event.target).value)" />
+  </div>
+
+  <div class="cs-tabs">
+    @for (s of sections; track s.key) {
+      <button class="cs-tab" [class.active]="active() === s.key" (click)="active.set(s.key)" type="button">
+        {{ s.icon }} {{ s.label }}
+      </button>
+    }
+  </div>
+
+  <div class="cs-grid">
+    @for (e of activeEntries(); track e.name) {
+      <div class="cs-card">
+        <div class="cs-card-head">
+          <code class="cs-name">{{ e.name }}</code>
+          @if (e.tag) { <span class="cs-tag">{{ e.tag }}</span> }
+        </div>
+        <p class="cs-desc">{{ e.desc }}</p>
+        <pre class="cs-example"><code>{{ e.example }}</code></pre>
+      </div>
+    }
+    @empty {
+      <p class="cs-empty">No entries match "{{ searchTerm() }}".</p>
+    }
+  </div>
+</div>
