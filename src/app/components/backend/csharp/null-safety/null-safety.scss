@@ -1,0 +1,123 @@
+// ── Variables ────────────────────────────────────────────────────────────────
+$cs-purple:       #6b21a8;
+$cs-violet:       #7c3aed;
+$cs-violet-light: #a78bfa;
+$cs-violet-bg:    #f5f3ff;
+$cs-violet-mid:   #ede9fe;
+
+// Neutral
+$text-primary:    #111827;
+$text-secondary:  #6b7280;
+$text-muted:      #9ca3af;
+$border:          #e5e7eb;
+$bg-card:         #ffffff;
+$bg-page:         #fafafa;
+
+// Dark equivalents
+$dark-bg-page:    #0f0f14;
+$dark-bg-card:    #1a1a24;
+$dark-border:     #2d2d3d;
+$dark-text:       #f1f0ff;
+$dark-text-sec:   #a1a1c2;
+$dark-text-muted: #6b6b8a;
+$dark-violet-bg:  #1e1730;
+
+// ── Reset / host ─────────────────────────────────────────────────────────────
+:host {
+  display: block;
+  background: $bg-page;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+// ── Page container ────────────────────────────────────────────────────────────
+.cs-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+// ── Header icon badge (purple C# pill) ───────────────────────────────────────
+.page-header-icon.cs-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, $cs-purple 0%, $cs-violet 100%);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.1rem;
+  box-shadow: 0 2px 12px rgba($cs-violet, 0.35);
+  user-select: none;
+}
+
+// ── Page title ────────────────────────────────────────────────────────────────
+.page-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: $text-primary;
+  margin: 0 0 0.6rem;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, $cs-purple 0%, $cs-violet 60%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// ── Page subtitle ─────────────────────────────────────────────────────────────
+.page-subtitle {
+  font-size: 1rem;
+  color: $text-secondary;
+  margin: 0 0 1.75rem;
+  max-width: 660px;
+  line-height: 1.65;
+}
+
+// ── Section heading ───────────────────────────────────────────────────────────
+.cs-section {
+  margin-top: 2.5rem;
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid $cs-violet-mid;
+  }
+}
+
+// ── Dark mode ─────────────────────────────────────────────────────────────────
+:host-context(body.dark) {
+  background: $dark-bg-page;
+
+  .cs-page {
+    background: $dark-bg-page;
+  }
+
+  .page-header-icon.cs-icon {
+    background: linear-gradient(135deg, darken($cs-purple, 5%) 0%, $cs-violet 100%);
+    box-shadow: 0 2px 14px rgba($cs-violet, 0.45);
+  }
+
+  .page-title {
+    background: linear-gradient(135deg, $cs-violet-light 0%, lighten($cs-violet, 20%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .page-subtitle {
+    color: $dark-text-sec;
+  }
+
+  .cs-section {
+    h2 {
+      color: $dark-text;
+      border-bottom-color: rgba($cs-violet, 0.3);
+    }
+  }
+}

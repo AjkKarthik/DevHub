@@ -83,6 +83,7 @@ export class HubHome {
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
     { name: 'Angular', route: '/angular', label: '45 pages · just updated' },
+    { name: 'C#',      route: '/csharp',  label: 'New · classes, LINQ, async' },
   ];
 
   readonly roleChips: RoleChip[] = [
@@ -268,7 +269,7 @@ export class HubHome {
       group: 'backend', name: 'C#', time: '~8 hrs',
       tagline: 'Microsoft\'s powerful OOP language — LINQ, async, .NET ecosystem.',
       icon: 'C#', gradient: 'linear-gradient(135deg, #512bd4 0%, #311a8a 100%)',
-      textDark: false, route: '/csharp', available: false,
+      textDark: false, route: '/csharp', available: true, topics: 6,
       roles: ['backend', 'architect'],
       highlights: [
         'Classes, interfaces, records, generics',

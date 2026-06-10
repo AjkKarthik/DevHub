@@ -1,0 +1,92 @@
+<div class="cs-page">
+
+  <div class="page-header">
+    <div class="page-header-icon cs-icon">C#</div>
+    <div>
+      <h1 class="page-title">OOP &amp; Classes</h1>
+      <p class="page-sub">Classes, inheritance, interfaces, polymorphism and access modifiers — the building blocks of well-structured C# code.</p>
+    </div>
+  </div>
+
+  <app-page-meta [readingTime]="35" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <!-- ── Classes & Properties ───────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="demo-section-header">
+      <h2>Classes, Properties &amp; Inheritance</h2>
+      <p class="demo-section-sub">Auto-properties, access modifiers, virtual/override, abstract classes and interfaces — the complete OOP toolkit.</p>
+    </div>
+    <app-code-block [tabs]="codeTabs" />
+    <div class="tip-grid">
+      <div class="tip">
+        <strong>virtual + override</strong>
+        Mark the base method <code>virtual</code> and the derived version <code>override</code>. The runtime dispatches to the correct type at runtime — that's polymorphism.
+      </div>
+      <div class="tip">
+        <strong>abstract</strong>
+        An abstract class cannot be instantiated. Abstract members have no body — every derived class must provide one. Perfect for template-method patterns.
+      </div>
+      <div class="tip">
+        <strong>sealed</strong>
+        Prevents further derivation. Use it when subclassing would break the class's invariants, or to enable JIT de-virtualisation.
+      </div>
+      <div class="tip">
+        <strong>interface</strong>
+        Pure contract — no fields or constructor. A class can implement many interfaces; enables clean dependency injection and testability.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Access modifiers reference ─────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="demo-section-header">
+      <h2>Access Modifier Quick-look</h2>
+      <p class="demo-section-sub">Where each modifier allows access — from most permissive to least.</p>
+    </div>
+    <div class="access-table">
+      <div class="at-row at-head">
+        <span>Modifier</span>
+        <span>Same class</span>
+        <span>Derived class</span>
+        <span>Same assembly</span>
+        <span>Other assembly</span>
+      </div>
+      <div class="at-row">
+        <code>public</code>
+        <span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span>
+      </div>
+      <div class="at-row">
+        <code>protected internal</code>
+        <span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span><span class="no">✗</span>
+      </div>
+      <div class="at-row">
+        <code>protected</code>
+        <span class="yes">✓</span><span class="yes">✓</span><span class="no">✗</span><span class="no">✗</span>
+      </div>
+      <div class="at-row">
+        <code>internal</code>
+        <span class="yes">✓</span><span class="no">✗</span><span class="yes">✓</span><span class="no">✗</span>
+      </div>
+      <div class="at-row">
+        <code>private protected</code>
+        <span class="yes">✓</span><span class="yes">✓*</span><span class="no">✗</span><span class="no">✗</span>
+      </div>
+      <div class="at-row">
+        <code>private</code>
+        <span class="yes">✓</span><span class="no">✗</span><span class="no">✗</span><span class="no">✗</span>
+      </div>
+    </div>
+    <p class="at-note">* <code>private protected</code> — derived classes in the <em>same assembly</em> only.</p>
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+
+  <app-page-complete route="csharp-oop" nextRoute="/csharp/records" nextLabel="Records &amp; Structs" />
+
+</div>

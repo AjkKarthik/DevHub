@@ -64,12 +64,6 @@
   transition: background .13s, color .13s;
 
   .link-arrow { color: var(--text3, #9ca3af); font-size: .8rem; transition: color .13s, transform .15s; }
-
-  &:hover {
-    background: var(--surface2, #f5f3ff);
-    color: var(--accent, #4f46e5);
-    .link-arrow { color: var(--accent, #4f46e5); transform: translateX(3px); }
-  }
 }
 
 // ── Quick Tip ──────────────────────────────────────────────────────────────
@@ -113,20 +107,58 @@
   &:hover .ext-icon { transform: translate(2px, -2px); }
 }
 
+// ── Section-aware accent colours ──────────────────────────────────────────
+// Angular = red (#dd0031), C# = purple (#7c3aed)
+// Default (Angular) —
 .docs-link {
-  color: #4338ca;
-  background: #eef2ff;
-  &:hover { background: #e0e7ff; color: #3730a3; }
+  color: #dd0031;
+  background: #fff1f2;
+  &:hover { background: #ffe4e6; color: #9f0023; }
 }
 :host-context(body.dark) .docs-link {
-  color: #a5b4fc;
-  background: #1e1b4b;
-  &:hover { background: #312e81; color: #c7d2fe; }
+  color: #fca5a5;
+  background: #450a0a;
+  &:hover { background: #7f1d1d; color: #fecaca; }
+}
+
+.related-link {
+  &:hover {
+    background: var(--surface2, #fff1f2);
+    color: #dd0031;
+    .link-arrow { color: #dd0031; transform: translateX(3px); }
+  }
 }
 
 .resource-link {
   color: var(--text2, #374151);
-  &:hover { background: var(--surface2, #f5f3ff); color: var(--accent, #4f46e5); }
+  &:hover { background: var(--surface2, #fff1f2); color: #dd0031; }
+}
+
+// C# override —
+:host(.section-csharp) {
+  .docs-link {
+    color: #7c3aed;
+    background: #f5f3ff;
+    &:hover { background: #ede9fe; color: #6b21a8; }
+  }
+
+  .related-link {
+    &:hover {
+      background: #f5f3ff;
+      color: #7c3aed;
+      .link-arrow { color: #7c3aed; }
+    }
+  }
+
+  .resource-link {
+    &:hover { background: #f5f3ff; color: #7c3aed; }
+  }
+}
+
+:host-context(body.dark):host(.section-csharp) .docs-link {
+  color: #c4b5fd;
+  background: #2e1065;
+  &:hover { background: #4c1d95; color: #ddd6fe; }
 }
 
 // ── Resource badges ────────────────────────────────────────────────────────

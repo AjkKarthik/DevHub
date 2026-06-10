@@ -1,0 +1,86 @@
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+// ── Page header ──────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__text {
+    flex: 1;
+  }
+}
+
+// ── C# purple icon badge ──────────────────────────────────────────────────────
+.cs-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 900;
+  letter-spacing: -.5px;
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  box-shadow: 0 4px 14px rgba(109, 40, 217, .35);
+  user-select: none;
+
+  :host-context(body.dark) & {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    box-shadow: 0 4px 18px rgba(139, 92, 246, .45);
+  }
+}
+
+// ── Typography ────────────────────────────────────────────────────────────────
+h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 .25rem;
+  color: var(--text, #1a1a1a);
+
+  :host-context(body.dark) & {
+    color: #f1f5f9;
+  }
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  color: var(--text3, #6b7280);
+  margin: 0 0 1.25rem;
+  line-height: 1.55;
+
+  :host-context(body.dark) & {
+    color: #94a3b8;
+  }
+}
+
+// ── Section ───────────────────────────────────────────────────────────────────
+.section {
+  margin-bottom: 2rem;
+
+  &__title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 .85rem;
+    color: var(--text, #1f2937);
+
+    :host-context(body.dark) & {
+      color: #e2e8f0;
+    }
+  }
+}

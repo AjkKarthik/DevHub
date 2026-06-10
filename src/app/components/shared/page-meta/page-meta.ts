@@ -8,12 +8,17 @@ import { Component, input } from '@angular/core';
       <span class="pm-time">⏱ {{ readingTime() }} min read</span>
       <span class="pm-diff pm-diff--{{ difficulty() }}">{{ difficulty() }}</span>
       @if (since()) {
-        <span class="pm-since">Angular {{ since() }}+</span>
+        <span class="pm-since" [class]="'pm-since--' + tech()">{{ since() }}</span>
       }
-      @if (stackblitzUrl()) {
-        <a class="pm-play" [href]="stackblitzUrl()" target="_blank" rel="noopener">▶ Playground</a>
-      } @else {
-        <a class="pm-play" href="https://angular.dev/playground" target="_blank" rel="noopener">▶ Playground</a>
+      @if (tech() === 'csharp' || tech() === 'dotnet') {
+        <a class="pm-play pm-play--csharp" href="https://dotnetfiddle.net/" target="_blank" rel="noopener">▶ .NET Fiddle</a>
+        <a class="pm-play pm-play--sharplab" href="https://sharplab.io/" target="_blank" rel="noopener">⚗ SharpLab</a>
+      } @else if (!hidePlayground()) {
+        @if (stackblitzUrl()) {
+          <a class="pm-play" [href]="stackblitzUrl()" target="_blank" rel="noopener">▶ Playground</a>
+        } @else {
+          <a class="pm-play" href="https://angular.dev/playground" target="_blank" rel="noopener">▶ Playground</a>
+        }
       }
     </div>
   `,
@@ -22,9 +27,7 @@ import { Component, input } from '@angular/core';
       display: flex; align-items: center; flex-wrap: wrap; gap: .5rem;
       margin-bottom: .85rem;
     }
-    .pm-time {
-      font-size: .78rem; font-weight: 600; color: var(--text3, #6b7280);
-    }
+    .pm-time { font-size: .78rem; font-weight: 600; color: var(--text3, #6b7280); }
     .pm-diff {
       font-size: .72rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: .05em; padding: 2px 8px; border-radius: 20px;
@@ -39,19 +42,29 @@ import { Component, input } from '@angular/core';
     }
     .pm-since {
       font-size: .72rem; font-weight: 700; color: #fff;
-      background: #0ea5e9; padding: 2px 8px; border-radius: 20px;
+      padding: 2px 8px; border-radius: 20px;
+      background: #0ea5e9;
+      &--csharp  { background: #6b21a8; }
+      &--dotnet  { background: #512bd4; }
+      &--node    { background: #16a34a; }
+      &--python  { background: #ca8a04; }
     }
     .pm-play {
-      margin-left: auto;
       font-size: .78rem; font-weight: 600; color: #0ea5e9;
-      text-decoration: none; display: flex; align-items: center; gap: .25rem;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .25rem;
+      padding: 2px 8px; border-radius: 20px; border: 1px solid currentColor;
       &:hover { text-decoration: underline; }
+      &:first-of-type { margin-left: auto; }
+      &--csharp   { color: #7c3aed; border-color: #7c3aed; }
+      &--sharplab { color: #0891b2; border-color: #0891b2; }
     }
   `],
 })
 export class PageMetaComponent {
-  readingTime   = input.required<number>();
-  difficulty    = input<'beginner' | 'intermediate' | 'advanced'>('intermediate');
-  since         = input<string>('');
-  stackblitzUrl = input<string>('');
+  readingTime    = input.required<number>();
+  difficulty     = input<'beginner' | 'intermediate' | 'advanced'>('intermediate');
+  since          = input<string>('');
+  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python'>('angular');
+  stackblitzUrl  = input<string>('');
+  hidePlayground = input<boolean>(false);
 }

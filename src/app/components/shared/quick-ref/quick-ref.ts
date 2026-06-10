@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 
 export interface QuickRefItem {
   name: string;
-  type: 'function' | 'decorator' | 'directive' | 'pipe' | 'class' | 'interface' | 'token' | 'operator' | 'hook';
+  type: 'function' | 'decorator' | 'directive' | 'pipe' | 'class' | 'interface' | 'token' | 'operator' | 'hook' | 'method' | 'constraint' | 'syntax' | 'keyword' | 'accessor' | 'type';
   desc: string;
   since?: string;
 }

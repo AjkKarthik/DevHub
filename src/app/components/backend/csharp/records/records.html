@@ -1,0 +1,34 @@
+<div class="cs-page">
+
+  <div class="page-header">
+    <div class="page-header-icon cs-icon">C#</div>
+    <div>
+      <h1 class="page-title">Records &amp; Structs</h1>
+      <p class="page-sub">Immutable data types with built-in value equality, with expressions, and deconstruction.</p>
+    </div>
+  </div>
+
+  <app-page-meta [readingTime]="20" difficulty="intermediate" since=".NET 9+" tech="csharp" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <!-- ── Code examples ───────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <div class="demo-section-header">
+      <h2>Code Examples</h2>
+      <p class="demo-section-sub">From basic positional records to init-only properties and value comparisons.</p>
+    </div>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-page-complete route="csharp-records" nextRoute="/csharp/generics" nextLabel="Generics" />
+
+</div>

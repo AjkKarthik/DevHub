@@ -1,0 +1,208 @@
+.cs-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+// ── Page header ───────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.page-header-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &.cs-icon {
+    background: linear-gradient(135deg, #512bd4 0%, #311a8a 100%);
+  }
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 900;
+  margin: 0 0 .25rem;
+  letter-spacing: -.03em;
+}
+
+.page-sub {
+  font-size: .95rem;
+  color: var(--text3, #666);
+  margin: 0;
+  line-height: 1.6;
+}
+
+// ── Demo section ──────────────────────────────────────────────────────────────
+.demo-section {
+  margin: 2.5rem 0;
+}
+
+.demo-section-header {
+  margin-bottom: 1.25rem;
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 0 0 .3rem;
+    letter-spacing: -.02em;
+  }
+}
+
+.demo-section-sub {
+  font-size: .88rem;
+  color: var(--text3, #666);
+  margin: 0;
+}
+
+// ── Tip grid ──────────────────────────────────────────────────────────────────
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+.tip {
+  padding: .85rem 1rem;
+  background: var(--surface2, #f7f7f7);
+  border: 1px solid var(--border, #e8e8e8);
+  border-radius: 10px;
+  font-size: .83rem;
+  color: var(--text2, #444);
+  line-height: 1.5;
+
+  strong {
+    display: block;
+    color: var(--text, #111);
+    font-weight: 700;
+    margin-bottom: .2rem;
+  }
+
+  code {
+    font-size: .8rem;
+    background: #ede9fe;
+    color: #5b21b6;
+    padding: 1px 4px;
+    border-radius: 4px;
+  }
+}
+
+// ── Access modifier table ─────────────────────────────────────────────────────
+.access-table {
+  border: 1px solid var(--border, #e8e8e8);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: .83rem;
+  margin-top: .75rem;
+}
+
+.at-row {
+  display: grid;
+  grid-template-columns: 10rem repeat(4, 1fr);
+  align-items: center;
+  padding: .55rem 1rem;
+  border-bottom: 1px solid var(--border, #f0f0f0);
+  gap: .5rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.at-head {
+    background: var(--surface2, #f7f7f7);
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text3, #888);
+  }
+
+  code {
+    font-size: .78rem;
+    background: #ede9fe;
+    color: #5b21b6;
+    padding: 2px 6px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+}
+
+.yes {
+  color: #16a34a;
+  font-weight: 800;
+  font-size: .9rem;
+  text-align: center;
+}
+
+.no {
+  color: var(--text3, #bbb);
+  font-weight: 700;
+  font-size: .9rem;
+  text-align: center;
+}
+
+.at-note {
+  font-size: .78rem;
+  color: var(--text3, #888);
+  margin: .5rem 0 0;
+
+  code {
+    font-size: .76rem;
+    background: #ede9fe;
+    color: #5b21b6;
+    padding: 1px 4px;
+    border-radius: 4px;
+  }
+}
+
+// ── Dark mode ─────────────────────────────────────────────────────────────────
+:host-context(body.dark) {
+  .page-sub         { color: #94a3b8; }
+  .demo-section-sub { color: #94a3b8; }
+
+  .tip {
+    background: #1a1a2e;
+    border-color: #2a2a3e;
+
+    strong { color: #e2e8f0; }
+
+    code {
+      background: #2d2b55;
+      color: #a78bfa;
+    }
+  }
+
+  .access-table {
+    border-color: #2a2a3e;
+  }
+
+  .at-row {
+    border-color: #2a2a3e;
+
+    &.at-head { background: #1a1a2e; }
+
+    code {
+      background: #2d2b55;
+      color: #a78bfa;
+    }
+  }
+
+  .yes { color: #4ade80; }
+  .no  { color: #475569; }
+
+  .at-note code {
+    background: #2d2b55;
+    color: #a78bfa;
+  }
+}
