@@ -1,6 +1,6 @@
 import { Component, signal, computed } from '@angular/core';
 
-type CsSection = 'types' | 'oop' | 'linq' | 'async' | 'patterns' | 'collections' | 'generics' | 'exceptions';
+type CsSection = 'types' | 'oop' | 'linq' | 'async' | 'patterns' | 'collections' | 'generics' | 'exceptions' | 'cli';
 
 interface CheatEntry { name: string; desc: string; example: string; tag?: string; }
 
@@ -24,6 +24,7 @@ export class CsharpCheatsheetComponent {
     { key: 'collections', label: 'Collections',        icon: '📦' },
     { key: 'generics',    label: 'Generics',           icon: '🧬' },
     { key: 'exceptions',  label: 'Exceptions',         icon: '⚠️' },
+    { key: 'cli',         label: 'dotnet CLI',         icon: '💻' },
   ];
 
   typesEntries: CheatEntry[] = [
@@ -157,6 +158,26 @@ export class CsharpCheatsheetComponent {
     { name: 'global exception handler', desc: 'AppDomain.UnhandledException / TaskScheduler.UnobservedTaskException as last-resort handlers', example: 'AppDomain.CurrentDomain.UnhandledException += (s, e) => LogFatal(e.ExceptionObject);' },
   ];
 
+  cliEntries: CheatEntry[] = [
+    { name: 'dotnet new',          desc: 'Scaffold a new project or file from a template', example: 'dotnet new webapi -n OrdersApi -o src/OrdersApi' },
+    { name: 'dotnet new list',     desc: 'List all installed project templates', example: 'dotnet new list  # console, classlib, webapi, xunit…' },
+    { name: 'dotnet build',        desc: 'Compile the project and its dependencies', example: 'dotnet build -c Release --no-restore' },
+    { name: 'dotnet run',          desc: 'Build and run the project in one step', example: 'dotnet run --project src/OrdersApi' },
+    { name: 'dotnet run --launch-profile', desc: 'Run using a specific profile from launchSettings.json', example: 'dotnet run --launch-profile "https"' },
+    { name: 'dotnet test',         desc: 'Run unit tests with the configured test runner', example: 'dotnet test --filter "Category=Unit" --logger trx' },
+    { name: 'dotnet publish',      desc: 'Produce deployable output — supports self-contained & single-file', example: 'dotnet publish -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true' },
+    { name: 'dotnet add package',  desc: 'Add a NuGet package reference to the project', example: 'dotnet add package Serilog.AspNetCore --version 8.0.0' },
+    { name: 'dotnet add reference', desc: 'Add a project-to-project reference', example: 'dotnet add OrdersApi.csproj reference ../Domain/Domain.csproj' },
+    { name: 'dotnet restore',      desc: 'Download NuGet dependencies declared in the project file', example: 'dotnet restore --locked-mode  # honour packages.lock.json' },
+    { name: 'dotnet watch',        desc: 'Hot reload — rebuild and rerun on file changes', example: 'dotnet watch run  # or: dotnet watch test' },
+    { name: 'dotnet ef',           desc: 'Entity Framework Core migrations and database commands', example: 'dotnet ef migrations add InitialCreate && dotnet ef database update', tag: 'EF Core' },
+    { name: 'dotnet tool',         desc: 'Install and manage global or local .NET tools', example: 'dotnet tool install -g dotnet-ef  # local: dotnet new tool-manifest' },
+    { name: 'dotnet format',       desc: 'Apply code style rules from .editorconfig to the codebase', example: 'dotnet format --verify-no-changes  # CI lint check' },
+    { name: 'csproj anatomy',      desc: 'SDK-style project file — TargetFramework, Nullable, PackageReference', example: '<PropertyGroup><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable></PropertyGroup>' },
+    { name: 'global.json',         desc: 'Pin the SDK version used by the dotnet CLI for a repo', example: '{ "sdk": { "version": "8.0.100", "rollForward": "latestFeature" } }' },
+    { name: 'dotnet --info',       desc: 'Show installed SDKs, runtimes, and environment details', example: 'dotnet --info  # also: dotnet --list-sdks' },
+  ];
+
   activeEntries = computed(() => {
     const all = {
       types:       this.typesEntries,
@@ -167,6 +188,7 @@ export class CsharpCheatsheetComponent {
       collections: this.collectionsEntries,
       generics:    this.genericsEntries,
       exceptions:  this.exceptionsEntries,
+      cli:         this.cliEntries,
     }[this.active()];
     const q = this.searchTerm().toLowerCase();
     return q ? all.filter(e => e.name.toLowerCase().includes(q) || e.desc.toLowerCase().includes(q)) : all;

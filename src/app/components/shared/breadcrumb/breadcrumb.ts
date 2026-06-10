@@ -6,7 +6,7 @@ import { filter, map, startWith } from 'rxjs';
 const ROUTE_LABELS: Record<string, string> = {
   '':                   'Home',
   'counter':            'Signals & State',
-  'template-syntax':    'Template Syntax',
+  'templates':          'Template Syntax',
   'directives':         'Directives',
   'lifecycle':          'Lifecycle Hooks',
   'pipes':              'Pipes',
@@ -50,6 +50,61 @@ const ROUTE_LABELS: Record<string, string> = {
   'pwa':                'PWA / Service Worker',
   'i18n':               'i18n',
   'ssr':                'SSR + Hydration',
+  'cheatsheet':         'Cheat Sheet',
+  'errors':             'Common Errors',
+  'whats-new':          "What's New",
+  'mini-projects':      'Mini Projects',
+  'learning-paths':     'Learning Paths',
+  'interview-prep':     'Interview Prep',
+  'quiz-practice':      'Quiz Practice',
+  'design-patterns':    'Design Patterns',
+  'decision-guides':    'Decision Guides',
+  'glossary':           'Glossary',
+};
+
+const CSHARP_LABELS: Record<string, string> = {
+  'basics':               'Variables & Types',
+  'fields':               'Fields & Constants',
+  'methods':              'Methods',
+  'type-conversion':      'Type Conversion',
+  'constructors':         'Constructors',
+  'properties-indexers':  'Properties & Indexers',
+  'namespaces':           'Namespaces & Usings',
+  'oop':                  'Classes & OOP',
+  'inheritance':          'Inheritance & Overriding',
+  'abstract-interfaces':  'Abstract & Interfaces',
+  'static-enums':         'Static, Partial & Enums',
+  'structures':           'Structures',
+  'system-object':        'System.Object',
+  'records':              'Records & Structs',
+  'generics':             'Generics',
+  'null-safety':          'Null Safety',
+  'pattern-matching':     'Pattern Matching',
+  'extension-methods':    'Extension Methods',
+  'tuples':               'Tuples & Anonymous Types',
+  'arrays':               'Arrays',
+  'collections':          'Collections',
+  'linq':                 'LINQ',
+  'strings-datetime':     'Strings, DateTime & Math',
+  'io-serialization':     'I/O & Serialization',
+  'gc-disposable':        'GC & IDisposable',
+  'threading':            'Threading',
+  'tasks':                'Tasks & Parallel',
+  'async':                'async / await',
+  'delegates':            'Delegates & Events',
+  'exceptions':           'Exceptions',
+  'whats-new-9-10':       "What's New in C# 9 & 10",
+  'whats-new-11-12':      "What's New in C# 11 & 12",
+  'whats-new-latest':     "What's New in C# 13+",
+  'cheatsheet':           'C# Cheat Sheet',
+  'errors':               'Common C# Errors',
+  'mini-projects':        'Mini Projects',
+  'learning-paths':       'Learning Paths',
+  'interview-prep':       'Interview Prep',
+  'quiz-practice':        'Quiz Practice',
+  'design-patterns':      'Design Patterns',
+  'decision-guides':      'Decision Guides',
+  'glossary':             'Glossary',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
@@ -141,6 +196,7 @@ export class BreadcrumbComponent {
     const segs = this.segments();
     if (segs.length < 2) return '';
     const key = segs[segs.length - 1];
-    return ROUTE_LABELS[key] ?? key;
+    const labels = segs[0] === 'csharp' ? CSHARP_LABELS : ROUTE_LABELS;
+    return labels[key] ?? key;
   };
 }

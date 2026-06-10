@@ -1,0 +1,57 @@
+.page-title { font-size: 1.75rem; font-weight: 800; margin-bottom: .25rem; }
+.page-sub { color: var(--text3, #888); margin-bottom: 1.5rem; }
+
+.paths-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 1.5rem;
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+
+.path-card {
+  border: 2px solid var(--path-color, #7c3aed);
+  border-radius: 14px; overflow: hidden;
+  background: var(--surface, #fff);
+}
+
+.path-header {
+  display: flex; align-items: flex-start; gap: .75rem;
+  padding: .9rem 1.1rem;
+  background: color-mix(in srgb, var(--path-color, #7c3aed) 8%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--path-color, #7c3aed) 25%, transparent);
+}
+.path-icon  { font-size: 1.6rem; line-height: 1; }
+.path-title { font-size: 1rem; font-weight: 800; color: var(--text, #1a1a1a); margin-bottom: .15rem; }
+.path-sub   { font-size: .8rem; color: var(--text3, #666); margin: 0; }
+.path-dur   { margin-left: auto; font-size: .72rem; font-weight: 700; color: var(--path-color, #7c3aed); white-space: nowrap; }
+
+.path-steps {
+  list-style: none; padding: .75rem 1rem; display: flex; flex-direction: column; gap: .35rem;
+}
+
+.path-step {
+  display: flex; align-items: flex-start; gap: .6rem;
+}
+.step-num {
+  min-width: 1.4rem; height: 1.4rem; border-radius: 50%;
+  background: color-mix(in srgb, var(--path-color, #7c3aed) 12%, transparent);
+  color: var(--path-color, #7c3aed);
+  font-size: .7rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.step-link {
+  font-size: .85rem; font-weight: 600; color: var(--path-color, #7c3aed);
+  text-decoration: none; white-space: nowrap;
+  &:hover { text-decoration: underline; }
+}
+.step-why {
+  font-size: .78rem; color: var(--text3, #888); line-height: 1.4; flex: 1;
+}
+
+:host-context(body.dark) {
+  .path-step .step-num {
+    background: color-mix(in srgb, var(--path-color, #7c3aed) 22%, transparent);
+  }
+  .step-link { filter: brightness(1.25); }
+}

@@ -275,6 +275,31 @@ const ALL_TOPICS: Topic[] = [
     description: 'Structured curriculums for Beginner, Intermediate, Advanced, and UI Engineering skill levels.',
     keyPoints: ['Beginner: signals → templates → forms → routing', 'Intermediate: OnPush → RxJS → @defer → testing', 'Advanced: Signal Store → resource() → SSR → E2E', 'UI: Material → CDK → Tailwind → animations'],
   },
+  {
+    title: 'Interview Prep', route: '/angular/interview-prep', badge: 'Reference',
+    description: '50+ real Angular interview questions with answers — filterable by difficulty (Junior/Mid/Senior) and topic.',
+    keyPoints: ['Signals vs RxJS, change detection, zoneless', 'DI hierarchy, standalone, control flow', 'Expandable answer cards with show-all toggle', 'Modern signals-era Angular (v17+)'],
+  },
+  {
+    title: 'Quiz Practice', route: '/angular/quiz-practice', badge: 'Reference',
+    description: 'Random quiz sessions from a 50+ question bank — pick a topic and length, get instant feedback and a score breakdown.',
+    keyPoints: ['Topics: Signals, DI, Router, Forms, RxJS, Perf, Testing', 'Instant right/wrong feedback with explanations', 'Per-topic score breakdown at the end'],
+  },
+  {
+    title: 'Design Patterns', route: '/angular/design-patterns', badge: 'Reference',
+    description: '12 patterns for signals-era Angular — smart/presentational, signal stores, facades, DI tokens, host directives, OnPush.',
+    keyPoints: ['When to use AND when not to use each pattern', 'Real modern code: inject(), input(), signals', 'Common pitfalls per pattern'],
+  },
+  {
+    title: 'Decision Guides', route: '/angular/decision-guides', badge: 'Reference',
+    description: 'Side-by-side comparisons: Signal vs Observable, Reactive vs Template forms, @defer vs lazy routes, NgRx vs signal store.',
+    keyPoints: ['Criteria tables with clear ✓/✗ verdicts', 'Rule-of-thumb callout per guide', '8 of the most common Angular decisions'],
+  },
+  {
+    title: 'Glossary', route: '/angular/glossary', badge: 'Reference',
+    description: 'A–Z glossary of 50+ Angular terms — hydration, zoneless, injector hierarchy, linkedSignal — with links to topic pages.',
+    keyPoints: ['Searchable with letter quick-nav', 'Plain-English 1-3 sentence definitions', 'See-also links into the relevant topic page'],
+  },
 ];
 
 const BADGE_GROUPS = ['All', 'Core', 'Forms', 'UI', '3rd Party', 'DI', 'State', 'Router', 'HTTP', 'RxJS', 'Perf', 'Testing', 'Reference'] as const;

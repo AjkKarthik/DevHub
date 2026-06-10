@@ -1,0 +1,45 @@
+<div class="page">
+  <h1 class="page-title">📖 Angular Glossary</h1>
+  <p class="page-sub">A–Z reference of Angular terms, each with a short plain-English definition.</p>
+
+  <input
+    class="gl-search"
+    type="search"
+    placeholder="Search terms or definitions…"
+    [value]="search()"
+    (input)="search.set($any($event.target).value)"
+    aria-label="Search glossary" />
+
+  <div class="gl-alpha" role="navigation" aria-label="Jump to letter">
+    @for (l of alphabet; track l) {
+      <button
+        type="button"
+        class="gl-letter"
+        [disabled]="!activeLetters().has(l)"
+        (click)="scrollTo(l)">
+        {{ l }}
+      </button>
+    }
+  </div>
+
+  @if (groups().length === 0) {
+    <p class="gl-empty">No terms match "{{ search() }}".</p>
+  }
+
+  @for (g of groups(); track g.letter) {
+    <section class="gl-group" [id]="'glossary-' + g.letter">
+      <h2 class="gl-heading">{{ g.letter }}</h2>
+      <div class="gl-terms">
+        @for (t of g.terms; track t.term) {
+          <div class="gl-term">
+            <h3 class="gl-name">{{ t.term }}</h3>
+            <p class="gl-def">{{ t.def }}</p>
+            @if (t.route) {
+              <a class="gl-see" [routerLink]="t.route">See also →</a>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  }
+</div>

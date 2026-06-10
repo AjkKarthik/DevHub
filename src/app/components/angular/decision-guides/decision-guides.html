@@ -1,0 +1,48 @@
+<div class="page">
+  <h1 class="page-title">⚖️ Angular Decision Guides</h1>
+  <p class="page-sub">"X vs Y" comparisons to help you pick the right tool — with a rule of thumb for each.</p>
+
+  <div class="dg-layout">
+    <nav class="dg-tabs" aria-label="Decision guides">
+      @for (g of guides; track g.title; let i = $index) {
+        <button type="button" class="dg-tab" [class.active]="active() === i" (click)="active.set(i)">
+          {{ g.title }}
+        </button>
+      }
+    </nav>
+
+    <section class="dg-panel">
+      <h2 class="dg-title">{{ guide().title }}</h2>
+
+      <div class="dg-table-wrap">
+        <table class="dg-table">
+          <thead>
+            <tr>
+              <th>Criterion</th>
+              @for (o of guide().options; track o) {
+                <th>{{ o }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of guide().rows; track row.criterion) {
+              <tr>
+                <td class="crit">{{ row.criterion }}</td>
+                @for (cell of row.cells; track $index) {
+                  <td [class.yes]="cell.startsWith('✓')" [class.no]="cell.startsWith('✗')">{{ cell }}</td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dg-rule">
+        <span class="dg-rule-label">👍 Rule of thumb</span>
+        <p>{{ guide().ruleOfThumb }}</p>
+      </div>
+
+      <p class="dg-verdict"><strong>Verdict:</strong> {{ guide().verdict }}</p>
+    </section>
+  </div>
+</div>

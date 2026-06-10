@@ -1,0 +1,73 @@
+<div class="page">
+  <h1 class="page-title">🚀 C# Mini Projects</h1>
+  <p class="page-sub">End-to-end console &amp; API project walkthroughs applying everything you've learned.</p>
+
+  <!-- Project selector -->
+  <div class="proj-tabs">
+    @for (p of projects; track p.id) {
+      <button type="button" class="proj-tab" [class.active]="active() === p.id"
+              (click)="active.set(p.id)">
+        <span class="proj-tab-icon">{{ p.icon }}</span>
+        <span class="proj-tab-label">{{ p.title }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Active project -->
+  <div class="proj-detail">
+    <div class="proj-hero">
+      <span class="proj-hero-icon">{{ activeProject.icon }}</span>
+      <div>
+        <h2 class="proj-title">{{ activeProject.title }}</h2>
+        <p class="proj-desc">{{ activeProject.description }}</p>
+        <div class="proj-meta">
+          <span class="proj-badge" [class]="'proj-badge diff-' + activeProject.difficulty.toLowerCase()">{{ activeProject.difficulty }}</span>
+          <span class="proj-time">⏱ {{ activeProject.time }}</span>
+        </div>
+        <div class="proj-tags">
+          @for (tag of activeProject.tags; track tag) {
+            <span class="proj-tag">{{ tag }}</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- What you'll learn -->
+    <div class="proj-learn">
+      <h3 class="learn-title">🎯 What you'll learn</h3>
+      <ul class="learn-list">
+        @for (item of activeProject.learn; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="proj-steps">
+      @for (step of activeProject.steps; track step.title; let i = $index) {
+        <div class="proj-step">
+          <div class="step-marker">
+            <span class="step-num">{{ i + 1 }}</span>
+            @if (i < activeProject.steps.length - 1) {
+              <div class="step-line"></div>
+            }
+          </div>
+          <div class="step-content">
+            <h3 class="step-title">{{ step.title }}</h3>
+            <p class="step-desc">{{ step.description }}</p>
+            <app-code-block [tabs]="[{label: step.title, language: step.language, code: step.code}]" />
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Stretch goals -->
+    <div class="proj-stretch">
+      <h3 class="stretch-title">🏋️ Stretch goals</h3>
+      <ul class="stretch-list">
+        @for (goal of activeProject.stretch; track goal) {
+          <li>{{ goal }}</li>
+        }
+      </ul>
+    </div>
+  </div>
+</div>

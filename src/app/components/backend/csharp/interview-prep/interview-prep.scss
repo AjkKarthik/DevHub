@@ -1,0 +1,359 @@
+// ── C# Interview Prep — purple theme ────────────────────────────────────────
+
+$accent:       #7c3aed;
+$accent-light: #f5f3ff;
+$border:       #e4e4e7;
+$text:         #18181b;
+$muted:        #71717a;
+
+$badge-junior: #16a34a;
+$badge-mid:    #d97706;
+$badge-senior: #dc2626;
+
+.iv-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  color: $text;
+  font-family: inherit;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+.iv-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.iv-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 12px;
+  background: $accent-light;
+  font-size: 1.75rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba($accent, 0.18);
+}
+
+.iv-title {
+  font-size: 1.875rem;
+  font-weight: 800;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.02em;
+  color: #111827;
+}
+
+.iv-subtitle {
+  color: $muted;
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+// ── Filters ───────────────────────────────────────────────────────────────────
+.iv-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid $border;
+  border-radius: 12px;
+  background: #fafafa;
+  margin-bottom: 1rem;
+}
+
+.iv-filter-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.iv-filter-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $muted;
+  min-width: 5rem;
+  padding-top: 0.4rem;
+}
+
+.iv-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.iv-chip {
+  border: 1px solid $border;
+  background: #fff;
+  color: $text;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: $accent;
+    color: $accent;
+  }
+
+  &.active {
+    background: $accent;
+    border-color: $accent;
+    color: #fff;
+  }
+}
+
+// ── Toolbar ───────────────────────────────────────────────────────────────────
+.iv-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.iv-count {
+  font-size: 0.875rem;
+  color: $muted;
+}
+
+.iv-toggle-all {
+  border: 1px solid $accent;
+  background: $accent-light;
+  color: $accent;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: $accent;
+    color: #fff;
+  }
+}
+
+// ── Question cards ────────────────────────────────────────────────────────────
+.iv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.iv-card {
+  border: 1px solid $border;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: rgba($accent, 0.45);
+  }
+
+  &.open {
+    border-color: $accent;
+    box-shadow: 0 2px 12px rgba($accent, 0.1);
+  }
+}
+
+.iv-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.iv-q {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: $text;
+  line-height: 1.4;
+}
+
+.iv-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.iv-badge {
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  white-space: nowrap;
+
+  &--topic {
+    background: $accent-light;
+    color: $accent;
+  }
+
+  &--junior {
+    background: rgba($badge-junior, 0.12);
+    color: $badge-junior;
+  }
+
+  &--mid {
+    background: rgba($badge-mid, 0.12);
+    color: $badge-mid;
+  }
+
+  &--senior {
+    background: rgba($badge-senior, 0.12);
+    color: $badge-senior;
+  }
+}
+
+.iv-chevron {
+  color: $muted;
+  font-size: 0.8rem;
+}
+
+.iv-answer {
+  padding: 0 1rem 1rem;
+  border-top: 1px dashed $border;
+
+  p {
+    margin: 0.875rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #3f3f46;
+  }
+}
+
+.iv-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: $muted;
+  font-size: 0.9375rem;
+  border: 1px dashed $border;
+  border-radius: 12px;
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .iv-card-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .iv-filter-row {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .iv-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+// ── Dark mode ─────────────────────────────────────────────────────────────────
+:host-context(body.dark) {
+  .iv-page {
+    color: #e4e4e7;
+  }
+
+  .iv-title {
+    color: #fafafa;
+  }
+
+  .iv-subtitle,
+  .iv-count,
+  .iv-filter-label,
+  .iv-chevron {
+    color: #a1a1aa;
+  }
+
+  .iv-icon {
+    background: rgba($accent, 0.18);
+  }
+
+  .iv-filters {
+    background: #18181b;
+    border-color: #3f3f46;
+  }
+
+  .iv-chip {
+    background: #27272a;
+    border-color: #3f3f46;
+    color: #e4e4e7;
+
+    &:hover {
+      border-color: $accent;
+      color: lighten($accent, 18%);
+    }
+
+    &.active {
+      background: $accent;
+      border-color: $accent;
+      color: #fff;
+    }
+  }
+
+  .iv-toggle-all {
+    background: rgba($accent, 0.15);
+    color: lighten($accent, 22%);
+
+    &:hover {
+      background: $accent;
+      color: #fff;
+    }
+  }
+
+  .iv-card {
+    background: #18181b;
+    border-color: #3f3f46;
+
+    &:hover {
+      border-color: rgba($accent, 0.6);
+    }
+
+    &.open {
+      border-color: $accent;
+      box-shadow: 0 2px 12px rgba($accent, 0.25);
+    }
+  }
+
+  .iv-q {
+    color: #f4f4f5;
+  }
+
+  .iv-badge--topic {
+    background: rgba($accent, 0.18);
+    color: lighten($accent, 25%);
+  }
+
+  .iv-answer {
+    border-top-color: #3f3f46;
+
+    p {
+      color: #c4c4cc;
+    }
+  }
+
+  .iv-empty {
+    border-color: #3f3f46;
+    color: #a1a1aa;
+  }
+}

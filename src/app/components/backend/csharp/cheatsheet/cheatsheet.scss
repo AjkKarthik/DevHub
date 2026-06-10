@@ -25,11 +25,12 @@ $cs-code-border:  #7c3aed;
   gap: 1.25rem;
   margin-bottom: 1.75rem;
 
-  h1 {
+  .cs-sheet-title {
     font-size: 1.875rem;
-    font-weight: 700;
+    font-weight: 800;
     margin: 0 0 0.25rem;
-    color: $cs-text;
+    color: #111827;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -199,13 +200,13 @@ $cs-code-border:  #7c3aed;
   font-size: 0.9375rem;
 }
 
-// ── Dark mode ──────────────────────────────────────────────────────────────────
-@media (prefers-color-scheme: dark) {
+// ── Dark mode (site toggle via body.dark, NOT OS preference) ──────────────────
+:host-context(body.dark) {
   .cs-cheatsheet {
     color: #e4e4e7;
   }
 
-  .cs-header h1 {
+  .cs-header .cs-sheet-title {
     color: #f4f4f5;
   }
 
