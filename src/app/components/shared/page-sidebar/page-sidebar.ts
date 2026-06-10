@@ -1563,6 +1563,58 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['New language features require updating <LangVersion> in .csproj — they don\'t activate automatically.', 'Some .NET 10/11 APIs are marked [Experimental] — check the docs before using in production.'],
   },
 
+  // ── C# Cheat Sheet ─────────────────────────────────────────────────────────
+  'csharp/cheatsheet': {
+    apis: ['var', 'record', 'LINQ', 'async/await', 'pattern matching', 'generics'],
+    related: [
+      { label: 'LINQ',             route: '/csharp/linq'            },
+      { label: 'async / await',    route: '/csharp/async'           },
+      { label: 'Pattern Matching', route: '/csharp/pattern-matching'},
+      { label: 'Generics',         route: '/csharp/generics'        },
+    ],
+    tip: 'Use the search bar to filter entries across all sections at once — great for looking up a specific keyword quickly.',
+    docs: [
+      { label: 'C# Language Reference',  url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/' },
+      { label: 'C# Programming Guide',   url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/' },
+      { label: 'LINQ Overview',          url: 'https://learn.microsoft.com/en-us/dotnet/csharp/linq/'              },
+      { label: 'Async / Await Guide',    url: 'https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/' },
+    ],
+    resources: [
+      { label: '.NET API Browser',       url: 'https://learn.microsoft.com/en-us/dotnet/api/',                      badge: 'docs'  },
+      { label: 'C# Interactive (Try)',   url: 'https://dotnetfiddle.net',                                            badge: 'tool'  },
+    ],
+    gotchas: [
+      'LINQ is lazy by default — always call ToList() or ToArray() when you need the results more than once.',
+      'async void swallows exceptions — only use it for event handlers and always use async Task everywhere else.',
+    ],
+  },
+
+  // ── C# Common Errors ───────────────────────────────────────────────────────
+  'csharp/errors': {
+    apis: ['NullReferenceException', 'InvalidCastException', 'ArgumentNullException', 'FormatException'],
+    related: [
+      { label: 'Null Safety',    route: '/csharp/null-safety' },
+      { label: 'Exceptions',     route: '/csharp/exceptions'  },
+      { label: 'async / await',  route: '/csharp/async'       },
+      { label: 'LINQ',           route: '/csharp/linq'        },
+    ],
+    tip: 'Enable #nullable in your .csproj (<Nullable>enable</Nullable>) to catch NullReferenceExceptions at compile time.',
+    docs: [
+      { label: 'Exception Handling',        url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/exceptions/'             },
+      { label: 'Nullable Reference Types',  url: 'https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references'                  },
+      { label: 'C# Compiler Errors',        url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/'},
+      { label: 'Async Best Practices',      url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming' },
+    ],
+    resources: [
+      { label: '.NET API Browser',          url: 'https://learn.microsoft.com/en-us/dotnet/api/',          badge: 'docs'  },
+      { label: 'Exception Design Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/exceptions', badge: 'docs' },
+    ],
+    gotchas: [
+      'throw; (bare) preserves the original stack trace; throw ex; resets it — always use bare throw when re-throwing.',
+      'Blocking on async with .Result or .Wait() can deadlock in sync-context environments — async all the way is the safest rule.',
+    ],
+  },
+
   // ── SSR + Hydration ─────────────────────────────────────────────────────────
   ssr: {
     apis: ['provideClientHydration()', 'withEventReplay()', 'isPlatformBrowser()', 'PLATFORM_ID', 'TransferState'],
@@ -1613,14 +1665,18 @@ export class PageSidebarComponent {
   );
 
   private routeKey = computed(() =>
-    this.currentUrl().replace(/^\//, '').split('?')[0].replace(/^(angular|csharp)\//, '')
+    this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
   section = computed<'angular' | 'csharp'>(() =>
     this.currentUrl().startsWith('/csharp') ? 'csharp' : 'angular'
   );
 
-  data = computed<SidebarData>(() => SIDEBAR_MAP[this.routeKey()] ?? DEFAULT);
+  data = computed<SidebarData>(() =>
+    SIDEBAR_MAP[this.routeKey()] ??
+    SIDEBAR_MAP[this.routeKey().replace(/^(angular|csharp)\//, '')] ??
+    DEFAULT
+  );
 
   badgeLabel: Record<string, string> = {
     docs: 'docs', video: 'video', blog: 'blog', tool: 'tool',

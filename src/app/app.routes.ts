@@ -106,6 +106,8 @@ export const routes: Routes = [
       { path: 'whats-new-9-10',    loadComponent: () => import('./components/backend/csharp/whats-new-9-10/whats-new-9-10').then(m => m.CsharpWhatsNew910) },
       { path: 'whats-new-11-12',   loadComponent: () => import('./components/backend/csharp/whats-new-11-12/whats-new-11-12').then(m => m.CsharpWhatsNew1112) },
       { path: 'whats-new-latest',  loadComponent: () => import('./components/backend/csharp/whats-new-latest/whats-new-latest').then(m => m.CsharpWhatsNewLatest) },
+      { path: 'cheatsheet',        loadComponent: () => import('./components/backend/csharp/cheatsheet/cheatsheet').then(m => m.CsharpCheatsheetComponent) },
+      { path: 'errors',            loadComponent: () => import('./components/backend/csharp/errors/errors').then(m => m.CsharpErrorsComponent) },
     ],
   },
 

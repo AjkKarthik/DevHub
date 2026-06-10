@@ -124,6 +124,12 @@
       <a routerLink="/csharp/whats-new-latest" routerLinkActive="active"><span class="nl-text">🆕 C# 13+ (.NET 9-11)</span>@if(progress.isDone('csharp-whats-new-latest')){<span class="nl-done">✓</span>}@if(diff('csharp-whats-new-latest');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/csharp/cheatsheet" routerLinkActive="active"><span class="nl-text">📋 C# Cheat Sheet</span></a>
+      <a routerLink="/csharp/errors" routerLinkActive="active"><span class="nl-text">⚠️ Common C# Errors</span></a>
+    </div>
+
     } <!-- end csharp nav -->
 
     <!-- ── Angular Navigation ─────────────────────────────────────── -->
