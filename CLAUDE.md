@@ -107,10 +107,12 @@ Order is **Challenge → Quiz → QnA → PageComplete**. Never reorder.
   `[hidePlayground]`
 - `challenge-block` auto-picks the playground from `Challenge.language`: `'csharp'` →
   ".NET Fiddle" button; anything else → Angular playground. `playgroundUrl` overrides.
-- `app-video-embed` (shared/video-embed): lazy YouTube facade — thumbnail until click,
-  then youtube-nocookie iframe. `<app-video-embed videoId="…" title="…" />`. Only embed
-  official-channel videos with embedding enabled; prefer links in sidebar resources
-  for everything else.
+- `app-video-embed` (shared/video-embed): two-step collapsed video accordion —
+  click 1 on the "▶ Watch: <title>" toggle expands to the video THUMBNAIL (still no
+  YouTube scripts); click 2 on the thumbnail's play button loads the youtube-nocookie
+  iframe and plays. "Hide video" collapses + unloads. `<app-video-embed videoId="…"
+  title="…" />` placed after the Code Examples section. Only embed official-channel
+  videos with embedding enabled; prefer links in sidebar resources otherwise.
 - Sidebar `Resource.badge` union: `'docs'|'video'|'blog'|'tool'|'code'` — use `'code'`
   (GitHub-dark badge) for GitHub repo/source links. Prefer official org repos
   (dotnet/*, angular/*) and reference apps (dotnet/eShop).

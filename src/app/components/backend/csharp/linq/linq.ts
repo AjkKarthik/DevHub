@@ -7,6 +7,7 @@ import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-bl
 import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
 import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
+import { VideoEmbedComponent } from '../../../shared/video-embed/video-embed';
 
 @Component({
   selector: 'app-csharp-linq',
@@ -20,6 +21,7 @@ import { PageCompleteComponent } from '../../../shared/page-complete/page-comple
     QuickRefComponent,
     PageMetaComponent,
     PageCompleteComponent,
+    VideoEmbedComponent,
   ],
   templateUrl: './linq.html',
   styleUrl: './linq.scss',

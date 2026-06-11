@@ -1245,7 +1245,9 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Query vs Method Syntax',url: 'https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/write-linq-queries' },
     ],
     resources: [
-      { label: '101 LINQ Samples', url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool' },
+      { label: '101 LINQ Samples',        url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool'  },
+      { label: 'LINQ source (dotnet/runtime)', url: 'https://github.com/dotnet/runtime/tree/main/src/libraries/System.Linq/src/System/Linq', badge: 'code' },
+      { label: 'LINQ & IEnumerable — .NET channel', url: 'https://www.youtube.com/watch?v=4ro5UCqU0P4', badge: 'video' },
     ],
     gotchas: [
       'First() throws if the sequence is empty — use FirstOrDefault() and check for null unless you are certain an element exists.',
