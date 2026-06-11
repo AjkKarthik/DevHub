@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -51,15 +51,31 @@
     </a>
 
     <!-- Progress bar (per-section) -->
-    <div class="nav-progress">
-      @if (currentSection() === 'csharp') {
-        <div class="nav-progress-bar" [style.width.%]="progress.csharpPct()"></div>
-        <span class="nav-progress-label">{{ progress.csharpCount() }}/{{ progress.csharpTotal }} topics done</span>
-      } @else {
-        <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
-        <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
-      }
+    @if (currentSection() !== 'aspnet') {
+      <div class="nav-progress">
+        @if (currentSection() === 'csharp') {
+          <div class="nav-progress-bar" [style.width.%]="progress.csharpPct()"></div>
+          <span class="nav-progress-label">{{ progress.csharpCount() }}/{{ progress.csharpTotal }} topics done</span>
+        } @else {
+          <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
+          <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
+        }
+      </div>
+    }
+
+    <!-- ── ASP.NET Core Navigation ────────────────────────────────── -->
+    @if (currentSection() === 'aspnet') {
+
+    <a routerLink="/aspnet" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">🏠 ASP.NET Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Coming Soon</p>
+      <p class="nav-soon-note">Topics unlock as they're built — see the home page for the full roadmap.</p>
     </div>
+
+    } <!-- end aspnet nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {
@@ -97,6 +113,7 @@
       <a routerLink="/csharp/pattern-matching" routerLinkActive="active"><span class="nl-text">Pattern Matching</span>@if(progress.isDone('csharp-pattern-matching')){<span class="nl-done">✓</span>}@if(diff('csharp-pattern-matching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/extension-methods" routerLinkActive="active"><span class="nl-text">Extension Methods</span>@if(progress.isDone('csharp-extension-methods')){<span class="nl-done">✓</span>}@if(diff('csharp-extension-methods');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/tuples" routerLinkActive="active"><span class="nl-text">Tuples &amp; Anonymous Types</span>@if(progress.isDone('csharp-tuples')){<span class="nl-done">✓</span>}@if(diff('csharp-tuples');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/iterators" routerLinkActive="active"><span class="nl-text">Iterators &amp; yield</span>@if(progress.isDone('csharp-iterators')){<span class="nl-done">✓</span>}@if(diff('csharp-iterators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
@@ -106,6 +123,7 @@
       <a routerLink="/csharp/linq" routerLinkActive="active"><span class="nl-text">LINQ</span>@if(progress.isDone('csharp-linq')){<span class="nl-done">✓</span>}@if(diff('csharp-linq');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/strings-datetime" routerLinkActive="active"><span class="nl-text">Strings, DateTime &amp; Math</span>@if(progress.isDone('csharp-strings-datetime')){<span class="nl-done">✓</span>}@if(diff('csharp-strings-datetime');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/io-serialization" routerLinkActive="active"><span class="nl-text">I/O &amp; Serialization</span>@if(progress.isDone('csharp-io-serialization')){<span class="nl-done">✓</span>}@if(diff('csharp-io-serialization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/regex" routerLinkActive="active"><span class="nl-text">Regular Expressions</span>@if(progress.isDone('csharp-regex')){<span class="nl-done">✓</span>}@if(diff('csharp-regex');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
@@ -120,6 +138,16 @@
       <a routerLink="/csharp/tasks" routerLinkActive="active"><span class="nl-text">Tasks</span>@if(progress.isDone('csharp-tasks')){<span class="nl-done">✓</span>}@if(diff('csharp-tasks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/async" routerLinkActive="active"><span class="nl-text">async / await</span>@if(progress.isDone('csharp-async')){<span class="nl-done">✓</span>}@if(diff('csharp-async');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/exceptions" routerLinkActive="active"><span class="nl-text">Exceptions</span>@if(progress.isDone('csharp-exceptions')){<span class="nl-done">✓</span>}@if(diff('csharp-exceptions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/channels" routerLinkActive="active"><span class="nl-text">Channels</span>@if(progress.isDone('csharp-channels')){<span class="nl-done">✓</span>}@if(diff('csharp-channels');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Advanced &amp; Quality</p>
+      <a routerLink="/csharp/unit-testing" routerLinkActive="active"><span class="nl-text">Unit Testing (xUnit &amp; Moq)</span>@if(progress.isDone('csharp-unit-testing')){<span class="nl-done">✓</span>}@if(diff('csharp-unit-testing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/reflection" routerLinkActive="active"><span class="nl-text">Reflection &amp; Attributes</span>@if(progress.isDone('csharp-reflection')){<span class="nl-done">✓</span>}@if(diff('csharp-reflection');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/expression-trees" routerLinkActive="active"><span class="nl-text">Expression Trees</span>@if(progress.isDone('csharp-expression-trees')){<span class="nl-done">✓</span>}@if(diff('csharp-expression-trees');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/dynamic" routerLinkActive="active"><span class="nl-text">dynamic &amp; the DLR</span>@if(progress.isDone('csharp-dynamic')){<span class="nl-done">✓</span>}@if(diff('csharp-dynamic');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/source-generators" routerLinkActive="active"><span class="nl-text">Source Generators</span>@if(progress.isDone('csharp-source-generators')){<span class="nl-done">✓</span>}@if(diff('csharp-source-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
@@ -476,6 +504,8 @@
         Angular 22 &mdash; Standalone &bull; Signals &bull; Material &bull; Lazy Routing &bull; Guards &bull; Interceptors
       } @else if (currentSection() === 'csharp') {
         C# &amp; .NET &mdash; OOP &bull; Generics &bull; LINQ &bull; async/await &bull; Pattern Matching &bull; .NET 8–11
+      } @else if (currentSection() === 'aspnet') {
+        ASP.NET Core &mdash; Middleware &bull; Web APIs &bull; EF Core &bull; Auth &bull; Testing &bull; Deployment
       } @else {
         Dev Learning Hub &mdash; Angular &bull; TypeScript &bull; JavaScript &bull; C# &bull; Node.js &bull; CSS &bull; SQL
       }

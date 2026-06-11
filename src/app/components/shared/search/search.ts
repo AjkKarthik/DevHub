@@ -103,12 +103,12 @@ export class SearchComponent {
 
   close() { this.svc.closeSearch(); }
 
-  // Index keys are bare ('counter') or prefixed ('csharp-basics');
-  // actual URLs live under /angular/ and /csharp/ respectively.
+  // Index keys are bare ('counter') or prefixed ('csharp-basics', 'aspnet-routing');
+  // actual URLs live under /angular/, /csharp/ and /aspnet/ respectively.
   url(route: string) {
-    return route.startsWith('csharp-')
-      ? '/csharp/' + route.slice('csharp-'.length)
-      : '/angular/' + route;
+    if (route.startsWith('csharp-')) return '/csharp/' + route.slice('csharp-'.length);
+    if (route.startsWith('aspnet-')) return '/aspnet/' + route.slice('aspnet-'.length);
+    return '/angular/' + route;
   }
 
   navigate(route: string) { this.router.navigate([this.url(route)]); this.close(); }

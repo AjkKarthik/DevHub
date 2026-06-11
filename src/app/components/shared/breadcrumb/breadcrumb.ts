@@ -93,6 +93,14 @@ const CSHARP_LABELS: Record<string, string> = {
   'async':                'async / await',
   'delegates':            'Delegates & Events',
   'exceptions':           'Exceptions',
+  'reflection':           'Reflection & Attributes',
+  'iterators':            'Iterators & yield',
+  'regex':                'Regular Expressions',
+  'channels':             'Channels & Producer/Consumer',
+  'unit-testing':         'Unit Testing (xUnit & Moq)',
+  'expression-trees':     'Expression Trees',
+  'dynamic':              'dynamic & the DLR',
+  'source-generators':    'Source Generators',
   'whats-new-9-10':       "What's New in C# 9 & 10",
   'whats-new-11-12':      "What's New in C# 11 & 12",
   'whats-new-latest':     "What's New in C# 13+",
@@ -107,9 +115,46 @@ const CSHARP_LABELS: Record<string, string> = {
   'glossary':             'Glossary',
 };
 
+const ASPNET_LABELS: Record<string, string> = {
+  'hosting-startup':       'Hosting & Startup',
+  'middleware':            'Middleware Pipeline',
+  'routing':               'Routing',
+  'configuration':         'Configuration & Options',
+  'dependency-injection':  'Dependency Injection',
+  'logging':               'Logging & Diagnostics',
+  'controllers':           'Controllers & Actions',
+  'minimal-apis':          'Minimal APIs',
+  'model-binding':         'Model Binding & Validation',
+  'filters':               'Filters',
+  'error-handling':        'Error Handling',
+  'ef-core-basics':        'EF Core Basics',
+  'ef-relationships':      'EF Relationships & Migrations',
+  'caching':               'Caching',
+  'authentication':        'Authentication',
+  'authorization':         'Authorization',
+  'cors':                  'CORS & Security Headers',
+  'testing':               'Testing',
+  'background-services':   'Background Services',
+  'signalr':               'SignalR',
+  'health-checks':         'Health Checks & Observability',
+  'deployment':            'Deployment',
+  'static-files':          'Static Files & Uploads',
+  'openapi-swagger':       'OpenAPI & Swagger',
+  'api-versioning':        'API Versioning',
+  'http-clients':          'HttpClient & Resilience',
+  'grpc':                  'gRPC Services',
+  'rate-limiting':         'Rate Limiting',
+  'aspire':                '.NET Aspire',
+  'ef-performance':        'EF Core Performance & Concurrency',
+  'web-security':          'Web Security Essentials',
+  'secrets':               'Secrets & Data Protection',
+  'performance':           'Performance & Diagnostics',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
-  'angular': { label: 'Angular', path: '/angular' },
-  'csharp':  { label: 'C#',     path: '/csharp'  },
+  'angular': { label: 'Angular',      path: '/angular' },
+  'csharp':  { label: 'C#',          path: '/csharp'  },
+  'aspnet':  { label: 'ASP.NET Core', path: '/aspnet' },
 };
 
 @Component({
@@ -196,7 +241,9 @@ export class BreadcrumbComponent {
     const segs = this.segments();
     if (segs.length < 2) return '';
     const key = segs[segs.length - 1];
-    const labels = segs[0] === 'csharp' ? CSHARP_LABELS : ROUTE_LABELS;
+    const labels = segs[0] === 'csharp' ? CSHARP_LABELS
+                 : segs[0] === 'aspnet' ? ASPNET_LABELS
+                 : ROUTE_LABELS;
     return labels[key] ?? key;
   };
 }

@@ -83,6 +83,9 @@ const ALL_TOPICS: CsharpTopic[] = [
   { title: 'Tuples & Anonymous Types', route: '/csharp/tuples',             badge: 'Modern',
     description: 'ValueTuple with named fields, tuple deconstruction, discards, and anonymous types in LINQ.',
     keyPoints: ['Named fields improve readability', 'Field names are compile-time only (Item1/Item2 at runtime)', 'Use records for cross-method data transfer'] },
+  { title: 'Iterators & yield',       route: '/csharp/iterators',          badge: 'Modern',
+    description: 'yield return, IEnumerable/IEnumerator, compiler state machines, lazy evaluation — how LINQ works underneath.',
+    keyPoints: ['yield return suspends and resumes the method', 'Deferred execution: nothing runs until enumeration', 'Multiple enumeration re-runs the iterator'] },
 
   // ── Data ──
   { title: 'Arrays',                  route: '/csharp/arrays',              badge: 'Data',
@@ -100,6 +103,9 @@ const ALL_TOPICS: CsharpTopic[] = [
   { title: 'I/O & Serialization',     route: '/csharp/io-serialization',    badge: 'Data',
     description: 'File I/O with File/streams, async I/O, System.Text.Json serialization/deserialization, and JsonSerializerOptions.',
     keyPoints: ['Use async file I/O in ASP.NET apps', 'JsonSerializer is case-insensitive for deserialization', 'Streams must be disposed — use using'] },
+  { title: 'Regular Expressions',     route: '/csharp/regex',               badge: 'Data',
+    description: 'Regex matching, groups & named captures, options, ReDoS timeouts, and source-generated [GeneratedRegex] (.NET 7+).',
+    keyPoints: ['[GeneratedRegex] compiles the pattern at build time', 'Always set MatchTimeout on untrusted input', 'Named groups: (?<year>\\d{4})'] },
 
   // ── Async ──
   { title: 'async / await',           route: '/csharp/async',               badge: 'Async',
@@ -111,6 +117,9 @@ const ALL_TOPICS: CsharpTopic[] = [
   { title: 'Tasks & Parallel',        route: '/csharp/tasks',               badge: 'Async',
     description: 'Task.Run(), Task.WhenAll/WhenAny, Parallel.ForEach, PLINQ, TaskCompletionSource, and CancellationToken.',
     keyPoints: ['Task.Run only for CPU-bound work', 'Task.WhenAll for fan-out parallelism', 'Prefer await over ContinueWith'] },
+  { title: 'Channels',                route: '/csharp/channels',            badge: 'Async',
+    description: 'System.Threading.Channels — bounded/unbounded queues, producer-consumer pipelines, backpressure, and graceful completion.',
+    keyPoints: ['Bounded channels apply backpressure automatically', 'Complete() signals no more writes', 'ReadAllAsync() consumes via await foreach'] },
 
   // ── Safety ──
   { title: 'Null Safety',             route: '/csharp/null-safety',         badge: 'Safety',
@@ -119,6 +128,9 @@ const ALL_TOPICS: CsharpTopic[] = [
   { title: 'Exceptions',             route: '/csharp/exceptions',           badge: 'Safety',
     description: 'try/catch/finally, exception filters (when), custom exceptions, AggregateException, Result pattern.',
     keyPoints: ['Catch specific exceptions before generic ones', 'throw; (bare) preserves the stack trace', 'finally always runs — even after a return'] },
+  { title: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing',     badge: 'Safety',
+    description: 'xUnit [Fact]/[Theory], Arrange-Act-Assert, mocking with Moq, testing async code and exceptions.',
+    keyPoints: ['[Theory] + [InlineData] for parameterised tests', 'Moq: Setup/Returns to stub, Verify to assert calls', 'Testable code = DI + small pure methods'] },
 
   // ── Advanced ──
   { title: 'GC & IDisposable',        route: '/csharp/gc-disposable',       badge: 'Advanced',
@@ -127,6 +139,18 @@ const ALL_TOPICS: CsharpTopic[] = [
   { title: 'Threading',               route: '/csharp/threading',           badge: 'Advanced',
     description: 'Thread, ThreadPool, lock, Monitor, Interlocked, volatile, and thread-safe concurrent collections.',
     keyPoints: ['Prefer Task/async over raw Thread', 'lock can cause deadlocks if acquired in different orders', 'volatile ensures visibility but not atomicity'] },
+  { title: 'Reflection & Attributes', route: '/csharp/reflection',          badge: 'Advanced',
+    description: 'Type introspection, PropertyInfo, Activator, defining and reading custom attributes — the machinery behind serializers and DI.',
+    keyPoints: ['typeof(T) is compile-time; GetType() is runtime', 'Cache MemberInfo — reflection lookups are slow', '[AttributeUsage] controls where attributes apply'] },
+  { title: 'Expression Trees',        route: '/csharp/expression-trees',    badge: 'Advanced',
+    description: 'Expression<Func<T>> as data, how EF Core translates lambdas to SQL, building and compiling trees, ExpressionVisitor.',
+    keyPoints: ['Expression<Func<T>> stores code as a tree; Func<T> is compiled', 'IQueryable providers translate trees (e.g. to SQL)', '.Compile() turns a tree back into a delegate'] },
+  { title: 'dynamic & the DLR',       route: '/csharp/dynamic',             badge: 'Advanced',
+    description: 'Runtime binding with dynamic, ExpandoObject, DynamicObject, interop scenarios — and why strong types usually win.',
+    keyPoints: ['dynamic defers binding to runtime (RuntimeBinderException)', 'ExpandoObject = dynamic property bag', 'Prefer records/strong types unless interop forces dynamic'] },
+  { title: 'Source Generators',       route: '/csharp/source-generators',   badge: 'Advanced',
+    description: 'Compile-time codegen with Roslyn — how [GeneratedRegex], JSON source-gen and LoggerMessage work, and authoring basics.',
+    keyPoints: ['Zero runtime cost, AOT-friendly — the modern reflection alternative', 'IIncrementalGenerator is the current API', 'Generated code extends your partial classes/methods'] },
 
   // ── What's New ──
   { title: "What's New in C# 9 & 10",     route: '/csharp/whats-new-9-10',      badge: "What's New",

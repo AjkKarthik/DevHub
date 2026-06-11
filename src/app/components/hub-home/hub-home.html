@@ -15,7 +15,7 @@
       <div class="stat-sep"></div>
       <div class="stat"><span class="stat-n">5</span><span class="stat-l">Learning Paths</span></div>
       <div class="stat-sep"></div>
-      <div class="stat"><span class="stat-n">90+</span><span class="stat-l">Live Pages</span></div>
+      <div class="stat"><span class="stat-n">100+</span><span class="stat-l">Live Pages</span></div>
     </div>
     <div class="hero-cta-row">
       <button class="hero-cta-btn" type="button" (click)="scrollToSection('paths-section')">Explore Learning Paths →</button>
@@ -169,7 +169,7 @@
       </div>
       <div class="carousel-track-wrap">
         <div class="carousel-track" [class.no-scroll]="liveCards().length < 3">
-          @for (t of liveCards(); track t.name) {
+          @for (t of carouselCards(); track $index) {
             <a class="live-card" [routerLink]="t.route">
               <div class="live-card-top" [style.background]="t.gradient">
                 <span class="live-card-icon">{{ t.icon }}</span>
@@ -185,9 +185,9 @@
               </div>
             </a>
           }
-          <!-- duplicate set for seamless loop — only when enough cards to fill the viewport -->
+          <!-- identical duplicate half for the seamless -50% loop -->
           @if (liveCards().length >= 3) {
-            @for (t of liveCards(); track 'd-' + t.name) {
+            @for (t of carouselCards(); track $index) {
               <a class="live-card" [routerLink]="t.route" aria-hidden="true" tabindex="-1">
                 <div class="live-card-top" [style.background]="t.gradient">
                   <span class="live-card-icon">{{ t.icon }}</span>

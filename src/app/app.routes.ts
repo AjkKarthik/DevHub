@@ -107,6 +107,15 @@ export const routes: Routes = [
       // ── Concurrency ──
       { path: 'threading',         loadComponent: () => import('./components/backend/csharp/threading/threading').then(m => m.CsharpThreading) },
       { path: 'tasks',             loadComponent: () => import('./components/backend/csharp/tasks/tasks').then(m => m.CsharpTasks) },
+      // ── Advanced & Quality ──
+      { path: 'reflection',        loadComponent: () => import('./components/backend/csharp/reflection/reflection').then(m => m.CsharpReflection) },
+      { path: 'iterators',         loadComponent: () => import('./components/backend/csharp/iterators/iterators').then(m => m.CsharpIterators) },
+      { path: 'regex',             loadComponent: () => import('./components/backend/csharp/regex/regex').then(m => m.CsharpRegex) },
+      { path: 'channels',          loadComponent: () => import('./components/backend/csharp/channels/channels').then(m => m.CsharpChannels) },
+      { path: 'unit-testing',      loadComponent: () => import('./components/backend/csharp/unit-testing/unit-testing').then(m => m.CsharpUnitTesting) },
+      { path: 'expression-trees',  loadComponent: () => import('./components/backend/csharp/expression-trees/expression-trees').then(m => m.CsharpExpressionTrees) },
+      { path: 'dynamic',           loadComponent: () => import('./components/backend/csharp/dynamic/dynamic').then(m => m.CsharpDynamic) },
+      { path: 'source-generators', loadComponent: () => import('./components/backend/csharp/source-generators/source-generators').then(m => m.CsharpSourceGenerators) },
       // ── What's New ──
       { path: 'whats-new-9-10',    loadComponent: () => import('./components/backend/csharp/whats-new-9-10/whats-new-9-10').then(m => m.CsharpWhatsNew910) },
       { path: 'whats-new-11-12',   loadComponent: () => import('./components/backend/csharp/whats-new-11-12/whats-new-11-12').then(m => m.CsharpWhatsNew1112) },
@@ -120,6 +129,14 @@ export const routes: Routes = [
       { path: 'design-patterns',   loadComponent: () => import('./components/backend/csharp/design-patterns/design-patterns').then(m => m.CsharpDesignPatterns) },
       { path: 'decision-guides',   loadComponent: () => import('./components/backend/csharp/decision-guides/decision-guides').then(m => m.CsharpDecisionGuides) },
       { path: 'glossary',          loadComponent: () => import('./components/backend/csharp/glossary/glossary').then(m => m.CsharpGlossary) },
+    ],
+  },
+
+  // ── ASP.NET Core ──────────────────────────────────────────────────────────
+  {
+    path: 'aspnet',
+    children: [
+      { path: '', loadComponent: () => import('./components/backend/aspnet/home/home').then(m => m.AspnetHome) },
     ],
   },
 

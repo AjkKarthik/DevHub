@@ -515,10 +515,11 @@
 
 .carousel-track {
   display: flex;
-  gap: 1rem;
-  padding: .25rem 2rem .5rem;
+  // no gap/padding here — each card carries margin-right so the two halves are
+  // exactly equal width and translateX(-50%) loops seamlessly
+  padding: .25rem 0 .5rem;
   width: max-content;
-  animation: carousel-scroll 30s linear infinite;
+  animation: carousel-scroll 40s linear infinite;
 }
 
 @keyframes carousel-scroll {
@@ -530,6 +531,7 @@
   animation: none;
   flex-wrap: wrap;
   width: auto;
+  padding: .25rem 2rem .5rem;
 }
 
 .live-card {
@@ -537,9 +539,11 @@
   flex-direction: column;
   flex-shrink: 0;
   width: 320px;
+  margin-right: 1rem;
   border-radius: 14px;
   overflow: hidden;
   border: 2px solid #86efac;
+  background: #fff;
   text-decoration: none;
   transition: transform .2s, box-shadow .2s;
 
@@ -583,6 +587,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  flex: 1;   // stretch to card height so shorter taglines stay fully white
 }
 
 .live-card-tagline {
