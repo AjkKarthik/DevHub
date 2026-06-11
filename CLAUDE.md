@@ -107,6 +107,13 @@ Order is **Challenge → Quiz → QnA → PageComplete**. Never reorder.
   `[hidePlayground]`
 - `challenge-block` auto-picks the playground from `Challenge.language`: `'csharp'` →
   ".NET Fiddle" button; anything else → Angular playground. `playgroundUrl` overrides.
+- `app-video-embed` (shared/video-embed): lazy YouTube facade — thumbnail until click,
+  then youtube-nocookie iframe. `<app-video-embed videoId="…" title="…" />`. Only embed
+  official-channel videos with embedding enabled; prefer links in sidebar resources
+  for everything else.
+- Sidebar `Resource.badge` union: `'docs'|'video'|'blog'|'tool'|'code'` — use `'code'`
+  (GitHub-dark badge) for GitHub repo/source links. Prefer official org repos
+  (dotnet/*, angular/*) and reference apps (dotnet/eShop).
 
 ### TypeScript gotcha
 In TS template literals containing C# code, escape interpolation: `\${x}` — otherwise JS
