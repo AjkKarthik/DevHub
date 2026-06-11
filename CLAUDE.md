@@ -200,6 +200,15 @@ structure/UX, only content + accent differ.
 
 ## Working practices
 
+**Token/credit economy (user is budget-conscious):**
+- Content-first rule: scaffold a new hub ONLY when its first content batch ships in the
+  same or next session. Never scaffold multiple empty hubs ahead of content.
+- One content batch (~5-7 topic pages) per FRESH chat session — start new chats instead
+  of continuing long ones; read this file + TODO.md and go.
+- Write topic pages directly (no subagents for content — they have died mid-task and
+  wasted quota). Build once per batch, not per file.
+- Keep responses/output lean; skip exploratory reading when CLAUDE.md already answers it.
+
 - Build and report issues first; **commit/push only when the user says so**.
 - Commit style: conventional (`feat(csharp): …`), bullet body, co-authored-by Claude line.
 - When using subagents for content generation, ALWAYS include in the prompt: the exact
