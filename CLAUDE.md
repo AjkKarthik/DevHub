@@ -107,6 +107,15 @@ Order is **Challenge → Quiz → QnA → PageComplete**. Never reorder.
   `[hidePlayground]`
 - `challenge-block` auto-picks the playground from `Challenge.language`: `'csharp'` →
   ".NET Fiddle" button; anything else → Angular playground. `playgroundUrl` overrides.
+- `app-video-embed` (shared/video-embed): two-step collapsed video accordion —
+  click 1 on the "▶ Watch: <title>" toggle expands to the video THUMBNAIL (still no
+  YouTube scripts); click 2 on the thumbnail's play button loads the youtube-nocookie
+  iframe and plays. "Hide video" collapses + unloads. `<app-video-embed videoId="…"
+  title="…" />` placed after the Code Examples section. Only embed official-channel
+  videos with embedding enabled; prefer links in sidebar resources otherwise.
+- Sidebar `Resource.badge` union: `'docs'|'video'|'blog'|'tool'|'code'` — use `'code'`
+  (GitHub-dark badge) for GitHub repo/source links. Prefer official org repos
+  (dotnet/*, angular/*) and reference apps (dotnet/eShop).
 
 ### TypeScript gotcha
 In TS template literals containing C# code, escape interpolation: `\${x}` — otherwise JS
@@ -190,6 +199,15 @@ structure/UX, only content + accent differ.
 - Hero stat: "100+ Live Pages".
 
 ## Working practices
+
+**Token/credit economy (user is budget-conscious):**
+- Content-first rule: scaffold a new hub ONLY when its first content batch ships in the
+  same or next session. Never scaffold multiple empty hubs ahead of content.
+- One content batch (~5-7 topic pages) per FRESH chat session — start new chats instead
+  of continuing long ones; read this file + TODO.md and go.
+- Write topic pages directly (no subagents for content — they have died mid-task and
+  wasted quota). Build once per batch, not per file.
+- Keep responses/output lean; skip exploratory reading when CLAUDE.md already answers it.
 
 - Build and report issues first; **commit/push only when the user says so**.
 - Commit style: conventional (`feat(csharp): …`), bullet body, co-authored-by Claude line.

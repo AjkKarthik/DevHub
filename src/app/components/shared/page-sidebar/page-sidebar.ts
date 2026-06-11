@@ -4,7 +4,7 @@ import { filter, map, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 export interface DocLink    { label: string; url: string; }
-export interface Resource   { label: string; url: string; badge: 'docs' | 'video' | 'blog' | 'tool'; }
+export interface Resource   { label: string; url: string; badge: 'docs' | 'video' | 'blog' | 'tool' | 'code'; }
 export interface SidebarData {
   apis:      string[];
   related:   { label: string; route: string }[];
@@ -1245,7 +1245,9 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Query vs Method Syntax',url: 'https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/write-linq-queries' },
     ],
     resources: [
-      { label: '101 LINQ Samples', url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool' },
+      { label: '101 LINQ Samples',        url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool'  },
+      { label: 'LINQ source (dotnet/runtime)', url: 'https://github.com/dotnet/runtime/tree/main/src/libraries/System.Linq/src/System/Linq', badge: 'code' },
+      { label: 'LINQ & IEnumerable — .NET channel', url: 'https://www.youtube.com/watch?v=4ro5UCqU0P4', badge: 'video' },
     ],
     gotchas: [
       'First() throws if the sequence is empty — use FirstOrDefault() and check for null unless you are certain an element exists.',
@@ -1582,6 +1584,8 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [
       { label: '.NET API Browser',       url: 'https://learn.microsoft.com/en-us/dotnet/api/',                      badge: 'docs'  },
       { label: 'C# Interactive (Try)',   url: 'https://dotnetfiddle.net',                                            badge: 'tool'  },
+      { label: 'dotnet/runtime',         url: 'https://github.com/dotnet/runtime',                                   badge: 'code'  },
+      { label: 'dotnet/csharplang (specs)', url: 'https://github.com/dotnet/csharplang',                             badge: 'code'  },
     ],
     gotchas: [
       'LINQ is lazy by default — always call ToList() or ToArray() when you need the results more than once.',
@@ -1716,6 +1720,8 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
     resources: [
       { label: 'Refactoring.Guru patterns', url: 'https://refactoring.guru/design-patterns/csharp', badge: 'blog' },
+      { label: 'dotnet/aspnetcore',         url: 'https://github.com/dotnet/aspnetcore',            badge: 'code' },
+      { label: 'eShop reference app',       url: 'https://github.com/dotnet/eShop',                 badge: 'code' },
     ],
     gotchas: [
       'Patterns are vocabulary, not goals — forcing a pattern onto simple code is the most common misuse.',
@@ -1817,7 +1823,9 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Signals Overview',  url: 'https://angular.dev/guide/signals' },
     ],
     resources: [
-      { label: 'Angular Blog', url: 'https://blog.angular.dev', badge: 'blog' },
+      { label: 'Angular Blog',      url: 'https://blog.angular.dev',                badge: 'blog' },
+      { label: 'angular/angular',   url: 'https://github.com/angular/angular',      badge: 'code' },
+      { label: 'angular/components', url: 'https://github.com/angular/components',  badge: 'code' },
     ],
     gotchas: [
       'Patterns are vocabulary, not goals — forcing a pattern onto simple code is the most common misuse.',
@@ -1931,6 +1939,6 @@ export class PageSidebarComponent {
   );
 
   badgeLabel: Record<string, string> = {
-    docs: 'docs', video: 'video', blog: 'blog', tool: 'tool',
+    docs: 'docs', video: 'video', blog: 'blog', tool: 'tool', code: 'code',
   };
 }

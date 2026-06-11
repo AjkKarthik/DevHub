@@ -52,6 +52,16 @@ _(empty — promote from Backlog)_
 
 ## Backlog — improvements
 
+- [ ] **Resource enrichment (GitHub + video links)** — per-topic curated links in
+  page-sidebar SIDEBAR_MAP `resources`: official GitHub repos (dotnet/runtime,
+  dotnet/aspnetcore, angular/angular, source files for the topic), and official-channel
+  YouTube *links* (badge 'video'). Batch ~10 topics per session. Prefer official
+  channels (dotnet, Microsoft Developer, Angular) — stable, authoritative, no rot.
+- [ ] **Video embeds on high-traffic pages** — use the `app-video-embed` lazy facade
+  component (shared/video-embed). Embed only on: hub home pages, learning paths, top
+  topics. Official channels only; youtube-nocookie domain (built into component).
+  Verify embedding is enabled per video before adding.
+
 - [ ] Flashcards mode (both hubs) — spaced-repetition style review of glossary/quiz content
 - [ ] "C# vs TypeScript/Java" comparison page (once a second language hub exists)
 - [ ] Per-page reading-progress indicator
