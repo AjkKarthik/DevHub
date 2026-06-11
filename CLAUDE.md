@@ -209,6 +209,18 @@ structure/UX, only content + accent differ.
   wasted quota). Build once per batch, not per file.
 - Keep responses/output lean; skip exploratory reading when CLAUDE.md already answers it.
 
+**Model choice (pick per session via /model to minimise cost):**
+- Routine content batches & wiring (topic pages, cards, search/nav entries — recipe is
+  fully defined in this file): **Sonnet** (claude-sonnet-4-6) — cheapest model that
+  reliably follows the conventions. Default choice.
+- Trivial edits (count updates, label fixes, single-file tweaks): **Haiku** is enough.
+- Architecture decisions, debugging weird build/rendering issues, designing new page
+  types or hubs, reviewing a large batch before commit: **Opus/Fable** — use briefly,
+  then switch back.
+- Review flow on a budget: the production build is the first reviewer (must pass);
+  then a quick self-review of the diff in the SAME session (no extra context cost).
+  Reserve a top-model review pass for big risky changes only, not routine batches.
+
 - Build and report issues first; **commit/push only when the user says so**.
 - Commit style: conventional (`feat(csharp): …`), bullet body, co-authored-by Claude line.
 - When using subagents for content generation, ALWAYS include in the prompt: the exact
