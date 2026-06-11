@@ -137,6 +137,13 @@ export const routes: Routes = [
     path: 'aspnet',
     children: [
       { path: '', loadComponent: () => import('./components/backend/aspnet/home/home').then(m => m.AspnetHome) },
+      // ── Fundamentals ──
+      { path: 'hosting-startup',      loadComponent: () => import('./components/backend/aspnet/hosting-startup/hosting-startup').then(m => m.AspnetHostingStartup) },
+      { path: 'middleware',           loadComponent: () => import('./components/backend/aspnet/middleware/middleware').then(m => m.AspnetMiddleware) },
+      { path: 'routing',              loadComponent: () => import('./components/backend/aspnet/routing/routing').then(m => m.AspnetRouting) },
+      { path: 'configuration',        loadComponent: () => import('./components/backend/aspnet/configuration/configuration').then(m => m.AspnetConfiguration) },
+      { path: 'dependency-injection', loadComponent: () => import('./components/backend/aspnet/dependency-injection/dependency-injection').then(m => m.AspnetDependencyInjection) },
+      { path: 'logging',              loadComponent: () => import('./components/backend/aspnet/logging/logging').then(m => m.AspnetLogging) },
     ],
   },
 

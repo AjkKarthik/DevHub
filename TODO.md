@@ -14,19 +14,18 @@ Add newly discovered work here instead of leaving it only in chat.
     cards all `available: false`, roadmap) + shell wiring (route block, currentSection,
     nav section + teal colors, footer, breadcrumb ASPNET_LABELS, sidebar section-aspnet,
     search url() aspnet- prefix, hub-home card flipped available). Build passes.
-  - [ ] Phase 2 (topics 33, build in batches of ~5): Fundamentals: hosting-startup,
-    middleware, routing, configuration, dependency-injection, logging, static-files ·
-    Web API: controllers, minimal-apis, model-binding, filters, error-handling,
-    openapi-swagger, api-versioning, http-clients, grpc · Data: ef-core-basics,
-    ef-relationships, ef-performance, caching · Security: authentication, authorization,
-    cors, rate-limiting, web-security, secrets · Quality: testing, background-services,
-    signalr, health-checks, performance, deployment, aspire.
-    Per topic: 3 files + route + nav link + search entry (`aspnet-<slug>`) + flip
-    `available: true` on home card + breadcrumb label exists already.
-    First trackable topic also needs: progress.service aspnetTotal/counts + nav progress
-    branch in app.html + page-meta `tech="aspnet"` support check.
+  - [x] Phase 2 Batch 1 DONE 2026-06-11: 6 Fundamentals topics (hosting-startup, middleware,
+    routing, configuration, dependency-injection, logging) — 18 files, full wiring:
+    routes, nav+progress bar, search entries, home cards flipped, progress.service
+    aspnetTotal/aspnetCount/aspnetPct, page-meta tech="aspnet" support. Build passes.
+  - [ ] Phase 2 Batch 2: Fundamentals remainder + Web API start:
+    static-files, controllers, minimal-apis, model-binding, filters, error-handling
+  - [ ] Phase 2 Batch 3: Web API finish: openapi-swagger, api-versioning, http-clients, grpc
+  - [ ] Phase 2 Batch 4: Data: ef-core-basics, ef-relationships, ef-performance, caching
+  - [ ] Phase 2 Batch 5: Security: authentication, authorization, cors, rate-limiting, web-security, secrets
+  - [ ] Phase 2 Batch 6: Quality: testing, background-services, signalr, health-checks, performance, deployment, aspire
   - [ ] Phase 3: parity practice/reference pages (cheatsheet, errors, quiz, interview prep, …)
-  - STATUS: Phase 1 complete; next session starts Phase 2 batch 1 (Fundamentals, 6 topics).
+  - STATUS: Phase 2 Batch 1 complete (6/33 topics live); next session starts Batch 2.
 
 ## Next Up
 
