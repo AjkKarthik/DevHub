@@ -1,0 +1,6 @@
+.cs-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.page-header-icon.cs-icon { display: inline-flex; align-items: center; justify-content: center; background: #6b21a8; color: #fff; font-weight: 900; font-size: 1.4rem; padding: 0.4rem 0.8rem; border-radius: 8px; margin-bottom: 1rem; letter-spacing: -0.02em; }
+.page-title { font-size: 2rem; font-weight: 900; margin: 0 0 0.4rem; letter-spacing: -0.03em; color: var(--text, #111); }
+.page-subtitle { font-size: 1rem; color: var(--text3, #666); margin: 0 0 2rem; line-height: 1.65; max-width: 640px; }
+.cs-section { margin: 2.5rem 0; h2 { font-size: 1.25rem; font-weight: 800; margin: 0 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border, #e8e8e8); letter-spacing: -0.02em; color: var(--text, #111); } }
+:host-context(body.dark) { .page-title { color: #f1f5f9; } .page-subtitle { color: #94a3b8; } .cs-section h2 { color: #e2e8f0; border-bottom-color: #2d2d3e; } .page-header-icon.cs-icon { background: #7c3aed; } }

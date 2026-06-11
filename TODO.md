@@ -6,18 +6,42 @@ Add newly discovered work here instead of leaving it only in chat.
 
 ## In Progress
 
-_(nothing — last batch completed 2026-06-11)_
+- [ ] **ASP.NET Core hub (`/aspnet`)** — multi-session effort. Plan:
+  - Accent: teal `#0e7490` (dark `#155e75`, tint `#ecfeff`, dark-mode `#67e8f9`) —
+    distinct from C# purple. Add to CLAUDE.md theming table when scaffolded.
+  - Search route prefix: `aspnet-`; progress keys `aspnet-<slug>`.
+  - [x] Phase 1 (scaffold) DONE 2026-06-11: home page (`backend/aspnet/home/`, 22 topic
+    cards all `available: false`, roadmap) + shell wiring (route block, currentSection,
+    nav section + teal colors, footer, breadcrumb ASPNET_LABELS, sidebar section-aspnet,
+    search url() aspnet- prefix, hub-home card flipped available). Build passes.
+  - [ ] Phase 2 (topics 33, build in batches of ~5): Fundamentals: hosting-startup,
+    middleware, routing, configuration, dependency-injection, logging, static-files ·
+    Web API: controllers, minimal-apis, model-binding, filters, error-handling,
+    openapi-swagger, api-versioning, http-clients, grpc · Data: ef-core-basics,
+    ef-relationships, ef-performance, caching · Security: authentication, authorization,
+    cors, rate-limiting, web-security, secrets · Quality: testing, background-services,
+    signalr, health-checks, performance, deployment, aspire.
+    Per topic: 3 files + route + nav link + search entry (`aspnet-<slug>`) + flip
+    `available: true` on home card + breadcrumb label exists already.
+    First trackable topic also needs: progress.service aspnetTotal/counts + nav progress
+    branch in app.html + page-meta `tech="aspnet"` support check.
+  - [ ] Phase 3: parity practice/reference pages (cheatsheet, errors, quiz, interview prep, …)
+  - STATUS: Phase 1 complete; next session starts Phase 2 batch 1 (Fundamentals, 6 topics).
 
 ## Next Up
 
-- [ ] ASP.NET Core hub (`/aspnet`) — card exists on hub home as "Soon"; natural next
-  step after C#. MVC, Web API, Minimal APIs, middleware, DI, EF Core, auth.
-- [ ] Sidebar data (SIDEBAR_MAP entries) for the 12 new practice/reference pages —
-  they currently fall back to DEFAULT.
-- [ ] C# home roadmap section: add a "⑦ Practice & Reference" group linking the new pages.
+_(empty — promote from Backlog)_
 
 ## Backlog — new technology hubs (hub-home cards are "Soon")
 
+- [ ] **Blazor hub (`/blazor`)** — build AFTER ASP.NET Core Phase 2 (its pages link back
+  to ASP.NET hosting/DI/auth as prerequisites). Hub-home card added 2026-06-11 (frontend
+  group, purple #5c2d91). ~20 planned topics: components & parameters, render modes
+  (SSR/Server/WASM/Auto), data binding, event handling, component lifecycle, forms &
+  validation, routing & navigation, layouts, dependency injection, state management,
+  cascading values, templated components, JS interop, authentication & authorization,
+  streaming rendering & enhanced navigation, error boundaries, performance (virtualize,
+  prerendering), bUnit testing, deployment (WASM hosting), what's new (.NET 9-11 Blazor).
 - [ ] TypeScript hub (`/typescript`) — types, generics, utility types, decorators, tsconfig
 - [ ] JavaScript hub (`/javascript`) — ES2025, closures, event loop, modules, DOM/Fetch
 - [ ] HTML hub (`/html`) — semantics, forms, accessibility, SEO
@@ -42,6 +66,15 @@ _(nothing — last batch completed 2026-06-11)_
 
 ## Done (recent)
 
+- [x] 2026-06-11 — 8 advanced C# topics (reflection, iterators, regex, channels,
+  unit-testing, expression-trees, dynamic, source-generators) + full wiring; C# now
+  41 trackable topics / 50 cards; hub hero "100+ Live Pages"
+- [x] 2026-06-11 — challenge-block playground now language-aware (C# → .NET Fiddle)
+- [x] 2026-06-11 — hub-home Live Now carousel: white card fix + seamless loop
+- [x] 2026-06-11 — ASP.NET Core hub Phase 1 scaffold (see In Progress for phases)
+
+- [x] 2026-06-11 — Sidebar SIDEBAR_MAP entries for all 12 new practice/reference pages
+- [x] 2026-06-11 — C# home roadmap "⑦ Practice & Reference" group
 - [x] 2026-06-11 — 12 practice/reference pages both hubs (quiz, interview prep, patterns,
   decision guides, glossary, C# mini-projects/learning-paths) + dotnet CLI tab + full wiring
 - [x] 2026-06-10 — C# cheatsheet & errors pages; search route fix; section-aware

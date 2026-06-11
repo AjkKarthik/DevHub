@@ -53,12 +53,12 @@ Each page = 3 files: `<name>.ts`, `<name>.html`, `<name>.scss` in its own folder
 
 ## Theming — section identity (CRITICAL)
 
-| | Angular hub | C# hub |
-|---|---|---|
-| Accent | `#dd0031` | `#7c3aed` (dark variant `#6b21a8`) |
-| Light tint | `#fff1f2` | `#f5f3ff` |
-| Dark-mode accent | `#ff5a76` | `#a78bfa` |
-| rgba accent | `rgba(221,0,49,…)` | `rgba(124,58,237,…)` |
+| | Angular hub | C# hub | ASP.NET Core hub |
+|---|---|---|---|
+| Accent | `#dd0031` | `#7c3aed` (dark variant `#6b21a8`) | `#0e7490` (dark variant `#155e75`) |
+| Light tint | `#fff1f2` | `#f5f3ff` | `#ecfeff` |
+| Dark-mode accent | `#ff5a76` | `#a78bfa` | `#67e8f9` |
+| rgba accent | `rgba(221,0,49,…)` | `rgba(124,58,237,…)` | `rgba(14,116,144,…)` |
 
 Define `$accent` / `$tint` at the top of page SCSS. New page types are built once and
 ported to the other hub by swapping these colors — structure/UX must stay identical.
@@ -105,6 +105,8 @@ Order is **Challenge → Quiz → QnA → PageComplete**. Never reorder.
   'token'|'operator'|'hook'|'method'|'constraint'|'syntax'|'keyword'|'accessor'|'type'`
 - `page-meta` with `tech="csharp"` auto-shows .NET Fiddle + SharpLab links — do not pass
   `[hidePlayground]`
+- `challenge-block` auto-picks the playground from `Challenge.language`: `'csharp'` →
+  ".NET Fiddle" button; anything else → Angular playground. `playgroundUrl` overrides.
 
 ### TypeScript gotcha
 In TS template literals containing C# code, escape interpolation: `\${x}` — otherwise JS
@@ -172,11 +174,20 @@ structure/UX, only content + accent differ.
 ## Current state (update when it changes!)
 
 - **Angular hub**: 45 trackable topics + 10 practice/reference pages (~50 cards).
-- **C# hub**: 33 trackable topics + 9 practice/reference pages (42 cards). Categories:
+- **C# hub**: 41 trackable topics + 9 practice/reference pages (50 cards). Categories:
   Foundations, OOP, Modern, Data, Async, Safety, Advanced, What's New, Reference.
-- **Hub home**: only Angular and C# are `available: true`. Everything else "Soon".
-- Progress totals: Angular 45, C# 33 (`progress.service.ts`).
-- Hero stat: "90+ Live Pages".
+  Includes advanced batch: reflection, iterators, regex, channels, unit-testing,
+  expression-trees, dynamic, source-generators (nav group "Advanced & Quality").
+- **ASP.NET Core hub**: scaffolded (home page + full shell wiring, teal theme). 33 topics
+  planned, ALL `available: false` — flip per topic in `backend/aspnet/home/home.ts` as
+  pages are built, and add the route/nav/search/breadcrumb wiring per the checklist.
+  Search prefix `aspnet-`. Progress not tracked yet (nav progress bar hidden for aspnet) —
+  add `aspnetTotal`/counts to progress.service when first trackable topic ships.
+  Topic page wrapper: reuse the C# topic anatomy but accent teal; page-meta `tech` value
+  TBD (check page-meta supports it or extend).
+- **Hub home**: Angular, C# and ASP.NET Core are `available: true`. Everything else "Soon".
+- Progress totals: Angular 45, C# 41 (`progress.service.ts`).
+- Hero stat: "100+ Live Pages".
 
 ## Working practices
 

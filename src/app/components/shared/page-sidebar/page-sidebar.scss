@@ -161,6 +161,33 @@
   &:hover { background: #4c1d95; color: #ddd6fe; }
 }
 
+// ASP.NET override —
+:host(.section-aspnet) {
+  .docs-link {
+    color: #0e7490;
+    background: #ecfeff;
+    &:hover { background: #cffafe; color: #155e75; }
+  }
+
+  .related-link {
+    &:hover {
+      background: #ecfeff;
+      color: #0e7490;
+      .link-arrow { color: #0e7490; }
+    }
+  }
+
+  .resource-link {
+    &:hover { background: #ecfeff; color: #0e7490; }
+  }
+}
+
+:host-context(body.dark):host(.section-aspnet) .docs-link {
+  color: #67e8f9;
+  background: #083344;
+  &:hover { background: #155e75; color: #a5f3fc; }
+}
+
 // ── Resource badges ────────────────────────────────────────────────────────
 .badge {
   font-size: .65rem; font-weight: 700; text-transform: uppercase;

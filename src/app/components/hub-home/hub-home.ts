@@ -83,7 +83,7 @@ export class HubHome {
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
     { name: 'Angular',            route: '/angular',                label: '50 pages · just updated' },
-    { name: 'C# · 42 topics',     route: '/csharp',                 label: 'New · full language coverage' },
+    { name: 'C# · 50 topics',     route: '/csharp',                 label: 'New · full language coverage' },
     { name: 'Quiz Practice',      route: '/csharp/quiz-practice',   label: 'New · C# & Angular quizzes' },
     { name: 'Interview Prep',     route: '/csharp/interview-prep',  label: 'New · 100+ Q&A both hubs' },
     { name: 'Design Patterns',    route: '/csharp/design-patterns', label: 'New · C# & Angular patterns' },
@@ -227,6 +227,20 @@ export class HubHome {
       ],
     },
     {
+      group: 'frontend', name: 'Blazor', time: '~14 hrs',
+      tagline: 'Full-stack web UI in C# — components, render modes, no JavaScript required.',
+      icon: '🔥', gradient: 'linear-gradient(135deg, #5c2d91 0%, #3a1c5c 100%)',
+      textDark: false, route: '/blazor', available: false,
+      sub: 'Server · WebAssembly · SSR',
+      roles: ['frontend', 'backend'],
+      highlights: [
+        'Components, parameters, data binding',
+        'Render modes: SSR, Server, WASM, Auto',
+        'Forms & validation, routing, layouts',
+        'JS interop, auth, state, bUnit testing',
+      ],
+    },
+    {
       group: 'frontend', name: 'Web Performance', time: '~3 hrs',
       tagline: 'Ship fast pages — Core Web Vitals, bundle size, lazy loading & Lighthouse.',
       icon: '⚡', gradient: 'linear-gradient(135deg, #854d0e 0%, #431a03 100%)',
@@ -270,29 +284,29 @@ export class HubHome {
     },
     {
       group: 'backend', name: 'C#', time: '~20 hrs',
-      tagline: 'Microsoft\'s powerful OOP language — 42 topics from basics to .NET 11.',
+      tagline: 'Microsoft\'s powerful OOP language — 50 topics from basics to .NET 11.',
       icon: 'C#', gradient: 'linear-gradient(135deg, #512bd4 0%, #311a8a 100%)',
-      textDark: false, route: '/csharp', available: true, topics: 42,
+      textDark: false, route: '/csharp', available: true, topics: 50,
       roles: ['backend', 'architect'],
       highlights: [
-        '33 language topics + 9 practice & reference pages',
-        'Design patterns, decision guides & glossary',
+        '41 language topics + 9 practice & reference pages',
+        'Reflection, source generators, channels, unit testing',
         'Quiz practice + 55-question interview prep',
         'C# 9–13 & .NET 8–11 coverage',
       ],
     },
     {
-      group: 'backend', name: 'ASP.NET Core', time: '~8 hrs',
-      tagline: 'Build production-grade REST APIs and MVC apps with C# and .NET.',
-      icon: '⚙️', gradient: 'linear-gradient(135deg, #68217a 0%, #3e1050 100%)',
-      textDark: false, route: '/aspnet', available: false,
-      sub: 'MVC · Web API · Minimal API',
+      group: 'backend', name: 'ASP.NET Core', time: '~17 hrs',
+      tagline: 'Build production-grade REST APIs with C# and .NET — 33 topics rolling out.',
+      icon: '⚙️', gradient: 'linear-gradient(135deg, #0e7490 0%, #155e75 100%)',
+      textDark: false, route: '/aspnet', available: true, topics: 33,
+      sub: 'Web API · Minimal API · EF Core',
       roles: ['backend', 'architect'],
       highlights: [
-        'REST API controllers, routing, model binding',
-        'Minimal APIs — lightweight endpoint style',
-        'Middleware, filters, action results',
-        'Swagger/OpenAPI, versioning, auth (JWT)',
+        'Middleware, routing, DI lifetimes, configuration',
+        'Minimal APIs, OpenAPI/Swagger, versioning, gRPC',
+        'EF Core, caching, auth, rate limiting, resilience',
+        'Testing, SignalR, health checks, .NET Aspire',
       ],
     },
     {
@@ -646,6 +660,16 @@ export class HubHome {
   });
 
   readonly liveCards   = computed(() => this.allTechsFiltered().filter(t => t.available));
+
+  // One half of the seamless loop — repeat the live set until it's wide enough
+  // (≥6 cards ≈ 2000px) so the track half always exceeds the viewport.
+  readonly carouselCards = computed(() => {
+    const base = this.liveCards();
+    if (base.length === 0) return base;
+    const out = [...base];
+    while (out.length < 6) out.push(...base);
+    return out;
+  });
   readonly hasResults  = computed(() => this.allTechsFiltered().length > 0);
   readonly totalCount  = computed(() => this.allTechs.length);
   readonly matchCount  = computed(() => this.allTechsFiltered().length);

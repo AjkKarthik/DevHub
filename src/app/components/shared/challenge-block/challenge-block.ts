@@ -45,11 +45,19 @@ export interface Challenge {
           <button type="button" class="reveal-btn" (click)="revealed.update(v => !v)">
             {{ revealed() ? '🙈 Hide Solution' : '👁 Reveal Solution' }}
           </button>
-          <a class="playground-btn"
-             [href]="item().playgroundUrl || 'https://angular.dev/playground'"
-             target="_blank" rel="noopener">
-            ▶ Try in Playground
-          </a>
+          @if (item().language === 'csharp') {
+            <a class="playground-btn playground-btn--csharp"
+               [href]="item().playgroundUrl || 'https://dotnetfiddle.net/'"
+               target="_blank" rel="noopener">
+              ▶ Try in .NET Fiddle
+            </a>
+          } @else {
+            <a class="playground-btn"
+               [href]="item().playgroundUrl || 'https://angular.dev/playground'"
+               target="_blank" rel="noopener">
+              ▶ Try in Playground
+            </a>
+          }
         </div>
 
         @if (revealed()) {
@@ -98,6 +106,10 @@ export interface Challenge {
       border-radius: 6px; font-size: .85rem; font-weight: 600;
       text-decoration: none; display: inline-flex; align-items: center;
       &:hover { background: #0284c7; }
+    }
+    .playground-btn--csharp {
+      background: #7c3aed;
+      &:hover { background: #6b21a8; }
     }
 
     .solution-box {

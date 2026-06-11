@@ -1615,6 +1615,255 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── C# Practice & Reference pages ───────────────────────────────────────────
+  'csharp/mini-projects': {
+    apis: ['List<T>', 'JsonSerializer', 'HttpClient', 'Task.WhenAll', 'SemaphoreSlim'],
+    related: [
+      { label: 'Collections',       route: '/csharp/collections'      },
+      { label: 'I/O & Serialization', route: '/csharp/io-serialization' },
+      { label: 'async / await',     route: '/csharp/async'            },
+      { label: 'Tasks & Parallel',  route: '/csharp/tasks'            },
+    ],
+    tip: 'Build the projects in order — each one layers new concepts on top of the previous one.',
+    docs: [
+      { label: '.NET Console Apps',     url: 'https://learn.microsoft.com/en-us/dotnet/core/tutorials/with-visual-studio-code' },
+      { label: 'System.Text.Json',      url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/overview' },
+      { label: 'HttpClient Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines' },
+    ],
+    resources: [
+      { label: '.NET Fiddle',           url: 'https://dotnetfiddle.net', badge: 'tool' },
+      { label: 'dotnet CLI docs',       url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Create one HttpClient and reuse it — instantiating per request exhausts sockets.',
+      'Always pass CancellationToken through async call chains so the whole pipeline can be cancelled.',
+    ],
+  },
+
+  'csharp/learning-paths': {
+    apis: ['Foundations', 'OOP', 'LINQ', 'async/await', 'Threading'],
+    related: [
+      { label: 'Variables & Types', route: '/csharp/basics'        },
+      { label: 'Classes & OOP',     route: '/csharp/oop'           },
+      { label: 'Quiz Practice',     route: '/csharp/quiz-practice' },
+      { label: 'Interview Prep',    route: '/csharp/interview-prep'},
+    ],
+    tip: 'Stick to one path at a time — finishing a track beats sampling all of them.',
+    docs: [
+      { label: 'C# Documentation',  url: 'https://learn.microsoft.com/en-us/dotnet/csharp/' },
+      { label: 'C# for Beginners',  url: 'https://dotnet.microsoft.com/en-us/learn/csharp'  },
+    ],
+    resources: [
+      { label: 'Microsoft Learn paths', url: 'https://learn.microsoft.com/en-us/training/browse/?languages=csharp', badge: 'docs' },
+    ],
+    gotchas: [
+      'Skipping fundamentals to reach async/LINQ faster usually costs more time than it saves.',
+    ],
+  },
+
+  'csharp/interview-prep': {
+    apis: ['boxing', 'variance', 'ConfigureAwait', 'GC generations', 'Span<T>'],
+    related: [
+      { label: 'Quiz Practice',     route: '/csharp/quiz-practice'   },
+      { label: 'System.Object',     route: '/csharp/system-object'   },
+      { label: 'async / await',     route: '/csharp/async'           },
+      { label: 'GC & IDisposable',  route: '/csharp/gc-disposable'   },
+    ],
+    tip: 'Answer out loud before expanding — interviews test recall under pressure, not recognition.',
+    docs: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/' },
+      { label: '.NET Memory & GC',      url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/' },
+    ],
+    resources: [
+      { label: 'SharpLab (inspect IL)', url: 'https://sharplab.io', badge: 'tool' },
+    ],
+    gotchas: [
+      'Senior questions probe trade-offs ("when would you NOT use X") — memorised definitions are not enough.',
+    ],
+  },
+
+  'csharp/quiz-practice': {
+    apis: ['Types', 'OOP', 'Generics', 'LINQ', 'Async', 'Memory'],
+    related: [
+      { label: 'Interview Prep',  route: '/csharp/interview-prep' },
+      { label: 'C# Cheat Sheet',  route: '/csharp/cheatsheet'     },
+      { label: 'Common C# Errors', route: '/csharp/errors'        },
+    ],
+    tip: 'Re-run the topics you score lowest on — the per-topic breakdown at the end shows exactly where to focus.',
+    docs: [
+      { label: 'C# Documentation', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/' },
+    ],
+    resources: [
+      { label: '.NET Fiddle',      url: 'https://dotnetfiddle.net', badge: 'tool' },
+    ],
+    gotchas: [
+      'Read the explanation even when you answer correctly — guessing right teaches nothing.',
+    ],
+  },
+
+  'csharp/design-patterns': {
+    apis: ['Singleton', 'Factory', 'Builder', 'Repository', 'Strategy', 'Mediator'],
+    related: [
+      { label: 'Abstract & Interfaces', route: '/csharp/abstract-interfaces' },
+      { label: 'Delegates & Events',    route: '/csharp/delegates'           },
+      { label: 'Generics',              route: '/csharp/generics'            },
+      { label: 'Decision Guides',       route: '/csharp/decision-guides'     },
+    ],
+    tip: 'In modern .NET the DI container replaces most hand-rolled Singletons and Factories — check "when NOT to use" first.',
+    docs: [
+      { label: 'DI in .NET',            url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection' },
+      { label: 'Architecture guides',   url: 'https://learn.microsoft.com/en-us/dotnet/architecture/' },
+    ],
+    resources: [
+      { label: 'Refactoring.Guru patterns', url: 'https://refactoring.guru/design-patterns/csharp', badge: 'blog' },
+    ],
+    gotchas: [
+      'Patterns are vocabulary, not goals — forcing a pattern onto simple code is the most common misuse.',
+    ],
+  },
+
+  'csharp/decision-guides': {
+    apis: ['List vs Span', 'class vs record', 'Task vs ValueTask', 'lock vs Interlocked'],
+    related: [
+      { label: 'Structures',       route: '/csharp/structures'      },
+      { label: 'Records & Structs', route: '/csharp/records'        },
+      { label: 'Collections',      route: '/csharp/collections'     },
+      { label: 'Design Patterns',  route: '/csharp/design-patterns' },
+    ],
+    tip: 'When two options tie on the table, pick the simpler one — you can upgrade later when a real constraint appears.',
+    docs: [
+      { label: 'Choosing collections', url: 'https://learn.microsoft.com/en-us/dotnet/standard/collections/selecting-a-collection-class' },
+      { label: 'Performance best practices', url: 'https://learn.microsoft.com/en-us/dotnet/framework/performance/performance-tips' },
+    ],
+    resources: [
+      { label: 'SharpLab (inspect IL)', url: 'https://sharplab.io', badge: 'tool' },
+    ],
+    gotchas: [
+      'Micro-benchmarks lie without BenchmarkDotNet — never decide struct-vs-class on a Stopwatch loop.',
+    ],
+  },
+
+  'csharp/glossary': {
+    apis: ['CLR', 'JIT', 'boxing', 'covariance', 'closure', 'GC'],
+    related: [
+      { label: 'C# Cheat Sheet',  route: '/csharp/cheatsheet'    },
+      { label: 'System.Object',   route: '/csharp/system-object' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable'},
+    ],
+    tip: 'Use the letter quick-nav or search — every term links onward to the full topic page where one exists.',
+    docs: [
+      { label: '.NET Glossary',   url: 'https://learn.microsoft.com/en-us/dotnet/standard/glossary' },
+    ],
+    resources: [
+      { label: '.NET API Browser', url: 'https://learn.microsoft.com/en-us/dotnet/api/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Terms like "managed" and "boxed" have precise CLR meanings — interviewers notice loose usage.',
+    ],
+  },
+
+  // ── Angular Practice & Reference pages ──────────────────────────────────────
+  'interview-prep': {
+    apis: ['signals', 'change detection', 'DI', 'zoneless', 'hydration'],
+    related: [
+      { label: 'Quiz Practice',    route: '/angular/quiz-practice'    },
+      { label: 'Change Detection', route: '/angular/change-detection' },
+      { label: 'Signals & State',  route: '/angular/counter'          },
+      { label: 'Dependency Injection', route: '/angular/di'           },
+    ],
+    tip: 'Answer out loud before expanding — interviews test recall under pressure, not recognition.',
+    docs: [
+      { label: 'angular.dev Guides', url: 'https://angular.dev/overview' },
+      { label: 'Signals Overview',   url: 'https://angular.dev/guide/signals' },
+    ],
+    resources: [
+      { label: 'Angular Blog', url: 'https://blog.angular.dev', badge: 'blog' },
+    ],
+    gotchas: [
+      'Senior questions probe trade-offs ("when would you NOT use X") — memorised definitions are not enough.',
+    ],
+  },
+
+  'quiz-practice': {
+    apis: ['Signals', 'DI', 'Router', 'Forms', 'RxJS', 'Testing'],
+    related: [
+      { label: 'Interview Prep',   route: '/angular/interview-prep' },
+      { label: 'Cheat Sheet',      route: '/angular/cheatsheet'     },
+      { label: 'Common Errors',    route: '/angular/errors'         },
+    ],
+    tip: 'Re-run the topics you score lowest on — the per-topic breakdown at the end shows exactly where to focus.',
+    docs: [
+      { label: 'angular.dev Guides', url: 'https://angular.dev/overview' },
+    ],
+    resources: [
+      { label: 'Angular Tutorials', url: 'https://angular.dev/tutorials', badge: 'docs' },
+    ],
+    gotchas: [
+      'Read the explanation even when you answer correctly — guessing right teaches nothing.',
+    ],
+  },
+
+  'design-patterns': {
+    apis: ['Signal Store', 'Facade', 'InjectionToken', 'host directives', 'OnPush'],
+    related: [
+      { label: 'Signal Store',       route: '/angular/store'           },
+      { label: 'Dependency Injection', route: '/angular/di'            },
+      { label: 'Content Projection', route: '/angular/content-projection' },
+      { label: 'Decision Guides',    route: '/angular/decision-guides' },
+    ],
+    tip: 'Most Angular patterns are DI + signals combinations — master those two primitives first.',
+    docs: [
+      { label: 'DI Guide',          url: 'https://angular.dev/guide/di' },
+      { label: 'Signals Overview',  url: 'https://angular.dev/guide/signals' },
+    ],
+    resources: [
+      { label: 'Angular Blog', url: 'https://blog.angular.dev', badge: 'blog' },
+    ],
+    gotchas: [
+      'Patterns are vocabulary, not goals — forcing a pattern onto simple code is the most common misuse.',
+    ],
+  },
+
+  'decision-guides': {
+    apis: ['signal vs observable', 'reactive vs template', '@defer vs lazy route'],
+    related: [
+      { label: 'Signals & State',  route: '/angular/counter'         },
+      { label: 'RxJS Operators',   route: '/angular/rxjs'            },
+      { label: '@defer Blocks',    route: '/angular/defer'           },
+      { label: 'Design Patterns',  route: '/angular/design-patterns' },
+    ],
+    tip: 'When two options tie on the table, pick the simpler one — you can upgrade later when a real constraint appears.',
+    docs: [
+      { label: 'Signals vs RxJS interop', url: 'https://angular.dev/guide/rxjs-interop' },
+      { label: 'Deferred loading',        url: 'https://angular.dev/guide/templates/defer' },
+    ],
+    resources: [
+      { label: 'Angular Blog', url: 'https://blog.angular.dev', badge: 'blog' },
+    ],
+    gotchas: [
+      'Defaults shifted in the signals era — advice older than v17 often recommends RxJS where a signal now suffices.',
+    ],
+  },
+
+  'glossary': {
+    apis: ['hydration', 'zoneless', 'injector', 'linkedSignal', 'CVA'],
+    related: [
+      { label: 'Cheat Sheet',      route: '/angular/cheatsheet'       },
+      { label: 'Change Detection', route: '/angular/change-detection' },
+      { label: 'SSR + Hydration',  route: '/angular/ssr'              },
+    ],
+    tip: 'Use the letter quick-nav or search — every term links onward to the full topic page where one exists.',
+    docs: [
+      { label: 'angular.dev Glossary-ish API docs', url: 'https://angular.dev/api' },
+    ],
+    resources: [
+      { label: 'angular.dev Guides', url: 'https://angular.dev/overview', badge: 'docs' },
+    ],
+    gotchas: [
+      'Terms like "hydration" and "zoneless" have precise meanings in Angular — loose usage causes confusion in reviews.',
+    ],
+  },
+
   // ── SSR + Hydration ─────────────────────────────────────────────────────────
   ssr: {
     apis: ['provideClientHydration()', 'withEventReplay()', 'isPlatformBrowser()', 'PLATFORM_ID', 'TransferState'],
@@ -1650,6 +1899,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
   host: {
     '[class.section-angular]': 'section() === "angular"',
     '[class.section-csharp]':  'section() === "csharp"',
+    '[class.section-aspnet]':  'section() === "aspnet"',
   },
 })
 export class PageSidebarComponent {
@@ -1668,8 +1918,10 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp'>(() =>
-    this.currentUrl().startsWith('/csharp') ? 'csharp' : 'angular'
+  section = computed<'angular' | 'csharp' | 'aspnet'>(() =>
+    this.currentUrl().startsWith('/csharp') ? 'csharp'
+    : this.currentUrl().startsWith('/aspnet') ? 'aspnet'
+    : 'angular'
   );
 
   data = computed<SidebarData>(() =>
