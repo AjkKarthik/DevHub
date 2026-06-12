@@ -44,6 +44,12 @@ const ALL_TOPICS: AspnetTopic[] = [
   { title: 'Static Files & Uploads',   route: '/aspnet/static-files',     badge: 'Fundamentals', available: true,
     description: 'Serving static content, wwwroot, IFormFile uploads, streaming large files, and download responses.',
     keyPoints: ['UseStaticFiles serves wwwroot by convention', 'IFormFile buffers — stream large uploads instead', 'Always validate type/size before saving uploads'] },
+  { title: 'Feature Flags',            route: '/aspnet',                  badge: 'Fundamentals', available: false,
+    description: 'Microsoft.FeatureManagement — feature gates in config, percentage rollout, targeting filters, and canary deployments.',
+    keyPoints: ['AddFeatureManagement() reads flags from IConfiguration', 'IFeatureManager.IsEnabledAsync() for runtime checks', 'TargetingFilter enables user/group-scoped rollouts'] },
+  { title: 'Localization & Globalization', route: '/aspnet',              badge: 'Fundamentals', available: false,
+    description: 'RequestLocalizationMiddleware, resource files, IStringLocalizer, culture routing, and right-to-left layout support.',
+    keyPoints: ['UseRequestLocalization() with supported cultures list', 'IStringLocalizer<T> injects typed strings', 'Resource files: Controllers.resx + Controllers.fr.resx'] },
 
   // ── Web API ──
   { title: 'Controllers & Actions',    route: '/aspnet/controllers',      badge: 'Web API', available: true,
@@ -73,6 +79,12 @@ const ALL_TOPICS: AspnetTopic[] = [
   { title: 'gRPC Services',            route: '/aspnet/grpc',             badge: 'Web API', available: true,
     description: 'Proto contracts, server & client implementation, streaming calls, gRPC-Web, and when to choose gRPC over REST.',
     keyPoints: ['Contract-first: .proto generates server base + clients', 'Four call types incl. bidirectional streaming', 'Best for internal service-to-service; REST for public APIs'] },
+  { title: 'FluentValidation',         route: '/aspnet',                  badge: 'Web API', available: false,
+    description: 'Fluent validation rules, validators per DTO, async validators, custom rule extensions, and ASP.NET Core integration.',
+    keyPoints: ['AbstractValidator<T> defines rules in a fluent chain', 'RuleFor(x => x.Email).NotEmpty().EmailAddress()', 'AddFluentValidationAutoValidation() replaces DataAnnotations pipeline'] },
+  { title: 'Minimal API Advanced',     route: '/aspnet',                  badge: 'Web API', available: false,
+    description: 'Typed endpoint groups, IEndpointRouteBuilder extensions, custom result types, OpenAPI metadata, and testing strategies.',
+    keyPoints: ['IEndpointRouteBuilder extension methods group related endpoints', 'IResult implementations for custom HTTP responses', 'WithOpenApi() + ProducesResponseType attributes for full doc coverage'] },
 
   // ── Data ──
   { title: 'EF Core Basics',           route: '/aspnet/ef-core-basics',   badge: 'Data', available: true,
@@ -87,6 +99,12 @@ const ALL_TOPICS: AspnetTopic[] = [
   { title: 'Caching',                  route: '/aspnet/caching',          badge: 'Data', available: true,
     description: 'IMemoryCache, IDistributedCache (Redis), output caching, and HybridCache (.NET 9).',
     keyPoints: ['Output caching middleware caches whole responses', 'HybridCache solves cache stampede', 'Always set expirations — unbounded caches leak'] },
+  { title: 'Output Caching Advanced',  route: '/aspnet',                  badge: 'Data', available: false,
+    description: 'Output caching policies, tagged eviction, VaryByHeader/VaryByQuery, and combining output caching with CDNs.',
+    keyPoints: ['Tags allow grouping cached items for targeted invalidation', 'VaryByHeader("Accept-Language") produces locale-specific cached responses', 'Combine with Reverse Proxy cache headers for edge caching'] },
+  { title: 'Dapper & Raw SQL',         route: '/aspnet',                  badge: 'Data', available: false,
+    description: 'When to use Dapper over EF Core — micro-ORM setup, parameterised queries, multi-mapping, and stored procedure calls.',
+    keyPoints: ['Dapper is a thin extension on IDbConnection — no change tracking', 'Dynamic parameters prevent SQL injection', 'Use Dapper for complex read queries; EF for writes and domain models'] },
 
   // ── Security ──
   { title: 'Authentication',           route: '/aspnet/authentication',   badge: 'Security', available: true,
@@ -107,6 +125,9 @@ const ALL_TOPICS: AspnetTopic[] = [
   { title: 'Secrets & Data Protection', route: '/aspnet/secrets',         badge: 'Security', available: true,
     description: 'User secrets, environment variables, Azure Key Vault, and the Data Protection API behind cookies and tokens.',
     keyPoints: ['Never commit secrets — user-secrets in dev, vault in prod', 'Data Protection keys must be shared across instances', 'IDataProtector for encrypting your own payloads'] },
+  { title: 'Anti-forgery & CSRF',      route: '/aspnet',                  badge: 'Security', available: false,
+    description: 'Deep-dive into antiforgery tokens, [ValidateAntiForgeryToken], SameSite cookies, and CSRF defence in SPAs.',
+    keyPoints: ['[AutoValidateAntiforgeryToken] globally validates all non-GET forms', 'SameSite=Strict prevents cross-origin cookie sending', 'SPAs: read the XSRF-TOKEN cookie and send in X-XSRF-TOKEN header'] },
 
   // ── Quality ──
   { title: 'Testing',                  route: '/aspnet/testing',          badge: 'Quality', available: true,
@@ -130,6 +151,19 @@ const ALL_TOPICS: AspnetTopic[] = [
   { title: '.NET Aspire',              route: '/aspnet/aspire',           badge: 'Quality', available: true,
     description: 'Cloud-native orchestration — AppHost, service discovery, built-in dashboard, integrations, and deploying Aspire apps.',
     keyPoints: ['AppHost composes services, databases, caches in C#', 'Dashboard gives logs/traces/metrics out of the box', 'Service discovery replaces hardcoded URLs'] },
+  { title: 'Response Compression',     route: '/aspnet',                  badge: 'Quality', available: false,
+    description: 'UseResponseCompression, Brotli vs Gzip, compression levels, HTTPS interaction, and measuring real-world gains.',
+    keyPoints: ['AddResponseCompression().AddBrotliCompressor() in the pipeline', 'Brotli achieves 20–30% better compression than Gzip', 'Never compress responses that are already compressed (images, ZIPs)'] },
+  { title: 'WebSockets',               route: '/aspnet',                  badge: 'Quality', available: false,
+    description: 'Raw WebSocket connections in ASP.NET Core — UseWebSockets, accepting upgrades, framing, and when to prefer SignalR.',
+    keyPoints: ['UseWebSockets() + HttpContext.WebSockets.AcceptWebSocketAsync()', 'Message loop: ReceiveAsync, check CloseStatus, SendAsync', 'Use SignalR unless you need binary framing or protocol control'] },
+  { title: 'YARP Reverse Proxy',       route: '/aspnet',                  badge: 'Quality', available: false,
+    description: 'Yet Another Reverse Proxy — route and cluster config, load balancing, transforms, and health-check passthrough.',
+    keyPoints: ['AddReverseProxy().LoadFromConfig(config.GetSection("ReverseProxy"))', 'Route transforms: prefix strip, header injection, path rewrite', 'Active health checks probe upstream services before routing'] },
+  { title: 'OpenTelemetry',            route: '/aspnet',                  badge: 'Quality', available: false,
+    description: 'Distributed tracing, metrics, and logs with OpenTelemetry .NET — exporting to Jaeger, Prometheus, and OTLP.',
+    keyPoints: ['AddOpenTelemetry().WithTracing().WithMetrics().WithLogging()', 'Activity and ActivitySource for custom spans', 'OTLP exporter sends to any OTel Collector-compatible backend'] },
+
   // ── Reference ──
   { title: 'Cheat Sheet',             route: '/aspnet/cheatsheet',       badge: 'Reference', available: true,
     description: 'Searchable quick-reference for middleware, minimal APIs, DI, auth, EF Core, HttpClient, and the CLI — all in one place.',
@@ -189,8 +223,8 @@ export class AspnetHome {
 
   setFilter(f: string) { this.activeFilter.set(f); }
   badgeCss(badge: string) { return 'badge badge-' + (BADGE_CSS[badge] ?? 'fundamentals'); }
-  toggleCard(route: string, event: Event) {
+  toggleCard(key: string, event: Event) {
     event.preventDefault();
-    this.expandedCard.update(c => c === route ? null : route);
+    this.expandedCard.update(c => c === key ? null : key);
   }
 }

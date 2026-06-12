@@ -73,6 +73,10 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'Three-valued logic, IS NULL / IS NOT NULL, COALESCE, NULLIF, ISNULL (MSSQL) vs COALESCE (both), NULL in aggregates and joins.',
     keyPoints: ['NULL propagates through arithmetic and comparisons', 'COALESCE returns first non-NULL; works in both dialects', 'NOT IN with a NULL in the list always returns empty — use NOT EXISTS'] },
 
+  { title: 'MERGE / Upsert',           route: '/sql',                       badge: 'Core SQL', available: false,
+    description: 'MERGE statement (MSSQL) vs INSERT … ON CONFLICT (PostgreSQL) — atomic upsert, delete-on-mismatch, and output clauses.',
+    keyPoints: ['MERGE matches source to target and applies WHEN MATCHED/NOT MATCHED actions', 'PostgreSQL ON CONFLICT DO UPDATE SET = upsert shorthand', 'OUTPUT clause captures inserted/updated rows without a second query'] },
+
   // ── Functions & Expressions ──────────────────────────────────────────────────
   { title: 'String Functions',         route: '/sql/string-functions',      badge: 'Functions', available: false,
     description: 'CONCAT, SUBSTRING/SUBSTR, TRIM, UPPER/LOWER, REPLACE, CHARINDEX vs POSITION, PATINDEX vs regexp_match.',
@@ -85,6 +89,10 @@ const ALL_TOPICS: SqlTopic[] = [
   { title: 'Conditional Expressions',  route: '/sql/conditional-expressions', badge: 'Functions', available: false,
     description: 'CASE WHEN/THEN/ELSE, searched vs simple CASE, IIF (MSSQL), NULLIF, GREATEST/LEAST (PostgreSQL), CHOOSE (MSSQL).',
     keyPoints: ['CASE is the standard — works in SELECT, WHERE, ORDER BY, and aggregates', 'IIF(cond, t, f) is MSSQL shorthand for a two-branch CASE', 'NULLIF(a,b) returns NULL when a=b — useful for avoiding division by zero'] },
+
+  { title: 'Math & Numeric Functions', route: '/sql',                       badge: 'Functions', available: false,
+    description: 'ROUND, FLOOR, CEILING, ABS, POWER, SQRT, LOG — and the key differences between integer division in T-SQL and PostgreSQL.',
+    keyPoints: ['Integer division in T-SQL: 5/2 = 2; cast to DECIMAL first', 'ROUND(n, -2) rounds to nearest hundred', 'CHECKSUM / MD5 for lightweight hash-based deduplication'] },
 
   // ── Advanced Queries ─────────────────────────────────────────────────────────
   { title: 'Subqueries & APPLY',       route: '/sql/subqueries',            badge: 'Advanced Queries', available: true,
@@ -120,10 +128,26 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'IDENTITY(1,1) (MSSQL) vs SERIAL/BIGSERIAL/GENERATED ALWAYS AS IDENTITY (PostgreSQL) — and standalone SEQUENCE objects.',
     keyPoints: ['IDENTITY in MSSQL; GENERATED ALWAYS AS IDENTITY is ANSI SQL', 'SEQUENCE objects can be shared across tables', 'Use BIGINT or BIGSERIAL for high-volume tables to avoid overflow'] },
 
+  { title: 'Temp Tables & Table Variables', route: '/sql',                  badge: 'Schema & Objects', available: false,
+    description: '#temp tables vs @table variables (MSSQL) vs TEMP TABLE (PostgreSQL) — scoping, statistics, and when each is appropriate.',
+    keyPoints: ['#temp has statistics — optimizer makes better plans; @table does not', 'MSSQL temp tables survive UDF calls and procedures in the same session', 'PostgreSQL ON COMMIT DROP creates session-scoped temporary tables'] },
+
+  { title: 'Computed & Generated Columns', route: '/sql',                   badge: 'Schema & Objects', available: false,
+    description: 'Persisted computed columns (MSSQL AS … PERSISTED) vs GENERATED ALWAYS AS STORED (PostgreSQL) — indexing and use cases.',
+    keyPoints: ['Persisted computed columns can be indexed for fast lookups', 'MSSQL: col AS expression PERSISTED; PostgreSQL: GENERATED ALWAYS AS (expr) STORED', 'Avoid expensive function calls in computed columns — they run on every write'] },
+
   // ── Programmatic SQL ─────────────────────────────────────────────────────────
   { title: 'Stored Procedures',        route: '/sql/stored-procedures',     badge: 'Programmatic', available: true,
     description: 'CREATE PROCEDURE (T-SQL) vs PL/pgSQL functions — parameters, TRY/CATCH vs EXCEPTION blocks, parameter sniffing.',
     keyPoints: ['Wrap DML in TRY/CATCH with ROLLBACK in the CATCH block (MSSQL)', 'PL/pgSQL uses RAISE EXCEPTION / BEGIN...EXCEPTION (PostgreSQL)', 'Parameter sniffing: use OPTION(RECOMPILE) or OPTIMIZE FOR to fix bad plans'] },
+
+  { title: 'Stored Functions',         route: '/sql',                       badge: 'Programmatic', available: false,
+    description: 'Scalar UDFs, inline table-valued functions (MSSQL), and PL/pgSQL RETURNS TABLE functions — plus performance implications.',
+    keyPoints: ['Scalar UDFs in MSSQL inhibit parallelism — prefer TVFs or inline expressions', 'Inline TVFs are expanded like views; multi-statement TVFs are opaque to the optimizer', 'PostgreSQL RETURNS TABLE functions are the idiomatic alternative to stored procedures'] },
+
+  { title: 'Cursors & Loops',          route: '/sql',                       badge: 'Programmatic', available: false,
+    description: 'CURSOR, FETCH NEXT (MSSQL) vs FOR loop / LOOP in PL/pgSQL — and why set-based SQL is almost always preferable.',
+    keyPoints: ['Cursors process row-by-row — 10–100× slower than set-based SQL', 'Use cursors only when no set-based solution exists (e.g. dynamic DDL per row)', 'PL/pgSQL FOR rec IN SELECT ... LOOP is cleaner than explicit CURSOR'] },
 
   { title: 'Triggers',                 route: '/sql/triggers',              badge: 'Programmatic', available: false,
     description: 'AFTER/INSTEAD OF DML triggers (MSSQL) vs BEFORE/AFTER/INSTEAD OF (PostgreSQL) — audit log and guard patterns.',
@@ -167,6 +191,14 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'BULK INSERT / BCP (MSSQL) vs COPY (PostgreSQL) — batch sizing, minimal logging, staging table patterns.',
     keyPoints: ['BULK INSERT with TABLOCK and BATCHSIZE for minimal logging (MSSQL)', 'COPY FROM is the fastest ingestion path in PostgreSQL', 'Stage → transform → upsert/merge pattern avoids contention'] },
 
+  { title: 'Query Store & Plan Regression', route: '/sql',                  badge: 'Performance', available: false,
+    description: 'Query Store (MSSQL/PostgreSQL 17+) — capturing plan history, forcing stable plans, detecting regressions.',
+    keyPoints: ['Query Store saves query text, plans, and runtime stats over time', 'Force a good plan with sys.sp_query_store_force_plan (MSSQL)', 'pg_stat_statements + auto_explain give equivalent visibility in PostgreSQL'] },
+
+  { title: 'Statistics & Cardinality', route: '/sql',                       badge: 'Performance', available: false,
+    description: 'How the optimizer uses column statistics, histograms, and density vectors — and when to update or trace statistics issues.',
+    keyPoints: ['Statistics are single-column or multi-column histograms of value distribution', 'Stale statistics → bad cardinality estimates → wrong join order or index choice', 'UPDATE STATISTICS WITH FULLSCAN / ANALYZE rebuilds from 100% of the data'] },
+
   // ── Advanced Features ────────────────────────────────────────────────────────
   { title: 'JSON Features',            route: '/sql/json-features',         badge: 'Advanced Features', available: true,
     description: 'JSON_VALUE/JSON_QUERY/OPENJSON/FOR JSON (MSSQL) vs jsonb operators/functions/GIN indexes (PostgreSQL).',
@@ -179,6 +211,10 @@ const ALL_TOPICS: SqlTopic[] = [
   { title: 'Security & RLS',           route: '/sql/security',              badge: 'Advanced Features', available: false,
     description: 'GRANT/REVOKE, principle of least privilege, Row-Level Security (both dialects), Always Encrypted (MSSQL), pg_hba.conf (PostgreSQL).',
     keyPoints: ['Grant execute on stored procedures — not SELECT on tables — for app users', 'Row-Level Security: CREATE POLICY + ALTER TABLE ENABLE ROW LEVEL SECURITY', 'Always Encrypted (MSSQL) / pgcrypto (PostgreSQL) for column-level encryption'] },
+
+  { title: 'Connection Pooling',       route: '/sql',                       badge: 'Advanced Features', available: false,
+    description: 'How ADO.NET/pgBouncer/PgPool pool connections, pool sizing formulas, monitoring leaks, and cloud-native pooling.',
+    keyPoints: ['ADO.NET pools connections per connection string — never modify the string at runtime', 'PgBouncer in transaction mode is the standard PostgreSQL pooler', 'Pool too small → queuing; too large → db context-switch overhead'] },
 
   // ── Reference ────────────────────────────────────────────────────────────────
   { title: 'Cheat Sheet',         route: '/sql/cheatsheet',      badge: 'Reference', available: true,
@@ -239,8 +275,8 @@ export class SqlHome {
 
   setFilter(f: string) { this.activeFilter.set(f); }
   badgeCss(badge: string) { return 'badge badge-' + (BADGE_CSS[badge] ?? 'core'); }
-  toggleCard(route: string, event: Event) {
+  toggleCard(key: string, event: Event) {
     event.preventDefault();
-    this.expandedCard.update(c => c === route ? null : route);
+    this.expandedCard.update(c => c === key ? null : key);
   }
 }

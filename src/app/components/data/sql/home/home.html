@@ -9,7 +9,7 @@
     <div class="stat"><span class="stat-num">{{ totalCount }}</span><span class="stat-label">topics</span></div>
     <div class="stat"><span class="stat-num">{{ availableCount }}</span><span class="stat-label">live now</span></div>
     <div class="stat"><span class="stat-num">MSSQL + PG</span><span class="stat-label">dual dialect</span></div>
-    <div class="stat"><span class="stat-num">9</span><span class="stat-label">categories</span></div>
+    <div class="stat"><span class="stat-num">10</span><span class="stat-label">categories</span></div>
   </div>
 </section>
 
@@ -26,8 +26,8 @@
   </div>
 
   <div class="grid">
-    @for (topic of topics(); track topic.route) {
-      <div class="card" [class.expanded]="expandedCard() === topic.route">
+    @for (topic of topics(); track topic.title) {
+      <div class="card" [class.expanded]="expandedCard() === topic.title" [class.soon]="!topic.available">
         @if (topic.available) {
           <a class="card-main" [routerLink]="topic.route">
             <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
@@ -42,8 +42,8 @@
           </div>
         }
         <div class="card-footer">
-          <button type="button" class="key-points-btn" (click)="toggleCard(topic.route, $event)">
-            {{ expandedCard() === topic.route ? '▲ Hide key points' : '▼ Key points' }}
+          <button type="button" class="key-points-btn" (click)="toggleCard(topic.title, $event)">
+            {{ expandedCard() === topic.title ? '▲ Hide key points' : '▼ Key points' }}
           </button>
           @if (topic.available) {
             <a class="arrow-link" [routerLink]="topic.route">Explore →</a>
@@ -51,7 +51,7 @@
             <span class="arrow-link disabled">Coming soon</span>
           }
         </div>
-        @if (expandedCard() === topic.route) {
+        @if (expandedCard() === topic.title) {
           <div class="key-points">
             @for (pt of topic.keyPoints; track pt) { <div class="key-point">{{ pt }}</div> }
           </div>
@@ -69,11 +69,11 @@
     <div class="path-group">
       <h3 class="group-label foundations">① Foundations</h3>
       <ol>
-        <li><span class="step-num">1</span><span>RDBMS Concepts — entities, keys, integrity</span></li>
-        <li><span class="step-num">2</span><span>Data Modeling — ER diagrams, cardinality</span></li>
-        <li><span class="step-num">3</span><span>Normalization — 1NF → 3NF → BCNF</span></li>
-        <li><span class="step-num">4</span><span>Database Architecture — pages, WAL, MVCC</span></li>
-        <li><span class="step-num">5</span><span>Data Types — storage sizes, dialect diffs</span></li>
+        <li><span class="step-num">1</span><span><a routerLink="/sql/rdbms-concepts"><strong>RDBMS Concepts</strong></a> — entities, keys, integrity</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/sql/data-modeling"><strong>Data Modeling</strong></a> — ER diagrams, cardinality</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/sql/normalization"><strong>Normalization</strong></a> — 1NF → 3NF → BCNF</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/sql/db-architecture"><strong>Database Architecture</strong></a> — pages, WAL, MVCC</span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/sql/data-types"><strong>Data Types</strong></a> — storage sizes, dialect diffs</span></li>
       </ol>
     </div>
 

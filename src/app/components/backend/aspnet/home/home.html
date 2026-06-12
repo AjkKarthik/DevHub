@@ -30,8 +30,8 @@
   </div>
 
   <div class="grid">
-    @for (topic of topics(); track topic.route) {
-      <div class="card" [class.expanded]="expandedCard() === topic.route" [class.soon]="!topic.available">
+    @for (topic of topics(); track topic.title) {
+      <div class="card" [class.expanded]="expandedCard() === topic.title" [class.soon]="!topic.available">
         @if (topic.available) {
           <a class="card-main" [routerLink]="topic.route">
             <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
@@ -46,8 +46,8 @@
           </div>
         }
         <div class="card-footer">
-          <button type="button" class="key-points-btn" (click)="toggleCard(topic.route, $event)">
-            {{ expandedCard() === topic.route ? '▲ Hide key points' : '▼ Key points' }}
+          <button type="button" class="key-points-btn" (click)="toggleCard(topic.title, $event)">
+            {{ expandedCard() === topic.title ? '▲ Hide key points' : '▼ Key points' }}
           </button>
           @if (topic.available) {
             <a class="arrow-link" [routerLink]="topic.route">Explore →</a>
@@ -55,7 +55,7 @@
             <span class="arrow-link disabled">Coming soon</span>
           }
         </div>
-        @if (expandedCard() === topic.route) {
+        @if (expandedCard() === topic.title) {
           <div class="key-points">
             @for (pt of topic.keyPoints; track pt) {
               <div class="key-point">{{ pt }}</div>

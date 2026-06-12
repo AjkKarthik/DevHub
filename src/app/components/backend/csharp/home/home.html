@@ -2,12 +2,12 @@
   <div class="hero-logo">C#</div>
   <h1>C# Language Hub</h1>
   <p class="subtitle">
-    {{ filters.length - 1 }} categories, 50 topics covering the full C# language —
+    {{ filters.length - 1 }} categories, {{ availableCount }} live topics covering the full C# language —
     from fundamentals to reflection, source generators, and the latest .NET 10/11 features.
   </p>
   <div class="stats">
-    <div class="stat"><span class="stat-num">50</span><span class="stat-label">topics</span></div>
-    <div class="stat"><span class="stat-num">{{ filters.length - 1 }}</span><span class="stat-label">categories</span></div>
+    <div class="stat"><span class="stat-num">{{ availableCount }}</span><span class="stat-label">live pages</span></div>
+    <div class="stat"><span class="stat-num">{{ totalCount }}</span><span class="stat-label">total topics</span></div>
     <div class="stat"><span class="stat-num">.NET 8–11</span><span class="stat-label">coverage</span></div>
   </div>
 </section>
@@ -30,20 +30,32 @@
   </div>
 
   <div class="grid">
-    @for (topic of topics(); track topic.route) {
-      <div class="card" [class.expanded]="expandedCard() === topic.route">
-        <a class="card-main" [routerLink]="topic.route">
-          <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
-          <h3>{{ topic.title }}</h3>
-          <p>{{ topic.description }}</p>
-        </a>
+    @for (topic of topics(); track topic.title) {
+      <div class="card" [class.expanded]="expandedCard() === topic.title" [class.soon]="!topic.available">
+        @if (topic.available) {
+          <a class="card-main" [routerLink]="topic.route">
+            <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
+            <h3>{{ topic.title }}</h3>
+            <p>{{ topic.description }}</p>
+          </a>
+        } @else {
+          <div class="card-main">
+            <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
+            <h3>{{ topic.title }} <span class="soon-chip">Soon</span></h3>
+            <p>{{ topic.description }}</p>
+          </div>
+        }
         <div class="card-footer">
-          <button type="button" class="key-points-btn" (click)="toggleCard(topic.route, $event)">
-            {{ expandedCard() === topic.route ? '▲ Hide key points' : '▼ Key points' }}
+          <button type="button" class="key-points-btn" (click)="toggleCard(topic.title, $event)">
+            {{ expandedCard() === topic.title ? '▲ Hide key points' : '▼ Key points' }}
           </button>
-          <a class="arrow-link" [routerLink]="topic.route">Explore →</a>
+          @if (topic.available) {
+            <a class="arrow-link" [routerLink]="topic.route">Explore →</a>
+          } @else {
+            <span class="arrow-link disabled">Coming soon</span>
+          }
         </div>
-        @if (expandedCard() === topic.route) {
+        @if (expandedCard() === topic.title) {
           <div class="key-points">
             @for (pt of topic.keyPoints; track pt) {
               <div class="key-point">{{ pt }}</div>
