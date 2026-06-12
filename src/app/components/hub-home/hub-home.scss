@@ -1,6 +1,7 @@
 .hub {
   min-height: 100vh;
   padding: 0 0 4rem;
+  overflow-x: hidden;
 }
 
 // ── Hero ────────────────────────────────────────────────────────────────────
@@ -505,30 +506,28 @@
 }
 
 .carousel-track-wrap {
-  overflow: hidden;
+  overflow-x: scroll;
+  overflow-y: hidden;
   width: 100%;
+  cursor: grab;
+  user-select: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
   mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 
-  &:hover .carousel-track { animation-play-state: paused; }
+  &.is-dragging { cursor: grabbing; }
+  &.no-drag { overflow-x: hidden; cursor: default; }
 }
 
 .carousel-track {
   display: flex;
-  // no gap/padding here — each card carries margin-right so the two halves are
-  // exactly equal width and translateX(-50%) loops seamlessly
   padding: .25rem 0 .5rem;
   width: max-content;
-  animation: carousel-scroll 40s linear infinite;
-}
-
-@keyframes carousel-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
 }
 
 .carousel-track.no-scroll {
-  animation: none;
   flex-wrap: wrap;
   width: auto;
   padding: .25rem 2rem .5rem;
@@ -987,6 +986,25 @@
 
   .feature-strip { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; padding: 1.5rem 1.25rem; }
   .live-card { width: 280px; }
+}
+
+// ── Small mobile (< 480px) ────────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .hero { padding: 2rem .875rem 1.75rem; }
+  .hero-stats { gap: .5rem .6rem; padding: .5rem .75rem; }
+  .stat-sep { display: none; }
+
+  .filter-bar { padding: .65rem .875rem; }
+
+  .whats-new-bar { gap: .35rem; padding: .5rem .875rem; }
+  .wn-item { padding: .15rem .4rem; }
+
+  .about-strip { padding: 1.5rem .875rem 1.25rem; }
+  .about-pillars { grid-template-columns: 1fr; }
+
+  .hub-group { margin-left: .25rem; margin-right: .25rem; }
+
+  .feature-strip { grid-template-columns: 1fr; padding: 1rem .875rem; }
 }
 
 // ── Mobile responsiveness ─────────────────────────────────────────────────────

@@ -167,7 +167,16 @@
           <span class="live-sub">Full content available — start exploring today</span>
         </div>
       </div>
-      <div class="carousel-track-wrap">
+      <div class="carousel-track-wrap"
+           #carouselWrap
+           [class.no-drag]="liveCards().length < 3"
+           (mouseenter)="onCarouselMouseEnter()"
+           (mouseleave)="onCarouselMouseLeave()"
+           (mousedown)="onCarouselMouseDown($event)"
+           (window:mousemove)="onCarouselMouseMove($event)"
+           (window:mouseup)="onCarouselMouseUp()"
+           (touchstart)="onTouchStart($event)"
+           (touchend)="onTouchEnd()">
         <div class="carousel-track" [class.no-scroll]="liveCards().length < 3">
           @for (t of carouselCards(); track $index) {
             <a class="live-card" [routerLink]="t.route">

@@ -1,4 +1,4 @@
-import { Component, signal, computed, effect } from '@angular/core';
+import { Component, signal, computed, effect, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 export type TechGroup  = 'frontend' | 'backend' | 'data' | 'architecture' | 'cloud' | 'fundamentals' | 'ai';
@@ -48,7 +48,90 @@ interface RoleChip {
   templateUrl: './hub-home.html',
   styleUrl: './hub-home.scss',
 })
-export class HubHome {
+export class HubHome implements AfterViewInit, OnDestroy {
+
+  // ── Carousel drag/scroll ────────────────────────────────────────────────────
+  @ViewChild('carouselWrap') private carouselRef!: ElementRef<HTMLDivElement>;
+  private rafId = 0;
+  private carouselPaused = false;
+  private isDragging = false;
+  private dragStartX = 0;
+  private dragStartScroll = 0;
+  private readonly SCROLL_SPEED = 0.5;
+  private readonly onTouchMoveBound = this.onTouchMove.bind(this);
+
+  ngAfterViewInit(): void {
+    if (this.liveCards().length >= 3) this.startCarouselScroll();
+  }
+
+  ngOnDestroy(): void {
+    cancelAnimationFrame(this.rafId);
+    this.carouselRef?.nativeElement?.removeEventListener('touchmove', this.onTouchMoveBound);
+  }
+
+  private startCarouselScroll(): void {
+    const el = this.carouselRef?.nativeElement;
+    if (!el) return;
+    el.addEventListener('touchmove', this.onTouchMoveBound, { passive: false });
+    const tick = () => {
+      if (!this.carouselPaused && !this.isDragging) {
+        el.scrollLeft += this.SCROLL_SPEED;
+        const half = el.scrollWidth / 2;
+        if (half > 0 && el.scrollLeft >= half) el.scrollLeft -= half;
+      }
+      this.rafId = requestAnimationFrame(tick);
+    };
+    this.rafId = requestAnimationFrame(tick);
+  }
+
+  onCarouselMouseEnter(): void { this.carouselPaused = true; }
+  onCarouselMouseLeave(): void { this.carouselPaused = false; }
+
+  onCarouselMouseDown(e: MouseEvent): void {
+    if (this.liveCards().length < 3) return;
+    this.isDragging = true;
+    this.dragStartX = e.clientX;
+    this.dragStartScroll = this.carouselRef.nativeElement.scrollLeft;
+    this.carouselRef.nativeElement.classList.add('is-dragging');
+  }
+
+  onCarouselMouseMove(e: MouseEvent): void {
+    if (!this.isDragging) return;
+    const el = this.carouselRef.nativeElement;
+    const half = el.scrollWidth / 2;
+    el.scrollLeft = this.dragStartScroll - (e.clientX - this.dragStartX);
+    if (half > 0) {
+      if (el.scrollLeft >= half) el.scrollLeft -= half;
+      if (el.scrollLeft < 0) el.scrollLeft += half;
+    }
+  }
+
+  onCarouselMouseUp(): void {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+    this.carouselRef?.nativeElement?.classList.remove('is-dragging');
+  }
+
+  onTouchStart(e: TouchEvent): void {
+    if (this.liveCards().length < 3) return;
+    this.isDragging = true;
+    this.dragStartX = e.touches[0].clientX;
+    this.dragStartScroll = this.carouselRef.nativeElement.scrollLeft;
+  }
+
+  private onTouchMove(e: TouchEvent): void {
+    if (!this.isDragging) return;
+    e.preventDefault();
+    const el = this.carouselRef.nativeElement;
+    const half = el.scrollWidth / 2;
+    el.scrollLeft = this.dragStartScroll - (e.touches[0].clientX - this.dragStartX);
+    if (half > 0) {
+      if (el.scrollLeft >= half) el.scrollLeft -= half;
+      if (el.scrollLeft < 0) el.scrollLeft += half;
+    }
+  }
+
+  onTouchEnd(): void { this.isDragging = false; }
 
   readonly searchTerm = signal('');
   readonly activeRole = signal<RoleFilter>('all');
