@@ -14,8 +14,13 @@ export class ProgressService {
   readonly csharpTotal  = 41;
   readonly csharpCount  = computed(() => [...this._done()].filter(r => r.startsWith('csharp-')).length);
   readonly csharpPct    = computed(() => Math.round((this.csharpCount() / this.csharpTotal) * 100));
-  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-')).length);
+  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-') && !r.startsWith('aspnet-')).length);
   readonly angularPct   = computed(() => Math.round((this.angularCount() / this.total) * 100));
+
+  // ── ASP.NET Core (keys prefixed 'aspnet-') ─────────────────────────────────
+  readonly aspnetTotal  = 33;
+  readonly aspnetCount  = computed(() => [...this._done()].filter(r => r.startsWith('aspnet-')).length);
+  readonly aspnetPct    = computed(() => Math.round((this.aspnetCount() / this.aspnetTotal) * 100));
 
   toggle(route: string) {
     this._done.update(s => {

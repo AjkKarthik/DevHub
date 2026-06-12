@@ -1938,6 +1938,14 @@ export class PageSidebarComponent {
     DEFAULT
   );
 
+  docsHeading = computed(() => {
+    switch (this.section()) {
+      case 'csharp':  return '📖 C# Docs';
+      case 'aspnet':  return '📖 ASP.NET Core Docs';
+      default:        return '📖 Angular Docs';
+    }
+  });
+
   badgeLabel: Record<string, string> = {
     docs: 'docs', video: 'video', blog: 'blog', tool: 'tool', code: 'code',
   };

@@ -28,9 +28,9 @@
     <p class="tip-text">{{ data().tip }}</p>
   </div>
 
-  <!-- Angular Official Docs -->
+  <!-- Official Docs -->
   <div class="sidebar-section">
-    <h4 class="section-title"><span class="icon">📖</span> Angular Docs</h4>
+    <h4 class="section-title">{{ docsHeading() }}</h4>
     <div class="ext-link-list">
       @for (doc of data().docs; track doc.url) {
         <a [href]="doc.url" target="_blank" rel="noopener noreferrer" class="ext-link docs-link">

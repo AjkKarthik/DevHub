@@ -10,7 +10,7 @@ import { Component, input } from '@angular/core';
       @if (since()) {
         <span class="pm-since" [class]="'pm-since--' + tech()">{{ since() }}</span>
       }
-      @if (tech() === 'csharp' || tech() === 'dotnet') {
+      @if (tech() === 'csharp' || tech() === 'dotnet' || tech() === 'aspnet') {
         <a class="pm-play pm-play--csharp" href="https://dotnetfiddle.net/" target="_blank" rel="noopener">▶ .NET Fiddle</a>
         <a class="pm-play pm-play--sharplab" href="https://sharplab.io/" target="_blank" rel="noopener">⚗ SharpLab</a>
       } @else if (!hidePlayground()) {
@@ -48,6 +48,7 @@ import { Component, input } from '@angular/core';
       &--dotnet  { background: #512bd4; }
       &--node    { background: #16a34a; }
       &--python  { background: #ca8a04; }
+      &--aspnet  { background: #0e7490; }
     }
     .pm-play {
       font-size: .78rem; font-weight: 600; color: #0ea5e9;
@@ -64,7 +65,7 @@ export class PageMetaComponent {
   readingTime    = input.required<number>();
   difficulty     = input<'beginner' | 'intermediate' | 'advanced'>('intermediate');
   since          = input<string>('');
-  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python'>('angular');
+  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python' | 'aspnet'>('angular');
   stackblitzUrl  = input<string>('');
   hidePlayground = input<boolean>(false);
 }
