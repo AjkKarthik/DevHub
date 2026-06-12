@@ -37,6 +37,29 @@ const DEFAULT: SidebarData = {
   ],
 };
 
+const ASPNET_DEFAULT: SidebarData = {
+  apis: ['WebApplication', 'IServiceCollection', 'IApplicationBuilder', 'IConfiguration', 'ILogger<T>'],
+  related: [
+    { label: 'Hosting & Startup',    route: '/aspnet/hosting-startup' },
+    { label: 'Middleware Pipeline',  route: '/aspnet/middleware' },
+    { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+  ],
+  tip: 'ASP.NET Core is modular — every feature is middleware or a service. Understand the request pipeline and DI container first.',
+  docs: [
+    { label: 'ASP.NET Core Docs',    url: 'https://learn.microsoft.com/en-us/aspnet/core/' },
+    { label: 'ASP.NET Core API Ref', url: 'https://learn.microsoft.com/en-us/dotnet/api/?view=aspnetcore-9.0' },
+    { label: '.NET Release schedule',url: 'https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core' },
+  ],
+  resources: [
+    { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop',   badge: 'code' },
+  ],
+  gotchas: [
+    'Middleware order matters — UseAuthentication must precede UseAuthorization, and both must precede endpoint middleware.',
+    'Scoped services cannot be consumed by Singleton services — captive dependency causes incorrect shared state across requests.',
+  ],
+};
+
 export const SIDEBAR_MAP: Record<string, SidebarData> = {
 
   // ── Signals & State ────────────────────────────────────────────────────────
@@ -1872,6 +1895,747 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ════════════════════════════════════════════════════════════════════════════
+  // ASP.NET CORE PAGES
+  // ════════════════════════════════════════════════════════════════════════════
+
+  'aspnet/hosting-startup': {
+    apis: ['WebApplication.CreateBuilder()', 'IWebHostEnvironment', 'IHostApplicationLifetime', 'ConfigureServices', 'WebApplicationBuilder'],
+    related: [
+      { label: 'Middleware Pipeline',  route: '/aspnet/middleware' },
+      { label: 'Configuration',        route: '/aspnet/configuration' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Use IHostApplicationLifetime for graceful shutdown — the Stopping event lets you drain in-flight requests before the process exits.',
+    docs: [
+      { label: 'WebApplication & Minimal Hosting', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/webapplication' },
+      { label: 'Host and Deploy',                  url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'All AddX() calls must come before builder.Build() — services registered after Build() are not in the container.',
+      'ASPNETCORE_ENVIRONMENT defaults to "Production" when unset — never rely on dev behaviour unless you set it explicitly.',
+    ],
+  },
+
+  'aspnet/middleware': {
+    apis: ['IMiddleware', 'RequestDelegate', 'Use()', 'Run()', 'Map()', 'IApplicationBuilder'],
+    related: [
+      { label: 'Hosting & Startup', route: '/aspnet/hosting-startup' },
+      { label: 'Routing',           route: '/aspnet/routing' },
+      { label: 'Error Handling',    route: '/aspnet/error-handling' },
+    ],
+    tip: 'Prefer middleware classes over inline delegates for anything you reuse — they are DI-friendly and independently testable.',
+    docs: [
+      { label: 'Middleware Overview',     url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/' },
+      { label: 'Write Custom Middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Middleware runs in registration order — reversing UseAuthentication and UseAuthorization silently breaks auth.',
+      'app.Run() is terminal — no middleware registered after it will ever execute.',
+    ],
+  },
+
+  'aspnet/routing': {
+    apis: ['MapGet()', 'MapControllers()', '[Route]', 'IRouteConstraint', 'LinkGenerator'],
+    related: [
+      { label: 'Controllers & Actions', route: '/aspnet/controllers' },
+      { label: 'Minimal APIs',          route: '/aspnet/minimal-apis' },
+      { label: 'Middleware Pipeline',   route: '/aspnet/middleware' },
+    ],
+    tip: 'Use route constraints (:int, :guid, :alpha, :length) to reject bad values at routing — before model binding runs.',
+    docs: [
+      { label: 'Routing in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing' },
+      { label: 'Route Constraints',       url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing#route-constraints' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Conflicting routes throw AmbiguousMatchException at runtime — more specific templates do NOT automatically win.',
+      'Route templates are case-insensitive but URL generation preserves the case of supplied route values.',
+    ],
+  },
+
+  'aspnet/configuration': {
+    apis: ['IConfiguration', 'IOptions<T>', 'IOptionsSnapshot<T>', 'IOptionsMonitor<T>', 'ValidateOnStart()'],
+    related: [
+      { label: 'Hosting & Startup',    route: '/aspnet/hosting-startup' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+      { label: 'Logging & Diagnostics',route: '/aspnet/logging' },
+    ],
+    tip: 'Always use typed options over IConfiguration["key"] — you get compile-time safety, validation support, and change notifications.',
+    docs: [
+      { label: 'Configuration in .NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/' },
+      { label: 'Options Pattern',        url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options' },
+      { label: 'Safe storage of secrets',url: 'https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop',   badge: 'code' },
+    ],
+    gotchas: [
+      'IOptions<T> is a singleton — it does not see config changes after startup. Use IOptionsSnapshot<T> for per-request fresh values.',
+      'User secrets are unencrypted on disk — they just stay out of source control. Use Key Vault in production.',
+    ],
+  },
+
+  'aspnet/dependency-injection': {
+    apis: ['AddSingleton()', 'AddScoped()', 'AddTransient()', 'IServiceProvider', 'ActivatorUtilities'],
+    related: [
+      { label: 'Hosting & Startup',  route: '/aspnet/hosting-startup' },
+      { label: 'Middleware Pipeline',route: '/aspnet/middleware' },
+      { label: 'Configuration',      route: '/aspnet/configuration' },
+    ],
+    tip: 'Default to scoped for services that touch EF Core or HTTP — this matches request lifetime and avoids thread-safety bugs.',
+    docs: [
+      { label: 'DI in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection' },
+      { label: 'Service lifetimes',  url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#service-lifetimes' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop',   badge: 'code' },
+    ],
+    gotchas: [
+      'Injecting a Scoped service into a Singleton creates a captive dependency — the scoped service lives as long as the singleton.',
+      'IServiceProvider.GetService<T>() returns null for unregistered types — use GetRequiredService<T>() to throw instead.',
+    ],
+  },
+
+  'aspnet/logging': {
+    apis: ['ILogger<T>', 'ILoggerFactory', 'LogLevel', '[LoggerMessage]', 'BeginScope()'],
+    related: [
+      { label: 'Hosting & Startup', route: '/aspnet/hosting-startup' },
+      { label: 'Configuration',     route: '/aspnet/configuration' },
+      { label: 'Error Handling',    route: '/aspnet/error-handling' },
+    ],
+    tip: 'Use the [LoggerMessage] source generator or LoggerMessage.Define() for high-frequency log calls — avoids boxing and string allocations.',
+    docs: [
+      { label: 'Logging in .NET',          url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/' },
+      { label: 'High-performance logging', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/high-performance-logging' },
+    ],
+    resources: [
+      { label: 'Serilog',           url: 'https://serilog.net',                      badge: 'tool' },
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore',    badge: 'code' },
+    ],
+    gotchas: [
+      'String interpolation in log messages defeats structured logging — use message templates: Log.Information("User {Id}", userId).',
+      'The console provider is synchronous by default — in high-throughput scenarios it can become a bottleneck.',
+    ],
+  },
+
+  'aspnet/static-files': {
+    apis: ['UseStaticFiles()', 'StaticFileOptions', 'IFormFile', 'IWebHostEnvironment', 'FileStreamResult'],
+    related: [
+      { label: 'Middleware Pipeline',  route: '/aspnet/middleware' },
+      { label: 'Routing',             route: '/aspnet/routing' },
+      { label: 'Controllers & Actions',route: '/aspnet/controllers' },
+    ],
+    tip: 'Stream large file uploads via Request.Body directly — IFormFile buffers to disk/memory and is unsuitable for files over ~50 MB.',
+    docs: [
+      { label: 'Static Files',  url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/static-files' },
+      { label: 'Upload files',  url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/models/file-uploads' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'UseStaticFiles() must be called before UseRouting() — otherwise the router claims the path first.',
+      'IFormFile.FileName is untrusted user input — never use it as a filesystem path without sanitization.',
+    ],
+  },
+
+  'aspnet/controllers': {
+    apis: ['ControllerBase', '[ApiController]', 'ActionResult<T>', 'IActionResult', '[Route]', 'Problem()'],
+    related: [
+      { label: 'Minimal APIs',             route: '/aspnet/minimal-apis' },
+      { label: 'Model Binding & Validation',route: '/aspnet/model-binding' },
+      { label: 'Filters & Endpoint Filters',route: '/aspnet/filters' },
+    ],
+    tip: 'Prefer ActionResult<T> over IActionResult — the compiler and OpenAPI generators infer the response shape without [ProducesResponseType] attributes.',
+    docs: [
+      { label: 'Controller actions',           url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/actions' },
+      { label: 'Routing to controller actions',url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop',   badge: 'code' },
+    ],
+    gotchas: [
+      '[ApiController] changes binding defaults (complex types from body) — remove it if you need explicit [FromQuery] on complex parameters.',
+      'Ok(null) returns 200 with a null body, not 204 — use NoContent() explicitly for empty success responses.',
+    ],
+  },
+
+  'aspnet/minimal-apis': {
+    apis: ['app.MapGet()', 'TypedResults', 'Results<T1,T2>', 'IEndpointFilter', 'RouteGroupBuilder'],
+    related: [
+      { label: 'Controllers & Actions',     route: '/aspnet/controllers' },
+      { label: 'Model Binding & Validation',route: '/aspnet/model-binding' },
+      { label: 'Filters & Endpoint Filters',route: '/aspnet/filters' },
+    ],
+    tip: 'Use TypedResults over Results — the compiler enforces all code paths return a declared type, and OpenAPI generators see the response schema.',
+    docs: [
+      { label: 'Minimal APIs overview',       url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/overview' },
+      { label: 'Minimal APIs quick reference',url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop',   badge: 'code' },
+    ],
+    gotchas: [
+      'DataAnnotations on DTOs are NOT validated automatically — add an IEndpointFilter or use .NET 9 AddValidation().',
+      'Lambda handlers prevent Native AOT — use static method groups or named delegates for AOT-compatible apps.',
+    ],
+  },
+
+  'aspnet/model-binding': {
+    apis: ['[FromBody]', '[FromQuery]', '[FromRoute]', '[FromHeader]', '[AsParameters]', 'IParsable<T>'],
+    related: [
+      { label: 'Controllers & Actions',      route: '/aspnet/controllers' },
+      { label: 'Minimal APIs',               route: '/aspnet/minimal-apis' },
+      { label: 'Filters & Endpoint Filters', route: '/aspnet/filters' },
+    ],
+    tip: 'Implement IParsable<T> on custom value types for automatic query/route binding in .NET 7+ — no custom IModelBinder needed.',
+    docs: [
+      { label: 'Model Binding',  url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/models/model-binding' },
+      { label: 'Model Validation',url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/models/validation' },
+      { label: 'FluentValidation',url: 'https://docs.fluentvalidation.net/en/latest/aspnet.html' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore',  url: 'https://github.com/dotnet/aspnetcore',             badge: 'code' },
+      { label: 'FluentValidation',   url: 'https://github.com/FluentValidation/FluentValidation', badge: 'code' },
+    ],
+    gotchas: [
+      'The request body is a non-seekable stream — only one [FromBody] parameter per action is allowed.',
+      '[ApiController] auto-400 runs before your action — override via ApiBehaviorOptions.InvalidModelStateResponseFactory.',
+    ],
+  },
+
+  'aspnet/filters': {
+    apis: ['IActionFilter', 'IAsyncActionFilter', 'IExceptionFilter', 'IEndpointFilter', 'ServiceFilterAttribute'],
+    related: [
+      { label: 'Controllers & Actions', route: '/aspnet/controllers' },
+      { label: 'Minimal APIs',          route: '/aspnet/minimal-apis' },
+      { label: 'Error Handling',        route: '/aspnet/error-handling' },
+    ],
+    tip: 'Use IExceptionHandler middleware (.NET 8+) for app-wide exception mapping. Reserve exception filters for controller-specific handling.',
+    docs: [
+      { label: 'Filters in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/filters' },
+      { label: 'Endpoint filters',        url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop',   badge: 'code' },
+    ],
+    gotchas: [
+      'Exception filters only catch exceptions from actions and MVC filters — NOT from middleware. Use UseExceptionHandler() for full coverage.',
+      '[ServiceFilter] filters must be registered in DI — forgetting causes InvalidOperationException at runtime.',
+    ],
+  },
+
+  'aspnet/error-handling': {
+    apis: ['UseExceptionHandler()', 'IExceptionHandler', 'ProblemDetails', 'AddProblemDetails()', 'IProblemDetailsService'],
+    related: [
+      { label: 'Middleware Pipeline',  route: '/aspnet/middleware' },
+      { label: 'Filters & Endpoint Filters', route: '/aspnet/filters' },
+      { label: 'Logging & Diagnostics',route: '/aspnet/logging' },
+    ],
+    tip: 'Call AddProblemDetails() before builder.Build() — this makes UseExceptionHandler() automatically format all 500s as RFC 9457 JSON.',
+    docs: [
+      { label: 'Error handling',    url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling' },
+      { label: 'Problem details',   url: 'https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors#problem-details-service' },
+      { label: 'RFC 9457',          url: 'https://www.rfc-editor.org/rfc/rfc9457' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop',   badge: 'code' },
+    ],
+    gotchas: [
+      'UseExceptionHandler() must be the FIRST middleware — exceptions from any later middleware are caught. Register it before UseHttpsRedirection.',
+      'UseDeveloperExceptionPage() exposes the full stack trace — never use it in production. Guard strictly with IsDevelopment().',
+    ],
+  },
+
+  'aspnet/openapi-swagger': {
+    apis: ['AddOpenApi()', 'MapOpenApi()', '.WithSummary()', '.WithDescription()', 'TypedResults', 'IOpenApiOperationTransformer'],
+    related: [
+      { label: 'Controllers & Actions', route: '/aspnet/controllers' },
+      { label: 'Minimal APIs',          route: '/aspnet/minimal-apis' },
+      { label: 'API Versioning',        route: '/aspnet/api-versioning' },
+    ],
+    tip: 'Use TypedResults (not IResult) in minimal APIs — the built-in OpenAPI generator reads the return type at build time to populate response schemas automatically.',
+    docs: [
+      { label: 'OpenAPI in ASP.NET Core (.NET 9)', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview' },
+      { label: 'Swashbuckle getting started',      url: 'https://github.com/domaindrivendev/Swashbuckle.AspNetCore' },
+      { label: 'NSwag documentation',             url: 'https://github.com/RicoSuter/NSwag' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore',  url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+      { label: 'scalar/scalar',      url: 'https://github.com/scalar/scalar',     badge: 'code' },
+    ],
+    gotchas: [
+      'Built-in AddOpenApi() (≥ .NET 9) and Swashbuckle are separate packages — do not install both unless intentional; they generate competing /openapi/*.json endpoints.',
+      'Controller XML doc comments require <GenerateDocumentationFile>true</GenerateDocumentationFile> in the .csproj and IncludeXmlComments() in the Swashbuckle config.',
+    ],
+  },
+
+  'aspnet/api-versioning': {
+    apis: ['AddApiVersioning()', '[ApiVersion]', '[MapToApiVersion]', '[Deprecated]', 'ApiVersioningOptions', 'ReportApiVersions'],
+    related: [
+      { label: 'Controllers & Actions', route: '/aspnet/controllers' },
+      { label: 'Minimal APIs',          route: '/aspnet/minimal-apis' },
+      { label: 'OpenAPI & Swagger',     route: '/aspnet/openapi-swagger' },
+    ],
+    tip: 'URL-segment versioning (/v1/products) is the most discoverable strategy — clients can see the version in logs, network traces, and browser URLs without reading docs.',
+    docs: [
+      { label: 'Asp.Versioning NuGet',         url: 'https://www.nuget.org/packages/Asp.Versioning.Mvc' },
+      { label: 'API versioning wiki',          url: 'https://github.com/dotnet/aspnet-api-versioning/wiki' },
+      { label: 'Versioning with minimal APIs', url: 'https://github.com/dotnet/aspnet-api-versioning/wiki/Minimal-APIs' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnet-api-versioning', url: 'https://github.com/dotnet/aspnet-api-versioning', badge: 'code' },
+      { label: 'dotnet/aspnetcore',            url: 'https://github.com/dotnet/aspnetcore',            badge: 'code' },
+    ],
+    gotchas: [
+      'Mark old versions [Deprecated] for at least one release cycle before removal — clients need time to migrate. Deprecated versions still respond; sunset date goes in headers.',
+      'Route prefix (/v{version:apiVersion}/) must match all versioned groups exactly — a mismatch returns 404, not a 400 Bad ApiVersion.',
+    ],
+  },
+
+  'aspnet/http-clients': {
+    apis: ['IHttpClientFactory', 'AddHttpClient<T>()', 'AddStandardResilienceHandler()', 'DelegatingHandler', 'ResiliencePipeline', 'HttpClientHandler'],
+    related: [
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+      { label: 'gRPC Services',        route: '/aspnet/grpc' },
+      { label: 'Configuration',        route: '/aspnet/configuration' },
+    ],
+    tip: 'Pair each typed client with exactly one downstream API — the client class owns base address, headers, serialization, and error handling so callers see a clean domain method.',
+    docs: [
+      { label: 'IHttpClientFactory in .NET',      url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory' },
+      { label: 'Resilience in .NET',              url: 'https://learn.microsoft.com/en-us/dotnet/core/resilience/' },
+      { label: 'Make HTTP requests with HttpClient', url: 'https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient' },
+    ],
+    resources: [
+      { label: 'dotnet/extensions',  url: 'https://github.com/dotnet/extensions', badge: 'code' },
+      { label: 'App-vNext/Polly',    url: 'https://github.com/App-vNext/Polly',   badge: 'code' },
+    ],
+    gotchas: [
+      'Never inject a typed client (Transient) into a Singleton service — the handler pool is fine, but any per-request state on the typed client will be shared. Use IServiceScopeFactory for background services.',
+      'HttpClient.BaseAddress must end with "/" — relative paths without a trailing slash on the base are silently dropped, resulting in 404s.',
+    ],
+  },
+
+  'aspnet/grpc': {
+    apis: ['MapGrpcService<T>()', 'ServerCallContext', 'IServerStreamWriter<T>', 'IAsyncStreamReader<T>', 'RpcException', 'GrpcChannel'],
+    related: [
+      { label: 'HttpClient & Resilience', route: '/aspnet/http-clients' },
+      { label: 'Dependency Injection',    route: '/aspnet/dependency-injection' },
+      { label: 'Error Handling',          route: '/aspnet/error-handling' },
+    ],
+    tip: 'Always pass ServerCallContext.CancellationToken to every async call — gRPC cancels the token when the client deadline expires or disconnects, so unchecked tokens waste server resources.',
+    docs: [
+      { label: 'gRPC for .NET overview', url: 'https://learn.microsoft.com/en-us/aspnet/core/grpc/' },
+      { label: 'gRPC services with C#',  url: 'https://learn.microsoft.com/en-us/aspnet/core/grpc/basics' },
+      { label: 'gRPC-Web in ASP.NET',   url: 'https://learn.microsoft.com/en-us/aspnet/core/grpc/grpcweb' },
+    ],
+    resources: [
+      { label: 'grpc/grpc-dotnet', url: 'https://github.com/grpc/grpc-dotnet', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop',  badge: 'code' },
+    ],
+    gotchas: [
+      'Never reuse or change Protobuf field numbers — they are the binary wire identity. Removed fields must be marked reserved to prevent accidental reuse in future schema versions.',
+      'gRPC requires HTTP/2. If hosting behind a reverse proxy (nginx, IIS), ensure HTTP/2 pass-through is configured — HTTP/1.1 proxies silently break the connection.',
+    ],
+  },
+
+  'aspnet/ef-core-basics': {
+    apis: ['DbContext', 'DbSet<T>', 'SaveChangesAsync()', 'FindAsync()', 'AsNoTracking()', 'OnModelCreating()'],
+    related: [
+      { label: 'EF Relationships',  route: '/aspnet/ef-relationships' },
+      { label: 'EF Performance',    route: '/aspnet/ef-performance' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Always call async EF Core methods (ToListAsync, SaveChangesAsync) and pass the CancellationToken — this lets ASP.NET Core cancel the DB query when the client disconnects.',
+    docs: [
+      { label: 'EF Core overview',       url: 'https://learn.microsoft.com/en-us/ef/core/' },
+      { label: 'Getting started',        url: 'https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app' },
+      { label: 'Migrations overview',    url: 'https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop', badge: 'code' },
+    ],
+    gotchas: [
+      'Never register DbContext as Singleton — it is not thread-safe and tracks entity state per instance. Use Scoped (default) or AddDbContextPool for high throughput.',
+      'Running Database.MigrateAsync() at startup can cause table locks on large tables in production. Use dotnet ef migrations script --idempotent and run migrations out-of-band.',
+    ],
+  },
+
+  'aspnet/ef-relationships': {
+    apis: ['HasMany()', 'HasOne()', 'WithMany()', 'WithOne()', 'Include()', 'ThenInclude()', 'OwnsOne()', 'OnDelete()'],
+    related: [
+      { label: 'EF Core Basics',    route: '/aspnet/ef-core-basics' },
+      { label: 'EF Performance',    route: '/aspnet/ef-performance' },
+    ],
+    tip: 'Always initialize collection navigations to an empty list: public List<T> Items { get; set; } = []. Un-initialized collections throw NullReferenceException when accessed before Include() loads them.',
+    docs: [
+      { label: 'Relationships',          url: 'https://learn.microsoft.com/en-us/ef/core/modeling/relationships' },
+      { label: 'Loading related data',   url: 'https://learn.microsoft.com/en-us/ef/core/querying/related-data/' },
+      { label: 'Owned entity types',     url: 'https://learn.microsoft.com/en-us/ef/core/modeling/owned-entities' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop', badge: 'code' },
+    ],
+    gotchas: [
+      'context.Update(entity) marks ALL properties Modified — it overwrites every column including ones you did not change. Load-then-mutate is safer for partial updates.',
+      'Cascade delete is the default for required relationships — deleting a parent silently deletes all children. Set OnDelete(DeleteBehavior.Restrict) explicitly for important data.',
+    ],
+  },
+
+  'aspnet/ef-performance': {
+    apis: ['AsNoTracking()', 'AsSplitQuery()', 'EF.CompileQuery()', 'ExecuteDeleteAsync()', 'ExecuteUpdateAsync()', 'FromSqlRaw()'],
+    related: [
+      { label: 'EF Core Basics',    route: '/aspnet/ef-core-basics' },
+      { label: 'EF Relationships',  route: '/aspnet/ef-relationships' },
+      { label: 'Caching',           route: '/aspnet/caching' },
+    ],
+    tip: 'Use Select() to project only the columns you need — EF Core generates SELECT col1, col2 instead of SELECT *. This reduces network I/O, memory, and deserialization cost in one change.',
+    docs: [
+      { label: 'Performance overview',   url: 'https://learn.microsoft.com/en-us/ef/core/performance/' },
+      { label: 'Bulk operations',        url: 'https://learn.microsoft.com/en-us/ef/core/saving/execute-insert-update-delete' },
+      { label: 'Compiled queries',       url: 'https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics#compiled-queries' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop', badge: 'code' },
+    ],
+    gotchas: [
+      'ExecuteDeleteAsync/ExecuteUpdateAsync bypass the change tracker — entity events, interceptors, and audit hooks tied to SaveChanges do NOT fire. Handle side-effects manually.',
+      'FromSqlRaw() with user input without parameterisation is a SQL injection vulnerability. Always use FromSqlInterpolated() or explicit SqlParameter objects.',
+    ],
+  },
+
+  'aspnet/caching': {
+    apis: ['IMemoryCache', 'GetOrCreateAsync()', 'IDistributedCache', 'AddOutputCache()', 'IOutputCacheStore', 'EvictByTagAsync()'],
+    related: [
+      { label: 'EF Performance',        route: '/aspnet/ef-performance' },
+      { label: 'Configuration & Options', route: '/aspnet/configuration' },
+      { label: 'Dependency Injection',  route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Use GetOrCreateAsync() rather than a get-then-set pattern — it prevents cache stampede by serializing factory execution for the same key under concurrent cache misses.',
+    docs: [
+      { label: 'Caching in .NET',             url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview' },
+      { label: 'Output caching middleware',    url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output' },
+      { label: 'Distributed caching',         url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed' },
+    ],
+    resources: [
+      { label: 'StackExchange.Redis', url: 'https://github.com/StackExchange/StackExchange.Redis', badge: 'code' },
+      { label: 'dotnet/aspnetcore',   url: 'https://github.com/dotnet/aspnetcore',                 badge: 'code' },
+    ],
+    gotchas: [
+      'IMemoryCache is per-process — in a multi-server deployment each pod has its own cache, so a write on server A is invisible to server B until TTL expires. Use IDistributedCache (Redis) for shared state.',
+      'Never cache user-specific data without including the user ID in the cache key — omitting it means one user sees another user\'s data.',
+    ],
+  },
+
+  // ── ASP.NET Security ────────────────────────────────────────────────────────
+  'aspnet/authentication': {
+    apis: ['AddAuthentication()', 'AddJwtBearer()', 'AddCookie()', 'UseAuthentication()', 'UseAuthorization()', 'ClaimsPrincipal', 'AddIdentity<T>()', 'AddOpenIdConnect()'],
+    related: [
+      { label: 'Authorization',         route: '/aspnet/authorization' },
+      { label: 'Secrets & Data Prot.',  route: '/aspnet/secrets' },
+      { label: 'Web Security',          route: '/aspnet/web-security' },
+    ],
+    tip: 'Always call UseAuthentication() before UseAuthorization() in middleware order — swapping them means authorization runs without a populated HttpContext.User.',
+    docs: [
+      { label: 'Authentication overview', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authentication/' },
+      { label: 'JWT bearer auth',         url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authentication/jwt-authn' },
+      { label: 'ASP.NET Core Identity',   url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+      { label: 'eShop reference app', url: 'https://github.com/dotnet/eShop', badge: 'code' },
+    ],
+    gotchas: [
+      'JWT tokens cannot be revoked before expiry unless you maintain a token blocklist. Keep access token lifetimes short (5–15 min) and use refresh tokens for long sessions.',
+      'Cookie auth SameSite=Strict blocks the cookie on cross-origin navigations including OAuth redirects. Use SameSite=Lax for OIDC callback flows.',
+    ],
+  },
+
+  'aspnet/authorization': {
+    apis: ['[Authorize]', '[AllowAnonymous]', 'AddAuthorization()', 'RequireAuthenticatedUser()', 'RequireRole()', 'RequireClaim()', 'IAuthorizationRequirement', 'IAuthorizationService'],
+    related: [
+      { label: 'Authentication',    route: '/aspnet/authentication' },
+      { label: 'Web Security',      route: '/aspnet/web-security' },
+      { label: 'Secrets & Data Prot.', route: '/aspnet/secrets' },
+    ],
+    tip: 'Prefer policy-based authorization over role checks — policies are testable, composable, and decouple claim names from business rules.',
+    docs: [
+      { label: 'Authorization overview',     url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/introduction' },
+      { label: 'Policy-based authorization', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies' },
+      { label: 'Resource-based auth',        url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'IAuthorizationHandler is registered as a service — inject your handler in AddScoped/AddTransient, not AddSingleton, if it needs per-request state.',
+      'FallbackPolicy applies to ALL endpoints. If you have public health-check endpoints, mark them with [AllowAnonymous] or MapHealthChecks().AllowAnonymous() explicitly.',
+    ],
+  },
+
+  'aspnet/cors': {
+    apis: ['AddCors()', 'UseCors()', 'WithOrigins()', 'AllowAnyOrigin()', 'AllowCredentials()', 'UseHsts()', 'UseHttpsRedirection()', 'RequireCors()'],
+    related: [
+      { label: 'Authentication',       route: '/aspnet/authentication' },
+      { label: 'Web Security',         route: '/aspnet/web-security' },
+      { label: 'Middleware',           route: '/aspnet/middleware' },
+    ],
+    tip: 'AllowAnyOrigin() and AllowCredentials() cannot be combined — the browser blocks credentialed cross-origin requests to wildcard origins. Use WithOrigins() with specific domains.',
+    docs: [
+      { label: 'Enable CORS in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/cors' },
+      { label: 'HTTPS & HSTS',           url: 'https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'CORS is a browser security feature — server-to-server calls are not restricted by CORS. A malicious server can still call your API without a browser.',
+      'UseCors() must come after UseRouting() but before UseAuthentication() and UseAuthorization() to apply correctly.',
+    ],
+  },
+
+  'aspnet/rate-limiting': {
+    apis: ['AddRateLimiter()', 'UseRateLimiter()', 'AddFixedWindowLimiter()', 'AddSlidingWindowLimiter()', 'AddTokenBucketLimiter()', 'AddConcurrencyLimiter()', 'RequireRateLimiting()', 'OnRejected'],
+    related: [
+      { label: 'Authentication',    route: '/aspnet/authentication' },
+      { label: 'Web Security',      route: '/aspnet/web-security' },
+      { label: 'Middleware',        route: '/aspnet/middleware' },
+    ],
+    tip: 'Partition limiters by user ID or API key rather than globally — a global limit lets one heavy user exhaust the quota for everyone else.',
+    docs: [
+      { label: 'Rate limiting middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit' },
+      { label: 'System.Threading.RateLimiting', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.ratelimiting' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Rate limiting state is in-memory and per-process. In a multi-replica deployment each pod has independent counters — use a distributed store (Redis) for global limits.',
+      'OnRejected fires synchronously on the limiter thread. Keep it lightweight — just set StatusCode 429 and write a short response; avoid slow I/O there.',
+    ],
+  },
+
+  'aspnet/web-security': {
+    apis: ['FromSqlInterpolated()', 'HtmlEncoder.Encode()', 'AddAntiforgery()', '[ValidateAntiForgeryToken]', 'IAntiforgery', 'LocalRedirect()', 'Content-Security-Policy', 'Path.GetFullPath()'],
+    related: [
+      { label: 'Authentication',    route: '/aspnet/authentication' },
+      { label: 'Authorization',     route: '/aspnet/authorization' },
+      { label: 'CORS & Security Headers', route: '/aspnet/cors' },
+    ],
+    tip: 'The single highest-value habit: never build SQL strings by concatenation. EF Core parameterises LINQ queries automatically; use FromSqlInterpolated() for raw SQL to keep the same safety guarantee.',
+    docs: [
+      { label: 'Prevent XSS in ASP.NET',   url: 'https://learn.microsoft.com/en-us/aspnet/core/security/cross-site-scripting' },
+      { label: 'Antiforgery in ASP.NET',    url: 'https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery' },
+      { label: 'OWASP Top 10',              url: 'https://owasp.org/www-project-top-ten/' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Razor pages auto-generate antiforgery tokens. Minimal API endpoints do NOT — call ValidateAntiforgeryToken() explicitly or use the IAntiforgery service middleware.',
+      'Path.Combine(root, userInput) does NOT prevent traversal if userInput starts with / or \\ — it just replaces root. Always call Path.GetFullPath and verify the result starts with root.',
+    ],
+  },
+
+  'aspnet/secrets': {
+    apis: ['dotnet user-secrets', 'AddUserSecrets<T>()', 'AddEnvironmentVariables()', 'AddAzureKeyVault()', 'IDataProtector', 'AddDataProtection()', 'PersistKeysToStackExchangeRedis()', 'ProtectCookies()'],
+    related: [
+      { label: 'Authentication',       route: '/aspnet/authentication' },
+      { label: 'Configuration',        route: '/aspnet/configuration' },
+      { label: 'Web Security',         route: '/aspnet/web-security' },
+    ],
+    tip: 'Use `__` (double underscore) as the hierarchy separator in environment variable names — it maps to `:` in configuration keys across all platforms including Linux containers.',
+    docs: [
+      { label: 'Safe storage of app secrets', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets' },
+      { label: 'Azure Key Vault provider',     url: 'https://learn.microsoft.com/en-us/aspnet/core/security/key-vault-configuration' },
+      { label: 'Data Protection API',          url: 'https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore',   url: 'https://github.com/dotnet/aspnetcore',   badge: 'code' },
+      { label: 'Azure/azure-sdk-for-net', url: 'https://github.com/Azure/azure-sdk-for-net', badge: 'code' },
+    ],
+    gotchas: [
+      'Data Protection keys are ephemeral by default — on restart all protected data (cookies, tokens, antiforgery) becomes invalid. Always configure persistent key storage in production.',
+      'User secrets are tied to the project by UserSecretsId in the .csproj. Changing that GUID silently breaks secret lookups without any error at startup.',
+    ],
+  },
+
+  // ── ASP.NET Quality ─────────────────────────────────────────────────────────
+  'aspnet/testing': {
+    apis: ['WebApplicationFactory<T>', 'CreateClient()', '[Fact]', '[Theory]', 'Substitute.For<T>()', 'ConfigureTestServices()', 'UseInMemoryDatabase()', 'UseSqlite(":memory:")'],
+    related: [
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+      { label: 'EF Core Basics',       route: '/aspnet/ef-core-basics' },
+      { label: 'Authentication',       route: '/aspnet/authentication' },
+    ],
+    tip: 'Use IClassFixture<WebApplicationFactory<T>> to share the in-memory server across all tests in a class — starting it once per class is much faster than once per test method.',
+    docs: [
+      { label: 'Integration tests in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests' },
+      { label: 'Unit testing in .NET',         url: 'https://learn.microsoft.com/en-us/dotnet/core/testing/' },
+    ],
+    resources: [
+      { label: 'xunit/xunit',        url: 'https://github.com/xunit/xunit',        badge: 'code' },
+      { label: 'nsubstitute/NSubstitute', url: 'https://github.com/nsubstitute/NSubstitute', badge: 'code' },
+    ],
+    gotchas: [
+      'SQLite :memory: databases are connection-scoped — close the connection and the data is gone. Keep SqliteConnection open for the test lifetime and pass it to DbContextOptions.',
+      'ConfigureTestServices runs AFTER the real DI registrations. Use services.RemoveAll<T>() before re-registering to avoid duplicate registration exceptions.',
+    ],
+  },
+
+  'aspnet/background-services': {
+    apis: ['IHostedService', 'BackgroundService', 'ExecuteAsync()', 'IServiceScopeFactory', 'PeriodicTimer', 'Channel<T>', 'AddHostedService<T>()', 'stoppingToken'],
+    related: [
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+      { label: 'Caching',              route: '/aspnet/caching' },
+      { label: 'SignalR',              route: '/aspnet/signalr' },
+    ],
+    tip: 'Use PeriodicTimer instead of Task.Delay in a loop — it ticks on schedule without drifting when the work takes variable time, and cleans up without a try/catch on OperationCanceledException.',
+    docs: [
+      { label: 'Background tasks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services' },
+      { label: 'System.Threading.Channels',   url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/channels' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime (Channels)',  url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'Never inject a scoped service (DbContext, your repositories) directly into BackgroundService — it is a singleton. Always create a scope via IServiceScopeFactory.CreateAsyncScope().',
+      'If ExecuteAsync throws an unhandled exception, the hosted service stops silently. Wrap the main loop in try/catch and log — or use IHostApplicationLifetime.StopApplication() to bring the whole process down on fatal errors.',
+    ],
+  },
+
+  'aspnet/signalr': {
+    apis: ['AddSignalR()', 'MapHub<T>()', 'Hub', 'IHubContext<T>', 'Clients.All', 'Clients.Caller', 'Groups.AddToGroupAsync()', 'AddStackExchangeRedis()'],
+    related: [
+      { label: 'Background Services', route: '/aspnet/background-services' },
+      { label: 'Authentication',      route: '/aspnet/authentication' },
+      { label: 'Rate Limiting',       route: '/aspnet/rate-limiting' },
+    ],
+    tip: 'Group membership is in-memory per server instance and lost on reconnect. Always have clients re-join their groups in the connection.onreconnected() callback on the client side.',
+    docs: [
+      { label: 'ASP.NET Core SignalR',     url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction' },
+      { label: 'JavaScript client',        url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/javascript-client' },
+      { label: 'Scale out with Redis',     url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/redis-backplane' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore',       url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+      { label: 'SignalR samples',         url: 'https://github.com/dotnet/AspNetCore.Docs.Samples', badge: 'code' },
+    ],
+    gotchas: [
+      'Hub instances are transient — created per invocation. Do not store client state in Hub fields. Use an external store (IMemoryCache, Redis, database) for connection-level state.',
+      'Hub methods invoked from JavaScript are matched by string name (case-insensitive by default). A rename on the server without updating the client silently breaks the call.',
+    ],
+  },
+
+  'aspnet/health-checks': {
+    apis: ['AddHealthChecks()', 'MapHealthChecks()', 'IHealthCheck', 'HealthCheckResult', 'AddDbContextCheck<T>()', 'AddUrlGroup()', 'UIResponseWriter', 'AddOpenTelemetry()'],
+    related: [
+      { label: 'Deployment',           route: '/aspnet/deployment' },
+      { label: 'Performance',          route: '/aspnet/performance' },
+      { label: 'Configuration',        route: '/aspnet/configuration' },
+    ],
+    tip: 'Split liveness and readiness into separate endpoints. Liveness (/health/live) should never check external dependencies — if your DB is down, liveness should still pass (don\'t let k8s restart your pod over a DB outage).',
+    docs: [
+      { label: 'Health checks in ASP.NET',  url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks' },
+      { label: 'OpenTelemetry .NET',        url: 'https://learn.microsoft.com/en-us/dotnet/core/diagnostics/observability-with-otel' },
+    ],
+    resources: [
+      { label: 'Xabaril/AspNetCore.Diagnostics.HealthChecks', url: 'https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks', badge: 'code' },
+      { label: 'open-telemetry/opentelemetry-dotnet',         url: 'https://github.com/open-telemetry/opentelemetry-dotnet',         badge: 'code' },
+    ],
+    gotchas: [
+      'The default HealthCheckOptions.ResponseWriter returns a plain "Healthy"/"Unhealthy" string. Production monitoring tools expect JSON — always provide a custom ResponseWriter or use UIResponseWriter.',
+      'Health check evaluation is sequential by default. Slow external checks (URL group, DNS) block the response. Set a per-check timeout via AddUrlGroup(..., timeout: TimeSpan.FromSeconds(3)).',
+    ],
+  },
+
+  'aspnet/deployment': {
+    apis: ['dotnet publish', '--self-contained', 'Dockerfile', 'ForwardedHeaders', 'UseForwardedHeaders()', 'ASPNETCORE_ENVIRONMENT', 'appsettings.{Env}.json', 'PublishAot'],
+    related: [
+      { label: 'Configuration',    route: '/aspnet/configuration' },
+      { label: 'Health Checks',    route: '/aspnet/health-checks' },
+      { label: 'Secrets',          route: '/aspnet/secrets' },
+    ],
+    tip: 'Copy only the *.csproj files before dotnet restore in your Dockerfile — this creates a separate layer for restored packages that is cached unless dependencies change, making rebuilds much faster.',
+    docs: [
+      { label: 'Host and deploy ASP.NET',   url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/' },
+      { label: 'Docker with .NET',          url: 'https://learn.microsoft.com/en-us/dotnet/core/docker/build-container' },
+      { label: 'Native AOT overview',       url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/' },
+    ],
+    resources: [
+      { label: 'dotnet/dotnet-docker',  url: 'https://github.com/dotnet/dotnet-docker', badge: 'code' },
+      { label: 'eShop reference app',   url: 'https://github.com/dotnet/eShop',         badge: 'code' },
+    ],
+    gotchas: [
+      'UseForwardedHeaders() must come before UseAuthentication(). If reversed, auth redirects use the wrong scheme (http instead of https) and OAuth/OIDC flows break.',
+      'Never set KnownNetworks.Clear() + KnownProxies.Clear() without trusting only your internal network. Without restriction, any caller can spoof X-Forwarded-For to impersonate any IP.',
+    ],
+  },
+
+  'aspnet/performance': {
+    apis: ['AddResponseCompression()', 'UseResponseCompression()', 'dotnet-counters', 'dotnet-trace', 'dotnet-dump', '[Benchmark]', 'ObjectPool<T>', 'ArrayPool<T>'],
+    related: [
+      { label: 'Caching',          route: '/aspnet/caching' },
+      { label: 'EF Performance',   route: '/aspnet/ef-performance' },
+      { label: 'Health Checks',    route: '/aspnet/health-checks' },
+    ],
+    tip: 'Run BenchmarkDotNet in Release mode (dotnet run -c Release) — Debug mode disables JIT optimisations that are active in production and makes results meaningless.',
+    docs: [
+      { label: 'Performance best practices',   url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/performance-best-practices' },
+      { label: 'Response compression',         url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/response-compression' },
+      { label: '.NET diagnostic tools',        url: 'https://learn.microsoft.com/en-us/dotnet/core/diagnostics/' },
+    ],
+    resources: [
+      { label: 'dotnet/BenchmarkDotNet', url: 'https://github.com/dotnet/BenchmarkDotNet', badge: 'code' },
+      { label: 'dotnet/aspnetcore',      url: 'https://github.com/dotnet/aspnetcore',      badge: 'code' },
+    ],
+    gotchas: [
+      'Response compression over HTTPS can be vulnerable to BREACH attacks when responses contain secrets that reflect user-controlled input. EnableForHttps = true is safe for pure API JSON payloads but dangerous for HTML pages with CSRF tokens.',
+      'ObjectPool<StringBuilder> calls sb.Clear() on Return — it does NOT reset the capacity. A StringBuilder that grew to 10 MB stays at 10 MB in the pool. Set a maximum capacity check before returning.',
+    ],
+  },
+
+  'aspnet/aspire': {
+    apis: ['AddProject<T>()', 'AddRedis()', 'AddPostgres()', 'WithReference()', 'AddServiceDefaults()', 'WithExternalHttpEndpoints()', 'ServiceDiscovery', 'azd up'],
+    related: [
+      { label: 'Health Checks',        route: '/aspnet/health-checks' },
+      { label: 'Background Services',  route: '/aspnet/background-services' },
+      { label: 'Deployment',           route: '/aspnet/deployment' },
+    ],
+    tip: 'The service name in AddProject("name") is your service discovery key. Use "https+http://name" as the HttpClient base address — Aspire resolves it to the actual port, so you never hardcode port numbers.',
+    docs: [
+      { label: '.NET Aspire overview',         url: 'https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview' },
+      { label: 'Service discovery in Aspire',  url: 'https://learn.microsoft.com/en-us/dotnet/aspire/service-discovery/overview' },
+      { label: 'Deploy with azd',              url: 'https://learn.microsoft.com/en-us/dotnet/aspire/deployment/azure/aca-deployment' },
+    ],
+    resources: [
+      { label: 'dotnet/aspire',        url: 'https://github.com/dotnet/aspire',        badge: 'code' },
+      { label: 'dotnet/aspire-samples', url: 'https://github.com/dotnet/aspire-samples', badge: 'code' },
+    ],
+    gotchas: [
+      'AddServiceDefaults() must be called in each service project — not just the AppHost. Forgetting it in a service means that service has no OTel, health checks, or resilience handlers.',
+      'Aspire containers (Redis, Postgres) use random host ports each run. Never hardcode ports in your service config — always rely on service discovery or the injected connection strings.',
+    ],
+  },
+
   // ── SSR + Hydration ─────────────────────────────────────────────────────────
   ssr: {
     apis: ['provideClientHydration()', 'withEventReplay()', 'isPlatformBrowser()', 'PLATFORM_ID', 'TransferState'],
@@ -1932,11 +2696,12 @@ export class PageSidebarComponent {
     : 'angular'
   );
 
-  data = computed<SidebarData>(() =>
-    SIDEBAR_MAP[this.routeKey()] ??
-    SIDEBAR_MAP[this.routeKey().replace(/^(angular|csharp)\//, '')] ??
-    DEFAULT
-  );
+  data = computed<SidebarData>(() => {
+    const key = this.routeKey();
+    return SIDEBAR_MAP[key] ??
+           SIDEBAR_MAP[key.replace(/^(angular|csharp)\//, '')] ??
+           (this.section() === 'aspnet' ? ASPNET_DEFAULT : DEFAULT);
+  });
 
   docsHeading = computed(() => {
     switch (this.section()) {

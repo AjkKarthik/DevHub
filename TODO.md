@@ -18,14 +18,15 @@ Add newly discovered work here instead of leaving it only in chat.
     routing, configuration, dependency-injection, logging) — 18 files, full wiring:
     routes, nav+progress bar, search entries, home cards flipped, progress.service
     aspnetTotal/aspnetCount/aspnetPct, page-meta tech="aspnet" support. Build passes.
-  - [ ] Phase 2 Batch 2: Fundamentals remainder + Web API start:
-    static-files, controllers, minimal-apis, model-binding, filters, error-handling
-  - [ ] Phase 2 Batch 3: Web API finish: openapi-swagger, api-versioning, http-clients, grpc
-  - [ ] Phase 2 Batch 4: Data: ef-core-basics, ef-relationships, ef-performance, caching
-  - [ ] Phase 2 Batch 5: Security: authentication, authorization, cors, rate-limiting, web-security, secrets
-  - [ ] Phase 2 Batch 6: Quality: testing, background-services, signalr, health-checks, performance, deployment, aspire
+  - [x] Phase 2 Batch 2 DONE 2026-06-11: static-files (Fundamentals), controllers,
+    minimal-apis, model-binding, filters, error-handling (Web API) — 18 files, full wiring:
+    routes, nav Web API group, search entries, home cards flipped. Build passes.
+  - [x] Phase 2 Batch 3 DONE 2026-06-12: openapi-swagger, api-versioning, http-clients, grpc — 12 files, full wiring: routes, nav, search, home cards flipped, sidebar entries. Build passes.
+  - [x] Phase 2 Batch 4 DONE 2026-06-12: ef-core-basics, ef-relationships, ef-performance, caching — 12 files, full wiring: routes, nav Data group, search, home cards flipped, sidebar entries. Build passes.
+  - [x] Phase 2 Batch 5 DONE 2026-06-12: authentication, authorization, cors, rate-limiting, web-security, secrets — 18 files, full wiring: routes, nav Security group, search, home cards flipped, sidebar entries. Build passes.
+  - [x] Phase 2 Batch 6 DONE 2026-06-12: testing, background-services, signalr, health-checks, deployment, performance, aspire — 21 files, full wiring: routes, nav Quality group, search, home cards flipped, sidebar entries. Build passes. All 33/33 topics live.
   - [ ] Phase 3: parity practice/reference pages (cheatsheet, errors, quiz, interview prep, …)
-  - STATUS: Phase 2 Batch 1 complete (6/33 topics live); next session starts Batch 2.
+  - STATUS: Phase 2 complete — all 33 ASP.NET Core topics live. Next: Phase 3 parity pages.
 
 ## Next Up
 

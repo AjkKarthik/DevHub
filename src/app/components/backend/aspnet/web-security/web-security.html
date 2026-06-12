@@ -1,0 +1,20 @@
+<div class="aspnet-page">
+  <div class="page-header-icon aspnet-icon">🔒</div>
+  <h1 class="page-title">Web Security Essentials</h1>
+  <p class="page-subtitle">OWASP for ASP.NET — SQL injection, XSS, CSRF antiforgery, open redirects, path traversal, and the headers that defend against them.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="aspnet-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+
+  <app-page-complete route="aspnet-web-security" nextRoute="/aspnet/secrets" nextLabel="Secrets &amp; Data Protection" />
+</div>
