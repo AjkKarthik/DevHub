@@ -1,0 +1,132 @@
+<section class="hero">
+  <div class="hero-logo">🗄️</div>
+  <h1>SQL Hub</h1>
+  <p class="subtitle">
+    Relational database fundamentals through advanced performance tuning —
+    every concept shown in both <strong>SQL Server (T-SQL)</strong> and <strong>PostgreSQL</strong>, with dialect diffs called out.
+  </p>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">{{ totalCount }}</span><span class="stat-label">topics</span></div>
+    <div class="stat"><span class="stat-num">{{ availableCount }}</span><span class="stat-label">live now</span></div>
+    <div class="stat"><span class="stat-num">MSSQL + PG</span><span class="stat-label">dual dialect</span></div>
+    <div class="stat"><span class="stat-num">9</span><span class="stat-label">categories</span></div>
+  </div>
+</section>
+
+<section class="topics">
+  <div class="topics-header">
+    <h2>What's inside</h2>
+    <div class="filters">
+      @for (f of filters; track f) {
+        <button type="button" class="filter-btn" [class.active]="activeFilter() === f" (click)="setFilter(f)">
+          {{ f }} <span class="count">{{ counts()[f] ?? 0 }}</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="grid">
+    @for (topic of topics(); track topic.route) {
+      <div class="card" [class.expanded]="expandedCard() === topic.route">
+        @if (topic.available) {
+          <a class="card-main" [routerLink]="topic.route">
+            <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
+            <h3>{{ topic.title }}</h3>
+            <p>{{ topic.description }}</p>
+          </a>
+        } @else {
+          <div class="card-main">
+            <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
+            <h3>{{ topic.title }} <span class="soon-chip">Soon</span></h3>
+            <p>{{ topic.description }}</p>
+          </div>
+        }
+        <div class="card-footer">
+          <button type="button" class="key-points-btn" (click)="toggleCard(topic.route, $event)">
+            {{ expandedCard() === topic.route ? '▲ Hide key points' : '▼ Key points' }}
+          </button>
+          @if (topic.available) {
+            <a class="arrow-link" [routerLink]="topic.route">Explore →</a>
+          } @else {
+            <span class="arrow-link disabled">Coming soon</span>
+          }
+        </div>
+        @if (expandedCard() === topic.route) {
+          <div class="key-points">
+            @for (pt of topic.keyPoints; track pt) { <div class="key-point">{{ pt }}</div> }
+          </div>
+        }
+      </div>
+    }
+    @empty { <p class="no-results">No topics in this category.</p> }
+  </div>
+</section>
+
+<section class="roadmap">
+  <h2>Recommended learning path</h2>
+  <div class="path-groups">
+
+    <div class="path-group">
+      <h3 class="group-label foundations">① Foundations</h3>
+      <ol>
+        <li><span class="step-num">1</span><span>RDBMS Concepts — entities, keys, integrity</span></li>
+        <li><span class="step-num">2</span><span>Data Modeling — ER diagrams, cardinality</span></li>
+        <li><span class="step-num">3</span><span>Normalization — 1NF → 3NF → BCNF</span></li>
+        <li><span class="step-num">4</span><span>Database Architecture — pages, WAL, MVCC</span></li>
+        <li><span class="step-num">5</span><span>Data Types — storage sizes, dialect diffs</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label core">② Core SQL</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/sql/basics"><strong>SQL Basics</strong></a> — SELECT, WHERE, ORDER BY</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/sql/joins"><strong>Joins</strong></a> — INNER, LEFT, FULL OUTER</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/sql/aggregations"><strong>Aggregations</strong></a> — GROUP BY, HAVING</span></li>
+        <li><span class="step-num">4</span><span>Set Operations — UNION, INTERSECT, EXCEPT</span></li>
+        <li><span class="step-num">5</span><span>NULL Handling — COALESCE, three-valued logic</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label advanced">③ Advanced Queries</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/sql/subqueries"><strong>Subqueries & APPLY</strong></a> — EXISTS, LATERAL</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/sql/ctes"><strong>CTEs & Recursive</strong></a> — WITH, hierarchies</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/sql/window-functions"><strong>Window Functions</strong></a> — ROW_NUMBER, LAG</span></li>
+        <li><span class="step-num">4</span><span>Pivoting — PIVOT (MSSQL) / crosstab() (PG)</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label schema">④ Schema & Objects</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/sql/schema-design"><strong>Schema Design</strong></a> — keys, naming, schemas</span></li>
+        <li><span class="step-num">2</span><span>Constraints — PK, FK, CHECK, DEFERRABLE</span></li>
+        <li><span class="step-num">3</span><span>Views &amp; Materialized Views</span></li>
+        <li><span class="step-num">4</span><span>Sequences &amp; Identity — IDENTITY vs GENERATED</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label transactions">⑤ Transactions</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/sql/transactions"><strong>Transactions & ACID</strong></a> — BEGIN/COMMIT</span></li>
+        <li><span class="step-num">2</span><span>Isolation Levels — SNAPSHOT, RCSI, MVCC</span></li>
+        <li><span class="step-num">3</span><span>Locking & Deadlocks — FOR UPDATE, NOLOCK</span></li>
+      </ol>
+    </div>
+
+    <div class="path-group">
+      <h3 class="group-label performance">⑥ Performance</h3>
+      <ol>
+        <li><span class="step-num">1</span><span><a routerLink="/sql/indexes"><strong>Indexes</strong></a> — B-tree, GIN, columnstore</span></li>
+        <li><span class="step-num">2</span><span>Execution Plans — EXPLAIN ANALYZE</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/sql/performance"><strong>Query Optimization</strong></a> — sargability, hints</span></li>
+        <li><span class="step-num">4</span><span>Partitioning — range, list, hash</span></li>
+        <li><span class="step-num">5</span><span>Bulk Operations — COPY vs BULK INSERT</span></li>
+      </ol>
+    </div>
+
+  </div>
+</section>

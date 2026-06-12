@@ -1,0 +1,38 @@
+<div class="an-cheatsheet">
+  <div class="an-header">
+    <div class="an-header-icon">ASP</div>
+    <div>
+      <h1 class="an-sheet-title">ASP.NET Core Cheat Sheet</h1>
+      <p class="an-subtitle">Quick-reference for middleware, Minimal APIs, DI, auth, EF Core, HTTP Client, and the dotnet CLI.</p>
+    </div>
+  </div>
+
+  <div class="an-search-wrap">
+    <input class="an-search" type="text" placeholder="Search entries…"
+      [value]="searchTerm()" (input)="searchTerm.set($any($event.target).value)" />
+  </div>
+
+  <div class="an-tabs">
+    @for (s of sections; track s.key) {
+      <button class="an-tab" [class.active]="active() === s.key" (click)="active.set(s.key)" type="button">
+        {{ s.icon }} {{ s.label }}
+      </button>
+    }
+  </div>
+
+  <div class="an-grid">
+    @for (e of activeEntries(); track e.name) {
+      <div class="an-card">
+        <div class="an-card-head">
+          <code class="an-name">{{ e.name }}</code>
+          @if (e.tag) { <span class="an-tag">{{ e.tag }}</span> }
+        </div>
+        <p class="an-desc">{{ e.desc }}</p>
+        <pre class="an-example"><code>{{ e.example }}</code></pre>
+      </div>
+    }
+    @empty {
+      <p class="an-empty">No entries match "{{ searchTerm() }}".</p>
+    }
+  </div>
+</div>

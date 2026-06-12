@@ -1,0 +1,37 @@
+$accent: #e05c00;
+$tint:   #fff7ed;
+$border: #e4e4e7;
+$muted:  #71717a;
+$code-bg: #1c1a0f;
+
+.sq-patterns { max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+.sq-pat-header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem;
+  h1 { font-size: 1.875rem; font-weight: 800; margin: 0 0 .25rem; }
+  p { margin: 0; color: $muted; font-size: .9375rem; }
+}
+.sq-pat-icon { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: $accent; color: #fff; border-radius: 12px; font-size: 1.2rem; flex-shrink: 0; }
+
+.sq-pat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+.sq-pat-card {
+  border: 1px solid $border; border-radius: 10px; overflow: hidden; background: #fff;
+  .pat-head { display: flex; align-items: center; gap: .75rem; padding: .875rem 1rem; cursor: pointer;
+    &:hover { background: #f9fafb; }
+  }
+  .pat-icon { font-size: 1.4rem; }
+  .pat-name { font-size: .9rem; font-weight: 700; flex: 1; }
+  .expand-icon { color: $muted; transition: transform .2s; font-size: .8rem; &.open { transform: rotate(180deg); } }
+  .pat-body { padding: 1rem; border-top: 1px solid #f3f4f6;
+    p { font-size: .83rem; color: #374151; margin: 0 0 .75rem; line-height: 1.55; }
+    pre { border-radius: 8px; overflow-x: auto; margin: 0; background: $code-bg;
+      code { display: block; padding: .7rem .9rem; font-size: .75rem; color: #e5e7eb; line-height: 1.6; white-space: pre; }
+    }
+  }
+}
+
+:host-context(body.dark) {
+  .sq-pat-card { background: #1f2937; border-color: #374151;
+    .pat-head:hover { background: #111827; }
+    .pat-name { color: #f9fafb; }
+    .pat-body { border-color: #374151; p { color: #d1d5db; } }
+  }
+}

@@ -1,0 +1,19 @@
+<div class="sq-page">
+  <div class="sq-icon">🗄️</div>
+  <h1 class="page-title">Database Architecture</h1>
+  <p class="page-subtitle">
+    How MSSQL and PostgreSQL physically store data — pages, buffer pools, write-ahead logging,
+    MVCC, VACUUM, and TempDB — and what it means for query performance.
+  </p>
+  <app-page-meta [readingTime]="28" difficulty="intermediate" since="SQL Server 2012 / PostgreSQL 9.0" tech="sql" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="sql-db-architecture" nextRoute="/sql/data-types" nextLabel="Data Types" />
+</div>

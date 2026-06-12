@@ -1,0 +1,48 @@
+$accent: #e05c00;
+$tint:   #fff7ed;
+$border: #e4e4e7;
+$muted:  #71717a;
+$code-bg: #1c1a0f;
+
+.sq-errors { max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+.sq-err-header {
+  display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem;
+  h1 { font-size: 1.875rem; font-weight: 800; margin: 0 0 .25rem; }
+  p { margin: 0; color: $muted; font-size: .9375rem; }
+}
+.sq-err-icon { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: $accent; color: #fff; border-radius: 12px; font-size: 1rem; font-weight: 900; flex-shrink: 0; }
+
+.sq-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+.sq-tag-btn {
+  padding: .35rem .75rem; border: 1.5px solid $border; border-radius: 20px;
+  background: #fff; font-size: .8rem; font-weight: 500; cursor: pointer; text-transform: capitalize;
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+}
+
+.sq-err-list { display: flex; flex-direction: column; gap: 1rem; }
+.sq-err-card {
+  border: 1px solid $border; border-radius: 10px; overflow: hidden; background: #fff;
+  .err-head { display: flex; align-items: center; gap: .75rem; padding: 1rem; border-bottom: 1px solid #f3f4f6; }
+  .err-code { font-size: .7rem; font-weight: 700; background: $tint; color: #9a3e00; padding: 2px 8px; border-radius: 6px; font-family: monospace; }
+  .err-title { font-size: .95rem; font-weight: 700; margin: 0; }
+  .err-tag { margin-left: auto; font-size: .65rem; font-weight: 700; background: #f3f4f6; color: #6b7280; padding: 1px 7px; border-radius: 10px; text-transform: capitalize; }
+  .err-body { display: grid; grid-template-columns: 1fr 1fr; }
+  .err-col { padding: 1rem;
+    &:first-child { border-right: 1px solid #f3f4f6; }
+    h4 { font-size: .73rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 .5rem; }
+    &.bad h4 { color: #b91c1c; }
+    &.fix h4 { color: #166534; }
+    p { font-size: .83rem; color: #374151; margin: 0 0 .6rem; line-height: 1.55; }
+    pre { margin: 0; border-radius: 6px; overflow-x: auto; background: $code-bg;
+      code { display: block; padding: .5rem .7rem; font-size: .75rem; color: #e5e7eb; white-space: pre; line-height: 1.55; }
+    }
+  }
+}
+
+:host-context(body.dark) {
+  .sq-err-card { background: #1f2937; border-color: #374151;
+    .err-head { border-color: #374151; }
+    .err-body .err-col { border-color: #374151; p { color: #d1d5db; } }
+  }
+  .sq-tag-btn { background: #1f2937; color: #d1d5db; border-color: #374151; }
+}

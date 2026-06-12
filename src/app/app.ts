@@ -54,14 +54,15 @@ export class App {
   showLeftNav = computed(() => this.currentUrl() !== '/');
   showSidebar = computed(() => {
     const url = this.currentUrl();
-    return !['/','','/angular','/csharp','/aspnet'].includes(url);
+    return !['/','','/angular','/csharp','/aspnet','/sql'].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'hub'>(() => {
     const url = this.currentUrl();
     if (url.startsWith('/angular')) return 'angular';
     if (url.startsWith('/csharp'))  return 'csharp';
     if (url.startsWith('/aspnet'))  return 'aspnet';
+    if (url.startsWith('/sql'))     return 'sql';
     return 'hub';
   });
 

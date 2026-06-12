@@ -16,9 +16,10 @@ const BADGE_CSS: Record<string, string> = {
   Data:         'data',
   Security:     'security',
   Quality:      'quality',
+  Reference:    'reference',
 };
 
-const GROUP_ORDER = ['All', 'Fundamentals', 'Web API', 'Data', 'Security', 'Quality'];
+const GROUP_ORDER = ['All', 'Fundamentals', 'Web API', 'Data', 'Security', 'Quality', 'Reference'];
 
 const ALL_TOPICS: AspnetTopic[] = [
   // ── Fundamentals ──
@@ -129,6 +130,34 @@ const ALL_TOPICS: AspnetTopic[] = [
   { title: '.NET Aspire',              route: '/aspnet/aspire',           badge: 'Quality', available: true,
     description: 'Cloud-native orchestration — AppHost, service discovery, built-in dashboard, integrations, and deploying Aspire apps.',
     keyPoints: ['AppHost composes services, databases, caches in C#', 'Dashboard gives logs/traces/metrics out of the box', 'Service discovery replaces hardcoded URLs'] },
+  // ── Reference ──
+  { title: 'Cheat Sheet',             route: '/aspnet/cheatsheet',       badge: 'Reference', available: true,
+    description: 'Searchable quick-reference for middleware, minimal APIs, DI, auth, EF Core, HttpClient, and the CLI — all in one place.',
+    keyPoints: ['7 tabbed sections covering the full stack', 'Filter by keyword within any section', 'Includes dotnet CLI commands'] },
+  { title: 'Common Errors',           route: '/aspnet/errors',           badge: 'Reference', available: true,
+    description: '13 real-world ASP.NET Core errors with cause, fix, and before/after code — startup, routing, auth, EF Core, async, and HTTP.',
+    keyPoints: ['Tag-filtered error browser', 'Root cause + one-line fix per entry', 'Covers the most Googled runtime exceptions'] },
+  { title: 'Quiz Practice',           route: '/aspnet/quiz-practice',    badge: 'Reference', available: true,
+    description: '20 questions across 8 topics — pick a topic and count, answer, and see your score with explanations.',
+    keyPoints: ['Setup → quiz → result flow', 'Explanations for every answer', 'Covers middleware to EF Core and SignalR'] },
+  { title: 'Interview Prep',          route: '/aspnet/interview-prep',   badge: 'Reference', available: true,
+    description: '22 interview questions from junior to senior — expand each to reveal a thorough model answer.',
+    keyPoints: ['Filter by level and topic', 'Junior through senior tiers', 'Covers DI, routing, EF Core, auth, and performance'] },
+  { title: 'Design Patterns',         route: '/aspnet/design-patterns',  badge: 'Reference', available: true,
+    description: '12 expandable design patterns commonly used in ASP.NET Core apps — with summary, context, and annotated code.',
+    keyPoints: ['Repository, CQRS/MediatR, Decorator DI, Options, and more', 'One-click expand/collapse per pattern', 'Production-ready code snippets'] },
+  { title: 'Decision Guides',         route: '/aspnet/decision-guides',  badge: 'Reference', available: true,
+    description: '8 side-by-side comparison tables for the toughest ASP.NET Core choices — with a clear rule of thumb for each.',
+    keyPoints: ['Minimal APIs vs Controllers, Cookie vs JWT, REST vs gRPC', 'EF Core vs Dapper, IMemoryCache vs IDistributed', 'One decision rule per comparison'] },
+  { title: 'Glossary',                route: '/aspnet/glossary',         badge: 'Reference', available: true,
+    description: 'A–Z definitions for 45+ ASP.NET Core and .NET terms — search, filter by letter, and click through to topic pages.',
+    keyPoints: ['45+ terms from AppHost to WebSockets', 'Letter filter + keyword search', 'Links to relevant topic pages'] },
+  { title: 'Mini Projects',           route: '/aspnet/mini-projects',    badge: 'Reference', available: true,
+    description: '4 step-by-step walkthroughs — Todo REST API, JWT auth, SignalR notifications, and a background order processor.',
+    keyPoints: ['Concrete goals with code at each step', 'Covers CRUD, auth, real-time, and background work', 'Good for portfolio pieces or interview prep'] },
+  { title: 'Learning Paths',          route: '/aspnet/learning-paths',   badge: 'Reference', available: true,
+    description: '4 curated learning paths — complete beginner, backend developer, senior/architect, and migrating from classic ASP.NET.',
+    keyPoints: ['Stage-by-stage progression with topic links', 'Paths for beginners through architects', 'Migration path from classic ASP.NET'] },
 ];
 
 @Component({

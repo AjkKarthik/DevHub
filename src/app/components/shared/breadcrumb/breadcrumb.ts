@@ -149,12 +149,51 @@ const ASPNET_LABELS: Record<string, string> = {
   'web-security':          'Web Security Essentials',
   'secrets':               'Secrets & Data Protection',
   'performance':           'Performance & Diagnostics',
+  'cheatsheet':            'Cheat Sheet',
+  'errors':               'Common Errors',
+  'quiz-practice':         'Quiz Practice',
+  'interview-prep':        'Interview Prep',
+  'design-patterns':       'Design Patterns',
+  'decision-guides':       'Decision Guides',
+  'glossary':              'Glossary',
+  'mini-projects':         'Mini Projects',
+  'learning-paths':        'Learning Paths',
+};
+
+const SQL_LABELS: Record<string, string> = {
+  'rdbms-concepts':    'RDBMS Concepts',
+  'data-modeling':     'Data Modeling',
+  'normalization':     'Normalization',
+  'db-architecture':   'DB Architecture',
+  'data-types':        'Data Types',
+  'basics':            'SQL Basics',
+  'joins':             'Joins',
+  'aggregations':      'Aggregations',
+  'subqueries':        'Subqueries',
+  'ctes':              'CTEs',
+  'window-functions':  'Window Functions',
+  'indexes':           'Indexes',
+  'transactions':      'Transactions',
+  'schema-design':     'Schema Design',
+  'stored-procedures': 'Stored Procedures',
+  'performance':       'Performance',
+  'json-features':     'JSON Features',
+  'cheatsheet':        'Cheat Sheet',
+  'errors':            'Common Errors',
+  'quiz-practice':     'Quiz Practice',
+  'interview-prep':    'Interview Prep',
+  'design-patterns':   'Design Patterns',
+  'decision-guides':   'Decision Guides',
+  'glossary':          'Glossary',
+  'mini-projects':     'Mini Projects',
+  'learning-paths':    'Learning Paths',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular': { label: 'Angular',      path: '/angular' },
   'csharp':  { label: 'C#',          path: '/csharp'  },
   'aspnet':  { label: 'ASP.NET Core', path: '/aspnet' },
+  'sql':     { label: 'SQL',          path: '/sql'    },
 };
 
 @Component({
@@ -243,6 +282,7 @@ export class BreadcrumbComponent {
     const key = segs[segs.length - 1];
     const labels = segs[0] === 'csharp' ? CSHARP_LABELS
                  : segs[0] === 'aspnet' ? ASPNET_LABELS
+                 : segs[0] === 'sql'    ? SQL_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

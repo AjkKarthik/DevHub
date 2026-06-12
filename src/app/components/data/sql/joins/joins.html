@@ -1,0 +1,22 @@
+<div class="sq-page">
+  <div class="sq-icon">🗄️</div>
+  <h1 class="page-title">Joins</h1>
+  <p class="page-subtitle">
+    INNER, LEFT, FULL OUTER, CROSS, self-join, anti-join, semi-join, and
+    APPLY / LATERAL — combining rows across multiple tables in both MSSQL and PostgreSQL.
+  </p>
+
+  <app-page-meta [readingTime]="28" difficulty="intermediate" since="SQL-92" tech="sql" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="sql-joins" nextRoute="/sql/aggregations" nextLabel="Aggregations" />
+</div>

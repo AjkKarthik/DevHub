@@ -165,11 +165,11 @@ export class HubHome implements AfterViewInit, OnDestroy {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'Angular',            route: '/angular',                label: '50 pages · just updated' },
-    { name: 'C# · 50 topics',     route: '/csharp',                 label: 'New · full language coverage' },
-    { name: 'Quiz Practice',      route: '/csharp/quiz-practice',   label: 'New · C# & Angular quizzes' },
-    { name: 'Interview Prep',     route: '/csharp/interview-prep',  label: 'New · 100+ Q&A both hubs' },
-    { name: 'Design Patterns',    route: '/csharp/design-patterns', label: 'New · C# & Angular patterns' },
+    { name: 'ASP.NET Core · 42 pages', route: '/aspnet',                  label: 'New · 33 topics + 9 reference' },
+    { name: 'Angular',                 route: '/angular',                  label: '50 pages · updated' },
+    { name: 'C# · 50 topics',          route: '/csharp',                   label: 'Full language coverage' },
+    { name: 'SQL',                     route: '/sql',                       label: 'New · 12 topics + reference' },
+    { name: 'Interview Prep',          route: '/aspnet/interview-prep',    label: 'New · ASP.NET Core Q&A' },
   ];
 
   readonly roleChips: RoleChip[] = [
@@ -380,9 +380,9 @@ export class HubHome implements AfterViewInit, OnDestroy {
     },
     {
       group: 'backend', name: 'ASP.NET Core', time: '~17 hrs',
-      tagline: 'Build production-grade REST APIs with C# and .NET — 33 topics rolling out.',
+      tagline: 'Build production-grade REST APIs with C# and .NET — 42 pages of full coverage.',
       icon: '⚙️', gradient: 'linear-gradient(135deg, #0e7490 0%, #155e75 100%)',
-      textDark: false, route: '/aspnet', available: true, topics: 33,
+      textDark: false, route: '/aspnet', available: true, topics: 42,
       sub: 'Web API · Minimal API · EF Core',
       roles: ['backend', 'architect'],
       highlights: [
@@ -412,7 +412,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'SQL', time: '~7 hrs',
       tagline: 'Query relational databases — SQL Server & PostgreSQL with real examples.',
       icon: '🗄️', gradient: 'linear-gradient(135deg, #e05c00 0%, #9a3e00 100%)',
-      textDark: false, route: '/sql', available: false,
+      textDark: false, route: '/sql', available: true, topics: 21,
       sub: 'MSSQL · PostgreSQL',
       roles: ['backend', 'architect'],
       highlights: [

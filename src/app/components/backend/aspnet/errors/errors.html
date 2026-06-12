@@ -1,0 +1,54 @@
+<div class="ae-page">
+  <div class="ae-header">
+    <div class="ae-header-icon">ASP</div>
+    <div>
+      <h1 class="ae-title">Common ASP.NET Core Errors</h1>
+      <p class="ae-subtitle">Root causes and fixes for startup failures, routing issues, auth, EF Core, async bugs, and HTTP client misuse.</p>
+    </div>
+  </div>
+
+  <div class="ae-tag-row">
+    @for (t of tags; track t) {
+      <button type="button" class="ae-tag-btn" [class.active]="activeTag() === t" (click)="activeTag.set(t)">
+        {{ t }}
+      </button>
+    }
+  </div>
+
+  <div class="ae-list">
+    @for (e of filtered(); track e.code) {
+      <div class="ae-card">
+        <div class="ae-card-header">
+          <span class="ae-code">{{ e.code }}</span>
+          <span class="ae-error-title">{{ e.title }}</span>
+          <span class="ae-badge">{{ e.tag }}</span>
+        </div>
+        <div class="ae-body">
+          <div class="ae-cause-fix">
+            <div class="ae-cause">
+              <strong>Cause</strong>
+              <p>{{ e.cause }}</p>
+            </div>
+            <div class="ae-fix">
+              <strong>Fix</strong>
+              <p>{{ e.fix }}</p>
+            </div>
+          </div>
+          <div class="ae-code-pair">
+            <div class="ae-code-block bad">
+              <div class="ae-code-label">✗ Problematic</div>
+              <pre><code>{{ e.example }}</code></pre>
+            </div>
+            <div class="ae-code-block good">
+              <div class="ae-code-label">✓ Fixed</div>
+              <pre><code>{{ e.solution }}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    @empty {
+      <p style="color:#71717a;text-align:center;padding:2rem;">No errors in this category.</p>
+    }
+  </div>
+</div>

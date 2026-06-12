@@ -1,0 +1,68 @@
+$accent:      #0e7490;
+$accent-dark: #155e75;
+$tint:        #ecfeff;
+$border:      #e4e4e7;
+$text:        #18181b;
+$muted:       #71717a;
+$code-bg:     #0c1a1f;
+
+.amp-page { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 3rem; color: $text; }
+
+.amp-header {
+  display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem;
+  .amp-title    { font-size: 1.875rem; font-weight: 800; margin: 0 0 0.25rem; color: $accent; letter-spacing: -0.02em; }
+  .amp-subtitle { margin: 0; color: $muted; font-size: 0.9375rem; }
+}
+.amp-header-icon { width: 56px; height: 56px; background: $accent; color: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+
+.amp-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.amp-card {
+  border: 1.5px solid $border; border-radius: 12px; overflow: hidden; background: #fff;
+  cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s;
+  &:hover { border-color: $accent; box-shadow: 0 2px 12px rgba(14,116,144,0.08); }
+  &.open { border-color: $accent; }
+}
+
+.amp-card-header {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+  padding: 1.125rem 1.25rem; background: $tint;
+
+  .amp-icon { font-size: 1.75rem; flex-shrink: 0; }
+  .amp-card-title { font-size: 1.0625rem; font-weight: 700; color: $accent-dark; margin: 0 0 0.25rem; }
+  .amp-card-desc  { font-size: 0.875rem; color: $muted; margin: 0; line-height: 1.5; }
+  .amp-chevron    { color: $muted; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.25rem; transition: transform 0.2s; }
+}
+.amp-card.open .amp-chevron { transform: rotate(180deg); }
+
+.amp-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; padding: 0.625rem 1.25rem; border-bottom: 1px solid $border; }
+.amp-tag { font-size: 0.7rem; background: rgba(14,116,144,0.1); color: $accent-dark; border-radius: 4px; padding: 0.125rem 0.5rem; }
+
+.amp-body { padding: 1.25rem; }
+
+.amp-steps { display: flex; flex-direction: column; gap: 1.25rem; }
+.amp-step {
+  display: flex; gap: 1rem;
+  .amp-step-num {
+    width: 1.75rem; height: 1.75rem; flex-shrink: 0;
+    background: $accent; color: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700; margin-top: 0.1rem;
+  }
+  .amp-step-content {
+    flex: 1;
+    h3 { font-size: 0.9375rem; font-weight: 700; margin: 0 0 0.375rem; color: $text; }
+    p  { font-size: 0.875rem; line-height: 1.6; color: #374151; margin: 0 0 0.625rem; }
+    pre { background: $code-bg; border-radius: 6px; border-left: 3px solid $accent; padding: 0.75rem; overflow-x: auto; margin: 0;
+      code { font-family: 'Fira Code', monospace; font-size: 0.775rem; color: #a5f3fc; white-space: pre; }
+    }
+  }
+}
+
+:host-context(body.dark) {
+  .amp-title    { color: #67e8f9; }
+  .amp-subtitle { color: #94a3b8; }
+  .amp-card { background: #1e293b; border-color: #334155; &.open { border-color: #67e8f9; } }
+  .amp-card-header { background: #164e63; .amp-card-title { color: #67e8f9; } }
+  .amp-step-content { h3 { color: #f1f5f9; } p { color: #cbd5e1; } }
+}

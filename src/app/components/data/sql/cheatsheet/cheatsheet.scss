@@ -1,0 +1,54 @@
+$accent: #e05c00;
+$tint:   #fff7ed;
+$border: #e4e4e7;
+$muted:  #71717a;
+$code-bg: #1c1a0f;
+
+.sq-cheatsheet { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+.sq-header {
+  display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem;
+  .sq-sheet-title { font-size: 1.875rem; font-weight: 800; margin: 0 0 .25rem; letter-spacing: -.02em; }
+  .sq-subtitle { margin: 0; color: $muted; font-size: .9375rem; }
+}
+.sq-header-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; background: $accent; color: #fff;
+  border-radius: 12px; font-size: 1rem; font-weight: 900; flex-shrink: 0;
+}
+
+.sq-search-wrap { margin-bottom: 1rem;
+  .sq-search {
+    width: 100%; padding: .625rem 1rem; border: 1.5px solid $border; border-radius: 8px; font-size: .9375rem; outline: none;
+    &:focus { border-color: $accent; box-shadow: 0 0 0 3px rgba(224,92,0,.12); }
+  }
+}
+
+.sq-tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+.sq-tab {
+  padding: .4rem .9rem; border: 1.5px solid $border; border-radius: 20px;
+  background: #fff; font-size: .85rem; font-weight: 500; cursor: pointer;
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+}
+
+.sq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+.sq-card {
+  border: 1px solid $border; border-radius: 10px; padding: 1rem; background: #fff;
+  .sq-card-head { display: flex; align-items: center; gap: .5rem; margin-bottom: .4rem; }
+  .sq-name { font-family: 'Cascadia Code','Consolas',monospace; font-size: .85rem; font-weight: 600; color: $accent; }
+  .sq-tag { font-size: .65rem; font-weight: 700; background: $tint; color: #9a3e00; border-radius: 10px; padding: 1px 7px; text-transform: uppercase; }
+  .sq-desc { font-size: .83rem; color: #374151; margin: .25rem 0 .6rem; line-height: 1.55; }
+  pre { margin: 0; border-radius: 7px; overflow-x: auto; background: $code-bg; }
+  pre code { display: block; padding: .65rem .8rem; font-size: .77rem; color: #e5e7eb; line-height: 1.6; white-space: pre; }
+}
+
+.sq-empty { color: $muted; padding: 2rem 0; font-size: .9rem; }
+
+:host-context(body.dark) {
+  .sq-cheatsheet { color: #f9fafb; }
+  .sq-card { background: #1f2937; border-color: #374151;
+    .sq-desc { color: #d1d5db; }
+  }
+  .sq-search { background: #1f2937; color: #f9fafb; border-color: #374151; }
+  .sq-tab { background: #1f2937; color: #d1d5db; border-color: #374151; }
+}

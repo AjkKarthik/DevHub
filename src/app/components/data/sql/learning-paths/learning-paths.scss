@@ -1,0 +1,39 @@
+$accent: #e05c00;
+$tint:   #fff7ed;
+$border: #e4e4e7;
+$muted:  #71717a;
+
+.sq-paths { max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+.sq-paths-header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem;
+  h1 { font-size: 1.875rem; font-weight: 800; margin: 0 0 .25rem; }
+  p { margin: 0; color: $muted; font-size: .9375rem; }
+}
+.sq-paths-icon { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: $accent; color: #fff; border-radius: 12px; font-size: 1.2rem; flex-shrink: 0; }
+
+.sq-paths-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 1.5rem; }
+.sq-path-card {
+  border: 1px solid $border; border-radius: 12px; overflow: hidden; background: #fff;
+  .path-head { padding: 1.25rem; background: $tint; border-bottom: 1px solid #fde7cc;
+    .path-audience { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #9a3e00; margin-bottom: .2rem; }
+    h2 { font-size: 1.1rem; font-weight: 800; margin: 0 0 .25rem; }
+    .path-duration { font-size: .8rem; color: #9a3e00; }
+  }
+  .path-stages { padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: .75rem; }
+  .path-stage {
+    border-left: 3px solid $accent; padding-left: .875rem;
+    h3 { font-size: .85rem; font-weight: 700; color: #9a3e00; margin: 0 0 .3rem; }
+    ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .2rem;
+      li { font-size: .82rem; color: #374151; display: flex; align-items: flex-start; gap: .4rem;
+        &::before { content: '→'; color: $accent; flex-shrink: 0; font-size: .75rem; margin-top: 1px; }
+        a { color: $accent; text-decoration: none; &:hover { text-decoration: underline; } }
+      }
+    }
+  }
+}
+
+:host-context(body.dark) {
+  .sq-path-card { background: #1f2937; border-color: #374151;
+    .path-head { background: #431a03; border-color: #7c2d12; h2 { color: #f9fafb; } }
+    .path-stages .path-stage ul li { color: #d1d5db; }
+  }
+}

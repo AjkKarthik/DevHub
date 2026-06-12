@@ -1,0 +1,40 @@
+$accent: #e05c00;
+$tint:   #fff7ed;
+$border: #e4e4e7;
+$muted:  #71717a;
+
+.sq-glossary { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+.sq-gls-header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem;
+  h1 { font-size: 1.875rem; font-weight: 800; margin: 0 0 .25rem; }
+  p { margin: 0; color: $muted; font-size: .9375rem; }
+}
+.sq-gls-icon { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: $accent; color: #fff; border-radius: 12px; font-size: 1.2rem; flex-shrink: 0; }
+
+.sq-gls-controls { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1.5rem;
+  .sq-gls-search { flex: 1; min-width: 220px; padding: .55rem 1rem; border: 1.5px solid $border; border-radius: 8px; font-size: .9rem; outline: none;
+    &:focus { border-color: $accent; }
+  }
+  .letter-row { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .letter-btn { width: 28px; height: 28px; border: 1.5px solid $border; border-radius: 6px; background: #fff; font-size: .8rem; font-weight: 600; cursor: pointer;
+    &.active { background: $accent; color: #fff; border-color: $accent; }
+  }
+}
+
+.sq-gls-group { margin-bottom: 1.5rem;
+  .group-letter { font-size: 1.15rem; font-weight: 800; color: $accent; margin-bottom: .6rem; padding-bottom: .3rem; border-bottom: 2px solid $tint; }
+}
+.sq-gls-item {
+  padding: .75rem 1rem; border: 1px solid $border; border-radius: 8px; background: #fff; margin-bottom: .5rem;
+  .gls-term { font-size: .9rem; font-weight: 700; margin-bottom: .2rem; }
+  .gls-def  { font-size: .84rem; color: #374151; line-height: 1.55; margin: 0; }
+  .gls-see  { font-size: .78rem; color: $accent; margin-top: .3rem; a { color: $accent; text-decoration: none; &:hover { text-decoration: underline; } } }
+}
+
+:host-context(body.dark) {
+  .sq-gls-item { background: #1f2937; border-color: #374151;
+    .gls-term { color: #f9fafb; }
+    .gls-def { color: #d1d5db; }
+  }
+  .sq-gls-search { background: #1f2937; color: #f9fafb; border-color: #374151; }
+  .letter-btn { background: #1f2937; color: #d1d5db; border-color: #374151; }
+}

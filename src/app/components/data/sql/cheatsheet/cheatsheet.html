@@ -1,0 +1,38 @@
+<div class="sq-cheatsheet">
+  <div class="sq-header">
+    <div class="sq-header-icon">SQL</div>
+    <div>
+      <h1 class="sq-sheet-title">SQL Cheat Sheet</h1>
+      <p class="sq-subtitle">Quick-reference for SELECT, JOINs, aggregations, window functions, DDL, DML, and CLI tools.</p>
+    </div>
+  </div>
+
+  <div class="sq-search-wrap">
+    <input class="sq-search" type="text" placeholder="Search entries…"
+      [value]="searchTerm()" (input)="searchTerm.set($any($event.target).value)" />
+  </div>
+
+  <div class="sq-tabs">
+    @for (s of sections; track s.key) {
+      <button class="sq-tab" [class.active]="active() === s.key" (click)="active.set(s.key)" type="button">
+        {{ s.icon }} {{ s.label }}
+      </button>
+    }
+  </div>
+
+  <div class="sq-grid">
+    @for (e of activeEntries(); track e.name) {
+      <div class="sq-card">
+        <div class="sq-card-head">
+          <code class="sq-name">{{ e.name }}</code>
+          @if (e.tag) { <span class="sq-tag">{{ e.tag }}</span> }
+        </div>
+        <p class="sq-desc">{{ e.desc }}</p>
+        <pre><code>{{ e.example }}</code></pre>
+      </div>
+    }
+    @empty {
+      <p class="sq-empty">No entries match "{{ searchTerm() }}".</p>
+    }
+  </div>
+</div>

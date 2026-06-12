@@ -1,0 +1,19 @@
+<div class="sq-page">
+  <div class="sq-icon">🗄️</div>
+  <h1 class="page-title">Data Modeling</h1>
+  <p class="page-subtitle">
+    Entity-Relationship diagrams, cardinality (1:1 / 1:N / M:N), crow's foot notation,
+    and the rules for translating ER models into SQL tables.
+  </p>
+  <app-page-meta [readingTime]="22" difficulty="beginner" since="SQL-92" tech="sql" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="sql-data-modeling" nextRoute="/sql/normalization" nextLabel="Normalization" />
+</div>

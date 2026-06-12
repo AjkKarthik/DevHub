@@ -1,0 +1,19 @@
+<div class="sq-page">
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Stored Procedures</h1>
+  <p class="page-subtitle">CREATE PROCEDURE, parameters, RETURN, TRY/CATCH, and T-SQL vs PL/pgSQL differences.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since="SQL Server 2016+" tech="sql" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="sql-stored-procedures" nextRoute="/sql/performance" nextLabel="Query Performance" />
+</div>

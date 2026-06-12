@@ -1,0 +1,38 @@
+<div class="sq-mini">
+  <div class="sq-mini-header">
+    <div class="sq-mini-icon">🛠️</div>
+    <div>
+      <h1>SQL Mini Projects</h1>
+      <p>4 step-by-step schema walkthroughs — e-commerce, analytics, HR, and inventory.</p>
+    </div>
+  </div>
+
+  <div class="sq-mini-grid">
+    @for (proj of projects; track proj.title) {
+      <div class="sq-mini-card">
+        <div class="mini-head">
+          <span class="mini-badge">{{ proj.badge }}</span>
+          <h2>{{ proj.title }}</h2>
+          <p>{{ proj.desc }}</p>
+        </div>
+
+        <div class="mini-section">
+          <h3>Build steps</h3>
+          <ul class="step-list">
+            @for (s of proj.steps; let i = $index; track s) {
+              <li><span class="step-n">{{ i + 1 }}</span><span>{{ s }}</span></li>
+            }
+          </ul>
+        </div>
+
+        @for (section of proj.sections; track section.title) {
+          <div class="mini-divider"></div>
+          <div class="mini-section">
+            <h3>{{ section.title }}</h3>
+            <pre><code>{{ section.code }}</code></pre>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

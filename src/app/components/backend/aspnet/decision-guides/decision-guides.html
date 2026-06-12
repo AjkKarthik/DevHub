@@ -1,0 +1,38 @@
+<div class="adg-page">
+  <div class="adg-header">
+    <div class="adg-header-icon">ASP</div>
+    <div>
+      <h1 class="adg-title">ASP.NET Core Decision Guides</h1>
+      <p class="adg-subtitle">8 comparison tables for the most common architectural decisions — with a rule-of-thumb callout for each.</p>
+    </div>
+  </div>
+
+  <div class="adg-grid">
+    @for (g of guides; track g.title) {
+      <div class="adg-guide">
+        <div class="adg-guide-header">
+          <h2>{{ g.title }}</h2>
+        </div>
+        <table class="adg-table">
+          <thead>
+            <tr>
+              <th>Criterion</th>
+              <th>{{ g.optA }}</th>
+              <th>{{ g.optB }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of g.rows; track row.criterion) {
+              <tr>
+                <td>{{ row.criterion }}</td>
+                <td [innerHTML]="row.optA"></td>
+                <td [innerHTML]="row.optB"></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <div class="adg-rule"><strong>💡</strong> {{ g.rule }}</div>
+      </div>
+    }
+  </div>
+</div>

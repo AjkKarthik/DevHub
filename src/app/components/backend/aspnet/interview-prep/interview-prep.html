@@ -1,0 +1,48 @@
+<div class="aip-page">
+  <div class="aip-header">
+    <div class="aip-header-icon">ASP</div>
+    <div>
+      <h1 class="aip-title">ASP.NET Core Interview Prep</h1>
+      <p class="aip-subtitle">{{ filtered().length }} questions — Fundamentals, DI, Routing, Minimal APIs, EF Core, Auth, and Performance.</p>
+    </div>
+  </div>
+
+  <div class="aip-filters">
+    <div class="aip-filter-group">
+      @for (l of levels; track l) {
+        <button type="button" class="aip-chip" [class]="'aip-chip ' + l" [class.active]="activeLevel() === l" (click)="activeLevel.set(l)">
+          {{ l }}
+        </button>
+      }
+    </div>
+    <div class="aip-filter-group">
+      @for (t of topics; track t) {
+        <button type="button" class="aip-chip" [class.active]="activeTopic() === t" (click)="activeTopic.set(t)">
+          {{ t }}
+        </button>
+      }
+    </div>
+    <span class="aip-count">{{ filtered().length }} questions</span>
+  </div>
+
+  <div class="aip-list">
+    @for (item of filtered(); track item.q; let i = $index) {
+      <div class="aip-item" [class.open]="openIndex() === i" (click)="toggle(i)">
+        <div class="aip-q-row">
+          <span class="aip-q">{{ item.q }}</span>
+          <span class="aip-chevron">▶</span>
+        </div>
+        <div class="aip-badges">
+          <span class="aip-badge" [class]="'aip-badge level-' + item.level">{{ item.level }}</span>
+          <span class="aip-badge topic">{{ item.topic }}</span>
+        </div>
+        @if (openIndex() === i) {
+          <div class="aip-answer">{{ item.a }}</div>
+        }
+      </div>
+    }
+    @empty {
+      <p style="color:#71717a;text-align:center;padding:2rem;">No questions match the selected filters.</p>
+    }
+  </div>
+</div>

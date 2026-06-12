@@ -1,0 +1,47 @@
+<div class="ag-page">
+  <div class="ag-header">
+    <div class="ag-header-icon">ASP</div>
+    <div>
+      <h1 class="ag-title">ASP.NET Core Glossary</h1>
+      <p class="ag-subtitle">A–Z definitions for {{ terms.length }}+ ASP.NET Core and .NET terms — with links to the relevant topic pages.</p>
+    </div>
+  </div>
+
+  <div class="ag-search-wrap">
+    <input class="ag-search" type="text" placeholder="Search terms…"
+      [value]="search()" (input)="search.set($any($event.target).value)" />
+  </div>
+
+  <div class="ag-alphabet">
+    @for (l of alphabet; track l) {
+      <button type="button" class="ag-letter-btn"
+        [class.active]="activeLetter() === l"
+        [disabled]="!hasLetter(l)"
+        (click)="toggleLetter(l)">{{ l }}</button>
+    }
+  </div>
+
+  <p class="ag-count">{{ totalCount() }} term{{ totalCount() === 1 ? '' : 's' }}</p>
+
+  <div class="ag-groups">
+    @for (group of groups(); track group.letter) {
+      <div class="ag-group">
+        <div class="ag-group-letter">{{ group.letter }}</div>
+        <div class="ag-terms">
+          @for (t of group.terms; track t.term) {
+            <div class="ag-term">
+              <div class="ag-term-name">{{ t.term }}</div>
+              <p class="ag-term-def">{{ t.def }}</p>
+              @if (t.route) {
+                <a class="ag-term-link" [routerLink]="t.route">→ {{ t.route.split('/').pop() }} topic page</a>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+    @empty {
+      <div class="ag-empty">No terms match "{{ search() }}".</div>
+    }
+  </div>
+</div>
