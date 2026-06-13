@@ -1,0 +1,40 @@
+<div class="sq-interview">
+  <div class="sq-int-header">
+    <div class="sq-int-icon">💼</div>
+    <div>
+      <h1>SQL Interview Prep</h1>
+      <p>22 questions from junior to senior — expand each for a thorough model answer.</p>
+    </div>
+  </div>
+
+  <div class="sq-int-filters">
+    @for (lv of levels; track lv) {
+      <button class="sq-int-chip" [class.active]="activeLevel() === lv"
+        (click)="activeLevel.set(lv)" type="button">{{ lv }}</button>
+    }
+    <span style="width:1px;background:#e5e7eb;margin:0 .25rem"></span>
+    @for (tp of topics; track tp) {
+      <button class="sq-int-chip" [class.active]="activeTopic() === tp"
+        (click)="activeTopic.set(tp)" type="button">{{ tp }}</button>
+    }
+  </div>
+
+  <div class="sq-int-list">
+    @for (item of filtered(); let i = $index; track item.q) {
+      <div class="sq-int-card">
+        <div class="int-head" (click)="toggle(i)">
+          <span class="int-q">{{ item.q }}</span>
+          <div class="int-chips">
+            <span class="int-level" [class]="'int-level ' + item.level">{{ item.level }}</span>
+            <span class="int-topic">{{ item.topic }}</span>
+          </div>
+          <span class="expand-icon" [class.open]="isOpen(i)">▼</span>
+        </div>
+        @if (isOpen(i)) {
+          <div class="int-answer">{{ item.a }}</div>
+        }
+      </div>
+    }
+    @empty { <p style="color:#9ca3af">No questions match the selected filters.</p> }
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="sq-paths">
+  <div class="sq-paths-header">
+    <div class="sq-paths-icon">🗺️</div>
+    <div>
+      <h1>SQL Learning Paths</h1>
+      <p>4 curated paths — complete beginner, data analyst, backend developer, and DBA.</p>
+    </div>
+  </div>
+
+  <div class="sq-paths-grid">
+    @for (path of paths; track path.title) {
+      <div class="sq-path-card">
+        <div class="path-head">
+          <div class="path-audience">{{ path.audience }}</div>
+          <h2>{{ path.title }}</h2>
+          <div class="path-duration">⏱ {{ path.duration }}</div>
+        </div>
+        <div class="path-stages">
+          @for (stage of path.stages; track stage.label) {
+            <div class="path-stage">
+              <h3>{{ stage.label }}</h3>
+              <ul>
+                @for (item of stage.items; track item.text) {
+                  <li>
+                    @if (item.route) {
+                      <a [routerLink]="item.route">{{ item.text }}</a>
+                    } @else {
+                      {{ item.text }}
+                    }
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

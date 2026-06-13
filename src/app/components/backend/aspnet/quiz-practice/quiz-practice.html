@@ -1,0 +1,109 @@
+<div class="aqp-page">
+  <div class="aqp-header">
+    <div class="aqp-header-icon">🧠</div>
+    <div>
+      <h1 class="aqp-title">ASP.NET Core Quiz Practice</h1>
+      <p class="aqp-subtitle">Test yourself on Middleware, DI, Routing, Minimal APIs, EF Core, Auth, Async, and Performance.</p>
+    </div>
+  </div>
+
+  @switch (phase()) {
+    @case ('setup') {
+      <div class="aqp-setup">
+        <h2 class="aqp-section-title">Pick a topic</h2>
+        <div class="aqp-chips">
+          <button type="button" class="aqp-chip" [class.active]="selectedTopic() === 'All'" (click)="selectedTopic.set('All')">
+            All <span class="aqp-chip-count">{{ poolSize('All') }}</span>
+          </button>
+          @for (t of topics; track t) {
+            <button type="button" class="aqp-chip" [class.active]="selectedTopic() === t" (click)="selectedTopic.set(t)">
+              {{ t }} <span class="aqp-chip-count">{{ poolSize(t) }}</span>
+            </button>
+          }
+        </div>
+
+        <h2 class="aqp-section-title">Number of questions</h2>
+        <div class="aqp-chips">
+          @for (c of counts; track c) {
+            <button type="button" class="aqp-chip" [class.active]="selectedCount() === c" (click)="selectedCount.set(c)">
+              {{ c }}
+            </button>
+          }
+        </div>
+
+        <button type="button" class="aqp-primary-btn" (click)="start()">▶ Start practice</button>
+        <p class="aqp-hint">Questions are shuffled every run. If a topic has fewer questions than selected, you get all of them.</p>
+      </div>
+    }
+
+    @case ('quiz') {
+      @if (current(); as q) {
+        <div class="aqp-quiz">
+          <div class="aqp-progress-row">
+            <span class="aqp-progress-label">Q {{ index() + 1 }}/{{ questions().length }}</span>
+            <span class="aqp-topic-badge">{{ q.topic }}</span>
+          </div>
+          <div class="aqp-progress-track">
+            <div class="aqp-progress-fill" [style.width.%]="((index() + (answered() ? 1 : 0)) / questions().length) * 100"></div>
+          </div>
+
+          <h2 class="aqp-question">{{ q.q }}</h2>
+
+          <div class="aqp-options">
+            @for (opt of q.options; track $index) {
+              <button type="button" class="aqp-option"
+                [class.correct]="answered() && $index === q.answer"
+                [class.wrong]="answered() && picked() === $index && $index !== q.answer"
+                [class.dimmed]="answered() && picked() !== $index && $index !== q.answer"
+                [disabled]="answered()"
+                (click)="pick($index)">
+                <span class="aqp-option-letter">{{ ['A','B','C','D'][$index] }}</span>
+                <span class="aqp-option-text">{{ opt }}</span>
+                @if (answered() && $index === q.answer) { <span class="aqp-mark">✓</span> }
+                @if (answered() && picked() === $index && $index !== q.answer) { <span class="aqp-mark">✗</span> }
+              </button>
+            }
+          </div>
+
+          @if (answered()) {
+            <div class="aqp-explanation" [class.was-correct]="picked() === q.answer">
+              <strong>{{ picked() === q.answer ? 'Correct!' : 'Not quite.' }}</strong>
+              {{ q.explanation }}
+            </div>
+            <button type="button" class="aqp-primary-btn" (click)="next()">
+              {{ isLast() ? 'See results →' : 'Next question →' }}
+            </button>
+          }
+        </div>
+      }
+    }
+
+    @case ('result') {
+      <div class="aqp-result">
+        <div class="aqp-score-card">
+          <div class="aqp-score-big">{{ score() }}<span class="aqp-score-total">/{{ questions().length }}</span></div>
+          <div class="aqp-percent">{{ percentage() }}%</div>
+          <p class="aqp-result-msg">{{ resultMessage() }}</p>
+        </div>
+
+        <h2 class="aqp-section-title">Per-topic breakdown</h2>
+        <div class="aqp-breakdown">
+          @for (row of breakdown(); track row.topic) {
+            <div class="aqp-breakdown-row">
+              <span class="aqp-breakdown-topic">{{ row.topic }}</span>
+              <div class="aqp-breakdown-track">
+                <div class="aqp-breakdown-fill" [style.width.%]="(row.correct / row.total) * 100"></div>
+              </div>
+              <span class="aqp-breakdown-score">{{ row.correct }}/{{ row.total }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="aqp-actions">
+          <button type="button" class="aqp-primary-btn" style="width:auto;padding:.625rem 1.5rem" (click)="tryAgain()">↺ Try again</button>
+          <button type="button" class="aqp-secondary-btn" (click)="newSettings()">⚙ New settings</button>
+        </div>
+      </div>
+    }
+  }
+</div>

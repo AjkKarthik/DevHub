@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -51,11 +51,14 @@
     </a>
 
     <!-- Progress bar (per-section) -->
-    @if (currentSection() !== 'aspnet') {
+    @if (currentSection() !== 'aspnet' && currentSection() !== 'hub') {
       <div class="nav-progress">
         @if (currentSection() === 'csharp') {
           <div class="nav-progress-bar" [style.width.%]="progress.csharpPct()"></div>
           <span class="nav-progress-label">{{ progress.csharpCount() }}/{{ progress.csharpTotal }} topics done</span>
+        } @else if (currentSection() === 'sql') {
+          <div class="nav-progress-bar" [style.width.%]="progress.sqlPct()"></div>
+          <span class="nav-progress-label">{{ progress.sqlCount() }}/{{ progress.sqlTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -128,7 +131,75 @@
       <a routerLink="/aspnet/aspire" routerLinkActive="active"><span class="nl-text">.NET Aspire</span>@if(progress.isDone('aspnet-aspire')){<span class="nl-done">✓</span>}@if(diff('aspnet-aspire');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/aspnet/cheatsheet"      routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+      <a routerLink="/aspnet/errors"          routerLinkActive="active"><span class="nl-text">Common Errors</span></a>
+      <a routerLink="/aspnet/quiz-practice"   routerLinkActive="active"><span class="nl-text">Quiz Practice</span></a>
+      <a routerLink="/aspnet/interview-prep"  routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+      <a routerLink="/aspnet/design-patterns" routerLinkActive="active"><span class="nl-text">Design Patterns</span></a>
+      <a routerLink="/aspnet/decision-guides" routerLinkActive="active"><span class="nl-text">Decision Guides</span></a>
+      <a routerLink="/aspnet/glossary"        routerLinkActive="active"><span class="nl-text">Glossary</span></a>
+      <a routerLink="/aspnet/mini-projects"   routerLinkActive="active"><span class="nl-text">Mini Projects</span></a>
+      <a routerLink="/aspnet/learning-paths"  routerLinkActive="active"><span class="nl-text">Learning Paths</span></a>
+    </div>
+
     } <!-- end aspnet nav -->
+
+    <!-- ── SQL Navigation ────────────────────────────────────────── -->
+    @if (currentSection() === 'sql') {
+
+    <a routerLink="/sql" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">🏠 SQL Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/sql/rdbms-concepts"  routerLinkActive="active"><span class="nl-text">RDBMS Concepts</span>@if(progress.isDone('sql-rdbms-concepts')){<span class="nl-done">✓</span>}@if(diff('sql-rdbms-concepts');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/data-modeling"   routerLinkActive="active"><span class="nl-text">Data Modeling</span>@if(progress.isDone('sql-data-modeling')){<span class="nl-done">✓</span>}@if(diff('sql-data-modeling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/normalization"   routerLinkActive="active"><span class="nl-text">Normalization</span>@if(progress.isDone('sql-normalization')){<span class="nl-done">✓</span>}@if(diff('sql-normalization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/db-architecture" routerLinkActive="active"><span class="nl-text">DB Architecture</span>@if(progress.isDone('sql-db-architecture')){<span class="nl-done">✓</span>}@if(diff('sql-db-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/data-types"      routerLinkActive="active"><span class="nl-text">Data Types</span>@if(progress.isDone('sql-data-types')){<span class="nl-done">✓</span>}@if(diff('sql-data-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Core SQL</p>
+      <a routerLink="/sql/basics"          routerLinkActive="active"><span class="nl-text">SQL Basics</span>@if(progress.isDone('sql-basics')){<span class="nl-done">✓</span>}@if(diff('sql-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/joins"           routerLinkActive="active"><span class="nl-text">Joins</span>@if(progress.isDone('sql-joins')){<span class="nl-done">✓</span>}@if(diff('sql-joins');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/aggregations"    routerLinkActive="active"><span class="nl-text">Aggregations</span>@if(progress.isDone('sql-aggregations')){<span class="nl-done">✓</span>}@if(diff('sql-aggregations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/subqueries"      routerLinkActive="active"><span class="nl-text">Subqueries</span>@if(progress.isDone('sql-subqueries')){<span class="nl-done">✓</span>}@if(diff('sql-subqueries');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/ctes"            routerLinkActive="active"><span class="nl-text">CTEs</span>@if(progress.isDone('sql-ctes')){<span class="nl-done">✓</span>}@if(diff('sql-ctes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Advanced Queries</p>
+      <a routerLink="/sql/window-functions" routerLinkActive="active"><span class="nl-text">Window Functions</span>@if(progress.isDone('sql-window-functions')){<span class="nl-done">✓</span>}@if(diff('sql-window-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/indexes"          routerLinkActive="active"><span class="nl-text">Indexes</span>@if(progress.isDone('sql-indexes')){<span class="nl-done">✓</span>}@if(diff('sql-indexes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/transactions"     routerLinkActive="active"><span class="nl-text">Transactions</span>@if(progress.isDone('sql-transactions')){<span class="nl-done">✓</span>}@if(diff('sql-transactions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Design & Operations</p>
+      <a routerLink="/sql/schema-design"      routerLinkActive="active"><span class="nl-text">Schema Design</span>@if(progress.isDone('sql-schema-design')){<span class="nl-done">✓</span>}@if(diff('sql-schema-design');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/stored-procedures"  routerLinkActive="active"><span class="nl-text">Stored Procedures</span>@if(progress.isDone('sql-stored-procedures')){<span class="nl-done">✓</span>}@if(diff('sql-stored-procedures');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/performance"        routerLinkActive="active"><span class="nl-text">Performance</span>@if(progress.isDone('sql-performance')){<span class="nl-done">✓</span>}@if(diff('sql-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/json-features"      routerLinkActive="active"><span class="nl-text">JSON Features</span>@if(progress.isDone('sql-json-features')){<span class="nl-done">✓</span>}@if(diff('sql-json-features');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/sql/cheatsheet"      routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+      <a routerLink="/sql/errors"          routerLinkActive="active"><span class="nl-text">Common Errors</span></a>
+      <a routerLink="/sql/quiz-practice"   routerLinkActive="active"><span class="nl-text">Quiz Practice</span></a>
+      <a routerLink="/sql/interview-prep"  routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+      <a routerLink="/sql/design-patterns" routerLinkActive="active"><span class="nl-text">Design Patterns</span></a>
+      <a routerLink="/sql/decision-guides" routerLinkActive="active"><span class="nl-text">Decision Guides</span></a>
+      <a routerLink="/sql/glossary"        routerLinkActive="active"><span class="nl-text">Glossary</span></a>
+      <a routerLink="/sql/mini-projects"   routerLinkActive="active"><span class="nl-text">Mini Projects</span></a>
+      <a routerLink="/sql/learning-paths"  routerLinkActive="active"><span class="nl-text">Learning Paths</span></a>
+    </div>
+
+    } <!-- end sql nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {

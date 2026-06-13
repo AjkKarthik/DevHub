@@ -1,0 +1,40 @@
+<div class="hero">
+  <div class="hero-logo">K8s</div>
+  <h1>Containers</h1>
+  <p class="subtitle">Docker, Kubernetes, Helm, and container security — from writing your first Dockerfile to running production workloads in K8s.</p>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">{{totalCount}}</span><span class="stat-label">Topics</span></div>
+    <div class="stat"><span class="stat-num">8</span><span class="stat-label">Categories</span></div>
+    <div class="stat"><span class="stat-num">Docker + K8s</span><span class="stat-label">Coverage</span></div>
+  </div>
+</div>
+<div class="topics">
+  <div class="topics-header">
+    <h2>All Topics</h2>
+    <div class="filters">
+      @for (f of filters; track f) {
+        <button class="filter-btn" [class.active]="activeFilter() === f" (click)="setFilter(f)">{{f}}<span class="count">{{counts()[f] ?? 0}}</span></button>
+      }
+    </div>
+  </div>
+  <div class="grid">
+    @for (topic of topics(); track topic.title) {
+      <div class="card" [class.expanded]="expandedCard() === topic.title" [class.soon]="!topic.available">
+        @if (topic.available) {
+          <a class="card-main" [routerLink]="topic.route"><div [class]="badgeCss(topic.badge)">{{topic.badge}}</div><h3>{{topic.title}}</h3><p>{{topic.description}}</p></a>
+        } @else {
+          <div class="card-main"><div [class]="badgeCss(topic.badge)">{{topic.badge}}</div><h3>{{topic.title}}<span class="soon-chip">SOON</span></h3><p>{{topic.description}}</p></div>
+        }
+        <div class="card-footer">
+          <button class="key-points-btn" (click)="toggleCard(topic.title, $event)">{{expandedCard() === topic.title ? '▲ Hide' : '▼ Key points'}}</button>
+          @if (topic.available) { <a class="arrow-link" [routerLink]="topic.route">Explore →</a> }
+          @else { <span class="arrow-link disabled">Coming soon</span> }
+        </div>
+        @if (expandedCard() === topic.title) {
+          <div class="key-points">@for (kp of topic.keyPoints; track kp) { <div class="key-point">{{kp}}</div> }</div>
+        }
+      </div>
+    }
+    @if (topics().length === 0) { <p class="no-results">No topics match this filter.</p> }
+  </div>
+</div>

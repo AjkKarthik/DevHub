@@ -187,15 +187,18 @@ structure/UX, only content + accent differ.
   Foundations, OOP, Modern, Data, Async, Safety, Advanced, What's New, Reference.
   Includes advanced batch: reflection, iterators, regex, channels, unit-testing,
   expression-trees, dynamic, source-generators (nav group "Advanced & Quality").
-- **ASP.NET Core hub**: scaffolded (home page + full shell wiring, teal theme). 33 topics
-  planned, ALL `available: false` — flip per topic in `backend/aspnet/home/home.ts` as
-  pages are built, and add the route/nav/search/breadcrumb wiring per the checklist.
-  Search prefix `aspnet-`. Progress not tracked yet (nav progress bar hidden for aspnet) —
-  add `aspnetTotal`/counts to progress.service when first trackable topic ships.
-  Topic page wrapper: reuse the C# topic anatomy but accent teal; page-meta `tech` value
-  TBD (check page-meta supports it or extend).
-- **Hub home**: Angular, C# and ASP.NET Core are `available: true`. Everything else "Soon".
-- Progress totals: Angular 45, C# 41 (`progress.service.ts`).
+- **ASP.NET Core hub**: 33 trackable topic pages + 9 practice/reference pages (42 total).
+  Feature-complete. Search prefix `aspnet-`. Progress: `aspnetTotal=33` in progress.service.
+  Teal theme `#0e7490`. All topics `available: true` in `backend/aspnet/home/home.ts`.
+- **SQL hub**: 17 trackable topic pages + 9 practice/reference pages (26 total). In progress —
+  expanding to 35 topic pages. Orange theme `$accent: #e05c00`. Search prefix `sql-`. Progress:
+  `sqlTotal=17` in progress.service. Nav groups: Foundations, Core SQL, Advanced Queries,
+  Design & Operations, Reference. Sidebar SQL_DEFAULT + 26 page-specific entries. Shared
+  code-block + challenge-block extended with `'sql'` language. `page-meta tech="sql"` → DB Fiddle.
+  Dual-dialect pattern: MSSQL (T-SQL) + PostgreSQL throughout. New Foundations group:
+  rdbms-concepts, data-modeling, normalization, db-architecture, data-types.
+- **Hub home**: Angular, C#, ASP.NET Core, and SQL are `available: true`. Everything else "Soon".
+- Progress totals: Angular 45, C# 41, ASP.NET Core 33, SQL 17 (`progress.service.ts`).
 - Hero stat: "100+ Live Pages".
 
 ## Working practices

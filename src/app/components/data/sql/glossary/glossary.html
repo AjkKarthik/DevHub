@@ -1,0 +1,38 @@
+<div class="sq-glossary">
+  <div class="sq-gls-header">
+    <div class="sq-gls-icon">📖</div>
+    <div>
+      <h1>SQL Glossary</h1>
+      <p>A–Z definitions for 50+ SQL and relational database terms — with links to topic pages.</p>
+    </div>
+  </div>
+
+  <div class="sq-gls-controls">
+    <input class="sq-gls-search" type="text" placeholder="Search terms and definitions…"
+      [value]="search()" (input)="search.set($any($event.target).value)" />
+    <div class="letter-row">
+      @for (l of letters(); track l) {
+        <button class="letter-btn" [class.active]="activeLetter() === l"
+          (click)="setLetter(l)" type="button">{{ l }}</button>
+      }
+    </div>
+  </div>
+
+  @for (group of grouped(); track group[0]) {
+    <div class="sq-gls-group">
+      <div class="group-letter">{{ group[0] }}</div>
+      @for (entry of group[1]; track entry.term) {
+        <div class="sq-gls-item">
+          <div class="gls-term">{{ entry.term }}</div>
+          <p class="gls-def">{{ entry.def }}</p>
+          @if (entry.see && entry.seeRoute) {
+            <div class="gls-see">See: <a [routerLink]="entry.seeRoute">{{ entry.see }}</a></div>
+          }
+        </div>
+      }
+    </div>
+  }
+  @if (grouped().length === 0) {
+    <p style="color:#9ca3af;padding:2rem 0">No terms match your search.</p>
+  }
+</div>

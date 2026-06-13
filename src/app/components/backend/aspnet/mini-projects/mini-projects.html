@@ -1,0 +1,45 @@
+<div class="amp-page">
+  <div class="amp-header">
+    <div class="amp-header-icon">🛠️</div>
+    <div>
+      <h1 class="amp-title">ASP.NET Core Mini Projects</h1>
+      <p class="amp-subtitle">4 step-by-step walkthroughs — from a simple CRUD API to JWT auth, SignalR, and background queues.</p>
+    </div>
+  </div>
+
+  <div class="amp-grid">
+    @for (p of projects; track p.title; let i = $index) {
+      <div class="amp-card" [class.open]="openIndex() === i" (click)="toggle(i)">
+        <div class="amp-card-header">
+          <span class="amp-icon">{{ p.icon }}</span>
+          <div style="flex:1">
+            <h2 class="amp-card-title">{{ p.title }}</h2>
+            <p class="amp-card-desc">{{ p.desc }}</p>
+          </div>
+          <span class="amp-chevron">{{ openIndex() === i ? '▲' : '▼' }}</span>
+        </div>
+        <div class="amp-tags">
+          @for (t of p.tags; track t) { <span class="amp-tag">{{ t }}</span> }
+        </div>
+        @if (openIndex() === i) {
+          <div class="amp-body">
+            <div class="amp-steps">
+              @for (s of p.steps; track s.title; let j = $index) {
+                <div class="amp-step">
+                  <div class="amp-step-num">{{ j + 1 }}</div>
+                  <div class="amp-step-content">
+                    <h3>{{ s.title }}</h3>
+                    <p>{{ s.body }}</p>
+                    @if (s.code) {
+                      <pre><code>{{ s.code }}</code></pre>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

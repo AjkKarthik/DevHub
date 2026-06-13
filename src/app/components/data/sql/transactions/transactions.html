@@ -1,0 +1,19 @@
+<div class="sq-page">
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Transactions</h1>
+  <p class="page-subtitle">ACID guarantees, isolation levels, BEGIN / COMMIT / ROLLBACK, deadlocks and optimistic locking.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since="SQL-92" tech="sql" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-page-complete route="sql-transactions" nextRoute="/sql/schema-design" nextLabel="Schema Design" />
+</div>

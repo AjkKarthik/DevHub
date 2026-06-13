@@ -1,0 +1,41 @@
+$accent: #e05c00;
+$tint:   #fff7ed;
+$border: #e4e4e7;
+$muted:  #71717a;
+$code-bg: #1c1a0f;
+
+.sq-mini { max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+.sq-mini-header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem;
+  h1 { font-size: 1.875rem; font-weight: 800; margin: 0 0 .25rem; }
+  p { margin: 0; color: $muted; font-size: .9375rem; }
+}
+.sq-mini-icon { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: $accent; color: #fff; border-radius: 12px; font-size: 1.2rem; flex-shrink: 0; }
+
+.sq-mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(460px, 1fr)); gap: 1.5rem; }
+.sq-mini-card {
+  border: 1px solid $border; border-radius: 12px; overflow: hidden; background: #fff;
+  .mini-head { padding: 1.25rem; border-bottom: 1px solid #f3f4f6;
+    .mini-badge { font-size: .7rem; font-weight: 700; background: $tint; color: #9a3e00; padding: 2px 8px; border-radius: 10px; margin-bottom: .4rem; display: inline-block; text-transform: uppercase; }
+    h2 { font-size: 1.05rem; font-weight: 800; margin: .25rem 0 .35rem; }
+    p { font-size: .84rem; color: #6b7280; margin: 0; line-height: 1.5; }
+  }
+  .mini-section { padding: 1rem 1.25rem;
+    h3 { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: $muted; margin: 0 0 .6rem; }
+    pre { margin: 0; border-radius: 8px; overflow-x: auto; background: $code-bg;
+      code { display: block; padding: .75rem .875rem; font-size: .76rem; color: #e5e7eb; line-height: 1.6; white-space: pre; }
+    }
+    .step-list { list-style: none; margin: 0; padding: 0;
+      li { display: flex; align-items: flex-start; gap: .5rem; font-size: .85rem; padding: .25rem 0;
+        .step-n { flex-shrink: 0; width: 18px; height: 18px; background: $accent; color: #fff; border-radius: 50%; font-size: .65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+      }
+    }
+  }
+  .mini-divider { height: 1px; background: #f3f4f6; }
+}
+
+:host-context(body.dark) {
+  .sq-mini-card { background: #1f2937; border-color: #374151;
+    .mini-head { border-color: #374151; h2 { color: #f9fafb; } p { color: #9ca3af; } }
+    .mini-divider { background: #374151; }
+  }
+}

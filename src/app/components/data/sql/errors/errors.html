@@ -1,0 +1,41 @@
+<div class="sq-errors">
+  <div class="sq-err-header">
+    <div class="sq-err-icon">SQL</div>
+    <div>
+      <h1>SQL Common Errors</h1>
+      <p>12 real-world SQL mistakes with root cause, fix, and before/after code.</p>
+    </div>
+  </div>
+
+  <div class="sq-tags">
+    @for (tag of tags; track tag) {
+      <button class="sq-tag-btn" [class.active]="activeTag() === tag" (click)="activeTag.set(tag)" type="button">
+        {{ tag }}
+      </button>
+    }
+  </div>
+
+  <div class="sq-err-list">
+    @for (err of filtered(); track err.code) {
+      <div class="sq-err-card">
+        <div class="err-head">
+          <span class="err-code">{{ err.code }}</span>
+          <h3 class="err-title">{{ err.title }}</h3>
+          <span class="err-tag">{{ err.tag }}</span>
+        </div>
+        <div class="err-body">
+          <div class="err-col bad">
+            <h4>Root cause</h4>
+            <p>{{ err.cause }}</p>
+            <pre><code>{{ err.example }}</code></pre>
+          </div>
+          <div class="err-col fix">
+            <h4>Fix</h4>
+            <p>{{ err.fix }}</p>
+            <pre><code>{{ err.solution }}</code></pre>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

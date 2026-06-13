@@ -1,0 +1,27 @@
+<div class="sq-patterns">
+  <div class="sq-pat-header">
+    <div class="sq-pat-icon">🏗️</div>
+    <div>
+      <h1>SQL Design Patterns</h1>
+      <p>12 expandable schema and query patterns — soft delete, audit log, temporal tables, hierarchies and more.</p>
+    </div>
+  </div>
+
+  <div class="sq-pat-grid">
+    @for (p of patterns; let i = $index; track p.name) {
+      <div class="sq-pat-card">
+        <div class="pat-head" (click)="toggle(i)">
+          <span class="pat-icon">{{ p.icon }}</span>
+          <span class="pat-name">{{ p.name }}</span>
+          <span class="expand-icon" [class.open]="isOpen(i)">▼</span>
+        </div>
+        @if (isOpen(i)) {
+          <div class="pat-body">
+            <p>{{ p.desc }}</p>
+            <pre><code>{{ p.code }}</code></pre>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

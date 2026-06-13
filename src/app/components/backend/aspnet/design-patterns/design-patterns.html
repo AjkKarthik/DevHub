@@ -1,0 +1,31 @@
+<div class="adp-page">
+  <div class="adp-header">
+    <div class="adp-header-icon">ASP</div>
+    <div>
+      <h1 class="adp-title">ASP.NET Core Design Patterns</h1>
+      <p class="adp-subtitle">12 patterns commonly used in real-world ASP.NET Core apps — click any card to expand the explanation and code.</p>
+    </div>
+  </div>
+
+  <div class="adp-grid">
+    @for (p of patterns; track p.name; let i = $index) {
+      <div class="adp-card" [class.open]="openIndex() === i" (click)="toggle(i)">
+        <div class="adp-card-header">
+          <span class="adp-pattern-name">{{ p.name }}</span>
+          <span class="adp-chevron">{{ openIndex() === i ? '▲' : '▼' }}</span>
+        </div>
+        <div class="adp-card-sub">
+          @for (b of p.badges; track b) {
+            <span class="adp-badge">{{ b }}</span>
+          }
+        </div>
+        @if (openIndex() === i) {
+          <div class="adp-body">
+            <p>{{ p.summary }}</p>
+            <pre><code>{{ p.code }}</code></pre>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

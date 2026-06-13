@@ -1,0 +1,53 @@
+$accent:      #0e7490;
+$accent-dark: #155e75;
+$tint:        #ecfeff;
+$border:      #e4e4e7;
+$text:        #18181b;
+$muted:       #71717a;
+
+.adg-page { max-width: 1000px; margin: 0 auto; padding: 1.5rem 1rem 3rem; color: $text; }
+
+.adg-header {
+  display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem;
+  .adg-title    { font-size: 1.875rem; font-weight: 800; margin: 0 0 0.25rem; color: $accent; letter-spacing: -0.02em; }
+  .adg-subtitle { margin: 0; color: $muted; font-size: 0.9375rem; }
+}
+.adg-header-icon { width: 56px; height: 56px; background: $accent; color: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 900; flex-shrink: 0; }
+
+.adg-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.adg-guide {
+  border: 1.5px solid $border; border-radius: 12px; overflow: hidden; background: #fff;
+  h2 { font-size: 1.0625rem; font-weight: 700; color: $accent-dark; margin: 0; }
+  p  { font-size: 0.85rem; color: $muted; margin: 0.25rem 0 0; }
+}
+
+.adg-guide-header { padding: 1rem 1.25rem; background: $tint; border-bottom: 1px solid $border; }
+
+.adg-table { width: 100%; border-collapse: collapse;
+  th { background: #f8fafc; font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: $muted; padding: 0.625rem 1rem; border-bottom: 1px solid $border; text-align: left; }
+  td { padding: 0.75rem 1rem; font-size: 0.875rem; border-bottom: 1px solid #f1f5f9; vertical-align: top; line-height: 1.5; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: $text; white-space: nowrap; }
+}
+
+.adg-yes  { color: #16a34a; font-weight: 700; }
+.adg-no   { color: #dc2626; font-weight: 700; }
+.adg-mid  { color: #d97706; font-weight: 700; }
+
+.adg-rule {
+  padding: 0.75rem 1.25rem;
+  background: rgba(14,116,144,0.06);
+  border-top: 1px solid $border;
+  font-size: 0.85rem; color: $accent-dark;
+  strong { font-weight: 700; }
+}
+
+:host-context(body.dark) {
+  .adg-title    { color: #67e8f9; }
+  .adg-subtitle { color: #94a3b8; }
+  .adg-guide { background: #1e293b; border-color: #334155; h2 { color: #67e8f9; } }
+  .adg-guide-header { background: #164e63; border-color: #334155; }
+  .adg-table { th { background: #0f172a; color: #64748b; } td { color: #cbd5e1; border-color: #1e293b; } td:first-child { color: #f1f5f9; } }
+  .adg-rule { background: rgba(103,232,249,0.08); color: #a5f3fc; border-color: #334155; }
+}

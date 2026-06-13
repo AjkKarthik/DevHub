@@ -149,12 +149,81 @@ const ASPNET_LABELS: Record<string, string> = {
   'web-security':          'Web Security Essentials',
   'secrets':               'Secrets & Data Protection',
   'performance':           'Performance & Diagnostics',
+  'cheatsheet':            'Cheat Sheet',
+  'errors':               'Common Errors',
+  'quiz-practice':         'Quiz Practice',
+  'interview-prep':        'Interview Prep',
+  'design-patterns':       'Design Patterns',
+  'decision-guides':       'Decision Guides',
+  'glossary':              'Glossary',
+  'mini-projects':         'Mini Projects',
+  'learning-paths':        'Learning Paths',
+};
+
+const SQL_LABELS: Record<string, string> = {
+  'rdbms-concepts':    'RDBMS Concepts',
+  'data-modeling':     'Data Modeling',
+  'normalization':     'Normalization',
+  'db-architecture':   'DB Architecture',
+  'data-types':        'Data Types',
+  'basics':            'SQL Basics',
+  'joins':             'Joins',
+  'aggregations':      'Aggregations',
+  'subqueries':        'Subqueries',
+  'ctes':              'CTEs',
+  'window-functions':  'Window Functions',
+  'indexes':           'Indexes',
+  'transactions':      'Transactions',
+  'schema-design':     'Schema Design',
+  'stored-procedures': 'Stored Procedures',
+  'performance':       'Performance',
+  'json-features':     'JSON Features',
+  'cheatsheet':        'Cheat Sheet',
+  'errors':            'Common Errors',
+  'quiz-practice':     'Quiz Practice',
+  'interview-prep':    'Interview Prep',
+  'design-patterns':   'Design Patterns',
+  'decision-guides':   'Decision Guides',
+  'glossary':          'Glossary',
+  'mini-projects':     'Mini Projects',
+  'learning-paths':    'Learning Paths',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
-  'angular': { label: 'Angular',      path: '/angular' },
-  'csharp':  { label: 'C#',          path: '/csharp'  },
-  'aspnet':  { label: 'ASP.NET Core', path: '/aspnet' },
+  'angular':         { label: 'Angular',               path: '/angular'         },
+  'csharp':          { label: 'C#',                    path: '/csharp'          },
+  'aspnet':          { label: 'ASP.NET Core',           path: '/aspnet'          },
+  'sql':             { label: 'SQL',                   path: '/sql'             },
+  'html':            { label: 'HTML',                  path: '/html'            },
+  'css':             { label: 'CSS',                   path: '/css'             },
+  'javascript':      { label: 'JavaScript',            path: '/javascript'      },
+  'typescript':      { label: 'TypeScript',            path: '/typescript'      },
+  'react':           { label: 'React',                 path: '/react'           },
+  'blazor':          { label: 'Blazor',                path: '/blazor'          },
+  'performance':     { label: 'Web Performance',       path: '/performance'     },
+  'node':            { label: 'Node.js',               path: '/node'            },
+  'python':          { label: 'Python',                path: '/python'          },
+  'go':              { label: 'Go',                    path: '/go'              },
+  'mongodb':         { label: 'MongoDB / NoSQL',       path: '/mongodb'         },
+  'redis':           { label: 'Redis',                 path: '/redis'           },
+  'graphql':         { label: 'GraphQL',               path: '/graphql'         },
+  'messaging':       { label: 'Messaging & Events',    path: '/messaging'       },
+  'design-patterns': { label: 'Design Patterns',       path: '/design-patterns' },
+  'arch-patterns':   { label: 'Architecture Patterns', path: '/arch-patterns'   },
+  'api-design':      { label: 'API Design',            path: '/api-design'      },
+  'system-design':   { label: 'System Design',         path: '/system-design'   },
+  'security':        { label: 'Security & Auth',       path: '/security'        },
+  'observability':   { label: 'Observability & SRE',   path: '/observability'   },
+  'devops':          { label: 'Git & DevOps',          path: '/devops'          },
+  'linux':           { label: 'Linux & Bash',          path: '/linux'           },
+  'containers':      { label: 'Docker & Kubernetes',   path: '/containers'      },
+  'terraform':       { label: 'Terraform / IaC',       path: '/terraform'       },
+  'azure':           { label: 'Azure',                 path: '/azure'           },
+  'aws':             { label: 'AWS',                   path: '/aws'             },
+  'service-mesh':    { label: 'Service Mesh & Istio',  path: '/service-mesh'    },
+  'dsa':             { label: 'DSA',                   path: '/dsa'             },
+  'testing-hub':     { label: 'Testing',               path: '/testing-hub'     },
+  'ai':              { label: 'AI & LLMs',             path: '/ai'              },
 };
 
 @Component({
@@ -243,6 +312,7 @@ export class BreadcrumbComponent {
     const key = segs[segs.length - 1];
     const labels = segs[0] === 'csharp' ? CSHARP_LABELS
                  : segs[0] === 'aspnet' ? ASPNET_LABELS
+                 : segs[0] === 'sql'    ? SQL_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

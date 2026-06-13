@@ -1,0 +1,36 @@
+<div class="sq-decisions">
+  <div class="sq-dec-header">
+    <div class="sq-dec-icon">⚖️</div>
+    <div>
+      <h1>SQL Decision Guides</h1>
+      <p>8 side-by-side comparison tables for common SQL choices — with a clear rule of thumb for each.</p>
+    </div>
+  </div>
+
+  <div class="sq-dec-list">
+    @for (g of guides; track g.title) {
+      <div class="sq-dec-card">
+        <h2>{{ g.title }}</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>{{ g.optionA }}</th>
+              <th>{{ g.optionB }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of g.rows; track row.aspect) {
+              <tr>
+                <td><strong>{{ row.aspect }}</strong></td>
+                <td>{{ row.optionA }}</td>
+                <td>{{ row.optionB }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <div class="rule">Rule of thumb: {{ g.rule }}</div>
+      </div>
+    }
+  </div>
+</div>

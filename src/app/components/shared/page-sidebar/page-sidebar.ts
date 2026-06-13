@@ -37,6 +37,28 @@ const DEFAULT: SidebarData = {
   ],
 };
 
+const SQL_DEFAULT: SidebarData = {
+  apis: ['SELECT', 'JOIN', 'WHERE', 'GROUP BY', 'ORDER BY', 'WITH (CTE)'],
+  related: [
+    { label: 'SQL Basics',    route: '/sql/basics'       },
+    { label: 'Joins',         route: '/sql/joins'        },
+    { label: 'Aggregations',  route: '/sql/aggregations' },
+  ],
+  tip: 'Write the SELECT last mentally — start with FROM, then JOIN, WHERE, GROUP BY, HAVING, then SELECT. This matches the engine\'s execution order.',
+  docs: [
+    { label: 'SQL Server T-SQL Reference',  url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-reference' },
+    { label: 'PostgreSQL Documentation',    url: 'https://www.postgresql.org/docs/current/' },
+    { label: 'DB Fiddle (run SQL online)',  url: 'https://dbfiddle.uk/' },
+  ],
+  resources: [
+    { label: 'SQL Server Samples', url: 'https://github.com/microsoft/sql-server-samples', badge: 'code' },
+  ],
+  gotchas: [
+    'NULL is not equal to anything — NULL = NULL is false. Use IS NULL / IS NOT NULL.',
+    'DISTINCT applies to the entire row, not just one column — can kill index usage on large tables.',
+  ],
+};
+
 const ASPNET_DEFAULT: SidebarData = {
   apis: ['WebApplication', 'IServiceCollection', 'IApplicationBuilder', 'IConfiguration', 'ILogger<T>'],
   related: [
@@ -2636,6 +2658,386 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── ASP.NET Core Reference ───────────────────────────────────────────────────
+  'aspnet/cheatsheet': {
+    apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],
+    related: [
+      { label: 'Middleware Pipeline',  route: '/aspnet/middleware' },
+      { label: 'Minimal APIs',         route: '/aspnet/minimal-apis' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Use the search bar to filter entries across all sections at once — great for looking up a specific method or CLI command quickly.',
+    docs: [
+      { label: 'ASP.NET Core fundamentals',  url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/' },
+      { label: 'dotnet CLI reference',       url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore',  url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The CLI section covers the most common commands — check the official dotnet CLI docs for the full flag reference.',
+    ],
+  },
+
+  'aspnet/errors': {
+    apis: ['IExceptionHandler', 'UseExceptionHandler()', 'ProblemDetails', 'ModelStateDictionary'],
+    related: [
+      { label: 'Error Handling',  route: '/aspnet/error-handling' },
+      { label: 'Middleware',      route: '/aspnet/middleware'      },
+      { label: 'Authentication',  route: '/aspnet/authentication'  },
+    ],
+    tip: 'Most startup errors have a root cause in the console output — check the inner exception before searching Stack Overflow.',
+    docs: [
+      { label: 'Handle errors in ASP.NET Core',  url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling' },
+      { label: 'Troubleshoot ASP.NET Core',      url: 'https://learn.microsoft.com/en-us/aspnet/core/test/troubleshoot' },
+    ],
+    resources: [],
+    gotchas: [
+      'Always read the full stack trace — the innermost exception is almost always the real cause, not the outer wrapper.',
+    ],
+  },
+
+  'aspnet/quiz-practice': {
+    apis: ['Middleware', 'DI', 'Routing', 'Auth', 'EF Core', 'Performance', 'SignalR'],
+    related: [
+      { label: 'Interview Prep',  route: '/aspnet/interview-prep' },
+      { label: 'Cheat Sheet',     route: '/aspnet/cheatsheet'     },
+      { label: 'Common Errors',   route: '/aspnet/errors'         },
+    ],
+    tip: 'Re-run the topics you score lowest on — focus beats breadth when preparing for an interview.',
+    docs: [
+      { label: 'ASP.NET Core docs',  url: 'https://learn.microsoft.com/en-us/aspnet/core/' },
+    ],
+    resources: [],
+    gotchas: [
+      'Read the explanation even for questions you got right — the why matters more than the what.',
+    ],
+  },
+
+  'aspnet/interview-prep': {
+    apis: ['IMiddleware', 'IServiceCollection', 'IEndpointRouteBuilder', 'DbContext', 'IAuthorizationHandler'],
+    related: [
+      { label: 'Quiz Practice',   route: '/aspnet/quiz-practice' },
+      { label: 'Design Patterns', route: '/aspnet/design-patterns' },
+      { label: 'Cheat Sheet',     route: '/aspnet/cheatsheet' },
+    ],
+    tip: 'Senior questions probe trade-offs ("when would you NOT use minimal APIs") — practised answers beat memorised definitions.',
+    docs: [
+      { label: 'ASP.NET Core fundamentals',  url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/' },
+      { label: 'Performance best practices', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/performance-best-practices' },
+    ],
+    resources: [],
+    gotchas: [
+      'Interviewers at senior level expect you to name trade-offs, not just features — practise the "it depends" framing.',
+    ],
+  },
+
+  'aspnet/design-patterns': {
+    apis: ['IRepository<T>', 'IMediator', 'IPipelineBehavior', 'ISpecification<T>', 'IResultPattern', 'IOutboxMessage'],
+    related: [
+      { label: 'Dependency Injection',  route: '/aspnet/dependency-injection' },
+      { label: 'EF Core Basics',        route: '/aspnet/ef-core-basics'       },
+      { label: 'Testing',               route: '/aspnet/testing'               },
+    ],
+    tip: 'Start with Repository + Options — they give most of the benefit with minimal complexity. Add CQRS/MediatR only when your command handlers grow past ~5.',
+    docs: [
+      { label: 'Architecture patterns (.NET)',  url: 'https://learn.microsoft.com/en-us/dotnet/architecture/' },
+      { label: 'MediatR docs',                 url: 'https://github.com/jbogard/MediatR/wiki' },
+    ],
+    resources: [
+      { label: 'dotnet/eShop (reference app)',  url: 'https://github.com/dotnet/eShop', badge: 'code' },
+    ],
+    gotchas: [
+      'Patterns add indirection — only adopt one when the problem it solves is actually present in your codebase.',
+    ],
+  },
+
+  'aspnet/decision-guides': {
+    apis: ['MapControllers()', 'MapGet()', 'AddJwtBearer()', 'AddCookie()', 'IMemoryCache', 'IDistributedCache'],
+    related: [
+      { label: 'Minimal APIs',    route: '/aspnet/minimal-apis'    },
+      { label: 'Authentication',  route: '/aspnet/authentication'  },
+      { label: 'Caching',         route: '/aspnet/caching'         },
+    ],
+    tip: 'Use the comparison tables as a starting checklist — the "rule of thumb" row gives the 80% answer; check the detail rows for your edge case.',
+    docs: [
+      { label: 'Choose between controller-based and minimal APIs',  url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/apis' },
+      { label: 'Caching overview',  url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview' },
+    ],
+    resources: [],
+    gotchas: [
+      'These guides cover the common 80% — always validate the recommendation against your team\'s skills and existing stack.',
+    ],
+  },
+
+  'aspnet/glossary': {
+    apis: ['Middleware', 'Kestrel', 'DI/IoC', 'DbContext', 'IActionResult', 'ClaimsPrincipal'],
+    related: [
+      { label: 'Cheat Sheet',     route: '/aspnet/cheatsheet'   },
+      { label: 'Learning Paths',  route: '/aspnet/learning-paths' },
+    ],
+    tip: 'Use the letter quick-nav or search — every term that has a matching topic page includes a direct link.',
+    docs: [
+      { label: 'ASP.NET Core fundamentals glossary',  url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/' },
+      { label: '.NET glossary',                       url: 'https://learn.microsoft.com/en-us/dotnet/standard/glossary' },
+    ],
+    resources: [],
+    gotchas: [
+      'Terms like "middleware" and "pipeline" have precise ASP.NET Core meanings — don\'t conflate them with general HTTP proxy concepts.',
+    ],
+  },
+
+  'aspnet/mini-projects': {
+    apis: ['MapGet/Post/Put/Delete()', 'AddAuthentication()', 'MapHub<T>()', 'IHostedService', 'Channel<T>'],
+    related: [
+      { label: 'Minimal APIs',        route: '/aspnet/minimal-apis'        },
+      { label: 'Authentication',      route: '/aspnet/authentication'       },
+      { label: 'SignalR',             route: '/aspnet/signalr'              },
+      { label: 'Background Services', route: '/aspnet/background-services'  },
+    ],
+    tip: 'Build projects 1 → 2 → 3 in order — each adds a layer on top of the previous, so the progression is natural.',
+    docs: [
+      { label: 'Tutorial: Create a minimal API',  url: 'https://learn.microsoft.com/en-us/aspnet/core/tutorials/min-web-api' },
+      { label: 'Use SignalR with ASP.NET Core',   url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore samples',  url: 'https://github.com/dotnet/aspnetcore/tree/main/src/Samples', badge: 'code' },
+    ],
+    gotchas: [
+      'These walkthroughs are intentionally minimal — real projects will need validation, logging, and error handling on top.',
+    ],
+  },
+
+  'aspnet/learning-paths': {
+    apis: ['Hosting & Startup', 'Middleware', 'DI', 'EF Core', 'Auth', 'Minimal APIs', 'Deployment'],
+    related: [
+      { label: 'Quiz Practice',   route: '/aspnet/quiz-practice'  },
+      { label: 'Interview Prep',  route: '/aspnet/interview-prep' },
+      { label: 'Mini Projects',   route: '/aspnet/mini-projects'  },
+    ],
+    tip: 'Stick to one path at a time — finishing a track beats sampling all four.',
+    docs: [
+      { label: 'ASP.NET Core docs',       url: 'https://learn.microsoft.com/en-us/aspnet/core/' },
+      { label: '.NET learning resources', url: 'https://dotnet.microsoft.com/en-us/learn'       },
+    ],
+    resources: [
+      { label: 'dotnet/eShop (reference app)',  url: 'https://github.com/dotnet/eShop', badge: 'code' },
+    ],
+    gotchas: [
+      'The Senior/Architect path assumes you\'ve already shipped a few APIs — don\'t skip the Backend Developer path unless you have solid fundamentals.',
+    ],
+  },
+
+  // ── SQL ─────────────────────────────────────────────────────────────────────
+  'sql/rdbms-concepts': {
+    apis: ['PRIMARY KEY', 'FOREIGN KEY', 'UNIQUE', 'NOT NULL', 'CHECK', 'REFERENCES', 'ON DELETE CASCADE'],
+    related: [{ label: 'Data Modeling', route: '/sql/data-modeling' }, { label: 'Normalization', route: '/sql/normalization' }, { label: 'SQL Basics', route: '/sql/basics' }],
+    tip: 'Every table should have a surrogate primary key (IDENTITY / SERIAL). Natural keys are fragile — emails and phone numbers change.',
+    docs: [{ label: 'T-SQL Constraints', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints' }, { label: 'PostgreSQL Constraints', url: 'https://www.postgresql.org/docs/current/ddl-constraints.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Circular FK references require deferrable constraints in PostgreSQL or careful insert ordering in MSSQL.', 'ON DELETE CASCADE can silently wipe child rows — prefer explicit deletes in application code for critical data.'],
+  },
+  'sql/data-modeling': {
+    apis: ['CREATE TABLE', 'FOREIGN KEY', 'REFERENCES', 'JOIN TABLE', 'ER Diagram'],
+    related: [{ label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' }, { label: 'Normalization', route: '/sql/normalization' }, { label: 'Schema Design', route: '/sql/schema-design' }],
+    tip: 'Model for queries first. A perfectly normalised schema that requires 8 joins for every read is often the wrong design.',
+    docs: [{ label: 'PostgreSQL DDL', url: 'https://www.postgresql.org/docs/current/ddl.html' }, { label: 'T-SQL DDL', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A Many-to-Many relationship always needs a junction table — you cannot store it in two columns.', 'Avoid storing comma-separated values in a single column — that breaks 1NF and makes queries painful.'],
+  },
+  'sql/normalization': {
+    apis: ['1NF', '2NF', '3NF', 'BCNF', 'Functional Dependency', 'Partial Dependency', 'Transitive Dependency'],
+    related: [{ label: 'Data Modeling', route: '/sql/data-modeling' }, { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' }, { label: 'Schema Design', route: '/sql/schema-design' }],
+    tip: 'Normalise to 3NF by default, then denormalise only where profiling shows a measurable performance gain.',
+    docs: [{ label: 'PostgreSQL DDL Best Practices', url: 'https://www.postgresql.org/docs/current/ddl.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['2NF only matters for composite primary keys — a single-column PK table is automatically in 2NF.', 'Denormalisation with triggers adds write overhead and complexity — document it and own it.'],
+  },
+  'sql/db-architecture': {
+    apis: ['Buffer Pool', 'WAL / Transaction Log', 'MVCC', 'VACUUM', 'ANALYZE', 'sys.dm_os_buffer_descriptors', 'pg_stat_bgwriter'],
+    related: [{ label: 'Transactions', route: '/sql/transactions' }, { label: 'Indexes', route: '/sql/indexes' }, { label: 'Performance', route: '/sql/performance' }],
+    tip: 'PostgreSQL MVCC never blocks readers with writers. MSSQL achieves the same with RCSI — enable it for OLTP databases.',
+    docs: [{ label: 'MSSQL Buffer Pool', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/memory-management-architecture-guide' }, { label: 'PostgreSQL MVCC', url: 'https://www.postgresql.org/docs/current/mvcc.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['PostgreSQL VACUUM does not reclaim disk space to the OS — use VACUUM FULL for that (takes an exclusive lock).', 'Stale statistics cause the planner to choose bad plans — run ANALYZE after large bulk loads.'],
+  },
+  'sql/data-types': {
+    apis: ['INT', 'BIGINT', 'DECIMAL', 'VARCHAR', 'NVARCHAR', 'DATETIME2', 'TIMESTAMPTZ', 'UUID', 'BOOLEAN', 'CAST', 'CONVERT', 'TRY_CAST'],
+    related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' }, { label: 'Schema Design', route: '/sql/schema-design' }],
+    tip: 'Always store timestamps as UTC. Use DATETIME2 (MSSQL) or TIMESTAMPTZ (PostgreSQL) — never DATETIME or TIMESTAMP WITHOUT TIME ZONE.',
+    docs: [{ label: 'T-SQL Data Types', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql' }, { label: 'PostgreSQL Data Types', url: 'https://www.postgresql.org/docs/current/datatype.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Never use FLOAT for money — floating-point rounding causes penny errors. Use DECIMAL(19,4).', 'MSSQL VARCHAR is single-byte; use NVARCHAR for Unicode. PostgreSQL VARCHAR is always UTF-8 — the N prefix makes no difference.'],
+  },
+  'sql/basics': {
+    apis: ['SELECT', 'FROM', 'WHERE', 'ORDER BY', 'DISTINCT', 'LIMIT / TOP', 'IS NULL', 'LIKE', 'BETWEEN', 'IN'],
+    related: [{ label: 'Joins', route: '/sql/joins' }, { label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Subqueries', route: '/sql/subqueries' }],
+    tip: 'NULL comparisons always use IS NULL / IS NOT NULL — never = NULL. Any comparison with NULL returns UNKNOWN, not FALSE.',
+    docs: [{ label: 'T-SQL SELECT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql' }, { label: 'PostgreSQL SELECT', url: 'https://www.postgresql.org/docs/current/sql-select.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['SELECT * in production kills index coverage — always name your columns.', 'LIMIT without ORDER BY returns non-deterministic rows — always pair them.'],
+  },
+  'sql/joins': {
+    apis: ['INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'ON', 'USING', 'self-join'],
+    related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Subqueries', route: '/sql/subqueries' }, { label: 'Aggregations', route: '/sql/aggregations' }],
+    tip: 'LEFT JOIN is right 80% of the time — use INNER JOIN only when you are certain every row has a match on both sides.',
+    docs: [{ label: 'T-SQL JOIN', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql' }, { label: 'PostgreSQL JOIN', url: 'https://www.postgresql.org/docs/current/queries-table-expressions.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Joining on nullable columns: NULL != NULL so rows where the key is NULL are always excluded from INNER JOIN.', 'CROSS JOIN on large tables is O(n×m) — easy to accidentally produce millions of rows.'],
+  },
+  'sql/aggregations': {
+    apis: ['GROUP BY', 'HAVING', 'COUNT()', 'SUM()', 'AVG()', 'MIN()', 'MAX()', 'COUNT(*)', 'ROLLUP', 'GROUPING SETS'],
+    related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Window Functions', route: '/sql/window-functions' }, { label: 'CTEs', route: '/sql/ctes' }],
+    tip: 'Every column in SELECT that is not inside an aggregate function must appear in GROUP BY — this is the fundamental rule of aggregation.',
+    docs: [{ label: 'T-SQL GROUP BY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql' }, { label: 'PostgreSQL Aggregates', url: 'https://www.postgresql.org/docs/current/functions-aggregate.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['HAVING filters after aggregation; WHERE filters before — you cannot use aggregate aliases in WHERE.', 'COUNT(*) counts rows including NULLs; COUNT(column) counts non-NULL values only.'],
+  },
+  'sql/subqueries': {
+    apis: ['IN (subquery)', 'EXISTS', 'NOT EXISTS', 'ANY / ALL', 'scalar subquery', 'derived table', 'correlated subquery'],
+    related: [{ label: 'CTEs', route: '/sql/ctes' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
+    tip: 'Prefer EXISTS over IN for subqueries against large tables — EXISTS short-circuits on first match; IN materialises the full result set.',
+    docs: [{ label: 'T-SQL Subqueries', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/subqueries' }, { label: 'PostgreSQL Subqueries', url: 'https://www.postgresql.org/docs/current/functions-subquery.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A correlated subquery re-runs for every outer row — if it is slow, rewrite as a JOIN or CTE.', 'NOT IN with a NULL in the subquery returns no rows at all — use NOT EXISTS instead.'],
+  },
+  'sql/ctes': {
+    apis: ['WITH name AS (...)', 'multiple CTEs', 'RECURSIVE', 'anchor member', 'recursive member', 'UNION ALL'],
+    related: [{ label: 'Subqueries', route: '/sql/subqueries' }, { label: 'Window Functions', route: '/sql/window-functions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'Recursive CTEs are the cleanest way to walk a parent-child hierarchy — but always include a depth/cycle guard to prevent infinite loops.',
+    docs: [{ label: 'T-SQL WITH / CTE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql' }, { label: 'PostgreSQL WITH', url: 'https://www.postgresql.org/docs/current/queries-with.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['CTEs in SQL Server are not always materialised — the optimiser can inline them and run the CTE body multiple times.', 'In PostgreSQL, CTEs are materialised by default (fence) — add NOT MATERIALIZED for optimiser visibility.'],
+  },
+  'sql/window-functions': {
+    apis: ['ROW_NUMBER()', 'RANK()', 'DENSE_RANK()', 'NTILE()', 'LAG()', 'LEAD()', 'FIRST_VALUE()', 'LAST_VALUE()', 'OVER()', 'PARTITION BY', 'ROWS BETWEEN'],
+    related: [{ label: 'Aggregations', route: '/sql/aggregations' }, { label: 'CTEs', route: '/sql/ctes' }, { label: 'Performance', route: '/sql/performance' }],
+    tip: 'Window functions never reduce row count — unlike GROUP BY, every input row has a corresponding output row, so you can mix detail and summary in the same query.',
+    docs: [{ label: 'T-SQL Window Functions', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/ranking-functions-transact-sql' }, { label: 'PostgreSQL Window Functions', url: 'https://www.postgresql.org/docs/current/tutorial-window.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['LAST_VALUE needs ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING — the default frame stops at the current row.', 'Window functions run after WHERE and GROUP BY — you cannot filter on them in the same query; wrap in a CTE.'],
+  },
+  'sql/indexes': {
+    apis: ['CREATE INDEX', 'CREATE CLUSTERED INDEX', 'INCLUDE', 'CREATE UNIQUE INDEX', 'DROP INDEX', 'sys.dm_db_missing_index_details', 'EXPLAIN', 'EXPLAIN ANALYZE'],
+    related: [{ label: 'Performance', route: '/sql/performance' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Schema Design', route: '/sql/schema-design' }],
+    tip: 'The most impactful index is often a covering index — add the SELECT columns to INCLUDE so the engine never touches the base table.',
+    docs: [{ label: 'SQL Server Indexes', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/indexes/indexes' }, { label: 'PostgreSQL Indexes', url: 'https://www.postgresql.org/docs/current/indexes.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Too many indexes slow down INSERT/UPDATE/DELETE — every write must update all indexes on the table.', 'SQL Server only uses one clustered index per table — choose the column most used in range queries (usually a sequential key).'],
+  },
+  'sql/transactions': {
+    apis: ['BEGIN TRANSACTION', 'COMMIT', 'ROLLBACK', 'SAVEPOINT', 'SET TRANSACTION ISOLATION LEVEL', 'READ COMMITTED', 'SERIALIZABLE', 'SNAPSHOT', 'SELECT ... FOR UPDATE', 'WITH (NOLOCK)'],
+    related: [{ label: 'Performance', route: '/sql/performance' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Indexes', route: '/sql/indexes' }],
+    tip: 'Keep transactions as short as possible — a long-running transaction holds locks and causes blocking for every other query that needs those rows.',
+    docs: [{ label: 'T-SQL Transactions', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/transactions-transact-sql' }, { label: 'PostgreSQL Transactions', url: 'https://www.postgresql.org/docs/current/tutorial-transactions.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['WITH (NOLOCK) / READ UNCOMMITTED reads dirty data — it avoids locks by reading uncommitted, potentially rolled-back rows.', 'Deadlocks are circular lock waits — SQL Server picks one transaction as the victim; always retry on deadlock error 1205.'],
+  },
+  'sql/schema-design': {
+    apis: ['CREATE TABLE', 'PRIMARY KEY', 'FOREIGN KEY', 'UNIQUE', 'CHECK', 'NOT NULL', 'DEFAULT', 'IDENTITY / SERIAL', 'ON DELETE CASCADE', 'ALTER TABLE'],
+    related: [{ label: 'Indexes', route: '/sql/indexes' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'JSON Features', route: '/sql/json-features' }],
+    tip: 'Normalise to 3NF by default; only denormalise for a measured performance problem. Premature denormalisation creates data anomalies that are hard to fix later.',
+    docs: [{ label: 'T-SQL CREATE TABLE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql' }, { label: 'PostgreSQL CREATE TABLE', url: 'https://www.postgresql.org/docs/current/sql-createtable.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Using VARCHAR(MAX) / TEXT for every string column hurts performance — choose appropriate lengths and use indexes.', 'Cascading deletes can surprise you in production — prefer explicit application-level deletes for critical data.'],
+  },
+  'sql/stored-procedures': {
+    apis: ['CREATE PROCEDURE', 'EXEC / CALL', '@param IN/OUT', 'RETURN', 'TRY/CATCH', 'RAISERROR / RAISE', 'CREATE FUNCTION', 'TABLE-VALUED FUNCTION', 'DECLARE', 'SET'],
+    related: [{ label: 'Transactions', route: '/sql/transactions' }, { label: 'Performance', route: '/sql/performance' }, { label: 'Schema Design', route: '/sql/schema-design' }],
+    tip: 'Wrap multi-step procedures in TRY/CATCH with explicit ROLLBACK in the CATCH — otherwise a partially-committed proc leaves data in an inconsistent state.',
+    docs: [{ label: 'T-SQL Stored Procedures', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/stored-procedures/stored-procedures-database-engine' }, { label: 'PostgreSQL PL/pgSQL', url: 'https://www.postgresql.org/docs/current/plpgsql.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Scalar UDFs in SQL Server are row-by-row — they kill query parallelism. Use inline TVFs or rewrite as set-based logic.', 'Procedure plan caching can cause parameter sniffing — OPTION (RECOMPILE) forces a fresh plan per execution.'],
+  },
+  'sql/performance': {
+    apis: ['EXPLAIN ANALYZE', 'SET STATISTICS IO ON', 'sys.dm_exec_query_stats', 'Index Seek vs Scan', 'Hash Join vs Nested Loop', 'OPTION (RECOMPILE)', 'Query Store'],
+    related: [{ label: 'Indexes', route: '/sql/indexes' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Window Functions', route: '/sql/window-functions' }],
+    tip: 'Read the execution plan right-to-left — the rightmost operations run first. The fattest arrow or the highest cost node is where to focus.',
+    docs: [{ label: 'SQL Server Query Tuning', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/performance-center-for-sql-server-database-engine-and-azure-sql-database' }, { label: 'PostgreSQL EXPLAIN', url: 'https://www.postgresql.org/docs/current/sql-explain.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Functions on indexed columns prevent index seeks: WHERE YEAR(created_at)=2024 scans everything; WHERE created_at >= … uses the index.', 'Implicit type conversions in WHERE (comparing INT column to a VARCHAR parameter) cause full scans.'],
+  },
+  'sql/json-features': {
+    apis: ['JSON_VALUE()', 'JSON_QUERY()', 'OPENJSON()', 'FOR JSON PATH', 'FOR JSON AUTO', 'jsonb', 'jsonb_extract_path()', '->', '->>', '@>', '?'],
+    related: [{ label: 'Schema Design', route: '/sql/schema-design' }, { label: 'Performance', route: '/sql/performance' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'In PostgreSQL, use jsonb (binary) not json (text) for stored JSON — jsonb supports indexing with GIN and all operators; json just stores the text.',
+    docs: [{ label: 'T-SQL JSON Functions', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/json-functions-transact-sql' }, { label: 'PostgreSQL JSON', url: 'https://www.postgresql.org/docs/current/functions-json.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['JSON columns cannot be indexed like normal columns without computed columns (SQL Server) or GIN indexes (PostgreSQL).', 'SQL Server stores JSON as NVARCHAR — there is no native JSON type, so validation is at function-call time, not insert time.'],
+  },
+  'sql/cheatsheet': {
+    apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
+    related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
+    tip: 'Use the tab filters to jump to a section and the search box to find a specific function or keyword across all sections.',
+    docs: [{ label: 'T-SQL Reference', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-reference' }, { label: 'PostgreSQL Reference', url: 'https://www.postgresql.org/docs/current/sql-commands.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Syntax differences between SQL Server and PostgreSQL are noted in the tabs — check both dialects for client-facing queries.'],
+  },
+  'sql/errors': {
+    apis: ['TRY/CATCH', 'RAISERROR', 'THROW', 'ERROR_MESSAGE()', 'ERROR_NUMBER()', 'RAISE', '@@ERROR'],
+    related: [{ label: 'Transactions', route: '/sql/transactions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Performance', route: '/sql/performance' }],
+    tip: 'Most SQL errors have a root cause in the error message itself — read the full error including the state/severity before searching.',
+    docs: [{ label: 'T-SQL Error Handling', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/try-catch-transact-sql' }, { label: 'PostgreSQL Error Codes', url: 'https://www.postgresql.org/docs/current/errcodes-appendix.html' }],
+    resources: [],
+    gotchas: ['Division by zero raises an error in SQL Server and PostgreSQL — use NULLIF(denominator, 0) to return NULL instead.'],
+  },
+  'sql/quiz-practice': {
+    apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'INDEX', 'TRANSACTION'],
+    related: [{ label: 'Interview Prep', route: '/sql/interview-prep' }, { label: 'Cheat Sheet', route: '/sql/cheatsheet' }, { label: 'Common Errors', route: '/sql/errors' }],
+    tip: 'Re-run the topics where you scored lowest — targeted practice beats breadth.',
+    docs: [{ label: 'T-SQL Reference', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-reference' }],
+    resources: [],
+    gotchas: ['Read the explanation for every question, even correct ones — the reasoning matters more than the answer.'],
+  },
+  'sql/interview-prep': {
+    apis: ['JOIN types', 'GROUP BY / HAVING', 'Window Functions', 'Indexes', 'Transactions', 'Normalisation'],
+    related: [{ label: 'Quiz Practice', route: '/sql/quiz-practice' }, { label: 'Design Patterns', route: '/sql/design-patterns' }, { label: 'Cheat Sheet', route: '/sql/cheatsheet' }],
+    tip: 'Senior SQL questions probe "why" — be ready to explain when NOT to use a subquery, why an index might not be used, and what isolation level trade-offs exist.',
+    docs: [{ label: 'T-SQL Reference', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-reference' }, { label: 'PostgreSQL Docs', url: 'https://www.postgresql.org/docs/current/' }],
+    resources: [],
+    gotchas: ['Interviewers at senior level expect execution-plan reasoning, not just syntax recall — practise reading query plans.'],
+  },
+  'sql/design-patterns': {
+    apis: ['soft delete', 'audit log', 'temporal tables', 'lookup/reference tables', 'adjacency list', 'nested sets', 'many-to-many junction'],
+    related: [{ label: 'Schema Design', route: '/sql/schema-design' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'JSON Features', route: '/sql/json-features' }],
+    tip: 'Start with the simplest pattern (adjacency list for trees, junction table for M:N) — only add complexity when you have a measured query problem.',
+    docs: [{ label: 'T-SQL Temporal Tables', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/temporal-tables' }, { label: 'PostgreSQL Inheritance', url: 'https://www.postgresql.org/docs/current/ddl-inherit.html' }],
+    resources: [],
+    gotchas: ['Soft delete adds a filter to every query — use row-level security or a view to avoid accidentally including deleted rows.'],
+  },
+  'sql/decision-guides': {
+    apis: ['clustered vs non-clustered', 'stored proc vs view', 'CTE vs subquery', 'ORM vs raw SQL', 'MSSQL vs PostgreSQL'],
+    related: [{ label: 'Indexes', route: '/sql/indexes' }, { label: 'Performance', route: '/sql/performance' }, { label: 'Schema Design', route: '/sql/schema-design' }],
+    tip: 'Decision tables give the 80% answer — always validate against your specific data distribution and query patterns.',
+    docs: [{ label: 'SQL Server vs PostgreSQL comparison', url: 'https://learn.microsoft.com/en-us/sql/sql-server/' }],
+    resources: [],
+    gotchas: ['Platform choice (MSSQL vs PostgreSQL) is often driven by team skill and cloud cost, not raw features — both are excellent for most workloads.'],
+  },
+  'sql/glossary': {
+    apis: ['DDL', 'DML', 'DCL', 'ACID', 'Normalisation', 'Cardinality', 'Index', 'Cursor'],
+    related: [{ label: 'Cheat Sheet', route: '/sql/cheatsheet' }, { label: 'Learning Paths', route: '/sql/learning-paths' }],
+    tip: 'Use the letter filter or search box — every term with a matching topic page links directly to it.',
+    docs: [{ label: 'SQL Server Glossary', url: 'https://learn.microsoft.com/en-us/sql/sql-server/' }, { label: 'PostgreSQL Glossary', url: 'https://www.postgresql.org/docs/current/glossary.html' }],
+    resources: [],
+    gotchas: ['SQL terminology overlaps with relational algebra terms — "relation" = table, "tuple" = row, "attribute" = column in academic writing.'],
+  },
+  'sql/mini-projects': {
+    apis: ['CREATE TABLE', 'INSERT', 'SELECT', 'JOIN', 'GROUP BY', 'INDEX', 'PROCEDURE'],
+    related: [{ label: 'Schema Design', route: '/sql/schema-design' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Performance', route: '/sql/performance' }],
+    tip: 'Build all 4 schemas in the same database so you can practice cross-schema joins.',
+    docs: [{ label: 'T-SQL Reference', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-reference' }, { label: 'PostgreSQL Reference', url: 'https://www.postgresql.org/docs/current/sql-commands.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['These schemas are intentionally simplified — production schemas will need audit columns, soft-delete, and partitioning for large tables.'],
+  },
+  'sql/learning-paths': {
+    apis: ['SELECT', 'JOIN', 'GROUP BY', 'Window Functions', 'Indexes', 'Transactions'],
+    related: [{ label: 'Quiz Practice', route: '/sql/quiz-practice' }, { label: 'Interview Prep', route: '/sql/interview-prep' }, { label: 'Mini Projects', route: '/sql/mini-projects' }],
+    tip: 'Follow one path at a time — the beginner path is prerequisite for all others.',
+    docs: [{ label: 'SQL Server Learning', url: 'https://learn.microsoft.com/en-us/sql/sql-server/' }, { label: 'PostgreSQL Tutorial', url: 'https://www.postgresql.org/docs/current/tutorial.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['The DBA path requires understanding execution plans — read the Indexes and Performance pages before tackling it.'],
+  },
+
   // ── SSR + Hydration ─────────────────────────────────────────────────────────
   ssr: {
     apis: ['provideClientHydration()', 'withEventReplay()', 'isPlatformBrowser()', 'PLATFORM_ID', 'TransferState'],
@@ -2672,6 +3074,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     '[class.section-angular]': 'section() === "angular"',
     '[class.section-csharp]':  'section() === "csharp"',
     '[class.section-aspnet]':  'section() === "aspnet"',
+    '[class.section-sql]':     'section() === "sql"',
   },
 })
 export class PageSidebarComponent {
@@ -2690,9 +3093,10 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql'>(() =>
     this.currentUrl().startsWith('/csharp') ? 'csharp'
     : this.currentUrl().startsWith('/aspnet') ? 'aspnet'
+    : this.currentUrl().startsWith('/sql')    ? 'sql'
     : 'angular'
   );
 
@@ -2700,13 +3104,16 @@ export class PageSidebarComponent {
     const key = this.routeKey();
     return SIDEBAR_MAP[key] ??
            SIDEBAR_MAP[key.replace(/^(angular|csharp)\//, '')] ??
-           (this.section() === 'aspnet' ? ASPNET_DEFAULT : DEFAULT);
+           (this.section() === 'aspnet' ? ASPNET_DEFAULT
+           : this.section() === 'sql'    ? SQL_DEFAULT
+           : DEFAULT);
   });
 
   docsHeading = computed(() => {
     switch (this.section()) {
       case 'csharp':  return '📖 C# Docs';
       case 'aspnet':  return '📖 ASP.NET Core Docs';
+      case 'sql':     return '📖 SQL Docs';
       default:        return '📖 Angular Docs';
     }
   });

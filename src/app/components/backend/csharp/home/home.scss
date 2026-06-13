@@ -108,6 +108,16 @@
   &:hover { text-decoration: underline; }
 }
 
+// "Soon" cards
+.card.soon { opacity: .75; .card-main { cursor: default; } }
+.soon-chip {
+  display: inline-block; margin-left: .4rem; padding: 1px 7px;
+  background: #f3f4f6; color: #6b7280; border-radius: 999px;
+  font-size: .64rem; font-weight: 700; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.arrow-link.disabled { color: #9ca3af; cursor: default; &:hover { text-decoration: none; } }
+
 .key-points {
   padding: .75rem 1.25rem;
   border-top: 1px solid #ede9fe;

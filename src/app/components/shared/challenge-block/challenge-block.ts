@@ -6,7 +6,7 @@ export interface Challenge {
   description: string;
   starterCode: string;
   solution: string;
-  language: 'typescript' | 'html' | 'scss' | 'csharp';
+  language: 'typescript' | 'html' | 'scss' | 'csharp' | 'sql';
   hints?: string[];
   playgroundUrl?: string;
 }

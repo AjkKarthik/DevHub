@@ -30,8 +30,8 @@
   </div>
 
   <div class="grid">
-    @for (topic of topics(); track topic.route) {
-      <div class="card" [class.expanded]="expandedCard() === topic.route" [class.soon]="!topic.available">
+    @for (topic of topics(); track topic.title) {
+      <div class="card" [class.expanded]="expandedCard() === topic.title" [class.soon]="!topic.available">
         @if (topic.available) {
           <a class="card-main" [routerLink]="topic.route">
             <span [class]="badgeCss(topic.badge)">{{ topic.badge }}</span>
@@ -46,8 +46,8 @@
           </div>
         }
         <div class="card-footer">
-          <button type="button" class="key-points-btn" (click)="toggleCard(topic.route, $event)">
-            {{ expandedCard() === topic.route ? '▲ Hide key points' : '▼ Key points' }}
+          <button type="button" class="key-points-btn" (click)="toggleCard(topic.title, $event)">
+            {{ expandedCard() === topic.title ? '▲ Hide key points' : '▼ Key points' }}
           </button>
           @if (topic.available) {
             <a class="arrow-link" [routerLink]="topic.route">Explore →</a>
@@ -55,7 +55,7 @@
             <span class="arrow-link disabled">Coming soon</span>
           }
         </div>
-        @if (expandedCard() === topic.route) {
+        @if (expandedCard() === topic.title) {
           <div class="key-points">
             @for (pt of topic.keyPoints; track pt) {
               <div class="key-point">{{ pt }}</div>
@@ -76,55 +76,55 @@
     <div class="path-group">
       <h3 class="group-label fundamentals">① Fundamentals</h3>
       <ol>
-        <li><span class="step-num">1</span><span><strong>Hosting & Startup</strong> — Program.cs, builder, environments</span></li>
-        <li><span class="step-num">2</span><span><strong>Middleware Pipeline</strong> — Use/Run/Map, ordering</span></li>
-        <li><span class="step-num">3</span><span><strong>Dependency Injection</strong> — lifetimes, registration</span></li>
-        <li><span class="step-num">4</span><span><strong>Configuration & Options</strong> — IOptions, secrets</span></li>
-        <li><span class="step-num">5</span><span><strong>Routing</strong> + <strong>Logging</strong></span></li>
+        <li><span class="step-num">1</span><span><a routerLink="/aspnet/hosting-startup"><strong>Hosting & Startup</strong></a> — Program.cs, builder, environments</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/aspnet/middleware"><strong>Middleware Pipeline</strong></a> — Use/Run/Map, ordering</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/aspnet/dependency-injection"><strong>Dependency Injection</strong></a> — lifetimes, registration</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/aspnet/configuration"><strong>Configuration & Options</strong></a> — IOptions, secrets</span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/aspnet/routing"><strong>Routing</strong></a> + <a routerLink="/aspnet/logging"><strong>Logging</strong></a></span></li>
       </ol>
     </div>
 
     <div class="path-group">
       <h3 class="group-label webapi">② Web APIs</h3>
       <ol>
-        <li><span class="step-num">1</span><span><strong>Controllers & Actions</strong> — or <strong>Minimal APIs</strong></span></li>
-        <li><span class="step-num">2</span><span><strong>Model Binding & Validation</strong></span></li>
-        <li><span class="step-num">3</span><span><strong>Error Handling</strong> — ProblemDetails</span></li>
-        <li><span class="step-num">4</span><span><strong>OpenAPI & Swagger</strong> · <strong>API Versioning</strong></span></li>
-        <li><span class="step-num">5</span><span><strong>HttpClient & Resilience</strong> · <strong>gRPC</strong></span></li>
+        <li><span class="step-num">1</span><span><a routerLink="/aspnet/controllers"><strong>Controllers & Actions</strong></a> — or <a routerLink="/aspnet/minimal-apis"><strong>Minimal APIs</strong></a></span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/aspnet/model-binding"><strong>Model Binding & Validation</strong></a></span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/aspnet/error-handling"><strong>Error Handling</strong></a> — ProblemDetails</span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/aspnet/openapi-swagger"><strong>OpenAPI & Swagger</strong></a> · <a routerLink="/aspnet/api-versioning"><strong>API Versioning</strong></a></span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/aspnet/http-clients"><strong>HttpClient & Resilience</strong></a> · <a routerLink="/aspnet/grpc"><strong>gRPC</strong></a></span></li>
       </ol>
     </div>
 
     <div class="path-group">
       <h3 class="group-label data">③ Data</h3>
       <ol>
-        <li><span class="step-num">1</span><span><strong>EF Core Basics</strong> — DbContext, queries</span></li>
-        <li><span class="step-num">2</span><span><strong>Relationships & Migrations</strong></span></li>
-        <li><span class="step-num">3</span><span><strong>EF Performance & Concurrency</strong></span></li>
-        <li><span class="step-num">4</span><span><strong>Caching</strong> — memory, Redis, output</span></li>
+        <li><span class="step-num">1</span><span><a routerLink="/aspnet/ef-core-basics"><strong>EF Core Basics</strong></a> — DbContext, queries</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/aspnet/ef-relationships"><strong>Relationships & Migrations</strong></a></span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/aspnet/ef-performance"><strong>EF Performance & Concurrency</strong></a></span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/aspnet/caching"><strong>Caching</strong></a> — memory, Redis, output</span></li>
       </ol>
     </div>
 
     <div class="path-group">
       <h3 class="group-label security">④ Security</h3>
       <ol>
-        <li><span class="step-num">1</span><span><strong>Authentication</strong> — JWT, cookies, Identity</span></li>
-        <li><span class="step-num">2</span><span><strong>Authorization</strong> — roles, policies</span></li>
-        <li><span class="step-num">3</span><span><strong>CORS & Security Headers</strong></span></li>
-        <li><span class="step-num">4</span><span><strong>Rate Limiting</strong> — protect your endpoints</span></li>
-        <li><span class="step-num">5</span><span><strong>Web Security Essentials</strong> · <strong>Secrets</strong></span></li>
+        <li><span class="step-num">1</span><span><a routerLink="/aspnet/authentication"><strong>Authentication</strong></a> — JWT, cookies, Identity</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/aspnet/authorization"><strong>Authorization</strong></a> — roles, policies</span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/aspnet/cors"><strong>CORS & Security Headers</strong></a></span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/aspnet/rate-limiting"><strong>Rate Limiting</strong></a> — protect your endpoints</span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/aspnet/web-security"><strong>Web Security Essentials</strong></a> · <a routerLink="/aspnet/secrets"><strong>Secrets</strong></a></span></li>
       </ol>
     </div>
 
     <div class="path-group">
       <h3 class="group-label quality">⑤ Production Quality</h3>
       <ol>
-        <li><span class="step-num">1</span><span><strong>Testing</strong> — WebApplicationFactory</span></li>
-        <li><span class="step-num">2</span><span><strong>Health Checks & Observability</strong></span></li>
-        <li><span class="step-num">3</span><span><strong>Background Services</strong> · <strong>SignalR</strong></span></li>
-        <li><span class="step-num">4</span><span><strong>Deployment</strong> — Docker, reverse proxies</span></li>
-        <li><span class="step-num">5</span><span><strong>Performance & Diagnostics</strong></span></li>
-        <li><span class="step-num">6</span><span><strong>.NET Aspire</strong> — cloud-native orchestration</span></li>
+        <li><span class="step-num">1</span><span><a routerLink="/aspnet/testing"><strong>Testing</strong></a> — WebApplicationFactory</span></li>
+        <li><span class="step-num">2</span><span><a routerLink="/aspnet/health-checks"><strong>Health Checks & Observability</strong></a></span></li>
+        <li><span class="step-num">3</span><span><a routerLink="/aspnet/background-services"><strong>Background Services</strong></a> · <a routerLink="/aspnet/signalr"><strong>SignalR</strong></a></span></li>
+        <li><span class="step-num">4</span><span><a routerLink="/aspnet/deployment"><strong>Deployment</strong></a> — Docker, reverse proxies</span></li>
+        <li><span class="step-num">5</span><span><a routerLink="/aspnet/performance"><strong>Performance & Diagnostics</strong></a></span></li>
+        <li><span class="step-num">6</span><span><a routerLink="/aspnet/aspire"><strong>.NET Aspire</strong></a> — cloud-native orchestration</span></li>
       </ol>
     </div>
   </div>

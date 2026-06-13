@@ -1,0 +1,44 @@
+import { Component, signal, computed } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+interface Topic { title: string; route: string; badge: string; description: string; keyPoints: string[]; available: boolean; }
+
+const BADGE_CSS: Record<string, string> = {
+  'Foundations': 'foundations', 'Compute': 'compute', 'Networking': 'networking',
+  'Storage': 'storage', 'Identity': 'identity', 'Databases': 'databases',
+  'App Services': 'appservices', 'Reference': 'reference',
+};
+const GROUP_ORDER = ['All', 'Foundations', 'Compute', 'Networking', 'Storage', 'Identity', 'Databases', 'App Services', 'Reference'];
+
+const ALL_TOPICS: Topic[] = [
+  { title: 'Azure Fundamentals', route: '/azure', badge: 'Foundations', description: 'Azure regions, availability zones, subscriptions, resource groups, and the Azure portal and CLI.', keyPoints: ['Regions and availability zones', 'Subscription and tenant hierarchy', 'Resource groups as containers', 'Azure CLI and PowerShell', 'Cloud Shell'], available: false },
+  { title: 'Azure Resource Manager', route: '/azure', badge: 'Foundations', description: 'ARM architecture, resource providers, API calls, ARM templates vs Bicep for IaC.', keyPoints: ['ARM REST API layer', 'Resource provider registration', 'ARM JSON templates', 'Bicep declarative syntax', 'Azure Portal deploys ARM'], available: false },
+  { title: 'Azure Virtual Machines', route: '/azure', badge: 'Compute', description: 'VM sizes, managed disks, availability sets, scale sets, and custom script extensions.', keyPoints: ['VM SKU families', 'Managed vs unmanaged disks', 'Availability sets and zones', 'VMSS autoscale', 'Custom Script Extension'], available: false },
+  { title: 'Azure App Service', route: '/azure', badge: 'Compute', description: 'Deploy .NET, Node, Python apps to fully managed PaaS — plans, deployment slots, and autoscale.', keyPoints: ['App Service Plans tiers', 'Deployment slots (staging/prod)', 'Slot swap for zero-downtime', 'Auto-scaling rules', 'Kudu debug console'], available: false },
+  { title: 'Azure Functions', route: '/azure', badge: 'Compute', description: 'Serverless compute — triggers, bindings, Durable Functions, and consumption vs premium plans.', keyPoints: ['HTTP, Timer, Queue triggers', 'Input/output bindings', 'Durable Functions orchestration', 'Consumption vs Premium plan', 'KEDA-based scaling'], available: false },
+  { title: 'Azure Kubernetes Service', route: '/azure', badge: 'Compute', description: 'Managed Kubernetes on Azure — node pools, autoscaler, Azure CNI, AGIC, and Workload Identity.', keyPoints: ['System and user node pools', 'Cluster autoscaler', 'Azure CNI networking', 'AGIC Ingress Controller', 'Workload Identity federation'], available: false },
+  { title: 'Azure Virtual Network', route: '/azure', badge: 'Networking', description: 'VNets, subnets, NSGs, route tables, VNet peering, private endpoints, and DNS resolution.', keyPoints: ['VNet address spaces', 'NSG inbound/outbound rules', 'Route tables UDR', 'VNet peering across regions', 'Private endpoints for PaaS'], available: false },
+  { title: 'Azure Load Balancer & Front Door', route: '/azure', badge: 'Networking', description: 'L4 and L7 load balancing — Azure Load Balancer, Application Gateway, and Azure Front Door WAF.', keyPoints: ['Azure Load Balancer L4', 'Application Gateway L7', 'Front Door global CDN/WAF', 'Health probes configuration', 'SSL offloading'], available: false },
+  { title: 'Azure Blob & Storage', route: '/azure', badge: 'Storage', description: 'Blob, File, Queue, and Table storage — tiers, lifecycle policies, and SAS tokens.', keyPoints: ['Hot/Cool/Archive tiers', 'Lifecycle management policies', 'SAS token generation', 'Azure Files SMB shares', 'Storage firewall and VNet rules'], available: false },
+  { title: 'Azure Active Directory & Entra ID', route: '/azure', badge: 'Identity', description: 'Entra ID (AAD) tenants, users, groups, app registrations, service principals, and OAuth flows.', keyPoints: ['Tenant and directory concepts', 'App registration client ID/secret', 'Service principal auth', 'OAuth2 / OIDC flows', 'Conditional Access policies'], available: false },
+  { title: 'Azure RBAC', route: '/azure', badge: 'Identity', description: 'Built-in and custom roles, scope hierarchy, Managed Identities, and least-privilege access.', keyPoints: ['Scope: management group/subscription/RG', 'Built-in roles (Owner, Contributor, Reader)', 'Custom role definitions', 'System vs user-assigned Managed Identity', 'PIM for JIT elevation'], available: false },
+  { title: 'Azure SQL & Cosmos DB', route: '/azure', badge: 'Databases', description: 'Azure SQL Database, Cosmos DB multi-API, and their pricing, consistency, and geo-distribution.', keyPoints: ['Azure SQL serverless tier', 'Elastic pool for multi-tenancy', 'Cosmos DB APIs (Core, Mongo)', 'Consistency levels', 'Geo-replication and failover'], available: false },
+  { title: 'Azure Monitor & App Insights', route: '/azure', badge: 'App Services', description: 'Metrics, logs, Application Insights traces, dashboards, and smart alert rules.', keyPoints: ['Azure Monitor Metrics', 'Log Analytics workspace', 'Application Insights SDK', 'Distributed tracing', 'Alert rules and action groups'], available: false },
+  { title: 'Azure DevOps & Pipelines', route: '/azure', badge: 'App Services', description: 'Repos, Boards, Pipelines YAML, Artifacts, and Test Plans in the Azure DevOps suite.', keyPoints: ['Azure Repos (Git)', 'Pipeline YAML stages', 'Service connections', 'Artifact feeds', 'Environment approvals'], available: false },
+  { title: 'Azure Cost Management', route: '/azure', badge: 'Reference', description: 'Budgets, cost alerts, reserved instances, savings plans, and the Pricing Calculator.', keyPoints: ['Cost Analysis dashboards', 'Budget alerts by threshold', 'Reserved Instance discounts', 'Azure Savings Plans', 'Azure Pricing Calculator'], available: false },
+  { title: 'Azure Security Center & Defender', route: '/azure', badge: 'Reference', description: 'Microsoft Defender for Cloud — secure score, recommendations, and threat protection.', keyPoints: ['Secure Score improvements', 'Defender for Servers/SQL/Containers', 'Security recommendations', 'Regulatory compliance view', 'Just-in-time VM access'], available: false },
+];
+
+@Component({ selector: 'app-azure-home', standalone: true, imports: [RouterLink], templateUrl: './home.html', styleUrl: './home.scss' })
+export class AzureHome {
+  activeFilter = signal('All');
+  expandedCard = signal<string | null>(null);
+  topics = computed(() => { const f = this.activeFilter(); return f === 'All' ? ALL_TOPICS : ALL_TOPICS.filter(t => t.badge === f); });
+  filters = GROUP_ORDER;
+  counts = computed(() => { const map: Record<string, number> = { All: ALL_TOPICS.length }; for (const t of ALL_TOPICS) map[t.badge] = (map[t.badge] ?? 0) + 1; return map; });
+  availableCount = ALL_TOPICS.filter(t => t.available).length;
+  totalCount = ALL_TOPICS.length;
+  setFilter(f: string) { this.activeFilter.set(f); }
+  badgeCss(badge: string) { return 'badge badge-' + (BADGE_CSS[badge] ?? 'foundations'); }
+  toggleCard(key: string, event: Event) { event.preventDefault(); this.expandedCard.update(c => c === key ? null : key); }
+}

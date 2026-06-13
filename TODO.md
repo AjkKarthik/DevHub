@@ -25,12 +25,30 @@ Add newly discovered work here instead of leaving it only in chat.
   - [x] Phase 2 Batch 4 DONE 2026-06-12: ef-core-basics, ef-relationships, ef-performance, caching — 12 files, full wiring: routes, nav Data group, search, home cards flipped, sidebar entries. Build passes.
   - [x] Phase 2 Batch 5 DONE 2026-06-12: authentication, authorization, cors, rate-limiting, web-security, secrets — 18 files, full wiring: routes, nav Security group, search, home cards flipped, sidebar entries. Build passes.
   - [x] Phase 2 Batch 6 DONE 2026-06-12: testing, background-services, signalr, health-checks, deployment, performance, aspire — 21 files, full wiring: routes, nav Quality group, search, home cards flipped, sidebar entries. Build passes. All 33/33 topics live.
-  - [ ] Phase 3: parity practice/reference pages (cheatsheet, errors, quiz, interview prep, …)
-  - STATUS: Phase 2 complete — all 33 ASP.NET Core topics live. Next: Phase 3 parity pages.
+  - [x] Phase 3 DONE 2026-06-12: 9 parity practice/reference pages — cheatsheet, errors, quiz-practice, interview-prep, design-patterns, decision-guides, glossary, mini-projects, learning-paths. Full wiring: routes, Reference nav group, search (9 entries), home cards (Reference badge + new group), breadcrumb labels, sidebar entries. Build passes.
+  - STATUS: Phase 3 complete — ASP.NET Core hub has 33 topic pages + 9 reference pages (42 total). Hub is feature-complete.
 
 ## Next Up
 
-_(empty — promote from Backlog)_
+- [ ] **SQL hub expansion** — rewrite all 12 existing topic pages (dual MSSQL+PostgreSQL examples,
+  dialect-diff callouts) + write 23 new topic pages. Home restructured with 9 categories + 35 cards
+  (DONE 2026-06-12). Execute in sessions:
+  - [x] **Session A DONE 2026-06-13**: Foundations (5 new: rdbms-concepts, data-modeling,
+    normalization, db-architecture, data-types) + Core SQL rewrites (basics, joins, aggregations).
+    Full wiring: routes, nav (new Foundations group + renamed Core SQL group), search (5 entries),
+    breadcrumb labels, sidebar entries (5), sqlTotal 12→17. Build passes.
+  - [ ] **Session B**: Functions (3 new: string-functions, date-functions, conditional-expressions)
+    + Core SQL (2 new: set-operations, null-handling) + Advanced rewrites (ctes, window-functions)
+  - [ ] **Session C**: Schema & Objects (constraints, views, sequences + rewrite schema-design)
+    + Programmatic (triggers, dynamic-sql + rewrite stored-procedures)
+  - [ ] **Session D**: Transactions (isolation-levels, locking + rewrite transactions)
+    + Performance (execution-plans, partitioning, bulk-operations + rewrite indexes, performance)
+  - [ ] **Session E**: Advanced Features (full-text-search, security + rewrite json-features)
+    + Advanced Queries (pivoting + rewrite subqueries)
+  - [ ] **Session F**: Update reference pages with dual-dialect examples; update progress total
+    to sqlTotal=35; update CLAUDE.md Current state
+  - After each session: add routes to app.routes.ts, nav entries to app.html, search entries,
+    breadcrumb labels, sidebar entries per the wiring checklist
 
 ## Backlog — new technology hubs (hub-home cards are "Soon")
 
@@ -46,7 +64,7 @@ _(empty — promote from Backlog)_
 - [ ] JavaScript hub (`/javascript`) — ES2025, closures, event loop, modules, DOM/Fetch
 - [ ] HTML hub (`/html`) — semantics, forms, accessibility, SEO
 - [ ] CSS hub (`/css`) — Flexbox, Grid, animations, custom properties
-- [ ] SQL hub (`/sql`)
+- [x] SQL hub (`/sql`) — DONE 2026-06-12 (see Done section)
 - [ ] Node.js hub (`/node`)
 - [ ] Follow the "Adding a whole NEW technology hub" playbook in CLAUDE.md for each.
 
@@ -75,6 +93,14 @@ _(empty — promote from Backlog)_
 - [ ] CRLF/LF warnings on every commit — consider a `.gitattributes`
 
 ## Done (recent)
+
+- [x] 2026-06-12 — **SQL hub** (`/sql`) complete: 12 topic pages (basics, joins, aggregations,
+  subqueries, ctes, window-functions, indexes, transactions, schema-design, stored-procedures,
+  performance, json-features) + 9 reference pages (cheatsheet, errors, quiz-practice,
+  interview-prep, design-patterns, decision-guides, glossary, mini-projects, learning-paths).
+  Full wiring: routes, nav (4 groups), search (21 entries), sidebar (21 entries + SQL_DEFAULT),
+  breadcrumb, progress service (`sqlTotal=12`), hub-home card. Shared code-block + challenge-block
+  extended with `'sql'` language. Orange theme `#e05c00`. Build passes.
 
 - [x] 2026-06-11 — 8 advanced C# topics (reflection, iterators, regex, channels,
   unit-testing, expression-trees, dynamic, source-generators) + full wiring; C# now

@@ -1,0 +1,45 @@
+import { Component, signal, computed } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+interface Topic { title: string; route: string; badge: string; description: string; keyPoints: string[]; available: boolean; }
+
+const BADGE_CSS: Record<string, string> = {
+  'Foundations': 'foundations', 'Unit Testing': 'unit', 'Integration': 'integration',
+  'E2E Testing': 'e2e', 'Test Design': 'design', 'Frontend': 'frontend',
+  'API Testing': 'api', 'Reference': 'reference',
+};
+const GROUP_ORDER = ['All', 'Foundations', 'Unit Testing', 'Integration', 'E2E Testing', 'Test Design', 'Frontend', 'API Testing', 'Reference'];
+
+const ALL_TOPICS: Topic[] = [
+  { title: 'Testing Fundamentals', route: '/testing', badge: 'Foundations', description: 'Testing pyramid, types of tests, test coverage, and why automated testing is a force multiplier.', keyPoints: ['Unit → Integration → E2E pyramid', 'Fast tests run more often', 'Coverage: line, branch, mutation', 'Test doubles overview', 'Shift-left testing mindset'], available: false },
+  { title: 'Jest Fundamentals', route: '/testing', badge: 'Unit Testing', description: 'describe, it/test, expect matchers, beforeEach/afterEach, and Jest configuration.', keyPoints: ['describe/it structure', 'expect().toBe() vs toEqual()', 'beforeEach setup / afterEach teardown', 'Jest config (jest.config.ts)', 'Coverage with --coverage'], available: false },
+  { title: 'Mocking & Spies', route: '/testing', badge: 'Unit Testing', description: 'jest.fn(), jest.spyOn(), module mocks, and controlling return values for isolated unit tests.', keyPoints: ['jest.fn() mock function', 'jest.spyOn() on objects', 'mockReturnValue / mockResolvedValue', 'jest.mock() module mocking', 'Clearing mocks between tests'], available: false },
+  { title: 'xUnit (.NET Testing)', route: '/testing', badge: 'Unit Testing', description: 'xUnit facts, theories, fixtures, and assertions for testing C# code.', keyPoints: ['[Fact] and [Theory] attributes', '[InlineData] parameterised tests', 'IClassFixture for shared setup', 'Assert.Equal, Assert.Throws', 'FluentAssertions library'], available: false },
+  { title: 'Test-Driven Development', route: '/testing', badge: 'Test Design', description: 'Red-Green-Refactor cycle, writing tests first, and how TDD shapes design toward testability.', keyPoints: ['Red: write failing test first', 'Green: minimal code to pass', 'Refactor: clean up safely', 'TDD drives better interfaces', 'Outside-in vs inside-out TDD'], available: false },
+  { title: 'Test Doubles', route: '/testing', badge: 'Test Design', description: 'Dummies, stubs, spies, mocks, and fakes — the Meszaros taxonomy and when to use each.', keyPoints: ['Stub: canned return values', 'Mock: verifies interactions', 'Fake: working lighter implementation', 'Spy: records real calls', 'Prefer stubs over mocks'], available: false },
+  { title: 'Integration Testing', route: '/testing', badge: 'Integration', description: 'Testing multiple units together — database integration, API clients, and test containers.', keyPoints: ['Test against real database', 'Testcontainers for Docker DBs', 'Reset state between tests', 'Integration vs unit trade-off', 'WebApplicationFactory (.NET)'], available: false },
+  { title: 'Testing with Databases', route: '/testing', badge: 'Integration', description: 'In-memory databases, real database via Docker, transaction rollback, and seeding test data.', keyPoints: ['SQLite in-memory for speed', 'Testcontainers Postgres', 'Transaction rollback per test', 'Database seeding helpers', 'Repository pattern aids testing'], available: false },
+  { title: 'Angular Testing', route: '/testing', badge: 'Frontend', description: 'TestBed, ComponentFixture, fakeAsync/tick, and testing Angular signals, services, and pipes.', keyPoints: ['TestBed.configureTestingModule', 'ComponentFixture.detectChanges()', 'fakeAsync + tick for observables', 'Testing signals with computed()', 'HttpClientTestingModule'], available: false },
+  { title: 'React Testing Library', route: '/testing', badge: 'Frontend', description: 'Render, queries (getByRole, findBy), userEvent, and testing React components by behaviour not implementation.', keyPoints: ['render() component', 'getByRole accessibility queries', 'userEvent.click/type', 'findBy for async elements', 'Avoid testing implementation details'], available: false },
+  { title: 'Playwright', route: '/testing', badge: 'E2E Testing', description: 'E2E browser automation with Playwright — locators, assertions, fixtures, and visual comparison.', keyPoints: ['Page object model', 'locator().click() and fill()', 'expect(page).toHaveTitle()', 'Trace viewer for debugging', 'Multi-browser Chromium/Firefox/WebKit'], available: false },
+  { title: 'Cypress', route: '/testing', badge: 'E2E Testing', description: 'Cypress E2E and component testing — cy.get, cy.intercept, custom commands, and CI integration.', keyPoints: ['cy.get() CSS selector', 'cy.intercept() API stubbing', 'Custom commands for DRY tests', 'cy.task() for server-side ops', 'Cypress component testing'], available: false },
+  { title: 'API Testing with REST Assured', route: '/testing', badge: 'API Testing', description: 'Test HTTP APIs with REST Assured (Java/Kotlin) or Supertest (Node) — status, body, and schema validation.', keyPoints: ['given/when/then structure', 'Validate response status and body', 'JSON schema validation', 'Supertest with Express', 'Contract testing concept'], available: false },
+  { title: 'Contract Testing (Pact)', route: '/testing', badge: 'API Testing', description: 'Consumer-driven contract testing with Pact — define expectations, publish pacts, and verify providers.', keyPoints: ['Consumer defines expectations', 'Pact file published to broker', 'Provider verifies pact', 'Can-I-Deploy check', 'Pact Broker CI integration'], available: false },
+  { title: 'Snapshot Testing', route: '/testing', badge: 'Frontend', description: 'Capture and compare rendered output snapshots in Jest — when useful and when to avoid.', keyPoints: ['toMatchSnapshot() auto-creates', 'Snapshots stored in __snapshots__', 'Update with --updateSnapshot', 'Inline snapshots', 'When snapshots help vs hurt'], available: false },
+  { title: 'Performance & Load Testing', route: '/testing', badge: 'Reference', description: 'k6, JMeter, and Gatling for load testing — virtual users, scenarios, thresholds, and SLO validation.', keyPoints: ['k6 script in JS', 'Virtual users (VUs)', 'Ramp-up/steady/ramp-down stages', 'Thresholds for pass/fail', 'p95 and p99 latency checks'], available: false },
+  { title: 'Mutation Testing', route: '/testing', badge: 'Reference', description: 'Assess test quality by injecting faults — Stryker for JavaScript/.NET and the mutation score metric.', keyPoints: ['Mutants: small code changes', 'Killed mutant = good test', 'Survived mutant = weak test', 'Mutation score %', 'Stryker setup and config'], available: false },
+];
+
+@Component({ selector: 'app-testing-home', standalone: true, imports: [RouterLink], templateUrl: './home.html', styleUrl: './home.scss' })
+export class TestingHome {
+  activeFilter = signal('All');
+  expandedCard = signal<string | null>(null);
+  topics = computed(() => { const f = this.activeFilter(); return f === 'All' ? ALL_TOPICS : ALL_TOPICS.filter(t => t.badge === f); });
+  filters = GROUP_ORDER;
+  counts = computed(() => { const map: Record<string, number> = { All: ALL_TOPICS.length }; for (const t of ALL_TOPICS) map[t.badge] = (map[t.badge] ?? 0) + 1; return map; });
+  availableCount = ALL_TOPICS.filter(t => t.available).length;
+  totalCount = ALL_TOPICS.length;
+  setFilter(f: string) { this.activeFilter.set(f); }
+  badgeCss(badge: string) { return 'badge badge-' + (BADGE_CSS[badge] ?? 'foundations'); }
+  toggleCard(key: string, event: Event) { event.preventDefault(); this.expandedCard.update(c => c === key ? null : key); }
+}

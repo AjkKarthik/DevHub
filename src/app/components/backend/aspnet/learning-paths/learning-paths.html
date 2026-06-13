@@ -1,0 +1,48 @@
+<div class="alp-page">
+  <div class="alp-header">
+    <div class="alp-header-icon">ASP</div>
+    <div>
+      <h1 class="alp-title">ASP.NET Core Learning Paths</h1>
+      <p class="alp-subtitle">4 curated paths — from complete beginner through senior architect and migration from classic ASP.NET.</p>
+    </div>
+  </div>
+
+  <div class="alp-paths">
+    @for (path of paths; track path.title) {
+      <div class="alp-path">
+        <div class="alp-path-header">
+          <span class="alp-path-icon">{{ path.icon }}</span>
+          <div>
+            <h2 class="alp-path-title">{{ path.title }}</h2>
+            <p class="alp-path-desc">{{ path.desc }}</p>
+          </div>
+        </div>
+        <div class="alp-stages">
+          @for (stage of path.stages; track stage.label; let last = $last) {
+            <div class="alp-stage">
+              <div class="alp-stage-left">
+                <div class="alp-stage-dot">{{ $index + 1 }}</div>
+                @if (!last) { <div class="alp-stage-line"></div> }
+              </div>
+              <div class="alp-stage-content">
+                <h3>{{ stage.label }}</h3>
+                <ul>
+                  @for (item of stage.items; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+                @if (stage.links?.length) {
+                  <div class="alp-topics">
+                    @for (link of stage.links!; track link.route) {
+                      <a class="alp-topic-link" [routerLink]="link.route">{{ link.label }}</a>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

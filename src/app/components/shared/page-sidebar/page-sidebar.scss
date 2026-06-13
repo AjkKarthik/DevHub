@@ -188,6 +188,24 @@
   &:hover { background: #155e75; color: #a5f3fc; }
 }
 
+// SQL override —
+:host(.section-sql) {
+  .docs-link {
+    color: #e05c00;
+    background: #fff7ed;
+    &:hover { background: #fed7aa; color: #9a3e00; }
+  }
+  .related-link {
+    &:hover { background: #fff7ed; color: #e05c00; }
+  }
+}
+
+:host-context(body.dark):host(.section-sql) .docs-link {
+  color: #fdba74;
+  background: #431a03;
+  &:hover { background: #7c2d12; color: #fed7aa; }
+}
+
 // ── Resource badges ────────────────────────────────────────────────────────
 .badge {
   font-size: .65rem; font-weight: 700; text-transform: uppercase;

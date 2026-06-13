@@ -1,0 +1,75 @@
+<div class="sq-quiz">
+  <div class="sq-quiz-header">
+    <div class="sq-quiz-icon">🎯</div>
+    <div>
+      <h1>SQL Quiz Practice</h1>
+      <p>20 questions across 9 topics — pick a topic, answer, and review explanations.</p>
+    </div>
+  </div>
+
+  @if (phase() === 'setup') {
+    <div class="sq-quiz-setup">
+      <div class="setup-card">
+        <h2>Choose a topic</h2>
+        <div class="topic-grid">
+          @for (t of topics; track t) {
+            <button class="topic-btn" [class.active]="selectedTopic() === t"
+              (click)="selectedTopic.set(t)" type="button">{{ t }}</button>
+          }
+        </div>
+      </div>
+      <button class="start-btn" (click)="start()" type="button">
+        Start Quiz ({{ filteredQuestions().length }} questions)
+      </button>
+    </div>
+  }
+
+  @if (phase() === 'quiz') {
+    <div class="sq-quiz-progress">
+      <div class="pbar-label">
+        <span>Question {{ currentIndex() + 1 }} of {{ total() }}</span>
+        <span>Score: {{ score() }}</span>
+      </div>
+      <div class="pbar"><div class="pbar-fill" [style.width.%]="pct()"></div></div>
+    </div>
+
+    @if (currentQ(); as q) {
+      <div class="sq-quiz-card">
+        <p class="qtext">{{ q.q }}</p>
+        <div class="opts">
+          @for (opt of q.options; let i = $index; track opt) {
+            <button class="opt" [class]="optionClass(i)"
+              [class.selected]="selected() === i"
+              [disabled]="selected() !== null"
+              (click)="select(i)" type="button">
+              {{ opt }}
+            </button>
+          }
+        </div>
+        @if (selected() !== null) {
+          <div class="explanation">💡 {{ q.explanation }}</div>
+        }
+      </div>
+      <div class="quiz-nav">
+        @if (selected() !== null) {
+          <button (click)="next()" type="button">
+            {{ currentIndex() + 1 < total() ? 'Next →' : 'See Results' }}
+          </button>
+        }
+      </div>
+    }
+  }
+
+  @if (phase() === 'result') {
+    <div class="sq-quiz-result">
+      <div class="score">{{ score() }} / {{ total() }}</div>
+      <div class="score-label">
+        @if (score() === total()) { Perfect score! 🎉 }
+        @else if (score() >= total() * 0.8) { Great work! Keep it up. }
+        @else if (score() >= total() * 0.5) { Good effort — review the topics you missed. }
+        @else { Keep practising — you'll get there! }
+      </div>
+      <button (click)="restart()" type="button">Try Again</button>
+    </div>
+  }
+</div>
