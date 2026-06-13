@@ -6,6 +6,40 @@ Add newly discovered work here — never leave scope only in chat.
 
 ---
 
+## Working Method (read before every session — these are hard rules)
+
+**1. One page at a time. No exceptions.**
+Write one complete topic page per task. Do not batch multiple pages in one go.
+Do not use parallel subagents to generate content. Each page deserves full attention.
+
+**2. Research before writing.**
+Before writing a topic page, spend time understanding the topic deeply:
+- What do 2024–2025 job listings ask about this topic?
+- What concepts trip people up in interviews?
+- What are the common production pitfalls?
+- What does an expert know that a beginner doesn't?
+Then write the page. Do not skip research to save time — shallow pages defeat the purpose.
+
+**3. Cover the topic completely.**
+A page should leave no important stone unturned. If a topic has 8 important sub-concepts,
+cover all 8 — in theory, code examples, quiz, Q&A, and pitfalls. Do not thin out content
+because it feels like "too much". Learners benefit from depth.
+
+**4. Before starting any new hub — research the hub first.**
+Run a full market research pass on the hub before writing a single page:
+- Review current home.ts topic cards
+- Research 2024–2025 job requirements for the technology
+- Identify any missing topics not yet in the home cards
+- Add new cards to home.ts if gaps found (available: false, coming-soon)
+- Only then begin writing page 1
+This ensures the hub's table of contents is complete before content starts.
+
+**5. No "coming soon" is the finish line.**
+Every card on every hub home must eventually link to a real, fully-written page.
+The plan is long — that is fine. One solid page at a time gets there.
+
+---
+
 ## Vision
 
 **Goal: zero "coming soon" across all 34 hubs.**
@@ -77,11 +111,12 @@ This one change makes theory visible on all 146 existing pages immediately.
 These hubs are already wired and partially built. Completing them is the highest ROI
 work — small number of pages to write, huge improvement to the user experience.
 
+**Work one page at a time through this list. Research each topic before writing.**
+
 ### 1A — Angular hub (13 remaining) `src/app/components/angular/`
 
 All topics already in the home, nav, and search. Just need the page files.
-
-**Batch 1 (~6 topics)**
+Write one per session in priority order:
 - [ ] `advanced-forms` — Reactive forms deep-dive: FormArray, cross-field validation,
   async validators, custom ControlValueAccessor, typed forms (Angular 14+)
 - [ ] `custom-directives` — Attribute directives, structural directives, exportAs,
@@ -95,7 +130,6 @@ All topics already in the home, nav, and search. Just need the page files.
 - [ ] `angular-animations` — trigger/state/transition, keyframes, query/stagger, route
   animations, AnimationBuilder for imperative animations
 
-**Batch 2 (~7 topics)**
 - [ ] `testing-components` — TestBed, ComponentFixture, fakeAsync/tick, signal testing,
   HttpClientTestingModule, harnesses
 - [ ] `performance` — OnPush change detection, trackBy, defer blocks (Angular 17+), lazy
@@ -111,13 +145,14 @@ All topics already in the home, nav, and search. Just need the page files.
 - [ ] `accessibility` — Angular CDK a11y: FocusTrap, LiveAnnouncer, HighContrastMode,
   RouterLink a11y, ARIA patterns, axe-core integration
 
-After both batches: update `progress.service.ts` angularTotal (currently 45 → 58),
-flip all cards `available: true` in home.ts, build.
+After all 13 pages: update `progress.service.ts` angularTotal (currently 45 → 58),
+confirm all cards `available: true` in home.ts, build.
 
 ---
 
 ### 1B — C# hub (9 remaining) `src/app/components/backend/csharp/`
 
+Write one per session in priority order:
 - [ ] `functional-csharp` — Result<T,E> pattern, OneOf discriminated unions, railway-
   oriented programming, FluentResults, avoiding exception-driven control flow
 - [ ] `source-generators` — ISourceGenerator vs IIncrementalGenerator, SyntaxReceiver,
@@ -137,12 +172,13 @@ flip all cards `available: true` in home.ts, build.
 - [ ] `unit-testing-advanced` — xUnit theories, Moq/NSubstitute, AutoFixture,
   FluentAssertions, test data builders, mutation testing with Stryker
 
-After: update `csharpTotal` (currently 41 → 50), flip all cards, build.
+After all 9 pages: update `csharpTotal` (currently 41 → 50), confirm all cards live, build.
 
 ---
 
 ### 1C — ASP.NET Core hub (12 remaining) `src/app/components/backend/aspnet/`
 
+Write one per session in priority order:
 - [ ] `minimal-api-advanced` — Route groups, typed results, endpoint filters, OpenAPI with
   Scalar, output caching, problem details middleware
 - [ ] `output-caching` — OutputCache attribute, cache policies, cache tags, vary-by,
@@ -167,15 +203,17 @@ After: update `csharpTotal` (currently 41 → 50), flip all cards, build.
 - [ ] `aspire` — .NET Aspire AppHost, orchestration, service defaults, dashboard,
   integrations (Redis, Postgres, RabbitMQ), deployment to Azure
 
-After: update `aspnetTotal` (currently 33 → 45), flip all cards, build.
+After all 12 pages: update `aspnetTotal` (currently 33 → 45), confirm all cards live, build.
 
 ---
 
 ### 1D — SQL hub (27 remaining) `src/app/components/data/sql/`
 
-Continuing from Session A (17 live). Sessions B–F already planned in old TODO — preserved:
+Continuing from Session A (17 live). Write one page at a time in the order below.
+Research each SQL topic across both MSSQL (T-SQL) and PostgreSQL before writing —
+every page must cover both dialects with explicit diff callouts.
 
-**Session B** — Functions + Core SQL additions
+**Next up — Functions + Core SQL**
 - [ ] `string-functions` — LEN/TRIM/CONCAT/SUBSTRING/REPLACE/CHARINDEX, FORMAT,
   T-SQL vs PostgreSQL function names
 - [ ] `date-functions` — GETDATE/NOW, DATEADD/INTERVAL, DATEDIFF/AGE, EXTRACT,
@@ -188,7 +226,7 @@ Continuing from Session A (17 live). Sessions B–F already planned in old TODO 
   COALESCE, NULLIF, NULL in aggregations, NULL in JOINs
 - [ ] Rewrites: `ctes` and `window-functions` (add dual dialect, depth)
 
-**Session C** — Schema & Objects + Programmatic
+**Schema & Objects + Programmatic**
 - [ ] `constraints` — CHECK, UNIQUE, DEFAULT, NOT NULL, FK with ON DELETE CASCADE/
   SET NULL/RESTRICT, deferrable constraints (PG)
 - [ ] `views` — Simple and complex views, updatable views, WITH CHECK OPTION,
@@ -201,7 +239,7 @@ Continuing from Session A (17 live). Sessions B–F already planned in old TODO 
   SQL injection in dynamic SQL, QUOTENAME
 - [ ] Rewrites: `schema-design`, `stored-procedures`
 
-**Session D** — Transactions + Performance
+**Transactions + Performance**
 - [ ] `isolation-levels` — READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE,
   SNAPSHOT (MSSQL), phenomena (dirty/phantom/non-repeatable read)
 - [ ] `locking` — Shared/exclusive/update locks, lock escalation, deadlocks,
@@ -214,7 +252,7 @@ Continuing from Session A (17 live). Sessions B–F already planned in old TODO 
   batching large INSERTs, staging patterns
 - [ ] Rewrites: `transactions`, `indexes`, `performance`
 
-**Session E** — Advanced Features + Queries
+**Advanced Features + Queries**
 - [ ] `full-text-search` — Full-Text Index (T-SQL: CONTAINS/FREETEXT),
   tsvector/tsquery (PG), ranking, phrase search, vs LIKE
 - [ ] `security-sql` — Row-level security (both), column-level permissions,
@@ -225,7 +263,7 @@ Continuing from Session A (17 live). Sessions B–F already planned in old TODO 
   as cross-dialect alternative, dynamic pivot
 - [ ] Rewrite: `subqueries` (add correlated subquery depth, EXISTS vs IN, scalar subquery)
 
-**Session F** — Reference pages update + final wiring
+**Reference pages update + final wiring**
 - [ ] Update all 9 reference pages with dual-dialect examples
 - [ ] Update `sqlTotal` in progress.service.ts to 35
 - [ ] Update CLAUDE.md Current State section
@@ -234,6 +272,8 @@ Continuing from Session A (17 live). Sessions B–F already planned in old TODO 
 
 ## Phase 2 — Enhance All Existing Pages (146 pages)
 
+Work through existing pages one at a time. Re-read each page fully before enhancing —
+understand what it covers, what's missing, then bring it up to the full standard below.
 Every live page (Angular 55, C# 41, ASP.NET 33, SQL 17) must meet this standard.
 
 ### The Enhanced Content Standard
@@ -274,47 +314,44 @@ Each topic page must have ALL of the following:
 - Recalculate after enhancement (most pages claiming 25 min read ~12 min actual)
 - Formula: (theory words / 200) + (code tabs × 2) + (quiz count × 0.5) + (QnA count × 1)
 
-### Enhancement batches (10 pages per session)
+### Enhancement order (one page per session, priority order)
 
-**Enhancement Batch 1 — C# Foundations (10 pages)**
-- [ ] `csharp/generics`, `csharp/collections`, `csharp/linq`, `csharp/delegates-events`,
-  `csharp/async-await`, `csharp/pattern-matching`, `csharp/records`, `csharp/spans`,
-  `csharp/nullable`, `csharp/exceptions`
+**C# — enhance in this order (one page per session):**
+- [ ] `csharp/generics` — add 2 theory sections, expand quiz to 8q, Q&A to 8, add pitfalls
+- [ ] `csharp/linq` — LINQ is deep; add deferred execution, query syntax vs method syntax, expression trees
+- [ ] `csharp/async-await` — ConfigureAwait, SynchronizationContext, ValueTask, CancellationToken patterns
+- [ ] `csharp/generics` → `csharp/delegates-events` → `csharp/pattern-matching` → `csharp/records`
+- [ ] Continue through all remaining C# pages in hub nav order
 
-**Enhancement Batch 2 — C# Advanced (10 pages)**
-- [ ] `csharp/interfaces`, `csharp/inheritance`, `csharp/extension-methods`,
-  `csharp/dependency-injection`, `csharp/attributes`, `csharp/reflection`,
-  `csharp/expression-trees`, `csharp/iterators`, `csharp/channels`, `csharp/regex`
+**Angular — enhance in this order (one page per session):**
+- [ ] `angular/signals` — computed, effect, resource, linkedSignal; migration from RxJS
+- [ ] `angular/change-detection` — OnPush, signal-based, ChangeDetectorRef, zone.js-less
+- [ ] `angular/routing` — guards, resolvers, deferrable views, title strategy
+- [ ] Continue through all remaining Angular pages in hub nav order
 
-**Enhancement Batch 3 — C# OOP + Modern (10 pages)**
-- [ ] Remaining C# pages
+**ASP.NET Core — enhance in this order (one page per session):**
+- [ ] `aspnet/middleware` — pipeline ordering, short-circuit, IMiddlewareFactory
+- [ ] `aspnet/ef-core-basics` — tracking vs no-tracking, SaveChanges, concurrency
+- [ ] Continue through all remaining ASP.NET pages in hub nav order
 
-**Enhancement Batch 4 — Angular Core (10 pages)**
-- [ ] `angular/signals`, `angular/components`, `angular/directives`, `angular/pipes`,
-  `angular/services`, `angular/routing`, `angular/forms`, `angular/http-client`,
-  `angular/change-detection`, `angular/dependency-injection`
-
-**Enhancement Batch 5 — Angular Advanced (10 pages)**
-- [ ] Next 10 Angular pages
-
-**Enhancement Batch 6 — Angular Advanced + ASP.NET (10 pages)**
-- [ ] Remaining Angular + first ASP.NET batch
-
-**Enhancement Batches 7–10 — ASP.NET Core + SQL (40 pages)**
-- [ ] All 33 ASP.NET pages + 17 SQL pages across 4 sessions
+**SQL — enhance as new pages are written (dual-dialect standard from the start)**
 
 ---
 
 ## Phase 3 — Frontend Hubs
 
 Build order chosen by market demand and learner overlap with existing Angular/React users.
+**Before writing the first page of each hub:** run the pre-hub research step (see Session
+Guidelines Step 2) — read home.ts, research current job market, add any missing cards.
 
 ### 3A — TypeScript hub (22 topics) `src/app/components/frontend/typescript/`
 
-Hub home, wiring, and 22 coming-soon cards already exist. Just build the pages.
+Hub home, wiring, and 22 coming-soon cards already exist.
+**Pre-hub research step required** before page 1 — verify topic list against 2024–2025 TS
+job requirements and add any missing cards to home.ts.
 Accent: `#3178c6` (TypeScript blue). Search prefix: `ts-`. Progress key: `tsTotal`.
+Write one page per session in this order:
 
-**Batch 1 (~6 topics)**
 - [ ] `ts-basics` — Type annotations, inference, `any` vs `unknown`, `never`, type assertions
 - [ ] `ts-functions` — Parameter types, return types, optional/default/rest, overloads,
   `this` parameter, function type expressions
@@ -327,7 +364,6 @@ Accent: `#3178c6` (TypeScript blue). Search prefix: `ts-`. Progress key: `tsTota
 - [ ] `ts-narrowing` — typeof, instanceof, in operator, discriminated unions, assertion
   functions, control flow analysis
 
-**Batch 2 (~6 topics)**
 - [ ] `ts-mapped-types` — `[K in keyof T]`, Readonly/Partial implementation, custom mapped
   types, `+/-` modifiers, key remapping with `as`
 - [ ] `ts-conditional-types` — `T extends U ? X : Y`, infer keyword, distributive
@@ -341,7 +377,6 @@ Accent: `#3178c6` (TypeScript blue). Search prefix: `ts-`. Progress key: `tsTota
 - [ ] `ts-tsconfig` — Strict mode flags, target/lib, moduleResolution, paths, composite
   projects, project references
 
-**Batch 3 (~5 topics + reference)**
 - [ ] `ts-classes` — Access modifiers, abstract classes, parameter properties, static,
   override keyword, class implements interface
 - [ ] `ts-enums` — const vs regular enums, string enums, reverse mapping, enum pitfalls,
@@ -361,7 +396,7 @@ sidebar entries, progress service (`tsTotal`), hub-home card flip.
 
 Accent: `#61dafb` (React blue), text on dark: `#20232a`. Search prefix: `react-`.
 
-**Batch 1 — Core (~6 topics)**
+
 - [ ] `react-basics` — JSX, components (function), props, rendering, keys, fragments
 - [ ] `react-hooks-core` — useState, useEffect, useRef, useContext, hook rules
 - [ ] `react-hooks-advanced` — useReducer, useMemo, useCallback, useTransition,
@@ -373,7 +408,7 @@ Accent: `#61dafb` (React blue), text on dark: `#20232a`. Search prefix: `react-`
 - [ ] `react-context` — Context API, createContext, useContext, context splitting for
   performance, Zustand as a lighter alternative
 
-**Batch 2 — State + Data (~6 topics)**
+
 - [ ] `react-state-management` — useState vs useReducer vs Zustand vs Jotai,
   when to pick each, derived state
 - [ ] `react-tanstack-query` — useQuery, useMutation, stale-while-revalidate,
@@ -387,7 +422,7 @@ Accent: `#61dafb` (React blue), text on dark: `#20232a`. Search prefix: `react-`
 - [ ] `react-testing` — Testing Library: render, queries, userEvent, MSW for API mocks,
   async testing, snapshot anti-patterns
 
-**Batch 3 — Ecosystem (~6 topics + reference)**
+
 - [ ] `react-nextjs` — App Router, Server Components, Client Components (`'use client'`),
   Server Actions, Suspense, streaming, layout.tsx
 - [ ] `react-native` — View/Text/ScrollView, StyleSheet, Expo, React Navigation,
@@ -406,7 +441,7 @@ Accent: `#61dafb` (React blue), text on dark: `#20232a`. Search prefix: `react-`
 
 Accent: `#f7df1e` (JS yellow), text `#1a1a1a`. Search prefix: `js-`.
 
-**Batch 1 — Foundations (~6 topics)**
+
 - [ ] `js-types-coercion` — Primitive types, typeof, loose vs strict equality,
   type coercion rules, truthy/falsy, the spec rules
 - [ ] `js-closures` — Lexical scope, closure over variables (not values), IIFE,
@@ -420,7 +455,7 @@ Accent: `#f7df1e` (JS yellow), text `#1a1a1a`. Search prefix: `js-`.
 - [ ] `js-modules` — ES modules (import/export), CommonJS (require), dynamic import(),
   module bundlers (Vite, Rollup), tree-shaking
 
-**Batch 2 — Modern JS (~6 topics)**
+
 - [ ] `js-promises` — Promise constructor, then/catch/finally, Promise.all/allSettled/
   race/any, error propagation, unhandled rejections
 - [ ] `js-async-await` — async function, await, top-level await, error handling patterns,
@@ -434,7 +469,7 @@ Accent: `#f7df1e` (JS yellow), text `#1a1a1a`. Search prefix: `js-`.
 - [ ] `js-symbols-weakrefs` — Symbol(), well-known symbols (iterator/toPrimitive),
   WeakMap, WeakSet, WeakRef, FinalizationRegistry
 
-**Batch 3 — APIs + Patterns (~6 topics + reference)**
+
 - [ ] `js-dom` — querySelector, event delegation, MutationObserver, IntersectionObserver,
   ResizeObserver, custom events
 - [ ] `js-fetch-xhr` — fetch(), Response, Request, Headers, AbortController, streaming
@@ -453,7 +488,7 @@ Accent: `#f7df1e` (JS yellow), text `#1a1a1a`. Search prefix: `js-`.
 
 Accent: `#e34c26` (HTML orange). Search prefix: `html-`.
 
-**Batch 1 (~6 topics)**
+
 - [ ] `html-document-structure` — DOCTYPE, `<html lang>`, `<meta charset>`, `<head>` vs
   `<body>`, rendering pipeline, parse vs DOMContentLoaded
 - [ ] `html-semantic-elements` — `<main>`, `<article>`, `<section>`, `<aside>`, `<nav>`,
@@ -467,7 +502,7 @@ Accent: `#e34c26` (HTML orange). Search prefix: `html-`.
 - [ ] `html-links-navigation` — `<a>` (href, rel, target, download), relative vs absolute
   URLs, `<link>`, `<base>`, fragment navigation, skip links
 
-**Batch 2 (~6 topics)**
+
 - [ ] `html-accessibility` — ARIA roles, aria-label vs aria-labelledby, aria-live, focus
   management, landmark roles, WCAG 2.1 checklist
 - [ ] `html-head-metadata` — `<meta>` charset/viewport/description, Open Graph, Twitter
@@ -481,7 +516,7 @@ Accent: `#e34c26` (HTML orange). Search prefix: `html-`.
 - [ ] `html-seo` — Structured data (JSON-LD), canonical URLs, robots.txt, sitemap.xml,
   Core Web Vitals meta tags, hreflang
 
-**Batch 3 (~4 topics + reference)**
+
 - [ ] `html-performance` — Resource hints (preload/prefetch/preconnect), `loading=lazy`,
   critical rendering path, render-blocking resources
 - [ ] `html-canvas-svg` — `<canvas>` 2D context API vs `<svg>` — use cases, text, shapes,
@@ -496,7 +531,7 @@ Accent: `#e34c26` (HTML orange). Search prefix: `html-`.
 
 Accent: `#264de4` (CSS blue). Search prefix: `css-`.
 
-**Batch 1 — Layout (~6 topics)**
+
 - [ ] `css-box-model` — content/padding/border/margin, box-sizing: border-box,
   collapsing margins, BFC, intrinsic vs extrinsic sizing
 - [ ] `css-flexbox` — flex container (direction, wrap, justify-content, align-items,
@@ -510,7 +545,7 @@ Accent: `#264de4` (CSS blue). Search prefix: `css-`.
 - [ ] `css-responsive` — Media queries, container queries, fluid typography (clamp()),
   aspect-ratio, min()/max()/clamp(), logical properties
 
-**Batch 2 — Styling (~6 topics)**
+
 - [ ] `css-selectors` — Specificity calculation, :is/:where/:has/:not, combinators,
   attribute selectors, pseudo-elements (::before/::after/::marker)
 - [ ] `css-typography` — font-family stack, variable fonts, text-wrap: balance/pretty,
@@ -524,7 +559,7 @@ Accent: `#264de4` (CSS blue). Search prefix: `css-`.
 - [ ] `css-scroll-driven` — animation-timeline: scroll()/view(), animation-range, View
   Transitions API, no IntersectionObserver needed
 
-**Batch 3 (~4 topics + reference)**
+
 - [ ] `css-modern-features` — @layer (cascade layers), @scope, color-mix(), oklch
   color space, nesting (native CSS), :has() selector
 - [ ] `css-theming` — Dark mode (prefers-color-scheme + class toggle), CSS variable
@@ -551,6 +586,8 @@ Build in 3 sessions of ~7 topics each. (Detailed topic list is in home.ts.)
 ---
 
 ## Phase 4 — Backend Hubs
+
+**Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
 
 ### 4A — Node.js hub (25 topics) `src/app/components/backend/nodejs/`
 
@@ -602,6 +639,7 @@ Patterns → Reference). 3 sessions.
 
 ## Phase 5 — Cloud & DevOps Hubs
 
+**Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
 Build order: DevOps → Containers → AWS → Azure → Linux → Terraform → Service Mesh.
 
 ### 5A — DevOps hub (22 topics) `src/app/components/cloud/devops/`
@@ -650,6 +688,8 @@ ambient mesh, Gateway API.
 
 ## Phase 6 — Architecture Hubs
 
+**Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
+
 ### 6A — System Design hub (26 topics) `src/app/components/architecture/system-design/`
 
 Accent: `#0f172a` (slate). Search prefix: `sysdesign-`.
@@ -691,6 +731,8 @@ SLO/error budget design, alerting, chaos engineering.
 
 ## Phase 7 — Data Hubs
 
+**Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
+
 ### 7A — MongoDB hub (21 topics) `src/app/components/data/mongodb/`
 
 Accent: `#00ed64` (MongoDB green). Search prefix: `mongo-`.
@@ -719,6 +761,8 @@ exactly-once semantics, Schema Registry, Kafka Connect, Kafka Streams.
 
 ## Phase 8 — Fundamentals Hubs
 
+**Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
+
 ### 8A — Testing hub (22 topics) `src/app/components/fundamentals/testing/`
 
 Accent: `#16a34a` (green). Search prefix: `test-`.
@@ -742,38 +786,100 @@ prompt engineering, AI agents/tool use, vector databases, MLOps.
 
 ## Session Guidelines
 
-Follow these rules in every session:
+**One page per session. Follow this order every time:**
 
-**Batch size:**
-- 5–7 topic pages per session (3 files each: .ts, .html, .scss)
-- One build at the end of each batch — never mid-batch
-- One session = one hub's batch. Do not mix hubs in one session.
+### Step 1 — Research (do not skip)
+Before touching any file, research the topic:
+- What are the 5–8 core concepts a developer must understand?
+- What are the 3–5 things that routinely cause bugs or interview failures?
+- What does the official documentation emphasise?
+- What real-world patterns and production code look like for this topic?
+- Are there any concepts that belong on this page that aren't in the home.ts keyPoints yet?
+Write down what you find. This shapes the entire page.
 
-**Per-topic page checklist (from CLAUDE.md wiring checklist):**
-1. [ ] Files: `.ts`, `.html`, `.scss` in correct folder
-2. [ ] Route in `app.routes.ts` (lazy `loadComponent`)
-3. [ ] Nav entry in `app.html` (correct group, progress dot + check)
-4. [ ] Search entry in `services/search.service.ts`
-5. [ ] Breadcrumb label in `shared/breadcrumb/breadcrumb.ts`
+### Step 2 — Hub research (first page of a new hub only)
+If this is the first page of a hub that has never had a live page:
+- Read the hub home.ts in full
+- Research the technology's current job market requirements (2024–2025)
+- Identify any missing topic cards
+- Add missing cards to home.ts (`available: false`) before writing anything
+- Then proceed to Step 1 for the actual page
+
+### Step 3 — Write the page (one page, all sections complete)
+Do not move to the next topic until this page meets the full content standard:
+
+**Theory block — minimum standard:**
+- 5–6 sections covering the topic end-to-end
+- Each section: 5–7 bullet points
+- Each point: 2–3 sentences — state the concept, explain WHY it works that way,
+  give a concrete consequence or gotcha
+- Use `<code>` inline for identifiers, `<strong>` for emphasis
+- Sections must cover: the problem it solves, how it works internally, the rules/
+  constraints, edge cases, performance/gotcha implications, when NOT to use it
+
+**Code tabs — minimum standard:**
+- 4–5 tabs, each focused on one aspect of the topic
+- Each tab: 30–70 lines of real, runnable, production-quality code
+- Comments in code explain the WHY, not the what
+- Last tab should show a real-world pattern (not just a toy example)
+
+**Common Pitfalls (required section, add between code and challenge):**
+- 4–6 pitfalls that real developers hit in production or interviews
+- Format per pitfall: what goes wrong → why → correct approach
+- Use `<code>` for the bad/good patterns inline
+
+**Challenge:**
+- Non-trivial — should require understanding the topic to solve, not just syntax
+- Hints guide without giving away
+- Solution is complete, clean, and production-quality
+
+**Quiz — minimum standard:**
+- 6–8 questions
+- Difficulty spread: 2 easy (recall), 3 medium (application), 2–3 hard (edge case/gotcha)
+- Hard questions should test: what happens when X meets Y, compiler/runtime behaviour,
+  subtle difference between two similar things
+- Each explanation: 2–3 sentences with the "why"
+
+**Q&A — minimum standard:**
+- 6–8 entries
+- At least 2 "trap" questions (things people confidently get wrong)
+- At least 1 "how does this work internally" question
+- Answers use `<code>`, `<ul>`, `<strong>` — not plain text walls
+- Each answer should be the kind of response that impresses in a technical interview
+
+**Sidebar resources:**
+- Add a page-specific entry in `shared/page-sidebar/page-sidebar.ts` SIDEBAR_MAP
+- Minimum 2 resources: official docs link (badge: 'docs') + 1 of code/blog/video
+- Prefer: official docs, official GitHub repos (dotnet/*, angular/*, etc.)
+
+### Step 4 — Wire the page (all 8 checklist items)
+1. [ ] Files created: `.ts`, `.html`, `.scss` in correct folder
+2. [ ] Route added in `app.routes.ts` (lazy `loadComponent`)
+3. [ ] Nav entry added in `app.html` (correct group, progress dot + check mark)
+4. [ ] Search entry added in `services/search.service.ts`
+5. [ ] Breadcrumb label added in `shared/breadcrumb/breadcrumb.ts`
 6. [ ] Hub home card flipped to `available: true`
-7. [ ] Sidebar entry in `shared/page-sidebar/page-sidebar.ts`
-8. [ ] Progress service total updated (`*Total` count)
-9. [ ] Build must pass: `npx ng build --configuration=production`
+7. [ ] Sidebar entry added in `shared/page-sidebar/page-sidebar.ts`
+8. [ ] Progress service `*Total` count updated
 
-**Content standard for new pages (built after this plan is written):**
-- Theory: 5–6 sections × 5–7 bullet points, 2–3 sentences per point
-- Code: 4–5 tabs, each 30–60 lines of real, runnable code
-- Challenge: meaningful exercise with hints, starter code, full solution
-- Quiz: 6–8 questions (2 easy, 3 medium, 2–3 hard)
-- Q&A: 6–8 entries including 2 "trap" questions
-- Common Pitfalls: 4–6 bullets (wrong pattern → consequence → fix)
-- Sidebar: 2+ page-specific resources in SIDEBAR_MAP
-- Dark mode: always `:host-context(body.dark)` — NEVER media query
+### Step 5 — Build
+`npx ng build --configuration=production` must pass before marking the page done.
+Known harmless warnings (ignore): Sass `lighten()`/`darken()` deprecation, bundle budget.
 
-**Model:**
-- Routine topic batches: Sonnet (default)
-- Architecture/debugging/new page type design: Opus briefly
-- Count updates, label fixes: Haiku
+### Step 6 — Update this file
+- Check off the completed page
+- Update the Current State table counts
+- Note anything discovered during research that should be added to a future page
+
+---
+
+**Dark mode rule (never break this):**
+Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-scheme: dark)`.
+
+**Model choice:**
+- Regular topic pages: Sonnet (default — follows conventions reliably)
+- Architecture decisions, debugging weird issues, new page type design: Opus briefly
+- Single-file count/label fixes: Haiku
 
 ---
 
