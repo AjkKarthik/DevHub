@@ -1,0 +1,41 @@
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Signal Effects</h1>
+  <p class="page-subtitle">
+    Reactive side effects with <code>effect()</code> — run code in response to signal changes,
+    manage resources with <code>onCleanup()</code>, and bridge signals to <code>localStorage</code>,
+    RxJS, and external APIs.
+  </p>
+
+  <app-page-meta [readingTime]="22" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-before-after [items]="beforeAfter"
+    beforeLabel="Zone / Lifecycle"
+    afterLabel="Signals + effect()" />
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="signal-effects"
+    nextRoute="/angular/typed-forms"
+    nextLabel="Typed Forms" />
+</div>

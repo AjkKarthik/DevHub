@@ -287,10 +287,10 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'Angular', time: '~20 hrs',
       tagline: 'Modern component framework with signals, routing & reactive forms.',
       icon: '🅰️', gradient: 'linear-gradient(135deg, #c3002f 0%, #7a0019 100%)',
-      textDark: false, route: '/angular', available: true, topics: 50,
+      textDark: false, route: '/angular', available: true, topics: 63,
 
       highlights: [
-        '45 hands-on pages with live demos',
+        '58 hands-on pages with live demos',
         'Signals, computed, effect, model()',
         'Reactive forms, HTTP, routing guards',
         'Testing, SSR, PWA, i18n, CDK',
@@ -367,12 +367,12 @@ export class HubHome implements AfterViewInit, OnDestroy {
     },
     {
       group: 'backend', name: 'C#', time: '~20 hrs',
-      tagline: 'Microsoft\'s powerful OOP language — 50 topics from basics to .NET 11.',
+      tagline: 'Microsoft\'s powerful OOP language — 51 topics from basics to .NET 11.',
       icon: 'C#', gradient: 'linear-gradient(135deg, #512bd4 0%, #311a8a 100%)',
-      textDark: false, route: '/csharp', available: true, topics: 50,
+      textDark: false, route: '/csharp', available: true, topics: 51,
       roles: ['backend', 'architect'],
       highlights: [
-        '41 language topics + 9 practice & reference pages',
+        '42 language topics + 9 practice & reference pages',
         'Reflection, source generators, channels, unit testing',
         'Quiz practice + 55-question interview prep',
         'C# 9–13 & .NET 8–11 coverage',

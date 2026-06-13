@@ -1,0 +1,55 @@
+$accent: #dd0031;
+$tint:   #fff1f2;
+
+.ng-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.page-header-icon.ng-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 12px;
+  background: $accent;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 .5rem;
+  color: #111;
+}
+
+.page-subtitle {
+  font-size: 1.05rem;
+  color: #6b7280;
+  margin: 0 0 1.75rem;
+  line-height: 1.6;
+}
+
+.ng-section {
+  margin: 2.5rem 0;
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 1rem;
+    padding-bottom: .4rem;
+    border-bottom: 2px solid $tint;
+  }
+}
+
+:host-context(body.dark) {
+  .page-title     { color: #f1f5f9; }
+  .page-subtitle  { color: #94a3b8; }
+  .ng-section h2  { color: #f1f5f9; border-color: rgba(221, 0, 49, .25); }
+}

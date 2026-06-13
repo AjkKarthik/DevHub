@@ -1,0 +1,34 @@
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Angular DevTools</h1>
+  <p class="page-subtitle">
+    Profile and debug Angular apps with the Chrome extension — Component Tree inspection,
+    Profiler flame charts, and <code>ng.*</code> console helpers.
+  </p>
+
+  <app-page-meta [readingTime]="18" difficulty="intermediate" since="Angular 9+" tech="angular" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="angular-devtools"
+    nextRoute="/angular/bundle-optimization"
+    nextLabel="Bundle Optimization" />
+</div>

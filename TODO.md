@@ -83,8 +83,8 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 
 | Hub | Live | Coming Soon | Status |
 |---|---|---|---|
-| Angular | 55 | 13 | Active — 13 remaining |
-| C# | 50 | 9 | Active — 9 remaining |
+| Angular | 56 | 12 | Active — 12 remaining |
+| C# | 51 | 8 | Active — 8 remaining |
 | ASP.NET Core | 42 | 12 | Active — 12 remaining |
 | SQL | 26 | 27 | Active — in-progress (Session B next) |
 | TypeScript | 0 | 22 | Not started |
@@ -161,95 +161,64 @@ work — small number of pages to write, huge improvement to the user experience
 
 ### 1A — Angular hub (13 remaining) `src/app/components/angular/`
 
-All topics already in the home, nav, and search. Just need the page files.
+These are the 13 `available: false` cards in `angular/home/home.ts` — confirmed from source.
 Write one per session in priority order:
-- [ ] `advanced-forms` — Reactive forms deep-dive: FormArray, cross-field validation,
-  async validators, custom ControlValueAccessor, typed forms (Angular 14+)
-- [ ] `custom-directives` — Attribute directives, structural directives, exportAs,
-  hostDirectives, directive composition API (Angular 15+)
-- [ ] `custom-pipes` — Pure vs impure pipes, async pipe internals, creating transform pipes,
-  pipe chaining, performance implications
-- [ ] `server-side-rendering` — Angular Universal/SSR: hydration, transfer state,
-  prerendering, App Shell, SEO benefits, pitfalls
-- [ ] `pwa` — Service worker setup, manifest, offline strategy, push notifications,
-  background sync, Angular Service Worker CLI
-- [ ] `angular-animations` — trigger/state/transition, keyframes, query/stagger, route
-  animations, AnimationBuilder for imperative animations
+- [x] 2026-06-13 `route-guards` — functional guards (canActivate/canDeactivate/canMatch), inject() in guards, redirect logic, role-based access
+- [ ] `http-interceptors` — functional interceptors (HttpInterceptorFn), retry, auth token injection, error handling
+- [ ] `signal-effects` — effect() deep-dive, cleanup, allowSignalWrites, untracked(), ordering guarantees
+- [ ] `typed-forms` — AbstractControl typing, FormRecord, NonNullableFormBuilder, type narrowing in templates
+- [ ] `host-directives` — hostDirectives API, exposing inputs/outputs, composing built-in directives
+- [ ] `let-template-vars` — @let syntax, scope rules, async unwrapping patterns, vs local variables
+- [ ] `standalone-migration` — ng generate @angular/core:standalone, migration steps, schematic options
+- [ ] `error-handling-patterns` — ErrorHandler, HttpClient error interceptor, global vs local strategies, user-friendly messages
+- [ ] `msw` — Mock Service Worker in Angular tests, setupWorker, http.get handlers, passthrough
+- [ ] `accessibility` — CDK a11y: FocusTrap, LiveAnnouncer, CdkListbox, ARIA in Angular templates, axe-core
+- [ ] `micro-frontends` — Module Federation with Angular, independent deployments, shared libs, routing across MFEs
+- [ ] `angular-devtools` — Profiler, component tree, change detection flame chart, injector tree
+- [ ] `bundle-optimization` — bundle analysis (source-map-explorer), lazy routes, defer, preloading, tree-shaking
 
-- [ ] `testing-components` — TestBed, ComponentFixture, fakeAsync/tick, signal testing,
-  HttpClientTestingModule, harnesses
-- [ ] `performance` — OnPush change detection, trackBy, defer blocks (Angular 17+), lazy
-  routes, preloading strategies, zone.js-less
-- [ ] `state-management` — NgRx Store vs Signals-based state vs lightweight services,
-  ComponentStore, when to use each
-- [ ] `micro-frontends` — Module Federation with Angular, independent deployment, shared
-  libraries, routing across MFEs
-- [ ] `angular-libraries` — Creating an Angular library: ng-packagr, secondary entry points,
-  publishing to npm, peer dependencies
-- [ ] `internationalization` — @angular/localize, $localize, ICU expressions, locale data,
-  build-time vs runtime i18n
-- [ ] `accessibility` — Angular CDK a11y: FocusTrap, LiveAnnouncer, HighContrastMode,
-  RouterLink a11y, ARIA patterns, axe-core integration
-
-After all 13 pages: update `progress.service.ts` angularTotal (currently 45 → 58),
-confirm all cards `available: true` in home.ts, build.
+After all 13: update `progress.service.ts` angularTotal (45 → 58), confirm all `available: true`, build.
 
 ---
 
 ### 1B — C# hub (9 remaining) `src/app/components/backend/csharp/`
 
+These are the 9 `available: false` cards in `csharp/home/home.ts` — confirmed from source.
+Note: source-generators, expression-trees, dynamic, channels, iterators, regex, reflection,
+unit-testing were completed in session 2026-06-11 and are already live.
 Write one per session in priority order:
-- [ ] `functional-csharp` — Result<T,E> pattern, OneOf discriminated unions, railway-
-  oriented programming, FluentResults, avoiding exception-driven control flow
-- [ ] `source-generators` — ISourceGenerator vs IIncrementalGenerator, SyntaxReceiver,
-  output → compile, AutoMapper/Mapperly pattern
-- [ ] `expression-trees` — Expression<Func<T>>, compiling to delegates, building dynamic
-  queries (EF Core uses this), Visitor pattern on expression trees
-- [ ] `dynamic-csharp` — dynamic keyword, ExpandoObject, DynamicObject, DLR, trade-offs
-  vs generics, COM interop use case
-- [ ] `channels` — System.Threading.Channels: bounded vs unbounded, producer/consumer
-  pattern, backpressure, vs BlockingCollection<T>
-- [ ] `iterators` — yield return mechanics, IEnumerable<T> deferred execution, iterator
-  state machines (IL output), infinite sequences, LINQ pipeline laziness
-- [ ] `regex` — Regex class, named groups, compiled regex, Regex.IsMatch vs Match vs
-  Matches, source-generated Regex (.NET 7+), common patterns
-- [ ] `reflection` — Type, MethodInfo, PropertyInfo, ActivatorCreateInstance, attribute
-  reading, performance (caching vs dynamic), Reflection.Emit intro
-- [ ] `unit-testing-advanced` — xUnit theories, Moq/NSubstitute, AutoFixture,
-  FluentAssertions, test data builders, mutation testing with Stryker
+- [x] 2026-06-13 `functional-csharp` — Result<T>, OneOf, FluentResults, railway-oriented programming, avoiding exception-driven control flow
+- [ ] `span-memory` — Span<T>, Memory<T>, ReadOnlySpan, stackalloc, MemoryPool<T>, zero-copy patterns
+- [ ] `di-dotnet` — Microsoft.Extensions.DI deep-dive: lifetimes, keyed services, factory registration, IServiceScope
+- [ ] `json-advanced` — System.Text.Json source gen, JsonSerializerContext, custom converters, Utf8JsonWriter
+- [ ] `unsafe-pointers` — unsafe keyword, fixed statement, pointer arithmetic, stackalloc, P/Invoke foundation
+- [ ] `native-aot` — AOT publishing, trimming annotations, reflection-free patterns, what breaks, when to use
+- [ ] `benchmarkdotnet` — [Benchmark], BenchmarkRunner, MemoryDiagnoser, comparing approaches, reading results
+- [ ] `pinvoke` — DllImport vs LibraryImport, marshalling, unsafe structs, COM interop, platform detection
+- [ ] `dotnet-cli` — dotnet new/build/run/test/publish, global tools, NuGet, project templates, .csproj anatomy
 
-After all 9 pages: update `csharpTotal` (currently 41 → 50), confirm all cards live, build.
+After all 9: update `csharpTotal` (41 → 50), confirm all `available: true`, build.
 
 ---
 
 ### 1C — ASP.NET Core hub (12 remaining) `src/app/components/backend/aspnet/`
 
+These are the 12 `available: false` cards in `aspnet/home/home.ts` — confirmed from source.
 Write one per session in priority order:
-- [ ] `minimal-api-advanced` — Route groups, typed results, endpoint filters, OpenAPI with
-  Scalar, output caching, problem details middleware
-- [ ] `output-caching` — OutputCache attribute, cache policies, cache tags, vary-by,
-  distributed output cache with Redis
-- [ ] `request-pipeline-advanced` — Endpoint routing internals, custom middleware ordering,
-  IMiddlewareFactory, terminal middleware, short-circuit middleware
-- [ ] `masstransit` — AddMassTransit setup, Consumers, Sagas (state machine), request/
-  response, outbox pattern, RabbitMQ and Azure Service Bus
-- [ ] `blazor-integration` — Hosting Blazor in ASP.NET Core, shared auth state,
-  SignalR circuits, pre-rendering with data, streaming
-- [ ] `aspnet-testing-advanced` — WebApplicationFactory, custom test server, integration
-  test DB setup, Respawn, TestContainers, snapshot testing responses
-- [ ] `microservices-patterns` — API Gateway with YARP, service discovery with Consul,
-  health checks for orchestrators, resiliency with Polly v8
-- [ ] `observability-aspnet` — OTel tracing (AddOpenTelemetry), custom spans, metrics
-  with System.Diagnostics.Meter, structured logging, Application Insights
-- [ ] `api-security-advanced` — API key auth, DPAPI, data protection API, certificate
-  auth, token binding, refresh token rotation
-- [ ] `http3-quic` — Kestrel HTTP/3, alt-svc header, QUIC transport, 0-RTT, TLS 1.3
-- [ ] `native-aot` — Native AOT publishing, trimming, source generator compatibility,
-  what breaks (reflection), when to use
-- [ ] `aspire` — .NET Aspire AppHost, orchestration, service defaults, dashboard,
-  integrations (Redis, Postgres, RabbitMQ), deployment to Azure
+- [ ] `fluent-validation` — FluentValidation setup, AbstractValidator, RuleFor, async validators, integration with minimal APIs/controllers
+- [ ] `masstransit` — AddMassTransit, Consumers, Sagas (state machine), request/response, outbox, RabbitMQ/Azure SB
+- [ ] `opentelemetry` — AddOpenTelemetry, tracing + metrics + logs, OTLP exporter, custom spans, Application Insights
+- [ ] `yarp` — YARP reverse proxy, route/cluster config, transforms, load balancing, auth passthrough
+- [ ] `minimal-api-advanced` — endpoint filters, route groups, TypedResults, OpenAPI with Scalar, output caching
+- [ ] `output-caching-advanced` — OutputCache policies, vary-by, cache tags, distributed (Redis), invalidation
+- [ ] `dapper` — Dapper query/execute/QueryMultiple, parameters, dynamic, multi-mapping, Dapper + EF together
+- [ ] `feature-flags` — Microsoft.FeatureManagement, IFeatureManager, targeting filters, appsettings config
+- [ ] `localization` — AddLocalization, IStringLocalizer, resource files, RequestLocalizationMiddleware, cultures
+- [ ] `websockets` — WebSocket middleware, accept handshake, send/receive loop, SignalR vs raw WebSocket
+- [ ] `response-compression` — AddResponseCompression, Brotli/Gzip, compression providers, when to use
+- [ ] `csrf` — Anti-forgery tokens, ValidateAntiForgeryToken, SameSite cookies, CSRF in SPAs/APIs
 
-After all 12 pages: update `aspnetTotal` (currently 33 → 45), confirm all cards live, build.
+After all 12: update `aspnetTotal` (33 → 45), confirm all `available: true`, build.
 
 ---
 

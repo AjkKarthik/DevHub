@@ -238,6 +238,7 @@
       <a routerLink="/csharp/extension-methods" routerLinkActive="active"><span class="nl-text">Extension Methods</span>@if(progress.isDone('csharp-extension-methods')){<span class="nl-done">✓</span>}@if(diff('csharp-extension-methods');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/tuples" routerLinkActive="active"><span class="nl-text">Tuples &amp; Anonymous Types</span>@if(progress.isDone('csharp-tuples')){<span class="nl-done">✓</span>}@if(diff('csharp-tuples');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/iterators" routerLinkActive="active"><span class="nl-text">Iterators &amp; yield</span>@if(progress.isDone('csharp-iterators')){<span class="nl-done">✓</span>}@if(diff('csharp-iterators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/functional-csharp" routerLinkActive="active"><span class="nl-text">Functional C# &amp; Result</span>@if(progress.isDone('csharp-functional-csharp')){<span class="nl-done">✓</span>}@if(diff('csharp-functional-csharp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
@@ -323,6 +324,16 @@
         @if (progress.isDone('directives')) {<span class="nl-done">✓</span>}
         @if (diff('directives'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
+      <a routerLink="/angular/host-directives" routerLinkActive="active">
+        <span class="nl-text">Host Directives</span>
+        @if (progress.isDone('host-directives')) {<span class="nl-done">✓</span>}
+        @if (diff('host-directives'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/angular/let-template-vars" routerLinkActive="active">
+        <span class="nl-text">&#64;let Template Vars</span>
+        @if (progress.isDone('let-template-vars')) {<span class="nl-done">✓</span>}
+        @if (diff('let-template-vars'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
       <a routerLink="/angular/lifecycle" routerLinkActive="active">
         <span class="nl-text">Lifecycle Hooks</span>
         @if (progress.isDone('lifecycle')) {<span class="nl-done">✓</span>}
@@ -402,6 +413,11 @@
         @if (progress.isDone('wizard-form')) {<span class="nl-done">✓</span>}
         @if (diff('wizard-form'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
+      <a routerLink="/angular/typed-forms" routerLinkActive="active">
+        <span class="nl-text">Typed Forms</span>
+        @if (progress.isDone('typed-forms')) {<span class="nl-done">✓</span>}
+        @if (diff('typed-forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
     </div>
 
     <div class="nav-group">
@@ -410,6 +426,16 @@
         <span class="nl-text">HTTP Client</span>
         @if (progress.isDone('http')) {<span class="nl-done">✓</span>}
         @if (diff('http'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/angular/http-interceptors" routerLinkActive="active">
+        <span class="nl-text">HTTP Interceptors</span>
+        @if (progress.isDone('http-interceptors')) {<span class="nl-done">✓</span>}
+        @if (diff('http-interceptors'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/angular/error-handling-patterns" routerLinkActive="active">
+        <span class="nl-text">Error Handling Patterns</span>
+        @if (progress.isDone('error-handling-patterns')) {<span class="nl-done">✓</span>}
+        @if (diff('error-handling-patterns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
       <a routerLink="/angular/routing" routerLinkActive="active">
         <span class="nl-text">Routing</span>
@@ -436,6 +462,11 @@
         @if (progress.isDone('testing')) {<span class="nl-done">✓</span>}
         @if (diff('testing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
+      <a routerLink="/angular/msw" routerLinkActive="active">
+        <span class="nl-text">Mock Service Worker</span>
+        @if (progress.isDone('msw')) {<span class="nl-done">✓</span>}
+        @if (diff('msw'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
       <a routerLink="/angular/route-resolvers" routerLinkActive="active">
         <span class="nl-text">Route Resolvers</span>
         @if (progress.isDone('route-resolvers')) {<span class="nl-done">✓</span>}
@@ -445,6 +476,11 @@
         <span class="nl-text">Preloading</span>
         @if (progress.isDone('preloading')) {<span class="nl-done">✓</span>}
         @if (diff('preloading'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/angular/route-guards" routerLinkActive="active">
+        <span class="nl-text">Route Guards</span>
+        @if (progress.isDone('route-guards')) {<span class="nl-done">✓</span>}
+        @if (diff('route-guards'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
     </div>
 
@@ -464,6 +500,11 @@
         <span class="nl-text">Angular CDK</span>
         @if (progress.isDone('cdk')) {<span class="nl-done">✓</span>}
         @if (diff('cdk'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/angular/accessibility" routerLinkActive="active">
+        <span class="nl-text">Accessibility (a11y)</span>
+        @if (progress.isDone('accessibility')) {<span class="nl-done">✓</span>}
+        @if (diff('accessibility'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
       <a routerLink="/angular/ag-grid" routerLinkActive="active">
         <span class="nl-text">AG Grid</span>
@@ -514,6 +555,11 @@
         @if (progress.isDone('zoneless')) {<span class="nl-done">✓</span>}
         @if (diff('zoneless'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
+      <a routerLink="/angular/signal-effects" routerLinkActive="active">
+        <span class="nl-text">Signal Effects</span>
+        @if (progress.isDone('signal-effects')) {<span class="nl-done">✓</span>}
+        @if (diff('signal-effects'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
     </div>
 
     <div class="nav-group">
@@ -556,6 +602,26 @@
         <span class="nl-text">SSR + Hydration</span>
         @if (progress.isDone('ssr')) {<span class="nl-done">✓</span>}
         @if (diff('ssr'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/angular/micro-frontends" routerLinkActive="active">
+        <span class="nl-text">Micro-Frontends</span>
+        @if (progress.isDone('micro-frontends')) {<span class="nl-done">✓</span>}
+        @if (diff('micro-frontends'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/angular/angular-devtools" routerLinkActive="active">
+        <span class="nl-text">Angular DevTools</span>
+        @if (progress.isDone('angular-devtools')) {<span class="nl-done">✓</span>}
+        @if (diff('angular-devtools'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/angular/bundle-optimization" routerLinkActive="active">
+        <span class="nl-text">Bundle Optimization</span>
+        @if (progress.isDone('bundle-optimization')) {<span class="nl-done">✓</span>}
+        @if (diff('bundle-optimization'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+      </a>
+      <a routerLink="/angular/standalone-migration" routerLinkActive="active">
+        <span class="nl-text">Standalone Migration</span>
+        @if (progress.isDone('standalone-migration')) {<span class="nl-done">✓</span>}
+        @if (diff('standalone-migration'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
       </a>
     </div>
 

@@ -87,7 +87,7 @@ const ALL_TOPICS: CsharpTopic[] = [
   { title: 'Iterators & yield',       route: '/csharp/iterators',          badge: 'Modern', available: true,
     description: 'yield return, IEnumerable/IEnumerator, compiler state machines, lazy evaluation — how LINQ works underneath.',
     keyPoints: ['yield return suspends and resumes the method', 'Deferred execution: nothing runs until enumeration', 'Multiple enumeration re-runs the iterator'] },
-  { title: 'Functional C# & Result Pattern', route: '/csharp',               badge: 'Modern', available: false,
+  { title: 'Functional C# & Result Pattern', route: '/csharp/functional-csharp', badge: 'Modern', available: true,
     description: 'Railway-Oriented Programming in C# — Result<T,E>, OneOf, functional pipelines, and eliminating exceptions for expected failures.',
     keyPoints: ['Result<T,E> = Success(T) | Failure(E) — explicit error without exceptions', 'Map/Bind: chain operations that can fail — compose Results fluently', 'OneOf<T1,T2,...>: discriminated union type for multiple return possibilities', 'FluentResults and LanguageExt are popular libraries', 'Avoid exception-driven control flow for domain validation errors'] },
   { title: 'Span<T> & Memory<T>',     route: '/csharp',                    badge: 'Modern', available: false,
