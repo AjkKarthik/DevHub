@@ -127,6 +127,10 @@ const ALL_TOPICS: Topic[] = [
     description: 'High-level modules should not depend on low-level modules. Both should depend on abstractions.',
     keyPoints: ['Register abstractions in the DI container', 'Interfaces belong to the consumer, not the implementation', 'Enables swapping implementations without changing callers'] },
 
+  { title: 'Clean Architecture',         route: '/design-patterns', badge: 'Enterprise', available: false,
+    description: 'Robert C. Martin\'s layered architecture — domain at the center, dependencies always pointing inward.',
+    keyPoints: ['4 rings: Entities → Use Cases → Interface Adapters → Frameworks & Drivers', 'Dependency Rule: source code dependencies only point inward — never outward', 'Use Cases know Entities but not controllers, databases, or frameworks', 'Interface Adapters: convert data between Use Cases and external formats', 'Screaming Architecture: folder structure reveals intent, not framework'] },
+
   // Reference
   { title: 'Pattern Cheat Sheet',      route: '/design-patterns', badge: 'Reference', available: false,
     description: 'Quick-reference card for all 23 GoF patterns — intent, participants, when to use, .NET examples.',

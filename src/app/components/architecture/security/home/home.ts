@@ -91,6 +91,9 @@ const ALL_TOPICS: Topic[] = [
     keyPoints: ['SHA-256: one-way, collision-resistant, not suitable for passwords', 'HMAC: keyed hash — proves authenticity + integrity', 'Length extension attack: use HMAC or SHA-3, not SHA-2 directly with secret'] },
 
   // Reference
+  { title: 'Supply Chain Security',      route: '/security', badge: 'Network & Infra', available: false,
+    description: 'SBOM, SLSA framework, Sigstore, dependency signing — securing the software supply chain from code to deploy.',
+    keyPoints: ['SBOM (Software Bill of Materials): machine-readable list of all dependencies (SPDX or CycloneDX)', 'SLSA framework: 4 levels of build provenance — from no guarantees to hermetic builds', 'Sigstore/Cosign: keyless signing of container images and artifacts using OIDC identity', 'npm audit / Dependabot / Renovate: automated dependency vulnerability scanning', 'Typosquatting defence: lock package versions, verify checksums, use private registries'] },
   { title: 'Security Cheat Sheet',      route: '/security', badge: 'Reference', available: false,
     description: 'Quick-reference for OWASP controls, security headers, hash algorithm choices, and auth flows.',
     keyPoints: ['OWASP control checklist per category', 'Algorithm recommendation table: which to use, which to avoid', 'Security testing tools: OWASP ZAP, Burp Suite, Semgrep'] },
