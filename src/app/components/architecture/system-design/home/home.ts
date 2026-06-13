@@ -92,6 +92,9 @@ const ALL_TOPICS: Topic[] = [
     keyPoints: ['Transcoding pipeline: raw upload → queue → worker farm → multiple bitrates', 'DASH/HLS: client picks bitrate based on bandwidth', 'Choke points: encode farm throughput, CDN origin shield'] },
 
   // Reference
+  { title: 'AI/ML System Design',        route: '/system-design', badge: 'Real Systems', available: false,
+    description: 'Design LLM-powered systems at scale — RAG pipelines, vector databases, model serving, and embedding infrastructure.',
+    keyPoints: ['RAG architecture: embed → store in vector DB → retrieve k-NN → augment prompt', 'Vector DB trade-offs: pgvector vs Pinecone vs Weaviate vs Chroma for different scales', 'Model serving: vLLM, Triton Inference Server, batching strategies for throughput', 'Embedding pipeline: chunking strategy, overlap, re-ranking with cross-encoders', 'LLM API cost vs latency: caching identical prompts; semantic caching with similarity threshold'] },
   { title: 'System Design Cheat Sheet', route: '/system-design', badge: 'Reference', available: false,
     description: 'Numbers you must know, component decision guide, and a blank design template for interviews.',
     keyPoints: ['Latency numbers: L1 cache 1ns, RAM 100ns, SSD 100µs, network 1ms+', 'Component shortlist per problem type', 'Interview template: req → estimate → design → deep dive'] },

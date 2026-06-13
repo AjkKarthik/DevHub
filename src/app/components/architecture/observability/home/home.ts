@@ -74,6 +74,15 @@ const ALL_TOPICS: Topic[] = [
     keyPoints: ['Hypothesis: "the system will remain available when X fails"', 'Start small: kill a single pod in staging; graduate to production', 'Chaos Monkey, Gremlin, Azure Chaos Studio, AWS Fault Injection Simulator'] },
 
   // Reference
+  { title: 'Cloud-Native Monitoring',    route: '/observability', badge: 'Metrics', available: false,
+    description: 'Datadog, New Relic, Azure Monitor, and AWS CloudWatch — cloud-native APM trade-offs vs self-hosted.',
+    keyPoints: ['Datadog APM: auto-instrumentation + agent, rich out-of-box dashboards', 'Azure Monitor + Application Insights: native for Azure-hosted workloads', 'Self-hosted (Prometheus+Grafana): more control, more ops overhead', 'Vendor lock-in mitigation: OTel SDK with OTLP export to any backend', 'Cost: cloud APM is expensive at scale — profile before committing'] },
+  { title: 'eBPF Observability',        route: '/observability', badge: 'Pillars', available: false,
+    description: 'Zero-instrumentation observability with eBPF — Pixie, Cilium Hubble, and kernel-level telemetry.',
+    keyPoints: ['eBPF: runs sandboxed kernel programs — no code change required', 'Automatic L7 protocol detection (HTTP, gRPC, DNS)', 'Pixie: in-cluster eBPF observability for Kubernetes', 'Cilium Hubble: network-level service graph via eBPF', 'Low overhead compared to sidecar proxies'] },
+  { title: 'Observability Maturity Model', route: '/observability', badge: 'Pillars', available: false,
+    description: 'Levels from reactive logging to proactive observability — assessing and evolving your team\'s practice.',
+    keyPoints: ['Level 0: manual checks, no dashboards', 'Level 1: centralised logs, basic metrics', 'Level 2: traces, SLOs, on-call process', 'Level 3: error budgets, automated remediation', 'OTel adoption is the first step to portability'] },
   { title: 'Observability Cheat Sheet', route: '/observability', badge: 'Reference', available: false,
     description: 'PromQL quick reference, OTel SDK setup, log level guide, and alerting decision tree.',
     keyPoints: ['PromQL: rate(), sum(), histogram_quantile() at a glance', 'OTel SDK setup: 3 lines for tracing, 3 for metrics', 'Alert routing: severity → channel mapping guide'] },

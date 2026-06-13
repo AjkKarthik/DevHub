@@ -1,59 +1,100 @@
-# AngularLearning
+# DevHub — Multi-Technology Learning Platform
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.0.
+A free, hands-on learning hub for developers. Structured topic pages with theory, code examples, challenges, quizzes, and a built-in progress tracker — covering Angular, C#, ASP.NET Core, SQL, and 30+ more technologies coming soon.
 
-## Development server
+**Live:** [https://ajkkarthik.github.io/DevHub](https://ajkkarthik.github.io/DevHub)
 
-To start a local development server, run:
+---
+
+## What's inside
+
+Each technology hub contains:
+
+- **Topic pages** — theory, code examples (multi-tab), interactive challenge, quiz, and Q&A
+- **Practice pages** — Cheat Sheet, Common Errors, Interview Prep, Design Patterns, Decision Guides, Glossary, Mini Projects, Learning Paths
+- **Progress tracking** — mark topics complete, per-hub completion bar (localStorage)
+- **Search** — Ctrl+K full-text search across all hubs
+- **Dark mode** — system-aware toggle
+
+---
+
+## Hubs
+
+### Live (full content)
+
+| Hub | Topics | Practice pages |
+|---|---|---|
+| Angular | 45 | 10 |
+| C# | 41 | 9 |
+| ASP.NET Core | 33 | 9 |
+| SQL | 17+ | 9 |
+
+### Coming soon (scaffolded, expanding)
+
+Frontend: React, Vue, TypeScript, JavaScript, HTML, CSS, Web Performance, Blazor  
+Backend: Node.js, Python, Go  
+Cloud & Infra: AWS, Azure, Containers/Kubernetes, Terraform, DevOps/CI-CD, Linux, Service Mesh  
+Data: MongoDB, Redis, GraphQL, Messaging (Kafka/RabbitMQ)  
+Architecture: Arch Patterns, API Design, System Design, Security, Observability  
+Fundamentals: DSA, Testing, AI/ML  
+
+---
+
+## Tech stack
+
+- **Angular 22** — standalone components only, no NgModules
+- **Angular Signals** — `signal`, `computed`, `effect` throughout
+- **SCSS** — per-component styles; global theme in `src/styles.scss`
+- Deployed to **GitHub Pages** via `gh-pages` branch
+
+---
+
+## Running locally
 
 ```bash
-ng serve
+npm install
+npx ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open `http://localhost:4200/`
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Production build
 
 ```bash
-ng generate component component-name
+npx ng build --configuration=production
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Build artifacts land in `dist/`. Known harmless warnings: Sass `lighten()`/`darken()` deprecation, initial bundle budget.
 
-```bash
-ng generate --help
+---
+
+## Project structure
+
+```
+src/app/
+  app.ts / app.html / app.scss      # Shell: left nav, breadcrumb, footer, sidebar
+  app.routes.ts                     # All routes (lazy loadComponent)
+  services/
+    progress.service.ts             # Topic completion (localStorage)
+    search.service.ts               # Ctrl+K search index
+    dark-mode.service.ts            # body.dark class toggle
+  components/
+    hub-home/                       # DevHub landing page
+    shared/                         # Shared UI: theory-block, code-block, quiz-block, etc.
+    angular/                        # Angular hub pages
+    backend/csharp/                 # C# hub pages
+    backend/aspnet/                 # ASP.NET Core hub pages
+    backend/sql/                    # SQL hub pages
+    frontend/                       # React, Vue, TypeScript, JS, CSS, HTML, Blazor, ...
+    backend/nodejs/ backend/python/ backend/go/
+    cloud/                          # AWS, Azure, Containers, Terraform, DevOps, Linux, ...
+    data/                           # MongoDB, Redis, GraphQL, Messaging
+    architecture/                   # Arch Patterns, API Design, System Design, Security, Observability
+    fundamentals/                   # DSA, Testing, AI/ML
 ```
 
-## Building
+---
 
-To build the project run:
+## Contributing
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Work happens on the `development` branch; `main` is for releases. See [CLAUDE.md](CLAUDE.md) for full conventions, wiring checklist, and theming rules.
