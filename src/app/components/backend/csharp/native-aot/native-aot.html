@@ -1,0 +1,41 @@
+<div class="cs-page">
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Native AOT</h1>
+  <p class="page-subtitle">
+    Compile C# to native machine code with no JIT and no runtime — instant startup, tiny footprint.
+    Learn trim-safe patterns, source generation, <code>[LibraryImport]</code>,
+    and AOT-compatible ASP.NET Core minimal APIs.
+  </p>
+
+  <app-page-meta [readingTime]="28" difficulty="advanced" since=".NET 7+" tech="csharp" />
+
+  <app-prerequisites [items]="prerequisites" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-before-after [items]="beforeAfter"
+    beforeLabel="Reflection-based JSON"
+    afterLabel="Source-generated (AOT-safe)" />
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="csharp-native-aot"
+    nextRoute="/csharp/benchmarkdotnet"
+    nextLabel="BenchmarkDotNet" />
+</div>

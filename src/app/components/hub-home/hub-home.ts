@@ -165,9 +165,9 @@ export class HubHome implements AfterViewInit, OnDestroy {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'ASP.NET Core · 42 pages', route: '/aspnet',                  label: 'New · 33 topics + 9 reference' },
+    { name: 'ASP.NET Core · 54 pages', route: '/aspnet',                  label: 'New · 45 topics + 9 reference' },
     { name: 'Angular',                 route: '/angular',                  label: '50 pages · updated' },
-    { name: 'C# · 50 topics',          route: '/csharp',                   label: 'Full language coverage' },
+    { name: 'C# · 58 topics',          route: '/csharp',                   label: 'Full language coverage' },
     { name: 'SQL',                     route: '/sql',                       label: 'New · 12 topics + reference' },
     { name: 'Interview Prep',          route: '/aspnet/interview-prep',    label: 'New · ASP.NET Core Q&A' },
   ];
@@ -287,10 +287,10 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'Angular', time: '~20 hrs',
       tagline: 'Modern component framework with signals, routing & reactive forms.',
       icon: '🅰️', gradient: 'linear-gradient(135deg, #c3002f 0%, #7a0019 100%)',
-      textDark: false, route: '/angular', available: true, topics: 50,
+      textDark: false, route: '/angular', available: true, topics: 63,
 
       highlights: [
-        '45 hands-on pages with live demos',
+        '58 hands-on pages with live demos',
         'Signals, computed, effect, model()',
         'Reactive forms, HTTP, routing guards',
         'Testing, SSR, PWA, i18n, CDK',
@@ -367,12 +367,12 @@ export class HubHome implements AfterViewInit, OnDestroy {
     },
     {
       group: 'backend', name: 'C#', time: '~20 hrs',
-      tagline: 'Microsoft\'s powerful OOP language — 50 topics from basics to .NET 11.',
+      tagline: 'Microsoft\'s powerful OOP language — 59 topics from basics to .NET 11.',
       icon: 'C#', gradient: 'linear-gradient(135deg, #512bd4 0%, #311a8a 100%)',
-      textDark: false, route: '/csharp', available: true, topics: 50,
+      textDark: false, route: '/csharp', available: true, topics: 59,
       roles: ['backend', 'architect'],
       highlights: [
-        '41 language topics + 9 practice & reference pages',
+        '50 language topics + 9 practice & reference pages',
         'Reflection, source generators, channels, unit testing',
         'Quiz practice + 55-question interview prep',
         'C# 9–13 & .NET 8–11 coverage',
@@ -380,9 +380,9 @@ export class HubHome implements AfterViewInit, OnDestroy {
     },
     {
       group: 'backend', name: 'ASP.NET Core', time: '~17 hrs',
-      tagline: 'Build production-grade REST APIs with C# and .NET — 42 pages of full coverage.',
+      tagline: 'Build production-grade REST APIs with C# and .NET — 54 pages of full coverage.',
       icon: '⚙️', gradient: 'linear-gradient(135deg, #0e7490 0%, #155e75 100%)',
-      textDark: false, route: '/aspnet', available: true, topics: 42,
+      textDark: false, route: '/aspnet', available: true, topics: 54,
       sub: 'Web API · Minimal API · EF Core',
       roles: ['backend', 'architect'],
       highlights: [

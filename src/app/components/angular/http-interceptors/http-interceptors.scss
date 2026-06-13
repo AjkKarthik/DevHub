@@ -1,0 +1,58 @@
+$accent: #dd0031;
+$tint:   #fff1f2;
+
+:host { display: block; }
+
+.ng-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.page-header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  background: $tint;
+  color: $accent;
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  font-size: 1.95rem;
+  font-weight: 800;
+  color: var(--text, #1a1a1a);
+  margin: 0 0 .5rem;
+  line-height: 1.25;
+}
+
+.page-subtitle {
+  font-size: .97rem;
+  color: var(--text2, #6b7280);
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+  code { font-size: .9rem; background: var(--surface2); padding: 0 .3rem; border-radius: 3px; }
+}
+
+.ng-section {
+  margin: 1.75rem 0 1.25rem;
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $accent;
+    margin: 0 0 .85rem;
+    padding-bottom: .35rem;
+    border-bottom: 2px solid $tint;
+  }
+}
+
+:host-context(body.dark) {
+  .page-title    { color: #f3f4f6; }
+  .page-subtitle { color: #9ca3af; code { background: #1e2028; } }
+  .page-header-icon { background: #3d0010; color: #ff5a76; }
+  .ng-section h2 { color: #ff5a76; border-bottom-color: #3d0010; }
+}

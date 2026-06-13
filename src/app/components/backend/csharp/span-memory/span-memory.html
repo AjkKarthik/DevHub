@@ -1,0 +1,41 @@
+<div class="cs-page">
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Span&lt;T&gt; &amp; Memory&lt;T&gt;</h1>
+  <p class="page-subtitle">
+    Zero-allocation slices of contiguous memory — process arrays, strings, and binary data
+    without heap allocations using <code>Span&lt;T&gt;</code>, <code>Memory&lt;T&gt;</code>,
+    <code>ArrayPool&lt;T&gt;</code>, and <code>stackalloc</code>.
+  </p>
+
+  <app-page-meta [readingTime]="28" difficulty="advanced" since=".NET Core 2.1+" tech="csharp" />
+
+  <app-prerequisites [items]="prerequisites" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-before-after [items]="beforeAfter"
+    beforeLabel="Substring (allocates)"
+    afterLabel="AsSpan (zero-allocation)" />
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="csharp-span-memory"
+    nextRoute="/csharp/di-dotnet"
+    nextLabel="Dependency Injection in .NET" />
+</div>
