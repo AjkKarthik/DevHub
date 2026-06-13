@@ -220,5 +220,42 @@ export const routes: Routes = [
     ],
   },
 
+  // ── Frontend Hubs ─────────────────────────────────────────────────────────
+  { path: 'html',          children: [{ path: '', loadComponent: () => import('./components/frontend/html/home/home').then(m => m.HtmlHome) }] },
+  { path: 'css',           children: [{ path: '', loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) }] },
+  { path: 'javascript',    children: [{ path: '', loadComponent: () => import('./components/frontend/javascript/home/home').then(m => m.JavaScriptHome) }] },
+  { path: 'typescript',    children: [{ path: '', loadComponent: () => import('./components/frontend/typescript/home/home').then(m => m.TypeScriptHome) }] },
+  { path: 'react',         children: [{ path: '', loadComponent: () => import('./components/frontend/react/home/home').then(m => m.ReactHome) }] },
+  { path: 'blazor',        children: [{ path: '', loadComponent: () => import('./components/frontend/blazor/home/home').then(m => m.BlazorHome) }] },
+  { path: 'performance',   children: [{ path: '', loadComponent: () => import('./components/frontend/web-performance/home/home').then(m => m.WebPerformanceHome) }] },
+  // ── Backend Hubs ──────────────────────────────────────────────────────────
+  { path: 'node',          children: [{ path: '', loadComponent: () => import('./components/backend/nodejs/home/home').then(m => m.NodejsHome) }] },
+  { path: 'python',        children: [{ path: '', loadComponent: () => import('./components/backend/python/home/home').then(m => m.PythonHome) }] },
+  { path: 'go',            children: [{ path: '', loadComponent: () => import('./components/backend/go/home/home').then(m => m.GoHome) }] },
+  // ── Data Hubs ─────────────────────────────────────────────────────────────
+  { path: 'mongodb',       children: [{ path: '', loadComponent: () => import('./components/data/mongodb/home/home').then(m => m.MongodbHome) }] },
+  { path: 'redis',         children: [{ path: '', loadComponent: () => import('./components/data/redis/home/home').then(m => m.RedisHome) }] },
+  { path: 'graphql',       children: [{ path: '', loadComponent: () => import('./components/data/graphql/home/home').then(m => m.GraphqlHome) }] },
+  { path: 'messaging',     children: [{ path: '', loadComponent: () => import('./components/data/messaging/home/home').then(m => m.MessagingHome) }] },
+  // ── Architecture Hubs ─────────────────────────────────────────────────────
+  { path: 'design-patterns', children: [{ path: '', loadComponent: () => import('./components/architecture/design-patterns/home/home').then(m => m.DesignPatternsHome) }] },
+  { path: 'arch-patterns',   children: [{ path: '', loadComponent: () => import('./components/architecture/arch-patterns/home/home').then(m => m.ArchPatternsHome) }] },
+  { path: 'api-design',      children: [{ path: '', loadComponent: () => import('./components/architecture/api-design/home/home').then(m => m.ApiDesignHome) }] },
+  { path: 'system-design',   children: [{ path: '', loadComponent: () => import('./components/architecture/system-design/home/home').then(m => m.SystemDesignHome) }] },
+  { path: 'security',        children: [{ path: '', loadComponent: () => import('./components/architecture/security/home/home').then(m => m.SecurityHome) }] },
+  { path: 'observability',   children: [{ path: '', loadComponent: () => import('./components/architecture/observability/home/home').then(m => m.ObservabilityHome) }] },
+  // ── Cloud Hubs ────────────────────────────────────────────────────────────
+  { path: 'devops',        children: [{ path: '', loadComponent: () => import('./components/cloud/devops/home/home').then(m => m.DevopsHome) }] },
+  { path: 'linux',         children: [{ path: '', loadComponent: () => import('./components/cloud/linux/home/home').then(m => m.LinuxHome) }] },
+  { path: 'containers',    children: [{ path: '', loadComponent: () => import('./components/cloud/containers/home/home').then(m => m.ContainersHome) }] },
+  { path: 'terraform',     children: [{ path: '', loadComponent: () => import('./components/cloud/terraform/home/home').then(m => m.TerraformHome) }] },
+  { path: 'azure',         children: [{ path: '', loadComponent: () => import('./components/cloud/azure/home/home').then(m => m.AzureHome) }] },
+  { path: 'aws',           children: [{ path: '', loadComponent: () => import('./components/cloud/aws/home/home').then(m => m.AwsHome) }] },
+  { path: 'service-mesh',  children: [{ path: '', loadComponent: () => import('./components/cloud/service-mesh/home/home').then(m => m.ServiceMeshHome) }] },
+  // ── Fundamentals & AI Hubs ────────────────────────────────────────────────
+  { path: 'dsa',           children: [{ path: '', loadComponent: () => import('./components/fundamentals/dsa/home/home').then(m => m.DsaHome) }] },
+  { path: 'testing-hub',   children: [{ path: '', loadComponent: () => import('./components/fundamentals/testing/home/home').then(m => m.TestingHome) }] },
+  { path: 'ai',            children: [{ path: '', loadComponent: () => import('./components/fundamentals/ai/home/home').then(m => m.AiHome) }] },
+
   { path: '**', redirectTo: '' },
 ];

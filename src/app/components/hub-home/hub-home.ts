@@ -235,7 +235,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'HTML', time: '~3 hrs',
       tagline: 'The skeleton of the web — semantic markup, accessibility & forms.',
       icon: '🌐', gradient: 'linear-gradient(135deg, #e44d26 0%, #b83219 100%)',
-      textDark: false, route: '/html', available: false,
+      textDark: false, route: '/html', available: true,
 
       highlights: [
         'Semantic elements: article, section, nav',
@@ -248,7 +248,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'CSS', time: '~5 hrs',
       tagline: 'Style the web — Flexbox, Grid, animations, custom properties.',
       icon: '🎨', gradient: 'linear-gradient(135deg, #264de4 0%, #142b9c 100%)',
-      textDark: false, route: '/css', available: false,
+      textDark: false, route: '/css', available: true,
 
       highlights: [
         'Flexbox and CSS Grid layout',
@@ -261,7 +261,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'JavaScript', time: '~10 hrs',
       tagline: 'The language of the web — ES2025, async/await, closures, modules.',
       icon: '𝐉𝐒', gradient: 'linear-gradient(135deg, #f7df1e 0%, #d4b800 100%)',
-      textDark: true, route: '/javascript', available: false,
+      textDark: true, route: '/javascript', available: true,
 
       highlights: [
         'ES2025 features, Promises, async/await',
@@ -274,7 +274,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'TypeScript', time: '~6 hrs',
       tagline: 'Typed superset of JavaScript — generics, decorators, utility types.',
       icon: '𝐓𝐒', gradient: 'linear-gradient(135deg, #3178c6 0%, #1a5490 100%)',
-      textDark: false, route: '/typescript', available: false,
+      textDark: false, route: '/typescript', available: true,
       roles: ['frontend', 'backend', 'architect'],
       highlights: [
         'Types, interfaces, enums, generics',
@@ -300,7 +300,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'React', time: '~12 hrs',
       tagline: 'Declarative UI library — hooks, context, server components & more.',
       icon: '⚛️', gradient: 'linear-gradient(135deg, #149eca 0%, #0c6a8c 100%)',
-      textDark: false, route: '/react', available: false,
+      textDark: false, route: '/react', available: true,
 
       highlights: [
         'JSX, functional components, hooks',
@@ -313,7 +313,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'Blazor', time: '~14 hrs',
       tagline: 'Full-stack web UI in C# — components, render modes, no JavaScript required.',
       icon: '🔥', gradient: 'linear-gradient(135deg, #5c2d91 0%, #3a1c5c 100%)',
-      textDark: false, route: '/blazor', available: false,
+      textDark: false, route: '/blazor', available: true,
       sub: 'Server · WebAssembly · SSR',
       roles: ['frontend', 'backend'],
       highlights: [
@@ -327,7 +327,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'Web Performance', time: '~3 hrs',
       tagline: 'Ship fast pages — Core Web Vitals, bundle size, lazy loading & Lighthouse.',
       icon: '⚡', gradient: 'linear-gradient(135deg, #854d0e 0%, #431a03 100%)',
-      textDark: false, route: '/performance', available: false,
+      textDark: false, route: '/performance', available: true,
       sub: 'LCP · CLS · INP · Lighthouse',
       roles: ['frontend', 'architect'],
       highlights: [
@@ -343,7 +343,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'backend', name: 'Node.js', time: '~8 hrs',
       tagline: 'Server-side JavaScript — Express, REST APIs, streams, npm.',
       icon: '⬡', gradient: 'linear-gradient(135deg, #339933 0%, #1a5c1a 100%)',
-      textDark: false, route: '/node', available: false,
+      textDark: false, route: '/node', available: true,
       roles: ['backend'],
       highlights: [
         'HTTP server, Express, Fastify',
@@ -356,7 +356,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'backend', name: 'Python', time: '~10 hrs',
       tagline: 'Versatile language for backends, scripting, automation & data.',
       icon: '🐍', gradient: 'linear-gradient(135deg, #3572a5 0%, #1f4c77 100%)',
-      textDark: false, route: '/python', available: false,
+      textDark: false, route: '/python', available: true,
       roles: ['backend'],
       highlights: [
         'FastAPI, Flask, Django REST Framework',
@@ -396,7 +396,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'backend', name: 'Go', time: '~8 hrs',
       tagline: 'Fast, simple, concurrent — the language behind Docker, K8s and cloud tooling.',
       icon: '🐹', gradient: 'linear-gradient(135deg, #00acd7 0%, #006b87 100%)',
-      textDark: false, route: '/go', available: false,
+      textDark: false, route: '/go', available: true,
       sub: 'Go · Goroutines · gRPC · CLI tools',
       roles: ['backend', 'devops', 'architect'],
       highlights: [
@@ -426,7 +426,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'MongoDB / NoSQL', time: '~5 hrs',
       tagline: 'Document databases — flexible schemas, aggregation & multi-model storage.',
       icon: '🍃', gradient: 'linear-gradient(135deg, #13aa52 0%, #0a6b34 100%)',
-      textDark: false, route: '/mongodb', available: false,
+      textDark: false, route: '/mongodb', available: true,
       sub: 'MongoDB · CosmosDB · DynamoDB',
       roles: ['backend', 'architect'],
       highlights: [
@@ -440,7 +440,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'Redis', time: '~4 hrs',
       tagline: 'In-memory store — caching, sessions, pub/sub, rate limiting & queues.',
       icon: '🔴', gradient: 'linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%)',
-      textDark: false, route: '/redis', available: false,
+      textDark: false, route: '/redis', available: true,
       sub: 'Cache · Pub/Sub · Sorted Sets',
       roles: ['backend', 'devops', 'architect'],
       highlights: [
@@ -454,7 +454,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'GraphQL', time: '~5 hrs',
       tagline: 'Query language for APIs — type-safe, flexible, self-documenting.',
       icon: '◈', gradient: 'linear-gradient(135deg, #e535ab 0%, #9c1f73 100%)',
-      textDark: false, route: '/graphql', available: false,
+      textDark: false, route: '/graphql', available: true,
       sub: 'GraphQL · Apollo · Hot Chocolate',
       roles: ['frontend', 'backend', 'architect'],
       highlights: [
@@ -468,7 +468,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'Messaging & Events', time: '~6 hrs',
       tagline: 'Event-driven architecture — Kafka, RabbitMQ, Service Bus & patterns.',
       icon: '📨', gradient: 'linear-gradient(135deg, #7c2d12 0%, #431407 100%)',
-      textDark: false, route: '/messaging', available: false,
+      textDark: false, route: '/messaging', available: true,
       sub: 'Kafka · RabbitMQ · Azure Service Bus',
       roles: ['backend', 'architect'],
       highlights: [
@@ -484,7 +484,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Design Patterns', time: '~7 hrs',
       tagline: 'GoF, SOLID, GRASP, DRY — implementation patterns every developer references.',
       icon: '🧩', gradient: 'linear-gradient(135deg, #6b21a8 0%, #3b0764 100%)',
-      textDark: false, route: '/design-patterns', available: false,
+      textDark: false, route: '/design-patterns', available: true,
       sub: 'GoF · SOLID · Enterprise Patterns',
       roles: ['backend', 'architect'],
       highlights: [
@@ -498,7 +498,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Architecture Patterns', time: '~8 hrs',
       tagline: 'When to use Microservices, Event-Driven, CQRS, DDD, or a Monolith.',
       icon: '◉', gradient: 'linear-gradient(135deg, #1a1a2e 0%, #4a1d8c 100%)',
-      textDark: false, route: '/arch-patterns', available: false,
+      textDark: false, route: '/arch-patterns', available: true,
       sub: 'Microservices · DDD · CQRS · Hexagonal',
       roles: ['architect'],
       highlights: [
@@ -512,7 +512,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'API Design', time: '~5 hrs',
       tagline: 'REST vs GraphQL vs gRPC vs WebSockets — pick the right protocol.',
       icon: '📡', gradient: 'linear-gradient(135deg, #065f46 0%, #022c22 100%)',
-      textDark: false, route: '/api-design', available: false,
+      textDark: false, route: '/api-design', available: true,
       sub: 'REST · gRPC · WebSockets · OpenAPI',
       roles: ['backend', 'architect'],
       highlights: [
@@ -526,7 +526,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'System Design', time: '~10 hrs',
       tagline: 'Architect scalable systems — trade-offs, capacity planning & distributed patterns.',
       icon: '🏗️', gradient: 'linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)',
-      textDark: false, route: '/system-design', available: false,
+      textDark: false, route: '/system-design', available: true,
       sub: 'Scalability · Reliability · Trade-offs',
       roles: ['architect'],
       highlights: [
@@ -540,7 +540,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Security & Auth', time: '~6 hrs',
       tagline: 'OAuth 2.0, JWT, OpenID Connect, HTTPS and OWASP best practices.',
       icon: '🔐', gradient: 'linear-gradient(135deg, #374151 0%, #111827 100%)',
-      textDark: false, route: '/security', available: false,
+      textDark: false, route: '/security', available: true,
       sub: 'JWT · OAuth 2.0 · OpenID Connect',
       roles: ['frontend', 'backend', 'devops', 'architect'],
       highlights: [
@@ -554,7 +554,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Observability & SRE', time: '~5 hrs',
       tagline: 'Design for production — logging, metrics, tracing, SLOs & alerting.',
       icon: '📊', gradient: 'linear-gradient(135deg, #166534 0%, #052e16 100%)',
-      textDark: false, route: '/observability', available: false,
+      textDark: false, route: '/observability', available: true,
       sub: 'Logs · Metrics · Traces · SLO/SLI',
       roles: ['devops', 'architect'],
       highlights: [
@@ -570,7 +570,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Git & DevOps', time: '~6 hrs',
       tagline: 'Version control, CI/CD pipelines and deployment workflows.',
       icon: '🔧', gradient: 'linear-gradient(135deg, #f05032 0%, #9c2f1a 100%)',
-      textDark: false, route: '/devops', available: false,
+      textDark: false, route: '/devops', available: true,
       sub: 'Git · GitHub Actions · Pipelines',
       roles: ['frontend', 'backend', 'devops', 'architect'],
       highlights: [
@@ -584,7 +584,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Linux & Bash', time: '~5 hrs',
       tagline: 'Command the server — shell scripting, process management & automation.',
       icon: '🐧', gradient: 'linear-gradient(135deg, #44403c 0%, #1c1917 100%)',
-      textDark: false, route: '/linux', available: false,
+      textDark: false, route: '/linux', available: true,
       sub: 'Bash · Shell · Cron · SSH',
       roles: ['backend', 'devops'],
       highlights: [
@@ -598,7 +598,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Docker & Kubernetes', time: '~8 hrs',
       tagline: 'Containerize apps and orchestrate them at scale with K8s.',
       icon: '🐳', gradient: 'linear-gradient(135deg, #0db7ed 0%, #0868a8 100%)',
-      textDark: false, route: '/containers', available: false,
+      textDark: false, route: '/containers', available: true,
       sub: 'Docker · Kubernetes · Helm',
       roles: ['backend', 'devops', 'architect'],
       highlights: [
@@ -612,7 +612,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Terraform / IaC', time: '~6 hrs',
       tagline: 'Define infrastructure as code — provision and manage cloud resources declaratively.',
       icon: '🔩', gradient: 'linear-gradient(135deg, #5c4ee5 0%, #3a2eb5 100%)',
-      textDark: false, route: '/terraform', available: false,
+      textDark: false, route: '/terraform', available: true,
       sub: 'Terraform · Bicep · Pulumi',
       roles: ['devops', 'architect'],
       highlights: [
@@ -626,7 +626,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Azure', time: '~12 hrs',
       tagline: 'Microsoft\'s cloud platform — App Service, Functions, Storage & DevOps.',
       icon: '☁️', gradient: 'linear-gradient(135deg, #0078d4 0%, #004578 100%)',
-      textDark: false, route: '/azure', available: false,
+      textDark: false, route: '/azure', available: true,
       sub: 'Microsoft Cloud',
       roles: ['devops', 'architect'],
       highlights: [
@@ -640,7 +640,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'AWS', time: '~12 hrs',
       tagline: 'Amazon Web Services — EC2, Lambda, S3, RDS & cloud-native patterns.',
       icon: '🟧', gradient: 'linear-gradient(135deg, #ff9900 0%, #c47000 100%)',
-      textDark: false, route: '/aws', available: false,
+      textDark: false, route: '/aws', available: true,
       sub: 'Amazon Cloud',
       roles: ['devops', 'architect'],
       highlights: [
@@ -654,7 +654,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Service Mesh & Istio', time: '~4 hrs',
       tagline: 'Manage microservice-to-microservice traffic — mTLS, observability & circuit breaking.',
       icon: '🕸️', gradient: 'linear-gradient(135deg, #475569 0%, #1e293b 100%)',
-      textDark: false, route: '/service-mesh', available: false,
+      textDark: false, route: '/service-mesh', available: true,
       sub: 'Istio · Linkerd · Envoy · Consul',
       roles: ['devops', 'architect'],
       highlights: [
@@ -670,7 +670,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'fundamentals', name: 'DSA', time: '~15 hrs',
       tagline: 'Data Structures & Algorithms — complexity, trade-offs & interview patterns.',
       icon: '🔢', gradient: 'linear-gradient(135deg, #92400e 0%, #451a03 100%)',
-      textDark: false, route: '/dsa', available: false,
+      textDark: false, route: '/dsa', available: true,
       sub: 'Arrays · Trees · Graphs · DP',
       roles: ['backend', 'architect'],
       highlights: [
@@ -684,7 +684,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'fundamentals', name: 'Testing', time: '~7 hrs',
       tagline: 'Unit, integration, E2E & contract testing — TDD, BDD and test strategy.',
       icon: '🧪', gradient: 'linear-gradient(135deg, #0369a1 0%, #0c4a6e 100%)',
-      textDark: false, route: '/testing-hub', available: false,
+      textDark: false, route: '/testing-hub', available: true,
       sub: 'Jest · Cypress · Playwright · Pact',
       roles: ['frontend', 'backend', 'architect'],
       highlights: [
@@ -700,7 +700,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'ai', name: 'AI & LLMs', time: '~8 hrs',
       tagline: 'Build AI-powered apps — prompt engineering, RAG, embeddings & agents.',
       icon: '🤖', gradient: 'linear-gradient(135deg, #6366f1 0%, #06b6d4 100%)',
-      textDark: false, route: '/ai', available: false,
+      textDark: false, route: '/ai', available: true,
       sub: 'OpenAI · Copilot · LangChain',
       roles: ['backend', 'architect'],
       highlights: [
@@ -742,7 +742,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
     };
   });
 
-  readonly liveCards   = computed(() => this.allTechsFiltered().filter(t => t.available));
+  readonly liveCards   = computed(() => this.allTechsFiltered().filter(t => t.available && t.topics));
 
   // One half of the seamless loop — repeat the live set until it's wide enough
   // (≥6 cards ≈ 2000px) so the track half always exceeds the viewport.

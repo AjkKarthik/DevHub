@@ -239,8 +239,10 @@
                   <h3 class="card-name" [title]="t.name">{{ t.name }}</h3>
                   @if (t.sub) { <span class="card-sub" [title]="t.sub">{{ t.sub }}</span> }
                 </div>
-                @if (t.available) {
+                @if (t.available && t.topics) {
                   <span class="card-badge available">{{ t.topics }} pages</span>
+                } @else if (t.available) {
+                  <span class="card-badge soon">Coming Soon</span>
                 } @else {
                   <span class="card-badge soon">Soon</span>
                 }
@@ -256,7 +258,7 @@
                 } @else {
                   <span class="card-cta disabled">Coming Soon</span>
                 }
-                @if (t.available) {
+                @if (t.available && t.topics) {
                   <button
                     type="button"
                     class="card-complete"

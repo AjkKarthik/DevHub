@@ -54,7 +54,14 @@ export class App {
   showLeftNav = computed(() => this.currentUrl() !== '/');
   showSidebar = computed(() => {
     const url = this.currentUrl();
-    return !['/','','/angular','/csharp','/aspnet','/sql'].includes(url);
+    return !['/','','/angular','/csharp','/aspnet','/sql',
+      '/html','/css','/javascript','/typescript','/react','/blazor','/performance',
+      '/node','/python','/go',
+      '/mongodb','/redis','/graphql','/messaging',
+      '/design-patterns','/arch-patterns','/api-design','/system-design','/security','/observability',
+      '/devops','/linux','/containers','/terraform','/azure','/aws','/service-mesh',
+      '/dsa','/testing-hub','/ai',
+    ].includes(url);
   });
 
   currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'hub'>(() => {

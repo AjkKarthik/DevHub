@@ -109,6 +109,7 @@ export class SearchComponent {
     if (route.startsWith('csharp-')) return '/csharp/' + route.slice('csharp-'.length);
     if (route.startsWith('aspnet-')) return '/aspnet/' + route.slice('aspnet-'.length);
     if (route.startsWith('sql-'))    return '/sql/'    + route.slice('sql-'.length);
+    if (route.startsWith('hub-'))    return '/'        + route.slice('hub-'.length);
     return '/angular/' + route;
   }
 

@@ -51,7 +51,7 @@
     </a>
 
     <!-- Progress bar (per-section) -->
-    @if (currentSection() !== 'aspnet') {
+    @if (currentSection() !== 'aspnet' && currentSection() !== 'hub') {
       <div class="nav-progress">
         @if (currentSection() === 'csharp') {
           <div class="nav-progress-bar" [style.width.%]="progress.csharpPct()"></div>

@@ -1,0 +1,44 @@
+import { Component, signal, computed } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+interface Topic { title: string; route: string; badge: string; description: string; keyPoints: string[]; available: boolean; }
+
+const BADGE_CSS: Record<string, string> = {
+  'Docker': 'docker', 'Dockerfile': 'dockerfile', 'Compose': 'compose',
+  'Kubernetes': 'kubernetes', 'Workloads': 'workloads', 'Networking': 'networking',
+  'Storage': 'storage', 'Reference': 'reference',
+};
+const GROUP_ORDER = ['All', 'Docker', 'Dockerfile', 'Compose', 'Kubernetes', 'Workloads', 'Networking', 'Storage', 'Reference'];
+
+const ALL_TOPICS: Topic[] = [
+  { title: 'Container Fundamentals', route: '/containers', badge: 'Docker', description: 'What containers are — namespaces, cgroups, OCI images, and how Docker differs from VMs.', keyPoints: ['Namespaces (pid, net, mnt, uts)', 'cgroups resource limits', 'OCI image spec', 'Container vs VM trade-offs', 'Docker Engine architecture'], available: false },
+  { title: 'Docker CLI', route: '/containers', badge: 'Docker', description: 'docker run, pull, ps, logs, exec, stop, rm — the essential Docker command-line workflow.', keyPoints: ['docker run -d -p flags', 'docker ps -a all containers', 'docker logs -f follow', 'docker exec -it shell', 'docker stop/rm cleanup'], available: false },
+  { title: 'Docker Images & Registry', route: '/containers', badge: 'Docker', description: 'Pull and push images, tagging strategy, Docker Hub, GHCR, and private registries.', keyPoints: ['docker pull / push', 'Image tagging conventions', 'Docker Hub vs GHCR', 'docker image prune', 'Image signing (Cosign)'], available: false },
+  { title: 'Writing Dockerfiles', route: '/containers', badge: 'Dockerfile', description: 'Dockerfile instructions — FROM, RUN, COPY, ADD, ENV, EXPOSE, CMD, ENTRYPOINT, and HEALTHCHECK.', keyPoints: ['FROM base image choice', 'RUN layer caching', 'COPY vs ADD', 'CMD vs ENTRYPOINT', 'HEALTHCHECK instruction'], available: false },
+  { title: 'Multi-Stage Builds', route: '/containers', badge: 'Dockerfile', description: 'Use multiple FROM stages to separate build and runtime layers for lean, secure production images.', keyPoints: ['Build stage: compile/test', 'Runtime stage: minimal base', 'COPY --from=builder', 'Alpine vs distroless', 'Image size reduction'], available: false },
+  { title: 'Docker Compose', route: '/containers', badge: 'Compose', description: 'Define multi-container applications with compose.yml — services, volumes, networks, and depends_on.', keyPoints: ['compose.yml v3 syntax', 'services, volumes, networks', 'depends_on with condition', 'Environment variables', 'docker compose up -d'], available: false },
+  { title: 'Compose Profiles & Overrides', route: '/containers', badge: 'Compose', description: 'Use profiles for optional services and override files for dev/prod environment differences.', keyPoints: ['profiles: [dev] selective start', 'docker-compose.override.yml', 'Merging compose files', 'COMPOSE_FILE env var', 'Production vs dev DB services'], available: false },
+  { title: 'Kubernetes Architecture', route: '/containers', badge: 'Kubernetes', description: 'Control plane, worker nodes, etcd, kube-apiserver, kubelet, and the reconciliation loop.', keyPoints: ['Control plane components', 'Worker node components', 'etcd as state store', 'Reconciliation controller loop', 'kubectl → API server'], available: false },
+  { title: 'kubectl Fundamentals', route: '/containers', badge: 'Kubernetes', description: 'kubectl get, describe, apply, delete, exec, logs, port-forward — the daily Kubernetes toolkit.', keyPoints: ['kubectl apply -f manifests', 'kubectl get pods -o wide', 'kubectl describe for events', 'kubectl exec -it shell', 'kubectl port-forward'], available: false },
+  { title: 'Pods, Deployments & ReplicaSets', route: '/containers', badge: 'Workloads', description: 'Pod lifecycle, Deployment rollout strategies, ReplicaSet management, and rolling updates.', keyPoints: ['Pod as smallest unit', 'Deployment manages ReplicaSets', 'Rolling update strategy', 'kubectl rollout undo', 'maxSurge and maxUnavailable'], available: false },
+  { title: 'Services & Ingress', route: '/containers', badge: 'Networking', description: 'ClusterIP, NodePort, LoadBalancer services and Ingress rules for HTTP routing.', keyPoints: ['ClusterIP: internal only', 'NodePort: direct node access', 'LoadBalancer: cloud LB', 'Ingress controller (NGINX)', 'TLS termination at Ingress'], available: false },
+  { title: 'ConfigMaps & Secrets', route: '/containers', badge: 'Workloads', description: 'Decouple configuration from images — ConfigMaps for plain data, Secrets for sensitive values.', keyPoints: ['ConfigMap as env vars', 'ConfigMap as mounted files', 'Secrets base64 encoded', 'External Secrets Operator', 'Sealed Secrets for GitOps'], available: false },
+  { title: 'Persistent Volumes & Storage', route: '/containers', badge: 'Storage', description: 'PV, PVC, StorageClass, and StatefulSets for running stateful workloads in Kubernetes.', keyPoints: ['PersistentVolume claim binding', 'StorageClass dynamic provisioning', 'RWO vs RWX access modes', 'StatefulSet stable storage', 'volumeClaimTemplates'], available: false },
+  { title: 'Helm', route: '/containers', badge: 'Reference', description: 'Package, version, and deploy Kubernetes applications with Helm charts — templating and values.', keyPoints: ['Chart structure (templates/values)', 'helm install / upgrade / rollback', 'values.yaml overrides', 'Chart dependencies', 'helm repo add/update'], available: false },
+  { title: 'Container Security', route: '/containers', badge: 'Reference', description: 'Run as non-root, read-only root fs, security contexts, network policies, and image scanning.', keyPoints: ['runAsNonRoot: true', 'readOnlyRootFilesystem', 'securityContext capabilities', 'NetworkPolicy ingress/egress', 'Trivy image scanning'], available: false },
+  { title: 'Kubernetes RBAC', route: '/containers', badge: 'Reference', description: 'Roles, ClusterRoles, RoleBindings, ServiceAccounts, and least-privilege access in Kubernetes.', keyPoints: ['Role vs ClusterRole scope', 'RoleBinding vs ClusterRoleBinding', 'ServiceAccount per workload', 'IRSA (AWS) / Workload Identity (GCP)', 'Audit logs for RBAC'], available: false },
+];
+
+@Component({ selector: 'app-containers-home', standalone: true, imports: [RouterLink], templateUrl: './home.html', styleUrl: './home.scss' })
+export class ContainersHome {
+  activeFilter = signal('All');
+  expandedCard = signal<string | null>(null);
+  topics = computed(() => { const f = this.activeFilter(); return f === 'All' ? ALL_TOPICS : ALL_TOPICS.filter(t => t.badge === f); });
+  filters = GROUP_ORDER;
+  counts = computed(() => { const map: Record<string, number> = { All: ALL_TOPICS.length }; for (const t of ALL_TOPICS) map[t.badge] = (map[t.badge] ?? 0) + 1; return map; });
+  availableCount = ALL_TOPICS.filter(t => t.available).length;
+  totalCount = ALL_TOPICS.length;
+  setFilter(f: string) { this.activeFilter.set(f); }
+  badgeCss(badge: string) { return 'badge badge-' + (BADGE_CSS[badge] ?? 'docker'); }
+  toggleCard(key: string, event: Event) { event.preventDefault(); this.expandedCard.update(c => c === key ? null : key); }
+}
