@@ -87,6 +87,8 @@
       <a routerLink="/aspnet/dependency-injection" routerLinkActive="active"><span class="nl-text">Dependency Injection</span>@if(progress.isDone('aspnet-dependency-injection')){<span class="nl-done">✓</span>}@if(diff('aspnet-dependency-injection');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/logging" routerLinkActive="active"><span class="nl-text">Logging &amp; Diagnostics</span>@if(progress.isDone('aspnet-logging')){<span class="nl-done">✓</span>}@if(diff('aspnet-logging');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/static-files" routerLinkActive="active"><span class="nl-text">Static Files &amp; Uploads</span>@if(progress.isDone('aspnet-static-files')){<span class="nl-done">✓</span>}@if(diff('aspnet-static-files');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/feature-flags" routerLinkActive="active"><span class="nl-text">Feature Flags</span>@if(progress.isDone('aspnet-feature-flags')){<span class="nl-done">✓</span>}@if(diff('aspnet-feature-flags');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/localization" routerLinkActive="active"><span class="nl-text">Localization</span>@if(progress.isDone('aspnet-localization')){<span class="nl-done">✓</span>}@if(diff('aspnet-localization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
@@ -100,6 +102,8 @@
       <a routerLink="/aspnet/api-versioning" routerLinkActive="active"><span class="nl-text">API Versioning</span>@if(progress.isDone('aspnet-api-versioning')){<span class="nl-done">✓</span>}@if(diff('aspnet-api-versioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/http-clients" routerLinkActive="active"><span class="nl-text">HttpClient &amp; Resilience</span>@if(progress.isDone('aspnet-http-clients')){<span class="nl-done">✓</span>}@if(diff('aspnet-http-clients');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/grpc" routerLinkActive="active"><span class="nl-text">gRPC Services</span>@if(progress.isDone('aspnet-grpc')){<span class="nl-done">✓</span>}@if(diff('aspnet-grpc');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/fluent-validation" routerLinkActive="active"><span class="nl-text">FluentValidation</span>@if(progress.isDone('aspnet-fluent-validation')){<span class="nl-done">✓</span>}@if(diff('aspnet-fluent-validation');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/minimal-api-advanced" routerLinkActive="active"><span class="nl-text">Minimal API Advanced</span>@if(progress.isDone('aspnet-minimal-api-advanced')){<span class="nl-done">✓</span>}@if(diff('aspnet-minimal-api-advanced');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
@@ -108,6 +112,8 @@
       <a routerLink="/aspnet/ef-relationships" routerLinkActive="active"><span class="nl-text">EF Relationships</span>@if(progress.isDone('aspnet-ef-relationships')){<span class="nl-done">✓</span>}@if(diff('aspnet-ef-relationships');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/ef-performance" routerLinkActive="active"><span class="nl-text">EF Performance</span>@if(progress.isDone('aspnet-ef-performance')){<span class="nl-done">✓</span>}@if(diff('aspnet-ef-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/caching" routerLinkActive="active"><span class="nl-text">Caching</span>@if(progress.isDone('aspnet-caching')){<span class="nl-done">✓</span>}@if(diff('aspnet-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/output-caching-advanced" routerLinkActive="active"><span class="nl-text">Output Caching Advanced</span>@if(progress.isDone('aspnet-output-caching-advanced')){<span class="nl-done">✓</span>}@if(diff('aspnet-output-caching-advanced');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/dapper" routerLinkActive="active"><span class="nl-text">Dapper &amp; Raw SQL</span>@if(progress.isDone('aspnet-dapper')){<span class="nl-done">✓</span>}@if(diff('aspnet-dapper');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
@@ -118,6 +124,7 @@
       <a routerLink="/aspnet/rate-limiting" routerLinkActive="active"><span class="nl-text">Rate Limiting</span>@if(progress.isDone('aspnet-rate-limiting')){<span class="nl-done">✓</span>}@if(diff('aspnet-rate-limiting');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/web-security" routerLinkActive="active"><span class="nl-text">Web Security</span>@if(progress.isDone('aspnet-web-security')){<span class="nl-done">✓</span>}@if(diff('aspnet-web-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/secrets" routerLinkActive="active"><span class="nl-text">Secrets & Data Protection</span>@if(progress.isDone('aspnet-secrets')){<span class="nl-done">✓</span>}@if(diff('aspnet-secrets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/csrf" routerLinkActive="active"><span class="nl-text">Anti-forgery &amp; CSRF</span>@if(progress.isDone('aspnet-csrf')){<span class="nl-done">✓</span>}@if(diff('aspnet-csrf');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
@@ -129,6 +136,11 @@
       <a routerLink="/aspnet/deployment" routerLinkActive="active"><span class="nl-text">Deployment</span>@if(progress.isDone('aspnet-deployment')){<span class="nl-done">✓</span>}@if(diff('aspnet-deployment');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/performance" routerLinkActive="active"><span class="nl-text">Performance & Diagnostics</span>@if(progress.isDone('aspnet-performance')){<span class="nl-done">✓</span>}@if(diff('aspnet-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/aspire" routerLinkActive="active"><span class="nl-text">.NET Aspire</span>@if(progress.isDone('aspnet-aspire')){<span class="nl-done">✓</span>}@if(diff('aspnet-aspire');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/masstransit" routerLinkActive="active"><span class="nl-text">MassTransit</span>@if(progress.isDone('aspnet-masstransit')){<span class="nl-done">✓</span>}@if(diff('aspnet-masstransit');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/response-compression" routerLinkActive="active"><span class="nl-text">Response Compression</span>@if(progress.isDone('aspnet-response-compression')){<span class="nl-done">✓</span>}@if(diff('aspnet-response-compression');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/websockets" routerLinkActive="active"><span class="nl-text">WebSockets</span>@if(progress.isDone('aspnet-websockets')){<span class="nl-done">✓</span>}@if(diff('aspnet-websockets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/yarp" routerLinkActive="active"><span class="nl-text">YARP Reverse Proxy</span>@if(progress.isDone('aspnet-yarp')){<span class="nl-done">✓</span>}@if(diff('aspnet-yarp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/opentelemetry" routerLinkActive="active"><span class="nl-text">OpenTelemetry</span>@if(progress.isDone('aspnet-opentelemetry')){<span class="nl-done">✓</span>}@if(diff('aspnet-opentelemetry');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">

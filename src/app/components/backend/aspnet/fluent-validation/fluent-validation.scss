@@ -1,0 +1,13 @@
+$accent: #0e7490;
+$tint:   #ecfeff;
+
+.aspnet-page { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+.page-header-icon.aspnet-icon { background: $accent; color: #fff; display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 12px; font-size: 1.4rem; margin-bottom: .75rem; }
+.page-title   { font-size: 2rem; font-weight: 900; color: $accent; margin: 0 0 .4rem; letter-spacing: -.02em; }
+.page-subtitle{ font-size: 1rem; color: var(--text2, #555); margin: 0 0 1.5rem; line-height: 1.6; max-width: 680px; }
+.aspnet-section h2 { font-size: 1.25rem; font-weight: 800; color: var(--text, #111); margin: 2rem 0 .85rem; }
+
+:host-context(body.dark) {
+  .page-title    { color: #67e8f9; }
+  .page-subtitle { color: #94a3b8; }
+}

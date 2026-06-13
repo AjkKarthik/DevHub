@@ -18,7 +18,7 @@ export class ProgressService {
   readonly angularPct   = computed(() => Math.round((this.angularCount() / this.total) * 100));
 
   // ── ASP.NET Core (keys prefixed 'aspnet-') ─────────────────────────────────
-  readonly aspnetTotal  = 33;
+  readonly aspnetTotal  = 45;
   readonly aspnetCount  = computed(() => [...this._done()].filter(r => r.startsWith('aspnet-')).length);
   readonly aspnetPct    = computed(() => Math.round((this.aspnetCount() / this.aspnetTotal) * 100));
 

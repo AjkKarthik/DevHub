@@ -165,7 +165,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'ASP.NET Core · 42 pages', route: '/aspnet',                  label: 'New · 33 topics + 9 reference' },
+    { name: 'ASP.NET Core · 54 pages', route: '/aspnet',                  label: 'New · 45 topics + 9 reference' },
     { name: 'Angular',                 route: '/angular',                  label: '50 pages · updated' },
     { name: 'C# · 58 topics',          route: '/csharp',                   label: 'Full language coverage' },
     { name: 'SQL',                     route: '/sql',                       label: 'New · 12 topics + reference' },
@@ -380,9 +380,9 @@ export class HubHome implements AfterViewInit, OnDestroy {
     },
     {
       group: 'backend', name: 'ASP.NET Core', time: '~17 hrs',
-      tagline: 'Build production-grade REST APIs with C# and .NET — 42 pages of full coverage.',
+      tagline: 'Build production-grade REST APIs with C# and .NET — 54 pages of full coverage.',
       icon: '⚙️', gradient: 'linear-gradient(135deg, #0e7490 0%, #155e75 100%)',
-      textDark: false, route: '/aspnet', available: true, topics: 42,
+      textDark: false, route: '/aspnet', available: true, topics: 54,
       sub: 'Web API · Minimal API · EF Core',
       roles: ['backend', 'architect'],
       highlights: [
