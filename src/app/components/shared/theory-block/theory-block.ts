@@ -75,5 +75,5 @@ export interface TheoryPoint {
 })
 export class TheoryBlockComponent {
   sections = input.required<TheoryPoint[]>();
-  visible  = signal(false);
+  visible  = signal(true);
 }

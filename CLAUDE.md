@@ -82,19 +82,45 @@ Template order is fixed:
   <h1 class="page-title">…</h1>
   <p class="page-subtitle">…</p>
   <app-page-meta [readingTime]="25" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+  <app-prerequisites [items]="prerequisites" />          <!-- optional: intermediate/advanced only -->
   <app-quick-ref [items]="quickRef" />
   <app-theory-block [sections]="theory" />
   <section class="cs-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-before-after [items]="beforeAfter" beforeLabel="Old" afterLabel=".NET 8+" />  <!-- optional -->
+  <app-video-embed videoId="…" title="…" />              <!-- optional: official video only -->
+  <app-common-mistakes [items]="mistakes" />             <!-- required: 4–6 entries -->
   <app-challenge-block [item]="challenge" />
   <app-quiz-block [items]="quiz" />
   <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
   <app-page-complete route="csharp-<slug>" nextRoute="/csharp/<next>" nextLabel="<Next title>" />
 </div>
 ```
-Order is **Challenge → Quiz → QnA → PageComplete**. Never reorder.
+Order is **Mistakes → Challenge → Quiz → QnA → RevisionCard → PageComplete**. Never reorder.
+Optional components (prerequisites, before-after, video-embed) may be omitted when not applicable.
 
 ### Shared component data shapes (exact field names — common agent mistakes!)
 
+- `RevisionSummary` (import `RevisionCardComponent, RevisionSummary` from
+  `shared/revision-card/revision-card`):
+  `{ oneLiner: string; mustKnow: string[]; interviewFocus: string[] }`
+  — place after `app-qna-block`, before `app-page-complete`. Every page needs one.
+  `mustKnow`: 5–7 bullets — core concepts. `interviewFocus`: 3–5 interview talking points.
+- `CommonMistake` (import `CommonMistakesComponent, CommonMistake` from
+  `shared/common-mistakes/common-mistakes`):
+  `{ title: string; wrong: string; right: string; explanation: string }`
+  — `wrong`/`right` are plain code strings (no HTML), rendered in `<pre><code>`. 4–6 entries.
+  Place after Code Examples section, before `app-challenge-block`. Required on every page.
+- `Prerequisite` (import `PrerequisitesComponent, Prerequisite` from
+  `shared/prerequisites/prerequisites`):
+  `{ label: string; route: string }` — `route` is the full path e.g. `/csharp/generics`.
+  Optional `note` string input on the component. Place after `app-page-meta`, before
+  `app-quick-ref`. Use on intermediate/advanced pages only (2–4 items max).
+- `BeforeAfterExample` (import `BeforeAfterComponent, BeforeAfterExample` from
+  `shared/before-after/before-after`):
+  `{ title: string; before: string; after: string; note?: string; language?: string }`
+  — `before`/`after` are plain code strings. Use `beforeLabel` / `afterLabel` inputs to label
+  the contrast (e.g. `afterLabel=".NET 8+"`). Optional — only when old-vs-new contrast exists.
 - `QnaItem`: `{ q: string; a: string }` — **NOT** `question`/`answer`
 - `QuizQuestion`: `{ q: string; options: string[]; answer: number; explanation: string }`
   (`answer` is the index)
@@ -161,8 +187,9 @@ structure/UX, only content + accent differ.
 8. **Progress totals** if a *trackable topic* page (has `app-page-complete`):
    `progress.service.ts` — `total` (Angular, currently 45) / `csharpTotal` (currently 33).
    Practice/reference pages are NOT counted.
-9. **DevHub home** (`hub-home/hub-home.ts`) if counts changed: tech card `topics:`,
-   tagline, What's New bar, "90+ Live Pages" hero stat.
+9. **DevHub home** (`hub-home/hub-home.ts`) — **do this after EVERY page that flips a card
+   to `available: true`**: update tech card `topics:` count, hero stat ("100+ Live Pages"
+   → actual running total), What's New bar if a hub milestone is reached. Never skip this.
 10. **Build**: `npx ng build --configuration=production` must pass.
 
 ## Adding a whole NEW technology hub (e.g. TypeScript, SQL, ASP.NET)

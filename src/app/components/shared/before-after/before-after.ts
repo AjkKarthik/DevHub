@@ -5,7 +5,7 @@ export interface BeforeAfterExample {
   before: string;
   after: string;
   note?: string;
-  language?: 'typescript' | 'html' | 'scss';
+  language?: 'typescript' | 'html' | 'scss' | 'csharp' | 'sql';
 }
 
 @Component({
@@ -26,11 +26,11 @@ export interface BeforeAfterExample {
               <h4 class="ba-title">{{ ex.title }}</h4>
               <div class="ba-split">
                 <div class="ba-panel ba-panel--before">
-                  <div class="ba-label">❌ Before</div>
+                  <div class="ba-label">❌ {{ beforeLabel() }}</div>
                   <pre class="ba-code"><code>{{ ex.before }}</code></pre>
                 </div>
                 <div class="ba-panel ba-panel--after">
-                  <div class="ba-label">✅ After (Angular 17+)</div>
+                  <div class="ba-label">✅ {{ afterLabel() }}</div>
                   <pre class="ba-code"><code>{{ ex.after }}</code></pre>
                 </div>
               </div>
@@ -107,6 +107,8 @@ export interface BeforeAfterExample {
   `],
 })
 export class BeforeAfterComponent {
-  items = input.required<BeforeAfterExample[]>();
-  open  = signal(false);
+  items      = input.required<BeforeAfterExample[]>();
+  beforeLabel = input<string>('Before');
+  afterLabel  = input<string>('After');
+  open        = signal(false);
 }

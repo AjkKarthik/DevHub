@@ -38,19 +38,44 @@ This ensures the hub's table of contents is complete before content starts.
 Every card on every hub home must eventually link to a real, fully-written page.
 The plan is long — that is fine. One solid page at a time gets there.
 
+**6. After every page, update the DevHub home.**
+When a topic page is completed and a hub card is flipped to `available: true`,
+also update `hub-home/hub-home.ts`:
+- Increment the relevant tech card `topics:` count
+- Update the hero stat ("100+ Live Pages" → actual count)
+- Update the What's New bar if the hub milestone is notable
+Do this in the same session, before the build step. Never skip it.
+
+**7. Each topic page must serve double duty: deep learning + interview prep.**
+Every page contains a `<app-revision-card>` at the bottom (after Q&A, before Page Complete).
+The revision card condenses the whole page into:
+- `oneLiner`: what the topic IS in 1–2 sentences
+- `mustKnow`: 5–7 core concepts (the things you'd write on a whiteboard)
+- `interviewFocus`: 3–5 interview-specific talking points or trap questions
+Learners read the full page once; they re-read the revision card before interviews.
+
+**8. Existing live pages need the same research treatment as new pages.**
+Phase 2 is not a mechanical "add more fields" pass. Each existing page must be:
+- Re-researched as if being written from scratch
+- Content gaps filled: add whole new theory sections if the topic warrants it
+- Enhanced to the full content standard (theory depth, quiz/Q&A count, pitfalls, sidebar)
+- Given a revision card based on what an interviewer would actually ask
+This is the same research step as Step 1 in Session Guidelines. Do not skip it.
+
 ---
 
 ## Vision
 
-**Goal: zero "coming soon" across all 34 hubs.**
+**Goal: zero "coming soon" across all 34 hubs. Every page at full quality standard.**
 Every card on every hub home must link to a real, fully-written topic page.
 Every existing page must meet the enhanced content standard defined in Phase 2.
+Every page — including newly written ones — passes the Phase 9 quality audit checklist.
 
 **Total scope:**
 - 751 topic pages to build (across 30 hubs at 0% + 4 partially done hubs)
-- 146 existing pages to enhance (Angular 55 + C# 41 + ASP.NET 33 + SQL 17)
-- 1 component fix (TheoryBlock collapsed default)
-- Estimated sessions: ~140 build sessions + ~20 enhancement sessions
+- 136 existing topic pages to enhance (Angular 45 + C# 41 + ASP.NET 33 + SQL 17)
+- ~73 practice/reference pages (also need common-mistakes + revision-card where applicable)
+- Estimated sessions: ~140 build sessions + ~136 enhancement sessions (1 page each)
 
 ---
 
@@ -95,14 +120,35 @@ Every existing page must meet the enhanced content standard defined in Phase 2.
 
 ---
 
-## Phase 0 — Component Fix (do this first, one session, ~30 min)
+## Phase 0 — Component Fixes & New Shared Components
 
-**TheoryBlock: starts collapsed by default — learners never see theory.**
-Fix: `visible = signal(false)` → `signal(true)` in `shared/theory-block/theory-block.ts`.
-This one change makes theory visible on all 146 existing pages immediately.
+### 0A — Fixes to existing components
+- [x] 2026-06-13 **Fix TheoryBlock collapsed default** — `signal(false)` → `signal(true)` in
+  `shared/theory-block/theory-block.ts`. Theory now visible on all pages immediately.
+- [x] 2026-06-13 **Fix BeforeAfter hardcoded label** — "Angular 17+" replaced with configurable
+  `beforeLabel` / `afterLabel` inputs. Language union extended with `'csharp' | 'sql'`.
 
-- [ ] **Fix TheoryBlock collapsed default** — change `signal(false)` to `signal(true)` in
-  `src/app/components/shared/theory-block/theory-block.ts`. Build + verify.
+### 0B — New shared components (already built, ready to use)
+- [x] 2026-06-13 **RevisionCard** (`shared/revision-card/revision-card.ts`) — interview-prep
+  summary card. Interface: `RevisionSummary { oneLiner, mustKnow[], interviewFocus[] }`.
+  Placed after Q&A, before PageComplete. Required on every topic page.
+- [x] 2026-06-13 **Prerequisites** (`shared/prerequisites/prerequisites.ts`) — small chip bar
+  linking to foundational topics. Interface: `Prerequisite { label, route }`. Optional `note`
+  input. Placed after PageMeta, before QuickRef. Use on intermediate/advanced pages.
+
+### 0C — Components already built, not yet used on any pages (must include going forward)
+These exist and compile — pages just haven't imported them yet. Every new/enhanced page must use them:
+- `app-common-mistakes` — `CommonMistake { title, wrong, right, explanation }`. Required on
+  every topic page (4–6 entries). Placed after Code Examples, before Challenge.
+  Starts collapsed — that is intentional (supplementary). Keep `open = signal(false)`.
+- `app-video-embed` — `<app-video-embed videoId="…" title="…" />`. Optional — only add when an
+  official-channel YouTube video exists for the specific topic. Placed after Code Examples
+  (before Common Mistakes). Do not embed unofficial or low-quality videos.
+- `app-before-after` — `BeforeAfterExample { title, before, after, note?, language? }`.
+  Optional — use for topics where there is a meaningful "old way vs new way" contrast
+  (e.g., Angular signals vs zone.js, C# records vs verbose DTOs, SQL EXISTS vs IN).
+  Use `beforeLabel` / `afterLabel` inputs to describe the contrast (e.g., `afterLabel=".NET 8+"`).
+  Placed after Code Examples, before Common Mistakes.
 
 ---
 
@@ -278,6 +324,23 @@ Every live page (Angular 55, C# 41, ASP.NET 33, SQL 17) must meet this standard.
 
 ### The Enhanced Content Standard
 
+**Full page component order (fixed — never reorder):**
+```
+app-page-meta
+app-prerequisites        ← optional; intermediate/advanced pages
+app-quick-ref
+app-theory-block
+Code section (app-code-block)
+app-before-after         ← optional; "old vs new" topics only
+app-video-embed          ← optional; official video exists
+app-common-mistakes      ← required (4–6 entries)
+app-challenge-block
+app-quiz-block
+app-qna-block
+app-revision-card        ← required
+app-page-complete
+```
+
 Each topic page must have ALL of the following:
 
 **Theory block (currently 4 sections, 3–5 pts each):**
@@ -314,27 +377,208 @@ Each topic page must have ALL of the following:
 - Recalculate after enhancement (most pages claiming 25 min read ~12 min actual)
 - Formula: (theory words / 200) + (code tabs × 2) + (quiz count × 0.5) + (QnA count × 1)
 
-### Enhancement order (one page per session, priority order)
+### Enhancement order — complete page list (one page per session)
 
-**C# — enhance in this order (one page per session):**
-- [ ] `csharp/generics` — add 2 theory sections, expand quiz to 8q, Q&A to 8, add pitfalls
-- [ ] `csharp/linq` — LINQ is deep; add deferred execution, query syntax vs method syntax, expression trees
-- [ ] `csharp/async-await` — ConfigureAwait, SynchronizationContext, ValueTask, CancellationToken patterns
-- [ ] `csharp/generics` → `csharp/delegates-events` → `csharp/pattern-matching` → `csharp/records`
-- [ ] Continue through all remaining C# pages in hub nav order
+Every page needs: **research → expand theory → add common-mistakes → add revision-card →
+expand quiz to 6-8q → expand Q&A to 6-8 → add prerequisites if advanced → add before-after
+if old-vs-new → add sidebar entry → recalculate reading time**
 
-**Angular — enhance in this order (one page per session):**
-- [ ] `angular/signals` — computed, effect, resource, linkedSignal; migration from RxJS
-- [ ] `angular/change-detection` — OnPush, signal-based, ChangeDetectorRef, zone.js-less
-- [ ] `angular/routing` — guards, resolvers, deferrable views, title strategy
-- [ ] Continue through all remaining Angular pages in hub nav order
+---
 
-**ASP.NET Core — enhance in this order (one page per session):**
-- [ ] `aspnet/middleware` — pipeline ordering, short-circuit, IMiddlewareFactory
-- [ ] `aspnet/ef-core-basics` — tracking vs no-tracking, SaveChanges, concurrency
-- [ ] Continue through all remaining ASP.NET pages in hub nav order
+#### C# hub — 41 topic pages
 
-**SQL — enhance as new pages are written (dual-dialect standard from the start)**
+**Foundation (do these first — highest traffic)**
+- [ ] `csharp/basics` — value vs reference semantics, boxing, verbatim strings, top-level statements
+- [ ] `csharp/methods` — params, in/out/ref, local functions, expression-bodied, overload resolution
+- [ ] `csharp/fields` — readonly, const vs static readonly, field initializers, backing fields
+- [ ] `csharp/constructors` — primary constructors (C# 12), required members, copy constructors
+- [ ] `csharp/namespaces` — file-scoped, global usings, nested, alias directives
+- [ ] `csharp/arrays` — jagged vs multidimensional, ArraySegment, Span<T>, stackalloc
+
+**Type system**
+- [ ] `csharp/oop` — encapsulation, access modifiers, partial classes, sealed
+- [ ] `csharp/inheritance` — virtual/override/new, method hiding, covariant returns (C# 9)
+- [ ] `csharp/abstract-interfaces` — default interface members (C# 8+), static abstract (C# 11+)
+- [ ] `csharp/properties-indexers` — init accessor, required, computed, indexed properties
+- [ ] `csharp/static-enums` — Flags enums, Enum.Parse vs TryParse, enum → int safety
+- [ ] `csharp/structures` — struct vs class, readonly struct, ref struct, record struct
+
+**Modern C#**
+- [ ] `csharp/generics` — variance (in/out), constraints chain, INumber<T>, default(T)
+- [ ] `csharp/linq` — deferred execution, IQueryable vs IEnumerable, LINQ to objects vs EF
+- [ ] `csharp/delegates` — Action/Func/Predicate, multicast, event vs delegate, weak events
+- [ ] `csharp/pattern-matching` — positional, property, list patterns, switch expressions, guards
+- [ ] `csharp/records` — with-expressions, value equality, record struct, deconstruct
+- [ ] `csharp/tuples` — ValueTuple vs Tuple, deconstruction, _ discard, tuple return patterns
+- [ ] `csharp/extension-methods` — this parameter rules, conflict resolution, extension properties
+
+**Async & Parallel**
+- [ ] `csharp/async` — ConfigureAwait, SynchronizationContext, deadlock, async void dangers
+- [ ] `csharp/tasks` — Task.WhenAll/WhenAny, TaskCompletionSource, Unwrap, ContinueWith
+- [ ] `csharp/threading` — Monitor, Mutex, SemaphoreSlim, Interlocked, lock vs volatile
+- [ ] `csharp/channels` — bounded vs unbounded, producer/consumer pattern, backpressure
+
+**Data & Safety**
+- [ ] `csharp/strings-datetime` — string interning, StringBuilder, DateTimeOffset vs DateTime, NodaTime
+- [ ] `csharp/collections` — IEnumerable vs IList, Dictionary internals, ImmutableDictionary, concurrent
+- [ ] `csharp/io-serialization` — System.Text.Json source gen, JsonSerializerOptions, Utf8JsonReader
+- [ ] `csharp/gc-disposable` — finalizers, IDisposable, IAsyncDisposable, using declaration, GC.Collect
+- [ ] `csharp/null-safety` — nullable reference types, null-forgiving, required, annotations
+- [ ] `csharp/exceptions` — custom exceptions, ExceptionDispatchInfo, AggregateException, filter
+- [ ] `csharp/type-conversion` — implicit/explicit operators, Convert vs cast, pattern-based cast
+- [ ] `csharp/system-object` — Equals/GetHashCode contract, == operator, ReferenceEquals
+
+**Advanced**
+- [ ] `csharp/reflection` — Type.GetMembers, caching MethodInfo, Emit basics, performance cost
+- [ ] `csharp/iterators` — yield state machine IL, IAsyncEnumerable, infinite sequences
+- [ ] `csharp/regex` — named groups, compiled Regex, source-generated ([GeneratedRegex]), backtracking
+- [ ] `csharp/expression-trees` — Expression<Func<T>>, Compile(), building IQueryable predicates
+- [ ] `csharp/dynamic` — dynamic vs object, ExpandoObject, DLR, DynamicObject, COM interop
+- [ ] `csharp/source-generators` — IIncrementalGenerator, SyntaxProvider, output registration
+- [ ] `csharp/unit-testing` — xUnit theories, Moq/NSubstitute, FluentAssertions, AutoFixture
+
+**What's New**
+- [ ] `csharp/whats-new-9-10` — records, init, top-level statements, pattern improvements, LINQ changes
+- [ ] `csharp/whats-new-11-12` — required, generic math, raw string literals, primary constructors
+- [ ] `csharp/whats-new-latest` — C# 13+ collection expressions, params span, lock object
+
+---
+
+#### Angular hub — 45 topic pages
+
+**Signals & reactivity (do these first)**
+- [ ] `angular/resource-api` — resource(), rxResource(), loading/error states, refresh
+- [ ] `angular/linked-signal` — linkedSignal(), write-back pattern, vs computed
+- [ ] `angular/signal-store` — @ngrx/signals, signalStore, withState, withMethods, withComputed
+- [ ] `angular/ngrx-signals` — feature stores, withEntities, custom features, devtools
+- [ ] `angular/change-detection` — OnPush, signal-based detection, ChangeDetectorRef, zone.js-less
+- [ ] `angular/zoneless` — provideZonelessChangeDetection, migration from zone.js, performance
+
+**Core framework**
+- [ ] `angular/template-syntax` — control flow (@if/@for/@switch), defer, ng-template, ng-content
+- [ ] `angular/lifecycle` — OnInit, OnDestroy, DestroyRef, afterNextRender, afterRender
+- [ ] `angular/di-demo` — inject(), injection tokens, hierarchical DI, useFactory, forwardRef
+- [ ] `angular/routing-demo` — lazy routes, functional guards, resolvers, withViewTransitions
+- [ ] `angular/http-demo` — HttpClient, interceptors (functional), provideHttpClient, retry
+- [ ] `angular/pipes-demo` — pure vs impure, async pipe internals, custom transform pipes
+
+**Forms**
+- [ ] `angular/forms-demo` — reactive vs template, FormGroup, FormControl, typed forms (v14+)
+- [ ] `angular/form-array` — FormArray, dynamic controls, array validators, nested groups
+- [ ] `angular/dynamic-forms` — building form config from JSON, custom validators
+- [ ] `angular/wizard-form` — multi-step form, stepper, inter-step validation
+- [ ] `angular/custom-validators` — sync/async validators, cross-field, NG_VALIDATORS token
+- [ ] `angular/cva-demo` — ControlValueAccessor, NG_VALUE_ACCESSOR, form integration
+- [ ] `angular/zod-forms` — Zod schema + Angular reactive forms, zodValidator adapter
+
+**Components**
+- [ ] `angular/parent-child` — @Input, @Output, model(), contentChildren, viewChild
+- [ ] `angular/content-projection` — ng-content, select, ngTemplateOutlet, multi-slot
+- [ ] `angular/directives-demo` — attribute directives, structural directives, hostDirectives
+- [ ] `angular/destroy-ref` — DestroyRef, takeUntilDestroyed, vs OnDestroy
+
+**Async & RxJS**
+- [ ] `angular/rxjs-demo` — switchMap/mergeMap/concatMap/exhaustMap, shareReplay, takeUntil
+- [ ] `angular/tanstack-query` — Angular TanStack Query, createQuery, createMutation, cache
+
+**Testing**
+- [ ] `angular/testing-demo` — TestBed, ComponentFixture, signal testing, HttpClientTestingModule
+- [ ] `angular/harnesses` — ComponentHarness, HarnessLoader, CDK test harnesses
+- [ ] `angular/e2e` — Playwright vs Cypress for Angular, component testing setup
+
+**Performance & Architecture**
+- [ ] `angular/preloading` — PreloadAllModules vs SelectivePreloading, QuicklinkStrategy
+- [ ] `angular/route-resolvers` — functional resolvers, inject() in resolvers, error handling
+- [ ] `angular/ssr` — Angular Universal/SSR, hydration, transferState, App Shell
+- [ ] `angular/pwa` — ngsw-config, caching strategies, push notifications, install prompt
+- [ ] `angular/web-workers` — comlink, offloading heavy computation, communication patterns
+
+**Libraries & integrations**
+- [ ] `angular/animations-demo` — trigger/state/transition, stagger, AnimationBuilder, route anim
+- [ ] `angular/cdk-demo` — FocusTrap, Overlay, DragDrop, VirtualScrollViewport, a11y module
+- [ ] `angular/material-demo` — theming (M3), form field, table, dialog, CDK integration
+- [ ] `angular/tanstack-query` — (see Async section above)
+- [ ] `angular/charts` — ng2-charts/Chart.js, reactive data binding, responsive charts
+- [ ] `angular/ag-grid-demo` — AG Grid community, rowData signal, custom cell renderers
+- [ ] `angular/ng-image` — NgOptimizedImage, srcset, priority, LQIP
+- [ ] `angular/datefns-demo` — date-fns with Angular pipes, locale, formatting patterns
+- [ ] `angular/tailwind-demo` — Tailwind CSS 4 in Angular, dark mode, component patterns
+
+**Misc**
+- [ ] `angular/counter` — simple signals counter demo — expand into signals deep-dive
+- [ ] `angular/todo` — todo app demo — expand into state management patterns demo
+- [ ] `angular/i18n` — @angular/localize, $localize, ICU, build-time vs runtime i18n
+
+---
+
+#### ASP.NET Core hub — 33 topic pages
+
+**Foundation (do first)**
+- [ ] `aspnet/hosting-startup` — Generic Host, WebApplication.CreateBuilder, IHostedService, startup order
+- [ ] `aspnet/middleware` — pipeline order, short-circuit, IMiddlewareFactory, terminal middleware
+- [ ] `aspnet/routing` — endpoint routing, route constraints, route groups, MapGroup
+- [ ] `aspnet/configuration` — IConfiguration, Options pattern, IOptionsSnapshot, secrets
+- [ ] `aspnet/dependency-injection` — lifetimes (singleton/scoped/transient), keyed services, factory
+- [ ] `aspnet/logging` — ILogger, structured logging, log levels, Serilog/OpenTelemetry integration
+
+**API layer**
+- [ ] `aspnet/controllers` — ApiController, ModelState, ActionResult<T>, problem details
+- [ ] `aspnet/minimal-apis` — route handlers, TypedResults, endpoint filters, groups, OpenAPI
+- [ ] `aspnet/model-binding` — [FromBody]/[FromRoute]/[FromQuery], custom binders, validation
+- [ ] `aspnet/filters` — action/exception/resource/auth filters, IFilterFactory, ordering
+- [ ] `aspnet/error-handling` — UseExceptionHandler, ProblemDetails middleware, IProblemDetailsService
+- [ ] `aspnet/api-versioning` — URL/header/query versioning, Asp.Versioning, deprecation
+- [ ] `aspnet/openapi-swagger` — Scalar, Swashbuckle, XML comments, security definitions
+
+**Data**
+- [ ] `aspnet/ef-core-basics` — DbContext lifetime, no-tracking, SaveChanges, transactions
+- [ ] `aspnet/ef-relationships` — one-to-many, many-to-many, owned entities, table splitting
+- [ ] `aspnet/ef-performance` — compiled queries, split queries, connection resiliency, bulk ops
+
+**Security**
+- [ ] `aspnet/authentication` — JWT bearer, cookie auth, IAuthenticationHandler, scheme selection
+- [ ] `aspnet/authorization` — policies, requirements, resource-based auth, IAuthorizationHandler
+- [ ] `aspnet/cors` — policy builder, pre-flight, credentials, CORS with minimal APIs
+- [ ] `aspnet/web-security` — CSRF, XSS, security headers, HTTPS enforcement, HSTS
+- [ ] `aspnet/secrets` — User Secrets, Azure Key Vault, DPAPI, ISecretManager
+- [ ] `aspnet/rate-limiting` — sliding window, fixed window, token bucket, concurrency limiter
+
+**Advanced**
+- [ ] `aspnet/http-clients` — IHttpClientFactory, typed clients, Polly v8, resilience pipeline
+- [ ] `aspnet/grpc` — protobuf service/message, Grpc.AspNetCore, client factory, streaming
+- [ ] `aspnet/caching` — IMemoryCache, IDistributedCache, Redis, output caching, cache tags
+- [ ] `aspnet/static-files` — StaticFileOptions, file provider, cache-control headers
+
+**Infrastructure**
+- [ ] `aspnet/background-services` — BackgroundService, IHostedService, Channels integration
+- [ ] `aspnet/health-checks` — AddHealthChecks, IHealthCheck, UI, readiness vs liveness
+- [ ] `aspnet/testing` — WebApplicationFactory, custom factory, Testcontainers, Respawn
+- [ ] `aspnet/signalr` — hubs, groups, connection lifecycle, scale-out with Redis backplane
+- [ ] `aspnet/deployment` — Kestrel, IIS, Docker, reverse proxy (NGINX), HTTPS in containers
+- [ ] `aspnet/performance` — response compression, response caching, async streaming, BenchmarkDotNet
+- [ ] `aspnet/aspire` — AppHost orchestration, service defaults, dashboard, integrations
+
+---
+
+#### SQL hub — 17 topic pages
+
+- [ ] `sql/rdbms-concepts` — ACID, CAP theorem, relational model, keys, constraints overview
+- [ ] `sql/data-modeling` — ER diagrams, entity identification, relationships, cardinality
+- [ ] `sql/normalization` — 1NF/2NF/3NF/BCNF, denormalisation trade-offs, when to break rules
+- [ ] `sql/db-architecture` — query processor, storage engine, buffer pool, WAL, MSSQL vs PG arch
+- [ ] `sql/data-types` — numeric precision, varchar vs nvarchar, JSONB, UUID, temporal types
+- [ ] `sql/basics` — SELECT, WHERE, ORDER BY, LIMIT/TOP, DISTINCT, aliases, DUAL table (PG)
+- [ ] `sql/joins` — INNER/LEFT/RIGHT/FULL/CROSS/SELF join, join order, NULL in join columns
+- [ ] `sql/aggregations` — GROUP BY, HAVING, COUNT/SUM/AVG/MIN/MAX, FILTER clause (PG), ROLLUP
+- [ ] `sql/subqueries` — correlated vs non-correlated, EXISTS vs IN, lateral joins (PG), scalar subquery
+- [ ] `sql/ctes` — recursive CTEs, WITH clause, CTE vs subquery performance, multiple CTEs
+- [ ] `sql/window-functions` — ROW_NUMBER/RANK/DENSE_RANK, LAG/LEAD, NTILE, ROWS vs RANGE frames
+- [ ] `sql/indexes` — clustered vs non-clustered, covering index, include columns, index maintenance
+- [ ] `sql/transactions` — BEGIN/COMMIT/ROLLBACK, savepoints, implicit vs explicit, retry logic
+- [ ] `sql/stored-procedures` — parameters, OUTPUT, EXEC, error handling, TRY/CATCH
+- [ ] `sql/schema-design` — naming conventions, surrogate vs natural keys, soft delete patterns
+- [ ] `sql/json-features` — FOR JSON PATH (T-SQL), jsonb operators (PG), JSON indexing
+- [ ] `sql/performance` — execution plans, query hints, statistics, parameter sniffing (T-SQL)
 
 ---
 
@@ -784,6 +1028,57 @@ prompt engineering, AI agents/tool use, vector databases, MLOps.
 
 ---
 
+## Phase 9 — Final Quality Audit (every page, every hub)
+
+**When to do this:** after all hubs are built (after Phase 8). This is the last pass before
+the site can be considered "done." Every single topic page across every hub — including pages
+written in Phases 1–8 — gets a structured review and fix pass.
+
+**Why this phase exists:** pages written early follow older, thinner conventions. Pages written
+quickly may have skipped components. The standard itself evolved during the project. This phase
+is the equaliser — it brings everything to the same bar.
+
+**Rule: one page per session, same as all other phases. No batching.**
+
+### What to check on every page (review checklist)
+
+Open the page, read it fully as a learner would, then check each item:
+
+```
+[ ] Theory: 5+ sections, each 5+ bullet points, each point 2+ sentences with WHY
+[ ] app-common-mistakes: present, 4–6 entries, wrong/right code + explanation
+[ ] app-revision-card: present, oneLiner is crisp, mustKnow has 5–7 items, interviewFocus has 3–5
+[ ] Quiz: 6–8 questions, difficulty spread (easy/medium/hard), explanations are 2–3 sentences
+[ ] Q&A: 6–8 entries, at least 2 trap questions, answers use <code>/<ul>/<strong> for structure
+[ ] app-prerequisites: present on intermediate/advanced pages (2–4 items max, correct routes)
+[ ] app-before-after: present if a meaningful old-vs-new contrast exists for the topic
+[ ] app-video-embed: present if a good official video exists; absent otherwise
+[ ] Sidebar: page-specific entry in SIDEBAR_MAP (not DEFAULT); min 2 resources
+[ ] Reading time in app-page-meta: accurate (recalculate if content changed significantly)
+[ ] Navigation: nextRoute and nextLabel point to the correct next page
+[ ] Hub home card: available: true, description and keyPoints reflect what the page actually covers
+[ ] No TypeScript \${} escaping issues (C# string interpolation in template literals)
+[ ] Dark mode: no @media (prefers-color-scheme) anywhere — only :host-context(body.dark)
+```
+
+If everything passes — check it off. If anything is missing — fix it in the same session,
+then check it off. Do not check off a page that still has gaps.
+
+### Audit order
+
+Work hub by hub, topic pages only (practice/reference pages are lower priority):
+
+**Hub 1 — Angular (45 pages):** work through in nav order  
+**Hub 2 — C# (41 pages):** work through in nav order  
+**Hub 3 — ASP.NET Core (33 pages):** work through in nav order  
+**Hub 4 — SQL (35 pages, after Phase 1D completes):** work through in nav order  
+**Hubs 5–34 (TypeScript, React, JS, HTML, CSS, …):** work through in hub order
+
+Each hub's pages are not individually listed here — use the hub's nav order as the sequence.
+When a hub's audit is complete, note it in Done History.
+
+---
+
 ## Session Guidelines
 
 **One page per session. Follow this order every time:**
@@ -847,12 +1142,51 @@ Do not move to the next topic until this page meets the full content standard:
 - Answers use `<code>`, `<ul>`, `<strong>` — not plain text walls
 - Each answer should be the kind of response that impresses in a technical interview
 
+**Revision card (required on every page — new component `app-revision-card`):**
+- Placed after Q&A, before Page Complete
+- `summary.oneLiner`: 1–2 sentences — what the topic IS; good enough to repeat in an interview
+- `summary.mustKnow`: 5–7 strings — the concepts you'd write on a whiteboard; use `<code>` inline
+- `summary.interviewFocus`: 3–5 strings — what interviewers actually ask; frame as Q: or talking point
+- This is the "skim before an interview" card — keep it ultra-concise and honest about what matters
+- Import: `RevisionCardComponent` from `../../../shared/revision-card/revision-card` (adjust path)
+  Interface: `RevisionSummary` from the same file
+
+**Common Mistakes (required — `app-common-mistakes`):**
+- 4–6 entries, placed after Code Examples, before Challenge
+- Each entry: `title` (the mistake name), `wrong` (bad code snippet), `right` (correct code),
+  `explanation` (1–2 sentences on WHY it matters and how to remember the fix)
+- Focus on mistakes that actually happen in production or that trip people up in interviews
+- The wrong/right fields are plain code strings (no HTML) — rendered in `<pre><code>`
+
+**Prerequisites (optional — `app-prerequisites`):**
+- Include on intermediate and advanced pages where the learner needs prior knowledge
+- Each item: `label` (display name of the topic) + `route` (full path, e.g. `/csharp/generics`)
+- Keep to 2–4 items maximum — only list pages that are genuinely required, not just related
+- Skip on beginner/foundational pages
+
+**Before / After (optional — `app-before-after`):**
+- Use when there is a meaningful "old pattern vs new pattern" contrast for the topic
+- Set `beforeLabel` / `afterLabel` to describe what changed (e.g. `beforeLabel="Traditional"`,
+  `afterLabel=".NET 8+ / Modern"`) — never leave as generic "Before" / "After"
+- Good candidates: topics with C# version upgrades, Angular 17+ changes, SQL modernisation
+
+**Video embed (optional — `app-video-embed`):**
+- Only add when an official-channel YouTube video exists for this specific topic
+- Do not add videos from unofficial channels or low-quality uploads
+- Placed after Code Examples, before Common Mistakes
+
+**Revision card (required — `app-revision-card`):**
+- `summary.oneLiner`: 1–2 sentences — what the topic IS; good enough to repeat in an interview
+- `summary.mustKnow`: 5–7 strings — the concepts you'd write on a whiteboard; use `<code>` inline
+- `summary.interviewFocus`: 3–5 strings — what interviewers actually ask; frame as talking points
+- This is the "skim before an interview" card — keep it ultra-concise and honest about what matters
+
 **Sidebar resources:**
 - Add a page-specific entry in `shared/page-sidebar/page-sidebar.ts` SIDEBAR_MAP
 - Minimum 2 resources: official docs link (badge: 'docs') + 1 of code/blog/video
 - Prefer: official docs, official GitHub repos (dotnet/*, angular/*, etc.)
 
-### Step 4 — Wire the page (all 8 checklist items)
+### Step 4 — Wire the page (all 9 checklist items)
 1. [ ] Files created: `.ts`, `.html`, `.scss` in correct folder
 2. [ ] Route added in `app.routes.ts` (lazy `loadComponent`)
 3. [ ] Nav entry added in `app.html` (correct group, progress dot + check mark)
@@ -861,6 +1195,7 @@ Do not move to the next topic until this page meets the full content standard:
 6. [ ] Hub home card flipped to `available: true`
 7. [ ] Sidebar entry added in `shared/page-sidebar/page-sidebar.ts`
 8. [ ] Progress service `*Total` count updated
+9. [ ] **DevHub home updated** (`hub-home/hub-home.ts`): tech card `topics:` count, hero stat, What's New bar
 
 ### Step 5 — Build
 `npx ng build --configuration=production` must pass before marking the page done.
