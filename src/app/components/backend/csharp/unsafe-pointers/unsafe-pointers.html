@@ -1,0 +1,37 @@
+<div class="cs-page">
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Unsafe Code &amp; Pointers</h1>
+  <p class="page-subtitle">
+    Direct pointer manipulation in C# — <code>fixed</code>, pointer arithmetic,
+    <code>NativeMemory</code>, <code>stackalloc</code>, and the <code>Unsafe</code> class.
+    Use only when Span&lt;T&gt; cannot do the job.
+  </p>
+
+  <app-page-meta [readingTime]="24" difficulty="advanced" since=".NET Core 1.0+" tech="csharp" />
+
+  <app-prerequisites [items]="prerequisites" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="csharp-unsafe-pointers"
+    nextRoute="/csharp/native-aot"
+    nextLabel="Native AOT" />
+</div>

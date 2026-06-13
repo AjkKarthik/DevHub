@@ -167,7 +167,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
   readonly whatsNew = [
     { name: 'ASP.NET Core · 42 pages', route: '/aspnet',                  label: 'New · 33 topics + 9 reference' },
     { name: 'Angular',                 route: '/angular',                  label: '50 pages · updated' },
-    { name: 'C# · 50 topics',          route: '/csharp',                   label: 'Full language coverage' },
+    { name: 'C# · 58 topics',          route: '/csharp',                   label: 'Full language coverage' },
     { name: 'SQL',                     route: '/sql',                       label: 'New · 12 topics + reference' },
     { name: 'Interview Prep',          route: '/aspnet/interview-prep',    label: 'New · ASP.NET Core Q&A' },
   ];
@@ -367,12 +367,12 @@ export class HubHome implements AfterViewInit, OnDestroy {
     },
     {
       group: 'backend', name: 'C#', time: '~20 hrs',
-      tagline: 'Microsoft\'s powerful OOP language — 51 topics from basics to .NET 11.',
+      tagline: 'Microsoft\'s powerful OOP language — 59 topics from basics to .NET 11.',
       icon: 'C#', gradient: 'linear-gradient(135deg, #512bd4 0%, #311a8a 100%)',
-      textDark: false, route: '/csharp', available: true, topics: 51,
+      textDark: false, route: '/csharp', available: true, topics: 59,
       roles: ['backend', 'architect'],
       highlights: [
-        '42 language topics + 9 practice & reference pages',
+        '50 language topics + 9 practice & reference pages',
         'Reflection, source generators, channels, unit testing',
         'Quiz practice + 55-question interview prep',
         'C# 9–13 & .NET 8–11 coverage',

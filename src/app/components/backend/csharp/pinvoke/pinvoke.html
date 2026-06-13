@@ -1,0 +1,40 @@
+<div class="cs-page">
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">P/Invoke &amp; Native Interop</h1>
+  <p class="page-subtitle">
+    Call native libraries and OS APIs from C# — <code>[LibraryImport]</code>, struct marshalling,
+    <code>SafeHandle</code> lifetime management, and native callbacks.
+  </p>
+
+  <app-page-meta [readingTime]="26" difficulty="advanced" since=".NET Framework 1.0+" tech="csharp" />
+
+  <app-prerequisites [items]="prerequisites" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-before-after [items]="beforeAfter"
+    beforeLabel="[DllImport] (legacy)"
+    afterLabel="[LibraryImport] (AOT-safe)" />
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="csharp-pinvoke"
+    nextRoute="/csharp/dotnet-cli"
+    nextLabel=".NET CLI &amp; Tooling" />
+</div>

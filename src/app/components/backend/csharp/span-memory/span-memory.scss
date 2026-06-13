@@ -1,0 +1,80 @@
+$accent: #7c3aed;
+$accent-dark: #6b21a8;
+$tint: #f5f3ff;
+
+.cs-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  color: var(--text);
+}
+
+.page-header-icon.cs-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: $tint;
+  color: $accent;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  border: 2px solid rgba(124, 58, 237, 0.2);
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: $accent;
+  margin: 0 0 0.5rem;
+}
+
+.page-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin: 0 0 2rem;
+  line-height: 1.6;
+
+  code {
+    background: $tint;
+    color: $accent;
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+}
+
+.cs-section {
+  margin: 2.5rem 0;
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: $accent;
+    margin: 0 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid rgba(124, 58, 237, 0.15);
+  }
+}
+
+:host-context(body.dark) {
+  .page-header-icon.cs-icon {
+    background: rgba(124, 58, 237, 0.15);
+    color: #a78bfa;
+    border-color: rgba(167, 139, 250, 0.25);
+  }
+
+  .page-title { color: #a78bfa; }
+
+  .page-subtitle code {
+    background: rgba(124, 58, 237, 0.15);
+    color: #a78bfa;
+  }
+
+  .cs-section h2 {
+    color: #a78bfa;
+    border-color: rgba(167, 139, 250, 0.2);
+  }
+}
