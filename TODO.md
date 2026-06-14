@@ -363,7 +363,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/io-serialization` — System.Text.Json source gen, JsonSerializerOptions, Utf8JsonReader
 - [x] 2026-06-14 `csharp/gc-disposable` — finalizers, IDisposable, IAsyncDisposable, using declaration, GC.Collect
 - [x] 2026-06-14 `csharp/null-safety` — nullable reference types, null-forgiving, required, annotations
-- [ ] `csharp/exceptions` — custom exceptions, ExceptionDispatchInfo, AggregateException, filter
+- [x] 2026-06-14 `csharp/exceptions` — custom exceptions, ExceptionDispatchInfo, AggregateException, filter
 - [ ] `csharp/type-conversion` — implicit/explicit operators, Convert vs cast, pattern-based cast
 - [ ] `csharp/system-object` — Equals/GetHashCode contract, == operator, ReferenceEquals
 

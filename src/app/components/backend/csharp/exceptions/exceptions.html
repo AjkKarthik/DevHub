@@ -1,34 +1,26 @@
 <div class="cs-page">
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Exceptions</h1>
+  <p class="page-subtitle">try/catch/finally, exception filters, custom exception hierarchies, AggregateException, ExceptionDispatchInfo, and the Result pattern for expected failures.</p>
 
-  <div class="page-header">
-    <div class="page-header-icon cs-icon">C#</div>
-    <div>
-      <h1 class="page-title">Exceptions</h1>
-      <p class="page-sub">try/catch/finally, exception filters, custom exceptions, and the Result pattern for expected failures.</p>
-    </div>
-  </div>
+  <app-page-meta [readingTime]="35" difficulty="intermediate" since="C# 1+" tech="csharp" />
 
-  <app-page-meta [readingTime]="20" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+  <app-prerequisites [items]="prerequisites" />
 
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
 
-  <!-- ── Code examples ───────────────────────────────────────────────────────── -->
-  <section class="demo-section">
-    <div class="demo-section-header">
-      <h2>Code Examples</h2>
-      <p class="demo-section-sub">From structured try/catch blocks and exception filters to custom exception hierarchies and the Result pattern.</p>
-    </div>
+  <section class="cs-section">
+    <h2>Code Examples</h2>
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-common-mistakes [items]="mistakes" />
   <app-challenge-block [item]="challenge" />
-
   <app-quiz-block [items]="quiz" />
-
   <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
 
-  <app-page-complete route="csharp-exceptions" nextRoute="/csharp/delegates" nextLabel="Delegates &amp; Events" />
-
+  <app-page-complete route="csharp-exceptions" nextRoute="/csharp/type-conversion" nextLabel="Type Conversion" />
 </div>
