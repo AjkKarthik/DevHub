@@ -145,15 +145,15 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'Scalar UDFs, inline table-valued functions (MSSQL), and PL/pgSQL RETURNS TABLE functions — plus performance implications.',
     keyPoints: ['Scalar UDFs in MSSQL inhibit parallelism — prefer TVFs or inline expressions', 'Inline TVFs are expanded like views; multi-statement TVFs are opaque to the optimizer', 'PostgreSQL RETURNS TABLE functions are the idiomatic alternative to stored procedures'] },
 
-  { title: 'Cursors & Loops',          route: '/sql',                       badge: 'Programmatic', available: false,
+  { title: 'Cursors & Loops',          route: '/sql/cursors',               badge: 'Programmatic', available: true,
     description: 'CURSOR, FETCH NEXT (MSSQL) vs FOR loop / LOOP in PL/pgSQL — and why set-based SQL is almost always preferable.',
     keyPoints: ['Cursors process row-by-row — 10–100× slower than set-based SQL', 'Use cursors only when no set-based solution exists (e.g. dynamic DDL per row)', 'PL/pgSQL FOR rec IN SELECT ... LOOP is cleaner than explicit CURSOR'] },
 
-  { title: 'Triggers',                 route: '/sql/triggers',              badge: 'Programmatic', available: false,
+  { title: 'Triggers',                 route: '/sql/triggers',              badge: 'Programmatic', available: true,
     description: 'AFTER/INSTEAD OF DML triggers (MSSQL) vs BEFORE/AFTER/INSTEAD OF (PostgreSQL) — audit log and guard patterns.',
     keyPoints: ['INSERTED and DELETED pseudo-tables in T-SQL triggers', 'PostgreSQL trigger functions return NEW/OLD records', 'Avoid triggers for business logic — use for audit/guard patterns only'] },
 
-  { title: 'Dynamic SQL',              route: '/sql/dynamic-sql',           badge: 'Programmatic', available: false,
+  { title: 'Dynamic SQL',              route: '/sql/dynamic-sql',           badge: 'Programmatic', available: true,
     description: 'EXEC (T-SQL), sp_executesql with parameterised queries (MSSQL), EXECUTE in PL/pgSQL — and SQL injection prevention.',
     keyPoints: ['sp_executesql with @params prevents SQL injection in MSSQL', 'EXECUTE format(\'…\', $1) or EXECUTE with USING in PL/pgSQL', 'Always use parameterised queries — never concatenate user input'] },
 
@@ -162,11 +162,11 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'BEGIN/COMMIT/ROLLBACK, SAVEPOINT, TRY/CATCH vs EXCEPTION blocks, and explicit vs autocommit behaviour.',
     keyPoints: ['Keep transactions short — long transactions hold locks', 'SAVEPOINT allows partial rollback within a transaction', 'Autocommit is the default in both dialects — wrap DML explicitly'] },
 
-  { title: 'Isolation Levels',         route: '/sql/isolation-levels',      badge: 'Transactions', available: false,
+  { title: 'Isolation Levels',         route: '/sql/isolation-levels',      badge: 'Transactions', available: true,
     description: 'READ UNCOMMITTED → SERIALIZABLE, SNAPSHOT/RCSI (MSSQL), PostgreSQL MVCC — dirty reads, phantom reads, and when each level is correct.',
     keyPoints: ['READ COMMITTED is the default in both dialects', 'SNAPSHOT isolation (MSSQL RCSI) eliminates reader-writer blocking', 'SERIALIZABLE prevents phantom reads — at cost of SSI aborts (PostgreSQL)'] },
 
-  { title: 'Locking & Deadlocks',      route: '/sql/locking',               badge: 'Transactions', available: false,
+  { title: 'Locking & Deadlocks',      route: '/sql/locking',               badge: 'Transactions', available: true,
     description: 'Shared, exclusive, and update locks, lock escalation, WITH(NOLOCK) (MSSQL), FOR UPDATE/SKIP LOCKED (PostgreSQL), deadlock patterns.',
     keyPoints: ['WITH(NOLOCK) / READ UNCOMMITTED reads dirty data — use cautiously', 'SELECT … FOR UPDATE locks rows; SKIP LOCKED skips locked rows', 'Access tables in consistent order to prevent circular deadlocks'] },
 
@@ -175,7 +175,7 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'B-tree, hash, GIN/GiST (PostgreSQL), columnstore (MSSQL) — clustered, non-clustered, covering, filtered, and composite indexes.',
     keyPoints: ['One clustered index per table — choose a narrow, monotonic key', 'INCLUDE columns in non-clustered indexes to eliminate key lookups', 'GIN indexes in PostgreSQL for jsonb/arrays; columnstore for analytics (MSSQL)'] },
 
-  { title: 'Execution Plans',          route: '/sql/execution-plans',       badge: 'Performance', available: false,
+  { title: 'Execution Plans',          route: '/sql/execution-plans',       badge: 'Performance', available: true,
     description: 'Reading MSSQL graphical/XML plans and PostgreSQL EXPLAIN ANALYZE — operators, cost, actual vs estimated rows.',
     keyPoints: ['Read MSSQL plans right-to-left, top-to-bottom; thickest arrow = most rows', 'EXPLAIN (ANALYZE, BUFFERS) in PostgreSQL shows actual time and I/O', 'Cardinality mismatch between estimated and actual rows signals stale statistics'] },
 
@@ -183,7 +183,7 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'Sargability, statistics, cardinality estimation, query hints — and systematic anti-pattern checklist.',
     keyPoints: ['Functions on indexed columns prevent seeks — rewrite predicates', 'Implicit type conversions cause full scans', 'UPDATE STATISTICS / ANALYZE after bulk loads'] },
 
-  { title: 'Partitioning',             route: '/sql/partitioning',          badge: 'Performance', available: false,
+  { title: 'Partitioning',             route: '/sql/partitioning',          badge: 'Performance', available: true,
     description: 'MSSQL partition functions/schemes vs PostgreSQL declarative partitioning — range, list, hash — and partition pruning.',
     keyPoints: ['Partitioning helps when queries filter on the partition key', 'MSSQL: CREATE PARTITION FUNCTION + SCHEME + aligned index', 'PostgreSQL: PARTITION BY RANGE/LIST/HASH on parent table'] },
 

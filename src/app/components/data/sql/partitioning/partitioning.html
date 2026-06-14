@@ -1,0 +1,21 @@
+<div class="sq-page">
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Partitioning</h1>
+  <p class="page-subtitle">Divide large tables into independently managed partitions for faster queries, instant archival, and parallel operations — RANGE, LIST, and HASH strategies in MSSQL and PostgreSQL.</p>
+
+  <app-page-meta [readingTime]="20" difficulty="advanced" since="SQL Server 2005+ / PostgreSQL 10+" tech="sql" />
+
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+
+  <app-page-complete route="sql-partitioning" nextRoute="/sql/bulk-operations" nextLabel="Bulk Operations" />
+</div>

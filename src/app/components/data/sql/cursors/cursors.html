@@ -1,0 +1,21 @@
+<div class="sq-page">
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Cursors & Row-by-Row Processing</h1>
+  <p class="page-subtitle">Understand when cursors are necessary, how to write them correctly in MSSQL and PostgreSQL, and how to replace them with faster set-based alternatives.</p>
+
+  <app-page-meta [readingTime]="16" difficulty="intermediate" since="SQL Server 2000+ / PostgreSQL 7.4+" tech="sql" />
+
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+
+  <app-page-complete route="sql-cursors" nextRoute="/sql/triggers" nextLabel="Triggers" />
+</div>
