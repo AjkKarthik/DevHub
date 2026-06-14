@@ -370,7 +370,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Advanced**
 - [x] 2026-06-14 `csharp/reflection` — Type.GetMembers, caching MethodInfo, Emit basics, performance cost
 - [x] 2026-06-14 `csharp/iterators` — yield state machine IL, IAsyncEnumerable, infinite sequences
-- [ ] `csharp/regex` — named groups, compiled Regex, source-generated ([GeneratedRegex]), backtracking
+- [x] 2026-06-14 `csharp/regex` — named groups, compiled Regex, source-generated ([GeneratedRegex]), backtracking
 - [ ] `csharp/expression-trees` — Expression<Func<T>>, Compile(), building IQueryable predicates
 - [ ] `csharp/dynamic` — dynamic vs object, ExpandoObject, DLR, DynamicObject, COM interop
 - [ ] `csharp/source-generators` — IIncrementalGenerator, SyntaxProvider, output registration

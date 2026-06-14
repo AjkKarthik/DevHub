@@ -1,13 +1,24 @@
 <div class="cs-page">
   <div class="page-header-icon cs-icon">C#</div>
   <h1 class="page-title">Regular Expressions</h1>
-  <p class="page-subtitle">Match, extract and replace text with Regex — groups, options, ReDoS timeouts, and compile-time [GeneratedRegex].</p>
-  <app-page-meta [readingTime]="24" difficulty="intermediate" since=".NET 7+" tech="csharp" />
+  <p class="page-subtitle">Match, extract and replace text with Regex — groups, lookaheads, ReDoS timeouts, <code>[GeneratedRegex]</code>, and zero-allocation Span APIs.</p>
+
+  <app-page-meta [readingTime]="30" difficulty="intermediate" since="C# 1+" tech="csharp" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
-  <section class="cs-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
   <app-challenge-block [item]="challenge" />
   <app-quiz-block [items]="quiz" />
   <app-qna-block [items]="qna" />
-  <app-page-complete route="csharp-regex" nextRoute="/csharp/strings-datetime" nextLabel="Strings, DateTime &amp; Math" />
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="csharp-regex" nextRoute="/csharp/expression-trees" nextLabel="Expression Trees" />
 </div>
