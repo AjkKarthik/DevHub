@@ -1,0 +1,21 @@
+<div class="sq-page">
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Statistics & Query Optimizer</h1>
+  <p class="page-subtitle">Help the optimizer make accurate row estimates — UPDATE STATISTICS and DBCC SHOW_STATISTICS (MSSQL), ANALYZE and pg_stats (PostgreSQL), and when to tune statistics targets.</p>
+
+  <app-page-meta [readingTime]="16" difficulty="intermediate" since="SQL Server 2005+ / PostgreSQL 7+" tech="sql" />
+
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+
+  <app-page-complete route="sql-statistics" nextRoute="/sql/full-text-search" nextLabel="Full-Text Search" />
+</div>

@@ -187,15 +187,15 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'MSSQL partition functions/schemes vs PostgreSQL declarative partitioning — range, list, hash — and partition pruning.',
     keyPoints: ['Partitioning helps when queries filter on the partition key', 'MSSQL: CREATE PARTITION FUNCTION + SCHEME + aligned index', 'PostgreSQL: PARTITION BY RANGE/LIST/HASH on parent table'] },
 
-  { title: 'Bulk Operations',          route: '/sql/bulk-operations',       badge: 'Performance', available: false,
+  { title: 'Bulk Operations',          route: '/sql/bulk-operations',       badge: 'Performance', available: true,
     description: 'BULK INSERT / BCP (MSSQL) vs COPY (PostgreSQL) — batch sizing, minimal logging, staging table patterns.',
     keyPoints: ['BULK INSERT with TABLOCK and BATCHSIZE for minimal logging (MSSQL)', 'COPY FROM is the fastest ingestion path in PostgreSQL', 'Stage → transform → upsert/merge pattern avoids contention'] },
 
-  { title: 'Query Store & Plan Regression', route: '/sql',                  badge: 'Performance', available: false,
-    description: 'Query Store (MSSQL/PostgreSQL 17+) — capturing plan history, forcing stable plans, detecting regressions.',
+  { title: 'Query Store & Stats',      route: '/sql/query-store',           badge: 'Performance', available: true,
+    description: 'Query Store (MSSQL) — capturing plan history, forcing stable plans, detecting regressions. pg_stat_statements for PostgreSQL.',
     keyPoints: ['Query Store saves query text, plans, and runtime stats over time', 'Force a good plan with sys.sp_query_store_force_plan (MSSQL)', 'pg_stat_statements + auto_explain give equivalent visibility in PostgreSQL'] },
 
-  { title: 'Statistics & Cardinality', route: '/sql',                       badge: 'Performance', available: false,
+  { title: 'Statistics & Optimizer',   route: '/sql/statistics',            badge: 'Performance', available: true,
     description: 'How the optimizer uses column statistics, histograms, and density vectors — and when to update or trace statistics issues.',
     keyPoints: ['Statistics are single-column or multi-column histograms of value distribution', 'Stale statistics → bad cardinality estimates → wrong join order or index choice', 'UPDATE STATISTICS WITH FULLSCAN / ANALYZE rebuilds from 100% of the data'] },
 
@@ -204,15 +204,15 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'JSON_VALUE/JSON_QUERY/OPENJSON/FOR JSON (MSSQL) vs jsonb operators/functions/GIN indexes (PostgreSQL).',
     keyPoints: ['PostgreSQL jsonb is binary, indexable, and operator-rich', 'OPENJSON with WITH clause projects JSON into typed columns (MSSQL)', 'GIN index on jsonb for fast containment (@>) and key-existence (?) queries'] },
 
-  { title: 'Full-Text Search',         route: '/sql/full-text-search',      badge: 'Advanced Features', available: false,
+  { title: 'Full-Text Search',         route: '/sql/full-text-search',      badge: 'Advanced Features', available: true,
     description: 'FTS catalogs, CONTAINS, FREETEXT (MSSQL) vs tsvector/tsquery/GIN, plainto_tsquery (PostgreSQL).',
     keyPoints: ['MSSQL FTS uses catalogs and indexes maintained by a background service', 'PostgreSQL: to_tsvector(\'english\', col) indexed with GIN', 'Use FTS for natural-language search; use LIKE only for exact prefix matching'] },
 
-  { title: 'Security & RLS',           route: '/sql/security',              badge: 'Advanced Features', available: false,
-    description: 'GRANT/REVOKE, principle of least privilege, Row-Level Security (both dialects), Always Encrypted (MSSQL), pg_hba.conf (PostgreSQL).',
+  { title: 'SQL Security',             route: '/sql/security',              badge: 'Advanced Features', available: true,
+    description: 'GRANT/REVOKE, principle of least privilege, Row-Level Security (both dialects), Always Encrypted (MSSQL), pgcrypto (PostgreSQL).',
     keyPoints: ['Grant execute on stored procedures — not SELECT on tables — for app users', 'Row-Level Security: CREATE POLICY + ALTER TABLE ENABLE ROW LEVEL SECURITY', 'Always Encrypted (MSSQL) / pgcrypto (PostgreSQL) for column-level encryption'] },
 
-  { title: 'Connection Pooling',       route: '/sql',                       badge: 'Advanced Features', available: false,
+  { title: 'Connection Pooling',       route: '/sql/connection-pooling',    badge: 'Advanced Features', available: true,
     description: 'How ADO.NET/pgBouncer/PgPool pool connections, pool sizing formulas, monitoring leaks, and cloud-native pooling.',
     keyPoints: ['ADO.NET pools connections per connection string — never modify the string at runtime', 'PgBouncer in transaction mode is the standard PostgreSQL pooler', 'Pool too small → queuing; too large → db context-switch overhead'] },
 
