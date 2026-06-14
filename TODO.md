@@ -332,7 +332,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/fields` — readonly, const vs static readonly, field initializers, backing fields
 - [x] 2026-06-14 `csharp/constructors` — primary constructors (C# 12), required members, copy constructors
 - [x] 2026-06-14 `csharp/namespaces` — file-scoped, global usings, nested, alias directives
-- [ ] `csharp/arrays` — jagged vs multidimensional, ArraySegment, Span<T>, stackalloc
+- [x] 2026-06-14 `csharp/arrays` — jagged vs multidimensional, ArraySegment, Span<T>, stackalloc
 
 **Type system**
 - [ ] `csharp/oop` — encapsulation, access modifiers, partial classes, sealed
