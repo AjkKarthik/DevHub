@@ -349,7 +349,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `csharp/pattern-matching` — positional, property, list patterns, switch expressions, guards ✓ 2026-06-14
 - [x] `csharp/records` — with-expressions, value equality, record struct, deconstruct ✓ 2026-06-14
 - [x] `csharp/tuples` — ValueTuple vs Tuple, deconstruction, _ discard, tuple return patterns ✓ 2026-06-14
-- [ ] `csharp/extension-methods` — this parameter rules, conflict resolution, extension properties
+- [x] `csharp/extension-methods` — this parameter rules, conflict resolution, extension properties ✓ 2026-06-14
 
 **Async & Parallel**
 - [ ] `csharp/async` — ConfigureAwait, SynchronizationContext, deadlock, async void dangers
