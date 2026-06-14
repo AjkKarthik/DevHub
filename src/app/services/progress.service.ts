@@ -23,7 +23,7 @@ export class ProgressService {
   readonly aspnetPct    = computed(() => Math.round((this.aspnetCount() / this.aspnetTotal) * 100));
 
   // ── SQL (keys prefixed 'sql-') ─────────────────────────────────────────────
-  readonly sqlTotal  = 17;
+  readonly sqlTotal  = 24;
   readonly sqlCount  = computed(() => [...this._done()].filter(r => r.startsWith('sql-')).length);
   readonly sqlPct    = computed(() => Math.round((this.sqlCount() / this.sqlTotal) * 100));
 

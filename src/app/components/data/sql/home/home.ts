@@ -65,32 +65,32 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'GROUP BY, HAVING, COUNT/SUM/AVG/MIN/MAX, ROLLUP, CUBE, GROUPING SETS — with dialect differences.',
     keyPoints: ['Every non-aggregate SELECT column must be in GROUP BY', 'HAVING filters after aggregation; WHERE before', 'ROLLUP adds subtotals; CUBE adds all combinations'] },
 
-  { title: 'Set Operations',           route: '/sql/set-operations',        badge: 'Core SQL', available: false,
+  { title: 'Set Operations',           route: '/sql/set-operations',        badge: 'Core SQL', available: true,
     description: 'UNION, UNION ALL, INTERSECT, EXCEPT (MSSQL) / EXCEPT (PostgreSQL) — combining and comparing result sets.',
     keyPoints: ['UNION deduplicates; UNION ALL is faster and preserves duplicates', 'Column count and types must match across all branches', 'EXCEPT (MSSQL/PG) ≡ MINUS (Oracle)'] },
 
-  { title: 'NULL Handling',            route: '/sql/null-handling',         badge: 'Core SQL', available: false,
+  { title: 'NULL Handling',            route: '/sql/null-handling',         badge: 'Core SQL', available: true,
     description: 'Three-valued logic, IS NULL / IS NOT NULL, COALESCE, NULLIF, ISNULL (MSSQL) vs COALESCE (both), NULL in aggregates and joins.',
     keyPoints: ['NULL propagates through arithmetic and comparisons', 'COALESCE returns first non-NULL; works in both dialects', 'NOT IN with a NULL in the list always returns empty — use NOT EXISTS'] },
 
-  { title: 'MERGE / Upsert',           route: '/sql',                       badge: 'Core SQL', available: false,
+  { title: 'MERGE / Upsert',           route: '/sql/merge',                 badge: 'Core SQL', available: true,
     description: 'MERGE statement (MSSQL) vs INSERT … ON CONFLICT (PostgreSQL) — atomic upsert, delete-on-mismatch, and output clauses.',
     keyPoints: ['MERGE matches source to target and applies WHEN MATCHED/NOT MATCHED actions', 'PostgreSQL ON CONFLICT DO UPDATE SET = upsert shorthand', 'OUTPUT clause captures inserted/updated rows without a second query'] },
 
   // ── Functions & Expressions ──────────────────────────────────────────────────
-  { title: 'String Functions',         route: '/sql/string-functions',      badge: 'Functions', available: false,
+  { title: 'String Functions',         route: '/sql/string-functions',      badge: 'Functions', available: true,
     description: 'CONCAT, SUBSTRING/SUBSTR, TRIM, UPPER/LOWER, REPLACE, CHARINDEX vs POSITION, PATINDEX vs regexp_match.',
     keyPoints: ['SUBSTRING(str, start, len) (MSSQL) vs SUBSTR (PG both work)', 'ILIKE for case-insensitive LIKE in PostgreSQL', 'PATINDEX (MSSQL) vs REGEXP_MATCH / ~ operator (PostgreSQL)'] },
 
-  { title: 'Date & Time Functions',    route: '/sql/date-functions',        badge: 'Functions', available: false,
+  { title: 'Date & Time Functions',    route: '/sql/date-functions',        badge: 'Functions', available: true,
     description: 'DATEADD/date_trunc, DATEDIFF/AGE, FORMAT/TO_CHAR, GETDATE()/NOW() — and timezone-aware timestamp handling.',
     keyPoints: ['DATEADD(day,7,d) (MSSQL) vs d + INTERVAL \'7 days\' (PostgreSQL)', 'DATEDIFF (MSSQL) vs AGE() / EXTRACT (PostgreSQL)', 'Always store timestamps in UTC; use TIMESTAMPTZ in PostgreSQL'] },
 
-  { title: 'Conditional Expressions',  route: '/sql/conditional-expressions', badge: 'Functions', available: false,
+  { title: 'Conditional Expressions',  route: '/sql/conditional-expressions', badge: 'Functions', available: true,
     description: 'CASE WHEN/THEN/ELSE, searched vs simple CASE, IIF (MSSQL), NULLIF, GREATEST/LEAST (PostgreSQL), CHOOSE (MSSQL).',
     keyPoints: ['CASE is the standard — works in SELECT, WHERE, ORDER BY, and aggregates', 'IIF(cond, t, f) is MSSQL shorthand for a two-branch CASE', 'NULLIF(a,b) returns NULL when a=b — useful for avoiding division by zero'] },
 
-  { title: 'Math & Numeric Functions', route: '/sql',                       badge: 'Functions', available: false,
+  { title: 'Math & Numeric Functions', route: '/sql/math-functions',        badge: 'Functions', available: true,
     description: 'ROUND, FLOOR, CEILING, ABS, POWER, SQRT, LOG — and the key differences between integer division in T-SQL and PostgreSQL.',
     keyPoints: ['Integer division in T-SQL: 5/2 = 2; cast to DECIMAL first', 'ROUND(n, -2) rounds to nearest hundred', 'CHECKSUM / MD5 for lightweight hash-based deduplication'] },
 
