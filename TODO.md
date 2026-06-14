@@ -358,7 +358,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `csharp/channels` — bounded vs unbounded, producer/consumer pattern, backpressure ✓ 2026-06-14
 
 **Data & Safety**
-- [ ] `csharp/strings-datetime` — string interning, StringBuilder, DateTimeOffset vs DateTime, NodaTime
+- [x] 2026-06-14 `csharp/strings-datetime` — string interning, StringBuilder, DateTimeOffset vs DateTime, NodaTime
 - [ ] `csharp/collections` — IEnumerable vs IList, Dictionary internals, ImmutableDictionary, concurrent
 - [ ] `csharp/io-serialization` — System.Text.Json source gen, JsonSerializerOptions, Utf8JsonReader
 - [ ] `csharp/gc-disposable` — finalizers, IDisposable, IAsyncDisposable, using declaration, GC.Collect
