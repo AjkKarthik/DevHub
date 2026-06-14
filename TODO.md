@@ -353,7 +353,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 
 **Async & Parallel**
 - [x] `csharp/async` — ConfigureAwait, SynchronizationContext, deadlock, async void dangers ✓ 2026-06-14
-- [ ] `csharp/tasks` — Task.WhenAll/WhenAny, TaskCompletionSource, Unwrap, ContinueWith
+- [x] `csharp/tasks` — Task.WhenAll/WhenAny, TaskCompletionSource, Unwrap, ContinueWith ✓ 2026-06-14
 - [ ] `csharp/threading` — Monitor, Mutex, SemaphoreSlim, Interlocked, lock vs volatile
 - [ ] `csharp/channels` — bounded vs unbounded, producer/consumer pattern, backpressure
 
