@@ -360,7 +360,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Data & Safety**
 - [x] 2026-06-14 `csharp/strings-datetime` — string interning, StringBuilder, DateTimeOffset vs DateTime, NodaTime
 - [x] 2026-06-14 `csharp/collections` — IEnumerable vs IList, Dictionary internals, ImmutableDictionary, concurrent
-- [ ] `csharp/io-serialization` — System.Text.Json source gen, JsonSerializerOptions, Utf8JsonReader
+- [x] 2026-06-14 `csharp/io-serialization` — System.Text.Json source gen, JsonSerializerOptions, Utf8JsonReader
 - [ ] `csharp/gc-disposable` — finalizers, IDisposable, IAsyncDisposable, using declaration, GC.Collect
 - [ ] `csharp/null-safety` — nullable reference types, null-forgiving, required, annotations
 - [ ] `csharp/exceptions` — custom exceptions, ExceptionDispatchInfo, AggregateException, filter
