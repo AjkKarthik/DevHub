@@ -346,7 +346,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/generics` — variance (in/out), constraints chain, INumber<T>, default(T)
 - [x] `csharp/linq` — deferred execution, IQueryable vs IEnumerable, LINQ to objects vs EF ✓ 2026-06-14
 - [x] `csharp/delegates` — Action/Func/Predicate, multicast, event vs delegate, weak events ✓ 2026-06-14
-- [ ] `csharp/pattern-matching` — positional, property, list patterns, switch expressions, guards
+- [x] `csharp/pattern-matching` — positional, property, list patterns, switch expressions, guards ✓ 2026-06-14
 - [ ] `csharp/records` — with-expressions, value equality, record struct, deconstruct
 - [ ] `csharp/tuples` — ValueTuple vs Tuple, deconstruction, _ discard, tuple return patterns
 - [ ] `csharp/extension-methods` — this parameter rules, conflict resolution, extension properties
