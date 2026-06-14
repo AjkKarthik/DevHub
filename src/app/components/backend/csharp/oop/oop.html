@@ -83,9 +83,13 @@
     <p class="at-note">* <code>private protected</code> — derived classes in the <em>same assembly</em> only.</p>
   </section>
 
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
   <app-quiz-block [items]="quiz" />
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
 
   <app-page-complete route="csharp-oop" nextRoute="/csharp/records" nextLabel="Records &amp; Structs" />
 

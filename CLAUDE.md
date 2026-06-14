@@ -209,23 +209,22 @@ structure/UX, only content + accent differ.
 
 ## Current state (update when it changes!)
 
-- **Angular hub**: 45 trackable topics + 10 practice/reference pages (~50 cards).
-- **C# hub**: 41 trackable topics + 9 practice/reference pages (50 cards). Categories:
-  Foundations, OOP, Modern, Data, Async, Safety, Advanced, What's New, Reference.
-  Includes advanced batch: reflection, iterators, regex, channels, unit-testing,
-  expression-trees, dynamic, source-generators (nav group "Advanced & Quality").
-- **ASP.NET Core hub**: 33 trackable topic pages + 9 practice/reference pages (42 total).
-  Feature-complete. Search prefix `aspnet-`. Progress: `aspnetTotal=33` in progress.service.
+- **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
+  Progress: `total=58` in progress.service. All cards `available: true`.
+- **C# hub**: 50 trackable topics + 9 practice/reference pages (59 cards). Feature-complete.
+  Progress: `csharpTotal=50` in progress.service. Categories: Foundations, OOP, Modern, Data,
+  Async, Safety, Advanced, What's New, Reference. All cards `available: true`.
+- **ASP.NET Core hub**: 45 trackable topic pages + 9 practice/reference pages (54 total).
+  Feature-complete. Search prefix `aspnet-`. Progress: `aspnetTotal=45` in progress.service.
   Teal theme `#0e7490`. All topics `available: true` in `backend/aspnet/home/home.ts`.
-- **SQL hub**: 17 trackable topic pages + 9 practice/reference pages (26 total). In progress —
-  expanding to 35 topic pages. Orange theme `$accent: #e05c00`. Search prefix `sql-`. Progress:
-  `sqlTotal=17` in progress.service. Nav groups: Foundations, Core SQL, Advanced Queries,
-  Design & Operations, Reference. Sidebar SQL_DEFAULT + 26 page-specific entries. Shared
-  code-block + challenge-block extended with `'sql'` language. `page-meta tech="sql"` → DB Fiddle.
-  Dual-dialect pattern: MSSQL (T-SQL) + PostgreSQL throughout. New Foundations group:
-  rdbms-concepts, data-modeling, normalization, db-architecture, data-types.
+- **SQL hub**: 44 trackable topic pages + 9 practice/reference pages (53 total). Feature-complete.
+  Orange theme `$accent: #e05c00`. Search prefix `sql-`. Progress: `sqlTotal=44` in progress.service.
+  Nav groups: Foundations, Core SQL, Functions, Programmatic, Schema & Objects, Concurrency &
+  Performance (+ Bulk Ops/Query Store/Statistics/FTS/Security/Connection Pooling), Advanced Queries,
+  Design & Operations, Reference. Dual-dialect pattern: MSSQL (T-SQL) + PostgreSQL throughout.
+  SQL pages use simpler structure: no `app-common-mistakes`, no `app-revision-card`.
 - **Hub home**: Angular, C#, ASP.NET Core, and SQL are `available: true`. Everything else "Soon".
-- Progress totals: Angular 45, C# 41, ASP.NET Core 33, SQL 17 (`progress.service.ts`).
+- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44 (`progress.service.ts`).
 - Hero stat: "100+ Live Pages".
 
 ## Working practices

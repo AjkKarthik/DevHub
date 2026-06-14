@@ -1,13 +1,22 @@
-<div class="page">
-  <h1>resource() API</h1>
-  <p class="subtitle">Angular's built-in reactive async primitive — signal-aware data fetching with loading, error, and status signals.</p>
-  <app-page-meta [readingTime]="10" difficulty="intermediate" since="19" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">resource() API</h1>
+  <p class="page-subtitle">Angular's built-in signal-native async primitive — reactive data fetching with <code>value()</code>, <code>isLoading()</code>, <code>error()</code>, and <code>status()</code> as signals.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since="Angular 19" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>Live demo — fetch post by ID</h2>
     <div class="demo-card">
       <div class="controls">
@@ -35,11 +44,17 @@
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="RxJS / toSignal()" afterLabel="resource() API" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/resource-api" nextRoute="/destroy-ref" nextLabel="Destroy Ref" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="resource-api" nextRoute="/angular/destroy-ref" nextLabel="Destroy Ref" />
 </div>

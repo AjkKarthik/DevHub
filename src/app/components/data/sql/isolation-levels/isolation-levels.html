@@ -1,0 +1,21 @@
+<div class="sq-page">
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Isolation Levels</h1>
+  <p class="page-subtitle">Control what concurrent transactions can see — dirty reads, non-repeatable reads, phantom reads, and snapshot isolation in MSSQL and PostgreSQL.</p>
+
+  <app-page-meta [readingTime]="20" difficulty="advanced" since="SQL:1992+" tech="sql" />
+
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+
+  <app-page-complete route="sql-isolation-levels" nextRoute="/sql/locking" nextLabel="Locking & Deadlocks" />
+</div>

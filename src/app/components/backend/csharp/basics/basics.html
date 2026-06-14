@@ -1,23 +1,26 @@
 <div class="cs-page">
   <div class="page-header-icon cs-icon">C#</div>
   <h1 class="page-title">Variables &amp; Types</h1>
-  <p class="page-subtitle">Built-in types, type inference, operators, control flow, and string features — the foundations of every C# program.</p>
+  <p class="page-subtitle">Built-in types, value vs reference semantics, boxing, type inference, control flow, string features, and modern program structure — the foundations every C# developer must know cold.</p>
 
-  <app-page-meta [readingTime]="25" difficulty="beginner" since=".NET 6+" tech="csharp" />
+  <app-page-meta [readingTime]="18" difficulty="beginner" since=".NET 6+" tech="csharp" />
 
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
 
-  <!-- Code examples -->
   <section class="cs-section">
     <h2>Code Examples</h2>
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
   <app-quiz-block [items]="quiz" />
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
 
   <app-page-complete route="csharp-basics" nextRoute="/csharp/oop" nextLabel="OOP &amp; Classes" />
 </div>

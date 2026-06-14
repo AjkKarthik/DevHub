@@ -1,0 +1,21 @@
+<div class="sq-page">
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Locking & Deadlocks</h1>
+  <p class="page-subtitle">Understand shared, exclusive, and update locks, prevent deadlocks with correct access ordering and hints, and diagnose blocking in production.</p>
+
+  <app-page-meta [readingTime]="20" difficulty="advanced" since="SQL Server 2000+ / PostgreSQL 7+" tech="sql" />
+
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+
+  <app-page-complete route="sql-locking" nextRoute="/sql/execution-plans" nextLabel="Execution Plans" />
+</div>

@@ -168,7 +168,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
     { name: 'ASP.NET Core · 54 pages', route: '/aspnet',                  label: 'New · 45 topics + 9 reference' },
     { name: 'Angular',                 route: '/angular',                  label: '50 pages · updated' },
     { name: 'C# · 58 topics',          route: '/csharp',                   label: 'Full language coverage' },
-    { name: 'SQL',                     route: '/sql',                       label: 'New · 12 topics + reference' },
+    { name: 'SQL · 53 pages',           route: '/sql',                       label: 'New · 44 topics + 9 reference' },
     { name: 'Interview Prep',          route: '/aspnet/interview-prep',    label: 'New · ASP.NET Core Q&A' },
   ];
 
@@ -412,7 +412,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'SQL', time: '~7 hrs',
       tagline: 'Query relational databases — SQL Server & PostgreSQL with real examples.',
       icon: '🗄️', gradient: 'linear-gradient(135deg, #e05c00 0%, #9a3e00 100%)',
-      textDark: false, route: '/sql', available: true, topics: 21,
+      textDark: false, route: '/sql', available: true, topics: 53,
       sub: 'MSSQL · PostgreSQL',
       roles: ['backend', 'architect'],
       highlights: [

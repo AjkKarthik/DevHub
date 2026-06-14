@@ -1,16 +1,21 @@
 <div class="cs-page">
   <div class="page-header-icon cs-icon">C#</div>
   <h1 class="page-title">Inheritance &amp; Overriding</h1>
-  <p class="page-subtitle">Single inheritance with <code>:</code>, virtual/override/new, sealed classes, base() calls, and polymorphism in action.</p>
-  <app-page-meta [readingTime]="30" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+  <p class="page-subtitle">Single inheritance with <code>:</code>, virtual/override/new, sealed classes, base() calls, covariant returns (C# 9), and polymorphism in action.</p>
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since=".NET 6+" tech="csharp" />
   <app-quick-ref [items]="quickRef" />
   <app-theory-block [sections]="theory" />
   <section class="cs-section">
     <h2>Code Examples</h2>
     <app-code-block [tabs]="codeTabs" />
   </section>
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
   <app-quiz-block [items]="quiz" />
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
   <app-page-complete route="csharp-inheritance" nextRoute="/csharp/abstract-interfaces" nextLabel="Abstract &amp; Interfaces" />
 </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CodeBlockComponent, CodeTab } from '../../../shared/code-block/code-block';
 import { TheoryBlockComponent, TheoryPoint } from '../../../shared/theory-block/theory-block';
 import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block';
@@ -7,19 +8,29 @@ import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-bl
 import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
 import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PrerequisitesComponent, Prerequisite } from '../../../shared/prerequisites/prerequisites';
 
 @Component({
   selector: 'app-csharp-reflection',
   standalone: true,
   imports: [
+    CommonModule,
     CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent,
     QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent,
     PageMetaComponent, PageCompleteComponent,
+    CommonMistakesComponent, RevisionCardComponent, PrerequisitesComponent,
   ],
   templateUrl: './reflection.html',
   styleUrl: './reflection.scss',
 })
 export class CsharpReflection {
+
+  prerequisites: Prerequisite[] = [
+    { label: 'Generics',   route: '/csharp/generics' },
+    { label: 'Delegates',  route: '/csharp/delegates' },
+  ];
 
   quickRef: QuickRefItem[] = [
     { name: 'typeof(T)',                  type: 'operator',  desc: 'Compile-time operator that returns the Type object for a known type name', since: 'C# 1' },
@@ -38,55 +49,61 @@ export class CsharpReflection {
     {
       heading: 'What reflection is — typeof vs GetType()',
       points: [
-        'Reflection lets code inspect and manipulate <em>metadata</em> at runtime: types, properties, methods, constructors, and attributes. Everything starts from a <code>System.Type</code> object.',
+        'Reflection lets code inspect and manipulate <em>metadata</em> at runtime: types, properties, methods, constructors, and attributes. Everything starts from a <code>System.Type</code> object obtained via <code>typeof</code> or <code>GetType()</code>.',
         '<code>typeof(Customer)</code> is resolved at <strong>compile time</strong> — you must know the type name. <code>obj.GetType()</code> is resolved at <strong>runtime</strong> and returns the actual most-derived type of the instance, even if the variable is typed as a base class or interface.',
-        'For a variable <code>Animal a = new Dog();</code>, <code>typeof(Animal)</code> is <code>Animal</code> but <code>a.GetType()</code> is <code>Dog</code>. This distinction matters for polymorphic scenarios like serializers.',
-        'You can also load a type by name with <code>Type.GetType("MyApp.Customer, MyApp")</code> — useful for plugin systems where the type name comes from configuration.',
+        'For a variable <code>Animal a = new Dog();</code>, <code>typeof(Animal)</code> yields <code>Animal</code> but <code>a.GetType()</code> yields <code>Dog</code>. This distinction matters for polymorphic scenarios like serializers that must know the concrete type to write the right JSON.',
+        'You can also load a type by assembly-qualified name: <code>Type.GetType("MyApp.Customer, MyApp")</code> — useful for plugin systems where the type name comes from configuration or a database.',
+        '<code>Assembly.GetExecutingAssembly().GetTypes()</code> returns all types in the current assembly — the starting point for plugin scanners, DI auto-registration, and test discovery.',
       ],
     },
     {
       heading: 'Exploring type members',
       points: [
         '<code>Type</code> exposes the full shape of a type: <code>GetProperties()</code>, <code>GetMethods()</code>, <code>GetFields()</code>, <code>GetConstructors()</code>, <code>GetInterfaces()</code> — each returning <code>*Info</code> metadata objects.',
-        'By default only <strong>public instance and static</strong> members are returned. Pass <code>BindingFlags</code> to widen or narrow the search: <code>BindingFlags.NonPublic | BindingFlags.Instance</code> reveals private members.',
-        '<code>PropertyInfo</code> tells you the property name, type, and whether it can read/write (<code>CanRead</code>/<code>CanWrite</code>). <code>MethodInfo</code> exposes parameters and return type and can be invoked with <code>Invoke(obj, args)</code>.',
-        'Reading a value is two steps: get the <code>PropertyInfo</code> from the <code>Type</code>, then call <code>prop.GetValue(instance)</code>. Writing uses <code>prop.SetValue(instance, value)</code>.',
+        'By default only <strong>public instance and static</strong> members are returned. Pass <code>BindingFlags</code> to widen or narrow: <code>BindingFlags.NonPublic | BindingFlags.Instance</code> reveals private members.',
+        '<code>PropertyInfo</code> tells you the property name, type (<code>PropertyType</code>), and whether it can read/write (<code>CanRead</code>/<code>CanWrite</code>). <code>MethodInfo</code> exposes parameters and return type and can be invoked with <code>Invoke(obj, args)</code>.',
+        'Reading a value is two steps: get the <code>PropertyInfo</code> from the <code>Type</code>, then call <code>prop.GetValue(instance)</code>. Writing uses <code>prop.SetValue(instance, value)</code>. Both box arguments and return values, which has a cost.',
+        '<code>MemberInfo</code> is the common base of <code>PropertyInfo</code>, <code>MethodInfo</code>, <code>FieldInfo</code>, and <code>EventInfo</code>. Use it when writing code that handles multiple member kinds generically (e.g. an attribute scanner).',
       ],
     },
     {
       heading: 'Creating instances at runtime',
       points: [
-        '<code>Activator.CreateInstance(type)</code> calls the parameterless constructor of a type known only at runtime. Overloads accept constructor arguments: <code>Activator.CreateInstance(type, arg1, arg2)</code>.',
-        'The generic form <code>Activator.CreateInstance&lt;T&gt;()</code> is what the <code>new()</code> generic constraint uses under the hood.',
-        'For repeated creation, <code>Activator</code> is slow — DI containers and serializers compile a creation delegate once (via expression trees or <code>RuntimeHelpers.GetUninitializedObject</code>) and reuse it.',
-        'A classic use case: a plugin loader reads a class name from config, finds the <code>Type</code> in a loaded assembly, verifies it implements <code>IPlugin</code>, and instantiates it.',
+        '<code>Activator.CreateInstance(type)</code> calls the parameterless constructor of a type known only at runtime. Overloads accept constructor arguments: <code>Activator.CreateInstance(type, arg1, arg2)</code> finds the best-matching constructor by argument types.',
+        'The generic form <code>Activator.CreateInstance&lt;T&gt;()</code> is what the <code>new()</code> generic constraint uses under the hood — it\'s slightly faster because the type is compile-time-known.',
+        'For repeated creation, <code>Activator.CreateInstance</code> is slow — DI containers and serializers compile a factory delegate once (via expression trees or <code>IL.Emit</code>) and reuse it for near-direct-call performance.',
+        '<code>RuntimeHelpers.GetUninitializedObject(type)</code> allocates memory for a type without calling any constructor — all fields are zero/null. Used by deserializers that set fields individually and cannot rely on a parameterless constructor.',
+        'A classic use case: a plugin loader reads a class name from config, calls <code>Type.GetType(...)</code>, verifies the type implements <code>IPlugin</code> with <code>typeof(IPlugin).IsAssignableFrom(type)</code>, then instantiates with <code>Activator.CreateInstance</code>.',
       ],
     },
     {
       heading: 'Custom attributes — declaring and reading',
       points: [
         'An attribute is a class deriving from <code>System.Attribute</code>, by convention named with an <code>Attribute</code> suffix (which the compiler lets you omit at the use site: <code>[Required]</code> for <code>RequiredAttribute</code>).',
-        '<code>[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]</code> restricts where the attribute may appear and whether it can be applied more than once.',
+        '<code>[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]</code> restricts where the attribute may appear and whether it can be applied more than once to the same member.',
         'Attributes are <strong>passive metadata</strong> — they do nothing by themselves. Some other code must read them via reflection: <code>prop.GetCustomAttribute&lt;RequiredAttribute&gt;()</code> or <code>GetCustomAttributes()</code> for multiples.',
-        'Attribute constructor arguments and named properties must be compile-time constants (numbers, strings, enums, types) — you cannot pass arbitrary objects or lambdas.',
+        'Attribute constructor arguments and named properties must be compile-time constants (numbers, strings, enums, <code>Type</code> objects) — you cannot pass arbitrary objects, lambdas, or runtime values.',
+        'The <code>inherit</code> flag on <code>GetCustomAttribute(inherit: true)</code> controls whether attributes on base-class members or overridden methods are included. For most validation use-cases, <code>inherit: true</code> is correct.',
       ],
     },
     {
       heading: 'Real-world uses: serializers, validators, DI containers',
       points: [
-        'JSON serializers walk <code>GetProperties()</code> to discover what to write, and honor attributes like <code>[JsonPropertyName]</code> and <code>[JsonIgnore]</code> to customize output.',
+        'JSON serializers walk <code>GetProperties()</code> to discover what to write, and honor attributes like <code>[JsonPropertyName]</code> and <code>[JsonIgnore]</code> to customize output. System.Text.Json\'s source generator replaces this reflection walk at compile time.',
         'Validation frameworks (DataAnnotations, FluentValidation\'s attribute mode) read attributes like <code>[Required]</code> and <code>[Range]</code> from properties and apply the rules to values fetched with <code>GetValue</code>.',
-        'DI containers reflect over constructors (<code>GetConstructors()</code>) to find the dependencies of a service, resolve each parameter recursively, then instantiate the object — this is "constructor injection" mechanically.',
-        'Test frameworks (xUnit, NUnit) find test methods by scanning assemblies for methods decorated with <code>[Fact]</code> / <code>[Test]</code> attributes and invoke them via <code>MethodInfo.Invoke</code>.',
+        'DI containers reflect over constructors (<code>GetConstructors()</code>) to find a service\'s dependencies, resolve each parameter type recursively, then instantiate the object — this is "constructor injection" reduced to its mechanics.',
+        'Test frameworks (xUnit, NUnit) find test methods by scanning assemblies for methods decorated with <code>[Fact]</code> / <code>[Test]</code> attributes and invoke them via <code>MethodInfo.Invoke</code>. The assembly scan runs once; the test runner\'s caching avoids repeated reflection.',
+        'ORMs (EF Core, Dapper) use reflection to map between C# types and database columns — <code>[Column("customer_id")]</code> attributes tell the ORM how to alias properties, and <code>GetProperties()</code> drives the SQL generation.',
       ],
     },
     {
       heading: 'Performance, caching, and the move to source generators',
       points: [
-        'Reflection is 10–100× slower than direct calls: member lookup does string-based searches, and <code>Invoke</code>/<code>GetValue</code> box arguments and bypass JIT inlining.',
-        'The biggest win is <strong>caching</strong>: look up <code>PropertyInfo[]</code>/<code>MethodInfo</code> once per type and store them in a <code>static ConcurrentDictionary&lt;Type, …&gt;</code>. The lookup is the expensive part; reusing the cached <code>MemberInfo</code> is much cheaper.',
-        'High-performance libraries go further: compile the cached metadata into delegates with expression trees (<code>Expression.Lambda</code>) so subsequent calls run at near-direct-call speed.',
-        'The modern trend is to avoid runtime reflection entirely with <strong>source generators</strong>, which generate the serializer/validator code at compile time (e.g. <code>System.Text.Json</code> source-gen, <code>[GeneratedRegex]</code>). This is faster, trimming/AOT-friendly, and discoverable in the debugger — reflection-heavy code is the main blocker for Native AOT.',
+        'Reflection is 10–100× slower than direct calls: member lookup performs string-based metadata searches, and <code>Invoke</code>/<code>GetValue</code> box value-type arguments and bypass JIT inlining and devirtualisation.',
+        'The biggest single win is <strong>caching MemberInfo</strong>: look up <code>PropertyInfo[]</code>/<code>MethodInfo</code> once per type and store in a <code>static ConcurrentDictionary&lt;Type, …&gt;</code>. The lookup is the expensive part; reusing the cached object is much cheaper.',
+        'High-performance libraries go further: compile the cached metadata into typed delegates with expression trees (<code>Expression.Lambda(...).Compile()</code>) so subsequent calls run at near-direct-call speed with no boxing or virtual dispatch.',
+        'The modern trend is to avoid runtime reflection with <strong>source generators</strong>, which emit the serializer/validator code at compile time (e.g. <code>System.Text.Json</code> source-gen, <code>[GeneratedRegex]</code>, EF Core compiled models). The generated code is visible in the debugger, immune to trimming, and AOT-safe.',
+        'Reflection is incompatible with <strong>Native AOT</strong> unless you annotate every accessed member with <code>[DynamicallyAccessedMembers]</code>. Moving reflection-heavy logic to source generators is the correct long-term strategy for trimming-safe libraries.',
       ],
     },
   ];
@@ -408,6 +425,28 @@ Console.WriteLine(getName(customer));   // Alice — compiled, no Invoke boxing
       answer: 1,
       explanation: 'Source generators (System.Text.Json source-gen, <code>[GeneratedRegex]</code>, etc.) emit ordinary C# at compile time, eliminating runtime metadata walks. The code is fast, visible in the debugger, and — crucially — analyzable by the trimmer and Native AOT, which runtime reflection defeats. Reflection itself remains fully supported.',
     },
+    {
+      q: 'You call <code>Type.GetType("MyApp.Customer")</code> and get <code>null</code>. What is the most likely cause?',
+      options: [
+        'GetType only works with built-in types, not user-defined classes',
+        'The type name must be assembly-qualified: "MyApp.Customer, MyApp" — unqualified names only work for the calling assembly or mscorlib',
+        'Reflection cannot load types that are in a different namespace',
+        'The Customer class must be marked with [Serializable] first',
+      ],
+      answer: 1,
+      explanation: '<code>Type.GetType(name)</code> requires an assembly-qualified name ("Namespace.TypeName, AssemblyName") to find types in other assemblies. Unqualified names only search the calling assembly and mscorlib. Forgetting to include the assembly name is the most common cause of a <code>null</code> return.',
+    },
+    {
+      q: 'What does <code>typeof(IPlugin).IsAssignableFrom(type)</code> check?',
+      options: [
+        'Whether IPlugin can be assigned from type — i.e., whether type is IPlugin or implements/extends IPlugin',
+        'Whether type can be assigned to an IPlugin variable — the same as type is IPlugin',
+        'Whether IPlugin has a base type of type',
+        'It always returns false unless type == typeof(IPlugin)',
+      ],
+      answer: 0,
+      explanation: '<code>IsAssignableFrom(type)</code> asks: "can a variable of this (the receiver) type hold a value of <code>type</code>?" So <code>typeof(IPlugin).IsAssignableFrom(concreteType)</code> returns <code>true</code> if <code>concreteType</code> implements <code>IPlugin</code>. Note the direction: receiver is the base/interface, argument is the concrete type — it\'s easy to get backwards.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -571,5 +610,90 @@ Console.WriteLine(CsvExporter.Export(products));
 // ID,Product Name,Price
 // 1,Widget,9.99
 // 2,Gadget,24.50`,
+  };
+
+  mistakes: CommonMistake[] = [
+    {
+      title: 'Re-calling GetProperties() on every use instead of caching',
+      wrong: `void Serialize(object obj)
+{
+    foreach (var p in obj.GetType().GetProperties()) // fresh scan every call!
+        writer.Write(p.GetValue(obj));
+}`,
+      right: `static readonly ConcurrentDictionary<Type, PropertyInfo[]> _cache = new();
+
+void Serialize(object obj)
+{
+    var props = _cache.GetOrAdd(obj.GetType(), t => t.GetProperties());
+    foreach (var p in props)
+        writer.Write(p.GetValue(obj));
+}`,
+      explanation: 'GetProperties() does a string-based metadata walk every time. In a serializer handling thousands of requests per second, re-scanning the same type repeatedly is a measurable bottleneck. Cache the PropertyInfo[] per type — the scan happens once, subsequent calls just read the dictionary.',
+    },
+    {
+      title: 'Missing BindingFlags and wondering why private members are invisible',
+      wrong: `var fields = typeof(MyClass).GetFields();
+// returns 0 fields — all fields are private backing fields`,
+      right: `var fields = typeof(MyClass).GetFields(
+    BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);`,
+      explanation: 'The parameterless GetFields()/GetProperties()/GetMethods() only returns public members. Private members are fully available via reflection but require BindingFlags.NonPublic. Forgetting this is the #1 cause of "reflection returned nothing" bugs.',
+    },
+    {
+      title: 'Expecting attributes to do something without a consumer',
+      wrong: `public class Order
+{
+    [Required]  // you defined this yourself
+    public string Name { get; set; } = "";
+}
+// No validation happens — who is reading the attribute?`,
+      right: `// Either use the framework's consumer (ASP.NET model binding, Validator.TryValidateObject)
+// or write your own reader:
+var errors = MiniValidator.Validate(order); // reads [Required] via GetCustomAttribute`,
+      explanation: 'Attributes are inert metadata. Applying [Required] to a property does nothing unless some code calls GetCustomAttribute<RequiredAttribute>() and acts on it. This is a common beginner trap — check which framework or validator is actually reading the attribute you placed.',
+    },
+    {
+      title: 'Using reflection in a hot path without caching compiled delegates',
+      wrong: `// GetValue boxes, skips JIT inlining — 50-100x slower than direct access
+var value = prop.GetValue(instance);`,
+      right: `// Compile once per property — subsequent calls are native speed
+Func<Customer, string> getter = Expression.Lambda<Func<Customer, string>>(
+    Expression.Property(Expression.Parameter(typeof(Customer), "c"), prop),
+    Expression.Parameter(typeof(Customer), "c")).Compile();
+// then reuse:
+var value = getter(instance);`,
+      explanation: 'PropertyInfo.GetValue boxes value-type results and prevents JIT optimisations. For properties read millions of times (high-throughput serializers, ORM mapping), compile a typed delegate from the PropertyInfo using expression trees. Cache the delegate statically per property — this brings performance to within a few percent of direct field access.',
+    },
+    {
+      title: 'Using reflection in code that must be trimmed or run as Native AOT',
+      wrong: `// Trimmer removes Customer.Name if it sees no direct references
+var prop = typeof(Customer).GetProperty("Name");
+var val = prop?.GetValue(customer); // null at runtime — trimmed!`,
+      right: `// Annotate what must survive trimming:
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+static void Inspect(Type t) { ... }
+
+// Or move to source generators — the compile-time alternative`,
+      explanation: 'Native AOT and IL trimming remove code they cannot prove is reachable. String-based reflection (GetProperty("Name")) is invisible to the analyzer. Add [DynamicallyAccessedMembers] annotations to tell the trimmer what to preserve, or — better — replace the reflection with a source generator that emits equivalent code at compile time.',
+    },
+  ];
+
+  revision: RevisionSummary = {
+    oneLiner: 'Reflection lets C# code inspect and invoke type metadata at runtime — the foundation of serializers, DI containers, validators, and test runners — but requires caching MemberInfo per type and is incompatible with Native AOT without annotations.',
+    mustKnow: [
+      '<code>typeof(T)</code> is compile-time; <code>obj.GetType()</code> is runtime and returns the actual most-derived type',
+      '<code>GetProperties()</code> returns public members only by default — add <code>BindingFlags.NonPublic</code> to see private members',
+      'Attributes are passive metadata — they do nothing unless some code reads them with <code>GetCustomAttribute&lt;T&gt;()</code>',
+      'Cache <code>PropertyInfo[]</code>/<code>MethodInfo</code> per type in a <code>ConcurrentDictionary</code> — the lookup is the expensive part',
+      'For hot paths, compile cached <code>PropertyInfo</code> into typed delegates with expression trees to reach near-native performance',
+      'String-based reflection is opaque to the trimmer and Native AOT — annotate with <code>[DynamicallyAccessedMembers]</code> or replace with source generators',
+      '<code>Activator.CreateInstance(type)</code> for one-off plugin creation; compile a factory delegate for repeated instantiation',
+    ],
+    interviewFocus: [
+      'What is the difference between <code>typeof(T)</code> and <code>obj.GetType()</code>? When would each return different results?',
+      'Why is caching <code>PropertyInfo</code> important? What is the performance mitigation ladder?',
+      'Why do attributes do nothing on their own? Give an example of something that reads them.',
+      'How does reflection interact with Native AOT and IL trimming? What is the recommended solution?',
+      'When would you use <code>Activator.CreateInstance</code> vs a compiled expression-tree factory?',
+    ],
   };
 }

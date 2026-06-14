@@ -2,12 +2,23 @@
   <div class="page-header-icon cs-icon">C#</div>
   <h1 class="page-title">What's New in C# 13+ &amp; .NET 10/11</h1>
   <p class="page-subtitle">C# 13 features, .NET 9/10 performance improvements, LINQ additions, <code>params ReadOnlySpan&lt;T&gt;</code>, the <code>field</code> keyword, and upcoming C# 14 extensions.</p>
-  <app-page-meta [readingTime]="30" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-page-meta [readingTime]="30" difficulty="advanced" since="C# 13+" tech="csharp" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
-  <section class="cs-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
   <app-challenge-block [item]="challenge" />
   <app-quiz-block [items]="quiz" />
   <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+
   <app-page-complete route="csharp-whats-new-latest" nextRoute="/csharp" nextLabel="C# Hub" />
 </div>

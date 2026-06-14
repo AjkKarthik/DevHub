@@ -1,0 +1,14 @@
+$accent: #e05c00;
+$tint:   #fff7ed;
+
+.sq-page { max-width: 860px; padding: 1rem; margin: 0 auto; }
+.sq-icon { background: $tint; color: $accent; border: 1px solid rgba(224,92,0,.25); }
+.sq-section {
+  margin: 2rem 0;
+  h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: #111827; }
+}
+
+:host-context(body.dark) {
+  .sq-icon { background: #431a03; color: #fdba74; }
+  .sq-section h2 { color: #f9fafb; }
+}

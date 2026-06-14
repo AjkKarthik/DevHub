@@ -79,14 +79,14 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 
 ---
 
-## Current State (as of 2026-06-13)
+## Current State (as of 2026-06-14)
 
 | Hub | Live | Coming Soon | Status |
 |---|---|---|---|
-| Angular | 56 | 12 | Active — 12 remaining |
-| C# | 51 | 8 | Active — 8 remaining |
-| ASP.NET Core | 42 | 12 | Active — 12 remaining |
-| SQL | 26 | 27 | Active — in-progress (Session B next) |
+| Angular | 68 | 0 | Complete — 58 topics + 10 practice/reference |
+| C# | 59 | 0 | Complete — 50 topics + 9 practice/reference |
+| ASP.NET Core | 54 | 0 | Complete — 45 topics + 9 practice/reference |
+| SQL | 53 | 0 | Complete — 44 topics + 9 reference |
 | TypeScript | 0 | 22 | Not started |
 | JavaScript | 0 | 24 | Not started |
 | React | 0 | 24 | Not started |
@@ -159,129 +159,99 @@ work — small number of pages to write, huge improvement to the user experience
 
 **Work one page at a time through this list. Research each topic before writing.**
 
-### 1A — Angular hub (13 remaining) `src/app/components/angular/`
+### 1A — Angular hub ✅ COMPLETE `src/app/components/angular/`
 
-These are the 13 `available: false` cards in `angular/home/home.ts` — confirmed from source.
-Write one per session in priority order:
+All 13 remaining pages completed (2026-06-13). angularTotal = 58. All cards `available: true`. Build passes.
 - [x] 2026-06-13 `route-guards` — functional guards (canActivate/canDeactivate/canMatch), inject() in guards, redirect logic, role-based access
-- [ ] `http-interceptors` — functional interceptors (HttpInterceptorFn), retry, auth token injection, error handling
-- [ ] `signal-effects` — effect() deep-dive, cleanup, allowSignalWrites, untracked(), ordering guarantees
-- [ ] `typed-forms` — AbstractControl typing, FormRecord, NonNullableFormBuilder, type narrowing in templates
-- [ ] `host-directives` — hostDirectives API, exposing inputs/outputs, composing built-in directives
-- [ ] `let-template-vars` — @let syntax, scope rules, async unwrapping patterns, vs local variables
-- [ ] `standalone-migration` — ng generate @angular/core:standalone, migration steps, schematic options
-- [ ] `error-handling-patterns` — ErrorHandler, HttpClient error interceptor, global vs local strategies, user-friendly messages
-- [ ] `msw` — Mock Service Worker in Angular tests, setupWorker, http.get handlers, passthrough
-- [ ] `accessibility` — CDK a11y: FocusTrap, LiveAnnouncer, CdkListbox, ARIA in Angular templates, axe-core
-- [ ] `micro-frontends` — Module Federation with Angular, independent deployments, shared libs, routing across MFEs
-- [ ] `angular-devtools` — Profiler, component tree, change detection flame chart, injector tree
-- [ ] `bundle-optimization` — bundle analysis (source-map-explorer), lazy routes, defer, preloading, tree-shaking
-
-After all 13: update `progress.service.ts` angularTotal (45 → 58), confirm all `available: true`, build.
+- [x] 2026-06-13 `http-interceptors` — functional interceptors (HttpInterceptorFn), retry, auth token injection, error handling
+- [x] 2026-06-13 `signal-effects` — effect() deep-dive, cleanup, allowSignalWrites, untracked(), ordering guarantees
+- [x] 2026-06-13 `typed-forms` — AbstractControl typing, FormRecord, NonNullableFormBuilder, type narrowing in templates
+- [x] 2026-06-13 `host-directives` — hostDirectives API, exposing inputs/outputs, composing built-in directives
+- [x] 2026-06-13 `let-template-vars` — @let syntax, scope rules, async unwrapping patterns, vs local variables
+- [x] 2026-06-13 `standalone-migration` — ng generate @angular/core:standalone, migration steps, schematic options
+- [x] 2026-06-13 `error-handling-patterns` — ErrorHandler, HttpClient error interceptor, global vs local strategies, user-friendly messages
+- [x] 2026-06-13 `msw` — Mock Service Worker in Angular tests, setupWorker, http.get handlers, passthrough
+- [x] 2026-06-13 `accessibility` — CDK a11y: FocusTrap, LiveAnnouncer, CdkListbox, ARIA in Angular templates, axe-core
+- [x] 2026-06-13 `micro-frontends` — Module Federation with Angular, independent deployments, shared libs, routing across MFEs
+- [x] 2026-06-13 `angular-devtools` — Profiler, component tree, change detection flame chart, injector tree
+- [x] 2026-06-13 `bundle-optimization` — bundle analysis (source-map-explorer), lazy routes, defer, preloading, tree-shaking
 
 ---
 
-### 1B — C# hub (9 remaining) `src/app/components/backend/csharp/`
+### 1B — C# hub ✅ COMPLETE `src/app/components/backend/csharp/`
 
-These are the 9 `available: false` cards in `csharp/home/home.ts` — confirmed from source.
+All 9 remaining pages completed (2026-06-13). csharpTotal = 50. All cards `available: true`. Build passes.
 Note: source-generators, expression-trees, dynamic, channels, iterators, regex, reflection,
 unit-testing were completed in session 2026-06-11 and are already live.
-Write one per session in priority order:
 - [x] 2026-06-13 `functional-csharp` — Result<T>, OneOf, FluentResults, railway-oriented programming, avoiding exception-driven control flow
-- [ ] `span-memory` — Span<T>, Memory<T>, ReadOnlySpan, stackalloc, MemoryPool<T>, zero-copy patterns
-- [ ] `di-dotnet` — Microsoft.Extensions.DI deep-dive: lifetimes, keyed services, factory registration, IServiceScope
-- [ ] `json-advanced` — System.Text.Json source gen, JsonSerializerContext, custom converters, Utf8JsonWriter
-- [ ] `unsafe-pointers` — unsafe keyword, fixed statement, pointer arithmetic, stackalloc, P/Invoke foundation
-- [ ] `native-aot` — AOT publishing, trimming annotations, reflection-free patterns, what breaks, when to use
-- [ ] `benchmarkdotnet` — [Benchmark], BenchmarkRunner, MemoryDiagnoser, comparing approaches, reading results
-- [ ] `pinvoke` — DllImport vs LibraryImport, marshalling, unsafe structs, COM interop, platform detection
-- [ ] `dotnet-cli` — dotnet new/build/run/test/publish, global tools, NuGet, project templates, .csproj anatomy
-
-After all 9: update `csharpTotal` (41 → 50), confirm all `available: true`, build.
+- [x] 2026-06-13 `span-memory` — Span<T>, Memory<T>, ReadOnlySpan, stackalloc, MemoryPool<T>, zero-copy patterns
+- [x] 2026-06-13 `di-dotnet` — Microsoft.Extensions.DI deep-dive: lifetimes, keyed services, factory registration, IServiceScope
+- [x] 2026-06-13 `json-advanced` — System.Text.Json source gen, JsonSerializerContext, custom converters, Utf8JsonWriter
+- [x] 2026-06-13 `unsafe-pointers` — unsafe keyword, fixed statement, pointer arithmetic, stackalloc, P/Invoke foundation
+- [x] 2026-06-13 `native-aot` — AOT publishing, trimming annotations, reflection-free patterns, what breaks, when to use
+- [x] 2026-06-13 `benchmarkdotnet` — [Benchmark], BenchmarkRunner, MemoryDiagnoser, comparing approaches, reading results
+- [x] 2026-06-13 `pinvoke` — DllImport vs LibraryImport, marshalling, unsafe structs, COM interop, platform detection
+- [x] 2026-06-13 `dotnet-cli` — dotnet new/build/run/test/publish, global tools, NuGet, project templates, .csproj anatomy
 
 ---
 
-### 1C — ASP.NET Core hub (12 remaining) `src/app/components/backend/aspnet/`
+### 1C — ASP.NET Core hub ✅ COMPLETE `src/app/components/backend/aspnet/`
 
-These are the 12 `available: false` cards in `aspnet/home/home.ts` — confirmed from source.
-Write one per session in priority order:
-- [ ] `fluent-validation` — FluentValidation setup, AbstractValidator, RuleFor, async validators, integration with minimal APIs/controllers
-- [ ] `masstransit` — AddMassTransit, Consumers, Sagas (state machine), request/response, outbox, RabbitMQ/Azure SB
-- [ ] `opentelemetry` — AddOpenTelemetry, tracing + metrics + logs, OTLP exporter, custom spans, Application Insights
-- [ ] `yarp` — YARP reverse proxy, route/cluster config, transforms, load balancing, auth passthrough
-- [ ] `minimal-api-advanced` — endpoint filters, route groups, TypedResults, OpenAPI with Scalar, output caching
-- [ ] `output-caching-advanced` — OutputCache policies, vary-by, cache tags, distributed (Redis), invalidation
-- [ ] `dapper` — Dapper query/execute/QueryMultiple, parameters, dynamic, multi-mapping, Dapper + EF together
-- [ ] `feature-flags` — Microsoft.FeatureManagement, IFeatureManager, targeting filters, appsettings config
-- [ ] `localization` — AddLocalization, IStringLocalizer, resource files, RequestLocalizationMiddleware, cultures
-- [ ] `websockets` — WebSocket middleware, accept handshake, send/receive loop, SignalR vs raw WebSocket
-- [ ] `response-compression` — AddResponseCompression, Brotli/Gzip, compression providers, when to use
-- [ ] `csrf` — Anti-forgery tokens, ValidateAntiForgeryToken, SameSite cookies, CSRF in SPAs/APIs
-
-After all 12: update `aspnetTotal` (33 → 45), confirm all `available: true`, build.
+All 12 remaining pages completed (2026-06-13). aspnetTotal = 45. All cards `available: true`. Build passes.
+- [x] 2026-06-13 `fluent-validation` — FluentValidation setup, AbstractValidator, RuleFor, async validators, integration with minimal APIs/controllers
+- [x] 2026-06-13 `masstransit` — AddMassTransit, Consumers, Sagas (state machine), request/response, outbox, RabbitMQ/Azure SB
+- [x] 2026-06-13 `opentelemetry` — AddOpenTelemetry, tracing + metrics + logs, OTLP exporter, custom spans, Application Insights
+- [x] 2026-06-13 `yarp` — YARP reverse proxy, route/cluster config, transforms, load balancing, auth passthrough
+- [x] 2026-06-13 `minimal-api-advanced` — endpoint filters, route groups, TypedResults, OpenAPI with Scalar, output caching
+- [x] 2026-06-13 `output-caching-advanced` — OutputCache policies, vary-by, cache tags, distributed (Redis), invalidation
+- [x] 2026-06-13 `dapper` — Dapper query/execute/QueryMultiple, parameters, dynamic, multi-mapping, Dapper + EF together
+- [x] 2026-06-13 `feature-flags` — Microsoft.FeatureManagement, IFeatureManager, targeting filters, appsettings config
+- [x] 2026-06-13 `localization` — AddLocalization, IStringLocalizer, resource files, RequestLocalizationMiddleware, cultures
+- [x] 2026-06-13 `websockets` — WebSocket middleware, accept handshake, send/receive loop, SignalR vs raw WebSocket
+- [x] 2026-06-13 `response-compression` — AddResponseCompression, Brotli/Gzip, compression providers, when to use
+- [x] 2026-06-13 `csrf` — Anti-forgery tokens, ValidateAntiForgeryToken, SameSite cookies, CSRF in SPAs/APIs
 
 ---
 
-### 1D — SQL hub (27 remaining) `src/app/components/data/sql/`
+### 1D — SQL hub ✅ COMPLETE `src/app/components/data/sql/`
 
-Continuing from Session A (17 live). Write one page at a time in the order below.
-Research each SQL topic across both MSSQL (T-SQL) and PostgreSQL before writing —
-every page must cover both dialects with explicit diff callouts.
+SQL hub expanded from 17 → 44 trackable topics across 4 batches. All wiring done.
+sqlTotal = 44, hub-home topics = 53. Build passes.
 
-**Next up — Functions + Core SQL**
-- [ ] `string-functions` — LEN/TRIM/CONCAT/SUBSTRING/REPLACE/CHARINDEX, FORMAT,
-  T-SQL vs PostgreSQL function names
-- [ ] `date-functions` — GETDATE/NOW, DATEADD/INTERVAL, DATEDIFF/AGE, EXTRACT,
-  AT TIME ZONE, date arithmetic
-- [ ] `conditional-expressions` — CASE/WHEN, IIF (T-SQL), COALESCE, NULLIF,
-  GREATEST/LEAST (PG), DECODE
-- [ ] `set-operations` — UNION/UNION ALL, INTERSECT, EXCEPT/MINUS, set semantics
-  vs bag semantics, ordering with set ops
-- [ ] `null-handling` — NULL semantics, three-valued logic, IS NULL/IS NOT NULL,
-  COALESCE, NULLIF, NULL in aggregations, NULL in JOINs
-- [ ] Rewrites: `ctes` and `window-functions` (add dual dialect, depth)
+**Batch 1 (2026-06-13/14):**
+- [x] `string-functions` — LEN/TRIM/CONCAT/SUBSTRING/REPLACE/CHARINDEX, FORMAT
+- [x] `date-functions` — GETDATE/NOW, DATEADD/INTERVAL, DATEDIFF/AGE, EXTRACT, AT TIME ZONE
+- [x] `conditional-expressions` — CASE/WHEN, IIF, COALESCE, NULLIF, GREATEST/LEAST
+- [x] `set-operations` — UNION/UNION ALL, INTERSECT, EXCEPT/MINUS, set vs bag semantics
+- [x] `null-handling` — three-valued logic, IS NULL, COALESCE, NULL in aggregations/JOINs
+- [x] `merge` — MERGE statement (T-SQL), INSERT … ON CONFLICT (PG), upsert patterns
+- [x] `math-functions` — ROUND/FLOOR/CEILING/ABS/MOD, numeric precision
 
-**Schema & Objects + Programmatic**
-- [ ] `constraints` — CHECK, UNIQUE, DEFAULT, NOT NULL, FK with ON DELETE CASCADE/
-  SET NULL/RESTRICT, deferrable constraints (PG)
-- [ ] `views` — Simple and complex views, updatable views, WITH CHECK OPTION,
-  indexed/materialized views (MSSQL), materialized views (PG)
-- [ ] `sequences` — CREATE SEQUENCE, NEXT VALUE FOR (T-SQL), nextval (PG), vs IDENTITY,
-  gaps in sequences, restart/increment
-- [ ] `triggers` — AFTER/INSTEAD OF triggers (T-SQL), BEFORE/AFTER/INSTEAD OF (PG),
-  audit logging pattern, trigger pitfalls
-- [ ] `dynamic-sql` — EXEC/sp_executesql (T-SQL), EXECUTE (PG), parameterisation,
-  SQL injection in dynamic SQL, QUOTENAME
-- [ ] Rewrites: `schema-design`, `stored-procedures`
+**Batch 2 (2026-06-14):**
+- [x] `pivoting` — PIVOT/UNPIVOT (T-SQL), crosstab (PG), conditional aggregation, dynamic pivot
+- [x] `constraints` — PK/FK/UNIQUE/CHECK/DEFAULT, ON DELETE CASCADE/SET NULL, DEFERRABLE
+- [x] `views` — updatable views, WITH CHECK OPTION, MSSQL indexed views, PG materialized views
+- [x] `sequences` — CREATE SEQUENCE, NEXT VALUE FOR, nextval(), IDENTITY, gaps
+- [x] `temp-tables` — #temp vs @table_var (MSSQL), PG TEMP TABLE, CTE vs temp table
+- [x] `computed-columns` — virtual vs persisted (MSSQL), GENERATED ALWAYS AS STORED (PG)
+- [x] `stored-functions` — MSSQL scalar/TVF UDFs, PG LANGUAGE sql/plpgsql, IMMUTABLE/STABLE
 
-**Transactions + Performance**
-- [ ] `isolation-levels` — READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE,
-  SNAPSHOT (MSSQL), phenomena (dirty/phantom/non-repeatable read)
-- [ ] `locking` — Shared/exclusive/update locks, lock escalation, deadlocks,
-  WITH (NOLOCK) dangers, SKIP LOCKED (PG), optimistic vs pessimistic
-- [ ] `execution-plans` — Reading SSMS/EXPLAIN plans, seek vs scan, key lookup,
-  hash/merge/nested loop joins, statistics, cardinality estimation
-- [ ] `partitioning` — Table partitioning (T-SQL: partition functions/schemes,
-  PG: declarative partitioning), partition pruning, partition switching
-- [ ] `bulk-operations` — BULK INSERT/COPY, bcp, OPENROWSET, minimal logging,
-  batching large INSERTs, staging patterns
-- [ ] Rewrites: `transactions`, `indexes`, `performance`
+**Batch 3 (2026-06-14):**
+- [x] `cursors` — DECLARE/OPEN/FETCH/CLOSE/DEALLOCATE, FAST_FORWARD, PG FOR loop
+- [x] `triggers` — AFTER/INSTEAD OF (MSSQL), BEFORE/AFTER (PG), NEW/OLD, audit logging
+- [x] `dynamic-sql` — sp_executesql, PG EXECUTE + FORMAT, QUOTENAME, injection prevention
+- [x] `isolation-levels` — READ UNCOMMITTED/COMMITTED/REPEATABLE READ/SERIALIZABLE, SNAPSHOT
+- [x] `locking` — S/X/U locks, UPDLOCK, NOLOCK, FOR UPDATE, SKIP LOCKED, deadlock prevention
+- [x] `execution-plans` — SHOWPLAN/STATISTICS IO, EXPLAIN ANALYZE, Index Seek vs Scan
+- [x] `partitioning` — RANGE/LIST/HASH, MSSQL partition function + scheme, PG declarative
 
-**Advanced Features + Queries**
-- [ ] `full-text-search` — Full-Text Index (T-SQL: CONTAINS/FREETEXT),
-  tsvector/tsquery (PG), ranking, phrase search, vs LIKE
-- [ ] `security-sql` — Row-level security (both), column-level permissions,
-  GRANT/REVOKE/DENY, schemas as security boundaries, always-encrypted
-- [ ] `json-features` — FOR JSON (T-SQL), JSON functions, jsonb (PG): @> operator,
-  GIN indexes, JSON path queries, JSON aggregation
-- [ ] `pivoting` — PIVOT/UNPIVOT (T-SQL), crosstab (PG), conditional aggregation
-  as cross-dialect alternative, dynamic pivot
-- [ ] Rewrite: `subqueries` (add correlated subquery depth, EXISTS vs IN, scalar subquery)
-
-**Reference pages update + final wiring**
-- [ ] Update all 9 reference pages with dual-dialect examples
-- [ ] Update `sqlTotal` in progress.service.ts to 35
-- [ ] Update CLAUDE.md Current State section
+**Batch 4 (2026-06-14):**
+- [x] `bulk-operations` — BULK INSERT/TABLOCK, bcp, PG COPY/\copy, staging pattern, batched DML
+- [x] `query-store` — MSSQL Query Store, plan forcing, pg_stat_statements, top query analysis
+- [x] `statistics` — UPDATE STATISTICS, DBCC SHOW_STATISTICS, ANALYZE, pg_stats, stale stats
+- [x] `full-text-search` — CONTAINS/FREETEXT/CONTAINSTABLE, tsvector/tsquery/GIN, ts_rank
+- [x] `security` — SQL injection/parameterized, GRANT/REVOKE, RLS, encryption, audit triggers
+- [x] `connection-pooling` — ADO.NET pool tuning, PgBouncer modes, idle-in-transaction, sizing
 
 ---
 
@@ -357,59 +327,59 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 #### C# hub — 41 topic pages
 
 **Foundation (do these first — highest traffic)**
-- [ ] `csharp/basics` — value vs reference semantics, boxing, verbatim strings, top-level statements
-- [ ] `csharp/methods` — params, in/out/ref, local functions, expression-bodied, overload resolution
-- [ ] `csharp/fields` — readonly, const vs static readonly, field initializers, backing fields
-- [ ] `csharp/constructors` — primary constructors (C# 12), required members, copy constructors
-- [ ] `csharp/namespaces` — file-scoped, global usings, nested, alias directives
-- [ ] `csharp/arrays` — jagged vs multidimensional, ArraySegment, Span<T>, stackalloc
+- [x] 2026-06-14 `csharp/basics` — value vs reference semantics, boxing, verbatim strings, top-level statements
+- [x] 2026-06-14 `csharp/methods` — params, in/out/ref, local functions, expression-bodied, overload resolution
+- [x] 2026-06-14 `csharp/fields` — readonly, const vs static readonly, field initializers, backing fields
+- [x] 2026-06-14 `csharp/constructors` — primary constructors (C# 12), required members, copy constructors
+- [x] 2026-06-14 `csharp/namespaces` — file-scoped, global usings, nested, alias directives
+- [x] 2026-06-14 `csharp/arrays` — jagged vs multidimensional, ArraySegment, Span<T>, stackalloc
 
 **Type system**
-- [ ] `csharp/oop` — encapsulation, access modifiers, partial classes, sealed
-- [ ] `csharp/inheritance` — virtual/override/new, method hiding, covariant returns (C# 9)
-- [ ] `csharp/abstract-interfaces` — default interface members (C# 8+), static abstract (C# 11+)
-- [ ] `csharp/properties-indexers` — init accessor, required, computed, indexed properties
-- [ ] `csharp/static-enums` — Flags enums, Enum.Parse vs TryParse, enum → int safety
-- [ ] `csharp/structures` — struct vs class, readonly struct, ref struct, record struct
+- [x] 2026-06-14 `csharp/oop` — encapsulation, access modifiers, partial classes, sealed
+- [x] 2026-06-14 `csharp/inheritance` — virtual/override/new, method hiding, covariant returns (C# 9)
+- [x] 2026-06-14 `csharp/abstract-interfaces` — default interface members (C# 8+), static abstract (C# 11+)
+- [x] 2026-06-14 `csharp/properties-indexers` — init accessor, required, computed, indexed properties
+- [x] 2026-06-14 `csharp/static-enums` — Flags enums, Enum.Parse vs TryParse, enum → int safety
+- [x] 2026-06-14 `csharp/structures` — struct vs class, readonly struct, ref struct, record struct
 
 **Modern C#**
-- [ ] `csharp/generics` — variance (in/out), constraints chain, INumber<T>, default(T)
-- [ ] `csharp/linq` — deferred execution, IQueryable vs IEnumerable, LINQ to objects vs EF
-- [ ] `csharp/delegates` — Action/Func/Predicate, multicast, event vs delegate, weak events
-- [ ] `csharp/pattern-matching` — positional, property, list patterns, switch expressions, guards
-- [ ] `csharp/records` — with-expressions, value equality, record struct, deconstruct
-- [ ] `csharp/tuples` — ValueTuple vs Tuple, deconstruction, _ discard, tuple return patterns
-- [ ] `csharp/extension-methods` — this parameter rules, conflict resolution, extension properties
+- [x] 2026-06-14 `csharp/generics` — variance (in/out), constraints chain, INumber<T>, default(T)
+- [x] `csharp/linq` — deferred execution, IQueryable vs IEnumerable, LINQ to objects vs EF ✓ 2026-06-14
+- [x] `csharp/delegates` — Action/Func/Predicate, multicast, event vs delegate, weak events ✓ 2026-06-14
+- [x] `csharp/pattern-matching` — positional, property, list patterns, switch expressions, guards ✓ 2026-06-14
+- [x] `csharp/records` — with-expressions, value equality, record struct, deconstruct ✓ 2026-06-14
+- [x] `csharp/tuples` — ValueTuple vs Tuple, deconstruction, _ discard, tuple return patterns ✓ 2026-06-14
+- [x] `csharp/extension-methods` — this parameter rules, conflict resolution, extension properties ✓ 2026-06-14
 
 **Async & Parallel**
-- [ ] `csharp/async` — ConfigureAwait, SynchronizationContext, deadlock, async void dangers
-- [ ] `csharp/tasks` — Task.WhenAll/WhenAny, TaskCompletionSource, Unwrap, ContinueWith
-- [ ] `csharp/threading` — Monitor, Mutex, SemaphoreSlim, Interlocked, lock vs volatile
-- [ ] `csharp/channels` — bounded vs unbounded, producer/consumer pattern, backpressure
+- [x] `csharp/async` — ConfigureAwait, SynchronizationContext, deadlock, async void dangers ✓ 2026-06-14
+- [x] `csharp/tasks` — Task.WhenAll/WhenAny, TaskCompletionSource, Unwrap, ContinueWith ✓ 2026-06-14
+- [x] `csharp/threading` — Monitor, Mutex, SemaphoreSlim, Interlocked, lock vs volatile ✓ 2026-06-14
+- [x] `csharp/channels` — bounded vs unbounded, producer/consumer pattern, backpressure ✓ 2026-06-14
 
 **Data & Safety**
-- [ ] `csharp/strings-datetime` — string interning, StringBuilder, DateTimeOffset vs DateTime, NodaTime
-- [ ] `csharp/collections` — IEnumerable vs IList, Dictionary internals, ImmutableDictionary, concurrent
-- [ ] `csharp/io-serialization` — System.Text.Json source gen, JsonSerializerOptions, Utf8JsonReader
-- [ ] `csharp/gc-disposable` — finalizers, IDisposable, IAsyncDisposable, using declaration, GC.Collect
-- [ ] `csharp/null-safety` — nullable reference types, null-forgiving, required, annotations
-- [ ] `csharp/exceptions` — custom exceptions, ExceptionDispatchInfo, AggregateException, filter
-- [ ] `csharp/type-conversion` — implicit/explicit operators, Convert vs cast, pattern-based cast
-- [ ] `csharp/system-object` — Equals/GetHashCode contract, == operator, ReferenceEquals
+- [x] 2026-06-14 `csharp/strings-datetime` — string interning, StringBuilder, DateTimeOffset vs DateTime, NodaTime
+- [x] 2026-06-14 `csharp/collections` — IEnumerable vs IList, Dictionary internals, ImmutableDictionary, concurrent
+- [x] 2026-06-14 `csharp/io-serialization` — System.Text.Json source gen, JsonSerializerOptions, Utf8JsonReader
+- [x] 2026-06-14 `csharp/gc-disposable` — finalizers, IDisposable, IAsyncDisposable, using declaration, GC.Collect
+- [x] 2026-06-14 `csharp/null-safety` — nullable reference types, null-forgiving, required, annotations
+- [x] 2026-06-14 `csharp/exceptions` — custom exceptions, ExceptionDispatchInfo, AggregateException, filter
+- [x] 2026-06-14 `csharp/type-conversion` — implicit/explicit operators, Convert vs cast, pattern-based cast
+- [x] 2026-06-14 `csharp/system-object` — Equals/GetHashCode contract, == operator, ReferenceEquals
 
 **Advanced**
-- [ ] `csharp/reflection` — Type.GetMembers, caching MethodInfo, Emit basics, performance cost
-- [ ] `csharp/iterators` — yield state machine IL, IAsyncEnumerable, infinite sequences
-- [ ] `csharp/regex` — named groups, compiled Regex, source-generated ([GeneratedRegex]), backtracking
-- [ ] `csharp/expression-trees` — Expression<Func<T>>, Compile(), building IQueryable predicates
-- [ ] `csharp/dynamic` — dynamic vs object, ExpandoObject, DLR, DynamicObject, COM interop
-- [ ] `csharp/source-generators` — IIncrementalGenerator, SyntaxProvider, output registration
-- [ ] `csharp/unit-testing` — xUnit theories, Moq/NSubstitute, FluentAssertions, AutoFixture
+- [x] 2026-06-14 `csharp/reflection` — Type.GetMembers, caching MethodInfo, Emit basics, performance cost
+- [x] 2026-06-14 `csharp/iterators` — yield state machine IL, IAsyncEnumerable, infinite sequences
+- [x] 2026-06-14 `csharp/regex` — named groups, compiled Regex, source-generated ([GeneratedRegex]), backtracking
+- [x] 2026-06-14 `csharp/expression-trees` — Expression<Func<T>>, Compile(), building IQueryable predicates
+- [x] 2026-06-14 `csharp/dynamic` — dynamic vs object, ExpandoObject, DLR, DynamicObject, COM interop
+- [x] 2026-06-14 `csharp/source-generators` — IIncrementalGenerator, SyntaxProvider, output registration
+- [x] 2026-06-14 `csharp/unit-testing` — xUnit theories, Moq/NSubstitute, FluentAssertions, AutoFixture
 
 **What's New**
-- [ ] `csharp/whats-new-9-10` — records, init, top-level statements, pattern improvements, LINQ changes
-- [ ] `csharp/whats-new-11-12` — required, generic math, raw string literals, primary constructors
-- [ ] `csharp/whats-new-latest` — C# 13+ collection expressions, params span, lock object
+- [x] 2026-06-14 `csharp/whats-new-9-10` — records, init, top-level statements, pattern improvements, LINQ changes
+- [x] 2026-06-14 `csharp/whats-new-11-12` — required, generic math, raw string literals, primary constructors
+- [x] 2026-06-14 `csharp/whats-new-latest` — C# 13+ collection expressions, params span, lock object
 
 ---
 
@@ -1206,6 +1176,27 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
   Next.js App Router, React Native, Symbols/Generators/Proxy/WeakMap (JS), Tailwind CSS,
   Scroll-Driven Animations, PWA/Service Workers, SEO/Meta, Kafka Connect, Schema Registry,
   Redis Stack, Supply Chain Security, Clean Architecture. README rewrite. Build passes.
+- [x] 2026-06-13 — Angular Phase 1A complete: 12 new topic pages (http-interceptors,
+  signal-effects, typed-forms, host-directives, let-template-vars, standalone-migration,
+  error-handling-patterns, msw, accessibility, micro-frontends, angular-devtools,
+  bundle-optimization). angularTotal 45 → 58. All 13 cards available:true. Build passes.
+- [x] 2026-06-13 — C# Phase 1B complete: 8 new topic pages (span-memory, di-dotnet,
+  json-advanced, unsafe-pointers, native-aot, benchmarkdotnet, pinvoke, dotnet-cli).
+  csharpTotal 41 → 50. All 9 cards available:true. Build passes.
+- [x] 2026-06-13 — ASP.NET Core Phase 1C complete: 12 new topic pages (fluent-validation,
+  masstransit, opentelemetry, yarp, minimal-api-advanced, output-caching-advanced, dapper,
+  feature-flags, localization, websockets, response-compression, csrf).
+  aspnetTotal 33 → 45. All 12 cards available:true. Build passes.
+- [x] 2026-06-14 — SQL hub Phase 1D complete: 27 new topic pages across 4 batches.
+  sqlTotal 17 → 44. hub-home topics 26 → 53. All wiring done. Build passes.
+  Batch 1: string-functions, date-functions, conditional-expressions, set-operations,
+  null-handling, merge, math-functions.
+  Batch 2: pivoting, constraints, views, sequences, temp-tables, computed-columns,
+  stored-functions.
+  Batch 3: cursors, triggers, dynamic-sql, isolation-levels, locking, execution-plans,
+  partitioning.
+  Batch 4: bulk-operations, query-store, statistics, full-text-search, security,
+  connection-pooling.
 - [x] 2026-06-13 — SQL hub Session A: 5 new Foundations topics + Core SQL rewrites.
   sqlTotal 12 → 17. Build passes.
 - [x] 2026-06-12 — ASP.NET Core hub Phase 3: 9 parity practice/reference pages. Hub

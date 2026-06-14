@@ -45,6 +45,9 @@
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <!-- ── Common Mistakes ──────────────────────────────────────────────────── -->
+  <app-common-mistakes [items]="mistakes" />
+
   <!-- ── Challenge ──────────────────────────────────────────────────────────── -->
   <section class="demo-section">
     <div class="demo-section-header">
@@ -71,6 +74,9 @@
     </div>
     <app-qna-block [items]="qna" />
   </section>
+
+  <!-- ── Revision Card ─────────────────────────────────────────────────────── -->
+  <app-revision-card [summary]="revision" />
 
   <!-- ── Page Complete ──────────────────────────────────────────────────────── -->
   <app-page-complete
