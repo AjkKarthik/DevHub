@@ -372,7 +372,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/iterators` — yield state machine IL, IAsyncEnumerable, infinite sequences
 - [x] 2026-06-14 `csharp/regex` — named groups, compiled Regex, source-generated ([GeneratedRegex]), backtracking
 - [x] 2026-06-14 `csharp/expression-trees` — Expression<Func<T>>, Compile(), building IQueryable predicates
-- [ ] `csharp/dynamic` — dynamic vs object, ExpandoObject, DLR, DynamicObject, COM interop
+- [x] 2026-06-14 `csharp/dynamic` — dynamic vs object, ExpandoObject, DLR, DynamicObject, COM interop
 - [ ] `csharp/source-generators` — IIncrementalGenerator, SyntaxProvider, output registration
 - [ ] `csharp/unit-testing` — xUnit theories, Moq/NSubstitute, FluentAssertions, AutoFixture
 
