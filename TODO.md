@@ -327,8 +327,8 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 #### C# hub — 41 topic pages
 
 **Foundation (do these first — highest traffic)**
-- [ ] `csharp/basics` — value vs reference semantics, boxing, verbatim strings, top-level statements
-- [ ] `csharp/methods` — params, in/out/ref, local functions, expression-bodied, overload resolution
+- [x] 2026-06-14 `csharp/basics` — value vs reference semantics, boxing, verbatim strings, top-level statements
+- [x] 2026-06-14 `csharp/methods` — params, in/out/ref, local functions, expression-bodied, overload resolution
 - [ ] `csharp/fields` — readonly, const vs static readonly, field initializers, backing fields
 - [ ] `csharp/constructors` — primary constructors (C# 12), required members, copy constructors
 - [ ] `csharp/namespaces` — file-scoped, global usings, nested, alias directives
