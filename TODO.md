@@ -368,7 +368,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/system-object` — Equals/GetHashCode contract, == operator, ReferenceEquals
 
 **Advanced**
-- [ ] `csharp/reflection` — Type.GetMembers, caching MethodInfo, Emit basics, performance cost
+- [x] 2026-06-14 `csharp/reflection` — Type.GetMembers, caching MethodInfo, Emit basics, performance cost
 - [ ] `csharp/iterators` — yield state machine IL, IAsyncEnumerable, infinite sequences
 - [ ] `csharp/regex` — named groups, compiled Regex, source-generated ([GeneratedRegex]), backtracking
 - [ ] `csharp/expression-trees` — Expression<Func<T>>, Compile(), building IQueryable predicates
