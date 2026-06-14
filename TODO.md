@@ -343,7 +343,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/structures` — struct vs class, readonly struct, ref struct, record struct
 
 **Modern C#**
-- [ ] `csharp/generics` — variance (in/out), constraints chain, INumber<T>, default(T)
+- [x] 2026-06-14 `csharp/generics` — variance (in/out), constraints chain, INumber<T>, default(T)
 - [ ] `csharp/linq` — deferred execution, IQueryable vs IEnumerable, LINQ to objects vs EF
 - [ ] `csharp/delegates` — Action/Func/Predicate, multicast, event vs delegate, weak events
 - [ ] `csharp/pattern-matching` — positional, property, list patterns, switch expressions, guards
