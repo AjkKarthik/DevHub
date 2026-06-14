@@ -1,13 +1,24 @@
 <div class="cs-page">
   <div class="page-header-icon cs-icon">C#</div>
   <h1 class="page-title">System.Object</h1>
-  <p class="page-subtitle">Every C# type derives from <code>object</code>. Master <code>ToString()</code>, <code>Equals()</code>, <code>GetHashCode()</code>, <code>GetType()</code>, and proper equality overrides.</p>
-  <app-page-meta [readingTime]="20" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+  <p class="page-subtitle">Every C# type derives from <code>object</code>. Master <code>ToString()</code>, <code>Equals()</code>, <code>GetHashCode()</code>, <code>GetType()</code>, <code>ReferenceEquals</code>, and the pitfalls of mutable keys.</p>
+
+  <app-page-meta [readingTime]="35" difficulty="intermediate" since="C# 1+" tech="csharp" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
-  <section class="cs-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
   <app-challenge-block [item]="challenge" />
   <app-quiz-block [items]="quiz" />
   <app-qna-block [items]="qna" />
-  <app-page-complete route="csharp-system-object" nextRoute="/csharp/records" nextLabel="Records &amp; Structs" />
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="csharp-system-object" nextRoute="/csharp/reflection" nextLabel="Reflection" />
 </div>

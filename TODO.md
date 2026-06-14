@@ -365,7 +365,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/null-safety` — nullable reference types, null-forgiving, required, annotations
 - [x] 2026-06-14 `csharp/exceptions` — custom exceptions, ExceptionDispatchInfo, AggregateException, filter
 - [x] 2026-06-14 `csharp/type-conversion` — implicit/explicit operators, Convert vs cast, pattern-based cast
-- [ ] `csharp/system-object` — Equals/GetHashCode contract, == operator, ReferenceEquals
+- [x] 2026-06-14 `csharp/system-object` — Equals/GetHashCode contract, == operator, ReferenceEquals
 
 **Advanced**
 - [ ] `csharp/reflection` — Type.GetMembers, caching MethodInfo, Emit basics, performance cost
