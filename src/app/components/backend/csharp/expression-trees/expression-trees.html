@@ -1,13 +1,26 @@
 <div class="cs-page">
   <div class="page-header-icon cs-icon">C#</div>
   <h1 class="page-title">Expression Trees</h1>
-  <p class="page-subtitle">Code as data — how Expression&lt;Func&lt;T&gt;&gt; works, how EF Core turns lambdas into SQL, and building dynamic queries safely.</p>
-  <app-page-meta [readingTime]="26" difficulty="advanced" since=".NET 6+" tech="csharp" />
+  <p class="page-subtitle">Code as data — how <code>Expression&lt;Func&lt;T&gt;&gt;</code> works, how EF Core turns lambdas into SQL, and building dynamic queries safely without string concatenation.</p>
+
+  <app-page-meta [readingTime]="35" difficulty="advanced" since="C# 3+" tech="csharp" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
-  <section class="cs-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
   <app-challenge-block [item]="challenge" />
   <app-quiz-block [items]="quiz" />
   <app-qna-block [items]="qna" />
-  <app-page-complete route="csharp-expression-trees" nextRoute="/csharp/source-generators" nextLabel="Source Generators" />
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="csharp-expression-trees" nextRoute="/csharp/dynamic" nextLabel="dynamic &amp; ExpandoObject" />
 </div>
