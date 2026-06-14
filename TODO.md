@@ -374,7 +374,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/expression-trees` — Expression<Func<T>>, Compile(), building IQueryable predicates
 - [x] 2026-06-14 `csharp/dynamic` — dynamic vs object, ExpandoObject, DLR, DynamicObject, COM interop
 - [x] 2026-06-14 `csharp/source-generators` — IIncrementalGenerator, SyntaxProvider, output registration
-- [ ] `csharp/unit-testing` — xUnit theories, Moq/NSubstitute, FluentAssertions, AutoFixture
+- [x] 2026-06-14 `csharp/unit-testing` — xUnit theories, Moq/NSubstitute, FluentAssertions, AutoFixture
 
 **What's New**
 - [ ] `csharp/whats-new-9-10` — records, init, top-level statements, pattern improvements, LINQ changes

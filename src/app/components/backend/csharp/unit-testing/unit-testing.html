@@ -1,13 +1,24 @@
 <div class="cs-page">
   <div class="page-header-icon cs-icon">C#</div>
   <h1 class="page-title">Unit Testing (xUnit &amp; Moq)</h1>
-  <p class="page-subtitle">Write fast, reliable tests with xUnit's Facts and Theories, isolate dependencies with Moq, and design code that is easy to test in the first place.</p>
-  <app-page-meta [readingTime]="25" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+  <p class="page-subtitle">Write fast, reliable tests with xUnit Facts and Theories, isolate dependencies with Moq, and design code that is easy to test from the start.</p>
+
+  <app-page-meta [readingTime]="30" difficulty="intermediate" since=".NET 5+" tech="csharp" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
-  <section class="cs-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
   <app-challenge-block [item]="challenge" />
   <app-quiz-block [items]="quiz" />
   <app-qna-block [items]="qna" />
-  <app-page-complete route="csharp-unit-testing" nextRoute="/csharp/exceptions" nextLabel="Exceptions" />
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="csharp-unit-testing" nextRoute="/csharp/whats-new-9-10" nextLabel="What's New in C# 9 &amp; 10" />
 </div>
