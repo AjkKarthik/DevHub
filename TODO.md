@@ -329,7 +329,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Foundation (do these first — highest traffic)**
 - [x] 2026-06-14 `csharp/basics` — value vs reference semantics, boxing, verbatim strings, top-level statements
 - [x] 2026-06-14 `csharp/methods` — params, in/out/ref, local functions, expression-bodied, overload resolution
-- [ ] `csharp/fields` — readonly, const vs static readonly, field initializers, backing fields
+- [x] 2026-06-14 `csharp/fields` — readonly, const vs static readonly, field initializers, backing fields
 - [ ] `csharp/constructors` — primary constructors (C# 12), required members, copy constructors
 - [ ] `csharp/namespaces` — file-scoped, global usings, nested, alias directives
 - [ ] `csharp/arrays` — jagged vs multidimensional, ArraySegment, Span<T>, stackalloc
