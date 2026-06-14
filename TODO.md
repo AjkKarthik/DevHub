@@ -364,7 +364,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/gc-disposable` — finalizers, IDisposable, IAsyncDisposable, using declaration, GC.Collect
 - [x] 2026-06-14 `csharp/null-safety` — nullable reference types, null-forgiving, required, annotations
 - [x] 2026-06-14 `csharp/exceptions` — custom exceptions, ExceptionDispatchInfo, AggregateException, filter
-- [ ] `csharp/type-conversion` — implicit/explicit operators, Convert vs cast, pattern-based cast
+- [x] 2026-06-14 `csharp/type-conversion` — implicit/explicit operators, Convert vs cast, pattern-based cast
 - [ ] `csharp/system-object` — Equals/GetHashCode contract, == operator, ReferenceEquals
 
 **Advanced**

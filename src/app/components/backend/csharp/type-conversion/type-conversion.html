@@ -1,9 +1,9 @@
 <div class="cs-page">
   <div class="page-header-icon cs-icon">C#</div>
   <h1 class="page-title">Type Conversion</h1>
-  <p class="page-subtitle">Implicit and explicit casts, <code>as</code>/<code>is</code> patterns, <code>checked</code>/<code>unchecked</code>, Convert, TryParse, and custom conversion operators.</p>
+  <p class="page-subtitle">Implicit and explicit casts, <code>as</code>/<code>is</code> patterns, <code>checked</code>/<code>unchecked</code>, boxing/unboxing, culture-aware parsing, and custom conversion operators.</p>
 
-  <app-page-meta [readingTime]="25" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+  <app-page-meta [readingTime]="35" difficulty="intermediate" since="C# 1+" tech="csharp" />
 
   <app-quick-ref [items]="quickRef" />
 
@@ -14,11 +14,11 @@
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-common-mistakes [items]="mistakes" />
   <app-challenge-block [item]="challenge" />
-
   <app-quiz-block [items]="quiz" />
-
   <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
 
-  <app-page-complete route="csharp-type-conversion" nextRoute="/csharp/constructors" nextLabel="Constructors" />
+  <app-page-complete route="csharp-type-conversion" nextRoute="/csharp/system-object" nextLabel="System.Object" />
 </div>
