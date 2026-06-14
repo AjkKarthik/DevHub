@@ -337,7 +337,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Type system**
 - [x] 2026-06-14 `csharp/oop` — encapsulation, access modifiers, partial classes, sealed
 - [x] 2026-06-14 `csharp/inheritance` — virtual/override/new, method hiding, covariant returns (C# 9)
-- [ ] `csharp/abstract-interfaces` — default interface members (C# 8+), static abstract (C# 11+)
+- [x] 2026-06-14 `csharp/abstract-interfaces` — default interface members (C# 8+), static abstract (C# 11+)
 - [ ] `csharp/properties-indexers` — init accessor, required, computed, indexed properties
 - [ ] `csharp/static-enums` — Flags enums, Enum.Parse vs TryParse, enum → int safety
 - [ ] `csharp/structures` — struct vs class, readonly struct, ref struct, record struct
