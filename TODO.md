@@ -340,7 +340,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/abstract-interfaces` — default interface members (C# 8+), static abstract (C# 11+)
 - [x] 2026-06-14 `csharp/properties-indexers` — init accessor, required, computed, indexed properties
 - [x] 2026-06-14 `csharp/static-enums` — Flags enums, Enum.Parse vs TryParse, enum → int safety
-- [ ] `csharp/structures` — struct vs class, readonly struct, ref struct, record struct
+- [x] 2026-06-14 `csharp/structures` — struct vs class, readonly struct, ref struct, record struct
 
 **Modern C#**
 - [ ] `csharp/generics` — variance (in/out), constraints chain, INumber<T>, default(T)
