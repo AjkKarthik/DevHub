@@ -344,7 +344,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 
 **Modern C#**
 - [x] 2026-06-14 `csharp/generics` — variance (in/out), constraints chain, INumber<T>, default(T)
-- [ ] `csharp/linq` — deferred execution, IQueryable vs IEnumerable, LINQ to objects vs EF
+- [x] `csharp/linq` — deferred execution, IQueryable vs IEnumerable, LINQ to objects vs EF ✓ 2026-06-14
 - [ ] `csharp/delegates` — Action/Func/Predicate, multicast, event vs delegate, weak events
 - [ ] `csharp/pattern-matching` — positional, property, list patterns, switch expressions, guards
 - [ ] `csharp/records` — with-expressions, value equality, record struct, deconstruct
