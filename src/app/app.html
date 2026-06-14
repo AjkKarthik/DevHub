@@ -192,6 +192,17 @@
       <a routerLink="/sql/date-functions"          routerLinkActive="active"><span class="nl-text">Date &amp; Time</span>@if(progress.isDone('sql-date-functions')){<span class="nl-done">✓</span>}@if(diff('sql-date-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/conditional-expressions" routerLinkActive="active"><span class="nl-text">Conditional Expressions</span>@if(progress.isDone('sql-conditional-expressions')){<span class="nl-done">✓</span>}@if(diff('sql-conditional-expressions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/math-functions"          routerLinkActive="active"><span class="nl-text">Math &amp; Numeric</span>@if(progress.isDone('sql-math-functions')){<span class="nl-done">✓</span>}@if(diff('sql-math-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/pivoting"               routerLinkActive="active"><span class="nl-text">Pivoting & Cross-Tab</span>@if(progress.isDone('sql-pivoting')){<span class="nl-done">✓</span>}@if(diff('sql-pivoting');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/stored-functions"       routerLinkActive="active"><span class="nl-text">Stored Functions</span>@if(progress.isDone('sql-stored-functions')){<span class="nl-done">✓</span>}@if(diff('sql-stored-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Schema & Objects</p>
+      <a routerLink="/sql/constraints"            routerLinkActive="active"><span class="nl-text">Constraints</span>@if(progress.isDone('sql-constraints')){<span class="nl-done">✓</span>}@if(diff('sql-constraints');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/views"                  routerLinkActive="active"><span class="nl-text">Views</span>@if(progress.isDone('sql-views')){<span class="nl-done">✓</span>}@if(diff('sql-views');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/sequences"              routerLinkActive="active"><span class="nl-text">Sequences &amp; Identity</span>@if(progress.isDone('sql-sequences')){<span class="nl-done">✓</span>}@if(diff('sql-sequences');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/temp-tables"            routerLinkActive="active"><span class="nl-text">Temp Tables</span>@if(progress.isDone('sql-temp-tables')){<span class="nl-done">✓</span>}@if(diff('sql-temp-tables');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/computed-columns"       routerLinkActive="active"><span class="nl-text">Computed Columns</span>@if(progress.isDone('sql-computed-columns')){<span class="nl-done">✓</span>}@if(diff('sql-computed-columns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">

@@ -107,7 +107,7 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'ROW_NUMBER, RANK, DENSE_RANK, NTILE, LAG, LEAD, FIRST/LAST VALUE, running totals — OVER/PARTITION BY/frame clauses.',
     keyPoints: ['OVER() defines the window; PARTITION BY resets it per group', 'ROWS UNBOUNDED PRECEDING for running totals', 'FILTER clause in PostgreSQL: SUM(x) FILTER (WHERE …)'] },
 
-  { title: 'Pivoting & CROSSTAB',      route: '/sql/pivoting',              badge: 'Advanced Queries', available: false,
+  { title: 'Pivoting & CROSSTAB',      route: '/sql/pivoting',              badge: 'Advanced Queries', available: true,
     description: 'PIVOT/UNPIVOT (MSSQL), crosstab() with tablefunc (PostgreSQL), and the portable CASE-based pivot.',
     keyPoints: ['PIVOT in MSSQL uses aggregate + FOR … IN list', 'PostgreSQL uses crosstab() from the tablefunc extension', 'CASE-based manual pivot works in both dialects with no extensions'] },
 
@@ -116,23 +116,23 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'Practical schema design — surrogate vs natural keys, naming conventions, schemas as namespaces (both dialects).',
     keyPoints: ['Surrogate INT/BIGINT PKs with UNIQUE constraint on natural keys', 'Use schemas (dbo / public) to organise objects', 'Narrow rows, correct types, and FK indexes reduce fragmentation'] },
 
-  { title: 'Constraints',              route: '/sql/constraints',           badge: 'Schema & Objects', available: false,
+  { title: 'Constraints',              route: '/sql/constraints',           badge: 'Schema & Objects', available: true,
     description: 'PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, DEFAULT, NOT NULL — inline vs out-of-line, deferrable (PostgreSQL), partial (PostgreSQL).',
     keyPoints: ['CHECK constraints validate domain rules at the DB layer', 'DEFERRABLE INITIALLY DEFERRED FK (PostgreSQL) allows batch inserts', 'Partial unique index in PostgreSQL: UNIQUE WHERE deleted_at IS NULL'] },
 
-  { title: 'Views & Materialized Views', route: '/sql/views',               badge: 'Schema & Objects', available: false,
+  { title: 'Views & Materialized Views', route: '/sql/views',               badge: 'Schema & Objects', available: true,
     description: 'Regular views, indexed views (MSSQL), materialized views (PostgreSQL) — creation, refresh, and query rewrite.',
     keyPoints: ['Regular views are query macros — no stored data', 'MSSQL indexed views store data when WITH SCHEMABINDING + UNIQUE CLUSTERED INDEX', 'PostgreSQL MATERIALIZED VIEW: REFRESH MATERIALIZED VIEW CONCURRENTLY'] },
 
-  { title: 'Sequences & Identity',     route: '/sql/sequences',             badge: 'Schema & Objects', available: false,
+  { title: 'Sequences & Identity',     route: '/sql/sequences',             badge: 'Schema & Objects', available: true,
     description: 'IDENTITY(1,1) (MSSQL) vs SERIAL/BIGSERIAL/GENERATED ALWAYS AS IDENTITY (PostgreSQL) — and standalone SEQUENCE objects.',
     keyPoints: ['IDENTITY in MSSQL; GENERATED ALWAYS AS IDENTITY is ANSI SQL', 'SEQUENCE objects can be shared across tables', 'Use BIGINT or BIGSERIAL for high-volume tables to avoid overflow'] },
 
-  { title: 'Temp Tables & Table Variables', route: '/sql',                  badge: 'Schema & Objects', available: false,
+  { title: 'Temp Tables & Table Variables', route: '/sql/temp-tables',      badge: 'Schema & Objects', available: true,
     description: '#temp tables vs @table variables (MSSQL) vs TEMP TABLE (PostgreSQL) — scoping, statistics, and when each is appropriate.',
     keyPoints: ['#temp has statistics — optimizer makes better plans; @table does not', 'MSSQL temp tables survive UDF calls and procedures in the same session', 'PostgreSQL ON COMMIT DROP creates session-scoped temporary tables'] },
 
-  { title: 'Computed & Generated Columns', route: '/sql',                   badge: 'Schema & Objects', available: false,
+  { title: 'Computed & Generated Columns', route: '/sql/computed-columns',  badge: 'Schema & Objects', available: true,
     description: 'Persisted computed columns (MSSQL AS … PERSISTED) vs GENERATED ALWAYS AS STORED (PostgreSQL) — indexing and use cases.',
     keyPoints: ['Persisted computed columns can be indexed for fast lookups', 'MSSQL: col AS expression PERSISTED; PostgreSQL: GENERATED ALWAYS AS (expr) STORED', 'Avoid expensive function calls in computed columns — they run on every write'] },
 
@@ -141,7 +141,7 @@ const ALL_TOPICS: SqlTopic[] = [
     description: 'CREATE PROCEDURE (T-SQL) vs PL/pgSQL functions — parameters, TRY/CATCH vs EXCEPTION blocks, parameter sniffing.',
     keyPoints: ['Wrap DML in TRY/CATCH with ROLLBACK in the CATCH block (MSSQL)', 'PL/pgSQL uses RAISE EXCEPTION / BEGIN...EXCEPTION (PostgreSQL)', 'Parameter sniffing: use OPTION(RECOMPILE) or OPTIMIZE FOR to fix bad plans'] },
 
-  { title: 'Stored Functions',         route: '/sql',                       badge: 'Programmatic', available: false,
+  { title: 'Stored Functions',         route: '/sql/stored-functions',      badge: 'Programmatic', available: true,
     description: 'Scalar UDFs, inline table-valued functions (MSSQL), and PL/pgSQL RETURNS TABLE functions — plus performance implications.',
     keyPoints: ['Scalar UDFs in MSSQL inhibit parallelism — prefer TVFs or inline expressions', 'Inline TVFs are expanded like views; multi-statement TVFs are opaque to the optimizer', 'PostgreSQL RETURNS TABLE functions are the idiomatic alternative to stored procedures'] },
 
