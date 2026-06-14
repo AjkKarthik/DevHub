@@ -348,7 +348,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `csharp/delegates` — Action/Func/Predicate, multicast, event vs delegate, weak events ✓ 2026-06-14
 - [x] `csharp/pattern-matching` — positional, property, list patterns, switch expressions, guards ✓ 2026-06-14
 - [x] `csharp/records` — with-expressions, value equality, record struct, deconstruct ✓ 2026-06-14
-- [ ] `csharp/tuples` — ValueTuple vs Tuple, deconstruction, _ discard, tuple return patterns
+- [x] `csharp/tuples` — ValueTuple vs Tuple, deconstruction, _ discard, tuple return patterns ✓ 2026-06-14
 - [ ] `csharp/extension-methods` — this parameter rules, conflict resolution, extension properties
 
 **Async & Parallel**
