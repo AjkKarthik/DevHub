@@ -377,9 +377,9 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-14 `csharp/unit-testing` — xUnit theories, Moq/NSubstitute, FluentAssertions, AutoFixture
 
 **What's New**
-- [ ] `csharp/whats-new-9-10` — records, init, top-level statements, pattern improvements, LINQ changes
-- [ ] `csharp/whats-new-11-12` — required, generic math, raw string literals, primary constructors
-- [ ] `csharp/whats-new-latest` — C# 13+ collection expressions, params span, lock object
+- [x] 2026-06-14 `csharp/whats-new-9-10` — records, init, top-level statements, pattern improvements, LINQ changes
+- [x] 2026-06-14 `csharp/whats-new-11-12` — required, generic math, raw string literals, primary constructors
+- [x] 2026-06-14 `csharp/whats-new-latest` — C# 13+ collection expressions, params span, lock object
 
 ---
 
