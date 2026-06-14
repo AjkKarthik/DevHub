@@ -352,7 +352,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `csharp/extension-methods` — this parameter rules, conflict resolution, extension properties ✓ 2026-06-14
 
 **Async & Parallel**
-- [ ] `csharp/async` — ConfigureAwait, SynchronizationContext, deadlock, async void dangers
+- [x] `csharp/async` — ConfigureAwait, SynchronizationContext, deadlock, async void dangers ✓ 2026-06-14
 - [ ] `csharp/tasks` — Task.WhenAll/WhenAny, TaskCompletionSource, Unwrap, ContinueWith
 - [ ] `csharp/threading` — Monitor, Mutex, SemaphoreSlim, Interlocked, lock vs volatile
 - [ ] `csharp/channels` — bounded vs unbounded, producer/consumer pattern, backpressure
