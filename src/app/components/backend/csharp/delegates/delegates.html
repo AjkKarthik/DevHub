@@ -23,12 +23,16 @@
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
 
   <app-quiz-block [items]="quiz" />
 
   <app-qna-block [items]="qna" />
 
-  <app-page-complete route="csharp-delegates" />
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="csharp-delegates" nextRoute="/csharp/pattern-matching" nextLabel="Pattern Matching" />
 
 </div>
