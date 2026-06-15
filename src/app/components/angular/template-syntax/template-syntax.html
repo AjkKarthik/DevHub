@@ -1,14 +1,21 @@
-<div class="page">
-  <h1>Template Syntax</h1>
-  <p class="subtitle">Angular's declarative template language — interpolation, bindings, pipes, and control flow.</p>
-  <app-page-meta [readingTime]="10" difficulty="beginner" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Template Syntax</h1>
+  <p class="page-subtitle">Angular's declarative template language — interpolation, bindings, pipes, control flow (&#64;if &#64;for &#64;defer), and &#64;let. Everything you need to wire a component class to the DOM.</p>
+
+  <app-page-meta [readingTime]="28" difficulty="beginner" since="Angular 2" tech="angular" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <!-- Interpolation -->
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <!-- Interpolation demo -->
+  <section class="ng-section">
     <h2>Interpolation <code>{{ '{' }}{{ '{' }} expr {{ '}' }}{{ '}' }}</code></h2>
     <div class="demo-card">
       <div class="controls">
@@ -24,8 +31,8 @@
     </div>
   </section>
 
-  <!-- Property binding -->
-  <section class="demo-section">
+  <!-- Property binding demo -->
+  <section class="ng-section">
     <h2>Property Binding <code>[property]</code></h2>
     <div class="demo-card">
       <div class="controls">
@@ -49,8 +56,8 @@
     </div>
   </section>
 
-  <!-- Event binding -->
-  <section class="demo-section">
+  <!-- Event binding demo -->
+  <section class="ng-section">
     <h2>Event Binding <code>(event)</code></h2>
     <div class="demo-card">
       <div class="output">
@@ -67,8 +74,8 @@
     </div>
   </section>
 
-  <!-- Two-way binding -->
-  <section class="demo-section">
+  <!-- Two-way binding demo -->
+  <section class="ng-section">
     <h2>Two-way Binding <code>[(ngModel)]</code></h2>
     <div class="demo-card">
       <div class="controls">
@@ -82,8 +89,8 @@
     </div>
   </section>
 
-  <!-- Template ref variable -->
-  <section class="demo-section">
+  <!-- Template ref demo -->
+  <section class="ng-section">
     <h2>Template Reference Variables <code>#ref</code></h2>
     <div class="demo-card">
       <div class="controls">
@@ -97,8 +104,8 @@
     </div>
   </section>
 
-  <!-- Class & style binding -->
-  <section class="demo-section">
+  <!-- Class & style binding demo -->
+  <section class="ng-section">
     <h2>Class &amp; Style Binding</h2>
     <div class="demo-card">
       <div class="controls">
@@ -124,8 +131,8 @@
     </div>
   </section>
 
-  <!-- Safe navigation -->
-  <section class="demo-section">
+  <!-- Safe navigation demo -->
+  <section class="ng-section">
     <h2>Safe Navigation &amp; Nullish Coalescing</h2>
     <div class="demo-card">
       <div class="controls">
@@ -146,8 +153,8 @@
     </div>
   </section>
 
-  <!-- Async pipe -->
-  <section class="demo-section">
+  <!-- Async pipe demo -->
+  <section class="ng-section">
     <h2>Async Pipe</h2>
     <div class="demo-card">
       <div class="output">
@@ -156,11 +163,18 @@
       </div>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Traditional" afterLabel="Angular 17+" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/templates" nextRoute="/parent-child" nextLabel="Parent Child" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="template-syntax" nextRoute="/angular/lifecycle" nextLabel="Component Lifecycle" />
 </div>

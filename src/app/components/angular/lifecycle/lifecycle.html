@@ -1,14 +1,23 @@
-<div class="page">
-  <h1>Lifecycle Hooks</h1>
-  <p class="subtitle">Angular calls specific methods at predictable points — ngOnInit, ngOnChanges, ngOnDestroy, ViewChild, and modern afterRender hooks.</p>
-  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Lifecycle Hooks</h1>
+  <p class="page-subtitle">Angular calls specific methods at predictable points — ngOnInit, ngOnChanges, ngOnDestroy, and modern alternatives like DestroyRef, afterNextRender, and signal-based viewChild.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
+
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
 
   <!-- ngOnChanges + ngOnInit + ngOnDestroy demo -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>ngOnChanges, ngOnInit &amp; ngOnDestroy</h2>
     <div class="demo-card">
       <div class="controls">
@@ -32,7 +41,7 @@
   </section>
 
   <!-- ViewChild + afterNextRender demo -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>ViewChild &amp; afterNextRender</h2>
     <div class="demo-card">
       <div class="controls">
@@ -49,8 +58,9 @@
       </div>
     </div>
   </section>
+
   <!-- effect() reactive tracking demo -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>effect() — Reactive Side Effects</h2>
     <div class="demo-card">
       <p class="muted">effect() re-runs automatically whenever any signal it reads changes — no subscription, no ngOnChanges needed.</p>
@@ -81,11 +91,17 @@
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old API" afterLabel="Modern API" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/lifecycle" nextRoute="/directives" nextLabel="Directives" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="lifecycle" nextRoute="/angular/di-demo" nextLabel="Dependency Injection" />
 </div>
