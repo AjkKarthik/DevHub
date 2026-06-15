@@ -418,7 +418,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 
 **Async & RxJS**
 - [x] 2026-06-15 `angular/rxjs-demo` — switchMap/mergeMap/concatMap/exhaustMap, shareReplay, takeUntil
-- [ ] `angular/tanstack-query` — Angular TanStack Query, createQuery, createMutation, cache
+- [x] 2026-06-15 `angular/tanstack-query` — Angular TanStack Query, createQuery, createMutation, cache
 
 **Testing**
 - [ ] `angular/testing-demo` — TestBed, ComponentFixture, signal testing, HttpClientTestingModule
