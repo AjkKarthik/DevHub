@@ -18,18 +18,24 @@ import { ChallengeBlockComponent, Challenge } from '../../shared/challenge-block
 import { QuickRefComponent, QuickRefItem } from '../../shared/quick-ref/quick-ref';
 import { BeforeAfterComponent, BeforeAfterExample } from '../../shared/before-after/before-after';
 import { CommonMistakesComponent, CommonMistake } from '../../shared/common-mistakes/common-mistakes';
-import { VersionBadgeComponent, VersionInfo } from '../../shared/version-badge/version-badge';
 import { PageMetaComponent } from '../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../shared/page-complete/page-complete';
+import { PrerequisitesComponent, Prerequisite } from '../../shared/prerequisites/prerequisites';
+import { RevisionCardComponent, RevisionSummary } from '../../shared/revision-card/revision-card';
 
 @Component({
   selector: 'app-rxjs-demo',
-  imports: [FormsModule, AsyncPipe, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, VersionBadgeComponent, PageMetaComponent, PageCompleteComponent],
+  imports: [FormsModule, AsyncPipe, JsonPipe, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, PageMetaComponent, PageCompleteComponent, PrerequisitesComponent, RevisionCardComponent],
   templateUrl: './rxjs-demo.html',
   styleUrl: './rxjs-demo.scss',
 })
 export class RxjsDemo {
   private http = inject(HttpClient);
+
+  prerequisites: Prerequisite[] = [
+    { label: 'Signals', route: '/angular/signals' },
+    { label: 'DestroyRef & Cleanup', route: '/angular/destroy-ref' },
+  ];
 
   // ── switchMap demo — search with cancel ──────────────────────────────────
   searchInput$ = new Subject<string>();
@@ -86,57 +92,70 @@ export class RxjsDemo {
 
   doClick() { this.click$.next(); }
 
-  qna: QnaItem[] = [
-    { q: 'What is the difference between switchMap, mergeMap, and concatMap?', a: '<code>switchMap</code> cancels the previous inner observable on each new emission — best for search. <code>mergeMap</code> runs all inner observables concurrently. <code>concatMap</code> queues them sequentially. Choose based on cancellation and ordering needs.' },
-    { q: 'What is a BehaviorSubject and how does it differ from Subject?', a: '<code>BehaviorSubject</code> requires an initial value and replays the <strong>latest</strong> value to new subscribers. <code>Subject</code> emits nothing to late subscribers — they miss past values. Use <code>BehaviorSubject</code> for state.' },
-    { q: 'How does toSignal() handle an Observable in Angular?', a: '<code>toSignal(obs$)</code> subscribes to the observable and returns a signal with the latest emitted value. It automatically unsubscribes when the component is destroyed. Set <code>initialValue</code> to avoid <code>undefined</code> on first read.' },
-    { q: 'What does debounceTime() do and when would you use it?', a: '<code>debounceTime(300)</code> waits 300ms after the last emission before forwarding the value. Use it on search inputs to avoid firing an API call on every keystroke — only fire after the user stops typing.' },
-    { q: 'What is combineLatest and when should you use it?', a: '<code>combineLatest([a$, b$])</code> emits an array of the latest values from each source whenever any source emits. Use it to combine multiple independent state streams — e.g. filter + sort + page signals for a data table.' },
-    { q: 'What is the scan operator?', a: '<code>scan((acc, curr) => acc + curr, 0)</code> is like Array.reduce but for streams — it accumulates state across emissions. Useful for running totals, undo history, or accumulating items into an array.' },
-  ];
-
   theory: TheoryPoint[] = [
     {
       heading: 'Observable fundamentals',
       points: [
-        'An <code>Observable</code> is a lazy push stream — nothing happens until you <code>subscribe()</code>.',
-        '<code>Subject</code>: multicast, hot — emits to all current subscribers. New subscribers miss past values.',
-        '<code>BehaviorSubject(initial)</code>: replays the latest value to new subscribers — great for current-state streams.',
-        '<code>ReplaySubject(n)</code>: replays the last n values. <code>AsyncSubject</code>: emits only the final value on complete.',
+        'An <code>Observable</code> is a lazy push stream — nothing executes until you <code>subscribe()</code>; unsubscribing tears it down.',
+        '<code>Subject</code>: a hot multicast observable you push values into manually; late subscribers miss past emissions.',
+        '<code>BehaviorSubject(initial)</code>: requires an initial value and synchronously replays the latest emission to every new subscriber — ideal for current-state streams.',
+        '<code>ReplaySubject(n)</code>: buffers the last n emissions and replays them to new subscribers; <code>AsyncSubject</code> emits only the final value on completion.',
+        'Cold observables (e.g. <code>http.get()</code>) create a new execution per subscriber; hot observables (Subject, fromEvent) share a single execution across all subscribers.',
       ],
     },
     {
-      heading: 'Essential operators',
+      heading: 'Flattening operators — switchMap, mergeMap, concatMap, exhaustMap',
       points: [
-        '<code>switchMap</code>: cancels the previous inner observable when a new outer value arrives — ideal for searches.',
-        '<code>mergeMap</code>: keeps all inner observables alive concurrently — use for parallel HTTP calls.',
-        '<code>concatMap</code>: queues inner observables one after another — preserves order.',
-        '<code>debounceTime(ms)</code>: waits ms of silence before passing the value — combines well with distinctUntilChanged.',
-        '<code>combineLatest([a$, b$])</code>: emits when ALL source observables have emitted at least once, then on every subsequent emit.',
-        '<code>scan(accumulator, seed)</code>: like Array.reduce but for streams — running total, state accumulation.',
+        '<code>switchMap</code>: cancels the previous inner observable when the source emits — ideal for search-as-you-type where only the latest response matters.',
+        '<code>mergeMap</code>: subscribes to every inner observable concurrently without cancellation — use for parallel HTTP uploads or independent side-effects.',
+        '<code>concatMap</code>: queues inner observables and processes them one at a time in order — use for sequential operations that must not overlap.',
+        '<code>exhaustMap</code>: ignores new outer emissions while an inner observable is still running — ideal for preventing duplicate form submits.',
+        'Pick the right one: search → switchMap; parallel calls → mergeMap; ordered queue → concatMap; one-at-a-time submit → exhaustMap.',
+      ],
+    },
+    {
+      heading: 'Filtering and timing operators',
+      points: [
+        '<code>debounceTime(ms)</code>: emits only after ms milliseconds of silence — suppresses keystroke bursts before firing an API call.',
+        '<code>distinctUntilChanged()</code>: drops an emission if it is strictly equal to the previous one — avoids redundant requests when the user types and deletes the same text.',
+        '<code>throttleTime(ms)</code>: emits at most once per ms interval — useful for window resize or scroll events where you want periodic updates, not debounced silence.',
+        '<code>filter(predicate)</code>: passes only emissions that satisfy the predicate — e.g. <code>filter(q => q.length >= 2)</code> to skip short queries.',
+        '<code>take(n)</code> / <code>takeUntil(signal$)</code>: complete the stream after n emissions or when a notifier emits — core unsubscription strategies alongside <code>takeUntilDestroyed()</code>.',
+      ],
+    },
+    {
+      heading: 'Combining observables',
+      points: [
+        '<code>combineLatest([a$, b$])</code>: emits an array of the latest values whenever any source emits — requires all sources to have emitted at least once before the first emission.',
+        '<code>forkJoin([a$, b$])</code>: waits for all source observables to complete, then emits one array of their final values — ideal for parallel HTTP calls where you need all results together.',
+        '<code>merge(a$, b$)</code>: interleaves emissions from multiple observables into one stream as they arrive — no waiting, just forwarding.',
+        '<code>zip(a$, b$)</code>: pairs the nth emission from each source — emits only when every source has produced its nth value; useful for coordinating matched pairs.',
+        '<code>withLatestFrom(other$)</code>: when source emits, attaches the latest value from other$ without subscribing independently — use to read state at the moment of an action.',
       ],
     },
     {
       heading: 'Bridging RxJS → Signals',
       points: [
-        '<code>toSignal(obs$)</code> subscribes inside the current injection context and exposes the latest value as a signal.',
-        'Provide <code>{ initialValue: ... }</code> to avoid the initial <code>undefined</code> before the first emission.',
-        '<code>toSignal</code> auto-unsubscribes when the component is destroyed — no manual cleanup needed.',
-        'Going the other way: <code>toObservable(mySignal)</code> turns a signal into an observable.',
+        '<code>toSignal(obs$)</code> subscribes inside the current injection context and exposes the latest value as a read-only signal — no manual unsubscribe.',
+        'Provide <code>{ initialValue: ... }</code> to get a non-nullable signal type; omitting it gives <code>Signal&lt;T | undefined&gt;</code> and requires null guards in templates.',
+        '<code>toSignal</code> auto-unsubscribes via <code>DestroyRef</code> when the component or service is destroyed — zero cleanup boilerplate.',
+        'Going the other way: <code>toObservable(mySignal)</code> from <code>@angular/core/rxjs-interop</code> turns a signal into an observable for use in RxJS pipelines.',
+        '<code>outputToObservable(output)</code> converts a component output to an observable — bridges the output API into RxJS without manual event listeners.',
       ],
     },
     {
-      heading: 'Key points to remember',
+      heading: 'Error handling and best practices',
       points: [
-        'Always unsubscribe — use <code>takeUntilDestroyed()</code>, the <code>async</code> pipe, or <code>toSignal()</code>.',
-        '<code>switchMap</code> does NOT cancel HTTP requests already in flight at the browser level — it just ignores the response.',
-        'Prefer <code>toSignal()</code> over <code>async</code> pipe for new code — it is more composable and type-safe.',
-        'Use <code>catchError(err => of(fallback))</code> inside pipe to prevent the stream from dying on errors.',
+        '<code>catchError(err => of(fallback))</code> must return a new observable — rethrowing or returning nothing terminates the stream and breaks all downstream operators.',
+        'Place <code>catchError</code> inside the inner pipe of <code>switchMap</code>, not at the outer level — so only the failing request dies, not the entire search stream.',
+        '<code>retry(n)</code> re-subscribes automatically on error up to n times; <code>retry({ count, delay })</code> adds delay between attempts; use exponential backoff for flaky APIs.',
+        'Always unsubscribe: prefer <code>toSignal()</code>, the <code>async</code> pipe, or <code>takeUntilDestroyed()</code> over manual <code>subscribe()</code> + <code>ngOnDestroy</code>.',
+        'Keep Subjects private and expose only <code>asObservable()</code> — prevents callers from pushing values without going through your validation logic.',
       ],
     },
   ];
 
-  tabs: CodeTab[] = [
+  codeTabs: CodeTab[] = [
     {
       label: 'switchMap',
       language: 'typescript',
@@ -335,40 +354,112 @@ const cart$ = actions$.pipe(
       answer: 3,
       explanation: 'Both BehaviorSubject (requires initial value) and ReplaySubject(1) replay the latest emission to late subscribers.',
     },
+    {
+      q: 'Which operator should you use to prevent duplicate form submit requests?',
+      options: ['switchMap — cancels in-flight', 'mergeMap — runs concurrently', 'exhaustMap — ignores new while in-flight', 'concatMap — queues them'],
+      answer: 2,
+      explanation: 'exhaustMap ignores new outer emissions while the inner observable is still running — exactly what you want for a submit button to prevent duplicate orders.',
+    },
+    {
+      q: 'When does combineLatest first emit a value?',
+      options: [
+        'As soon as any one source emits',
+        'Only after ALL source observables have emitted at least once',
+        'After the first source completes',
+        'When you call subscribe()',
+      ],
+      answer: 1,
+      explanation: 'combineLatest waits until every source observable has emitted at least once before producing its first combined emission. After that it emits on every new emission from any source.',
+    },
+    {
+      q: 'What is the key advantage of toSignal() over the async pipe for using observables in templates?',
+      options: [
+        'toSignal() works in older Angular versions',
+        'toSignal() returns a synchronously readable value with no null/undefined until first emit (when initialValue is set)',
+        'async pipe does not automatically unsubscribe',
+        'toSignal() prevents change detection entirely',
+      ],
+      answer: 1,
+      explanation: 'toSignal() with initialValue gives a Signal<T> — synchronously readable with no null guard needed. The async pipe returns T | null, requiring unwrapping in templates.',
+    },
+  ];
+
+  qna: QnaItem[] = [
+    { q: 'What is the difference between switchMap, mergeMap, and concatMap?', a: '<code>switchMap</code> cancels the previous inner observable on each new emission — best for search. <code>mergeMap</code> runs all inner observables concurrently. <code>concatMap</code> queues them sequentially. Choose based on cancellation and ordering needs.' },
+    { q: 'What is a BehaviorSubject and how does it differ from Subject?', a: '<code>BehaviorSubject</code> requires an initial value and replays the <strong>latest</strong> value to new subscribers. <code>Subject</code> emits nothing to late subscribers — they miss past values. Use <code>BehaviorSubject</code> for state.' },
+    { q: 'How does toSignal() handle an Observable in Angular?', a: '<code>toSignal(obs$)</code> subscribes to the observable and returns a signal with the latest emitted value. It automatically unsubscribes when the component is destroyed. Set <code>initialValue</code> to avoid <code>undefined</code> on first read.' },
+    { q: 'What does debounceTime() do and when would you use it?', a: '<code>debounceTime(300)</code> waits 300ms after the last emission before forwarding the value. Use it on search inputs to avoid firing an API call on every keystroke — only fire after the user stops typing.' },
+    { q: 'What is combineLatest and when should you use it?', a: '<code>combineLatest([a$, b$])</code> emits an array of the latest values from each source whenever any source emits. Use it to combine multiple independent state streams — e.g. filter + sort + page signals for a data table.' },
+    { q: 'What is the scan operator?', a: '<code>scan((acc, curr) => acc + curr, 0)</code> is like Array.reduce but for streams — it accumulates state across emissions. Useful for running totals, undo history, or accumulating items into an array.' },
+    { q: 'How do you make parallel HTTP requests and wait for all results?', a: 'Use <code>forkJoin([req1$, req2$, req3$])</code> — it waits for all source observables to complete, then emits one array of their final values. Unlike <code>combineLatest</code>, it only emits once and requires all sources to complete. If any source errors, the whole forkJoin errors; wrap individual requests in <code>catchError</code> to make them fault-tolerant.' },
   ];
 
   quickRef: QuickRefItem[] = [
     { name: 'switchMap', type: 'operator', desc: 'Cancels the previous inner observable and subscribes to the new one when the source emits — ideal for search-as-you-type.' , since: '2'},
     { name: 'mergeMap', type: 'operator', desc: 'Subscribes to every inner observable concurrently without cancellation — use for parallel HTTP calls.' , since: '2'},
+    { name: 'exhaustMap', type: 'operator', desc: 'Ignores new outer emissions while the inner observable is still running — ideal for form submit buttons.' , since: '2'},
     { name: 'debounceTime', type: 'operator', desc: 'Emits a value only after a specified millisecond silence period, suppressing rapid bursts like keystrokes.' , since: '2'},
     { name: 'distinctUntilChanged', type: 'operator', desc: 'Drops an emission if it is strictly equal to the previous value, preventing redundant downstream work.' , since: '2'},
     { name: 'combineLatest', type: 'function', desc: 'Emits an array of the latest values from all source observables whenever any one of them emits.' , since: '2'},
+    { name: 'forkJoin', type: 'function', desc: 'Waits for all source observables to complete, then emits one array of their final values — parallel HTTP pattern.' , since: '2'},
     { name: 'scan', type: 'operator', desc: 'Applies an accumulator function over the stream like Array.reduce, emitting the running result on each emission.' , since: '2'},
     { name: 'BehaviorSubject', type: 'class', desc: 'A Subject that requires an initial value and synchronously replays the latest emitted value to any new subscriber.' , since: '2'},
-    { name: 'Subject', type: 'class', desc: 'A multicast hot observable you push values into manually; late subscribers miss past emissions.' , since: '2'},
     { name: 'toSignal', type: 'function', desc: 'Wraps an observable into a signal, auto-subscribing in the current injection context and auto-unsubscribing on destroy.' , since: '16'},
     { name: 'catchError', type: 'operator', desc: 'Intercepts an error in the pipeline and must return a replacement observable, keeping the stream alive.' , since: '2'},
   ];
 
   beforeAfter: BeforeAfterExample[] = [
-    { title: 'Subscribing manually vs toSignal()', before: '// Old: manual subscribe + cleanup\nresults: string[] = [];\nngOnInit() {\n  this.results$.subscribe(r => this.results = r);\n}\nngOnDestroy() { this.sub.unsubscribe(); }', after: '// New: toSignal handles subscribe + cleanup\nresults = toSignal(this.results$, { initialValue: [] });\n// Use results() in template — no ngOnDestroy needed',
-      note: 'toSignal() was introduced in Angular 16 via @angular/core/rxjs-interop' },
-    { title: 'async pipe in template vs toSignal()', before: '// Old: async pipe — requires NgIf/async and handles null\n// template: *ngIf=\'total$ | async as total\'\n// component:\ntotal$ = combineLatest([qty$, price$]).pipe(\n  map(([q, p]) => q * p)\n);', after: '// New: toSignal — synchronous read in template\ntotal$ = combineLatest([qty$, price$]).pipe(\n  map(([q, p]) => q * p)\n);\ntotal = toSignal(this.total$, { initialValue: 0 });\n// template: {{ total() }}',
-      note: 'toSignal avoids nullable async pipe boilerplate and works with @if/@for control flow' },
-    { title: 'Unsubscription: takeUntil vs takeUntilDestroyed()', before: '// Old: manual destroy subject\nprivate destroy$ = new Subject<void>();\nngOnInit() {\n  this.data$.pipe(takeUntil(this.destroy$)).subscribe(...);\n}\nngOnDestroy() { this.destroy$.next(); this.destroy$.complete(); }', after: '// New: takeUntilDestroyed (Angular 16+)\nimport { takeUntilDestroyed } from \'@angular/core/rxjs-interop\';\nngOnInit() {\n  this.data$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(...);\n}',
-      note: 'takeUntilDestroyed() integrates with DestroyRef, eliminating the boilerplate destroy subject pattern' },
+    {
+      title: 'Subscribing manually vs toSignal()',
+      before: '// Old: manual subscribe + cleanup\nresults: string[] = [];\nngOnInit() {\n  this.results$.subscribe(r => this.results = r);\n}\nngOnDestroy() { this.sub.unsubscribe(); }',
+      after: '// New: toSignal handles subscribe + cleanup\nresults = toSignal(this.results$, { initialValue: [] });\n// Use results() in template — no ngOnDestroy needed',
+      note: 'toSignal() was introduced in Angular 16 via @angular/core/rxjs-interop',
+    },
+    {
+      title: 'async pipe in template vs toSignal()',
+      before: '// Old: async pipe — nullable; requires unwrapping\n// template: *ngIf=\'total$ | async as total\'\n// component:\ntotal$ = combineLatest([qty$, price$]).pipe(\n  map(([q, p]) => q * p)\n);',
+      after: '// New: toSignal — synchronous read in template\ntotal$ = combineLatest([qty$, price$]).pipe(\n  map(([q, p]) => q * p)\n);\ntotal = toSignal(this.total$, { initialValue: 0 });\n// template: {{ total() }}',
+      note: 'toSignal avoids nullable async pipe boilerplate and works with @if/@for control flow',
+    },
+    {
+      title: 'Unsubscription: takeUntil vs takeUntilDestroyed()',
+      before: '// Old: manual destroy subject\nprivate destroy$ = new Subject<void>();\nngOnInit() {\n  this.data$.pipe(takeUntil(this.destroy$)).subscribe(...);\n}\nngOnDestroy() { this.destroy$.next(); this.destroy$.complete(); }',
+      after: '// New: takeUntilDestroyed (Angular 16+)\nimport { takeUntilDestroyed } from \'@angular/core/rxjs-interop\';\nngOnInit() {\n  this.data$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(...);\n}',
+      note: 'takeUntilDestroyed() integrates with DestroyRef, eliminating the boilerplate destroy subject pattern',
+    },
   ];
 
   mistakes: CommonMistake[] = [
-    { title: 'Using switchMap for actions that must not be cancelled', wrong: '// Form submit — switchMap cancels in-flight request!\nsubmit$.pipe(\n  switchMap(() => http.post(\'/api/order\', data))\n);', right: '// Use exhaustMap to ignore extra clicks while in-flight\nsubmit$.pipe(\n  exhaustMap(() => http.post(\'/api/order\', data))\n);', explanation: 'switchMap cancels the previous inner observable on each new emission. For form submits you want exhaustMap (ignore) or concatMap (queue), never switchMap.'  },
-    { title: 'Letting catchError kill the stream by rethrowing', wrong: 'search$.pipe(\n  switchMap(q => http.get(\'/api?q=\' + q)),\n  catchError(err => { throw err; }) // stream dies!\n);', right: 'search$.pipe(\n  switchMap(q => http.get(\'/api?q=\' + q).pipe(\n    catchError(() => of([]))  // inner catch keeps outer alive\n  ))\n);', explanation: 'catchError must return an observable. Rethrowing or returning nothing terminates the stream. Place catchError inside the inner pipe so only that request fails, not the whole search stream.'  },
-    { title: 'Forgetting initialValue in toSignal()', wrong: '// Type is Signal<string[] | undefined> — causes runtime errors\nresults = toSignal(this.results$);', right: '// Type is Signal<string[]> — safe from first render\nresults = toSignal(this.results$, { initialValue: [] as string[] });', explanation: 'Without initialValue, toSignal returns undefined until the first emission, causing template errors and requiring extra null checks everywhere.'  },
-    { title: 'Using BehaviorSubject as a public property', wrong: '// External code can call next() freely — breaks encapsulation\nexport class ThemeService {\n  theme$ = new BehaviorSubject(\'light\');\n}', right: 'export class ThemeService {\n  private _theme = new BehaviorSubject(\'light\');\n  readonly theme$ = this._theme.asObservable();\n  setTheme(t: string) { this._theme.next(t); }\n}', explanation: 'Exposing a BehaviorSubject publicly lets any consumer push values, bypassing validation logic. Always keep the Subject private and expose only the observable via asObservable().'  },
-  ];
-
-  versionItems: VersionInfo[] = [
-    { version: '16', label: 'rxjs-interop: toSignal and toObservable', features: ['toSignal(obs$) bridges RxJS observables into Angular signals with automatic subscription management', 'toObservable(signal) converts a signal into an observable for use in RxJS pipelines', 'takeUntilDestroyed() eliminates the destroy-subject boilerplate pattern', 'All three live in @angular/core/rxjs-interop'] },
-    { version: '2', label: 'RxJS core operators and classes', features: ['Observable, Subject, BehaviorSubject, ReplaySubject available from rxjs', 'Pipeable operators (switchMap, mergeMap, debounceTime, etc.) available from rxjs/operators', 'AsyncPipe in @angular/common provides template-level subscription management'] },
+    {
+      title: 'Using switchMap for actions that must not be cancelled',
+      wrong: '// Form submit — switchMap cancels in-flight request!\nsubmit$.pipe(\n  switchMap(() => http.post(\'/api/order\', data))\n);',
+      right: '// Use exhaustMap to ignore extra clicks while in-flight\nsubmit$.pipe(\n  exhaustMap(() => http.post(\'/api/order\', data))\n);',
+      explanation: 'switchMap cancels the previous inner observable on each new emission. For form submits you want exhaustMap (ignore) or concatMap (queue), never switchMap.',
+    },
+    {
+      title: 'Letting catchError kill the stream by rethrowing',
+      wrong: 'search$.pipe(\n  switchMap(q => http.get(\'/api?q=\' + q)),\n  catchError(err => { throw err; }) // stream dies!\n);',
+      right: 'search$.pipe(\n  switchMap(q => http.get(\'/api?q=\' + q).pipe(\n    catchError(() => of([]))  // inner catch keeps outer alive\n  ))\n);',
+      explanation: 'catchError must return an observable. Rethrowing or returning nothing terminates the stream. Place catchError inside the inner pipe so only that request fails, not the whole search stream.',
+    },
+    {
+      title: 'Forgetting initialValue in toSignal()',
+      wrong: '// Type is Signal<string[] | undefined> — causes runtime errors\nresults = toSignal(this.results$);',
+      right: '// Type is Signal<string[]> — safe from first render\nresults = toSignal(this.results$, { initialValue: [] as string[] });',
+      explanation: 'Without initialValue, toSignal returns undefined until the first emission, causing template errors and requiring extra null checks everywhere.',
+    },
+    {
+      title: 'Using BehaviorSubject as a public property',
+      wrong: '// External code can call next() freely — breaks encapsulation\nexport class ThemeService {\n  theme$ = new BehaviorSubject(\'light\');\n}',
+      right: 'export class ThemeService {\n  private _theme = new BehaviorSubject(\'light\');\n  readonly theme$ = this._theme.asObservable();\n  setTheme(t: string) { this._theme.next(t); }\n}',
+      explanation: 'Exposing a BehaviorSubject publicly lets any consumer push values, bypassing validation logic. Always keep the Subject private and expose only the observable via asObservable().',
+    },
+    {
+      title: 'Skipping distinctUntilChanged in a search pipeline',
+      wrong: '// Without distinctUntilChanged — fires API on every keystroke,\n// even when the user deletes then retypes the same text\nsearch$.pipe(\n  debounceTime(300),\n  switchMap(q => http.get(\'/api?q=\' + q))\n);',
+      right: '// With distinctUntilChanged — skips if value matches previous emit\nsearch$.pipe(\n  debounceTime(300),\n  distinctUntilChanged(),\n  switchMap(q => http.get(\'/api?q=\' + q))\n);',
+      explanation: 'debounceTime only waits for silence; it still emits if the same value is typed again. distinctUntilChanged ensures duplicate consecutive terms never reach the HTTP layer.',
+    },
   ];
 
   challenge: Challenge = {
@@ -416,5 +507,25 @@ export class SearchComponent {
     ),
   );
 }`,
+  };
+
+  revision: RevisionSummary = {
+    oneLiner: 'RxJS provides composable async streams; Angular 16+ rxjs-interop bridges to signals with toSignal/toObservable for zero-boilerplate subscriptions.',
+    mustKnow: [
+      'Observable is lazy — nothing executes until subscribe(); unsubscribing tears it down',
+      'switchMap cancels previous inner; mergeMap keeps all concurrent; exhaustMap ignores new while running; concatMap queues in order',
+      'BehaviorSubject replays its latest value to new subscribers; Subject does not',
+      'debounceTime + distinctUntilChanged is the canonical search-input pattern — one waits for silence, the other skips unchanged values',
+      'catchError must return an Observable; place it inside inner pipes so outer streams survive individual request failures',
+      'toSignal() auto-subscribes and auto-unsubscribes; always set initialValue to get a non-nullable Signal<T>',
+      'scan() accumulates state across emissions like Array.reduce — running totals, undo stacks, cart sums',
+    ],
+    interviewFocus: [
+      'Explain switchMap vs mergeMap vs concatMap vs exhaustMap with concrete use cases',
+      'Why use BehaviorSubject over Subject for state management in a service?',
+      'How does toSignal() differ from the async pipe — type safety, null handling, template syntax?',
+      'How do you prevent memory leaks when subscribing inside a component?',
+      'How do you handle errors in a search pipeline without killing the stream?',
+    ],
   };
 }
