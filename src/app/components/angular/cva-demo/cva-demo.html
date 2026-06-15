@@ -1,14 +1,23 @@
-<div class="page">
-  <h1>Control Value Accessor</h1>
-  <p class="subtitle">Build a custom form control (star rating widget) that works natively with Reactive Forms and <code>formControlName</code>.</p>
-  <app-page-meta [readingTime]="15" difficulty="advanced" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Control Value Accessor</h1>
+  <p class="page-subtitle">Build custom form controls (star ratings, date pickers, tag editors) that work natively with <code>formControlName</code>, <code>ngModel</code>, validators, and disabled state — no adapters needed.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="advanced" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
-    <h2>Star Rating — reactive form</h2>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
+    <h2>Star Rating — reactive form demo</h2>
     <div class="demo-card">
       <form [formGroup]="form" (ngSubmit)="submit()">
         <div class="field">
@@ -21,7 +30,6 @@
 
         <div class="field">
           <label>Your rating</label>
-          <!-- Works exactly like a native input -->
           <app-star-rating formControlName="rating" />
           @if (ratingCtrl?.invalid && (submitted() || ratingCtrl?.touched)) {
             <span class="error">Please select a rating (1–5)</span>
@@ -47,33 +55,39 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>How CVA wires up</h2>
     <div class="info-cards">
       <div class="info-card">
         <h3>writeValue(val)</h3>
-        <p>Called by Angular to push a value INTO your component. Use when programmatic patchValue/setValue is called.</p>
+        <p>Called by Angular to push a value INTO your component. Use when programmatic <code>patchValue()</code> or <code>setValue()</code> is called. Never call <code>onChange()</code> here.</p>
       </div>
       <div class="info-card">
         <h3>registerOnChange(fn)</h3>
-        <p>Angular passes a callback. Call it whenever the user changes the value to notify the form.</p>
+        <p>Angular passes a callback. Store it and call <code>onChange(newValue)</code> whenever the user changes the value.</p>
       </div>
       <div class="info-card">
         <h3>registerOnTouched(fn)</h3>
-        <p>Angular passes a callback. Call it when the user blurs/interacts to mark the control as touched.</p>
+        <p>Angular passes a callback. Store it and call <code>onTouched()</code> when the user blurs or interacts to enable error display.</p>
       </div>
       <div class="info-card">
         <h3>setDisabledState(b)</h3>
-        <p>Called when the form control is programmatically disabled. Update your component's visual state.</p>
+        <p>Called when the form control is programmatically disabled. Update your component's visual state — use a signal for reactive updates.</p>
       </div>
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Angular" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/cva" nextRoute="/routing" nextLabel="Routing" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="cva-demo" nextRoute="/angular/zod-forms" nextLabel="Zod Forms" />
 </div>
