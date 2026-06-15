@@ -421,7 +421,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-15 `angular/tanstack-query` — Angular TanStack Query, createQuery, createMutation, cache
 
 **Testing**
-- [ ] `angular/testing-demo` — TestBed, ComponentFixture, signal testing, HttpClientTestingModule
+- [x] 2026-06-15 `angular/testing-demo` — TestBed, ComponentFixture, signal testing, HttpClientTestingModule
 - [ ] `angular/harnesses` — ComponentHarness, HarnessLoader, CDK test harnesses
 - [ ] `angular/e2e` — Playwright vs Cypress for Angular, component testing setup
 
