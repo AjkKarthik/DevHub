@@ -1,28 +1,44 @@
-<div class="page">
-  <h1>E2E Testing with Playwright</h1>
-  <p class="subtitle">Automated browser testing — real browsers, semantic locators, auto-waiting assertions, and API mocking.</p>
-  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">E2E Testing with Playwright</h1>
+  <p class="page-subtitle">Automate real browsers with semantic locators, auto-waiting assertions, and network interception — no brittle CSS selectors, no manual sleeps, no backend dependency.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="advanced" since="Angular 14" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
-    <h2>Playwright locator hierarchy</h2>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
+    <h2>Locator hierarchy — from best to worst</h2>
     <div class="locator-list">
-      <div class="loc-row best"><span class="loc-badge">Best</span><code>getByRole('button', &#123; name: 'Submit' &#125;)</code><span class="loc-why">Semantic — survives refactors</span></div>
-      <div class="loc-row good"><span class="loc-badge">Good</span><code>getByLabel('Email')</code><span class="loc-why">Tied to accessible label</span></div>
-      <div class="loc-row good"><span class="loc-badge">Good</span><code>getByText('Hello')</code><span class="loc-why">Matches visible text</span></div>
-      <div class="loc-row ok"><span class="loc-badge">OK</span><code>getByTestId('submit-btn')</code><span class="loc-why">Explicit but needs data-testid</span></div>
-      <div class="loc-row avoid"><span class="loc-badge">Avoid</span><code>locator('.btn.primary')</code><span class="loc-why">Brittle — breaks on CSS refactor</span></div>
+      <div class="loc-row best"><span class="loc-badge">Best</span><code>getByRole('button', &#123; name: 'Submit' &#125;)</code><span class="loc-why">Semantic — queries accessibility tree, survives refactors</span></div>
+      <div class="loc-row good"><span class="loc-badge">Good</span><code>getByLabel('Email')</code><span class="loc-why">Tied to accessible label text, stable for forms</span></div>
+      <div class="loc-row good"><span class="loc-badge">Good</span><code>getByText('Hello')</code><span class="loc-why">Matches visible text content</span></div>
+      <div class="loc-row ok"><span class="loc-badge">OK</span><code>getByTestId('submit-btn')</code><span class="loc-why">Explicit but requires data-testid attribute</span></div>
+      <div class="loc-row avoid"><span class="loc-badge">Avoid</span><code>locator('.btn.primary')</code><span class="loc-why">Brittle — breaks on CSS or DOM refactor</span></div>
       <div class="loc-row avoid"><span class="loc-badge">Avoid</span><code>locator('div:nth-child(3)')</code><span class="loc-why">Extremely fragile</span></div>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old / Fragile" afterLabel="Playwright / Robust" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/e2e" nextRoute="/ssr" nextLabel="Ssr" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="e2e" nextRoute="/angular/preloading" nextLabel="Preloading Strategies" />
 </div>
