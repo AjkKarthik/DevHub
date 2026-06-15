@@ -1,13 +1,22 @@
-<div class="page">
-  <h1>DestroyRef + takeUntilDestroyed</h1>
-  <p class="subtitle">Modern RxJS cleanup — no more ngOnDestroy boilerplate or Subject destroy$ patterns.</p>
-  <app-page-meta [readingTime]="8" difficulty="beginner" since="16" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">DestroyRef &amp; takeUntilDestroyed</h1>
+  <p class="page-subtitle">Modern Angular cleanup — register teardown callbacks with <code>DestroyRef.onDestroy()</code> or auto-complete RxJS observables with <code>takeUntilDestroyed()</code>, no <code>ngOnDestroy</code> boilerplate required.</p>
+
+  <app-page-meta [readingTime]="22" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>Auto-cleanup timer</h2>
     <div class="demo-card">
       <p>Click Start — the interval uses <code>takeUntilDestroyed(destroyRef)</code> and auto-stops when the component is destroyed.</p>
@@ -20,11 +29,18 @@
       <p class="hint">Navigate away and back — the timer is gone. No memory leak, no manual unsubscribe.</p>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="DestroyRef" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/destroy-ref" nextRoute="/zoneless" nextLabel="Zoneless" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="destroy-ref" nextRoute="/angular/rxjs-demo" nextLabel="RxJS Patterns" />
 </div>
