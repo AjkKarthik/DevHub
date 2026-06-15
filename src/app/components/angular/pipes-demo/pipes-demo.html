@@ -1,14 +1,19 @@
-<div class="page">
-  <h1>Pipes</h1>
-  <p class="subtitle">Transform data in templates — date, currency, number, case, slice, JSON, async, and custom pipes.</p>
-  <app-page-meta [readingTime]="10" difficulty="beginner" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Pipes</h1>
+  <p class="page-subtitle">Transform data in templates — date, currency, number, case, slice, JSON, async, and custom pipes with the PipeTransform interface.</p>
+  <app-page-meta [readingTime]="26" difficulty="beginner" since="Angular 2" tech="angular" />
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
+
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
 
   <!-- Date pipe -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Date Pipe</h2>
     <div class="demo-card">
       <div class="controls">
@@ -44,7 +49,7 @@
   </section>
 
   <!-- Currency / Number / Percent -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Currency, Number &amp; Percent Pipes</h2>
     <div class="demo-card">
       <div class="controls">
@@ -89,7 +94,7 @@
   </section>
 
   <!-- Case pipes -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Case Pipes</h2>
     <div class="demo-card">
       <div class="controls">
@@ -115,7 +120,7 @@
   </section>
 
   <!-- Slice pipe -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Slice Pipe</h2>
     <div class="demo-card">
       <div class="controls">
@@ -134,7 +139,7 @@
   </section>
 
   <!-- Async + Custom pipe -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Async Pipe &amp; Custom Truncate</h2>
     <div class="demo-card">
       <div class="controls">
@@ -152,7 +157,7 @@
   </section>
 
   <!-- JSON pipe -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>JSON Pipe (debug tool)</h2>
     <div class="demo-card">
       <div class="output">
@@ -160,11 +165,18 @@
       </div>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old API" afterLabel="Modern API" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/pipes" nextRoute="/forms" nextLabel="Forms" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="pipes-demo" nextRoute="/angular/forms-demo" nextLabel="Forms" />
 </div>
