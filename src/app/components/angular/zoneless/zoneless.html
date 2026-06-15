@@ -1,13 +1,22 @@
-<div class="page">
-  <h1>Zoneless Angular</h1>
-  <p class="subtitle">Remove Zone.js, reduce bundle size, and let signals drive all change detection — maximum performance with minimal overhead.</p>
-  <app-page-meta [readingTime]="12" difficulty="advanced" since="18" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Zoneless Angular</h1>
+  <p class="page-subtitle">Remove Zone.js, shrink your bundle by ~50 kB, and let signals drive all change detection — surgical re-renders with zero wasted cycles.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="advanced" since="Angular 18" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>Signal-driven rendering (no Zone.js needed)</h2>
     <div class="demo-card">
       <div class="counter-display">
@@ -31,11 +40,18 @@
       }
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Zone.js" afterLabel="Zoneless" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/zoneless" nextRoute="/store" nextLabel="Store" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="zoneless" nextRoute="/angular/template-syntax" nextLabel="Template Syntax" />
 </div>
