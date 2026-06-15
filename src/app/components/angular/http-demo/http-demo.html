@@ -1,112 +1,118 @@
-<div class="page">
-  <h2>HTTP Client</h2>
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">HTTP Client</h1>
+  <p class="page-subtitle">Angular's HttpClient — typed GET/POST requests, toSignal(), httpResource(), functional interceptors, error handling, and reactive search with debounce and switchMap.</p>
 
-  <app-page-meta [readingTime]="14" difficulty="intermediate" since="2" />
+  <app-page-meta [readingTime]="28" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
 
-  <div class="concept">
-    <h3>Key Concepts</h3>
-    <ul>
-      <li><code>provideHttpClient(withInterceptors([...]))</code> in <code>app.config.ts</code></li>
-      <li><code>inject(HttpClient)</code> — no constructor needed</li>
-      <li><code>toSignal(observable$)</code> — wraps an Observable into a signal (auto-unsubscribes on destroy)</li>
-      <li><code>HttpInterceptorFn</code> — functional interceptor, clones the request before forwarding</li>
-      <li><code>TruncatePipe</code> — custom pipe, shortens long strings: <code>{{ '{}' | truncate:45 }}</code></li>
-      <li><code>appHighlight</code> — custom directive, adds background on hover</li>
-    </ul>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
     <app-code-block [tabs]="httpTabs" />
-  </div>
+  </section>
 
   <!-- GET DEMO -->
-  <div class="card">
-    <h3>Live Demo — GET (JSONPlaceholder)</h3>
-    <p class="hint">Open DevTools → Console to see the logging interceptor. Network tab shows the <code>Authorization</code> header.</p>
-
-    @if (todos() === undefined) {
-      <p class="loading">Loading…</p>
-    } @else if (todos() === null) {
-      <p class="error">Failed to load todos.</p>
-    } @else {
-      <ul class="api-list">
-        @for (todo of todos()!; track todo.id) {
-          <li appHighlight="#fff9c4" [class.done]="todo.completed">
-            <span class="id">#{{ todo.id }}</span>
-            <span>{{ todo.title | truncate:45 }}</span>
-            @if (todo.completed) { <span class="tag">done</span> }
-          </li>
-        }
-      </ul>
-    }
-  </div>
+  <section class="ng-section">
+    <h2>Live Demo — GET (JSONPlaceholder)</h2>
+    <div class="demo-card">
+      <p class="hint">Open DevTools → Network tab to see the <code>Authorization</code> header added by the interceptor.</p>
+      @if (todos() === undefined) {
+        <p class="loading">Loading…</p>
+      } @else if (todos() === null) {
+        <p class="error">Failed to load todos.</p>
+      } @else {
+        <ul class="api-list">
+          @for (todo of todos()!; track todo.id) {
+            <li appHighlight="#fff9c4" [class.done]="todo.completed">
+              <span class="id">#{{ todo.id }}</span>
+              <span>{{ todo.title | truncate:45 }}</span>
+              @if (todo.completed) { <span class="tag">done</span> }
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </section>
 
   <!-- POST DEMO -->
-  <div class="card">
-    <h3>Live Demo — POST</h3>
-    <p class="hint">JSONPlaceholder echoes the body back — nothing is actually persisted.</p>
-    <button type="button" (click)="createTodo()" [disabled]="posting()">
-      {{ posting() ? 'Posting…' : 'Create Todo' }}
-    </button>
-    @if (postResult()) {
-      <p class="result">{{ postResult() }}</p>
-    }
-  </div>
+  <section class="ng-section">
+    <h2>Live Demo — POST</h2>
+    <div class="demo-card">
+      <p class="hint">JSONPlaceholder echoes the body back — nothing is actually persisted.</p>
+      <button type="button" (click)="createTodo()" [disabled]="posting()">
+        {{ posting() ? 'Posting…' : 'Create Todo' }}
+      </button>
+      @if (postResult()) {
+        <p class="result">{{ postResult() }}</p>
+      }
+    </div>
+  </section>
 
   <!-- PATTERN DEMO: Search with debounce + loading state -->
-  <div class="pattern-demo">
-    <div class="pattern-header">
-      <h3>Pattern Demo — Search with debounce + switchMap</h3>
-      <p class="pattern-sub">Each keystroke triggers debounce. <code>switchMap</code> cancels any in-flight request when you type again. Try fast vs slow typing.</p>
-    </div>
-    <div class="demo-split">
-      <div class="demo-left">
-        <div class="search-box">
-          <input
-            type="text"
-            placeholder="Search Pokémon name (min 2 chars)…"
-            [value]="searchQuery()"
-            (input)="onSearch($event)"
-            class="search-input"
-          />
-          @if (searchLoading()) {
-            <span class="search-spinner">⟳</span>
-          }
-        </div>
-
-        @if (searchError()) {
-          <p class="search-error">{{ searchError() }}</p>
-        } @else if (searchResults().length === 0 && searchQuery().length >= 2 && !searchLoading()) {
-          <p class="search-empty">No results found.</p>
-        } @else {
-          <div class="search-results">
-            @for (r of searchResults(); track r.name) {
-              <div class="search-item">
-                <span class="result-dot"></span>{{ r.name }}
-              </div>
-            } @empty {
-              <div class="search-hint">Type at least 2 characters to search.</div>
+  <section class="ng-section">
+    <h2>Pattern Demo — Search with debounce + switchMap</h2>
+    <div class="demo-card">
+      <p class="muted">Each keystroke triggers debounce. <code>switchMap</code> cancels any in-flight request when you type again. Try fast vs slow typing.</p>
+      <div class="demo-split">
+        <div class="demo-left">
+          <div class="search-box">
+            <input
+              type="text"
+              placeholder="Search Pokémon name (min 2 chars)…"
+              [value]="searchQuery()"
+              (input)="onSearch($event)"
+              class="search-input"
+            />
+            @if (searchLoading()) {
+              <span class="search-spinner">⟳</span>
             }
           </div>
-        }
 
-        <div class="status-pills">
-          <span class="pill">query: "{{ searchQuery() }}"</span>
-          <span class="pill" [class.active]="searchLoading()">loading: {{ searchLoading() }}</span>
-          <span class="pill">results: {{ searchResults().length }}</span>
+          @if (searchError()) {
+            <p class="search-error">{{ searchError() }}</p>
+          } @else if (searchResults().length === 0 && searchQuery().length >= 2 && !searchLoading()) {
+            <p class="search-empty">No results found.</p>
+          } @else {
+            <div class="search-results">
+              @for (r of searchResults(); track r.name) {
+                <div class="search-item">
+                  <span class="result-dot"></span>{{ r.name }}
+                </div>
+              } @empty {
+                <div class="search-hint">Type at least 2 characters to search.</div>
+              }
+            </div>
+          }
+
+          <div class="status-pills">
+            <span class="pill">query: "{{ searchQuery() }}"</span>
+            <span class="pill" [class.active]="searchLoading()">loading: {{ searchLoading() }}</span>
+            <span class="pill">results: {{ searchResults().length }}</span>
+          </div>
+        </div>
+        <div class="demo-right">
+          <app-code-block [tabs]="searchCodeTabs" />
         </div>
       </div>
-      <div class="demo-right">
-        <app-code-block [tabs]="searchCodeTabs" />
-      </div>
     </div>
-  </div>
+  </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old API" afterLabel="Modern API" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/http" nextRoute="/rxjs" nextLabel="Rxjs" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="http-demo" nextRoute="/angular/pipes-demo" nextLabel="Pipes" />
 </div>
