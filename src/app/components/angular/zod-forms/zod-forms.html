@@ -1,14 +1,23 @@
-<div class="page">
-  <h1>Zod + Reactive Forms</h1>
-  <p class="subtitle">Runtime schema validation with Zod, integrated with Angular Reactive Forms — type-safe, schema-first form validation.</p>
-  <app-page-meta [readingTime]="14" difficulty="advanced" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Zod + Reactive Forms</h1>
+  <p class="page-subtitle">Runtime schema validation with Zod, integrated with Angular Reactive Forms — type-safe, schema-first form validation with <code>z.infer</code> and <code>safeParse</code>.</p>
+
+  <app-page-meta [readingTime]="28" difficulty="advanced" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
+
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
 
   <!-- Live field validation -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Live Field Validation with Zod</h2>
     <div class="demo-card">
       <div class="live-row">
@@ -33,7 +42,7 @@
   </section>
 
   <!-- Signup form -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Signup Form — Zod Validated on Submit</h2>
     <div class="demo-card">
       <form [formGroup]="signupForm" (ngSubmit)="submitSignup()" class="zod-form">
@@ -82,7 +91,7 @@
   </section>
 
   <!-- Product form -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Product Form — Zod Schema with enum &amp; array</h2>
     <div class="demo-card">
       <form [formGroup]="productForm" (ngSubmit)="submitProduct()" class="zod-form">
@@ -136,11 +145,18 @@
       }
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Manual / Old" afterLabel="Zod Pattern" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/zod-forms" nextRoute="/testing" nextLabel="Testing" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="zod-forms" nextRoute="/angular/parent-child" nextLabel="Parent-Child Communication" />
 </div>
