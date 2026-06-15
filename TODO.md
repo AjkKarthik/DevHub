@@ -422,8 +422,8 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 
 **Testing**
 - [x] 2026-06-15 `angular/testing-demo` — TestBed, ComponentFixture, signal testing, HttpClientTestingModule
-- [ ] `angular/harnesses` — ComponentHarness, HarnessLoader, CDK test harnesses
-- [ ] `angular/e2e` — Playwright vs Cypress for Angular, component testing setup
+- [x] 2026-06-15 `angular/harnesses` — ComponentHarness, HarnessLoader, CDK test harnesses
+- [x] 2026-06-15 `angular/e2e` — Playwright vs Cypress for Angular, component testing setup
 
 **Performance & Architecture**
 - [ ] `angular/preloading` — PreloadAllModules vs SelectivePreloading, QuicklinkStrategy
