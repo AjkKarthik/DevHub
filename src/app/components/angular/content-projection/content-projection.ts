@@ -10,13 +10,14 @@ import { ChallengeBlockComponent, Challenge } from '../../shared/challenge-block
 import { QuickRefComponent, QuickRefItem } from '../../shared/quick-ref/quick-ref';
 import { BeforeAfterComponent, BeforeAfterExample } from '../../shared/before-after/before-after';
 import { CommonMistakesComponent, CommonMistake } from '../../shared/common-mistakes/common-mistakes';
-import { VersionBadgeComponent, VersionInfo } from '../../shared/version-badge/version-badge';
 import { PageMetaComponent } from '../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../shared/page-complete/page-complete';
+import { RevisionCardComponent, RevisionSummary } from '../../shared/revision-card/revision-card';
+import { PrerequisitesComponent, Prerequisite } from '../../shared/prerequisites/prerequisites';
 
 @Component({
   selector: 'app-content-projection',
-  imports: [TitleCasePipe, CodeBlockComponent, TheoryBlockComponent, CardComponent, AlertComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, VersionBadgeComponent, PageMetaComponent, PageCompleteComponent],
+  imports: [TitleCasePipe, CodeBlockComponent, TheoryBlockComponent, CardComponent, AlertComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, PageMetaComponent, PageCompleteComponent, RevisionCardComponent, PrerequisitesComponent],
   templateUrl: './content-projection.html',
   styleUrl: './content-projection.scss',
 })
@@ -24,41 +25,70 @@ export class ContentProjectionDemo {
   alertType = signal<'info' | 'success' | 'warning' | 'danger'>('info');
   showGroup = signal(true);
 
+  prerequisites: Prerequisite[] = [
+    { label: 'Components', route: '/angular/components' },
+    { label: 'Parent-Child Communication', route: '/angular/parent-child' },
+  ];
+
   theory: TheoryPoint[] = [
     {
       heading: 'What is content projection?',
       points: [
-        '<code>ng-content</code> is a slot — the parent decides what HTML goes inside a child component.',
-        'Angular replaces <code>&lt;ng-content /&gt;</code> with the markup placed between the child\'s opening and closing tags.',
-        'Projected content belongs to the <strong>parent\'s</strong> change detection — not the child\'s.',
-        'Content projection does NOT create a new scope — CSS of the host still applies to projected content.',
+        'Content projection lets a parent component pass markup INTO a child\'s template through <code>&lt;ng-content /&gt;</code> — similar to React\'s <code>children</code> prop or HTML\'s <code>&lt;slot&gt;</code> element in web components.',
+        'Angular replaces <code>&lt;ng-content /&gt;</code> with the markup placed between the child\'s opening and closing tags in the parent template — at exactly that point in the child\'s layout.',
+        'Projected content belongs to the <strong>parent\'s</strong> change detection context, not the child\'s. Even if the child uses <code>OnPush</code>, Angular runs projected content on the parent\'s change detection cycle.',
+        'You cannot project content into a component that has no <code>&lt;ng-content /&gt;</code> in its template — Angular silently discards it rather than throwing an error, which can cause confusing blank areas.',
+        'There are three flavours: basic single-slot, multi-slot (named slots via <code>select</code>), and template-based projection via <code>NgTemplateOutlet</code> — a critical pattern for reusable tables, lists, and virtual scroll.',
       ],
     },
     {
-      heading: 'Multi-slot projection',
+      heading: 'Multi-slot projection with select',
       points: [
-        'Add a <code>select</code> attribute to target specific elements: <code>&lt;ng-content select="[card-header]" /&gt;</code>.',
-        'The selector is a CSS attribute, class, or element selector applied to children in the parent template.',
-        'Unmatched content goes into a default <code>&lt;ng-content /&gt;</code> with no select (the catch-all slot).',
-        '<code>ngProjectAs</code> overrides what selector a projected element matches — useful for wrapping components.',
+        'Add a <code>select</code> attribute to route specific projected elements into distinct slots: <code>&lt;ng-content select="[card-header]" /&gt;</code> captures only elements tagged with <code>card-header</code>.',
+        'The selector is a CSS selector — attribute selectors (<code>[attr]</code>), class selectors (<code>.class</code>), and element selectors (<code>tag</code>) are all valid. Angular evaluates it against the <strong>top-level</strong> projected children only.',
+        'A plain <code>&lt;ng-content /&gt;</code> with no <code>select</code> is the catch-all slot — it receives all content that didn\'t match any named slot. Only ONE default slot per template is allowed; a second default slot causes a compile error.',
+        'Slots render projected content in the order the CHILD template defines them, NOT the order the parent provided the elements. This is a common source of unexpected render order.',
+        'The <code>select</code> attribute is evaluated at compile time — it cannot be dynamically changed at runtime. For dynamic slot routing, use <code>NgTemplateOutlet</code> with conditional logic.',
       ],
     },
     {
-      heading: 'ng-template vs ng-container',
+      heading: 'ngProjectAs and slot routing edge cases',
       points: [
-        '<code>ng-template</code> defines a lazy fragment — nothing renders until you instantiate it via <code>NgTemplateOutlet</code> or a structural directive.',
-        '<code>ng-container</code> is a zero-DOM wrapper — useful to group elements or host a directive without adding a real element.',
-        'Pass templates as <code>@Input()</code> to child components: <code>input&lt;TemplateRef&lt;any&gt;&gt;()</code>.',
-        'Use <code>let-variable</code> on <code>ng-template</code> to bind context variables passed via <code>NgTemplateOutlet</code>.',
+        '<code>ngProjectAs="[selector]"</code> overrides which slot a projected element is routed into — it tells Angular to treat that element AS IF it had the specified attribute or class.',
+        'The classic use case: wrapping siblings in <code>&lt;ng-container&gt;</code> breaks slot matching because <code>ng-container</code> itself has no attributes. Adding <code>ngProjectAs="[card-header]"</code> restores the match.',
+        'Angular evaluates the <code>select</code> attribute against the OUTERMOST element of the projected subtree. Attributes on inner (nested) elements are invisible to the slot selector.',
+        'Element type selectors also work: <code>select="app-tab-title"</code> captures <code>&lt;app-tab-title&gt;</code> components projected by the parent — enabling composite component APIs (tabs, stepper steps).',
+        'Content that doesn\'t match any named slot is silently discarded if no default slot exists. This silent failure makes debugging multi-slot issues difficult — always include a default fallback slot.',
       ],
     },
     {
-      heading: 'Key points to remember',
+      heading: 'ng-template and NgTemplateOutlet',
       points: [
-        'You cannot project content into a component that uses <code>OnPush</code> differently — the projection slot is always eager.',
-        'Projected content is accessible via <code>contentChild()</code> / <code>contentChildren()</code> after <code>ngAfterContentInit</code>.',
-        'Avoid putting logic in projected content — it couples the parent and child unnecessarily.',
-        'Multiple <code>&lt;ng-content /&gt;</code> without <code>select</code> is an error — only one default slot is allowed.',
+        '<code>&lt;ng-template&gt;</code> defines a lazy template fragment — Angular does NOT render it until explicitly instantiated. Nothing appears in the DOM at the <code>&lt;ng-template&gt;</code> location.',
+        '<code>*ngTemplateOutlet="myTpl; context: { $implicit: item }"</code> renders the template at that point. The context object\'s properties bind with <code>let-varName</code> declarations on the <code>&lt;ng-template&gt;</code>.',
+        'Pass a <code>TemplateRef</code> as a signal input: <code>rowTemplate = input&lt;TemplateRef&lt;any&gt; | null&gt;(null)</code>. The parent supplies the template; the child renders it. This powers virtual scroll, data tables, and any component needing user-defined render logic.',
+        '<code>let-item</code> on <code>&lt;ng-template&gt;</code> binds <code>context.$implicit</code>; <code>let-x="propName"</code> binds a named context property. Use named props when passing multiple variables in one context.',
+        '<code>ng-template</code> is the invisible host element for ALL structural directives — <code>@if</code>, <code>@for</code>, <code>*ngIf</code>, <code>*ngFor</code> all expand to <code>&lt;ng-template&gt;</code> under the hood. This is why only one structural directive per element is allowed.',
+      ],
+    },
+    {
+      heading: 'ng-container — zero-DOM grouping',
+      points: [
+        '<code>&lt;ng-container&gt;</code> renders its children directly into the DOM without emitting any wrapper element — the Angular equivalent of React\'s <code>&lt;&gt;...&lt;/&gt;</code> fragment.',
+        'Use it when a wrapper element would break layout: inside <code>&lt;table&gt;</code> (which disallows arbitrary <code>&lt;div&gt;</code>), inside <code>&lt;ul&gt;</code>/<code>&lt;ol&gt;</code>, or within flex/grid containers where extra nodes affect spacing.',
+        'Multiple structural directives (<code>*ngIf</code> + <code>*ngFor</code>) cannot coexist on the same element — nest them in separate <code>&lt;ng-container&gt;</code> elements to apply each independently without adding real DOM.',
+        '<code>&lt;ng-container *ngTemplateOutlet="tpl" /&gt;</code> renders a template at a precise location without inserting any real DOM node at that point — ideal for optional template injection.',
+        '<code>&lt;ng-container ngProjectAs="[slot]"&gt;</code> groups multiple siblings into one logical projected group that matches a named slot — without polluting the DOM with a wrapper element.',
+      ],
+    },
+    {
+      heading: 'contentChild() / contentChildren() and the content lifecycle',
+      points: [
+        '<code>contentChild(token)</code> returns a <code>Signal&lt;T | undefined&gt;</code> for the first projected element matching the token. <code>contentChildren(token)</code> returns <code>Signal&lt;readonly T[]&gt;</code> for all matches.',
+        'Both queries become available after <code>ngAfterContentInit</code>. Reading them in <code>ngOnInit</code> returns <code>undefined</code>/<code>[]</code> — Angular has not yet inserted the projected nodes.',
+        '<code>contentChild()</code> queries elements projected INTO the component via <code>&lt;ng-content&gt;</code>. <code>viewChild()</code> queries elements in the component\'s OWN template. Never swap these — they query fundamentally different subtrees.',
+        '<code>contentChild.required(token)</code> asserts that at least one matching element is always projected. Angular reports a runtime error if the parent omits it — useful for enforcing component API contracts.',
+        'Use the <code>read</code> option to retrieve a different type from the same query: <code>contentChild(\'ref\', { read: ElementRef })</code> returns the underlying <code>ElementRef</code> rather than the component instance.',
       ],
     },
   ];
@@ -70,9 +100,10 @@ export class ContentProjectionDemo {
     { q: 'What is the difference between ng-content and ng-template?', a: '<code>&lt;ng-content&gt;</code> projects host content into the component at the slot location. <code>&lt;ng-template&gt;</code> defines a reusable template fragment that is rendered on demand by <code>*ngTemplateOutlet</code> or structural directives.' },
     { q: 'Does projected content belong to the host or the child?', a: 'Projected content belongs to the <strong>host (parent)</strong>\'s change detection context, not the child component. This means the parent\'s change detection runs the projected content — not the child\'s OnPush cycle.' },
     { q: 'Can you query projected content with viewChild?', a: 'No — use <code>contentChild()</code> or <code>contentChildren()</code> to query projected content. <code>viewChild()</code> only queries elements defined in the component\'s own template.' },
+    { q: 'How do you pass a custom row template from a parent into a data table component for rendering?', a: 'In the child, declare <code>rowTemplate = input&lt;TemplateRef&lt;any&gt; | null&gt;(null)</code>. In the child template: <code>&lt;ng-container *ngTemplateOutlet="rowTemplate(); context: { $implicit: row }" /&gt;</code>. The parent passes <code>[rowTemplate]="myTpl"</code> with an <code>&lt;ng-template #myTpl let-row&gt;{{ row.name }}&lt;/ng-template&gt;</code>. This pattern enables fully customisable render logic without coupling the table to specific content.' },
   ];
 
-  tabs: CodeTab[] = [
+  codeTabs: CodeTab[] = [
     {
       label: 'Basic ng-content',
       language: 'html',
@@ -150,6 +181,8 @@ export class ContentProjectionDemo {
     { q: 'In multi-slot projection, what kind of value does the select attribute on <ng-content> accept?', options: ['A template reference variable name, e.g. select="#myRef"', 'A CSS selector such as an attribute, class, or element selector', 'An Angular directive name', 'A component @Input() property name'], answer: 1, explanation: 'The select attribute accepts CSS selectors — attribute selectors like [card-header], class selectors like .header, or element selectors. The parent marks its content with matching attributes or classes so Angular routes it to the correct slot.' },
     { q: 'You wrap projected content in <ng-container> and it stops matching the child\'s select="[card-header]" slot. What attribute fixes this without removing the ng-container wrapper?', options: ['projectTo="[card-header]"', 'ngContentSelect="[card-header]"', 'ngProjectAs="[card-header]"', 'slotAs="card-header"'], answer: 2, explanation: 'ngProjectAs overrides which selector a projected element matches. Placing ngProjectAs="[card-header]" on the <ng-container> tells Angular to treat that wrapper as if it were an element with the card-header attribute, restoring correct slot routing.' },
     { q: 'Which hook is the earliest lifecycle point at which contentChild() / contentChildren() queries are fully resolved and safe to use?', options: ['ngOnInit', 'ngOnChanges', 'ngAfterViewInit', 'ngAfterContentInit'], answer: 3, explanation: 'contentChild() and contentChildren() queries become available after ngAfterContentInit. At ngOnInit the projected content has not yet been initialised, so queries would return undefined or empty results.' },
+    { q: 'A parent projects three sibling elements into a named slot using <ng-container ngProjectAs="[card-header]">. What role does ngProjectAs play here?', options: ['It tells Angular to create a new change detection scope for the group', 'It makes Angular treat the ng-container as if it had the card-header attribute, so all its children project into the [card-header] slot', 'It is the same as adding card-header to each child element individually', 'It enables the ng-container to render an actual DOM wrapper that matches the slot'], answer: 1, explanation: 'Angular evaluates slot selectors against the OUTERMOST projected element. A bare ng-container has no attributes, so its children would miss the [card-header] slot. ngProjectAs="[card-header]" tells Angular to treat the ng-container as if it had that attribute, routing the entire group into the correct slot.' },
+    { q: 'Why can you not apply two structural directives like *ngIf and *ngFor to the same element?', options: ['Angular only allows one structural directive import per NgModule', 'Structural directives expand to ng-template wrappers; two on the same element would create conflicting template nesting', 'It is a TypeScript limitation — two decorators cannot coexist on one class property', 'They cancel each other out and render nothing'], answer: 1, explanation: '*ngIf and *ngFor both expand to <ng-template> wrappers at compile time. If both targeted the same element, they would conflict about which template wraps which. The fix is nested <ng-container> elements: one hosts *ngIf and the inner one hosts *ngFor.' },
   ];
 
   quickRef: QuickRefItem[] = [
@@ -258,28 +291,42 @@ headerEl = contentChild<ElementRef>('header');`,
 }`,
       explanation: 'Projected content queries are resolved after ngAfterContentInit. Reading them in ngOnInit returns undefined because Angular has not yet inserted the projected nodes.',
     },
+    {
+      title: 'Expecting nested attributes to match a slot selector',
+      wrong: `<!-- Only TOP-LEVEL projected children are checked against select selectors -->
+<app-panel>
+  <div>               <!-- outer div has no card-header attribute -->
+    <h2 card-header>Title</h2>  <!-- nested — invisible to the slot selector -->
+  </div>
+</app-panel>
+<!-- h2 is silently discarded — it never appears in [card-header] slot -->`,
+      right: `<!-- Move the attribute to the outermost projected element -->
+<app-panel>
+  <h2 card-header>Title</h2>  <!-- top-level — correctly matches the slot -->
+</app-panel>`,
+      explanation: 'Angular evaluates the select attribute only against top-level projected elements. A card-header attribute on a nested h2 inside a div is invisible to the slot selector. Move the attribute to the outermost element, or use ngProjectAs on a wrapper.',
+    },
   ];
 
-  versionItems: VersionInfo[] = [
-    {
-      version: '17',
-      label: 'Signal-based content queries',
-      features: [
-        'contentChild() and contentChildren() replaced @ContentChild/@ContentChildren with reactive signals',
-        'Queries automatically update when projected content changes without manual change detection',
-        'Compatible with the new input() and output() signal primitives introduced in Angular 17',
-      ],
-    },
-    {
-      version: '2',
-      label: 'Core content projection primitives',
-      features: [
-        'ng-content with select attribute for multi-slot projection',
-        'ngProjectAs attribute to override slot matching for wrapped elements',
-        'ng-template and NgTemplateOutlet for passing and rendering template fragments',
-      ],
-    },
-  ];
+  revision: RevisionSummary = {
+    oneLiner: 'Content projection passes markup from a parent into a child via <code>&lt;ng-content&gt;</code> — single-slot, multi-slot with <code>select</code>, and template-based via <code>NgTemplateOutlet</code> are the three core patterns for truly reusable wrapper components.',
+    mustKnow: [
+      '<code>&lt;ng-content /&gt;</code> — slot where parent-provided markup is inserted; ONE default (no-select) slot per template',
+      '<code>select="[attr]"</code> on ng-content routes elements into named slots; evaluated against TOP-LEVEL projected children only',
+      '<code>ngProjectAs="[attr]"</code> overrides the slot an element routes to — fix for ng-container wrappers breaking select matching',
+      '<code>&lt;ng-template #tpl let-x&gt;</code> defines a lazy fragment; render with <code>*ngTemplateOutlet="tpl; context: { $implicit: x }"</code>',
+      '<code>&lt;ng-container&gt;</code> = zero-DOM wrapper; use to host structural directives, group siblings, and apply <code>ngProjectAs</code>',
+      'Projected content belongs to the <strong>parent\'s</strong> change detection context — not the child\'s OnPush cycle',
+      '<code>contentChild()</code> queries projected content (available after ngAfterContentInit); <code>viewChild()</code> queries the component\'s own template',
+    ],
+    interviewFocus: [
+      'What is the difference between <code>viewChild()</code> and <code>contentChild()</code>?',
+      'Why does wrapping projected content in ng-container break named slot matching? How do you fix it?',
+      'Which change detection context runs projected content — parent or child?',
+      'Name three scenarios where you would use <code>&lt;ng-container&gt;</code> instead of a <code>&lt;div&gt;</code>.',
+      'How does the ng-template + NgTemplateOutlet pattern enable custom render templates for data table rows?',
+    ],
+  };
 
   challenge: Challenge = {
     title: 'Build a Tabbed Panel with Named ng-content Slots',

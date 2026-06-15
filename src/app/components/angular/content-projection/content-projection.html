@@ -1,13 +1,22 @@
-<div class="page">
-  <h1>Content Projection</h1>
-  <p class="subtitle">ng-content, multi-slot projection, ng-template, and ng-container — building truly reusable components.</p>
-  <app-page-meta [readingTime]="10" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Content Projection</h1>
+  <p class="page-subtitle">ng-content, multi-slot projection with <code>select</code>, <code>ngProjectAs</code>, ng-template, and ng-container — the building blocks of truly reusable wrapper components.</p>
+
+  <app-page-meta [readingTime]="24" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>Multi-slot Card — header / body / footer slots</h2>
     <div class="demo-card">
       <p class="muted">The card component uses three named <code>ng-content</code> slots selected by attribute.</p>
@@ -27,7 +36,7 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Alert Component — single slot</h2>
     <div class="demo-card">
       <div class="controls">
@@ -48,7 +57,7 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>ng-container — no DOM wrapper</h2>
     <div class="demo-card">
       <div class="controls">
@@ -68,11 +77,18 @@
       </div>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Decorator API" afterLabel="Signal API" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/content-projection" nextRoute="/change-detection" nextLabel="Change Detection" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="content-projection" nextRoute="/angular/directives-demo" nextLabel="Custom Directives" />
 </div>
