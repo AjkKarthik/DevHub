@@ -1,14 +1,23 @@
-<div class="page">
-  <h1>Dependency Injection</h1>
-  <p class="subtitle">Angular's DI system — singleton services, component-scoped providers, InjectionToken, and hierarchical resolution.</p>
-  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Dependency Injection</h1>
+  <p class="page-subtitle">Angular's DI system — singleton services, component-scoped providers, InjectionToken, hierarchical resolution, and the modern inject() API.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
+
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
 
   <!-- Root singleton vs scoped -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Root Singleton vs Component-Scoped Service</h2>
     <div class="demo-card">
       <div class="di-grid">
@@ -38,7 +47,7 @@
   </section>
 
   <!-- InjectionToken -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>InjectionToken</h2>
     <div class="demo-card">
       <p class="muted">APP_CONFIG token injected — factory runs once and provides these values:</p>
@@ -62,7 +71,7 @@
   </section>
 
   <!-- DI resolution visual -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Hierarchical DI Resolution</h2>
     <div class="demo-card">
       <div class="hierarchy">
@@ -88,11 +97,18 @@
       </div>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old API" afterLabel="Modern API" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/di" nextRoute="/content-projection" nextLabel="Content Projection" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="di-demo" nextRoute="/angular/routing-demo" nextLabel="Routing" />
 </div>
