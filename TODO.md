@@ -386,38 +386,38 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 #### Angular hub — 45 topic pages
 
 **Signals & reactivity (do these first)**
-- [ ] `angular/resource-api` — resource(), rxResource(), loading/error states, refresh
-- [ ] `angular/linked-signal` — linkedSignal(), write-back pattern, vs computed
-- [ ] `angular/signal-store` — @ngrx/signals, signalStore, withState, withMethods, withComputed
-- [ ] `angular/ngrx-signals` — feature stores, withEntities, custom features, devtools
-- [ ] `angular/change-detection` — OnPush, signal-based detection, ChangeDetectorRef, zone.js-less
-- [ ] `angular/zoneless` — provideZonelessChangeDetection, migration from zone.js, performance
+- [x] 2026-06-14 `angular/resource-api` — resource(), rxResource(), loading/error states, refresh
+- [x] 2026-06-14 `angular/linked-signal` — linkedSignal(), write-back pattern, vs computed
+- [x] 2026-06-14 `angular/signal-store` — @ngrx/signals, signalStore, withState, withMethods, withComputed
+- [x] 2026-06-14 `angular/ngrx-signals` — feature stores, withEntities, custom features, devtools
+- [x] 2026-06-14 `angular/change-detection` — OnPush, signal-based detection, ChangeDetectorRef, zone.js-less
+- [x] 2026-06-14 `angular/zoneless` — provideZonelessChangeDetection, migration from zone.js, performance
 
 **Core framework**
-- [ ] `angular/template-syntax` — control flow (@if/@for/@switch), defer, ng-template, ng-content
-- [ ] `angular/lifecycle` — OnInit, OnDestroy, DestroyRef, afterNextRender, afterRender
-- [ ] `angular/di-demo` — inject(), injection tokens, hierarchical DI, useFactory, forwardRef
-- [ ] `angular/routing-demo` — lazy routes, functional guards, resolvers, withViewTransitions
-- [ ] `angular/http-demo` — HttpClient, interceptors (functional), provideHttpClient, retry
-- [ ] `angular/pipes-demo` — pure vs impure, async pipe internals, custom transform pipes
+- [x] 2026-06-15 `angular/template-syntax` — control flow (@if/@for/@switch), defer, ng-template, ng-content
+- [x] 2026-06-15 `angular/lifecycle` — OnInit, OnDestroy, DestroyRef, afterNextRender, afterRender
+- [x] 2026-06-15 `angular/di-demo` — inject(), injection tokens, hierarchical DI, useFactory, forwardRef
+- [x] 2026-06-15 `angular/routing-demo` — lazy routes, functional guards, resolvers, withViewTransitions
+- [x] 2026-06-15 `angular/http-demo` — HttpClient, interceptors (functional), provideHttpClient, retry
+- [x] 2026-06-15 `angular/pipes-demo` — pure vs impure, async pipe internals, custom transform pipes
 
 **Forms**
-- [ ] `angular/forms-demo` — reactive vs template, FormGroup, FormControl, typed forms (v14+)
-- [ ] `angular/form-array` — FormArray, dynamic controls, array validators, nested groups
-- [ ] `angular/dynamic-forms` — building form config from JSON, custom validators
-- [ ] `angular/wizard-form` — multi-step form, stepper, inter-step validation
-- [ ] `angular/custom-validators` — sync/async validators, cross-field, NG_VALIDATORS token
-- [ ] `angular/cva-demo` — ControlValueAccessor, NG_VALUE_ACCESSOR, form integration
-- [ ] `angular/zod-forms` — Zod schema + Angular reactive forms, zodValidator adapter
+- [x] 2026-06-15 `angular/forms-demo` — reactive vs template, FormGroup, FormControl, typed forms (v14+)
+- [x] 2026-06-15 `angular/form-array` — FormArray, dynamic controls, array validators, nested groups
+- [x] 2026-06-15 `angular/dynamic-forms` — building form config from JSON, custom validators
+- [x] 2026-06-15 `angular/wizard-form` — multi-step form, stepper, inter-step validation
+- [x] 2026-06-15 `angular/custom-validators` — sync/async validators, cross-field, NG_VALIDATORS token
+- [x] 2026-06-15 `angular/cva-demo` — ControlValueAccessor, NG_VALUE_ACCESSOR, form integration
+- [x] 2026-06-15 `angular/zod-forms` — Zod schema + Angular reactive forms, zodValidator adapter
 
 **Components**
-- [ ] `angular/parent-child` — @Input, @Output, model(), contentChildren, viewChild
-- [ ] `angular/content-projection` — ng-content, select, ngTemplateOutlet, multi-slot
-- [ ] `angular/directives-demo` — attribute directives, structural directives, hostDirectives
-- [ ] `angular/destroy-ref` — DestroyRef, takeUntilDestroyed, vs OnDestroy
+- [x] 2026-06-15 `angular/parent-child` — @Input, @Output, model(), contentChildren, viewChild
+- [x] 2026-06-15 `angular/content-projection` — ng-content, select, ngTemplateOutlet, multi-slot
+- [x] 2026-06-15 `angular/directives-demo` — attribute directives, structural directives, hostDirectives
+- [x] 2026-06-15 `angular/destroy-ref` — DestroyRef, takeUntilDestroyed, vs OnDestroy
 
 **Async & RxJS**
-- [ ] `angular/rxjs-demo` — switchMap/mergeMap/concatMap/exhaustMap, shareReplay, takeUntil
+- [x] 2026-06-15 `angular/rxjs-demo` — switchMap/mergeMap/concatMap/exhaustMap, shareReplay, takeUntil
 - [ ] `angular/tanstack-query` — Angular TanStack Query, createQuery, createMutation, cache
 
 **Testing**
