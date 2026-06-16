@@ -36,7 +36,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Utility Types',              route: '/typescript/utility-types', badge: 'Advanced Types', available: true,
     description: 'Partial, Required, Readonly, Pick, Omit, Record, Extract, Exclude, NonNullable, ReturnType, Parameters.',
     keyPoints: ['Partial<T>: all properties optional — useful for update DTOs', 'Record<K, V>: typed object with string/enum keys', 'ReturnType<typeof fn>: extract the return type of any function'] },
-  { title: 'Mapped Types',               route: '/typescript/mapped-types', badge: 'Advanced Types', available: false,
+  { title: 'Mapped Types',               route: '/typescript/mapped-types', badge: 'Advanced Types', available: true,
     description: 'Transform existing types — iterate over keys with [K in keyof T], modifiers (+/- optional/readonly).',
     keyPoints: ['{ [K in keyof T]: T[K] } is identity mapped type — add modifiers on top', '-? removes optional; -readonly removes readonly', 'Mapped type + conditional type = powerful transformations'] },
   { title: 'Template Literal Types',     route: '/typescript/template-literal-types', badge: 'Advanced Types', available: false,
