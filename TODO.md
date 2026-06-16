@@ -438,13 +438,13 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-16 `angular/material-demo` — theming (M3), form field, table, dialog, CDK integration
 - [ ] `angular/tanstack-query` — (see Async section above)
 - [x] 2026-06-16 `angular/charts` — ng2-charts/Chart.js, reactive data binding, responsive charts
-- [ ] `angular/ag-grid-demo` — AG Grid community, rowData signal, custom cell renderers
-- [ ] `angular/ng-image` — NgOptimizedImage, srcset, priority, LQIP
-- [ ] `angular/datefns-demo` — date-fns with Angular pipes, locale, formatting patterns
+- [x] 2026-06-16 `angular/ag-grid-demo` — AG Grid community, rowData signal, custom cell renderers
+- [x] 2026-06-16 `angular/ng-image` — NgOptimizedImage, srcset, priority, LQIP
+- [x] 2026-06-16 `angular/datefns-demo` — date-fns with Angular pipes, locale, formatting patterns
 - [x] 2026-06-16 `angular/tailwind-demo` — Tailwind CSS 4 in Angular, dark mode, component patterns
 
 **Misc**
-- [ ] `angular/counter` — simple signals counter demo — expand into signals deep-dive
+- [x] 2026-06-16 `angular/counter` — simple signals counter demo — expand into signals deep-dive
 - [ ] `angular/todo` — todo app demo — expand into state management patterns demo
 - [ ] `angular/i18n` — @angular/localize, $localize, ICU, build-time vs runtime i18n
 
