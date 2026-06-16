@@ -433,7 +433,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-16 `angular/web-workers` — comlink, offloading heavy computation, communication patterns
 
 **Libraries & integrations**
-- [ ] `angular/animations-demo` — trigger/state/transition, stagger, AnimationBuilder, route anim
+- [x] 2026-06-16 `angular/animations-demo` — trigger/state/transition, stagger, AnimationBuilder, route anim
 - [ ] `angular/cdk-demo` — FocusTrap, Overlay, DragDrop, VirtualScrollViewport, a11y module
 - [ ] `angular/material-demo` — theming (M3), form field, table, dialog, CDK integration
 - [ ] `angular/tanstack-query` — (see Async section above)
