@@ -480,7 +480,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `aspnet/cors` — policy builder, pre-flight, credentials, CORS with minimal APIs (2026-06-16)
 - [x] `aspnet/web-security` — CSRF, XSS, security headers, HTTPS enforcement, HSTS (2026-06-16)
 - [x] `aspnet/secrets` — User Secrets, Azure Key Vault, DPAPI, ISecretManager (2026-06-16)
-- [ ] `aspnet/rate-limiting` — sliding window, fixed window, token bucket, concurrency limiter
+- [x] 2026-06-16 `aspnet/rate-limiting` — sliding window, fixed window, token bucket, concurrency limiter
 
 **Advanced**
 - [ ] `aspnet/http-clients` — IHttpClientFactory, typed clients, Polly v8, resilience pipeline
