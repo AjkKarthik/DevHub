@@ -2,12 +2,29 @@
   <div class="page-header-icon asp-icon">ASP</div>
   <h1 class="page-title">Middleware Pipeline</h1>
   <p class="page-subtitle">app.Use / Run / Map, ordering rules, short-circuiting, and writing custom middleware — the backbone of every ASP.NET Core request.</p>
-  <app-page-meta [readingTime]="22" difficulty="beginner" since="ASP.NET Core 1+" tech="aspnet" />
+
+  <app-page-meta [readingTime]="30" difficulty="beginner" since="ASP.NET Core 1+" tech="aspnet" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
-  <section class="asp-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Inline Delegate" afterLabel="Class Middleware / IMiddleware" />
+
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
   <app-page-complete route="aspnet-middleware" nextRoute="/aspnet/routing" nextLabel="Routing" />
 </div>
