@@ -505,7 +505,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `sql/data-modeling` — 2026-06-16
 - [x] `sql/normalization` — 1NF/2NF/3NF/BCNF, denormalisation trade-offs, when to break rules `2026-06-16`
 - [x] `sql/db-architecture` — 2026-06-16
-- [ ] `sql/data-types` — numeric precision, varchar vs nvarchar, JSONB, UUID, temporal types
+- [x] `sql/data-types` — 2026-06-16
 - [x] `sql/basics` — 2026-06-16
 - [x] `sql/joins` — 2026-06-16
 - [x] `sql/aggregations` — 2026-06-16
