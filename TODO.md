@@ -466,7 +466,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `aspnet/model-binding` — [FromBody]/[FromRoute]/[FromQuery], custom binders, validation (2026-06-16)
 - [x] `aspnet/filters` — action/exception/resource/auth filters, IFilterFactory, ordering (2026-06-16)
 - [x] `aspnet/error-handling` — UseExceptionHandler, ProblemDetails middleware, IProblemDetailsService (2026-06-16)
-- [ ] `aspnet/api-versioning` — URL/header/query versioning, Asp.Versioning, deprecation
+- [x] `aspnet/api-versioning` — URL/header/query versioning, Asp.Versioning, deprecation (2026-06-16)
 - [x] `aspnet/openapi-swagger` — Scalar, Swashbuckle, XML comments, security definitions (2026-06-16)
 
 **Data**
