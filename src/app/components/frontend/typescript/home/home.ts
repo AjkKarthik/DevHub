@@ -57,7 +57,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'TypeScript with Frameworks', route: '/typescript/frameworks', badge: 'Tooling', available: false,
     description: 'TypeScript in React (JSX, component props types), Node.js, and Express type-safe request/response.',
     keyPoints: ['React.FC<Props> vs (props: Props) => JSX.Element — prefer the latter', 'Express: augment Request type via declaration merging for req.user', 'Zod: runtime schema + TypeScript type from one declaration (z.infer)'] },
-  { title: 'Type Guards & Narrowing',     route: '/typescript/narrowing', badge: 'Type System', available: false,
+  { title: 'Type Guards & Narrowing',     route: '/typescript/narrowing', badge: 'Type System', available: true,
     description: 'Narrowing techniques in depth — typeof, instanceof, in, user-defined predicates, and assertion functions.',
     keyPoints: ['isXxx(x): x is T — custom type predicate returns boolean + narrows', 'asserts x is T — throws if assertion fails, narrows after call', 'Exhaustiveness check: default: const _: never = x catches missing branches'] },
   { title: 'Declaration Files (d.ts)',    route: '/typescript/declarations', badge: 'Tooling', available: false,
