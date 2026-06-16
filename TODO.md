@@ -470,7 +470,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `aspnet/openapi-swagger` — Scalar, Swashbuckle, XML comments, security definitions (2026-06-16)
 
 **Data**
-- [ ] `aspnet/ef-core-basics` — DbContext lifetime, no-tracking, SaveChanges, transactions
+- [x] `aspnet/ef-core-basics` — DbContext lifetime, no-tracking, SaveChanges, transactions (2026-06-16)
 - [ ] `aspnet/ef-relationships` — one-to-many, many-to-many, owned entities, table splitting
 - [ ] `aspnet/ef-performance` — compiled queries, split queries, connection resiliency, bulk ops
 
