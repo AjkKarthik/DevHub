@@ -1,1 +1,21 @@
-<div class="ts-page"><p>Coming soon</p></div>
+<div class="ts-page">
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Primitive &amp; Literal Types</h1>
+  <p class="page-subtitle">The full TypeScript type hierarchy: <code>string</code>, <code>number</code>, <code>boolean</code>, <code>null</code>, <code>undefined</code>, <code>void</code>, <code>never</code>, <code>unknown</code>, <code>any</code>, <code>bigint</code>, <code>symbol</code> — plus literal types, <code>as const</code>, and exhaustiveness checking with <code>never</code>.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="beginner" since="TypeScript 4.x+" tech="typescript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" playgroundUrl="https://www.typescriptlang.org/play" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="ts-primitive-types" nextRoute="/typescript/interfaces-types" nextLabel="Interfaces & Type Aliases" />
+</div>

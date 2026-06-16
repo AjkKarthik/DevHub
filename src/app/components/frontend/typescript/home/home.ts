@@ -15,7 +15,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'TypeScript Fundamentals',    route: '/typescript/basics', badge: 'Foundations', available: true,
     description: 'Why TypeScript, compiling to JS, tsconfig basics, type annotations, and the TypeScript compiler flags.',
     keyPoints: ['TypeScript is a structural type system — shape matters, not name', 'strict: true enables strictNullChecks, noImplicitAny, and more', 'tsc --noEmit: type-check without emitting files (ideal for CI)'] },
-  { title: 'Primitive & Literal Types',  route: '/typescript/primitive-types', badge: 'Type System', available: false,
+  { title: 'Primitive & Literal Types',  route: '/typescript/primitive-types', badge: 'Type System', available: true,
     description: 'string, number, boolean, undefined, null, void, never, unknown, any — and literal types.',
     keyPoints: ['unknown is type-safe any — must narrow before use', 'never: a value that never occurs (exhaustive switch, throwing functions)', 'Literal types: const role = "admin" has type "admin", not string'] },
   { title: 'Interfaces & Type Aliases',  route: '/typescript/interfaces-types', badge: 'Type System', available: false,
