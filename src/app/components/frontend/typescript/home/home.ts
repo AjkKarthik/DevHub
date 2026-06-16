@@ -33,7 +33,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Generic Patterns',           route: '/typescript/generic-patterns', badge: 'Generics', available: true,
     description: 'Generic utility functions, generic classes, and common patterns like Result<T, E> and Option<T>.',
     keyPoints: ['Result<T, E> = { ok: true; value: T } | { ok: false; error: E }', 'Generic factory: function create<T>(ctor: new() => T): T', 'Conditional generic: T extends string ? "yes" : "no"'] },
-  { title: 'Utility Types',              route: '/typescript/utility-types', badge: 'Advanced Types', available: false,
+  { title: 'Utility Types',              route: '/typescript/utility-types', badge: 'Advanced Types', available: true,
     description: 'Partial, Required, Readonly, Pick, Omit, Record, Extract, Exclude, NonNullable, ReturnType, Parameters.',
     keyPoints: ['Partial<T>: all properties optional — useful for update DTOs', 'Record<K, V>: typed object with string/enum keys', 'ReturnType<typeof fn>: extract the return type of any function'] },
   { title: 'Mapped Types',               route: '/typescript/mapped-types', badge: 'Advanced Types', available: false,
