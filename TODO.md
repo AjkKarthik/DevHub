@@ -486,7 +486,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-16 `aspnet/http-clients` — IHttpClientFactory, typed clients, Polly v8, resilience pipeline
 - [x] 2026-06-16 `aspnet/grpc` — protobuf service/message, Grpc.AspNetCore, client factory, streaming
 - [x] 2026-06-16 `aspnet/caching` — IMemoryCache, IDistributedCache, Redis, output caching, cache tags
-- [ ] `aspnet/static-files` — StaticFileOptions, file provider, cache-control headers
+- [x] 2026-06-16 `aspnet/static-files` — StaticFileOptions, file provider, cache-control headers
 
 **Infrastructure**
 - [ ] `aspnet/background-services` — BackgroundService, IHostedService, Channels integration
