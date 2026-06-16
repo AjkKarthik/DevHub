@@ -21,7 +21,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Interfaces & Type Aliases',  route: '/typescript/interfaces-types', badge: 'Type System', available: true,
     description: 'interface vs type — differences, when to use each, declaration merging, and index signatures.',
     keyPoints: ['Interfaces can be extended and merged; type aliases cannot be reopened', 'type for unions and computed types; interface for object shapes', 'Index signature: [key: string]: T — allows any string key'] },
-  { title: 'Union & Intersection Types', route: '/typescript/unions', badge: 'Type System', available: false,
+  { title: 'Union & Intersection Types', route: '/typescript/unions', badge: 'Type System', available: true,
     description: 'Union (|), intersection (&), discriminated unions, and type narrowing techniques.',
     keyPoints: ['Discriminated union: shared literal property narrows the type', 'Narrowing: typeof, instanceof, in, custom type predicates (x is T)', 'Exhaustiveness check: default: satisfies never catches missing cases'] },
   { title: 'Enums & Tuples',             route: '/typescript/enums-tuples', badge: 'Type System', available: false,
