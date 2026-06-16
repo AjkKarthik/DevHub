@@ -42,7 +42,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Template Literal Types',     route: '/typescript/template-literal-types', badge: 'Advanced Types', available: false,
     description: 'String manipulation at the type level — `${"get" | "set"}${Capitalize<string>}` and infer.',
     keyPoints: ['`${EventName}Changed` generates a union of string literal types', 'Intrinsic string manipulation: Uppercase, Lowercase, Capitalize, Uncapitalize', 'infer in conditional types: extract sub-types from complex types'] },
-  { title: 'Conditional Types',          route: '/typescript/conditional-types', badge: 'Advanced Types', available: false,
+  { title: 'Conditional Types',          route: '/typescript/conditional-types', badge: 'Advanced Types', available: true,
     description: 'T extends U ? X : Y — distributive conditional types, infer, and deferred resolution.',
     keyPoints: ['Distributive: applied to each member of a union separately', 'infer P in "T extends Promise<infer P>" extracts P from Promise<P>', 'NonNullable<T> = T extends null | undefined ? never : T — stdlib uses this'] },
   { title: 'Decorators',                 route: '/typescript/decorators', badge: 'OOP', available: false,
