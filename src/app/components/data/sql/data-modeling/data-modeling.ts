@@ -30,6 +30,9 @@ export class SqlDataModeling {
     { name: 'Crow\'s Foot',      type: 'keyword', desc: 'ERD notation: lines with symbols — |— (one), >— (many), O— (zero-or-one). Shows min/max participation.' },
     { name: 'Weak Entity',       type: 'keyword', desc: 'An entity that cannot be uniquely identified without its parent entity (e.g. OrderLine depends on Order).' },
     { name: 'Junction Table',    type: 'keyword', desc: 'A table that resolves a M:N relationship. Contains FK columns to both parent tables; their combination is the PK.' },
+    { name: 'Surrogate Key',     type: 'keyword', desc: 'A system-generated PK with no business meaning (IDENTITY/SERIAL int, UUID). Stable, index-friendly.' },
+    { name: 'Natural Key',       type: 'keyword', desc: 'A PK whose value has business meaning (email, ISBN, SSN). Can change and be long — prefer as unique constraint, not PK.' },
+    { name: 'EAV',               type: 'keyword', desc: 'Entity-Attribute-Value pattern: (id, attr_name, attr_value). Flexible but type-unsafe, unindexable, hard to query.' },
     { name: 'Identifying Rel.',  type: 'keyword', desc: 'A relationship where the child\'s PK includes the parent\'s PK (weak entity). OrderLine(OrderID, LineNum).' },
     { name: 'Participation',     type: 'keyword', desc: 'Total: every entity instance must participate in the relationship. Partial: participation is optional (0 or more).' },
   ];
@@ -63,7 +66,6 @@ export class SqlDataModeling {
         'Rule 3 — Each M:N relationship → create a junction table. Its PK is the composite of both parent FKs. Add extra attributes of the relationship (e.g. enrolment_date, grade) as columns in the junction table.',
         'Rule 4 — Each 1:1 relationship → place the FK on the table that has PARTIAL participation (the optional side), or merge them if the relationship is always total on both sides.',
         'Rule 5 — Multivalued attributes → extract to a separate child table with a FK back to the parent and the value as part of the PK.',
-        'Rule 6 — Weak entities → the junction table uses the parent PK as part of its own composite PK (identifying relationship).',
       ],
     },
     {
@@ -74,6 +76,26 @@ export class SqlDataModeling {
         'Many-to-many with extra attributes: as soon as the junction table gains meaningful attributes (grade, price_at_purchase, created_by), it becomes a full entity in its own right. Name it something meaningful (Enrolment, OrderLine, ProjectMembership).',
         'Think about the write side too: insert/update/delete patterns should be as simple as possible. Heavily denormalized schemas that are fast to read can be nightmares to keep consistent on writes.',
         'Start normalised (3NF). Denormalise only after measuring a real performance problem. See the Normalization page for the full rules.',
+      ],
+    },
+    {
+      heading: 'Surrogate vs natural keys — choosing a primary key strategy',
+      points: [
+        '<strong>Surrogate keys</strong> are system-generated identifiers with no business meaning: <code>INT IDENTITY</code> (MSSQL), <code>SERIAL</code> / <code>GENERATED ALWAYS AS IDENTITY</code> (PostgreSQL), or UUID. They never change, are compact, and make FK relationships simple. The recommended default for most tables.',
+        '<strong>Natural keys</strong> have business meaning: email address, ISBN, national ID number, product SKU. Tempting as PKs because they are already unique and meaningful. But they change (users change emails), can be long strings (slow index comparisons), and couples business rules to the schema structure.',
+        'Best practice: use a surrogate integer PK, and apply a UNIQUE constraint on the natural key column. This gives you both fast FK joins on the integer PK and the business-rule uniqueness guarantee on the natural key. Example: <code>PRIMARY KEY (customer_id)</code> + <code>UNIQUE (email)</code>.',
+        '<strong>UUID as PK</strong>: globally unique across systems — useful for distributed architectures or when clients generate IDs before writing. Downside: random UUIDs (<code>NEWID()</code> / <code>gen_random_uuid()</code>) fragment the clustered index badly (random inserts cause page splits). Use sequential UUIDs (<code>NEWSEQUENTIALID()</code> in MSSQL, UUIDv7 in PostgreSQL 17+) if you must use UUID as a clustered PK, or use UUID as a secondary unique column and keep an integer as the clustered PK.',
+        '<strong>Composite PKs</strong> are appropriate for junction tables (Student + Course in Enrollments) and weak entities (OrderID + LineNumber in OrderLines). Avoid composite PKs on main entity tables — they make FK columns verbose and join conditions longer. When in doubt, add a surrogate PK and a UNIQUE constraint on the natural composite.',
+      ],
+    },
+    {
+      heading: 'EAV anti-pattern and alternatives — polymorphic associations and flexible schemas',
+      points: [
+        '<strong>Entity-Attribute-Value (EAV)</strong>: a "universal table" pattern with columns <code>(entity_id, attribute_name, attribute_value VARCHAR)</code>. Attractive for "flexible" schemas with varying attributes per row. Problems: all values stored as strings (no type safety, no CHECK constraints), filtering requires pivoting (<code>CASE WHEN attr = \'price\' THEN value END</code>), indexes cannot be used effectively, and required attributes cannot be enforced.',
+        'EAV alternatives: (1) <strong>typed columns with NULLs</strong> — add optional columns to the main table; fine for a small, stable set of optional fields. (2) <strong>JSON/JSONB column</strong> — store flexible attributes as a JSON blob alongside fixed columns; allows schema flexibility without abandoning type-safe columns for core fields. (3) <strong>class-table inheritance</strong> — a base table with common columns plus a subtype table per variant; foreign keys link them.',
+        '<strong>Polymorphic associations</strong>: a Comment can belong to either a Post or a Photo. Anti-pattern: <code>(commentable_type VARCHAR, commentable_id INT)</code> — cannot enforce FK integrity. Better options: (1) two nullable FKs (<code>post_id INT NULL, photo_id INT NULL</code>) with a CHECK that exactly one is non-NULL; (2) a separate CommentOnPost and CommentOnPhoto table; (3) an abstract parent table (Content) that both Post and Photo reference.',
+        '<strong>Sparse columns in MSSQL</strong>: a specific alternative to EAV for tables with many NULL columns. Declare sparse columns with <code>column_name TYPE SPARSE NULL</code>; they use no storage for NULL values. Suits EAV-like schemas where each row has very different sets of populated columns. Not available in PostgreSQL — use JSON/JSONB instead.',
+        'When a product catalog needs unlimited custom attributes (color: "red", material: "steel", size: "XL" — different attributes per category), a hybrid approach works well: typed columns for attributes shared across all products (price, sku, weight) + a JSONB / JSON column for category-specific custom attributes. Query fixed columns normally; use JSON operators for flexible attributes. Index specific JSONB paths with PostgreSQL expression indexes when query performance requires it.',
       ],
     },
   ];
@@ -204,6 +226,153 @@ FROM courses     c
 LEFT JOIN enrollments e ON c.course_id = e.course_id  -- LEFT keeps courses with 0 enrolments
 GROUP BY c.course_id, c.course_code, c.course_name
 ORDER BY enrolled DESC;`,
+    },
+    {
+      label: 'Key strategies (surrogate, natural, UUID)',
+      language: 'sql',
+      code: `-- ── Pattern 1: surrogate INT PK + natural key as UNIQUE constraint ─────
+-- MSSQL
+CREATE TABLE customers_mssql (
+    customer_id  INT           NOT NULL IDENTITY(1,1),  -- surrogate PK
+    email        NVARCHAR(254) NOT NULL,                -- natural key → UNIQUE only
+    full_name    NVARCHAR(200) NOT NULL,
+    CONSTRAINT PK_Customers  PRIMARY KEY (customer_id),
+    CONSTRAINT UQ_Cust_Email UNIQUE      (email)        -- business-rule uniqueness
+);
+
+-- PostgreSQL (GENERATED ALWAYS AS IDENTITY = preferred over SERIAL)
+CREATE TABLE customers_pg (
+    customer_id  INT          GENERATED ALWAYS AS IDENTITY,
+    email        VARCHAR(254) NOT NULL,
+    full_name    VARCHAR(200) NOT NULL,
+    CONSTRAINT pk_customers  PRIMARY KEY (customer_id),
+    CONSTRAINT uq_cust_email UNIQUE      (email)
+);
+
+-- ── Pattern 2: sequential UUID PK (for distributed systems) ─────────────
+-- MSSQL: NEWSEQUENTIALID() avoids random-insert fragmentation
+CREATE TABLE events_mssql (
+    event_id    UNIQUEIDENTIFIER NOT NULL DEFAULT NEWSEQUENTIALID(),
+    event_type  VARCHAR(50)      NOT NULL,
+    occurred_at DATETIME2(7)     NOT NULL DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT PK_Events PRIMARY KEY (event_id)
+);
+
+-- PostgreSQL 17+: UUIDv7 is time-ordered (no fragmentation)
+CREATE TABLE events_pg (
+    event_id    UUID         NOT NULL DEFAULT gen_random_uuid(),  -- v4; replace with uuidv7() on PG17
+    event_type  VARCHAR(50)  NOT NULL,
+    occurred_at TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+    CONSTRAINT pk_events PRIMARY KEY (event_id)
+);
+
+-- ── Pattern 3: composite PK on junction table ────────────────────────────
+CREATE TABLE project_members (
+    project_id  INT  NOT NULL,
+    employee_id INT  NOT NULL,
+    role        VARCHAR(50) NOT NULL DEFAULT 'Contributor',
+    joined_date DATE        NOT NULL DEFAULT CURRENT_DATE,
+    CONSTRAINT pk_project_members PRIMARY KEY (project_id, employee_id),
+    CONSTRAINT fk_pm_project  FOREIGN KEY (project_id)  REFERENCES projects(project_id),
+    CONSTRAINT fk_pm_employee FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+CREATE INDEX ix_pm_employee ON project_members(employee_id);`,
+    },
+    {
+      label: 'EAV alternatives & polymorphic FK',
+      language: 'sql',
+      code: `-- ── EAV anti-pattern (avoid) ─────────────────────────────────────────
+CREATE TABLE product_attributes_eav (
+    product_id      INT,
+    attribute_name  VARCHAR(100),
+    attribute_value VARCHAR(500)   -- all types as string: no type safety, no indexes on values
+);
+-- To get price: SELECT attribute_value FROM … WHERE attribute_name = 'price'
+-- Aggregating: pivot query required — fragile and slow
+
+-- ── Typed columns + JSON hybrid (recommended) ──────────────────────────
+-- Fixed columns for shared, filterable attributes; JSON for category-specific extras
+CREATE TABLE products (
+    product_id    SERIAL      NOT NULL,
+    sku           VARCHAR(50) NOT NULL,
+    product_name  VARCHAR(300) NOT NULL,
+    price         NUMERIC(12,2) NOT NULL,         -- typed: filterable, indexable
+    weight_kg     NUMERIC(8,3)  NULL,              -- typed: shared across categories
+    custom_attrs  JSONB         NULL,              -- flexible: category-specific
+    CONSTRAINT pk_products   PRIMARY KEY (product_id),
+    CONSTRAINT uq_products_sku UNIQUE (sku)
+);
+
+-- Index a specific JSONB path for efficient querying (PostgreSQL):
+CREATE INDEX ix_products_color ON products((custom_attrs->>'color'));
+
+-- Query: find all red t-shirts under $30
+SELECT sku, product_name, price
+FROM   products
+WHERE  price < 30
+  AND  custom_attrs->>'color' = 'red'
+  AND  custom_attrs->>'category' = 'tshirt';
+
+-- ── Polymorphic association — two nullable FKs with CHECK ─────────────
+-- A comment can belong to EITHER a post OR a video (not both)
+CREATE TABLE comments (
+    comment_id INT  GENERATED ALWAYS AS IDENTITY,
+    post_id    INT  NULL REFERENCES posts(post_id),
+    video_id   INT  NULL REFERENCES videos(video_id),
+    body       TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT pk_comments PRIMARY KEY (comment_id),
+    CONSTRAINT ck_comments_one_parent CHECK (
+        (post_id IS NOT NULL AND video_id IS NULL) OR
+        (post_id IS NULL    AND video_id IS NOT NULL)
+    )
+);`,
+    },
+    {
+      label: 'Self-referencing hierarchy (recursive CTE)',
+      language: 'sql',
+      code: `-- Adjacency list: each category has an optional parent (self-referencing FK)
+CREATE TABLE categories (
+    category_id        INT          GENERATED ALWAYS AS IDENTITY,
+    category_name      VARCHAR(200) NOT NULL,
+    parent_category_id INT          NULL REFERENCES categories(category_id),
+    CONSTRAINT pk_categories PRIMARY KEY (category_id)
+);
+CREATE INDEX ix_categories_parent ON categories(parent_category_id);
+
+-- Sample data: Electronics > Phones > Smartphones
+INSERT INTO categories (category_name, parent_category_id)
+VALUES ('Electronics', NULL),            -- root
+       ('Phones',      1),               -- child of Electronics
+       ('Smartphones', 2),               -- child of Phones
+       ('Laptops',     1);               -- child of Electronics
+
+-- ── Recursive CTE: traverse the full hierarchy ─────────────────────────
+-- Works in both MSSQL and PostgreSQL
+WITH RECURSIVE cat_tree AS (          -- MSSQL: omit RECURSIVE keyword
+    -- Anchor: start at root categories
+    SELECT category_id, category_name, parent_category_id, 0 AS depth,
+           CAST(category_name AS VARCHAR(1000)) AS path
+    FROM   categories
+    WHERE  parent_category_id IS NULL
+
+    UNION ALL
+
+    -- Recursive member: join children to their parent
+    SELECT c.category_id, c.category_name, c.parent_category_id,
+           ct.depth + 1,
+           CAST(ct.path || ' > ' || c.category_name AS VARCHAR(1000)) AS path
+    FROM   categories c
+    JOIN   cat_tree ct ON c.parent_category_id = ct.category_id
+)
+SELECT depth, LPAD('  ', depth * 2, ' ') || category_name AS indented_name, path
+FROM   cat_tree
+ORDER BY path;
+-- Result:
+-- 0  Electronics
+-- 1    Laptops        → Electronics > Laptops
+-- 1    Phones         → Electronics > Phones
+-- 2      Smartphones  → Electronics > Phones > Smartphones`,
     },
   ];
 
@@ -343,6 +512,28 @@ CREATE INDEX ix_comments_author ON comments(author_id);`,
       answer: 2,
       explanation: 'The composite primary key (PostID, TagID) ensures that each post-tag combination is unique and eliminates duplicates at the database level. A surrogate key on a junction table adds no value and removes the uniqueness guarantee.',
     },
+    {
+      q: 'You want to use a UUID as the primary key for an events table in MSSQL. Which function avoids clustered index fragmentation?',
+      options: [
+        'NEWID() — generates a random UUID (v4)',
+        'NEWSEQUENTIALID() — generates a time-ordered UUID that increments with each insert',
+        'GETDATE() — timestamps are sequential',
+        'HASHBYTES(\'SHA1\', GETDATE()) — hashes are stable',
+      ],
+      answer: 1,
+      explanation: 'NEWID() generates random UUIDs whose unpredictable order causes every insert to land at a random page in the clustered B-tree index — the root cause of index fragmentation and page splits. NEWSEQUENTIALID() generates UUIDs that always increase, so inserts go to the end of the index just like an IDENTITY column.',
+    },
+    {
+      q: 'What is the primary problem with the EAV (Entity-Attribute-Value) pattern?',
+      options: [
+        'EAV tables are always slower to write than normalized tables',
+        'All values are stored as strings — no type safety, no FK constraints, and aggregation requires complex pivoting',
+        'EAV tables cannot have primary keys',
+        'EAV is not supported in PostgreSQL',
+      ],
+      answer: 1,
+      explanation: 'EAV stores all attribute values as VARCHAR/TEXT, so numeric, date, and boolean semantics are lost. You cannot add a CHECK constraint, enforce NOT NULL for specific attributes, or write simple WHERE clauses. Aggregating requires a PIVOT or a chain of CASE expressions. The recommended alternatives are typed columns for fixed attributes and a JSON/JSONB column for flexible extras.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -357,6 +548,22 @@ CREATE INDEX ix_comments_author ON comments(author_id);`,
     {
       q: 'I have a Category entity, and categories can have sub-categories (parent-child hierarchy). How do I model that?',
       a: 'Use an adjacency list: add a nullable self-referencing FK column parent_category_id back to the same table. A root category has parent_category_id = NULL. To query the hierarchy, use a recursive CTE. This pattern works in both MSSQL and PostgreSQL. For very deep hierarchies or frequent subtree queries, consider the nested-set model or a path-enumeration column instead.',
+    },
+    {
+      q: 'Should I use a surrogate integer key or a natural key as my primary key?',
+      a: 'Use a surrogate integer PK (IDENTITY/SERIAL) for most tables, and apply a UNIQUE constraint on the natural key separately. Surrogate PKs are compact (4 bytes vs. a long string), never change (emails and product codes do change), and make FK columns simple single integers. Natural keys are fine for lookup/reference tables where the code IS the meaningful identifier (country codes, currency codes, status values) — but even there, watch out for length and mutability. Bottom line: <strong>PK = surrogate INT, UNIQUE = natural key</strong>.',
+    },
+    {
+      q: 'How do I model a 1:1 relationship in SQL?',
+      a: 'Add a FK column on one table that references the PK of the other, then apply a UNIQUE constraint on that FK column (so each parent row maps to at most one child row). Place the FK on the "optional" side — the table whose record might not exist for every parent. Example: an Employee might have a DriverLicense record or not. The FK <code>employee_id</code> goes on DriverLicenses, not on Employees. UNIQUE(employee_id) ensures one license per employee. If the 1:1 is always total on both sides (every Employee always has exactly one Profile), consider merging the tables to avoid a join.',
+    },
+    {
+      q: 'What are the alternatives to the EAV anti-pattern for flexible schemas?',
+      a: 'Three main alternatives, in order of preference: (1) <strong>Typed nullable columns</strong> — add optional columns for attributes that are known in advance. Best when the set of attributes is small and stable; zero query complexity overhead. (2) <strong>JSON/JSONB column</strong> — store unknown or category-specific attributes as a JSON blob alongside typed columns for shared, filterable fields. PostgreSQL JSONB supports GIN indexes on specific keys for query performance. Works well for product catalogs or settings objects. (3) <strong>Class-table inheritance</strong> — a base table with common columns (id, created_at, type) and separate subtype tables (ProductClothing, ProductElectronics) each with their specific columns. Most type-safe, but requires an extra join per subtype.',
+    },
+    {
+      q: 'How do I model a polymorphic association — where a comment can belong to either a Post or a Video?',
+      a: 'Three approaches, in order of recommendation: (1) <strong>Two nullable FKs + CHECK constraint</strong>: <code>post_id INT NULL REFERENCES posts, video_id INT NULL REFERENCES videos</code> with <code>CHECK ((post_id IS NOT NULL AND video_id IS NULL) OR (post_id IS NULL AND video_id IS NOT NULL))</code>. Enforces FK integrity; requires adding a new FK column per new parent type. (2) <strong>Separate tables</strong>: PostComments and VideoComments — the cleanest design with full FK integrity and no NULLs, at the cost of more tables. (3) <strong>Abstract parent (Content table)</strong>: create a Content table that both Post and Video reference with a 1:1 FK, then Comment references Content. Avoids per-type FK columns at the cost of an extra join. Avoid the common (commentable_type VARCHAR, commentable_id INT) pattern — it cannot enforce FK integrity.',
     },
   ];
 }
