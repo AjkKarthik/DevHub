@@ -517,7 +517,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [ ] `sql/stored-procedures` — parameters, OUTPUT, EXEC, error handling, TRY/CATCH
 - [ ] `sql/schema-design` — naming conventions, surrogate vs natural keys, soft delete patterns
 - [ ] `sql/json-features` — FOR JSON PATH (T-SQL), jsonb operators (PG), JSON indexing
-- [ ] `sql/performance` — execution plans, query hints, statistics, parameter sniffing (T-SQL)
+- [x] `sql/performance` — execution plans, query hints, statistics, parameter sniffing (T-SQL) `2026-06-16`
 
 ---
 
