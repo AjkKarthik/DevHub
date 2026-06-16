@@ -507,7 +507,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [ ] `sql/db-architecture` — query processor, storage engine, buffer pool, WAL, MSSQL vs PG arch
 - [ ] `sql/data-types` — numeric precision, varchar vs nvarchar, JSONB, UUID, temporal types
 - [x] `sql/basics` — 2026-06-16
-- [ ] `sql/joins` — INNER/LEFT/RIGHT/FULL/CROSS/SELF join, join order, NULL in join columns
+- [x] `sql/joins` — 2026-06-16
 - [ ] `sql/aggregations` — GROUP BY, HAVING, COUNT/SUM/AVG/MIN/MAX, FILTER clause (PG), ROLLUP
 - [x] `sql/subqueries` — correlated vs non-correlated, EXISTS vs IN, lateral joins (PG), scalar subquery `2026-06-16`
 - [x] `sql/ctes` — recursive CTEs, WITH clause, CTE vs subquery performance, multiple CTEs `2026-06-16`
