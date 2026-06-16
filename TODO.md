@@ -489,7 +489,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-16 `aspnet/static-files` — StaticFileOptions, file provider, cache-control headers
 
 **Infrastructure**
-- [ ] `aspnet/background-services` — BackgroundService, IHostedService, Channels integration
+- [x] `aspnet/background-services` — BackgroundService, IHostedService, Channels integration (2026-06-16)
 - [ ] `aspnet/health-checks` — AddHealthChecks, IHealthCheck, UI, readiness vs liveness
 - [ ] `aspnet/testing` — WebApplicationFactory, custom factory, Testcontainers, Respawn
 - [ ] `aspnet/signalr` — hubs, groups, connection lifecycle, scale-out with Redis backplane
