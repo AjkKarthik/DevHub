@@ -501,7 +501,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 
 #### SQL hub — 17 topic pages
 
-- [ ] `sql/rdbms-concepts` — ACID, CAP theorem, relational model, keys, constraints overview
+- [x] `sql/rdbms-concepts` — ACID, CAP theorem, relational model, keys, constraints overview `2026-06-16`
 - [ ] `sql/data-modeling` — ER diagrams, entity identification, relationships, cardinality
 - [x] `sql/normalization` — 1NF/2NF/3NF/BCNF, denormalisation trade-offs, when to break rules `2026-06-16`
 - [ ] `sql/db-architecture` — query processor, storage engine, buffer pool, WAL, MSSQL vs PG arch
