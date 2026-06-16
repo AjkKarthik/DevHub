@@ -7,17 +7,26 @@ import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-bl
 import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
 import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PrerequisitesComponent, Prerequisite } from '../../../shared/prerequisites/prerequisites';
 
 @Component({
   selector: 'app-aspnet-cors',
   standalone: true,
   imports: [CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent,
             QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent,
-            PageMetaComponent, PageCompleteComponent],
+            PageMetaComponent, PageCompleteComponent,
+            CommonMistakesComponent, RevisionCardComponent, PrerequisitesComponent],
   templateUrl: './cors.html',
   styleUrl: './cors.scss',
 })
 export class AspnetCors {
+
+  prerequisites: Prerequisite[] = [
+    { label: 'Middleware',      route: '/aspnet/middleware' },
+    { label: 'Authentication',  route: '/aspnet/authentication' },
+  ];
 
   quickRef: QuickRefItem[] = [
     { name: 'AddCors()',                 type: 'method',  desc: 'Register CORS services and define named policies' },
@@ -37,6 +46,9 @@ export class AspnetCors {
         'CORS (Cross-Origin Resource Sharing) is a browser security mechanism. When JavaScript on <code>https://app.com</code> calls <code>https://api.com/data</code>, the browser first sends a <strong>preflight OPTIONS request</strong> asking "is this allowed?" The server responds with <code>Access-Control-Allow-Origin</code> headers. If the origin is not listed, the browser blocks the response — the request still reaches the server.',
         'CORS is enforced by the <em>browser</em>, not the server. A server-side tool (curl, Postman, server-to-server) ignores CORS headers entirely. This means CORS is a client-side sandbox, not a security boundary for your API. Protect APIs with authentication, not CORS.',
         'Simple requests (GET/POST with basic content types) skip the preflight. Requests with custom headers (Authorization, Content-Type: application/json) trigger a preflight OPTIONS request that must be answered correctly before the actual request proceeds.',
+        'The browser caches preflight responses for the duration specified in <code>Access-Control-Max-Age</code>. Setting a high value (86400 = 1 day) reduces the number of OPTIONS round trips — the browser skips the preflight for subsequent identical cross-origin requests within the cache window.',
+        '<strong>Credentialed requests</strong> (cookies, Authorization headers) require both the server to send <code>Access-Control-Allow-Credentials: true</code> AND the client to set <code>credentials: "include"</code> in the fetch call. Either side omitting their half causes the browser to block the response.',
+        '<strong>Cross-origin vs same-site</strong>: an origin is scheme + host + port. <code>https://api.myapp.com</code> is a different origin from <code>https://myapp.com</code> — even though they share the domain. CORS applies across origins; SameSite cookie attributes operate across sites (registrable domain boundary).',
       ],
     },
     {
@@ -45,6 +57,9 @@ export class AspnetCors {
         'Use named policies for different route groups: an <code>"AllowFrontend"</code> policy for API routes and a broader <code>"AllowInternal"</code> for health/admin endpoints. Apply policies via <code>UseCors("AllowFrontend")</code> globally or <code>.RequireCors("AllowFrontend")</code> per endpoint.',
         'Never use <code>AllowAnyOrigin().AllowCredentials()</code> — this combination is rejected by browsers as insecure and throws an InvalidOperationException at startup in ASP.NET Core. Always specify explicit origins when credentials are needed.',
         'Use <code>SetIsOriginAllowed(origin => new Uri(origin).Host.EndsWith(".mycompany.com"))</code> for wildcard subdomain matching — <code>WithOrigins</code> requires exact matches.',
+        'Always read allowed origins from configuration, not hardcoded strings. Use <code>builder.Configuration.GetSection("AllowedOrigins").Get&lt;string[]&gt;()</code> and define different values per environment in appsettings.Development.json and appsettings.Production.json.',
+        'The <code>AddDefaultPolicy()</code> shorthand sets a policy without a name that is applied when <code>UseCors()</code> is called with no argument. Use named policies (<code>AddPolicy("name", ...)</code>) when you need multiple policies for different endpoint groups.',
+        'Expose custom response headers with <code>WithExposedHeaders("X-Pagination", "X-Total-Count")</code>. By default, only a small set of simple response headers are accessible to browser JavaScript — custom headers must be explicitly exposed or JavaScript cannot read them.',
       ],
     },
     {
@@ -53,14 +68,31 @@ export class AspnetCors {
         '<code>UseHttpsRedirection()</code> redirects HTTP requests to HTTPS with a 307 (or 301 in production). Always register this before CORS, routing, and auth middleware.',
         '<code>UseHsts()</code> sends the <code>Strict-Transport-Security</code> header, instructing browsers to only access the site over HTTPS for the specified duration (max-age). <strong>Never send HSTS from localhost</strong> — it permanently blocks HTTP access in that browser for the domain.',
         'In production, set the HSTS max-age to at least 1 year and consider preloading. Start with a short max-age (300s) during rollout so you can revert if HTTPS breaks.',
+        '<code>IncludeSubDomains</code> extends the HSTS rule to all subdomains — only enable when all subdomains support HTTPS. <code>Preload</code> opts the domain into browser-maintained preload lists so HTTPS is enforced even before the first visit.',
+        'HTTPS redirection only works when ASP.NET Core knows the HTTPS port. Set <code>opts.HttpsPort = 443</code> in AddHttpsRedirection() or via the <code>ASPNETCORE_HTTPS_PORT</code> environment variable. Behind a reverse proxy, configure <code>UseForwardedHeaders()</code> so ASP.NET Core sees the original HTTPS scheme.',
+        '<strong>Mixed content</strong>: HSTS only affects navigations. Embedded resources (images, scripts, fonts) loaded over HTTP on an HTTPS page are "mixed content" — blocked by modern browsers. Ensure all assets are served over HTTPS, including third-party CDNs.',
       ],
     },
     {
       heading: 'Common Security Headers',
       points: [
-        '<strong>X-Content-Type-Options: nosniff</strong> — prevents browsers from MIME-sniffing a response away from the declared content type (blocks some XSS vectors).',
-        '<strong>X-Frame-Options: DENY / SAMEORIGIN</strong> — prevents clickjacking by controlling whether the page can be embedded in an iframe. Superseded by CSP frame-ancestors but still widely used as a fallback.',
-        '<strong>Content-Security-Policy</strong> — defines trusted sources for scripts, styles, and media. The most powerful XSS mitigation header but complex to configure. Start with <code>default-src \'self\'</code> and expand as needed. Use <code>NWebSec</code> or <code>Helmet</code>-inspired middleware to add headers programmatically.',
+        '<strong>X-Content-Type-Options: nosniff</strong> — prevents browsers from MIME-sniffing a response away from the declared content type (blocks some XSS vectors). Essential for any API or page that serves user-uploaded content.',
+        '<strong>X-Frame-Options: DENY / SAMEORIGIN</strong> — prevents clickjacking by controlling whether the page can be embedded in an iframe. Use <code>DENY</code> for pages that must never be framed; <code>SAMEORIGIN</code> for pages that may be framed by your own site.',
+        '<strong>Content-Security-Policy (CSP)</strong> — defines trusted sources for scripts, styles, and media. The most powerful XSS mitigation header but complex to configure. Start with <code>default-src \'self\'</code> and expand as needed. Use <code>report-only</code> mode first to validate before enforcing.',
+        '<strong>Referrer-Policy: strict-origin-when-cross-origin</strong> — controls how much referrer information is sent with requests. The strict variant sends the full URL for same-origin requests but only the origin for cross-origin, preventing leaking of sensitive URL paths to third parties.',
+        '<strong>Permissions-Policy</strong> (formerly Feature-Policy) — restricts which browser features the page can use: <code>geolocation=(), camera=(), microphone=()</code> disables access entirely. Reduces the attack surface if your site is XSS-ed.',
+        'Add security headers via custom middleware (early in the pipeline, before any content is written) or via NWebSec. Place the header-adding middleware before <code>UseStaticFiles()</code> — static files bypass most middleware if registered first.',
+      ],
+    },
+    {
+      heading: 'CORS Middleware Order & Troubleshooting',
+      points: [
+        'The correct middleware order: <code>UseHttpsRedirection()</code> → <code>UseStaticFiles()</code> → <code>UseRouting()</code> → <code>UseCors()</code> → <code>UseAuthentication()</code> → <code>UseAuthorization()</code> → <code>MapControllers()</code>. CORS must come before auth — preflight OPTIONS requests carry no credentials and must not be rejected by auth middleware.',
+        'If a preflight OPTIONS request receives a 401 or 404, the actual request never fires. The browser reports a CORS error even though the root cause is auth or routing. Always check OPTIONS separately with curl when debugging CORS: <code>curl -X OPTIONS -H "Origin: http://localhost:4200" https://api.example.com/endpoint -v</code>.',
+        'A common SPA symptom: GET works but POST fails with CORS. The GET is a simple request (no preflight); the POST with JSON body triggers a preflight. Ensure the CORS policy allows the Content-Type header with <code>AllowAnyHeader()</code> or explicitly <code>WithHeaders("Content-Type", "Authorization")</code>.',
+        'CORS does not restrict server-to-server calls. Microservices calling each other directly (not through a browser) ignore CORS completely — they exchange no Origin headers. Only configure CORS for endpoints that browsers call directly.',
+        'Testing CORS in integration tests: use <code>WebApplicationFactory</code> and add an <code>Origin</code> header to your test requests. Assert that the response includes <code>Access-Control-Allow-Origin</code> matching the origin you sent.',
+        'For SPAs deployed on the same domain as the API (same origin), CORS is not needed at all — browsers only enforce CORS for cross-origin calls. Co-locating the SPA (serve Angular from the same host/port as the API using static files middleware) eliminates all CORS configuration.',
       ],
     },
   ];
@@ -299,6 +331,50 @@ app.Run();`,
       answer: 1,
       explanation: 'Without nosniff, browsers may "sniff" the content type — treating a text/plain response as executable JavaScript if it looks like script. This enables certain XSS attacks. nosniff tells the browser to trust the Content-Type header and not guess.',
     },
+    {
+      q: 'Where in the middleware pipeline must UseCors() be placed relative to UseAuthentication()?',
+      options: [
+        'After UseAuthentication() — auth must validate first',
+        'Before UseAuthentication() — preflight OPTIONS requests carry no credentials',
+        'The order does not matter for CORS',
+        'UseCors() must always be the very first middleware',
+      ],
+      answer: 1,
+      explanation: 'Preflight OPTIONS requests do not carry authentication tokens or cookies. If UseAuthentication() or UseAuthorization() runs before UseCors(), it rejects the preflight with 401/403, the browser never receives the CORS headers, and the actual request never fires. CORS must come first.',
+    },
+    {
+      q: 'How do you allow wildcard subdomains in a CORS policy?',
+      options: [
+        'WithOrigins("*.myapp.com") — wildcards are supported natively',
+        'SetIsOriginAllowed(o => new Uri(o).Host.EndsWith(".myapp.com"))',
+        'AllowAnyOrigin().WithHeaders("X-Domain", "myapp.com")',
+        'Wildcard subdomains are not supported in ASP.NET Core CORS',
+      ],
+      answer: 1,
+      explanation: 'WithOrigins() requires exact string matches — wildcards like "*.myapp.com" are not supported. SetIsOriginAllowed() accepts a predicate function called with each incoming Origin. Parse the origin URI and check the Host for the desired suffix to allow all subdomains dynamically.',
+    },
+    {
+      q: 'What header makes custom response headers readable to browser JavaScript?',
+      options: [
+        'Access-Control-Allow-Headers',
+        'Access-Control-Expose-Headers',
+        'Access-Control-Allow-Methods',
+        'X-Exposed-Headers',
+      ],
+      answer: 1,
+      explanation: 'Browsers restrict which response headers JavaScript can read. By default, only a small allowlist (Cache-Control, Content-Type, etc.) is accessible. Access-Control-Expose-Headers lists additional headers the server explicitly permits JavaScript to read — e.g. X-Pagination or X-Total-Count for pagination metadata.',
+    },
+    {
+      q: 'A SPA can GET from the API cross-origin but POST fails with a CORS error. What is the most likely cause?',
+      options: [
+        'POST is not allowed in CORS — use PUT instead',
+        'GET is a simple request (no preflight); POST with JSON triggers a preflight, and the CORS policy is missing AllowAnyHeader() or does not allow Content-Type',
+        'The JWT token is expired',
+        'UseCors() was registered after UseAuthorization()',
+      ],
+      answer: 1,
+      explanation: 'GET without custom headers is a simple request — no preflight, browser reads the response directly. POST with Content-Type: application/json is non-simple — triggers an OPTIONS preflight. If the CORS policy does not allow the Content-Type header (via AllowAnyHeader() or explicit WithHeaders()), the preflight fails and the POST never fires.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -322,5 +398,98 @@ app.Run();`,
       q: 'Can I apply different CORS policies to different endpoint groups?',
       a: 'Yes. Use app.MapGroup("/api").RequireCors("ApiPolicy") and app.MapGroup("/public").RequireCors("PublicPolicy"). Or apply per endpoint with .RequireCors("PolicyName"). The global UseCors() applies as the default for any endpoint without an explicit override.',
     },
+    {
+      q: 'How do I safely enable HSTS without permanently breaking HTTP access?',
+      a: 'Start with a short max-age (e.g. 300 seconds) and only enable for non-development environments. Test that HTTPS works correctly in all environments before increasing max-age. Add IncludeSubDomains only when all subdomains support HTTPS. Consider the Preload flag only when you are committed to HTTPS permanently — preloaded domains are hardcoded in browsers and extremely difficult to remove. Never enable HSTS on localhost.',
+    },
+    {
+      q: 'How do I test that my CORS policy is working correctly?',
+      a: 'Three approaches: (1) Browser devtools — the Network tab shows the OPTIONS preflight and the actual request; the Console shows the specific CORS error. (2) curl with Origin header: curl -X OPTIONS -H "Origin: http://localhost:4200" -H "Access-Control-Request-Method: POST" https://api.example.com/endpoint -v — inspect the response headers. (3) Integration test with WebApplicationFactory — add an Origin header to the test request and assert Access-Control-Allow-Origin in the response.',
+    },
+    {
+      q: 'What is the difference between Access-Control-Allow-Headers and Access-Control-Expose-Headers?',
+      a: 'Allow-Headers is a response to a preflight — it lists which request headers the client is permitted to send (e.g. Authorization, Content-Type). Expose-Headers is a directive about response headers — it lists which headers in the actual response JavaScript is allowed to read. Without Expose-Headers, custom response headers like X-Total-Count are sent but invisible to JS even if CORS succeeds.',
+    },
   ];
+
+  mistakes: CommonMistake[] = [
+    {
+      title: 'Registering UseCors() after UseAuthentication()',
+      wrong: `app.UseAuthentication();  // rejects OPTIONS preflight with 401
+app.UseAuthorization();
+app.UseCors("MyPolicy"); // too late — preflight already failed`,
+      right: `app.UseCors("MyPolicy");  // CORS must come first — OPTIONS has no auth
+app.UseAuthentication();
+app.UseAuthorization();`,
+      explanation: 'Preflight OPTIONS requests carry no JWT or cookie — they are anonymous. If authentication middleware runs first, it rejects the OPTIONS request with 401. The browser never receives the CORS headers and blocks all subsequent actual requests.',
+    },
+    {
+      title: 'Combining AllowAnyOrigin() with AllowCredentials()',
+      wrong: `opts.AddPolicy("Bad", p =>
+    p.AllowAnyOrigin()
+     .AllowCredentials()); // throws InvalidOperationException at startup`,
+      right: `opts.AddPolicy("Good", p =>
+    p.WithOrigins("https://myapp.example.com")
+     .AllowAnyHeader()
+     .AllowAnyMethod()
+     .AllowCredentials());`,
+      explanation: 'AllowAnyOrigin() with AllowCredentials() would allow any website to make authenticated requests as the current user — a critical security vulnerability. ASP.NET Core throws an exception at startup when this combination is detected. Always specify explicit origins when credentials are needed.',
+    },
+    {
+      title: 'Hardcoding origins instead of reading from configuration',
+      wrong: `opts.AddPolicy("Prod", p =>
+    p.WithOrigins("https://myapp.example.com") // breaks in dev
+     .AllowAnyHeader().AllowAnyMethod());`,
+      right: `opts.AddPolicy("Default", p =>
+    p.WithOrigins(
+        builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? [])
+     .AllowAnyHeader().AllowAnyMethod().AllowCredentials());`,
+      explanation: 'Hardcoded origins either block development or force you to maintain separate Program.cs branches. Read allowed origins from configuration — define http://localhost:4200 in appsettings.Development.json and production URLs in appsettings.Production.json.',
+    },
+    {
+      title: 'Enabling HSTS in development or on localhost',
+      wrong: `// Always enables HSTS — even in development on localhost
+app.UseHsts();
+app.UseHttpsRedirection();`,
+      right: `if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+    app.UseHttpsRedirection();
+}`,
+      explanation: 'HSTS caches the "only use HTTPS" rule in the browser for max-age seconds. Enabling it on localhost permanently blocks HTTP access to localhost in that browser — a frustrating developer experience that requires manual browser flag removal. Always gate HSTS behind an IsDevelopment() check.',
+    },
+    {
+      title: 'Forgetting to expose custom response headers',
+      wrong: `// Server sends X-Total-Count but JavaScript cannot read it
+Response.Headers["X-Total-Count"] = totalCount.ToString();
+// fetch response.headers.get("X-Total-Count") returns null`,
+      right: `// In CORS policy — expose the header
+opts.AddPolicy("Api", p =>
+    p.WithOrigins(...)
+     .AllowAnyHeader()
+     .AllowAnyMethod()
+     .WithExposedHeaders("X-Total-Count", "X-Pagination"));`,
+      explanation: 'Browsers restrict which response headers JavaScript can access. Custom headers like X-Total-Count are filtered out unless listed in Access-Control-Expose-Headers. Add WithExposedHeaders() to your CORS policy for every custom header your SPA needs to read.',
+    },
+  ];
+
+  revision: RevisionSummary = {
+    oneLiner: 'CORS is a browser-enforced sandbox — browsers block cross-origin responses without correct headers; configure named policies with explicit origins, register UseCors() before auth middleware, and never combine AllowAnyOrigin() with AllowCredentials().',
+    mustKnow: [
+      'CORS is browser-enforced — curl/Postman/server-to-server ignore it entirely',
+      'Preflight OPTIONS: triggered by custom headers (Authorization, application/json); cached by Access-Control-Max-Age',
+      'AllowAnyOrigin() + AllowCredentials() is forbidden — throws at startup',
+      'UseCors() must come before UseAuthentication() — OPTIONS carries no credentials',
+      'SetIsOriginAllowed() for wildcard subdomains — WithOrigins() requires exact strings',
+      'WithExposedHeaders() makes custom response headers readable to JavaScript',
+      'HSTS: never in development; start with short max-age, add IncludeSubDomains, then Preload',
+    ],
+    interviewFocus: [
+      'Why does curl bypass CORS but a browser does not?',
+      'Why must UseCors() be placed before UseAuthentication()?',
+      'Why does AllowAnyOrigin().AllowCredentials() throw, and what is the correct alternative?',
+      'What is the difference between Access-Control-Allow-Headers and Access-Control-Expose-Headers?',
+      'Why must HSTS never be enabled in development?',
+    ],
+  };
 }

@@ -1,20 +1,30 @@
-<div class="aspnet-page">
-  <div class="page-header-icon aspnet-icon">🌐</div>
+<div class="asp-page">
+  <div class="page-header-icon asp-icon">ASP</div>
   <h1 class="page-title">CORS &amp; Security Headers</h1>
   <p class="page-subtitle">CORS policies, preflight requests, HTTPS redirection, HSTS, and common security headers that protect browsers from attack.</p>
 
-  <app-page-meta [readingTime]="20" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+  <app-page-meta [readingTime]="35" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
 
-  <section class="aspnet-section">
+  <section class="asp-section">
     <h2>Code Examples</h2>
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
 
   <app-page-complete route="aspnet-cors" nextRoute="/aspnet/rate-limiting" nextLabel="Rate Limiting" />
 </div>
