@@ -1,1 +1,21 @@
-<div class="ts-page"><p>Coming soon</p></div>
+<div class="ts-page">
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Classes &amp; Visibility</h1>
+  <p class="page-subtitle">Access modifiers (<code>public</code>, <code>private</code>, <code>protected</code>), <code>readonly</code>, parameter properties, <code>abstract</code> classes, the <code>override</code> keyword, static members, and the mixin pattern.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since="TypeScript 4.3+" tech="typescript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" playgroundUrl="https://www.typescriptlang.org/play" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="ts-classes" nextRoute="/typescript/decorators" nextLabel="Decorators" />
+</div>

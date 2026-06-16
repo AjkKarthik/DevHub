@@ -48,7 +48,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Decorators',                 route: '/typescript/decorators', badge: 'OOP', available: false,
     description: 'Class, method, property, and parameter decorators — TypeScript 5 decorator syntax (TC39 Stage 3).',
     keyPoints: ['TS 5.0 implements TC39 Stage 3 decorators — breaking change from experimental decorators', 'Class decorator: receives the class, can return a replacement', 'DI frameworks (Angular, NestJS) rely heavily on decorators for metadata'] },
-  { title: 'Classes & Visibility',       route: '/typescript/classes', badge: 'OOP', available: false,
+  { title: 'Classes & Visibility',       route: '/typescript/classes', badge: 'OOP', available: true,
     description: 'Access modifiers, abstract classes, readonly, parameter properties, override, and class expressions.',
     keyPoints: ['private is TS-only compile-time; #private is JS runtime-enforced', 'abstract class: cannot be instantiated; forces subclasses to implement methods', 'Parameter property: constructor(private name: string) declares + assigns in one'] },
   { title: 'tsconfig Deep Dive',         route: '/typescript/tsconfig', badge: 'Tooling', available: false,
