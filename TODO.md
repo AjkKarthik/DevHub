@@ -463,7 +463,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **API layer**
 - [x] 2026-06-16 `aspnet/controllers` — ApiController, ModelState, ActionResult<T>, problem details
 - [x] `aspnet/minimal-apis` — route handlers, TypedResults, endpoint filters, groups, OpenAPI (2026-06-16)
-- [ ] `aspnet/model-binding` — [FromBody]/[FromRoute]/[FromQuery], custom binders, validation
+- [x] `aspnet/model-binding` — [FromBody]/[FromRoute]/[FromQuery], custom binders, validation (2026-06-16)
 - [ ] `aspnet/filters` — action/exception/resource/auth filters, IFilterFactory, ordering
 - [ ] `aspnet/error-handling` — UseExceptionHandler, ProblemDetails middleware, IProblemDetailsService
 - [ ] `aspnet/api-versioning` — URL/header/query versioning, Asp.Versioning, deprecation
