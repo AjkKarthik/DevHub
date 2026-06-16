@@ -475,7 +475,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `aspnet/ef-performance` — compiled queries, split queries, connection resiliency, bulk ops (2026-06-16)
 
 **Security**
-- [ ] `aspnet/authentication` — JWT bearer, cookie auth, IAuthenticationHandler, scheme selection
+- [x] `aspnet/authentication` — JWT bearer, cookie auth, IAuthenticationHandler, scheme selection (2026-06-16)
 - [ ] `aspnet/authorization` — policies, requirements, resource-based auth, IAuthorizationHandler
 - [ ] `aspnet/cors` — policy builder, pre-flight, credentials, CORS with minimal APIs
 - [ ] `aspnet/web-security` — CSRF, XSS, security headers, HTTPS enforcement, HSTS
