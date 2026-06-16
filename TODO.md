@@ -471,7 +471,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 
 **Data**
 - [x] `aspnet/ef-core-basics` — DbContext lifetime, no-tracking, SaveChanges, transactions (2026-06-16)
-- [ ] `aspnet/ef-relationships` — one-to-many, many-to-many, owned entities, table splitting
+- [x] `aspnet/ef-relationships` — one-to-many, many-to-many, owned entities, table splitting (2026-06-16)
 - [ ] `aspnet/ef-performance` — compiled queries, split queries, connection resiliency, bulk ops
 
 **Security**
