@@ -456,8 +456,8 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-16 `aspnet/hosting-startup` — Generic Host, WebApplication.CreateBuilder, IHostedService, startup order
 - [x] 2026-06-16 `aspnet/middleware` — pipeline order, short-circuit, IMiddlewareFactory, terminal middleware
 - [ ] `aspnet/routing` — endpoint routing, route constraints, route groups, MapGroup
-- [ ] `aspnet/configuration` — IConfiguration, Options pattern, IOptionsSnapshot, secrets
-- [ ] `aspnet/dependency-injection` — lifetimes (singleton/scoped/transient), keyed services, factory
+- [x] 2026-06-16 `aspnet/configuration` — IConfiguration, Options pattern, IOptionsSnapshot, secrets
+- [x] 2026-06-16 `aspnet/dependency-injection` — lifetimes (singleton/scoped/transient), keyed services, factory
 - [ ] `aspnet/logging` — ILogger, structured logging, log levels, Serilog/OpenTelemetry integration
 
 **API layer**
