@@ -504,7 +504,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `sql/rdbms-concepts` — ACID, CAP theorem, relational model, keys, constraints overview `2026-06-16`
 - [x] `sql/data-modeling` — 2026-06-16
 - [x] `sql/normalization` — 1NF/2NF/3NF/BCNF, denormalisation trade-offs, when to break rules `2026-06-16`
-- [ ] `sql/db-architecture` — query processor, storage engine, buffer pool, WAL, MSSQL vs PG arch
+- [x] `sql/db-architecture` — 2026-06-16
 - [ ] `sql/data-types` — numeric precision, varchar vs nvarchar, JSONB, UUID, temporal types
 - [x] `sql/basics` — 2026-06-16
 - [x] `sql/joins` — 2026-06-16

@@ -34,6 +34,9 @@ export class SqlDbArchitecture {
     { name: 'TempDB',             type: 'keyword', desc: 'MSSQL system database for temp tables (#t), table variables, worktables (sorts/spools), and row-version store for SNAPSHOT isolation.' },
     { name: 'LSN',                type: 'keyword', desc: 'Log Sequence Number — a position in the transaction log / WAL. Used for replication, point-in-time recovery.' },
     { name: 'shared_buffers',     type: 'keyword', desc: 'PostgreSQL GUC parameter: size of the shared buffer pool. Default 128 MB; set to ~25% of RAM.' },
+    { name: 'Streaming Replication', type: 'keyword', desc: 'PostgreSQL HA: primary streams WAL records in real-time to standby servers. Standbys replay WAL to stay in sync.' },
+    { name: 'Always On AG',       type: 'keyword', desc: 'MSSQL Availability Groups: synchronous or asynchronous log shipping with automatic failover and readable secondaries.' },
+    { name: 'Connection Pooling', type: 'keyword', desc: 'Reusing idle database connections instead of opening a new one per request. Reduces connection overhead on both client and server.' },
   ];
 
   theory: TheoryPoint[] = [
@@ -85,6 +88,16 @@ export class SqlDbArchitecture {
         'ANALYZE (PostgreSQL) / UPDATE STATISTICS (MSSQL): updates the query planner\'s statistics — column histograms and row count estimates used to generate execution plans. Stale statistics cause bad plans.',
         'MSSQL: statistics are updated automatically when ~20% of rows change (auto update statistics). For large tables, 20% of 100 M rows = 20 M changes before stats update — consider manual UPDATE STATISTICS on important tables after bulk loads.',
         'Both engines: always run ANALYZE (PG) or UPDATE STATISTICS (MSSQL) after a large bulk insert or data migration, before running queries that depend on accurate cardinality estimates.',
+      ],
+    },
+    {
+      heading: 'Replication, high availability, and connection pooling',
+      points: [
+        '<strong>PostgreSQL streaming replication</strong>: the primary server sends WAL records in real-time to one or more standby servers, which replay them continuously. Synchronous replication (synchronous_commit = on) waits for at least one standby to acknowledge the WAL write before confirming commit — zero RPO at the cost of added latency. Asynchronous replication (the default) is faster but standby may lag by seconds.',
+        '<strong>MSSQL Always On Availability Groups</strong>: a set of user databases that fail over together. Each AG has a primary replica (read-write) and up to 8 secondary replicas (read-only or HA-only). Secondary replicas can serve read-only queries — offloading reporting workloads from the primary. Failover can be automatic (synchronous replica + Windows Server Failover Cluster) or manual.',
+        '<strong>Replication lag</strong> is the key health metric for any standby. In PostgreSQL, query pg_stat_replication on the primary for write_lag, flush_lag, and replay_lag. In MSSQL, query sys.dm_hadr_database_replica_states for redo_queue_size and estimated_recovery_time. Alert when lag exceeds your RPO threshold.',
+        '<strong>Connection pooling</strong>: opening a new database connection is expensive (process/thread creation, TLS handshake, authentication). A connection pool maintains a set of idle, pre-authenticated connections and hands them to application requests. Tools: PgBouncer (PostgreSQL — transaction-mode pooling is the most efficient), Pgpool-II, or the built-in pool in frameworks (ADO.NET for MSSQL, HikariCP for Java). MSSQL has built-in connection pooling in the ADO.NET driver — no separate tool needed in most cases.',
+        '<strong>Max connections and monitoring</strong>: PostgreSQL has a hard max_connections limit (default 100); each connection is a separate OS process (~5-10 MB RAM each). PgBouncer allows thousands of application connections to share a small pool of server connections. MSSQL is thread-based — max connections is limited by RAM and licensing rather than a hard config limit. Monitor active vs idle vs waiting connections via pg_stat_activity (PG) or sys.dm_exec_connections + sys.dm_exec_sessions (MSSQL) to catch connection leaks or pool exhaustion.',
       ],
     },
   ];
@@ -249,6 +262,107 @@ CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) sp
 WHERE OBJECT_NAME(s.object_id) = 'Orders'
 ORDER BY sp.last_updated DESC;`,
     },
+    {
+      label: 'Replication health (MSSQL + PG)',
+      language: 'sql',
+      code: `-- ── PostgreSQL: streaming replication health on the primary ─────────────
+-- Query on the PRIMARY to see all connected standbys and their lag:
+SELECT
+    application_name,
+    client_addr,
+    state,                 -- 'streaming' = live; 'catchup' = behind
+    sync_state,            -- 'sync' or 'async'
+    write_lag,             -- time from primary WAL write to standby ack of write
+    flush_lag,             -- time until standby flushes to its own disk
+    replay_lag,            -- time until standby applies change to its data files
+    sent_lsn,
+    replay_lsn,
+    (sent_lsn - replay_lsn) AS lag_bytes    -- bytes of unapplied WAL
+FROM pg_stat_replication
+ORDER BY replay_lag DESC;
+
+-- Query on the STANDBY to check its own lag:
+SELECT
+    pg_is_in_recovery()         AS is_standby,
+    pg_last_wal_receive_lsn()   AS last_received_lsn,
+    pg_last_wal_replay_lsn()    AS last_applied_lsn,
+    now() - pg_last_xact_replay_timestamp() AS replication_lag;
+
+-- ── MSSQL: Always On AG health ───────────────────────────────────────────
+-- AG overview: primary + secondaries, sync state, redo queue
+SELECT
+    ag.name                     AS ag_name,
+    ars.role_desc               AS role,
+    ars.operational_state_desc,
+    ars.connected_state_desc,
+    ars.synchronization_health_desc,
+    drs.synchronization_state_desc,
+    drs.redo_queue_size,        -- KB of WAL not yet replayed on secondary
+    drs.estimated_recovery_time AS estimated_catchup_seconds
+FROM sys.availability_groups            ag
+JOIN sys.availability_replicas          ar  ON ar.group_id   = ag.group_id
+JOIN sys.dm_hadr_availability_replica_states ars ON ars.replica_id = ar.replica_id
+JOIN sys.dm_hadr_database_replica_states     drs ON drs.replica_id = ar.replica_id
+ORDER BY ag.name, ars.role_desc;`,
+    },
+    {
+      label: 'Connection monitoring',
+      language: 'sql',
+      code: `-- ── PostgreSQL: active connections and pool pressure ─────────────────────
+-- Current connections by state and application:
+SELECT
+    datname                AS database,
+    application_name,
+    state,                 -- 'active', 'idle', 'idle in transaction', 'waiting'
+    COUNT(*)               AS connections,
+    MAX(EXTRACT(EPOCH FROM (now() - state_change)))::INT AS max_seconds_in_state
+FROM pg_stat_activity
+GROUP BY datname, application_name, state
+ORDER BY connections DESC;
+
+-- Long-running idle-in-transaction connections (connection leak indicator):
+SELECT pid, datname, application_name, state, state_change,
+       now() - state_change AS time_in_state,
+       query
+FROM pg_stat_activity
+WHERE state = 'idle in transaction'
+  AND now() - state_change > INTERVAL '5 minutes'
+ORDER BY time_in_state DESC;
+
+-- Terminate a stuck connection (requires superuser):
+SELECT pg_terminate_backend(pid)
+FROM   pg_stat_activity
+WHERE  pid <> pg_backend_pid()   -- don't kill yourself
+  AND  state = 'idle in transaction'
+  AND  now() - state_change > INTERVAL '30 minutes';
+
+-- ── MSSQL: connection and session monitoring ──────────────────────────────
+-- Active sessions: connection details + current request
+SELECT
+    s.session_id,
+    s.login_name,
+    s.program_name,
+    s.status,
+    r.wait_type,
+    r.wait_time / 1000.0         AS wait_seconds,
+    r.total_elapsed_time / 1000.0 AS elapsed_seconds,
+    SUBSTRING(t.text, 1, 200)    AS current_sql
+FROM sys.dm_exec_sessions   s
+LEFT JOIN sys.dm_exec_requests r  ON r.session_id = s.session_id
+OUTER APPLY sys.dm_exec_sql_text(r.sql_handle) t
+WHERE s.is_user_process = 1
+ORDER BY wait_seconds DESC NULLS LAST;
+
+-- Check for blocking chains:
+SELECT
+    blocked.session_id      AS blocked_session,
+    blocking.session_id     AS blocking_session,
+    blocked.wait_type,
+    blocked.wait_time / 1000.0 AS blocked_seconds
+FROM sys.dm_exec_requests blocked
+JOIN sys.dm_exec_sessions blocking ON blocking.session_id = blocked.blocking_session_id
+ORDER BY blocked_seconds DESC;`,
+    },
   ];
 
   challenge: Challenge = {
@@ -359,6 +473,39 @@ WHERE relname = 'orders';
       answer: 2,
       explanation: 'RCSI stores row versions in TempDB so that READ COMMITTED queries read the last committed version of a row without acquiring shared locks. This eliminates reader-writer blocking under the default isolation level, which is the most common cause of OLTP contention.',
     },
+    {
+      q: 'What happens during a database checkpoint?',
+      options: [
+        'All active transactions are rolled back',
+        'All dirty (modified) buffer pages are flushed to data files on disk, and the LSN of the checkpoint is recorded in the log',
+        'The WAL log is deleted and restarted from zero',
+        'All user connections are terminated',
+      ],
+      answer: 1,
+      explanation: 'A checkpoint flushes dirty pages from the buffer pool to data files and records the checkpoint LSN. This is important for recovery: after a crash, the engine only needs to replay the log from the most recent checkpoint LSN forward — making restart time predictable. Without checkpoints, recovery time would grow unboundedly.',
+    },
+    {
+      q: 'In MSSQL, sys.databases shows log_reuse_wait_desc = \'LOG_BACKUP\'. What does this mean?',
+      options: [
+        'The log file is corrupt and needs to be rebuilt',
+        'The database is in FULL recovery model and log space cannot be reused until a log backup is taken',
+        'The database has no log file',
+        'Active transactions are blocking log truncation',
+      ],
+      answer: 1,
+      explanation: 'In FULL recovery model, the transaction log grows until a log backup is taken. LOG_BACKUP means the log is waiting for a backup before it can truncate inactive portions. Fix: take a transaction log backup (or switch to SIMPLE recovery model if you do not need point-in-time recovery). Other common values: ACTIVE_TRANSACTION (an open long-running transaction), REPLICATION (log reader agent is behind).',
+    },
+    {
+      q: 'Why is PgBouncer transaction-mode pooling more efficient than session-mode pooling for PostgreSQL?',
+      options: [
+        'Transaction mode allows more concurrent transactions per connection',
+        'In transaction mode, a server connection is held only for the duration of a transaction, not for the entire client session — so 1000 app connections can share 20 server connections',
+        'Transaction mode bypasses authentication, reducing overhead',
+        'Session mode uses more RAM per connection',
+      ],
+      answer: 1,
+      explanation: 'In session-mode pooling, a server connection is assigned to a client for the entire session — while the client is idle between transactions, the server connection is held and unavailable to others. Transaction-mode pooling returns the connection to the pool after each transaction ends, allowing the same server connections to serve many more clients. This is critical because PostgreSQL server connections are expensive OS processes.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -373,6 +520,22 @@ WHERE relname = 'orders';
     {
       q: 'What is the difference between VACUUM and VACUUM FULL in PostgreSQL?',
       a: 'VACUUM (plain): marks dead tuple space as reusable within the same file. Does not shrink the file on disk. Runs concurrently with reads and writes — safe to run on production tables at any time. This is what autovacuum runs. VACUUM FULL: rewrites the entire table to a new file, compacting it and returning space to the OS. Acquires an ACCESS EXCLUSIVE lock — blocks ALL reads and writes for the duration. Only use VACUUM FULL when a table has extreme bloat (e.g. after deleting 90% of rows) and the free space must be returned to the OS. Plan a maintenance window.',
+    },
+    {
+      q: 'What is the difference between synchronous and asynchronous replication in PostgreSQL?',
+      a: 'In <strong>synchronous replication</strong> (<code>synchronous_commit = on</code>), the primary waits for at least one synchronous standby to acknowledge that the WAL record has been written (and optionally flushed) before returning success to the client. This gives zero data loss (RPO = 0) on planned failover, but adds network round-trip latency to every write. In <strong>asynchronous replication</strong> (the default), the primary returns success immediately after writing the WAL locally. The standby replays changes shortly after — typically milliseconds, but potentially seconds or more under heavy load. Asynchronous is faster but may lose a small window of commits on failover. Choose based on RPO requirements: zero-loss financial systems → synchronous; high-throughput analytics → asynchronous.',
+    },
+    {
+      q: 'What causes "idle in transaction" connections and why are they dangerous?',
+      a: '"Idle in transaction" means the application opened a transaction (BEGIN) but has not committed or rolled back, yet the connection is sitting idle. This is almost always a bug in application code — a transaction left open after completing its last SQL statement. These sessions are dangerous because: (1) they hold row-level or table-level locks, blocking writes to those rows; (2) in PostgreSQL, they prevent VACUUM from reclaiming dead tuples (the oldest transaction horizon stays pinned); (3) they consume a database connection slot indefinitely. Fix in code: always commit/rollback in a finally block. Operational fix: set <code>idle_in_transaction_session_timeout</code> (PostgreSQL) to auto-terminate sessions that have been idle in transaction for too long (e.g. 5 minutes).',
+    },
+    {
+      q: 'When should I use connection pooling, and which tool should I choose?',
+      a: 'Use connection pooling whenever your application creates more than ~20-30 concurrent database connections, or when connection setup time is measurable (e.g. microservices making short-lived requests). Without pooling, each request opens a new TCP connection + authentication handshake + session init — adds 5-50ms per request. For <strong>PostgreSQL</strong>: use <strong>PgBouncer</strong> in transaction mode for most workloads — it is lightweight, widely deployed, and handles thousands of app connections with ~20-50 server connections. For complex load balancing + read/write split, use Pgpool-II. For <strong>MSSQL</strong>: the ADO.NET driver has built-in connection pooling — it is enabled by default and usually sufficient. Only add external pooling if you need cross-process pooling or very fine-grained control. In both cases, set pool min/max sizes to match your workload: too large wastes server resources; too small causes connection starvation under load.',
+    },
+    {
+      q: 'What does the MSSQL transaction log log_reuse_wait_desc = \'ACTIVE_TRANSACTION\' mean, and how do I find the blocking transaction?',
+      a: '<code>ACTIVE_TRANSACTION</code> means an open (uncommitted) transaction is preventing log space from being reused. Even if the transaction is not doing anything, the log must retain all records since that transaction started (in case of rollback). Find the culprit: query <code>sys.dm_tran_active_transactions</code> joined to <code>sys.dm_exec_sessions</code> — look for the oldest transaction (largest transaction_begin_time). Common causes: long-running batch jobs that wrap thousands of rows in one transaction, or idle-in-transaction application connections. Fix: commit or break work into smaller batches. If the session is stuck, identify the session_id and kill it with <code>KILL session_id</code> — after verifying with the application team that rolling back is safe.',
     },
   ];
 }
