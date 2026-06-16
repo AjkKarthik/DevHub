@@ -515,7 +515,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `sql/indexes` — clustered vs non-clustered, covering index, include columns, index maintenance `2026-06-16`
 - [x] `sql/transactions` — BEGIN/COMMIT/ROLLBACK, savepoints, implicit vs explicit, retry logic `2026-06-16`
 - [x] `sql/stored-procedures` — parameters, OUTPUT, EXEC, error handling, TRY/CATCH `2026-06-16`
-- [ ] `sql/schema-design` — naming conventions, surrogate vs natural keys, soft delete patterns
+- [x] `sql/schema-design` — naming conventions, surrogate vs natural keys, soft delete patterns `2026-06-16`
 - [x] `sql/json-features` — FOR JSON PATH (T-SQL), jsonb operators (PG), JSON indexing `2026-06-16`
 - [x] `sql/performance` — execution plans, query hints, statistics, parameter sniffing (T-SQL) `2026-06-16`
 
