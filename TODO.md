@@ -508,7 +508,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [ ] `sql/data-types` — numeric precision, varchar vs nvarchar, JSONB, UUID, temporal types
 - [x] `sql/basics` — 2026-06-16
 - [x] `sql/joins` — 2026-06-16
-- [ ] `sql/aggregations` — GROUP BY, HAVING, COUNT/SUM/AVG/MIN/MAX, FILTER clause (PG), ROLLUP
+- [x] `sql/aggregations` — 2026-06-16
 - [x] `sql/subqueries` — correlated vs non-correlated, EXISTS vs IN, lateral joins (PG), scalar subquery `2026-06-16`
 - [x] `sql/ctes` — recursive CTEs, WITH clause, CTE vs subquery performance, multiple CTEs `2026-06-16`
 - [x] `sql/window-functions` — ROW_NUMBER/RANK/DENSE_RANK, LAG/LEAD, NTILE, ROWS vs RANGE frames `2026-06-16`

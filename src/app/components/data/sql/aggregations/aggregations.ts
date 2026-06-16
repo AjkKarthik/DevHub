@@ -33,7 +33,9 @@ export class SqlAggregations {
     { name: 'ROLLUP',                type: 'keyword',  desc: 'Subtotals + grand total: GROUP BY ROLLUP(a, b) produces (a,b), (a), () groups. Both dialects.' },
     { name: 'CUBE',                  type: 'keyword',  desc: 'All combinations of grouping columns. GROUP BY CUBE(a, b) → (a,b), (a,), (b), (). Both dialects.' },
     { name: 'GROUPING SETS',        type: 'keyword',  desc: 'Explicit list of grouping combinations. More flexible than ROLLUP/CUBE. Both dialects.' },
+    { name: 'GROUPING(col)',         type: 'function', desc: 'Returns 1 if col is a rolled-up (subtotal) NULL in a ROLLUP/CUBE result; 0 if it is an actual group value.' },
     { name: 'PERCENTILE_CONT/DISC', type: 'function', desc: 'Ordered-set aggregates. PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY val) = median. Both dialects.' },
+    { name: 'ARRAY_AGG (PG)',        type: 'function', desc: 'PostgreSQL: aggregates values into a PostgreSQL array. ARRAY_AGG(name ORDER BY name).' },
   ];
 
   theory: TheoryPoint[] = [
@@ -53,7 +55,8 @@ export class SqlAggregations {
         'WHERE filters individual rows BEFORE aggregation. HAVING filters groups AFTER aggregation.',
         'Rule of thumb: if the condition references an aggregate function (SUM, COUNT, AVG…), it belongs in HAVING. If it references a raw column value, it belongs in WHERE.',
         'Filtering early in WHERE is cheaper: it reduces the row count before the GROUP BY, so the engine aggregates fewer rows. Move every non-aggregate filter to WHERE.',
-        'HAVING without GROUP BY: applies to the single group formed by the whole table — rarely useful but valid.',
+        'HAVING without GROUP BY: applies to the single group formed by the whole table. Rarely useful, but valid — for example <code>HAVING COUNT(*) > 0</code> on a bare table would always return one row if the table is non-empty.',
+        'SELECT aliases are NOT available in HAVING (HAVING is evaluated before SELECT). Use the full expression: <code>HAVING SUM(amount) > 5000</code> rather than <code>HAVING revenue > 5000</code> unless your dialect explicitly supports alias references in HAVING (PostgreSQL does; MSSQL generally does not).',
       ],
     },
     {
@@ -63,6 +66,7 @@ export class SqlAggregations {
         'MSSQL & PostgreSQL (universal): SUM(CASE WHEN status = \'Shipped\' THEN amount ELSE 0 END) AS shipped_revenue.',
         'PostgreSQL FILTER clause (cleaner): COUNT(*) FILTER (WHERE status = \'Active\') AS active_count. Readable, standard SQL:2003. Not available in MSSQL.',
         'Use conditional aggregation to pivot category breakdowns, day-of-week stats, or A/B test metrics without a separate PIVOT/UNPIVOT operation.',
+        'NULL handling in CASE WHEN: <code>SUM(CASE WHEN condition THEN col END)</code> (no ELSE) is equivalent to <code>SUM(CASE WHEN condition THEN col ELSE NULL END)</code> — the NULL is ignored by SUM. This is correct when you want to sum only matching rows. Use ELSE 0 only when a missing value should contribute 0 to the total (e.g. counting flags), not when summing amounts.',
       ],
     },
     {
@@ -83,6 +87,16 @@ export class SqlAggregations {
         'PERCENTILE_CONT(fraction): interpolated percentile. PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY salary) gives the median even if no row has exactly the median value.',
         'PERCENTILE_DISC(fraction): returns the nearest actual data value rather than an interpolation.',
         'PostgreSQL extras: ARRAY_AGG(col ORDER BY …) aggregates values into an array; json_agg(row) into a JSON array; mode() WITHIN GROUP (ORDER BY col) for the most frequent value. These have no direct MSSQL equivalents.',
+      ],
+    },
+    {
+      heading: 'Aggregate performance — covering indexes, hash vs sort aggregate',
+      points: [
+        'The query planner can execute GROUP BY using two algorithms: <strong>Hash Aggregate</strong> (build an in-memory hash table keyed on the GROUP BY columns) or <strong>Sort Aggregate</strong> (sort the input first, then scan for group boundaries). Hash Aggregate is generally faster for unsorted inputs; Sort Aggregate is chosen when the input is already ordered on the GROUP BY keys (e.g., a clustered index scan).',
+        '<strong>Covering index for GROUP BY</strong>: if the GROUP BY columns and all aggregated columns fit in a single non-clustered index, the engine can do an index-only scan rather than fetching data pages. Example: <code>CREATE INDEX ix_orders_emp_date_amt ON orders(employee_id, order_date) INCLUDE (total_amount)</code> — a query grouping by employee_id and filtering by order_date can satisfy GROUP BY entirely from the index.',
+        '<strong>COUNT(DISTINCT col) is expensive</strong>: it cannot be computed in a simple one-pass hash aggregate — the engine must track all distinct values per group. For large tables, consider an approximation (<code>HLL</code> extension in PG, or pre-aggregate unique values in a CTE) or restructure the query to use a subquery that deduplicates first.',
+        '<strong>Pre-aggregate in CTEs</strong> to avoid redundant computation. If you need total revenue per employee AND the grand total, compute the employee totals once in a CTE, then derive the grand total from the CTE using a second aggregation — never compute the raw join + aggregate twice in separate subqueries.',
+        '<strong>Avoiding accidental full-table aggregation</strong>: a query with no WHERE clause and a GROUP BY on a low-cardinality column (e.g., status with 3 values) will scan the entire table. For dashboards, consider a materialized view (PG) or indexed view (MSSQL) that pre-computes common aggregations and is incrementally maintained by the engine.',
       ],
     },
   ];
@@ -156,7 +170,15 @@ FROM   categories c
 JOIN   products   p  ON p.category_id = c.category_id
 JOIN   order_lines ol ON ol.product_id = p.product_id
 JOIN   orders     o  ON o.order_id    = ol.order_id
-GROUP BY c.category_id, c.category_name;`,
+GROUP BY c.category_id, c.category_name;
+
+-- NULL in CASE WHEN — SUM without ELSE ignores non-matching rows
+-- Use ELSE 0 for counting flags, no ELSE for summing amounts:
+SELECT
+    COUNT(CASE WHEN status = 'Active' THEN 1 END)      AS active_count,  -- no ELSE
+    SUM(CASE WHEN status = 'Active' THEN amount END)   AS active_revenue, -- no ELSE, not ELSE 0
+    SUM(CASE WHEN status = 'Active' THEN 1 ELSE 0 END) AS active_flag     -- ELSE 0 for counting
+FROM orders;`,
     },
     {
       label: 'ROLLUP / CUBE / GROUPING SETS (both)',
@@ -236,6 +258,101 @@ SELECT
     json_agg(row_to_json(p))                        AS products_json
 FROM products p
 GROUP BY category_id;`,
+    },
+    {
+      label: 'Pre-aggregate CTE pattern',
+      language: 'sql',
+      code: `-- ── Anti-pattern: computing the join+aggregate twice ────────────────────
+-- WRONG: expensive — two separate full scans + joins
+SELECT
+    e.full_name,
+    t.revenue,
+    t.revenue / (SELECT SUM(total_amount) FROM orders WHERE YEAR(order_date) = 2024)
+        AS pct_share
+FROM employees e
+JOIN (
+    SELECT employee_id, SUM(total_amount) AS revenue
+    FROM   orders WHERE YEAR(order_date) = 2024
+    GROUP  BY employee_id
+) t ON t.employee_id = e.employee_id;
+
+-- ── Correct: aggregate once in a CTE, derive grand total from it ─────────
+WITH emp_totals AS (
+    SELECT
+        employee_id,
+        COUNT(*)          AS order_count,
+        SUM(total_amount) AS revenue
+    FROM   orders
+    WHERE  YEAR(order_date) = 2024   -- MSSQL; use EXTRACT(YEAR FROM …) for PG
+    GROUP  BY employee_id
+    HAVING COUNT(*) >= 5
+),
+grand_total AS (
+    SELECT SUM(revenue) AS total FROM emp_totals  -- derived from CTE, not raw table
+)
+SELECT
+    e.full_name,
+    et.order_count,
+    ROUND(et.revenue, 2)                       AS revenue,
+    ROUND(et.revenue / gt.total * 100, 2)      AS pct_share,
+    RANK() OVER (ORDER BY et.revenue DESC)     AS revenue_rank
+FROM   emp_totals  et
+JOIN   employees   e  ON e.employee_id = et.employee_id
+CROSS JOIN grand_total gt
+ORDER BY revenue_rank;
+
+-- ── Covering index for GROUP BY (add INCLUDE for aggregated columns) ─────
+-- Without: GROUP BY employee_id hits the clustered table for each row
+-- With: GROUP BY employee_id can be satisfied entirely from the index
+CREATE INDEX IX_Orders_Emp_Date
+    ON orders(employee_id, order_date)
+    INCLUDE (total_amount);     -- MSSQL syntax; PG: CREATE INDEX ... INCLUDE (total_amount)`,
+    },
+    {
+      label: 'Aggregate diagnostics & GROUPING()',
+      language: 'sql',
+      code: `-- ── GROUPING() to label subtotal rows in ROLLUP output ──────────────────
+-- Both MSSQL and PostgreSQL:
+SELECT
+    CASE WHEN GROUPING(region) = 1 THEN 'ALL REGIONS' ELSE region END   AS region,
+    CASE WHEN GROUPING(status)  = 1 THEN 'ALL STATUSES' ELSE status END AS status,
+    COUNT(*)          AS order_count,
+    SUM(total_amount) AS revenue
+FROM orders
+GROUP BY ROLLUP(region, status)
+ORDER BY region, status;
+-- Rows where GROUPING(region)=1 are the per-status-all-regions subtotal
+-- Rows where both GROUPING()=1 are the grand total
+
+-- ── COUNT(DISTINCT) performance comparison (PostgreSQL) ──────────────────
+-- Slow: COUNT(DISTINCT) requires tracking all values per group
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT category_id, COUNT(DISTINCT customer_id) AS unique_customers
+FROM   orders
+GROUP BY category_id;
+
+-- Fast alternative: pre-deduplicate in a CTE, then count
+WITH deduped AS (
+    SELECT DISTINCT category_id, customer_id
+    FROM   orders o
+    JOIN   order_lines ol ON ol.order_id  = o.order_id
+    JOIN   products    p  ON p.product_id = ol.product_id
+)
+SELECT category_id, COUNT(*) AS unique_customers
+FROM   deduped
+GROUP BY category_id;
+
+-- ── MSSQL: check hash aggregate vs sort aggregate in execution plan ───────
+-- Look for "Hash Match (Aggregate)" vs "Sort" + "Stream Aggregate" in the plan:
+SET STATISTICS IO ON;
+SELECT employee_id, SUM(total_amount) AS revenue
+FROM   orders
+WHERE  order_date >= '2024-01-01'
+GROUP  BY employee_id
+ORDER  BY revenue DESC;
+SET STATISTICS IO OFF;
+-- Hash Aggregate: no pre-sort needed — typically faster for low-cardinality GROUP BY
+-- Stream Aggregate: requires sorted input — used when clustered index provides order`,
     },
   ];
 
@@ -382,6 +499,28 @@ ORDER BY revenue_rank;`,
       answer: 2,
       explanation: 'FILTER is a per-aggregate conditional. The MSSQL equivalent is SUM(CASE WHEN status = \'Active\' THEN 1 ELSE 0 END) or COUNT(CASE WHEN status = \'Active\' THEN 1 END). Both compute conditional aggregation in a single pass.',
     },
+    {
+      q: 'GROUPING(col) returns 1 in a ROLLUP result row. What does that mean?',
+      options: [
+        'The column has a NULL data value in the source table',
+        'That column is "rolled up" — this row is a subtotal or grand total where col is aggregated across all its values',
+        'The GROUP BY clause is missing the column',
+        'The column contains duplicate values',
+      ],
+      answer: 1,
+      explanation: 'GROUPING(col) = 1 means this row is a subtotal row where col is not broken out — i.e., the NULL in that column is a "rolled-up" NULL generated by ROLLUP/CUBE, not a NULL data value. Use it to reliably distinguish subtotal rows from rows where the actual data value happens to be NULL.',
+    },
+    {
+      q: 'What is the difference between PERCENTILE_CONT(0.5) and PERCENTILE_DISC(0.5)?',
+      options: [
+        'PERCENTILE_CONT is faster; PERCENTILE_DISC is more accurate',
+        'PERCENTILE_CONT returns an interpolated value (may not exist in the data); PERCENTILE_DISC returns the nearest actual data row value',
+        'PERCENTILE_DISC works only in PostgreSQL; PERCENTILE_CONT works in both dialects',
+        'They are identical for numeric columns',
+      ],
+      answer: 1,
+      explanation: 'PERCENTILE_CONT uses linear interpolation — for an even number of values, the median might be the average of the two middle values (not necessarily present in the data). PERCENTILE_DISC returns the smallest value in the ordered set whose cumulative distribution is ≥ the specified fraction — always an actual data point. Use CONT for statistical medians, DISC when you need a real row value.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -396,6 +535,22 @@ ORDER BY revenue_rank;`,
     {
       q: 'How do I compute a median in MSSQL and PostgreSQL?',
       a: 'Both support PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY col): SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY salary) FROM employees. PERCENTILE_CONT returns an interpolated value (may not be an actual data point). PERCENTILE_DISC(0.5) returns the nearest actual value. These are ordered-set aggregate functions — they have no GROUP BY requirement and can be combined with GROUP BY to get per-group medians. Both MSSQL (2012+) and PostgreSQL (9.4+) support them.',
+    },
+    {
+      q: 'Can I use a SELECT alias in GROUP BY or HAVING?',
+      a: 'It depends on the dialect. <strong>PostgreSQL</strong> allows SELECT aliases in GROUP BY (evaluated after GROUP BY internally resolves them) — so <code>SELECT price * 1.2 AS taxed_price … GROUP BY taxed_price</code> works. <strong>MSSQL</strong> does NOT allow aliases in GROUP BY — you must repeat the expression: <code>GROUP BY price * 1.2</code>. For HAVING: PostgreSQL allows aliases; MSSQL does not. Cross-platform safe practice: always repeat the expression in GROUP BY and HAVING rather than using an alias. Alternatively, wrap the query in a CTE or subquery so the alias is visible in the outer query\'s WHERE.',
+    },
+    {
+      q: 'Why is COUNT(DISTINCT col) slow and what can I do about it?',
+      a: 'COUNT(DISTINCT col) forces the engine to track all distinct values seen per group, which requires either sorting the values or building a hash set of them — both are more expensive than a simple count. For large tables, alternatives: (1) <strong>Pre-deduplicate in a CTE</strong>: <code>WITH d AS (SELECT DISTINCT group_col, counted_col FROM t) SELECT group_col, COUNT(*) FROM d GROUP BY group_col</code> — gives the optimizer more flexibility. (2) <strong>HyperLogLog approximation</strong> (PostgreSQL extension): gives an approximate distinct count in O(1) space per group — accurate within ~1-2%, fast enough for dashboards. (3) For MSSQL: check if a pre-aggregated indexed view can serve the query. Avoid COUNT(DISTINCT) inside ROLLUP — it is especially expensive there.',
+    },
+    {
+      q: 'What is the difference between SUM(CASE WHEN cond THEN col END) and SUM(CASE WHEN cond THEN col ELSE 0 END)?',
+      a: 'When the condition is false, the ELSE-less version returns NULL for that row, which SUM ignores — so only matching rows contribute to the total. The ELSE 0 version contributes 0 for non-matching rows. For revenue/amount sums, both produce the same result. The distinction matters for averaging: <code>AVG(CASE WHEN cond THEN col END)</code> averages only matching rows (denominator = count of matching rows), while <code>AVG(CASE WHEN cond THEN col ELSE 0 END)</code> averages all rows with 0 for non-matches (denominator = total row count, result is smaller). Use no-ELSE for "sum/avg of the subset", use ELSE 0 for "count or flag across all rows".',
+    },
+    {
+      q: 'When should I use a materialized view instead of a GROUP BY query?',
+      a: 'Consider a materialized view (PostgreSQL) or indexed view (MSSQL) when: (1) the aggregation is over a very large table and the query runs frequently; (2) the underlying data changes infrequently relative to how often the aggregate is read; (3) the GROUP BY columns and aggregate functions are well-defined and stable. PostgreSQL materialized views require manual or scheduled <code>REFRESH MATERIALIZED VIEW</code> — they are not auto-updated. MSSQL indexed views are auto-maintained by the engine on every write (with some restrictions: no outer joins, no subqueries, specific WITH SCHEMABINDING requirement). Trade-off: write overhead to maintain the pre-computed aggregate vs read speed. For real-time dashboards with high write rates, materialized views can become a write bottleneck.',
     },
   ];
 }
