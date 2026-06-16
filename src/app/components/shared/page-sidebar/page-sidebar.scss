@@ -206,6 +206,33 @@
   &:hover { background: #7c2d12; color: #fed7aa; }
 }
 
+// TypeScript override —
+:host(.section-typescript) {
+  .docs-link {
+    color: #3178c6;
+    background: #eff6ff;
+    &:hover { background: #dbeafe; color: #1d4ed8; }
+  }
+
+  .related-link {
+    &:hover {
+      background: #eff6ff;
+      color: #3178c6;
+      .link-arrow { color: #3178c6; }
+    }
+  }
+
+  .resource-link {
+    &:hover { background: #eff6ff; color: #3178c6; }
+  }
+}
+
+:host-context(body.dark):host(.section-typescript) .docs-link {
+  color: #93c5fd;
+  background: #172554;
+  &:hover { background: #1e3a8a; color: #bfdbfe; }
+}
+
 // ── Resource badges ────────────────────────────────────────────────────────
 .badge {
   font-size: .65rem; font-weight: 700; text-transform: uppercase;
