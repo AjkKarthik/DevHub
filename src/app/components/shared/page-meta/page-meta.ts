@@ -15,6 +15,8 @@ import { Component, input } from '@angular/core';
         <a class="pm-play pm-play--sharplab" href="https://sharplab.io/" target="_blank" rel="noopener">⚗ SharpLab</a>
       } @else if (tech() === 'sql') {
         <a class="pm-play pm-play--sql" href="https://dbfiddle.uk/" target="_blank" rel="noopener">▶ DB Fiddle</a>
+      } @else if (tech() === 'typescript') {
+        <a class="pm-play pm-play--typescript" href="https://www.typescriptlang.org/play" target="_blank" rel="noopener">▶ TS Playground</a>
       } @else if (!hidePlayground()) {
         @if (stackblitzUrl()) {
           <a class="pm-play" [href]="stackblitzUrl()" target="_blank" rel="noopener">▶ Playground</a>
@@ -51,7 +53,8 @@ import { Component, input } from '@angular/core';
       &--node    { background: #16a34a; }
       &--python  { background: #ca8a04; }
       &--aspnet  { background: #0e7490; }
-      &--sql     { background: #e05c00; }
+      &--sql        { background: #e05c00; }
+      &--typescript { background: #3178c6; }
     }
     .pm-play {
       font-size: .78rem; font-weight: 600; color: #0ea5e9;
@@ -61,7 +64,8 @@ import { Component, input } from '@angular/core';
       &:first-of-type { margin-left: auto; }
       &--csharp   { color: #7c3aed; border-color: #7c3aed; }
       &--sharplab { color: #0891b2; border-color: #0891b2; }
-      &--sql      { color: #e05c00; border-color: #e05c00; }
+      &--sql        { color: #e05c00; border-color: #e05c00; }
+      &--typescript { color: #3178c6; border-color: #3178c6; }
     }
   `],
 })
@@ -69,7 +73,7 @@ export class PageMetaComponent {
   readingTime    = input.required<number>();
   difficulty     = input<'beginner' | 'intermediate' | 'advanced'>('intermediate');
   since          = input<string>('');
-  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python' | 'aspnet' | 'sql'>('angular');
+  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python' | 'aspnet' | 'sql' | 'typescript'>('angular');
   stackblitzUrl  = input<string>('');
   hidePlayground = input<boolean>(false);
 }

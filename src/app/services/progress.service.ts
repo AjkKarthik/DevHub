@@ -14,7 +14,7 @@ export class ProgressService {
   readonly csharpTotal  = 50;
   readonly csharpCount  = computed(() => [...this._done()].filter(r => r.startsWith('csharp-')).length);
   readonly csharpPct    = computed(() => Math.round((this.csharpCount() / this.csharpTotal) * 100));
-  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-') && !r.startsWith('aspnet-') && !r.startsWith('sql-')).length);
+  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-') && !r.startsWith('aspnet-') && !r.startsWith('sql-') && !r.startsWith('ts-')).length);
   readonly angularPct   = computed(() => Math.round((this.angularCount() / this.total) * 100));
 
   // ── ASP.NET Core (keys prefixed 'aspnet-') ─────────────────────────────────
@@ -26,6 +26,11 @@ export class ProgressService {
   readonly sqlTotal  = 44;
   readonly sqlCount  = computed(() => [...this._done()].filter(r => r.startsWith('sql-')).length);
   readonly sqlPct    = computed(() => Math.round((this.sqlCount() / this.sqlTotal) * 100));
+
+  // ── TypeScript (keys prefixed 'ts-') ───────────────────────────────────────
+  readonly tsTotal  = 20;
+  readonly tsCount  = computed(() => [...this._done()].filter(r => r.startsWith('ts-')).length);
+  readonly tsPct    = computed(() => Math.round((this.tsCount() / this.tsTotal) * 100));
 
   toggle(route: string) {
     this._done.update(s => {

@@ -319,6 +319,15 @@ main {
   body.dark &.active { background: #155e75; color: #fff; }
 }
 
+// TypeScript section — blue active state
+.left-nav.section-typescript a {
+  &:hover { background: #eff6ff; color: #3178c6; }
+  &.active { background: #3178c6; color: #fff; }
+
+  body.dark &:hover { background: #172554; color: #93c5fd; }
+  body.dark &.active { background: #1d4ed8; color: #fff; }
+}
+
 // SQL section — orange active state
 .left-nav.section-sql a {
   &:hover { background: #fff7ed; color: #e05c00; }

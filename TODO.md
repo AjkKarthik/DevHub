@@ -535,7 +535,7 @@ job requirements and add any missing cards to home.ts.
 Accent: `#3178c6` (TypeScript blue). Search prefix: `ts-`. Progress key: `tsTotal`.
 Write one page per session in this order:
 
-- [ ] `ts-basics` — Type annotations, inference, `any` vs `unknown`, `never`, type assertions
+- [x] 2026-06-16 `ts-basics` — Type annotations, inference, `any` vs `unknown`, `never`, type assertions
 - [ ] `ts-functions` — Parameter types, return types, optional/default/rest, overloads,
   `this` parameter, function type expressions
 - [ ] `ts-interfaces-types` — interface vs type alias, structural typing, extends vs

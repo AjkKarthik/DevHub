@@ -64,12 +64,13 @@ export class App {
     ].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'hub'>(() => {
     const url = this.currentUrl();
-    if (url.startsWith('/angular')) return 'angular';
-    if (url.startsWith('/csharp'))  return 'csharp';
-    if (url.startsWith('/aspnet'))  return 'aspnet';
-    if (url.startsWith('/sql'))     return 'sql';
+    if (url.startsWith('/angular'))    return 'angular';
+    if (url.startsWith('/csharp'))     return 'csharp';
+    if (url.startsWith('/aspnet'))     return 'aspnet';
+    if (url.startsWith('/sql'))        return 'sql';
+    if (url.startsWith('/typescript')) return 'typescript';
     return 'hub';
   });
 

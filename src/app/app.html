@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -59,6 +59,9 @@
         } @else if (currentSection() === 'sql') {
           <div class="nav-progress-bar" [style.width.%]="progress.sqlPct()"></div>
           <span class="nav-progress-label">{{ progress.sqlCount() }}/{{ progress.sqlTotal }} topics done</span>
+        } @else if (currentSection() === 'typescript') {
+          <div class="nav-progress-bar" [style.width.%]="progress.tsPct()"></div>
+          <span class="nav-progress-label">{{ progress.tsCount() }}/{{ progress.tsTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -251,6 +254,65 @@
     </div>
 
     } <!-- end sql nav -->
+
+    <!-- ── TypeScript Navigation ─────────────────────────────────── -->
+    @if (currentSection() === 'typescript') {
+
+    <a routerLink="/typescript" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">🏠 TypeScript Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/typescript/basics"           routerLinkActive="active"><span class="nl-text">TS Fundamentals</span>@if(progress.isDone('ts-basics')){<span class="nl-done">✓</span>}@if(diff('ts-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/primitive-types"  routerLinkActive="active"><span class="nl-text">Primitive &amp; Literal Types</span>@if(progress.isDone('ts-primitive-types')){<span class="nl-done">✓</span>}@if(diff('ts-primitive-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/strict-migration" routerLinkActive="active"><span class="nl-text">Strict Mode &amp; Migration</span>@if(progress.isDone('ts-strict-migration')){<span class="nl-done">✓</span>}@if(diff('ts-strict-migration');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Type System</p>
+      <a routerLink="/typescript/interfaces-types" routerLinkActive="active"><span class="nl-text">Interfaces &amp; Types</span>@if(progress.isDone('ts-interfaces-types')){<span class="nl-done">✓</span>}@if(diff('ts-interfaces-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/unions"           routerLinkActive="active"><span class="nl-text">Union &amp; Intersection</span>@if(progress.isDone('ts-unions')){<span class="nl-done">✓</span>}@if(diff('ts-unions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/narrowing"        routerLinkActive="active"><span class="nl-text">Type Guards &amp; Narrowing</span>@if(progress.isDone('ts-narrowing')){<span class="nl-done">✓</span>}@if(diff('ts-narrowing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/enums-tuples"     routerLinkActive="active"><span class="nl-text">Enums &amp; Tuples</span>@if(progress.isDone('ts-enums-tuples')){<span class="nl-done">✓</span>}@if(diff('ts-enums-tuples');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Generics</p>
+      <a routerLink="/typescript/generics"         routerLinkActive="active"><span class="nl-text">Generics Fundamentals</span>@if(progress.isDone('ts-generics')){<span class="nl-done">✓</span>}@if(diff('ts-generics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/generic-patterns" routerLinkActive="active"><span class="nl-text">Generic Patterns</span>@if(progress.isDone('ts-generic-patterns')){<span class="nl-done">✓</span>}@if(diff('ts-generic-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/utility-types"    routerLinkActive="active"><span class="nl-text">Utility Types</span>@if(progress.isDone('ts-utility-types')){<span class="nl-done">✓</span>}@if(diff('ts-utility-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Advanced Types</p>
+      <a routerLink="/typescript/mapped-types"            routerLinkActive="active"><span class="nl-text">Mapped Types</span>@if(progress.isDone('ts-mapped-types')){<span class="nl-done">✓</span>}@if(diff('ts-mapped-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/conditional-types"       routerLinkActive="active"><span class="nl-text">Conditional Types</span>@if(progress.isDone('ts-conditional-types')){<span class="nl-done">✓</span>}@if(diff('ts-conditional-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/template-literal-types"  routerLinkActive="active"><span class="nl-text">Template Literal Types</span>@if(progress.isDone('ts-template-literal-types')){<span class="nl-done">✓</span>}@if(diff('ts-template-literal-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">OOP</p>
+      <a routerLink="/typescript/classes"     routerLinkActive="active"><span class="nl-text">Classes &amp; Visibility</span>@if(progress.isDone('ts-classes')){<span class="nl-done">✓</span>}@if(diff('ts-classes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/decorators"  routerLinkActive="active"><span class="nl-text">Decorators</span>@if(progress.isDone('ts-decorators')){<span class="nl-done">✓</span>}@if(diff('ts-decorators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Tooling</p>
+      <a routerLink="/typescript/tsconfig"        routerLinkActive="active"><span class="nl-text">tsconfig Deep Dive</span>@if(progress.isDone('ts-tsconfig')){<span class="nl-done">✓</span>}@if(diff('ts-tsconfig');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/modules"         routerLinkActive="active"><span class="nl-text">Module System</span>@if(progress.isDone('ts-modules')){<span class="nl-done">✓</span>}@if(diff('ts-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/declarations"    routerLinkActive="active"><span class="nl-text">Declaration Files</span>@if(progress.isDone('ts-declarations')){<span class="nl-done">✓</span>}@if(diff('ts-declarations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/frameworks"      routerLinkActive="active"><span class="nl-text">TS with Frameworks</span>@if(progress.isDone('ts-frameworks')){<span class="nl-done">✓</span>}@if(diff('ts-frameworks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/ts-performance"  routerLinkActive="active"><span class="nl-text">TS Performance</span>@if(progress.isDone('ts-performance')){<span class="nl-done">✓</span>}@if(diff('ts-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/typescript/cheatsheet"     routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+      <a routerLink="/typescript/interview-prep" routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+    </div>
+
+    } <!-- end typescript nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {

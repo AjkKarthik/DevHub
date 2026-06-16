@@ -1,0 +1,11 @@
+$accent: #3178c6;
+$tint:   #eff6ff;
+.ts-page { max-width: 860px; padding: 1rem; margin: 0 auto; }
+.ts-icon { background: $tint; color: $accent; border: 1px solid rgba(49,120,198,.25); }
+.ts-section { margin: 2rem 0;
+  h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: #111827; }
+}
+:host-context(body.dark) {
+  .ts-icon { background: #172554; color: #93c5fd; }
+  .ts-section h2 { color: #f9fafb; }
+}
