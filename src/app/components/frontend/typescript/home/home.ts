@@ -45,7 +45,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Conditional Types',          route: '/typescript/conditional-types', badge: 'Advanced Types', available: true,
     description: 'T extends U ? X : Y — distributive conditional types, infer, and deferred resolution.',
     keyPoints: ['Distributive: applied to each member of a union separately', 'infer P in "T extends Promise<infer P>" extracts P from Promise<P>', 'NonNullable<T> = T extends null | undefined ? never : T — stdlib uses this'] },
-  { title: 'Decorators',                 route: '/typescript/decorators', badge: 'OOP', available: false,
+  { title: 'Decorators',                 route: '/typescript/decorators', badge: 'OOP', available: true,
     description: 'Class, method, property, and parameter decorators — TypeScript 5 decorator syntax (TC39 Stage 3).',
     keyPoints: ['TS 5.0 implements TC39 Stage 3 decorators — breaking change from experimental decorators', 'Class decorator: receives the class, can return a replacement', 'DI frameworks (Angular, NestJS) rely heavily on decorators for metadata'] },
   { title: 'Classes & Visibility',       route: '/typescript/classes', badge: 'OOP', available: true,
