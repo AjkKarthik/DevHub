@@ -1,19 +1,26 @@
-<div class="page">
-  <h1>Chart.js Visualizations</h1>
-  <p class="subtitle">Interactive data visualizations using Chart.js — bar, line, and doughnut charts with live data updates.</p>
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Chart.js with Angular</h1>
+  <p class="page-subtitle">Interactive data visualizations using Chart.js — bar, line, and doughnut charts initialized with afterNextRender(), updated reactively via signals, and cleaned up with DestroyRef.</p>
 
-  <app-page-meta [readingTime]="10" difficulty="intermediate" since="16" />
+  <app-page-meta [readingTime]="26" difficulty="intermediate" since="Angular 17" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <!-- Bar chart -->
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>Bar Chart — Monthly Sales</h2>
     <div class="demo-card">
       <div class="controls">
-        <button (click)="randomizeBar()">Randomize Data</button>
+        <button class="btn" (click)="randomizeBar()">Randomize Data</button>
       </div>
       <div class="chart-container">
         <canvas #barCanvas></canvas>
@@ -21,12 +28,11 @@
     </div>
   </section>
 
-  <!-- Line chart -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Line Chart — Revenue vs Expenses</h2>
     <div class="demo-card">
       <div class="controls">
-        <button (click)="randomizeLine()">Randomize Data</button>
+        <button class="btn" (click)="randomizeLine()">Randomize Data</button>
       </div>
       <div class="chart-container">
         <canvas #lineCanvas></canvas>
@@ -34,8 +40,7 @@
     </div>
   </section>
 
-  <!-- Doughnut chart -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Doughnut Chart — Codebase Breakdown</h2>
     <div class="demo-card">
       <div class="chart-container chart-sm">
@@ -44,11 +49,17 @@
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Angular" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/charts" nextRoute="/ag-grid" nextLabel="Ag Grid" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="charts" nextRoute="/angular/ag-grid-demo" nextLabel="AG Grid" />
 </div>
