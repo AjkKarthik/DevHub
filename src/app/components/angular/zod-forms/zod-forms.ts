@@ -10,9 +10,10 @@ import { ChallengeBlockComponent, Challenge } from '../../shared/challenge-block
 import { QuickRefComponent, QuickRefItem } from '../../shared/quick-ref/quick-ref';
 import { BeforeAfterComponent, BeforeAfterExample } from '../../shared/before-after/before-after';
 import { CommonMistakesComponent, CommonMistake } from '../../shared/common-mistakes/common-mistakes';
-import { VersionBadgeComponent, VersionInfo } from '../../shared/version-badge/version-badge';
 import { PageMetaComponent } from '../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../shared/page-complete/page-complete';
+import { RevisionCardComponent, RevisionSummary } from '../../shared/revision-card/revision-card';
+import { PrerequisitesComponent, Prerequisite } from '../../shared/prerequisites/prerequisites';
 
 // --- Zod schemas (single source of truth) ---
 const signupSchema = z.object({
@@ -51,7 +52,7 @@ type Product = z.infer<typeof productSchema>;
 
 @Component({
   selector: 'app-zod-forms',
-  imports: [ReactiveFormsModule, JsonPipe, TitleCasePipe, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, VersionBadgeComponent, PageMetaComponent, PageCompleteComponent],
+  imports: [ReactiveFormsModule, JsonPipe, TitleCasePipe, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, PageMetaComponent, PageCompleteComponent, RevisionCardComponent, PrerequisitesComponent],
   templateUrl: './zod-forms.html',
   styleUrl: './zod-forms.scss',
 })
@@ -132,41 +133,70 @@ export class ZodFormsDemo {
     return r.success ? `✅ Valid: ${r.data}` : `❌ ${r.error.issues[0].message}`;
   });
 
+  prerequisites: Prerequisite[] = [
+    { label: 'Forms (Reactive & Template)', route: '/angular/forms-demo' },
+    { label: 'Custom Validators', route: '/angular/custom-validators' },
+  ];
+
   theory: TheoryPoint[] = [
   {
     heading: 'What is Zod?',
     points: [
-      'Zod is a TypeScript-first schema validation library. You define schemas and it infers the TypeScript type.',
-      '<code>z.object({ name: z.string().min(2) })</code> — the schema IS the type definition.',
-      '<code>schema.parse(data)</code> throws on invalid input. <code>schema.safeParse(data)</code> returns <code>{ success, data, error }</code>.',
-      'Zod schemas validate at runtime — they catch API mismatches, malformed user input, and env config errors.',
+      'Zod is a TypeScript-first runtime schema validation library — you define schemas using a fluent builder API, and it infers the TypeScript type automatically using <code>z.infer&lt;typeof mySchema&gt;</code>.',
+      '<code>z.safeParse(data)</code> never throws — it returns <code>{ success: true, data }</code> or <code>{ success: false, error: ZodError }</code>. <code>z.parse(data)</code> throws on failure — always use <code>safeParse</code> for user input.',
+      'Schemas validate at runtime while TypeScript types check at compile time. Zod bridges both layers: the same schema definition drives Angular\'s form validators and TypeScript\'s type system.',
+      'Zod\'s bundle size is ~14 kB gzipped — acceptable for most Angular applications. Alternatives: Yup (older), Valibot (smaller, similar API), Arktype (even faster).',
+      'Use Zod everywhere a contract matters: form submission, API responses, environment variables, query parameters, localStorage values — any boundary where external data enters your app.',
     ],
   },
   {
-    heading: 'Zod + Reactive Forms integration',
+    heading: 'Zod + Reactive Forms integration strategies',
     points: [
-      'Define validators that call <code>schema.safeParse()</code> and map Zod errors to Angular\'s <code>ValidationErrors</code>.',
-      'Use <code>z.infer&lt;typeof mySchema&gt;</code> to get the TypeScript type — no duplicate type definitions.',
-      'Validate individual fields with field-level schemas, or the full form value with a group-level schema.',
-      'On submit: call <code>schema.parse(form.value)</code> — if it throws, the data structure is wrong; log and handle.',
+      '<strong>Strategy 1 — Submit-time Zod:</strong> use Angular\'s built-in validators for instant UI feedback, then run <code>schema.safeParse(form.value)</code> on submit for full schema enforcement and a typed result.',
+      '<strong>Strategy 2 — Zod-powered Angular validators:</strong> create a <code>zodValidator(schema)</code> factory that wraps <code>safeParse</code> and returns <code>ValidationErrors | null</code> — applied directly to <code>FormControl</code> definitions.',
+      '<strong>Strategy 3 — Schema-only on submit:</strong> skip Angular validators entirely; rely purely on Zod on submit. Simpler setup, but loses real-time field-level feedback.',
+      'Use <code>z.infer&lt;typeof schema&gt;</code> to derive the TypeScript type. The typed result from <code>safeParse(...).data</code> carries the exact type, so you get autocomplete on the submitted payload without a separate interface.',
+      'Pre-process form values before parsing: <code>z.coerce.number()</code> handles string-to-number conversion; for arrays represented as comma-separated strings, split before calling <code>safeParse</code>.',
+    ],
+  },
+  {
+    heading: 'The zodValidator factory pattern',
+    points: [
+      'A <code>zodValidator</code> factory converts any Zod schema into an Angular <code>ValidatorFn</code>: <code>(ctrl: AbstractControl) => ValidationErrors | null</code> — a reusable bridge with zero Zod-specific code in your form setup.',
+      'Return format: <code>{ zod: errorMessage }</code> on failure, <code>null</code> on success. Access in the template with <code>control.errors?.[\'zod\']</code> for a clean, single-key error convention.',
+      'Field-level usage: <code>email: [\'\', zodValidator(z.string().email(\'Invalid email\'))]</code>. The Angular validator fires on every value change, just like a built-in validator.',
+      'For cross-field rules, attach the <code>zodValidator</code> at the group level: <code>this.fb.group({...}, { validators: zodValidator(myFullSchema) })</code> — the group validator receives the whole <code>FormGroup</code>.',
+      'Compose with built-in validators: <code>[Validators.required, zodValidator(z.string().url())]</code>. Angular runs them in order — <code>Validators.required</code> blocks empty strings before Zod runs its URL check.',
+    ],
+  },
+  {
+    heading: 'Cross-field validation with .refine() and .superRefine()',
+    points: [
+      '<code>.refine(fn, opts)</code> attaches a custom validation function to a Zod schema. Returns <code>true</code> for valid, <code>false</code> for invalid. The <code>message</code> option sets the error text.',
+      'Place <code>.refine()</code> at the object level for cross-field rules: <code>z.object({ pass, confirm }).refine(d => d.pass === d.confirm, { message: \'Passwords must match\', path: [\'confirm\'] })</code>.',
+      'Without <code>path</code>, cross-field errors land at <code>path: []</code> (the root object) — <code>getZodError(\'confirm\')</code> won\'t find them. Always set <code>path</code> on cross-field refinements.',
+      '<code>.superRefine((data, ctx) => { ctx.addIssue({...}) })</code> allows adding multiple issues in one call — useful when a cross-field rule can fail in several independent ways.',
+      'Async refinements: <code>.refine(async val => await checkUnique(val), { message: \'Username taken\' })</code>. Use <code>safeParseAsync()</code> to evaluate them.',
     ],
   },
   {
     heading: 'Runtime API response validation',
     points: [
-      'Parse HTTP responses with Zod to catch backend contract drift early.',
-      '<code>const user = UserSchema.parse(response)</code> — if the API removes a required field, you know immediately.',
-      'Use <code>safeParse</code> in production to fail gracefully rather than crashing the app.',
-      'Combine with TanStack Query\'s <code>queryFn</code>: parse the response inside the function before returning.',
+      'Define a Zod schema that matches your API\'s expected response shape. On every HTTP call, run <code>schema.safeParse(response)</code> — if it fails, you\'ve caught backend contract drift before it causes a runtime error.',
+      'In Angular HttpClient, pipe the response through a Zod parse: <code>this.http.get(\'/api/users\').pipe(map(data => { const r = schema.safeParse(data); if (!r.success) throw new Error(\'API mismatch\'); return r.data; }))</code>.',
+      '<code>z.array(userSchema)</code> validates list responses. Combine with <code>.nullable()</code> or <code>.optional()</code> to handle fields the backend might return as null.',
+      'In production, use <code>safeParse</code> (not <code>parse</code>) in HTTP interceptors — a <code>ZodError</code> thrown mid-request is an uncaught error if not handled. Log <code>error.issues</code> for observability.',
+      'Versioned API schemas: use Zod\'s discriminated unions (<code>z.discriminatedUnion(\'version\', [...])</code>) to handle multiple API response shapes based on a version discriminant field.',
     ],
   },
   {
-    heading: 'Key points to remember',
+    heading: 'Best practices',
     points: [
-      'Zod runs in the browser — it is not a server-only library. Bundle size is ~14 kB gzipped.',
-      'Use <code>.optional()</code> for optional fields, <code>.nullable()</code> for fields that can be null, <code>.nullish()</code> for both.',
-      'Zod supports transforms: <code>z.string().transform(s => s.trim())</code> — useful for sanitising form input.',
-      'Alternatives: Yup (older, larger), Valibot (smaller, similar API), class-validator (decorator-based, needs reflect-metadata).',
+      'Place Zod schemas in a <code>schemas/</code> folder (or colocated with the feature) as <code>const</code>s — not class methods. They are pure data and should be reusable across components, services, and tests.',
+      'Use <code>z.string().trim()</code> or <code>.toLowerCase()</code> as transforms to normalise input before storing. The parsed output is the normalised value — not the raw string.',
+      'In tests, call <code>schema.parse(testData)</code> directly without Angular — Zod schemas are plain TypeScript and require no testing framework setup. Schema unit tests are fast and isolated.',
+      'For Zod validation at app startup, parse <code>environment</code> through a config schema in <code>APP_INITIALIZER</code> — if it fails, log and throw to prevent the app from running with missing env vars.',
+      'Prefer <code>z.object().strict()</code> for API response validation to catch extra unexpected fields, but avoid it for form values where Angular adds control metadata to the value object.',
     ],
   },
 ];
@@ -178,9 +208,10 @@ export class ZodFormsDemo {
     { q: 'How do you add a custom Zod validator?', a: '<code>z.string().refine(val => val.startsWith(\'@\'), { message: \'Must start with @\' })</code>. For async: <code>.refine(async val => await checkUnique(val), { message: \'Already taken\' })</code>. Use <code>.superRefine()</code> for multiple errors.' },
     { q: 'How do cross-field validations work in Zod?', a: 'Apply a validator at the object level: <code>z.object({ pass: z.string(), confirm: z.string() }).refine(d => d.pass === d.confirm, { message: \'Passwords must match\', path: [\'confirm\'] })</code>. The <code>path</code> assigns the error to a specific field.' },
     { q: 'Can Zod replace Angular Validators entirely?', a: 'In practice, use both: Angular Validators for synchronous UI feedback, Zod for full schema validation on submit and for validating API responses. A Zod-to-Angular adapter is not built-in — you call <code>safeParse</code> manually in the submit handler.' },
+    { q: 'How do you validate arrays of items from an API response — e.g. a list of users?', a: 'Use <code>z.array(itemSchema)</code>: <code>const usersSchema = z.array(userSchema)</code>. Then call <code>usersSchema.safeParse(responseData)</code>. The result\'s <code>data</code> is typed as <code>User[]</code>. For empty-allowed vs non-empty lists, chain <code>.min(1)</code> or <code>.nonempty()</code> on the array schema.' },
   ];
 
-  tabs: CodeTab[] = [
+  codeTabs: CodeTab[] = [
     {
       label: 'Schema definition',
       language: 'typescript',
@@ -322,6 +353,8 @@ export class UserService {
     { q: 'In the `zodValidator` factory function, what does it return when `schema.safeParse(control.value)` succeeds?', options: ['An empty object `{}`', '`{ valid: true }`', 'The parsed data object', 'null'], answer: 3, explanation: 'Angular\'s validator contract requires returning `null` when a control is valid, or a `ValidationErrors` object when it is invalid. The `zodValidator` factory returns `null` on success and `{ zod: result.error.issues[0].message }` on failure.' },
     { q: 'How does the product form handle the `tags` field, which is stored as a comma-separated string in the form control but needs to be a `string[]` for Zod validation?', options: ['It uses `z.coerce.array()` to automatically convert the string', 'It splits the raw string by comma, trims each entry, and filters empty strings before calling `safeParse`', 'It defines the Zod schema field as `z.string()` and then transforms it after validation', 'It uses a custom Angular `ControlValueAccessor` to convert the value'], answer: 1, explanation: 'In `submitProduct()`, the raw form value is spread and the `tags` field is transformed: `tags: (raw.tags as string).split(\',\').map(t => t.trim()).filter(Boolean)`. This pre-processing happens before `productSchema.safeParse(parsed)` is called, adapting the UI representation to the schema\'s expected shape.' },
     { q: 'The `signupSchema` uses `.refine()` at the object level to check that `password === confirm`. Why is the `path: [\'confirm\']` option important?', options: ['It tells Zod which field to validate first', 'It is required syntax — `.refine()` will throw without a path', 'It assigns the cross-field error to the `confirm` field so `getZodError(\'confirm\')` can surface it', 'It prevents Zod from running the refinement when `confirm` is empty'], answer: 2, explanation: 'When a `.refine()` is placed on the whole object, its error would normally have an empty path `[]`. By setting `path: [\'confirm\']`, the error issue\'s `path[0]` becomes `\'confirm\'`, so the `getZodError(\'confirm\')` helper — which searches `err.issues` by `path[0]` — can find and display it next to the confirm field.' },
+    { q: 'An HTML `<input type="number">` still yields a string in a reactive form. Which Zod schema correctly validates it as a number with a minimum of 18?', options: ['`z.number().min(18)` — Zod automatically coerces HTML input values', '`z.string().min(18)` — min() works on string length and numeric value alike', '`z.coerce.number().min(18)` — coerce converts the string before the min() check runs', '`z.literal(18)` — literal is the only type that accepts both strings and numbers'], answer: 2, explanation: '`z.number()` strictly expects a JavaScript number and fails when given the string `\'25\'`. `z.coerce.number()` runs `Number(value)` before validation, converting `\'25\'` to `25` and then applying the `min(18)` check. Always use `z.coerce.number()` for reactive form number controls.' },
+    { q: 'What does `type SignupForm = z.infer<typeof signupSchema>` accomplish compared to writing a separate `interface SignupForm`?', options: ['Nothing — z.infer is purely decorative and produces the `any` type', 'It derives the TypeScript type from the schema at compile time, staying automatically in sync as the schema changes', 'It generates a runtime class that can be instantiated with `new SignupForm()`', 'It is a Zod-specific type that cannot be used outside of Zod utility functions'], answer: 1, explanation: '`z.infer<typeof schema>` is a TypeScript compile-time operation that extracts the exact static type described by the schema. If you add a new required field to the schema, the inferred type updates automatically — no separate interface to maintain. This single-source-of-truth pattern eliminates drift between runtime validation and compile-time types.' },
   ];
 
   quickRef: QuickRefItem[] = [
@@ -351,12 +384,28 @@ export class UserService {
     { title: 'Forgetting z.coerce for numeric form controls', wrong: '// Form control value is always a string from the DOM\nconst schema = z.object({ age: z.number().min(18) });\n// safeParse({ age: \'25\' }) → fails: expected number, received string', right: '// z.coerce.number() converts \'25\' → 25 before validating\nconst schema = z.object({ age: z.coerce.number().min(18) });\n// safeParse({ age: \'25\' }) → success: { age: 25 }', explanation: 'HTML inputs always yield strings. z.coerce.number() converts the string to a number before applying min/max checks — without coerce, numeric validations will always fail on raw form values.'  },
     { title: 'Cross-field .refine() without specifying path', wrong: '// No path — error lands at root [], not on the confirm field\nz.object({ pass: z.string(), confirm: z.string() })\n  .refine(d => d.pass === d.confirm, { message: \'Must match\' });', right: 'z.object({ pass: z.string(), confirm: z.string() })\n  .refine(d => d.pass === d.confirm, {\n    message: \'Passwords must match\',\n    path: [\'confirm\'],  // assigns error to the confirm field\n  });', explanation: 'Without path, the ZodIssue has path: [] (the root object). Setting path: [\'confirm\'] lets field-level helpers like getZodError(\'confirm\') locate and display the error next to the correct input.'  },
     { title: 'Writing a separate TypeScript interface instead of using z.infer', wrong: '// Duplicated — schema and interface can drift\nconst schema = z.object({ name: z.string(), age: z.number() });\ninterface User { name: string; age: number; }  // duplicate!', right: '// Single source of truth — type is always in sync with schema\nconst schema = z.object({ name: z.string(), age: z.number() });\ntype User = z.infer<typeof schema>;', explanation: 'Maintaining a separate interface alongside a Zod schema means two things to keep in sync. z.infer derives the TypeScript type directly from the schema at compile time, so they can never drift.'  },
+    { title: 'Not pre-processing form values that need type conversion before safeParse', wrong: '// productForm.tags control is a comma-separated string\n// productSchema expects tags: z.array(z.string()).min(1)\nconst result = productSchema.safeParse(this.productForm.value);\n// Fails: expected array, received string', right: '// Pre-process before parsing\nconst raw = this.productForm.value;\nconst parsed = {\n  ...raw,\n  tags: (raw.tags as string).split(\',\').map(t => t.trim()).filter(Boolean),\n};\nconst result = productSchema.safeParse(parsed);', explanation: 'Zod validates the exact shape you pass it. Form controls yield strings — arrays, booleans, and numbers must be transformed to their correct JS types before calling safeParse. Use z.coerce for scalars and manual transforms for arrays.' },
   ];
 
-  versionItems: VersionInfo[] = [
-    { version: 'Angular 14', label: 'Standalone components — Zod integration without NgModule', features: ['Standalone components can import ReactiveFormsModule directly in the @Component imports array', 'No NgModule boilerplate required to use FormBuilder, FormGroup, and custom Zod validators together', 'inject(FormBuilder) works in standalone components, replacing constructor injection'] },
-    { version: 'Angular 16', label: 'Signals pair naturally with Zod safeParse results', features: ['signal<T | null>(null) stores the typed parse result from z.infer — fully reactive without RxJS', 'computed() enables live field validation: const emailResult = computed(() => z.string().email().safeParse(liveEmail()))', 'signal-based error stores replace BehaviorSubject for surfacing ZodError.issues in the template'] },
-  ];
+  revision: RevisionSummary = {
+    oneLiner: 'Zod is a TypeScript-first runtime schema validation library — use <code>z.infer</code> to derive types from schemas and <code>safeParse()</code> to validate form values and API responses without throwing.',
+    mustKnow: [
+      '<code>z.safeParse(data)</code> never throws — returns <code>{ success: true, data }</code> or <code>{ success: false, error: ZodError }</code>',
+      '<code>type T = z.infer&lt;typeof schema&gt;</code> — derives TypeScript type from schema; single source of truth',
+      '<code>z.coerce.number()</code> converts <code>\'25\'</code> → <code>25</code> before validating — required for HTML number inputs',
+      'zodValidator factory: wraps <code>safeParse</code> to return Angular <code>ValidationErrors | null</code>',
+      'Cross-field <code>.refine()</code>: always set <code>path: [\'fieldName\']</code> to assign the error to a specific field',
+      'API response validation: <code>schema.safeParse(responseData)</code> — catches backend contract drift before it causes downstream errors',
+      'Pre-process form values before parsing: split comma-strings to arrays, use <code>z.coerce</code> for type conversion',
+    ],
+    interviewFocus: [
+      'What is the difference between <code>z.parse()</code> and <code>z.safeParse()</code>? When would you use each?',
+      'How does <code>z.infer</code> eliminate duplicate type definitions?',
+      'Why must you use <code>z.coerce.number()</code> instead of <code>z.number()</code> with Angular form controls?',
+      'How do you implement a cross-field password-match rule in Zod, and why does <code>path</code> matter?',
+      'Walk through the <code>zodValidator</code> factory function — what does it take in, what does it return, and why?',
+    ],
+  };
 
   challenge: Challenge = {
     title: 'Build a Zod-Validated Profile Form',

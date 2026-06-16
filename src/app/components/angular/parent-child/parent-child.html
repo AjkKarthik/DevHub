@@ -1,14 +1,19 @@
-<div class="page">
-  <h2>Input / Output Signals (Parent ↔ Child)</h2>
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Parent-Child Communication</h1>
+  <p class="page-subtitle">The signal-based component API — <code>input()</code>, <code>output()</code>, <code>model()</code>, <code>viewChild()</code>, and <code>contentChild()</code> — for reactive, type-safe parent-child data flow without lifecycle hooks.</p>
 
-  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+  <app-page-meta [readingTime]="26" difficulty="intermediate" since="Angular 17" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
 
   <!-- ── Demo 1: input() / output() ──────────────────────────────────────── -->
-  <section class="demo-section">
-    <h3>Demo 1 — input() &amp; output()</h3>
+  <section class="ng-section">
+    <h2>Demo 1 — input() &amp; output()</h2>
     <div class="demo-split">
       <div class="demo-live">
         <div class="card controls">
@@ -52,8 +57,8 @@
   </section>
 
   <!-- ── Demo 2: model() two-way binding ─────────────────────────────────── -->
-  <section class="demo-section">
-    <h3>Demo 2 — model() two-way binding</h3>
+  <section class="ng-section">
+    <h2>Demo 2 — model() two-way binding</h2>
     <div class="demo-split">
       <div class="demo-live">
         <div class="model-box">
@@ -92,8 +97,8 @@
   </section>
 
   <!-- ── Demo 3: viewChild() ─────────────────────────────────────────────── -->
-  <section class="demo-section">
-    <h3>Demo 3 — viewChild() &amp; viewChildren()</h3>
+  <section class="ng-section">
+    <h2>Demo 3 — viewChild() &amp; viewChildren()</h2>
     <div class="demo-split">
       <div class="demo-live">
         <div class="vc-box">
@@ -133,11 +138,17 @@
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Legacy Decorators" afterLabel="Signal API" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/parent-child" nextRoute="/lifecycle" nextLabel="Lifecycle" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="parent-child" nextRoute="/angular/content-projection" nextLabel="Content Projection" />
 </div>

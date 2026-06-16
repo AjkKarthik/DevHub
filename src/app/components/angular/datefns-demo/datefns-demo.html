@@ -1,14 +1,21 @@
-<div class="page">
-  <h1>date-fns</h1>
-  <p class="subtitle">Lightweight date manipulation — format, parse, date math, relative time, and a mini calendar built from scratch.</p>
-  <app-page-meta [readingTime]="8" difficulty="beginner" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">date-fns in Angular</h1>
+  <p class="page-subtitle">Tree-shakeable, immutable date utilities — format, parse, date math, relative time, locale support, and a mini calendar built from scratch with Angular Signals.</p>
+
+  <app-page-meta [readingTime]="28" difficulty="beginner" since="date-fns v3" tech="angular" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
-    <h2>format + Custom Format String</h2>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
+    <h2>format() — Live Format String</h2>
     <div class="demo-card">
       <div class="controls">
         <label>Date <input type="date" [value]="selectedDate()" (change)="selectedDate.set($any($event.target).value)" /></label>
@@ -18,7 +25,7 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Date Math — add / subtract</h2>
     <div class="demo-card">
       <div class="controls">
@@ -37,7 +44,7 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Relative Time — formatDistance</h2>
     <div class="demo-card">
       <div class="controls">
@@ -47,13 +54,13 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Mini Calendar — built with date-fns</h2>
     <div class="demo-card">
       <div class="cal-nav">
-        <button type="button" (click)="prevMonth()">‹</button>
+        <button type="button" (click)="prevMonth()">&lsaquo;</button>
         <strong>{{ calTitle() }}</strong>
-        <button type="button" (click)="nextMonth()">›</button>
+        <button type="button" (click)="nextMonth()">&rsaquo;</button>
       </div>
       <div class="cal-grid">
         @for (dow of ['Su','Mo','Tu','We','Th','Fr','Sa']; track dow) {
@@ -73,11 +80,17 @@
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="date-fns" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/date-fns" nextRoute="/zod-forms" nextLabel="Zod Forms" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="datefns-demo" nextRoute="/angular/counter" nextLabel="Signals Counter" />
 </div>

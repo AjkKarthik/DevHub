@@ -1,14 +1,21 @@
-<div class="page">
-  <h1>Tailwind CSS</h1>
-  <p class="subtitle">Utility-first styling for Angular — class binding, responsive breakpoints, dark mode, @apply patterns, and live component gallery.</p>
-  <app-page-meta [readingTime]="8" difficulty="beginner" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Tailwind CSS in Angular</h1>
+  <p class="page-subtitle">Utility-first styling for Angular — [class] bindings with signals, responsive breakpoints, dark mode via class strategy, @apply extraction, and Tailwind v4 setup.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="beginner" since="Angular 14" tech="angular" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
-    <h2>Dark mode toggle</h2>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
+    <h2>Dark Mode Toggle</h2>
     <div class="demo-card" [class.dark-card]="darkMode()">
       <div class="dark-toggle-row">
         <span>Mode: <strong>{{ darkMode() ? 'Dark' : 'Light' }}</strong></span>
@@ -18,8 +25,8 @@
     </div>
   </section>
 
-  <section class="demo-section">
-    <h2>Component gallery — utility classes in action</h2>
+  <section class="ng-section">
+    <h2>Component Gallery — utility classes in action</h2>
 
     <div class="gallery-grid">
       <div class="gallery-card">
@@ -71,11 +78,17 @@
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Tailwind" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/tailwind" nextRoute="/charts" nextLabel="Charts" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="tailwind-demo" nextRoute="/angular/charts" nextLabel="Charts & Data Viz" />
 </div>

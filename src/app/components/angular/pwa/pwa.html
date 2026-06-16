@@ -1,33 +1,53 @@
-<div class="page">
-  <h1>Service Worker / PWA</h1>
-  <p class="subtitle">Make your Angular app installable and offline-capable with @angular/pwa — one command sets up caching, manifest, and icons.</p>
-  <app-page-meta [readingTime]="12" difficulty="intermediate" since="5" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">PWA &amp; Service Workers</h1>
+  <p class="page-subtitle">Turn your Angular app into a Progressive Web App — installable, offline-capable, and push-notification-ready — using @angular/service-worker and ngsw-config.json.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="intermediate" since="Angular 5" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
-    <h2>Runtime status</h2>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
+    <h2>Live demo — service worker status</h2>
     <div class="demo-card">
       <div class="status-row">
-        <span class="label">Network:</span>
-        <span class="badge" [class.online]="isOnline()" [class.offline]="!isOnline()">
-          {{ isOnline() ? 'Online ✓' : 'Offline ✗' }}
+        <span class="status-label">Network:</span>
+        <span class="status-badge" [class.online]="isOnline()" [class.offline]="!isOnline()">
+          {{ isOnline() ? 'Online' : 'Offline' }}
         </span>
       </div>
       <div class="status-row">
-        <span class="label">Service Worker:</span>
-        <span class="sw-status">{{ swStatus() }}</span>
+        <span class="status-label">Service Worker:</span>
+        <span class="status-value">{{ swStatus() }}</span>
       </div>
-      <p class="hint">Run <code>ng build</code> and serve the <code>dist/</code> folder with a static server to activate the service worker in production mode.</p>
+      <div class="status-row">
+        <span class="status-label">Cache entries:</span>
+        <span class="status-value">{{ cacheItems().length ? cacheItems().join(', ') : 'No named caches found' }}</span>
+      </div>
+      <p class="demo-note">This status reflects the real browser state. In production (after <code>ng build</code> + <code>serve dist/</code>), "Service Worker" shows "Registered" with the active scope.</p>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Angular" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/pwa" nextRoute="/i18n" nextLabel="I18n" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="pwa" nextRoute="/angular/web-workers" nextLabel="Web Workers" />
 </div>

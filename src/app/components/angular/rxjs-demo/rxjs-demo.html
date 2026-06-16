@@ -1,13 +1,22 @@
-<div class="page">
-  <h1>RxJS Operators</h1>
-  <p class="subtitle">switchMap, debounceTime, combineLatest, Subject, BehaviorSubject, scan — the operators every Angular dev needs.</p>
-  <app-page-meta [readingTime]="18" difficulty="advanced" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">RxJS Operators</h1>
+  <p class="page-subtitle">switchMap, debounceTime, combineLatest, Subject, BehaviorSubject, scan — the operators every Angular dev needs, plus toSignal for bridging to the signals world.</p>
+
+  <app-page-meta [readingTime]="28" difficulty="advanced" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>switchMap + debounceTime — Live Search</h2>
     <div class="demo-card">
       <p class="muted">Type 2+ characters. switchMap cancels the previous HTTP call when you type again. debounceTime waits 400ms.</p>
@@ -22,7 +31,7 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>BehaviorSubject — Theme Toggle</h2>
     <div class="demo-card">
       <button type="button" class="btn" (click)="toggleTheme()">Toggle theme</button>
@@ -32,7 +41,7 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>combineLatest — Live Total</h2>
     <div class="demo-card">
       <div class="controls">
@@ -48,7 +57,7 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>scan — Accumulating State</h2>
     <div class="demo-card">
       <button type="button" class="btn" (click)="doClick()">Click me!</button>
@@ -57,11 +66,17 @@
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Angular" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/rxjs" nextRoute="/di" nextLabel="Di" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="rxjs" nextRoute="/angular/tanstack-query" nextLabel="TanStack Query" />
 </div>

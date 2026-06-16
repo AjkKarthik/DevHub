@@ -1,13 +1,22 @@
-<div class="page">
-  <h1>Testing Angular</h1>
-  <p class="subtitle">TestBed for unit tests, @testing-library/angular for user-centric tests, HttpTestingController for services, and signal-aware assertions.</p>
-  <app-page-meta [readingTime]="15" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Angular</h1>
+  <p class="page-subtitle">TestBed for unit tests, @testing-library/angular for user-centric tests, HttpTestingController for services, and signal-aware assertions — no real network or browser required.</p>
+
+  <app-page-meta [readingTime]="28" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>Live — Component Under Test</h2>
     <p class="hint">This is the actual <code>CounterUnderTest</code> component embedded here. The code tabs show how you'd write tests for it.</p>
     <div class="demo-card">
@@ -15,7 +24,7 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Testing strategy matrix</h2>
     <table class="matrix">
       <thead>
@@ -32,7 +41,7 @@
     </table>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Key testing-library principles</h2>
     <div class="principle-list">
       <div class="principle">
@@ -49,16 +58,22 @@
       </div>
       <div class="principle">
         <strong>Signals read immediately</strong>
-        <p>Unlike markForCheck, signal reads are synchronous — no detectChanges needed between signal read and assertion.</p>
+        <p>Unlike markForCheck, signal reads are synchronous — no detectChanges needed between signal mutation and assertion.</p>
       </div>
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Angular" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/testing" nextRoute="/harnesses" nextLabel="Harnesses" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="testing" nextRoute="/angular/harnesses" nextLabel="Component Harnesses" />
 </div>

@@ -11,13 +11,14 @@ import { ChallengeBlockComponent, Challenge } from '../../shared/challenge-block
 import { QuickRefComponent, QuickRefItem } from '../../shared/quick-ref/quick-ref';
 import { BeforeAfterComponent, BeforeAfterExample } from '../../shared/before-after/before-after';
 import { CommonMistakesComponent, CommonMistake } from '../../shared/common-mistakes/common-mistakes';
-import { VersionBadgeComponent, VersionInfo } from '../../shared/version-badge/version-badge';
 import { PageMetaComponent } from '../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../shared/page-complete/page-complete';
+import { RevisionCardComponent, RevisionSummary } from '../../shared/revision-card/revision-card';
+import { PrerequisitesComponent, Prerequisite } from '../../shared/prerequisites/prerequisites';
 
 @Component({
   selector: 'app-parent-child',
-  imports: [JsonPipe, ReactiveFormsModule, ChildCardComponent, ModelCounterComponent, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, VersionBadgeComponent, PageMetaComponent, PageCompleteComponent],
+  imports: [JsonPipe, ReactiveFormsModule, ChildCardComponent, ModelCounterComponent, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, PageMetaComponent, PageCompleteComponent, RevisionCardComponent, PrerequisitesComponent],
   templateUrl: './parent-child.html',
   styleUrl: './parent-child.scss',
 })
@@ -71,42 +72,71 @@ export class ParentChildComponent {
     });
   }
 
+  prerequisites: Prerequisite[] = [
+    { label: 'Signals', route: '/angular/signals' },
+    { label: 'Components', route: '/angular/components' },
+  ];
+
   // ── Code Tabs ─────────────────────────────────────────────────────────────
   theory: TheoryPoint[] = [
     {
       heading: 'input() — modern @Input replacement',
       points: [
-        'input<T>() declares a required or optional input as a read-only signal inside the child component.',
-        'input.required<T>() enforces that the parent MUST pass a value — compile error if missing.',
-        'Read the value like any signal: this.name() — no need for ngOnChanges to react to changes.',
-        'input() integrates with withComponentInputBinding() to auto-map route params to inputs.',
+        '<code>input&lt;T&gt;()</code> declares an optional signal input with an optional default; <code>input.required&lt;T&gt;()</code> enforces that the parent MUST pass a value — TypeScript gives a compile error if the binding is missing.',
+        'The value is accessed as a signal: <code>this.title()</code> — no need for <code>ngOnChanges</code> to react to changes, and no risk of stale values.',
+        'Inputs are read-only (<code>InputSignal</code> has no <code>.set()</code>). Only the parent can change the value by changing its binding expression.',
+        '<code>input()</code> integrates with <code>withComponentInputBinding()</code>: route params (e.g. <code>:id</code>) are automatically mapped to an <code>input()</code> with the same name — no <code>ActivatedRoute.snapshot</code> needed.',
+        'Signal inputs support <code>transform</code> option: <code>input(0, { transform: numberAttribute })</code> converts attribute strings to numbers automatically.',
       ],
     },
     {
       heading: 'output() — modern @Output replacement',
       points: [
-        'output<T>() creates an EventEmitter-like output without requiring RxJS Subject underneath.',
-        'Emit with outputRef.emit(value) — identical API to the old EventEmitter.emit().',
-        'Parent binds with (outputName)="handler($event)" — same template syntax as before.',
-        'model() = input() + output() combined — creates a two-way binding shorthand like [(ngModel)].',
+        '<code>output&lt;T&gt;()</code> creates a type-safe component output without requiring an RxJS <code>Subject</code> or <code>EventEmitter</code> underneath.',
+        'Emit with <code>this.myOutput.emit(value)</code> — identical call site to <code>EventEmitter.emit()</code>, so child code reads the same.',
+        'Parent binds with <code>(outputName)="handler($event)"</code> — same template syntax as the old <code>@Output()</code>; no migration required on the parent side.',
+        '<code>outputFromObservable(observable$)</code> converts an RxJS Observable into an Angular output — useful for bridging existing streams to the new API.',
+        '<code>toObservable(outputRef.asObservable())</code> is available if you need to compose the output stream with RxJS operators downstream.',
       ],
     },
     {
-      heading: 'viewChild() — modern @ViewChild replacement',
+      heading: 'model() — two-way binding with ModelSignal',
       points: [
-        'viewChild<T>(\'refName\') returns a Signal<T | undefined> — no need for ngAfterViewInit.',
-        'viewChild.required<T>(\'refName\') asserts the element is always present — Signal<T> (no undefined).',
-        'Read inside effect() or computed() — Angular automatically tracks the DOM reference.',
-        'For multiple elements use viewChildren() which returns Signal<readonly T[]>.',
+        '<code>model(defaultVal)</code> creates a <code>ModelSignal</code> — a writable signal in the child that the parent can both read from and write to using the <code>[(prop)]</code> two-way syntax.',
+        'Under the hood, <code>model()</code> generates an input and an auto-named <code>propChange</code> output. <code>[(count)]="qty"</code> desugars to <code>[count]="qty()" (countChange)="qty.set($event)"</code>.',
+        'The child calls <code>this.count.set(n)</code> or <code>this.count.update(n => n + 1)</code> — Angular emits the change event automatically, updating the parent signal.',
+        '<code>model.required&lt;T&gt;()</code> marks the model as required — the parent MUST provide a two-way binding or Angular reports a compile error.',
+        'Multiple siblings can bind to the same parent signal via <code>model()</code>: changing one child updates the parent signal, which flows into all other bound children reactively.',
       ],
     },
     {
-      heading: 'Key points to remember',
+      heading: 'viewChild() and viewChildren()',
       points: [
-        'input() is read-only — child cannot .set() it. Use a local signal and sync with effect() if needed.',
-        'Prefer output() over EventEmitter for new code — it has better type inference.',
-        'model() requires the parent to use [(prop)] two-way binding syntax.',
-        'Signal inputs react to changes automatically — no ngOnChanges hook needed for most use cases.',
+        '<code>viewChild&lt;T&gt;(\'refName\')</code> queries a single child element or component by template reference variable and returns <code>Signal&lt;T | undefined&gt;</code> — no <code>ngAfterViewInit</code> lifecycle hook needed.',
+        '<code>viewChild.required&lt;T&gt;(\'refName\')</code> asserts the element is always present — returns <code>Signal&lt;T&gt;</code> without the <code>undefined</code> case, reducing null-checks.',
+        '<code>viewChildren(ComponentType)</code> returns <code>Signal&lt;readonly T[]&gt;</code> containing all instances of that component type in this view — replaces <code>@ViewChildren</code>.',
+        'Read inside <code>computed()</code> or <code>effect()</code>. Angular tracks the signal dependency and re-runs when the view changes (e.g. when an <code>@if</code> block adds/removes the child).',
+        'You can also query by directive type, template-ref token, or injection token — not just component type — giving flexibility to query structural directive instances.',
+      ],
+    },
+    {
+      heading: 'contentChild() and contentChildren()',
+      points: [
+        '<code>contentChild()</code> queries content projected INTO the component\'s <code>&lt;ng-content&gt;</code> slot by the parent — as opposed to <code>viewChild()</code> which queries the component\'s OWN template.',
+        '<code>contentChildren(TokenType)</code> returns <code>Signal&lt;readonly T[]&gt;</code> of all projected children matching the token — replaces <code>@ContentChildren</code>.',
+        'Use <code>contentChild()</code> when writing wrapper/container components (tabs, accordions, form groups) that need to read or configure the projected items.',
+        '<code>contentChild.required()</code> asserts that at least one matching item is projected — useful for layout containers that MUST receive content.',
+        'Both <code>contentChild</code> and <code>viewChild</code> support <code>read</code> option: <code>viewChild(\'ref\', { read: ElementRef })</code> returns the <code>ElementRef</code> of the queried element rather than the component instance.',
+      ],
+    },
+    {
+      heading: 'Best practices and migration patterns',
+      points: [
+        'Migrate <code>@Input() prop!: T</code> → <code>prop = input.required&lt;T&gt;()</code> and update all reads from <code>this.prop</code> to <code>this.prop()</code>. The parent template binding stays the same.',
+        'Replace <code>@Output() evt = new EventEmitter&lt;T&gt;()</code> → <code>evt = output&lt;T&gt;()</code>. No other changes needed — <code>emit()</code> call and parent binding are identical.',
+        'Signal inputs do NOT trigger <code>ngOnChanges</code>. Replace <code>ngOnChanges(changes)</code> with <code>effect(() => { const v = this.prop(); ... })</code> to react to changes reactively.',
+        'Never use <code>input()</code> and <code>@Input()</code> on the same property — pick one API per property consistently. Mixing causes Angular to apply both bindings, leading to confusing behaviour.',
+        'For deeply nested components, prefer a shared <code>injectable</code> service or signals over long chains of inputs and outputs — more than two levels of prop-drilling is a signal to refactor.',
       ],
     },
   ];
@@ -118,6 +148,7 @@ export class ParentChildComponent {
     { q: 'Can a parent read child state without an event?', a: 'Yes — via <code>viewChild(MyChildComponent)</code>. The parent gets a Signal of the child instance and can read its public signals/properties. Alternatively, lift state to a shared service.' },
     { q: 'What is withComponentInputBinding() used for?', a: 'It makes Angular automatically map route params, query params, and resolver data to <code>input()</code> signals on the routed component — no <code>ActivatedRoute.snapshot</code> needed. Registered with <code>provideRouter(routes, withComponentInputBinding())</code>.' },
     { q: 'Can input() have a default value?', a: 'Yes: <code>input(\'default\')</code> returns a non-required input with "default" as the initial value. <code>input.required()</code> has no default — the parent must pass a value or TypeScript will error at compile time.' },
+    { q: 'What is the difference between contentChild() and viewChild()?', a: '<code>viewChild()</code> queries elements in the component\'s OWN template. <code>contentChild()</code> queries elements projected INTO the component via <code>&lt;ng-content&gt;</code> by the parent. Use <code>contentChild()</code> in wrapper components (tabs, accordions) that need to inspect or configure their projected content.' },
   ];
 
   ioTabs: CodeTab[] = [
@@ -257,6 +288,8 @@ export class ParentComponent {
     { q: 'How does output() differ from EventEmitter?', options: ['output() is synchronous only', 'output() is the modern signal-era API — no Observable subscription, just .emit()', 'EventEmitter is deprecated', 'output() requires Zone.js'], answer: 1, explanation: 'output() returns an OutputEmitterRef. You call .emit(value) and Angular delivers it to the parent binding without needing RxJS or zone triggers.' },
     { q: 'What does viewChild(\'#ref\') return?', options: ['The first matching DOM element', 'A Signal<T | undefined> resolving after view init', 'A Promise<T>', 'An Observable<T>'], answer: 1, explanation: 'viewChild() returns a signal. It\'s undefined until ngAfterViewInit, then holds the queried element or component reference.' },
     { q: 'When using input(), when can you read the value?', options: ['In the constructor', 'After ngOnChanges', 'Anywhere — it\'s a signal, always available', 'Only in ngOnInit'], answer: 2, explanation: 'Because input() is a signal, you can call it () anywhere — constructor, computed, template. Angular tracks the dependency automatically.' },
+    { q: 'How do you query ALL instances of a child component type in the parent\'s view?', options: ['viewChild(MyComp) returns an array when multiple match', 'viewChildren(MyComp) returns Signal<readonly MyComp[]>', 'Use @ContentChildren — viewChildren does not support multiple queries', 'Declare multiple viewChild() calls, one per instance'], answer: 1, explanation: 'viewChildren(ComponentType) returns a Signal<readonly T[]> containing every instance of that component type in the parent\'s view. viewChild() only ever returns the FIRST match or a specific #ref. For arrays, always use viewChildren().' },
+    { q: 'What does withComponentInputBinding() enable for routed components?', options: ['It allows components to accept input() bindings without a parent template', 'Route params, query params, and resolver data are automatically mapped to input() signals by name', 'It enables lazy loading of input signals from child routes', 'It binds component inputs to HTTP response data'], answer: 1, explanation: 'Registered with provideRouter(routes, withComponentInputBinding()), this feature makes Angular map :id route params and resolver data directly to component input() signals with matching names. This replaces manual ActivatedRoute.snapshot.paramMap access in routed components.' },
   ];
 
   challenge: Challenge = {
@@ -333,10 +366,26 @@ export class QtySelectorComponent {
     { title: 'Forgetting to call input() signals as functions in the template', wrong: '<!-- Wrong: treats signal as a plain property -->\n<h2>{{ title }}</h2>', right: '<!-- Correct: invoke the signal -->\n<h2>{{ title() }}</h2>', explanation: 'Signal inputs are functions. Omitting () displays \'[object Object]\' or nothing instead of the actual value.'  },
     { title: 'Using [(model)] syntax but not declaring model() in the child', wrong: '// Child uses plain input + output\n@Input() count = 0;\n@Output() countChange = new EventEmitter<number>();\n// Parent template: [(count)]=\'qty\' — partially works but loses signal reactivity', right: '// Child uses model()\ncount = model(0);\n// Parent template: [(count)]=\'qty\' — full signal two-way binding', explanation: '[(prop)] two-way syntax works with both patterns, but model() is required for the child to get a writable signal rather than a plain property.'  },
     { title: 'Reading viewChild() result in the constructor before the view is initialised', wrong: 'constructor() {\n  const c = this.counterRef(); // always undefined here\n  console.log(c?.count());\n}', right: 'constructor() {\n  effect(() => {\n    const c = this.counterRef();\n    if (c) console.log(c.count());\n  });\n}', explanation: 'viewChild() is undefined until the view is rendered. Wrap access in effect() or computed() so Angular re-evaluates once the child is available.'  },
+    { title: 'Expecting ngOnChanges to fire when using input() signal inputs', wrong: 'title = input.required<string>();\n// ngOnChanges never fires for signal inputs\nngOnChanges(changes: SimpleChanges) {\n  console.log(changes[\'title\']); // always undefined\n}', right: 'title = input.required<string>();\nconstructor() {\n  effect(() => {\n    // reactive — fires whenever title() changes\n    console.log(\'title changed to\', this.title());\n  });\n}', explanation: 'ngOnChanges only tracks properties decorated with @Input(). Signal inputs use a different mechanism — use effect() or computed() to react to input() changes. Mixing ngOnChanges with signal inputs is a common migration pitfall.' },
   ];
 
-  versionItems: VersionInfo[] = [
-    { version: 'Angular 17', label: 'Signal Inputs, Outputs & model()', features: ['input() and input.required() replace @Input() with reactive signals', 'output() replaces EventEmitter-based @Output() with a cleaner API', 'model() introduces two-way bindable ModelSignal (input + change output in one)', 'viewChild() and viewChildren() replace @ViewChild / @ViewChildren with signals'] },
-    { version: 'Angular 16', label: 'withComponentInputBinding()', features: ['provideRouter(routes, withComponentInputBinding()) maps route params to input() signals automatically', 'Eliminates manual ActivatedRoute.snapshot.paramMap access in routed components'] },
-  ];
+  revision: RevisionSummary = {
+    oneLiner: 'The modern signal-based parent-child API — <code>input()</code>, <code>output()</code>, <code>model()</code>, <code>viewChild()</code> — replaces Angular\'s legacy decorators with reactive signals that are always up-to-date without lifecycle hooks.',
+    mustKnow: [
+      '<code>input.required&lt;T&gt;()</code> — required signal input; compile error if parent omits it. Read as <code>this.prop()</code>',
+      '<code>output&lt;T&gt;()</code> — type-safe emitter; call <code>.emit(value)</code> in child; parent binds with <code>(evt)="handler($event)"</code>',
+      '<code>model(defaultVal)</code> — two-way signal: child calls <code>.set()</code>; parent uses <code>[(prop)]</code> syntax',
+      '<code>viewChild(\'#ref\')</code> returns <code>Signal&lt;T | undefined&gt;</code>; read inside <code>effect()</code> or <code>computed()</code> — never in constructor directly',
+      '<code>viewChildren(ComponentType)</code> returns <code>Signal&lt;readonly T[]&gt;</code> — all instances in this view',
+      '<code>contentChild()</code> queries projected <code>&lt;ng-content&gt;</code> elements; <code>viewChild()</code> queries this component\'s own template',
+      'Signal inputs do NOT trigger <code>ngOnChanges</code> — use <code>effect(() => { const v = this.prop(); ... })</code> instead',
+    ],
+    interviewFocus: [
+      'What is the difference between <code>input()</code> and <code>@Input()</code>? Why prefer the new API?',
+      'What does <code>model()</code> replace, and how does the parent bind to it with <code>[()]</code>?',
+      'When would you use <code>contentChild()</code> vs <code>viewChild()</code>?',
+      'What happens if you rely on <code>ngOnChanges</code> with signal inputs — and what do you use instead?',
+      'How does <code>withComponentInputBinding()</code> eliminate <code>ActivatedRoute</code> usage in routed components?',
+    ],
+  };
 }

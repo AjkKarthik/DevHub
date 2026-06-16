@@ -1,13 +1,22 @@
-<div class="page">
-  <h1>Custom Validators</h1>
-  <p class="subtitle">Sync validators, async validators with debounce, and cross-field validation — all built from scratch.</p>
-  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Custom Validators</h1>
+  <p class="page-subtitle">Sync validators, parameterized factories, async validators with debounce, and cross-field validation — all built from scratch with pure functions.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>Registration Form — All Validator Types Live</h2>
     <div class="demo-card">
       <form [formGroup]="form" (ngSubmit)="submit()" class="val-form">
@@ -58,11 +67,18 @@
       }
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Pattern" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/custom-validators" nextRoute="/dynamic-forms" nextLabel="Dynamic Forms" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="custom-validators" nextRoute="/angular/dynamic-forms" nextLabel="Dynamic Forms" />
 </div>

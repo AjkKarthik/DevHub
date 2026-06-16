@@ -386,75 +386,75 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 #### Angular hub — 45 topic pages
 
 **Signals & reactivity (do these first)**
-- [ ] `angular/resource-api` — resource(), rxResource(), loading/error states, refresh
-- [ ] `angular/linked-signal` — linkedSignal(), write-back pattern, vs computed
-- [ ] `angular/signal-store` — @ngrx/signals, signalStore, withState, withMethods, withComputed
-- [ ] `angular/ngrx-signals` — feature stores, withEntities, custom features, devtools
-- [ ] `angular/change-detection` — OnPush, signal-based detection, ChangeDetectorRef, zone.js-less
-- [ ] `angular/zoneless` — provideZonelessChangeDetection, migration from zone.js, performance
+- [x] 2026-06-14 `angular/resource-api` — resource(), rxResource(), loading/error states, refresh
+- [x] 2026-06-14 `angular/linked-signal` — linkedSignal(), write-back pattern, vs computed
+- [x] 2026-06-14 `angular/signal-store` — @ngrx/signals, signalStore, withState, withMethods, withComputed
+- [x] 2026-06-14 `angular/ngrx-signals` — feature stores, withEntities, custom features, devtools
+- [x] 2026-06-14 `angular/change-detection` — OnPush, signal-based detection, ChangeDetectorRef, zone.js-less
+- [x] 2026-06-14 `angular/zoneless` — provideZonelessChangeDetection, migration from zone.js, performance
 
 **Core framework**
-- [ ] `angular/template-syntax` — control flow (@if/@for/@switch), defer, ng-template, ng-content
-- [ ] `angular/lifecycle` — OnInit, OnDestroy, DestroyRef, afterNextRender, afterRender
-- [ ] `angular/di-demo` — inject(), injection tokens, hierarchical DI, useFactory, forwardRef
-- [ ] `angular/routing-demo` — lazy routes, functional guards, resolvers, withViewTransitions
-- [ ] `angular/http-demo` — HttpClient, interceptors (functional), provideHttpClient, retry
-- [ ] `angular/pipes-demo` — pure vs impure, async pipe internals, custom transform pipes
+- [x] 2026-06-15 `angular/template-syntax` — control flow (@if/@for/@switch), defer, ng-template, ng-content
+- [x] 2026-06-15 `angular/lifecycle` — OnInit, OnDestroy, DestroyRef, afterNextRender, afterRender
+- [x] 2026-06-15 `angular/di-demo` — inject(), injection tokens, hierarchical DI, useFactory, forwardRef
+- [x] 2026-06-15 `angular/routing-demo` — lazy routes, functional guards, resolvers, withViewTransitions
+- [x] 2026-06-15 `angular/http-demo` — HttpClient, interceptors (functional), provideHttpClient, retry
+- [x] 2026-06-15 `angular/pipes-demo` — pure vs impure, async pipe internals, custom transform pipes
 
 **Forms**
-- [ ] `angular/forms-demo` — reactive vs template, FormGroup, FormControl, typed forms (v14+)
-- [ ] `angular/form-array` — FormArray, dynamic controls, array validators, nested groups
-- [ ] `angular/dynamic-forms` — building form config from JSON, custom validators
-- [ ] `angular/wizard-form` — multi-step form, stepper, inter-step validation
-- [ ] `angular/custom-validators` — sync/async validators, cross-field, NG_VALIDATORS token
-- [ ] `angular/cva-demo` — ControlValueAccessor, NG_VALUE_ACCESSOR, form integration
-- [ ] `angular/zod-forms` — Zod schema + Angular reactive forms, zodValidator adapter
+- [x] 2026-06-15 `angular/forms-demo` — reactive vs template, FormGroup, FormControl, typed forms (v14+)
+- [x] 2026-06-15 `angular/form-array` — FormArray, dynamic controls, array validators, nested groups
+- [x] 2026-06-15 `angular/dynamic-forms` — building form config from JSON, custom validators
+- [x] 2026-06-15 `angular/wizard-form` — multi-step form, stepper, inter-step validation
+- [x] 2026-06-15 `angular/custom-validators` — sync/async validators, cross-field, NG_VALIDATORS token
+- [x] 2026-06-15 `angular/cva-demo` — ControlValueAccessor, NG_VALUE_ACCESSOR, form integration
+- [x] 2026-06-15 `angular/zod-forms` — Zod schema + Angular reactive forms, zodValidator adapter
 
 **Components**
-- [ ] `angular/parent-child` — @Input, @Output, model(), contentChildren, viewChild
-- [ ] `angular/content-projection` — ng-content, select, ngTemplateOutlet, multi-slot
-- [ ] `angular/directives-demo` — attribute directives, structural directives, hostDirectives
-- [ ] `angular/destroy-ref` — DestroyRef, takeUntilDestroyed, vs OnDestroy
+- [x] 2026-06-15 `angular/parent-child` — @Input, @Output, model(), contentChildren, viewChild
+- [x] 2026-06-15 `angular/content-projection` — ng-content, select, ngTemplateOutlet, multi-slot
+- [x] 2026-06-15 `angular/directives-demo` — attribute directives, structural directives, hostDirectives
+- [x] 2026-06-15 `angular/destroy-ref` — DestroyRef, takeUntilDestroyed, vs OnDestroy
 
 **Async & RxJS**
-- [ ] `angular/rxjs-demo` — switchMap/mergeMap/concatMap/exhaustMap, shareReplay, takeUntil
-- [ ] `angular/tanstack-query` — Angular TanStack Query, createQuery, createMutation, cache
+- [x] 2026-06-15 `angular/rxjs-demo` — switchMap/mergeMap/concatMap/exhaustMap, shareReplay, takeUntil
+- [x] 2026-06-15 `angular/tanstack-query` — Angular TanStack Query, createQuery, createMutation, cache
 
 **Testing**
-- [ ] `angular/testing-demo` — TestBed, ComponentFixture, signal testing, HttpClientTestingModule
-- [ ] `angular/harnesses` — ComponentHarness, HarnessLoader, CDK test harnesses
-- [ ] `angular/e2e` — Playwright vs Cypress for Angular, component testing setup
+- [x] 2026-06-15 `angular/testing-demo` — TestBed, ComponentFixture, signal testing, HttpClientTestingModule
+- [x] 2026-06-15 `angular/harnesses` — ComponentHarness, HarnessLoader, CDK test harnesses
+- [x] 2026-06-15 `angular/e2e` — Playwright vs Cypress for Angular, component testing setup
 
 **Performance & Architecture**
-- [ ] `angular/preloading` — PreloadAllModules vs SelectivePreloading, QuicklinkStrategy
-- [ ] `angular/route-resolvers` — functional resolvers, inject() in resolvers, error handling
-- [ ] `angular/ssr` — Angular Universal/SSR, hydration, transferState, App Shell
-- [ ] `angular/pwa` — ngsw-config, caching strategies, push notifications, install prompt
-- [ ] `angular/web-workers` — comlink, offloading heavy computation, communication patterns
+- [x] 2026-06-15 `angular/preloading` — PreloadAllModules vs SelectivePreloading, QuicklinkStrategy
+- [x] 2026-06-15 `angular/route-resolvers` — functional resolvers, inject() in resolvers, error handling
+- [x] 2026-06-15 `angular/ssr` — Angular Universal/SSR, hydration, transferState, App Shell
+- [x] 2026-06-16 `angular/pwa` — ngsw-config, caching strategies, push notifications, install prompt
+- [x] 2026-06-16 `angular/web-workers` — comlink, offloading heavy computation, communication patterns
 
 **Libraries & integrations**
-- [ ] `angular/animations-demo` — trigger/state/transition, stagger, AnimationBuilder, route anim
-- [ ] `angular/cdk-demo` — FocusTrap, Overlay, DragDrop, VirtualScrollViewport, a11y module
-- [ ] `angular/material-demo` — theming (M3), form field, table, dialog, CDK integration
-- [ ] `angular/tanstack-query` — (see Async section above)
-- [ ] `angular/charts` — ng2-charts/Chart.js, reactive data binding, responsive charts
-- [ ] `angular/ag-grid-demo` — AG Grid community, rowData signal, custom cell renderers
-- [ ] `angular/ng-image` — NgOptimizedImage, srcset, priority, LQIP
-- [ ] `angular/datefns-demo` — date-fns with Angular pipes, locale, formatting patterns
-- [ ] `angular/tailwind-demo` — Tailwind CSS 4 in Angular, dark mode, component patterns
+- [x] 2026-06-16 `angular/animations-demo` — trigger/state/transition, stagger, AnimationBuilder, route anim
+- [x] 2026-06-16 `angular/cdk-demo` — FocusTrap, Overlay, DragDrop, VirtualScrollViewport, a11y module
+- [x] 2026-06-16 `angular/material-demo` — theming (M3), form field, table, dialog, CDK integration
+- [x] `angular/tanstack-query` — (see Async section above)
+- [x] 2026-06-16 `angular/charts` — ng2-charts/Chart.js, reactive data binding, responsive charts
+- [x] 2026-06-16 `angular/ag-grid-demo` — AG Grid community, rowData signal, custom cell renderers
+- [x] 2026-06-16 `angular/ng-image` — NgOptimizedImage, srcset, priority, LQIP
+- [x] 2026-06-16 `angular/datefns-demo` — date-fns with Angular pipes, locale, formatting patterns
+- [x] 2026-06-16 `angular/tailwind-demo` — Tailwind CSS 4 in Angular, dark mode, component patterns
 
 **Misc**
-- [ ] `angular/counter` — simple signals counter demo — expand into signals deep-dive
-- [ ] `angular/todo` — todo app demo — expand into state management patterns demo
-- [ ] `angular/i18n` — @angular/localize, $localize, ICU, build-time vs runtime i18n
+- [x] 2026-06-16 `angular/counter` — simple signals counter demo — expand into signals deep-dive
+- [x] 2026-06-16 `angular/todo` — todo app demo — expand into state management patterns demo
+- [x] 2026-06-16 `angular/i18n` — @angular/localize, $localize, ICU, build-time vs runtime i18n
 
 ---
 
 #### ASP.NET Core hub — 33 topic pages
 
 **Foundation (do first)**
-- [ ] `aspnet/hosting-startup` — Generic Host, WebApplication.CreateBuilder, IHostedService, startup order
-- [ ] `aspnet/middleware` — pipeline order, short-circuit, IMiddlewareFactory, terminal middleware
+- [x] 2026-06-16 `aspnet/hosting-startup` — Generic Host, WebApplication.CreateBuilder, IHostedService, startup order
+- [x] 2026-06-16 `aspnet/middleware` — pipeline order, short-circuit, IMiddlewareFactory, terminal middleware
 - [ ] `aspnet/routing` — endpoint routing, route constraints, route groups, MapGroup
 - [ ] `aspnet/configuration` — IConfiguration, Options pattern, IOptionsSnapshot, secrets
 - [ ] `aspnet/dependency-injection` — lifetimes (singleton/scoped/transient), keyed services, factory

@@ -9,15 +9,16 @@ import { ChallengeBlockComponent, Challenge } from '../../shared/challenge-block
 import { QuickRefComponent, QuickRefItem } from '../../shared/quick-ref/quick-ref';
 import { BeforeAfterComponent, BeforeAfterExample } from '../../shared/before-after/before-after';
 import { CommonMistakesComponent, CommonMistake } from '../../shared/common-mistakes/common-mistakes';
-import { VersionBadgeComponent, VersionInfo } from '../../shared/version-badge/version-badge';
 import { PageMetaComponent } from '../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../shared/page-complete/page-complete';
+import { RevisionCardComponent, RevisionSummary } from '../../shared/revision-card/revision-card';
+import { PrerequisitesComponent, Prerequisite } from '../../shared/prerequisites/prerequisites';
 
 type Theme = 'default' | 'success' | 'warning' | 'danger';
 
 @Component({
   selector: 'app-directives-demo',
-  imports: [NgClass, NgStyle, DecimalPipe, JsonPipe, HighlightDirective, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, VersionBadgeComponent, PageMetaComponent, PageCompleteComponent],
+  imports: [NgClass, NgStyle, DecimalPipe, JsonPipe, HighlightDirective, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, PageMetaComponent, PageCompleteComponent, RevisionCardComponent, PrerequisitesComponent],
   templateUrl: './directives-demo.html',
   styleUrl: './directives-demo.scss',
 })
@@ -64,41 +65,70 @@ export class DirectivesDemo {
   highlightColor = signal('#fef08a');
   highlightItems = ['Hover over this row', 'And this one too', 'Each uses [appHighlight]', 'Colour comes from the picker'];
 
+  prerequisites: Prerequisite[] = [
+    { label: 'Components', route: '/angular/components' },
+    { label: 'Parent-Child Communication', route: '/angular/parent-child' },
+  ];
+
   theory: TheoryPoint[] = [
   {
     heading: 'Attribute directives',
     points: [
-      'Attribute directives change the appearance or behaviour of an element without adding/removing DOM nodes.',
-      '<code>NgClass</code>: applies CSS classes conditionally. <code>[ngClass]="{ \'active\': isActive }"</code>.',
-      '<code>NgStyle</code>: applies inline styles dynamically. <code>[ngStyle]="{ color: textColor }"</code>.',
-      'Custom attribute directive: decorate a class with <code>@Directive({ selector: \'[appTooltip]\' })</code>.',
+      'Attribute directives change the appearance or behaviour of an element WITHOUT adding or removing DOM nodes — they sit on an existing element and modify it in place.',
+      '<code>NgClass</code>: applies CSS classes conditionally via string, array, or object: <code>[ngClass]="{ active: isActive, bold: isBold }"</code>. Prefer the terser <code>[class.active]="isActive"</code> for single classes.',
+      '<code>NgStyle</code>: applies inline CSS properties dynamically via an object map. Prefer the terser <code>[style.fontSize.px]="size"</code> syntax for single properties.',
+      'Custom attribute directive: decorate a class with <code>@Directive({ selector: \'[appTooltip]\' })</code>. The bracketed selector matches any element that has the <code>appTooltip</code> attribute.',
+      'Attribute directives are standalone by default in Angular 14+ — import them in the consuming component\'s <code>imports: []</code> array, not in any NgModule.',
     ],
   },
   {
     heading: 'Custom directive anatomy',
     points: [
-      'Inject <code>ElementRef</code> and <code>Renderer2</code> — never manipulate the DOM directly for SSR compatibility.',
-      'Use <code>@HostListener(\'mouseenter\')</code> to respond to DOM events on the host element.',
-      'Use <code>input()</code> to receive configuration: <code>&lt;div [appTooltip]="\'Hello\'"&gt;</code>.',
-      'Use <code>@HostBinding()</code> or <code>host: { \'[class.active]\': \'isActive\' }</code> to reflect state back to the host.',
+      'Inject <code>ElementRef</code> (to access the host element) and <code>Renderer2</code> (to mutate it safely). Never use <code>el.nativeElement.style.x = y</code> directly — it breaks SSR.',
+      'Use <code>@HostListener(\'mouseenter\')</code> to respond to DOM events on the host element. The decorated method is called with the event object as argument if declared: <code>@HostListener(\'click\', [\'$event\'])</code>.',
+      'Use <code>input()</code> (or <code>@Input()</code>) to receive configuration: <code>appHighlight = input(\'#fef08a\')</code> lets the parent bind <code>[appHighlight]="color"</code>.',
+      'Reflect state back to the host via <code>host: { \'[class.active]\': \'isActive()\' }</code> in the <code>@Directive</code> metadata. This is cleaner than a separate <code>@HostBinding</code> decorator for each property.',
+      'Use <code>inject()</code> for all dependencies at field level — no constructor needed. <code>private el = inject(ElementRef); private r = inject(Renderer2);</code>',
     ],
   },
   {
-    heading: 'Structural directives',
+    heading: 'Built-in structural directives and the new control flow',
     points: [
-      'Structural directives add/remove DOM nodes — prefixed with <code>*</code> (syntactic sugar for <code>&lt;ng-template&gt;</code>).',
-      'Built-ins: <code>*ngIf</code>, <code>*ngFor</code>, <code>*ngSwitch</code>. Prefer the new <code>@if</code>/<code>@for</code>/<code>@switch</code> blocks in Angular 17+.',
-      'Custom structural directive: inject <code>TemplateRef</code> and <code>ViewContainerRef</code>. Call <code>vcr.createEmbeddedView(tpl)</code> to show, <code>vcr.clear()</code> to hide.',
-      'Only one structural directive per element — use <code>&lt;ng-container&gt;</code> to layer multiple.',
+      'Structural directives add or remove DOM nodes — they are prefixed with <code>*</code>, which is syntactic sugar: <code>*ngIf="cond"</code> desugars to <code>&lt;ng-template [ngIf]="cond"&gt;&lt;/ng-template&gt;</code>.',
+      'Angular 17+ introduced native control flow: <code>@if</code>, <code>@for</code>, <code>@switch</code>/<code>@case</code>. These are built into the template compiler — no directive import needed.',
+      '<code>@for (item of items; track item.id) { }</code> replaces <code>*ngFor</code> and makes <code>track</code> mandatory, improving rendering performance by default.',
+      '<code>@if (x) { } @else if (y) { } @else { }</code> replaces <code>*ngIf</code> and eliminates the awkward <code>ng-template #elseBlock</code> pattern.',
+      'Only one structural directive per element — wrap with <code>&lt;ng-container&gt;</code> (zero DOM cost) to apply two independently: outer hosts <code>*ngIf</code>, inner hosts <code>*ngFor</code>.',
     ],
   },
   {
-    heading: 'Key points to remember',
+    heading: 'Custom structural directives — TemplateRef + ViewContainerRef',
     points: [
-      'Prefer signal <code>input()</code> over <code>@Input()</code> in new directives — it works with OnPush and is more composable.',
-      'Directives are standalone by default — import them directly in the component\'s <code>imports</code> array.',
-      'Use <code>Renderer2</code> over direct DOM manipulation to keep server-side rendering compatible.',
-      'Test directives with <code>TestBed</code> by creating a host component that uses the directive.',
+      'Custom structural directives inject <code>TemplateRef&lt;C&gt;</code> (the template to stamp) and <code>ViewContainerRef</code> (where to insert views into the DOM).',
+      'Call <code>this.vcr.createEmbeddedView(this.tpl, context)</code> to render the template. Call <code>this.vcr.clear()</code> to remove all views — equivalent to *ngIf toggling.',
+      'Pass context to the template: <code>{ $implicit: value }</code> binds to <code>let-x</code> in <code>&lt;ng-template let-x&gt;</code>. Named props: <code>{ index: i }</code> binds to <code>let-i="index"</code>.',
+      'The <code>*appRepeat="3"</code> microsyntax desugars to <code>&lt;ng-template [appRepeat]="3"&gt;</code> — Angular maps the <code>*attr="value"</code> shorthand to a regular attribute binding on the ng-template.',
+      'Prefer <code>@if</code>/<code>@for</code> for standard conditions/loops. Build custom structural directives only for reusable logic with complex inputs — permission guards, feature flags, lazy-load wrappers.',
+    ],
+  },
+  {
+    heading: 'Directive Composition API (hostDirectives)',
+    points: [
+      '<code>hostDirectives</code> in <code>@Directive</code> or <code>@Component</code> applies one or more directives to the host without requiring the consumer to add them in the template.',
+      'Consumers see only the composed directive — the composed behaviour (ripple, tooltip, focus trap) is encapsulated and invisible unless you explicitly re-expose inputs/outputs.',
+      'Re-expose inputs with <code>{ directive: TooltipDir, inputs: [\'appTooltip\'] }</code> in the <code>hostDirectives</code> array. The consumer can then bind <code>[appTooltip]="text"</code> directly on the host.',
+      'This pattern replaces mixin-like base classes and wrapper components: apply <code>hostDirectives</code> to a <code>ButtonComponent</code> to bundle ripple + tooltip + disabled state in one declaration.',
+      'Composed directives can themselves have <code>hostDirectives</code>, enabling multi-level composition trees — useful for design system primitives that accumulate behaviour across layers.',
+    ],
+  },
+  {
+    heading: 'Best practices',
+    points: [
+      'Prefer signal <code>input()</code> over <code>@Input()</code> for directive inputs — signal inputs are reactive, work with <code>OnPush</code> change detection, and compose better with <code>computed()</code>.',
+      'Always use <code>Renderer2</code> to mutate the host element\'s styles, classes, and attributes — direct DOM mutation via <code>nativeElement</code> breaks server-side rendering and web worker contexts.',
+      'Test directives with <code>TestBed.createComponent(HostFixture)</code> where <code>HostFixture</code> is a minimal test component that uses the directive — this exercises the real DOM interaction path.',
+      'Keep directive logic focused: a directive should do ONE thing (highlight on hover, show a tooltip, trap focus). Bundle multiple behaviours with the Directive Composition API rather than in one fat directive class.',
+      'Prefer <code>[class.active]="bool"</code> and <code>[style.fontSize.px]="n"</code> over <code>NgClass</code>/<code>NgStyle</code> for simple single-property cases — fewer imports and clearer intent.',
     ],
   },
 ];
@@ -110,9 +140,10 @@ export class DirectivesDemo {
     { q: 'Can a directive have its own host bindings?', a: 'Yes — use <code>host: { \'[class.active]\': \'isActive()\' }</code> in the <code>@Directive</code> decorator, or <code>@HostBinding(\'class.active\')</code>. This avoids needing a template.' },
     { q: 'When would you use a structural directive over @if/@for?', a: 'Built-in <code>@if</code> and <code>@for</code> cover most cases. Use a custom structural directive when you need reusable conditional logic with complex inputs — e.g. a permission-guard directive <code>*canSee="\'admin\'"</code>.' },
     { q: 'How do you share state between a directive and its host component?', a: 'Inject the host component in the directive constructor: <code>private host = inject(MyComponent)</code>. Or use a shared service. Or emit via <code>output()</code> from the directive.' },
+    { q: 'What is the Directive Composition API and what problem does it solve?', a: 'The <code>hostDirectives</code> field in <code>@Directive</code>/<code>@Component</code> applies other directives to a host automatically — the consumer gets the composed behaviour (ripple, tooltip, focus trap) without explicitly adding those directives in the template. It replaces mixin-like base classes and eliminates wrapper components created just to bundle directive behaviours.' },
   ];
 
-  tabs: CodeTab[] = [
+  codeTabs: CodeTab[] = [
     {
       label: 'NgClass',
       language: 'html',
@@ -254,6 +285,8 @@ export class RepeatDirective implements OnInit {
     { q: 'How do you create a custom attribute directive in Angular 22?', options: ['@Directive({ selector: \'[appName]\' })', '@Component({ selector: \'app-name\' })', '@Pipe({ name: \'appName\' })', '@Injectable()'], answer: 0, explanation: 'Custom attribute directives use @Directive with a bracketed selector like [appHighlight] to match any element that has that attribute.' },
     { q: 'What does NgStyle do?', options: ['Adds CSS classes dynamically', 'Sets inline CSS styles dynamically', 'Loops over a list', 'Handles events'], answer: 1, explanation: 'NgStyle accepts a {property: value} object and applies those as inline styles. Useful for values that can\'t be expressed as class names.' },
     { q: 'How do you pass a value to a custom directive?', options: ['Using @Output()', 'Using input() or @Input()', 'Via the template ref variable', 'Through the constructor only'], answer: 1, explanation: 'Use input() (Angular 17+) or @Input() to accept values in a directive, same as in a component.' },
+    { q: 'What two classes does a custom structural directive inject to render and remove views?', options: ['ElementRef and Renderer2', 'TemplateRef and ViewContainerRef', 'ChangeDetectorRef and NgZone', 'ViewRef and ComponentRef'], answer: 1, explanation: 'TemplateRef holds the ng-template content to stamp out; ViewContainerRef is the anchor point where views are created and destroyed. Call vcr.createEmbeddedView(tpl, context) to render and vcr.clear() to remove — the same pair that powers *ngIf and *ngFor.' },
+    { q: 'Which Angular 17+ control flow block replaces *ngFor and what is newly required that was optional before?', options: ['@list — the track expression is now optional', '@for — the track expression is now mandatory for all loops', '@repeat — the track expression defaults to the index', '@iterate — the track expression is inferred from the collection type'], answer: 1, explanation: '@for (item of items; track item.id) replaces *ngFor. The key difference is that track is now MANDATORY — Angular uses it to efficiently reconcile the list on change. This eliminates the common perf bug of accidentally using *ngFor without trackBy.' },
   ];
 
   quickRef: QuickRefItem[] = [
@@ -355,29 +388,47 @@ private renderer = inject(Renderer2);`,
 <p [style.font-size.px]='size'>text</p>`,
       explanation: 'Angular\'s built-in [style.*] and [class.*] bindings handle single-property cases without needing NgStyle/NgClass imports.',
     },
+    {
+      title: 'Calling input() signal in ngOnInit instead of reacting in effect()',
+      wrong: `appHighlight = input('#fef08a');
+
+ngOnInit() {
+  // runs once — misses future color changes from the parent
+  this.renderer.setStyle(this.el.nativeElement,
+    'background', this.appHighlight());
+}`,
+      right: `appHighlight = input('#fef08a');
+
+constructor() {
+  effect(() => {
+    // reactive — re-runs whenever appHighlight() changes
+    this.renderer.setStyle(this.el.nativeElement,
+      'background', this.appHighlight());
+  });
+}`,
+      explanation: 'ngOnInit runs once at initialisation. If the parent changes the bound color after that, ngOnInit never re-runs. Use effect() to react to signal input changes reactively — it re-runs whenever the signal value changes.',
+    },
   ];
 
-  versionItems: VersionInfo[] = [
-    {
-      version: '15',
-      label: 'Directive Composition API',
-      features: [
-        'hostDirectives field in @Directive/@Component applies directives to a host without template changes',
-        'Inputs and outputs from composed directives can be explicitly re-exposed to consumers',
-        'Eliminates wrapper components just to bundle multiple directive behaviours',
-      ],
-    },
-    {
-      version: '17',
-      label: 'Built-in control flow replaces structural directives',
-      features: [
-        '@if / @else blocks replace *ngIf — no NgIf import required',
-        '@for with mandatory track replaces *ngFor — better performance defaults',
-        '@switch / @case replaces *ngSwitch — cleaner multi-branch syntax',
-        'Custom structural directives still supported but rarely needed for simple cases',
-      ],
-    },
-  ];
+  revision: RevisionSummary = {
+    oneLiner: 'Angular directives are reusable behaviours attached to elements — attribute directives modify appearance without touching the DOM structure; structural directives add or remove nodes; the Directive Composition API (<code>hostDirectives</code>) bundles multiple directives without template boilerplate.',
+    mustKnow: [
+      '<code>@Directive({ selector: \'[appName]\' })</code> — attribute selector matches any element with that attribute',
+      'Always use <code>Renderer2</code> to mutate styles/classes — direct <code>nativeElement</code> access breaks SSR',
+      '<code>@HostListener(\'event\')</code> reacts to host DOM events; <code>host: { \'[class.x]\': \'isX()\' }</code> reflects state to host',
+      'Structural directives inject <code>TemplateRef</code> + <code>ViewContainerRef</code>; <code>vcr.createEmbeddedView(tpl)</code> renders, <code>vcr.clear()</code> removes',
+      '<code>@for (x of items; track x.id)</code> replaces <code>*ngFor</code> — <code>track</code> is now mandatory',
+      '<code>hostDirectives: [Dir]</code> composes multiple directive behaviours onto a host without consumer template changes',
+      'Use <code>effect()</code> to react to signal input changes in directives — <code>ngOnInit</code> only runs once and misses future updates',
+    ],
+    interviewFocus: [
+      'What is the difference between attribute directives and structural directives?',
+      'Why must you use <code>Renderer2</code> rather than <code>el.nativeElement.style</code>?',
+      'What two injected classes does a custom structural directive need, and what does each do?',
+      'What is the Directive Composition API and when would you use it?',
+      'What changed about <code>@for</code> vs <code>*ngFor</code>? What is now mandatory?',
+    ],
+  };
 
   challenge: Challenge = {
     title: 'Custom Border Highlight Directive',

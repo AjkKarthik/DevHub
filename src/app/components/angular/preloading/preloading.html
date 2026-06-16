@@ -1,14 +1,23 @@
-<div class="page">
-  <h1>Preloading Strategies</h1>
-  <p class="subtitle">Silently prefetch lazy-loaded route bundles in the background — eliminating navigation delay without sacrificing initial load time.</p>
-  <app-page-meta [readingTime]="10" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Preloading Strategies</h1>
+  <p class="page-subtitle">Silently prefetch lazy-loaded route bundles in the background — eliminating navigation delay without sacrificing initial load time.</p>
+
+  <app-page-meta [readingTime]="28" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
+
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
 
   <!-- ── Demo 1: Strategy simulator ──────────────────────────────────────── -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Demo 1 — Strategy Simulator</h2>
     <p class="hint">Pick a strategy then click Simulate to watch routes preload in real time.</p>
 
@@ -53,7 +62,7 @@
   </section>
 
   <!-- ── Demo 2: Resolver vs no resolver ─────────────────────────────────── -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Demo 2 — Route Resolver: With vs Without</h2>
     <div class="resolver-split">
 
@@ -118,7 +127,7 @@
   </section>
 
   <!-- ── Static comparison ─────────────────────────────────────────────────── -->
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>Strategy comparison</h2>
     <div class="comparison">
       <div class="comp-card">
@@ -148,11 +157,17 @@
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Angular" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/preloading" nextRoute="/route-resolvers" nextLabel="Route Resolvers" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="preloading" nextRoute="/angular/route-resolvers" nextLabel="Route Resolvers" />
 </div>

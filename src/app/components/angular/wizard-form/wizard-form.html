@@ -1,14 +1,22 @@
-<div class="page">
-  <h1>Multi-step Wizard Form</h1>
-  <p class="subtitle">Split complex forms into validated steps — each step independently validated before advancing.</p>
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Multi-Step Wizard Form</h1>
+  <p class="page-subtitle">Split complex forms into independently-validated steps — each step passes before the user advances, keeping errors focused and completion rates high.</p>
 
-  <app-page-meta [readingTime]="18" difficulty="advanced" since="2" />
+  <app-page-meta [readingTime]="28" difficulty="advanced" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>Registration Wizard</h2>
     <div class="wizard-card">
       <div class="stepper">
@@ -71,11 +79,18 @@
       </div>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Approach" afterLabel="Modern (Angular 17+)" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/wizard-form" nextRoute="/cva" nextLabel="Cva" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="wizard-form" nextRoute="/angular/cva-demo" nextLabel="Control Value Accessor" />
 </div>

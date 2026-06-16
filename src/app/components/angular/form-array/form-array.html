@@ -1,96 +1,120 @@
-<div class="page">
-  <h2>FormArray — Dynamic Fields</h2>
-  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">FormArray — Dynamic Fields</h1>
+  <p class="page-subtitle">Add and remove form rows at runtime with FormArray — perfect for email lists, phone numbers, skills, and any repeating field group.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
 
-  <div class="concept">
-    <h3>Key Concepts</h3>
-    <ul>
-      <li><code>FormArray</code> — an array of controls you can add/remove at runtime</li>
-      <li><code>fb.array([...])</code> — creates it; each item can be a <code>FormControl</code> or <code>FormGroup</code></li>
-      <li><code>formArray.push(ctrl)</code> / <code>removeAt(i)</code> — mutate the array</li>
-      <li><code>formArrayName</code> directive in the template binds to it</li>
-      <li><code>form.markAllAsTouched()</code> — trigger all validators at once on submit</li>
-    </ul>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
     <app-code-block [tabs]="arrayTabs" />
-  </div>
+  </section>
 
-  @if (submitted) {
-    <div class="success card">
-      <h3>Submitted!</h3>
-      <pre>{{ form.value | json }}</pre>
-      <button type="button" (click)="reset()">Reset</button>
+  <!-- Key concepts summary -->
+  <section class="ng-section">
+    <h2>Key Concepts</h2>
+    <div class="demo-card">
+      <ul>
+        <li><code>FormArray</code> — an array of controls you can add/remove at runtime</li>
+        <li><code>fb.array([...])</code> — creates it; each item can be a <code>FormControl</code> or <code>FormGroup</code></li>
+        <li><code>formArray.push(ctrl)</code> / <code>removeAt(i)</code> — mutate the array</li>
+        <li><code>formArrayName</code> directive in the template binds to it</li>
+        <li><code>form.markAllAsTouched()</code> — trigger all validators at once on submit</li>
+      </ul>
     </div>
-  } @else {
+  </section>
 
-  <form [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Live demo -->
+  <section class="ng-section">
+    <h2>Live Demo</h2>
 
-    <div class="card">
-      <h3>Live Demo</h3>
-      <div class="field">
-        <label for="fa-name">Full name</label>
-        <input id="fa-name" formControlName="name" placeholder="Your name" />
-        @if (form.controls.name.touched && form.controls.name.invalid) {
-          <span class="err">Name is required.</span>
-        }
+    @if (submitted) {
+      <div class="success card">
+        <h3>Submitted!</h3>
+        <pre>{{ form.value | json }}</pre>
+        <button type="button" (click)="reset()">Reset</button>
       </div>
-    </div>
+    } @else {
 
-    <!-- EMAILS -->
-    <div class="card">
-      <div class="section-header">
-        <h3>Email addresses <span class="hint">(FormArray of FormControls)</span></h3>
-        <button type="button" class="add-btn" (click)="addEmail()">+ Add email</button>
-      </div>
-      <div formArrayName="emails">
-        @for (ctrl of emails.controls; track $index) {
-          <div class="array-row">
-            <input [formControlName]="$index" type="email" placeholder="email@example.com" />
-            @if (emails.length > 1) {
-              <button type="button" class="remove-btn" (click)="removeEmail($index)">✕</button>
-            }
-          </div>
-          @if (ctrl.touched && ctrl.invalid) {
-            <span class="err">Valid email required.</span>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <div class="card">
+        <div class="field">
+          <label for="fa-name">Full name</label>
+          <input id="fa-name" formControlName="name" placeholder="Your name" />
+          @if (form.controls.name.touched && form.controls.name.invalid) {
+            <span class="err">Name is required.</span>
           }
-        }
+        </div>
       </div>
-    </div>
 
-    <!-- SKILLS -->
-    <div class="card">
-      <div class="section-header">
-        <h3>Skills <span class="hint">(FormArray of FormGroups)</span></h3>
-        <button type="button" class="add-btn" (click)="addSkill()">+ Add skill</button>
-      </div>
-      <div formArrayName="skills">
-        @for (group of skills.controls; track $index) {
-          <div [formGroupName]="$index" class="skill-row">
-            <input formControlName="name" placeholder="Skill name" />
-            <select formControlName="level" title="Skill level">
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-            </select>
-            @if (skills.length > 1) {
-              <button type="button" class="remove-btn" (click)="removeSkill($index)">✕</button>
+      <!-- EMAILS -->
+      <div class="card">
+        <div class="section-header">
+          <h3>Email addresses <span class="hint">(FormArray of FormControls)</span></h3>
+          <button type="button" class="add-btn" (click)="addEmail()">+ Add email</button>
+        </div>
+        <div formArrayName="emails">
+          @for (ctrl of emails.controls; track $index) {
+            <div class="array-row">
+              <input [formControlName]="$index" type="email" placeholder="email@example.com" />
+              @if (emails.length > 1) {
+                <button type="button" class="remove-btn" (click)="removeEmail($index)">✕</button>
+              }
+            </div>
+            @if (ctrl.touched && ctrl.invalid) {
+              <span class="err">Valid email required.</span>
             }
-          </div>
-        }
+          }
+        </div>
       </div>
-    </div>
 
-    <button type="submit" class="submit-btn">Submit</button>
-  </form>
+      <!-- SKILLS -->
+      <div class="card">
+        <div class="section-header">
+          <h3>Skills <span class="hint">(FormArray of FormGroups)</span></h3>
+          <button type="button" class="add-btn" (click)="addSkill()">+ Add skill</button>
+        </div>
+        <div formArrayName="skills">
+          @for (group of skills.controls; track $index) {
+            <div [formGroupName]="$index" class="skill-row">
+              <input formControlName="name" placeholder="Skill name" />
+              <select formControlName="level" title="Skill level">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+              @if (skills.length > 1) {
+                <button type="button" class="remove-btn" (click)="removeSkill($index)">✕</button>
+              }
+            </div>
+          }
+        </div>
+      </div>
 
-  }
-  <app-before-after [items]="beforeAfter" />
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+
+    }
+  </section>
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old API" afterLabel="Modern API" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/form-array" nextRoute="/custom-validators" nextLabel="Custom Validators" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="form-array" nextRoute="/angular/custom-validators" nextLabel="Custom Validators" />
 </div>

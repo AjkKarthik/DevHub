@@ -1,16 +1,23 @@
-<div class="page">
-  <h1>NgOptimizedImage</h1>
-  <p class="subtitle">Built-in Angular directive that automatically adds lazy loading, prevents layout shift, and integrates with CDN image loaders.</p>
-  <app-page-meta [readingTime]="8" difficulty="beginner" since="15" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">NgOptimizedImage</h1>
+  <p class="page-subtitle">Built-in Angular directive that enforces CLS-preventing width/height, adds lazy loading automatically, injects LCP preloads, and integrates with CDN loaders for responsive srcset generation.</p>
+
+  <app-page-meta [readingTime]="26" difficulty="beginner" since="Angular 15" tech="angular" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
-    <h2>Live demo — optimized image</h2>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
+    <h2>Live demo — NgOptimizedImage in action</h2>
     <div class="demo-card">
-      <p>Using <code>ngSrc</code> with explicit <code>width</code> and <code>height</code> — no layout shift.</p>
+      <p>Using <code>ngSrc</code> with explicit <code>width</code> and <code>height</code> — space reserved before load, no layout shift.</p>
       <div class="img-wrapper">
         <img
           ngSrc="https://picsum.photos/seed/angular/800/400"
@@ -21,18 +28,25 @@
         />
       </div>
       <div class="attrs-list">
-        <div class="attr"><span class="attr-k">ngSrc</span><span class="attr-v">picsum.photos/…/800/400</span></div>
+        <div class="attr"><span class="attr-k">ngSrc</span><span class="attr-v">picsum.photos/seed/angular/800/400</span></div>
         <div class="attr"><span class="attr-k">width</span><span class="attr-v">800</span></div>
         <div class="attr"><span class="attr-k">height</span><span class="attr-v">400</span></div>
-        <div class="attr"><span class="attr-k">loading</span><span class="attr-v">lazy (auto)</span></div>
+        <div class="attr"><span class="attr-k">loading</span><span class="attr-v">lazy (auto-set)</span></div>
       </div>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Native img" afterLabel="NgOptimizedImage" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/ng-image" nextRoute="/todo" nextLabel="Todo" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="ng-image" nextRoute="/angular/datefns-demo" nextLabel="date-fns Integration" />
 </div>
