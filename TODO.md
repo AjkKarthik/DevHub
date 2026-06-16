@@ -467,7 +467,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `aspnet/filters` — action/exception/resource/auth filters, IFilterFactory, ordering (2026-06-16)
 - [x] `aspnet/error-handling` — UseExceptionHandler, ProblemDetails middleware, IProblemDetailsService (2026-06-16)
 - [ ] `aspnet/api-versioning` — URL/header/query versioning, Asp.Versioning, deprecation
-- [ ] `aspnet/openapi-swagger` — Scalar, Swashbuckle, XML comments, security definitions
+- [x] `aspnet/openapi-swagger` — Scalar, Swashbuckle, XML comments, security definitions (2026-06-16)
 
 **Data**
 - [ ] `aspnet/ef-core-basics` — DbContext lifetime, no-tracking, SaveChanges, transactions
