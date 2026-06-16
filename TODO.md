@@ -512,7 +512,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `sql/subqueries` — correlated vs non-correlated, EXISTS vs IN, lateral joins (PG), scalar subquery `2026-06-16`
 - [x] `sql/ctes` — recursive CTEs, WITH clause, CTE vs subquery performance, multiple CTEs `2026-06-16`
 - [x] `sql/window-functions` — ROW_NUMBER/RANK/DENSE_RANK, LAG/LEAD, NTILE, ROWS vs RANGE frames `2026-06-16`
-- [ ] `sql/indexes` — clustered vs non-clustered, covering index, include columns, index maintenance
+- [x] `sql/indexes` — clustered vs non-clustered, covering index, include columns, index maintenance `2026-06-16`
 - [x] `sql/transactions` — BEGIN/COMMIT/ROLLBACK, savepoints, implicit vs explicit, retry logic `2026-06-16`
 - [ ] `sql/stored-procedures` — parameters, OUTPUT, EXEC, error handling, TRY/CATCH
 - [ ] `sql/schema-design` — naming conventions, surrogate vs natural keys, soft delete patterns
