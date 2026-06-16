@@ -430,7 +430,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-15 `angular/route-resolvers` — functional resolvers, inject() in resolvers, error handling
 - [x] 2026-06-15 `angular/ssr` — Angular Universal/SSR, hydration, transferState, App Shell
 - [x] 2026-06-16 `angular/pwa` — ngsw-config, caching strategies, push notifications, install prompt
-- [ ] `angular/web-workers` — comlink, offloading heavy computation, communication patterns
+- [x] 2026-06-16 `angular/web-workers` — comlink, offloading heavy computation, communication patterns
 
 **Libraries & integrations**
 - [ ] `angular/animations-demo` — trigger/state/transition, stagger, AnimationBuilder, route anim

@@ -1,13 +1,22 @@
-<div class="page">
-  <h1>Angular Animations</h1>
-  <p class="subtitle">trigger, state, transition, animate, keyframes, and stagger — all driven by signals.</p>
-  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Angular Animations</h1>
+  <p class="page-subtitle">trigger, state, transition, animate, keyframes, and stagger — declarative animations driven by signals, from simple show/hide to staggered list choreography.</p>
+
+  <app-page-meta [readingTime]="24" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
     <h2>state-based: open / close</h2>
     <div class="demo-card">
       <button type="button" class="btn" (click)="isOpen.set(!isOpen())">
@@ -20,7 +29,7 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>:enter / :leave (fadeSlide)</h2>
     <div class="demo-card">
       <button type="button" class="btn" (click)="showBanner.set(!showBanner())">
@@ -34,17 +43,17 @@
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>keyframes — pulse</h2>
     <div class="demo-card">
       <button type="button" class="btn" (click)="triggerPulse()">Pulse!</button>
       <div class="pulse-box" [@pulse]="pulseState()">
-        ★ Pulse me ★
+        Pulse me
       </div>
     </div>
   </section>
 
-  <section class="demo-section">
+  <section class="ng-section">
     <h2>stagger — list items</h2>
     <div class="demo-card">
       <div class="list-controls">
@@ -54,18 +63,24 @@
         @for (item of items(); track item) {
           <div class="list-item">
             {{ item }}
-            <button type="button" class="remove-btn" (click)="removeItem($index)">×</button>
+            <button type="button" class="remove-btn" (click)="removeItem($index)">x</button>
           </div>
         }
       </div>
     </div>
   </section>
 
-  <app-before-after [items]="beforeAfter" />
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Angular" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/animations" nextRoute="/cdk" nextLabel="Cdk" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="animations-demo" nextRoute="/angular/cdk-demo" nextLabel="Angular CDK" />
 </div>
