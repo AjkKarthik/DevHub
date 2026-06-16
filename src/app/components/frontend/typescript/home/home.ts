@@ -30,7 +30,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Generics Fundamentals',      route: '/typescript/generics', badge: 'Generics', available: true,
     description: 'Generic functions, generic interfaces, default type parameters, and generic constraints with extends.',
     keyPoints: ['function identity<T>(arg: T): T — T is inferred from call site', 'Constraints: T extends { id: string } limits T to objects with id', 'Default type: Array<T = unknown> provides a fallback when T is omitted'] },
-  { title: 'Generic Patterns',           route: '/typescript/generic-patterns', badge: 'Generics', available: false,
+  { title: 'Generic Patterns',           route: '/typescript/generic-patterns', badge: 'Generics', available: true,
     description: 'Generic utility functions, generic classes, and common patterns like Result<T, E> and Option<T>.',
     keyPoints: ['Result<T, E> = { ok: true; value: T } | { ok: false; error: E }', 'Generic factory: function create<T>(ctor: new() => T): T', 'Conditional generic: T extends string ? "yes" : "no"'] },
   { title: 'Utility Types',              route: '/typescript/utility-types', badge: 'Advanced Types', available: false,
