@@ -461,7 +461,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-16 `aspnet/logging` — ILogger, structured logging, log levels, Serilog/OpenTelemetry integration
 
 **API layer**
-- [ ] `aspnet/controllers` — ApiController, ModelState, ActionResult<T>, problem details
+- [x] 2026-06-16 `aspnet/controllers` — ApiController, ModelState, ActionResult<T>, problem details
 - [ ] `aspnet/minimal-apis` — route handlers, TypedResults, endpoint filters, groups, OpenAPI
 - [ ] `aspnet/model-binding` — [FromBody]/[FromRoute]/[FromQuery], custom binders, validation
 - [ ] `aspnet/filters` — action/exception/resource/auth filters, IFilterFactory, ordering
