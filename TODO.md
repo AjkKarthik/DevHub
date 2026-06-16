@@ -441,7 +441,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [ ] `angular/ag-grid-demo` — AG Grid community, rowData signal, custom cell renderers
 - [ ] `angular/ng-image` — NgOptimizedImage, srcset, priority, LQIP
 - [ ] `angular/datefns-demo` — date-fns with Angular pipes, locale, formatting patterns
-- [ ] `angular/tailwind-demo` — Tailwind CSS 4 in Angular, dark mode, component patterns
+- [x] 2026-06-16 `angular/tailwind-demo` — Tailwind CSS 4 in Angular, dark mode, component patterns
 
 **Misc**
 - [ ] `angular/counter` — simple signals counter demo — expand into signals deep-dive
