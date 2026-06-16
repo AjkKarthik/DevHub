@@ -27,7 +27,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Enums & Tuples',             route: '/typescript/enums-tuples', badge: 'Type System', available: true,
     description: 'Const enums, string enums, numeric enums trade-offs, and fixed-length tuple types.',
     keyPoints: ['const enum: erased at compile time — no runtime object generated', 'String enums are more readable in logs than numeric enums', 'Tuple: [string, number] — exact length and positional types'] },
-  { title: 'Generics Fundamentals',      route: '/typescript/generics', badge: 'Generics', available: false,
+  { title: 'Generics Fundamentals',      route: '/typescript/generics', badge: 'Generics', available: true,
     description: 'Generic functions, generic interfaces, default type parameters, and generic constraints with extends.',
     keyPoints: ['function identity<T>(arg: T): T — T is inferred from call site', 'Constraints: T extends { id: string } limits T to objects with id', 'Default type: Array<T = unknown> provides a fallback when T is omitted'] },
   { title: 'Generic Patterns',           route: '/typescript/generic-patterns', badge: 'Generics', available: false,
