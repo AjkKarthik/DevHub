@@ -2,12 +2,29 @@
   <div class="page-header-icon asp-icon">ASP</div>
   <h1 class="page-title">Hosting &amp; Startup</h1>
   <p class="page-subtitle">WebApplication builder, Program.cs anatomy, environments, Kestrel, and the host lifetime — everything that happens before the first request arrives.</p>
-  <app-page-meta [readingTime]="20" difficulty="beginner" since="ASP.NET Core 6+" tech="aspnet" />
+
+  <app-page-meta [readingTime]="28" difficulty="beginner" since="ASP.NET Core 6+" tech="aspnet" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
-  <section class="asp-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Startup.cs" afterLabel=".NET 6+ Minimal" />
+
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
   <app-page-complete route="aspnet-hosting-startup" nextRoute="/aspnet/middleware" nextLabel="Middleware Pipeline" />
 </div>

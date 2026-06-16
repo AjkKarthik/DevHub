@@ -436,7 +436,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-16 `angular/animations-demo` — trigger/state/transition, stagger, AnimationBuilder, route anim
 - [x] 2026-06-16 `angular/cdk-demo` — FocusTrap, Overlay, DragDrop, VirtualScrollViewport, a11y module
 - [x] 2026-06-16 `angular/material-demo` — theming (M3), form field, table, dialog, CDK integration
-- [ ] `angular/tanstack-query` — (see Async section above)
+- [x] `angular/tanstack-query` — (see Async section above)
 - [x] 2026-06-16 `angular/charts` — ng2-charts/Chart.js, reactive data binding, responsive charts
 - [x] 2026-06-16 `angular/ag-grid-demo` — AG Grid community, rowData signal, custom cell renderers
 - [x] 2026-06-16 `angular/ng-image` — NgOptimizedImage, srcset, priority, LQIP
