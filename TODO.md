@@ -494,8 +494,8 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-16 `aspnet/testing` — WebApplicationFactory, custom factory, Testcontainers, Respawn
 - [x] 2026-06-16 `aspnet/signalr` — hubs, groups, connection lifecycle, scale-out with Redis backplane
 - [x] 2026-06-16 `aspnet/deployment` — Kestrel, IIS, Docker, reverse proxy (NGINX), HTTPS in containers
-- [ ] `aspnet/performance` — response compression, response caching, async streaming, BenchmarkDotNet
-- [ ] `aspnet/aspire` — AppHost orchestration, service defaults, dashboard, integrations
+- [x] 2026-06-16 `aspnet/performance` — response compression, response caching, async streaming, BenchmarkDotNet
+- [x] 2026-06-16 `aspnet/aspire` — AppHost orchestration, service defaults, dashboard, integrations
 
 ---
 
@@ -509,7 +509,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [ ] `sql/basics` — SELECT, WHERE, ORDER BY, LIMIT/TOP, DISTINCT, aliases, DUAL table (PG)
 - [ ] `sql/joins` — INNER/LEFT/RIGHT/FULL/CROSS/SELF join, join order, NULL in join columns
 - [ ] `sql/aggregations` — GROUP BY, HAVING, COUNT/SUM/AVG/MIN/MAX, FILTER clause (PG), ROLLUP
-- [ ] `sql/subqueries` — correlated vs non-correlated, EXISTS vs IN, lateral joins (PG), scalar subquery
+- [x] `sql/subqueries` — correlated vs non-correlated, EXISTS vs IN, lateral joins (PG), scalar subquery `2026-06-16`
 - [ ] `sql/ctes` — recursive CTEs, WITH clause, CTE vs subquery performance, multiple CTEs
 - [ ] `sql/window-functions` — ROW_NUMBER/RANK/DENSE_RANK, LAG/LEAD, NTILE, ROWS vs RANGE frames
 - [ ] `sql/indexes` — clustered vs non-clustered, covering index, include columns, index maintenance

@@ -525,7 +525,7 @@ finally
     else
         pool.Return(sb);
 }`,
-      explanation: 'ObjectPool clears a StringBuilder\'s content on Return but preserves its internal char[] capacity. A StringBuilder that grew to 100 MB stays at 100 MB in the pool — the next caller borrows a 100 MB buffer for a 100-byte string, wasting memory. Check capacity before returning and discard instances that grew beyond a safe limit.',
+      explanation: 'ObjectPool clears a StringBuilder\'s content on Return but preserves its internal char[] capacity. A StringBuilder that grew to 100 MB returned to the pool remains at 100 MB — future callers borrow and hold a 100 MB buffer for a 100-byte operation, wasting memory. Always check Capacity before returning and discard instances that grew beyond a safe limit.',
     },
     {
       title: 'Calling GC.Collect() in application request handlers',
