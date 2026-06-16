@@ -1,20 +1,30 @@
-<div class="aspnet-page">
-  <div class="page-header-icon aspnet-icon">🔗</div>
+<div class="asp-page">
+  <div class="page-header-icon asp-icon">ASP</div>
   <h1 class="page-title">EF Core Relationships</h1>
   <p class="page-subtitle">One-to-many, one-to-one, many-to-many, eager loading with Include/ThenInclude, owned entities, and cascade delete.</p>
 
-  <app-page-meta [readingTime]="25" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+  <app-page-meta [readingTime]="35" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
 
-  <section class="aspnet-section">
+  <section class="asp-section">
     <h2>Code Examples</h2>
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
 
   <app-page-complete route="aspnet-ef-relationships" nextRoute="/aspnet/ef-performance" nextLabel="EF Core Performance" />
 </div>
