@@ -1,16 +1,25 @@
-<div class="page">
-  <h1>Web Workers</h1>
-  <p class="subtitle">Offload CPU-intensive work to a background thread — keep the UI responsive during heavy computation.</p>
-  <app-page-meta [readingTime]="12" difficulty="advanced" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Web Workers</h1>
+  <p class="page-subtitle">Offload CPU-intensive work to a background OS thread — keep the UI at 60 fps during heavy computation, image processing, and large data parsing.</p>
+
+  <app-page-meta [readingTime]="24" difficulty="advanced" since="Angular 8" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
-    <h2>Main thread vs Worker — UI responsiveness</h2>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
+    <h2>Main thread vs Worker — UI responsiveness demo</h2>
     <div class="demo-card">
-      <p>Both buttons calculate the sum of 0…500,000,000. Watch the counter above to see if the UI stays responsive.</p>
+      <p>Both buttons calculate the sum of 0&hellip;500,000,000. Watch the counter to see if the UI stays responsive.</p>
       <div class="counter-display">UI tick counter: <strong>{{ uiCounter() }}</strong></div>
       @if (mainBlocked()) {
         <div class="blocked-warn">Main thread BLOCKED — UI frozen during computation!</div>
@@ -24,18 +33,25 @@
         </button>
       </div>
       @if (running() && !mainBlocked()) {
-        <div class="loading">Worker computing… UI counter keeps ticking ✓</div>
+        <div class="loading">Worker computing… UI counter keeps ticking</div>
       }
       @if (result() !== null) {
         <div class="result-box">Result: {{ result() }}</div>
       }
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Angular" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/web-workers" nextRoute="/ng-image" nextLabel="Ng Image" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="web-workers" nextRoute="/angular/ng-image" nextLabel="Image Optimization" />
 </div>

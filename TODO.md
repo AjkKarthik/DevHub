@@ -428,8 +428,8 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Performance & Architecture**
 - [x] 2026-06-15 `angular/preloading` — PreloadAllModules vs SelectivePreloading, QuicklinkStrategy
 - [x] 2026-06-15 `angular/route-resolvers` — functional resolvers, inject() in resolvers, error handling
-- [ ] `angular/ssr` — Angular Universal/SSR, hydration, transferState, App Shell
-- [ ] `angular/pwa` — ngsw-config, caching strategies, push notifications, install prompt
+- [x] 2026-06-15 `angular/ssr` — Angular Universal/SSR, hydration, transferState, App Shell
+- [x] 2026-06-16 `angular/pwa` — ngsw-config, caching strategies, push notifications, install prompt
 - [ ] `angular/web-workers` — comlink, offloading heavy computation, communication patterns
 
 **Libraries & integrations**
