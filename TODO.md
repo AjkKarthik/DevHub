@@ -446,7 +446,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Misc**
 - [x] 2026-06-16 `angular/counter` — simple signals counter demo — expand into signals deep-dive
 - [x] 2026-06-16 `angular/todo` — todo app demo — expand into state management patterns demo
-- [ ] `angular/i18n` — @angular/localize, $localize, ICU, build-time vs runtime i18n
+- [x] 2026-06-16 `angular/i18n` — @angular/localize, $localize, ICU, build-time vs runtime i18n
 
 ---
 

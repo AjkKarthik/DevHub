@@ -1,14 +1,23 @@
-<div class="page">
-  <h1>i18n — Internationalisation</h1>
-  <p class="subtitle">Runtime language switching with a custom translation map — plus coverage of Transloco and Angular's built-in i18n.</p>
-  <app-page-meta [readingTime]="12" difficulty="intermediate" since="2" />
+<div class="ng-page">
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Internationalisation (i18n)</h1>
+  <p class="page-subtitle">Runtime language switching with Angular Signals, Transloco, built-in i18n, ICU pluralisation, and browser-native Intl APIs for locale-aware numbers and dates.</p>
+
+  <app-page-meta [readingTime]="28" difficulty="intermediate" since="Angular 2+" tech="angular" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
 
   <app-theory-block [sections]="theory" />
-  <app-code-block [tabs]="tabs" />
 
-  <section class="demo-section">
-    <h2>Live language switcher</h2>
+  <section class="ng-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <section class="ng-section">
+    <h2>Live Language Switcher</h2>
     <div class="demo-card">
       <div class="lang-btns">
         @for (l of langs; track l) {
@@ -29,11 +38,18 @@
       </div>
     </div>
   </section>
-  <app-before-after [items]="beforeAfter" />
+
+  <app-before-after [items]="beforeAfter" beforeLabel="Old Pattern" afterLabel="Modern Angular" />
+
   <app-common-mistakes [items]="mistakes" />
-  <app-version-badge [items]="versionItems" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="/i18n" nextRoute="/web-workers" nextLabel="Web Workers" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="i18n" nextRoute="/angular/web-workers" nextLabel="Web Workers" />
 </div>
