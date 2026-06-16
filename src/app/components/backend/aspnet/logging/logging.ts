@@ -5,6 +5,9 @@ import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block'
 import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
 import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
 import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PrerequisitesComponent, Prerequisite } from '../../../shared/prerequisites/prerequisites';
 import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
 
@@ -14,12 +17,18 @@ import { PageCompleteComponent } from '../../../shared/page-complete/page-comple
   imports: [
     CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent,
     QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent,
+    CommonMistakesComponent, RevisionCardComponent, PrerequisitesComponent,
     PageMetaComponent, PageCompleteComponent,
   ],
   templateUrl: './logging.html',
   styleUrl: './logging.scss',
 })
 export class AspnetLogging {
+
+  prerequisites: Prerequisite[] = [
+    { label: 'Hosting & Startup', route: '/aspnet/hosting-startup' },
+    { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+  ];
 
   quickRef: QuickRefItem[] = [
     { name: 'ILogger<T>',                   type: 'interface', desc: 'Inject into any service; T becomes the category name for log filtering', since: 'Core 1+' },
@@ -38,46 +47,51 @@ export class AspnetLogging {
     {
       heading: 'ILogger<T> and log levels',
       points: [
-        'Inject <code>ILogger&lt;MyService&gt;</code> into any class. The generic type parameter becomes the <strong>category name</strong> — usually the fully-qualified class name — which is used in appsettings.json to filter log output per class or namespace.',
-        'Six log levels in ascending severity: <code>Trace</code> (most verbose), <code>Debug</code>, <code>Information</code>, <code>Warning</code>, <code>Error</code>, <code>Critical</code>. Each has a matching method: <code>LogTrace</code> … <code>LogCritical</code>, plus the generic <code>Log(level, …)</code>.',
-        'Set minimum levels in <code>appsettings.json</code> under <code>"Logging": { "LogLevel": { "Default": "Information", "Microsoft": "Warning" } }</code>. Messages below the minimum are discarded before reaching any provider — no allocation, no overhead.',
-        'Prefer <code>LogError(ex, "…")</code> with an <code>Exception</code> first argument to capture stack traces. The exception is attached to the log entry as structured data, not just concatenated as a string.',
+        'Inject <code>ILogger&lt;MyService&gt;</code> into any class. The generic type parameter becomes the <strong>category name</strong> — usually the fully-qualified class name — which is used in appsettings.json to filter log output per class or namespace. Category-based filtering lets you turn on debug output for one class without flooding logs from the whole application.',
+        'Six log levels in ascending severity: <code>Trace</code> (most verbose), <code>Debug</code>, <code>Information</code>, <code>Warning</code>, <code>Error</code>, <code>Critical</code>. Each has a matching method: <code>LogTrace</code> … <code>LogCritical</code>, plus the generic <code>Log(level, message, args)</code>.',
+        'Messages below the configured minimum level are discarded <em>before</em> reaching any provider — the check happens in the <code>ILogger</code> implementation, not in the sink. This means no allocations, no serialization, and no network round-trips for filtered events.',
+        'Prefer <code>LogError(ex, "message {OrderId}", orderId)</code> with the <code>Exception</code> as the <em>first</em> argument. The exception is attached as structured data — the full stack trace, inner exception chain, and exception type are preserved and queryable in log tools.',
+        'Use <code>LogWarning</code> for recoverable situations that need attention (retry limits approaching, slow queries). Reserve <code>LogError</code> for failures that affect a user or a job. <code>LogCritical</code> is for the process needing a restart or an unrecoverable state.',
       ],
     },
     {
       heading: 'Structured logging — templates, not interpolation',
       points: [
-        'Use <strong>message templates</strong> with named holes: <code>logger.LogInformation("Order {OrderId} placed by {UserId}", orderId, userId)</code>. The holes become named structured properties that log sinks (Seq, Elasticsearch, Application Insights) can index and query.',
-        'Never use string interpolation (<code>$"Order {orderId}"</code>) in log calls. Interpolation builds the string even when the log level is filtered out — wasting allocations. It also discards the structured data, turning it into an opaque string.',
-        'Semantic logging lets you write queries like <code>WHERE OrderId = 42</code> in your log tool instead of <code>WHERE message LIKE \'%42%\'</code>. The difference between "a log message" and "observable, queryable telemetry data" is structured logging.',
-        'Property names are by convention PascalCase. Complex objects are serialized by the provider (Serilog destructs them with <code>{@obj}</code>). Keep holes to the minimum needed to identify the event.',
+        'Use <strong>message templates</strong> with named holes: <code>logger.LogInformation("Order {OrderId} placed by {UserId}", orderId, userId)</code>. The holes become named structured properties that log sinks (Seq, Elasticsearch, Application Insights) can index and query independently of the message string.',
+        'Never use string interpolation (<code>$"Order {orderId}"</code>) in log calls. Interpolation builds the full string <em>before</em> the log level check — wasting allocation even when the message is filtered out. It also destroys structured data, turning it into an opaque string blob.',
+        'Semantic logging changes what you can do with logs: instead of <code>WHERE message LIKE \'%42%\'</code> you write <code>WHERE OrderId = 42</code>. Log tools can aggregate, count, and alert on structured properties independently — turning logs from audit trail to live dashboard.',
+        'Property names are by convention PascalCase. Complex objects can be prefixed with <code>@</code> in Serilog (<code>{@Request}</code>) to serialize the full object graph. For standard ILogger, complex objects call <code>ToString()</code> unless the provider supports destructuring.',
+        'Keep the number of properties per log entry small (3–5 max). Every property is serialized and indexed; excessive properties increase storage and query cost. Log the minimum set needed to diagnose the event without reopening the code.',
       ],
     },
     {
       heading: 'Log scopes — attaching ambient context',
       points: [
-        '<code>logger.BeginScope(…)</code> attaches key-value pairs to every log entry made within the <code>using</code> block — including calls inside injected services that share the same logger category.',
-        'Common uses: attach a request correlation ID, tenant ID, or user ID to all logs within a request or a batch job, without threading it through every method signature.',
-        'The scope is pushed to a thread-local (or async-local) stack. Providers that support structured logging (Serilog, Application Insights) capture scope properties alongside the message. The built-in console provider can be configured to include scopes.',
-        'Middleware is the natural place to open a request-wide scope: <code>using (_logger.BeginScope(new { CorrelationId = ctx.TraceIdentifier })) { await next(ctx); }</code>.',
+        '<code>logger.BeginScope(…)</code> attaches key-value pairs to every log entry made within the <code>using</code> block — including calls inside injected services called from within that block, even if those services use a different <code>ILogger&lt;T&gt;</code> category.',
+        'Common uses: attach a request correlation ID, tenant ID, or user ID to all logs within a request without threading it through every method signature. The scope travels with the async context automatically.',
+        'The scope is stored on an async-local stack. Structured providers (Serilog, Application Insights) capture scope properties alongside the message in every entry. The built-in Console provider can be configured to include scopes with <code>"IncludeScopes": true</code> in appsettings.json.',
+        'Middleware is the natural place to open a request-wide scope: <code>using (_logger.BeginScope(new { CorrelationId = ctx.TraceIdentifier })) { await next(ctx); }</code> — every log in the pipeline carries the correlation ID with no extra work.',
+        'Scopes can be nested. Inner scopes add properties on top of outer ones. The outermost scope set at the entry point (middleware or background job) provides baseline context; inner scopes in specific operations add additional fields.',
       ],
     },
     {
       heading: 'Source-generated LoggerMessage — zero-allocation logging',
       points: [
-        'Every call to <code>logger.LogInformation("…", args)</code> boxes value-type arguments and allocates a delegate unless the message is filtered. <strong>Source-generated LoggerMessage</strong> avoids this entirely.',
-        'Decorate a <code>static partial</code> method with <code>[LoggerMessage(EventId, Level, "template")]</code>. The compiler generates a cached delegate that checks the enabled level first and skips all allocations if filtered.',
-        'The generated method is strongly typed — the compiler will catch mismatched argument counts and wrong types at build time, unlike the runtime-only checks in normal log calls.',
-        'Use source gen for hot-path log statements (per-request, per-loop). Less critical log calls (startup, shutdown, rare errors) do not justify the boilerplate.',
+        'Every call to <code>logger.LogInformation("…", args)</code> boxes value-type arguments (int, Guid, etc.) and allocates a <code>params object[]</code> even when the message is filtered. On a hot path (per-request, per-loop) this adds up to measurable GC pressure.',
+        'Decorate a <code>static partial</code> method with <code>[LoggerMessage(EventId, Level, "template")]</code>. The source generator produces a method that performs the level check first and skips all allocation if the logger is not enabled for that level.',
+        'Generated methods are strongly typed — the compiler catches mismatched argument counts, wrong types, and missing template holes at build time rather than at runtime. This eliminates a whole class of logging bugs.',
+        'Use source gen for hot-path log statements (per-request, per-loop, tight retry loops). Startup, shutdown, and rare error logs do not justify the boilerplate — use direct <code>Log{Level}</code> calls there.',
+        'Assign stable <code>EventId</code> integers grouped by service area (e.g., 1000–1099 for OrderService). Production monitoring rules and dashboards key on EventId rather than parsing message strings — never reuse or change an EventId once it is in production logs.',
       ],
     },
     {
-      heading: 'Providers and third-party logging frameworks',
+      heading: 'Providers, filtering, and third-party frameworks',
       points: [
-        'Built-in providers: <code>Console</code>, <code>Debug</code>, <code>EventSource</code>, <code>EventLog</code> (Windows), <code>ApplicationInsights</code> (via NuGet). They are all sink-agnostic: <code>ILogger</code> in your code never changes when you swap providers.',
-        'Popular third-party providers: <strong>Serilog</strong> (rich sink ecosystem — files, Seq, Elasticsearch, Splunk), <strong>NLog</strong> (high-performance, flexible targets), <strong>OpenTelemetry</strong> (CNCF standard, exports to Jaeger, Tempo, Prometheus).',
-        'To use Serilog: <code>builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration))</code>. Call <code>builder.Logging.ClearProviders()</code> first to avoid duplicate console output.',
-        'Log correlation with distributed tracing: when OpenTelemetry is configured, <code>ILogger</code> automatically stamps every entry with the current <code>TraceId</code> and <code>SpanId</code>, linking logs to traces in your observability platform.',
+        'Built-in providers: <code>Console</code>, <code>Debug</code>, <code>EventSource</code>, <code>EventLog</code> (Windows only), <code>AzureAppServicesFile</code>. They are sink-agnostic: <code>ILogger</code> in your code never changes when you swap providers.',
+        'Popular third-party providers: <strong>Serilog</strong> (rich sink ecosystem — files, Seq, Elasticsearch, Splunk), <strong>NLog</strong> (high performance, flexible rule-based targets), <strong>OpenTelemetry</strong> (CNCF standard, exports to Jaeger, Grafana Tempo, Dynatrace, Prometheus).',
+        'To add Serilog: <code>builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration))</code>. Always call <code>builder.Logging.ClearProviders()</code> first to avoid duplicate output from both Serilog and the default Console provider.',
+        'Filtering is hierarchical: the <code>Default</code> level applies to any category not matched by a more-specific key. <code>"Microsoft.EntityFrameworkCore": "Warning"</code> silences EF Core query spam in Development while keeping your own code at <code>Information</code>. Per-provider sections (<code>"Console": { "LogLevel": { … } }</code>) let you send different levels to different sinks.',
+        'Log correlation with distributed tracing: when OpenTelemetry is configured, <code>ILogger</code> entries are automatically stamped with the current <code>TraceId</code> and <code>SpanId</code>, linking log lines to the distributed trace span that produced them — critical for diagnosing failures across microservices.',
       ],
     },
   ];
@@ -396,6 +410,39 @@ Register it in Program.cs and verify the logs appear with structured properties.
       answer: 2,
       explanation: 'ASP.NET Core checks the level before writing the entry, so filtered log calls do not write output. But if you must build expensive arguments first (loading from a database, serialising a large object), those allocations happen before the level check. Wrapping the work in <code>if (logger.IsEnabled(LogLevel.Debug))</code> skips the expensive preparation entirely when the level is off.',
     },
+    {
+      q: 'Which log level is appropriate for a situation where a cache miss falls back to the database successfully?',
+      options: [
+        'LogLevel.Error — any fallback is an error',
+        'LogLevel.Warning — the fallback worked but signals potential perf degradation',
+        'LogLevel.Debug — routine operational detail useful only during debugging',
+        'LogLevel.Critical — cache misses must be investigated immediately',
+      ],
+      answer: 2,
+      explanation: 'A cache miss that is gracefully handled is a routine operational detail — it is expected behaviour under normal conditions and resolved without user impact. <code>Debug</code> is appropriate. <code>Warning</code> is reserved for situations that <em>need attention</em> but did not fail: approaching a limit, an unexpected but recovered state, or a deprecated code path still in use.',
+    },
+    {
+      q: 'You call builder.Logging.ClearProviders() then builder.Host.UseSerilog(…). What providers write logs?',
+      options: [
+        'Both the default Console provider and Serilog — ClearProviders has no effect after UseSerilog',
+        'Only Serilog — ClearProviders removed the built-in providers before Serilog was added',
+        'No providers — ClearProviders removes all providers including Serilog',
+        'Only the default Console provider — UseSerilog only adds a filter, not a provider',
+      ],
+      answer: 1,
+      explanation: '<code>ClearProviders()</code> removes all previously registered providers. After that, <code>UseSerilog()</code> registers Serilog as the sole provider. This is the recommended setup — without clearing, both the default Console provider and Serilog write every entry, producing duplicates in the console output.',
+    },
+    {
+      q: 'What is the correct category name when ILogger is injected as ILogger<OrderService>?',
+      options: [
+        '"OrderService"',
+        'The fully-qualified type name, e.g. "MyApp.Services.OrderService"',
+        '"ILogger"',
+        'A random GUID assigned at startup',
+      ],
+      answer: 1,
+      explanation: 'The category name is the <strong>fully-qualified type name</strong> of the generic parameter — <code>MyApp.Services.OrderService</code>. This is what you use in appsettings.json to filter by namespace: <code>"MyApp.Services": "Debug"</code> enables debug logs for all services in that namespace, while <code>"MyApp.Services.OrderService": "Trace"</code> targets only that class.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -423,5 +470,108 @@ Register it in Program.cs and verify the logs appear with structured properties.
       q: 'Why do I see duplicate log entries after adding Serilog?',
       a: 'You forgot to call <code>builder.Logging.ClearProviders()</code> before <code>builder.Host.UseSerilog(…)</code>. Without clearing, both the default Console/Debug providers and Serilog\'s providers are active, so every log entry goes through both pipelines. Call <code>ClearProviders()</code> first, then configure Serilog as the sole provider.',
     },
+    {
+      q: 'How do you suppress noisy EF Core SQL query logs in Development without turning off all database logging?',
+      a: 'Set a category-specific log level in appsettings.Development.json: <code>"Logging": { "LogLevel": { "Microsoft.EntityFrameworkCore.Database.Command": "Warning" } }</code>. This silences the per-query SQL output (which is at <code>Information</code>) while keeping warnings and errors from EF Core. You can also use <code>"Microsoft.EntityFrameworkCore": "Warning"</code> to suppress all EF Core logs, or drill down to specific categories for fine-grained control.',
+    },
+    {
+      q: 'What is the difference between ILoggerFactory and ILogger<T>?',
+      a: '<code>ILoggerFactory</code> is the root service that creates <code>ILogger</code> instances. You rarely inject it directly — it is mainly used in infrastructure code that does not know the category type at compile time (e.g., creating loggers for dynamically discovered plugins). <code>ILogger&lt;T&gt;</code> is a convenience wrapper that calls <code>factory.CreateLogger(typeof(T).FullName)</code> — it is the right choice for almost all application code because the category name is embedded at compile time.',
+    },
   ];
+
+  mistakes: CommonMistake[] = [
+    {
+      title: 'Using string interpolation instead of message templates',
+      wrong: `// BAD: allocates the string even when level is filtered; destroys structured data
+_logger.LogInformation(\$"Order {order.Id} placed by {order.UserId} for {order.Total:C}");`,
+      right: `// GOOD: named holes become queryable properties; no allocation when filtered
+_logger.LogInformation("Order {OrderId} placed by {UserId} for {Amount:C}",
+    order.Id, order.UserId, order.Total);`,
+      explanation: 'String interpolation builds the full string before the log level check fires. On a filtered level this wastes heap allocation on every call. More critically, it discards the structured properties — log tools can no longer query by OrderId. Always use named template holes.',
+    },
+    {
+      title: 'Logging the exception message instead of passing the exception object',
+      wrong: `catch (Exception ex)
+{
+    // BAD: loses stack trace, inner exceptions, exception type — unsearchable
+    _logger.LogError(\$"Payment failed: {ex.Message}");
+    throw;
+}`,
+      right: `catch (Exception ex)
+{
+    // GOOD: exception is first argument — stack trace and type are preserved
+    _logger.LogError(ex, "Payment failed for order {OrderId}", orderId);
+    throw;
+}`,
+      explanation: 'The exception must be the first argument to LogError/LogCritical. When passed correctly, the full stack trace, inner exception chain, exception type, and all properties are stored as structured data. Concatenating ex.Message into the template string discards all of this and makes the entry unsearchable by exception type.',
+    },
+    {
+      title: 'Forgetting ClearProviders() when switching to Serilog',
+      wrong: `// BAD: Serilog added but defaults (Console, Debug) still active → duplicate output
+builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));`,
+      right: `// GOOD: clear built-in providers first, then configure Serilog as sole provider
+builder.Logging.ClearProviders();
+builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));`,
+      explanation: 'WebApplication.CreateBuilder() registers Console and Debug providers by default. Adding Serilog without clearing means every log entry goes through both pipelines — doubled console output confuses developers and doubles ingestion costs if the console output is also collected by a log aggregator.',
+    },
+    {
+      title: 'Building expensive log arguments unconditionally on a hot path',
+      wrong: `// BAD: SerializeToJson runs even when Debug level is filtered out
+var payload = JsonSerializer.Serialize(largeObject);  // always allocates
+_logger.LogDebug("Processing payload: {Payload}", payload);`,
+      right: `// GOOD: skip expensive work when the level is disabled
+if (_logger.IsEnabled(LogLevel.Debug))
+{
+    var payload = JsonSerializer.Serialize(largeObject);
+    _logger.LogDebug("Processing payload: {Payload}", payload);
+}
+// BETTER for truly hot paths: use [LoggerMessage] source generation`,
+      explanation: 'ASP.NET Core checks the log level before writing, but argument evaluation always happens before the method call. If arguments involve serialisation, database queries, or expensive computations, guard them with IsEnabled() on hot paths, or use source-generated LoggerMessage which performs the check before any argument evaluation.',
+    },
+    {
+      title: 'Using a single "Default": "Trace" level for all categories in Production',
+      wrong: `// appsettings.Production.json — BAD: floods logs with framework internals
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Trace"
+    }
+  }
+}`,
+      right: `// GOOD: suppress noisy framework categories; verbose only for your own code
+{
+  "Logging": {
+    "LogLevel": {
+      "Default":                                 "Warning",
+      "Microsoft":                               "Warning",
+      "Microsoft.Hosting.Lifetime":              "Information",
+      "Microsoft.EntityFrameworkCore.Database":  "Warning",
+      "MyApp":                                   "Information"
+    }
+  }
+}`,
+      explanation: 'Setting Trace or Debug globally in Production floods your log store with thousands of framework-internal entries per request (routing decisions, EF Core SQL, SignalR heartbeats). This inflates storage costs, buries real errors in noise, and slows down log ingestion. Use Warning or higher for Microsoft.* and Information for your own namespaces.',
+    },
+  ];
+
+  revision: RevisionSummary = {
+    oneLiner: 'ASP.NET Core logging is built around ILogger<T>, structured message templates, and a pluggable provider pipeline — use named template holes (never interpolation), BeginScope for ambient context, and source-generated LoggerMessage on hot paths.',
+    mustKnow: [
+      'Six log levels: Trace < Debug < Information < Warning < Error < Critical — levels below the configured minimum are discarded with zero cost',
+      'Message templates with named holes (<code>{OrderId}</code>) preserve structured properties; string interpolation destroys them and always allocates',
+      '<code>LogError(ex, "message", args)</code> — exception is the <em>first</em> argument to capture the full stack trace',
+      '<code>logger.BeginScope(…)</code> attaches ambient key-value pairs to all entries within the <code>using</code> block, including nested service calls',
+      '<code>[LoggerMessage]</code> source generation — zero-allocation, strongly-typed, compile-time-checked log methods for hot paths',
+      'Category-based filtering: <code>"Microsoft.EntityFrameworkCore": "Warning"</code> silences EF SQL spam without affecting your own code',
+      'Call <code>builder.Logging.ClearProviders()</code> before adding Serilog or NLog to prevent duplicate output',
+    ],
+    interviewFocus: [
+      'Why should you use message templates instead of string interpolation in log calls?',
+      'How do log scopes work and when would you use them?',
+      'What does source-generated LoggerMessage give you that direct LogXxx() calls do not?',
+      'How do you configure different log levels for different namespaces in appsettings.json?',
+      'How does ILogger relate to distributed tracing and OpenTelemetry?',
+    ],
+  };
 }
