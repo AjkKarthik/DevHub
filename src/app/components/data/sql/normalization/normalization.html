@@ -1,11 +1,8 @@
 <div class="sq-page">
   <div class="sq-icon">🗄️</div>
   <h1 class="page-title">Normalization</h1>
-  <p class="page-subtitle">
-    1NF → 2NF → 3NF → BCNF — eliminate update, insert, and delete anomalies
-    by ensuring each fact is stored exactly once.
-  </p>
-  <app-page-meta [readingTime]="25" difficulty="intermediate" since="SQL-92" tech="sql" />
+  <p class="page-subtitle">1NF → 2NF → 3NF → BCNF → 4NF — eliminate update, insert, and delete anomalies by storing each fact exactly once; plus multi-valued dependencies, star schema denormalisation, and hierarchical data patterns.</p>
+  <app-page-meta [readingTime]="30" difficulty="intermediate" since="SQL-92" tech="sql" />
   <app-quick-ref [items]="quickRef" />
   <app-theory-block [sections]="theory" />
   <section class="sq-section">

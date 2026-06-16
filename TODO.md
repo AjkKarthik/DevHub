@@ -503,7 +503,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 
 - [ ] `sql/rdbms-concepts` — ACID, CAP theorem, relational model, keys, constraints overview
 - [ ] `sql/data-modeling` — ER diagrams, entity identification, relationships, cardinality
-- [ ] `sql/normalization` — 1NF/2NF/3NF/BCNF, denormalisation trade-offs, when to break rules
+- [x] `sql/normalization` — 1NF/2NF/3NF/BCNF, denormalisation trade-offs, when to break rules `2026-06-16`
 - [ ] `sql/db-architecture` — query processor, storage engine, buffer pool, WAL, MSSQL vs PG arch
 - [ ] `sql/data-types` — numeric precision, varchar vs nvarchar, JSONB, UUID, temporal types
 - [ ] `sql/basics` — SELECT, WHERE, ORDER BY, LIMIT/TOP, DISTINCT, aliases, DUAL table (PG)
