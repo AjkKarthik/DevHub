@@ -5,6 +5,9 @@ import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block'
 import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
 import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
 import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PrerequisitesComponent, Prerequisite } from '../../../shared/prerequisites/prerequisites';
 import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
 
@@ -14,12 +17,18 @@ import { PageCompleteComponent } from '../../../shared/page-complete/page-comple
   imports: [
     CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent,
     QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent,
+    CommonMistakesComponent, RevisionCardComponent, PrerequisitesComponent,
     PageMetaComponent, PageCompleteComponent,
   ],
   templateUrl: './configuration.html',
   styleUrl: './configuration.scss',
 })
 export class AspnetConfiguration {
+
+  prerequisites: Prerequisite[] = [
+    { label: 'Hosting & Startup', route: '/aspnet/hosting-startup' },
+    { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+  ];
 
   quickRef: QuickRefItem[] = [
     { name: 'builder.Configuration',          type: 'accessor',  desc: 'IConfiguration built from layered providers; read values with ["Key"] or GetValue<T>()', since: '.NET 6+' },
@@ -78,6 +87,19 @@ export class AspnetConfiguration {
         'User secrets are active only in the Development environment. In Production use environment variables, Azure Key Vault, or a secrets manager — never appsettings.json for secrets.',
         '<strong>Environment variables</strong> are the standard way to inject secrets in containers and cloud platforms. They override appsettings.json by default. Nested keys: <code>Database__Host=db.internal</code> maps to <code>Database:Host</code> in code.',
         'Prefix environment variables to avoid collisions: <code>builder.Configuration.AddEnvironmentVariables("MYAPP_")</code> — only variables starting with <code>MYAPP_</code> are loaded, and the prefix is stripped.',
+        'In Docker/Kubernetes pass secrets via environment variables injected at runtime — never bake them into image layers. Use Kubernetes Secrets or Docker secrets, then map them to container environment variables in the deployment manifest.',
+        'The <code>ISecretManager</code> abstraction (Azure Key Vault, AWS Secrets Manager, HashiCorp Vault) integrates as a configuration provider — values appear in <code>IConfiguration</code> just like appsettings values, so consuming code never needs to know the source.',
+      ],
+    },
+    {
+      heading: 'PostConfigure, chaining, and advanced patterns',
+      points: [
+        '<code>PostConfigure&lt;T&gt;()</code> runs after all <code>Configure&lt;T&gt;</code> calls — useful for computed defaults: set a computed <code>DisplayName</code> from <code>FirstName</code> + <code>LastName</code> after the raw values are bound.',
+        '<code>ConfigureAll&lt;T&gt;()</code> and <code>PostConfigureAll&lt;T&gt;()</code> apply to every named instance of an options type — useful for cross-cutting defaults (e.g., set a default timeout on every <code>HttpClientOptions</code> instance).',
+        'The <code>IConfigureOptions&lt;T&gt;</code> interface lets you inject dependencies into the configuration step: register a class implementing it and the DI container will call its <code>Configure</code> method when options are first resolved.',
+        'Use <code>AddOptions&lt;T&gt;().Configure&lt;IDep&gt;((opts, dep) => { ... })</code> as a shorthand for resolving one dependency during configuration — avoids writing a full <code>IConfigureOptions</code> class for simple cases.',
+        'Never call <code>builder.Configuration.GetSection()</code> inside a handler at request time. Read configuration at startup into a strongly-typed class via <code>IOptions&lt;T&gt;</code>. Per-request config reads bypass caching and add overhead every time.',
+        'For large apps, partition options by domain: <code>SmtpOptions</code>, <code>JwtOptions</code>, <code>DatabaseOptions</code> — one class per config section. Avoid a single mega-settings class; it becomes a god object and makes validation impossible.',
       ],
     },
   ];
@@ -370,6 +392,39 @@ public class FeatureFlags
       answer: 1,
       explanation: '<code>appsettings.json</code> is part of your source tree. Storing secrets there means they end up in Git history and are visible to every developer, CI system, and anyone who can read the repo. Use user-secrets locally and environment variables or a secrets manager (Key Vault, AWS Secrets Manager) in deployed environments.',
     },
+    {
+      q: 'What is the effect of calling PostConfigure<T>() after Configure<T>()?',
+      options: [
+        'It replaces the Configure<T> call entirely',
+        'It runs after all Configure<T> callbacks, allowing computed defaults or overrides to be applied last',
+        'It disables hot-reload for that options type',
+        'It only runs in the Development environment',
+      ],
+      answer: 1,
+      explanation: '<code>PostConfigure&lt;T&gt;()</code> is guaranteed to run after all <code>Configure&lt;T&gt;</code> registrations for that type. This makes it ideal for computing derived values (e.g., a full connection string assembled from host + port + database name) or applying cross-cutting defaults that should not be overridable by earlier registrations.',
+    },
+    {
+      q: 'What does IOptionsSnapshot<T> do that IOptions<T> does not?',
+      options: [
+        'IOptionsSnapshot<T> is singleton and never reloads; IOptions<T> reloads per request',
+        'IOptionsSnapshot<T> is scoped and re-reads config once per request, picking up hot-reloaded values',
+        'IOptionsSnapshot<T> validates options at startup; IOptions<T> validates on first access',
+        'IOptionsSnapshot<T> supports named options; IOptions<T> does not',
+      ],
+      answer: 1,
+      explanation: '<code>IOptionsSnapshot&lt;T&gt;</code> is registered as Scoped — it reads the current configuration once per request. If a file-based provider has reloaded (e.g., appsettings.json changed), the new values are picked up at the next request boundary. <code>IOptions&lt;T&gt;</code> is Singleton and takes a snapshot at startup that never updates.',
+    },
+    {
+      q: 'Why is it wrong to inject IOptionsSnapshot<T> into a Singleton service?',
+      options: [
+        'Singletons cannot use generic types',
+        'A Scoped service injected into a Singleton is captured for the Singleton\'s lifetime — the Scoped service never re-resolves, creating a captive dependency',
+        'IOptionsSnapshot<T> throws an exception when resolved inside a Singleton',
+        'Singleton services cannot read configuration in ASP.NET Core',
+      ],
+      answer: 1,
+      explanation: 'A Singleton service is created once and held for the application lifetime. If it captures a Scoped dependency at construction, that dependency also lives forever — it is never re-resolved, defeating the purpose of Scoped lifetime. In Development, ASP.NET Core\'s scope validation throws <code>InvalidOperationException</code> to catch this mistake. Use <code>IOptionsMonitor&lt;T&gt;</code> (Singleton-safe) instead.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -397,5 +452,116 @@ public class FeatureFlags
       q: 'When are environment-variable config values refreshed?',
       a: 'Environment variables are read once at startup when the configuration providers are built. They do not hot-reload — if you change an environment variable while the app is running, you must restart the process. Only file-based providers (appsettings.json) support hot-reload via the file watcher. For runtime-changing values, use a database, a distributed cache, or a Key Vault provider configured with a polling interval.',
     },
+    {
+      q: 'How do you supply a configuration value that differs between two instances of the same options class?',
+      a: 'Use <strong>named options</strong>. <code>services.Configure&lt;SmtpOptions&gt;("primary", section1)</code> and <code>services.Configure&lt;SmtpOptions&gt;("backup", section2)</code> register two named instances. Inject <code>IOptionsMonitor&lt;SmtpOptions&gt;</code> and retrieve by name: <code>monitor.Get("primary")</code> or <code>monitor.Get("backup")</code>. Named options let you reuse one strongly-typed class for multiple config blocks — common for multi-tenant databases or multiple external service endpoints.',
+    },
+    {
+      q: 'Can configuration providers be ordered or replaced after the app starts?',
+      a: 'No — providers are built once when <code>WebApplication.CreateBuilder()</code> calls <code>builder.Configuration.Build()</code> internally. The order is fixed at startup. If you need runtime-updateable values you must either use a provider that supports hot-reload (file-based, Azure App Configuration), poll an external store (Key Vault), or push updates via a message bus into your own in-memory cache accessible through a singleton service.',
+    },
   ];
+
+  mistakes: CommonMistake[] = [
+    {
+      title: 'Injecting IOptionsSnapshot<T> into a Singleton service',
+      wrong: `// BUG: IOptionsSnapshot is Scoped — captures once and never reloads in a Singleton
+public class TokenService(IOptionsSnapshot<JwtOptions> opts) { ... }
+builder.Services.AddSingleton<TokenService>(); // scope validation throws in Dev`,
+      right: `// IOptionsMonitor is Singleton-safe and always has current values
+public class TokenService(IOptionsMonitor<JwtOptions> opts)
+{
+    public string Issuer => opts.CurrentValue.Issuer;
+}
+builder.Services.AddSingleton<TokenService>();`,
+      explanation: 'IOptionsSnapshot<T> is Scoped — injecting it into a Singleton creates a captive dependency that never re-resolves. ASP.NET Core throws InvalidOperationException in Development when scope validation is enabled. Use IOptionsMonitor<T> in Singletons and background services.',
+    },
+    {
+      title: 'Skipping ValidateOnStart() — discovering bad config on the first request',
+      wrong: `builder.Services
+    .AddOptions<DatabaseOptions>()
+    .BindConfiguration("Database")
+    .ValidateDataAnnotations();   // lazy — validates on first IOptions<T>.Value access
+// If "Database:Host" is missing, Production gets a 500 on the first user request`,
+      right: `builder.Services
+    .AddOptions<DatabaseOptions>()
+    .BindConfiguration("Database")
+    .ValidateDataAnnotations()
+    .ValidateOnStart();   // throws during startup before accepting any traffic`,
+      explanation: 'Without ValidateOnStart(), DataAnnotations validation is lazy — it fires on the first IOptions<T>.Value access, which is typically on the first HTTP request in Production. ValidateOnStart() makes the app refuse to start with a clear error message, preventing bad config from reaching users.',
+    },
+    {
+      title: 'Using ":" in environment variable names on Linux/Docker',
+      wrong: `# Linux shell: colon in variable names is invalid / ignored
+export Database:Host=prod-db   # syntax error on bash
+# Or in docker-compose:
+  environment:
+    - Database:Host=prod-db     # silently ignored on Linux`,
+      right: `# Use double underscore — ASP.NET Core maps __ to :
+export Database__Host=prod-db   # correctly maps to Database:Host in code
+# docker-compose:
+  environment:
+    - Database__Host=prod-db`,
+      explanation: 'Colons are not valid characters in environment variable names on Linux and macOS. ASP.NET Core\'s environment variable provider maps double underscores (__) to colons (:) in configuration keys. Using : in Docker or Kubernetes config files silently fails — the variable is never set, and the configuration falls back to the default or missing value.',
+    },
+    {
+      title: 'Storing secrets in appsettings.json and committing to source control',
+      wrong: `// appsettings.json (COMMITTED TO GIT)
+{
+  "Jwt": {
+    "Secret": "my-super-secret-signing-key-12345"  // ← exposed to every dev and CI system
+  }
+}`,
+      right: `// Development: use user-secrets (stored outside the repo)
+// dotnet user-secrets set "Jwt:Secret" "my-super-secret-signing-key-12345"
+
+// Production: inject via environment variable or Key Vault
+// ASPNETCORE_Jwt__Secret=... (env var in Docker/Kubernetes)`,
+      explanation: 'appsettings.json is tracked by Git. Any secret stored there is immediately exposed to anyone with repo access, appears in pull request diffs, and persists in Git history even after deletion. Use dotnet user-secrets for local development and environment variables or a secrets manager for every deployed environment.',
+    },
+    {
+      title: 'Reading IConfiguration directly in handlers instead of using IOptions<T>',
+      wrong: `// BUG: reads config string on every request — no type safety, no caching
+app.MapGet("/timeout", (IConfiguration config) =>
+    int.Parse(config["Http:TimeoutSeconds"]!));   // throws if missing; not validated at startup`,
+      right: `// Register at startup
+builder.Services.AddOptions<HttpOptions>()
+    .BindConfiguration("Http")
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+// Inject typed, validated, cached options
+app.MapGet("/timeout", (IOptions<HttpOptions> opts) => opts.Value.TimeoutSeconds);`,
+      explanation: 'Injecting IConfiguration into handlers bypasses the Options pattern: no type safety, no startup validation, no caching. Every request parses a raw string. IOptions<T> binds the section once, validates at startup, and provides a strongly-typed POCO — the right tool for all non-trivial configuration.',
+    },
+    {
+      title: 'Forgetting that environment-specific appsettings files must match the ASPNETCORE_ENVIRONMENT value exactly',
+      wrong: `// File: appsettings.production.json   ← lowercase 'p'
+// Environment variable: ASPNETCORE_ENVIRONMENT=Production  ← capital 'P'
+// Result: file is never loaded — ASP.NET Core does a case-sensitive match on the file name`,
+      right: `// File: appsettings.Production.json   ← matches ASPNETCORE_ENVIRONMENT exactly
+// The match is case-sensitive on Linux — use exact casing in the filename`,
+      explanation: 'On Linux (and in Docker) the file system is case-sensitive. appsettings.Production.json and appsettings.production.json are different files. ASPNETCORE_ENVIRONMENT=Production will only load appsettings.Production.json. On Windows this bug hides because the file system is case-insensitive — it surfaces only in production Linux containers.',
+    },
+  ];
+
+  revision: RevisionSummary = {
+    oneLiner: 'ASP.NET Core configuration layers providers (JSON → env vars → CLI args) into a unified IConfiguration; the Options pattern binds sections to typed classes with three lifetime variants — IOptions (startup snapshot), IOptionsSnapshot (per-request reload), IOptionsMonitor (singleton with live updates).',
+    mustKnow: [
+      'Provider order: appsettings.json → appsettings.{Env}.json → user secrets → env vars → CLI args — later wins',
+      'Nested keys use <code>:</code> in code and JSON; use <code>__</code> (double underscore) in environment variables',
+      '<code>IOptions&lt;T&gt;</code> Singleton/snapshot; <code>IOptionsSnapshot&lt;T&gt;</code> Scoped/per-request; <code>IOptionsMonitor&lt;T&gt;</code> Singleton/live',
+      'Never inject <code>IOptionsSnapshot&lt;T&gt;</code> into a Singleton — captive dependency, throws in Dev',
+      '<code>ValidateOnStart()</code> enforces eager validation at startup; without it, bad config surfaces on the first request',
+      'Secrets: user secrets in Dev (outside repo), environment variables or Key Vault in Production — never appsettings.json',
+      '<code>PostConfigure&lt;T&gt;</code> runs after all Configure registrations — use for computed defaults or cross-cutting overrides',
+    ],
+    interviewFocus: [
+      'What is the difference between IOptions, IOptionsSnapshot, and IOptionsMonitor?',
+      'Why is injecting IOptionsSnapshot into a Singleton a bug? What should you use instead?',
+      'How do you represent the nested key "Database:Host" as an environment variable?',
+      'Why should ValidateOnStart() be used in production apps?',
+      'How do named options work, and when would you use them?',
+    ],
+  };
 }

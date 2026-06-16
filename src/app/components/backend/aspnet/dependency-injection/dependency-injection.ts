@@ -5,6 +5,9 @@ import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block'
 import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
 import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
 import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PrerequisitesComponent, Prerequisite } from '../../../shared/prerequisites/prerequisites';
 import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
 
@@ -14,12 +17,18 @@ import { PageCompleteComponent } from '../../../shared/page-complete/page-comple
   imports: [
     CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent,
     QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent,
+    CommonMistakesComponent, RevisionCardComponent, PrerequisitesComponent,
     PageMetaComponent, PageCompleteComponent,
   ],
   templateUrl: './dependency-injection.html',
   styleUrl: './dependency-injection.scss',
 })
 export class AspnetDependencyInjection {
+
+  prerequisites: Prerequisite[] = [
+    { label: 'Hosting & Startup', route: '/aspnet/hosting-startup' },
+    { label: 'Configuration & Options', route: '/aspnet/configuration' },
+  ];
 
   quickRef: QuickRefItem[] = [
     { name: 'AddSingleton<TService, TImpl>()', type: 'method',    desc: 'One instance for the entire application lifetime', since: 'Core 1+' },
@@ -38,46 +47,64 @@ export class AspnetDependencyInjection {
     {
       heading: 'Service lifetimes — Singleton, Scoped, Transient',
       points: [
-        '<strong>Singleton</strong>: one instance is created the first time it is requested and reused for the entire application lifetime. Safe for stateless services and caches. Must be thread-safe because multiple requests access the same instance concurrently.',
-        '<strong>Scoped</strong>: one instance per <em>scope</em>. In ASP.NET Core, a new scope is created per HTTP request, so each request gets its own instance — ideal for DbContext, unit-of-work, and per-request state. Never use across requests.',
-        '<strong>Transient</strong>: a fresh instance is created every time the service is resolved from DI. Best for lightweight, stateless services (validators, formatters). Avoid for expensive objects — a new instance is allocated on every injection point.',
-        'The rule of thumb: <em>Scoped by default</em> for services with per-request state; <em>Singleton</em> for thread-safe shared state; <em>Transient</em> for cheap stateless utilities.',
+        '<strong>Singleton</strong>: one instance is created the first time it is requested and reused for the entire application lifetime. All requests share the same object — must be thread-safe because concurrent requests access it simultaneously. Use for caches, configuration wrappers, HTTP clients, and stateless services.',
+        '<strong>Scoped</strong>: one instance per <em>scope</em>. In ASP.NET Core, a new <code>IServiceScope</code> is created for each HTTP request, so each request gets its own fresh instance. Perfect for <code>DbContext</code>, unit-of-work, per-request state, and services that should not bleed state between requests.',
+        '<strong>Transient</strong>: a brand-new instance is created every time the service is resolved from DI — even multiple times within the same request. Best for lightweight, stateless utilities (validators, mappers, formatters). Avoid for expensive objects or objects that hold open connections.',
+        'Choosing wrong costs you correctness, not just performance: a Scoped DbContext in a Singleton will serve stale entity-tracking state to every request after the first. A Transient <code>HttpClient</code> creates a new socket per resolution, exhausting ports under load.',
+        'The rule of thumb: <em>Scoped by default</em> for services with per-request state; <em>Singleton</em> for thread-safe shared state; <em>Transient</em> only for cheap, truly stateless utilities that must not share any field between callers.',
+        'Scope validation (enabled by default in Development via <code>WebApplication.CreateBuilder</code>) catches lifetime mismatches at startup rather than at runtime under load. Never disable it.',
       ],
     },
     {
       heading: 'Registration patterns',
       points: [
-        '<strong>Interface + implementation</strong>: <code>services.AddScoped&lt;IOrderService, OrderService&gt;()</code>. Consumers depend on the abstraction, enabling substitution (mocks in tests, alternative implementations).',
-        '<strong>Self-registration</strong>: <code>services.AddSingleton&lt;EmailSender&gt;()</code> — no interface. Simpler but tightly coupled. Fine for concrete utilities that are never swapped.',
-        '<strong>Factory registration</strong>: <code>services.AddScoped&lt;ICache&gt;(sp => new RedisCache(sp.GetRequiredService&lt;IOptions&lt;RedisOptions&gt;&gt;().Value))</code>. Use when construction logic depends on other services or runtime values.',
-        '<strong>Open-generic registration</strong>: <code>services.AddScoped(typeof(IRepository&lt;&gt;), typeof(Repository&lt;&gt;))</code>. One line covers all <code>IRepository&lt;T&gt;</code> variants for any entity type.',
+        '<strong>Interface + implementation</strong>: <code>services.AddScoped&lt;IOrderService, OrderService&gt;()</code>. Consumers depend on the abstraction — this enables mocking in tests, alternative implementations in different environments, and decorator wrapping without changing call sites.',
+        '<strong>Self-registration</strong>: <code>services.AddSingleton&lt;EmailSender&gt;()</code> — no interface. Simpler but tightly coupled. Fine for internal concrete utilities that are never substituted and never need mocking.',
+        '<strong>Factory registration</strong>: <code>services.AddScoped&lt;ICache&gt;(sp => new RedisCache(sp.GetRequiredService&lt;IOptions&lt;RedisOptions&gt;&gt;().Value))</code>. Use when construction logic depends on other services resolved from DI, on runtime configuration values, or on environment-specific conditions.',
+        '<strong>Open-generic registration</strong>: <code>services.AddScoped(typeof(IRepository&lt;&gt;), typeof(EfRepository&lt;&gt;))</code>. One line covers <code>IRepository&lt;Order&gt;</code>, <code>IRepository&lt;Product&gt;</code>, and every other entity type — no per-entity registration needed.',
+        '<strong>Multiple implementations</strong>: calling <code>AddScoped&lt;INotifier, Email&gt;()</code> then <code>AddScoped&lt;INotifier, Sms&gt;()</code> registers both. Inject <code>IEnumerable&lt;INotifier&gt;</code> to receive all; inject <code>INotifier</code> to get only the last-registered.',
+        '<strong>Instance registration</strong>: <code>services.AddSingleton&lt;IConfig&gt;(myConfigInstance)</code> — supplies a pre-built instance. The container does not own its disposal; you must handle lifetime yourself.',
       ],
     },
     {
       heading: 'Captive dependency — the most common lifetime bug',
       points: [
-        'A <strong>captive dependency</strong> occurs when a longer-lived service holds a reference to a shorter-lived one. The most common case: a <em>Singleton</em> that depends on a <em>Scoped</em> service.',
-        'The Scoped service is resolved <em>once</em> when the Singleton is first created and then held forever — it is never freed at the end of a request. This defeats the point of Scoped (per-request isolation) and can cause data leakage between requests.',
-        'ASP.NET Core detects this in Development with scope validation (enabled by default). The startup exception message is: <em>"Cannot consume scoped service from singleton"</em>.',
-        'Fix: restructure so the Singleton does not depend on the Scoped service directly. Inject <code>IServiceScopeFactory</code> and create a scope explicitly when you need per-operation work (see the code tab).',
+        'A <strong>captive dependency</strong> occurs when a longer-lived service holds a reference to a shorter-lived one. The most common case: a <em>Singleton</em> that constructor-injects a <em>Scoped</em> service.',
+        'The Scoped service is resolved <em>once</em> when the Singleton is first created and then held for the entire application lifetime — it is never freed at request end. The DbContext accumulates change-tracker state across thousands of requests, leaking memory and potentially returning stale or wrong data.',
+        'ASP.NET Core detects this in Development with scope validation enabled by default. The startup exception reads: <em>"Cannot consume scoped service \'AppDbContext\' from singleton \'ReportService\'."</em> This is intentional — fail fast beats silently corrupt data in production.',
+        'Scope validation only fires in Development by default. In Production the captive dependency silently "works" until load reveals the concurrency bug. Enable it in Production too: <code>builder.Host.UseDefaultServiceProvider(o => o.ValidateScopes = true)</code>.',
+        'Fix: restructure the Singleton to not depend on the Scoped service directly. Inject <code>IServiceScopeFactory</code> and create a scope explicitly per unit-of-work — this is the correct pattern for background services and singletons that occasionally need per-operation database access.',
+        'Transient-in-Singleton is also a captive dependency, though less commonly noticed — the Transient instance is captured forever in the Singleton\'s field, making it effectively a Singleton itself and potentially thread-unsafe.',
       ],
     },
     {
       heading: 'Resolving Scoped services from Singletons',
       points: [
-        'Background services (<code>BackgroundService</code>) are Singletons. If they need to use Scoped services (DbContext, repositories), they must create a manual scope for each unit of work.',
-        'Inject <code>IServiceScopeFactory</code> into the Singleton constructor. Inside the method that does work, call <code>using var scope = factory.CreateScope()</code> and resolve the Scoped service from <code>scope.ServiceProvider</code>.',
-        'Each <code>using</code> block creates and disposes a complete scope — DbContext connections are released, unit-of-work transactions are committed or rolled back, and per-scope state is reset.',
-        'Never store the resolved Scoped service in a field on the Singleton — that recreates the captive dependency. Always resolve fresh from the scope within the unit-of-work boundary.',
+        'Background services (<code>BackgroundService</code>) are registered as Singletons by <code>AddHostedService&lt;T&gt;()</code>. If they need Scoped services (DbContext, repositories), they must manually create and dispose a scope for each unit of work.',
+        'Inject <code>IServiceScopeFactory</code> into the Singleton constructor. For each batch of work call <code>await using var scope = factory.CreateAsyncScope()</code> and resolve services from <code>scope.ServiceProvider.GetRequiredService&lt;T&gt;()</code>.',
+        'Each <code>await using</code> block creates a complete scope boundary: DbContext connections are returned to the pool, unit-of-work transactions complete, and per-scope state is discarded. The next iteration starts fresh.',
+        'Never store the resolved Scoped service in a field on the Singleton — that recreates the captive dependency exactly. Always resolve within the <code>using</code> block and let it go out of scope.',
+        '<code>CreateAsyncScope()</code> (.NET 6+) is preferred over <code>CreateScope()</code> when any service in the scope implements <code>IAsyncDisposable</code> (DbContext does). Using the sync version with an async-disposable service produces a compiler warning and may not correctly await disposal.',
       ],
     },
     {
-      heading: 'TryAdd*, keyed services, and advanced registration',
+      heading: 'TryAdd*, keyed services, and advanced patterns',
       points: [
-        '<code>TryAddSingleton&lt;T&gt;()</code> / <code>TryAddScoped&lt;T&gt;()</code> registers the service <em>only if no registration already exists</em> for that interface. Library authors use this so app code can override library defaults.',
-        '<strong>Keyed services</strong> (.NET 8+): register multiple implementations of the same interface with a key: <code>services.AddKeyedScoped&lt;IPaymentGateway, Stripe&gt;("stripe")</code> and <code>services.AddKeyedScoped&lt;IPaymentGateway, PayPal&gt;("paypal")</code>. Inject with <code>[FromKeyedServices("stripe")] IPaymentGateway gateway</code>.',
-        '<strong>Decorator pattern</strong> via DI: register the inner implementation first, then register the outer one using a factory that wraps it: <code>services.AddSingleton&lt;ICache, DecoratedCache&gt;(sp => new DecoratedCache(sp.GetRequiredService&lt;MemoryCache&gt;()))</code>.',
-        '<code>ActivatorUtilities.CreateInstance&lt;T&gt;(provider, extraArg1, extraArg2)</code> creates an instance by mixing DI-resolved services with manually supplied constructor arguments. Useful for middleware and command handlers not registered in DI.',
+        '<code>TryAddSingleton&lt;T&gt;()</code> / <code>TryAddScoped&lt;T&gt;()</code> registers the service <em>only if no registration already exists</em> for that interface. Library authors use this so app code can register its own implementation first and the library fallback is used only when no override is present.',
+        '<strong>Keyed services</strong> (.NET 8+): register multiple implementations of the same interface by a string (or any object) key: <code>services.AddKeyedScoped&lt;IPaymentGateway, StripeGateway&gt;("stripe")</code>. Inject with <code>[FromKeyedServices("stripe")] IPaymentGateway gw</code> or resolve via <code>sp.GetRequiredKeyedService&lt;IPaymentGateway&gt;("stripe")</code>.',
+        '<strong>Decorator pattern</strong>: register the inner implementation as a concrete type, then register the interface using a factory that wraps it: <code>services.AddSingleton&lt;ICache&gt;(sp => new LoggingCache(sp.GetRequiredService&lt;MemoryCache&gt;(), sp.GetRequiredService&lt;ILogger&lt;LoggingCache&gt;&gt;()))</code>.',
+        '<code>ActivatorUtilities.CreateInstance&lt;T&gt;(provider, extraArg)</code> creates an instance mixing DI-resolved services with manually supplied constructor arguments — useful for middleware, command-pattern handlers, or plugin objects not registered in DI.',
+        'Use <code>services.AddOptions&lt;T&gt;().Configure&lt;IDep&gt;((opts, dep) => { ... })</code> to inject a DI service into an options configuration callback — this is cleaner than building a full <code>IConfigureOptions&lt;T&gt;</code> class for simple cases.',
+      ],
+    },
+    {
+      heading: 'Disposal, validation, and production hardening',
+      points: [
+        'The DI container tracks <code>IDisposable</code> and <code>IAsyncDisposable</code> services it creates and disposes them when the owning scope ends. For request-scoped services, disposal happens after the HTTP response completes. For singletons, disposal happens on application shutdown.',
+        'If you resolve a Transient <code>IDisposable</code> from the <em>root</em> container (outside any scope), the root container holds it until app shutdown — effectively a memory leak. Always resolve disposables inside a scope.',
+        'Enable scope validation in all environments: <code>builder.Host.UseDefaultServiceProvider(o => { o.ValidateScopes = true; o.ValidateOnBuild = true; })</code>. <code>ValidateOnBuild</code> checks that all registered service types can actually be resolved at startup — catches typos and missing registrations before the first request.',
+        'For startup work requiring DI (e.g., database migrations): create a scope from <code>app.Services</code> before <code>app.Run()</code> — <code>await using var scope = app.Services.CreateAsyncScope(); await scope.ServiceProvider.GetRequiredService&lt;AppDbContext&gt;().Database.MigrateAsync();</code>',
+        'Prefer constructor injection over property injection and method injection. Constructor injection makes dependencies explicit, required, and visible in the type signature — tools like the DI scope validator and code analysers can reason about them.',
       ],
     },
   ];
@@ -409,6 +436,39 @@ public class JobMetrics
       answer: 1,
       explanation: 'Transient creates a new instance every time the service is resolved, even within the same request. Use it for lightweight, stateless utilities (formatters, validators, mappers) where sharing state between injection points in the same request would be wrong. For most services with per-request state, Scoped is a better fit.',
     },
+    {
+      q: 'What does ValidateOnBuild do when added to UseDefaultServiceProvider options?',
+      options: [
+        'It runs all registered validators (DataAnnotations) during the build phase',
+        'It verifies that every registered service type can be fully resolved at startup — catching missing registrations before the first request',
+        'It prevents services from being added after Build() is called',
+        'It enables scope validation only for Scoped services',
+      ],
+      answer: 1,
+      explanation: '<code>ValidateOnBuild = true</code> causes the DI container to attempt to resolve every registered service graph at startup. If any dependency is missing or unresolvable, an exception is thrown before the app begins accepting traffic. This catches typos, forgotten registrations, and broken dependency chains before users see 500 errors.',
+    },
+    {
+      q: 'A Transient IDisposable is resolved from the root IServiceProvider (outside any HTTP request scope). When is it disposed?',
+      options: [
+        'At the end of the next request',
+        'Immediately after the method that resolved it returns',
+        'At application shutdown — the root container holds it for the entire application lifetime',
+        'It is never disposed — Transient services are not tracked by the container',
+      ],
+      answer: 2,
+      explanation: 'The root container tracks every <code>IDisposable</code> it creates to ensure disposal happens eventually. A Transient resolved from the root container is held until the root scope ends — which is application shutdown. This is effectively a memory leak for long-running apps. Always resolve Transient disposables inside a request scope or a manually created <code>IServiceScope</code>.',
+    },
+    {
+      q: 'You inject IEnumerable<INotifier> but only one implementation is registered. What do you get?',
+      options: [
+        'null',
+        'An empty enumerable',
+        'An enumerable containing the one registered implementation',
+        'A runtime exception because IEnumerable<T> requires at least two implementations',
+      ],
+      answer: 2,
+      explanation: 'Injecting <code>IEnumerable&lt;T&gt;</code> always returns a collection of <em>all</em> registered implementations of <code>T</code>, including zero or one. It never throws for a missing or single registration. This makes it ideal for plugin-style systems where the number of implementations varies — the consuming code loops over whatever is registered.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -434,7 +494,141 @@ public class JobMetrics
     },
     {
       q: 'How do I perform startup work that needs DI services (e.g., run database migrations)?',
-      a: 'Create a scope from <code>app.Services</code> before calling <code>app.Run()</code>: <code>using var scope = app.Services.CreateScope(); var db = scope.ServiceProvider.GetRequiredService&lt;AppDbContext&gt;(); await db.Database.MigrateAsync();</code>. This resolves Scoped services (like DbContext) safely. Alternatively, implement <code>IHostedLifecycleService</code> (.NET 8+) and put the migration in <code>StartingAsync</code> — it runs before the HTTP server begins accepting requests.',
+      a: 'Create a scope from <code>app.Services</code> before calling <code>app.Run()</code>: <code>await using var scope = app.Services.CreateAsyncScope(); var db = scope.ServiceProvider.GetRequiredService&lt;AppDbContext&gt;(); await db.Database.MigrateAsync();</code>. This resolves Scoped services (like DbContext) safely. Alternatively, implement <code>IHostedLifecycleService</code> (.NET 8+) and put the migration in <code>StartingAsync</code> — it runs before the HTTP server begins accepting requests.',
+    },
+    {
+      q: 'How does the Decorator pattern work with the built-in DI container?',
+      a: 'The built-in container does not support decoration directly via <code>Decorate&lt;T&gt;()</code>. The workaround is factory registration: register the inner implementation as its concrete type (not the interface), then register the interface with a factory lambda that resolves the inner type and wraps it: <code>services.AddSingleton&lt;MemoryCache&gt;(); services.AddSingleton&lt;ICache&gt;(sp => new LoggingCache(sp.GetRequiredService&lt;MemoryCache&gt;()))</code>. For cleaner syntax, use <strong>Scrutor</strong> (<code>services.Decorate&lt;ICache, LoggingCache&gt;()</code>).',
+    },
+    {
+      q: 'What is the difference between IServiceProvider.CreateScope() and IServiceScopeFactory.CreateScope()?',
+      a: 'Both create a new <code>IServiceScope</code>. <code>IServiceProvider.CreateScope()</code> is an extension method that internally calls <code>IServiceScopeFactory.CreateScope()</code> — they are equivalent. The convention in background services is to inject <code>IServiceScopeFactory</code> directly because it expresses the intent more clearly and avoids a dependency on <code>IServiceProvider</code> (which is the service-locator anti-pattern). Use <code>CreateAsyncScope()</code> when any service in the scope is <code>IAsyncDisposable</code>.',
     },
   ];
+
+  mistakes: CommonMistake[] = [
+    {
+      title: 'Captive dependency: Singleton depending on Scoped service',
+      wrong: `// BUG: Singleton captures a Scoped DbContext at construction — never freed
+public class ReportService(AppDbContext db) { }   // ReportService = Singleton
+builder.Services.AddSingleton<ReportService>();
+builder.Services.AddDbContext<AppDbContext>();     // DbContext = Scoped
+// Throws in Dev: "Cannot consume scoped service from singleton"`,
+      right: `// FIX: inject IServiceScopeFactory and create a scope per unit of work
+public class ReportService(IServiceScopeFactory factory)
+{
+    public async Task<Report> GenerateAsync(int id)
+    {
+        await using var scope = factory.CreateAsyncScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        return new Report(await db.Orders.Where(o => o.ReportId == id).ToListAsync());
+    }
+}`,
+      explanation: 'A Singleton capturing a Scoped service keeps it alive for the entire app lifetime — DbContext accumulates entity-tracking state across thousands of requests, leaking memory and returning stale data. Scope validation throws in Development to catch this. Use IServiceScopeFactory to create a fresh scope per unit of work.',
+    },
+    {
+      title: 'Resolving a Transient IDisposable from the root container',
+      wrong: `// BUG: root container holds IDisposable until app shutdown
+var app = builder.Build();
+var conn = app.Services.GetRequiredService<IDbConnection>(); // Transient + IDisposable
+// conn is tracked by root IServiceProvider — never disposed during normal operation`,
+      right: `// Always resolve disposables inside a scope
+await using var scope = app.Services.CreateAsyncScope();
+var conn = scope.ServiceProvider.GetRequiredService<IDbConnection>();
+// conn is disposed when scope ends`,
+      explanation: 'The root IServiceProvider tracks every IDisposable it creates. A Transient disposable resolved from the root is held until application shutdown — a slow memory leak. Always wrap resolution of disposable services in an IServiceScope so disposal happens at the right time.',
+    },
+    {
+      title: 'Using AddScoped twice instead of TryAddScoped for library defaults',
+      wrong: `// Library code
+services.AddScoped<IIdGenerator, GuidIdGenerator>();   // registers first
+
+// App code — intending to override
+services.AddScoped<IIdGenerator, SequentialIdGenerator>(); // registers second
+
+// Injecting IIdGenerator returns SequentialIdGenerator (last wins)
+// Injecting IEnumerable<IIdGenerator> returns BOTH — unexpected duplicates`,
+      right: `// Library code — use TryAdd so app can override
+services.TryAddScoped<IIdGenerator, GuidIdGenerator>();
+
+// App code registered first takes precedence; library default is only a fallback
+services.AddScoped<IIdGenerator, SequentialIdGenerator>(); // registers before library TryAdd`,
+      explanation: 'AddScoped always adds a registration, even if one exists. Injecting the interface then returns the last-registered implementation; injecting IEnumerable<T> returns all of them — causing duplicate processing in fan-out patterns. TryAddScoped is a no-op when a registration already exists, making it the correct choice for library default registrations.',
+    },
+    {
+      title: 'Using the service locator pattern (GetRequiredService) in application services',
+      wrong: `public class OrderService(IServiceProvider sp)
+{
+    public async Task ProcessAsync(Order order)
+    {
+        // Hidden dependency — not visible in the constructor signature
+        var repo = sp.GetRequiredService<IOrderRepository>();
+        await repo.SaveAsync(order);
+    }
+}`,
+      right: `public class OrderService(IOrderRepository repo)   // explicit, testable
+{
+    public async Task ProcessAsync(Order order)
+        => await repo.SaveAsync(order);
+}`,
+      explanation: 'Injecting IServiceProvider hides dependencies — unit tests must set up the entire container instead of just mocking one interface. Scope validation cannot analyse the hidden resolution. Constructor injection makes all dependencies explicit, enables scope validation, and keeps tests simple.',
+    },
+    {
+      title: 'Forgetting that BackgroundService is Singleton — injecting Scoped services directly',
+      wrong: `public class DataSyncJob(AppDbContext db) : BackgroundService  // WRONG
+{
+    protected override async Task ExecuteAsync(CancellationToken ct)
+    {
+        // db is the same captured instance forever — entity tracking bloat
+        while (!ct.IsCancellationRequested) { await SyncAsync(db); }
+    }
+}
+builder.Services.AddHostedService<DataSyncJob>();  // Singleton — throws in Dev`,
+      right: `public class DataSyncJob(IServiceScopeFactory factory) : BackgroundService
+{
+    protected override async Task ExecuteAsync(CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested)
+        {
+            await using var scope = factory.CreateAsyncScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            await SyncAsync(db);
+            await Task.Delay(TimeSpan.FromSeconds(30), ct);
+        }
+    }
+}`,
+      explanation: 'AddHostedService registers the service as a Singleton. Constructor-injecting a Scoped DbContext is a captive dependency — it throws in Development. Use IServiceScopeFactory to create a fresh scope per batch of work so DbContext is properly disposed and change-tracking state resets between runs.',
+    },
+    {
+      title: 'Not enabling ValidateOnBuild in staging/production',
+      wrong: `// Default: scope validation on in Dev, but ValidateOnBuild is off
+// Missing service registration surfaces as 500 on the first request in Production`,
+      right: `builder.Host.UseDefaultServiceProvider(options =>
+{
+    options.ValidateScopes  = true;   // catch captive dependencies
+    options.ValidateOnBuild = true;   // catch missing registrations at startup
+});`,
+      explanation: 'ValidateOnBuild walks the full service graph at startup and throws if any dependency cannot be resolved. Without it, a missing AddScoped call causes the first affected HTTP request to throw an unhandled exception. Enabling it in all environments makes misconfigured DI a startup failure rather than a runtime surprise for users.',
+    },
+  ];
+
+  revision: RevisionSummary = {
+    oneLiner: 'ASP.NET Core\'s built-in DI container manages service lifetimes — Singleton (one forever), Scoped (one per request), Transient (new every time) — and validates the dependency graph at startup to catch captive dependencies and missing registrations before they hit production.',
+    mustKnow: [
+      '<strong>Lifetimes</strong>: Singleton = one for the app; Scoped = one per HTTP request; Transient = new on every resolve',
+      '<strong>Captive dependency</strong>: Singleton holding a Scoped service → Scoped never freed, data leaks between requests',
+      'Fix captive: inject <code>IServiceScopeFactory</code>, create <code>await using var scope = factory.CreateAsyncScope()</code> per unit of work',
+      '<code>TryAddScoped</code> registers only if no existing registration — use in library code so apps can override',
+      '<strong>Keyed services</strong> (.NET 8+): <code>AddKeyedScoped&lt;I, Impl&gt;("key")</code> + <code>[FromKeyedServices("key")]</code> for multiple implementations',
+      'Transient <code>IDisposable</code> from root container leaks until shutdown — always resolve inside a scope',
+      '<code>ValidateOnBuild = true</code> walks the whole graph at startup — catches missing registrations before first request',
+    ],
+    interviewFocus: [
+      'What is a captive dependency and how do you fix it?',
+      'Why is BackgroundService a Singleton, and how do you use DbContext inside one?',
+      'What is the difference between Singleton, Scoped, and Transient — and how do you choose?',
+      'What does ValidateOnBuild do and why should it be enabled beyond Development?',
+      'How do you register multiple implementations of the same interface and consume all of them?',
+    ],
+  };
 }

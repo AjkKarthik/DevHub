@@ -1,20 +1,30 @@
-<div class="aspnet-page">
-  <div class="page-header-icon aspnet-icon">⚡</div>
+<div class="asp-page">
+  <div class="page-header-icon asp-icon">ASP</div>
   <h1 class="page-title">Rate Limiting</h1>
-  <p class="page-subtitle">Built-in .NET 7+ rate limiting middleware — fixed window, sliding window, token bucket, concurrency, and per-user partitioned limiters.</p>
+  <p class="page-subtitle">Fixed window, sliding window, token bucket, and concurrency limiters — protecting your API from abuse, bursts, and resource exhaustion in ASP.NET Core.</p>
 
-  <app-page-meta [readingTime]="22" difficulty="intermediate" since=".NET 7+" tech="aspnet" />
+  <app-page-meta [readingTime]="35" difficulty="intermediate" since=".NET 7+" tech="aspnet" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
 
-  <section class="aspnet-section">
+  <section class="asp-section">
     <h2>Code Examples</h2>
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
 
   <app-page-complete route="aspnet-rate-limiting" nextRoute="/aspnet/web-security" nextLabel="Web Security Essentials" />
 </div>

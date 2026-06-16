@@ -456,41 +456,41 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-16 `aspnet/hosting-startup` — Generic Host, WebApplication.CreateBuilder, IHostedService, startup order
 - [x] 2026-06-16 `aspnet/middleware` — pipeline order, short-circuit, IMiddlewareFactory, terminal middleware
 - [ ] `aspnet/routing` — endpoint routing, route constraints, route groups, MapGroup
-- [ ] `aspnet/configuration` — IConfiguration, Options pattern, IOptionsSnapshot, secrets
-- [ ] `aspnet/dependency-injection` — lifetimes (singleton/scoped/transient), keyed services, factory
-- [ ] `aspnet/logging` — ILogger, structured logging, log levels, Serilog/OpenTelemetry integration
+- [x] 2026-06-16 `aspnet/configuration` — IConfiguration, Options pattern, IOptionsSnapshot, secrets
+- [x] 2026-06-16 `aspnet/dependency-injection` — lifetimes (singleton/scoped/transient), keyed services, factory
+- [x] 2026-06-16 `aspnet/logging` — ILogger, structured logging, log levels, Serilog/OpenTelemetry integration
 
 **API layer**
-- [ ] `aspnet/controllers` — ApiController, ModelState, ActionResult<T>, problem details
-- [ ] `aspnet/minimal-apis` — route handlers, TypedResults, endpoint filters, groups, OpenAPI
-- [ ] `aspnet/model-binding` — [FromBody]/[FromRoute]/[FromQuery], custom binders, validation
-- [ ] `aspnet/filters` — action/exception/resource/auth filters, IFilterFactory, ordering
-- [ ] `aspnet/error-handling` — UseExceptionHandler, ProblemDetails middleware, IProblemDetailsService
-- [ ] `aspnet/api-versioning` — URL/header/query versioning, Asp.Versioning, deprecation
-- [ ] `aspnet/openapi-swagger` — Scalar, Swashbuckle, XML comments, security definitions
+- [x] 2026-06-16 `aspnet/controllers` — ApiController, ModelState, ActionResult<T>, problem details
+- [x] `aspnet/minimal-apis` — route handlers, TypedResults, endpoint filters, groups, OpenAPI (2026-06-16)
+- [x] `aspnet/model-binding` — [FromBody]/[FromRoute]/[FromQuery], custom binders, validation (2026-06-16)
+- [x] `aspnet/filters` — action/exception/resource/auth filters, IFilterFactory, ordering (2026-06-16)
+- [x] `aspnet/error-handling` — UseExceptionHandler, ProblemDetails middleware, IProblemDetailsService (2026-06-16)
+- [x] `aspnet/api-versioning` — URL/header/query versioning, Asp.Versioning, deprecation (2026-06-16)
+- [x] `aspnet/openapi-swagger` — Scalar, Swashbuckle, XML comments, security definitions (2026-06-16)
 
 **Data**
-- [ ] `aspnet/ef-core-basics` — DbContext lifetime, no-tracking, SaveChanges, transactions
-- [ ] `aspnet/ef-relationships` — one-to-many, many-to-many, owned entities, table splitting
-- [ ] `aspnet/ef-performance` — compiled queries, split queries, connection resiliency, bulk ops
+- [x] `aspnet/ef-core-basics` — DbContext lifetime, no-tracking, SaveChanges, transactions (2026-06-16)
+- [x] `aspnet/ef-relationships` — one-to-many, many-to-many, owned entities, table splitting (2026-06-16)
+- [x] `aspnet/ef-performance` — compiled queries, split queries, connection resiliency, bulk ops (2026-06-16)
 
 **Security**
-- [ ] `aspnet/authentication` — JWT bearer, cookie auth, IAuthenticationHandler, scheme selection
-- [ ] `aspnet/authorization` — policies, requirements, resource-based auth, IAuthorizationHandler
-- [ ] `aspnet/cors` — policy builder, pre-flight, credentials, CORS with minimal APIs
-- [ ] `aspnet/web-security` — CSRF, XSS, security headers, HTTPS enforcement, HSTS
-- [ ] `aspnet/secrets` — User Secrets, Azure Key Vault, DPAPI, ISecretManager
-- [ ] `aspnet/rate-limiting` — sliding window, fixed window, token bucket, concurrency limiter
+- [x] `aspnet/authentication` — JWT bearer, cookie auth, IAuthenticationHandler, scheme selection (2026-06-16)
+- [x] `aspnet/authorization` — policies, requirements, resource-based auth, IAuthorizationHandler (2026-06-16)
+- [x] `aspnet/cors` — policy builder, pre-flight, credentials, CORS with minimal APIs (2026-06-16)
+- [x] `aspnet/web-security` — CSRF, XSS, security headers, HTTPS enforcement, HSTS (2026-06-16)
+- [x] `aspnet/secrets` — User Secrets, Azure Key Vault, DPAPI, ISecretManager (2026-06-16)
+- [x] 2026-06-16 `aspnet/rate-limiting` — sliding window, fixed window, token bucket, concurrency limiter
 
 **Advanced**
-- [ ] `aspnet/http-clients` — IHttpClientFactory, typed clients, Polly v8, resilience pipeline
-- [ ] `aspnet/grpc` — protobuf service/message, Grpc.AspNetCore, client factory, streaming
-- [ ] `aspnet/caching` — IMemoryCache, IDistributedCache, Redis, output caching, cache tags
-- [ ] `aspnet/static-files` — StaticFileOptions, file provider, cache-control headers
+- [x] 2026-06-16 `aspnet/http-clients` — IHttpClientFactory, typed clients, Polly v8, resilience pipeline
+- [x] 2026-06-16 `aspnet/grpc` — protobuf service/message, Grpc.AspNetCore, client factory, streaming
+- [x] 2026-06-16 `aspnet/caching` — IMemoryCache, IDistributedCache, Redis, output caching, cache tags
+- [x] 2026-06-16 `aspnet/static-files` — StaticFileOptions, file provider, cache-control headers
 
 **Infrastructure**
-- [ ] `aspnet/background-services` — BackgroundService, IHostedService, Channels integration
-- [ ] `aspnet/health-checks` — AddHealthChecks, IHealthCheck, UI, readiness vs liveness
+- [x] `aspnet/background-services` — BackgroundService, IHostedService, Channels integration (2026-06-16)
+- [x] `aspnet/health-checks` — AddHealthChecks, IHealthCheck, UI, readiness vs liveness (2026-06-16)
 - [ ] `aspnet/testing` — WebApplicationFactory, custom factory, Testcontainers, Respawn
 - [ ] `aspnet/signalr` — hubs, groups, connection lifecycle, scale-out with Redis backplane
 - [ ] `aspnet/deployment` — Kestrel, IIS, Docker, reverse proxy (NGINX), HTTPS in containers
