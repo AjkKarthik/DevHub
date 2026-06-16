@@ -492,8 +492,8 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] `aspnet/background-services` — BackgroundService, IHostedService, Channels integration (2026-06-16)
 - [x] `aspnet/health-checks` — AddHealthChecks, IHealthCheck, UI, readiness vs liveness (2026-06-16)
 - [x] 2026-06-16 `aspnet/testing` — WebApplicationFactory, custom factory, Testcontainers, Respawn
-- [ ] `aspnet/signalr` — hubs, groups, connection lifecycle, scale-out with Redis backplane
-- [ ] `aspnet/deployment` — Kestrel, IIS, Docker, reverse proxy (NGINX), HTTPS in containers
+- [x] 2026-06-16 `aspnet/signalr` — hubs, groups, connection lifecycle, scale-out with Redis backplane
+- [x] 2026-06-16 `aspnet/deployment` — Kestrel, IIS, Docker, reverse proxy (NGINX), HTTPS in containers
 - [ ] `aspnet/performance` — response compression, response caching, async streaming, BenchmarkDotNet
 - [ ] `aspnet/aspire` — AppHost orchestration, service defaults, dashboard, integrations
 
