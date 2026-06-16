@@ -24,7 +24,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Union & Intersection Types', route: '/typescript/unions', badge: 'Type System', available: true,
     description: 'Union (|), intersection (&), discriminated unions, and type narrowing techniques.',
     keyPoints: ['Discriminated union: shared literal property narrows the type', 'Narrowing: typeof, instanceof, in, custom type predicates (x is T)', 'Exhaustiveness check: default: satisfies never catches missing cases'] },
-  { title: 'Enums & Tuples',             route: '/typescript/enums-tuples', badge: 'Type System', available: false,
+  { title: 'Enums & Tuples',             route: '/typescript/enums-tuples', badge: 'Type System', available: true,
     description: 'Const enums, string enums, numeric enums trade-offs, and fixed-length tuple types.',
     keyPoints: ['const enum: erased at compile time — no runtime object generated', 'String enums are more readable in logs than numeric enums', 'Tuple: [string, number] — exact length and positional types'] },
   { title: 'Generics Fundamentals',      route: '/typescript/generics', badge: 'Generics', available: false,
