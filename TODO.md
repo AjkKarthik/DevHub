@@ -455,7 +455,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Foundation (do first)**
 - [x] 2026-06-16 `aspnet/hosting-startup` — Generic Host, WebApplication.CreateBuilder, IHostedService, startup order
 - [x] 2026-06-16 `aspnet/middleware` — pipeline order, short-circuit, IMiddlewareFactory, terminal middleware
-- [ ] `aspnet/routing` — endpoint routing, route constraints, route groups, MapGroup
+- [x] 2026-06-16 `aspnet/routing` — endpoint routing, route constraints, route groups, MapGroup
 - [x] 2026-06-16 `aspnet/configuration` — IConfiguration, Options pattern, IOptionsSnapshot, secrets
 - [x] 2026-06-16 `aspnet/dependency-injection` — lifetimes (singleton/scoped/transient), keyed services, factory
 - [x] 2026-06-16 `aspnet/logging` — ILogger, structured logging, log levels, Serilog/OpenTelemetry integration
@@ -491,7 +491,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Infrastructure**
 - [x] `aspnet/background-services` — BackgroundService, IHostedService, Channels integration (2026-06-16)
 - [x] `aspnet/health-checks` — AddHealthChecks, IHealthCheck, UI, readiness vs liveness (2026-06-16)
-- [ ] `aspnet/testing` — WebApplicationFactory, custom factory, Testcontainers, Respawn
+- [x] 2026-06-16 `aspnet/testing` — WebApplicationFactory, custom factory, Testcontainers, Respawn
 - [ ] `aspnet/signalr` — hubs, groups, connection lifecycle, scale-out with Redis backplane
 - [ ] `aspnet/deployment` — Kestrel, IIS, Docker, reverse proxy (NGINX), HTTPS in containers
 - [ ] `aspnet/performance` — response compression, response caching, async streaming, BenchmarkDotNet
