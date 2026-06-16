@@ -426,8 +426,8 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [x] 2026-06-15 `angular/e2e` — Playwright vs Cypress for Angular, component testing setup
 
 **Performance & Architecture**
-- [ ] `angular/preloading` — PreloadAllModules vs SelectivePreloading, QuicklinkStrategy
-- [ ] `angular/route-resolvers` — functional resolvers, inject() in resolvers, error handling
+- [x] 2026-06-15 `angular/preloading` — PreloadAllModules vs SelectivePreloading, QuicklinkStrategy
+- [x] 2026-06-15 `angular/route-resolvers` — functional resolvers, inject() in resolvers, error handling
 - [ ] `angular/ssr` — Angular Universal/SSR, hydration, transferState, App Shell
 - [ ] `angular/pwa` — ngsw-config, caching strategies, push notifications, install prompt
 - [ ] `angular/web-workers` — comlink, offloading heavy computation, communication patterns
