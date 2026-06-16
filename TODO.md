@@ -458,7 +458,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 - [ ] `aspnet/routing` — endpoint routing, route constraints, route groups, MapGroup
 - [x] 2026-06-16 `aspnet/configuration` — IConfiguration, Options pattern, IOptionsSnapshot, secrets
 - [x] 2026-06-16 `aspnet/dependency-injection` — lifetimes (singleton/scoped/transient), keyed services, factory
-- [ ] `aspnet/logging` — ILogger, structured logging, log levels, Serilog/OpenTelemetry integration
+- [x] 2026-06-16 `aspnet/logging` — ILogger, structured logging, log levels, Serilog/OpenTelemetry integration
 
 **API layer**
 - [ ] `aspnet/controllers` — ApiController, ModelState, ActionResult<T>, problem details
