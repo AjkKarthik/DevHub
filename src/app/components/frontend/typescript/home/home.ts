@@ -39,7 +39,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Mapped Types',               route: '/typescript/mapped-types', badge: 'Advanced Types', available: true,
     description: 'Transform existing types — iterate over keys with [K in keyof T], modifiers (+/- optional/readonly).',
     keyPoints: ['{ [K in keyof T]: T[K] } is identity mapped type — add modifiers on top', '-? removes optional; -readonly removes readonly', 'Mapped type + conditional type = powerful transformations'] },
-  { title: 'Template Literal Types',     route: '/typescript/template-literal-types', badge: 'Advanced Types', available: false,
+  { title: 'Template Literal Types',     route: '/typescript/template-literal-types', badge: 'Advanced Types', available: true,
     description: 'String manipulation at the type level — `${"get" | "set"}${Capitalize<string>}` and infer.',
     keyPoints: ['`${EventName}Changed` generates a union of string literal types', 'Intrinsic string manipulation: Uppercase, Lowercase, Capitalize, Uncapitalize', 'infer in conditional types: extract sub-types from complex types'] },
   { title: 'Conditional Types',          route: '/typescript/conditional-types', badge: 'Advanced Types', available: true,
