@@ -18,7 +18,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Primitive & Literal Types',  route: '/typescript/primitive-types', badge: 'Type System', available: true,
     description: 'string, number, boolean, undefined, null, void, never, unknown, any — and literal types.',
     keyPoints: ['unknown is type-safe any — must narrow before use', 'never: a value that never occurs (exhaustive switch, throwing functions)', 'Literal types: const role = "admin" has type "admin", not string'] },
-  { title: 'Interfaces & Type Aliases',  route: '/typescript/interfaces-types', badge: 'Type System', available: false,
+  { title: 'Interfaces & Type Aliases',  route: '/typescript/interfaces-types', badge: 'Type System', available: true,
     description: 'interface vs type — differences, when to use each, declaration merging, and index signatures.',
     keyPoints: ['Interfaces can be extended and merged; type aliases cannot be reopened', 'type for unions and computed types; interface for object shapes', 'Index signature: [key: string]: T — allows any string key'] },
   { title: 'Union & Intersection Types', route: '/typescript/unions', badge: 'Type System', available: false,
