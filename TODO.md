@@ -476,7 +476,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 
 **Security**
 - [x] `aspnet/authentication` — JWT bearer, cookie auth, IAuthenticationHandler, scheme selection (2026-06-16)
-- [ ] `aspnet/authorization` — policies, requirements, resource-based auth, IAuthorizationHandler
+- [x] `aspnet/authorization` — policies, requirements, resource-based auth, IAuthorizationHandler (2026-06-16)
 - [ ] `aspnet/cors` — policy builder, pre-flight, credentials, CORS with minimal APIs
 - [ ] `aspnet/web-security` — CSRF, XSS, security headers, HTTPS enforcement, HSTS
 - [ ] `aspnet/secrets` — User Secrets, Azure Key Vault, DPAPI, ISecretManager
