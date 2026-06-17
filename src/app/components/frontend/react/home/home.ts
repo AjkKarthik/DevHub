@@ -43,7 +43,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'React Performance',           route: '/react/performance', badge: 'Performance', available: true,
     description: 'React.memo, useMemo, useCallback, Profiler, concurrent features, and virtualization with react-window.',
     keyPoints: ['Profile first — React DevTools Profiler shows which components re-render and why', 'React.memo: skip re-render if props are shallowly equal — objects must be stable references', 'Virtualization: react-window renders only visible rows — essential for 1000+ item lists'] },
-  { title: 'React Patterns',              route: '/react/patterns', badge: 'Patterns', available: false,
+  { title: 'React Patterns',              route: '/react/patterns', badge: 'Patterns', available: true,
     description: 'Compound components, render props, HOCs, and why custom hooks are the modern replacement.',
     keyPoints: ['Compound components: share implicit state via Context — <Select>, <Tabs>', 'Custom hook is the modern render prop — returns data and handlers, not JSX', 'HOC: withAuth(Comp) — still common in older codebases; prefer hooks in new code'] },
   { title: 'Testing React',               route: '/react/testing', badge: 'Ecosystem', available: false,
