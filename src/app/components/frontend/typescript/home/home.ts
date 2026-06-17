@@ -66,7 +66,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Module System & Namespaces', route: '/typescript/modules', badge: 'Tooling', available: true,
     description: 'ES modules vs CommonJS in TS, module resolution algorithms, path aliases, and legacy namespaces.',
     keyPoints: ['moduleResolution: bundler (TS 5), node16, nodenext', 'paths aliases in tsconfig — must mirror bundler config', 'namespace (legacy): use ES modules instead in modern code'] },
-  { title: 'Strict Mode & Migration',    route: '/typescript/strict-migration', badge: 'Foundations', available: false,
+  { title: 'Strict Mode & Migration',    route: '/typescript/strict-migration', badge: 'Foundations', available: true,
     description: 'Enabling strict mode step-by-step, migrating JS to TS, and allowJs for gradual adoption.',
     keyPoints: ['strict: true = noImplicitAny + strictNullChecks + more', 'allowJs + checkJs: type-check JS files without migration', 'Incremental migration: add tsconfig + .ts files one module at a time'] },
   { title: 'TypeScript Performance',     route: '/typescript/ts-performance', badge: 'Tooling', available: false,
