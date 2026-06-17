@@ -337,6 +337,7 @@ const HTML_LABELS: Record<string, string> = {
   'iframes-embeds':     'iFrames & Embeds',
   'canvas-svg':         'Canvas & SVG',
   'performance':        'HTML Performance',
+  'pwa-service-workers': 'PWA & Service Workers',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

@@ -4156,6 +4156,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/pwa-service-workers': {
+    apis: ['navigator.serviceWorker.register()', 'self.addEventListener("install")', 'self.addEventListener("fetch")', 'caches.open()', 'cache.put()', 'cache.match()', 'skipWaiting()', 'clients.claim()', 'PushManager', 'BackgroundSync'],
+    related: [
+      { label: 'HTML Performance',  route: '/html/performance'     },
+      { label: 'HTML APIs',         route: '/html/apis'            },
+      { label: 'HTML SEO',          route: '/html/seo'             },
+    ],
+    tip: 'Version your cache name (e.g. "app-shell-v2") so the activate event can cleanly delete old caches — unversioned caches grow forever and serve stale assets.',
+    docs: [
+      { label: 'MDN — Service Worker API',  url: 'https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API'    },
+      { label: 'MDN — Cache API',           url: 'https://developer.mozilla.org/en-US/docs/Web/API/Cache'                 },
+      { label: 'web.dev — PWA',             url: 'https://web.dev/progressive-web-apps/'                                  },
+    ],
+    resources: [
+      { label: 'Workbox (Google)',          url: 'https://developer.chrome.com/docs/workbox/',                badge: 'tool' },
+      { label: 'web.dev — Offline cookbook', url: 'https://web.dev/articles/offline-cookbook',               badge: 'blog' },
+    ],
+    gotchas: [
+      'Service workers only work on HTTPS (or localhost) — HTTP origins will silently fail to register.',
+      'The service worker scope is limited to its file location — a SW in /js/ cannot intercept requests from /.',
+      'skipWaiting() alone does not take control of open clients — pair it with clients.claim() in the activate event.',
+    ],
+  },
+
   'html/performance': {
     apis: ['loading="lazy"', 'fetchpriority="high"', 'rel="preload"', 'rel="prefetch"', 'rel="preconnect"', 'rel="dns-prefetch"', 'defer', 'async', 'rel="modulepreload"', 'content-visibility'],
     related: [

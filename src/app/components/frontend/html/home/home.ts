@@ -72,7 +72,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Drag & Drop API',            route: '/html', badge: 'HTML5 APIs', available: false,
     description: 'Native HTML5 drag-and-drop events — draggable, dragstart, dragover, drop — with data transfer.',
     keyPoints: ['draggable="true" makes any element draggable', 'event.dataTransfer.setData/getData transfer payload between drag and drop', 'Pointer Events API is a more accessible alternative for complex DnD'] },
-  { title: 'PWA & Service Workers',       route: '/html', badge: 'HTML5 APIs', available: false,
+  { title: 'PWA & Service Workers',       route: '/html/pwa-service-workers', badge: 'HTML5 APIs', available: true,
     description: 'Turn a web app into an installable PWA — Web App Manifest, service worker lifecycle, and offline caching.',
     keyPoints: ['manifest.json: name, icons, theme_color, start_url — enables "Add to Home Screen"', 'Service worker: intercepts fetch requests; cache-first or network-first strategies', 'Cache API: caches.open(), cache.put(), cache.match() for offline assets', 'Background Sync: defer failed requests until connectivity returns', 'Push API + Notifications API: re-engagement without a native app'] },
   { title: 'Head & Metadata',            route: '/html/head-metadata', badge: 'Semantic', available: true,
