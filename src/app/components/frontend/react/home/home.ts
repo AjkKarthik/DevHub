@@ -37,7 +37,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'React Router v6/v7',           route: '/react/router', badge: 'Routing', available: true,
     description: 'createBrowserRouter, nested routes, loader and action functions, useNavigate, useParams, and Outlet.',
     keyPoints: ['Nested routes: <Outlet /> renders the child route component', 'loader: fetch data before rendering the route — replaces useEffect+fetch', 'useNavigate(-1) for back; navigate() for imperative navigation with state'] },
-  { title: 'TanStack Query',              route: '/react/tanstack-query', badge: 'Ecosystem', available: false,
+  { title: 'TanStack Query',              route: '/react/tanstack-query', badge: 'Ecosystem', available: true,
     description: 'Server-state management — useQuery, useMutation, stale-while-revalidate, cache invalidation, and optimistic updates.',
     keyPoints: ['useQuery: automatic caching, background refetch, stale-while-revalidate', 'useMutation + onSuccess → queryClient.invalidateQueries: keep cache fresh after writes', 'Optimistic updates: update UI instantly, rollback on error — useMutation onMutate + onError'] },
   { title: 'React Performance',           route: '/react/performance', badge: 'Performance', available: false,
