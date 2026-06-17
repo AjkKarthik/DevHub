@@ -275,6 +275,28 @@ const TYPESCRIPT_LABELS: Record<string, string> = {
   'interview-prep':           'Interview Prep',
 };
 
+const REACT_LABELS: Record<string, string> = {
+  'basics':            'React Fundamentals',
+  'hooks-core':        'Core Hooks',
+  'hooks-advanced':    'Advanced Hooks',
+  'forms':             'Forms & Validation',
+  'router':            'React Router',
+  'context':           'Context API',
+  'state-management':  'State Management',
+  'tanstack-query':    'TanStack Query',
+  'performance':       'Performance',
+  'patterns':          'React Patterns',
+  'typescript':        'TypeScript & React',
+  'testing':           'Testing React',
+  'nextjs':            'Next.js App Router',
+  'native':            'React Native',
+  'hook-form':         'React Hook Form',
+  'animations':        'Animations',
+  'security':          'Security',
+  'cheatsheet':        'Cheat Sheet',
+  'interview-prep':    'Interview Prep',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -400,6 +422,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'aspnet'     ? ASPNET_LABELS
                  : segs[0] === 'sql'        ? SQL_LABELS
                  : segs[0] === 'typescript' ? TYPESCRIPT_LABELS
+                 : segs[0] === 'react'      ? REACT_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

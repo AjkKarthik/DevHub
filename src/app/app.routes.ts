@@ -310,7 +310,9 @@ export const routes: Routes = [
     { path: 'cheatsheet',              loadComponent: () => import('./components/frontend/typescript/cheatsheet/cheatsheet').then(m => m.TsCheatsheet) },
     { path: 'interview-prep',          loadComponent: () => import('./components/frontend/typescript/interview-prep/interview-prep').then(m => m.TsInterviewPrep) },
   ] },
-  { path: 'react',         children: [{ path: '', loadComponent: () => import('./components/frontend/react/home/home').then(m => m.ReactHome) }] },
+  { path: 'react', children: [
+    { path: '', loadComponent: () => import('./components/frontend/react/home/home').then(m => m.ReactHome) },
+  ] },
   { path: 'blazor',        children: [{ path: '', loadComponent: () => import('./components/frontend/blazor/home/home').then(m => m.BlazorHome) }] },
   { path: 'performance',   children: [{ path: '', loadComponent: () => import('./components/frontend/web-performance/home/home').then(m => m.WebPerformanceHome) }] },
   // ── Backend Hubs ──────────────────────────────────────────────────────────

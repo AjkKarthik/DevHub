@@ -32,6 +32,11 @@ export class ProgressService {
   readonly tsCount  = computed(() => [...this._done()].filter(r => r.startsWith('ts-')).length);
   readonly tsPct    = computed(() => Math.round((this.tsCount() / this.tsTotal) * 100));
 
+  // ── React (keys prefixed 'react-') ─────────────────────────────────────────
+  readonly reactTotal  = 17;
+  readonly reactCount  = computed(() => [...this._done()].filter(r => r.startsWith('react-')).length);
+  readonly reactPct    = computed(() => Math.round((this.reactCount() / this.reactTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

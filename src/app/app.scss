@@ -328,6 +328,15 @@ main {
   body.dark &.active { background: #1d4ed8; color: #fff; }
 }
 
+// React section — cyan active state
+.left-nav.section-react a {
+  &:hover { background: #ecfeff; color: #0e9ab7; }
+  &.active { background: #0e9ab7; color: #fff; }
+
+  body.dark &:hover { background: #083344; color: #67e8f9; }
+  body.dark &.active { background: #155e75; color: #fff; }
+}
+
 // SQL section — orange active state
 .left-nav.section-sql a {
   &:hover { background: #fff7ed; color: #e05c00; }

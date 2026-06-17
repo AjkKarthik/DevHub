@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -62,6 +62,9 @@
         } @else if (currentSection() === 'typescript') {
           <div class="nav-progress-bar" [style.width.%]="progress.tsPct()"></div>
           <span class="nav-progress-label">{{ progress.tsCount() }}/{{ progress.tsTotal }} topics done</span>
+        } @else if (currentSection() === 'react') {
+          <div class="nav-progress-bar" [style.width.%]="progress.reactPct()"></div>
+          <span class="nav-progress-label">{{ progress.reactCount() }}/{{ progress.reactTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -313,6 +316,58 @@
     </div>
 
     } <!-- end typescript nav -->
+
+    <!-- ── React Navigation ──────────────────────────────────────── -->
+    @if (currentSection() === 'react') {
+
+    <a routerLink="/react" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">⚛️ React Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/react/basics"      routerLinkActive="active"><span class="nl-text">React Fundamentals</span>@if(progress.isDone('react-basics')){<span class="nl-done">✓</span>}@if(diff('react-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/typescript"  routerLinkActive="active"><span class="nl-text">TypeScript &amp; React</span>@if(progress.isDone('react-typescript')){<span class="nl-done">✓</span>}@if(diff('react-typescript');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/forms"       routerLinkActive="active"><span class="nl-text">Forms &amp; Validation</span>@if(progress.isDone('react-forms')){<span class="nl-done">✓</span>}@if(diff('react-forms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Hooks</p>
+      <a routerLink="/react/hooks-core"     routerLinkActive="active"><span class="nl-text">Core Hooks</span>@if(progress.isDone('react-hooks-core')){<span class="nl-done">✓</span>}@if(diff('react-hooks-core');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/hooks-advanced" routerLinkActive="active"><span class="nl-text">Advanced Hooks</span>@if(progress.isDone('react-hooks-advanced')){<span class="nl-done">✓</span>}@if(diff('react-hooks-advanced');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">State &amp; Routing</p>
+      <a routerLink="/react/context"           routerLinkActive="active"><span class="nl-text">Context API</span>@if(progress.isDone('react-context')){<span class="nl-done">✓</span>}@if(diff('react-context');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/state-management"  routerLinkActive="active"><span class="nl-text">State Management</span>@if(progress.isDone('react-state-management')){<span class="nl-done">✓</span>}@if(diff('react-state-management');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/router"            routerLinkActive="active"><span class="nl-text">React Router</span>@if(progress.isDone('react-router')){<span class="nl-done">✓</span>}@if(diff('react-router');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Ecosystem</p>
+      <a routerLink="/react/tanstack-query" routerLinkActive="active"><span class="nl-text">TanStack Query</span>@if(progress.isDone('react-tanstack-query')){<span class="nl-done">✓</span>}@if(diff('react-tanstack-query');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/hook-form"      routerLinkActive="active"><span class="nl-text">React Hook Form</span>@if(progress.isDone('react-hook-form')){<span class="nl-done">✓</span>}@if(diff('react-hook-form');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/nextjs"         routerLinkActive="active"><span class="nl-text">Next.js App Router</span>@if(progress.isDone('react-nextjs')){<span class="nl-done">✓</span>}@if(diff('react-nextjs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/native"         routerLinkActive="active"><span class="nl-text">React Native</span>@if(progress.isDone('react-native')){<span class="nl-done">✓</span>}@if(diff('react-native');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/animations"     routerLinkActive="active"><span class="nl-text">Animations</span>@if(progress.isDone('react-animations')){<span class="nl-done">✓</span>}@if(diff('react-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Performance &amp; Patterns</p>
+      <a routerLink="/react/performance"       routerLinkActive="active"><span class="nl-text">Performance</span>@if(progress.isDone('react-performance')){<span class="nl-done">✓</span>}@if(diff('react-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/patterns"          routerLinkActive="active"><span class="nl-text">React Patterns</span>@if(progress.isDone('react-patterns')){<span class="nl-done">✓</span>}@if(diff('react-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/testing"           routerLinkActive="active"><span class="nl-text">Testing React</span>@if(progress.isDone('react-testing')){<span class="nl-done">✓</span>}@if(diff('react-testing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/security"          routerLinkActive="active"><span class="nl-text">Security</span>@if(progress.isDone('react-security')){<span class="nl-done">✓</span>}@if(diff('react-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/react/cheatsheet"     routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+      <a routerLink="/react/interview-prep" routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+    </div>
+
+    } <!-- end react nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {
