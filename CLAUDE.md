@@ -53,14 +53,17 @@ Each page = 3 files: `<name>.ts`, `<name>.html`, `<name>.scss` in its own folder
 
 ## Theming — section identity (CRITICAL)
 
-| | Angular hub | C# hub | ASP.NET Core hub |
-|---|---|---|---|
-| Accent | `#dd0031` | `#7c3aed` (dark variant `#6b21a8`) | `#0e7490` (dark variant `#155e75`) |
-| Light tint | `#fff1f2` | `#f5f3ff` | `#ecfeff` |
-| Dark-mode accent | `#ff5a76` | `#a78bfa` | `#67e8f9` |
-| rgba accent | `rgba(221,0,49,…)` | `rgba(124,58,237,…)` | `rgba(14,116,144,…)` |
+| Hub | `$accent` | `$tint` | Dark accent | rgba accent |
+|---|---|---|---|---|
+| Angular | `#dd0031` | `#fff1f2` | `#ff5a76` | `rgba(221,0,49,…)` |
+| C# | `#7c3aed` (dark `#6b21a8`) | `#f5f3ff` | `#a78bfa` | `rgba(124,58,237,…)` |
+| ASP.NET Core | `#0e7490` (dark `#155e75`) | `#ecfeff` | `#67e8f9` | `rgba(14,116,144,…)` |
+| SQL | `#e05c00` | `#fff7ed` | `#fdba74` | `rgba(224,92,0,…)` |
+| TypeScript | `#3178c6` | `#eff6ff` | `#93c5fd` | `rgba(49,120,198,…)` |
+| React | `#0ea5e9` (dark `#0284c7`) | `#f0f9ff` | `#67e8f9` | `rgba(14,165,233,…)` |
+| JavaScript | `#f7df1e` (text `#854d0e`) | `#fefce8` | `#fde68a` | `rgba(247,223,30,…)` |
 
-Define `$accent` / `$tint` at the top of page SCSS. New page types are built once and
+Define `$accent` / `$tint` at the top of every page SCSS. New page types are built once and
 ported to the other hub by swapping these colors — structure/UX must stay identical.
 
 **Dark mode: ALWAYS `:host-context(body.dark) { ... }` — NEVER
@@ -72,6 +75,101 @@ Section-aware shell pieces (already implemented, keep them in sync when adding a
 - Sidebar: `page-sidebar.ts` host classes `section-angular` / `section-csharp`
 - Footer text in `app.html` switches on `currentSection()`
 - Breadcrumb section chip links to the hub home (`/angular` or `/csharp`)
+
+## Hub CSS naming conventions (CRITICAL — never mix these across hubs)
+
+Every hub has a fixed set of CSS class names. Using the wrong hub's class on a page is a
+design bug — it breaks icon colors, section headings, and dark mode.
+
+| Hub | Page wrapper | Section class | Icon class | Icon text | `tech=` in page-meta |
+|---|---|---|---|---|---|
+| Angular | `.ng-page` | `.ng-section` | `.ng-icon` | `A` | `angular` |
+| C# | `.cs-page` | `.cs-section` | `.cs-icon` | `C#` | `csharp` |
+| ASP.NET | `.asp-page` | `.asp-section` | `.asp-icon` | `ASP` | `aspnet` |
+| SQL | `.sq-page` | `.sq-section` | `.sq-icon` | `SQL` | `sql` |
+| TypeScript | `.ts-page` | `.ts-section` | `.ts-icon` | `TS` | `typescript` |
+| React | `.react-page` | `.react-section` | `.react-icon` | `React` | `react` |
+| JavaScript | `.js-page` | `.js-section` | `.js-icon` | `JS` | `javascript` |
+
+### Icon pattern — exact HTML required
+
+```html
+<div class="page-header-icon <hub>-icon">ABBR</div>
+```
+
+Rules:
+- **Always two classes**: `page-header-icon` (global layout — 48×48, flex, border-radius)
+  AND the hub icon class (colors). One without the other is wrong.
+- **Always text, never emoji**: "A", "C#", "ASP", "SQL", "TS", "React", "JS" — not ⚛ 🗄️ etc.
+- **Always the correct hub class**: React pages use `react-icon`, not `cs-icon` or `ip-icon`.
+  C# pages use `cs-icon`. Never mix hub classes across hubs.
+- **Abbreviations for library pages are acceptable** (e.g. `RHF` for React Hook Form,
+  `RN` for React Native, `FM` for Framer Motion) but the icon class must still be `react-icon`.
+
+### Two icon visual generations (do not mix within a hub)
+
+**Solid fill** (Angular, C#, ASP.NET — older hubs): accent background, white text,
+`font-size: 1.4rem`, `border-radius: 8px`, sizing via `padding: 0.4rem 0.8rem` (Angular
+uses `width: 3rem; height: 3rem`). Defined in each component's own SCSS.
+
+**Light tint** (SQL, TypeScript, React, JavaScript — newer hubs): tint background,
+accent-colored text, thin border `rgba($accent, 0.25)`. Inherits 48×48 layout from
+global `styles.scss`. Defined as `.page-header-icon.<hub>-icon` in component SCSS
+(only color/background/border — NOT layout).
+
+When writing a new page for an existing hub, copy the icon SCSS block from another page
+in the SAME hub. Never copy from a different hub — the two visual styles are incompatible.
+
+### Nav home-link pattern
+
+Every hub in `app.html` must follow this structure exactly:
+
+```html
+<a routerLink="/hub" ... class="nav-home-link">   ← standalone, outside nav-groups
+  <span class="nl-text">🏠 Hub Home</span>
+</a>
+
+<div class="nav-group">
+  <p class="nav-group-label">Foundations</p>    ← NO hub name label here
+  <a routerLink="/hub/topic1" ...>…</a>
+  …
+</div>
+```
+
+**Never put the home link inside a `<div class="nav-group">`** — that creates a visible
+section label above the home link (e.g. the "🅰️ ANGULAR" label bug). The home link
+must be a standalone `<a class="nav-home-link">` before the first nav-group.
+
+## Component rules by hub type
+
+### Standard topic page (Angular, C#, ASP.NET, TypeScript, React, JavaScript)
+
+Required: `app-page-meta`, `app-quick-ref`, `app-theory-block`, `app-code-block`,
+`app-common-mistakes` (4–6 entries), `app-challenge-block`, `app-quiz-block`,
+`app-qna-block`, `app-revision-card`, `app-page-complete`
+
+Optional: `app-prerequisites` (intermediate/advanced only), `app-before-after` (old-vs-new
+contrast only), `app-video-embed` (official video exists)
+
+### SQL topic page (simpler structure — intentionally different)
+
+Required: `app-page-meta`, `app-quick-ref`, `app-theory-block`, `app-code-block`,
+`app-challenge-block`, `app-quiz-block`, `app-qna-block`, `app-page-complete`
+
+**Omitted on SQL pages**: `app-common-mistakes`, `app-revision-card` — SQL pages use a
+simpler structure by design (SQL is a data query language, not a programming language;
+the interview-prep angle is lighter). Do NOT add these to SQL pages.
+
+### Reference pages (cheatsheet, interview-prep, glossary, etc.)
+
+**No `app-page-complete`** — reference pages are not trackable topics.
+**No `app-revision-card`** — not applicable to reference material.
+**No `app-common-mistakes`** — optional; only add if there's a meaningful pitfalls section.
+
+Older hub reference pages (Angular, C#, ASP.NET) use bespoke layouts (`<div class="page">`,
+`<div class="cs-cheatsheet">`, etc.) — these are intentionally customised for their tab/filter
+UIs. Do not "standardise" them unless rewriting the page. Newer hub reference pages (SQL,
+TS, React, JS) use the standard topic wrapper pattern.
 
 ## Topic page anatomy (language-topic pages like /csharp/generics)
 

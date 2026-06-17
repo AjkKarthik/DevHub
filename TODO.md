@@ -935,11 +935,52 @@ Open the page, read it fully as a learner would, then check each item:
 [ ] Hub home card: available: true, description and keyPoints reflect what the page actually covers
 [ ] No TypeScript \${} escaping issues (C# string interpolation in template literals)
 [ ] Dark mode: no @media (prefers-color-scheme) anywhere — only :host-context(body.dark)
-[ ] Page header icon: uses <div class="page-header-icon <hub>-icon">ABBR</div> — NOT emoji,
-    NOT bare hub-class-only, NOT wrong hub class. Text content is hub abbreviation (JS/TS/SQL/
-    React/C#/ASP) NOT emoji. Correct hub class matches the page's hub.
-[ ] Hub nav: Home link uses class="nav-home-link" (standalone, above nav-groups). No section
-    label above the home link. No home link inside a nav-group.
+[ ] Page header icon: <div class="page-header-icon <hub>-icon">ABBR</div> — BOTH classes
+    present (page-header-icon + hub-icon). Text not emoji. Hub class matches the page's hub.
+    Exact text per hub: Angular=A, C#=C#, ASP.NET=ASP, SQL=SQL, TS=TS, React=React, JS=JS.
+    (Library abbreviations OK: RHF, RN, FM — but hub class must still be the correct hub.)
+[ ] Page wrapper class matches hub: ng-page / cs-page / asp-page / sq-page / ts-page /
+    react-page / js-page. Never use another hub's wrapper on a page.
+[ ] Section class matches hub: ng-section / cs-section / asp-section / sq-section /
+    ts-section / react-section / js-section. Never mix.
+[ ] SCSS starts with correct $accent and $tint for the hub (see CLAUDE.md theming table).
+    Icon SCSS block copied from a page in THE SAME HUB (not from a different hub).
+[ ] Component set matches hub type:
+    - Standard hubs (Angular/C#/ASP.NET/TS/React/JS): MUST have app-common-mistakes
+      AND app-revision-card. Missing either is a gap.
+    - SQL hub: must NOT have app-common-mistakes or app-revision-card. Adding them is wrong.
+    - Reference pages (cheatsheet/interview-prep/glossary): no app-page-complete, no
+      app-revision-card. These are not trackable; don't add page-complete to them.
+[ ] Hub nav home link in app.html: is a standalone <a class="nav-home-link"> OUTSIDE any
+    nav-group. No hub-name nav-group-label above it.
+[ ] tech= in app-page-meta matches hub (angular/csharp/aspnet/sql/typescript/react/javascript).
+    Wrong tech= shows the wrong playground button.
+[ ] Dark mode: all dark styles use :host-context(body.dark) — zero @media(prefers-color-scheme).
+```
+
+### Design consistency — quick grep commands (run before marking a hub complete)
+
+```bash
+# Wrong icon class or emoji content
+grep -rn "\"sq-icon\"\|\"cs-icon\"\|\"ng-icon\"\|\"ts-icon\"\|\"react-icon\"\|\"js-icon\"\|\"asp-icon\"" \
+  src/app/components/<hub>/ --include="*.html" | grep -v "page-header-icon"
+# → should return 0 lines (all icons must have BOTH classes)
+
+# Emoji in icon divs
+grep -rn "page-header-icon" src/app/components/<hub>/ --include="*.html" | grep -E "⚛|🗄️|🔷|💎"
+# → should return 0 lines
+
+# Wrong hub class (e.g. cs-icon on a React page)
+grep -rn "cs-icon\|ng-icon\|asp-icon" src/app/components/frontend/react/ --include="*.html"
+# → should return 0 lines
+
+# Dark mode violations
+grep -rn "@media (prefers-color-scheme" src/app/components/<hub>/ --include="*.scss"
+# → should return 0 lines
+
+# SQL pages with wrong components
+grep -rn "app-common-mistakes\|app-revision-card" src/app/components/data/sql/ --include="*.html"
+# → should return 0 lines (SQL intentionally omits these)
 ```
 
 If everything passes — check it off. If anything is missing — fix it in the same session,
