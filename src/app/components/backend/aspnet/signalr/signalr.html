@@ -1,19 +1,32 @@
-<div class="aspnet-page">
-  <div class="page-header-icon aspnet-icon">ASP</div>
+<div class="asp-page">
+  <div class="page-header-icon asp-icon">ASP</div>
   <h1 class="page-title">SignalR</h1>
-  <p class="page-subtitle">Real-time communication with hubs, groups, client broadcasting, IHubContext for push-from-service, and Redis scale-out for multi-server deployments.</p>
+  <p class="page-subtitle">Real-time communication with hubs, groups, client broadcasting, server-to-client streaming, IHubContext for push-from-service, and Redis scale-out for multi-server deployments.</p>
 
-  <app-page-meta [readingTime]="22" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+  <app-page-meta [readingTime]="30" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
 
-  <section class="aspnet-section">
+  <section class="asp-section">
     <h2>Code Examples</h2>
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-before-after [items]="beforeAfter" beforeLabel="Common Mistake" afterLabel="Correct Pattern" />
+
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
-  <app-page-complete route="aspnet-signalr" nextRoute="/aspnet/health-checks" nextLabel="Health Checks & Observability" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete route="aspnet-signalr" nextRoute="/aspnet/deployment" nextLabel="Deployment & Hosting" />
 </div>

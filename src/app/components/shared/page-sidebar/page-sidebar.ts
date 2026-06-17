@@ -59,6 +59,28 @@ const SQL_DEFAULT: SidebarData = {
   ],
 };
 
+const TS_DEFAULT: SidebarData = {
+  apis: ['type', 'interface', 'generic <T>', 'keyof', 'typeof', 'infer', 'satisfies'],
+  related: [
+    { label: 'TS Fundamentals',      route: '/typescript/basics'         },
+    { label: 'Utility Types',        route: '/typescript/utility-types'  },
+    { label: 'Type Guards',          route: '/typescript/narrowing'      },
+  ],
+  tip: 'Read the TypeScript Handbook sequentially at least once — it\'s short and every section builds on the last.',
+  docs: [
+    { label: 'TypeScript Handbook',    url: 'https://www.typescriptlang.org/docs/handbook/intro.html' },
+    { label: 'TSConfig Reference',     url: 'https://www.typescriptlang.org/tsconfig'                 },
+    { label: 'TypeScript Playground',  url: 'https://www.typescriptlang.org/play'                     },
+  ],
+  resources: [
+    { label: 'microsoft/TypeScript',   url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+  ],
+  gotchas: [
+    'TypeScript is structural, not nominal — two unrelated classes with the same shape are assignable to each other.',
+    'any silently disables all type checking — prefer unknown and narrow it before use.',
+  ],
+};
+
 const ASPNET_DEFAULT: SidebarData = {
   apis: ['WebApplication', 'IServiceCollection', 'IApplicationBuilder', 'IConfiguration', 'ILogger<T>'],
   related: [
@@ -1813,6 +1835,520 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ════════════════════════════════════════════════════════════════════════════
+  // TYPESCRIPT PAGES
+  // ════════════════════════════════════════════════════════════════════════════
+
+  'typescript/basics': {
+    apis: ['tsc', 'tsconfig.json', '--noEmit', 'strict', 'any', 'unknown', 'never'],
+    related: [
+      { label: 'Primitive & Literal Types', route: '/typescript/primitive-types'  },
+      { label: 'Strict Mode & Migration',   route: '/typescript/strict-migration' },
+      { label: 'tsconfig Deep Dive',        route: '/typescript/tsconfig'         },
+    ],
+    tip: 'Run tsc --noEmit in CI to type-check without generating output files — faster and keeps your build pipeline clean.',
+    docs: [
+      { label: 'TypeScript Handbook',    url: 'https://www.typescriptlang.org/docs/handbook/intro.html'      },
+      { label: 'TSConfig Reference',     url: 'https://www.typescriptlang.org/tsconfig'                      },
+      { label: 'TypeScript Playground',  url: 'https://www.typescriptlang.org/play'                          },
+      { label: 'tsc CLI Reference',      url: 'https://www.typescriptlang.org/docs/handbook/compiler-options.html' },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript',   url: 'https://github.com/microsoft/TypeScript',       badge: 'code' },
+      { label: 'TypeScript Deep Dive',   url: 'https://basarat.gitbook.io/typescript',          badge: 'blog' },
+    ],
+    gotchas: [
+      'any disables type checking silently — a single any in a call chain can erase types across the whole expression.',
+      'unknown requires narrowing before use — it is the type-safe alternative to any for external/untyped data.',
+      'TypeScript is erased at runtime — there are no types in the JavaScript output; runtime checks must use typeof/instanceof.',
+    ],
+  },
+
+  'typescript/primitive-types': {
+    apis: ['string', 'number', 'boolean', 'null', 'undefined', 'void', 'never', 'unknown', 'any', 'bigint', 'symbol'],
+    related: [
+      { label: 'TS Fundamentals',           route: '/typescript/basics'           },
+      { label: 'Interfaces & Type Aliases', route: '/typescript/interfaces-types' },
+      { label: 'Type Guards & Narrowing',   route: '/typescript/narrowing'        },
+    ],
+    tip: 'Prefer unknown over any for values from external sources — it forces you to narrow before use, preserving type safety.',
+    docs: [
+      { label: 'Everyday Types',        url: 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html'   },
+      { label: 'Narrowing',             url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html'        },
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play'                                  },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript',  url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'void and undefined are subtly different — void means "I don\'t care about the return value"; undefined means it literally returns undefined.',
+      'never is the bottom type — functions that always throw or loop infinitely have return type never; a union with never collapses.',
+      'Literal types are inferred from const: const x = "admin" has type "admin", not string; let x = "admin" has type string.',
+    ],
+  },
+
+  'typescript/interfaces-types': {
+    apis: ['interface', 'type', 'extends', 'implements', 'readonly', '[key: string]: T', 'declaration merging', '&'],
+    related: [
+      { label: 'Primitive & Literal Types', route: '/typescript/primitive-types' },
+      { label: 'Union & Intersection',       route: '/typescript/unions'          },
+      { label: 'Mapped Types',               route: '/typescript/mapped-types'    },
+    ],
+    tip: 'Use interface for object shapes that may be extended or merged; use type for unions, intersections, and computed types.',
+    docs: [
+      { label: 'Object Types (Handbook)',   url: 'https://www.typescriptlang.org/docs/handbook/2/objects.html'           },
+      { label: 'Type Aliases (Handbook)',   url: 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-aliases' },
+      { label: 'TypeScript Playground',    url: 'https://www.typescriptlang.org/play'                                     },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Declaration merging only works with interface — two type aliases for the same name is a compile error.',
+      'Index signatures ([key: string]: T) require all named properties to be assignable to T — common source of unexpected errors.',
+      'type aliases cannot be reopened after definition; interface can always be extended by another interface declaration.',
+    ],
+  },
+
+  'typescript/unions': {
+    apis: ['|', '&', 'discriminated union', 'in operator', 'typeof', 'instanceof', 'satisfies'],
+    related: [
+      { label: 'Type Guards & Narrowing', route: '/typescript/narrowing'          },
+      { label: 'Enums & Tuples',          route: '/typescript/enums-tuples'       },
+      { label: 'Conditional Types',       route: '/typescript/conditional-types'  },
+    ],
+    tip: 'Add a literal discriminant property (kind: "circle" | "square") to union members — exhaustive narrowing becomes trivial.',
+    docs: [
+      { label: 'Union Types (Handbook)',        url: 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types' },
+      { label: 'Narrowing (Handbook)',          url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html'                  },
+      { label: 'TypeScript Playground',        url: 'https://www.typescriptlang.org/play'                                             },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Intersection (&) on primitive types gives never — string & number = never; it is only meaningful on object types.',
+      'Spreading a union into a function: fn(...args: A | B) does not work — you need overloads or a conditional type.',
+      'The exhaustiveness check (default: const _: never = x) fails silently if the variable is unused and noUnusedLocals is off.',
+    ],
+  },
+
+  'typescript/narrowing': {
+    apis: ['typeof', 'instanceof', 'in', 'x is T (type predicate)', 'asserts x is T', 'satisfies never', 'Array.isArray()'],
+    related: [
+      { label: 'Union & Intersection',       route: '/typescript/unions'         },
+      { label: 'Conditional Types',          route: '/typescript/conditional-types' },
+      { label: 'Enums & Tuples',             route: '/typescript/enums-tuples'   },
+    ],
+    tip: 'Use asserts x is T for assertion functions — TypeScript narrows the type after the call site without requiring a conditional.',
+    docs: [
+      { label: 'Narrowing (Handbook)',    url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html' },
+      { label: 'TypeScript Playground',  url: 'https://www.typescriptlang.org/play'                          },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Type predicates (x is T) are unsafe — TypeScript trusts your return value; returning true on the wrong branch corrupts the type.',
+      'typeof null === "object" — always check null separately before checking for an object type.',
+      'The in operator narrows to the intersection that contains the key — not just the branch that definitely has it.',
+    ],
+  },
+
+  'typescript/enums-tuples': {
+    apis: ['enum', 'const enum', 'string enum', 'numeric enum', 'tuple', 'labeled tuple', 'rest in tuple'],
+    related: [
+      { label: 'Union & Intersection', route: '/typescript/unions'           },
+      { label: 'Primitive & Literal',  route: '/typescript/primitive-types'  },
+      { label: 'Conditional Types',    route: '/typescript/conditional-types' },
+    ],
+    tip: 'Prefer const enum (for inlining) or a string literal union over numeric enums in new code — unions are tree-shakable and readable in logs.',
+    docs: [
+      { label: 'Enums (Handbook)',      url: 'https://www.typescriptlang.org/docs/handbook/enums.html'                                     },
+      { label: 'Tuple Types',           url: 'https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types'                     },
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play'                                                          },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'const enum are erased at compile time — they cannot be used from outside the module with isolatedModules: true (required by esbuild/Babel).',
+      'Numeric enums generate a reverse-mapping object — Direction[0] === "Up" — which can be surprising and increases bundle size.',
+      'Tuples are assignable to arrays but not vice versa — [string, number] is stricter than (string | number)[].',
+    ],
+  },
+
+  'typescript/generics': {
+    apis: ['<T>', '<T extends U>', 'default type parameter', 'keyof T', 'T[K]', 'generic function', 'generic interface'],
+    related: [
+      { label: 'Generic Patterns',     route: '/typescript/generic-patterns' },
+      { label: 'Utility Types',        route: '/typescript/utility-types'    },
+      { label: 'Conditional Types',    route: '/typescript/conditional-types' },
+    ],
+    tip: 'Name type parameters by role in non-trivial generics — <TInput, TOutput> is clearer than <T, U> when both parameters matter.',
+    docs: [
+      { label: 'Generics (Handbook)',   url: 'https://www.typescriptlang.org/docs/handbook/2/generics.html' },
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play'                         },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+      { label: 'TypeScript Deep Dive', url: 'https://basarat.gitbook.io/typescript',   badge: 'blog' },
+    ],
+    gotchas: [
+      'T extends string means T could be a string literal subtype, not just string — be careful in conditional types.',
+      'Generic defaults (T = unknown) kick in only when T cannot be inferred — explicit default does not prevent inference.',
+      'Using typeof param inside a generic function gives the generic type T, not the concrete type at the call site.',
+    ],
+  },
+
+  'typescript/generic-patterns': {
+    apis: ['Result<T,E>', 'Option<T>', 'generic factory (new() => T)', 'fluent builder', 'phantom type', 'branded type'],
+    related: [
+      { label: 'Generics Fundamentals', route: '/typescript/generics'          },
+      { label: 'Utility Types',         route: '/typescript/utility-types'     },
+      { label: 'Conditional Types',     route: '/typescript/conditional-types' },
+    ],
+    tip: 'Model fallible operations as Result<T, E> = { ok: true; value: T } | { ok: false; error: E } — explicit errors, no unexpected throws.',
+    docs: [
+      { label: 'Generics (Handbook)',   url: 'https://www.typescriptlang.org/docs/handbook/2/generics.html'    },
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play'                             },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+      { label: 'ts-results (npm)',      url: 'https://www.npmjs.com/package/ts-results', badge: 'tool' },
+    ],
+    gotchas: [
+      'Phantom types exist only at compile time — a branded { _brand: "UserId" } adds zero runtime overhead.',
+      'TypeScript does not support true higher-kinded types (HKT) — workarounds exist via interface merging but are verbose.',
+      'Generic factories (new() => T) only work for classes with public constructors — abstract classes are excluded.',
+    ],
+  },
+
+  'typescript/utility-types': {
+    apis: ['Partial<T>', 'Required<T>', 'Readonly<T>', 'Pick<T,K>', 'Omit<T,K>', 'Record<K,V>', 'Extract<T,U>', 'Exclude<T,U>', 'NonNullable<T>', 'ReturnType<F>', 'Parameters<F>'],
+    related: [
+      { label: 'Mapped Types',      route: '/typescript/mapped-types'      },
+      { label: 'Conditional Types', route: '/typescript/conditional-types'  },
+      { label: 'Generics',          route: '/typescript/generics'           },
+    ],
+    tip: 'Chain utility types for precise shapes: Pick<Readonly<User>, "id" | "name"> produces a readonly subset in one expression.',
+    docs: [
+      { label: 'Utility Types Reference', url: 'https://www.typescriptlang.org/docs/handbook/utility-types.html' },
+      { label: 'TypeScript Playground',   url: 'https://www.typescriptlang.org/play'                             },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+      { label: 'type-fest (npm)',       url: 'https://www.npmjs.com/package/type-fest', badge: 'tool' },
+    ],
+    gotchas: [
+      'Partial and Required are shallow — nested objects are unaffected; write a DeepPartial recursive type for full depth.',
+      'Omit<T, K> on a union type may not work as expected — each union member is processed independently.',
+      'Record<K, V> with a union K creates a required entry for every member — use Partial<Record<K, V>> for optional entries.',
+    ],
+  },
+
+  'typescript/mapped-types': {
+    apis: ['{ [K in keyof T]: T[K] }', '-?', '-readonly', 'as (key remap)', 'PropertyKey', 'template literal key'],
+    related: [
+      { label: 'Utility Types',          route: '/typescript/utility-types'         },
+      { label: 'Conditional Types',      route: '/typescript/conditional-types'     },
+      { label: 'Template Literal Types', route: '/typescript/template-literal-types'},
+    ],
+    tip: 'Use the as clause for key remapping: { [K in keyof T as Capitalize<string & K>]: T[K] } to rename keys at the type level.',
+    docs: [
+      { label: 'Mapped Types (Handbook)',   url: 'https://www.typescriptlang.org/docs/handbook/2/mapped-types.html' },
+      { label: 'TypeScript Playground',    url: 'https://www.typescriptlang.org/play'                              },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Mapped types on union types distribute over the union — each member is mapped independently, which may not be what you want.',
+      'Add -readonly and -? to actively remove modifiers; just omitting them keeps the original modifier.',
+      'Key remapping with as never filters out that key — useful for removing keys conditionally: as K extends "id" ? never : K.',
+    ],
+  },
+
+  'typescript/conditional-types': {
+    apis: ['T extends U ? X : Y', 'infer P', 'distributive conditional', 'NonNullable<T>', 'Awaited<T>', 'ReturnType<F>'],
+    related: [
+      { label: 'Mapped Types',           route: '/typescript/mapped-types'          },
+      { label: 'Utility Types',          route: '/typescript/utility-types'         },
+      { label: 'Template Literal Types', route: '/typescript/template-literal-types'},
+    ],
+    tip: 'Wrap T in a tuple ([T] extends [U]) to prevent distributive behaviour when you need the whole union evaluated together.',
+    docs: [
+      { label: 'Conditional Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html' },
+      { label: 'TypeScript Playground',       url: 'https://www.typescriptlang.org/play'                                    },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Conditional types with a still-generic T are deferred — the type stays unevaluated until T is resolved at the call site.',
+      'Distributive types apply to each union member independently — T extends U ? X : Y with T = A | B gives (A extends U ? X : Y) | (B extends U ? X : Y).',
+      'infer can only appear in the extends clause of a conditional type — not in the true/false branches.',
+    ],
+  },
+
+  'typescript/template-literal-types': {
+    apis: ['`${T}${U}`', 'Uppercase<S>', 'Lowercase<S>', 'Capitalize<S>', 'Uncapitalize<S>', 'infer in template'],
+    related: [
+      { label: 'Conditional Types', route: '/typescript/conditional-types' },
+      { label: 'Mapped Types',      route: '/typescript/mapped-types'      },
+      { label: 'Utility Types',     route: '/typescript/utility-types'     },
+    ],
+    tip: 'Combine with mapped types to derive event handler names: { [K in EventName as `on${Capitalize<K>}`]: Handler<K> }',
+    docs: [
+      { label: 'Template Literal Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html' },
+      { label: 'TypeScript Playground',            url: 'https://www.typescriptlang.org/play'                                       },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'Large string unions in template literals create exponentially large union types — can significantly slow compilation.',
+      'infer in template literal types cannot match across arbitrary word boundaries — use a chained conditional to extract parts.',
+      'Intrinsic string manipulation (Uppercase, Capitalize) only works on string literal types, not runtime strings.',
+    ],
+  },
+
+  'typescript/classes': {
+    apis: ['class', 'private / protected / public', '#private (ECMAScript)', 'readonly', 'abstract class', 'override', 'parameter property'],
+    related: [
+      { label: 'Decorators',              route: '/typescript/decorators'        },
+      { label: 'Interfaces & Type Aliases', route: '/typescript/interfaces-types'},
+      { label: 'Generics',                route: '/typescript/generics'          },
+    ],
+    tip: 'Use ECMAScript #private for genuine runtime privacy — TypeScript private is compile-time only and is accessible in emitted JS.',
+    docs: [
+      { label: 'Classes (Handbook)',    url: 'https://www.typescriptlang.org/docs/handbook/2/classes.html' },
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play'                        },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'abstract class cannot be instantiated — trying to new it is a compile error; always create a concrete subclass.',
+      'override keyword (TS 4.3+) enforces the method exists in the superclass — but it is NOT required by default; enable noImplicitOverride.',
+      'Parameter properties (constructor(private x: T)) only work in TypeScript classes, not in plain ES class declarations.',
+    ],
+  },
+
+  'typescript/decorators': {
+    apis: ['@decorator', 'ClassDecorator', 'MethodDecorator', 'PropertyDecorator', 'ParameterDecorator', 'DecoratorContext (TS 5)', 'experimentalDecorators'],
+    related: [
+      { label: 'Classes & Visibility', route: '/typescript/classes'   },
+      { label: 'tsconfig Deep Dive',   route: '/typescript/tsconfig'  },
+      { label: 'TypeScript with Frameworks', route: '/typescript/frameworks' },
+    ],
+    tip: 'TS 5.0 decorators (TC39 Stage 3) are the standard — use experimentalDecorators: true only for legacy code or frameworks that require it.',
+    docs: [
+      { label: 'Decorators (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/decorators.html'                  },
+      { label: 'TC39 Decorators Proposal', url: 'https://github.com/tc39/proposal-decorators'                               },
+      { label: 'TypeScript 5.0 Blog',   url: 'https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/'        },
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play'                                          },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'TS 5.0 decorators and experimentalDecorators are INCOMPATIBLE — you cannot mix them in the same file.',
+      'Angular still uses experimental decorators internally — enable experimentalDecorators in Angular projects.',
+      'Class decorators receive the class constructor; method decorators receive the method and its descriptor — the APIs differ between experimental and TC39 Stage 3.',
+    ],
+  },
+
+  'typescript/tsconfig': {
+    apis: ['target', 'lib', 'module', 'moduleResolution', 'strict', 'paths', 'baseUrl', 'composite', 'references', 'skipLibCheck'],
+    related: [
+      { label: 'Module System',       route: '/typescript/modules'      },
+      { label: 'Declaration Files',   route: '/typescript/declarations' },
+      { label: 'TS Performance',      route: '/typescript/ts-performance'},
+    ],
+    tip: 'Use extends in tsconfig to share a base: tsconfig.base.json sets strict + target, per-package configs extend it and add paths.',
+    docs: [
+      { label: 'TSConfig Reference',    url: 'https://www.typescriptlang.org/tsconfig'                                          },
+      { label: 'Project References',    url: 'https://www.typescriptlang.org/docs/handbook/project-references.html'              },
+      { label: 'tsc CLI Reference',     url: 'https://www.typescriptlang.org/docs/handbook/compiler-options.html'                },
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play'                                               },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'target (JS output version) and lib (available types) are independent — you can target ES5 while using Promise types from lib ES2017.',
+      'moduleResolution: bundler (TS 5.0+) is required for Vite/esbuild — do not use node16/nodenext with plain bundlers.',
+      'paths aliases must also be configured in the bundler (Vite/Webpack) — tsc resolves them for type-checking but bundlers do their own resolution.',
+    ],
+  },
+
+  'typescript/modules': {
+    apis: ['import', 'export', 'export default', 'import type', 'require()', 'namespace', 'declare module', 'module resolution'],
+    related: [
+      { label: 'tsconfig Deep Dive',    route: '/typescript/tsconfig'    },
+      { label: 'Declaration Files',     route: '/typescript/declarations'},
+      { label: 'TypeScript Frameworks', route: '/typescript/frameworks'  },
+    ],
+    tip: 'Use import type for type-only imports — it is erased at compile time and prevents accidental circular dependencies at runtime.',
+    docs: [
+      { label: 'Modules (Handbook)',    url: 'https://www.typescriptlang.org/docs/handbook/2/modules.html'   },
+      { label: 'Module Resolution',    url: 'https://www.typescriptlang.org/docs/handbook/module-resolution.html' },
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play'                          },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'A file with no import/export is a script — its declarations are global; add export {} to make it a module.',
+      'namespace (internal modules) is legacy — use ES modules and import/export in all new code.',
+      'esModuleInterop: true allows default imports from CommonJS modules — without it you need import * as React from "react".',
+    ],
+  },
+
+  'typescript/declarations': {
+    apis: ['declare', '.d.ts', 'declare module', 'declare global', '@types/xxx', 'DefinitelyTyped', 'module augmentation'],
+    related: [
+      { label: 'Module System',     route: '/typescript/modules'    },
+      { label: 'TypeScript Frameworks', route: '/typescript/frameworks'},
+      { label: 'tsconfig Deep Dive', route: '/typescript/tsconfig'   },
+    ],
+    tip: 'Use module augmentation to extend third-party types: declare module "express" { interface Request { user?: User } }',
+    docs: [
+      { label: 'Declaration Files (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html' },
+      { label: 'Publishing (Handbook)',        url: 'https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html'   },
+      { label: 'TypeScript Playground',       url: 'https://www.typescriptlang.org/play'                                              },
+    ],
+    resources: [
+      { label: 'DefinitelyTyped',      url: 'https://github.com/DefinitelyTyped/DefinitelyTyped', badge: 'code' },
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript',            badge: 'code' },
+    ],
+    gotchas: [
+      'A .d.ts without any exports is an ambient global declaration — add export {} if you only want to augment an existing module.',
+      '@types packages belong in devDependencies — they are erased at runtime and should not appear in your production bundle.',
+      'declare module "lib" {} creates a completely new shape — use import type and interface merging to augment without clobbering existing types.',
+    ],
+  },
+
+  'typescript/frameworks': {
+    apis: ['React.FC<Props>', 'JSX.Element', 'z.infer<T>', 'Zod', 'Request augmentation', 'Next.js types', '@types/node'],
+    related: [
+      { label: 'Declaration Files', route: '/typescript/declarations' },
+      { label: 'Generics',          route: '/typescript/generics'     },
+      { label: 'Modules',           route: '/typescript/modules'      },
+    ],
+    tip: 'Prefer (props: Props) => JSX.Element over React.FC<Props> — no implicit children, better generic components, and simpler types.',
+    docs: [
+      { label: 'React TypeScript Cheatsheet', url: 'https://react-typescript-cheatsheet.netlify.app'                    },
+      { label: 'Zod Documentation',           url: 'https://zod.dev'                                                    },
+      { label: 'TypeScript Handbook',         url: 'https://www.typescriptlang.org/docs/handbook/intro.html'            },
+      { label: 'TypeScript Playground',       url: 'https://www.typescriptlang.org/play'                                },
+    ],
+    resources: [
+      { label: '@types/react',         url: 'https://www.npmjs.com/package/@types/react',  badge: 'tool' },
+      { label: '@types/node',          url: 'https://www.npmjs.com/package/@types/node',   badge: 'tool' },
+      { label: 'DefinitelyTyped',      url: 'https://github.com/DefinitelyTyped/DefinitelyTyped', badge: 'code' },
+    ],
+    gotchas: [
+      'React.FC removed implicit children in React 18 — old tutorials showing children without explicit typing are incorrect.',
+      'Zod z.infer<typeof schema> gives the TypeScript type from a runtime schema — one source of truth for validation + types.',
+      'Augmenting Express Request types requires the exact module path: "express-serve-static-core" not "express".',
+    ],
+  },
+
+  'typescript/strict-migration': {
+    apis: ['strict', 'noImplicitAny', 'strictNullChecks', 'allowJs', 'checkJs', '--noEmit', 'ts-migrate'],
+    related: [
+      { label: 'TS Fundamentals',  route: '/typescript/basics'    },
+      { label: 'tsconfig',         route: '/typescript/tsconfig'  },
+      { label: 'Declarations',     route: '/typescript/declarations'},
+    ],
+    tip: 'Add // @ts-check to JS files for incremental type-checking before full migration — zero-cost first step for large codebases.',
+    docs: [
+      { label: 'Migrating from JS (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html' },
+      { label: 'Strict mode flags',            url: 'https://www.typescriptlang.org/tsconfig#strict'                              },
+      { label: 'TypeScript Playground',        url: 'https://www.typescriptlang.org/play'                                         },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript',  url: 'https://github.com/microsoft/TypeScript',              badge: 'code' },
+      { label: 'ts-migrate (npm)',       url: 'https://www.npmjs.com/package/ts-migrate',             badge: 'tool' },
+    ],
+    gotchas: [
+      'noImplicitAny errors flood first in a large JS migration — suppress with // @ts-expect-error and fix gradually by file.',
+      'strictNullChecks reveals the most bugs but is the hardest flag to retrofit — enable it last, after noImplicitAny is clean.',
+      'allowJs + checkJs type-check JS files as-is; allowJs without checkJs compiles them but does not type-check.',
+    ],
+  },
+
+  'typescript/ts-performance': {
+    apis: ['composite: true', 'incremental: true', 'isolatedModules: true', 'skipLibCheck: true', '--listFiles', '--diagnostics', 'project references'],
+    related: [
+      { label: 'tsconfig Deep Dive',  route: '/typescript/tsconfig'    },
+      { label: 'Modules',             route: '/typescript/modules'     },
+      { label: 'Declaration Files',   route: '/typescript/declarations'},
+    ],
+    tip: 'Run tsc --diagnostics to see which files consume the most type-checking time — target those for simplification or project-reference isolation.',
+    docs: [
+      { label: 'Performance Wiki',      url: 'https://github.com/microsoft/TypeScript/wiki/Performance'           },
+      { label: 'Project References',    url: 'https://www.typescriptlang.org/docs/handbook/project-references.html'},
+      { label: 'TSConfig Reference',    url: 'https://www.typescriptlang.org/tsconfig'                            },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript', badge: 'code' },
+    ],
+    gotchas: [
+      'isolatedModules: true requires each file to be transpilable in isolation — const enum and ambient type-only re-exports fail.',
+      'skipLibCheck skips type errors in .d.ts files — it speeds up compilation but may hide real errors from dependencies.',
+      'Deeply recursive conditional types and mapped types on large unions are the most common causes of slow compilation.',
+    ],
+  },
+
+  'typescript/cheatsheet': {
+    apis: ['Partial<T>', 'Record<K,V>', 'ReturnType<F>', 'keyof', 'typeof', 'infer', 'satisfies', 'as const'],
+    related: [
+      { label: 'Utility Types',    route: '/typescript/utility-types'  },
+      { label: 'Mapped Types',     route: '/typescript/mapped-types'   },
+      { label: 'Conditional Types',route: '/typescript/conditional-types'},
+    ],
+    tip: 'Use as const on object literals for narrow literal types on all values — { role: "admin" } as const narrows to "admin", not string.',
+    docs: [
+      { label: 'Utility Types Reference', url: 'https://www.typescriptlang.org/docs/handbook/utility-types.html' },
+      { label: 'TypeScript Handbook',     url: 'https://www.typescriptlang.org/docs/handbook/intro.html'         },
+      { label: 'TypeScript Playground',   url: 'https://www.typescriptlang.org/play'                             },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript',  url: 'https://github.com/microsoft/TypeScript',   badge: 'code' },
+      { label: 'type-challenges (GitHub)', url: 'https://github.com/type-challenges/type-challenges', badge: 'code' },
+    ],
+    gotchas: [
+      'keyof on a class type includes all public property and method names — including inherited ones from the prototype chain.',
+      'as const on an array creates a readonly tuple — useful but means you cannot push() or sort() without casting.',
+      'satisfies operator checks a value against a type without widening the variable\'s inferred type — different from a type annotation.',
+    ],
+  },
+
+  'typescript/interview-prep': {
+    apis: ['type vs interface', 'generic constraints', 'conditional types', 'infer', 'discriminated union', 'structural typing'],
+    related: [
+      { label: 'TS Fundamentals',    route: '/typescript/basics'        },
+      { label: 'Utility Types',      route: '/typescript/utility-types' },
+      { label: 'Type Guards',        route: '/typescript/narrowing'     },
+    ],
+    tip: 'Answer with examples — explaining infer by writing T extends Promise<infer U> ? U : never beats any definition-only answer in an interview.',
+    docs: [
+      { label: 'TypeScript Handbook',   url: 'https://www.typescriptlang.org/docs/handbook/intro.html' },
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play'                     },
+    ],
+    resources: [
+      { label: 'microsoft/TypeScript',  url: 'https://github.com/microsoft/TypeScript',              badge: 'code' },
+      { label: 'type-challenges',       url: 'https://github.com/type-challenges/type-challenges',   badge: 'code' },
+    ],
+    gotchas: [
+      'Senior questions probe trade-offs ("when would you use type over interface") — one-line definitions are not enough.',
+      'Structural typing questions trip up candidates from Java/C# backgrounds — two unrelated classes with the same shape are assignable to each other.',
+    ],
+  },
+
   // ── Angular Practice & Reference pages ──────────────────────────────────────
   'interview-prep': {
     apis: ['signals', 'change detection', 'DI', 'zoneless', 'hydration'],
@@ -3071,10 +3607,11 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
   templateUrl: './page-sidebar.html',
   styleUrl: './page-sidebar.scss',
   host: {
-    '[class.section-angular]': 'section() === "angular"',
-    '[class.section-csharp]':  'section() === "csharp"',
-    '[class.section-aspnet]':  'section() === "aspnet"',
-    '[class.section-sql]':     'section() === "sql"',
+    '[class.section-angular]':     'section() === "angular"',
+    '[class.section-csharp]':      'section() === "csharp"',
+    '[class.section-aspnet]':      'section() === "aspnet"',
+    '[class.section-sql]':         'section() === "sql"',
+    '[class.section-typescript]':  'section() === "typescript"',
   },
 })
 export class PageSidebarComponent {
@@ -3093,10 +3630,11 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql'>(() =>
-    this.currentUrl().startsWith('/csharp') ? 'csharp'
-    : this.currentUrl().startsWith('/aspnet') ? 'aspnet'
-    : this.currentUrl().startsWith('/sql')    ? 'sql'
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript'>(() =>
+    this.currentUrl().startsWith('/csharp')      ? 'csharp'
+    : this.currentUrl().startsWith('/aspnet')    ? 'aspnet'
+    : this.currentUrl().startsWith('/sql')       ? 'sql'
+    : this.currentUrl().startsWith('/typescript')? 'typescript'
     : 'angular'
   );
 
@@ -3104,17 +3642,19 @@ export class PageSidebarComponent {
     const key = this.routeKey();
     return SIDEBAR_MAP[key] ??
            SIDEBAR_MAP[key.replace(/^(angular|csharp)\//, '')] ??
-           (this.section() === 'aspnet' ? ASPNET_DEFAULT
-           : this.section() === 'sql'    ? SQL_DEFAULT
+           (this.section() === 'aspnet'      ? ASPNET_DEFAULT
+           : this.section() === 'sql'        ? SQL_DEFAULT
+           : this.section() === 'typescript' ? TS_DEFAULT
            : DEFAULT);
   });
 
   docsHeading = computed(() => {
     switch (this.section()) {
-      case 'csharp':  return '📖 C# Docs';
-      case 'aspnet':  return '📖 ASP.NET Core Docs';
-      case 'sql':     return '📖 SQL Docs';
-      default:        return '📖 Angular Docs';
+      case 'csharp':      return '📖 C# Docs';
+      case 'aspnet':      return '📖 ASP.NET Core Docs';
+      case 'sql':         return '📖 SQL Docs';
+      case 'typescript':  return '📖 TypeScript Docs';
+      default:            return '📖 Angular Docs';
     }
   });
 

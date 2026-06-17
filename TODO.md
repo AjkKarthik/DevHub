@@ -87,7 +87,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | C# | 59 | 0 | Complete — 50 topics + 9 practice/reference |
 | ASP.NET Core | 54 | 0 | Complete — 45 topics + 9 practice/reference |
 | SQL | 53 | 0 | Complete — 44 topics + 9 reference |
-| TypeScript | 0 | 22 | Not started |
+| TypeScript | 22 | 0 | Complete — 20 topics + 2 reference |
 | JavaScript | 0 | 24 | Not started |
 | React | 0 | 24 | Not started |
 | HTML | 0 | 22 | Not started |
@@ -455,7 +455,7 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Foundation (do first)**
 - [x] 2026-06-16 `aspnet/hosting-startup` — Generic Host, WebApplication.CreateBuilder, IHostedService, startup order
 - [x] 2026-06-16 `aspnet/middleware` — pipeline order, short-circuit, IMiddlewareFactory, terminal middleware
-- [ ] `aspnet/routing` — endpoint routing, route constraints, route groups, MapGroup
+- [x] 2026-06-16 `aspnet/routing` — endpoint routing, route constraints, route groups, MapGroup
 - [x] 2026-06-16 `aspnet/configuration` — IConfiguration, Options pattern, IOptionsSnapshot, secrets
 - [x] 2026-06-16 `aspnet/dependency-injection` — lifetimes (singleton/scoped/transient), keyed services, factory
 - [x] 2026-06-16 `aspnet/logging` — ILogger, structured logging, log levels, Serilog/OpenTelemetry integration
@@ -491,33 +491,33 @@ if old-vs-new → add sidebar entry → recalculate reading time**
 **Infrastructure**
 - [x] `aspnet/background-services` — BackgroundService, IHostedService, Channels integration (2026-06-16)
 - [x] `aspnet/health-checks` — AddHealthChecks, IHealthCheck, UI, readiness vs liveness (2026-06-16)
-- [ ] `aspnet/testing` — WebApplicationFactory, custom factory, Testcontainers, Respawn
-- [ ] `aspnet/signalr` — hubs, groups, connection lifecycle, scale-out with Redis backplane
-- [ ] `aspnet/deployment` — Kestrel, IIS, Docker, reverse proxy (NGINX), HTTPS in containers
-- [ ] `aspnet/performance` — response compression, response caching, async streaming, BenchmarkDotNet
-- [ ] `aspnet/aspire` — AppHost orchestration, service defaults, dashboard, integrations
+- [x] 2026-06-16 `aspnet/testing` — WebApplicationFactory, custom factory, Testcontainers, Respawn
+- [x] 2026-06-16 `aspnet/signalr` — hubs, groups, connection lifecycle, scale-out with Redis backplane
+- [x] 2026-06-16 `aspnet/deployment` — Kestrel, IIS, Docker, reverse proxy (NGINX), HTTPS in containers
+- [x] 2026-06-16 `aspnet/performance` — response compression, response caching, async streaming, BenchmarkDotNet
+- [x] 2026-06-16 `aspnet/aspire` — AppHost orchestration, service defaults, dashboard, integrations
 
 ---
 
 #### SQL hub — 17 topic pages
 
-- [ ] `sql/rdbms-concepts` — ACID, CAP theorem, relational model, keys, constraints overview
-- [ ] `sql/data-modeling` — ER diagrams, entity identification, relationships, cardinality
-- [ ] `sql/normalization` — 1NF/2NF/3NF/BCNF, denormalisation trade-offs, when to break rules
-- [ ] `sql/db-architecture` — query processor, storage engine, buffer pool, WAL, MSSQL vs PG arch
-- [ ] `sql/data-types` — numeric precision, varchar vs nvarchar, JSONB, UUID, temporal types
-- [ ] `sql/basics` — SELECT, WHERE, ORDER BY, LIMIT/TOP, DISTINCT, aliases, DUAL table (PG)
-- [ ] `sql/joins` — INNER/LEFT/RIGHT/FULL/CROSS/SELF join, join order, NULL in join columns
-- [ ] `sql/aggregations` — GROUP BY, HAVING, COUNT/SUM/AVG/MIN/MAX, FILTER clause (PG), ROLLUP
-- [ ] `sql/subqueries` — correlated vs non-correlated, EXISTS vs IN, lateral joins (PG), scalar subquery
-- [ ] `sql/ctes` — recursive CTEs, WITH clause, CTE vs subquery performance, multiple CTEs
-- [ ] `sql/window-functions` — ROW_NUMBER/RANK/DENSE_RANK, LAG/LEAD, NTILE, ROWS vs RANGE frames
-- [ ] `sql/indexes` — clustered vs non-clustered, covering index, include columns, index maintenance
-- [ ] `sql/transactions` — BEGIN/COMMIT/ROLLBACK, savepoints, implicit vs explicit, retry logic
-- [ ] `sql/stored-procedures` — parameters, OUTPUT, EXEC, error handling, TRY/CATCH
-- [ ] `sql/schema-design` — naming conventions, surrogate vs natural keys, soft delete patterns
-- [ ] `sql/json-features` — FOR JSON PATH (T-SQL), jsonb operators (PG), JSON indexing
-- [ ] `sql/performance` — execution plans, query hints, statistics, parameter sniffing (T-SQL)
+- [x] `sql/rdbms-concepts` — ACID, CAP theorem, relational model, keys, constraints overview `2026-06-16`
+- [x] `sql/data-modeling` — 2026-06-16
+- [x] `sql/normalization` — 1NF/2NF/3NF/BCNF, denormalisation trade-offs, when to break rules `2026-06-16`
+- [x] `sql/db-architecture` — 2026-06-16
+- [x] `sql/data-types` — 2026-06-16
+- [x] `sql/basics` — 2026-06-16
+- [x] `sql/joins` — 2026-06-16
+- [x] `sql/aggregations` — 2026-06-16
+- [x] `sql/subqueries` — correlated vs non-correlated, EXISTS vs IN, lateral joins (PG), scalar subquery `2026-06-16`
+- [x] `sql/ctes` — recursive CTEs, WITH clause, CTE vs subquery performance, multiple CTEs `2026-06-16`
+- [x] `sql/window-functions` — ROW_NUMBER/RANK/DENSE_RANK, LAG/LEAD, NTILE, ROWS vs RANGE frames `2026-06-16`
+- [x] `sql/indexes` — clustered vs non-clustered, covering index, include columns, index maintenance `2026-06-16`
+- [x] `sql/transactions` — BEGIN/COMMIT/ROLLBACK, savepoints, implicit vs explicit, retry logic `2026-06-16`
+- [x] `sql/stored-procedures` — parameters, OUTPUT, EXEC, error handling, TRY/CATCH `2026-06-16`
+- [x] `sql/schema-design` — naming conventions, surrogate vs natural keys, soft delete patterns `2026-06-16`
+- [x] `sql/json-features` — FOR JSON PATH (T-SQL), jsonb operators (PG), JSON indexing `2026-06-16`
+- [x] `sql/performance` — execution plans, query hints, statistics, parameter sniffing (T-SQL) `2026-06-16`
 
 ---
 
@@ -535,40 +535,29 @@ job requirements and add any missing cards to home.ts.
 Accent: `#3178c6` (TypeScript blue). Search prefix: `ts-`. Progress key: `tsTotal`.
 Write one page per session in this order:
 
-- [ ] `ts-basics` — Type annotations, inference, `any` vs `unknown`, `never`, type assertions
-- [ ] `ts-functions` — Parameter types, return types, optional/default/rest, overloads,
-  `this` parameter, function type expressions
-- [ ] `ts-interfaces-types` — interface vs type alias, structural typing, extends vs
-  intersection (&), declaration merging, index signatures
-- [ ] `ts-generics` — Generic functions, constraints (`extends`), generic interfaces,
-  generic classes, default type params
-- [ ] `ts-utility-types` — Partial, Required, Readonly, Pick, Omit, Record, Extract,
-  Exclude, NonNullable, ReturnType, Parameters
-- [ ] `ts-narrowing` — typeof, instanceof, in operator, discriminated unions, assertion
-  functions, control flow analysis
-
-- [ ] `ts-mapped-types` — `[K in keyof T]`, Readonly/Partial implementation, custom mapped
-  types, `+/-` modifiers, key remapping with `as`
-- [ ] `ts-conditional-types` — `T extends U ? X : Y`, infer keyword, distributive
-  conditional types, built-in conditional utilities
-- [ ] `ts-template-literal-types` — Template literal type syntax, string manipulation types,
-  `Uppercase`/`Lowercase`/`Capitalize`/`Uncapitalize`
-- [ ] `ts-decorators` — Experimental vs TC39 decorators, class/method/property/parameter
-  decorators, metadata reflection, Angular/NestJS usage
-- [ ] `ts-modules` — ES modules in TS, `import type`, module resolution strategies,
-  path aliases in tsconfig, declaration files (`.d.ts`)
-- [ ] `ts-tsconfig` — Strict mode flags, target/lib, moduleResolution, paths, composite
-  projects, project references
-
-- [ ] `ts-classes` — Access modifiers, abstract classes, parameter properties, static,
-  override keyword, class implements interface
-- [ ] `ts-enums` — const vs regular enums, string enums, reverse mapping, enum pitfalls,
-  prefer union types over enums (when/why)
-- [ ] `ts-advanced-patterns` — Builder pattern in TS, fluent API design, branded types,
-  phantom types, opaque types
-- [ ] `ts-react-typescript` — FC vs function declaration, event types, useRef<T>, custom
-  hook typing, generic components, discriminated union props
-- [ ] Reference pages: cheatsheet, interview-prep (already in home — build them)
+- [x] 2026-06-16 `ts-basics` — Type annotations, inference, `any` vs `unknown`, `never`, type assertions
+- [x] 2026-06-17 `ts-basics` — type annotations, inference, any/unknown/never, assertions
+- [x] 2026-06-17 `ts-primitive-types` — string, number, boolean, null, undefined, void, never, unknown, literal types
+- [x] 2026-06-17 `ts-interfaces-types` — interface vs type alias, declaration merging, index signatures
+- [x] 2026-06-17 `ts-unions` — union/intersection types, discriminated unions, narrowing
+- [x] 2026-06-17 `ts-enums-tuples` — const/string enums, reverse mapping, tuple types
+- [x] 2026-06-17 `ts-generics` — generic functions, constraints, interfaces, classes, default params
+- [x] 2026-06-17 `ts-generic-patterns` — Result<T,E>, Option<T>, generic factories, conditional generics
+- [x] 2026-06-17 `ts-utility-types` — Partial, Required, Readonly, Pick, Omit, Record, Extract, Exclude, NonNullable, ReturnType
+- [x] 2026-06-17 `ts-mapped-types` — [K in keyof T], +/- modifiers, key remapping with as
+- [x] 2026-06-17 `ts-template-literal-types` — template literal syntax, Uppercase/Capitalize/infer
+- [x] 2026-06-17 `ts-conditional-types` — T extends U ? X : Y, infer, distributive, built-ins
+- [x] 2026-06-17 `ts-narrowing` — typeof, instanceof, in, predicates, assertion functions, exhaustiveness
+- [x] 2026-06-17 `ts-decorators` — TC39 Stage 3 vs legacy, class/method/field/accessor decorators
+- [x] 2026-06-17 `ts-classes` — access modifiers, abstract, readonly, override, parameter properties
+- [x] 2026-06-17 `ts-tsconfig` — target/lib, module/moduleResolution, strict flags, paths, composite
+- [x] 2026-06-17 `ts-modules` — ES modules, import type, resolution, path aliases, namespaces
+- [x] 2026-06-17 `ts-declarations` — .d.ts files, DefinitelyTyped, ambient declare, module augmentation
+- [x] 2026-06-17 `ts-frameworks` — React, Express, Zod, Next.js App Router typed patterns
+- [x] 2026-06-17 `ts-strict-migration` — strict: true flags, allowJs, @ts-expect-error, bottom-up migration
+- [x] 2026-06-17 `ts-ts-performance` — incremental, composite, isolatedModules, noEmit, barrel chains
+- [x] 2026-06-17 `ts-cheatsheet` — 8-tab reference: types, narrowing, generics, utility, mapped, classes, modules, config
+- [x] 2026-06-17 `ts-interview-prep` — 35 Q&A across Type System, Generics, Advanced Types, Classes, Modules, Config, Patterns
 
 Wiring checklist per CLAUDE.md: routes, nav block, search entries, breadcrumb labels,
 sidebar entries, progress service (`tsTotal`), hub-home card flip.
@@ -1170,6 +1159,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-17 — TypeScript hub Phase 3A complete: all 22 pages live (20 trackable topics + cheatsheet + interview-prep). tsTotal = 20. hub-home TypeScript card topics: 22, available: true. Hero stat: 250+. Build passes.
 - [x] 2026-06-13 — Market-gap topic additions across all 34 hubs (18 new coming-soon
   cards): NestJS, Gin, a11y, MassTransit, Functional C#, AI/ML System Design, Celery,
   K8s Operators, MongoDB Time Series, Azure Bicep, TanStack Query, React Hook Form,

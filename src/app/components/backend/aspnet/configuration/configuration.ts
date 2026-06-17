@@ -5,6 +5,7 @@ import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block'
 import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
 import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
 import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { BeforeAfterComponent, BeforeAfterExample } from '../../../shared/before-after/before-after';
 import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
 import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
 import { PrerequisitesComponent, Prerequisite } from '../../../shared/prerequisites/prerequisites';
@@ -17,7 +18,7 @@ import { PageCompleteComponent } from '../../../shared/page-complete/page-comple
   imports: [
     CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent,
     QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent,
-    CommonMistakesComponent, RevisionCardComponent, PrerequisitesComponent,
+    BeforeAfterComponent, CommonMistakesComponent, RevisionCardComponent, PrerequisitesComponent,
     PageMetaComponent, PageCompleteComponent,
   ],
   templateUrl: './configuration.html',
@@ -459,6 +460,59 @@ public class FeatureFlags
     {
       q: 'Can configuration providers be ordered or replaced after the app starts?',
       a: 'No — providers are built once when <code>WebApplication.CreateBuilder()</code> calls <code>builder.Configuration.Build()</code> internally. The order is fixed at startup. If you need runtime-updateable values you must either use a provider that supports hot-reload (file-based, Azure App Configuration), poll an external store (Key Vault), or push updates via a message bus into your own in-memory cache accessible through a singleton service.',
+    },
+  ];
+
+  beforeAfter: BeforeAfterExample[] = [
+    {
+      title: 'Raw IConfiguration access vs strongly-typed options',
+      before: `// Fragile: typo in key name compiles; null not handled
+public class EmailService(IConfiguration config)
+{
+    public Task SendAsync(string to)
+    {
+        var host = config["Smpt:Host"];           // typo — compiles, null at runtime
+        var port = int.Parse(config["Smtp:Port"]!); // throws if key missing
+        Console.WriteLine(\$"Sending via {host}:{port}");
+        return Task.CompletedTask;
+    }
+}`,
+      after: `// Strongly-typed: one registration, compile-time safety, no string keys
+public class SmtpOptions { public string Host { get; set; } = ""; public int Port { get; set; } = 587; }
+
+// Program.cs — register once:
+builder.Services.AddOptions<SmtpOptions>().BindConfiguration("Smtp").ValidateOnStart();
+
+// Service — typed POCO, no null risk:
+public class EmailService(IOptions<SmtpOptions> opts)
+{
+    public Task SendAsync(string to)
+    {
+        Console.WriteLine(\$"Sending via {opts.Value.Host}:{opts.Value.Port}");
+        return Task.CompletedTask;
+    }
+}`,
+      note: 'The options pattern moves config coupling to one registration point. Typos become compile errors (or validation errors at startup), and consuming classes depend on a typed POCO rather than magic strings.',
+    },
+    {
+      title: 'Lazy validation vs ValidateOnStart',
+      before: `// Validation runs on first access — error surfaces in production
+builder.Services
+    .AddOptions<JwtOptions>()
+    .BindConfiguration("Jwt")
+    .ValidateDataAnnotations(); // no ValidateOnStart
+
+// App starts fine even with missing Jwt:Secret
+// First POST /login → OptionsValidationException → 500 in production`,
+      after: `// ValidateOnStart fails the process before accepting any requests
+builder.Services
+    .AddOptions<JwtOptions>()
+    .BindConfiguration("Jwt")
+    .ValidateDataAnnotations()
+    .ValidateOnStart();  // throws at startup: "Jwt:Secret is required"
+
+// App startup fails with a clear message — fix config, redeploy, no 500s`,
+      note: 'ValidateOnStart makes a misconfigured app fail immediately with a descriptive message rather than surfacing as a cryptic 500 on the first production request. Always use it alongside ValidateDataAnnotations().',
     },
   ];
 

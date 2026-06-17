@@ -250,6 +250,53 @@ const SQL_LABELS: Record<string, string> = {
   'learning-paths':    'Learning Paths',
 };
 
+const TYPESCRIPT_LABELS: Record<string, string> = {
+  'basics':                   'TS Fundamentals',
+  'primitive-types':          'Primitive & Literal Types',
+  'interfaces-types':         'Interfaces & Type Aliases',
+  'unions':                   'Union & Intersection Types',
+  'narrowing':                'Type Guards & Narrowing',
+  'enums-tuples':             'Enums & Tuples',
+  'generics':                 'Generics Fundamentals',
+  'generic-patterns':         'Generic Patterns',
+  'utility-types':            'Utility Types',
+  'mapped-types':             'Mapped Types',
+  'conditional-types':        'Conditional Types',
+  'template-literal-types':   'Template Literal Types',
+  'classes':                  'Classes & Visibility',
+  'decorators':               'Decorators',
+  'tsconfig':                 'tsconfig Deep Dive',
+  'modules':                  'Module System & Namespaces',
+  'declarations':             'Declaration Files (d.ts)',
+  'frameworks':               'TypeScript with Frameworks',
+  'strict-migration':         'Strict Mode & Migration',
+  'ts-performance':           'TypeScript Performance',
+  'cheatsheet':               'Cheat Sheet',
+  'interview-prep':           'Interview Prep',
+};
+
+const REACT_LABELS: Record<string, string> = {
+  'basics':            'React Fundamentals',
+  'hooks-core':        'Core Hooks',
+  'hooks-advanced':    'Advanced Hooks',
+  'forms':             'Forms & Validation',
+  'router':            'React Router',
+  'context':           'Context API',
+  'state-management':  'State Management',
+  'tanstack-query':    'TanStack Query',
+  'performance':       'Performance',
+  'patterns':          'React Patterns',
+  'typescript':        'TypeScript & React',
+  'testing':           'Testing React',
+  'nextjs':            'Next.js App Router',
+  'native':            'React Native',
+  'hook-form':         'React Hook Form',
+  'animations':        'Animations',
+  'security':          'Security',
+  'cheatsheet':        'Cheat Sheet',
+  'interview-prep':    'Interview Prep',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -371,9 +418,11 @@ export class BreadcrumbComponent {
     const segs = this.segments();
     if (segs.length < 2) return '';
     const key = segs[segs.length - 1];
-    const labels = segs[0] === 'csharp' ? CSHARP_LABELS
-                 : segs[0] === 'aspnet' ? ASPNET_LABELS
-                 : segs[0] === 'sql'    ? SQL_LABELS
+    const labels = segs[0] === 'csharp'     ? CSHARP_LABELS
+                 : segs[0] === 'aspnet'     ? ASPNET_LABELS
+                 : segs[0] === 'sql'        ? SQL_LABELS
+                 : segs[0] === 'typescript' ? TYPESCRIPT_LABELS
+                 : segs[0] === 'react'      ? REACT_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

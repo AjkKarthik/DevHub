@@ -1,12 +1,9 @@
 <div class="sq-page">
   <div class="sq-icon">🗄️</div>
   <h1 class="page-title">Aggregations</h1>
-  <p class="page-subtitle">
-    GROUP BY, HAVING, COUNT/SUM/AVG/MIN/MAX, conditional aggregation, ROLLUP/CUBE/GROUPING SETS,
-    STRING_AGG, PERCENTILE_CONT — with MSSQL and PostgreSQL dialect differences throughout.
-  </p>
+  <p class="page-subtitle">GROUP BY, HAVING, COUNT/SUM/AVG/MIN/MAX, conditional aggregation (CASE WHEN + FILTER), ROLLUP/CUBE/GROUPING SETS, GROUPING(), STRING_AGG, PERCENTILE_CONT/DISC — plus covering indexes for GROUP BY, hash vs sort aggregate plans, COUNT(DISTINCT) pitfalls, and pre-aggregate CTE patterns.</p>
 
-  <app-page-meta [readingTime]="28" difficulty="intermediate" since="SQL-92" tech="sql" />
+  <app-page-meta [readingTime]="32" difficulty="intermediate" since="SQL-92" tech="sql" />
   <app-quick-ref [items]="quickRef" />
   <app-theory-block [sections]="theory" />
 

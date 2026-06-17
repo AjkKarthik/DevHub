@@ -33,9 +33,12 @@ export class SqlDataTypes {
     { name: 'TEXT',                type: 'type', desc: 'PG: unlimited length UTF-8 string (preferred for long text). MSSQL: deprecated large-value type — use VARCHAR(MAX) instead.' },
     { name: 'DATE',                type: 'type', desc: 'Date only (no time). YYYY-MM-DD. Both dialects.' },
     { name: 'DATETIME2(n)',        type: 'type', desc: 'MSSQL: date + time, 0–7 fractional seconds precision. Preferred over the legacy DATETIME type.' },
+    { name: 'DATETIMEOFFSET',      type: 'type', desc: 'MSSQL: datetime2 + UTC offset. Use when originating timezone must be preserved.' },
     { name: 'TIMESTAMPTZ',        type: 'type', desc: 'PostgreSQL: timestamp with time zone — stored as UTC, displayed in session timezone. Always use this over plain TIMESTAMP.' },
     { name: 'BIT',                 type: 'type', desc: 'MSSQL: 1/0/NULL — not a true Boolean. PG equivalent: BOOLEAN (TRUE/FALSE/NULL).' },
     { name: 'UNIQUEIDENTIFIER',    type: 'type', desc: 'MSSQL: 128-bit GUID (16 bytes). Use NEWSEQUENTIALID() for PKs to reduce index fragmentation. PG: UUID type.' },
+    { name: 'JSONB (PG)',          type: 'type', desc: 'PostgreSQL binary JSON — parsed on insert, supports GIN indexes, operators @>, ?, ->. Preferred over JSON type.' },
+    { name: 'JSON (MSSQL)',        type: 'type', desc: 'MSSQL stores JSON as NVARCHAR; functions JSON_VALUE/JSON_QUERY/OPENJSON parse it at query time. No dedicated JSON type.' },
   ];
 
   theory: TheoryPoint[] = [
@@ -73,12 +76,10 @@ export class SqlDataTypes {
       heading: 'Date and Time Types — Always Use UTC',
       points: [
         'DATE: date only, no time component. YYYY-MM-DD. Both dialects. Use for birthdays, event dates, and any value where time is irrelevant.',
-        'MSSQL DATETIME (legacy): date + time, ±3.33 ms precision, range 1753–9999. Avoid in new schemas — DATETIME2 supersedes it.',
-        'MSSQL DATETIME2(n): date + time, fractional seconds 0–7 (7 = 100ns precision). Use DATETIME2(0) for second precision, DATETIME2(7) for the maximum. SYSUTCDATETIME() returns current UTC as DATETIME2(7).',
-        'MSSQL DATETIMEOFFSET: stores the UTC offset alongside the value. Useful when the originating timezone must be preserved (e.g. user-submitted appointments).',
-        'PostgreSQL TIMESTAMP: date + time without timezone. Avoid for anything that could span timezones.',
-        'PostgreSQL TIMESTAMPTZ (= TIMESTAMP WITH TIME ZONE): stores the value as UTC internally; displays it in the session\'s timezone. Always use TIMESTAMPTZ. NOW() / CURRENT_TIMESTAMP returns TIMESTAMPTZ.',
-        'Universal rule: store all timestamps in UTC. Convert to local time in the application layer. Mixing timezones in storage is a major source of subtle bugs.',
+        'MSSQL DATETIME2(n): date + time, fractional seconds 0–7 (7 = 100ns precision). Replaces the legacy DATETIME type. Use SYSUTCDATETIME() for the current UTC time as DATETIME2(7). DATETIMEOFFSET adds a UTC offset component for storing the originating timezone alongside the UTC moment.',
+        'PostgreSQL TIMESTAMPTZ (= TIMESTAMP WITH TIME ZONE): stores the value as UTC internally; displays it in the session\'s timezone. Always use TIMESTAMPTZ. NOW() / CURRENT_TIMESTAMP returns TIMESTAMPTZ. Plain TIMESTAMP has no timezone awareness — avoid it.',
+        'Universal rule: store all timestamps in UTC. Convert to local time in the application layer. Mixing local and UTC timestamps in storage is a major source of subtle bugs across DST transitions.',
+        'Date arithmetic: MSSQL uses DATEADD / DATEDIFF functions. PostgreSQL uses interval arithmetic directly: <code>\'2025-01-01\'::DATE + INTERVAL \'7 days\'</code>. Both support EXTRACT / DATEPART for extracting year, month, day, hour, etc.',
       ],
     },
     {
@@ -89,6 +90,16 @@ export class SqlDataTypes {
         'UUID / UNIQUEIDENTIFIER: 128-bit globally unique identifier. MSSQL: UNIQUEIDENTIFIER; PG: UUID. Random UUIDs (NEWID() / gen_random_uuid()) as PKs cause index fragmentation — use NEWSEQUENTIALID() (MSSQL) or UUIDv7 (PG 17+) for sequential UUIDs that insert at the end of the B-tree.',
         'PostgreSQL-only types: ARRAY (e.g. INT[]), INET/CIDR for IP addresses, JSONB for binary JSON (indexed with GIN), HSTORE for string key-value pairs, geometric types (POINT, LINE, POLYGON). These have no direct MSSQL equivalents.',
         'MSSQL-only types: HIERARCHYID (for tree structures), GEOGRAPHY/GEOMETRY (spatial), ROWVERSION (auto-updated binary version number for optimistic locking), SQL_VARIANT (avoid).',
+      ],
+    },
+    {
+      heading: 'JSON and semi-structured data — JSONB vs typed columns',
+      points: [
+        '<strong>PostgreSQL JSONB</strong>: binary JSON stored in a parsed, decomposed format. Faster to query than plain JSON (no re-parsing), supports GIN indexes on all keys or specific paths, and supports containment (<code>@&gt;</code>), key-existence (<code>?</code>), and path operators (<code>-&gt;</code>, <code>-&gt;&gt;</code>, <code>#&gt;</code>). Preferred over the plain JSON type (which is stored as text and must be re-parsed on every read).',
+        '<strong>MSSQL JSON</strong>: MSSQL has no dedicated JSON column type — JSON is stored as NVARCHAR. Functions <code>JSON_VALUE(col, \'$.path\')</code> (returns a scalar), <code>JSON_QUERY(col, \'$.path\')</code> (returns an object/array), and <code>OPENJSON(col)</code> (shreds to rows) parse it at query time. SQL Server 2022+ adds JSON_PATH_EXISTS and JSON_OBJECT/JSON_ARRAY constructors.',
+        'When to use JSON vs typed columns: use <strong>typed columns</strong> for attributes you filter, sort, join, or aggregate on — they are indexable, type-safe, and queryable with standard SQL. Use <strong>JSON/JSONB</strong> for flexible, schema-less attributes that vary per row (product custom attributes, user preferences, event payloads) where the exact set of keys is not fixed in advance.',
+        '<strong>JSONB indexing in PostgreSQL</strong>: a GIN index on the whole column (<code>CREATE INDEX ON products USING GIN(custom_attrs)</code>) accelerates containment and key-existence queries. An expression index on a specific path (<code>CREATE INDEX ON products((custom_attrs-&gt;&gt;\'color\'))</code>) accelerates equality filters on that key — useful for frequently-queried known attributes even if stored in JSONB.',
+        '<strong>Hybrid schema pattern</strong>: combine both — typed columns for the fixed, shared attributes (price, sku, created_at) and a single JSONB / NVARCHAR(JSON) column for category-specific extras. This gives you the filtering and indexing of typed columns where it matters and the flexibility of JSON where attribute sets vary. Never use the EAV (entity-attribute-value) pattern — JSON is a far better alternative when structured columns are insufficient.',
       ],
     },
   ];
@@ -169,28 +180,28 @@ SELECT * FROM contacts_pg WHERE full_name ILIKE '%garcia%';`,
       language: 'sql',
       code: `-- ── MSSQL date/time best practices ─────────────────────────────────────
 CREATE TABLE events_mssql (
-    event_id     BIGINT          NOT NULL IDENTITY(1,1) PRIMARY KEY,
-    event_name   NVARCHAR(200)   NOT NULL,
-    occurs_on    DATE            NOT NULL,            -- date only
-    created_at   DATETIME2(0)    NOT NULL             -- UTC, second precision
-                   DEFAULT SYSUTCDATETIME(),
-    updated_at   DATETIME2(7)    NOT NULL             -- UTC, max precision
-                   DEFAULT SYSUTCDATETIME(),
-    duration_ms  INT             NULL
+    event_id       BIGINT          NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    event_name     NVARCHAR(200)   NOT NULL,
+    occurs_on      DATE            NOT NULL,           -- date only
+    created_at     DATETIME2(0)    NOT NULL             -- UTC, second precision
+                     DEFAULT SYSUTCDATETIME(),
+    updated_at     DATETIME2(7)    NOT NULL DEFAULT SYSUTCDATETIME(),
+    user_local_at  DATETIMEOFFSET  NULL                -- preserves originating timezone
 );
 
 -- Current timestamps in MSSQL:
 SELECT
-    GETDATE()          AS local_datetime,    -- session/server timezone (avoid)
-    GETUTCDATE()       AS utc_datetime,      -- UTC as DATETIME (legacy precision)
-    SYSUTCDATETIME()   AS utc_datetime2,     -- UTC as DATETIME2(7) (preferred)
+    GETDATE()           AS local_datetime,   -- session/server timezone (avoid)
+    SYSUTCDATETIME()    AS utc_datetime2,    -- UTC as DATETIME2(7) (preferred)
     SYSDATETIMEOFFSET() AS utc_with_offset;  -- DATETIMEOFFSET
 
 -- Date arithmetic in MSSQL:
 SELECT
-    DATEADD(DAY,   7, '2025-01-01')  AS plus7days,
-    DATEADD(MONTH, 3, '2025-01-01')  AS plus3months,
-    DATEDIFF(DAY, '2024-01-01', '2025-01-01') AS days_diff;
+    DATEADD(DAY,   7, '2025-01-01')          AS plus7days,
+    DATEADD(MONTH, 3, '2025-01-01')          AS plus3months,
+    DATEDIFF(DAY, '2024-01-01', '2025-01-01') AS days_diff,
+    YEAR('2025-06-15')                        AS year_part,
+    DATEPART(WEEKDAY, '2025-06-15')           AS weekday;
 
 -- ── PostgreSQL date/time best practices ──────────────────────────────────
 CREATE TABLE events_pg (
@@ -199,23 +210,22 @@ CREATE TABLE events_pg (
     occurs_on   DATE          NOT NULL,
     created_at  TIMESTAMPTZ   NOT NULL DEFAULT NOW(),   -- always TIMESTAMPTZ
     updated_at  TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
-    duration_ms INTEGER       NULL,
     CONSTRAINT pk_events PRIMARY KEY (event_id)
 );
 
 -- Current timestamps in PostgreSQL:
 SELECT
-    NOW()                    AS timestamptz_now,     -- current TIMESTAMPTZ
-    CURRENT_TIMESTAMP        AS same_as_now,
-    CURRENT_DATE             AS date_only,
-    LOCALTIMESTAMP           AS without_tz;          -- avoid — no timezone info
+    NOW()             AS timestamptz_now,   -- current TIMESTAMPTZ
+    CURRENT_DATE      AS date_only,
+    LOCALTIMESTAMP    AS without_tz;        -- avoid — no timezone info
 
--- Date arithmetic in PostgreSQL:
+-- Date arithmetic in PostgreSQL (interval-based, no functions needed):
 SELECT
-    '2025-01-01'::DATE + INTERVAL '7 days'        AS plus7days,
-    '2025-01-01'::DATE + INTERVAL '3 months'       AS plus3months,
-    '2025-01-01'::DATE - '2024-01-01'::DATE        AS days_diff,  -- returns INTEGER
-    AGE('2025-01-01', '2024-01-01')                AS interval_diff;`,
+    '2025-01-01'::DATE + INTERVAL '7 days'   AS plus7days,
+    '2025-01-01'::DATE + INTERVAL '3 months' AS plus3months,
+    '2025-01-01'::DATE - '2024-01-01'::DATE  AS days_diff,  -- returns INTEGER
+    EXTRACT(YEAR FROM NOW())::INT            AS year_part,
+    AGE('2025-06-15', '2024-01-01')          AS interval_diff;`,
     },
     {
       label: 'Boolean & UUID (MSSQL vs PG)',
@@ -242,7 +252,6 @@ CREATE TABLE users_pg (
     email       VARCHAR(254) NOT NULL,
     is_active   BOOLEAN      NOT NULL DEFAULT TRUE,
     is_admin    BOOLEAN      NOT NULL DEFAULT FALSE,
-    -- UUID (requires pgcrypto or pg 13+):
     external_id UUID         NOT NULL DEFAULT gen_random_uuid(),
     CONSTRAINT pk_users PRIMARY KEY (user_id)
 );
@@ -250,7 +259,6 @@ CREATE TABLE users_pg (
 -- BOOLEAN used directly in WHERE — no = TRUE needed:
 SELECT * FROM users_pg WHERE is_active;              -- correct
 SELECT * FROM users_pg WHERE NOT is_admin;           -- correct
-SELECT * FROM users_pg WHERE is_active = TRUE;       -- also valid but verbose
 
 -- PostgreSQL ARRAY type (no MSSQL equivalent):
 CREATE TABLE post_tags_pg (
@@ -294,6 +302,73 @@ SELECT TRY_CONVERT(INT, 'not_a_number');   -- NULL (no error)
 
 -- PostgreSQL equivalent — wrap in a function or use CASE:
 -- No built-in TRY_CAST; use a custom function or validate before casting.`,
+    },
+    {
+      label: 'JSONB (PG) and JSON (MSSQL)',
+      language: 'sql',
+      code: `-- ── PostgreSQL JSONB — binary JSON with GIN indexing ─────────────────────
+CREATE TABLE products (
+    product_id   SERIAL        NOT NULL,
+    sku          VARCHAR(50)   NOT NULL,
+    price        NUMERIC(10,2) NOT NULL,    -- typed: always filterable
+    custom_attrs JSONB         NULL,         -- flexible per-category extras
+    CONSTRAINT pk_products PRIMARY KEY (product_id),
+    CONSTRAINT uq_products_sku UNIQUE (sku)
+);
+
+-- GIN index on the whole JSONB column (containment + key existence queries):
+CREATE INDEX ix_products_attrs ON products USING GIN(custom_attrs);
+
+-- Expression index on a specific path (equality filter on known key):
+CREATE INDEX ix_products_color ON products((custom_attrs->>'color'));
+
+-- Insert: JSONB stored in binary — keys are sorted, duplicates removed
+INSERT INTO products (sku, price, custom_attrs)
+VALUES ('SHIRT-RED-M', 29.99, '{"color":"red","size":"M","material":"cotton"}');
+
+-- Query JSONB operators:
+SELECT sku, price,
+       custom_attrs->>'color'    AS color,    -- ->> returns TEXT
+       custom_attrs->'material'  AS material  -- -> returns JSONB
+FROM products
+WHERE custom_attrs->>'color' = 'red'          -- uses expression index
+  AND custom_attrs @> '{"size":"M"}';         -- @> = containment (uses GIN)
+
+-- Key existence check:
+SELECT * FROM products WHERE custom_attrs ? 'discount_pct';  -- has this key?
+
+-- Update a single JSONB key (non-destructive):
+UPDATE products
+SET custom_attrs = jsonb_set(custom_attrs, '{color}', '"blue"')
+WHERE sku = 'SHIRT-RED-M';
+
+-- ── MSSQL JSON (stored as NVARCHAR) ──────────────────────────────────────
+CREATE TABLE products_mssql (
+    product_id   INT            NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    sku          VARCHAR(50)    NOT NULL,
+    price        DECIMAL(10,2)  NOT NULL,
+    custom_attrs NVARCHAR(MAX)  NULL
+        CHECK (ISJSON(custom_attrs) = 1)    -- validate JSON on insert
+);
+
+-- Query with JSON_VALUE (scalar) and JSON_QUERY (object/array):
+SELECT
+    sku,
+    JSON_VALUE(custom_attrs, '$.color')     AS color,
+    JSON_VALUE(custom_attrs, '$.size')      AS size,
+    JSON_QUERY(custom_attrs, '$.dimensions') AS dimensions_json
+FROM products_mssql
+WHERE JSON_VALUE(custom_attrs, '$.color') = 'red';
+
+-- OPENJSON: shred JSON array to rows
+SELECT p.sku, j.value AS tag
+FROM products_mssql p
+CROSS APPLY OPENJSON(p.custom_attrs, '$.tags') j;
+
+-- Computed column + index on a JSON path (MSSQL):
+ALTER TABLE products_mssql
+ADD color AS JSON_VALUE(custom_attrs, '$.color') PERSISTED;
+CREATE INDEX ix_products_color ON products_mssql(color);`,
     },
   ];
 
@@ -391,6 +466,28 @@ CREATE TABLE sales_report_pg (
       answer: 1,
       explanation: 'TIMESTAMPTZ (TIMESTAMP WITH TIME ZONE) stores the value as UTC and displays it in the session\'s timezone. Plain TIMESTAMP has no timezone awareness — if users are in different timezones, you cannot determine the absolute moment of submission from a plain TIMESTAMP.',
     },
+    {
+      q: 'In MSSQL, why is NEWSEQUENTIALID() preferred over NEWID() for a UNIQUEIDENTIFIER primary key?',
+      options: [
+        'NEWSEQUENTIALID() is shorter and uses less storage',
+        'NEWID() generates duplicate values; NEWSEQUENTIALID() is unique',
+        'NEWID() generates random UUIDs that cause page splits on every insert; NEWSEQUENTIALID() generates increasing UUIDs that insert at the end of the B-tree, like an IDENTITY column',
+        'NEWSEQUENTIALID() is compatible with PostgreSQL UUID; NEWID() is not',
+      ],
+      answer: 2,
+      explanation: 'A B-tree clustered index keeps rows in sorted order. NEWID() generates random UUIDs, so each insert lands at a random position in the index — causing page splits and severe fragmentation on busy tables. NEWSEQUENTIALID() generates values that are always greater than any previous value, so inserts append to the end of the index, matching the efficient behaviour of IDENTITY columns.',
+    },
+    {
+      q: 'What is the key difference between PostgreSQL\'s JSONB type and its plain JSON type?',
+      options: [
+        'JSONB supports more JSON operators; JSON does not support any operators',
+        'JSONB is stored as parsed binary (faster to query, supports GIN indexes); JSON is stored as raw text (preserves whitespace and key order, must re-parse on every read)',
+        'JSON can be larger than JSONB',
+        'JSONB requires a schema definition; JSON is schema-less',
+      ],
+      answer: 1,
+      explanation: 'PostgreSQL\'s plain JSON stores the raw text and re-parses it on every access — preserving whitespace, duplicate keys, and key order. JSONB decomposes and stores JSON in binary format on insert, strips whitespace, removes duplicates, and can be queried with GIN indexes. For almost all use cases, JSONB is the right choice.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -405,6 +502,22 @@ CREATE TABLE sales_report_pg (
     {
       q: 'When should I use CHAR(n) vs VARCHAR(n)?',
       a: 'Use CHAR(n) for fixed-length strings where EVERY value will always be exactly n characters: ISO country codes (CHAR(2)), ISO currency codes (CHAR(3)), fixed-format codes. CHAR pads shorter values with spaces and rejects longer ones. For everything else use VARCHAR(n) — it stores only the actual length without padding. In PostgreSQL, CHAR(n) is stored identically to VARCHAR(n) except for the trailing space padding; VARCHAR is almost always preferable. In MSSQL, CHAR vs VARCHAR does matter for collation and implicit conversion behaviour.',
+    },
+    {
+      q: 'What is the MSSQL DATETIMEOFFSET type and when do I need it?',
+      a: 'DATETIMEOFFSET stores a datetime2 value together with its UTC offset (e.g. 2025-06-15 14:30:00 +05:30). Use it when the originating timezone must be preserved alongside the absolute moment — for example, a meeting time scheduled by a user in a specific timezone that must display back in that same timezone regardless of where the server is. For general-purpose timestamps (audit columns, created_at, updated_at), use DATETIME2(7) stored in UTC — the timezone conversion to local time should happen in the application layer. Never mix DATETIMEOFFSET and DATETIME2 columns in the same query without explicit conversion.',
+    },
+    {
+      q: 'When should I use JSONB instead of typed columns in PostgreSQL?',
+      a: 'Use JSONB when: (1) the set of attributes varies significantly per row and cannot be defined in advance (e.g. product custom attributes differ by category — a phone has RAM and storage, a shirt has color and size); (2) the attributes are written but rarely filtered or sorted — so index performance is less critical; (3) you are storing event payloads, configuration objects, or API responses where the schema evolves frequently. Use typed columns when: (1) you filter, sort, or aggregate on the attribute; (2) you need referential integrity (FK constraints); (3) you need type-safe CHECK constraints. Hybrid: typed columns for shared filterable fields + a single JSONB column for flexible per-category extras. Never use EAV tables — JSONB is a far better alternative for flexible schemas.',
+    },
+    {
+      q: 'What are TRY_CAST and TRY_CONVERT in MSSQL and when should I use them?',
+      a: 'TRY_CAST(expression AS type) and TRY_CONVERT(type, expression) are MSSQL-specific safe conversion functions that return NULL instead of raising an error when the conversion fails. Regular CAST and CONVERT throw a runtime error if the value cannot be converted (e.g. CAST(\'abc\' AS INT) = error). Use TRY_CAST/TRY_CONVERT when processing user input, imported data, or any string column that might contain non-numeric values: <code>SELECT TRY_CAST(user_input AS DECIMAL(10,2))</code> — then check for NULL to detect invalid values. PostgreSQL has no built-in TRY_CAST; the workaround is a custom function using an EXCEPTION block or a REGEXP check before casting.',
+    },
+    {
+      q: 'Should I store IP addresses as VARCHAR or use a dedicated type?',
+      a: 'PostgreSQL provides <code>INET</code> (a single IP address or network address, IPv4 or IPv6) and <code>CIDR</code> (a network block like 192.168.1.0/24). These types validate format on insert, support network-aware operators (<code>&lt;&lt;</code> = is contained by network, <code>&gt;&gt;</code> = contains), and can be indexed. Use them instead of VARCHAR for IP data in PostgreSQL. MSSQL has no INET type — store as VARCHAR(45) (covers IPv6) and validate at the application layer, or store as BIGINT (IPv4 only, for range queries using BETWEEN). For both dialects, avoid storing IP addresses in BINARY — it complicates display and makes queries harder.',
     },
   ];
 }

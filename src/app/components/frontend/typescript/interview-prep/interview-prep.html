@@ -1,0 +1,56 @@
+<div class="ts-interview">
+  <div class="ts-int-header">
+    <div class="ts-int-icon">TS</div>
+    <div>
+      <h1 class="ts-int-title">TypeScript Interview Prep</h1>
+      <p class="ts-int-subtitle">{{ filtered().length }} questions — filter by topic and level, then expand to reveal the answer.</p>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="ts-int-filters">
+    <div class="ts-filter-row">
+      <span class="ts-filter-label">Topic</span>
+      <div class="ts-chips">
+        @for (t of topics; track t) {
+          <button class="ts-chip" [class.active]="activeTopic() === t"
+            (click)="setTopic(t)" type="button">{{ t }}</button>
+        }
+      </div>
+    </div>
+    <div class="ts-filter-row">
+      <span class="ts-filter-label">Level</span>
+      <div class="ts-chips">
+        @for (l of levels; track l) {
+          <button class="ts-chip ts-chip-level" [class.active]="activeLevel() === l"
+            [class.junior]="l === 'junior'" [class.mid]="l === 'mid'" [class.senior]="l === 'senior'"
+            (click)="setLevel(l)" type="button">{{ levelLabel(l) }}</button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Questions -->
+  <div class="ts-int-list">
+    @for (q of filtered(); track q.q; let i = $index) {
+      <div class="ts-int-card" [class.open]="openIndex() === i">
+        <button class="ts-int-question" (click)="toggle(i)" type="button">
+          <span class="ts-int-q-text">{{ q.q }}</span>
+          <div class="ts-int-meta">
+            <span class="ts-badge-topic">{{ q.topic }}</span>
+            <span class="ts-badge-level" [class]="'level-' + q.level">{{ levelLabel(q.level) }}</span>
+            <span class="ts-int-arrow">{{ openIndex() === i ? '▲' : '▼' }}</span>
+          </div>
+        </button>
+        @if (openIndex() === i) {
+          <div class="ts-int-answer">
+            <p>{{ q.a }}</p>
+          </div>
+        }
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <div class="ts-int-empty">No questions match the selected filters.</div>
+    }
+  </div>
+</div>

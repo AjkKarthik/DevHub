@@ -1,19 +1,32 @@
-<div class="aspnet-page">
-  <div class="page-header-icon aspnet-icon">ASP</div>
+<div class="asp-page">
+  <div class="page-header-icon asp-icon">ASP</div>
   <h1 class="page-title">Performance &amp; Diagnostics</h1>
-  <p class="page-subtitle">Response compression, dotnet-counters/trace/dump for live diagnostics, BenchmarkDotNet for rigorous micro-benchmarking, and ObjectPool/ArrayPool to reduce GC pressure.</p>
+  <p class="page-subtitle">Response compression, dotnet-counters/trace/dump for live diagnostics, BenchmarkDotNet for rigorous micro-benchmarking, ObjectPool/ArrayPool to eliminate GC pressure, and IAsyncEnumerable for constant-memory streaming.</p>
 
-  <app-page-meta [readingTime]="25" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+  <app-page-meta [readingTime]="32" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
 
-  <section class="aspnet-section">
+  <section class="asp-section">
     <h2>Code Examples</h2>
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-before-after [items]="beforeAfter" beforeLabel="Problematic Pattern" afterLabel="Optimised Pattern" />
+
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
   <app-page-complete route="aspnet-performance" nextRoute="/aspnet/aspire" nextLabel=".NET Aspire" />
 </div>

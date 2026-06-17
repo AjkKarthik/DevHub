@@ -1,19 +1,32 @@
-<div class="aspnet-page">
-  <div class="page-header-icon aspnet-icon">ASP</div>
-  <h1 class="page-title">Deployment</h1>
-  <p class="page-subtitle">Publishing options (FDD/SCD/AOT), multi-stage Dockerfiles, ForwardedHeaders for reverse proxies, environment-based configuration, and Native AOT for minimal APIs.</p>
+<div class="asp-page">
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Deployment & Hosting</h1>
+  <p class="page-subtitle">Publishing options (FDD/SCD/AOT), multi-stage Dockerfiles, ForwardedHeaders for reverse proxies, environment-based secrets, Kestrel configuration, and Kubernetes deployment patterns.</p>
 
-  <app-page-meta [readingTime]="22" difficulty="intermediate" since=".NET 7+" tech="aspnet" />
+  <app-page-meta [readingTime]="32" difficulty="intermediate" since=".NET 7+" tech="aspnet" />
+
+  <app-prerequisites [items]="prerequisites" />
+
   <app-quick-ref [items]="quickRef" />
+
   <app-theory-block [sections]="theory" />
 
-  <section class="aspnet-section">
+  <section class="asp-section">
     <h2>Code Examples</h2>
     <app-code-block [tabs]="codeTabs" />
   </section>
 
+  <app-before-after [items]="beforeAfter" beforeLabel="Common Mistake" afterLabel="Production Pattern" />
+
+  <app-common-mistakes [items]="mistakes" />
+
   <app-challenge-block [item]="challenge" />
+
   <app-quiz-block [items]="quiz" />
+
   <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
   <app-page-complete route="aspnet-deployment" nextRoute="/aspnet/performance" nextLabel="Performance & Diagnostics" />
 </div>

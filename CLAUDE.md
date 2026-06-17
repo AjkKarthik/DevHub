@@ -223,9 +223,13 @@ structure/UX, only content + accent differ.
   Performance (+ Bulk Ops/Query Store/Statistics/FTS/Security/Connection Pooling), Advanced Queries,
   Design & Operations, Reference. Dual-dialect pattern: MSSQL (T-SQL) + PostgreSQL throughout.
   SQL pages use simpler structure: no `app-common-mistakes`, no `app-revision-card`.
-- **Hub home**: Angular, C#, ASP.NET Core, and SQL are `available: true`. Everything else "Soon".
-- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44 (`progress.service.ts`).
-- Hero stat: "100+ Live Pages".
+- **TypeScript hub**: 20 trackable topic pages + 2 reference pages (22 total). Feature-complete.
+  Blue theme `$accent: #3178c6`, dark `#93c5fd`. Search prefix `ts-`. Progress: `tsTotal=20` in progress.service.
+  Nav groups: Foundations, Type System, Generics, Advanced Types, OOP, Tooling, Reference.
+  CSS classes: `ts-page`, `ts-icon`, `ts-section`. All cards `available: true`.
+- **Hub home**: Angular, C#, ASP.NET Core, SQL, and TypeScript are `available: true`. Everything else "Soon".
+- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20 (`progress.service.ts`).
+- Hero stat: "250+ Live Pages".
 
 ## Working practices
 
