@@ -300,7 +300,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'React', time: '~12 hrs',
       tagline: 'Declarative UI library — hooks, context, server components & more.',
       icon: '⚛️', gradient: 'linear-gradient(135deg, #149eca 0%, #0c6a8c 100%)',
-      textDark: false, route: '/react', available: true,
+      textDark: false, route: '/react', available: true, topics: 19,
 
       highlights: [
         'JSX, functional components, hooks',

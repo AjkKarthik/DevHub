@@ -67,7 +67,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'React Cheat Sheet',           route: '/react/cheatsheet', badge: 'Reference', available: true,
     description: 'All hooks, component patterns, event types, and routing API quick-reference.',
     keyPoints: ['Hooks: useState, useEffect, useRef, useMemo, useCallback, useContext, useReducer', 'Component design: composition > inheritance; controlled > uncontrolled', 'Key patterns: compound, render prop, HOC, custom hook'] },
-  { title: 'React Interview Prep',        route: '/react/interview-prep', badge: 'Reference', available: false,
+  { title: 'React Interview Prep',        route: '/react/interview-prep', badge: 'Reference', available: true,
     description: '40+ React interview questions — hooks, rendering, state, performance, and React 19 features.',
     keyPoints: ['Explain the virtual DOM, reconciliation, and the Fiber architecture', 'When would you use useReducer over useState?', 'How does React.memo differ from useMemo and useCallback?'] },
 ];

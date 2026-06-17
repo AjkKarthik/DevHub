@@ -330,6 +330,7 @@ export const routes: Routes = [
     { path: 'animations',       loadComponent: () => import('./components/frontend/react/animations/animations').then(m => m.ReactAnimations) },
     { path: 'security',         loadComponent: () => import('./components/frontend/react/security/security').then(m => m.ReactSecurity) },
     { path: 'cheatsheet',       loadComponent: () => import('./components/frontend/react/cheatsheet/cheatsheet').then(m => m.ReactCheatsheet) },
+    { path: 'interview-prep',   loadComponent: () => import('./components/frontend/react/interview-prep/interview-prep').then(m => m.ReactInterviewPrep) },
   ] },
   { path: 'blazor',        children: [{ path: '', loadComponent: () => import('./components/frontend/blazor/home/home').then(m => m.BlazorHome) }] },
   { path: 'performance',   children: [{ path: '', loadComponent: () => import('./components/frontend/web-performance/home/home').then(m => m.WebPerformanceHome) }] },

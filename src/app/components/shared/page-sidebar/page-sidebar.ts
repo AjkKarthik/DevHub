@@ -2819,6 +2819,29 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/interview-prep': {
+    apis: ['useState', 'useEffect', 'useReducer', 'React.memo', 'Suspense', 'Fiber', 'Server Components'],
+    related: [
+      { label: 'React Cheat Sheet',  route: '/react/cheatsheet'   },
+      { label: 'React Patterns',     route: '/react/patterns'     },
+      { label: 'React Performance',  route: '/react/performance'  },
+    ],
+    tip: 'Filter by topic to focus your prep session. For each question, form your own answer first — then expand to compare. Cover all 3 difficulty levels before an interview.',
+    docs: [
+      { label: 'React Docs',               url: 'https://react.dev/'                             },
+      { label: 'React 19 Changelog',       url: 'https://react.dev/blog/2024/04/25/react-19'     },
+      { label: 'Reconciliation & Fiber',   url: 'https://react.dev/learn/preserving-and-resetting-state' },
+    ],
+    resources: [
+      { label: 'React Docs — Reference',  url: 'https://react.dev/reference/react',  badge: 'docs' },
+    ],
+    gotchas: [
+      'Interviewers often ask follow-up: "how would you prove it?" — always mention DevTools Profiler.',
+      'Virtual DOM ≠ Shadow DOM — they are completely different concepts; be precise.',
+      'React.memo skips re-renders but adds a comparison cost — profile before adding it everywhere.',
+    ],
+  },
+
   'react/cheatsheet': {
     apis: ['useState', 'useEffect', 'useCallback', 'useMemo', 'useRef', 'useContext', 'useReducer'],
     related: [
