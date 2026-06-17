@@ -4108,6 +4108,31 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['The DBA path requires understanding execution plans — read the Indexes and Performance pages before tackling it.'],
   },
 
+  // ── HTML: Accessibility & ARIA ─────────────────────────────────────────────
+  'html/accessibility': {
+    apis: ['role', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-hidden', 'tabindex'],
+    related: [
+      { label: 'Semantic Elements',  route: '/html/semantic-elements'  },
+      { label: 'HTML Forms',         route: '/html/forms'              },
+      { label: 'Document Structure', route: '/html/document-structure' },
+    ],
+    tip: 'Rule 1 of ARIA: if you can use a native HTML element or attribute with the right semantics, do that instead of adding an ARIA role.',
+    docs: [
+      { label: 'MDN ARIA Reference',        url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA' },
+      { label: 'WCAG 2.1 Guidelines',       url: 'https://www.w3.org/WAI/WCAG21/quickref/' },
+      { label: 'WebAIM Contrast Checker',   url: 'https://webaim.org/resources/contrastchecker/' },
+    ],
+    resources: [
+      { label: 'web.dev — Accessibility',   url: 'https://web.dev/accessibility/',                           badge: 'blog' },
+      { label: 'a11yproject.com',           url: 'https://www.a11yproject.com/',                             badge: 'blog' },
+      { label: 'Axe DevTools (extension)',  url: 'https://www.deque.com/axe/devtools/',                     badge: 'tool' },
+    ],
+    gotchas: [
+      'aria-hidden="true" on a focusable element creates an invisible keyboard trap — screen reader skips it but keyboard does not.',
+      'Live regions (aria-live) must already exist in the DOM before content is injected — injecting the region and content simultaneously does not announce.',
+    ],
+  },
+
   // ── SSR + Hydration ─────────────────────────────────────────────────────────
   ssr: {
     apis: ['provideClientHydration()', 'withEventReplay()', 'isPlatformBrowser()', 'PLATFORM_ID', 'TransferState'],

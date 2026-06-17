@@ -350,6 +350,7 @@ export const SEARCH_INDEX: SearchEntry[] = [
   { route: 'html-media',              title: 'Media Elements',        section: 'HTML',          difficulty: 'beginner',     keywords: 'html img alt srcset sizes picture video audio track source loading lazy eager fetchpriority responsive' },
   { route: 'html-tables',             title: 'Tables',                section: 'HTML',          difficulty: 'beginner',     keywords: 'html table thead tbody tfoot th td caption scope colspan rowspan colgroup accessible data' },
   { route: 'html-links-navigation',   title: 'Links & Navigation',    section: 'HTML',          difficulty: 'beginner',     keywords: 'html anchor href target blank noopener download rel fragment base skip link aria-current breadcrumb pagination' },
+  { route: 'html-accessibility',      title: 'Accessibility & ARIA',  section: 'HTML',          difficulty: 'intermediate', keywords: 'html aria wcag landmark role aria-label aria-labelledby aria-live aria-hidden aria-expanded tabindex focus management skip link screen reader a11y' },
 
   { route: 'hub-aws',              title: 'AWS',                   section: 'Cloud',         difficulty: 'intermediate', keywords: 'aws ec2 lambda s3 rds iam vpc cloudwatch cloudformation sqs sns eventbridge' },
   { route: 'hub-service-mesh',     title: 'Service Mesh & Istio',  section: 'Cloud',         difficulty: 'advanced',     keywords: 'service mesh istio linkerd envoy mtls traffic management tracing canary mirror' },

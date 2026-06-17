@@ -461,6 +461,11 @@
       <a routerLink="/html/forms" routerLinkActive="active"><span class="nl-text">Forms &amp; Input</span>@if(progress.isDone('html-forms')){<span class="nl-done">✓</span>}@if(diff('html-forms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
+    <div class="nav-group">
+      <p class="nav-group-label">Advanced</p>
+      <a routerLink="/html/accessibility" routerLinkActive="active"><span class="nl-text">Accessibility &amp; ARIA</span>@if(progress.isDone('html-accessibility')){<span class="nl-done">✓</span>}@if(diff('html-accessibility');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
     } <!-- end html nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->

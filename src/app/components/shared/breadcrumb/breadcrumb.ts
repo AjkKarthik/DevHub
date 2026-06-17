@@ -331,6 +331,7 @@ const HTML_LABELS: Record<string, string> = {
   'media':              'Media Elements',
   'tables':             'Tables',
   'links-navigation':   'Links & Navigation',
+  'accessibility':      'Accessibility & ARIA',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

@@ -290,6 +290,7 @@ export const routes: Routes = [
     { path: 'media',               loadComponent: () => import('./components/frontend/html/media/media').then(m => m.HtmlMedia) },
     { path: 'tables',              loadComponent: () => import('./components/frontend/html/tables/tables').then(m => m.HtmlTables) },
     { path: 'links-navigation',    loadComponent: () => import('./components/frontend/html/links-navigation/links-navigation').then(m => m.HtmlLinksNavigation) },
+    { path: 'accessibility',       loadComponent: () => import('./components/frontend/html/accessibility/accessibility').then(m => m.HtmlAccessibility) },
   ] },
   { path: 'css',           children: [{ path: '', loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) }] },
   { path: 'javascript', children: [
