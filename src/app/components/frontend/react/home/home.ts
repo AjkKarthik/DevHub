@@ -25,7 +25,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Core Hooks',                  route: '/react/hooks-core', badge: 'Hooks', available: true,
     description: 'useState, useEffect, useRef, useContext — the hooks you use in every component.',
     keyPoints: ['useState(fn): lazy initializer runs once — use for expensive initial state', 'useEffect cleanup: return a function to cancel subscriptions, timers, and abort controllers', 'useRef: persists across renders without triggering a re-render — DOM refs and stale closure escape'] },
-  { title: 'Advanced Hooks',              route: '/react/hooks-advanced', badge: 'Hooks', available: false,
+  { title: 'Advanced Hooks',              route: '/react/hooks-advanced', badge: 'Hooks', available: true,
     description: 'useReducer, useMemo, useCallback, useTransition, useDeferredValue, useId, and building custom hooks.',
     keyPoints: ['useReducer: action-based updates — prefer when state has multiple sub-values', 'useTransition: mark state as low-priority to keep UI responsive during heavy renders', 'Custom hooks: extract stateful logic, not markup — start with "use", return data + handlers'] },
   { title: 'Context API',                 route: '/react/context', badge: 'State Management', available: false,
