@@ -63,7 +63,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Declaration Files (d.ts)',    route: '/typescript/declarations', badge: 'Tooling', available: false,
     description: 'Ambient declarations, writing .d.ts files, DefinitelyTyped, and augmenting third-party types.',
     keyPoints: ['declare module "lib" {} — ambient declaration for JS libraries', '@types/xxx packages: community type definitions on DefinitelyTyped', 'Module augmentation: extend existing types with interface merging'] },
-  { title: 'Module System & Namespaces', route: '/typescript/modules', badge: 'Tooling', available: false,
+  { title: 'Module System & Namespaces', route: '/typescript/modules', badge: 'Tooling', available: true,
     description: 'ES modules vs CommonJS in TS, module resolution algorithms, path aliases, and legacy namespaces.',
     keyPoints: ['moduleResolution: bundler (TS 5), node16, nodenext', 'paths aliases in tsconfig — must mirror bundler config', 'namespace (legacy): use ES modules instead in modern code'] },
   { title: 'Strict Mode & Migration',    route: '/typescript/strict-migration', badge: 'Foundations', available: false,

@@ -1,1 +1,21 @@
-<div class="ts-page"><p>Coming soon</p></div>
+<div class="ts-page">
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Module System &amp; Namespaces</h1>
+  <p class="page-subtitle">ES modules vs CommonJS, named and default exports, <code>import type</code>, barrel patterns, module augmentation, namespaces (and why to avoid them), and the <code>package.json</code> exports map.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since="TypeScript 4.5+" tech="typescript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" playgroundUrl="https://www.typescriptlang.org/play" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="ts-modules" nextRoute="/typescript/declarations" nextLabel="Declaration Files (d.ts)" />
+</div>
