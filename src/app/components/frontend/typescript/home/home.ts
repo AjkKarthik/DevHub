@@ -54,7 +54,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'tsconfig Deep Dive',         route: '/typescript/tsconfig', badge: 'Tooling', available: true,
     description: 'All important compilerOptions — target, lib, module, strict, paths, composite, and project references.',
     keyPoints: ['target: the JS version emitted; lib: type definitions available', 'paths: module aliases; must also be configured in the bundler', 'composite + references: incremental build for monorepos'] },
-  { title: 'TypeScript with Frameworks', route: '/typescript/frameworks', badge: 'Tooling', available: false,
+  { title: 'TypeScript with Frameworks', route: '/typescript/frameworks', badge: 'Tooling', available: true,
     description: 'TypeScript in React (JSX, component props types), Node.js, and Express type-safe request/response.',
     keyPoints: ['React.FC<Props> vs (props: Props) => JSX.Element — prefer the latter', 'Express: augment Request type via declaration merging for req.user', 'Zod: runtime schema + TypeScript type from one declaration (z.infer)'] },
   { title: 'Type Guards & Narrowing',     route: '/typescript/narrowing', badge: 'Type System', available: true,
