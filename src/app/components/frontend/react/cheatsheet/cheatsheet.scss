@@ -1,0 +1,243 @@
+$accent: #0ea5e9;
+$tint: #f0f9ff;
+
+.cs-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.cs-icon {
+  width: 64px;
+  height: 64px;
+  background: $tint;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .85rem;
+  font-weight: 800;
+  color: $accent;
+  border: 2px solid rgba($accent, 0.2);
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text, #111827);
+  margin: 0.5rem 0 0.4rem;
+}
+
+.page-subtitle {
+  color: var(--text2, #6b7280);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 1.75rem;
+}
+
+// ── Search ──────────────────────────────────────────────────────────────────
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background: var(--surface, #fff);
+  border: 1.5px solid var(--border, #e5e7eb);
+  border-radius: 10px;
+  padding: .55rem .9rem;
+  margin-bottom: 1.25rem;
+  transition: border-color .15s;
+
+  &:focus-within { border-color: $accent; }
+}
+
+.search-icon { font-size: .9rem; color: var(--text3, #9ca3af); }
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: .95rem;
+  color: var(--text, #111827);
+  &::placeholder { color: var(--text3, #9ca3af); }
+}
+
+.clear-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text3, #9ca3af);
+  font-size: .85rem;
+  padding: 0 2px;
+  &:hover { color: var(--text2, #374151); }
+}
+
+// ── Tabs ────────────────────────────────────────────────────────────────────
+.tab-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin-bottom: 1rem;
+}
+
+.tab-btn {
+  padding: .4rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid var(--border, #e5e7eb);
+  background: var(--surface, #fff);
+  color: var(--text2, #374151);
+  font-size: .87rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .13s, color .13s, border-color .13s;
+
+  &:hover { background: $tint; color: $accent; border-color: rgba($accent, .3); }
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+}
+
+// ── Tag chips ───────────────────────────────────────────────────────────────
+.tag-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem;
+  margin-bottom: 1.5rem;
+}
+
+.tag-chip {
+  padding: .2rem .65rem;
+  border-radius: 20px;
+  border: 1px solid var(--border, #e5e7eb);
+  background: var(--surface2, #f9fafb);
+  color: var(--text2, #6b7280);
+  font-size: .75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .13s, color .13s, border-color .13s;
+
+  &:hover { background: $tint; color: $accent; border-color: rgba($accent, .3); }
+  &.active { background: $tint; color: $accent; border-color: $accent; }
+}
+
+// ── Cards grid ──────────────────────────────────────────────────────────────
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.cheat-card {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  transition: border-color .15s, box-shadow .15s;
+
+  &:hover {
+    border-color: rgba($accent, .4);
+    box-shadow: 0 2px 8px rgba($accent, .1);
+  }
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+.card-name {
+  font-weight: 700;
+  font-size: .95rem;
+  color: $accent;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+  justify-content: flex-end;
+}
+
+.mini-tag {
+  font-size: .65rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: $tint;
+  color: $accent;
+  border: 1px solid rgba($accent, .2);
+  white-space: nowrap;
+}
+
+.card-syntax {
+  background: var(--surface2, #f9fafb);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 6px;
+  padding: .6rem .75rem;
+  margin: 0;
+  font-size: .78rem;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  color: var(--text, #111827);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
+.card-desc {
+  margin: 0;
+  font-size: .83rem;
+  color: var(--text2, #6b7280);
+  line-height: 1.6;
+}
+
+// ── No results ──────────────────────────────────────────────────────────────
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text2, #6b7280);
+
+  p { margin-bottom: 1rem; }
+
+  button {
+    padding: .5rem 1.25rem;
+    background: $accent;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+}
+
+// ── Dark mode ───────────────────────────────────────────────────────────────
+:host-context(body.dark) {
+  .cs-icon         { background: #083344; color: #67e8f9; border-color: rgba(103,232,249,.2); }
+  .page-title      { color: #f9fafb; }
+  .page-subtitle   { color: #9ca3af; }
+
+  .search-bar      { background: #1f2937; border-color: #374151;
+                     &:focus-within { border-color: #67e8f9; } }
+  .search-input    { color: #f9fafb; &::placeholder { color: #6b7280; } }
+
+  .tab-btn         { background: #1f2937; color: #9ca3af; border-color: #374151;
+                     &:hover { background: #083344; color: #67e8f9; border-color: #67e8f9; }
+                     &.active { background: #0ea5e9; color: #fff; border-color: #0ea5e9; } }
+
+  .tag-chip        { background: #1f2937; color: #9ca3af; border-color: #374151;
+                     &:hover, &.active { background: #083344; color: #67e8f9; border-color: #67e8f9; } }
+
+  .cheat-card      { background: #1f2937; border-color: #374151;
+                     &:hover { border-color: #0ea5e9; box-shadow: 0 2px 8px rgba(14,165,233,.15); } }
+
+  .card-name       { color: #67e8f9; }
+  .card-syntax     { background: #111827; border-color: #374151; color: #e5e7eb; }
+  .card-desc       { color: #9ca3af; }
+  .mini-tag        { background: #083344; color: #67e8f9; border-color: rgba(103,232,249,.25); }
+}

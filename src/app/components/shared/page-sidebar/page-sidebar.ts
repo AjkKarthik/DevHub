@@ -2819,6 +2819,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/cheatsheet': {
+    apis: ['useState', 'useEffect', 'useCallback', 'useMemo', 'useRef', 'useContext', 'useReducer'],
+    related: [
+      { label: 'Core Hooks',         route: '/react/hooks-core'     },
+      { label: 'Advanced Hooks',     route: '/react/hooks-advanced' },
+      { label: 'React Patterns',     route: '/react/patterns'       },
+    ],
+    tip: 'The cheat sheet is filterable by tab and tag. Use it to quickly cross-reference hooks, event types, or TypeScript patterns while coding.',
+    docs: [
+      { label: 'React API Reference',       url: 'https://react.dev/reference/react'     },
+      { label: 'Hooks Reference',           url: 'https://react.dev/reference/react/hooks' },
+      { label: 'React Router v6 API',       url: 'https://reactrouter.com/en/main/route/route' },
+    ],
+    resources: [
+      { label: 'React Docs',         url: 'https://react.dev/',                    badge: 'docs' },
+      { label: 'TypeScript Handbook', url: 'https://www.typescriptlang.org/docs/', badge: 'docs' },
+    ],
+    gotchas: [
+      'useCallback and useMemo only help when consumers are memoised with React.memo or also use those hooks.',
+      'Empty dep array [] runs once; omitting deps runs after every render.',
+      'Number inputs always return strings — use valueAsNumber or coerce manually.',
+    ],
+  },
+
   'react/security': {
     apis: ['dangerouslySetInnerHTML', 'DOMPurify.sanitize()', 'SameSite=Strict', 'httpOnly', 'Content-Security-Policy'],
     related: [

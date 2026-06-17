@@ -64,7 +64,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Security in React',           route: '/react/security', badge: 'Patterns', available: true,
     description: 'XSS prevention, dangerouslySetInnerHTML, CSP headers, authentication patterns, and CSRF in Next.js.',
     keyPoints: ['React escapes JSX strings by default — dangerouslySetInnerHTML bypasses this', 'DOMPurify: sanitize untrusted HTML before dangerouslySetInnerHTML', 'CSRF in Next.js: Server Actions use CSRF tokens automatically; REST APIs need explicit headers'] },
-  { title: 'React Cheat Sheet',           route: '/react/cheatsheet', badge: 'Reference', available: false,
+  { title: 'React Cheat Sheet',           route: '/react/cheatsheet', badge: 'Reference', available: true,
     description: 'All hooks, component patterns, event types, and routing API quick-reference.',
     keyPoints: ['Hooks: useState, useEffect, useRef, useMemo, useCallback, useContext, useReducer', 'Component design: composition > inheritance; controlled > uncontrolled', 'Key patterns: compound, render prop, HOC, custom hook'] },
   { title: 'React Interview Prep',        route: '/react/interview-prep', badge: 'Reference', available: false,
