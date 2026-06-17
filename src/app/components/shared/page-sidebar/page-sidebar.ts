@@ -4156,6 +4156,31 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/apis': {
+    apis: ['navigator.geolocation.getCurrentPosition()', 'navigator.geolocation.watchPosition()', 'Notification.requestPermission()', 'new Notification()', 'FileReader', 'DataTransfer', 'navigator.clipboard.writeText()', 'navigator.clipboard.readText()', 'navigator.share()', 'event.dataTransfer'],
+    related: [
+      { label: 'PWA & Service Workers', route: '/html/pwa-service-workers' },
+      { label: 'HTML Performance',      route: '/html/performance'         },
+      { label: 'Canvas & SVG',          route: '/html/canvas-svg'          },
+    ],
+    tip: 'Always feature-detect browser APIs before calling them — wrap calls in if ("share" in navigator) or if ("geolocation" in navigator) to avoid runtime errors on unsupported browsers.',
+    docs: [
+      { label: 'MDN — Geolocation API',  url: 'https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API'  },
+      { label: 'MDN — Notifications API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API' },
+      { label: 'MDN — File API',         url: 'https://developer.mozilla.org/en-US/docs/Web/API/File_API'          },
+      { label: 'MDN — Clipboard API',    url: 'https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API'     },
+    ],
+    resources: [
+      { label: 'MDN — Web Share API',    url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Share_API',    badge: 'docs' },
+      { label: 'web.dev — Capabilities', url: 'https://web.dev/explore/capabilities',                              badge: 'blog' },
+    ],
+    gotchas: [
+      'Geolocation, Notifications, and Clipboard readText() all require HTTPS — they silently fail or throw on HTTP origins.',
+      'dragover must call event.preventDefault() — without it the drop event never fires.',
+      'Notification permission once set to "denied" cannot be re-requested from JavaScript — the user must change it in browser settings.',
+    ],
+  },
+
   'html/seo': {
     apis: ['<title>', '<meta name="description">', '<link rel="canonical">', '<meta name="robots">', 'JSON-LD <script>', 'og:title / og:image', 'twitter:card', 'hreflang', 'sitemap.xml', 'Core Web Vitals'],
     related: [
