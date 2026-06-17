@@ -336,6 +336,7 @@ const HTML_LABELS: Record<string, string> = {
   'custom-elements':    'Web Components',
   'iframes-embeds':     'iFrames & Embeds',
   'canvas-svg':         'Canvas & SVG',
+  'performance':        'HTML Performance',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

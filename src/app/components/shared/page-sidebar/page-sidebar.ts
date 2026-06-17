@@ -4156,6 +4156,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/performance': {
+    apis: ['loading="lazy"', 'fetchpriority="high"', 'rel="preload"', 'rel="prefetch"', 'rel="preconnect"', 'rel="dns-prefetch"', 'defer', 'async', 'rel="modulepreload"', 'content-visibility'],
+    related: [
+      { label: 'Head & Metadata',  route: '/html/head-metadata'   },
+      { label: 'Canvas & SVG',     route: '/html/canvas-svg'      },
+      { label: 'PWA & Service Workers', route: '/html/pwa-service-workers' },
+    ],
+    tip: 'Always add fetchpriority="high" to your above-the-fold hero/LCP image — it is a one-line change that can move LCP by hundreds of milliseconds.',
+    docs: [
+      { label: 'MDN — Resource hints',      url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload'   },
+      { label: 'web.dev — Optimize LCP',    url: 'https://web.dev/articles/optimize-lcp'                                       },
+      { label: 'web.dev — fetchpriority',   url: 'https://web.dev/articles/fetch-priority'                                     },
+    ],
+    resources: [
+      { label: 'web.dev — Critical Rendering Path', url: 'https://web.dev/articles/critical-rendering-path', badge: 'blog' },
+      { label: 'MDN — content-visibility',          url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility', badge: 'docs' },
+    ],
+    gotchas: [
+      'Preloading too many resources defeats the purpose — only preload the 1-3 resources the browser would not discover early enough on its own.',
+      'Font preloads need both as="font" and crossorigin attributes — missing crossorigin causes a double fetch.',
+      'async on a script that depends on another async script causes race conditions — use defer or modules instead.',
+    ],
+  },
+
   'html/canvas-svg': {
     apis: ['getContext("2d")', 'fillRect()', 'beginPath()', 'arc()', 'fillText()', 'drawImage()', 'requestAnimationFrame()', 'save()/restore()', 'SVG viewBox', '<path d="">'],
     related: [

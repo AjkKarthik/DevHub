@@ -295,6 +295,7 @@ export const routes: Routes = [
     { path: 'custom-elements',     loadComponent: () => import('./components/frontend/html/custom-elements/custom-elements').then(m => m.HtmlCustomElements) },
     { path: 'iframes-embeds',      loadComponent: () => import('./components/frontend/html/iframes-embeds/iframes-embeds').then(m => m.HtmlIframesEmbeds) },
     { path: 'canvas-svg',          loadComponent: () => import('./components/frontend/html/canvas-svg/canvas-svg').then(m => m.HtmlCanvasSvg) },
+    { path: 'performance',         loadComponent: () => import('./components/frontend/html/performance/performance').then(m => m.HtmlPerformance) },
   ] },
   { path: 'css',           children: [{ path: '', loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) }] },
   { path: 'javascript', children: [
