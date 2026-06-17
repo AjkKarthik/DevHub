@@ -51,7 +51,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Classes & Visibility',       route: '/typescript/classes', badge: 'OOP', available: true,
     description: 'Access modifiers, abstract classes, readonly, parameter properties, override, and class expressions.',
     keyPoints: ['private is TS-only compile-time; #private is JS runtime-enforced', 'abstract class: cannot be instantiated; forces subclasses to implement methods', 'Parameter property: constructor(private name: string) declares + assigns in one'] },
-  { title: 'tsconfig Deep Dive',         route: '/typescript/tsconfig', badge: 'Tooling', available: false,
+  { title: 'tsconfig Deep Dive',         route: '/typescript/tsconfig', badge: 'Tooling', available: true,
     description: 'All important compilerOptions — target, lib, module, strict, paths, composite, and project references.',
     keyPoints: ['target: the JS version emitted; lib: type definitions available', 'paths: module aliases; must also be configured in the bundler', 'composite + references: incremental build for monorepos'] },
   { title: 'TypeScript with Frameworks', route: '/typescript/frameworks', badge: 'Tooling', available: false,

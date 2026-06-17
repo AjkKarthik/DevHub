@@ -1,1 +1,21 @@
-<div class="ts-page"><p>Coming soon</p></div>
+<div class="ts-page">
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">tsconfig Deep Dive</h1>
+  <p class="page-subtitle">Every important <code>compilerOptions</code> flag explained — <code>target</code> vs <code>lib</code>, <code>module</code> &amp; <code>moduleResolution</code> pairs, <code>strict</code> mode sub-flags, <code>paths</code> aliases, and <code>composite</code> for monorepo project references.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since="TypeScript 5.0+" tech="typescript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" playgroundUrl="https://www.typescriptlang.org/play" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="ts-tsconfig" nextRoute="/typescript/modules" nextLabel="Module System & Namespaces" />
+</div>
