@@ -21,6 +21,7 @@ import { Component, input } from '@angular/core';
         <a class="pm-play pm-play--react" href="https://stackblitz.com/fork/react-ts" target="_blank" rel="noopener">▶ StackBlitz</a>
       } @else if (tech() === 'javascript') {
         <a class="pm-play pm-play--javascript" href="https://playcode.io/new" target="_blank" rel="noopener">▶ PlayCode</a>
+        <a class="pm-play pm-play--javascript" href="https://codepen.io/pen" target="_blank" rel="noopener">▶ CodePen</a>
       } @else if (!hidePlayground()) {
         @if (stackblitzUrl()) {
           <a class="pm-play" [href]="stackblitzUrl()" target="_blank" rel="noopener">▶ Playground</a>
