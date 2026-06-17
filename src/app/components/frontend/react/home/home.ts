@@ -49,7 +49,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Testing React',               route: '/react/testing', badge: 'Ecosystem', available: true,
     description: 'React Testing Library, Vitest, userEvent, MSW for API mocking, and async testing patterns.',
     keyPoints: ['Test behaviour, not implementation — getByRole, not getByClassName', 'userEvent.click() simulates real user events including focus and keyboard', 'MSW: intercept fetch/axios in tests without mocking modules — realistic tests'] },
-  { title: 'Next.js App Router',          route: '/react/nextjs', badge: 'Ecosystem', available: false,
+  { title: 'Next.js App Router',          route: '/react/nextjs', badge: 'Ecosystem', available: true,
     description: 'Server Components, Client Components, Server Actions, layouts, Suspense streaming, and caching.',
     keyPoints: ['"use client" opts into Client Component — everything else is a Server Component', 'Server Actions: async functions that run on the server, called from forms or buttons', 'layout.tsx persists across navigations; loading.tsx is automatic Suspense boundary'] },
   { title: 'React Native',                route: '/react/native', badge: 'Ecosystem', available: false,

@@ -81,6 +81,29 @@ const TS_DEFAULT: SidebarData = {
   ],
 };
 
+const REACT_DEFAULT: SidebarData = {
+  apis: ['useState()', 'useEffect()', 'useRef()', 'useMemo()', 'useCallback()', 'createContext()'],
+  related: [
+    { label: 'React Fundamentals',  route: '/react/basics'         },
+    { label: 'Core Hooks',          route: '/react/hooks-core'     },
+    { label: 'State Management',    route: '/react/state-management'},
+  ],
+  tip: 'React re-renders are cheap — profile before optimising. Most performance issues are caused by missing keys, unnecessary context updates, or large unmemoised lists.',
+  docs: [
+    { label: 'React.dev Docs',       url: 'https://react.dev/learn'                                  },
+    { label: 'React API Reference',  url: 'https://react.dev/reference/react'                        },
+    { label: 'React Blog',           url: 'https://react.dev/blog'                                   },
+  ],
+  resources: [
+    { label: 'facebook/react',       url: 'https://github.com/facebook/react',   badge: 'code' },
+    { label: 'React YouTube',        url: 'https://www.youtube.com/@reactjs',     badge: 'video' },
+  ],
+  gotchas: [
+    'Never mutate state directly — always return a new object/array from setState or a reducer.',
+    'Keys must be stable IDs — using array index causes wrong reconciliation on reorder.',
+  ],
+};
+
 const ASPNET_DEFAULT: SidebarData = {
   apis: ['WebApplication', 'IServiceCollection', 'IApplicationBuilder', 'IConfiguration', 'ILogger<T>'],
   related: [
@@ -2454,6 +2477,322 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
   },
 
   // ════════════════════════════════════════════════════════════════════════════
+  // REACT PAGES
+  // ════════════════════════════════════════════════════════════════════════════
+
+  'react/basics': {
+    apis: ['JSX', 'createElement()', 'Fragment', 'key', 'ReactDOM.createRoot()'],
+    related: [
+      { label: 'Core Hooks',       route: '/react/hooks-core'     },
+      { label: 'TypeScript & React', route: '/react/typescript'   },
+      { label: 'React Patterns',   route: '/react/patterns'       },
+    ],
+    tip: 'JSX is syntactic sugar — every <Tag> compiles to React.createElement(). Understanding this makes the virtual DOM click.',
+    docs: [
+      { label: 'React Docs — Describing the UI',   url: 'https://react.dev/learn/describing-the-ui'         },
+      { label: 'React.dev Quick Start',            url: 'https://react.dev/learn'                           },
+      { label: 'Reconciliation (legacy docs)',     url: 'https://legacy.reactjs.org/docs/reconciliation.html'},
+    ],
+    resources: [
+      { label: 'facebook/react',   url: 'https://github.com/facebook/react', badge: 'code' },
+      { label: 'React Blog',       url: 'https://react.dev/blog',             badge: 'blog' },
+    ],
+    gotchas: [
+      'Keys must be stable data IDs — using array index causes incorrect reconciliation on reorder or filter.',
+      'JSX expressions must return a single root — wrap siblings in a Fragment <> </> or a div.',
+      'Component names must start with uppercase — lowercase tags are treated as HTML elements.',
+    ],
+  },
+
+  'react/hooks-core': {
+    apis: ['useState()', 'useEffect()', 'useRef()', 'useContext()', 'Rules of Hooks'],
+    related: [
+      { label: 'Advanced Hooks',    route: '/react/hooks-advanced' },
+      { label: 'Context API',       route: '/react/context'        },
+      { label: 'React Patterns',    route: '/react/patterns'       },
+    ],
+    tip: 'useEffect cleanup is mandatory for subscriptions, timers, and fetch abort controllers — a missing cleanup causes memory leaks.',
+    docs: [
+      { label: 'useState Reference',  url: 'https://react.dev/reference/react/useState'  },
+      { label: 'useEffect Reference', url: 'https://react.dev/reference/react/useEffect' },
+      { label: 'useRef Reference',    url: 'https://react.dev/reference/react/useRef'    },
+      { label: 'Rules of Hooks',      url: 'https://react.dev/reference/rules/rules-of-hooks' },
+    ],
+    resources: [
+      { label: 'A Complete Guide to useEffect', url: 'https://overreacted.io/a-complete-guide-to-useeffect/', badge: 'blog' },
+      { label: 'facebook/react',               url: 'https://github.com/facebook/react',                      badge: 'code' },
+    ],
+    gotchas: [
+      'Never call hooks conditionally or inside loops — hooks must run in the same order on every render.',
+      'Stale closure: useEffect captures props/state at the time it ran. Use the functional updater setState(prev => ...) to avoid staleness.',
+      'useEffect with an empty [] dep array runs once — but its cleanup still runs on unmount.',
+    ],
+  },
+
+  'react/hooks-advanced': {
+    apis: ['useReducer()', 'useMemo()', 'useCallback()', 'useTransition()', 'useDeferredValue()', 'useId()'],
+    related: [
+      { label: 'Core Hooks',        route: '/react/hooks-core'      },
+      { label: 'React Performance', route: '/react/performance'     },
+      { label: 'State Management',  route: '/react/state-management'},
+    ],
+    tip: 'useReducer shines when the next state depends on the previous state across multiple sub-values — prefer it over multiple useState.',
+    docs: [
+      { label: 'useReducer Reference',       url: 'https://react.dev/reference/react/useReducer'       },
+      { label: 'useMemo Reference',          url: 'https://react.dev/reference/react/useMemo'          },
+      { label: 'useCallback Reference',      url: 'https://react.dev/reference/react/useCallback'      },
+      { label: 'useTransition Reference',    url: 'https://react.dev/reference/react/useTransition'    },
+    ],
+    resources: [
+      { label: 'React Blog — React 18',  url: 'https://react.dev/blog/2022/03/29/react-v18',  badge: 'blog' },
+      { label: 'facebook/react',         url: 'https://github.com/facebook/react',             badge: 'code' },
+    ],
+    gotchas: [
+      'useMemo and useCallback have their own overhead — only add them after profiling shows a real performance problem.',
+      'useId() generates a stable ID per component instance — safe for SSR. Never use Math.random() for element IDs.',
+    ],
+  },
+
+  'react/forms': {
+    apis: ['controlled input', 'useRef for uncontrolled', 'React Hook Form', 'zodResolver', 'useFieldArray'],
+    related: [
+      { label: 'Core Hooks',        route: '/react/hooks-core'  },
+      { label: 'TypeScript & React', route: '/react/typescript' },
+      { label: 'Testing React',     route: '/react/testing'     },
+    ],
+    tip: 'React Hook Form uses uncontrolled inputs by default — the form only re-renders on submission and on validation errors, not on every keystroke.',
+    docs: [
+      { label: 'RHF Docs',          url: 'https://react-hook-form.com/docs'                              },
+      { label: 'Zod Docs',          url: 'https://zod.dev'                                               },
+      { label: 'React Forms Guide',  url: 'https://react.dev/reference/react-dom/components/input'       },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+      { label: 'colinhacks/zod',                  url: 'https://github.com/colinhacks/zod',                   badge: 'code' },
+    ],
+    gotchas: [
+      'Controller wraps controlled third-party inputs (Radix, MUI) — register() only works on native HTML inputs.',
+      'Zod refinements run after field validation — put cross-field checks (password confirm) in .superRefine() not per-field.',
+    ],
+  },
+
+  'react/context': {
+    apis: ['createContext()', 'useContext()', 'Context.Provider', 'useReducer + Context'],
+    related: [
+      { label: 'State Management',  route: '/react/state-management' },
+      { label: 'React Patterns',    route: '/react/patterns'         },
+      { label: 'Advanced Hooks',    route: '/react/hooks-advanced'   },
+    ],
+    tip: 'Split context into a StateContext and a DispatchContext — consumers that only dispatch never re-render when state changes.',
+    docs: [
+      { label: 'createContext Reference',  url: 'https://react.dev/reference/react/createContext'  },
+      { label: 'useContext Reference',     url: 'https://react.dev/reference/react/useContext'     },
+      { label: 'Scaling with Reducer + Context', url: 'https://react.dev/learn/scaling-up-with-reducer-and-context' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Every context consumer re-renders when the Provider\'s value reference changes — memoize the value object.',
+      'Context is not a state manager — it is a dependency injector. Pair with useReducer for complex state.',
+    ],
+  },
+
+  'react/state-management': {
+    apis: ['useState', 'useReducer', 'Zustand create()', 'Jotai atom()', 'RTK createSlice'],
+    related: [
+      { label: 'Context API',        route: '/react/context'        },
+      { label: 'Advanced Hooks',     route: '/react/hooks-advanced' },
+      { label: 'TanStack Query',     route: '/react/tanstack-query' },
+    ],
+    tip: 'TanStack Query for server state + Zustand for client state covers 90% of React apps — RTK is rarely needed.',
+    docs: [
+      { label: 'Zustand Docs',        url: 'https://zustand-demo.pmnd.rs/'         },
+      { label: 'Jotai Docs',          url: 'https://jotai.org/docs/introduction'   },
+      { label: 'Redux Toolkit Docs',  url: 'https://redux-toolkit.js.org/'         },
+      { label: 'React — State Guide', url: 'https://react.dev/learn/managing-state'},
+    ],
+    resources: [
+      { label: 'pmndrs/zustand', url: 'https://github.com/pmndrs/zustand', badge: 'code' },
+      { label: 'pmndrs/jotai',   url: 'https://github.com/pmndrs/jotai',   badge: 'code' },
+    ],
+    gotchas: [
+      'Zustand subscriptions are fine-grained — use selector functions to avoid re-renders from unrelated state slices.',
+      'Redux DevTools work with Zustand via devtools middleware — add it in development for time-travel debugging.',
+    ],
+  },
+
+  'react/router': {
+    apis: ['createBrowserRouter()', 'loader', 'action', '<Outlet />', 'useFetcher()', 'useNavigate()'],
+    related: [
+      { label: 'TanStack Query',    route: '/react/tanstack-query' },
+      { label: 'Next.js App Router', route: '/react/nextjs'       },
+      { label: 'React Forms',       route: '/react/forms'         },
+    ],
+    tip: 'loader() runs before the component renders — no loading state, no useEffect. Use it for all route-level data fetching.',
+    docs: [
+      { label: 'React Router v6 Docs',    url: 'https://reactrouter.com/en/main'                        },
+      { label: 'loader Reference',        url: 'https://reactrouter.com/en/main/route/loader'           },
+      { label: 'action Reference',        url: 'https://reactrouter.com/en/main/route/action'           },
+      { label: 'useFetcher Reference',    url: 'https://reactrouter.com/en/main/hooks/use-fetcher'      },
+    ],
+    resources: [
+      { label: 'remix-run/react-router', url: 'https://github.com/remix-run/react-router', badge: 'code' },
+    ],
+    gotchas: [
+      'loader errors bubble to the nearest errorElement — always add one to prevent blank screens.',
+      'navigate() in a loader/action is not the same as redirect() — use redirect() from react-router-dom for server-like redirects.',
+    ],
+  },
+
+  'react/tanstack-query': {
+    apis: ['useQuery()', 'useMutation()', 'queryClient.invalidateQueries()', 'useInfiniteQuery()', 'QueryClient'],
+    related: [
+      { label: 'State Management',   route: '/react/state-management' },
+      { label: 'React Router',       route: '/react/router'           },
+      { label: 'Core Hooks',         route: '/react/hooks-core'       },
+    ],
+    tip: 'stale-while-revalidate is on by default — data is shown immediately from cache while a background fetch updates it. Use staleTime to control how long data stays fresh.',
+    docs: [
+      { label: 'TanStack Query Docs',        url: 'https://tanstack.com/query/latest/docs/framework/react/overview' },
+      { label: 'Query Keys Guide',           url: 'https://tanstack.com/query/latest/docs/framework/react/guides/query-keys'      },
+      { label: 'Mutations Guide',            url: 'https://tanstack.com/query/latest/docs/framework/react/guides/mutations'       },
+      { label: 'Optimistic Updates Guide',   url: 'https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates' },
+    ],
+    resources: [
+      { label: 'TanStack/query', url: 'https://github.com/TanStack/query', badge: 'code' },
+      { label: 'TanStack Blog',  url: 'https://tanstack.com/blog',          badge: 'blog' },
+    ],
+    gotchas: [
+      'Query keys are serialised — objects with the same properties in different orders are the same key.',
+      'onSuccess/onError callbacks in useMutation run once; use queryClient.invalidateQueries in onSuccess for cache consistency.',
+    ],
+  },
+
+  'react/performance': {
+    apis: ['React.memo()', 'useMemo()', 'useCallback()', 'lazy()', '<Suspense>', 'FixedSizeList', 'useTransition()'],
+    related: [
+      { label: 'Advanced Hooks',    route: '/react/hooks-advanced' },
+      { label: 'React Patterns',    route: '/react/patterns'       },
+      { label: 'Testing React',     route: '/react/testing'        },
+    ],
+    tip: 'Profile in React DevTools first — the "Why did this render?" panel pinpoints the prop or hook that triggered a re-render.',
+    docs: [
+      { label: 'React.memo Reference',    url: 'https://react.dev/reference/react/memo'                        },
+      { label: 'useMemo Reference',       url: 'https://react.dev/reference/react/useMemo'                     },
+      { label: 'lazy Reference',          url: 'https://react.dev/reference/react/lazy'                        },
+      { label: 'useTransition Reference', url: 'https://react.dev/reference/react/useTransition'               },
+    ],
+    resources: [
+      { label: 'react-window Docs',    url: 'https://react-window.vercel.app/',                         badge: 'docs' },
+      { label: 'bvaughn/react-window', url: 'https://github.com/bvaughn/react-window',                  badge: 'code' },
+      { label: 'web-vitals Library',   url: 'https://github.com/GoogleChrome/web-vitals',               badge: 'code' },
+    ],
+    gotchas: [
+      'React.memo with unstable prop references (inline objects/functions) never skips re-renders — memoising is pointless without stable refs.',
+      'Virtualisation only helps when the list is long enough to fill more than the viewport — short lists need no windowing.',
+    ],
+  },
+
+  'react/patterns': {
+    apis: ['createContext()', 'React.memo()', 'forwardRef()', 'React.Children', 'render prop', 'HOC'],
+    related: [
+      { label: 'Core Hooks',         route: '/react/hooks-core'     },
+      { label: 'React Performance',  route: '/react/performance'    },
+      { label: 'Context API',        route: '/react/context'        },
+    ],
+    tip: 'Custom hooks replaced render props for most cases — only reach for render props when a library needs to inject both behavior and rendering context.',
+    docs: [
+      { label: 'Reusing Logic with Custom Hooks', url: 'https://react.dev/learn/reusing-logic-with-custom-hooks' },
+      { label: 'Passing Data with Context',       url: 'https://react.dev/learn/passing-data-deeply-with-context'},
+      { label: 'forwardRef Reference',            url: 'https://react.dev/reference/react/forwardRef'            },
+    ],
+    resources: [
+      { label: 'Radix UI Primitives (headless)',  url: 'https://www.radix-ui.com/',                         badge: 'docs' },
+      { label: 'radix-ui/primitives',             url: 'https://github.com/radix-ui/primitives',            badge: 'code' },
+    ],
+    gotchas: [
+      'Compound components via cloneElement only work for direct children — Context-based compound components work at any depth.',
+      'HOC display names must be set manually — omitting them makes DevTools show "Unknown" or the wrong name.',
+    ],
+  },
+
+  'react/typescript': {
+    apis: ['React.ReactNode', 'React.FC', 'React.ChangeEvent<T>', 'forwardRef<RefType,Props>', 'ComponentPropsWithoutRef<T>'],
+    related: [
+      { label: 'React Patterns',     route: '/react/patterns'       },
+      { label: 'React Forms',        route: '/react/forms'          },
+      { label: 'Testing React',      route: '/react/testing'        },
+    ],
+    tip: 'Prefer (props: Props) => JSX.Element over React.FC<Props> — no implicit children, better inference, and simpler generic components.',
+    docs: [
+      { label: 'React TypeScript Cheatsheet', url: 'https://react-typescript-cheatsheet.netlify.app'      },
+      { label: 'TypeScript Handbook',         url: 'https://www.typescriptlang.org/docs/handbook/intro.html'},
+      { label: 'forwardRef Reference',        url: 'https://react.dev/reference/react/forwardRef'          },
+    ],
+    resources: [
+      { label: '@types/react',        url: 'https://www.npmjs.com/package/@types/react',  badge: 'tool' },
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript',    badge: 'code' },
+    ],
+    gotchas: [
+      'forwardRef<RefType, PropsType> — RefType comes first. Swapping them silently assigns wrong types.',
+      'Generic arrow functions in TSX need a trailing comma <T,> to avoid JSX-tag ambiguity.',
+      'ComponentPropsWithoutRef<"button"> is equivalent to React.ButtonHTMLAttributes<HTMLButtonElement> — use either consistently.',
+    ],
+  },
+
+  'react/testing': {
+    apis: ['render()', 'screen.getByRole()', 'userEvent.setup()', 'renderHook()', 'act()', 'setupServer()'],
+    related: [
+      { label: 'React Forms',        route: '/react/forms'          },
+      { label: 'Core Hooks',         route: '/react/hooks-core'     },
+      { label: 'TypeScript & React', route: '/react/typescript'     },
+    ],
+    tip: 'getByRole is the default query — it tests accessible behaviour and doubles as an a11y audit. Only fall back to getByTestId when no role exists.',
+    docs: [
+      { label: 'RTL Docs',           url: 'https://testing-library.com/docs/react-testing-library/intro/' },
+      { label: 'MSW Docs',           url: 'https://mswjs.io/docs/'                                        },
+      { label: 'Vitest Docs',        url: 'https://vitest.dev/'                                           },
+      { label: 'userEvent Docs',     url: 'https://testing-library.com/docs/user-event/intro'             },
+    ],
+    resources: [
+      { label: 'testing-library/react',   url: 'https://github.com/testing-library/react-testing-library', badge: 'code' },
+      { label: 'mswjs/msw',               url: 'https://github.com/mswjs/msw',                              badge: 'code' },
+      { label: 'vitest-dev/vitest',        url: 'https://github.com/vitest-dev/vitest',                      badge: 'code' },
+    ],
+    gotchas: [
+      'userEvent methods return Promises — always await them or assertions run on stale DOM.',
+      'getBy throws on missing element (good for asserting presence); queryBy returns null (use for absence assertions).',
+      'server.resetHandlers() in afterEach prevents per-test MSW overrides from bleeding into subsequent tests.',
+    ],
+  },
+
+  'react/nextjs': {
+    apis: ['"use client"', '"use server"', 'layout.tsx', 'loading.tsx', 'revalidatePath()', 'generateStaticParams()'],
+    related: [
+      { label: 'TanStack Query',    route: '/react/tanstack-query' },
+      { label: 'React Patterns',    route: '/react/patterns'       },
+      { label: 'React Performance', route: '/react/performance'    },
+    ],
+    tip: 'Start every component as a Server Component — only add "use client" when you need interactivity, hooks, or browser APIs.',
+    docs: [
+      { label: 'Next.js App Router Docs',    url: 'https://nextjs.org/docs/app'                            },
+      { label: 'Server Components',          url: 'https://nextjs.org/docs/app/building-your-application/rendering/server-components' },
+      { label: 'Server Actions',             url: 'https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations' },
+      { label: 'Data Fetching',              url: 'https://nextjs.org/docs/app/building-your-application/data-fetching' },
+    ],
+    resources: [
+      { label: 'vercel/next.js',   url: 'https://github.com/vercel/next.js',       badge: 'code' },
+      { label: 'Next.js Blog',     url: 'https://nextjs.org/blog',                  badge: 'blog' },
+    ],
+    gotchas: [
+      '"use client" propagates — all imports from a "use client" file are also client code.',
+      'Cannot import a Server Component into a Client Component — pass it as children from a Server parent.',
+      'useSearchParams() requires a Suspense boundary wrapper — omitting it causes a build warning.',
+    ],
+  },
+
+  // ════════════════════════════════════════════════════════════════════════════
   // ASP.NET CORE PAGES
   // ════════════════════════════════════════════════════════════════════════════
 
@@ -3612,6 +3951,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     '[class.section-aspnet]':      'section() === "aspnet"',
     '[class.section-sql]':         'section() === "sql"',
     '[class.section-typescript]':  'section() === "typescript"',
+    '[class.section-react]':       'section() === "react"',
   },
 })
 export class PageSidebarComponent {
@@ -3630,11 +3970,12 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react'>(() =>
     this.currentUrl().startsWith('/csharp')      ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')    ? 'aspnet'
     : this.currentUrl().startsWith('/sql')       ? 'sql'
     : this.currentUrl().startsWith('/typescript')? 'typescript'
+    : this.currentUrl().startsWith('/react')     ? 'react'
     : 'angular'
   );
 
@@ -3645,6 +3986,7 @@ export class PageSidebarComponent {
            (this.section() === 'aspnet'      ? ASPNET_DEFAULT
            : this.section() === 'sql'        ? SQL_DEFAULT
            : this.section() === 'typescript' ? TS_DEFAULT
+           : this.section() === 'react'      ? REACT_DEFAULT
            : DEFAULT);
   });
 
@@ -3654,6 +3996,7 @@ export class PageSidebarComponent {
       case 'aspnet':      return '📖 ASP.NET Core Docs';
       case 'sql':         return '📖 SQL Docs';
       case 'typescript':  return '📖 TypeScript Docs';
+      case 'react':       return '📖 React Docs';
       default:            return '📖 Angular Docs';
     }
   });

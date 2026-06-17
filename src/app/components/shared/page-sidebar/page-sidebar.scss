@@ -233,6 +233,24 @@
   &:hover { background: #1e3a8a; color: #bfdbfe; }
 }
 
+// React override —
+:host(.section-react) {
+  .docs-link {
+    color: #0ea5e9;
+    background: #f0f9ff;
+    &:hover { background: #e0f2fe; color: #0284c7; }
+  }
+  .related-link {
+    &:hover { background: #f0f9ff; color: #0ea5e9; }
+  }
+}
+
+:host-context(body.dark):host(.section-react) .docs-link {
+  color: #67e8f9;
+  background: #083344;
+  &:hover { background: #0e4d64; color: #a5f3fc; }
+}
+
 // ── Resource badges ────────────────────────────────────────────────────────
 .badge {
   font-size: .65rem; font-weight: 700; text-transform: uppercase;
