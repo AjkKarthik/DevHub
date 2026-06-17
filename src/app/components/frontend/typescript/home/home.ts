@@ -69,7 +69,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Strict Mode & Migration',    route: '/typescript/strict-migration', badge: 'Foundations', available: true,
     description: 'Enabling strict mode step-by-step, migrating JS to TS, and allowJs for gradual adoption.',
     keyPoints: ['strict: true = noImplicitAny + strictNullChecks + more', 'allowJs + checkJs: type-check JS files without migration', 'Incremental migration: add tsconfig + .ts files one module at a time'] },
-  { title: 'TypeScript Performance',     route: '/typescript/ts-performance', badge: 'Tooling', available: false,
+  { title: 'TypeScript Performance',     route: '/typescript/ts-performance', badge: 'Tooling', available: true,
     description: 'Large project build performance — composite, incremental, isolatedModules, and skipping type-check.',
     keyPoints: ['composite: true + incremental: true for project references build cache', 'isolatedModules: true — each file as separate module, required by esbuild/Babel', 'transpileOnly (ts-node): skip type checks for dev-time speed'] },
   { title: 'TypeScript Cheat Sheet',     route: '/typescript/cheatsheet', badge: 'Reference', available: false,
