@@ -75,7 +75,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'TypeScript Cheat Sheet',     route: '/typescript/cheatsheet', badge: 'Reference', available: true,
     description: 'All utility types, key modifiers, generic constraints, and type narrowing patterns at a glance.',
     keyPoints: ['Utility types quick reference: Partial, Required, Pick, Omit, Record, etc.', 'Narrowing cheat sheet: typeof, instanceof, in, discriminant, assertion functions', 'tsconfig flags: strict mode sub-flags explained'] },
-  { title: 'TypeScript Interview Prep',  route: '/typescript/interview-prep', badge: 'Reference', available: false,
+  { title: 'TypeScript Interview Prep',  route: '/typescript/interview-prep', badge: 'Reference', available: true,
     description: '35+ TypeScript interview questions — type vs interface, generics, utility types, and advanced patterns.',
     keyPoints: ['What is the difference between type and interface?', 'Explain conditional types and infer', 'How do you ensure exhaustive handling of a discriminated union?'] },
 ];
