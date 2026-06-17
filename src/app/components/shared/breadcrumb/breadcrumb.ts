@@ -297,6 +297,33 @@ const REACT_LABELS: Record<string, string> = {
   'interview-prep':    'Interview Prep',
 };
 
+const JAVASCRIPT_LABELS: Record<string, string> = {
+  'fundamentals':   'JavaScript Fundamentals',
+  'closures':       'Scope & Closures',
+  'hoisting':       'Hoisting & TDZ',
+  'symbols':        'Symbols & Iterators',
+  'functions':      'Functions Deep Dive',
+  'prototypes':     'Prototypes & Classes',
+  'objects':        'Object Fundamentals',
+  'destructuring':  'Destructuring & Spread',
+  'arrays':         'Arrays & Iteration',
+  'promises':       'Promises & Async/Await',
+  'event-loop':     'Event Loop & Concurrency',
+  'error-handling': 'Error Handling',
+  'generators':     'Generators',
+  'dom':            'DOM Manipulation',
+  'events':         'Events & Custom Events',
+  'browser-apis':   'Browser APIs',
+  'modules':        'ES Modules',
+  'bundlers':       'Bundlers & Build Tools',
+  'patterns':       'Design Patterns in JS',
+  'functional':     'Functional JS',
+  'proxy':          'Proxy & Reflect API',
+  'weakrefs':       'WeakMap, WeakSet & WeakRef',
+  'cheatsheet':     'Cheat Sheet',
+  'interview-prep': 'Interview Prep',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -418,11 +445,12 @@ export class BreadcrumbComponent {
     const segs = this.segments();
     if (segs.length < 2) return '';
     const key = segs[segs.length - 1];
-    const labels = segs[0] === 'csharp'     ? CSHARP_LABELS
-                 : segs[0] === 'aspnet'     ? ASPNET_LABELS
-                 : segs[0] === 'sql'        ? SQL_LABELS
-                 : segs[0] === 'typescript' ? TYPESCRIPT_LABELS
-                 : segs[0] === 'react'      ? REACT_LABELS
+    const labels = segs[0] === 'csharp'      ? CSHARP_LABELS
+                 : segs[0] === 'aspnet'      ? ASPNET_LABELS
+                 : segs[0] === 'sql'         ? SQL_LABELS
+                 : segs[0] === 'typescript'  ? TYPESCRIPT_LABELS
+                 : segs[0] === 'react'       ? REACT_LABELS
+                 : segs[0] === 'javascript'  ? JAVASCRIPT_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

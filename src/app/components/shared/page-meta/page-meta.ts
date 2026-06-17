@@ -76,7 +76,7 @@ export class PageMetaComponent {
   readingTime    = input.required<number>();
   difficulty     = input<'beginner' | 'intermediate' | 'advanced'>('intermediate');
   since          = input<string>('');
-  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python' | 'aspnet' | 'sql' | 'typescript' | 'react'>('angular');
+  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript'>('angular');
   stackblitzUrl  = input<string>('');
   hidePlayground = input<boolean>(false);
 }

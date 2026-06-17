@@ -1,0 +1,22 @@
+<div class="js-page">
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Promises & Async/Await</h1>
+  <p class="page-subtitle">Promise states and chaining, async/await for readable async code, parallel vs sequential execution, and all four Promise combinators — all, allSettled, race, and any.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="js-promises" nextRoute="/javascript/event-loop" nextLabel="Event Loop & Concurrency" />
+</div>

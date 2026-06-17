@@ -1,0 +1,51 @@
+<div class="ip-page">
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">JavaScript Interview Prep</h1>
+  <p class="page-subtitle">20 essential JavaScript interview questions across closures, async, prototypes, the event loop, and advanced patterns — with full answers.</p>
+
+  <div class="filters">
+    <div class="filter-group">
+      <span class="filter-label">Difficulty</span>
+      <div class="chip-row">
+        @for (d of difficulties; track d) {
+          <button class="chip" [class.active]="activeDifficulty() === d" (click)="setDifficulty(d)">
+            {{ d }}
+          </button>
+        }
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Topic</span>
+      <div class="chip-row">
+        @for (t of topics; track t) {
+          <button class="chip" [class.active]="activeTopic() === t" (click)="setTopic(t)">
+            {{ t }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <p class="result-count">Showing {{ filtered().length }} question{{ filtered().length !== 1 ? 's' : '' }}</p>
+
+  <div class="question-list">
+    @for (item of filtered(); track item.id) {
+      <div class="q-card" [class.open]="item.expanded">
+        <button class="q-header" (click)="toggle(item)">
+          <div class="q-meta">
+            <span class="diff-badge" [class]="item.difficulty">{{ item.difficulty }}</span>
+            <span class="topic-badge">{{ item.topic }}</span>
+          </div>
+          <span class="q-text">{{ item.q }}</span>
+          <span class="q-toggle">{{ item.expanded ? '▲' : '▼' }}</span>
+        </button>
+        @if (item.expanded) {
+          <div class="q-answer" [innerHTML]="item.a"></div>
+        }
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <p class="empty-state">No questions match the selected filters.</p>
+    }
+  </div>
+</div>

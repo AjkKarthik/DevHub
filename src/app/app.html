@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -65,6 +65,9 @@
         } @else if (currentSection() === 'react') {
           <div class="nav-progress-bar" [style.width.%]="progress.reactPct()"></div>
           <span class="nav-progress-label">{{ progress.reactCount() }}/{{ progress.reactTotal }} topics done</span>
+        } @else if (currentSection() === 'javascript') {
+          <div class="nav-progress-bar" [style.width.%]="progress.jsPct()"></div>
+          <span class="nav-progress-label">{{ progress.jsCount() }}/{{ progress.jsTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -368,6 +371,67 @@
     </div>
 
     } <!-- end react nav -->
+
+    <!-- ── JavaScript Navigation ─────────────────────────────────── -->
+    @if (currentSection() === 'javascript') {
+
+    <a routerLink="/javascript" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">JS JavaScript Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/javascript/fundamentals"  routerLinkActive="active"><span class="nl-text">JS Fundamentals</span>@if(progress.isDone('js-fundamentals')){<span class="nl-done">✓</span>}@if(diff('js-fundamentals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/closures"      routerLinkActive="active"><span class="nl-text">Scope &amp; Closures</span>@if(progress.isDone('js-closures')){<span class="nl-done">✓</span>}@if(diff('js-closures');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/hoisting"      routerLinkActive="active"><span class="nl-text">Hoisting &amp; TDZ</span>@if(progress.isDone('js-hoisting')){<span class="nl-done">✓</span>}@if(diff('js-hoisting');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/symbols"       routerLinkActive="active"><span class="nl-text">Symbols &amp; Iterators</span>@if(progress.isDone('js-symbols')){<span class="nl-done">✓</span>}@if(diff('js-symbols');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Functions &amp; Objects</p>
+      <a routerLink="/javascript/functions"     routerLinkActive="active"><span class="nl-text">Functions Deep Dive</span>@if(progress.isDone('js-functions')){<span class="nl-done">✓</span>}@if(diff('js-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/prototypes"    routerLinkActive="active"><span class="nl-text">Prototypes &amp; Classes</span>@if(progress.isDone('js-prototypes')){<span class="nl-done">✓</span>}@if(diff('js-prototypes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/objects"       routerLinkActive="active"><span class="nl-text">Object Fundamentals</span>@if(progress.isDone('js-objects')){<span class="nl-done">✓</span>}@if(diff('js-objects');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/destructuring" routerLinkActive="active"><span class="nl-text">Destructuring &amp; Spread</span>@if(progress.isDone('js-destructuring')){<span class="nl-done">✓</span>}@if(diff('js-destructuring');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/arrays"        routerLinkActive="active"><span class="nl-text">Arrays &amp; Iteration</span>@if(progress.isDone('js-arrays')){<span class="nl-done">✓</span>}@if(diff('js-arrays');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Async &amp; Concurrency</p>
+      <a routerLink="/javascript/promises"      routerLinkActive="active"><span class="nl-text">Promises &amp; Async/Await</span>@if(progress.isDone('js-promises')){<span class="nl-done">✓</span>}@if(diff('js-promises');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/event-loop"    routerLinkActive="active"><span class="nl-text">Event Loop</span>@if(progress.isDone('js-event-loop')){<span class="nl-done">✓</span>}@if(diff('js-event-loop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('js-error-handling')){<span class="nl-done">✓</span>}@if(diff('js-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/generators"    routerLinkActive="active"><span class="nl-text">Generators</span>@if(progress.isDone('js-generators')){<span class="nl-done">✓</span>}@if(diff('js-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">DOM &amp; Browser</p>
+      <a routerLink="/javascript/dom"           routerLinkActive="active"><span class="nl-text">DOM Manipulation</span>@if(progress.isDone('js-dom')){<span class="nl-done">✓</span>}@if(diff('js-dom');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/events"        routerLinkActive="active"><span class="nl-text">Events &amp; Custom Events</span>@if(progress.isDone('js-events')){<span class="nl-done">✓</span>}@if(diff('js-events');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/browser-apis"  routerLinkActive="active"><span class="nl-text">Browser APIs</span>@if(progress.isDone('js-browser-apis')){<span class="nl-done">✓</span>}@if(diff('js-browser-apis');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Modules &amp; Tooling</p>
+      <a routerLink="/javascript/modules"       routerLinkActive="active"><span class="nl-text">ES Modules</span>@if(progress.isDone('js-modules')){<span class="nl-done">✓</span>}@if(diff('js-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/bundlers"      routerLinkActive="active"><span class="nl-text">Bundlers &amp; Build Tools</span>@if(progress.isDone('js-bundlers')){<span class="nl-done">✓</span>}@if(diff('js-bundlers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Patterns</p>
+      <a routerLink="/javascript/patterns"      routerLinkActive="active"><span class="nl-text">Design Patterns</span>@if(progress.isDone('js-patterns')){<span class="nl-done">✓</span>}@if(diff('js-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/functional"    routerLinkActive="active"><span class="nl-text">Functional JS</span>@if(progress.isDone('js-functional')){<span class="nl-done">✓</span>}@if(diff('js-functional');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/proxy"         routerLinkActive="active"><span class="nl-text">Proxy &amp; Reflect</span>@if(progress.isDone('js-proxy')){<span class="nl-done">✓</span>}@if(diff('js-proxy');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/javascript/weakrefs"      routerLinkActive="active"><span class="nl-text">WeakMap &amp; WeakRef</span>@if(progress.isDone('js-weakrefs')){<span class="nl-done">✓</span>}@if(diff('js-weakrefs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/javascript/cheatsheet"    routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+      <a routerLink="/javascript/interview-prep" routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+    </div>
+
+    } <!-- end javascript nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {

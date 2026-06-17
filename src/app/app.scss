@@ -346,6 +346,15 @@ main {
   body.dark &.active { background: #9a3e00; color: #fff; }
 }
 
+// JavaScript section — yellow active state
+.left-nav.section-javascript a {
+  &:hover { background: #fefce8; color: #a16207; }
+  &.active { background: #ca8a04; color: #fff; }
+
+  body.dark &:hover { background: #1c1906; color: #fde68a; }
+  body.dark &.active { background: #854d0e; color: #fff; }
+}
+
 .nav-soon-note {
   font-size: .78rem; color: var(--text3, #9ca3af);
   margin: 0; padding: .25rem .75rem; line-height: 1.5;

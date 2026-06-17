@@ -1,0 +1,46 @@
+<div class="cs-page">
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">JavaScript Cheat Sheet</h1>
+  <p class="page-subtitle">Quick reference for arrays, objects, async patterns, strings, syntax, and types — searchable and tab-organised.</p>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Search methods, keywords, tags..."
+      [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)"
+      class="search-input"
+    />
+  </div>
+
+  <div class="tab-bar">
+    @for (tab of tabs; track tab.id) {
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === tab.id"
+        (click)="setTab(tab.id)"
+      >{{ tab.label }}</button>
+    }
+  </div>
+
+  <div class="cheat-grid">
+    @for (item of filtered(); track item.name) {
+      <div class="cheat-card">
+        <div class="card-header">
+          <span class="card-name">{{ item.name }}</span>
+          <code class="card-sig">{{ item.signature }}</code>
+        </div>
+        <p class="card-desc">{{ item.description }}</p>
+        <pre class="card-example"><code>{{ item.example }}</code></pre>
+        <div class="card-tags">
+          @for (tag of item.tags; track tag) {
+            <span class="tag">{{ tag }}</span>
+          }
+        </div>
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <p class="empty-state">No matches for "{{ searchQuery() }}" in this tab.</p>
+    }
+  </div>
+</div>

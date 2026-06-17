@@ -104,6 +104,29 @@ const REACT_DEFAULT: SidebarData = {
   ],
 };
 
+const JS_DEFAULT: SidebarData = {
+  apis: ['Promise', 'async/await', 'Array.prototype', 'Object.*', 'Proxy', 'WeakMap'],
+  related: [
+    { label: 'JS Fundamentals',  route: '/javascript/fundamentals' },
+    { label: 'Closures',         route: '/javascript/closures'     },
+    { label: 'Promises',         route: '/javascript/promises'     },
+  ],
+  tip: 'JavaScript\'s single thread is never blocked — async/await and Promises schedule work around the event loop without freezing the UI.',
+  docs: [
+    { label: 'MDN JavaScript Docs',  url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
+    { label: 'ECMAScript Spec',      url: 'https://tc39.es/ecma262/' },
+    { label: 'Node.js Docs',         url: 'https://nodejs.org/en/docs/' },
+  ],
+  resources: [
+    { label: 'tc39/proposals', url: 'https://github.com/tc39/proposals', badge: 'code' },
+    { label: 'You Don\'t Know JS', url: 'https://github.com/getify/You-Dont-Know-JS', badge: 'blog' },
+  ],
+  gotchas: [
+    'typeof null === "object" is a historical bug — always check for null explicitly with === null.',
+    'Closures capture variable references, not values — use let in loops or IIFE to capture the value.',
+  ],
+};
+
 const ASPNET_DEFAULT: SidebarData = {
   apis: ['WebApplication', 'IServiceCollection', 'IApplicationBuilder', 'IConfiguration', 'ILogger<T>'],
   related: [
@@ -4101,6 +4124,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     '[class.section-sql]':         'section() === "sql"',
     '[class.section-typescript]':  'section() === "typescript"',
     '[class.section-react]':       'section() === "react"',
+    '[class.section-javascript]':  'section() === "javascript"',
   },
 })
 export class PageSidebarComponent {
@@ -4119,12 +4143,13 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react'>(() =>
-    this.currentUrl().startsWith('/csharp')      ? 'csharp'
-    : this.currentUrl().startsWith('/aspnet')    ? 'aspnet'
-    : this.currentUrl().startsWith('/sql')       ? 'sql'
-    : this.currentUrl().startsWith('/typescript')? 'typescript'
-    : this.currentUrl().startsWith('/react')     ? 'react'
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript'>(() =>
+    this.currentUrl().startsWith('/csharp')       ? 'csharp'
+    : this.currentUrl().startsWith('/aspnet')     ? 'aspnet'
+    : this.currentUrl().startsWith('/sql')        ? 'sql'
+    : this.currentUrl().startsWith('/typescript') ? 'typescript'
+    : this.currentUrl().startsWith('/react')      ? 'react'
+    : this.currentUrl().startsWith('/javascript') ? 'javascript'
     : 'angular'
   );
 
@@ -4136,6 +4161,7 @@ export class PageSidebarComponent {
            : this.section() === 'sql'        ? SQL_DEFAULT
            : this.section() === 'typescript' ? TS_DEFAULT
            : this.section() === 'react'      ? REACT_DEFAULT
+           : this.section() === 'javascript' ? JS_DEFAULT
            : DEFAULT);
   });
 
@@ -4146,6 +4172,7 @@ export class PageSidebarComponent {
       case 'sql':         return '📖 SQL Docs';
       case 'typescript':  return '📖 TypeScript Docs';
       case 'react':       return '📖 React Docs';
+      case 'javascript':  return '📖 MDN JS Docs';
       default:            return '📖 Angular Docs';
     }
   });

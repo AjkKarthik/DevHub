@@ -259,9 +259,9 @@ export class HubHome implements AfterViewInit, OnDestroy {
     },
     {
       group: 'frontend', name: 'JavaScript', time: '~10 hrs',
-      tagline: 'The language of the web — ES2025, async/await, closures, modules.',
+      tagline: 'The language of the web — ES2025, async/await, closures, modules, DOM.',
       icon: '𝐉𝐒', gradient: 'linear-gradient(135deg, #f7df1e 0%, #d4b800 100%)',
-      textDark: true, route: '/javascript', available: true,
+      textDark: true, route: '/javascript', available: true, topics: 24,
 
       highlights: [
         'ES2025 features, Promises, async/await',
