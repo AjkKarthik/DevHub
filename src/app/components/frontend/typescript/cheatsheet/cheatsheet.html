@@ -1,1 +1,38 @@
-<div class="ts-page"><p>Coming soon</p></div>
+<div class="ts-cheatsheet">
+  <div class="ts-header">
+    <div class="ts-header-icon">TS</div>
+    <div>
+      <h1 class="ts-sheet-title">TypeScript Cheat Sheet</h1>
+      <p class="ts-subtitle">Quick-reference for type system, narrowing, generics, utility types, mapped &amp; conditional types, classes, modules, and tsconfig flags.</p>
+    </div>
+  </div>
+
+  <div class="ts-search-wrap">
+    <input class="ts-search" type="text" placeholder="Search entries…"
+      [value]="searchTerm()" (input)="onSearch($any($event.target).value)" />
+  </div>
+
+  <div class="ts-tabs">
+    @for (s of sections; track s.key) {
+      <button class="ts-tab" [class.active]="active() === s.key" (click)="setSection(s.key)" type="button">
+        {{ s.icon }} {{ s.label }}
+      </button>
+    }
+  </div>
+
+  <div class="ts-grid">
+    @for (e of filteredEntries(); track e.name) {
+      <div class="ts-card">
+        <div class="ts-card-head">
+          <code class="ts-name">{{ e.name }}</code>
+          @if (e.tag) { <span class="ts-tag">{{ e.tag }}</span> }
+        </div>
+        <p class="ts-desc">{{ e.desc }}</p>
+        <pre class="ts-example"><code>{{ e.example }}</code></pre>
+      </div>
+    }
+    @empty {
+      <p class="ts-empty">No entries match "{{ searchTerm() }}".</p>
+    }
+  </div>
+</div>

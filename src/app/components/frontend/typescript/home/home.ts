@@ -72,7 +72,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'TypeScript Performance',     route: '/typescript/ts-performance', badge: 'Tooling', available: true,
     description: 'Large project build performance — composite, incremental, isolatedModules, and skipping type-check.',
     keyPoints: ['composite: true + incremental: true for project references build cache', 'isolatedModules: true — each file as separate module, required by esbuild/Babel', 'transpileOnly (ts-node): skip type checks for dev-time speed'] },
-  { title: 'TypeScript Cheat Sheet',     route: '/typescript/cheatsheet', badge: 'Reference', available: false,
+  { title: 'TypeScript Cheat Sheet',     route: '/typescript/cheatsheet', badge: 'Reference', available: true,
     description: 'All utility types, key modifiers, generic constraints, and type narrowing patterns at a glance.',
     keyPoints: ['Utility types quick reference: Partial, Required, Pick, Omit, Record, etc.', 'Narrowing cheat sheet: typeof, instanceof, in, discriminant, assertion functions', 'tsconfig flags: strict mode sub-flags explained'] },
   { title: 'TypeScript Interview Prep',  route: '/typescript/interview-prep', badge: 'Reference', available: false,

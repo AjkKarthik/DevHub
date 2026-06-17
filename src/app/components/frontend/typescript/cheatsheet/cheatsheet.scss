@@ -1,11 +1,176 @@
-$accent: #3178c6;
-$tint:   #eff6ff;
-.ts-page { max-width: 860px; padding: 1rem; margin: 0 auto; }
-.ts-icon { background: $tint; color: $accent; border: 1px solid rgba(49,120,198,.25); }
-.ts-section { margin: 2rem 0;
-  h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: #111827; }
+$accent:       #3178c6;
+$accent-dark:  #1d4ed8;
+$tint:         #eff6ff;
+$tint-mid:     #dbeafe;
+$border:       #e4e4e7;
+$text:         #18181b;
+$muted:        #71717a;
+$code-bg:      #0f172a;
+
+.ts-cheatsheet {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  color: $text;
 }
+
+.ts-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.ts-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, $accent, $accent-dark);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-family: monospace;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(49, 120, 198, 0.35);
+}
+
+.ts-sheet-title {
+  font-size: 1.875rem;
+  font-weight: 800;
+  margin: 0 0 0.25rem;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.ts-subtitle { color: $muted; font-size: 0.9375rem; margin: 0; }
+
+.ts-search-wrap { margin-bottom: 1.25rem; }
+
+.ts-search {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid $border;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  outline: none;
+  transition: border-color 0.15s;
+  background: #fff;
+  color: $text;
+  box-sizing: border-box;
+  &:focus {
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba(49, 120, 198, 0.12);
+  }
+}
+
+.ts-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.ts-tab {
+  padding: 0.4375rem 0.875rem;
+  border-radius: 20px;
+  border: 1.5px solid $border;
+  background: #fff;
+  color: $muted;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover { border-color: $accent; color: $accent; background: $tint; }
+  &.active { background: $accent; color: #fff; border-color: $accent; font-weight: 600; }
+}
+
+.ts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1rem;
+}
+
+.ts-card {
+  border: 1px solid $border;
+  border-radius: 10px;
+  padding: 1rem;
+  background: #fff;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  &:hover { border-color: $accent; box-shadow: 0 2px 12px rgba(49, 120, 198, 0.1); }
+}
+
+.ts-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ts-name {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: $accent;
+  background: $tint;
+  padding: 0.15rem 0.5rem;
+  border-radius: 5px;
+  font-family: 'Fira Code', monospace;
+}
+
+.ts-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  background: $accent;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.ts-desc { font-size: 0.875rem; color: $muted; margin: 0 0 0.75rem; line-height: 1.5; }
+
+.ts-example {
+  background: $code-bg;
+  border-radius: 7px;
+  padding: 0.625rem 0.875rem;
+  margin: 0;
+  overflow-x: auto;
+  code {
+    font-family: 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.8125rem;
+    color: #e2e8f0;
+    white-space: pre;
+  }
+}
+
+.ts-empty { grid-column: 1/-1; text-align: center; color: $muted; padding: 2rem; }
+
 :host-context(body.dark) {
-  .ts-icon { background: #172554; color: #93c5fd; }
-  .ts-section h2 { color: #f9fafb; }
+  .ts-cheatsheet { color: #f4f4f5; }
+  .ts-sheet-title { color: #f9fafb; }
+  .ts-subtitle { color: #a1a1aa; }
+  .ts-search {
+    background: #27272a;
+    border-color: #3f3f46;
+    color: #f4f4f5;
+    &::placeholder { color: #71717a; }
+    &:focus { border-color: #93c5fd; box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.15); }
+  }
+  .ts-tab {
+    background: #27272a;
+    border-color: #3f3f46;
+    color: #a1a1aa;
+    &:hover { border-color: #93c5fd; color: #93c5fd; background: #172554; }
+    &.active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+  }
+  .ts-card {
+    background: #27272a;
+    border-color: #3f3f46;
+    &:hover { border-color: #93c5fd; box-shadow: 0 2px 12px rgba(147, 197, 253, 0.12); }
+  }
+  .ts-name { color: #93c5fd; background: #172554; }
+  .ts-desc { color: #a1a1aa; }
+  .ts-empty { color: #71717a; }
 }
