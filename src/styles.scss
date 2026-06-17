@@ -111,6 +111,46 @@ body.dark {
   white-space: nowrap; border: 0;
 }
 
+/* ── Page header icon — base shape shared by all hub topic pages ─────────
+   Each hub's component SCSS sets background/color via its specific class
+   (.ng-icon, .react-icon, .js-icon, …). The globals below are fallbacks
+   for pages that only override colours and rely on these base dimensions. */
+.page-header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+  /* Angular default — overridden by hub classes below */
+  background: #fff1f2;
+  color: #dd0031;
+}
+
+/* Hub-specific colour defaults (lower specificity than component-scoped overrides) */
+.page-header-icon.ng-icon     { background: #fff1f2; color: #dd0031; }
+.page-header-icon.cs-icon     { background: #f5f3ff; color: #7c3aed; }
+.page-header-icon.aspnet-icon { background: #ecfeff; color: #0e7490; }
+.page-header-icon.sql-icon    { background: #fff7ed; color: #e05c00; }
+.page-header-icon.ts-icon     { background: #eff6ff; color: #3178c6; }
+.page-header-icon.react-icon  { background: #f0f9ff; color: #0ea5e9; border: 1px solid rgba(14,165,233,.2); }
+.page-header-icon.js-icon     { background: #fefce8; color: #854d0e; }
+
+body.dark {
+  .page-header-icon.ng-icon     { background: #450a0a; color: #ff5a76; }
+  .page-header-icon.cs-icon     { background: #2e1065; color: #a78bfa; }
+  .page-header-icon.aspnet-icon { background: #083344; color: #67e8f9; }
+  .page-header-icon.sql-icon    { background: #431a03; color: #fdba74; }
+  .page-header-icon.ts-icon     { background: #172554; color: #93c5fd; }
+  .page-header-icon.react-icon  { background: #083344; color: #67e8f9; border-color: rgba(103,232,249,.2); }
+  .page-header-icon.js-icon     { background: #2d1f00; color: #fde68a; }
+}
+
 /* ── Global responsive page container ───────────────────────────────────────
    Fluid width — fills available space, capped at 1400px on very large screens.
    Overrides all component-scoped .page max-width constraints. */
