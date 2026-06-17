@@ -87,7 +87,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | C# | 59 | 0 | Complete — 50 topics + 9 practice/reference |
 | ASP.NET Core | 54 | 0 | Complete — 45 topics + 9 practice/reference |
 | SQL | 53 | 0 | Complete — 44 topics + 9 reference |
-| TypeScript | 0 | 22 | Not started |
+| TypeScript | 22 | 0 | Complete — 20 topics + 2 reference |
 | JavaScript | 0 | 24 | Not started |
 | React | 0 | 24 | Not started |
 | HTML | 0 | 22 | Not started |
@@ -536,39 +536,28 @@ Accent: `#3178c6` (TypeScript blue). Search prefix: `ts-`. Progress key: `tsTota
 Write one page per session in this order:
 
 - [x] 2026-06-16 `ts-basics` — Type annotations, inference, `any` vs `unknown`, `never`, type assertions
-- [ ] `ts-functions` — Parameter types, return types, optional/default/rest, overloads,
-  `this` parameter, function type expressions
-- [ ] `ts-interfaces-types` — interface vs type alias, structural typing, extends vs
-  intersection (&), declaration merging, index signatures
-- [ ] `ts-generics` — Generic functions, constraints (`extends`), generic interfaces,
-  generic classes, default type params
-- [ ] `ts-utility-types` — Partial, Required, Readonly, Pick, Omit, Record, Extract,
-  Exclude, NonNullable, ReturnType, Parameters
-- [ ] `ts-narrowing` — typeof, instanceof, in operator, discriminated unions, assertion
-  functions, control flow analysis
-
-- [ ] `ts-mapped-types` — `[K in keyof T]`, Readonly/Partial implementation, custom mapped
-  types, `+/-` modifiers, key remapping with `as`
-- [ ] `ts-conditional-types` — `T extends U ? X : Y`, infer keyword, distributive
-  conditional types, built-in conditional utilities
-- [ ] `ts-template-literal-types` — Template literal type syntax, string manipulation types,
-  `Uppercase`/`Lowercase`/`Capitalize`/`Uncapitalize`
-- [ ] `ts-decorators` — Experimental vs TC39 decorators, class/method/property/parameter
-  decorators, metadata reflection, Angular/NestJS usage
-- [ ] `ts-modules` — ES modules in TS, `import type`, module resolution strategies,
-  path aliases in tsconfig, declaration files (`.d.ts`)
-- [ ] `ts-tsconfig` — Strict mode flags, target/lib, moduleResolution, paths, composite
-  projects, project references
-
-- [ ] `ts-classes` — Access modifiers, abstract classes, parameter properties, static,
-  override keyword, class implements interface
-- [ ] `ts-enums` — const vs regular enums, string enums, reverse mapping, enum pitfalls,
-  prefer union types over enums (when/why)
-- [ ] `ts-advanced-patterns` — Builder pattern in TS, fluent API design, branded types,
-  phantom types, opaque types
-- [ ] `ts-react-typescript` — FC vs function declaration, event types, useRef<T>, custom
-  hook typing, generic components, discriminated union props
-- [ ] Reference pages: cheatsheet, interview-prep (already in home — build them)
+- [x] 2026-06-17 `ts-basics` — type annotations, inference, any/unknown/never, assertions
+- [x] 2026-06-17 `ts-primitive-types` — string, number, boolean, null, undefined, void, never, unknown, literal types
+- [x] 2026-06-17 `ts-interfaces-types` — interface vs type alias, declaration merging, index signatures
+- [x] 2026-06-17 `ts-unions` — union/intersection types, discriminated unions, narrowing
+- [x] 2026-06-17 `ts-enums-tuples` — const/string enums, reverse mapping, tuple types
+- [x] 2026-06-17 `ts-generics` — generic functions, constraints, interfaces, classes, default params
+- [x] 2026-06-17 `ts-generic-patterns` — Result<T,E>, Option<T>, generic factories, conditional generics
+- [x] 2026-06-17 `ts-utility-types` — Partial, Required, Readonly, Pick, Omit, Record, Extract, Exclude, NonNullable, ReturnType
+- [x] 2026-06-17 `ts-mapped-types` — [K in keyof T], +/- modifiers, key remapping with as
+- [x] 2026-06-17 `ts-template-literal-types` — template literal syntax, Uppercase/Capitalize/infer
+- [x] 2026-06-17 `ts-conditional-types` — T extends U ? X : Y, infer, distributive, built-ins
+- [x] 2026-06-17 `ts-narrowing` — typeof, instanceof, in, predicates, assertion functions, exhaustiveness
+- [x] 2026-06-17 `ts-decorators` — TC39 Stage 3 vs legacy, class/method/field/accessor decorators
+- [x] 2026-06-17 `ts-classes` — access modifiers, abstract, readonly, override, parameter properties
+- [x] 2026-06-17 `ts-tsconfig` — target/lib, module/moduleResolution, strict flags, paths, composite
+- [x] 2026-06-17 `ts-modules` — ES modules, import type, resolution, path aliases, namespaces
+- [x] 2026-06-17 `ts-declarations` — .d.ts files, DefinitelyTyped, ambient declare, module augmentation
+- [x] 2026-06-17 `ts-frameworks` — React, Express, Zod, Next.js App Router typed patterns
+- [x] 2026-06-17 `ts-strict-migration` — strict: true flags, allowJs, @ts-expect-error, bottom-up migration
+- [x] 2026-06-17 `ts-ts-performance` — incremental, composite, isolatedModules, noEmit, barrel chains
+- [x] 2026-06-17 `ts-cheatsheet` — 8-tab reference: types, narrowing, generics, utility, mapped, classes, modules, config
+- [x] 2026-06-17 `ts-interview-prep` — 35 Q&A across Type System, Generics, Advanced Types, Classes, Modules, Config, Patterns
 
 Wiring checklist per CLAUDE.md: routes, nav block, search entries, breadcrumb labels,
 sidebar entries, progress service (`tsTotal`), hub-home card flip.
@@ -1170,6 +1159,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-17 — TypeScript hub Phase 3A complete: all 22 pages live (20 trackable topics + cheatsheet + interview-prep). tsTotal = 20. hub-home TypeScript card topics: 22, available: true. Hero stat: 250+. Build passes.
 - [x] 2026-06-13 — Market-gap topic additions across all 34 hubs (18 new coming-soon
   cards): NestJS, Gin, a11y, MassTransit, Functional C#, AI/ML System Design, Celery,
   K8s Operators, MongoDB Time Series, Azure Bicep, TanStack Query, React Hook Form,

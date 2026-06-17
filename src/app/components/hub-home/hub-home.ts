@@ -165,11 +165,11 @@ export class HubHome implements AfterViewInit, OnDestroy {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'ASP.NET Core · 54 pages', route: '/aspnet',                  label: 'New · 45 topics + 9 reference' },
-    { name: 'Angular',                 route: '/angular',                  label: '50 pages · updated' },
-    { name: 'C# · 58 topics',          route: '/csharp',                   label: 'Full language coverage' },
-    { name: 'SQL · 53 pages',           route: '/sql',                       label: 'New · 44 topics + 9 reference' },
-    { name: 'Interview Prep',          route: '/aspnet/interview-prep',    label: 'New · ASP.NET Core Q&A' },
+    { name: 'TypeScript · 22 pages',   route: '/typescript',               label: 'New · 20 topics + 2 reference' },
+    { name: 'SQL · 53 pages',          route: '/sql',                      label: '44 topics + 9 reference' },
+    { name: 'ASP.NET Core · 54 pages', route: '/aspnet',                   label: '45 topics + 9 reference' },
+    { name: 'C# · 59 pages',           route: '/csharp',                   label: 'Full language coverage' },
+    { name: 'Angular · 68 pages',      route: '/angular',                  label: '58 topics + 10 reference' },
   ];
 
   readonly roleChips: RoleChip[] = [
@@ -274,7 +274,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'TypeScript', time: '~6 hrs',
       tagline: 'Typed superset of JavaScript — generics, decorators, utility types.',
       icon: '𝐓𝐒', gradient: 'linear-gradient(135deg, #3178c6 0%, #1a5490 100%)',
-      textDark: false, route: '/typescript', available: true,
+      textDark: false, route: '/typescript', available: true, topics: 22,
       roles: ['frontend', 'backend', 'architect'],
       highlights: [
         'Types, interfaces, enums, generics',
