@@ -11,15 +11,14 @@ $tint:   #fff1f2;
   width: 52px;
   height: 52px;
   border-radius: 12px;
-  background: $tint;
-  color: $accent;
+  background: $accent;
+  color: #fff;
   font-size: 1.4rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  border: 2px solid rgba(221, 0, 49, 0.15);
 }
 
 .page-title {

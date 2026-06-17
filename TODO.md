@@ -939,6 +939,19 @@ Open the page, read it fully as a learner would, then check each item:
     present. Hub class matches the page's hub. Content per hub:
     Angular=A | C#=C# | ASP.NET=ASP | SQL=SQL | TS=TS | JS=JS | React=⚛ (atom, ALL pages).
     React pages: always ⚛, never "React"/"RHF"/"RN"/"FM" text — use the brand symbol.
+[ ] Icon fill pattern is correct for the hub:
+    - Angular/C#/ASP.NET = SOLID FILL (accent bg, white text). If component SCSS defines
+      the icon with `background: $tint; color: $accent;` that is WRONG — fix it to
+      `background: $accent; color: #fff;`. Remove any `border:` on solid-fill icons.
+    - SQL/TS/React/JS = LIGHT TINT (tint bg, accent text). Do not change these to solid fill.
+    - Pages that do NOT define the icon in component SCSS use the global styles.scss — this
+      is fine and preferred. Only override in SCSS if the global doesn't cover a special case.
+[ ] Inline code inside .page-subtitle always uses light tint:
+    `code { background: $tint; color: $accent; }` — NEVER `background: $accent; color: #fff;`
+    on inline code (that would render solid red/purple on text).
+[ ] .ng-page / .cs-page etc. padding is consistent with other pages in the same hub:
+    Check that padding matches the standard: `padding: 2rem 1.25rem 4rem;` for Angular/C#.
+    If a component SCSS defines different padding (e.g. 1.5rem), update it to match.
 [ ] content-grid gap: .content-grid.has-sidebar must have gap: 2rem in app.scss — zero gap
     puts content and sidebar edge-to-edge with no breathing room.
 [ ] Page wrapper class matches hub: ng-page / cs-page / asp-page / sq-page / ts-page /
@@ -975,6 +988,16 @@ grep -rn "page-header-icon" src/app/components/<hub>/ --include="*.html" | grep 
 # Wrong hub class (e.g. cs-icon on a React page)
 grep -rn "cs-icon\|ng-icon\|asp-icon" src/app/components/frontend/react/ --include="*.html"
 # → should return 0 lines
+
+# Light-tint icon in solid-fill hub (Angular/C#/ASP.NET) — should be $accent bg not $tint
+grep -rn "background.*\$tint" src/app/components/angular/ --include="*.scss" | grep -i "icon"
+grep -rn "background.*\$tint" src/app/components/backend/csharp/ --include="*.scss" | grep -i "icon"
+grep -rn "background.*\$tint" src/app/components/backend/aspnet/ --include="*.scss" | grep -i "icon"
+# → should return 0 lines (icon blocks must use $accent, not $tint for these hubs)
+
+# Inconsistent .ng-page / .cs-page padding
+grep -rn "padding:" src/app/components/angular/ --include="*.scss" | grep "ng-page" | sort | uniq -c
+# → all values should be the same (2rem 1.25rem 4rem is the standard)
 
 # Dark mode violations
 grep -rn "@media (prefers-color-scheme" src/app/components/<hub>/ --include="*.scss"

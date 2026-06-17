@@ -108,19 +108,31 @@ Rules:
 - **Always the correct hub class**: React pages use `react-icon`, not `cs-icon` or `ip-icon`.
   C# pages use `cs-icon`. Never mix hub classes across hubs.
 
-### Two icon visual generations (do not mix within a hub)
+### Two icon visual generations (NEVER mix within a hub)
 
-**Solid fill** (Angular, C#, ASP.NET — older hubs): accent background, white text,
-`font-size: 1.4rem`, `border-radius: 8px`, sizing via `padding: 0.4rem 0.8rem` (Angular
-uses `width: 3rem; height: 3rem`). Defined in each component's own SCSS.
+The global `src/styles.scss` now defines canonical icon styles for ALL hubs. Do NOT
+override them in component SCSS unless something special is needed for that page.
 
-**Light tint** (SQL, TypeScript, React, JavaScript — newer hubs): tint background,
-accent-colored text, thin border `rgba($accent, 0.25)`. Inherits 48×48 layout from
-global `styles.scss`. Defined as `.page-header-icon.<hub>-icon` in component SCSS
-(only color/background/border — NOT layout).
+**Solid fill** (Angular, C#, ASP.NET): accent bg, white text, `font-size: 1.4rem`.
+- Angular: `background: #dd0031; color: #fff` — 48×48 square, `border-radius: 12px`
+- C#: `background: #6b21a8; color: #fff` — pill shape, `padding: 0.4rem 0.8rem`
+- ASP.NET: `background: #0e7490; color: #fff` — 48×48 square, `border-radius: 12px`
+- If a component SCSS defines `background: $tint; color: $accent;` for the icon of these
+  hubs — that is WRONG. It must be `background: $accent; color: #fff;` (solid fill).
 
-When writing a new page for an existing hub, copy the icon SCSS block from another page
-in the SAME hub. Never copy from a different hub — the two visual styles are incompatible.
+**Light tint** (SQL, TypeScript, React, JavaScript): tint bg, accent-colored text.
+- SQL, TS, JS: defined globally in styles.scss — usually no component override needed
+- React: adds `font-size: 1.8rem` for the atom symbol; global already does this
+
+**CRITICAL: inline `<code>` inside `.page-subtitle` ALWAYS uses light tint regardless of
+hub fill pattern.** Example: `code { background: $tint; color: $accent; }`. Never use
+`background: $accent; color: #fff;` for inline code — that produces solid red on code text.
+
+**Padding within .ng-page / .cs-page etc. — must be consistent within a hub:**
+Standard padding for Angular topic pages: `padding: 2rem 1.25rem 4rem;`
+Standard padding for C# topic pages: `padding: 2rem 1.25rem 4rem;`
+If a component SCSS defines `.ng-page` with DIFFERENT padding (e.g. `1.5rem 1.25rem 3rem`),
+that creates visible inconsistency between pages. Keep all `.ng-page` padding identical.
 
 ### Nav home-link pattern
 

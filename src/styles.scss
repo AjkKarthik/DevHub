@@ -112,9 +112,10 @@ body.dark {
 }
 
 /* ── Page header icon — base shape shared by all hub topic pages ─────────
-   Each hub's component SCSS sets background/color via its specific class
-   (.ng-icon, .react-icon, .js-icon, …). The globals below are fallbacks
-   for pages that only override colours and rely on these base dimensions. */
+   Angular/C#/ASP.NET use SOLID FILL (accent bg, white text).
+   SQL/TS/React/JS use LIGHT TINT (tint bg, accent text, optional border).
+   Component SCSSs that define the icon block override these; globals ensure
+   pages WITHOUT a local definition look identical to those that have one. */
 .page-header-icon {
   display: inline-flex;
   align-items: center;
@@ -127,24 +128,27 @@ body.dark {
   margin-bottom: 1rem;
   line-height: 1;
   flex-shrink: 0;
-  /* Angular default — overridden by hub classes below */
-  background: #fff1f2;
-  color: #dd0031;
 }
 
-/* Hub-specific colour defaults (lower specificity than component-scoped overrides) */
-.page-header-icon.ng-icon     { background: #fff1f2; color: #dd0031; }
-.page-header-icon.cs-icon     { background: #f5f3ff; color: #7c3aed; }
-.page-header-icon.aspnet-icon { background: #ecfeff; color: #0e7490; }
+/* ── Solid-fill hubs (Angular, C#, ASP.NET): accent bg + white text ─── */
+.page-header-icon.ng-icon     { background: #dd0031; color: #fff; font-size: 1.4rem; }
+.page-header-icon.cs-icon     { background: #6b21a8; color: #fff; font-size: 1.4rem; border-radius: 8px; width: auto; height: auto; padding: 0.4rem 0.8rem; }
+.page-header-icon.aspnet-icon,
+.page-header-icon.asp-icon    { background: #0e7490; color: #fff; font-size: 1.4rem; }
+
+/* ── Light-tint hubs (SQL, TS, React, JS): tint bg + accent text ─────── */
 .page-header-icon.sql-icon    { background: #fff7ed; color: #e05c00; }
 .page-header-icon.ts-icon     { background: #eff6ff; color: #3178c6; }
 .page-header-icon.react-icon  { background: #f0f9ff; color: #0ea5e9; border: 1px solid rgba(14,165,233,.2); font-size: 1.8rem; }
 .page-header-icon.js-icon     { background: #fefce8; color: #854d0e; }
 
 body.dark {
-  .page-header-icon.ng-icon     { background: #450a0a; color: #ff5a76; }
-  .page-header-icon.cs-icon     { background: #2e1065; color: #a78bfa; }
-  .page-header-icon.aspnet-icon { background: #083344; color: #67e8f9; }
+  /* Solid-fill hubs darken the fill slightly in dark mode */
+  .page-header-icon.ng-icon     { background: #9b0022; color: #fecdd3; }
+  .page-header-icon.cs-icon     { background: #7c3aed; color: #fff; }
+  .page-header-icon.aspnet-icon,
+  .page-header-icon.asp-icon    { background: #155e75; color: #cffafe; }
+  /* Light-tint hubs flip to dark tint */
   .page-header-icon.sql-icon    { background: #431a03; color: #fdba74; }
   .page-header-icon.ts-icon     { background: #172554; color: #93c5fd; }
   .page-header-icon.react-icon  { background: #083344; color: #67e8f9; border-color: rgba(103,232,249,.2); font-size: 1.8rem; }
