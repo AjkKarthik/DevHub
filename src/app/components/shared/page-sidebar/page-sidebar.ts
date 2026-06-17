@@ -4132,6 +4132,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── HTML: iFrames & Embeds ─────────────────────────────────────────────────
+  'html/iframes-embeds': {
+    apis: ['sandbox', 'allow', 'srcdoc', 'loading="lazy"', 'X-Frame-Options', 'frame-ancestors'],
+    related: [
+      { label: 'Head & Metadata',    route: '/html/head-metadata'    },
+      { label: 'HTML Performance',   route: '/html/performance'      },
+      { label: 'Web Components',     route: '/html/custom-elements'  },
+    ],
+    tip: 'Always set an explicit width and height on iframes to prevent CLS, and always add a title attribute for screen reader accessibility.',
+    docs: [
+      { label: 'MDN — <iframe>',           url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe'   },
+      { label: 'CSP frame-ancestors',      url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors' },
+      { label: 'Permissions Policy',       url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Permissions_Policy' },
+    ],
+    resources: [
+      { label: 'OWASP Clickjacking Guide', url: 'https://owasp.org/www-community/attacks/Clickjacking',  badge: 'docs' },
+      { label: 'web.dev — Permissions Policy', url: 'https://web.dev/articles/permissions-policy',        badge: 'blog' },
+    ],
+    gotchas: [
+      'sandbox allow attribute uses semicolons as separators — commas silently break the entire attribute.',
+      'Combining allow-scripts + allow-same-origin in sandbox defeats it — a script can remove its own sandbox attribute.',
+    ],
+  },
+
   // ── HTML: Web Components ───────────────────────────────────────────────────
   'html/custom-elements': {
     apis: ['customElements.define()', 'attachShadow()', '<template>', '<slot>', 'connectedCallback()', 'observedAttributes'],

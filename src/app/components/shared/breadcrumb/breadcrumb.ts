@@ -334,6 +334,7 @@ const HTML_LABELS: Record<string, string> = {
   'accessibility':      'Accessibility & ARIA',
   'head-metadata':      'Head & Metadata',
   'custom-elements':    'Web Components',
+  'iframes-embeds':     'iFrames & Embeds',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

@@ -293,6 +293,7 @@ export const routes: Routes = [
     { path: 'accessibility',       loadComponent: () => import('./components/frontend/html/accessibility/accessibility').then(m => m.HtmlAccessibility) },
     { path: 'head-metadata',       loadComponent: () => import('./components/frontend/html/head-metadata/head-metadata').then(m => m.HtmlHeadMetadata) },
     { path: 'custom-elements',     loadComponent: () => import('./components/frontend/html/custom-elements/custom-elements').then(m => m.HtmlCustomElements) },
+    { path: 'iframes-embeds',      loadComponent: () => import('./components/frontend/html/iframes-embeds/iframes-embeds').then(m => m.HtmlIframesEmbeds) },
   ] },
   { path: 'css',           children: [{ path: '', loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) }] },
   { path: 'javascript', children: [
