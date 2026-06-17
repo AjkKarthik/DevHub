@@ -16,7 +16,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'React Fundamentals',         route: '/react/basics', badge: 'Foundations', available: true,
     description: 'JSX, function components, props, rendering, keys, fragments, and React\'s virtual DOM and reconciliation algorithm.',
     keyPoints: ['JSX is syntactic sugar over React.createElement() calls', 'Virtual DOM: diff between renders; React applies minimal DOM patches', 'One-way data flow — parent → child via props, child → parent via callbacks'] },
-  { title: 'TypeScript & React',          route: '/react/typescript', badge: 'Foundations', available: false,
+  { title: 'TypeScript & React',          route: '/react/typescript', badge: 'Foundations', available: true,
     description: 'Typing props, events, refs, generic components, and discriminated union patterns for variant props.',
     keyPoints: ['Prefer (props: Props) => JSX.Element over React.FC — no implicit children', 'Event types: React.ChangeEvent<HTMLInputElement>, React.FormEvent<HTMLFormElement>', 'Generic components: function List<T>(props: { items: T[] }) — same syntax as TypeScript generics'] },
   { title: 'Forms & Validation',          route: '/react/forms', badge: 'Foundations', available: true,

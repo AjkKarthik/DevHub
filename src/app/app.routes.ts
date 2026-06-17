@@ -322,6 +322,7 @@ export const routes: Routes = [
     { path: 'tanstack-query',   loadComponent: () => import('./components/frontend/react/tanstack-query/tanstack-query').then(m => m.ReactTanstackQuery) },
     { path: 'performance',      loadComponent: () => import('./components/frontend/react/performance/performance').then(m => m.ReactPerformance) },
     { path: 'patterns',         loadComponent: () => import('./components/frontend/react/patterns/patterns').then(m => m.ReactPatterns) },
+    { path: 'typescript',       loadComponent: () => import('./components/frontend/react/typescript/typescript').then(m => m.ReactTypescript) },
   ] },
   { path: 'blazor',        children: [{ path: '', loadComponent: () => import('./components/frontend/blazor/home/home').then(m => m.BlazorHome) }] },
   { path: 'performance',   children: [{ path: '', loadComponent: () => import('./components/frontend/web-performance/home/home').then(m => m.WebPerformanceHome) }] },
