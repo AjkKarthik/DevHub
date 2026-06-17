@@ -4156,6 +4156,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/seo': {
+    apis: ['<title>', '<meta name="description">', '<link rel="canonical">', '<meta name="robots">', 'JSON-LD <script>', 'og:title / og:image', 'twitter:card', 'hreflang', 'sitemap.xml', 'Core Web Vitals'],
+    related: [
+      { label: 'Head & Metadata',       route: '/html/head-metadata'        },
+      { label: 'HTML Performance',      route: '/html/performance'          },
+      { label: 'PWA & Service Workers', route: '/html/pwa-service-workers'  },
+    ],
+    tip: 'Test structured data with Google\'s Rich Results Test before deploying — invalid JSON-LD silently fails to produce rich snippets.',
+    docs: [
+      { label: 'Google — Search Central',       url: 'https://developers.google.com/search/docs'                              },
+      { label: 'Schema.org',                    url: 'https://schema.org'                                                      },
+      { label: 'Google — Core Web Vitals',      url: 'https://web.dev/articles/vitals'                                        },
+    ],
+    resources: [
+      { label: 'Open Graph Protocol',           url: 'https://ogp.me/',                                          badge: 'docs' },
+      { label: 'Google Rich Results Test',      url: 'https://search.google.com/test/rich-results',              badge: 'tool' },
+    ],
+    gotchas: [
+      'Canonical and noindex together: if a page has both, Google will likely drop it from the index — pick one signal.',
+      'og:image must be an absolute URL, not a relative path — social crawlers do not resolve relative paths.',
+      'hreflang must be reciprocal — every page in the set must link back to all others, or Google ignores the tags.',
+    ],
+  },
+
   'html/pwa-service-workers': {
     apis: ['navigator.serviceWorker.register()', 'self.addEventListener("install")', 'self.addEventListener("fetch")', 'caches.open()', 'cache.put()', 'cache.match()', 'skipWaiting()', 'clients.claim()', 'PushManager', 'BackgroundSync'],
     related: [

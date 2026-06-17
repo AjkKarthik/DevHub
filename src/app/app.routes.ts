@@ -297,6 +297,7 @@ export const routes: Routes = [
     { path: 'canvas-svg',          loadComponent: () => import('./components/frontend/html/canvas-svg/canvas-svg').then(m => m.HtmlCanvasSvg) },
     { path: 'performance',         loadComponent: () => import('./components/frontend/html/performance/performance').then(m => m.HtmlPerformance) },
     { path: 'pwa-service-workers', loadComponent: () => import('./components/frontend/html/pwa-service-workers/pwa-service-workers').then(m => m.HtmlPwaServiceWorkers) },
+    { path: 'seo',                 loadComponent: () => import('./components/frontend/html/seo/seo').then(m => m.HtmlSeo) },
   ] },
   { path: 'css',           children: [{ path: '', loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) }] },
   { path: 'javascript', children: [

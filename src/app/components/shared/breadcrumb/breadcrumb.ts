@@ -338,6 +338,7 @@ const HTML_LABELS: Record<string, string> = {
   'canvas-svg':         'Canvas & SVG',
   'performance':        'HTML Performance',
   'pwa-service-workers': 'PWA & Service Workers',
+  'seo':                 'HTML SEO',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
