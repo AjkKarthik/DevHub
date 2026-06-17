@@ -4132,6 +4132,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── HTML: Web Components ───────────────────────────────────────────────────
+  'html/custom-elements': {
+    apis: ['customElements.define()', 'attachShadow()', '<template>', '<slot>', 'connectedCallback()', 'observedAttributes'],
+    related: [
+      { label: 'Document Structure', route: '/html/document-structure' },
+      { label: 'HTML APIs',          route: '/html/apis'               },
+      { label: 'JavaScript DOM',     route: '/javascript/dom'          },
+    ],
+    tip: 'Start with autonomous custom elements (extend HTMLElement) — customized built-ins (extend HTMLButtonElement) have poor Safari support and rarely worth the complexity.',
+    docs: [
+      { label: 'MDN — Web Components',       url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components' },
+      { label: 'Custom Elements Spec',        url: 'https://html.spec.whatwg.org/multipage/custom-elements.html'    },
+      { label: 'Shadow DOM Spec',             url: 'https://www.w3.org/TR/shadow-dom/'                             },
+    ],
+    resources: [
+      { label: 'webcomponents.org',   url: 'https://www.webcomponents.org/',                       badge: 'blog' },
+      { label: 'Open Web Components', url: 'https://open-wc.org/',                                 badge: 'tool' },
+    ],
+    gotchas: [
+      'super() must be the very first statement in the constructor — any this access before it throws ReferenceError.',
+      'template.content.cloneNode(true) is required — appending template.content directly moves the nodes and leaves the template empty for all future instances.',
+    ],
+  },
+
   // ── HTML: Accessibility & ARIA ─────────────────────────────────────────────
   'html/accessibility': {
     apis: ['role', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-hidden', 'tabindex'],

@@ -333,6 +333,7 @@ const HTML_LABELS: Record<string, string> = {
   'links-navigation':   'Links & Navigation',
   'accessibility':      'Accessibility & ARIA',
   'head-metadata':      'Head & Metadata',
+  'custom-elements':    'Web Components',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
