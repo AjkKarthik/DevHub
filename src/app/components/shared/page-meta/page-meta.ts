@@ -17,6 +17,8 @@ import { Component, input } from '@angular/core';
         <a class="pm-play pm-play--sql" href="https://dbfiddle.uk/" target="_blank" rel="noopener">▶ DB Fiddle</a>
       } @else if (tech() === 'typescript') {
         <a class="pm-play pm-play--typescript" href="https://www.typescriptlang.org/play" target="_blank" rel="noopener">▶ TS Playground</a>
+      } @else if (tech() === 'react') {
+        <a class="pm-play pm-play--react" href="https://stackblitz.com/fork/react-ts" target="_blank" rel="noopener">▶ StackBlitz</a>
       } @else if (!hidePlayground()) {
         @if (stackblitzUrl()) {
           <a class="pm-play" [href]="stackblitzUrl()" target="_blank" rel="noopener">▶ Playground</a>
@@ -55,6 +57,7 @@ import { Component, input } from '@angular/core';
       &--aspnet  { background: #0e7490; }
       &--sql        { background: #e05c00; }
       &--typescript { background: #3178c6; }
+      &--react      { background: #0ea5e9; }
     }
     .pm-play {
       font-size: .78rem; font-weight: 600; color: #0ea5e9;
@@ -73,7 +76,7 @@ export class PageMetaComponent {
   readingTime    = input.required<number>();
   difficulty     = input<'beginner' | 'intermediate' | 'advanced'>('intermediate');
   since          = input<string>('');
-  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python' | 'aspnet' | 'sql' | 'typescript'>('angular');
+  tech           = input<'angular' | 'csharp' | 'dotnet' | 'node' | 'python' | 'aspnet' | 'sql' | 'typescript' | 'react'>('angular');
   stackblitzUrl  = input<string>('');
   hidePlayground = input<boolean>(false);
 }

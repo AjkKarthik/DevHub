@@ -13,7 +13,7 @@ const BADGE_CSS: Record<string, string> = {
 const GROUP_ORDER = ['All', 'Foundations', 'Hooks', 'State Management', 'Routing', 'Performance', 'Patterns', 'Ecosystem', 'Reference'];
 
 const ALL_TOPICS: Topic[] = [
-  { title: 'React Fundamentals',         route: '/react/basics', badge: 'Foundations', available: false,
+  { title: 'React Fundamentals',         route: '/react/basics', badge: 'Foundations', available: true,
     description: 'JSX, function components, props, rendering, keys, fragments, and React\'s virtual DOM and reconciliation algorithm.',
     keyPoints: ['JSX is syntactic sugar over React.createElement() calls', 'Virtual DOM: diff between renders; React applies minimal DOM patches', 'One-way data flow — parent → child via props, child → parent via callbacks'] },
   { title: 'TypeScript & React',          route: '/react/typescript', badge: 'Foundations', available: false,
