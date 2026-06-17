@@ -60,7 +60,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Type Guards & Narrowing',     route: '/typescript/narrowing', badge: 'Type System', available: true,
     description: 'Narrowing techniques in depth — typeof, instanceof, in, user-defined predicates, and assertion functions.',
     keyPoints: ['isXxx(x): x is T — custom type predicate returns boolean + narrows', 'asserts x is T — throws if assertion fails, narrows after call', 'Exhaustiveness check: default: const _: never = x catches missing branches'] },
-  { title: 'Declaration Files (d.ts)',    route: '/typescript/declarations', badge: 'Tooling', available: false,
+  { title: 'Declaration Files (d.ts)',    route: '/typescript/declarations', badge: 'Tooling', available: true,
     description: 'Ambient declarations, writing .d.ts files, DefinitelyTyped, and augmenting third-party types.',
     keyPoints: ['declare module "lib" {} — ambient declaration for JS libraries', '@types/xxx packages: community type definitions on DefinitelyTyped', 'Module augmentation: extend existing types with interface merging'] },
   { title: 'Module System & Namespaces', route: '/typescript/modules', badge: 'Tooling', available: true,
