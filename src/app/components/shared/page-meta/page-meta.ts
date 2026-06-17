@@ -19,6 +19,8 @@ import { Component, input } from '@angular/core';
         <a class="pm-play pm-play--typescript" href="https://www.typescriptlang.org/play" target="_blank" rel="noopener">▶ TS Playground</a>
       } @else if (tech() === 'react') {
         <a class="pm-play pm-play--react" href="https://stackblitz.com/fork/react-ts" target="_blank" rel="noopener">▶ StackBlitz</a>
+      } @else if (tech() === 'javascript') {
+        <a class="pm-play pm-play--javascript" href="https://playcode.io/new" target="_blank" rel="noopener">▶ PlayCode</a>
       } @else if (!hidePlayground()) {
         @if (stackblitzUrl()) {
           <a class="pm-play" [href]="stackblitzUrl()" target="_blank" rel="noopener">▶ Playground</a>
@@ -56,8 +58,9 @@ import { Component, input } from '@angular/core';
       &--python  { background: #ca8a04; }
       &--aspnet  { background: #0e7490; }
       &--sql        { background: #e05c00; }
-      &--typescript { background: #3178c6; }
-      &--react      { background: #0ea5e9; }
+      &--typescript  { background: #3178c6; }
+      &--react       { background: #0ea5e9; }
+      &--javascript  { background: #854d0e; color: #fef9c3; }
     }
     .pm-play {
       font-size: .78rem; font-weight: 600; color: #0ea5e9;
@@ -68,7 +71,8 @@ import { Component, input } from '@angular/core';
       &--csharp   { color: #7c3aed; border-color: #7c3aed; }
       &--sharplab { color: #0891b2; border-color: #0891b2; }
       &--sql        { color: #e05c00; border-color: #e05c00; }
-      &--typescript { color: #3178c6; border-color: #3178c6; }
+      &--typescript  { color: #3178c6; border-color: #3178c6; }
+      &--javascript  { color: #854d0e; border-color: #854d0e; }
     }
   `],
 })
