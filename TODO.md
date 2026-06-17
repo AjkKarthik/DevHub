@@ -608,18 +608,18 @@ Accent: `#f7df1e` (JS yellow). Search prefix: `js-`. Hero stat updated to 300+.
 
 Accent: `#e34c26` (HTML orange). Search prefix: `html-`.
 
-
-- [ ] `html-document-structure` — DOCTYPE, `<html lang>`, `<meta charset>`, `<head>` vs
+**Batch 1 (2026-06-18):**
+- [x] 2026-06-18 `html-document-structure` — DOCTYPE, `<html lang>`, `<meta charset>`, `<head>` vs
   `<body>`, rendering pipeline, parse vs DOMContentLoaded
-- [ ] `html-semantic-elements` — `<main>`, `<article>`, `<section>`, `<aside>`, `<nav>`,
+- [x] 2026-06-18 `html-semantic-elements` — `<main>`, `<article>`, `<section>`, `<aside>`, `<nav>`,
   `<figure>`, `<time>`, `<address>` — when and why each
-- [ ] `html-forms` — `<form>`, `<input>` types, `<label>`, `<fieldset>`, `<select>`,
+- [x] 2026-06-18 `html-forms` — `<form>`, `<input>` types, `<label>`, `<fieldset>`, `<select>`,
   `<textarea>`, HTML5 validation attributes, constraint API
-- [ ] `html-media` — `<img>` (srcset, sizes, loading=lazy, decoding=async), `<picture>`,
+- [x] 2026-06-18 `html-media` — `<img>` (srcset, sizes, loading=lazy, decoding=async), `<picture>`,
   `<video>` (controls, poster, track), `<audio>`, `<source>`
-- [ ] `html-tables` — `<table>`, `<thead>`, `<tbody>`, `<th scope>`, `<caption>`,
+- [x] 2026-06-18 `html-tables` — `<table>`, `<thead>`, `<tbody>`, `<th scope>`, `<caption>`,
   `<colgroup>` — accessibility requirements, when not to use tables
-- [ ] `html-links-navigation` — `<a>` (href, rel, target, download), relative vs absolute
+- [x] 2026-06-18 `html-links-navigation` — `<a>` (href, rel, target, download), relative vs absolute
   URLs, `<link>`, `<base>`, fragment navigation, skip links
 
 

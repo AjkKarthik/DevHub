@@ -1,0 +1,168 @@
+```json
+{
+  "quickRef": [
+    { "name": "ARIA roles", "type": "keyword", "desc": "Define the purpose and behavior of an element." },
+    { "name": "aria-label", "type": "attribute", "desc": "Provide a text label for an element." },
+    { "name": "aria-labelledby", "type": "attribute", "desc": "Link an element to another element's label." },
+    { "name": "aria-live", "type": "attribute", "desc": "Notify users of changes in content or the page." },
+    { "name": "role", "type": "keyword", "desc": "Override the default role of an element." },
+    { "name": "tabindex", "type": "attribute", "desc": "Control focus order and keyboard navigation." },
+    { "name": "focus management", "type": "concept", "desc": "Ensure elements are accessible via keyboard and screen readers." },
+    { "name": "WCAG 2.1 levels", "type": "standard", "desc": "Accessibility guidelines for web content." },
+    { "name": "landmark roles", "type": "keyword", "desc": "Define regions of the page for assistive technologies." },
+    { "name": "aria-expanded", "type": "attribute", "desc": "Indicate whether a collapsible element is expanded or collapsed." },
+    { "name": "aria-hidden", "type": "attribute", "desc": "Hide an element from assistive technologies." },
+    { "name": "alt text", "type": "attribute", "desc": "Provide alternative text for images." }
+  ],
+  "theory": [
+    {
+      "heading": "What is ARIA?",
+      "points": [
+        "Accessible Rich Internet Applications",
+        "Enhances accessibility of web content and applications",
+        "Complements HTML, CSS, and JavaScript"
+      ]
+    },
+    {
+      "heading": "5 Rules of ARIA",
+      "points": [
+        "Use native HTML elements where possible",
+        "Avoid unnecessary roles",
+        "Ensure proper use of states and properties",
+        "Maintain a logical tab order",
+        "Provide accessible labels"
+      ]
+    },
+    {
+      "heading": "Landmark Roles",
+      "points": [
+        "header, footer, main, nav, aside, section, article, figure, figcaption",
+        "Help screen readers navigate the page structure"
+      ]
+    },
+    {
+      "heading": "Interactive Widget Roles and States",
+      "points": [
+        "button, checkbox, radio, switch, menuitem, tab, listbox, combobox",
+        "States: checked, selected, expanded, disabled"
+      ]
+    },
+    {
+      "heading": "Live Regions",
+      "points": [
+        "aria-live: assertive, polite, off",
+        "Notify users of changes in content or the page"
+      ]
+    }
+  ],
+  "codeTabs": [
+    {
+      "label": "Landmark regions",
+      "language": "html",
+      "code": "<header role=\"banner\">\n  <h1>My Website</h1>\n</header>\n<main role=\"main\">\n  <section role=\"region\" aria-label=\"Main Content\">\n    <!-- Main content goes here -->\n  </section>\n</main>\n<footer role=\"contentinfo\">\n  <p>&copy; 2023 My Website</p>\n</footer>"
+    },
+    {
+      "label": "ARIA widgets",
+      "language": "html",
+      "code": "<button id=\"toggleButton\" aria-expanded=\"false\" tabindex=\"0\">Toggle Menu</button>\n<ul role=\"menu\" aria-labelledby=\"toggleButton\">\n  <li><a href=\"#\">Home</a></li>\n  <li><a href=\"#\">About</a></li>\n  <li><a href=\"#\">Contact</a></li>\n</ul>"
+    },
+    {
+      "label": "Live regions & focus",
+      "language": "html",
+      "code": "<div role=\"status\" aria-live=\"polite\" id=\"liveRegion\"></div>\n<button id=\"incrementButton\" tabindex=\"0\">Increment</button>\n<script>\n  document.getElementById('incrementButton').addEventListener('click', function() {\n    var count = parseInt(document.getElementById('count').innerText) || 0;\n    count++;\n    document.getElementById('count').innerText = count;\n    document.getElementById('liveRegion').innerText = 'Count is now ' + count;\n  });\n</script>"
+    }
+  ],
+  "mistakes": [
+    {
+      "title": "Adding role=button to div without keyboard handler",
+      "wrong": "<div role=\"button\">Click me</div>",
+      "right": "<button>Click me</button>",
+      "explanation": "Buttons must be focusable and handle keyboard events."
+    },
+    {
+      "title": "aria-hidden on focusable elements",
+      "wrong": "<input type=\"text\" aria-hidden=\"true\" tabindex=\"0\">",
+      "right": "<input type=\"text\" tabindex=\"-1\">",
+      "explanation": "Focusable elements should not be hidden."
+    },
+    {
+      "title": "Wrong heading hierarchy",
+      "wrong": "<h2>Subsection</h2>\n<h3>Main Section</h3>",
+      "right": "<h1>Main Section</h1>\n<h2>Subsection</h2>",
+      "explanation": "Headings should be in logical order."
+    },
+    {
+      "title": "Missing form labels",
+      "wrong": "<input type=\"text\">",
+      "right": "<label for=\"name\">Name:</label><input id=\"name\" type=\"text\">",
+      "explanation": "Labels provide context for input elements."
+    },
+    {
+      "title": "aria-label vs aria-labelledby confusion",
+      "wrong": "<button aria-label=\"Click me\" aria-labelledby=\"myLabel\"></button>",
+      "right": "<button aria-label=\"Click me\"></button>\n<label id=\"myLabel\">Click me</label>",
+      "explanation": "Use aria-label for simple labels and aria-labelledby for complex ones."
+    }
+  ],
+  "challenge": {
+    "title": "Build an Accessible Modal Dialog",
+    "description": "Create a modal dialog with focus trap, aria-modal, proper labelling, and escape key dismissal.",
+    "hints": [
+      "Use role=\"dialog\" and aria-modal=\"true\"",
+      "Trap focus within the modal using tabindex",
+      "Handle escape key to close the modal"
+    ],
+    "starterCode": "<button id=\"openModal\">Open Modal</button>\n<div id=\"modal\" role=\"dialog\" aria-modal=\"false\" style=\"display:none;\">\n  <div>Modal Content</div>\n  <button id=\"closeModal\">Close</button>\n</div>",
+    "solution": "<button id=\"openModal\">Open Modal</button>\n<div id=\"modal\" role=\"dialog\" aria-modal=\"true\" tabindex=\"-1\" style=\"display:none;\">\n  <div>Modal Content</div>\n  <button id=\"closeModal\">Close</button>\n</div>\n<script>\n  document.getElementById('openModal').addEventListener('click', function() {\n    document.getElementById('modal').style.display = 'block';\n    document.getElementById('modal').focus();\n  });\n  document.getElementById('closeModal').addEventListener('click', function() {\n    document.getElementById('modal').style.display = 'none';\n  });\n  document.addEventListener('keydown', function(event) {\n    if (event.key === 'Escape') {\n      document.getElementById('modal').style.display = 'none';\n    }\n  });\n</script>"
+  },
+  "quiz": [
+    {
+      "q": "What does ARIA stand for?",
+      "options": ["Accessible Rich Internet Applications", "Advanced Rich Internet Applications", "Accessible Rich Interface Applications"],
+      "answer": 0,
+      "explanation": "ARIA stands for Accessible Rich Internet Applications."
+    },
+    {
+      "q": "Which WCAG level is the most recent?",
+      "options": ["WCAG 2.1", "WCAG 3.0", "WCAG 4.0"],
+      "answer": 0,
+      "explanation": "The most recent WCAG level is WCAG 2.1."
+    },
+    {
+      "q": "What does aria-live do?",
+      "options": ["Indicates whether a collapsible element is expanded or collapsed", "Notifies users of changes in content or the page", "Provides alternative text for images"],
+      "answer": 1,
+      "explanation": "aria-live notifies users of changes in content or the page."
+    },
+    {
+      "q": "Which role should be used for a navigation menu?",
+      "options": ["nav", "menu", "navigation"],
+      "answer": 0,
+      "explanation": "The nav role should be used for a navigation menu."
+    }
+  ],
+  "qna": [
+    {
+      "q": "What is the purpose of tabindex in accessibility?",
+      "a": "tabindex controls focus order and keyboard navigation."
+    },
+    {
+      "q": "How can you ensure an element is accessible via screen readers?",
+      "a": "Use ARIA roles, labels, and states to provide context for elements."
+    },
+    {
+      "q": "What should you do if a form input doesn't have a label?",
+      "a": "Provide alternative text using the alt attribute."
+    },
+    {
+      "q": "How can you trap focus within a modal dialog?",
+      "a": "Use tabindex to make elements focusable and handle keyboard events to move focus within the modal."
+    }
+  ],
+  "revision": {
+    "oneLiner": "ARIA enhances web accessibility by providing roles, states, and properties for assistive technologies.",
+    "mustKnow": ["ARIA roles", "aria-label", "aria-labelledby", "aria-live", "role", "tabindex", "focus management"],
+    "interviewFocus": ["Accessible modal dialogs", "Keyboard navigation", "Screen reader compatibility"]
+  }
+}
+```
