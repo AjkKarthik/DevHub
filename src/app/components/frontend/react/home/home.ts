@@ -61,7 +61,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Animations (Framer Motion)',  route: '/react/animations', badge: 'Ecosystem', available: true,
     description: 'motion.div, animate/variants, layout animations, AnimatePresence for exit animations, and useSpring.',
     keyPoints: ['motion.div animate={{ x: 100 }}: declarative imperative animation', 'variants: name reusable states — parent orchestrates children via "staggerChildren"', 'AnimatePresence: enables exit animations for components removed from the DOM'] },
-  { title: 'Security in React',           route: '/react/security', badge: 'Patterns', available: false,
+  { title: 'Security in React',           route: '/react/security', badge: 'Patterns', available: true,
     description: 'XSS prevention, dangerouslySetInnerHTML, CSP headers, authentication patterns, and CSRF in Next.js.',
     keyPoints: ['React escapes JSX strings by default — dangerouslySetInnerHTML bypasses this', 'DOMPurify: sanitize untrusted HTML before dangerouslySetInnerHTML', 'CSRF in Next.js: Server Actions use CSRF tokens automatically; REST APIs need explicit headers'] },
   { title: 'React Cheat Sheet',           route: '/react/cheatsheet', badge: 'Reference', available: false,

@@ -2819,6 +2819,31 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/security': {
+    apis: ['dangerouslySetInnerHTML', 'DOMPurify.sanitize()', 'SameSite=Strict', 'httpOnly', 'Content-Security-Policy'],
+    related: [
+      { label: 'Next.js App Router',  route: '/react/nextjs'    },
+      { label: 'React Hook Form',     route: '/react/hook-form' },
+      { label: 'Testing React',       route: '/react/testing'   },
+    ],
+    tip: 'React escapes JSX by default — {userInput} is always safe. The three common mistakes: dangerouslySetInnerHTML without DOMPurify, tokens in localStorage, and open redirects from query params.',
+    docs: [
+      { label: 'React Security Docs',       url: 'https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html' },
+      { label: 'OWASP Top 10',              url: 'https://owasp.org/www-project-top-ten/'                                                      },
+      { label: 'MDN CSP Guide',             url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP'                                       },
+      { label: 'Next.js Security Headers',  url: 'https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy'    },
+    ],
+    resources: [
+      { label: 'cure53/DOMPurify',  url: 'https://github.com/cure53/DOMPurify',  badge: 'code' },
+      { label: 'OWASP XSS Cheat Sheet', url: 'https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html', badge: 'docs' },
+    ],
+    gotchas: [
+      'dangerouslySetInnerHTML with unsanitized HTML = XSS. Always DOMPurify.sanitize() first.',
+      'localStorage tokens are readable by XSS. Use httpOnly; SameSite=Strict cookies instead.',
+      'rel="noopener noreferrer" is required on every target="_blank" link to prevent tab-napping.',
+    ],
+  },
+
   'react/animations': {
     apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
     related: [

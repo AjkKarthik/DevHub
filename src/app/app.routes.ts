@@ -328,6 +328,7 @@ export const routes: Routes = [
     { path: 'native',           loadComponent: () => import('./components/frontend/react/native/native').then(m => m.ReactNative) },
     { path: 'hook-form',        loadComponent: () => import('./components/frontend/react/hook-form/hook-form').then(m => m.ReactHookForm) },
     { path: 'animations',       loadComponent: () => import('./components/frontend/react/animations/animations').then(m => m.ReactAnimations) },
+    { path: 'security',         loadComponent: () => import('./components/frontend/react/security/security').then(m => m.ReactSecurity) },
   ] },
   { path: 'blazor',        children: [{ path: '', loadComponent: () => import('./components/frontend/blazor/home/home').then(m => m.BlazorHome) }] },
   { path: 'performance',   children: [{ path: '', loadComponent: () => import('./components/frontend/web-performance/home/home').then(m => m.WebPerformanceHome) }] },
