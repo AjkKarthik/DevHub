@@ -31,7 +31,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Context API',                 route: '/react/context', badge: 'State Management', available: true,
     description: 'createContext, useContext, context splitting for performance, and when to reach for Zustand instead.',
     keyPoints: ['All context consumers re-render when value changes — split by update frequency', 'Context is not a state manager — combine with useReducer for complex global state', 'Zustand: simpler API, no provider, selective subscription — preferred for cross-cutting state'] },
-  { title: 'State Management',            route: '/react/state-management', badge: 'State Management', available: false,
+  { title: 'State Management',            route: '/react/state-management', badge: 'State Management', available: true,
     description: 'useState vs useReducer vs Zustand vs Jotai vs Redux Toolkit — when to pick each, derived state.',
     keyPoints: ['useState: local component state — first choice, lift when siblings need it', 'Zustand: global state, no provider, subscribe to slices — minimal boilerplate', 'Redux Toolkit: createSlice + RTK Query — justified at large scale with complex async flows'] },
   { title: 'React Router v6/v7',           route: '/react/router', badge: 'Routing', available: false,
