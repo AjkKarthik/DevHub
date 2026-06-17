@@ -34,7 +34,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'State Management',            route: '/react/state-management', badge: 'State Management', available: true,
     description: 'useState vs useReducer vs Zustand vs Jotai vs Redux Toolkit — when to pick each, derived state.',
     keyPoints: ['useState: local component state — first choice, lift when siblings need it', 'Zustand: global state, no provider, subscribe to slices — minimal boilerplate', 'Redux Toolkit: createSlice + RTK Query — justified at large scale with complex async flows'] },
-  { title: 'React Router v6/v7',           route: '/react/router', badge: 'Routing', available: false,
+  { title: 'React Router v6/v7',           route: '/react/router', badge: 'Routing', available: true,
     description: 'createBrowserRouter, nested routes, loader and action functions, useNavigate, useParams, and Outlet.',
     keyPoints: ['Nested routes: <Outlet /> renders the child route component', 'loader: fetch data before rendering the route — replaces useEffect+fetch', 'useNavigate(-1) for back; navigate() for imperative navigation with state'] },
   { title: 'TanStack Query',              route: '/react/tanstack-query', badge: 'Ecosystem', available: false,
