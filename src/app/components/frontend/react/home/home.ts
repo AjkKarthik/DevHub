@@ -46,7 +46,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'React Patterns',              route: '/react/patterns', badge: 'Patterns', available: true,
     description: 'Compound components, render props, HOCs, and why custom hooks are the modern replacement.',
     keyPoints: ['Compound components: share implicit state via Context — <Select>, <Tabs>', 'Custom hook is the modern render prop — returns data and handlers, not JSX', 'HOC: withAuth(Comp) — still common in older codebases; prefer hooks in new code'] },
-  { title: 'Testing React',               route: '/react/testing', badge: 'Ecosystem', available: false,
+  { title: 'Testing React',               route: '/react/testing', badge: 'Ecosystem', available: true,
     description: 'React Testing Library, Vitest, userEvent, MSW for API mocking, and async testing patterns.',
     keyPoints: ['Test behaviour, not implementation — getByRole, not getByClassName', 'userEvent.click() simulates real user events including focus and keyboard', 'MSW: intercept fetch/axios in tests without mocking modules — realistic tests'] },
   { title: 'Next.js App Router',          route: '/react/nextjs', badge: 'Ecosystem', available: false,
