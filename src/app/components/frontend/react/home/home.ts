@@ -52,7 +52,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Next.js App Router',          route: '/react/nextjs', badge: 'Ecosystem', available: true,
     description: 'Server Components, Client Components, Server Actions, layouts, Suspense streaming, and caching.',
     keyPoints: ['"use client" opts into Client Component — everything else is a Server Component', 'Server Actions: async functions that run on the server, called from forms or buttons', 'layout.tsx persists across navigations; loading.tsx is automatic Suspense boundary'] },
-  { title: 'React Native',                route: '/react/native', badge: 'Ecosystem', available: false,
+  { title: 'React Native',                route: '/react/native', badge: 'Ecosystem', available: true,
     description: 'View/Text/ScrollView, StyleSheet, Expo, React Navigation, and the New Architecture (Fabric + JSI).',
     keyPoints: ['No HTML — View maps to UIView/android.view, Text to UILabel/TextView', 'StyleSheet.create: inline styles validated at dev time; flexbox by default', 'New Architecture: Fabric renderer + JSI bridge = synchronous JS↔native calls'] },
   { title: 'React Hook Form',             route: '/react/hook-form', badge: 'Ecosystem', available: false,

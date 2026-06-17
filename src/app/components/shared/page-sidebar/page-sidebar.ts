@@ -2792,6 +2792,33 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/native': {
+    apis: ['<View>', '<Text>', '<FlatList>', 'StyleSheet.create()', 'useNavigation()', 'Platform.OS'],
+    related: [
+      { label: 'React Patterns',   route: '/react/patterns'    },
+      { label: 'TypeScript & React', route: '/react/typescript' },
+      { label: 'React Testing',    route: '/react/testing'     },
+    ],
+    tip: 'flexDirection defaults to "column" in React Native (opposite of CSS). All text must be inside <Text> — raw strings in <View> crash in production builds.',
+    docs: [
+      { label: 'React Native Docs',      url: 'https://reactnative.dev/docs/getting-started'                },
+      { label: 'Expo Documentation',     url: 'https://docs.expo.dev/'                                      },
+      { label: 'React Navigation Docs',  url: 'https://reactnavigation.org/docs/getting-started'            },
+      { label: 'New Architecture',       url: 'https://reactnative.dev/docs/the-new-architecture/landing-page' },
+    ],
+    resources: [
+      { label: 'facebook/react-native',        url: 'https://github.com/facebook/react-native',  badge: 'code' },
+      { label: 'expo/expo',                    url: 'https://github.com/expo/expo',               badge: 'code' },
+      { label: 'react-navigation/navigation',  url: 'https://github.com/react-navigation/react-navigation', badge: 'code' },
+      { label: 'Expo Snack (playground)',      url: 'https://snack.expo.dev/',                   badge: 'tool' },
+    ],
+    gotchas: [
+      'All text strings must be wrapped in <Text> — placing raw text in <View> crashes production builds.',
+      'AsyncStorage is plain text on disk — always use expo-secure-store for tokens and passwords.',
+      'FlatList needs keyExtractor returning a stable unique string — index keys cause incorrect reconciliation.',
+    ],
+  },
+
   // ════════════════════════════════════════════════════════════════════════════
   // ASP.NET CORE PAGES
   // ════════════════════════════════════════════════════════════════════════════
