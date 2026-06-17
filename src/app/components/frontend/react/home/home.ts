@@ -19,7 +19,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'TypeScript & React',          route: '/react/typescript', badge: 'Foundations', available: false,
     description: 'Typing props, events, refs, generic components, and discriminated union patterns for variant props.',
     keyPoints: ['Prefer (props: Props) => JSX.Element over React.FC — no implicit children', 'Event types: React.ChangeEvent<HTMLInputElement>, React.FormEvent<HTMLFormElement>', 'Generic components: function List<T>(props: { items: T[] }) — same syntax as TypeScript generics'] },
-  { title: 'Forms & Validation',          route: '/react/forms', badge: 'Foundations', available: false,
+  { title: 'Forms & Validation',          route: '/react/forms', badge: 'Foundations', available: true,
     description: 'Controlled vs uncontrolled inputs, HTML5 validation, and getting started with React Hook Form + Zod.',
     keyPoints: ['Controlled: React owns the value via useState — enables real-time validation', 'Uncontrolled: DOM owns the value via useRef — simpler but less flexible', 'Zod + React Hook Form: schema as single source of truth for validation'] },
   { title: 'Core Hooks',                  route: '/react/hooks-core', badge: 'Hooks', available: true,
