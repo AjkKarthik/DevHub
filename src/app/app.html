@@ -544,11 +544,12 @@
     <!-- ── Angular Navigation ─────────────────────────────────────── -->
     @if (currentSection() === 'angular') {
 
+    <a routerLink="/angular" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">🏠 Angular Home</span>
+    </a>
+
     <div class="nav-group">
-      <p class="nav-group-label">🅰️ Angular</p>
-      <a routerLink="/angular" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-        <span class="nl-text">🏠 Angular Home</span>
-      </a>
+      <p class="nav-group-label">Foundations</p>
       <a routerLink="/angular/counter" routerLinkActive="active">
         <span class="nl-text">Signals &amp; State</span>
         @if (progress.isDone('counter')) {<span class="nl-done">✓</span>}
