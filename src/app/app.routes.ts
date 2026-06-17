@@ -312,7 +312,8 @@ export const routes: Routes = [
   ] },
   { path: 'react', children: [
     { path: '', loadComponent: () => import('./components/frontend/react/home/home').then(m => m.ReactHome) },
-    { path: 'basics', loadComponent: () => import('./components/frontend/react/basics/basics').then(m => m.ReactBasics) },
+    { path: 'basics',       loadComponent: () => import('./components/frontend/react/basics/basics').then(m => m.ReactBasics) },
+    { path: 'hooks-core',   loadComponent: () => import('./components/frontend/react/hooks-core/hooks-core').then(m => m.ReactHooksCore) },
   ] },
   { path: 'blazor',        children: [{ path: '', loadComponent: () => import('./components/frontend/blazor/home/home').then(m => m.BlazorHome) }] },
   { path: 'performance',   children: [{ path: '', loadComponent: () => import('./components/frontend/web-performance/home/home').then(m => m.WebPerformanceHome) }] },

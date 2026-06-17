@@ -22,7 +22,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Forms & Validation',          route: '/react/forms', badge: 'Foundations', available: false,
     description: 'Controlled vs uncontrolled inputs, HTML5 validation, and getting started with React Hook Form + Zod.',
     keyPoints: ['Controlled: React owns the value via useState — enables real-time validation', 'Uncontrolled: DOM owns the value via useRef — simpler but less flexible', 'Zod + React Hook Form: schema as single source of truth for validation'] },
-  { title: 'Core Hooks',                  route: '/react/hooks-core', badge: 'Hooks', available: false,
+  { title: 'Core Hooks',                  route: '/react/hooks-core', badge: 'Hooks', available: true,
     description: 'useState, useEffect, useRef, useContext — the hooks you use in every component.',
     keyPoints: ['useState(fn): lazy initializer runs once — use for expensive initial state', 'useEffect cleanup: return a function to cancel subscriptions, timers, and abort controllers', 'useRef: persists across renders without triggering a re-render — DOM refs and stale closure escape'] },
   { title: 'Advanced Hooks',              route: '/react/hooks-advanced', badge: 'Hooks', available: false,
