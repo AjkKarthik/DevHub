@@ -4108,6 +4108,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['The DBA path requires understanding execution plans — read the Indexes and Performance pages before tackling it.'],
   },
 
+  // ── HTML: Head & Metadata ──────────────────────────────────────────────────
+  'html/head-metadata': {
+    apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],
+    related: [
+      { label: 'Document Structure', route: '/html/document-structure' },
+      { label: 'SEO & Meta Tags',    route: '/html/seo'                },
+      { label: 'Performance',        route: '/html/performance'        },
+    ],
+    tip: 'Order matters in <head>: charset first, viewport second, then title and meta — any stylesheet or script before charset can cause encoding bugs.',
+    docs: [
+      { label: 'MDN — <head> element',     url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head' },
+      { label: 'Open Graph Protocol',      url: 'https://ogp.me/' },
+      { label: 'Google — Resource Hints',  url: 'https://web.dev/articles/preload-critical-assets' },
+    ],
+    resources: [
+      { label: 'Metatags.io preview tool', url: 'https://metatags.io/',         badge: 'tool' },
+      { label: 'Open Graph Debugger',      url: 'https://developers.facebook.com/tools/debug/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Font preloads need crossorigin even for same-origin fonts — omitting it causes the font to download twice.',
+      'rel="canonical" must use an absolute URL; a relative path resolves differently across mirrors and defeats the duplicate-content fix.',
+    ],
+  },
+
   // ── HTML: Accessibility & ARIA ─────────────────────────────────────────────
   'html/accessibility': {
     apis: ['role', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-hidden', 'tabindex'],

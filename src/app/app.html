@@ -464,6 +464,7 @@
     <div class="nav-group">
       <p class="nav-group-label">Advanced</p>
       <a routerLink="/html/accessibility" routerLinkActive="active"><span class="nl-text">Accessibility &amp; ARIA</span>@if(progress.isDone('html-accessibility')){<span class="nl-done">✓</span>}@if(diff('html-accessibility');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/head-metadata" routerLinkActive="active"><span class="nl-text">Head &amp; Metadata</span>@if(progress.isDone('html-head-metadata')){<span class="nl-done">✓</span>}@if(diff('html-head-metadata');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     } <!-- end html nav -->
