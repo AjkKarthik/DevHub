@@ -233,9 +233,15 @@ structure/UX, only content + accent differ.
   Nav groups: Foundations, Hooks, State Management, Routing, Ecosystem, Performance, Patterns, Reference.
   React pages use `app-common-mistakes` but NOT `app-revision-card` (no PageComplete on reference pages).
   All 19 cards `available: true`.
-- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, and React are `available: true`. Everything else "Soon".
-- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17 (`progress.service.ts`).
-- Hero stat: "275+ Live Pages".
+- **JavaScript hub**: 22 trackable topic pages + 2 reference pages (24 total). Feature-complete.
+  Yellow theme `$accent: #f7df1e`, tint `#fefce8`, dark `#fde68a`. Search prefix `js-`.
+  Progress: `jsTotal=22` in progress.service. CSS classes: `js-page`, `js-icon`, `js-section`.
+  Nav groups: Foundations, Functions & Scope, Objects & Prototypes, Arrays & Destructuring,
+  Async, Browser & Modules, Patterns, Advanced, Reference. All 24 cards `available: true`.
+  JS pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
+- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, and JavaScript are `available: true`. Everything else "Soon".
+- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22 (`progress.service.ts`).
+- Hero stat: "300+ Live Pages".
 
 ## Working practices
 

@@ -89,7 +89,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | SQL | 53 | 0 | Complete — 44 topics + 9 reference |
 | TypeScript | 22 | 0 | Complete — 20 topics + 2 reference |
 | React | 19 | 0 | Complete — 17 topics + 2 reference |
-| JavaScript | 0 | 24 | Not started |
+| JavaScript | 24 | 0 | Complete — 22 topics + 2 reference |
 | HTML | 0 | 22 | Not started |
 | CSS | 0 | 22 | Not started |
 | Web Performance | 0 | 22 | Not started |
@@ -591,50 +591,16 @@ Accent: `#0ea5e9` sky-blue. Search prefix: `react-`. Hero stat updated to 275+.
 
 ---
 
-### 3C — JavaScript hub (24 topics) `src/app/components/frontend/javascript/`
+### 3C — JavaScript hub ✅ COMPLETE `src/app/components/frontend/javascript/`
 
-Accent: `#f7df1e` (JS yellow), text `#1a1a1a`. Search prefix: `js-`.
+All 22 trackable topics + 2 reference pages live (2026-06-17). jsTotal = 22. All 24 cards `available: true`.
+Accent: `#f7df1e` (JS yellow). Search prefix: `js-`. Hero stat updated to 300+.
 
-
-- [ ] `js-types-coercion` — Primitive types, typeof, loose vs strict equality,
-  type coercion rules, truthy/falsy, the spec rules
-- [ ] `js-closures` — Lexical scope, closure over variables (not values), IIFE,
-  module pattern, memory and closure leaks
-- [ ] `js-prototypes` — Prototype chain, `__proto__` vs `prototype`, Object.create,
-  class syntax desugaring, `instanceof`, mixin patterns
-- [ ] `js-this-binding` — call/apply/bind, arrow function `this`, method shorthand,
-  class fields vs prototype methods, common `this` bugs
-- [ ] `js-event-loop` — Call stack, task queue, microtask queue (Promises), setTimeout(0),
-  queueMicrotask, requestAnimationFrame
-- [ ] `js-modules` — ES modules (import/export), CommonJS (require), dynamic import(),
-  module bundlers (Vite, Rollup), tree-shaking
-
-
-- [ ] `js-promises` — Promise constructor, then/catch/finally, Promise.all/allSettled/
-  race/any, error propagation, unhandled rejections
-- [ ] `js-async-await` — async function, await, top-level await, error handling patterns,
-  parallel vs sequential, async iterators
-- [ ] `js-destructuring` — Array/object destructuring, default values, renaming, rest/spread,
-  nested destructuring, function parameter destructuring
-- [ ] `js-iterators-generators` — Iterator protocol, for...of, Symbol.iterator, generator
-  functions (function*), yield, two-way communication
-- [ ] `js-proxy-reflect` — Proxy traps (get/set/has/deleteProperty), Reflect API,
-  Vue 3 reactivity model, revocable proxies
-- [ ] `js-symbols-weakrefs` — Symbol(), well-known symbols (iterator/toPrimitive),
-  WeakMap, WeakSet, WeakRef, FinalizationRegistry
-
-
-- [ ] `js-dom` — querySelector, event delegation, MutationObserver, IntersectionObserver,
-  ResizeObserver, custom events
-- [ ] `js-fetch-xhr` — fetch(), Response, Request, Headers, AbortController, streaming
-  responses, vs XMLHttpRequest
-- [ ] `js-storage` — localStorage, sessionStorage, IndexedDB basics, cookies vs storage,
-  quota and eviction
-- [ ] `js-patterns` — Observer, pub/sub, mediator, strategy, module pattern — all in
-  idiomatic modern JS without classes
-- [ ] `js-performance` — Debounce/throttle, memoization, Web Workers, SharedArrayBuffer,
-  Atomics, profiling in DevTools
-- [ ] Reference pages: cheatsheet, interview-prep
+- [x] 2026-06-17 `js-fundamentals`, `js-closures`, `js-hoisting`, `js-symbols`, `js-functions`
+- [x] 2026-06-17 `js-prototypes`, `js-objects`, `js-destructuring`, `js-arrays`, `js-promises`
+- [x] 2026-06-17 `js-event-loop`, `js-error-handling`, `js-generators`, `js-dom`, `js-events`
+- [x] 2026-06-17 `js-browser-apis`, `js-modules`, `js-bundlers`, `js-patterns`, `js-functional`
+- [x] 2026-06-17 `js-proxy`, `js-weakrefs`, `js-cheatsheet` (reference), `js-interview-prep` (reference)
 
 ---
 
@@ -1141,6 +1107,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-17 — JavaScript hub Phase 3C complete: all 24 pages live (22 trackable topics + cheatsheet + interview-prep). jsTotal = 22. hub-home JavaScript card topics: 24, available: true. Hero stat updated to 300+. Build passes.
 - [x] 2026-06-17 — React hub Phase 3B complete: all 19 pages live (17 trackable topics + cheatsheet + interview-prep). reactTotal = 17. hub-home React card topics: 19, available: true. Hero stat updated to 275+. Build passes.
 - [x] 2026-06-17 — TypeScript hub Phase 3A complete: all 22 pages live (20 trackable topics + cheatsheet + interview-prep). tsTotal = 20. hub-home TypeScript card topics: 22, available: true. Hero stat: 250+. Build passes.
 - [x] 2026-06-13 — Market-gap topic additions across all 34 hubs (18 new coming-soon
