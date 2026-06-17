@@ -81,30 +81,32 @@ Section-aware shell pieces (already implemented, keep them in sync when adding a
 Every hub has a fixed set of CSS class names. Using the wrong hub's class on a page is a
 design bug — it breaks icon colors, section headings, and dark mode.
 
-| Hub | Page wrapper | Section class | Icon class | Icon text | `tech=` in page-meta |
+| Hub | Page wrapper | Section class | Icon class | Icon content | `tech=` in page-meta |
 |---|---|---|---|---|---|
 | Angular | `.ng-page` | `.ng-section` | `.ng-icon` | `A` | `angular` |
 | C# | `.cs-page` | `.cs-section` | `.cs-icon` | `C#` | `csharp` |
 | ASP.NET | `.asp-page` | `.asp-section` | `.asp-icon` | `ASP` | `aspnet` |
 | SQL | `.sq-page` | `.sq-section` | `.sq-icon` | `SQL` | `sql` |
 | TypeScript | `.ts-page` | `.ts-section` | `.ts-icon` | `TS` | `typescript` |
-| React | `.react-page` | `.react-section` | `.react-icon` | `React` | `react` |
+| React | `.react-page` | `.react-section` | `.react-icon` | `⚛` (atom — React's brand symbol) | `react` |
 | JavaScript | `.js-page` | `.js-section` | `.js-icon` | `JS` | `javascript` |
 
 ### Icon pattern — exact HTML required
 
 ```html
-<div class="page-header-icon <hub>-icon">ABBR</div>
+<div class="page-header-icon <hub>-icon">CONTENT</div>
 ```
 
 Rules:
 - **Always two classes**: `page-header-icon` (global layout — 48×48, flex, border-radius)
   AND the hub icon class (colors). One without the other is wrong.
-- **Always text, never emoji**: "A", "C#", "ASP", "SQL", "TS", "React", "JS" — not ⚛ 🗄️ etc.
+- **React uses ⚛, not text**: ALL React pages (including library pages like hook-form,
+  native, animations) use the atom symbol `⚛` at `font-size: 1.8rem`. Never "React",
+  "RHF", "RN", "FM", or "SEC" — those looked like labels not icons.
+- **Other hubs use short text abbreviations**: "A" (Angular), "C#", "ASP", "SQL", "TS", "JS" —
+  2–3 characters max, no emoji for these hubs.
 - **Always the correct hub class**: React pages use `react-icon`, not `cs-icon` or `ip-icon`.
   C# pages use `cs-icon`. Never mix hub classes across hubs.
-- **Abbreviations for library pages are acceptable** (e.g. `RHF` for React Hook Form,
-  `RN` for React Native, `FM` for Framer Motion) but the icon class must still be `react-icon`.
 
 ### Two icon visual generations (do not mix within a hub)
 

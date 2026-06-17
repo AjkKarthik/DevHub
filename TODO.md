@@ -935,10 +935,12 @@ Open the page, read it fully as a learner would, then check each item:
 [ ] Hub home card: available: true, description and keyPoints reflect what the page actually covers
 [ ] No TypeScript \${} escaping issues (C# string interpolation in template literals)
 [ ] Dark mode: no @media (prefers-color-scheme) anywhere — only :host-context(body.dark)
-[ ] Page header icon: <div class="page-header-icon <hub>-icon">ABBR</div> — BOTH classes
-    present (page-header-icon + hub-icon). Text not emoji. Hub class matches the page's hub.
-    Exact text per hub: Angular=A, C#=C#, ASP.NET=ASP, SQL=SQL, TS=TS, React=React, JS=JS.
-    (Library abbreviations OK: RHF, RN, FM — but hub class must still be the correct hub.)
+[ ] Page header icon: <div class="page-header-icon <hub>-icon">CONTENT</div> — BOTH classes
+    present. Hub class matches the page's hub. Content per hub:
+    Angular=A | C#=C# | ASP.NET=ASP | SQL=SQL | TS=TS | JS=JS | React=⚛ (atom, ALL pages).
+    React pages: always ⚛, never "React"/"RHF"/"RN"/"FM" text — use the brand symbol.
+[ ] content-grid gap: .content-grid.has-sidebar must have gap: 2rem in app.scss — zero gap
+    puts content and sidebar edge-to-edge with no breathing room.
 [ ] Page wrapper class matches hub: ng-page / cs-page / asp-page / sq-page / ts-page /
     react-page / js-page. Never use another hub's wrapper on a page.
 [ ] Section class matches hub: ng-section / cs-section / asp-section / sq-section /

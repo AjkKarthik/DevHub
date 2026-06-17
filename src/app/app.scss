@@ -245,7 +245,7 @@ main {
   &.has-sidebar {
     display: grid;
     grid-template-columns: 1fr 280px;
-    gap: 0;
+    gap: 2rem;
     align-items: start;
   }
 }
