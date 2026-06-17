@@ -4156,6 +4156,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/canvas-svg': {
+    apis: ['getContext("2d")', 'fillRect()', 'beginPath()', 'arc()', 'fillText()', 'drawImage()', 'requestAnimationFrame()', 'save()/restore()', 'SVG viewBox', '<path d="">'],
+    related: [
+      { label: 'iFrames & Embeds',   route: '/html/iframes-embeds'  },
+      { label: 'HTML Performance',   route: '/html/performance'     },
+      { label: 'HTML APIs',          route: '/html/apis'            },
+    ],
+    tip: 'Set canvas width/height via HTML attributes for pixel resolution — CSS only scales the existing buffer and will cause blur on HiDPI screens.',
+    docs: [
+      { label: 'MDN — Canvas API',           url: 'https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API'        },
+      { label: 'MDN — SVG',                  url: 'https://developer.mozilla.org/en-US/docs/Web/SVG'                   },
+      { label: 'MDN — requestAnimationFrame', url: 'https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame' },
+    ],
+    resources: [
+      { label: 'web.dev — Canvas tutorial',  url: 'https://web.dev/articles/canvas-performance', badge: 'blog' },
+      { label: 'SVG Tutorial — MDN',         url: 'https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial',        badge: 'docs' },
+    ],
+    gotchas: [
+      'Missing beginPath() causes shapes to share state — the second shape inherits the first\'s path and styles.',
+      'Canvas pixel density: multiply canvas.width/height by devicePixelRatio and scale the context to avoid blur on retina screens.',
+      'SVG elements created with document.createElement (not createElementNS) will render as unknown HTML, not SVG shapes.',
+    ],
+  },
+
   // ── HTML: Web Components ───────────────────────────────────────────────────
   'html/custom-elements': {
     apis: ['customElements.define()', 'attachShadow()', '<template>', '<slot>', 'connectedCallback()', 'observedAttributes'],

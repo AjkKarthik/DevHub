@@ -57,7 +57,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'HTML5 Storage APIs',         route: '/html', badge: 'HTML5 APIs', available: false,
     description: 'localStorage vs sessionStorage vs IndexedDB vs cookies — capacity, scope, and security.',
     keyPoints: ['localStorage: persistent, 5MB, same-origin; sessionStorage: tab-scoped', 'IndexedDB: async, indexed, large structured data', 'Cookies: server-readable; set HttpOnly + Secure + SameSite=Lax'] },
-  { title: 'Canvas & SVG',               route: '/html', badge: 'HTML5 APIs', available: false,
+  { title: 'Canvas & SVG',               route: '/html/canvas-svg', badge: 'HTML5 APIs', available: true,
     description: 'Canvas 2D API for dynamic graphics, SVG for scalable vector graphics — differences and use cases.',
     keyPoints: ['Canvas: pixel-based, fast animation, no DOM overhead', 'SVG: vector, scalable, accessible, CSS-styleable, DOM-queryable', 'Canvas for games/charts; SVG for icons, logos, data vis'] },
   { title: 'Web Components',             route: '/html/custom-elements', badge: 'HTML5 APIs', available: true,

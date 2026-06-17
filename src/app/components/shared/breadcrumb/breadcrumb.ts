@@ -335,6 +335,7 @@ const HTML_LABELS: Record<string, string> = {
   'head-metadata':      'Head & Metadata',
   'custom-elements':    'Web Components',
   'iframes-embeds':     'iFrames & Embeds',
+  'canvas-svg':         'Canvas & SVG',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
