@@ -141,6 +141,7 @@ body.dark {
 .page-header-icon.ts-icon     { background: #eff6ff; color: #3178c6; }
 .page-header-icon.react-icon  { background: #f0f9ff; color: #0ea5e9; border: 1px solid rgba(14,165,233,.2); font-size: 1.8rem; }
 .page-header-icon.js-icon     { background: #fefce8; color: #854d0e; }
+.page-header-icon.html-icon   { background: #fff7ed; color: #c2410c; }
 
 body.dark {
   /* Solid-fill hubs darken the fill slightly in dark mode */
@@ -153,6 +154,7 @@ body.dark {
   .page-header-icon.ts-icon     { background: #172554; color: #93c5fd; }
   .page-header-icon.react-icon  { background: #083344; color: #67e8f9; border-color: rgba(103,232,249,.2); font-size: 1.8rem; }
   .page-header-icon.js-icon     { background: #2d1f00; color: #fde68a; }
+  .page-header-icon.html-icon   { background: #431507; color: #fed7aa; }
 }
 
 /* ── Global page wrapper defaults — canonical dimensions per hub ─────────────
@@ -160,6 +162,8 @@ body.dark {
    specificity from View Encapsulation). Pages WITHOUT a local definition
    inherit these defaults, ensuring visual consistency across the hub. */
 
+/* HTML topic pages */
+.html-page  { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem;  box-sizing: border-box; }
 /* Angular topic pages */
 .ng-page    { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; box-sizing: border-box; }
 /* C# topic pages */

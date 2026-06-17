@@ -343,6 +343,14 @@ export const SEARCH_INDEX: SearchEntry[] = [
   { route: 'react-cheatsheet',        title: 'React Cheat Sheet',       section: 'React',         difficulty: 'beginner',     keywords: 'react cheatsheet hooks lifecycle patterns components quick reference' },
   { route: 'react-interview-prep',    title: 'React Interview Prep',    section: 'React',         difficulty: 'intermediate', keywords: 'react interview questions virtual dom hooks reconciliation fiber state rendering' },
 
+  // ── HTML ──────────────────────────────────────────────────────────────────
+  { route: 'html-document-structure', title: 'Document Structure',    section: 'HTML',          difficulty: 'beginner',     keywords: 'html doctype lang charset viewport head body defer async script meta title link structure' },
+  { route: 'html-semantic-elements',  title: 'Semantic Elements',     section: 'HTML',          difficulty: 'beginner',     keywords: 'html semantic main article section aside nav header footer figure time address mark details summary' },
+  { route: 'html-forms',              title: 'Forms & Input',         section: 'HTML',          difficulty: 'beginner',     keywords: 'html form input label fieldset legend select textarea button required pattern validation enctype method action' },
+  { route: 'html-media',              title: 'Media Elements',        section: 'HTML',          difficulty: 'beginner',     keywords: 'html img alt srcset sizes picture video audio track source loading lazy eager fetchpriority responsive' },
+  { route: 'html-tables',             title: 'Tables',                section: 'HTML',          difficulty: 'beginner',     keywords: 'html table thead tbody tfoot th td caption scope colspan rowspan colgroup accessible data' },
+  { route: 'html-links-navigation',   title: 'Links & Navigation',    section: 'HTML',          difficulty: 'beginner',     keywords: 'html anchor href target blank noopener download rel fragment base skip link aria-current breadcrumb pagination' },
+
   { route: 'hub-aws',              title: 'AWS',                   section: 'Cloud',         difficulty: 'intermediate', keywords: 'aws ec2 lambda s3 rds iam vpc cloudwatch cloudformation sqs sns eventbridge' },
   { route: 'hub-service-mesh',     title: 'Service Mesh & Istio',  section: 'Cloud',         difficulty: 'advanced',     keywords: 'service mesh istio linkerd envoy mtls traffic management tracing canary mirror' },
   { route: 'hub-dsa',              title: 'DSA',                   section: 'Fundamentals',  difficulty: 'intermediate', keywords: 'dsa data structures algorithms big o arrays trees graphs sorting dynamic programming' },

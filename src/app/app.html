@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -68,6 +68,9 @@
         } @else if (currentSection() === 'javascript') {
           <div class="nav-progress-bar" [style.width.%]="progress.jsPct()"></div>
           <span class="nav-progress-label">{{ progress.jsCount() }}/{{ progress.jsTotal }} topics done</span>
+        } @else if (currentSection() === 'html') {
+          <div class="nav-progress-bar" [style.width.%]="progress.htmlPct()"></div>
+          <span class="nav-progress-label">{{ progress.htmlCount() }}/{{ progress.htmlTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -432,6 +435,33 @@
     </div>
 
     } <!-- end javascript nav -->
+
+    <!-- ── HTML Navigation ───────────────────────────────────────── -->
+    @if (currentSection() === 'html') {
+
+    <a routerLink="/html" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">HTML Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/html/document-structure" routerLinkActive="active"><span class="nl-text">Document Structure</span>@if(progress.isDone('html-document-structure')){<span class="nl-done">✓</span>}@if(diff('html-document-structure');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/semantic-elements"  routerLinkActive="active"><span class="nl-text">Semantic Elements</span>@if(progress.isDone('html-semantic-elements')){<span class="nl-done">✓</span>}@if(diff('html-semantic-elements');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Text &amp; Media</p>
+      <a routerLink="/html/links-navigation" routerLinkActive="active"><span class="nl-text">Links &amp; Navigation</span>@if(progress.isDone('html-links-navigation')){<span class="nl-done">✓</span>}@if(diff('html-links-navigation');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/media"            routerLinkActive="active"><span class="nl-text">Media Elements</span>@if(progress.isDone('html-media')){<span class="nl-done">✓</span>}@if(diff('html-media');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/tables"           routerLinkActive="active"><span class="nl-text">Tables</span>@if(progress.isDone('html-tables')){<span class="nl-done">✓</span>}@if(diff('html-tables');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Forms</p>
+      <a routerLink="/html/forms" routerLinkActive="active"><span class="nl-text">Forms &amp; Input</span>@if(progress.isDone('html-forms')){<span class="nl-done">✓</span>}@if(diff('html-forms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    } <!-- end html nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {

@@ -127,6 +127,29 @@ const JS_DEFAULT: SidebarData = {
   ],
 };
 
+const HTML_DEFAULT: SidebarData = {
+  apis: ['<a href>', '<img srcset>', '<form>', '<table>', '<video>', '<picture>'],
+  related: [
+    { label: 'Document Structure',  route: '/html/document-structure' },
+    { label: 'Semantic Elements',   route: '/html/semantic-elements'  },
+    { label: 'HTML Forms',          route: '/html/forms'              },
+  ],
+  tip: 'Always validate your HTML at validator.w3.org — invalid markup causes subtle rendering and accessibility bugs that browsers silently paper over.',
+  docs: [
+    { label: 'MDN HTML Reference',     url: 'https://developer.mozilla.org/en-US/docs/Web/HTML' },
+    { label: 'HTML Living Standard',   url: 'https://html.spec.whatwg.org/'                     },
+    { label: 'W3C Markup Validator',   url: 'https://validator.w3.org/'                         },
+  ],
+  resources: [
+    { label: 'Can I Use',  url: 'https://caniuse.com/', badge: 'tool' },
+    { label: 'MDN HTML Guides', url: 'https://developer.mozilla.org/en-US/docs/Learn/HTML', badge: 'docs' },
+  ],
+  gotchas: [
+    'Placeholder is not a label — it disappears on input and fails contrast requirements. Always use <label>.',
+    'loading="lazy" on the LCP hero image delays the largest contentful paint — use it only below the fold.',
+  ],
+};
+
 const ASPNET_DEFAULT: SidebarData = {
   apis: ['WebApplication', 'IServiceCollection', 'IApplicationBuilder', 'IConfiguration', 'ILogger<T>'],
   related: [
@@ -4125,6 +4148,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     '[class.section-typescript]':  'section() === "typescript"',
     '[class.section-react]':       'section() === "react"',
     '[class.section-javascript]':  'section() === "javascript"',
+    '[class.section-html]':        'section() === "html"',
   },
 })
 export class PageSidebarComponent {
@@ -4143,13 +4167,14 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html'>(() =>
     this.currentUrl().startsWith('/csharp')       ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')     ? 'aspnet'
     : this.currentUrl().startsWith('/sql')        ? 'sql'
     : this.currentUrl().startsWith('/typescript') ? 'typescript'
     : this.currentUrl().startsWith('/react')      ? 'react'
     : this.currentUrl().startsWith('/javascript') ? 'javascript'
+    : this.currentUrl().startsWith('/html')       ? 'html'
     : 'angular'
   );
 
@@ -4162,6 +4187,7 @@ export class PageSidebarComponent {
            : this.section() === 'typescript' ? TS_DEFAULT
            : this.section() === 'react'      ? REACT_DEFAULT
            : this.section() === 'javascript' ? JS_DEFAULT
+           : this.section() === 'html'       ? HTML_DEFAULT
            : DEFAULT);
   });
 
@@ -4173,6 +4199,7 @@ export class PageSidebarComponent {
       case 'typescript':  return '📖 TypeScript Docs';
       case 'react':       return '📖 React Docs';
       case 'javascript':  return '📖 MDN JS Docs';
+      case 'html':        return '📖 MDN HTML Docs';
       default:            return '📖 Angular Docs';
     }
   });

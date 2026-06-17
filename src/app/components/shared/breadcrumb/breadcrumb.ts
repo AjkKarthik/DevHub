@@ -324,6 +324,15 @@ const JAVASCRIPT_LABELS: Record<string, string> = {
   'interview-prep': 'Interview Prep',
 };
 
+const HTML_LABELS: Record<string, string> = {
+  'document-structure': 'Document Structure',
+  'semantic-elements':  'Semantic Elements',
+  'forms':              'Forms & Input',
+  'media':              'Media Elements',
+  'tables':             'Tables',
+  'links-navigation':   'Links & Navigation',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -451,6 +460,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'typescript'  ? TYPESCRIPT_LABELS
                  : segs[0] === 'react'       ? REACT_LABELS
                  : segs[0] === 'javascript'  ? JAVASCRIPT_LABELS
+                 : segs[0] === 'html'        ? HTML_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

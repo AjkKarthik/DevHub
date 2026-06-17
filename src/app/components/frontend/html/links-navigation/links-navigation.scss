@@ -1,0 +1,15 @@
+$accent: #e34c26;
+$tint: #fff7ed;
+
+.html-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.page-header-icon.html-icon { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 12px; background: $tint; color: $accent; font-weight: 900; font-size: .95rem; margin-bottom: 1rem; }
+.page-title { font-size: 2rem; font-weight: 700; margin: 0 0 .5rem; }
+.page-subtitle { color: #555; margin: 0 0 2rem; font-size: 1.05rem; line-height: 1.6; code { background: $tint; color: $accent; padding: .1em .35em; border-radius: 4px; font-size: .9em; } }
+.html-section { margin: 2.5rem 0; h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 2px solid rgba(227,76,38,.3); } }
+
+:host-context(body.dark) {
+  .page-title { color: #f1f5f9; }
+  .page-subtitle { color: #94a3b8; code { background: rgba(227,76,38,.15); color: #fb923c; } }
+  .page-header-icon.html-icon { background: #431507; color: #fed7aa; }
+  .html-section h2 { color: #fb923c; }
+}

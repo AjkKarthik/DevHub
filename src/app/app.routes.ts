@@ -282,7 +282,15 @@ export const routes: Routes = [
   },
 
   // ── Frontend Hubs ─────────────────────────────────────────────────────────
-  { path: 'html',          children: [{ path: '', loadComponent: () => import('./components/frontend/html/home/home').then(m => m.HtmlHome) }] },
+  { path: 'html', children: [
+    { path: '', loadComponent: () => import('./components/frontend/html/home/home').then(m => m.HtmlHome) },
+    { path: 'document-structure',  loadComponent: () => import('./components/frontend/html/document-structure/document-structure').then(m => m.HtmlDocumentStructure) },
+    { path: 'semantic-elements',   loadComponent: () => import('./components/frontend/html/semantic-elements/semantic-elements').then(m => m.HtmlSemanticElements) },
+    { path: 'forms',               loadComponent: () => import('./components/frontend/html/forms/forms').then(m => m.HtmlForms) },
+    { path: 'media',               loadComponent: () => import('./components/frontend/html/media/media').then(m => m.HtmlMedia) },
+    { path: 'tables',              loadComponent: () => import('./components/frontend/html/tables/tables').then(m => m.HtmlTables) },
+    { path: 'links-navigation',    loadComponent: () => import('./components/frontend/html/links-navigation/links-navigation').then(m => m.HtmlLinksNavigation) },
+  ] },
   { path: 'css',           children: [{ path: '', loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) }] },
   { path: 'javascript', children: [
     { path: '', loadComponent: () => import('./components/frontend/javascript/home/home').then(m => m.JavaScriptHome) },
