@@ -40,7 +40,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'TanStack Query',              route: '/react/tanstack-query', badge: 'Ecosystem', available: true,
     description: 'Server-state management — useQuery, useMutation, stale-while-revalidate, cache invalidation, and optimistic updates.',
     keyPoints: ['useQuery: automatic caching, background refetch, stale-while-revalidate', 'useMutation + onSuccess → queryClient.invalidateQueries: keep cache fresh after writes', 'Optimistic updates: update UI instantly, rollback on error — useMutation onMutate + onError'] },
-  { title: 'React Performance',           route: '/react/performance', badge: 'Performance', available: false,
+  { title: 'React Performance',           route: '/react/performance', badge: 'Performance', available: true,
     description: 'React.memo, useMemo, useCallback, Profiler, concurrent features, and virtualization with react-window.',
     keyPoints: ['Profile first — React DevTools Profiler shows which components re-render and why', 'React.memo: skip re-render if props are shallowly equal — objects must be stable references', 'Virtualization: react-window renders only visible rows — essential for 1000+ item lists'] },
   { title: 'React Patterns',              route: '/react/patterns', badge: 'Patterns', available: false,
