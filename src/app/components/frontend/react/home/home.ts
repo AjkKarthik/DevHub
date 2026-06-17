@@ -55,7 +55,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'React Native',                route: '/react/native', badge: 'Ecosystem', available: true,
     description: 'View/Text/ScrollView, StyleSheet, Expo, React Navigation, and the New Architecture (Fabric + JSI).',
     keyPoints: ['No HTML — View maps to UIView/android.view, Text to UILabel/TextView', 'StyleSheet.create: inline styles validated at dev time; flexbox by default', 'New Architecture: Fabric renderer + JSI bridge = synchronous JS↔native calls'] },
-  { title: 'React Hook Form',             route: '/react/hook-form', badge: 'Ecosystem', available: false,
+  { title: 'React Hook Form',             route: '/react/hook-form', badge: 'Ecosystem', available: true,
     description: 'Uncontrolled form management — register, handleSubmit, Controller, zodResolver, and field arrays.',
     keyPoints: ['register(): binds inputs without controlled state — minimal re-renders', 'Controller: wraps controlled components (Material UI, Radix) in RHF', 'zodResolver: schema-driven validation — single source of truth for form + API shapes'] },
   { title: 'Animations (Framer Motion)',  route: '/react/animations', badge: 'Ecosystem', available: false,

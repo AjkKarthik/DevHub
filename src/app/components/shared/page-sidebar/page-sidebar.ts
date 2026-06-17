@@ -2819,6 +2819,31 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/hook-form': {
+    apis: ['useForm()', 'register()', 'handleSubmit()', '<Controller>', 'useFieldArray()', 'zodResolver()'],
+    related: [
+      { label: 'Forms & Validation',  route: '/react/forms'            },
+      { label: 'TypeScript & React',  route: '/react/typescript'       },
+      { label: 'Testing React',       route: '/react/testing'          },
+    ],
+    tip: 'register() uses refs — no re-renders while typing. Only add watch() when you need to display a live computed value. For one-shot reads, use getValues() inside event handlers.',
+    docs: [
+      { label: 'React Hook Form Docs',  url: 'https://react-hook-form.com/get-started'    },
+      { label: 'API Reference',         url: 'https://react-hook-form.com/docs/useform'   },
+      { label: 'Zod Documentation',     url: 'https://zod.dev'                             },
+      { label: '@hookform/resolvers',   url: 'https://github.com/react-hook-form/resolvers' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+      { label: 'colinhacks/zod',                  url: 'https://github.com/colinhacks/zod',                  badge: 'code' },
+    ],
+    gotchas: [
+      'Add noValidate to <form> — without it, browser native validation fires before RHF and shows unstyled popups.',
+      'Number inputs return strings — add { valueAsNumber: true } to register() or use z.coerce.number() in Zod.',
+      'In useFieldArray, use field.id as the React key — never the array index.',
+    ],
+  },
+
   // ════════════════════════════════════════════════════════════════════════════
   // ASP.NET CORE PAGES
   // ════════════════════════════════════════════════════════════════════════════

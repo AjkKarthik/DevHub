@@ -326,6 +326,7 @@ export const routes: Routes = [
     { path: 'testing',          loadComponent: () => import('./components/frontend/react/testing/testing').then(m => m.ReactTesting) },
     { path: 'nextjs',           loadComponent: () => import('./components/frontend/react/nextjs/nextjs').then(m => m.ReactNextjs) },
     { path: 'native',           loadComponent: () => import('./components/frontend/react/native/native').then(m => m.ReactNative) },
+    { path: 'hook-form',        loadComponent: () => import('./components/frontend/react/hook-form/hook-form').then(m => m.ReactHookForm) },
   ] },
   { path: 'blazor',        children: [{ path: '', loadComponent: () => import('./components/frontend/blazor/home/home').then(m => m.BlazorHome) }] },
   { path: 'performance',   children: [{ path: '', loadComponent: () => import('./components/frontend/web-performance/home/home').then(m => m.WebPerformanceHome) }] },
