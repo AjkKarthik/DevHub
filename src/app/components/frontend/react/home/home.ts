@@ -28,7 +28,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Advanced Hooks',              route: '/react/hooks-advanced', badge: 'Hooks', available: true,
     description: 'useReducer, useMemo, useCallback, useTransition, useDeferredValue, useId, and building custom hooks.',
     keyPoints: ['useReducer: action-based updates — prefer when state has multiple sub-values', 'useTransition: mark state as low-priority to keep UI responsive during heavy renders', 'Custom hooks: extract stateful logic, not markup — start with "use", return data + handlers'] },
-  { title: 'Context API',                 route: '/react/context', badge: 'State Management', available: false,
+  { title: 'Context API',                 route: '/react/context', badge: 'State Management', available: true,
     description: 'createContext, useContext, context splitting for performance, and when to reach for Zustand instead.',
     keyPoints: ['All context consumers re-render when value changes — split by update frequency', 'Context is not a state manager — combine with useReducer for complex global state', 'Zustand: simpler API, no provider, selective subscription — preferred for cross-cutting state'] },
   { title: 'State Management',            route: '/react/state-management', badge: 'State Management', available: false,
