@@ -1,11 +1,10 @@
 $accent: #7c3aed;
-$accent-dark: #6b21a8;
 $tint: #f5f3ff;
 
 .cs-page {
   max-width: 860px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.5rem 4rem;
   color: var(--text);
 }
 
@@ -13,15 +12,14 @@ $tint: #f5f3ff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: $tint;
-  color: $accent;
-  font-weight: 800;
-  font-size: 1.1rem;
+  background: #6b21a8;
+  color: #fff;
+  font-weight: 900;
+  font-size: 1.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
   margin-bottom: 1rem;
-  border: 2px solid rgba(124, 58, 237, 0.2);
+  letter-spacing: -0.02em;
 }
 
 .page-title {
@@ -60,11 +58,7 @@ $tint: #f5f3ff;
 }
 
 :host-context(body.dark) {
-  .page-header-icon.cs-icon {
-    background: rgba(124, 58, 237, 0.15);
-    color: #a78bfa;
-    border-color: rgba(167, 139, 250, 0.25);
-  }
+  .page-header-icon.cs-icon { background: #7c3aed; color: #fff; }
 
   .page-title { color: #a78bfa; }
 
@@ -78,3 +72,4 @@ $tint: #f5f3ff;
     border-color: rgba(167, 139, 250, 0.2);
   }
 }
+

@@ -34,24 +34,21 @@ $dark-violet-bg:  #1e1730;
 .cs-page {
   max-width: 900px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
+  padding: 2rem 1.5rem 4rem;
 }
 
-// ── Header icon badge (purple C# pill) ───────────────────────────────────────
 .page-header-icon.cs-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.35rem 1rem;
-  border-radius: 999px;
-  background: linear-gradient(135deg, $cs-purple 0%, $cs-violet 100%);
+  background: #6b21a8;
   color: #fff;
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  margin-bottom: 1.1rem;
-  box-shadow: 0 2px 12px rgba($cs-violet, 0.35);
-  user-select: none;
+  font-weight: 900;
+  font-size: 1.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
 }
 
 // ── Page title ────────────────────────────────────────────────────────────────
@@ -98,10 +95,7 @@ $dark-violet-bg:  #1e1730;
     background: $dark-bg-page;
   }
 
-  .page-header-icon.cs-icon {
-    background: linear-gradient(135deg, darken($cs-purple, 5%) 0%, $cs-violet 100%);
-    box-shadow: 0 2px 14px rgba($cs-violet, 0.45);
-  }
+  .page-header-icon.cs-icon { background: #7c3aed; color: #fff; }
 
   .page-title {
     background: linear-gradient(135deg, $cs-violet-light 0%, lighten($cs-violet, 20%) 100%);

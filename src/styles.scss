@@ -155,6 +155,19 @@ body.dark {
   .page-header-icon.js-icon     { background: #2d1f00; color: #fde68a; }
 }
 
+/* ── Global page wrapper defaults — canonical dimensions per hub ─────────────
+   Component SCSSs that define their own padding will override these (higher
+   specificity from View Encapsulation). Pages WITHOUT a local definition
+   inherit these defaults, ensuring visual consistency across the hub. */
+
+/* Angular topic pages */
+.ng-page    { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; box-sizing: border-box; }
+/* C# topic pages */
+.cs-page    { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem;  box-sizing: border-box; }
+/* ASP.NET topic pages — both class names in use across the hub */
+.asp-page,
+.aspnet-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem;  box-sizing: border-box; }
+
 /* ── Global responsive page container ───────────────────────────────────────
    Fluid width — fills available space, capped at 1400px on very large screens.
    Overrides all component-scoped .page max-width constraints. */
@@ -167,5 +180,6 @@ body.dark {
 }
 
 @media (max-width: 640px) {
-  .page { padding: 0.75rem !important; }
+  .page         { padding: 0.75rem !important; }
+  .ng-page, .cs-page, .asp-page, .aspnet-page { padding: 0.75rem !important; }
 }

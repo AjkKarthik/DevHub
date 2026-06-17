@@ -966,6 +966,17 @@ Open the page, read it fully as a learner would, then check each item:
     - SQL hub: must NOT have app-common-mistakes or app-revision-card. Adding them is wrong.
     - Reference pages (cheatsheet/interview-prep/glossary): no app-page-complete, no
       app-revision-card. These are not trackable; don't add page-complete to them.
+[ ] Page wrapper padding matches hub standard — must be consistent across ALL pages in the hub:
+    - Angular (.ng-page): `padding: 2rem 1.25rem 4rem;` (max-width 860px)
+    - C# (.cs-page): `padding: 2rem 1.5rem 4rem;` (max-width 860px)
+    - ASP.NET (.asp-page / .aspnet-page): `padding: 2rem 1.5rem 4rem;` (max-width 860px)
+    Common wrong values found: `2rem 1.5rem` (no bottom!), `1.5rem 1rem 3rem`, `1.5rem 1.25rem 3rem`.
+    Pages with no component SCSS wrapper class inherit from global styles.scss (correct).
+    Pages that define the wrapper in component SCSS must match the standard exactly.
+[ ] Icon size in component SCSS — no custom sizes:
+    Angular ng-icon: 48px (or 3rem) square — NEVER 52px or other values.
+    C# cs-icon: `padding: 0.4rem 0.8rem; border-radius: 8px;` (pill shape) — NEVER `width: 56px`.
+    ASP.NET asp/aspnet-icon: 48px square — same as Angular.
 [ ] Hub nav home link in app.html: is a standalone <a class="nav-home-link"> OUTSIDE any
     nav-group. No hub-name nav-group-label above it.
 [ ] tech= in app-page-meta matches hub (angular/csharp/aspnet/sql/typescript/react/javascript).
@@ -995,9 +1006,17 @@ grep -rn "background.*\$tint" src/app/components/backend/csharp/ --include="*.sc
 grep -rn "background.*\$tint" src/app/components/backend/aspnet/ --include="*.scss" | grep -i "icon"
 # → should return 0 lines (icon blocks must use $accent, not $tint for these hubs)
 
-# Inconsistent .ng-page / .cs-page padding
-grep -rn "padding:" src/app/components/angular/ --include="*.scss" | grep "ng-page" | sort | uniq -c
-# → all values should be the same (2rem 1.25rem 4rem is the standard)
+# Wrong .ng-page padding (Angular standard: 2rem 1.25rem 4rem)
+grep -rn "\.ng-page" src/app/components/angular/ --include="*.scss" -A5 | grep "padding" | sort | uniq -c
+# → all should be "2rem 1.25rem 4rem" — flag any that differ
+
+# Wrong .cs-page padding (C# standard: 2rem 1.5rem 4rem)
+grep -rn "\.cs-page" src/app/components/backend/csharp/ --include="*.scss" -A5 | grep "padding" | sort | uniq -c
+# → all should be "2rem 1.5rem 4rem"
+
+# Wrong icon size in component SCSS (Angular: 3rem or 48px; C#: no width, only padding)
+grep -rn "ng-icon\|cs-icon" src/app/components/ --include="*.scss" -A5 | grep "width:" | grep -v "48px\|3rem"
+# → should return 0 lines (52px, 56px etc. are wrong)
 
 # Dark mode violations
 grep -rn "@media (prefers-color-scheme" src/app/components/<hub>/ --include="*.scss"
