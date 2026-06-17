@@ -2819,6 +2819,31 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/animations': {
+    apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
+    related: [
+      { label: 'React Performance',  route: '/react/performance'   },
+      { label: 'React Patterns',     route: '/react/patterns'      },
+      { label: 'React Native',       route: '/react/native'        },
+    ],
+    tip: 'Animate transform and opacity — not layout properties (width, height, margin). Transform/opacity run on the GPU compositor at 60fps. Layout properties trigger recalculation on every frame.',
+    docs: [
+      { label: 'Framer Motion Docs',       url: 'https://www.framer.com/motion/'                           },
+      { label: 'Animation Guide',          url: 'https://www.framer.com/motion/animation/'                  },
+      { label: 'Gestures',                 url: 'https://www.framer.com/motion/gestures/'                   },
+      { label: 'Layout Animations',        url: 'https://www.framer.com/motion/layout-animations/'          },
+    ],
+    resources: [
+      { label: 'framer/motion',             url: 'https://github.com/framer/motion',        badge: 'code' },
+      { label: 'Framer Motion Examples',    url: 'https://www.framer.com/motion/examples/',  badge: 'blog' },
+    ],
+    gotchas: [
+      'exit prop requires AnimatePresence parent — without it, components are removed from DOM instantly.',
+      'AnimatePresence list children need unique stable keys — not array index.',
+      'initial={false} on motion.div or AnimatePresence prevents flash-of-invisible-content in SSR apps.',
+    ],
+  },
+
   'react/hook-form': {
     apis: ['useForm()', 'register()', 'handleSubmit()', '<Controller>', 'useFieldArray()', 'zodResolver()'],
     related: [

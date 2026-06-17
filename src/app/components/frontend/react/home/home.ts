@@ -58,7 +58,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'React Hook Form',             route: '/react/hook-form', badge: 'Ecosystem', available: true,
     description: 'Uncontrolled form management — register, handleSubmit, Controller, zodResolver, and field arrays.',
     keyPoints: ['register(): binds inputs without controlled state — minimal re-renders', 'Controller: wraps controlled components (Material UI, Radix) in RHF', 'zodResolver: schema-driven validation — single source of truth for form + API shapes'] },
-  { title: 'Animations (Framer Motion)',  route: '/react/animations', badge: 'Ecosystem', available: false,
+  { title: 'Animations (Framer Motion)',  route: '/react/animations', badge: 'Ecosystem', available: true,
     description: 'motion.div, animate/variants, layout animations, AnimatePresence for exit animations, and useSpring.',
     keyPoints: ['motion.div animate={{ x: 100 }}: declarative imperative animation', 'variants: name reusable states — parent orchestrates children via "staggerChildren"', 'AnimatePresence: enables exit animations for components removed from the DOM'] },
   { title: 'Security in React',           route: '/react/security', badge: 'Patterns', available: false,

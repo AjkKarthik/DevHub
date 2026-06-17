@@ -1,0 +1,66 @@
+$accent: #0ea5e9;
+$tint: #f0f9ff;
+
+.react-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.react-icon {
+  width: 64px;
+  height: 64px;
+  background: $tint;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 800;
+  color: $accent;
+  border: 2px solid rgba($accent, 0.2);
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text, #111827);
+  margin: 0.5rem 0 0.5rem;
+}
+
+.page-subtitle {
+  color: var(--text2, #6b7280);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.react-section {
+  margin: 2.5rem 0;
+
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text, #111827);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid $tint;
+  }
+}
+
+:host-context(body.dark) {
+  .react-icon {
+    background: #083344;
+    color: #67e8f9;
+    border-color: rgba(103, 232, 249, 0.2);
+  }
+
+  .page-title { color: #f9fafb; }
+  .page-subtitle { color: #9ca3af; }
+
+  .react-section h2 {
+    color: #f9fafb;
+    border-color: #083344;
+  }
+}
