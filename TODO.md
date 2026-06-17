@@ -935,6 +935,11 @@ Open the page, read it fully as a learner would, then check each item:
 [ ] Hub home card: available: true, description and keyPoints reflect what the page actually covers
 [ ] No TypeScript \${} escaping issues (C# string interpolation in template literals)
 [ ] Dark mode: no @media (prefers-color-scheme) anywhere — only :host-context(body.dark)
+[ ] Page header icon: uses <div class="page-header-icon <hub>-icon">ABBR</div> — NOT emoji,
+    NOT bare hub-class-only, NOT wrong hub class. Text content is hub abbreviation (JS/TS/SQL/
+    React/C#/ASP) NOT emoji. Correct hub class matches the page's hub.
+[ ] Hub nav: Home link uses class="nav-home-link" (standalone, above nav-groups). No section
+    label above the home link. No home link inside a nav-group.
 ```
 
 If everything passes — check it off. If anything is missing — fix it in the same session,
