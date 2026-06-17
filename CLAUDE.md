@@ -227,9 +227,15 @@ structure/UX, only content + accent differ.
   Blue theme `$accent: #3178c6`, dark `#93c5fd`. Search prefix `ts-`. Progress: `tsTotal=20` in progress.service.
   Nav groups: Foundations, Type System, Generics, Advanced Types, OOP, Tooling, Reference.
   CSS classes: `ts-page`, `ts-icon`, `ts-section`. All cards `available: true`.
-- **Hub home**: Angular, C#, ASP.NET Core, SQL, and TypeScript are `available: true`. Everything else "Soon".
-- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20 (`progress.service.ts`).
-- Hero stat: "250+ Live Pages".
+- **React hub**: 17 trackable topic pages + 2 reference pages (19 total). Feature-complete.
+  Sky-blue theme `$accent: #0ea5e9`, tint `#f0f9ff`, dark `#67e8f9`. Search prefix `react-`.
+  Progress: `reactTotal=17` in progress.service. CSS classes: `react-page`, `react-icon`, `react-section`.
+  Nav groups: Foundations, Hooks, State Management, Routing, Ecosystem, Performance, Patterns, Reference.
+  React pages use `app-common-mistakes` but NOT `app-revision-card` (no PageComplete on reference pages).
+  All 19 cards `available: true`.
+- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, and React are `available: true`. Everything else "Soon".
+- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17 (`progress.service.ts`).
+- Hero stat: "275+ Live Pages".
 
 ## Working practices
 
