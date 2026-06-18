@@ -348,7 +348,8 @@ const CSS_LABELS: Record<string, string> = {
   'box-model': 'Box Model',
   'flexbox':   'Flexbox',
   'grid':        'CSS Grid',
-  'positioning': 'Positioning & Stacking',
+  'positioning':       'Positioning & Stacking',
+  'custom-properties': 'CSS Custom Properties',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

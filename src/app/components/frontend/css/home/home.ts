@@ -21,7 +21,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Selectors Deep Dive',        route: '/css', badge: 'Foundations', available: false,
     description: 'Combinators, pseudo-classes, pseudo-elements, attribute selectors, :is(), :where(), :has().',
     keyPoints: [':is() and :where() take a forgiving selector list — invalid selectors are ignored', ':has() is CSS\'s parent selector — "card:has(img)" selects cards containing images', ':where() has zero specificity — good for resets and defaults'] },
-  { title: 'CSS Custom Properties',      route: '/css', badge: 'Foundations', available: false,
+  { title: 'CSS Custom Properties',      route: '/css/custom-properties', badge: 'Foundations', available: true,
     description: 'CSS variables, scope, inheritance, fallbacks, and using them for design tokens and theming.',
     keyPoints: ['--my-var: value; defined on :root for global scope', 'var(--my-var, fallback) — fallback if variable is undefined', 'Custom properties cascade and inherit — override at component scope'] },
   { title: 'Flexbox',                    route: '/css/flexbox', badge: 'Layout', available: true,

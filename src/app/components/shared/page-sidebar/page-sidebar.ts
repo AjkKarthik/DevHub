@@ -4154,6 +4154,29 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Custom Properties ────────────────────────────────────────────────
+  'css/custom-properties': {
+    apis: ['var()', '--custom-prop', ':root', '@property', 'color-mix()', 'calc() with var()'],
+    related: [
+      { label: 'Colors & Theming', route: '/css/colors-theming' },
+      { label: 'CSS Animations',   route: '/css/animations'     },
+      { label: 'Box Model',        route: '/css/box-model'      },
+    ],
+    tip: 'Name your tokens semantically (--color-surface, not --white) so they stay meaningful when the color changes in dark mode.',
+    docs: [
+      { label: 'MDN — CSS Custom Properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties' },
+      { label: 'MDN — @property',             url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@property'                   },
+      { label: 'web.dev — CSS Variables',     url: 'https://web.dev/learn/css/custom-properties'                                  },
+    ],
+    resources: [
+      { label: 'Open Props (token library)', url: 'https://open-props.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'var() fallback fires on undefined variables, not on invalid values — invalid triggers inherited/initial value instead.',
+      'Sass variables are compile-time; CSS custom properties are runtime. Use CSS variables for anything that needs to change dynamically.',
+    ],
+  },
+
   // ── CSS: Positioning ──────────────────────────────────────────────────────
   'css/positioning': {
     apis: ['position: relative', 'position: absolute', 'position: fixed', 'position: sticky', 'z-index', 'inset', 'isolation: isolate'],

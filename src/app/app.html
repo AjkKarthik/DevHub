@@ -504,6 +504,11 @@
       <a routerLink="/css/positioning" routerLinkActive="active"><span class="nl-text">Positioning & Stacking</span>@if(progress.isDone('css-positioning')){<span class="nl-done">✓</span>}@if(diff('css-positioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
+    <div class="nav-group">
+      <p class="nav-group-label">Visual</p>
+      <a routerLink="/css/custom-properties" routerLinkActive="active"><span class="nl-text">Custom Properties</span>@if(progress.isDone('css-custom-properties')){<span class="nl-done">✓</span>}@if(diff('css-custom-properties');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
     } <!-- end css nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
