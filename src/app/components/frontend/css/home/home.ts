@@ -33,7 +33,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Positioning & Stacking',     route: '/css/positioning', badge: 'Layout', available: true,
     description: 'Static, relative, absolute, fixed, sticky positioning — stacking context and z-index.',
     keyPoints: ['Absolute: relative to nearest positioned ancestor (position ≠ static)', 'Sticky: normal flow until scroll threshold, then acts like fixed within container', 'Stacking context: created by transform, opacity < 1, z-index on positioned elements'] },
-  { title: 'Typography',                 route: '/css', badge: 'Visual', available: false,
+  { title: 'Typography',                 route: '/css/typography', badge: 'Visual', available: true,
     description: 'Font loading, variable fonts, system font stack, fluid typography, and text rendering.',
     keyPoints: ['font-display: swap: text visible immediately with fallback font', 'clamp(1rem, 2.5vw, 1.5rem): fluid font size without media queries', 'Variable fonts: one file, many axes (weight, width, slant)'] },
   { title: 'Colors & Theming',           route: '/css', badge: 'Visual', available: false,

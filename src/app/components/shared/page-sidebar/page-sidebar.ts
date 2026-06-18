@@ -4154,6 +4154,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Typography ───────────────────────────────────────────────────────
+  'css/typography': {
+    apis: ['@font-face', 'font-display', 'clamp()', 'line-height', 'text-wrap', 'font-variation-settings', 'font-optical-sizing'],
+    related: [
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+      { label: 'Responsive Design', route: '/css/responsive'        },
+      { label: 'Colors & Theming',  route: '/css/colors-theming'    },
+    ],
+    tip: 'Start every project with clamp() type tokens on :root and max-width: 65ch on .prose — these two rules eliminate most typography media queries.',
+    docs: [
+      { label: 'MDN — @font-face',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face'    },
+      { label: 'web.dev — Font best practices', url: 'https://web.dev/articles/font-best-practices'           },
+      { label: 'Variable Fonts Guide',  url: 'https://web.dev/articles/variable-fonts'                        },
+    ],
+    resources: [
+      { label: 'Fluid Type Scale', url: 'https://www.fluid-type-scale.com/', badge: 'tool' },
+      { label: 'Font Squirrel',    url: 'https://www.fontsquirrel.com/',     badge: 'tool' },
+    ],
+    gotchas: [
+      'Font preloads need crossorigin even for same-origin fonts — missing it causes a double download.',
+      'em compounds in nested elements for font-size. Use rem to always be relative to the root.',
+    ],
+  },
+
   // ── CSS: Selectors ────────────────────────────────────────────────────────
   'css/selectors': {
     apis: [':is()', ':where()', ':has()', ':not()', ':nth-child()', '::before', '::after', '[attr^=]'],
