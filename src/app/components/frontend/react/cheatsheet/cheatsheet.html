@@ -1,0 +1,66 @@
+<div class="cs-page">
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">React Cheat Sheet</h1>
+  <p class="page-subtitle">Quick-reference for hooks, components, JSX, TypeScript, patterns, performance, and routing. Search or filter by tag.</p>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input
+      type="text"
+      placeholder="Search hooks, components, patterns…"
+      [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)"
+      class="search-input"
+    />
+    @if (searchQuery()) {
+      <button class="clear-btn" (click)="searchQuery.set('')">✕</button>
+    }
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    @for (tab of tabs; track tab.label; let i = $index) {
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === i"
+        (click)="setTab(i)"
+      >{{ tab.label }}</button>
+    }
+  </div>
+
+  <!-- Tag filter -->
+  <div class="tag-bar">
+    @for (tag of tagsForCurrentTab; track tag) {
+      <button
+        class="tag-chip"
+        [class.active]="activeTag() === tag"
+        (click)="setTag(tag)"
+      >{{ tag }}</button>
+    }
+  </div>
+
+  <!-- Items -->
+  <div class="items-grid">
+    @for (item of filteredItems(); track item.name) {
+      <div class="cheat-card">
+        <div class="card-header">
+          <span class="card-name">{{ item.name }}</span>
+          <div class="card-tags">
+            @for (tag of item.tags; track tag) {
+              <span class="mini-tag">{{ tag }}</span>
+            }
+          </div>
+        </div>
+        <pre class="card-syntax"><code>{{ item.syntax }}</code></pre>
+        <p class="card-desc">{{ item.desc }}</p>
+      </div>
+    }
+    @if (filteredItems().length === 0) {
+      <div class="no-results">
+        <p>No items match your search. Try a different term or clear the filter.</p>
+        <button (click)="searchQuery.set(''); activeTag.set('')">Clear filters</button>
+      </div>
+    }
+  </div>
+</div>

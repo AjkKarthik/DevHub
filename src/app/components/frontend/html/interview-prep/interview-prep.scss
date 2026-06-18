@@ -1,0 +1,28 @@
+$accent: #e34c26;
+$tint: #fff7ed;
+
+.html-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.html-section h2 { font-size: 1.3rem; font-weight: 700; color: $accent; margin: 2rem 0 0.5rem; }
+
+.ip-subtitle { font-size: 0.9rem; color: #6b7280; margin: 0 0 1rem; }
+
+.ip-filters {
+  display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;
+}
+
+.ip-filter-btn {
+  padding: 0.3rem 0.75rem; border: 1.5px solid #d1d5db; border-radius: 20px;
+  background: #fff; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.15s;
+  &:hover { border-color: $accent; color: $accent; }
+  &.active { background: $accent; border-color: $accent; color: #fff; }
+}
+
+:host-context(body.dark) {
+  .html-section h2 { color: #fb923c; }
+  .ip-subtitle { color: #94a3b8; }
+  .ip-filter-btn {
+    background: #1e293b; border-color: #334155; color: #cbd5e1;
+    &:hover { border-color: #fb923c; color: #fb923c; }
+    &.active { background: $accent; border-color: $accent; color: #fff; }
+  }
+}

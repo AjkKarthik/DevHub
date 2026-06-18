@@ -1,0 +1,24 @@
+$accent: #e34c26;
+$tint: #fff7ed;
+
+.html-page {
+  max-width: 860px;
+  padding: 2rem 1.25rem 4rem;
+
+  .page-title { font-size: 2rem; font-weight: 700; margin: 0.5rem 0; color: #1e293b; }
+  .page-subtitle { color: #64748b; font-size: 1.05rem; margin-bottom: 1.5rem;
+    code { background: $tint; color: $accent; padding: 0.1em 0.4em; border-radius: 4px; } }
+
+  .html-section { margin: 2rem 0;
+    h2 { font-size: 1.25rem; font-weight: 600; color: #1e293b; margin-bottom: 1rem;
+      padding-left: 0.75rem; border-left: 3px solid $accent; } }
+}
+
+:host-context(body.dark) {
+  .html-page {
+    .page-title { color: #f1f5f9; }
+    .page-subtitle { color: #94a3b8;
+      code { background: rgba(227,76,38,.15); color: #fb923c; } }
+    .html-section h2 { color: #f1f5f9; }
+  }
+}

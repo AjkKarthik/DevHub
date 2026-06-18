@@ -235,7 +235,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'HTML', time: '~3 hrs',
       tagline: 'The skeleton of the web — semantic markup, accessibility & forms.',
       icon: '🌐', gradient: 'linear-gradient(135deg, #e44d26 0%, #b83219 100%)',
-      textDark: false, route: '/html', available: true,
+      textDark: false, route: '/html', available: true, topics: 17,
 
       highlights: [
         'Semantic elements: article, section, nav',
@@ -259,9 +259,9 @@ export class HubHome implements AfterViewInit, OnDestroy {
     },
     {
       group: 'frontend', name: 'JavaScript', time: '~10 hrs',
-      tagline: 'The language of the web — ES2025, async/await, closures, modules.',
+      tagline: 'The language of the web — ES2025, async/await, closures, modules, DOM.',
       icon: '𝐉𝐒', gradient: 'linear-gradient(135deg, #f7df1e 0%, #d4b800 100%)',
-      textDark: true, route: '/javascript', available: true,
+      textDark: true, route: '/javascript', available: true, topics: 24,
 
       highlights: [
         'ES2025 features, Promises, async/await',
@@ -300,7 +300,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'React', time: '~12 hrs',
       tagline: 'Declarative UI library — hooks, context, server components & more.',
       icon: '⚛️', gradient: 'linear-gradient(135deg, #149eca 0%, #0c6a8c 100%)',
-      textDark: false, route: '/react', available: true,
+      textDark: false, route: '/react', available: true, topics: 19,
 
       highlights: [
         'JSX, functional components, hooks',

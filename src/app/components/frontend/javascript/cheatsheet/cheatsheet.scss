@@ -1,0 +1,87 @@
+$accent: #f7df1e;
+$tint: #fefce8;
+
+.cs-page { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+.page-header-icon.js-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; border-radius: 12px;
+  background: $accent; color: #1a1a1a; font-weight: 800; font-size: 1rem; margin-bottom: 1rem;
+}
+.page-title { font-size: 2rem; font-weight: 700; margin: 0 0 .5rem; }
+.page-subtitle { color: #555; margin: 0 0 1.5rem; font-size: 1.05rem; line-height: 1.6; }
+
+.search-bar { margin-bottom: 1.25rem; }
+.search-input {
+  width: 100%; max-width: 480px; padding: .6rem 1rem;
+  border: 1.5px solid #d1d5db; border-radius: 8px;
+  font-size: .95rem; outline: none;
+  &:focus { border-color: $accent; box-shadow: 0 0 0 3px rgba(247,223,30,.2); }
+}
+
+.tab-bar {
+  display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem;
+}
+.tab-btn {
+  padding: .4rem 1rem; border-radius: 20px; border: 1.5px solid #e5e7eb;
+  background: #fff; font-size: .88rem; cursor: pointer; font-weight: 500;
+  transition: all .15s;
+  &:hover { border-color: $accent; }
+  &.active { background: $accent; border-color: $accent; color: #1a1a1a; font-weight: 700; }
+}
+
+.cheat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.cheat-card {
+  border: 1px solid #e5e7eb; border-radius: 10px;
+  padding: 1rem 1.1rem; background: #fff;
+  display: flex; flex-direction: column; gap: .4rem;
+}
+.card-header {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; flex-wrap: wrap;
+}
+.card-name { font-weight: 700; font-size: .95rem; color: #111; }
+.card-sig {
+  font-size: .78rem; background: $tint; padding: .15rem .45rem;
+  border-radius: 4px; color: #713f12; white-space: nowrap; flex-shrink: 0;
+}
+.card-desc { font-size: .87rem; color: #444; margin: 0; line-height: 1.5; }
+.card-example {
+  margin: 0; padding: .5rem .75rem;
+  background: #f8f8f8; border-radius: 6px;
+  font-size: .8rem; overflow-x: auto;
+  code { font-family: 'Fira Code', monospace; color: #1a1a1a; }
+}
+.card-tags { display: flex; flex-wrap: wrap; gap: .3rem; }
+.tag {
+  font-size: .72rem; padding: .1rem .4rem; border-radius: 10px;
+  background: #f3f4f6; color: #6b7280;
+}
+
+.empty-state { color: #9ca3af; font-style: italic; padding: 2rem 0; }
+
+:host-context(body.dark) {
+  .page-title { color: #f1f5f9; }
+  .page-subtitle { color: #94a3b8; }
+  .page-header-icon.js-icon { background: #854d0e; color: #fde68a; }
+  .search-input {
+    background: #1e293b; border-color: #334155; color: #f1f5f9;
+    &:focus { border-color: #ca8a04; }
+    &::placeholder { color: #64748b; }
+  }
+  .tab-btn {
+    background: #1e293b; border-color: #334155; color: #cbd5e1;
+    &.active { background: #854d0e; border-color: #854d0e; color: #fde68a; }
+    &:hover:not(.active) { border-color: #ca8a04; }
+  }
+  .cheat-card { background: #1e293b; border-color: #334155; }
+  .card-name { color: #f1f5f9; }
+  .card-sig { background: #292524; color: #fde68a; }
+  .card-desc { color: #94a3b8; }
+  .card-example { background: #0f172a; code { color: #e2e8f0; } }
+  .tag { background: #334155; color: #94a3b8; }
+}

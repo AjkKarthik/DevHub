@@ -64,7 +64,7 @@ export class App {
     ].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'hub'>(() => {
     const url = this.currentUrl();
     if (url.startsWith('/angular'))    return 'angular';
     if (url.startsWith('/csharp'))     return 'csharp';
@@ -72,6 +72,8 @@ export class App {
     if (url.startsWith('/sql'))        return 'sql';
     if (url.startsWith('/typescript')) return 'typescript';
     if (url.startsWith('/react'))      return 'react';
+    if (url.startsWith('/javascript')) return 'javascript';
+    if (url.startsWith('/html'))       return 'html';
     return 'hub';
   });
 

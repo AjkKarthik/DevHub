@@ -1,0 +1,22 @@
+<div class="js-page">
+  <div class="page-header-icon js-icon">JS</div>
+  <h1 class="page-title">Hoisting & TDZ</h1>
+  <p class="page-subtitle">How JavaScript hoists declarations before execution, why var silently gives undefined while let/const throw in the Temporal Dead Zone, and why this matters for predictable code.</p>
+
+  <app-page-meta [readingTime]="18" difficulty="beginner" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="js-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="js-hoisting" nextRoute="/javascript/symbols" nextLabel="Symbols & Iterators" />
+</div>

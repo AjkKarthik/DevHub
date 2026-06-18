@@ -1,0 +1,16 @@
+$accent: #f7df1e;
+$tint: #fefce8;
+
+.js-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.page-header-icon.js-icon { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 12px; background: $accent; color: #1a1a1a; font-weight: 800; font-size: 1rem; margin-bottom: 1rem; }
+.page-title { font-size: 2rem; font-weight: 700; margin: 0 0 .5rem; }
+.page-subtitle { color: #555; margin: 0 0 2rem; font-size: 1.05rem; line-height: 1.6; }
+.js-section { margin: 2.5rem 0; }
+.js-section h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 2px solid $accent; display: inline-block; }
+
+:host-context(body.dark) {
+  .page-title { color: #f1f5f9; }
+  .page-subtitle { color: #94a3b8; }
+  .page-header-icon.js-icon { background: #854d0e; color: #fde68a; }
+  .js-section h2 { color: #fde68a; border-bottom-color: #854d0e; }
+}

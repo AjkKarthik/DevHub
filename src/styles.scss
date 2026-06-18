@@ -111,6 +111,67 @@ body.dark {
   white-space: nowrap; border: 0;
 }
 
+/* ── Page header icon — base shape shared by all hub topic pages ─────────
+   Angular/C#/ASP.NET use SOLID FILL (accent bg, white text).
+   SQL/TS/React/JS use LIGHT TINT (tint bg, accent text, optional border).
+   Component SCSSs that define the icon block override these; globals ensure
+   pages WITHOUT a local definition look identical to those that have one. */
+.page-header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── Solid-fill hubs (Angular, C#, ASP.NET): accent bg + white text ─── */
+.page-header-icon.ng-icon     { background: #dd0031; color: #fff; font-size: 1.4rem; }
+.page-header-icon.cs-icon     { background: #6b21a8; color: #fff; font-size: 1.4rem; border-radius: 8px; width: auto; height: auto; padding: 0.4rem 0.8rem; }
+.page-header-icon.aspnet-icon,
+.page-header-icon.asp-icon    { background: #0e7490; color: #fff; font-size: 1.4rem; }
+
+/* ── Light-tint hubs (SQL, TS, React, JS): tint bg + accent text ─────── */
+.page-header-icon.sql-icon    { background: #fff7ed; color: #e05c00; }
+.page-header-icon.ts-icon     { background: #eff6ff; color: #3178c6; }
+.page-header-icon.react-icon  { background: #f0f9ff; color: #0ea5e9; border: 1px solid rgba(14,165,233,.2); font-size: 1.8rem; }
+.page-header-icon.js-icon     { background: #fefce8; color: #854d0e; }
+.page-header-icon.html-icon   { background: #fff7ed; color: #c2410c; }
+
+body.dark {
+  /* Solid-fill hubs darken the fill slightly in dark mode */
+  .page-header-icon.ng-icon     { background: #9b0022; color: #fecdd3; }
+  .page-header-icon.cs-icon     { background: #7c3aed; color: #fff; }
+  .page-header-icon.aspnet-icon,
+  .page-header-icon.asp-icon    { background: #155e75; color: #cffafe; }
+  /* Light-tint hubs flip to dark tint */
+  .page-header-icon.sql-icon    { background: #431a03; color: #fdba74; }
+  .page-header-icon.ts-icon     { background: #172554; color: #93c5fd; }
+  .page-header-icon.react-icon  { background: #083344; color: #67e8f9; border-color: rgba(103,232,249,.2); font-size: 1.8rem; }
+  .page-header-icon.js-icon     { background: #2d1f00; color: #fde68a; }
+  .page-header-icon.html-icon   { background: #431507; color: #fed7aa; }
+}
+
+/* ── Global page wrapper defaults — canonical dimensions per hub ─────────────
+   Component SCSSs that define their own padding will override these (higher
+   specificity from View Encapsulation). Pages WITHOUT a local definition
+   inherit these defaults, ensuring visual consistency across the hub. */
+
+/* HTML topic pages */
+.html-page  { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem;  box-sizing: border-box; }
+/* Angular topic pages */
+.ng-page    { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; box-sizing: border-box; }
+/* C# topic pages */
+.cs-page    { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem;  box-sizing: border-box; }
+/* ASP.NET topic pages — both class names in use across the hub */
+.asp-page,
+.aspnet-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem;  box-sizing: border-box; }
+
 /* ── Global responsive page container ───────────────────────────────────────
    Fluid width — fills available space, capped at 1400px on very large screens.
    Overrides all component-scoped .page max-width constraints. */
@@ -123,5 +184,6 @@ body.dark {
 }
 
 @media (max-width: 640px) {
-  .page { padding: 0.75rem !important; }
+  .page         { padding: 0.75rem !important; }
+  .ng-page, .cs-page, .asp-page, .aspnet-page { padding: 0.75rem !important; }
 }

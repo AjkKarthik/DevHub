@@ -1,4 +1,7 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map, startWith } from 'rxjs';
 import { CodeBlockComponent, CodeTab } from '../code-block/code-block';
 
 export interface Challenge {
@@ -45,19 +48,11 @@ export interface Challenge {
           <button type="button" class="reveal-btn" (click)="revealed.update(v => !v)">
             {{ revealed() ? '🙈 Hide Solution' : '👁 Reveal Solution' }}
           </button>
-          @if (item().language === 'csharp') {
-            <a class="playground-btn playground-btn--csharp"
-               [href]="item().playgroundUrl || 'https://dotnetfiddle.net/'"
-               target="_blank" rel="noopener">
-              ▶ Try in .NET Fiddle
-            </a>
-          } @else {
-            <a class="playground-btn"
-               [href]="item().playgroundUrl || 'https://angular.dev/playground'"
-               target="_blank" rel="noopener">
-              ▶ Try in Playground
-            </a>
-          }
+          <a class="playground-btn" [class]="'playground-btn--' + playgroundStyle()"
+             [href]="item().playgroundUrl || playgroundUrl()"
+             target="_blank" rel="noopener">
+            ▶ {{ playgroundLabel() }}
+          </a>
         </div>
 
         @if (revealed()) {
@@ -107,10 +102,11 @@ export interface Challenge {
       text-decoration: none; display: inline-flex; align-items: center;
       &:hover { background: #0284c7; }
     }
-    .playground-btn--csharp {
-      background: #7c3aed;
-      &:hover { background: #6b21a8; }
-    }
+    .playground-btn--csharp      { background: #7c3aed; &:hover { background: #6b21a8; } }
+    .playground-btn--sql         { background: #e05c00; &:hover { background: #c24f00; } }
+    .playground-btn--typescript  { background: #3178c6; &:hover { background: #1d4ed8; } }
+    .playground-btn--javascript  { background: #854d0e; &:hover { background: #713f12; } }
+    .playground-btn--react       { background: #0ea5e9; &:hover { background: #0284c7; } }
 
     .solution-box {
       border: 2px solid #10b981; border-radius: 8px; overflow: hidden;
@@ -124,8 +120,58 @@ export interface Challenge {
 export class ChallengeBlockComponent {
   item = input.required<Challenge>();
 
-  revealed   = signal(false);
-  hintsOpen  = signal(false);
+  revealed  = signal(false);
+  hintsOpen = signal(false);
+
+  private router = inject(Router);
+  private url = toSignal(
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      map(() => this.router.url),
+      startWith(this.router.url),
+    ),
+    { initialValue: this.router.url }
+  );
+
+  private section = computed(() => {
+    const u = this.url();
+    if (u.startsWith('/csharp') || u.startsWith('/aspnet')) return 'csharp';
+    if (u.startsWith('/sql'))        return 'sql';
+    if (u.startsWith('/typescript')) return 'typescript';
+    if (u.startsWith('/react'))      return 'react';
+    if (u.startsWith('/javascript')) return 'javascript';
+    return 'angular';
+  });
+
+  playgroundUrl = computed(() => {
+    if (this.item().language === 'csharp') return 'https://dotnetfiddle.net/';
+    if (this.item().language === 'sql')    return 'https://dbfiddle.uk/';
+    const s = this.section();
+    if (s === 'javascript')  return 'https://playcode.io/new';
+    if (s === 'typescript')  return 'https://www.typescriptlang.org/play';
+    if (s === 'react')       return 'https://stackblitz.com/fork/react-ts';
+    return 'https://angular.dev/playground';
+  });
+
+  playgroundLabel = computed(() => {
+    if (this.item().language === 'csharp') return 'Try in .NET Fiddle';
+    if (this.item().language === 'sql')    return 'Try in DB Fiddle';
+    const s = this.section();
+    if (s === 'javascript')  return 'Try in PlayCode';
+    if (s === 'typescript')  return 'Try in TS Playground';
+    if (s === 'react')       return 'Try in StackBlitz';
+    return 'Try in Playground';
+  });
+
+  playgroundStyle = computed(() => {
+    if (this.item().language === 'csharp') return 'csharp';
+    if (this.item().language === 'sql')    return 'sql';
+    const s = this.section();
+    if (s === 'javascript')  return 'javascript';
+    if (s === 'typescript')  return 'typescript';
+    if (s === 'react')       return 'react';
+    return '';
+  });
 
   starterTabs = () => [{
     label: 'Starter Code',

@@ -111,6 +111,8 @@ export class SearchComponent {
     if (route.startsWith('sql-'))    return '/sql/'        + route.slice('sql-'.length);
     if (route.startsWith('ts-'))     return '/typescript/' + route.slice('ts-'.length);
     if (route.startsWith('react-'))  return '/react/'      + route.slice('react-'.length);
+    if (route.startsWith('js-'))     return '/javascript/' + route.slice('js-'.length);
+    if (route.startsWith('html-'))   return '/html/'       + route.slice('html-'.length);
     if (route.startsWith('hub-'))    return '/'            + route.slice('hub-'.length);
     return '/angular/' + route;
   }

@@ -88,9 +88,9 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | ASP.NET Core | 54 | 0 | Complete — 45 topics + 9 practice/reference |
 | SQL | 53 | 0 | Complete — 44 topics + 9 reference |
 | TypeScript | 22 | 0 | Complete — 20 topics + 2 reference |
-| JavaScript | 0 | 24 | Not started |
-| React | 0 | 24 | Not started |
-| HTML | 0 | 22 | Not started |
+| React | 19 | 0 | Complete — 17 topics + 2 reference |
+| JavaScript | 24 | 0 | Complete — 22 topics + 2 reference |
+| HTML | 17 | 8 | In Progress — 15 topics + 2 reference live; 8 cards coming soon |
 | CSS | 0 | 22 | Not started |
 | Web Performance | 0 | 22 | Not started |
 | Blazor | 0 | 23 | Not started |
@@ -564,95 +564,43 @@ sidebar entries, progress service (`tsTotal`), hub-home card flip.
 
 ---
 
-### 3B — React hub (24 topics) `src/app/components/frontend/react/`
+### 3B — React hub ✅ COMPLETE `src/app/components/frontend/react/`
 
-Accent: `#61dafb` (React blue), text on dark: `#20232a`. Search prefix: `react-`.
+All 17 trackable topics + 2 reference pages live (2026-06-17). reactTotal = 17. All cards `available: true`.
+Accent: `#0ea5e9` sky-blue. Search prefix: `react-`. Hero stat updated to 275+.
 
-
-- [ ] `react-basics` — JSX, components (function), props, rendering, keys, fragments
-- [ ] `react-hooks-core` — useState, useEffect, useRef, useContext, hook rules
-- [ ] `react-hooks-advanced` — useReducer, useMemo, useCallback, useTransition,
-  useDeferredValue, useId, custom hooks
-- [ ] `react-forms` — Controlled vs uncontrolled, form events, React Hook Form basics,
-  Zod validation integration
-- [ ] `react-router` — React Router v6/7: createBrowserRouter, loader, action,
-  useNavigate, useParams, Outlet, nested routes
-- [ ] `react-context` — Context API, createContext, useContext, context splitting for
-  performance, Zustand as a lighter alternative
-
-
-- [ ] `react-state-management` — useState vs useReducer vs Zustand vs Jotai,
-  when to pick each, derived state
-- [ ] `react-tanstack-query` — useQuery, useMutation, stale-while-revalidate,
-  cache invalidation, optimistic updates, prefetching
-- [ ] `react-performance` — React.memo, useMemo, useCallback, Profiler, virtualization
-  with react-window, concurrent features
-- [ ] `react-patterns` — Compound components, render props, higher-order components,
-  custom hooks as the modern pattern
-- [ ] `react-typescript` — Typing props, events, refs, generic components, discriminated
-  union props, ComponentPropsWithRef
-- [ ] `react-testing` — Testing Library: render, queries, userEvent, MSW for API mocks,
-  async testing, snapshot anti-patterns
-
-
-- [ ] `react-nextjs` — App Router, Server Components, Client Components (`'use client'`),
-  Server Actions, Suspense, streaming, layout.tsx
-- [ ] `react-native` — View/Text/ScrollView, StyleSheet, Expo, React Navigation,
-  New Architecture (Fabric + JSI)
-- [ ] `react-hook-form` — register, handleSubmit, Controller, formState.errors,
-  Zod + zodResolver, field arrays
-- [ ] `react-animations` — Framer Motion: motion.div, animate, variants, layout animations,
-  AnimatePresence, useSpring
-- [ ] `react-security` — XSS prevention (dangerouslySetInnerHTML), CSP, auth patterns,
-  CSRF in Next.js
-- [ ] Reference pages: cheatsheet, interview-prep
+- [x] 2026-06-17 `react-basics` — JSX, components, props, rendering, keys, fragments, reconciliation
+- [x] 2026-06-17 `react-hooks-core` — useState, useEffect, useRef, useContext
+- [x] 2026-06-17 `react-hooks-advanced` — useReducer, useMemo, useCallback, useTransition, useDeferredValue, useId, custom hooks
+- [x] 2026-06-17 `react-forms` — controlled vs uncontrolled, HTML5 validation, React Hook Form + Zod
+- [x] 2026-06-17 `react-context` — createContext, useContext, context splitting, Zustand intro
+- [x] 2026-06-17 `react-state-management` — useState vs useReducer vs Zustand vs Jotai vs Redux Toolkit
+- [x] 2026-06-17 `react-router` — createBrowserRouter, nested routes, loader, action, useNavigate, Outlet
+- [x] 2026-06-17 `react-tanstack-query` — useQuery, useMutation, cache invalidation, optimistic updates
+- [x] 2026-06-17 `react-performance` — React.memo, useMemo, useCallback, Profiler, react-window
+- [x] 2026-06-17 `react-patterns` — Compound components, render props, HOCs, custom hooks
+- [x] 2026-06-17 `react-typescript` — Typing props/events/refs, generic components, discriminated unions
+- [x] 2026-06-17 `react-testing` — RTL, Vitest, userEvent, MSW, async testing
+- [x] 2026-06-17 `react-nextjs` — App Router, Server Components, Server Actions, Suspense, layouts
+- [x] 2026-06-17 `react-native` — View/Text/FlatList, StyleSheet, Expo, React Navigation, New Architecture
+- [x] 2026-06-17 `react-hook-form` — register, handleSubmit, Controller, zodResolver, field arrays
+- [x] 2026-06-17 `react-animations` — Framer Motion: motion.div, variants, AnimatePresence, useSpring
+- [x] 2026-06-17 `react-security` — XSS, dangerouslySetInnerHTML + DOMPurify, CSP, CSRF, httpOnly cookies
+- [x] 2026-06-17 `react-cheatsheet` — 7-tab reference (Hooks, Components, JSX, TypeScript, Patterns, Performance, Router)
+- [x] 2026-06-17 `react-interview-prep` — 32 Q&A across Fundamentals/Hooks/State/Patterns/Testing/Next.js/React 19
 
 ---
 
-### 3C — JavaScript hub (24 topics) `src/app/components/frontend/javascript/`
+### 3C — JavaScript hub ✅ COMPLETE `src/app/components/frontend/javascript/`
 
-Accent: `#f7df1e` (JS yellow), text `#1a1a1a`. Search prefix: `js-`.
+All 22 trackable topics + 2 reference pages live (2026-06-17). jsTotal = 22. All 24 cards `available: true`.
+Accent: `#f7df1e` (JS yellow). Search prefix: `js-`. Hero stat updated to 300+.
 
-
-- [ ] `js-types-coercion` — Primitive types, typeof, loose vs strict equality,
-  type coercion rules, truthy/falsy, the spec rules
-- [ ] `js-closures` — Lexical scope, closure over variables (not values), IIFE,
-  module pattern, memory and closure leaks
-- [ ] `js-prototypes` — Prototype chain, `__proto__` vs `prototype`, Object.create,
-  class syntax desugaring, `instanceof`, mixin patterns
-- [ ] `js-this-binding` — call/apply/bind, arrow function `this`, method shorthand,
-  class fields vs prototype methods, common `this` bugs
-- [ ] `js-event-loop` — Call stack, task queue, microtask queue (Promises), setTimeout(0),
-  queueMicrotask, requestAnimationFrame
-- [ ] `js-modules` — ES modules (import/export), CommonJS (require), dynamic import(),
-  module bundlers (Vite, Rollup), tree-shaking
-
-
-- [ ] `js-promises` — Promise constructor, then/catch/finally, Promise.all/allSettled/
-  race/any, error propagation, unhandled rejections
-- [ ] `js-async-await` — async function, await, top-level await, error handling patterns,
-  parallel vs sequential, async iterators
-- [ ] `js-destructuring` — Array/object destructuring, default values, renaming, rest/spread,
-  nested destructuring, function parameter destructuring
-- [ ] `js-iterators-generators` — Iterator protocol, for...of, Symbol.iterator, generator
-  functions (function*), yield, two-way communication
-- [ ] `js-proxy-reflect` — Proxy traps (get/set/has/deleteProperty), Reflect API,
-  Vue 3 reactivity model, revocable proxies
-- [ ] `js-symbols-weakrefs` — Symbol(), well-known symbols (iterator/toPrimitive),
-  WeakMap, WeakSet, WeakRef, FinalizationRegistry
-
-
-- [ ] `js-dom` — querySelector, event delegation, MutationObserver, IntersectionObserver,
-  ResizeObserver, custom events
-- [ ] `js-fetch-xhr` — fetch(), Response, Request, Headers, AbortController, streaming
-  responses, vs XMLHttpRequest
-- [ ] `js-storage` — localStorage, sessionStorage, IndexedDB basics, cookies vs storage,
-  quota and eviction
-- [ ] `js-patterns` — Observer, pub/sub, mediator, strategy, module pattern — all in
-  idiomatic modern JS without classes
-- [ ] `js-performance` — Debounce/throttle, memoization, Web Workers, SharedArrayBuffer,
-  Atomics, profiling in DevTools
-- [ ] Reference pages: cheatsheet, interview-prep
+- [x] 2026-06-17 `js-fundamentals`, `js-closures`, `js-hoisting`, `js-symbols`, `js-functions`
+- [x] 2026-06-17 `js-prototypes`, `js-objects`, `js-destructuring`, `js-arrays`, `js-promises`
+- [x] 2026-06-17 `js-event-loop`, `js-error-handling`, `js-generators`, `js-dom`, `js-events`
+- [x] 2026-06-17 `js-browser-apis`, `js-modules`, `js-bundlers`, `js-patterns`, `js-functional`
+- [x] 2026-06-17 `js-proxy`, `js-weakrefs`, `js-cheatsheet` (reference), `js-interview-prep` (reference)
 
 ---
 
@@ -660,42 +608,34 @@ Accent: `#f7df1e` (JS yellow), text `#1a1a1a`. Search prefix: `js-`.
 
 Accent: `#e34c26` (HTML orange). Search prefix: `html-`.
 
-
-- [ ] `html-document-structure` — DOCTYPE, `<html lang>`, `<meta charset>`, `<head>` vs
+**Batch 1 (2026-06-18):**
+- [x] 2026-06-18 `html-document-structure` — DOCTYPE, `<html lang>`, `<meta charset>`, `<head>` vs
   `<body>`, rendering pipeline, parse vs DOMContentLoaded
-- [ ] `html-semantic-elements` — `<main>`, `<article>`, `<section>`, `<aside>`, `<nav>`,
+- [x] 2026-06-18 `html-semantic-elements` — `<main>`, `<article>`, `<section>`, `<aside>`, `<nav>`,
   `<figure>`, `<time>`, `<address>` — when and why each
-- [ ] `html-forms` — `<form>`, `<input>` types, `<label>`, `<fieldset>`, `<select>`,
+- [x] 2026-06-18 `html-forms` — `<form>`, `<input>` types, `<label>`, `<fieldset>`, `<select>`,
   `<textarea>`, HTML5 validation attributes, constraint API
-- [ ] `html-media` — `<img>` (srcset, sizes, loading=lazy, decoding=async), `<picture>`,
+- [x] 2026-06-18 `html-media` — `<img>` (srcset, sizes, loading=lazy, decoding=async), `<picture>`,
   `<video>` (controls, poster, track), `<audio>`, `<source>`
-- [ ] `html-tables` — `<table>`, `<thead>`, `<tbody>`, `<th scope>`, `<caption>`,
+- [x] 2026-06-18 `html-tables` — `<table>`, `<thead>`, `<tbody>`, `<th scope>`, `<caption>`,
   `<colgroup>` — accessibility requirements, when not to use tables
-- [ ] `html-links-navigation` — `<a>` (href, rel, target, download), relative vs absolute
+- [x] 2026-06-18 `html-links-navigation` — `<a>` (href, rel, target, download), relative vs absolute
   URLs, `<link>`, `<base>`, fragment navigation, skip links
 
 
-- [ ] `html-accessibility` — ARIA roles, aria-label vs aria-labelledby, aria-live, focus
-  management, landmark roles, WCAG 2.1 checklist
-- [ ] `html-head-metadata` — `<meta>` charset/viewport/description, Open Graph, Twitter
-  Cards, canonical, `<link rel>` preload/prefetch/dns-prefetch
-- [ ] `html-custom-elements` — Web Components: `<template>`, `<slot>`, shadow DOM,
-  `customElements.define`, `HTMLElement` lifecycle callbacks
-- [ ] `html-iframes-embeds` — `<iframe>` sandbox, srcdoc, allow, CSP frame-ancestors,
-  `<embed>`, `<object>`, security implications
-- [ ] `html-pwa-service-workers` — manifest.json, service worker lifecycle, Cache API,
-  offline strategies, Background Sync, Push API
-- [ ] `html-seo` — Structured data (JSON-LD), canonical URLs, robots.txt, sitemap.xml,
-  Core Web Vitals meta tags, hreflang
+**Workflow: qwen3.6 writes full .ts file → Claude validates build errors only → Claude does wiring**
 
-
-- [ ] `html-performance` — Resource hints (preload/prefetch/preconnect), `loading=lazy`,
-  critical rendering path, render-blocking resources
-- [ ] `html-canvas-svg` — `<canvas>` 2D context API vs `<svg>` — use cases, text, shapes,
-  gradients, animation approaches
-- [ ] `html-apis` — Geolocation, Notifications, File API, Drag and Drop, Clipboard API,
-  Web Share API — feature detection pattern
-- [ ] Reference pages: cheatsheet, interview-prep
+- [x] 2026-06-18 `html-accessibility` — ARIA roles, aria-label vs aria-labelledby, aria-live, focus management, landmark roles
+- [x] 2026-06-18 `html-head-metadata` — charset/viewport, Open Graph, Twitter Cards, canonical, link rel preload/prefetch
+- [x] 2026-06-18 `html-custom-elements` — Web Components: template, slot, shadow DOM, customElements.define, lifecycle
+- [x] 2026-06-18 `html-iframes-embeds` — iframe sandbox, allow, CSP frame-ancestors, embed vs object vs SVG
+- [x] 2026-06-18 `html-canvas-svg` — canvas 2D context API vs SVG — shapes, text, gradients, animation
+- [x] 2026-06-18 `html-performance` — Resource hints, loading=lazy, critical rendering path, render-blocking
+- [x] 2026-06-18 `html-pwa-service-workers` — manifest.json, service worker lifecycle, Cache API, offline strategies
+- [x] 2026-06-18 `html-seo` — JSON-LD structured data, canonical, robots.txt, Core Web Vitals, hreflang
+- [x] 2026-06-18 `html-apis` — Geolocation, Notifications, File API, Drag and Drop, Clipboard API, Web Share
+- [x] 2026-06-18 `html-cheatsheet` — reference page (no app-page-complete, no app-revision-card)
+- [x] 2026-06-18 `html-interview-prep` — reference page (no app-page-complete, no app-revision-card)
 
 ---
 
@@ -987,6 +927,96 @@ Open the page, read it fully as a learner would, then check each item:
 [ ] Hub home card: available: true, description and keyPoints reflect what the page actually covers
 [ ] No TypeScript \${} escaping issues (C# string interpolation in template literals)
 [ ] Dark mode: no @media (prefers-color-scheme) anywhere — only :host-context(body.dark)
+[ ] Page header icon: <div class="page-header-icon <hub>-icon">CONTENT</div> — BOTH classes
+    present. Hub class matches the page's hub. Content per hub:
+    Angular=A | C#=C# | ASP.NET=ASP | SQL=SQL | TS=TS | JS=JS | React=⚛ (atom, ALL pages).
+    React pages: always ⚛, never "React"/"RHF"/"RN"/"FM" text — use the brand symbol.
+[ ] Icon fill pattern is correct for the hub:
+    - Angular/C#/ASP.NET = SOLID FILL (accent bg, white text). If component SCSS defines
+      the icon with `background: $tint; color: $accent;` that is WRONG — fix it to
+      `background: $accent; color: #fff;`. Remove any `border:` on solid-fill icons.
+    - SQL/TS/React/JS = LIGHT TINT (tint bg, accent text). Do not change these to solid fill.
+    - Pages that do NOT define the icon in component SCSS use the global styles.scss — this
+      is fine and preferred. Only override in SCSS if the global doesn't cover a special case.
+[ ] Inline code inside .page-subtitle always uses light tint:
+    `code { background: $tint; color: $accent; }` — NEVER `background: $accent; color: #fff;`
+    on inline code (that would render solid red/purple on text).
+[ ] .ng-page / .cs-page etc. padding is consistent with other pages in the same hub:
+    Check that padding matches the standard: `padding: 2rem 1.25rem 4rem;` for Angular/C#.
+    If a component SCSS defines different padding (e.g. 1.5rem), update it to match.
+[ ] content-grid gap: .content-grid.has-sidebar must have gap: 2rem in app.scss — zero gap
+    puts content and sidebar edge-to-edge with no breathing room.
+[ ] Page wrapper class matches hub: ng-page / cs-page / asp-page / sq-page / ts-page /
+    react-page / js-page. Never use another hub's wrapper on a page.
+[ ] Section class matches hub: ng-section / cs-section / asp-section / sq-section /
+    ts-section / react-section / js-section. Never mix.
+[ ] SCSS starts with correct $accent and $tint for the hub (see CLAUDE.md theming table).
+    Icon SCSS block copied from a page in THE SAME HUB (not from a different hub).
+[ ] Component set matches hub type:
+    - Standard hubs (Angular/C#/ASP.NET/TS/React/JS): MUST have app-common-mistakes
+      AND app-revision-card. Missing either is a gap.
+    - SQL hub: must NOT have app-common-mistakes or app-revision-card. Adding them is wrong.
+    - Reference pages (cheatsheet/interview-prep/glossary): no app-page-complete, no
+      app-revision-card. These are not trackable; don't add page-complete to them.
+[ ] Page wrapper padding matches hub standard — must be consistent across ALL pages in the hub:
+    - Angular (.ng-page): `padding: 2rem 1.25rem 4rem;` (max-width 860px)
+    - C# (.cs-page): `padding: 2rem 1.5rem 4rem;` (max-width 860px)
+    - ASP.NET (.asp-page / .aspnet-page): `padding: 2rem 1.5rem 4rem;` (max-width 860px)
+    Common wrong values found: `2rem 1.5rem` (no bottom!), `1.5rem 1rem 3rem`, `1.5rem 1.25rem 3rem`.
+    Pages with no component SCSS wrapper class inherit from global styles.scss (correct).
+    Pages that define the wrapper in component SCSS must match the standard exactly.
+[ ] Icon size in component SCSS — no custom sizes:
+    Angular ng-icon: 48px (or 3rem) square — NEVER 52px or other values.
+    C# cs-icon: `padding: 0.4rem 0.8rem; border-radius: 8px;` (pill shape) — NEVER `width: 56px`.
+    ASP.NET asp/aspnet-icon: 48px square — same as Angular.
+[ ] Hub nav home link in app.html: is a standalone <a class="nav-home-link"> OUTSIDE any
+    nav-group. No hub-name nav-group-label above it.
+[ ] tech= in app-page-meta matches hub (angular/csharp/aspnet/sql/typescript/react/javascript).
+    Wrong tech= shows the wrong playground button.
+[ ] Dark mode: all dark styles use :host-context(body.dark) — zero @media(prefers-color-scheme).
+```
+
+### Design consistency — quick grep commands (run before marking a hub complete)
+
+```bash
+# Wrong icon class or emoji content
+grep -rn "\"sq-icon\"\|\"cs-icon\"\|\"ng-icon\"\|\"ts-icon\"\|\"react-icon\"\|\"js-icon\"\|\"asp-icon\"" \
+  src/app/components/<hub>/ --include="*.html" | grep -v "page-header-icon"
+# → should return 0 lines (all icons must have BOTH classes)
+
+# Emoji in icon divs
+grep -rn "page-header-icon" src/app/components/<hub>/ --include="*.html" | grep -E "⚛|🗄️|🔷|💎"
+# → should return 0 lines
+
+# Wrong hub class (e.g. cs-icon on a React page)
+grep -rn "cs-icon\|ng-icon\|asp-icon" src/app/components/frontend/react/ --include="*.html"
+# → should return 0 lines
+
+# Light-tint icon in solid-fill hub (Angular/C#/ASP.NET) — should be $accent bg not $tint
+grep -rn "background.*\$tint" src/app/components/angular/ --include="*.scss" | grep -i "icon"
+grep -rn "background.*\$tint" src/app/components/backend/csharp/ --include="*.scss" | grep -i "icon"
+grep -rn "background.*\$tint" src/app/components/backend/aspnet/ --include="*.scss" | grep -i "icon"
+# → should return 0 lines (icon blocks must use $accent, not $tint for these hubs)
+
+# Wrong .ng-page padding (Angular standard: 2rem 1.25rem 4rem)
+grep -rn "\.ng-page" src/app/components/angular/ --include="*.scss" -A5 | grep "padding" | sort | uniq -c
+# → all should be "2rem 1.25rem 4rem" — flag any that differ
+
+# Wrong .cs-page padding (C# standard: 2rem 1.5rem 4rem)
+grep -rn "\.cs-page" src/app/components/backend/csharp/ --include="*.scss" -A5 | grep "padding" | sort | uniq -c
+# → all should be "2rem 1.5rem 4rem"
+
+# Wrong icon size in component SCSS (Angular: 3rem or 48px; C#: no width, only padding)
+grep -rn "ng-icon\|cs-icon" src/app/components/ --include="*.scss" -A5 | grep "width:" | grep -v "48px\|3rem"
+# → should return 0 lines (52px, 56px etc. are wrong)
+
+# Dark mode violations
+grep -rn "@media (prefers-color-scheme" src/app/components/<hub>/ --include="*.scss"
+# → should return 0 lines
+
+# SQL pages with wrong components
+grep -rn "app-common-mistakes\|app-revision-card" src/app/components/data/sql/ --include="*.html"
+# → should return 0 lines (SQL intentionally omits these)
 ```
 
 If everything passes — check it off. If anything is missing — fix it in the same session,
@@ -1159,6 +1189,9 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-18 — HTML hub Phase 3D Batch 2: 7 new pages (canvas-svg, performance, pwa-service-workers, seo, apis, cheatsheet, interview-prep). htmlTotal = 20. hub-home HTML card topics: 17, available: true. Build passes. 17 pages live (15 topics + 2 reference), 8 coming soon.
+- [x] 2026-06-17 — JavaScript hub Phase 3C complete: all 24 pages live (22 trackable topics + cheatsheet + interview-prep). jsTotal = 22. hub-home JavaScript card topics: 24, available: true. Hero stat updated to 300+. Build passes.
+- [x] 2026-06-17 — React hub Phase 3B complete: all 19 pages live (17 trackable topics + cheatsheet + interview-prep). reactTotal = 17. hub-home React card topics: 19, available: true. Hero stat updated to 275+. Build passes.
 - [x] 2026-06-17 — TypeScript hub Phase 3A complete: all 22 pages live (20 trackable topics + cheatsheet + interview-prep). tsTotal = 20. hub-home TypeScript card topics: 22, available: true. Hero stat: 250+. Build passes.
 - [x] 2026-06-13 — Market-gap topic additions across all 34 hubs (18 new coming-soon
   cards): NestJS, Gin, a11y, MassTransit, Functional C#, AI/ML System Design, Celery,

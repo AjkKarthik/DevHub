@@ -81,6 +81,75 @@ const TS_DEFAULT: SidebarData = {
   ],
 };
 
+const REACT_DEFAULT: SidebarData = {
+  apis: ['useState()', 'useEffect()', 'useRef()', 'useMemo()', 'useCallback()', 'createContext()'],
+  related: [
+    { label: 'React Fundamentals',  route: '/react/basics'         },
+    { label: 'Core Hooks',          route: '/react/hooks-core'     },
+    { label: 'State Management',    route: '/react/state-management'},
+  ],
+  tip: 'React re-renders are cheap — profile before optimising. Most performance issues are caused by missing keys, unnecessary context updates, or large unmemoised lists.',
+  docs: [
+    { label: 'React.dev Docs',       url: 'https://react.dev/learn'                                  },
+    { label: 'React API Reference',  url: 'https://react.dev/reference/react'                        },
+    { label: 'React Blog',           url: 'https://react.dev/blog'                                   },
+  ],
+  resources: [
+    { label: 'facebook/react',       url: 'https://github.com/facebook/react',   badge: 'code' },
+    { label: 'React YouTube',        url: 'https://www.youtube.com/@reactjs',     badge: 'video' },
+  ],
+  gotchas: [
+    'Never mutate state directly — always return a new object/array from setState or a reducer.',
+    'Keys must be stable IDs — using array index causes wrong reconciliation on reorder.',
+  ],
+};
+
+const JS_DEFAULT: SidebarData = {
+  apis: ['Promise', 'async/await', 'Array.prototype', 'Object.*', 'Proxy', 'WeakMap'],
+  related: [
+    { label: 'JS Fundamentals',  route: '/javascript/fundamentals' },
+    { label: 'Closures',         route: '/javascript/closures'     },
+    { label: 'Promises',         route: '/javascript/promises'     },
+  ],
+  tip: 'JavaScript\'s single thread is never blocked — async/await and Promises schedule work around the event loop without freezing the UI.',
+  docs: [
+    { label: 'MDN JavaScript Docs',  url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
+    { label: 'ECMAScript Spec',      url: 'https://tc39.es/ecma262/' },
+    { label: 'Node.js Docs',         url: 'https://nodejs.org/en/docs/' },
+  ],
+  resources: [
+    { label: 'tc39/proposals', url: 'https://github.com/tc39/proposals', badge: 'code' },
+    { label: 'You Don\'t Know JS', url: 'https://github.com/getify/You-Dont-Know-JS', badge: 'blog' },
+  ],
+  gotchas: [
+    'typeof null === "object" is a historical bug — always check for null explicitly with === null.',
+    'Closures capture variable references, not values — use let in loops or IIFE to capture the value.',
+  ],
+};
+
+const HTML_DEFAULT: SidebarData = {
+  apis: ['<a href>', '<img srcset>', '<form>', '<table>', '<video>', '<picture>'],
+  related: [
+    { label: 'Document Structure',  route: '/html/document-structure' },
+    { label: 'Semantic Elements',   route: '/html/semantic-elements'  },
+    { label: 'HTML Forms',          route: '/html/forms'              },
+  ],
+  tip: 'Always validate your HTML at validator.w3.org — invalid markup causes subtle rendering and accessibility bugs that browsers silently paper over.',
+  docs: [
+    { label: 'MDN HTML Reference',     url: 'https://developer.mozilla.org/en-US/docs/Web/HTML' },
+    { label: 'HTML Living Standard',   url: 'https://html.spec.whatwg.org/'                     },
+    { label: 'W3C Markup Validator',   url: 'https://validator.w3.org/'                         },
+  ],
+  resources: [
+    { label: 'Can I Use',  url: 'https://caniuse.com/', badge: 'tool' },
+    { label: 'MDN HTML Guides', url: 'https://developer.mozilla.org/en-US/docs/Learn/HTML', badge: 'docs' },
+  ],
+  gotchas: [
+    'Placeholder is not a label — it disappears on input and fails contrast requirements. Always use <label>.',
+    'loading="lazy" on the LCP hero image delays the largest contentful paint — use it only below the fold.',
+  ],
+};
+
 const ASPNET_DEFAULT: SidebarData = {
   apis: ['WebApplication', 'IServiceCollection', 'IApplicationBuilder', 'IConfiguration', 'ILogger<T>'],
   related: [
@@ -2454,6 +2523,471 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
   },
 
   // ════════════════════════════════════════════════════════════════════════════
+  // REACT PAGES
+  // ════════════════════════════════════════════════════════════════════════════
+
+  'react/basics': {
+    apis: ['JSX', 'createElement()', 'Fragment', 'key', 'ReactDOM.createRoot()'],
+    related: [
+      { label: 'Core Hooks',       route: '/react/hooks-core'     },
+      { label: 'TypeScript & React', route: '/react/typescript'   },
+      { label: 'React Patterns',   route: '/react/patterns'       },
+    ],
+    tip: 'JSX is syntactic sugar — every <Tag> compiles to React.createElement(). Understanding this makes the virtual DOM click.',
+    docs: [
+      { label: 'React Docs — Describing the UI',   url: 'https://react.dev/learn/describing-the-ui'         },
+      { label: 'React.dev Quick Start',            url: 'https://react.dev/learn'                           },
+      { label: 'Reconciliation (legacy docs)',     url: 'https://legacy.reactjs.org/docs/reconciliation.html'},
+    ],
+    resources: [
+      { label: 'facebook/react',   url: 'https://github.com/facebook/react', badge: 'code' },
+      { label: 'React Blog',       url: 'https://react.dev/blog',             badge: 'blog' },
+    ],
+    gotchas: [
+      'Keys must be stable data IDs — using array index causes incorrect reconciliation on reorder or filter.',
+      'JSX expressions must return a single root — wrap siblings in a Fragment <> </> or a div.',
+      'Component names must start with uppercase — lowercase tags are treated as HTML elements.',
+    ],
+  },
+
+  'react/hooks-core': {
+    apis: ['useState()', 'useEffect()', 'useRef()', 'useContext()', 'Rules of Hooks'],
+    related: [
+      { label: 'Advanced Hooks',    route: '/react/hooks-advanced' },
+      { label: 'Context API',       route: '/react/context'        },
+      { label: 'React Patterns',    route: '/react/patterns'       },
+    ],
+    tip: 'useEffect cleanup is mandatory for subscriptions, timers, and fetch abort controllers — a missing cleanup causes memory leaks.',
+    docs: [
+      { label: 'useState Reference',  url: 'https://react.dev/reference/react/useState'  },
+      { label: 'useEffect Reference', url: 'https://react.dev/reference/react/useEffect' },
+      { label: 'useRef Reference',    url: 'https://react.dev/reference/react/useRef'    },
+      { label: 'Rules of Hooks',      url: 'https://react.dev/reference/rules/rules-of-hooks' },
+    ],
+    resources: [
+      { label: 'A Complete Guide to useEffect', url: 'https://overreacted.io/a-complete-guide-to-useeffect/', badge: 'blog' },
+      { label: 'facebook/react',               url: 'https://github.com/facebook/react',                      badge: 'code' },
+    ],
+    gotchas: [
+      'Never call hooks conditionally or inside loops — hooks must run in the same order on every render.',
+      'Stale closure: useEffect captures props/state at the time it ran. Use the functional updater setState(prev => ...) to avoid staleness.',
+      'useEffect with an empty [] dep array runs once — but its cleanup still runs on unmount.',
+    ],
+  },
+
+  'react/hooks-advanced': {
+    apis: ['useReducer()', 'useMemo()', 'useCallback()', 'useTransition()', 'useDeferredValue()', 'useId()'],
+    related: [
+      { label: 'Core Hooks',        route: '/react/hooks-core'      },
+      { label: 'React Performance', route: '/react/performance'     },
+      { label: 'State Management',  route: '/react/state-management'},
+    ],
+    tip: 'useReducer shines when the next state depends on the previous state across multiple sub-values — prefer it over multiple useState.',
+    docs: [
+      { label: 'useReducer Reference',       url: 'https://react.dev/reference/react/useReducer'       },
+      { label: 'useMemo Reference',          url: 'https://react.dev/reference/react/useMemo'          },
+      { label: 'useCallback Reference',      url: 'https://react.dev/reference/react/useCallback'      },
+      { label: 'useTransition Reference',    url: 'https://react.dev/reference/react/useTransition'    },
+    ],
+    resources: [
+      { label: 'React Blog — React 18',  url: 'https://react.dev/blog/2022/03/29/react-v18',  badge: 'blog' },
+      { label: 'facebook/react',         url: 'https://github.com/facebook/react',             badge: 'code' },
+    ],
+    gotchas: [
+      'useMemo and useCallback have their own overhead — only add them after profiling shows a real performance problem.',
+      'useId() generates a stable ID per component instance — safe for SSR. Never use Math.random() for element IDs.',
+    ],
+  },
+
+  'react/forms': {
+    apis: ['controlled input', 'useRef for uncontrolled', 'React Hook Form', 'zodResolver', 'useFieldArray'],
+    related: [
+      { label: 'Core Hooks',        route: '/react/hooks-core'  },
+      { label: 'TypeScript & React', route: '/react/typescript' },
+      { label: 'Testing React',     route: '/react/testing'     },
+    ],
+    tip: 'React Hook Form uses uncontrolled inputs by default — the form only re-renders on submission and on validation errors, not on every keystroke.',
+    docs: [
+      { label: 'RHF Docs',          url: 'https://react-hook-form.com/docs'                              },
+      { label: 'Zod Docs',          url: 'https://zod.dev'                                               },
+      { label: 'React Forms Guide',  url: 'https://react.dev/reference/react-dom/components/input'       },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+      { label: 'colinhacks/zod',                  url: 'https://github.com/colinhacks/zod',                   badge: 'code' },
+    ],
+    gotchas: [
+      'Controller wraps controlled third-party inputs (Radix, MUI) — register() only works on native HTML inputs.',
+      'Zod refinements run after field validation — put cross-field checks (password confirm) in .superRefine() not per-field.',
+    ],
+  },
+
+  'react/context': {
+    apis: ['createContext()', 'useContext()', 'Context.Provider', 'useReducer + Context'],
+    related: [
+      { label: 'State Management',  route: '/react/state-management' },
+      { label: 'React Patterns',    route: '/react/patterns'         },
+      { label: 'Advanced Hooks',    route: '/react/hooks-advanced'   },
+    ],
+    tip: 'Split context into a StateContext and a DispatchContext — consumers that only dispatch never re-render when state changes.',
+    docs: [
+      { label: 'createContext Reference',  url: 'https://react.dev/reference/react/createContext'  },
+      { label: 'useContext Reference',     url: 'https://react.dev/reference/react/useContext'     },
+      { label: 'Scaling with Reducer + Context', url: 'https://react.dev/learn/scaling-up-with-reducer-and-context' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Every context consumer re-renders when the Provider\'s value reference changes — memoize the value object.',
+      'Context is not a state manager — it is a dependency injector. Pair with useReducer for complex state.',
+    ],
+  },
+
+  'react/state-management': {
+    apis: ['useState', 'useReducer', 'Zustand create()', 'Jotai atom()', 'RTK createSlice'],
+    related: [
+      { label: 'Context API',        route: '/react/context'        },
+      { label: 'Advanced Hooks',     route: '/react/hooks-advanced' },
+      { label: 'TanStack Query',     route: '/react/tanstack-query' },
+    ],
+    tip: 'TanStack Query for server state + Zustand for client state covers 90% of React apps — RTK is rarely needed.',
+    docs: [
+      { label: 'Zustand Docs',        url: 'https://zustand-demo.pmnd.rs/'         },
+      { label: 'Jotai Docs',          url: 'https://jotai.org/docs/introduction'   },
+      { label: 'Redux Toolkit Docs',  url: 'https://redux-toolkit.js.org/'         },
+      { label: 'React — State Guide', url: 'https://react.dev/learn/managing-state'},
+    ],
+    resources: [
+      { label: 'pmndrs/zustand', url: 'https://github.com/pmndrs/zustand', badge: 'code' },
+      { label: 'pmndrs/jotai',   url: 'https://github.com/pmndrs/jotai',   badge: 'code' },
+    ],
+    gotchas: [
+      'Zustand subscriptions are fine-grained — use selector functions to avoid re-renders from unrelated state slices.',
+      'Redux DevTools work with Zustand via devtools middleware — add it in development for time-travel debugging.',
+    ],
+  },
+
+  'react/router': {
+    apis: ['createBrowserRouter()', 'loader', 'action', '<Outlet />', 'useFetcher()', 'useNavigate()'],
+    related: [
+      { label: 'TanStack Query',    route: '/react/tanstack-query' },
+      { label: 'Next.js App Router', route: '/react/nextjs'       },
+      { label: 'React Forms',       route: '/react/forms'         },
+    ],
+    tip: 'loader() runs before the component renders — no loading state, no useEffect. Use it for all route-level data fetching.',
+    docs: [
+      { label: 'React Router v6 Docs',    url: 'https://reactrouter.com/en/main'                        },
+      { label: 'loader Reference',        url: 'https://reactrouter.com/en/main/route/loader'           },
+      { label: 'action Reference',        url: 'https://reactrouter.com/en/main/route/action'           },
+      { label: 'useFetcher Reference',    url: 'https://reactrouter.com/en/main/hooks/use-fetcher'      },
+    ],
+    resources: [
+      { label: 'remix-run/react-router', url: 'https://github.com/remix-run/react-router', badge: 'code' },
+    ],
+    gotchas: [
+      'loader errors bubble to the nearest errorElement — always add one to prevent blank screens.',
+      'navigate() in a loader/action is not the same as redirect() — use redirect() from react-router-dom for server-like redirects.',
+    ],
+  },
+
+  'react/tanstack-query': {
+    apis: ['useQuery()', 'useMutation()', 'queryClient.invalidateQueries()', 'useInfiniteQuery()', 'QueryClient'],
+    related: [
+      { label: 'State Management',   route: '/react/state-management' },
+      { label: 'React Router',       route: '/react/router'           },
+      { label: 'Core Hooks',         route: '/react/hooks-core'       },
+    ],
+    tip: 'stale-while-revalidate is on by default — data is shown immediately from cache while a background fetch updates it. Use staleTime to control how long data stays fresh.',
+    docs: [
+      { label: 'TanStack Query Docs',        url: 'https://tanstack.com/query/latest/docs/framework/react/overview' },
+      { label: 'Query Keys Guide',           url: 'https://tanstack.com/query/latest/docs/framework/react/guides/query-keys'      },
+      { label: 'Mutations Guide',            url: 'https://tanstack.com/query/latest/docs/framework/react/guides/mutations'       },
+      { label: 'Optimistic Updates Guide',   url: 'https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates' },
+    ],
+    resources: [
+      { label: 'TanStack/query', url: 'https://github.com/TanStack/query', badge: 'code' },
+      { label: 'TanStack Blog',  url: 'https://tanstack.com/blog',          badge: 'blog' },
+    ],
+    gotchas: [
+      'Query keys are serialised — objects with the same properties in different orders are the same key.',
+      'onSuccess/onError callbacks in useMutation run once; use queryClient.invalidateQueries in onSuccess for cache consistency.',
+    ],
+  },
+
+  'react/performance': {
+    apis: ['React.memo()', 'useMemo()', 'useCallback()', 'lazy()', '<Suspense>', 'FixedSizeList', 'useTransition()'],
+    related: [
+      { label: 'Advanced Hooks',    route: '/react/hooks-advanced' },
+      { label: 'React Patterns',    route: '/react/patterns'       },
+      { label: 'Testing React',     route: '/react/testing'        },
+    ],
+    tip: 'Profile in React DevTools first — the "Why did this render?" panel pinpoints the prop or hook that triggered a re-render.',
+    docs: [
+      { label: 'React.memo Reference',    url: 'https://react.dev/reference/react/memo'                        },
+      { label: 'useMemo Reference',       url: 'https://react.dev/reference/react/useMemo'                     },
+      { label: 'lazy Reference',          url: 'https://react.dev/reference/react/lazy'                        },
+      { label: 'useTransition Reference', url: 'https://react.dev/reference/react/useTransition'               },
+    ],
+    resources: [
+      { label: 'react-window Docs',    url: 'https://react-window.vercel.app/',                         badge: 'docs' },
+      { label: 'bvaughn/react-window', url: 'https://github.com/bvaughn/react-window',                  badge: 'code' },
+      { label: 'web-vitals Library',   url: 'https://github.com/GoogleChrome/web-vitals',               badge: 'code' },
+    ],
+    gotchas: [
+      'React.memo with unstable prop references (inline objects/functions) never skips re-renders — memoising is pointless without stable refs.',
+      'Virtualisation only helps when the list is long enough to fill more than the viewport — short lists need no windowing.',
+    ],
+  },
+
+  'react/patterns': {
+    apis: ['createContext()', 'React.memo()', 'forwardRef()', 'React.Children', 'render prop', 'HOC'],
+    related: [
+      { label: 'Core Hooks',         route: '/react/hooks-core'     },
+      { label: 'React Performance',  route: '/react/performance'    },
+      { label: 'Context API',        route: '/react/context'        },
+    ],
+    tip: 'Custom hooks replaced render props for most cases — only reach for render props when a library needs to inject both behavior and rendering context.',
+    docs: [
+      { label: 'Reusing Logic with Custom Hooks', url: 'https://react.dev/learn/reusing-logic-with-custom-hooks' },
+      { label: 'Passing Data with Context',       url: 'https://react.dev/learn/passing-data-deeply-with-context'},
+      { label: 'forwardRef Reference',            url: 'https://react.dev/reference/react/forwardRef'            },
+    ],
+    resources: [
+      { label: 'Radix UI Primitives (headless)',  url: 'https://www.radix-ui.com/',                         badge: 'docs' },
+      { label: 'radix-ui/primitives',             url: 'https://github.com/radix-ui/primitives',            badge: 'code' },
+    ],
+    gotchas: [
+      'Compound components via cloneElement only work for direct children — Context-based compound components work at any depth.',
+      'HOC display names must be set manually — omitting them makes DevTools show "Unknown" or the wrong name.',
+    ],
+  },
+
+  'react/typescript': {
+    apis: ['React.ReactNode', 'React.FC', 'React.ChangeEvent<T>', 'forwardRef<RefType,Props>', 'ComponentPropsWithoutRef<T>'],
+    related: [
+      { label: 'React Patterns',     route: '/react/patterns'       },
+      { label: 'React Forms',        route: '/react/forms'          },
+      { label: 'Testing React',      route: '/react/testing'        },
+    ],
+    tip: 'Prefer (props: Props) => JSX.Element over React.FC<Props> — no implicit children, better inference, and simpler generic components.',
+    docs: [
+      { label: 'React TypeScript Cheatsheet', url: 'https://react-typescript-cheatsheet.netlify.app'      },
+      { label: 'TypeScript Handbook',         url: 'https://www.typescriptlang.org/docs/handbook/intro.html'},
+      { label: 'forwardRef Reference',        url: 'https://react.dev/reference/react/forwardRef'          },
+    ],
+    resources: [
+      { label: '@types/react',        url: 'https://www.npmjs.com/package/@types/react',  badge: 'tool' },
+      { label: 'microsoft/TypeScript', url: 'https://github.com/microsoft/TypeScript',    badge: 'code' },
+    ],
+    gotchas: [
+      'forwardRef<RefType, PropsType> — RefType comes first. Swapping them silently assigns wrong types.',
+      'Generic arrow functions in TSX need a trailing comma <T,> to avoid JSX-tag ambiguity.',
+      'ComponentPropsWithoutRef<"button"> is equivalent to React.ButtonHTMLAttributes<HTMLButtonElement> — use either consistently.',
+    ],
+  },
+
+  'react/testing': {
+    apis: ['render()', 'screen.getByRole()', 'userEvent.setup()', 'renderHook()', 'act()', 'setupServer()'],
+    related: [
+      { label: 'React Forms',        route: '/react/forms'          },
+      { label: 'Core Hooks',         route: '/react/hooks-core'     },
+      { label: 'TypeScript & React', route: '/react/typescript'     },
+    ],
+    tip: 'getByRole is the default query — it tests accessible behaviour and doubles as an a11y audit. Only fall back to getByTestId when no role exists.',
+    docs: [
+      { label: 'RTL Docs',           url: 'https://testing-library.com/docs/react-testing-library/intro/' },
+      { label: 'MSW Docs',           url: 'https://mswjs.io/docs/'                                        },
+      { label: 'Vitest Docs',        url: 'https://vitest.dev/'                                           },
+      { label: 'userEvent Docs',     url: 'https://testing-library.com/docs/user-event/intro'             },
+    ],
+    resources: [
+      { label: 'testing-library/react',   url: 'https://github.com/testing-library/react-testing-library', badge: 'code' },
+      { label: 'mswjs/msw',               url: 'https://github.com/mswjs/msw',                              badge: 'code' },
+      { label: 'vitest-dev/vitest',        url: 'https://github.com/vitest-dev/vitest',                      badge: 'code' },
+    ],
+    gotchas: [
+      'userEvent methods return Promises — always await them or assertions run on stale DOM.',
+      'getBy throws on missing element (good for asserting presence); queryBy returns null (use for absence assertions).',
+      'server.resetHandlers() in afterEach prevents per-test MSW overrides from bleeding into subsequent tests.',
+    ],
+  },
+
+  'react/nextjs': {
+    apis: ['"use client"', '"use server"', 'layout.tsx', 'loading.tsx', 'revalidatePath()', 'generateStaticParams()'],
+    related: [
+      { label: 'TanStack Query',    route: '/react/tanstack-query' },
+      { label: 'React Patterns',    route: '/react/patterns'       },
+      { label: 'React Performance', route: '/react/performance'    },
+    ],
+    tip: 'Start every component as a Server Component — only add "use client" when you need interactivity, hooks, or browser APIs.',
+    docs: [
+      { label: 'Next.js App Router Docs',    url: 'https://nextjs.org/docs/app'                            },
+      { label: 'Server Components',          url: 'https://nextjs.org/docs/app/building-your-application/rendering/server-components' },
+      { label: 'Server Actions',             url: 'https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations' },
+      { label: 'Data Fetching',              url: 'https://nextjs.org/docs/app/building-your-application/data-fetching' },
+    ],
+    resources: [
+      { label: 'vercel/next.js',   url: 'https://github.com/vercel/next.js',       badge: 'code' },
+      { label: 'Next.js Blog',     url: 'https://nextjs.org/blog',                  badge: 'blog' },
+    ],
+    gotchas: [
+      '"use client" propagates — all imports from a "use client" file are also client code.',
+      'Cannot import a Server Component into a Client Component — pass it as children from a Server parent.',
+      'useSearchParams() requires a Suspense boundary wrapper — omitting it causes a build warning.',
+    ],
+  },
+
+  'react/native': {
+    apis: ['<View>', '<Text>', '<FlatList>', 'StyleSheet.create()', 'useNavigation()', 'Platform.OS'],
+    related: [
+      { label: 'React Patterns',   route: '/react/patterns'    },
+      { label: 'TypeScript & React', route: '/react/typescript' },
+      { label: 'React Testing',    route: '/react/testing'     },
+    ],
+    tip: 'flexDirection defaults to "column" in React Native (opposite of CSS). All text must be inside <Text> — raw strings in <View> crash in production builds.',
+    docs: [
+      { label: 'React Native Docs',      url: 'https://reactnative.dev/docs/getting-started'                },
+      { label: 'Expo Documentation',     url: 'https://docs.expo.dev/'                                      },
+      { label: 'React Navigation Docs',  url: 'https://reactnavigation.org/docs/getting-started'            },
+      { label: 'New Architecture',       url: 'https://reactnative.dev/docs/the-new-architecture/landing-page' },
+    ],
+    resources: [
+      { label: 'facebook/react-native',        url: 'https://github.com/facebook/react-native',  badge: 'code' },
+      { label: 'expo/expo',                    url: 'https://github.com/expo/expo',               badge: 'code' },
+      { label: 'react-navigation/navigation',  url: 'https://github.com/react-navigation/react-navigation', badge: 'code' },
+      { label: 'Expo Snack (playground)',      url: 'https://snack.expo.dev/',                   badge: 'tool' },
+    ],
+    gotchas: [
+      'All text strings must be wrapped in <Text> — placing raw text in <View> crashes production builds.',
+      'AsyncStorage is plain text on disk — always use expo-secure-store for tokens and passwords.',
+      'FlatList needs keyExtractor returning a stable unique string — index keys cause incorrect reconciliation.',
+    ],
+  },
+
+  'react/interview-prep': {
+    apis: ['useState', 'useEffect', 'useReducer', 'React.memo', 'Suspense', 'Fiber', 'Server Components'],
+    related: [
+      { label: 'React Cheat Sheet',  route: '/react/cheatsheet'   },
+      { label: 'React Patterns',     route: '/react/patterns'     },
+      { label: 'React Performance',  route: '/react/performance'  },
+    ],
+    tip: 'Filter by topic to focus your prep session. For each question, form your own answer first — then expand to compare. Cover all 3 difficulty levels before an interview.',
+    docs: [
+      { label: 'React Docs',               url: 'https://react.dev/'                             },
+      { label: 'React 19 Changelog',       url: 'https://react.dev/blog/2024/04/25/react-19'     },
+      { label: 'Reconciliation & Fiber',   url: 'https://react.dev/learn/preserving-and-resetting-state' },
+    ],
+    resources: [
+      { label: 'React Docs — Reference',  url: 'https://react.dev/reference/react',  badge: 'docs' },
+    ],
+    gotchas: [
+      'Interviewers often ask follow-up: "how would you prove it?" — always mention DevTools Profiler.',
+      'Virtual DOM ≠ Shadow DOM — they are completely different concepts; be precise.',
+      'React.memo skips re-renders but adds a comparison cost — profile before adding it everywhere.',
+    ],
+  },
+
+  'react/cheatsheet': {
+    apis: ['useState', 'useEffect', 'useCallback', 'useMemo', 'useRef', 'useContext', 'useReducer'],
+    related: [
+      { label: 'Core Hooks',         route: '/react/hooks-core'     },
+      { label: 'Advanced Hooks',     route: '/react/hooks-advanced' },
+      { label: 'React Patterns',     route: '/react/patterns'       },
+    ],
+    tip: 'The cheat sheet is filterable by tab and tag. Use it to quickly cross-reference hooks, event types, or TypeScript patterns while coding.',
+    docs: [
+      { label: 'React API Reference',       url: 'https://react.dev/reference/react'     },
+      { label: 'Hooks Reference',           url: 'https://react.dev/reference/react/hooks' },
+      { label: 'React Router v6 API',       url: 'https://reactrouter.com/en/main/route/route' },
+    ],
+    resources: [
+      { label: 'React Docs',         url: 'https://react.dev/',                    badge: 'docs' },
+      { label: 'TypeScript Handbook', url: 'https://www.typescriptlang.org/docs/', badge: 'docs' },
+    ],
+    gotchas: [
+      'useCallback and useMemo only help when consumers are memoised with React.memo or also use those hooks.',
+      'Empty dep array [] runs once; omitting deps runs after every render.',
+      'Number inputs always return strings — use valueAsNumber or coerce manually.',
+    ],
+  },
+
+  'react/security': {
+    apis: ['dangerouslySetInnerHTML', 'DOMPurify.sanitize()', 'SameSite=Strict', 'httpOnly', 'Content-Security-Policy'],
+    related: [
+      { label: 'Next.js App Router',  route: '/react/nextjs'    },
+      { label: 'React Hook Form',     route: '/react/hook-form' },
+      { label: 'Testing React',       route: '/react/testing'   },
+    ],
+    tip: 'React escapes JSX by default — {userInput} is always safe. The three common mistakes: dangerouslySetInnerHTML without DOMPurify, tokens in localStorage, and open redirects from query params.',
+    docs: [
+      { label: 'React Security Docs',       url: 'https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html' },
+      { label: 'OWASP Top 10',              url: 'https://owasp.org/www-project-top-ten/'                                                      },
+      { label: 'MDN CSP Guide',             url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP'                                       },
+      { label: 'Next.js Security Headers',  url: 'https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy'    },
+    ],
+    resources: [
+      { label: 'cure53/DOMPurify',  url: 'https://github.com/cure53/DOMPurify',  badge: 'code' },
+      { label: 'OWASP XSS Cheat Sheet', url: 'https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html', badge: 'docs' },
+    ],
+    gotchas: [
+      'dangerouslySetInnerHTML with unsanitized HTML = XSS. Always DOMPurify.sanitize() first.',
+      'localStorage tokens are readable by XSS. Use httpOnly; SameSite=Strict cookies instead.',
+      'rel="noopener noreferrer" is required on every target="_blank" link to prevent tab-napping.',
+    ],
+  },
+
+  'react/animations': {
+    apis: ['motion.div', 'animate', 'variants', '<AnimatePresence>', 'layout', 'layoutId', 'useMotionValue()'],
+    related: [
+      { label: 'React Performance',  route: '/react/performance'   },
+      { label: 'React Patterns',     route: '/react/patterns'      },
+      { label: 'React Native',       route: '/react/native'        },
+    ],
+    tip: 'Animate transform and opacity — not layout properties (width, height, margin). Transform/opacity run on the GPU compositor at 60fps. Layout properties trigger recalculation on every frame.',
+    docs: [
+      { label: 'Framer Motion Docs',       url: 'https://www.framer.com/motion/'                           },
+      { label: 'Animation Guide',          url: 'https://www.framer.com/motion/animation/'                  },
+      { label: 'Gestures',                 url: 'https://www.framer.com/motion/gestures/'                   },
+      { label: 'Layout Animations',        url: 'https://www.framer.com/motion/layout-animations/'          },
+    ],
+    resources: [
+      { label: 'framer/motion',             url: 'https://github.com/framer/motion',        badge: 'code' },
+      { label: 'Framer Motion Examples',    url: 'https://www.framer.com/motion/examples/',  badge: 'blog' },
+    ],
+    gotchas: [
+      'exit prop requires AnimatePresence parent — without it, components are removed from DOM instantly.',
+      'AnimatePresence list children need unique stable keys — not array index.',
+      'initial={false} on motion.div or AnimatePresence prevents flash-of-invisible-content in SSR apps.',
+    ],
+  },
+
+  'react/hook-form': {
+    apis: ['useForm()', 'register()', 'handleSubmit()', '<Controller>', 'useFieldArray()', 'zodResolver()'],
+    related: [
+      { label: 'Forms & Validation',  route: '/react/forms'            },
+      { label: 'TypeScript & React',  route: '/react/typescript'       },
+      { label: 'Testing React',       route: '/react/testing'          },
+    ],
+    tip: 'register() uses refs — no re-renders while typing. Only add watch() when you need to display a live computed value. For one-shot reads, use getValues() inside event handlers.',
+    docs: [
+      { label: 'React Hook Form Docs',  url: 'https://react-hook-form.com/get-started'    },
+      { label: 'API Reference',         url: 'https://react-hook-form.com/docs/useform'   },
+      { label: 'Zod Documentation',     url: 'https://zod.dev'                             },
+      { label: '@hookform/resolvers',   url: 'https://github.com/react-hook-form/resolvers' },
+    ],
+    resources: [
+      { label: 'react-hook-form/react-hook-form', url: 'https://github.com/react-hook-form/react-hook-form', badge: 'code' },
+      { label: 'colinhacks/zod',                  url: 'https://github.com/colinhacks/zod',                  badge: 'code' },
+    ],
+    gotchas: [
+      'Add noValidate to <form> — without it, browser native validation fires before RHF and shows unstyled popups.',
+      'Number inputs return strings — add { valueAsNumber: true } to register() or use z.coerce.number() in Zod.',
+      'In useFieldArray, use field.id as the React key — never the array index.',
+    ],
+  },
+
+  // ════════════════════════════════════════════════════════════════════════════
   // ASP.NET CORE PAGES
   // ════════════════════════════════════════════════════════════════════════════
 
@@ -3574,6 +4108,262 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['The DBA path requires understanding execution plans — read the Indexes and Performance pages before tackling it.'],
   },
 
+  // ── HTML: Head & Metadata ──────────────────────────────────────────────────
+  'html/head-metadata': {
+    apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],
+    related: [
+      { label: 'Document Structure', route: '/html/document-structure' },
+      { label: 'SEO & Meta Tags',    route: '/html/seo'                },
+      { label: 'Performance',        route: '/html/performance'        },
+    ],
+    tip: 'Order matters in <head>: charset first, viewport second, then title and meta — any stylesheet or script before charset can cause encoding bugs.',
+    docs: [
+      { label: 'MDN — <head> element',     url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head' },
+      { label: 'Open Graph Protocol',      url: 'https://ogp.me/' },
+      { label: 'Google — Resource Hints',  url: 'https://web.dev/articles/preload-critical-assets' },
+    ],
+    resources: [
+      { label: 'Metatags.io preview tool', url: 'https://metatags.io/',         badge: 'tool' },
+      { label: 'Open Graph Debugger',      url: 'https://developers.facebook.com/tools/debug/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Font preloads need crossorigin even for same-origin fonts — omitting it causes the font to download twice.',
+      'rel="canonical" must use an absolute URL; a relative path resolves differently across mirrors and defeats the duplicate-content fix.',
+    ],
+  },
+
+  // ── HTML: iFrames & Embeds ─────────────────────────────────────────────────
+  'html/iframes-embeds': {
+    apis: ['sandbox', 'allow', 'srcdoc', 'loading="lazy"', 'X-Frame-Options', 'frame-ancestors'],
+    related: [
+      { label: 'Head & Metadata',    route: '/html/head-metadata'    },
+      { label: 'HTML Performance',   route: '/html/performance'      },
+      { label: 'Web Components',     route: '/html/custom-elements'  },
+    ],
+    tip: 'Always set an explicit width and height on iframes to prevent CLS, and always add a title attribute for screen reader accessibility.',
+    docs: [
+      { label: 'MDN — <iframe>',           url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe'   },
+      { label: 'CSP frame-ancestors',      url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors' },
+      { label: 'Permissions Policy',       url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Permissions_Policy' },
+    ],
+    resources: [
+      { label: 'OWASP Clickjacking Guide', url: 'https://owasp.org/www-community/attacks/Clickjacking',  badge: 'docs' },
+      { label: 'web.dev — Permissions Policy', url: 'https://web.dev/articles/permissions-policy',        badge: 'blog' },
+    ],
+    gotchas: [
+      'sandbox allow attribute uses semicolons as separators — commas silently break the entire attribute.',
+      'Combining allow-scripts + allow-same-origin in sandbox defeats it — a script can remove its own sandbox attribute.',
+    ],
+  },
+
+  'html/cheatsheet': {
+    apis: ['<!DOCTYPE html>', '<meta charset>', '<link rel>', 'defer/async', 'aria-*', 'data-*', 'loading="lazy"', 'fetchpriority'],
+    related: [
+      { label: 'HTML Interview Prep',   route: '/html/interview-prep'   },
+      { label: 'Accessibility & ARIA',  route: '/html/accessibility'    },
+      { label: 'HTML Performance',      route: '/html/performance'      },
+    ],
+    tip: 'Use the category filter to focus on one area at a time — Forms and A11y are the most common gaps in HTML interviews.',
+    docs: [
+      { label: 'MDN — HTML elements reference', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element'            },
+      { label: 'MDN — Global attributes',       url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes'  },
+      { label: 'HTML spec (WHATWG)',             url: 'https://html.spec.whatwg.org/multipage/'                             },
+    ],
+    resources: [
+      { label: 'web.dev — Learn HTML',  url: 'https://web.dev/learn/html',  badge: 'blog' },
+    ],
+    gotchas: [],
+  },
+
+  'html/interview-prep': {
+    apis: ['defer/async', 'ARIA', 'Critical Rendering Path', 'service worker', 'Shadow DOM', 'canonical', 'hreflang', 'JSON-LD'],
+    related: [
+      { label: 'HTML Cheat Sheet',      route: '/html/cheatsheet'       },
+      { label: 'Accessibility & ARIA',  route: '/html/accessibility'    },
+      { label: 'HTML SEO',              route: '/html/seo'              },
+    ],
+    tip: 'Interviewers love "why" answers — for every HTML feature, know the fallback, the performance impact, and the accessibility consequence.',
+    docs: [
+      { label: 'MDN — HTML',                   url: 'https://developer.mozilla.org/en-US/docs/Web/HTML'        },
+      { label: 'web.dev — Core Web Vitals',    url: 'https://web.dev/articles/vitals'                         },
+      { label: 'WHATWG HTML Living Standard',  url: 'https://html.spec.whatwg.org/multipage/'                 },
+    ],
+    resources: [
+      { label: 'web.dev — Learn HTML', url: 'https://web.dev/learn/html',  badge: 'blog' },
+    ],
+    gotchas: [],
+  },
+
+  'html/apis': {
+    apis: ['navigator.geolocation.getCurrentPosition()', 'navigator.geolocation.watchPosition()', 'Notification.requestPermission()', 'new Notification()', 'FileReader', 'DataTransfer', 'navigator.clipboard.writeText()', 'navigator.clipboard.readText()', 'navigator.share()', 'event.dataTransfer'],
+    related: [
+      { label: 'PWA & Service Workers', route: '/html/pwa-service-workers' },
+      { label: 'HTML Performance',      route: '/html/performance'         },
+      { label: 'Canvas & SVG',          route: '/html/canvas-svg'          },
+    ],
+    tip: 'Always feature-detect browser APIs before calling them — wrap calls in if ("share" in navigator) or if ("geolocation" in navigator) to avoid runtime errors on unsupported browsers.',
+    docs: [
+      { label: 'MDN — Geolocation API',  url: 'https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API'  },
+      { label: 'MDN — Notifications API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API' },
+      { label: 'MDN — File API',         url: 'https://developer.mozilla.org/en-US/docs/Web/API/File_API'          },
+      { label: 'MDN — Clipboard API',    url: 'https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API'     },
+    ],
+    resources: [
+      { label: 'MDN — Web Share API',    url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Share_API',    badge: 'docs' },
+      { label: 'web.dev — Capabilities', url: 'https://web.dev/explore/capabilities',                              badge: 'blog' },
+    ],
+    gotchas: [
+      'Geolocation, Notifications, and Clipboard readText() all require HTTPS — they silently fail or throw on HTTP origins.',
+      'dragover must call event.preventDefault() — without it the drop event never fires.',
+      'Notification permission once set to "denied" cannot be re-requested from JavaScript — the user must change it in browser settings.',
+    ],
+  },
+
+  'html/seo': {
+    apis: ['<title>', '<meta name="description">', '<link rel="canonical">', '<meta name="robots">', 'JSON-LD <script>', 'og:title / og:image', 'twitter:card', 'hreflang', 'sitemap.xml', 'Core Web Vitals'],
+    related: [
+      { label: 'Head & Metadata',       route: '/html/head-metadata'        },
+      { label: 'HTML Performance',      route: '/html/performance'          },
+      { label: 'PWA & Service Workers', route: '/html/pwa-service-workers'  },
+    ],
+    tip: 'Test structured data with Google\'s Rich Results Test before deploying — invalid JSON-LD silently fails to produce rich snippets.',
+    docs: [
+      { label: 'Google — Search Central',       url: 'https://developers.google.com/search/docs'                              },
+      { label: 'Schema.org',                    url: 'https://schema.org'                                                      },
+      { label: 'Google — Core Web Vitals',      url: 'https://web.dev/articles/vitals'                                        },
+    ],
+    resources: [
+      { label: 'Open Graph Protocol',           url: 'https://ogp.me/',                                          badge: 'docs' },
+      { label: 'Google Rich Results Test',      url: 'https://search.google.com/test/rich-results',              badge: 'tool' },
+    ],
+    gotchas: [
+      'Canonical and noindex together: if a page has both, Google will likely drop it from the index — pick one signal.',
+      'og:image must be an absolute URL, not a relative path — social crawlers do not resolve relative paths.',
+      'hreflang must be reciprocal — every page in the set must link back to all others, or Google ignores the tags.',
+    ],
+  },
+
+  'html/pwa-service-workers': {
+    apis: ['navigator.serviceWorker.register()', 'self.addEventListener("install")', 'self.addEventListener("fetch")', 'caches.open()', 'cache.put()', 'cache.match()', 'skipWaiting()', 'clients.claim()', 'PushManager', 'BackgroundSync'],
+    related: [
+      { label: 'HTML Performance',  route: '/html/performance'     },
+      { label: 'HTML APIs',         route: '/html/apis'            },
+      { label: 'HTML SEO',          route: '/html/seo'             },
+    ],
+    tip: 'Version your cache name (e.g. "app-shell-v2") so the activate event can cleanly delete old caches — unversioned caches grow forever and serve stale assets.',
+    docs: [
+      { label: 'MDN — Service Worker API',  url: 'https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API'    },
+      { label: 'MDN — Cache API',           url: 'https://developer.mozilla.org/en-US/docs/Web/API/Cache'                 },
+      { label: 'web.dev — PWA',             url: 'https://web.dev/progressive-web-apps/'                                  },
+    ],
+    resources: [
+      { label: 'Workbox (Google)',          url: 'https://developer.chrome.com/docs/workbox/',                badge: 'tool' },
+      { label: 'web.dev — Offline cookbook', url: 'https://web.dev/articles/offline-cookbook',               badge: 'blog' },
+    ],
+    gotchas: [
+      'Service workers only work on HTTPS (or localhost) — HTTP origins will silently fail to register.',
+      'The service worker scope is limited to its file location — a SW in /js/ cannot intercept requests from /.',
+      'skipWaiting() alone does not take control of open clients — pair it with clients.claim() in the activate event.',
+    ],
+  },
+
+  'html/performance': {
+    apis: ['loading="lazy"', 'fetchpriority="high"', 'rel="preload"', 'rel="prefetch"', 'rel="preconnect"', 'rel="dns-prefetch"', 'defer', 'async', 'rel="modulepreload"', 'content-visibility'],
+    related: [
+      { label: 'Head & Metadata',  route: '/html/head-metadata'   },
+      { label: 'Canvas & SVG',     route: '/html/canvas-svg'      },
+      { label: 'PWA & Service Workers', route: '/html/pwa-service-workers' },
+    ],
+    tip: 'Always add fetchpriority="high" to your above-the-fold hero/LCP image — it is a one-line change that can move LCP by hundreds of milliseconds.',
+    docs: [
+      { label: 'MDN — Resource hints',      url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload'   },
+      { label: 'web.dev — Optimize LCP',    url: 'https://web.dev/articles/optimize-lcp'                                       },
+      { label: 'web.dev — fetchpriority',   url: 'https://web.dev/articles/fetch-priority'                                     },
+    ],
+    resources: [
+      { label: 'web.dev — Critical Rendering Path', url: 'https://web.dev/articles/critical-rendering-path', badge: 'blog' },
+      { label: 'MDN — content-visibility',          url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility', badge: 'docs' },
+    ],
+    gotchas: [
+      'Preloading too many resources defeats the purpose — only preload the 1-3 resources the browser would not discover early enough on its own.',
+      'Font preloads need both as="font" and crossorigin attributes — missing crossorigin causes a double fetch.',
+      'async on a script that depends on another async script causes race conditions — use defer or modules instead.',
+    ],
+  },
+
+  'html/canvas-svg': {
+    apis: ['getContext("2d")', 'fillRect()', 'beginPath()', 'arc()', 'fillText()', 'drawImage()', 'requestAnimationFrame()', 'save()/restore()', 'SVG viewBox', '<path d="">'],
+    related: [
+      { label: 'iFrames & Embeds',   route: '/html/iframes-embeds'  },
+      { label: 'HTML Performance',   route: '/html/performance'     },
+      { label: 'HTML APIs',          route: '/html/apis'            },
+    ],
+    tip: 'Set canvas width/height via HTML attributes for pixel resolution — CSS only scales the existing buffer and will cause blur on HiDPI screens.',
+    docs: [
+      { label: 'MDN — Canvas API',           url: 'https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API'        },
+      { label: 'MDN — SVG',                  url: 'https://developer.mozilla.org/en-US/docs/Web/SVG'                   },
+      { label: 'MDN — requestAnimationFrame', url: 'https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame' },
+    ],
+    resources: [
+      { label: 'web.dev — Canvas tutorial',  url: 'https://web.dev/articles/canvas-performance', badge: 'blog' },
+      { label: 'SVG Tutorial — MDN',         url: 'https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial',        badge: 'docs' },
+    ],
+    gotchas: [
+      'Missing beginPath() causes shapes to share state — the second shape inherits the first\'s path and styles.',
+      'Canvas pixel density: multiply canvas.width/height by devicePixelRatio and scale the context to avoid blur on retina screens.',
+      'SVG elements created with document.createElement (not createElementNS) will render as unknown HTML, not SVG shapes.',
+    ],
+  },
+
+  // ── HTML: Web Components ───────────────────────────────────────────────────
+  'html/custom-elements': {
+    apis: ['customElements.define()', 'attachShadow()', '<template>', '<slot>', 'connectedCallback()', 'observedAttributes'],
+    related: [
+      { label: 'Document Structure', route: '/html/document-structure' },
+      { label: 'HTML APIs',          route: '/html/apis'               },
+      { label: 'JavaScript DOM',     route: '/javascript/dom'          },
+    ],
+    tip: 'Start with autonomous custom elements (extend HTMLElement) — customized built-ins (extend HTMLButtonElement) have poor Safari support and rarely worth the complexity.',
+    docs: [
+      { label: 'MDN — Web Components',       url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components' },
+      { label: 'Custom Elements Spec',        url: 'https://html.spec.whatwg.org/multipage/custom-elements.html'    },
+      { label: 'Shadow DOM Spec',             url: 'https://www.w3.org/TR/shadow-dom/'                             },
+    ],
+    resources: [
+      { label: 'webcomponents.org',   url: 'https://www.webcomponents.org/',                       badge: 'blog' },
+      { label: 'Open Web Components', url: 'https://open-wc.org/',                                 badge: 'tool' },
+    ],
+    gotchas: [
+      'super() must be the very first statement in the constructor — any this access before it throws ReferenceError.',
+      'template.content.cloneNode(true) is required — appending template.content directly moves the nodes and leaves the template empty for all future instances.',
+    ],
+  },
+
+  // ── HTML: Accessibility & ARIA ─────────────────────────────────────────────
+  'html/accessibility': {
+    apis: ['role', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-hidden', 'tabindex'],
+    related: [
+      { label: 'Semantic Elements',  route: '/html/semantic-elements'  },
+      { label: 'HTML Forms',         route: '/html/forms'              },
+      { label: 'Document Structure', route: '/html/document-structure' },
+    ],
+    tip: 'Rule 1 of ARIA: if you can use a native HTML element or attribute with the right semantics, do that instead of adding an ARIA role.',
+    docs: [
+      { label: 'MDN ARIA Reference',        url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA' },
+      { label: 'WCAG 2.1 Guidelines',       url: 'https://www.w3.org/WAI/WCAG21/quickref/' },
+      { label: 'WebAIM Contrast Checker',   url: 'https://webaim.org/resources/contrastchecker/' },
+    ],
+    resources: [
+      { label: 'web.dev — Accessibility',   url: 'https://web.dev/accessibility/',                           badge: 'blog' },
+      { label: 'a11yproject.com',           url: 'https://www.a11yproject.com/',                             badge: 'blog' },
+      { label: 'Axe DevTools (extension)',  url: 'https://www.deque.com/axe/devtools/',                     badge: 'tool' },
+    ],
+    gotchas: [
+      'aria-hidden="true" on a focusable element creates an invisible keyboard trap — screen reader skips it but keyboard does not.',
+      'Live regions (aria-live) must already exist in the DOM before content is injected — injecting the region and content simultaneously does not announce.',
+    ],
+  },
+
   // ── SSR + Hydration ─────────────────────────────────────────────────────────
   ssr: {
     apis: ['provideClientHydration()', 'withEventReplay()', 'isPlatformBrowser()', 'PLATFORM_ID', 'TransferState'],
@@ -3612,6 +4402,9 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     '[class.section-aspnet]':      'section() === "aspnet"',
     '[class.section-sql]':         'section() === "sql"',
     '[class.section-typescript]':  'section() === "typescript"',
+    '[class.section-react]':       'section() === "react"',
+    '[class.section-javascript]':  'section() === "javascript"',
+    '[class.section-html]':        'section() === "html"',
   },
 })
 export class PageSidebarComponent {
@@ -3630,11 +4423,14 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript'>(() =>
-    this.currentUrl().startsWith('/csharp')      ? 'csharp'
-    : this.currentUrl().startsWith('/aspnet')    ? 'aspnet'
-    : this.currentUrl().startsWith('/sql')       ? 'sql'
-    : this.currentUrl().startsWith('/typescript')? 'typescript'
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html'>(() =>
+    this.currentUrl().startsWith('/csharp')       ? 'csharp'
+    : this.currentUrl().startsWith('/aspnet')     ? 'aspnet'
+    : this.currentUrl().startsWith('/sql')        ? 'sql'
+    : this.currentUrl().startsWith('/typescript') ? 'typescript'
+    : this.currentUrl().startsWith('/react')      ? 'react'
+    : this.currentUrl().startsWith('/javascript') ? 'javascript'
+    : this.currentUrl().startsWith('/html')       ? 'html'
     : 'angular'
   );
 
@@ -3645,6 +4441,9 @@ export class PageSidebarComponent {
            (this.section() === 'aspnet'      ? ASPNET_DEFAULT
            : this.section() === 'sql'        ? SQL_DEFAULT
            : this.section() === 'typescript' ? TS_DEFAULT
+           : this.section() === 'react'      ? REACT_DEFAULT
+           : this.section() === 'javascript' ? JS_DEFAULT
+           : this.section() === 'html'       ? HTML_DEFAULT
            : DEFAULT);
   });
 
@@ -3654,6 +4453,9 @@ export class PageSidebarComponent {
       case 'aspnet':      return '📖 ASP.NET Core Docs';
       case 'sql':         return '📖 SQL Docs';
       case 'typescript':  return '📖 TypeScript Docs';
+      case 'react':       return '📖 React Docs';
+      case 'javascript':  return '📖 MDN JS Docs';
+      case 'html':        return '📖 MDN HTML Docs';
       default:            return '📖 Angular Docs';
     }
   });

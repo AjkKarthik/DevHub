@@ -14,7 +14,7 @@ export class ProgressService {
   readonly csharpTotal  = 50;
   readonly csharpCount  = computed(() => [...this._done()].filter(r => r.startsWith('csharp-')).length);
   readonly csharpPct    = computed(() => Math.round((this.csharpCount() / this.csharpTotal) * 100));
-  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-') && !r.startsWith('aspnet-') && !r.startsWith('sql-') && !r.startsWith('ts-')).length);
+  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-') && !r.startsWith('aspnet-') && !r.startsWith('sql-') && !r.startsWith('ts-') && !r.startsWith('react-') && !r.startsWith('js-') && !r.startsWith('html-')).length);
   readonly angularPct   = computed(() => Math.round((this.angularCount() / this.total) * 100));
 
   // ── ASP.NET Core (keys prefixed 'aspnet-') ─────────────────────────────────
@@ -36,6 +36,16 @@ export class ProgressService {
   readonly reactTotal  = 17;
   readonly reactCount  = computed(() => [...this._done()].filter(r => r.startsWith('react-')).length);
   readonly reactPct    = computed(() => Math.round((this.reactCount() / this.reactTotal) * 100));
+
+  // ── JavaScript (keys prefixed 'js-') ───────────────────────────────────────
+  readonly jsTotal  = 22;
+  readonly jsCount  = computed(() => [...this._done()].filter(r => r.startsWith('js-')).length);
+  readonly jsPct    = computed(() => Math.round((this.jsCount() / this.jsTotal) * 100));
+
+  // ── HTML (keys prefixed 'html-') ───────────────────────────────────────────
+  readonly htmlTotal  = 20;
+  readonly htmlCount  = computed(() => [...this._done()].filter(r => r.startsWith('html-')).length);
+  readonly htmlPct    = computed(() => Math.round((this.htmlCount() / this.htmlTotal) * 100));
 
   toggle(route: string) {
     this._done.update(s => {

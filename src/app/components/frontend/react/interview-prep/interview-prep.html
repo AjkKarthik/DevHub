@@ -1,0 +1,63 @@
+<div class="ip-page">
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">React Interview Prep</h1>
+  <p class="page-subtitle">32 React interview questions covering fundamentals, hooks, state, performance, patterns, testing, Next.js, and TypeScript. Filter by topic or difficulty.</p>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <span class="stat-chip stat-total">{{ counts.total }} questions</span>
+    <span class="stat-chip stat-beginner">{{ counts.beginner }} beginner</span>
+    <span class="stat-chip stat-intermediate">{{ counts.intermediate }} intermediate</span>
+    <span class="stat-chip stat-advanced">{{ counts.advanced }} advanced</span>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-row">
+    <div class="filter-group">
+      <span class="filter-label">Topic</span>
+      <div class="chip-group">
+        @for (topic of topics; track topic) {
+          <button class="chip" [class.active]="activeTopic() === topic" (click)="setTopic(topic)">{{ topic }}</button>
+        }
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Level</span>
+      <div class="chip-group">
+        @for (diff of difficulties; track diff) {
+          <button class="chip" [class.active]="activeDifficulty() === diff" [ngClass]="diff !== 'All' ? diffClass(diff) + '-chip' : ''" (click)="setDiff(diff)">
+            {{ diff === 'All' ? 'All levels' : diffLabel(diff) }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Questions list -->
+  <div class="questions-list">
+    @for (q of filtered(); track q.id) {
+      <div class="question-card" [class.open]="expandedId() === q.id">
+        <button class="question-header" (click)="toggle(q.id)">
+          <span class="q-number">Q{{ q.id }}</span>
+          <span class="q-text">{{ q.q }}</span>
+          <div class="q-meta">
+            <span class="diff-badge" [ngClass]="diffClass(q.difficulty)">{{ diffLabel(q.difficulty) }}</span>
+            <span class="topic-badge">{{ q.topic }}</span>
+            <span class="chevron" [class.rotated]="expandedId() === q.id">▾</span>
+          </div>
+        </button>
+        @if (expandedId() === q.id) {
+          <div class="answer-body">
+            <p>{{ q.a }}</p>
+          </div>
+        }
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <div class="no-results">
+        <p>No questions match this filter combination.</p>
+        <button (click)="setTopic('All'); setDiff('All')">Reset filters</button>
+      </div>
+    }
+  </div>
+</div>
