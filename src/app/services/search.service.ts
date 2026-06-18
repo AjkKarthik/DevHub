@@ -364,6 +364,7 @@ export const SEARCH_INDEX: SearchEntry[] = [
 
   { route: 'css-box-model',          title: 'CSS Box Model',         section: 'CSS',           difficulty: 'beginner',     keywords: 'css box model box-sizing border-box content-box margin collapse padding border overflow display inline block width height' },
   { route: 'css-flexbox',            title: 'CSS Flexbox',           section: 'CSS',           difficulty: 'beginner',     keywords: 'css flexbox flex container item justify-content align-items flex-wrap gap flex-direction flex-grow flex-shrink flex-basis order one-dimensional layout' },
+  { route: 'css-grid',              title: 'CSS Grid',              section: 'CSS',           difficulty: 'intermediate', keywords: 'css grid display grid-template-columns grid-template-rows fr unit repeat auto-fit auto-fill minmax grid-area template-areas subgrid implicit explicit gap two-dimensional layout' },
 
   { route: 'hub-aws',              title: 'AWS',                   section: 'Cloud',         difficulty: 'intermediate', keywords: 'aws ec2 lambda s3 rds iam vpc cloudwatch cloudformation sqs sns eventbridge' },
   { route: 'hub-service-mesh',     title: 'Service Mesh & Istio',  section: 'Cloud',         difficulty: 'advanced',     keywords: 'service mesh istio linkerd envoy mtls traffic management tracing canary mirror' },

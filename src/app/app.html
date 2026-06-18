@@ -500,6 +500,7 @@
     <div class="nav-group">
       <p class="nav-group-label">Layout</p>
       <a routerLink="/css/flexbox" routerLinkActive="active"><span class="nl-text">Flexbox</span>@if(progress.isDone('css-flexbox')){<span class="nl-done">✓</span>}@if(diff('css-flexbox');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/grid" routerLinkActive="active"><span class="nl-text">CSS Grid</span>@if(progress.isDone('css-grid')){<span class="nl-done">✓</span>}@if(diff('css-grid');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     } <!-- end css nav -->

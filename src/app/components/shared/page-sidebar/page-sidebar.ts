@@ -4154,6 +4154,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Grid ─────────────────────────────────────────────────────────────
+  'css/grid': {
+    apis: ['display: grid', 'grid-template-columns', 'grid-template-areas', 'repeat()', 'minmax()', 'fr', 'gap', 'grid-area'],
+    related: [
+      { label: 'Flexbox',               route: '/css/flexbox'    },
+      { label: 'Box Model',             route: '/css/box-model'  },
+      { label: 'Positioning & Stacking', route: '/css/positioning' },
+    ],
+    tip: 'repeat(auto-fit, minmax(200px, 1fr)) is the single most useful CSS Grid pattern — responsive columns with zero media queries.',
+    docs: [
+      { label: 'MDN — CSS Grid Layout', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout' },
+      { label: 'MDN — grid-template-areas', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas' },
+      { label: 'web.dev — Learn CSS Grid', url: 'https://web.dev/learn/css/grid' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Grid Guide', url: 'https://css-tricks.com/snippets/css/complete-guide-grid/', badge: 'blog' },
+      { label: 'Grid Garden (game)',      url: 'https://cssgridgarden.com/',                                  badge: 'tool' },
+    ],
+    gotchas: [
+      'Grid items have min-width: auto — add min-width: 0 to allow them to shrink below content size.',
+      'auto-fit collapses empty tracks; auto-fill keeps them — use auto-fit for card grids.',
+    ],
+  },
+
   // ── CSS: Flexbox ──────────────────────────────────────────────────────────
   'css/flexbox': {
     apis: ['display: flex', 'justify-content', 'align-items', 'flex-wrap', 'gap', 'flex', 'align-self', 'order'],

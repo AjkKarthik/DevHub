@@ -27,7 +27,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Flexbox',                    route: '/css/flexbox', badge: 'Layout', available: true,
     description: 'One-dimensional layout — flex container and item properties, alignment, wrapping, and reordering.',
     keyPoints: ['flex: 1 = flex-grow:1, flex-shrink:1, flex-basis:0% — equal share of space', 'justify-content: main axis; align-items: cross axis', 'gap replaces margin hacks for consistent gutter between flex items'] },
-  { title: 'CSS Grid',                   route: '/css', badge: 'Layout', available: false,
+  { title: 'CSS Grid',                   route: '/css/grid', badge: 'Layout', available: true,
     description: 'Two-dimensional layout — explicit and implicit grids, template areas, auto-placement, and subgrid.',
     keyPoints: ['grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) — responsive without media queries', 'grid-area: spans a named template area; grid-column/row for explicit placement', 'subgrid: lets children align to the parent grid — solves card header alignment'] },
   { title: 'Positioning & Stacking',     route: '/css', badge: 'Layout', available: false,
