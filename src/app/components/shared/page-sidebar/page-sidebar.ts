@@ -4154,6 +4154,29 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Positioning ──────────────────────────────────────────────────────
+  'css/positioning': {
+    apis: ['position: relative', 'position: absolute', 'position: fixed', 'position: sticky', 'z-index', 'inset', 'isolation: isolate'],
+    related: [
+      { label: 'CSS Grid',    route: '/css/grid'    },
+      { label: 'Flexbox',     route: '/css/flexbox' },
+      { label: 'Box Model',   route: '/css/box-model' },
+    ],
+    tip: 'Debugging z-index? Open DevTools, select the element, and look at the Layers panel — it shows every stacking context and lets you see what\'s layering on top.',
+    docs: [
+      { label: 'MDN — position',           url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/position'         },
+      { label: 'MDN — z-index',            url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/z-index'          },
+      { label: 'MDN — Stacking context',   url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — z-index', url: 'https://css-tricks.com/almanac/properties/z/z-index/', badge: 'blog' },
+    ],
+    gotchas: [
+      'z-index has no effect on position: static elements — add position: relative.',
+      'overflow: hidden on a parent breaks sticky — the parent becomes the scroll container.',
+    ],
+  },
+
   // ── CSS: Grid ─────────────────────────────────────────────────────────────
   'css/grid': {
     apis: ['display: grid', 'grid-template-columns', 'grid-template-areas', 'repeat()', 'minmax()', 'fr', 'gap', 'grid-area'],

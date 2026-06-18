@@ -30,7 +30,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'CSS Grid',                   route: '/css/grid', badge: 'Layout', available: true,
     description: 'Two-dimensional layout — explicit and implicit grids, template areas, auto-placement, and subgrid.',
     keyPoints: ['grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) — responsive without media queries', 'grid-area: spans a named template area; grid-column/row for explicit placement', 'subgrid: lets children align to the parent grid — solves card header alignment'] },
-  { title: 'Positioning & Stacking',     route: '/css', badge: 'Layout', available: false,
+  { title: 'Positioning & Stacking',     route: '/css/positioning', badge: 'Layout', available: true,
     description: 'Static, relative, absolute, fixed, sticky positioning — stacking context and z-index.',
     keyPoints: ['Absolute: relative to nearest positioned ancestor (position ≠ static)', 'Sticky: normal flow until scroll threshold, then acts like fixed within container', 'Stacking context: created by transform, opacity < 1, z-index on positioned elements'] },
   { title: 'Typography',                 route: '/css', badge: 'Visual', available: false,

@@ -306,7 +306,8 @@ export const routes: Routes = [
     { path: '',          loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) },
     { path: 'box-model', loadComponent: () => import('./components/frontend/css/box-model/box-model').then(m => m.CssBoxModel) },
     { path: 'flexbox',   loadComponent: () => import('./components/frontend/css/flexbox/flexbox').then(m => m.CssFlexbox) },
-    { path: 'grid',      loadComponent: () => import('./components/frontend/css/grid/grid').then(m => m.CssGrid) },
+    { path: 'grid',        loadComponent: () => import('./components/frontend/css/grid/grid').then(m => m.CssGrid) },
+    { path: 'positioning', loadComponent: () => import('./components/frontend/css/positioning/positioning').then(m => m.CssPositioning) },
   ] },
   { path: 'javascript', children: [
     { path: '', loadComponent: () => import('./components/frontend/javascript/home/home').then(m => m.JavaScriptHome) },
