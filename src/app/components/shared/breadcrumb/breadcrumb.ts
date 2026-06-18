@@ -350,6 +350,7 @@ const CSS_LABELS: Record<string, string> = {
   'grid':        'CSS Grid',
   'positioning':       'Positioning & Stacking',
   'custom-properties': 'CSS Custom Properties',
+  'selectors':         'Selectors Deep Dive',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

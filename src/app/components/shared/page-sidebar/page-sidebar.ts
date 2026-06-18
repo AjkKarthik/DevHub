@@ -4154,6 +4154,29 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Selectors ────────────────────────────────────────────────────────
+  'css/selectors': {
+    apis: [':is()', ':where()', ':has()', ':not()', ':nth-child()', '::before', '::after', '[attr^=]'],
+    related: [
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+      { label: 'Box Model',         route: '/css/box-model'         },
+      { label: 'Flexbox',           route: '/css/flexbox'           },
+    ],
+    tip: 'Use :where() for base/reset styles so components can override without specificity fights. Use :is() when you need the selector\'s specificity to apply.',
+    docs: [
+      { label: 'MDN — :is()',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:is'   },
+      { label: 'MDN — :has()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:has'  },
+      { label: 'MDN — Specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity' },
+    ],
+    resources: [
+      { label: 'CSS Specificity Calculator', url: 'https://specificity.keegan.st/', badge: 'tool' },
+    ],
+    gotchas: [
+      ':is() takes the specificity of its most specific argument — :is(#id, .class) has ID-level specificity.',
+      '::before/::after require content: "" even when empty — without it they don\'t render.',
+    ],
+  },
+
   // ── CSS: Custom Properties ────────────────────────────────────────────────
   'css/custom-properties': {
     apis: ['var()', '--custom-prop', ':root', '@property', 'color-mix()', 'calc() with var()'],

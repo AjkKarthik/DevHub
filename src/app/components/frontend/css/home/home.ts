@@ -18,7 +18,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Box Model',                  route: '/css/box-model', badge: 'Foundations', available: true,
     description: 'Content, padding, border, margin — box-sizing: border-box and why it changed everything.',
     keyPoints: ['border-box: width includes padding and border — use everywhere via *', 'Margin collapse: adjacent block margins collapse to the larger value', 'Negative margins: valid, pulls elements together or outside their container'] },
-  { title: 'Selectors Deep Dive',        route: '/css', badge: 'Foundations', available: false,
+  { title: 'Selectors Deep Dive',        route: '/css/selectors', badge: 'Foundations', available: true,
     description: 'Combinators, pseudo-classes, pseudo-elements, attribute selectors, :is(), :where(), :has().',
     keyPoints: [':is() and :where() take a forgiving selector list — invalid selectors are ignored', ':has() is CSS\'s parent selector — "card:has(img)" selects cards containing images', ':where() has zero specificity — good for resets and defaults'] },
   { title: 'CSS Custom Properties',      route: '/css/custom-properties', badge: 'Foundations', available: true,
