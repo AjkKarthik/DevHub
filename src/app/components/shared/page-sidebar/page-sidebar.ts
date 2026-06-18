@@ -4154,6 +4154,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Flexbox ──────────────────────────────────────────────────────────
+  'css/flexbox': {
+    apis: ['display: flex', 'justify-content', 'align-items', 'flex-wrap', 'gap', 'flex', 'align-self', 'order'],
+    related: [
+      { label: 'Box Model',              route: '/css/box-model'    },
+      { label: 'CSS Grid',               route: '/css/grid'         },
+      { label: 'Positioning & Stacking', route: '/css/positioning'  },
+    ],
+    tip: 'Remember: justify-content = main axis (row → horizontal), align-items = cross axis (row → vertical). They swap when flex-direction is column.',
+    docs: [
+      { label: 'MDN — Flexbox',          url: 'https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox' },
+      { label: 'MDN — flex shorthand',   url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/flex' },
+      { label: 'web.dev — Learn CSS Flexbox', url: 'https://web.dev/learn/css/flexbox' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Flexbox Guide', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', badge: 'blog' },
+      { label: 'Flexbox Froggy (game)',      url: 'https://flexboxfroggy.com/',                              badge: 'tool' },
+    ],
+    gotchas: [
+      'flex items have min-width: auto by default — add min-width: 0 to allow shrinking below content size.',
+      'align-content only takes effect when flex-wrap: wrap is set and there are multiple rows.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],

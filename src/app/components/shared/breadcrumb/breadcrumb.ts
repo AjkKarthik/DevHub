@@ -346,6 +346,7 @@ const HTML_LABELS: Record<string, string> = {
 
 const CSS_LABELS: Record<string, string> = {
   'box-model': 'Box Model',
+  'flexbox':   'Flexbox',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

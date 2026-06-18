@@ -363,6 +363,7 @@ export const SEARCH_INDEX: SearchEntry[] = [
   { route: 'html-interview-prep',    title: 'HTML Interview Prep',   section: 'HTML',          difficulty: 'intermediate', keywords: 'html interview questions answers semantic accessibility forms performance defer async aria live shadow dom service worker csp canonical' },
 
   { route: 'css-box-model',          title: 'CSS Box Model',         section: 'CSS',           difficulty: 'beginner',     keywords: 'css box model box-sizing border-box content-box margin collapse padding border overflow display inline block width height' },
+  { route: 'css-flexbox',            title: 'CSS Flexbox',           section: 'CSS',           difficulty: 'beginner',     keywords: 'css flexbox flex container item justify-content align-items flex-wrap gap flex-direction flex-grow flex-shrink flex-basis order one-dimensional layout' },
 
   { route: 'hub-aws',              title: 'AWS',                   section: 'Cloud',         difficulty: 'intermediate', keywords: 'aws ec2 lambda s3 rds iam vpc cloudwatch cloudformation sqs sns eventbridge' },
   { route: 'hub-service-mesh',     title: 'Service Mesh & Istio',  section: 'Cloud',         difficulty: 'advanced',     keywords: 'service mesh istio linkerd envoy mtls traffic management tracing canary mirror' },

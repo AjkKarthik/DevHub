@@ -24,7 +24,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'CSS Custom Properties',      route: '/css', badge: 'Foundations', available: false,
     description: 'CSS variables, scope, inheritance, fallbacks, and using them for design tokens and theming.',
     keyPoints: ['--my-var: value; defined on :root for global scope', 'var(--my-var, fallback) — fallback if variable is undefined', 'Custom properties cascade and inherit — override at component scope'] },
-  { title: 'Flexbox',                    route: '/css', badge: 'Layout', available: false,
+  { title: 'Flexbox',                    route: '/css/flexbox', badge: 'Layout', available: true,
     description: 'One-dimensional layout — flex container and item properties, alignment, wrapping, and reordering.',
     keyPoints: ['flex: 1 = flex-grow:1, flex-shrink:1, flex-basis:0% — equal share of space', 'justify-content: main axis; align-items: cross axis', 'gap replaces margin hacks for consistent gutter between flex items'] },
   { title: 'CSS Grid',                   route: '/css', badge: 'Layout', available: false,
