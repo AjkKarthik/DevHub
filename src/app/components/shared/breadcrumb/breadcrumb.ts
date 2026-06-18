@@ -344,6 +344,10 @@ const HTML_LABELS: Record<string, string> = {
   'interview-prep':      'HTML Interview Prep',
 };
 
+const CSS_LABELS: Record<string, string> = {
+  'box-model': 'Box Model',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -472,6 +476,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'react'       ? REACT_LABELS
                  : segs[0] === 'javascript'  ? JAVASCRIPT_LABELS
                  : segs[0] === 'html'        ? HTML_LABELS
+                 : segs[0] === 'css'         ? CSS_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

@@ -150,6 +150,29 @@ const HTML_DEFAULT: SidebarData = {
   ],
 };
 
+const CSS_DEFAULT: SidebarData = {
+  apis: ['box-sizing', 'margin', 'padding', 'border', 'display', 'overflow', 'width/height'],
+  related: [
+    { label: 'Box Model',    route: '/css/box-model' },
+    { label: 'Flexbox',      route: '/css/flexbox'   },
+    { label: 'CSS Grid',     route: '/css/grid'      },
+  ],
+  tip: 'Always set * { box-sizing: border-box } as your first rule — it makes width predictable and eliminates the most common CSS sizing bugs.',
+  docs: [
+    { label: 'MDN CSS Reference',     url: 'https://developer.mozilla.org/en-US/docs/Web/CSS' },
+    { label: 'CSS Tricks Guides',     url: 'https://css-tricks.com/guides/'                   },
+    { label: 'web.dev — Learn CSS',   url: 'https://web.dev/learn/css'                        },
+  ],
+  resources: [
+    { label: 'CSS Tricks — Flexbox Guide', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', badge: 'blog' },
+    { label: 'Can I Use',                  url: 'https://caniuse.com/',                                     badge: 'tool' },
+  ],
+  gotchas: [
+    'Without border-box, adding padding or border increases an element\'s total size — breaking pixel-perfect layouts.',
+    'Margin collapse only happens vertically between block elements in normal flow — it does not apply in flex or grid containers.',
+  ],
+};
+
 const ASPNET_DEFAULT: SidebarData = {
   apis: ['WebApplication', 'IServiceCollection', 'IApplicationBuilder', 'IConfiguration', 'ILogger<T>'],
   related: [
@@ -4108,6 +4131,29 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['The DBA path requires understanding execution plans — read the Indexes and Performance pages before tackling it.'],
   },
 
+  // ── CSS: Box Model ────────────────────────────────────────────────────────
+  'css/box-model': {
+    apis: ['box-sizing', 'margin', 'padding', 'border', 'width', 'height', 'overflow', 'display'],
+    related: [
+      { label: 'Flexbox',               route: '/css/flexbox'    },
+      { label: 'CSS Grid',              route: '/css/grid'       },
+      { label: 'Positioning & Stacking', route: '/css/positioning' },
+    ],
+    tip: '* { box-sizing: border-box } should be line 1 of every stylesheet — it makes width mean what you expect and eliminates 80% of sizing bugs.',
+    docs: [
+      { label: 'MDN — box-sizing',    url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing'    },
+      { label: 'MDN — margin collapse', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing' },
+      { label: 'web.dev — Box Model', url: 'https://web.dev/learn/css/box-model'                            },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Box Model', url: 'https://css-tricks.com/the-css-box-model/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Margin collapse only happens in normal block flow — margins do not collapse inside flex or grid containers.',
+      'overflow: hidden on a parent creates a BFC, which is a common trick to contain floats and prevent margin collapse.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],
@@ -4405,6 +4451,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     '[class.section-react]':       'section() === "react"',
     '[class.section-javascript]':  'section() === "javascript"',
     '[class.section-html]':        'section() === "html"',
+    '[class.section-css]':         'section() === "css"',
   },
 })
 export class PageSidebarComponent {
@@ -4423,7 +4470,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css'>(() =>
     this.currentUrl().startsWith('/csharp')       ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')     ? 'aspnet'
     : this.currentUrl().startsWith('/sql')        ? 'sql'
@@ -4431,6 +4478,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/react')      ? 'react'
     : this.currentUrl().startsWith('/javascript') ? 'javascript'
     : this.currentUrl().startsWith('/html')       ? 'html'
+    : this.currentUrl().startsWith('/css')        ? 'css'
     : 'angular'
   );
 
@@ -4444,6 +4492,7 @@ export class PageSidebarComponent {
            : this.section() === 'react'      ? REACT_DEFAULT
            : this.section() === 'javascript' ? JS_DEFAULT
            : this.section() === 'html'       ? HTML_DEFAULT
+           : this.section() === 'css'        ? CSS_DEFAULT
            : DEFAULT);
   });
 
@@ -4456,6 +4505,7 @@ export class PageSidebarComponent {
       case 'react':       return '📖 React Docs';
       case 'javascript':  return '📖 MDN JS Docs';
       case 'html':        return '📖 MDN HTML Docs';
+      case 'css':         return '📖 MDN CSS Docs';
       default:            return '📖 Angular Docs';
     }
   });

@@ -362,6 +362,8 @@ export const SEARCH_INDEX: SearchEntry[] = [
   { route: 'html-cheatsheet',        title: 'HTML Cheat Sheet',      section: 'HTML',          difficulty: 'beginner',     keywords: 'html cheatsheet reference elements attributes doctype head body form input table semantic aria global' },
   { route: 'html-interview-prep',    title: 'HTML Interview Prep',   section: 'HTML',          difficulty: 'intermediate', keywords: 'html interview questions answers semantic accessibility forms performance defer async aria live shadow dom service worker csp canonical' },
 
+  { route: 'css-box-model',          title: 'CSS Box Model',         section: 'CSS',           difficulty: 'beginner',     keywords: 'css box model box-sizing border-box content-box margin collapse padding border overflow display inline block width height' },
+
   { route: 'hub-aws',              title: 'AWS',                   section: 'Cloud',         difficulty: 'intermediate', keywords: 'aws ec2 lambda s3 rds iam vpc cloudwatch cloudformation sqs sns eventbridge' },
   { route: 'hub-service-mesh',     title: 'Service Mesh & Istio',  section: 'Cloud',         difficulty: 'advanced',     keywords: 'service mesh istio linkerd envoy mtls traffic management tracing canary mirror' },
   { route: 'hub-dsa',              title: 'DSA',                   section: 'Fundamentals',  difficulty: 'intermediate', keywords: 'dsa data structures algorithms big o arrays trees graphs sorting dynamic programming' },

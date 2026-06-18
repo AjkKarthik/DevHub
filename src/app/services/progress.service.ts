@@ -47,6 +47,11 @@ export class ProgressService {
   readonly htmlCount  = computed(() => [...this._done()].filter(r => r.startsWith('html-')).length);
   readonly htmlPct    = computed(() => Math.round((this.htmlCount() / this.htmlTotal) * 100));
 
+  // ── CSS (keys prefixed 'css-') ────────────────────────────────────────────
+  readonly cssTotal  = 22;
+  readonly cssCount  = computed(() => [...this._done()].filter(r => r.startsWith('css-')).length);
+  readonly cssPct    = computed(() => Math.round((this.cssCount() / this.cssTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

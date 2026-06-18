@@ -15,7 +15,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'CSS Fundamentals',           route: '/css', badge: 'Foundations', available: false,
     description: 'Selectors, the cascade, specificity, inheritance, and how the browser calculates styles.',
     keyPoints: ['Specificity: inline > id > class/attribute/pseudo-class > element', 'Cascade order: importance → specificity → source order', '!important overrides all; avoid except for utility classes and resets'] },
-  { title: 'Box Model',                  route: '/css', badge: 'Foundations', available: false,
+  { title: 'Box Model',                  route: '/css/box-model', badge: 'Foundations', available: true,
     description: 'Content, padding, border, margin — box-sizing: border-box and why it changed everything.',
     keyPoints: ['border-box: width includes padding and border — use everywhere via *', 'Margin collapse: adjacent block margins collapse to the larger value', 'Negative margins: valid, pulls elements together or outside their container'] },
   { title: 'Selectors Deep Dive',        route: '/css', badge: 'Foundations', available: false,

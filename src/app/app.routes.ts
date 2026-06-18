@@ -302,7 +302,10 @@ export const routes: Routes = [
     { path: 'cheatsheet',          loadComponent: () => import('./components/frontend/html/cheatsheet/cheatsheet').then(m => m.HtmlCheatsheet) },
     { path: 'interview-prep',      loadComponent: () => import('./components/frontend/html/interview-prep/interview-prep').then(m => m.HtmlInterviewPrep) },
   ] },
-  { path: 'css',           children: [{ path: '', loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) }] },
+  { path: 'css', children: [
+    { path: '',          loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) },
+    { path: 'box-model', loadComponent: () => import('./components/frontend/css/box-model/box-model').then(m => m.CssBoxModel) },
+  ] },
   { path: 'javascript', children: [
     { path: '', loadComponent: () => import('./components/frontend/javascript/home/home').then(m => m.JavaScriptHome) },
     { path: 'fundamentals',   loadComponent: () => import('./components/frontend/javascript/fundamentals/fundamentals').then(m => m.JsFundamentals) },
