@@ -1,0 +1,22 @@
+<div class="html-page">
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">HTML Interview Prep</h1>
+  <p class="page-subtitle">25+ curated questions covering semantics, accessibility, performance, forms, and browser APIs — plus deep-dive answers for the trickiest HTML topics.</p>
+  <app-page-meta [readingTime]="15" difficulty="intermediate" since="HTML5" tech="javascript" />
+
+  <section class="html-section">
+    <h2>Quick-Fire Quiz</h2>
+    <p class="ip-subtitle">Test your knowledge — 12 scenario-based multiple-choice questions.</p>
+    <app-quiz-block [items]="quiz" />
+  </section>
+
+  <section class="html-section">
+    <h2>Deep-Dive Q&amp;A</h2>
+    <div class="ip-filters" role="group" aria-label="Filter by topic">
+      @for(f of filters; track f) {
+        <button class="ip-filter-btn" [class.active]="activeFilter() === f" (click)="setFilter(f)">{{f}}</button>
+      }
+    </div>
+    <app-qna-block [items]="filteredQna()" />
+  </section>
+</div>

@@ -1,0 +1,69 @@
+$accent: #e34c26;
+$tint: #fff7ed;
+
+.html-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.html-section h2 { font-size: 1.3rem; font-weight: 700; color: $accent; margin: 2rem 0 1rem; }
+
+.cs-controls {
+  display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0;
+}
+
+.cs-search {
+  width: 100%; padding: 0.5rem 0.875rem; border: 1.5px solid #d1d5db;
+  border-radius: 8px; font-size: 0.95rem; outline: none;
+  &:focus { border-color: $accent; box-shadow: 0 0 0 3px rgba(227,76,38,0.12); }
+}
+
+.cs-filters {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+}
+
+.cs-filter-btn {
+  padding: 0.3rem 0.75rem; border: 1.5px solid #d1d5db; border-radius: 20px;
+  background: #fff; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.15s;
+  &:hover { border-color: $accent; color: $accent; }
+  &.active { background: $accent; border-color: $accent; color: #fff; }
+}
+
+.cs-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; margin: 1rem 0 2rem;
+}
+
+.cs-card {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 10px;
+  padding: 0.875rem 1rem; display: flex; flex-direction: column; gap: 0.35rem;
+  transition: box-shadow 0.15s;
+  &:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+}
+
+.cs-name {
+  font-size: 0.82rem; font-weight: 700; color: $accent;
+  background: $tint; padding: 0.15rem 0.4rem; border-radius: 4px; width: fit-content;
+  word-break: break-all;
+}
+
+.cs-badge {
+  font-size: 0.7rem; font-weight: 600; padding: 0.1rem 0.45rem;
+  border-radius: 10px; width: fit-content; background: #f3f4f6; color: #6b7280;
+}
+
+.cs-desc { font-size: 0.82rem; color: #374151; line-height: 1.5; margin: 0; }
+
+.cs-empty { grid-column: 1/-1; text-align: center; color: #9ca3af; padding: 2rem; }
+
+:host-context(body.dark) {
+  .cs-search {
+    background: #1e293b; border-color: #334155; color: #f1f5f9;
+    &:focus { border-color: #fb923c; box-shadow: 0 0 0 3px rgba(251,146,60,0.15); }
+  }
+  .cs-filter-btn {
+    background: #1e293b; border-color: #334155; color: #cbd5e1;
+    &:hover { border-color: #fb923c; color: #fb923c; }
+    &.active { background: $accent; border-color: $accent; color: #fff; }
+  }
+  .cs-card { background: #1e293b; border-color: #334155; }
+  .cs-name { color: #fb923c; background: rgba(251,146,60,0.1); }
+  .cs-badge { background: #334155; color: #94a3b8; }
+  .cs-desc { color: #cbd5e1; }
+  .html-section h2 { color: #fb923c; }
+}

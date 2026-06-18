@@ -340,6 +340,8 @@ const HTML_LABELS: Record<string, string> = {
   'pwa-service-workers': 'PWA & Service Workers',
   'seo':                 'HTML SEO',
   'apis':                'HTML5 Browser APIs',
+  'cheatsheet':          'HTML Cheat Sheet',
+  'interview-prep':      'HTML Interview Prep',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

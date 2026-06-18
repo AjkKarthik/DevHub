@@ -299,6 +299,8 @@ export const routes: Routes = [
     { path: 'pwa-service-workers', loadComponent: () => import('./components/frontend/html/pwa-service-workers/pwa-service-workers').then(m => m.HtmlPwaServiceWorkers) },
     { path: 'seo',                 loadComponent: () => import('./components/frontend/html/seo/seo').then(m => m.HtmlSeo) },
     { path: 'apis',                loadComponent: () => import('./components/frontend/html/apis/apis').then(m => m.HtmlApis) },
+    { path: 'cheatsheet',          loadComponent: () => import('./components/frontend/html/cheatsheet/cheatsheet').then(m => m.HtmlCheatsheet) },
+    { path: 'interview-prep',      loadComponent: () => import('./components/frontend/html/interview-prep/interview-prep').then(m => m.HtmlInterviewPrep) },
   ] },
   { path: 'css',           children: [{ path: '', loadComponent: () => import('./components/frontend/css/home/home').then(m => m.CssHome) }] },
   { path: 'javascript', children: [

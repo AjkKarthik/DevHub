@@ -1,0 +1,33 @@
+<div class="html-page">
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">HTML Cheat Sheet</h1>
+  <p class="page-subtitle">All essential HTML5 elements, attributes, and patterns grouped by category — with filterable search.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="HTML5" tech="javascript" />
+
+  <div class="cs-controls">
+    <input class="cs-search" type="search" placeholder="Search elements…" (input)="onSearch($event)" aria-label="Search cheatsheet" />
+    <div class="cs-filters" role="group" aria-label="Filter by category">
+      @for(cat of categories; track cat) {
+        <button class="cs-filter-btn" [class.active]="activeCategory() === cat" (click)="setCategory(cat)">{{cat}}</button>
+      }
+    </div>
+  </div>
+
+  <div class="cs-grid">
+    @for(item of items(); track item.name) {
+      <div class="cs-card">
+        <code class="cs-name">{{item.name}}</code>
+        <span class="cs-badge cs-badge--{{item.category.toLowerCase()}}">{{item.category}}</span>
+        <p class="cs-desc">{{item.desc}}</p>
+      </div>
+    }
+    @if(items().length === 0) {
+      <p class="cs-empty">No elements match your search.</p>
+    }
+  </div>
+
+  <section class="html-section">
+    <h2>Code Patterns</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+</div>

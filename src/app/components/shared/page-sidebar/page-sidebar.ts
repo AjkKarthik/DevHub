@@ -4156,6 +4156,44 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'html/cheatsheet': {
+    apis: ['<!DOCTYPE html>', '<meta charset>', '<link rel>', 'defer/async', 'aria-*', 'data-*', 'loading="lazy"', 'fetchpriority'],
+    related: [
+      { label: 'HTML Interview Prep',   route: '/html/interview-prep'   },
+      { label: 'Accessibility & ARIA',  route: '/html/accessibility'    },
+      { label: 'HTML Performance',      route: '/html/performance'      },
+    ],
+    tip: 'Use the category filter to focus on one area at a time — Forms and A11y are the most common gaps in HTML interviews.',
+    docs: [
+      { label: 'MDN — HTML elements reference', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element'            },
+      { label: 'MDN — Global attributes',       url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes'  },
+      { label: 'HTML spec (WHATWG)',             url: 'https://html.spec.whatwg.org/multipage/'                             },
+    ],
+    resources: [
+      { label: 'web.dev — Learn HTML',  url: 'https://web.dev/learn/html',  badge: 'blog' },
+    ],
+    gotchas: [],
+  },
+
+  'html/interview-prep': {
+    apis: ['defer/async', 'ARIA', 'Critical Rendering Path', 'service worker', 'Shadow DOM', 'canonical', 'hreflang', 'JSON-LD'],
+    related: [
+      { label: 'HTML Cheat Sheet',      route: '/html/cheatsheet'       },
+      { label: 'Accessibility & ARIA',  route: '/html/accessibility'    },
+      { label: 'HTML SEO',              route: '/html/seo'              },
+    ],
+    tip: 'Interviewers love "why" answers — for every HTML feature, know the fallback, the performance impact, and the accessibility consequence.',
+    docs: [
+      { label: 'MDN — HTML',                   url: 'https://developer.mozilla.org/en-US/docs/Web/HTML'        },
+      { label: 'web.dev — Core Web Vitals',    url: 'https://web.dev/articles/vitals'                         },
+      { label: 'WHATWG HTML Living Standard',  url: 'https://html.spec.whatwg.org/multipage/'                 },
+    ],
+    resources: [
+      { label: 'web.dev — Learn HTML', url: 'https://web.dev/learn/html',  badge: 'blog' },
+    ],
+    gotchas: [],
+  },
+
   'html/apis': {
     apis: ['navigator.geolocation.getCurrentPosition()', 'navigator.geolocation.watchPosition()', 'Notification.requestPermission()', 'new Notification()', 'FileReader', 'DataTransfer', 'navigator.clipboard.writeText()', 'navigator.clipboard.readText()', 'navigator.share()', 'event.dataTransfer'],
     related: [

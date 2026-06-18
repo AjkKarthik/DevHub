@@ -235,7 +235,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'HTML', time: '~3 hrs',
       tagline: 'The skeleton of the web — semantic markup, accessibility & forms.',
       icon: '🌐', gradient: 'linear-gradient(135deg, #e44d26 0%, #b83219 100%)',
-      textDark: false, route: '/html', available: true,
+      textDark: false, route: '/html', available: true, topics: 17,
 
       highlights: [
         'Semantic elements: article, section, nav',

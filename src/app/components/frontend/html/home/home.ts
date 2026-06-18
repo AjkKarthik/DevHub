@@ -81,12 +81,12 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Head & Metadata',            route: '/html/head-metadata', badge: 'Semantic', available: true,
     description: 'charset, viewport, SEO meta tags, Open Graph, Twitter Cards, canonical, resource hints, and favicon setup.',
     keyPoints: ['charset must be the first tag in <head> — within the first 1024 bytes', 'og:image needs to be at least 1200×630 px for a full-size social preview card', 'Font preloads require both as="font" and crossorigin to avoid a double fetch'] },
-  { title: 'HTML Cheat Sheet',           route: '/html', badge: 'Reference', available: false,
-    description: 'All HTML5 elements grouped by category, global attributes, input types, and event attributes.',
-    keyPoints: ['Void elements: area, base, br, col, embed, hr, img, input, link, meta, param, source, track, wbr', 'Global attributes: id, class, style, hidden, tabindex, data-*, aria-*', 'Character entities: &amp; &lt; &gt; &nbsp; &copy; — when and why'] },
-  { title: 'HTML Interview Prep',        route: '/html', badge: 'Reference', available: false,
-    description: '25+ HTML interview questions — semantic HTML, accessibility, forms, performance, and browser behaviour.',
-    keyPoints: ['Explain the difference between <section> and <div>', 'What is the purpose of alt text on images?', 'How does the browser render an HTML document? (parse → DOM → CSSOM → render tree)'] },
+  { title: 'HTML Cheat Sheet',           route: '/html/cheatsheet', badge: 'Reference', available: true,
+    description: 'All HTML5 elements grouped by category — Document, Text, Tables, Forms, Semantic, Accessibility, and Global attributes. Filterable and searchable.',
+    keyPoints: ['Void elements: area, base, br, col, embed, hr, img, input, link, meta, param, source, track, wbr', 'Global attributes: id, class, style, hidden, tabindex, data-*, aria-*', 'Filterable by category with live keyword search'] },
+  { title: 'HTML Interview Prep',        route: '/html/interview-prep', badge: 'Reference', available: true,
+    description: '25+ curated questions covering semantics, accessibility, forms, performance, and browser APIs — plus deep-dive answers.',
+    keyPoints: ['12 quick-fire multiple-choice questions with explanations', '10 deep-dive Q&As on CRP, ARIA, service workers, Shadow DOM', 'Filter by topic: Foundations, Semantic, Forms, Accessibility, Performance, APIs'] },
 ];
 
 @Component({

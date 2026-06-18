@@ -90,7 +90,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | TypeScript | 22 | 0 | Complete — 20 topics + 2 reference |
 | React | 19 | 0 | Complete — 17 topics + 2 reference |
 | JavaScript | 24 | 0 | Complete — 22 topics + 2 reference |
-| HTML | 0 | 22 | Not started |
+| HTML | 17 | 8 | In Progress — 15 topics + 2 reference live; 8 cards coming soon |
 | CSS | 0 | 22 | Not started |
 | Web Performance | 0 | 22 | Not started |
 | Blazor | 0 | 23 | Not started |
@@ -623,27 +623,19 @@ Accent: `#e34c26` (HTML orange). Search prefix: `html-`.
   URLs, `<link>`, `<base>`, fragment navigation, skip links
 
 
-- [ ] `html-accessibility` — ARIA roles, aria-label vs aria-labelledby, aria-live, focus
-  management, landmark roles, WCAG 2.1 checklist
-- [ ] `html-head-metadata` — `<meta>` charset/viewport/description, Open Graph, Twitter
-  Cards, canonical, `<link rel>` preload/prefetch/dns-prefetch
-- [ ] `html-custom-elements` — Web Components: `<template>`, `<slot>`, shadow DOM,
-  `customElements.define`, `HTMLElement` lifecycle callbacks
-- [ ] `html-iframes-embeds` — `<iframe>` sandbox, srcdoc, allow, CSP frame-ancestors,
-  `<embed>`, `<object>`, security implications
-- [ ] `html-pwa-service-workers` — manifest.json, service worker lifecycle, Cache API,
-  offline strategies, Background Sync, Push API
-- [ ] `html-seo` — Structured data (JSON-LD), canonical URLs, robots.txt, sitemap.xml,
-  Core Web Vitals meta tags, hreflang
+**Workflow: qwen3.6 writes full .ts file → Claude validates build errors only → Claude does wiring**
 
-
-- [ ] `html-performance` — Resource hints (preload/prefetch/preconnect), `loading=lazy`,
-  critical rendering path, render-blocking resources
-- [ ] `html-canvas-svg` — `<canvas>` 2D context API vs `<svg>` — use cases, text, shapes,
-  gradients, animation approaches
-- [ ] `html-apis` — Geolocation, Notifications, File API, Drag and Drop, Clipboard API,
-  Web Share API — feature detection pattern
-- [ ] Reference pages: cheatsheet, interview-prep
+- [x] 2026-06-18 `html-accessibility` — ARIA roles, aria-label vs aria-labelledby, aria-live, focus management, landmark roles
+- [x] 2026-06-18 `html-head-metadata` — charset/viewport, Open Graph, Twitter Cards, canonical, link rel preload/prefetch
+- [x] 2026-06-18 `html-custom-elements` — Web Components: template, slot, shadow DOM, customElements.define, lifecycle
+- [x] 2026-06-18 `html-iframes-embeds` — iframe sandbox, allow, CSP frame-ancestors, embed vs object vs SVG
+- [x] 2026-06-18 `html-canvas-svg` — canvas 2D context API vs SVG — shapes, text, gradients, animation
+- [x] 2026-06-18 `html-performance` — Resource hints, loading=lazy, critical rendering path, render-blocking
+- [x] 2026-06-18 `html-pwa-service-workers` — manifest.json, service worker lifecycle, Cache API, offline strategies
+- [x] 2026-06-18 `html-seo` — JSON-LD structured data, canonical, robots.txt, Core Web Vitals, hreflang
+- [x] 2026-06-18 `html-apis` — Geolocation, Notifications, File API, Drag and Drop, Clipboard API, Web Share
+- [x] 2026-06-18 `html-cheatsheet` — reference page (no app-page-complete, no app-revision-card)
+- [x] 2026-06-18 `html-interview-prep` — reference page (no app-page-complete, no app-revision-card)
 
 ---
 
@@ -1197,6 +1189,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-18 — HTML hub Phase 3D Batch 2: 7 new pages (canvas-svg, performance, pwa-service-workers, seo, apis, cheatsheet, interview-prep). htmlTotal = 20. hub-home HTML card topics: 17, available: true. Build passes. 17 pages live (15 topics + 2 reference), 8 coming soon.
 - [x] 2026-06-17 — JavaScript hub Phase 3C complete: all 24 pages live (22 trackable topics + cheatsheet + interview-prep). jsTotal = 22. hub-home JavaScript card topics: 24, available: true. Hero stat updated to 300+. Build passes.
 - [x] 2026-06-17 — React hub Phase 3B complete: all 19 pages live (17 trackable topics + cheatsheet + interview-prep). reactTotal = 17. hub-home React card topics: 19, available: true. Hero stat updated to 275+. Build passes.
 - [x] 2026-06-17 — TypeScript hub Phase 3A complete: all 22 pages live (20 trackable topics + cheatsheet + interview-prep). tsTotal = 20. hub-home TypeScript card topics: 22, available: true. Hero stat: 250+. Build passes.
