@@ -45,7 +45,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Font Performance',           route: '/performance/font-performance', badge: 'Assets', available: true,
     description: 'Font loading strategies, font-display, FOUT vs FOIT, subsetting, and variable fonts.',
     keyPoints: ['font-display: swap: text shown immediately with fallback font', 'Subset fonts: remove unused characters — 40KB → 8KB for Latin subset', 'Variable font: one file replaces multiple weight files; smaller total size'] },
-  { title: 'JavaScript Performance',     route: '/performance/js-performance', badge: 'JavaScript', available: false,
+  { title: 'JavaScript Performance',     route: '/performance/js-performance', badge: 'JavaScript', available: true,
     description: 'Bundle size analysis, tree shaking, code splitting, and long task avoidance.',
     keyPoints: ['webpack-bundle-analyzer / rollup-plugin-visualizer: find what\'s big', 'Tree shaking: named exports required; CommonJS (require) is not tree-shakeable', 'Long tasks > 50ms: break with requestIdleCallback or scheduler.yield()'] },
   { title: 'Third-Party Scripts',        route: '/performance/third-party-scripts', badge: 'JavaScript', available: false,
