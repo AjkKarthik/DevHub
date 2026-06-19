@@ -4178,6 +4178,28 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/container-queries': {
+    apis: ['container-type', 'container-name', 'container', '@container', 'cqw', 'cqh', 'cqi', 'cqb'],
+    related: [
+      { label: 'Responsive Design', route: '/css/responsive'          },
+      { label: 'CSS Grid',          route: '/css/grid'                },
+      { label: 'Flexbox',           route: '/css/flexbox'             },
+    ],
+    tip: 'Use container-type: inline-size (not size) for most cases — size containment can collapse element height.',
+    docs: [
+      { label: 'MDN — container-type',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type'  },
+      { label: 'MDN — @container',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@container'      },
+      { label: 'Can I Use — Container Queries', url: 'https://caniuse.com/css-container-queries'               },
+    ],
+    resources: [
+      { label: 'Container Query Playground', url: 'https://codepen.io/una/pen/LYbvKpK', badge: 'tool' },
+    ],
+    gotchas: [
+      'A container cannot query itself — only descendants respond to @container rules on that container.',
+      'cqw / cqh only work when there is a container-type ancestor in scope — without one, they resolve to 0.',
+    ],
+  },
+
   // ── CSS: Colors & Theming ─────────────────────────────────────────────────
   'css/colors-theming': {
     apis: ['oklch()', 'color-mix()', 'prefers-color-scheme', 'forced-colors', 'color-scheme', 'var(--token)', 'contrast-color()'],

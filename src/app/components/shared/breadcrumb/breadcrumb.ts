@@ -357,6 +357,7 @@ const CSS_LABELS: Record<string, string> = {
   'transitions':       'CSS Transitions',
   'colors-theming':        'Colors & Theming',
   'backgrounds-borders':   'Backgrounds & Borders',
+  'container-queries':     'Container Queries',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

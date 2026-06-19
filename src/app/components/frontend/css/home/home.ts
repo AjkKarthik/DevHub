@@ -45,7 +45,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Responsive Design',          route: '/css/responsive', badge: 'Responsive', available: true,
     description: 'Mobile-first methodology, media queries, fluid grids, and responsive images.',
     keyPoints: ['Mobile-first: start with small screen styles, add complexity with min-width queries', 'clamp() and min()/max() for fluid sizing without breakpoints', 'Container queries: @container — respond to element width, not viewport'] },
-  { title: 'Container Queries',          route: '/css', badge: 'Responsive', available: false,
+  { title: 'Container Queries',          route: '/css/container-queries', badge: 'Responsive', available: true,
     description: 'Component-scoped responsiveness — @container queries respond to element width instead of viewport.',
     keyPoints: ['container-type: inline-size on parent; @container (min-width: 500px) on children', 'Container queries unlock truly reusable components independent of their context', 'Container query units: cqw, cqh — percentage of container dimensions'] },
   { title: 'CSS Transitions',            route: '/css/transitions', badge: 'Animation', available: true,
