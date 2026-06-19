@@ -1,1 +1,35 @@
+<div class="perf-page">
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Resource Hints</h1>
+  <p class="page-subtitle">
+    Tell the browser what to fetch before the parser discovers it.
+    <code>preload</code> for now, <code>prefetch</code> for next, <code>preconnect</code>
+    to warm origins, <code>modulepreload</code> to pre-compile JS modules.
+  </p>
 
+  <app-page-meta [readingTime]="18" difficulty="intermediate" since="2016" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="perf-resource-hints"
+    nextRoute="/performance/http2-http3"
+    nextLabel="HTTP/2 & HTTP/3" />
+</div>

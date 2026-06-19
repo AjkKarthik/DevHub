@@ -30,7 +30,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Browser Rendering Pipeline', route: '/performance/browser-rendering', badge: 'Rendering', available: true,
     description: 'Layout, paint, and composite layers — which CSS properties are cheap (composite-only) vs expensive (layout).',
     keyPoints: ['Cheap: transform and opacity — compositor-only, no layout/paint', 'Expensive: width, height, top, left — trigger layout on every change', 'contain: strict or content isolates subtree from global layout calculations'] },
-  { title: 'Resource Hints',             route: '/performance/resource-hints', badge: 'Loading', available: false,
+  { title: 'Resource Hints',             route: '/performance/resource-hints', badge: 'Loading', available: true,
     description: 'preload, prefetch, preconnect, dns-prefetch, modulepreload — and when each helps (or hurts).',
     keyPoints: ['preload: high priority for current page critical resources', 'prefetch: low priority for next page resources', 'preconnect: open TCP/TLS to third-party origin before needed (fonts, CDN)'] },
   { title: 'HTTP/2 & HTTP/3',            route: '/performance/http2-http3', badge: 'Loading', available: false,
