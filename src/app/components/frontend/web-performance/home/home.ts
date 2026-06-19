@@ -42,7 +42,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Image Optimisation',         route: '/performance/image-optimisation', badge: 'Assets', available: true,
     description: 'WebP/AVIF, responsive images, srcset, lazy loading, and the new image rendering APIs.',
     keyPoints: ['AVIF: 50% smaller than JPEG; WebP: 30% smaller — serve via <picture> with fallback', 'srcset + sizes: browser picks the right image for device resolution and viewport', 'loading="lazy" for below-the-fold; fetchpriority="high" for LCP image'] },
-  { title: 'Font Performance',           route: '/performance/font-performance', badge: 'Assets', available: false,
+  { title: 'Font Performance',           route: '/performance/font-performance', badge: 'Assets', available: true,
     description: 'Font loading strategies, font-display, FOUT vs FOIT, subsetting, and variable fonts.',
     keyPoints: ['font-display: swap: text shown immediately with fallback font', 'Subset fonts: remove unused characters — 40KB → 8KB for Latin subset', 'Variable font: one file replaces multiple weight files; smaller total size'] },
   { title: 'JavaScript Performance',     route: '/performance/js-performance', badge: 'JavaScript', available: false,
