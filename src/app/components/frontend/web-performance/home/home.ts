@@ -33,7 +33,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Resource Hints',             route: '/performance/resource-hints', badge: 'Loading', available: true,
     description: 'preload, prefetch, preconnect, dns-prefetch, modulepreload — and when each helps (or hurts).',
     keyPoints: ['preload: high priority for current page critical resources', 'prefetch: low priority for next page resources', 'preconnect: open TCP/TLS to third-party origin before needed (fonts, CDN)'] },
-  { title: 'HTTP/2 & HTTP/3',            route: '/performance/http2-http3', badge: 'Loading', available: false,
+  { title: 'HTTP/2 & HTTP/3',            route: '/performance/http2-http3', badge: 'Loading', available: true,
     description: 'Multiplexing, header compression, server push (HTTP/2), QUIC (HTTP/3), and implications for bundling strategy.',
     keyPoints: ['HTTP/2 multiplexing: many requests on one connection — domain sharding is counter-productive', 'HTTP/3: QUIC over UDP — 0-RTT reconnect, no head-of-line blocking', 'HTTP/2: less need to concatenate files; HTTP/1.1: still benefits from bundles'] },
   { title: 'Caching & Service Workers',  route: '/performance/caching', badge: 'Loading', available: false,
