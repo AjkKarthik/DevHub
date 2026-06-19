@@ -60,7 +60,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Server-Side Rendering & Streaming', route: '/performance/ssr-streaming', badge: 'Rendering', available: true,
     description: 'SSR, SSG, ISR, and streaming HTML — when server rendering improves performance vs adds complexity.',
     keyPoints: ['SSR: faster LCP when client JS is heavy', 'SSG: pre-rendered HTML at build time — fastest possible TTFB', 'Streaming HTML: flush early with React/Node.js ReadableStream', 'Partial hydration: hydrate only interactive components', 'Edge rendering: deploy SSR close to users (Vercel, Cloudflare)'] },
-  { title: 'CSS Performance',             route: '/performance/css-performance', badge: 'Assets', available: false,
+  { title: 'CSS Performance',             route: '/performance/css-performance', badge: 'Assets', available: true,
     description: 'Reduce CSS selector complexity, contain, content-visibility, and removing unused styles.',
     keyPoints: ['content-visibility: auto: browser skips off-screen rendering', 'PurgeCSS / UnCSS: remove unused class selectors in production', 'Critical CSS: inline above-the-fold, async-load the rest', 'contain: layout strict: isolates element from triggering global layout', 'Avoid @import in CSS — causes serial network requests'] },
   { title: 'Web Workers & Off-Main-Thread', route: '/performance/web-workers', badge: 'JavaScript', available: false,
