@@ -360,6 +360,7 @@ const CSS_LABELS: Record<string, string> = {
   'container-queries':     'Container Queries',
   'css-layers':            'CSS Cascade Layers',
   'css-nesting':           'CSS Nesting',
+  'logical-properties':    'Logical Properties',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

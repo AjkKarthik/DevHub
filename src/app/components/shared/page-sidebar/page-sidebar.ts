@@ -4178,6 +4178,28 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/logical-properties': {
+    apis: ['margin-inline', 'padding-block', 'inset-inline-start', 'inline-size', 'block-size', 'border-inline-start', 'border-start-start-radius'],
+    related: [
+      { label: 'CSS Nesting',      route: '/css/css-nesting'    },
+      { label: 'Responsive Design', route: '/css/responsive'    },
+      { label: 'Flexbox',          route: '/css/flexbox'        },
+    ],
+    tip: 'Start migration with margin-inline: auto (centering) and padding-block/inline — these are the highest ROI logical properties.',
+    docs: [
+      { label: 'MDN — Logical Properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values' },
+      { label: 'MDN — inset',              url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/inset'                            },
+      { label: 'Can I Use — Logical Props', url: 'https://caniuse.com/css-logical-props'                                           },
+    ],
+    resources: [
+      { label: 'CSS Logical Properties Guide', url: 'https://web.dev/learn/css/logical-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'In vertical-rl writing mode, inline-size maps to height and block-size maps to width — opposite of horizontal-tb.',
+      'inset is physical (top/right/bottom/left) — use inset-inline-start/end for direction-aware positioning.',
+    ],
+  },
+
   'css/css-nesting': {
     apis: ['& (parent selector)', 'nested @media', 'nested @container', 'nested @supports'],
     related: [

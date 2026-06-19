@@ -60,7 +60,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'CSS Nesting',                route: '/css/css-nesting', badge: 'Modern CSS', available: true,
     description: 'Native CSS nesting (without preprocessors) — & parent selector, nested media queries.',
     keyPoints: ['& refers to the parent selector in native nesting', '.card { & h3 { } } is equivalent to .card h3 {}', 'Nested @media queries: context-aware breakpoints alongside the component styles'] },
-  { title: 'Logical Properties',         route: '/css', badge: 'Modern CSS', available: false,
+  { title: 'Logical Properties',         route: '/css/logical-properties', badge: 'Modern CSS', available: true,
     description: 'margin-inline, padding-block, inset — write CSS that works for LTR and RTL without overrides.',
     keyPoints: ['margin-inline: horizontal margin; margin-block: vertical margin', 'Automatically flips for RTL languages — no dir="rtl" overrides needed', 'border-start-start-radius: equivalent of border-top-left-radius in LTR'] },
   { title: 'CSS Architecture (BEM/ITCSS)', route: '/css', badge: 'Modern CSS', available: false,
