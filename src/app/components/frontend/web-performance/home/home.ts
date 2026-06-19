@@ -39,7 +39,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Caching & Service Workers',  route: '/performance/caching', badge: 'Loading', available: true,
     description: 'Cache-Control, ETags, immutable assets, and Service Worker caching strategies for offline and fast loads.',
     keyPoints: ['Versioned assets (bundle.abc123.js): Cache-Control: max-age=31536000, immutable', 'index.html: Cache-Control: no-cache — always revalidate entry point', 'Workbox: stale-while-revalidate, cache-first, network-first strategies'] },
-  { title: 'Image Optimisation',         route: '/performance/image-optimisation', badge: 'Assets', available: false,
+  { title: 'Image Optimisation',         route: '/performance/image-optimisation', badge: 'Assets', available: true,
     description: 'WebP/AVIF, responsive images, srcset, lazy loading, and the new image rendering APIs.',
     keyPoints: ['AVIF: 50% smaller than JPEG; WebP: 30% smaller — serve via <picture> with fallback', 'srcset + sizes: browser picks the right image for device resolution and viewport', 'loading="lazy" for below-the-fold; fetchpriority="high" for LCP image'] },
   { title: 'Font Performance',           route: '/performance/font-performance', badge: 'Assets', available: false,
