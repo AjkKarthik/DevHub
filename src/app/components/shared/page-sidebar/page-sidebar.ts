@@ -4178,6 +4178,28 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-architecture': {
+    apis: ['BEM', 'ITCSS', 'CSS Modules', '@layer + ITCSS'],
+    related: [
+      { label: 'CSS Layers (@layer)',  route: '/css/css-layers'   },
+      { label: 'CSS Custom Properties', route: '/css/custom-properties' },
+      { label: 'Tailwind CSS',         route: '/css/tailwind'     },
+    ],
+    tip: 'Modern stack: ITCSS conceptual layers + CSS @layer enforcement + BEM naming for components = zero specificity wars.',
+    docs: [
+      { label: 'BEM Official Docs',    url: 'https://getbem.com/'                                                    },
+      { label: 'ITCSS — Harry Roberts', url: 'https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/' },
+      { label: 'CSS Modules Docs',     url: 'https://github.com/css-modules/css-modules'                            },
+    ],
+    resources: [
+      { label: 'CUBE CSS (modern take)', url: 'https://cube.fyi/', badge: 'docs' },
+    ],
+    gotchas: [
+      'BEM elements are flat siblings in CSS — never nest .card__title inside .card { } or you get a descendant selector.',
+      'ITCSS Objects layer is structure-only — no colors, shadows, or fonts. Those go in Components.',
+    ],
+  },
+
   'css/logical-properties': {
     apis: ['margin-inline', 'padding-block', 'inset-inline-start', 'inline-size', 'block-size', 'border-inline-start', 'border-start-start-radius'],
     related: [

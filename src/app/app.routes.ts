@@ -320,6 +320,7 @@ export const routes: Routes = [
     { path: 'css-layers',         loadComponent: () => import('./components/frontend/css/css-layers/css-layers').then(m => m.CssCssLayers) },
     { path: 'css-nesting',         loadComponent: () => import('./components/frontend/css/css-nesting/css-nesting').then(m => m.CssCssNesting) },
     { path: 'logical-properties',  loadComponent: () => import('./components/frontend/css/logical-properties/logical-properties').then(m => m.CssLogicalProperties) },
+    { path: 'css-architecture',    loadComponent: () => import('./components/frontend/css/css-architecture/css-architecture').then(m => m.CssCssArchitecture) },
   ] },
   { path: 'javascript', children: [
     { path: '', loadComponent: () => import('./components/frontend/javascript/home/home').then(m => m.JavaScriptHome) },

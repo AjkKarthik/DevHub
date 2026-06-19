@@ -63,7 +63,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Logical Properties',         route: '/css/logical-properties', badge: 'Modern CSS', available: true,
     description: 'margin-inline, padding-block, inset — write CSS that works for LTR and RTL without overrides.',
     keyPoints: ['margin-inline: horizontal margin; margin-block: vertical margin', 'Automatically flips for RTL languages — no dir="rtl" overrides needed', 'border-start-start-radius: equivalent of border-top-left-radius in LTR'] },
-  { title: 'CSS Architecture (BEM/ITCSS)', route: '/css', badge: 'Modern CSS', available: false,
+  { title: 'CSS Architecture (BEM/ITCSS)', route: '/css/css-architecture', badge: 'Modern CSS', available: true,
     description: 'BEM naming, ITCSS layers, CSS Modules, utility-first (Tailwind) — methodologies for maintainable CSS.',
     keyPoints: ['BEM: .block__element--modifier — eliminates specificity battles', 'ITCSS: Settings → Tools → Generic → Elements → Objects → Components → Utilities', 'CSS Modules: locally scoped class names — zero collision guarantee'] },
   { title: 'Tailwind CSS',               route: '/css', badge: 'Modern CSS', available: false,

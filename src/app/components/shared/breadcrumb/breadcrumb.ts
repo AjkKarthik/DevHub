@@ -361,6 +361,7 @@ const CSS_LABELS: Record<string, string> = {
   'css-layers':            'CSS Cascade Layers',
   'css-nesting':           'CSS Nesting',
   'logical-properties':    'Logical Properties',
+  'css-architecture':      'CSS Architecture',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
