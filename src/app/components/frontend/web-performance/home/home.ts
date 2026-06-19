@@ -48,7 +48,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'JavaScript Performance',     route: '/performance/js-performance', badge: 'JavaScript', available: true,
     description: 'Bundle size analysis, tree shaking, code splitting, and long task avoidance.',
     keyPoints: ['webpack-bundle-analyzer / rollup-plugin-visualizer: find what\'s big', 'Tree shaking: named exports required; CommonJS (require) is not tree-shakeable', 'Long tasks > 50ms: break with requestIdleCallback or scheduler.yield()'] },
-  { title: 'Third-Party Scripts',        route: '/performance/third-party-scripts', badge: 'JavaScript', available: false,
+  { title: 'Third-Party Scripts',        route: '/performance/third-party-scripts', badge: 'JavaScript', available: true,
     description: 'The performance cost of analytics, ads, and chat widgets — loading strategies and facade patterns.',
     keyPoints: ['Third-party scripts block main thread and inflate INP', 'Facade pattern: load YouTube/Stripe only on interaction, not on page load', 'Partytown: run third-party scripts in a Web Worker, off main thread'] },
   { title: 'Performance Measurement',    route: '/performance/measurement', badge: 'Measurement', available: false,
