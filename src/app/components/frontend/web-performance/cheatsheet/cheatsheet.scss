@@ -1,1 +1,116 @@
+$accent: #16a34a;
+$tint:   #f0fdf4;
 
+.perf-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.page-header-icon { font-size: 1.8rem; }
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: .5rem 0 .4rem;
+}
+
+.page-subtitle {
+  font-size: 1.05rem;
+  color: #4b5563;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.cheat-section {
+  margin-bottom: 2.5rem;
+
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $accent;
+    margin-bottom: .75rem;
+    padding-bottom: .4rem;
+    border-bottom: 2px solid $tint;
+  }
+}
+
+.cheat-table {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.cheat-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto auto;
+  gap: .15rem .75rem;
+  padding: .55rem .75rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  border-left: 3px solid #e5e7eb;
+  align-items: start;
+
+  &.good { border-left-color: $accent; background: $tint; }
+  &.bad  { border-left-color: #dc2626; background: #fff1f2; }
+}
+
+.cheat-label {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #374151;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.cheat-value {
+  font-size: .8rem;
+  font-family: 'Fira Code', monospace;
+  color: $accent;
+  background: rgba(22, 163, 74, .08);
+  padding: .15em .45em;
+  border-radius: 4px;
+  word-break: break-all;
+  grid-column: 2;
+  grid-row: 1;
+
+  .bad & { color: #dc2626; background: rgba(220, 38, 38, .08); }
+}
+
+.cheat-note {
+  font-size: .78rem;
+  color: #6b7280;
+  grid-column: 2;
+  grid-row: 2;
+  line-height: 1.4;
+}
+
+:host-context(body.dark) {
+  .page-title   { color: #f9fafb; }
+  .page-subtitle { color: #9ca3af; }
+
+  .cheat-section h2 { border-bottom-color: #14532d; }
+
+  .cheat-row {
+    background: #1f2937;
+    border-left-color: #374151;
+
+    &.good { background: #052e16; border-left-color: #16a34a; }
+    &.bad  { background: #2d0a0a; border-left-color: #dc2626; }
+  }
+
+  .cheat-label { color: #d1d5db; }
+  .cheat-value { color: #86efac; background: rgba(134, 239, 172, .08); }
+  .cheat-note  { color: #6b7280; }
+}
+
+@media (max-width: 600px) {
+  .cheat-row {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  .cheat-value { grid-column: 1; grid-row: 2; }
+  .cheat-note  { grid-column: 1; grid-row: 3; }
+}

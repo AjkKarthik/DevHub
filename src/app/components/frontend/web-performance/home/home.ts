@@ -72,7 +72,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Speculation Rules API',       route: '/performance/speculation-rules', badge: 'Loading', available: true,
     description: 'Instant page navigations with the new Speculation Rules API — prefetch and prerender rules.',
     keyPoints: ['<script type="speculationrules"> JSON config', 'prefetch: early resource fetch for next page', 'prerender: full background render before navigation', 'URL patterns: list, selector-based, or eager on hover', 'Currently Chrome 109+ only; feature-detect first'] },
-  { title: 'Performance Cheat Sheet',    route: '/performance/cheatsheet', badge: 'Reference', available: false,
+  { title: 'Performance Cheat Sheet',    route: '/performance/cheatsheet', badge: 'Reference', available: true,
     description: 'Core Web Vitals thresholds, quick wins checklist, resource hint guide, and caching strategy matrix.',
     keyPoints: ['CWV thresholds: LCP < 2.5s, INP < 200ms, CLS < 0.1', 'Quick wins: preload LCP image, lazy-load below-fold, eliminate render-blocking CSS', 'Cache strategy: immutable assets forever, HTML no-cache, API short TTL'] },
   { title: 'Performance Interview Prep', route: '/performance/interview-prep', badge: 'Reference', available: false,

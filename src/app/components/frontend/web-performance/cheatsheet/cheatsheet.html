@@ -1,1 +1,25 @@
+<div class="perf-page">
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Web Performance Cheat Sheet</h1>
+  <p class="page-subtitle">
+    CWV thresholds, quick wins, resource hint guide, caching strategy matrix,
+    image optimisation, JavaScript budgets, and tool reference — all in one page.
+  </p>
 
+  @for (section of sections; track section.title) {
+    <section class="cheat-section">
+      <h2>{{ section.title }}</h2>
+      <div class="cheat-table">
+        @for (item of section.items; track item.label) {
+          <div class="cheat-row" [class.good]="item.good" [class.bad]="item.bad">
+            <span class="cheat-label">{{ item.label }}</span>
+            <code class="cheat-value">{{ item.value }}</code>
+            @if (item.note) {
+              <span class="cheat-note">{{ item.note }}</span>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  }
+</div>
