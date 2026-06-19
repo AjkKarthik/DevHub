@@ -327,7 +327,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'Web Performance', time: '~3 hrs',
       tagline: 'Ship fast pages — Core Web Vitals, bundle size, lazy loading & Lighthouse.',
       icon: '⚡', gradient: 'linear-gradient(135deg, #854d0e 0%, #431a03 100%)',
-      textDark: false, route: '/performance', available: true,
+      textDark: false, route: '/performance', available: true, topics: 22,
       sub: 'LCP · CLS · INP · Lighthouse',
       roles: ['frontend', 'architect'],
       highlights: [
