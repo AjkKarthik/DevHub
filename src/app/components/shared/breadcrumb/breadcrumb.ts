@@ -358,6 +358,7 @@ const CSS_LABELS: Record<string, string> = {
   'colors-theming':        'Colors & Theming',
   'backgrounds-borders':   'Backgrounds & Borders',
   'container-queries':     'Container Queries',
+  'css-layers':            'CSS Cascade Layers',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

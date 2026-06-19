@@ -317,6 +317,7 @@ export const routes: Routes = [
     { path: 'colors-theming',     loadComponent: () => import('./components/frontend/css/colors-theming/colors-theming').then(m => m.CssColorsTheming) },
     { path: 'backgrounds-borders', loadComponent: () => import('./components/frontend/css/backgrounds-borders/backgrounds-borders').then(m => m.CssBackgroundsBorders) },
     { path: 'container-queries',  loadComponent: () => import('./components/frontend/css/container-queries/container-queries').then(m => m.CssContainerQueries) },
+    { path: 'css-layers',         loadComponent: () => import('./components/frontend/css/css-layers/css-layers').then(m => m.CssCssLayers) },
   ] },
   { path: 'javascript', children: [
     { path: '', loadComponent: () => import('./components/frontend/javascript/home/home').then(m => m.JavaScriptHome) },

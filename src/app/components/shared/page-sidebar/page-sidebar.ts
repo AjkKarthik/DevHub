@@ -4178,6 +4178,28 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-layers': {
+    apis: ['@layer', 'revert-layer', 'layer() in @import'],
+    related: [
+      { label: 'CSS Custom Properties', route: '/css/custom-properties' },
+      { label: 'Selectors Deep Dive',   route: '/css/selectors'         },
+      { label: 'CSS Nesting',           route: '/css/css-nesting'       },
+    ],
+    tip: 'Declare @layer order as the very first line in your stylesheet — the first @layer the browser sees establishes priority.',
+    docs: [
+      { label: 'MDN — @layer',        url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@layer'       },
+      { label: 'MDN — revert-layer',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/revert-layer' },
+      { label: 'Can I Use — @layer',  url: 'https://caniuse.com/css-cascade-5'                             },
+    ],
+    resources: [
+      { label: 'CSS Cascade Layers Explainer', url: 'https://css.oddbird.net/layers/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Unlayered styles always beat layered ones — existing code outside @layer continues to win.',
+      '!important reverses layer priority — !important in a lower-priority layer wins over !important in a higher one.',
+    ],
+  },
+
   'css/container-queries': {
     apis: ['container-type', 'container-name', 'container', '@container', 'cqw', 'cqh', 'cqi', 'cqb'],
     related: [
