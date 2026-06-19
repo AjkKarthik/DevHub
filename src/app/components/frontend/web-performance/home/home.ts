@@ -18,7 +18,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Largest Contentful Paint',   route: '/performance/lcp', badge: 'Core Web Vitals', available: true,
     description: 'What counts as the LCP element, common causes of poor LCP, and optimisation strategies.',
     keyPoints: ['LCP elements: img, video poster, background-image, block text', 'Biggest wins: preload LCP image, avoid lazy-loading it, serve from CDN', 'Resource hints: <link rel="preload" as="image" href="hero.webp">'] },
-  { title: 'Interaction to Next Paint',  route: '/performance/inp', badge: 'Core Web Vitals', available: false,
+  { title: 'Interaction to Next Paint',  route: '/performance/inp', badge: 'Core Web Vitals', available: true,
     description: 'INP replaced FID in March 2024 — measuring responsiveness to all user interactions.',
     keyPoints: ['INP measures the worst interaction delay (not just first)', 'Long tasks block the main thread — break up with scheduler.yield()', 'Input delay + processing time + presentation delay = full INP breakdown'] },
   { title: 'Cumulative Layout Shift',    route: '/performance/cls', badge: 'Core Web Vitals', available: false,
