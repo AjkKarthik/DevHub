@@ -57,7 +57,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Real User Monitoring (RUM)', route: '/performance/rum', badge: 'Measurement', available: true,
     description: 'Collecting Web Vitals from real users with the web-vitals library and sending to analytics.',
     keyPoints: ['web-vitals.js: onLCP, onINP, onCLS, onFCP, onTTFB callbacks', 'Send metrics to analytics on visibilitychange for accurate LCP', 'Segment by device type: mobile vs desktop CWV often differ dramatically'] },
-  { title: 'Server-Side Rendering & Streaming', route: '/performance/ssr-streaming', badge: 'Rendering', available: false,
+  { title: 'Server-Side Rendering & Streaming', route: '/performance/ssr-streaming', badge: 'Rendering', available: true,
     description: 'SSR, SSG, ISR, and streaming HTML — when server rendering improves performance vs adds complexity.',
     keyPoints: ['SSR: faster LCP when client JS is heavy', 'SSG: pre-rendered HTML at build time — fastest possible TTFB', 'Streaming HTML: flush early with React/Node.js ReadableStream', 'Partial hydration: hydrate only interactive components', 'Edge rendering: deploy SSR close to users (Vercel, Cloudflare)'] },
   { title: 'CSS Performance',             route: '/performance/css-performance', badge: 'Assets', available: false,
