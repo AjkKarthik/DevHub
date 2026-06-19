@@ -27,7 +27,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Critical Rendering Path',   route: '/performance/critical-rendering-path', badge: 'Rendering', available: true,
     description: 'HTML parse → DOM → CSSOM → Render Tree → Layout → Paint → Composite — optimising each stage.',
     keyPoints: ['Render-blocking resources: CSS in <head> blocks paint; JS blocks HTML parsing', 'defer and async attributes defer JS execution past first render', 'Inline critical CSS: paste above-the-fold styles in <style> to unblock paint'] },
-  { title: 'Browser Rendering Pipeline', route: '/performance/browser-rendering', badge: 'Rendering', available: false,
+  { title: 'Browser Rendering Pipeline', route: '/performance/browser-rendering', badge: 'Rendering', available: true,
     description: 'Layout, paint, and composite layers — which CSS properties are cheap (composite-only) vs expensive (layout).',
     keyPoints: ['Cheap: transform and opacity — compositor-only, no layout/paint', 'Expensive: width, height, top, left — trigger layout on every change', 'contain: strict or content isolates subtree from global layout calculations'] },
   { title: 'Resource Hints',             route: '/performance/resource-hints', badge: 'Loading', available: false,
