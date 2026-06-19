@@ -1,1 +1,39 @@
+<div class="perf-page">
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Performance Interview Prep</h1>
+  <p class="page-subtitle">
+    30+ web performance interview questions spanning Core Web Vitals, rendering,
+    loading, JavaScript, assets, and measurement — with detailed answers.
+  </p>
 
+  <div class="filters">
+    <div class="filter-group">
+      @for (t of topics; track t) {
+        <button class="filter-chip" [class.active]="activeTopic() === t" (click)="setTopic(t)">{{ t }}</button>
+      }
+    </div>
+    <div class="filter-group">
+      @for (d of diffs; track d) {
+        <button class="filter-chip" [class.active]="activeDiff() === d" (click)="setDiff(d)">{{ d }}</button>
+      }
+    </div>
+  </div>
+
+  <p class="count-label">{{ filtered.length }} question{{ filtered.length === 1 ? '' : 's' }}</p>
+
+  <div class="questions">
+    @for (item of filtered; track item.q; let i = $index) {
+      <div class="q-card" [class.open]="expanded() === i">
+        <button class="q-header" (click)="toggle(i)">
+          <span class="diff-badge" [class]="diffClass(item.difficulty)">{{ item.difficulty }}</span>
+          <span class="q-topic-chip">{{ item.topic }}</span>
+          <span class="q-text">{{ item.q }}</span>
+          <span class="q-chevron">{{ expanded() === i ? '▲' : '▼' }}</span>
+        </button>
+        @if (expanded() === i) {
+          <div class="q-answer">{{ item.a }}</div>
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -75,7 +75,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Performance Cheat Sheet',    route: '/performance/cheatsheet', badge: 'Reference', available: true,
     description: 'Core Web Vitals thresholds, quick wins checklist, resource hint guide, and caching strategy matrix.',
     keyPoints: ['CWV thresholds: LCP < 2.5s, INP < 200ms, CLS < 0.1', 'Quick wins: preload LCP image, lazy-load below-fold, eliminate render-blocking CSS', 'Cache strategy: immutable assets forever, HTML no-cache, API short TTL'] },
-  { title: 'Performance Interview Prep', route: '/performance/interview-prep', badge: 'Reference', available: false,
+  { title: 'Performance Interview Prep', route: '/performance/interview-prep', badge: 'Reference', available: true,
     description: '30+ web performance interview questions — Core Web Vitals, rendering, caching, and optimisation strategies.',
     keyPoints: ['Explain the Critical Rendering Path', 'What is the difference between LCP, FCP, and TTFB?', 'How would you optimise a page scoring poorly on INP?'] },
 ];
