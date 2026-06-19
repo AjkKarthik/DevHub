@@ -340,6 +340,14 @@ const HTML_LABELS: Record<string, string> = {
   'pwa-service-workers': 'PWA & Service Workers',
   'seo':                 'HTML SEO',
   'apis':                'HTML5 Browser APIs',
+  'fundamentals':         'HTML Fundamentals',
+  'headings-paragraphs':  'Headings & Paragraphs',
+  'input-types':          'Input Types & Attributes',
+  'landmark-elements':    'Landmark Elements',
+  'aria-roles':           'ARIA Roles & Attributes',
+  'focus-management':     'Focus Management',
+  'storage-apis':         'HTML5 Storage APIs',
+  'drag-drop':            'Drag & Drop API',
   'cheatsheet':          'HTML Cheat Sheet',
   'interview-prep':      'HTML Interview Prep',
 };
@@ -362,6 +370,13 @@ const CSS_LABELS: Record<string, string> = {
   'css-nesting':           'CSS Nesting',
   'logical-properties':    'Logical Properties',
   'css-architecture':      'CSS Architecture',
+  'tailwind':                    'Tailwind CSS',
+  'scroll-driven-animations':   'Scroll-Driven Animations',
+  'css-transforms':             'CSS Transforms',
+  'css-filters':               'CSS Filters & Effects',
+  'fundamentals':              'CSS Fundamentals',
+  'cheatsheet':               'CSS Cheat Sheet',
+  'interview-prep':           'CSS Interview Prep',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

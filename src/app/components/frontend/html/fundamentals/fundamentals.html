@@ -1,0 +1,21 @@
+<div class="html-page">
+  <div class="page-header-icon html-icon">&lt;/&gt;</div>
+  <h1 class="page-title">HTML Fundamentals</h1>
+  <p class="page-subtitle">Elements, attributes, void elements, block vs inline, the DOM tree — the building blocks of every web page.</p>
+
+  <app-page-meta [readingTime]="12" difficulty="beginner" since="HTML5" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="html-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="html-fundamentals" nextRoute="/html/document-structure" nextLabel="Document Structure" />
+</div>

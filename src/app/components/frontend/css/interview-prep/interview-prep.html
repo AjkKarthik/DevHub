@@ -1,0 +1,48 @@
+<div class="ip-wrap">
+  <div class="ip-header">
+    <div class="page-header-icon css-icon">CSS</div>
+    <div>
+      <h1 class="page-title">CSS Interview Prep</h1>
+      <p class="page-subtitle">{{ filtered().length }} questions — cascade, specificity, layout, performance, and modern CSS.</p>
+    </div>
+  </div>
+
+  <div class="ip-filters">
+    <div class="ip-filter-group">
+      @for (d of difficulties; track d) {
+        <button class="ip-chip" [class.active]="difficulty() === d" (click)="setDifficulty(d)">
+          @if (d === 'All') { All ({{ counts().all }}) }
+          @else if (d === 'beginner') { Beginner ({{ counts().beginner }}) }
+          @else if (d === 'intermediate') { Intermediate ({{ counts().intermediate }}) }
+          @else { Advanced ({{ counts().advanced }}) }
+        </button>
+      }
+    </div>
+    <div class="ip-topic-row">
+      @for (t of topics; track t) {
+        <button class="ip-chip ip-chip--topic" [class.active]="topic() === t" (click)="setTopic(t)">
+          {{ t }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="ip-list">
+    @for (item of filtered(); track item.q; let i = $index) {
+      <div class="ip-card" [class.open]="expanded() === i">
+        <button class="ip-q" (click)="toggle(i)" [attr.aria-expanded]="expanded() === i">
+          <span class="ip-badge" [class]="'ip-badge--' + item.difficulty">{{ diffLabel(item.difficulty) }}</span>
+          <span class="ip-badge ip-badge--topic">{{ item.topic }}</span>
+          <span class="ip-q-text">{{ item.q }}</span>
+          <span class="ip-chevron">{{ expanded() === i ? '▲' : '▼' }}</span>
+        </button>
+        @if (expanded() === i) {
+          <div class="ip-a">{{ item.a }}</div>
+        }
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <p class="ip-empty">No questions match the current filters.</p>
+    }
+  </div>
+</div>

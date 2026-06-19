@@ -43,7 +43,7 @@ export class ProgressService {
   readonly jsPct    = computed(() => Math.round((this.jsCount() / this.jsTotal) * 100));
 
   // ── HTML (keys prefixed 'html-') ───────────────────────────────────────────
-  readonly htmlTotal  = 20;
+  readonly htmlTotal  = 23;
   readonly htmlCount  = computed(() => [...this._done()].filter(r => r.startsWith('html-')).length);
   readonly htmlPct    = computed(() => Math.round((this.htmlCount() / this.htmlTotal) * 100));
 
