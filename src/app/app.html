@@ -516,6 +516,11 @@
       <a routerLink="/css/responsive" routerLinkActive="active"><span class="nl-text">Responsive Design</span>@if(progress.isDone('css-responsive')){<span class="nl-done">✓</span>}@if(diff('css-responsive');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
+    <div class="nav-group">
+      <p class="nav-group-label">Animation</p>
+      <a routerLink="/css/animations" routerLinkActive="active"><span class="nl-text">CSS Animations</span>@if(progress.isDone('css-animations')){<span class="nl-done">✓</span>}@if(diff('css-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
     } <!-- end css nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->

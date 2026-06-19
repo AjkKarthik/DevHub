@@ -4154,6 +4154,29 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Animations ───────────────────────────────────────────────────────
+  'css/animations': {
+    apis: ['@keyframes', 'animation-duration', 'animation-timing-function', 'animation-fill-mode', 'animation-delay', 'will-change', 'animation-play-state'],
+    related: [
+      { label: 'CSS Transitions',  route: '/css/transitions'  },
+      { label: 'Responsive Design', route: '/css/responsive'  },
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+    ],
+    tip: 'Only animate transform and opacity for 60fps — everything else triggers layout or paint and will cause jank.',
+    docs: [
+      { label: 'MDN — CSS Animations', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations' },
+      { label: 'cubic-bezier visualiser', url: 'https://cubic-bezier.com/' },
+      { label: 'web.dev — Animations guide', url: 'https://web.dev/articles/animations-guide' },
+    ],
+    resources: [
+      { label: 'Animate.css', url: 'https://animate.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'will-change creates a GPU layer per element — applying it to everything wastes memory. Remove after animation ends.',
+      'animation-fill-mode: none (default) resets element to original state on completion — usually set to "both".',
+    ],
+  },
+
   // ── CSS: Responsive Design ────────────────────────────────────────────────
   'css/responsive': {
     apis: ['@media (min-width)', '@container', 'container-type', 'clamp()', 'min()', 'max()', 'auto-fit', 'minmax()', 'prefers-reduced-motion'],

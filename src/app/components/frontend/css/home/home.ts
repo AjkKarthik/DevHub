@@ -51,7 +51,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'CSS Transitions',            route: '/css', badge: 'Animation', available: false,
     description: 'Transition property, duration, timing function, and delay — performant transitions on CSS properties.',
     keyPoints: ['Only transition transform and opacity for 60fps (no layout/paint)', 'transition: all .3s is a performance anti-pattern — be specific', 'prefers-reduced-motion media query — always respect user preference'] },
-  { title: 'CSS Animations',             route: '/css', badge: 'Animation', available: false,
+  { title: 'CSS Animations',             route: '/css/animations', badge: 'Animation', available: true,
     description: '@keyframes, animation shorthand, timing functions, fill-mode, iteration, and the Web Animations API.',
     keyPoints: ['will-change: transform hints the browser to promote element to its own layer', 'animation-fill-mode: forwards — keeps last keyframe state after animation ends', 'Web Animations API: control animations from JavaScript (play, pause, reverse)'] },
   { title: 'CSS Layers (@layer)',         route: '/css', badge: 'Modern CSS', available: false,

@@ -353,6 +353,7 @@ const CSS_LABELS: Record<string, string> = {
   'selectors':         'Selectors Deep Dive',
   'typography':        'Typography',
   'responsive':        'Responsive Design',
+  'animations':        'CSS Animations',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
