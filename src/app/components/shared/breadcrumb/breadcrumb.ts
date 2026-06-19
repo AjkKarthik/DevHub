@@ -359,6 +359,7 @@ const CSS_LABELS: Record<string, string> = {
   'backgrounds-borders':   'Backgrounds & Borders',
   'container-queries':     'Container Queries',
   'css-layers':            'CSS Cascade Layers',
+  'css-nesting':           'CSS Nesting',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

@@ -4178,6 +4178,28 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'css/css-nesting': {
+    apis: ['& (parent selector)', 'nested @media', 'nested @container', 'nested @supports'],
+    related: [
+      { label: 'CSS Layers (@layer)', route: '/css/css-layers'        },
+      { label: 'Selectors Deep Dive', route: '/css/selectors'         },
+      { label: 'Logical Properties',  route: '/css/logical-properties' },
+    ],
+    tip: 'Always use & before pseudo-classes (&:hover) and pseudo-elements (&::before). Without &, the rule is a descendant selector.',
+    docs: [
+      { label: 'MDN — CSS Nesting',     url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting'        },
+      { label: 'MDN — & selector',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Nesting_selector'   },
+      { label: 'Can I Use — Nesting',   url: 'https://caniuse.com/css-nesting'                                     },
+    ],
+    resources: [
+      { label: 'CSS Nesting Playground', url: 'https://codepen.io/web-dot-dev/pen/OJoKJeK', badge: 'tool' },
+    ],
+    gotchas: [
+      '.card { :hover { } } targets any hovered descendant — use &:hover to target .card itself.',
+      'Native nesting does NOT concatenate strings — .block { &__element { } } is NOT .block__element.',
+    ],
+  },
+
   'css/css-layers': {
     apis: ['@layer', 'revert-layer', 'layer() in @import'],
     related: [

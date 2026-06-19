@@ -57,7 +57,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'CSS Layers (@layer)',         route: '/css/css-layers', badge: 'Modern CSS', available: true,
     description: 'Cascade layers control specificity without specificity wars — order layers instead of fighting selectors.',
     keyPoints: ['@layer base, components, utilities — lower layers have lower priority', 'Unlayered styles beat all layered styles regardless of specificity', 'Libraries in a layer: third-party styles never win over your utilities'] },
-  { title: 'CSS Nesting',                route: '/css', badge: 'Modern CSS', available: false,
+  { title: 'CSS Nesting',                route: '/css/css-nesting', badge: 'Modern CSS', available: true,
     description: 'Native CSS nesting (without preprocessors) — & parent selector, nested media queries.',
     keyPoints: ['& refers to the parent selector in native nesting', '.card { & h3 { } } is equivalent to .card h3 {}', 'Nested @media queries: context-aware breakpoints alongside the component styles'] },
   { title: 'Logical Properties',         route: '/css', badge: 'Modern CSS', available: false,
