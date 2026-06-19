@@ -4154,6 +4154,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Colors & Theming ─────────────────────────────────────────────────
+  'css/colors-theming': {
+    apis: ['oklch()', 'color-mix()', 'prefers-color-scheme', 'forced-colors', 'color-scheme', 'var(--token)', 'contrast-color()'],
+    related: [
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+      { label: 'Responsive Design', route: '/css/responsive'        },
+      { label: 'Typography',        route: '/css/typography'        },
+    ],
+    tip: 'Define 6 tokens: --bg, --surface, --border, --text, --muted, --accent. Every component reads these — dark mode is a single :root override.',
+    docs: [
+      { label: 'MDN — oklch',           url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch'   },
+      { label: 'MDN — color-mix()',     url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix' },
+      { label: 'oklch.com — color tool', url: 'https://oklch.com/' },
+    ],
+    resources: [
+      { label: 'oklch.com palette tool', url: 'https://oklch.com/',     badge: 'tool' },
+      { label: 'Radix Colors',           url: 'https://www.radix-ui.com/colors', badge: 'tool' },
+    ],
+    gotchas: [
+      'Never use color alone to convey meaning (error/success) — pair with an icon or text label (WCAG 1.4.1).',
+      'color-scheme: light dark must be on :root so native form controls adopt the correct mode.',
+    ],
+  },
+
   // ── CSS: Transitions ──────────────────────────────────────────────────────
   'css/transitions': {
     apis: ['transition', 'transition-duration', 'transition-timing-function', 'transition-delay', 'cubic-bezier()', 'prefers-reduced-motion'],
