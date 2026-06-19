@@ -315,6 +315,7 @@ export const routes: Routes = [
     { path: 'animations',         loadComponent: () => import('./components/frontend/css/animations/animations').then(m => m.CssAnimations) },
     { path: 'transitions',        loadComponent: () => import('./components/frontend/css/transitions/transitions').then(m => m.CssTransitions) },
     { path: 'colors-theming',     loadComponent: () => import('./components/frontend/css/colors-theming/colors-theming').then(m => m.CssColorsTheming) },
+    { path: 'backgrounds-borders', loadComponent: () => import('./components/frontend/css/backgrounds-borders/backgrounds-borders').then(m => m.CssBackgroundsBorders) },
   ] },
   { path: 'javascript', children: [
     { path: '', loadComponent: () => import('./components/frontend/javascript/home/home').then(m => m.JavaScriptHome) },

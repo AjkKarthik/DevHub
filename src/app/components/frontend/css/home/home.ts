@@ -39,7 +39,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Colors & Theming',           route: '/css/colors-theming', badge: 'Visual', available: true,
     description: 'Color spaces (oklch, hsl, rgb), color functions, dark mode strategies, and accessible contrast.',
     keyPoints: ['oklch: perceptually uniform — equal lightness values look equally bright', 'prefers-color-scheme: media query for system dark mode preference', 'color-mix(): mix two colors in a given color space — CSS-native tinting'] },
-  { title: 'Backgrounds & Borders',      route: '/css', badge: 'Visual', available: false,
+  { title: 'Backgrounds & Borders',      route: '/css/backgrounds-borders', badge: 'Visual', available: true,
     description: 'Background image, gradients, background-size, multiple backgrounds, border-radius, box-shadow.',
     keyPoints: ['aspect-ratio: 16/9 maintains ratio without padding-top hack', 'object-fit: cover/contain for img inside fixed-size container', 'box-shadow: multiple values stacked for layered, smooth shadows'] },
   { title: 'Responsive Design',          route: '/css/responsive', badge: 'Responsive', available: true,

@@ -4154,6 +4154,30 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Backgrounds & Borders ────────────────────────────────────────────
+  'css/backgrounds-borders': {
+    apis: ['background-size', 'background-image', 'linear-gradient()', 'radial-gradient()', 'border-radius', 'box-shadow', 'object-fit', 'aspect-ratio', 'outline'],
+    related: [
+      { label: 'Colors & Theming',  route: '/css/colors-theming' },
+      { label: 'Responsive Design', route: '/css/responsive'     },
+      { label: 'CSS Transitions',   route: '/css/transitions'    },
+    ],
+    tip: 'Layer 3 box-shadows (small/medium/large blur with low opacity) for realistic depth — a single large shadow looks flat.',
+    docs: [
+      { label: 'MDN — background',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/background'     },
+      { label: 'MDN — box-shadow',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow'     },
+      { label: 'MDN — aspect-ratio',    url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio'   },
+    ],
+    resources: [
+      { label: 'CSS Gradient Generator', url: 'https://www.css-gradient.com/', badge: 'tool' },
+      { label: 'Shadow Palette Generator', url: 'https://www.joshwcomeau.com/shadow-palette/', badge: 'tool' },
+    ],
+    gotchas: [
+      'background shorthand resets all sub-properties — use slash notation (position / size) inside it to set background-size.',
+      'object-fit has no effect without explicit width and height on the img/video element.',
+    ],
+  },
+
   // ── CSS: Colors & Theming ─────────────────────────────────────────────────
   'css/colors-theming': {
     apis: ['oklch()', 'color-mix()', 'prefers-color-scheme', 'forced-colors', 'color-scheme', 'var(--token)', 'contrast-color()'],

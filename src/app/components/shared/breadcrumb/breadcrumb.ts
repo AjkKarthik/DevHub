@@ -355,7 +355,8 @@ const CSS_LABELS: Record<string, string> = {
   'responsive':        'Responsive Design',
   'animations':        'CSS Animations',
   'transitions':       'CSS Transitions',
-  'colors-theming':    'Colors & Theming',
+  'colors-theming':        'Colors & Theming',
+  'backgrounds-borders':   'Backgrounds & Borders',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
