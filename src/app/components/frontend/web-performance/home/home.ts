@@ -66,7 +66,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Web Workers & Off-Main-Thread', route: '/performance/web-workers', badge: 'JavaScript', available: true,
     description: 'Move CPU-intensive work off the main thread with Web Workers and Comlink for clean APIs.',
     keyPoints: ['Web Worker: runs JS in background thread', 'Comlink: wraps Worker with Proxy for RPC-style calls', 'Use for image processing, encryption, JSON parsing at scale', 'SharedArrayBuffer: shared memory with cross-origin isolation', 'Atomics: synchronise threads via atomic operations'] },
-  { title: 'Performance Budgets & CI',    route: '/performance/performance-budgets', badge: 'Measurement', available: false,
+  { title: 'Performance Budgets & CI',    route: '/performance/performance-budgets', badge: 'Measurement', available: true,
     description: 'Set performance budgets, automate Lighthouse in CI, and fail builds when budgets are exceeded.',
     keyPoints: ['Lighthouse CI (LHCI): run Lighthouse on every PR', 'Budget types: file size, Lighthouse score, CWV thresholds', 'Performance regression in CI: assert score >= baseline', 'Bundlesize: enforce JS budget per chunk in CI', 'SpeedCurve / Calibre: continuous field data monitoring'] },
   { title: 'Speculation Rules API',       route: '/performance/speculation-rules', badge: 'Loading', available: false,
