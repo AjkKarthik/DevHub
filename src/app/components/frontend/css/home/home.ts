@@ -42,7 +42,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Backgrounds & Borders',      route: '/css', badge: 'Visual', available: false,
     description: 'Background image, gradients, background-size, multiple backgrounds, border-radius, box-shadow.',
     keyPoints: ['aspect-ratio: 16/9 maintains ratio without padding-top hack', 'object-fit: cover/contain for img inside fixed-size container', 'box-shadow: multiple values stacked for layered, smooth shadows'] },
-  { title: 'Responsive Design',          route: '/css', badge: 'Responsive', available: false,
+  { title: 'Responsive Design',          route: '/css/responsive', badge: 'Responsive', available: true,
     description: 'Mobile-first methodology, media queries, fluid grids, and responsive images.',
     keyPoints: ['Mobile-first: start with small screen styles, add complexity with min-width queries', 'clamp() and min()/max() for fluid sizing without breakpoints', 'Container queries: @container — respond to element width, not viewport'] },
   { title: 'Container Queries',          route: '/css', badge: 'Responsive', available: false,

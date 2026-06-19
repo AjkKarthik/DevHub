@@ -4154,6 +4154,29 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Responsive Design ────────────────────────────────────────────────
+  'css/responsive': {
+    apis: ['@media (min-width)', '@container', 'container-type', 'clamp()', 'min()', 'max()', 'auto-fit', 'minmax()', 'prefers-reduced-motion'],
+    related: [
+      { label: 'CSS Grid',        route: '/css/grid'             },
+      { label: 'Flexbox',         route: '/css/flexbox'          },
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+    ],
+    tip: 'Replace max-width + width: 100% with min(100%, 600px) — one property, zero override needed.',
+    docs: [
+      { label: 'MDN — @media',              url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@media'            },
+      { label: 'MDN — Container queries',   url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries' },
+      { label: 'web.dev — Responsive design', url: 'https://web.dev/learn/design'                                     },
+    ],
+    resources: [
+      { label: 'Utopia fluid type & space', url: 'https://utopia.fyi/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Without <meta name="viewport" content="width=device-width, initial-scale=1">, media queries won\'t behave on mobile.',
+      'prefers-reduced-motion: reduce must disable or simplify animations — WCAG requires this for accessibility.',
+    ],
+  },
+
   // ── CSS: Typography ───────────────────────────────────────────────────────
   'css/typography': {
     apis: ['@font-face', 'font-display', 'clamp()', 'line-height', 'text-wrap', 'font-variation-settings', 'font-optical-sizing'],

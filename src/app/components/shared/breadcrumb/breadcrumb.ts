@@ -345,13 +345,14 @@ const HTML_LABELS: Record<string, string> = {
 };
 
 const CSS_LABELS: Record<string, string> = {
-  'box-model': 'Box Model',
-  'flexbox':   'Flexbox',
-  'grid':        'CSS Grid',
+  'box-model':         'Box Model',
+  'flexbox':           'Flexbox',
+  'grid':              'CSS Grid',
   'positioning':       'Positioning & Stacking',
   'custom-properties': 'CSS Custom Properties',
-  'selectors':   'Selectors Deep Dive',
-  'typography':  'Typography',
+  'selectors':         'Selectors Deep Dive',
+  'typography':        'Typography',
+  'responsive':        'Responsive Design',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {

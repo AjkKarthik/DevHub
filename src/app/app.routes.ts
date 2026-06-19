@@ -311,6 +311,7 @@ export const routes: Routes = [
     { path: 'custom-properties',  loadComponent: () => import('./components/frontend/css/custom-properties/custom-properties').then(m => m.CssCustomProperties) },
     { path: 'selectors',          loadComponent: () => import('./components/frontend/css/selectors/selectors').then(m => m.CssSelectors) },
     { path: 'typography',         loadComponent: () => import('./components/frontend/css/typography/typography').then(m => m.CssTypography) },
+    { path: 'responsive',         loadComponent: () => import('./components/frontend/css/responsive/responsive').then(m => m.CssResponsive) },
   ] },
   { path: 'javascript', children: [
     { path: '', loadComponent: () => import('./components/frontend/javascript/home/home').then(m => m.JavaScriptHome) },

@@ -511,6 +511,11 @@
       <a routerLink="/css/typography" routerLinkActive="active"><span class="nl-text">Typography</span>@if(progress.isDone('css-typography')){<span class="nl-done">✓</span>}@if(diff('css-typography');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
+    <div class="nav-group">
+      <p class="nav-group-label">Responsive</p>
+      <a routerLink="/css/responsive" routerLinkActive="active"><span class="nl-text">Responsive Design</span>@if(progress.isDone('css-responsive')){<span class="nl-done">✓</span>}@if(diff('css-responsive');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
     } <!-- end css nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
