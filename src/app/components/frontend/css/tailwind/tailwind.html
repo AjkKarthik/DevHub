@@ -1,0 +1,29 @@
+<div class="css-page">
+  <div class="page-header-icon css-icon">CSS</div>
+  <h1 class="page-title">Tailwind CSS</h1>
+  <p class="page-subtitle">
+    Utility-first CSS — compose <code>flex</code>, <code>p-4</code>, <code>bg-blue-500</code>
+    directly in HTML. JIT generates only what you use, keeping bundles tiny.
+  </p>
+
+  <app-page-meta [readingTime]="22" difficulty="intermediate" since="Tailwind v3+" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="css-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="css-tailwind"
+    nextRoute="/css/scroll-driven-animations"
+    nextLabel="Scroll-Driven Animations" />
+</div>

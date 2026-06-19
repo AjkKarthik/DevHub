@@ -1,0 +1,35 @@
+<div class="perf-page">
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Font Performance</h1>
+  <p class="page-subtitle">
+    Eliminate FOIT with <code>font-display: swap</code>, reduce CLS with
+    <code>size-adjust</code>, shrink payload with woff2 subsets and variable fonts,
+    and preload the critical weight with <code>crossorigin</code>.
+  </p>
+
+  <app-page-meta [readingTime]="20" difficulty="intermediate" since="2018" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="perf-font-performance"
+    nextRoute="/performance/js-performance"
+    nextLabel="JavaScript Performance" />
+</div>

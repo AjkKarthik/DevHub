@@ -1,0 +1,34 @@
+<div class="perf-page">
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Critical Rendering Path</h1>
+  <p class="page-subtitle">
+    HTML → DOM → CSSOM → Render Tree → Layout → Paint → Composite. Cut render-blocking
+    resources with <code>defer</code>, inline critical CSS, and <code>preload</code> hero assets.
+  </p>
+
+  <app-page-meta [readingTime]="22" difficulty="intermediate" since="2015" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="perf-critical-rendering-path"
+    nextRoute="/performance/browser-rendering"
+    nextLabel="Browser Rendering Pipeline" />
+</div>

@@ -1,0 +1,35 @@
+<div class="perf-page">
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">JavaScript Performance</h1>
+  <p class="page-subtitle">
+    Reduce bundle size with tree shaking and <code>import()</code> code splitting,
+    eliminate long tasks with <code>scheduler.yield()</code>, and profile with
+    <code>rollup-plugin-visualizer</code> before every release.
+  </p>
+
+  <app-page-meta [readingTime]="22" difficulty="intermediate" since="2020" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="perf-js-performance"
+    nextRoute="/performance/third-party-scripts"
+    nextLabel="Third-Party Scripts" />
+</div>

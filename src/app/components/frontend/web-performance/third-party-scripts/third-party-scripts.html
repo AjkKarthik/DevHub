@@ -1,0 +1,35 @@
+<div class="perf-page">
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Third-Party Scripts</h1>
+  <p class="page-subtitle">
+    Analytics, ads, and chat widgets run on your main thread — use <code>defer</code>,
+    the <strong>facade pattern</strong>, or <strong>Partytown</strong> to keep third parties
+    from inflating your <code>INP</code> and blocking the critical path.
+  </p>
+
+  <app-page-meta [readingTime]="20" difficulty="intermediate" since="2021" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="perf-third-party-scripts"
+    nextRoute="/performance/measurement"
+    nextLabel="Performance Measurement" />
+</div>

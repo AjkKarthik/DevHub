@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -71,6 +71,12 @@
         } @else if (currentSection() === 'html') {
           <div class="nav-progress-bar" [style.width.%]="progress.htmlPct()"></div>
           <span class="nav-progress-label">{{ progress.htmlCount() }}/{{ progress.htmlTotal }} topics done</span>
+        } @else if (currentSection() === 'css') {
+          <div class="nav-progress-bar" [style.width.%]="progress.cssPct()"></div>
+          <span class="nav-progress-label">{{ progress.cssCount() }}/{{ progress.cssTotal }} topics done</span>
+        } @else if (currentSection() === 'performance') {
+          <div class="nav-progress-bar" [style.width.%]="progress.perfPct()"></div>
+          <span class="nav-progress-label">{{ progress.perfCount() }}/{{ progress.perfTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -445,42 +451,178 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
+      <a routerLink="/html/fundamentals"       routerLinkActive="active"><span class="nl-text">HTML Fundamentals</span>@if(progress.isDone('html-fundamentals')){<span class="nl-done">✓</span>}@if(diff('html-fundamentals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/html/document-structure" routerLinkActive="active"><span class="nl-text">Document Structure</span>@if(progress.isDone('html-document-structure')){<span class="nl-done">✓</span>}@if(diff('html-document-structure');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/html/semantic-elements"  routerLinkActive="active"><span class="nl-text">Semantic Elements</span>@if(progress.isDone('html-semantic-elements')){<span class="nl-done">✓</span>}@if(diff('html-semantic-elements');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Text &amp; Media</p>
-      <a routerLink="/html/links-navigation" routerLinkActive="active"><span class="nl-text">Links &amp; Navigation</span>@if(progress.isDone('html-links-navigation')){<span class="nl-done">✓</span>}@if(diff('html-links-navigation');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/media"            routerLinkActive="active"><span class="nl-text">Media Elements</span>@if(progress.isDone('html-media')){<span class="nl-done">✓</span>}@if(diff('html-media');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/tables"           routerLinkActive="active"><span class="nl-text">Tables</span>@if(progress.isDone('html-tables')){<span class="nl-done">✓</span>}@if(diff('html-tables');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/headings-paragraphs" routerLinkActive="active"><span class="nl-text">Headings &amp; Paragraphs</span>@if(progress.isDone('html-headings-paragraphs')){<span class="nl-done">✓</span>}@if(diff('html-headings-paragraphs');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/links-navigation"   routerLinkActive="active"><span class="nl-text">Links &amp; Navigation</span>@if(progress.isDone('html-links-navigation')){<span class="nl-done">✓</span>}@if(diff('html-links-navigation');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/media"              routerLinkActive="active"><span class="nl-text">Media Elements</span>@if(progress.isDone('html-media')){<span class="nl-done">✓</span>}@if(diff('html-media');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/tables"             routerLinkActive="active"><span class="nl-text">Tables</span>@if(progress.isDone('html-tables')){<span class="nl-done">✓</span>}@if(diff('html-tables');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Forms</p>
-      <a routerLink="/html/forms" routerLinkActive="active"><span class="nl-text">Forms &amp; Input</span>@if(progress.isDone('html-forms')){<span class="nl-done">✓</span>}@if(diff('html-forms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/forms"       routerLinkActive="active"><span class="nl-text">Forms &amp; Input</span>@if(progress.isDone('html-forms')){<span class="nl-done">✓</span>}@if(diff('html-forms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/input-types" routerLinkActive="active"><span class="nl-text">Input Types</span>@if(progress.isDone('html-input-types')){<span class="nl-done">✓</span>}@if(diff('html-input-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
-      <p class="nav-group-label">Advanced</p>
-      <a routerLink="/html/accessibility" routerLinkActive="active"><span class="nl-text">Accessibility &amp; ARIA</span>@if(progress.isDone('html-accessibility')){<span class="nl-done">✓</span>}@if(diff('html-accessibility');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/head-metadata" routerLinkActive="active"><span class="nl-text">Head &amp; Metadata</span>@if(progress.isDone('html-head-metadata')){<span class="nl-done">✓</span>}@if(diff('html-head-metadata');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/custom-elements" routerLinkActive="active"><span class="nl-text">Web Components</span>@if(progress.isDone('html-custom-elements')){<span class="nl-done">✓</span>}@if(diff('html-custom-elements');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/iframes-embeds" routerLinkActive="active"><span class="nl-text">iFrames &amp; Embeds</span>@if(progress.isDone('html-iframes-embeds')){<span class="nl-done">✓</span>}@if(diff('html-iframes-embeds');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/canvas-svg" routerLinkActive="active"><span class="nl-text">Canvas &amp; SVG</span>@if(progress.isDone('html-canvas-svg')){<span class="nl-done">✓</span>}@if(diff('html-canvas-svg');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/performance" routerLinkActive="active"><span class="nl-text">HTML Performance</span>@if(progress.isDone('html-performance')){<span class="nl-done">✓</span>}@if(diff('html-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <p class="nav-group-label">Semantic &amp; Accessibility</p>
+      <a routerLink="/html/landmark-elements" routerLinkActive="active"><span class="nl-text">Landmark Elements</span>@if(progress.isDone('html-landmark-elements')){<span class="nl-done">✓</span>}@if(diff('html-landmark-elements');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/accessibility"     routerLinkActive="active"><span class="nl-text">Accessibility &amp; ARIA</span>@if(progress.isDone('html-accessibility')){<span class="nl-done">✓</span>}@if(diff('html-accessibility');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/aria-roles"        routerLinkActive="active"><span class="nl-text">ARIA Roles</span>@if(progress.isDone('html-aria-roles')){<span class="nl-done">✓</span>}@if(diff('html-aria-roles');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/focus-management"  routerLinkActive="active"><span class="nl-text">Focus Management</span>@if(progress.isDone('html-focus-management')){<span class="nl-done">✓</span>}@if(diff('html-focus-management');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/head-metadata"     routerLinkActive="active"><span class="nl-text">Head &amp; Metadata</span>@if(progress.isDone('html-head-metadata')){<span class="nl-done">✓</span>}@if(diff('html-head-metadata');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/seo"               routerLinkActive="active"><span class="nl-text">HTML SEO</span>@if(progress.isDone('html-seo')){<span class="nl-done">✓</span>}@if(diff('html-seo');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">HTML5 APIs</p>
+      <a routerLink="/html/performance"        routerLinkActive="active"><span class="nl-text">HTML Performance</span>@if(progress.isDone('html-performance')){<span class="nl-done">✓</span>}@if(diff('html-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/apis"               routerLinkActive="active"><span class="nl-text">HTML5 APIs</span>@if(progress.isDone('html-apis')){<span class="nl-done">✓</span>}@if(diff('html-apis');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/storage-apis"       routerLinkActive="active"><span class="nl-text">Storage APIs</span>@if(progress.isDone('html-storage-apis')){<span class="nl-done">✓</span>}@if(diff('html-storage-apis');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/drag-drop"          routerLinkActive="active"><span class="nl-text">Drag &amp; Drop</span>@if(progress.isDone('html-drag-drop')){<span class="nl-done">✓</span>}@if(diff('html-drag-drop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/canvas-svg"         routerLinkActive="active"><span class="nl-text">Canvas &amp; SVG</span>@if(progress.isDone('html-canvas-svg')){<span class="nl-done">✓</span>}@if(diff('html-canvas-svg');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/custom-elements"    routerLinkActive="active"><span class="nl-text">Web Components</span>@if(progress.isDone('html-custom-elements')){<span class="nl-done">✓</span>}@if(diff('html-custom-elements');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/html/iframes-embeds"     routerLinkActive="active"><span class="nl-text">iFrames &amp; Embeds</span>@if(progress.isDone('html-iframes-embeds')){<span class="nl-done">✓</span>}@if(diff('html-iframes-embeds');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/html/pwa-service-workers" routerLinkActive="active"><span class="nl-text">PWA &amp; Service Workers</span>@if(progress.isDone('html-pwa-service-workers')){<span class="nl-done">✓</span>}@if(diff('html-pwa-service-workers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/seo" routerLinkActive="active"><span class="nl-text">HTML SEO</span>@if(progress.isDone('html-seo')){<span class="nl-done">✓</span>}@if(diff('html-seo');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/html/apis" routerLinkActive="active"><span class="nl-text">HTML5 APIs</span>@if(progress.isDone('html-apis')){<span class="nl-done">✓</span>}@if(diff('html-apis');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Reference</p>
-      <a routerLink="/html/cheatsheet" routerLinkActive="active"><span class="nl-text">HTML Cheat Sheet</span></a>
+      <a routerLink="/html/cheatsheet"    routerLinkActive="active"><span class="nl-text">HTML Cheat Sheet</span></a>
       <a routerLink="/html/interview-prep" routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
     </div>
 
     } <!-- end html nav -->
+
+    <!-- ── CSS Navigation ───────────────────────────────────────── -->
+    @if (currentSection() === 'css') {
+
+    <a routerLink="/css" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">CSS Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/css/box-model" routerLinkActive="active"><span class="nl-text">Box Model</span>@if(progress.isDone('css-box-model')){<span class="nl-done">✓</span>}@if(diff('css-box-model');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Layout</p>
+      <a routerLink="/css/flexbox" routerLinkActive="active"><span class="nl-text">Flexbox</span>@if(progress.isDone('css-flexbox')){<span class="nl-done">✓</span>}@if(diff('css-flexbox');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/grid" routerLinkActive="active"><span class="nl-text">CSS Grid</span>@if(progress.isDone('css-grid')){<span class="nl-done">✓</span>}@if(diff('css-grid');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/positioning" routerLinkActive="active"><span class="nl-text">Positioning & Stacking</span>@if(progress.isDone('css-positioning')){<span class="nl-done">✓</span>}@if(diff('css-positioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Visual</p>
+      <a routerLink="/css/custom-properties" routerLinkActive="active"><span class="nl-text">Custom Properties</span>@if(progress.isDone('css-custom-properties')){<span class="nl-done">✓</span>}@if(diff('css-custom-properties');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/selectors" routerLinkActive="active"><span class="nl-text">Selectors Deep Dive</span>@if(progress.isDone('css-selectors')){<span class="nl-done">✓</span>}@if(diff('css-selectors');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/typography" routerLinkActive="active"><span class="nl-text">Typography</span>@if(progress.isDone('css-typography')){<span class="nl-done">✓</span>}@if(diff('css-typography');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/colors-theming" routerLinkActive="active"><span class="nl-text">Colors &amp; Theming</span>@if(progress.isDone('css-colors-theming')){<span class="nl-done">✓</span>}@if(diff('css-colors-theming');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/backgrounds-borders" routerLinkActive="active"><span class="nl-text">Backgrounds &amp; Borders</span>@if(progress.isDone('css-backgrounds-borders')){<span class="nl-done">✓</span>}@if(diff('css-backgrounds-borders');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Responsive</p>
+      <a routerLink="/css/responsive" routerLinkActive="active"><span class="nl-text">Responsive Design</span>@if(progress.isDone('css-responsive')){<span class="nl-done">✓</span>}@if(diff('css-responsive');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/container-queries" routerLinkActive="active"><span class="nl-text">Container Queries</span>@if(progress.isDone('css-container-queries')){<span class="nl-done">✓</span>}@if(diff('css-container-queries');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Modern CSS</p>
+      <a routerLink="/css/css-layers" routerLinkActive="active"><span class="nl-text">CSS Layers (@layer)</span>@if(progress.isDone('css-css-layers')){<span class="nl-done">✓</span>}@if(diff('css-css-layers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/css-nesting" routerLinkActive="active"><span class="nl-text">CSS Nesting</span>@if(progress.isDone('css-css-nesting')){<span class="nl-done">✓</span>}@if(diff('css-css-nesting');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/logical-properties" routerLinkActive="active"><span class="nl-text">Logical Properties</span>@if(progress.isDone('css-logical-properties')){<span class="nl-done">✓</span>}@if(diff('css-logical-properties');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/css-architecture" routerLinkActive="active"><span class="nl-text">CSS Architecture</span>@if(progress.isDone('css-css-architecture')){<span class="nl-done">✓</span>}@if(diff('css-css-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/tailwind" routerLinkActive="active"><span class="nl-text">Tailwind CSS</span>@if(progress.isDone('css-tailwind')){<span class="nl-done">✓</span>}@if(diff('css-tailwind');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/scroll-driven-animations" routerLinkActive="active"><span class="nl-text">Scroll-Driven Animations</span>@if(progress.isDone('css-scroll-driven-animations')){<span class="nl-done">✓</span>}@if(diff('css-scroll-driven-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/css-transforms" routerLinkActive="active"><span class="nl-text">CSS Transforms</span>@if(progress.isDone('css-css-transforms')){<span class="nl-done">✓</span>}@if(diff('css-css-transforms');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/css-filters" routerLinkActive="active"><span class="nl-text">CSS Filters & Effects</span>@if(progress.isDone('css-css-filters')){<span class="nl-done">✓</span>}@if(diff('css-css-filters');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Bonus</p>
+      <a routerLink="/css/fundamentals" routerLinkActive="active"><span class="nl-text">CSS Fundamentals</span>@if(progress.isDone('css-fundamentals')){<span class="nl-done">✓</span>}@if(diff('css-fundamentals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/css/cheatsheet" routerLinkActive="active"><span class="nl-text">CSS Cheat Sheet</span></a>
+      <a routerLink="/css/interview-prep" routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Animation</p>
+      <a routerLink="/css/animations" routerLinkActive="active"><span class="nl-text">CSS Animations</span>@if(progress.isDone('css-animations')){<span class="nl-done">✓</span>}@if(diff('css-animations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/css/transitions" routerLinkActive="active"><span class="nl-text">CSS Transitions</span>@if(progress.isDone('css-transitions')){<span class="nl-done">✓</span>}@if(diff('css-transitions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    } <!-- end css nav -->
+
+    <!-- ── Web Performance Navigation ──────────────────────────────── -->
+    @if (currentSection() === 'performance') {
+
+    <a routerLink="/performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">⚡ Performance Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Core Web Vitals</p>
+      <a routerLink="/performance/core-web-vitals" routerLinkActive="active"><span class="nl-text">CWV Overview</span>@if(progress.isDone('perf-core-web-vitals')){<span class="nl-done">✓</span>}@if(diff('perf-core-web-vitals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/lcp" routerLinkActive="active"><span class="nl-text">Largest Contentful Paint</span>@if(progress.isDone('perf-lcp')){<span class="nl-done">✓</span>}@if(diff('perf-lcp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/inp" routerLinkActive="active"><span class="nl-text">Interaction to Next Paint</span>@if(progress.isDone('perf-inp')){<span class="nl-done">✓</span>}@if(diff('perf-inp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/cls" routerLinkActive="active"><span class="nl-text">Cumulative Layout Shift</span>@if(progress.isDone('perf-cls')){<span class="nl-done">✓</span>}@if(diff('perf-cls');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Rendering</p>
+      <a routerLink="/performance/critical-rendering-path" routerLinkActive="active"><span class="nl-text">Critical Rendering Path</span>@if(progress.isDone('perf-critical-rendering-path')){<span class="nl-done">✓</span>}@if(diff('perf-critical-rendering-path');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/browser-rendering" routerLinkActive="active"><span class="nl-text">Browser Rendering Pipeline</span>@if(progress.isDone('perf-browser-rendering')){<span class="nl-done">✓</span>}@if(diff('perf-browser-rendering');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/ssr-streaming" routerLinkActive="active"><span class="nl-text">SSR &amp; Streaming HTML</span>@if(progress.isDone('perf-ssr-streaming')){<span class="nl-done">✓</span>}@if(diff('perf-ssr-streaming');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Loading</p>
+      <a routerLink="/performance/resource-hints" routerLinkActive="active"><span class="nl-text">Resource Hints</span>@if(progress.isDone('perf-resource-hints')){<span class="nl-done">✓</span>}@if(diff('perf-resource-hints');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/http2-http3" routerLinkActive="active"><span class="nl-text">HTTP/2 &amp; HTTP/3</span>@if(progress.isDone('perf-http2-http3')){<span class="nl-done">✓</span>}@if(diff('perf-http2-http3');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/caching" routerLinkActive="active"><span class="nl-text">Caching &amp; Service Workers</span>@if(progress.isDone('perf-caching')){<span class="nl-done">✓</span>}@if(diff('perf-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/speculation-rules" routerLinkActive="active"><span class="nl-text">Speculation Rules API</span>@if(progress.isDone('perf-speculation-rules')){<span class="nl-done">✓</span>}@if(diff('perf-speculation-rules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Assets</p>
+      <a routerLink="/performance/image-optimisation" routerLinkActive="active"><span class="nl-text">Image Optimisation</span>@if(progress.isDone('perf-image-optimisation')){<span class="nl-done">✓</span>}@if(diff('perf-image-optimisation');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/font-performance" routerLinkActive="active"><span class="nl-text">Font Performance</span>@if(progress.isDone('perf-font-performance')){<span class="nl-done">✓</span>}@if(diff('perf-font-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/css-performance" routerLinkActive="active"><span class="nl-text">CSS Performance</span>@if(progress.isDone('perf-css-performance')){<span class="nl-done">✓</span>}@if(diff('perf-css-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">JavaScript</p>
+      <a routerLink="/performance/js-performance" routerLinkActive="active"><span class="nl-text">JavaScript Performance</span>@if(progress.isDone('perf-js-performance')){<span class="nl-done">✓</span>}@if(diff('perf-js-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/third-party-scripts" routerLinkActive="active"><span class="nl-text">Third-Party Scripts</span>@if(progress.isDone('perf-third-party-scripts')){<span class="nl-done">✓</span>}@if(diff('perf-third-party-scripts');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/web-workers" routerLinkActive="active"><span class="nl-text">Web Workers</span>@if(progress.isDone('perf-web-workers')){<span class="nl-done">✓</span>}@if(diff('perf-web-workers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Measurement</p>
+      <a routerLink="/performance/measurement" routerLinkActive="active"><span class="nl-text">Performance Measurement</span>@if(progress.isDone('perf-measurement')){<span class="nl-done">✓</span>}@if(diff('perf-measurement');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/rum" routerLinkActive="active"><span class="nl-text">Real User Monitoring</span>@if(progress.isDone('perf-rum')){<span class="nl-done">✓</span>}@if(diff('perf-rum');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/performance-budgets" routerLinkActive="active"><span class="nl-text">Performance Budgets &amp; CI</span>@if(progress.isDone('perf-performance-budgets')){<span class="nl-done">✓</span>}@if(diff('perf-performance-budgets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/performance/cheatsheet" routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+      <a routerLink="/performance/interview-prep" routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+    </div>
+
+    } <!-- end performance nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {

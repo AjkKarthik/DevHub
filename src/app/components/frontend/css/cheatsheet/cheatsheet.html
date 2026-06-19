@@ -1,0 +1,47 @@
+<div class="cs-wrap">
+  <div class="cs-header">
+    <div class="page-header-icon css-icon">CSS</div>
+    <div>
+      <h1 class="page-title">CSS Cheat Sheet</h1>
+      <p class="page-subtitle">Quick-reference for selectors, box model, layout, typography, colours, and modern CSS.</p>
+    </div>
+  </div>
+
+  <div class="cs-toolbar">
+    <div class="cs-tabs">
+      @for (tab of tabs; track tab.id) {
+        <button class="cs-tab" [class.active]="activeTab() === tab.id" (click)="setTab(tab.id)">
+          {{ tab.label }}
+        </button>
+      }
+    </div>
+    <input
+      class="cs-search"
+      type="search"
+      placeholder="Filter entries…"
+      [value]="search()"
+      (input)="onSearch($any($event.target).value)" />
+  </div>
+
+  <div class="cs-body">
+    @for (section of filteredSections(); track section.heading) {
+      <div class="cs-section">
+        <h2 class="cs-section-heading">{{ section.heading }}</h2>
+        <div class="cs-table">
+          @for (entry of section.entries; track entry.label) {
+            <div class="cs-row">
+              <code class="cs-label">{{ entry.label }}</code>
+              <span class="cs-value">{{ entry.value }}</span>
+              @if (entry.note) {
+                <span class="cs-note">{{ entry.note }}</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+    @if (filteredSections().length === 0) {
+      <p class="cs-empty">No entries match "<strong>{{ search() }}</strong>"</p>
+    }
+  </div>
+</div>

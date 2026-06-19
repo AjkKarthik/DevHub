@@ -340,8 +340,68 @@ const HTML_LABELS: Record<string, string> = {
   'pwa-service-workers': 'PWA & Service Workers',
   'seo':                 'HTML SEO',
   'apis':                'HTML5 Browser APIs',
+  'fundamentals':         'HTML Fundamentals',
+  'headings-paragraphs':  'Headings & Paragraphs',
+  'input-types':          'Input Types & Attributes',
+  'landmark-elements':    'Landmark Elements',
+  'aria-roles':           'ARIA Roles & Attributes',
+  'focus-management':     'Focus Management',
+  'storage-apis':         'HTML5 Storage APIs',
+  'drag-drop':            'Drag & Drop API',
   'cheatsheet':          'HTML Cheat Sheet',
   'interview-prep':      'HTML Interview Prep',
+};
+
+const CSS_LABELS: Record<string, string> = {
+  'box-model':         'Box Model',
+  'flexbox':           'Flexbox',
+  'grid':              'CSS Grid',
+  'positioning':       'Positioning & Stacking',
+  'custom-properties': 'CSS Custom Properties',
+  'selectors':         'Selectors Deep Dive',
+  'typography':        'Typography',
+  'responsive':        'Responsive Design',
+  'animations':        'CSS Animations',
+  'transitions':       'CSS Transitions',
+  'colors-theming':        'Colors & Theming',
+  'backgrounds-borders':   'Backgrounds & Borders',
+  'container-queries':     'Container Queries',
+  'css-layers':            'CSS Cascade Layers',
+  'css-nesting':           'CSS Nesting',
+  'logical-properties':    'Logical Properties',
+  'css-architecture':      'CSS Architecture',
+  'tailwind':                    'Tailwind CSS',
+  'scroll-driven-animations':   'Scroll-Driven Animations',
+  'css-transforms':             'CSS Transforms',
+  'css-filters':               'CSS Filters & Effects',
+  'fundamentals':              'CSS Fundamentals',
+  'cheatsheet':               'CSS Cheat Sheet',
+  'interview-prep':           'CSS Interview Prep',
+};
+
+const PERFORMANCE_LABELS: Record<string, string> = {
+  'core-web-vitals':        'Core Web Vitals',
+  'lcp':                    'Largest Contentful Paint',
+  'inp':                    'Interaction to Next Paint',
+  'cls':                    'Cumulative Layout Shift',
+  'critical-rendering-path': 'Critical Rendering Path',
+  'browser-rendering':      'Browser Rendering Pipeline',
+  'resource-hints':         'Resource Hints',
+  'http2-http3':            'HTTP/2 & HTTP/3',
+  'caching':                'Caching & Service Workers',
+  'image-optimisation':     'Image Optimisation',
+  'font-performance':       'Font Performance',
+  'js-performance':         'JavaScript Performance',
+  'third-party-scripts':    'Third-Party Scripts',
+  'measurement':            'Performance Measurement',
+  'rum':                    'Real User Monitoring (RUM)',
+  'ssr-streaming':          'SSR & Streaming HTML',
+  'css-performance':        'CSS Performance',
+  'web-workers':            'Web Workers & Off-Main-Thread',
+  'performance-budgets':    'Performance Budgets & CI',
+  'speculation-rules':      'Speculation Rules API',
+  'cheatsheet':             'Web Performance Cheat Sheet',
+  'interview-prep':         'Performance Interview Prep',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
@@ -465,13 +525,15 @@ export class BreadcrumbComponent {
     const segs = this.segments();
     if (segs.length < 2) return '';
     const key = segs[segs.length - 1];
-    const labels = segs[0] === 'csharp'      ? CSHARP_LABELS
-                 : segs[0] === 'aspnet'      ? ASPNET_LABELS
-                 : segs[0] === 'sql'         ? SQL_LABELS
-                 : segs[0] === 'typescript'  ? TYPESCRIPT_LABELS
-                 : segs[0] === 'react'       ? REACT_LABELS
-                 : segs[0] === 'javascript'  ? JAVASCRIPT_LABELS
-                 : segs[0] === 'html'        ? HTML_LABELS
+    const labels = segs[0] === 'csharp'       ? CSHARP_LABELS
+                 : segs[0] === 'aspnet'       ? ASPNET_LABELS
+                 : segs[0] === 'sql'          ? SQL_LABELS
+                 : segs[0] === 'typescript'   ? TYPESCRIPT_LABELS
+                 : segs[0] === 'react'        ? REACT_LABELS
+                 : segs[0] === 'javascript'   ? JAVASCRIPT_LABELS
+                 : segs[0] === 'html'         ? HTML_LABELS
+                 : segs[0] === 'css'          ? CSS_LABELS
+                 : segs[0] === 'performance'  ? PERFORMANCE_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

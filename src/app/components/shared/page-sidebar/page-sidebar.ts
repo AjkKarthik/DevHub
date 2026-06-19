@@ -150,6 +150,29 @@ const HTML_DEFAULT: SidebarData = {
   ],
 };
 
+const CSS_DEFAULT: SidebarData = {
+  apis: ['box-sizing', 'margin', 'padding', 'border', 'display', 'overflow', 'width/height'],
+  related: [
+    { label: 'Box Model',    route: '/css/box-model' },
+    { label: 'Flexbox',      route: '/css/flexbox'   },
+    { label: 'CSS Grid',     route: '/css/grid'      },
+  ],
+  tip: 'Always set * { box-sizing: border-box } as your first rule — it makes width predictable and eliminates the most common CSS sizing bugs.',
+  docs: [
+    { label: 'MDN CSS Reference',     url: 'https://developer.mozilla.org/en-US/docs/Web/CSS' },
+    { label: 'CSS Tricks Guides',     url: 'https://css-tricks.com/guides/'                   },
+    { label: 'web.dev — Learn CSS',   url: 'https://web.dev/learn/css'                        },
+  ],
+  resources: [
+    { label: 'CSS Tricks — Flexbox Guide', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', badge: 'blog' },
+    { label: 'Can I Use',                  url: 'https://caniuse.com/',                                     badge: 'tool' },
+  ],
+  gotchas: [
+    'Without border-box, adding padding or border increases an element\'s total size — breaking pixel-perfect layouts.',
+    'Margin collapse only happens vertically between block elements in normal flow — it does not apply in flex or grid containers.',
+  ],
+};
+
 const ASPNET_DEFAULT: SidebarData = {
   apis: ['WebApplication', 'IServiceCollection', 'IApplicationBuilder', 'IConfiguration', 'ILogger<T>'],
   related: [
@@ -4108,6 +4131,533 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['The DBA path requires understanding execution plans — read the Indexes and Performance pages before tackling it.'],
   },
 
+  // ── CSS: Box Model ────────────────────────────────────────────────────────
+  'css/box-model': {
+    apis: ['box-sizing', 'margin', 'padding', 'border', 'width', 'height', 'overflow', 'display'],
+    related: [
+      { label: 'Flexbox',               route: '/css/flexbox'    },
+      { label: 'CSS Grid',              route: '/css/grid'       },
+      { label: 'Positioning & Stacking', route: '/css/positioning' },
+    ],
+    tip: '* { box-sizing: border-box } should be line 1 of every stylesheet — it makes width mean what you expect and eliminates 80% of sizing bugs.',
+    docs: [
+      { label: 'MDN — box-sizing',    url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing'    },
+      { label: 'MDN — margin collapse', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing' },
+      { label: 'web.dev — Box Model', url: 'https://web.dev/learn/css/box-model'                            },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Box Model', url: 'https://css-tricks.com/the-css-box-model/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Margin collapse only happens in normal block flow — margins do not collapse inside flex or grid containers.',
+      'overflow: hidden on a parent creates a BFC, which is a common trick to contain floats and prevent margin collapse.',
+    ],
+  },
+
+  // ── CSS: Backgrounds & Borders ────────────────────────────────────────────
+  'css/backgrounds-borders': {
+    apis: ['background-size', 'background-image', 'linear-gradient()', 'radial-gradient()', 'border-radius', 'box-shadow', 'object-fit', 'aspect-ratio', 'outline'],
+    related: [
+      { label: 'Colors & Theming',  route: '/css/colors-theming' },
+      { label: 'Responsive Design', route: '/css/responsive'     },
+      { label: 'CSS Transitions',   route: '/css/transitions'    },
+    ],
+    tip: 'Layer 3 box-shadows (small/medium/large blur with low opacity) for realistic depth — a single large shadow looks flat.',
+    docs: [
+      { label: 'MDN — background',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/background'     },
+      { label: 'MDN — box-shadow',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow'     },
+      { label: 'MDN — aspect-ratio',    url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio'   },
+    ],
+    resources: [
+      { label: 'CSS Gradient Generator', url: 'https://www.css-gradient.com/', badge: 'tool' },
+      { label: 'Shadow Palette Generator', url: 'https://www.joshwcomeau.com/shadow-palette/', badge: 'tool' },
+    ],
+    gotchas: [
+      'background shorthand resets all sub-properties — use slash notation (position / size) inside it to set background-size.',
+      'object-fit has no effect without explicit width and height on the img/video element.',
+    ],
+  },
+
+  'css/cheatsheet': {
+    apis: ['Selectors', 'Box Model', 'Flexbox', 'Grid', 'Typography', 'Colors & Variables', 'Animations', 'Modern CSS'],
+    related: [
+      { label: 'CSS Interview Prep',  route: '/css/interview-prep'  },
+      { label: 'CSS Fundamentals',    route: '/css/fundamentals'    },
+      { label: 'Selectors Deep Dive', route: '/css/selectors'       },
+    ],
+    tip: 'Use Ctrl+K to search the site — or use the filter box in the cheat sheet to jump to specific properties.',
+    docs: [
+      { label: 'MDN CSS Reference',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference' },
+      { label: 'CSS Tricks Almanac', url: 'https://css-tricks.com/almanac/'                            },
+    ],
+    resources: [],
+    gotchas: [],
+  },
+
+  'css/interview-prep': {
+    apis: ['Cascade', 'Specificity', 'Flexbox', 'Grid', 'Positioning', 'Performance', 'Modern CSS'],
+    related: [
+      { label: 'CSS Cheat Sheet',   route: '/css/cheatsheet'     },
+      { label: 'CSS Fundamentals',  route: '/css/fundamentals'   },
+      { label: 'CSS Architecture',  route: '/css/css-architecture' },
+    ],
+    tip: 'Study the cascade algorithm, specificity calculation, and stacking context — these come up in almost every CSS interview.',
+    docs: [
+      { label: 'MDN: Cascade & Specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade' },
+    ],
+    resources: [],
+    gotchas: [],
+  },
+
+  'css/fundamentals': {
+    apis: ['cascade', 'specificity', 'inheritance', 'box-sizing', 'display', ':is()', ':where()', 'all: unset', 'inherit / initial / unset / revert'],
+    related: [
+      { label: 'CSS Selectors Deep Dive', route: '/css/selectors'         },
+      { label: 'Box Model',               route: '/css/box-model'         },
+      { label: 'CSS Custom Properties',   route: '/css/custom-properties' },
+    ],
+    tip: 'Use :where() for resets and defaults — its zero specificity means any class selector will override it without specificity battles.',
+    docs: [
+      { label: 'MDN: Cascade & Specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade'     },
+      { label: 'MDN: Inheritance',           url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Inheritance' },
+      { label: 'MDN: box-sizing',            url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing'  },
+    ],
+    resources: [],
+    gotchas: [
+      'Specificity is a tuple, not a decimal — 10 classes never beat 1 ID.',
+      'Vertical margins collapse between adjacent block siblings — horizontal margins never do.',
+    ],
+  },
+
+  'css/css-filters': {
+    apis: ['filter: blur/brightness/contrast/grayscale/hue-rotate/saturate/sepia/drop-shadow/invert', 'backdrop-filter', 'mix-blend-mode', 'background-blend-mode', 'isolation: isolate'],
+    related: [
+      { label: 'CSS Transforms',  route: '/css/css-transforms' },
+      { label: 'CSS Animations',  route: '/css/animations'     },
+      { label: 'Colors & Theming', route: '/css/colors-theming' },
+    ],
+    tip: 'For frosted glass: background must be semi-transparent + -webkit-backdrop-filter for Safari. Keep backdrop-filter on small areas for performance.',
+    docs: [
+      { label: 'MDN: filter',          url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/filter'          },
+      { label: 'MDN: backdrop-filter', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter' },
+      { label: 'MDN: mix-blend-mode',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode'  },
+    ],
+    resources: [],
+    gotchas: [
+      'drop-shadow has no spread radius — only x, y, blur, color. box-shadow has the 4th spread value.',
+      'backdrop-filter always needs -webkit-backdrop-filter for Safari (even Safari 17).',
+    ],
+  },
+
+  'css/css-transforms': {
+    apis: ['translate()', 'rotate()', 'scale()', 'skew()', 'perspective()', 'transform-origin', 'transform-style: preserve-3d', 'backface-visibility', 'translate / rotate / scale (individual properties)'],
+    related: [
+      { label: 'CSS Animations',   route: '/css/animations'  },
+      { label: 'CSS Transitions',  route: '/css/transitions' },
+      { label: 'CSS Filters',      route: '/css/css-filters' },
+    ],
+    tip: 'Use individual transform properties (translate, rotate, scale) over the shorthand — they compose independently and each can have its own transition-duration.',
+    docs: [
+      { label: 'MDN: transform',       url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform'       },
+      { label: 'MDN: perspective',     url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/perspective'     },
+      { label: 'MDN: transform-style', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform-style' },
+    ],
+    resources: [],
+    gotchas: [
+      'Transform order matters — rotate(45deg) translateX(100px) moves in the ROTATED X direction, not screen X.',
+      'transform creates a stacking context — children\'s z-index is relative to the transformed element, not the page.',
+    ],
+  },
+
+  'css/scroll-driven-animations': {
+    apis: ['animation-timeline: scroll()', 'animation-timeline: view()', 'animation-range', 'scroll-timeline-name', 'view-timeline-name', 'timeline-scope'],
+    related: [
+      { label: 'CSS Animations',   route: '/css/animations'   },
+      { label: 'CSS Transitions',  route: '/css/transitions'  },
+      { label: 'Container Queries', route: '/css/container-queries' },
+    ],
+    tip: 'Always add @supports not (animation-timeline: view()) when starting with opacity:0 — unsupported browsers leave content permanently invisible.',
+    docs: [
+      { label: 'MDN: animation-timeline',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline'  },
+      { label: 'MDN: animation-range',     url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/animation-range'     },
+      { label: 'Chrome Developers Guide',  url: 'https://developer.chrome.com/docs/css-ui/scroll-driven-animations'   },
+    ],
+    resources: [
+      { label: 'Scroll-driven demos', url: 'https://scroll-driven-animations.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'animation-duration is ignored for scroll timelines — progress is positional. Omit it or set "auto".',
+      'Siblings cannot share a named timeline without timeline-scope on a common ancestor.',
+    ],
+  },
+
+  'css/tailwind': {
+    apis: ['flex', 'grid', 'p-4', 'bg-{color}-500', 'hover:', 'md:', 'dark:', '@apply', 'group-hover:', 'peer-checked:', 'arbitrary values []'],
+    related: [
+      { label: 'CSS Architecture',     route: '/css/css-architecture' },
+      { label: 'CSS Custom Properties', route: '/css/custom-properties' },
+      { label: 'Responsive Design',    route: '/css/responsive'       },
+    ],
+    tip: 'Never build class names dynamically: `bg-${color}-500` is never scanned by JIT. Use a lookup object with full class name strings.',
+    docs: [
+      { label: 'Tailwind CSS Docs',    url: 'https://tailwindcss.com/docs'                          },
+      { label: 'Tailwind v4 Guide',    url: 'https://tailwindcss.com/docs/v4-beta'                  },
+      { label: 'Headless UI',          url: 'https://headlessui.com/'                               },
+    ],
+    resources: [
+      { label: 'Tailwind UI components', url: 'https://tailwindui.com/',           badge: 'tool' },
+      { label: 'shadcn/ui',              url: 'https://ui.shadcn.com/',             badge: 'code' },
+    ],
+    gotchas: [
+      'Files missing from the content array = classes not generated. Always include both .html and .ts for Angular.',
+      'Dynamic class strings (template literals) are never generated by JIT — use a full-string lookup object instead.',
+    ],
+  },
+
+  'css/css-architecture': {
+    apis: ['BEM', 'ITCSS', 'CSS Modules', '@layer + ITCSS'],
+    related: [
+      { label: 'CSS Layers (@layer)',  route: '/css/css-layers'   },
+      { label: 'CSS Custom Properties', route: '/css/custom-properties' },
+      { label: 'Tailwind CSS',         route: '/css/tailwind'     },
+    ],
+    tip: 'Modern stack: ITCSS conceptual layers + CSS @layer enforcement + BEM naming for components = zero specificity wars.',
+    docs: [
+      { label: 'BEM Official Docs',    url: 'https://getbem.com/'                                                    },
+      { label: 'ITCSS — Harry Roberts', url: 'https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/' },
+      { label: 'CSS Modules Docs',     url: 'https://github.com/css-modules/css-modules'                            },
+    ],
+    resources: [
+      { label: 'CUBE CSS (modern take)', url: 'https://cube.fyi/', badge: 'docs' },
+    ],
+    gotchas: [
+      'BEM elements are flat siblings in CSS — never nest .card__title inside .card { } or you get a descendant selector.',
+      'ITCSS Objects layer is structure-only — no colors, shadows, or fonts. Those go in Components.',
+    ],
+  },
+
+  'css/logical-properties': {
+    apis: ['margin-inline', 'padding-block', 'inset-inline-start', 'inline-size', 'block-size', 'border-inline-start', 'border-start-start-radius'],
+    related: [
+      { label: 'CSS Nesting',      route: '/css/css-nesting'    },
+      { label: 'Responsive Design', route: '/css/responsive'    },
+      { label: 'Flexbox',          route: '/css/flexbox'        },
+    ],
+    tip: 'Start migration with margin-inline: auto (centering) and padding-block/inline — these are the highest ROI logical properties.',
+    docs: [
+      { label: 'MDN — Logical Properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values' },
+      { label: 'MDN — inset',              url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/inset'                            },
+      { label: 'Can I Use — Logical Props', url: 'https://caniuse.com/css-logical-props'                                           },
+    ],
+    resources: [
+      { label: 'CSS Logical Properties Guide', url: 'https://web.dev/learn/css/logical-properties', badge: 'docs' },
+    ],
+    gotchas: [
+      'In vertical-rl writing mode, inline-size maps to height and block-size maps to width — opposite of horizontal-tb.',
+      'inset is physical (top/right/bottom/left) — use inset-inline-start/end for direction-aware positioning.',
+    ],
+  },
+
+  'css/css-nesting': {
+    apis: ['& (parent selector)', 'nested @media', 'nested @container', 'nested @supports'],
+    related: [
+      { label: 'CSS Layers (@layer)', route: '/css/css-layers'        },
+      { label: 'Selectors Deep Dive', route: '/css/selectors'         },
+      { label: 'Logical Properties',  route: '/css/logical-properties' },
+    ],
+    tip: 'Always use & before pseudo-classes (&:hover) and pseudo-elements (&::before). Without &, the rule is a descendant selector.',
+    docs: [
+      { label: 'MDN — CSS Nesting',     url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting'        },
+      { label: 'MDN — & selector',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Nesting_selector'   },
+      { label: 'Can I Use — Nesting',   url: 'https://caniuse.com/css-nesting'                                     },
+    ],
+    resources: [
+      { label: 'CSS Nesting Playground', url: 'https://codepen.io/web-dot-dev/pen/OJoKJeK', badge: 'tool' },
+    ],
+    gotchas: [
+      '.card { :hover { } } targets any hovered descendant — use &:hover to target .card itself.',
+      'Native nesting does NOT concatenate strings — .block { &__element { } } is NOT .block__element.',
+    ],
+  },
+
+  'css/css-layers': {
+    apis: ['@layer', 'revert-layer', 'layer() in @import'],
+    related: [
+      { label: 'CSS Custom Properties', route: '/css/custom-properties' },
+      { label: 'Selectors Deep Dive',   route: '/css/selectors'         },
+      { label: 'CSS Nesting',           route: '/css/css-nesting'       },
+    ],
+    tip: 'Declare @layer order as the very first line in your stylesheet — the first @layer the browser sees establishes priority.',
+    docs: [
+      { label: 'MDN — @layer',        url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@layer'       },
+      { label: 'MDN — revert-layer',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/revert-layer' },
+      { label: 'Can I Use — @layer',  url: 'https://caniuse.com/css-cascade-5'                             },
+    ],
+    resources: [
+      { label: 'CSS Cascade Layers Explainer', url: 'https://css.oddbird.net/layers/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Unlayered styles always beat layered ones — existing code outside @layer continues to win.',
+      '!important reverses layer priority — !important in a lower-priority layer wins over !important in a higher one.',
+    ],
+  },
+
+  'css/container-queries': {
+    apis: ['container-type', 'container-name', 'container', '@container', 'cqw', 'cqh', 'cqi', 'cqb'],
+    related: [
+      { label: 'Responsive Design', route: '/css/responsive'          },
+      { label: 'CSS Grid',          route: '/css/grid'                },
+      { label: 'Flexbox',           route: '/css/flexbox'             },
+    ],
+    tip: 'Use container-type: inline-size (not size) for most cases — size containment can collapse element height.',
+    docs: [
+      { label: 'MDN — container-type',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/container-type'  },
+      { label: 'MDN — @container',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@container'      },
+      { label: 'Can I Use — Container Queries', url: 'https://caniuse.com/css-container-queries'               },
+    ],
+    resources: [
+      { label: 'Container Query Playground', url: 'https://codepen.io/una/pen/LYbvKpK', badge: 'tool' },
+    ],
+    gotchas: [
+      'A container cannot query itself — only descendants respond to @container rules on that container.',
+      'cqw / cqh only work when there is a container-type ancestor in scope — without one, they resolve to 0.',
+    ],
+  },
+
+  // ── CSS: Colors & Theming ─────────────────────────────────────────────────
+  'css/colors-theming': {
+    apis: ['oklch()', 'color-mix()', 'prefers-color-scheme', 'forced-colors', 'color-scheme', 'var(--token)', 'contrast-color()'],
+    related: [
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+      { label: 'Responsive Design', route: '/css/responsive'        },
+      { label: 'Typography',        route: '/css/typography'        },
+    ],
+    tip: 'Define 6 tokens: --bg, --surface, --border, --text, --muted, --accent. Every component reads these — dark mode is a single :root override.',
+    docs: [
+      { label: 'MDN — oklch',           url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch'   },
+      { label: 'MDN — color-mix()',     url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix' },
+      { label: 'oklch.com — color tool', url: 'https://oklch.com/' },
+    ],
+    resources: [
+      { label: 'oklch.com palette tool', url: 'https://oklch.com/',     badge: 'tool' },
+      { label: 'Radix Colors',           url: 'https://www.radix-ui.com/colors', badge: 'tool' },
+    ],
+    gotchas: [
+      'Never use color alone to convey meaning (error/success) — pair with an icon or text label (WCAG 1.4.1).',
+      'color-scheme: light dark must be on :root so native form controls adopt the correct mode.',
+    ],
+  },
+
+  // ── CSS: Transitions ──────────────────────────────────────────────────────
+  'css/transitions': {
+    apis: ['transition', 'transition-duration', 'transition-timing-function', 'transition-delay', 'cubic-bezier()', 'prefers-reduced-motion'],
+    related: [
+      { label: 'CSS Animations', route: '/css/animations'      },
+      { label: 'Flexbox',        route: '/css/flexbox'         },
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+    ],
+    tip: 'Define transition on the base state, not on :hover — otherwise the reverse transition snaps instead of animating.',
+    docs: [
+      { label: 'MDN — CSS Transitions', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions' },
+      { label: 'cubic-bezier.com',      url: 'https://cubic-bezier.com/' },
+      { label: 'Easing functions reference', url: 'https://easings.net/' },
+    ],
+    resources: [
+      { label: 'Easing Cheat Sheet', url: 'https://easings.net/', badge: 'tool' },
+    ],
+    gotchas: [
+      'transition: all watches every property — always list specific properties to avoid wasted recalculations.',
+      'transition on :hover only = one-way animation. Put it on the base element for both-way transitions.',
+    ],
+  },
+
+  // ── CSS: Animations ───────────────────────────────────────────────────────
+  'css/animations': {
+    apis: ['@keyframes', 'animation-duration', 'animation-timing-function', 'animation-fill-mode', 'animation-delay', 'will-change', 'animation-play-state'],
+    related: [
+      { label: 'CSS Transitions',  route: '/css/transitions'  },
+      { label: 'Responsive Design', route: '/css/responsive'  },
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+    ],
+    tip: 'Only animate transform and opacity for 60fps — everything else triggers layout or paint and will cause jank.',
+    docs: [
+      { label: 'MDN — CSS Animations', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations' },
+      { label: 'cubic-bezier visualiser', url: 'https://cubic-bezier.com/' },
+      { label: 'web.dev — Animations guide', url: 'https://web.dev/articles/animations-guide' },
+    ],
+    resources: [
+      { label: 'Animate.css', url: 'https://animate.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'will-change creates a GPU layer per element — applying it to everything wastes memory. Remove after animation ends.',
+      'animation-fill-mode: none (default) resets element to original state on completion — usually set to "both".',
+    ],
+  },
+
+  // ── CSS: Responsive Design ────────────────────────────────────────────────
+  'css/responsive': {
+    apis: ['@media (min-width)', '@container', 'container-type', 'clamp()', 'min()', 'max()', 'auto-fit', 'minmax()', 'prefers-reduced-motion'],
+    related: [
+      { label: 'CSS Grid',        route: '/css/grid'             },
+      { label: 'Flexbox',         route: '/css/flexbox'          },
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+    ],
+    tip: 'Replace max-width + width: 100% with min(100%, 600px) — one property, zero override needed.',
+    docs: [
+      { label: 'MDN — @media',              url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@media'            },
+      { label: 'MDN — Container queries',   url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries' },
+      { label: 'web.dev — Responsive design', url: 'https://web.dev/learn/design'                                     },
+    ],
+    resources: [
+      { label: 'Utopia fluid type & space', url: 'https://utopia.fyi/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Without <meta name="viewport" content="width=device-width, initial-scale=1">, media queries won\'t behave on mobile.',
+      'prefers-reduced-motion: reduce must disable or simplify animations — WCAG requires this for accessibility.',
+    ],
+  },
+
+  // ── CSS: Typography ───────────────────────────────────────────────────────
+  'css/typography': {
+    apis: ['@font-face', 'font-display', 'clamp()', 'line-height', 'text-wrap', 'font-variation-settings', 'font-optical-sizing'],
+    related: [
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+      { label: 'Responsive Design', route: '/css/responsive'        },
+      { label: 'Colors & Theming',  route: '/css/colors-theming'    },
+    ],
+    tip: 'Start every project with clamp() type tokens on :root and max-width: 65ch on .prose — these two rules eliminate most typography media queries.',
+    docs: [
+      { label: 'MDN — @font-face',      url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face'    },
+      { label: 'web.dev — Font best practices', url: 'https://web.dev/articles/font-best-practices'           },
+      { label: 'Variable Fonts Guide',  url: 'https://web.dev/articles/variable-fonts'                        },
+    ],
+    resources: [
+      { label: 'Fluid Type Scale', url: 'https://www.fluid-type-scale.com/', badge: 'tool' },
+      { label: 'Font Squirrel',    url: 'https://www.fontsquirrel.com/',     badge: 'tool' },
+    ],
+    gotchas: [
+      'Font preloads need crossorigin even for same-origin fonts — missing it causes a double download.',
+      'em compounds in nested elements for font-size. Use rem to always be relative to the root.',
+    ],
+  },
+
+  // ── CSS: Selectors ────────────────────────────────────────────────────────
+  'css/selectors': {
+    apis: [':is()', ':where()', ':has()', ':not()', ':nth-child()', '::before', '::after', '[attr^=]'],
+    related: [
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+      { label: 'Box Model',         route: '/css/box-model'         },
+      { label: 'Flexbox',           route: '/css/flexbox'           },
+    ],
+    tip: 'Use :where() for base/reset styles so components can override without specificity fights. Use :is() when you need the selector\'s specificity to apply.',
+    docs: [
+      { label: 'MDN — :is()',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:is'   },
+      { label: 'MDN — :has()', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:has'  },
+      { label: 'MDN — Specificity', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity' },
+    ],
+    resources: [
+      { label: 'CSS Specificity Calculator', url: 'https://specificity.keegan.st/', badge: 'tool' },
+    ],
+    gotchas: [
+      ':is() takes the specificity of its most specific argument — :is(#id, .class) has ID-level specificity.',
+      '::before/::after require content: "" even when empty — without it they don\'t render.',
+    ],
+  },
+
+  // ── CSS: Custom Properties ────────────────────────────────────────────────
+  'css/custom-properties': {
+    apis: ['var()', '--custom-prop', ':root', '@property', 'color-mix()', 'calc() with var()'],
+    related: [
+      { label: 'Colors & Theming', route: '/css/colors-theming' },
+      { label: 'CSS Animations',   route: '/css/animations'     },
+      { label: 'Box Model',        route: '/css/box-model'      },
+    ],
+    tip: 'Name your tokens semantically (--color-surface, not --white) so they stay meaningful when the color changes in dark mode.',
+    docs: [
+      { label: 'MDN — CSS Custom Properties', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties' },
+      { label: 'MDN — @property',             url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@property'                   },
+      { label: 'web.dev — CSS Variables',     url: 'https://web.dev/learn/css/custom-properties'                                  },
+    ],
+    resources: [
+      { label: 'Open Props (token library)', url: 'https://open-props.style/', badge: 'tool' },
+    ],
+    gotchas: [
+      'var() fallback fires on undefined variables, not on invalid values — invalid triggers inherited/initial value instead.',
+      'Sass variables are compile-time; CSS custom properties are runtime. Use CSS variables for anything that needs to change dynamically.',
+    ],
+  },
+
+  // ── CSS: Positioning ──────────────────────────────────────────────────────
+  'css/positioning': {
+    apis: ['position: relative', 'position: absolute', 'position: fixed', 'position: sticky', 'z-index', 'inset', 'isolation: isolate'],
+    related: [
+      { label: 'CSS Grid',    route: '/css/grid'    },
+      { label: 'Flexbox',     route: '/css/flexbox' },
+      { label: 'Box Model',   route: '/css/box-model' },
+    ],
+    tip: 'Debugging z-index? Open DevTools, select the element, and look at the Layers panel — it shows every stacking context and lets you see what\'s layering on top.',
+    docs: [
+      { label: 'MDN — position',           url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/position'         },
+      { label: 'MDN — z-index',            url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/z-index'          },
+      { label: 'MDN — Stacking context',   url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — z-index', url: 'https://css-tricks.com/almanac/properties/z/z-index/', badge: 'blog' },
+    ],
+    gotchas: [
+      'z-index has no effect on position: static elements — add position: relative.',
+      'overflow: hidden on a parent breaks sticky — the parent becomes the scroll container.',
+    ],
+  },
+
+  // ── CSS: Grid ─────────────────────────────────────────────────────────────
+  'css/grid': {
+    apis: ['display: grid', 'grid-template-columns', 'grid-template-areas', 'repeat()', 'minmax()', 'fr', 'gap', 'grid-area'],
+    related: [
+      { label: 'Flexbox',               route: '/css/flexbox'    },
+      { label: 'Box Model',             route: '/css/box-model'  },
+      { label: 'Positioning & Stacking', route: '/css/positioning' },
+    ],
+    tip: 'repeat(auto-fit, minmax(200px, 1fr)) is the single most useful CSS Grid pattern — responsive columns with zero media queries.',
+    docs: [
+      { label: 'MDN — CSS Grid Layout', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout' },
+      { label: 'MDN — grid-template-areas', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas' },
+      { label: 'web.dev — Learn CSS Grid', url: 'https://web.dev/learn/css/grid' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Grid Guide', url: 'https://css-tricks.com/snippets/css/complete-guide-grid/', badge: 'blog' },
+      { label: 'Grid Garden (game)',      url: 'https://cssgridgarden.com/',                                  badge: 'tool' },
+    ],
+    gotchas: [
+      'Grid items have min-width: auto — add min-width: 0 to allow them to shrink below content size.',
+      'auto-fit collapses empty tracks; auto-fill keeps them — use auto-fit for card grids.',
+    ],
+  },
+
+  // ── CSS: Flexbox ──────────────────────────────────────────────────────────
+  'css/flexbox': {
+    apis: ['display: flex', 'justify-content', 'align-items', 'flex-wrap', 'gap', 'flex', 'align-self', 'order'],
+    related: [
+      { label: 'Box Model',              route: '/css/box-model'    },
+      { label: 'CSS Grid',               route: '/css/grid'         },
+      { label: 'Positioning & Stacking', route: '/css/positioning'  },
+    ],
+    tip: 'Remember: justify-content = main axis (row → horizontal), align-items = cross axis (row → vertical). They swap when flex-direction is column.',
+    docs: [
+      { label: 'MDN — Flexbox',          url: 'https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox' },
+      { label: 'MDN — flex shorthand',   url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/flex' },
+      { label: 'web.dev — Learn CSS Flexbox', url: 'https://web.dev/learn/css/flexbox' },
+    ],
+    resources: [
+      { label: 'CSS Tricks — Flexbox Guide', url: 'https://css-tricks.com/snippets/css/a-guide-to-flexbox/', badge: 'blog' },
+      { label: 'Flexbox Froggy (game)',      url: 'https://flexboxfroggy.com/',                              badge: 'tool' },
+    ],
+    gotchas: [
+      'flex items have min-width: auto by default — add min-width: 0 to allow shrinking below content size.',
+      'align-content only takes effect when flex-wrap: wrap is set and there are multiple rows.',
+    ],
+  },
+
   // ── HTML: Head & Metadata ──────────────────────────────────────────────────
   'html/head-metadata': {
     apis: ['<meta charset>', '<meta name="viewport">', 'og:image', '<link rel="preload">', '<link rel="canonical">'],
@@ -4364,6 +4914,195 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── HTML: New topic pages ─────────────────────────────────────────────────
+  'html/fundamentals': {
+    apis: ['<!DOCTYPE html>', '<html lang>', '<head>', '<body>', 'void elements', 'block vs inline', 'data-*', 'id', 'class', 'charset'],
+    related: [
+      { label: 'Document Structure', route: '/html/document-structure' },
+      { label: 'Semantic HTML',      route: '/html/semantic-elements'  },
+      { label: 'HTML Forms',         route: '/html/forms'              },
+    ],
+    tip: 'Always declare <!DOCTYPE html> as the very first line — it switches the browser into standards mode and avoids quirks-mode rendering bugs.',
+    docs: [
+      { label: 'MDN — HTML Basics',         url: 'https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics' },
+      { label: 'MDN — HTML Elements',       url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element'                               },
+      { label: 'WHATWG HTML Living Standard', url: 'https://html.spec.whatwg.org/multipage/'                                               },
+    ],
+    resources: [
+      { label: 'web.dev — Learn HTML', url: 'https://web.dev/learn/html', badge: 'blog' },
+    ],
+    gotchas: [
+      'Void elements (img, input, br, hr, meta, link) must NOT have a closing tag — </img> is a parse error in HTML5.',
+      'id values must be unique per page — duplicate IDs break querySelector, aria-labelledby, and fragment navigation.',
+      'Nesting block elements inside inline elements is invalid — <a><div> will be auto-corrected by the browser in unexpected ways.',
+    ],
+  },
+
+  'html/headings-paragraphs': {
+    apis: ['<h1>–<h6>', '<p>', '<br>', '<strong>', '<em>', '<b>', '<i>', '<small>', '<mark>', '<abbr>', '<blockquote>', '<cite>'],
+    related: [
+      { label: 'Semantic HTML',        route: '/html/semantic-elements'  },
+      { label: 'HTML SEO',             route: '/html/seo'                },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility'      },
+    ],
+    tip: 'Use exactly one <h1> per page for SEO and accessibility — subsequent headings should form a logical outline without skipping levels.',
+    docs: [
+      { label: 'MDN — Heading elements', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements' },
+      { label: 'MDN — <p>',             url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p'                },
+      { label: 'MDN — <strong>',        url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/strong'           },
+    ],
+    resources: [
+      { label: 'web.dev — Document and website structure', url: 'https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure', badge: 'blog' },
+    ],
+    gotchas: [
+      'Never use headings for visual sizing — use CSS. Skipping from h1 to h4 breaks the document outline for screen readers.',
+      '<br> should never be used for spacing — use CSS margin-bottom on paragraphs instead.',
+      '<b> and <i> are presentational; <strong> and <em> carry semantic weight that affects screen reader tone.',
+    ],
+  },
+
+  'html/input-types': {
+    apis: ['type="email"', 'type="tel"', 'type="url"', 'type="number"', 'type="date"', 'type="range"', 'type="color"', 'type="search"', 'type="file"', 'type="checkbox"', 'autocomplete', 'inputmode'],
+    related: [
+      { label: 'HTML Forms',           route: '/html/forms'        },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility' },
+    ],
+    tip: 'Use type="email" and type="tel" to get the right mobile keyboard automatically — it costs nothing and significantly improves UX on touch devices.',
+    docs: [
+      { label: 'MDN — <input> types',    url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input' },
+      { label: 'MDN — autocomplete',     url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete' },
+      { label: 'MDN — inputmode',        url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode' },
+    ],
+    resources: [
+      { label: 'web.dev — Forms best practices', url: 'https://web.dev/articles/payment-and-address-form-best-practices', badge: 'blog' },
+    ],
+    gotchas: [
+      'type="number" with step="any" still rejects non-numeric input — for phone numbers, use type="tel" with pattern validation instead.',
+      'type="date" returns the value in ISO 8601 (YYYY-MM-DD) regardless of the locale displayed in the picker.',
+      'Browsers may ignore autocomplete="off" for password fields — use a unique field name instead if you need to suppress autofill.',
+    ],
+  },
+
+  'html/landmark-elements': {
+    apis: ['<header>', '<nav>', '<main>', '<aside>', '<footer>', '<section>', '<article>', '<form>', 'role="search"', 'aria-label', 'aria-labelledby'],
+    related: [
+      { label: 'Semantic HTML',        route: '/html/semantic-elements'  },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility'      },
+      { label: 'ARIA Roles',           route: '/html/aria-roles'         },
+    ],
+    tip: 'Add aria-label to every <nav> element when you have more than one on the page — "Primary navigation" vs "Breadcrumb" lets screen reader users quickly identify which is which.',
+    docs: [
+      { label: 'MDN — ARIA landmark roles', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles#landmark_roles' },
+      { label: 'MDN — <main>',              url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main'                       },
+      { label: 'MDN — <nav>',               url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav'                        },
+    ],
+    resources: [
+      { label: 'W3C — Using ARIA landmarks', url: 'https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/', badge: 'docs' },
+      { label: 'a11yproject — Landmark regions', url: 'https://www.a11yproject.com/posts/aria-landmark-roles/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Multiple <main> elements on a page are invalid — there can only be one visible <main> at a time.',
+      'Nesting <main> inside <aside> or <header> is invalid — <main> must be a direct child of <body> (or a direct child of a landmark that is a direct child of <body>).',
+      '<footer> inside an <article> refers to the article footer, not the page footer — context matters for screen readers.',
+    ],
+  },
+
+  'html/aria-roles': {
+    apis: ['role="button"', 'role="dialog"', 'role="alertdialog"', 'role="alert"', 'role="status"', 'role="tooltip"', 'role="tab"', 'role="tabpanel"', 'aria-expanded', 'aria-controls', 'aria-selected', 'aria-live'],
+    related: [
+      { label: 'Accessibility & ARIA', route: '/html/accessibility'     },
+      { label: 'Landmark Elements',    route: '/html/landmark-elements' },
+      { label: 'Focus Management',     route: '/html/focus-management'  },
+    ],
+    tip: 'The first rule of ARIA: use the native HTML element before adding a role — a <button> beats a <div role="button"> every time (no extra JS needed for keyboard support).',
+    docs: [
+      { label: 'MDN — ARIA roles',      url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles' },
+      { label: 'ARIA in HTML (spec)',    url: 'https://www.w3.org/TR/html-aria/'                                      },
+      { label: 'WAI-ARIA 1.2',          url: 'https://www.w3.org/TR/wai-aria-1.2/'                                   },
+    ],
+    resources: [
+      { label: 'W3C ARIA Authoring Practices', url: 'https://www.w3.org/WAI/ARIA/apg/', badge: 'docs' },
+      { label: 'Deque — ARIA roles reference', url: 'https://dequeuniversity.com/library/', badge: 'blog' },
+    ],
+    gotchas: [
+      'role="presentation" removes semantics but not focusability — pair it with tabindex="-1" when removing a table used for layout.',
+      'aria-live="assertive" interrupts the current screen reader announcement — use it only for time-sensitive alerts, not status messages.',
+      'Dynamic ARIA state (aria-expanded, aria-checked) must be updated via JavaScript — the attribute does not self-update on click.',
+    ],
+  },
+
+  'html/focus-management': {
+    apis: ['tabindex', 'focus()', 'blur()', ':focus-visible', ':focus-within', 'focusTrap', 'inert', 'autofocus', 'dialog.showModal()', 'skip link'],
+    related: [
+      { label: 'ARIA Roles',           route: '/html/aria-roles'        },
+      { label: 'Accessibility & ARIA', route: '/html/accessibility'     },
+      { label: 'HTML Forms',           route: '/html/forms'             },
+    ],
+    tip: 'Use <dialog> for modals — the browser natively traps focus and restores it on close, avoiding hundreds of lines of custom focus-trap code.',
+    docs: [
+      { label: 'MDN — :focus-visible',  url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible' },
+      { label: 'MDN — tabindex',        url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex' },
+      { label: 'MDN — inert attribute', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert' },
+    ],
+    resources: [
+      { label: 'web.dev — Focus management', url: 'https://web.dev/articles/focus', badge: 'blog' },
+      { label: 'a11yproject — Skip navigation', url: 'https://www.a11yproject.com/posts/skip-nav-links/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Never use outline: none without a visible :focus-visible replacement — keyboard users lose their location indicator entirely.',
+      'tabindex > 0 creates a separate focus order before the natural DOM order — this almost always creates a confusing tab sequence.',
+      'autofocus inside a dialog causes a screen reader to jump to the focused element without context — prefer focusing the dialog heading instead.',
+    ],
+  },
+
+  'html/storage-apis': {
+    apis: ['localStorage.setItem()', 'localStorage.getItem()', 'sessionStorage', 'indexedDB.open()', 'IDBObjectStore', 'document.cookie', 'CookieStore API', 'cache.put()', 'navigator.storage.estimate()'],
+    related: [
+      { label: 'PWA & Service Workers', route: '/html/pwa-service-workers' },
+      { label: 'HTML5 Browser APIs',    route: '/html/apis'                },
+      { label: 'HTML Performance',      route: '/html/performance'         },
+    ],
+    tip: 'Wrap localStorage calls in try/catch — Safari in private mode and storage-full scenarios throw QuotaExceededError that would otherwise crash your app.',
+    docs: [
+      { label: 'MDN — Web Storage API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API' },
+      { label: 'MDN — IndexedDB API',   url: 'https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API'   },
+      { label: 'MDN — Cookie API',      url: 'https://developer.mozilla.org/en-US/docs/Web/API/Cookie_Store_API' },
+    ],
+    resources: [
+      { label: 'web.dev — Storage for the web', url: 'https://web.dev/articles/storage-for-the-web', badge: 'blog' },
+      { label: 'Dexie.js — IndexedDB wrapper',  url: 'https://dexie.org/',                           badge: 'tool' },
+    ],
+    gotchas: [
+      'localStorage is synchronous and blocks the main thread — for large data, use IndexedDB with an async wrapper like Dexie.',
+      'sessionStorage is per-tab, not per-window — opening the same URL in a new tab starts a fresh sessionStorage.',
+      'Cookies set without SameSite are treated as SameSite=Lax by modern browsers — cross-site POST requests will not include them.',
+    ],
+  },
+
+  'html/drag-drop': {
+    apis: ['draggable="true"', 'dragstart', 'dragover', 'drop', 'dragend', 'dataTransfer.setData()', 'dataTransfer.getData()', 'dataTransfer.effectAllowed', 'dataTransfer.dropEffect', 'event.preventDefault()'],
+    related: [
+      { label: 'HTML5 Browser APIs',   route: '/html/apis'    },
+      { label: 'HTML5 Storage APIs',   route: '/html/storage-apis' },
+      { label: 'Canvas & SVG',         route: '/html/canvas-svg'   },
+    ],
+    tip: 'Call event.preventDefault() in the dragover handler — without it, the browser handles the drop itself and your drop event never fires.',
+    docs: [
+      { label: 'MDN — HTML Drag and Drop API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API' },
+      { label: 'MDN — DataTransfer',           url: 'https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer'           },
+      { label: 'MDN — draggable attribute',    url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/draggable' },
+    ],
+    resources: [
+      { label: 'web.dev — Drag and Drop', url: 'https://web.dev/articles/drag-and-drop',             badge: 'blog' },
+      { label: 'MDN — Pointer Events (accessible alternative)', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events', badge: 'docs' },
+    ],
+    gotchas: [
+      'The HTML5 DnD API is not keyboard accessible — provide a keyboard-operable alternative (cut/paste, up/down buttons) alongside drag-and-drop.',
+      'dataTransfer.setData() must be called in the dragstart handler, not in drop — the data is write-only during dragstart and read-only during drop.',
+      'draggable="true" on a link or image conflicts with the browser\'s default drag behaviour — call preventDefault() in dragstart to override it.',
+    ],
+  },
+
   // ── SSR + Hydration ─────────────────────────────────────────────────────────
   ssr: {
     apis: ['provideClientHydration()', 'withEventReplay()', 'isPlatformBrowser()', 'PLATFORM_ID', 'TransferState'],
@@ -4405,6 +5144,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     '[class.section-react]':       'section() === "react"',
     '[class.section-javascript]':  'section() === "javascript"',
     '[class.section-html]':        'section() === "html"',
+    '[class.section-css]':         'section() === "css"',
   },
 })
 export class PageSidebarComponent {
@@ -4423,7 +5163,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css'>(() =>
     this.currentUrl().startsWith('/csharp')       ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')     ? 'aspnet'
     : this.currentUrl().startsWith('/sql')        ? 'sql'
@@ -4431,6 +5171,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/react')      ? 'react'
     : this.currentUrl().startsWith('/javascript') ? 'javascript'
     : this.currentUrl().startsWith('/html')       ? 'html'
+    : this.currentUrl().startsWith('/css')        ? 'css'
     : 'angular'
   );
 
@@ -4444,6 +5185,7 @@ export class PageSidebarComponent {
            : this.section() === 'react'      ? REACT_DEFAULT
            : this.section() === 'javascript' ? JS_DEFAULT
            : this.section() === 'html'       ? HTML_DEFAULT
+           : this.section() === 'css'        ? CSS_DEFAULT
            : DEFAULT);
   });
 
@@ -4456,6 +5198,7 @@ export class PageSidebarComponent {
       case 'react':       return '📖 React Docs';
       case 'javascript':  return '📖 MDN JS Docs';
       case 'html':        return '📖 MDN HTML Docs';
+      case 'css':         return '📖 MDN CSS Docs';
       default:            return '📖 Angular Docs';
     }
   });

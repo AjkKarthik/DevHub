@@ -90,9 +90,9 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | TypeScript | 22 | 0 | Complete — 20 topics + 2 reference |
 | React | 19 | 0 | Complete — 17 topics + 2 reference |
 | JavaScript | 24 | 0 | Complete — 22 topics + 2 reference |
-| HTML | 17 | 8 | In Progress — 15 topics + 2 reference live; 8 cards coming soon |
-| CSS | 0 | 22 | Not started |
-| Web Performance | 0 | 22 | Not started |
+| HTML | 25 | 0 | Complete — 23 topics + 2 reference |
+| CSS | 24 | 0 | Complete — 22 topics + 2 reference |
+| Web Performance | 1 | 21 | In Progress — Phase 3F wiring done, core-web-vitals written, 21 stubs |
 | Blazor | 0 | 23 | Not started |
 | Node.js | 0 | 25 | Not started |
 | Python | 0 | 23 | Not started |
@@ -636,57 +636,78 @@ Accent: `#e34c26` (HTML orange). Search prefix: `html-`.
 - [x] 2026-06-18 `html-apis` — Geolocation, Notifications, File API, Drag and Drop, Clipboard API, Web Share
 - [x] 2026-06-18 `html-cheatsheet` — reference page (no app-page-complete, no app-revision-card)
 - [x] 2026-06-18 `html-interview-prep` — reference page (no app-page-complete, no app-revision-card)
+- [x] 2026-06-19 `html-fundamentals` — elements, attributes, void elements, block vs inline, DOCTYPE, character encoding
+- [x] 2026-06-19 `html-headings-paragraphs` — h1–h6 hierarchy, paragraph, inline text elements, semantic vs presentational
+- [x] 2026-06-19 `html-input-types` — email/tel/url/number/date/range/color/search, autocomplete, inputmode, pattern
+- [x] 2026-06-19 `html-landmark-elements` — all 8 ARIA landmark roles, HTML equivalents, aria-label for duplicates
+- [x] 2026-06-19 `html-aria-roles` — ARIA role categories, aria-label/labelledby/describedby, live regions, states
+- [x] 2026-06-19 `html-focus-management` — tabindex, focus(), :focus-visible, skip links, modal focus traps, inert
+- [x] 2026-06-19 `html-storage-apis` — localStorage vs sessionStorage vs IndexedDB vs cookies, capacity, security
+- [x] 2026-06-19 `html-drag-drop` — draggable, drag event sequence, DataTransfer, effectAllowed/dropEffect
 
 ---
 
-### 3E — CSS hub (22 topics) `src/app/components/frontend/css/`
+### 3E — CSS hub ✅ COMPLETE `src/app/components/frontend/css/`
 
-Accent: `#264de4` (CSS blue). Search prefix: `css-`.
+All 22 trackable topics + 2 reference pages live (2026-06-19). cssTotal = 22. All 24 cards `available: true`.
+Accent: `#264de4` (CSS blue). Search prefix: `css-`. Icon content: `CSS`. `tech="javascript"` in page-meta.
 
-
-- [ ] `css-box-model` — content/padding/border/margin, box-sizing: border-box,
-  collapsing margins, BFC, intrinsic vs extrinsic sizing
-- [ ] `css-flexbox` — flex container (direction, wrap, justify-content, align-items,
-  align-content), flex items (flex shorthand, order, align-self)
-- [ ] `css-grid` — grid-template-columns/rows, fr unit, auto-fill vs auto-fit, named
-  areas, implicit grid, subgrid (CSS Grid Level 2)
-- [ ] `css-positioning` — static/relative/absolute/fixed/sticky, z-index stacking contexts,
-  containing block, logical properties (inset-block/inline)
-- [ ] `css-custom-properties` — CSS variables (--name: value), var(), fallback, scope,
-  inheritance, updating via JS, design token patterns
-- [ ] `css-responsive` — Media queries, container queries, fluid typography (clamp()),
-  aspect-ratio, min()/max()/clamp(), logical properties
-
-
-- [ ] `css-selectors` — Specificity calculation, :is/:where/:has/:not, combinators,
-  attribute selectors, pseudo-elements (::before/::after/::marker)
-- [ ] `css-typography` — font-family stack, variable fonts, text-wrap: balance/pretty,
-  line-height units, font-display, optical sizing
-- [ ] `css-animations` — @keyframes, animation shorthand, timing functions, will-change,
-  prefers-reduced-motion, vs transitions
-- [ ] `css-tailwind` — Utility-first philosophy, JIT mode, tailwind.config.ts, dark mode
-  class strategy, cn()/clsx, component extraction vs @apply
-- [ ] `css-transforms-3d` — translate/scale/rotate/skew, 3D transforms, perspective,
-  transform-origin, GPU compositing layers
-- [ ] `css-scroll-driven` — animation-timeline: scroll()/view(), animation-range, View
-  Transitions API, no IntersectionObserver needed
-
-
-- [ ] `css-modern-features` — @layer (cascade layers), @scope, color-mix(), oklch
-  color space, nesting (native CSS), :has() selector
-- [ ] `css-theming` — Dark mode (prefers-color-scheme + class toggle), CSS variable
-  theming architecture, design token layers
-- [ ] `css-architecture` — BEM, CSS Modules, CSS-in-JS (Emotion/styled-components),
-  atomic CSS, when to choose each
-- [ ] Reference pages: cheatsheet, interview-prep
+- [x] 2026-06-19 `css-fundamentals` — cascade, specificity, inheritance, box-sizing, :is()/:where()
+- [x] 2026-06-19 `css-box-model` — content/padding/border/margin, BFC, collapsing margins
+- [x] 2026-06-19 `css-selectors` — :is/:where/:has/:not, combinators, attribute selectors, pseudo-elements
+- [x] 2026-06-19 `css-custom-properties` — CSS variables, var(), fallback, scope, design token patterns
+- [x] 2026-06-19 `css-flexbox` — flex container/items, justify-content, align-items, gap, flex shorthand
+- [x] 2026-06-19 `css-grid` — template-columns/rows, fr unit, auto-fill/auto-fit, named areas, subgrid
+- [x] 2026-06-19 `css-positioning` — static/relative/absolute/fixed/sticky, z-index stacking contexts
+- [x] 2026-06-19 `css-typography` — font loading, variable fonts, clamp(), font-display
+- [x] 2026-06-19 `css-colors-theming` — oklch, color-mix(), dark mode strategies, accessible contrast
+- [x] 2026-06-19 `css-backgrounds-borders` — gradients, background-size, multiple backgrounds, box-shadow
+- [x] 2026-06-19 `css-responsive` — mobile-first, media queries, fluid grids, container queries
+- [x] 2026-06-19 `css-container-queries` — @container, cqw/cqh units, component-scoped responsiveness
+- [x] 2026-06-19 `css-transitions` — transition property/duration/easing, transform+opacity only for 60fps
+- [x] 2026-06-19 `css-animations` — @keyframes, animation shorthand, will-change, prefers-reduced-motion
+- [x] 2026-06-19 `css-css-layers` — @layer, layer order, unlayered styles beat all layers
+- [x] 2026-06-19 `css-css-nesting` — native CSS nesting, & parent selector, nested @media
+- [x] 2026-06-19 `css-logical-properties` — margin-inline/block, inset, writing-mode, RTL support
+- [x] 2026-06-19 `css-css-architecture` — BEM, ITCSS, CSS Modules, utility-first
+- [x] 2026-06-19 `css-tailwind` — utility-first, JIT mode, @apply, group/peer variants, dark mode class
+- [x] 2026-06-19 `css-css-transforms` — translate/rotate/scale/3D, perspective, transform-origin, GPU layers
+- [x] 2026-06-19 `css-css-filters` — filter, backdrop-filter, mix-blend-mode, isolation, frosted glass
+- [x] 2026-06-19 `css-scroll-driven-animations` — animation-timeline: scroll()/view(), animation-range
+- [x] 2026-06-19 `css-cheatsheet` — reference: 7-tab (Selectors/Box Model/Layout/Typography/Colors/Animations/Modern CSS)
+- [x] 2026-06-19 `css-interview-prep` — reference: 20 Q&A filterable by difficulty + topic
 
 ---
 
-### 3F — Web Performance hub (22 topics) — already detailed in home
+### 3F — Web Performance hub (22 topics) — IN PROGRESS
 
-Accent: `#16a34a` (green). Search prefix: `perf-`.
-Batches: Core Metrics (CWV) → Loading → Runtime → Tooling → Reference.
-Build in 3 sessions of ~6 topics each. (Detailed topic list is in home.ts.)
+Accent: `#16a34a` (green). Search prefix: `perf-`. Route: `/performance`.
+CSS classes: `.perf-page`, `.perf-icon`, `.perf-section`. Icon: `⚡`. tech="javascript".
+Shell wiring DONE: routes, nav, progress (perfTotal=20), search index, breadcrumb, app.scss, app.ts, search.ts, home.ts routes.
+21 stub components created. First full page written: `core-web-vitals`.
+
+Remaining pages to write (one per session turn):
+- [ ] `lcp` — Largest Contentful Paint
+- [ ] `inp` — Interaction to Next Paint
+- [ ] `cls` — Cumulative Layout Shift
+- [ ] `critical-rendering-path` — Critical Rendering Path
+- [ ] `browser-rendering` — Browser Rendering Pipeline
+- [ ] `resource-hints` — Resource Hints
+- [ ] `http2-http3` — HTTP/2 & HTTP/3
+- [ ] `caching` — Caching & Service Workers
+- [ ] `image-optimisation` — Image Optimisation
+- [ ] `font-performance` — Font Performance
+- [ ] `js-performance` — JavaScript Performance
+- [ ] `third-party-scripts` — Third-Party Scripts
+- [ ] `measurement` — Performance Measurement
+- [ ] `rum` — Real User Monitoring
+- [ ] `ssr-streaming` — SSR & Streaming HTML
+- [ ] `css-performance` — CSS Performance
+- [ ] `web-workers` — Web Workers & Off-Main-Thread
+- [ ] `performance-budgets` — Performance Budgets & CI
+- [ ] `speculation-rules` — Speculation Rules API
+- [ ] `cheatsheet` — Performance Cheat Sheet (reference — no PageComplete)
+- [ ] `interview-prep` — Performance Interview Prep (reference — no PageComplete)
 
 ---
 
@@ -1189,6 +1210,9 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-19 — Web Performance hub Phase 3F wiring complete: routes, nav, progress (perfTotal=20), search (22 perf- entries), breadcrumb, app.scss section-performance, search.ts perf- URL routing. 21 stub components created. First full page: core-web-vitals. Build passes. Green accent #16a34a.
+- [x] 2026-06-19 — HTML hub Phase 3D complete: all 25 pages live (23 trackable topics + cheatsheet + interview-prep). htmlTotal = 23. hub-home HTML card topics: 25, available: true. Accent #e34c26, search prefix html-. Build passes.
+- [x] 2026-06-19 — CSS hub Phase 3E complete: all 24 pages live (22 trackable topics + cheatsheet + interview-prep). cssTotal = 22. hub-home CSS card topics: 24, available: true. Accent #264de4, search prefix css-. Build passes.
 - [x] 2026-06-18 — HTML hub Phase 3D Batch 2: 7 new pages (canvas-svg, performance, pwa-service-workers, seo, apis, cheatsheet, interview-prep). htmlTotal = 20. hub-home HTML card topics: 17, available: true. Build passes. 17 pages live (15 topics + 2 reference), 8 coming soon.
 - [x] 2026-06-17 — JavaScript hub Phase 3C complete: all 24 pages live (22 trackable topics + cheatsheet + interview-prep). jsTotal = 22. hub-home JavaScript card topics: 24, available: true. Hero stat updated to 300+. Build passes.
 - [x] 2026-06-17 — React hub Phase 3B complete: all 19 pages live (17 trackable topics + cheatsheet + interview-prep). reactTotal = 17. hub-home React card topics: 19, available: true. Hero stat updated to 275+. Build passes.

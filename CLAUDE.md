@@ -62,6 +62,8 @@ Each page = 3 files: `<name>.ts`, `<name>.html`, `<name>.scss` in its own folder
 | TypeScript | `#3178c6` | `#eff6ff` | `#93c5fd` | `rgba(49,120,198,…)` |
 | React | `#0ea5e9` (dark `#0284c7`) | `#f0f9ff` | `#67e8f9` | `rgba(14,165,233,…)` |
 | JavaScript | `#f7df1e` (text `#854d0e`) | `#fefce8` | `#fde68a` | `rgba(247,223,30,…)` |
+| CSS | `#264de4` | `#eff6ff` | `#93c5fd` | `rgba(38,77,228,…)` |
+| Web Performance | `#16a34a` (dark `#15803d`) | `#f0fdf4` | `#86efac` | `rgba(22,163,74,…)` |
 
 Define `$accent` / `$tint` at the top of every page SCSS. New page types are built once and
 ported to the other hub by swapping these colors — structure/UX must stay identical.
@@ -90,6 +92,8 @@ design bug — it breaks icon colors, section headings, and dark mode.
 | TypeScript | `.ts-page` | `.ts-section` | `.ts-icon` | `TS` | `typescript` |
 | React | `.react-page` | `.react-section` | `.react-icon` | `⚛` (atom — React's brand symbol) | `react` |
 | JavaScript | `.js-page` | `.js-section` | `.js-icon` | `JS` | `javascript` |
+| CSS | `.css-page` | `.css-section` | `.css-icon` | `CSS` | `javascript` (CSS pages share JS playground; no dedicated CSS fiddle) |
+| Web Performance | `.perf-page` | `.perf-section` | `.perf-icon` | `⚡` | `javascript` (shares JS playground) |
 
 ### Icon pattern — exact HTML required
 
@@ -351,8 +355,29 @@ structure/UX, only content + accent differ.
   Nav groups: Foundations, Functions & Scope, Objects & Prototypes, Arrays & Destructuring,
   Async, Browser & Modules, Patterns, Advanced, Reference. All 24 cards `available: true`.
   JS pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
-- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, and JavaScript are `available: true`. Everything else "Soon".
-- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22 (`progress.service.ts`).
+- **CSS hub**: 22 trackable topic pages + 2 reference pages (24 total). Feature-complete.
+  Blue theme `$accent: #264de4`, tint `#eff6ff`, dark `#93c5fd`. Search prefix `css-`.
+  Progress: `cssTotal=22` in progress.service. CSS classes: `css-page`, `css-icon`, `css-section`.
+  Icon content: `CSS`. `tech="javascript"` in page-meta (CSS pages share JS playground).
+  Nav groups: Foundations, Layout, Visual, Responsive, Animation, Modern CSS, Reference.
+  All 24 cards `available: true`. CSS pages use `app-common-mistakes` AND `app-revision-card`.
+  Reference pages have no PageComplete. Challenge.language must be `'html'` or `'scss'` (no `'css'`).
+- **HTML hub**: 23 trackable topic pages + 2 reference pages (25 total). Feature-complete.
+  Orange theme `$accent: #e34c26`, tint `#fff7ed`, dark `#fb923c`. Search prefix `html-`.
+  Progress: `htmlTotal=23` in progress.service. CSS classes: `html-page`, `html-icon`, `html-section`.
+  Icon content: `&lt;/&gt;`. `tech="javascript"` in page-meta (HTML pages share JS playground).
+  Nav groups: Foundations, Text & Media, Forms, Semantic & Accessibility, HTML5 APIs, Reference.
+  All 25 cards `available: true`. HTML pages use `app-common-mistakes` AND `app-revision-card`.
+  Reference pages have no PageComplete. Challenge.language must be `'html'` (not `'css'`).
+- **Web Performance hub**: 0 trackable topic pages live (20 total planned) + 2 reference pages (22 cards total). In progress — Phase 3F.
+  Green theme `$accent: #16a34a`, tint `#f0fdf4`, dark `#86efac`. Search prefix `perf-`. Route: `/performance`.
+  CSS classes: `.perf-page`, `.perf-icon`, `.perf-section`. Icon content: `⚡` at `font-size: 1.8rem`. `tech="javascript"`.
+  Nav groups: Core Web Vitals, Rendering, Loading, Assets, JavaScript, Measurement, Reference.
+  All topic cards `available: false` until pages are written. Progress: `perfTotal=20` in progress.service.ts.
+  Pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete. Challenge.language: `'html'` or `'typescript'`.
+  First page written: `core-web-vitals` (available: false still — flip to true when wiring that card).
+- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, and HTML are `available: true`. Web Performance hub home exists at `/performance` but topic cards are `available: false`. Everything else "Soon".
+- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20 (`progress.service.ts`).
 - Hero stat: "300+ Live Pages".
 
 ## Working practices

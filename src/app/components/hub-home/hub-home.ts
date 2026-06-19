@@ -235,7 +235,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'HTML', time: '~3 hrs',
       tagline: 'The skeleton of the web — semantic markup, accessibility & forms.',
       icon: '🌐', gradient: 'linear-gradient(135deg, #e44d26 0%, #b83219 100%)',
-      textDark: false, route: '/html', available: true, topics: 17,
+      textDark: false, route: '/html', available: true, topics: 25,
 
       highlights: [
         'Semantic elements: article, section, nav',
@@ -248,7 +248,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'CSS', time: '~5 hrs',
       tagline: 'Style the web — Flexbox, Grid, animations, custom properties.',
       icon: '🎨', gradient: 'linear-gradient(135deg, #264de4 0%, #142b9c 100%)',
-      textDark: false, route: '/css', available: true,
+      textDark: false, route: '/css', available: true, topics: 24,
 
       highlights: [
         'Flexbox and CSS Grid layout',

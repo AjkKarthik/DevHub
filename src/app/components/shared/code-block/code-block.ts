@@ -7,6 +7,7 @@ import scss from 'highlight.js/lib/languages/scss';
 import bash from 'highlight.js/lib/languages/bash';
 import csharp from 'highlight.js/lib/languages/csharp';
 import sql from 'highlight.js/lib/languages/sql';
+import css from 'highlight.js/lib/languages/css';
 
 hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('html', xml);
@@ -14,11 +15,12 @@ hljs.registerLanguage('scss', scss);
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('csharp', csharp);
 hljs.registerLanguage('sql', sql);
+hljs.registerLanguage('css', css);
 
 export interface CodeTab {
   label: string;
   code: string;
-  language?: 'typescript' | 'html' | 'scss' | 'bash' | 'csharp' | 'sql';
+  language?: 'typescript' | 'html' | 'scss' | 'bash' | 'csharp' | 'sql' | 'css';
 }
 
 @Component({
