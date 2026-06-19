@@ -63,7 +63,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'CSS Performance',             route: '/performance/css-performance', badge: 'Assets', available: true,
     description: 'Reduce CSS selector complexity, contain, content-visibility, and removing unused styles.',
     keyPoints: ['content-visibility: auto: browser skips off-screen rendering', 'PurgeCSS / UnCSS: remove unused class selectors in production', 'Critical CSS: inline above-the-fold, async-load the rest', 'contain: layout strict: isolates element from triggering global layout', 'Avoid @import in CSS — causes serial network requests'] },
-  { title: 'Web Workers & Off-Main-Thread', route: '/performance/web-workers', badge: 'JavaScript', available: false,
+  { title: 'Web Workers & Off-Main-Thread', route: '/performance/web-workers', badge: 'JavaScript', available: true,
     description: 'Move CPU-intensive work off the main thread with Web Workers and Comlink for clean APIs.',
     keyPoints: ['Web Worker: runs JS in background thread', 'Comlink: wraps Worker with Proxy for RPC-style calls', 'Use for image processing, encryption, JSON parsing at scale', 'SharedArrayBuffer: shared memory with cross-origin isolation', 'Atomics: synchronise threads via atomic operations'] },
   { title: 'Performance Budgets & CI',    route: '/performance/performance-budgets', badge: 'Measurement', available: false,

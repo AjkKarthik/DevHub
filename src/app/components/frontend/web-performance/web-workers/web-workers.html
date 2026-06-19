@@ -1,1 +1,35 @@
+<div class="perf-page">
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">Web Workers &amp; Off-Main-Thread</h1>
+  <p class="page-subtitle">
+    Move CPU-intensive work to a <code>Web Worker</code> so the main thread stays free
+    for input handling — use <code>Comlink</code> for clean RPC-style calls and
+    <code>Transferable</code> objects for zero-copy data transfer.
+  </p>
 
+  <app-page-meta [readingTime]="22" difficulty="intermediate" since="2018" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="perf-web-workers"
+    nextRoute="/performance/performance-budgets"
+    nextLabel="Performance Budgets &amp; CI" />
+</div>
