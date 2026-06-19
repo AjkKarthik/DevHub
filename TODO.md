@@ -92,7 +92,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | JavaScript | 24 | 0 | Complete — 22 topics + 2 reference |
 | HTML | 25 | 0 | Complete — 23 topics + 2 reference |
 | CSS | 24 | 0 | Complete — 22 topics + 2 reference |
-| Web Performance | 0 | 22 | Not started |
+| Web Performance | 1 | 21 | In Progress — Phase 3F wiring done, core-web-vitals written, 21 stubs |
 | Blazor | 0 | 23 | Not started |
 | Node.js | 0 | 25 | Not started |
 | Python | 0 | 23 | Not started |
@@ -679,11 +679,35 @@ Accent: `#264de4` (CSS blue). Search prefix: `css-`. Icon content: `CSS`. `tech=
 
 ---
 
-### 3F — Web Performance hub (22 topics) — already detailed in home
+### 3F — Web Performance hub (22 topics) — IN PROGRESS
 
-Accent: `#16a34a` (green). Search prefix: `perf-`.
-Batches: Core Metrics (CWV) → Loading → Runtime → Tooling → Reference.
-Build in 3 sessions of ~6 topics each. (Detailed topic list is in home.ts.)
+Accent: `#16a34a` (green). Search prefix: `perf-`. Route: `/performance`.
+CSS classes: `.perf-page`, `.perf-icon`, `.perf-section`. Icon: `⚡`. tech="javascript".
+Shell wiring DONE: routes, nav, progress (perfTotal=20), search index, breadcrumb, app.scss, app.ts, search.ts, home.ts routes.
+21 stub components created. First full page written: `core-web-vitals`.
+
+Remaining pages to write (one per session turn):
+- [ ] `lcp` — Largest Contentful Paint
+- [ ] `inp` — Interaction to Next Paint
+- [ ] `cls` — Cumulative Layout Shift
+- [ ] `critical-rendering-path` — Critical Rendering Path
+- [ ] `browser-rendering` — Browser Rendering Pipeline
+- [ ] `resource-hints` — Resource Hints
+- [ ] `http2-http3` — HTTP/2 & HTTP/3
+- [ ] `caching` — Caching & Service Workers
+- [ ] `image-optimisation` — Image Optimisation
+- [ ] `font-performance` — Font Performance
+- [ ] `js-performance` — JavaScript Performance
+- [ ] `third-party-scripts` — Third-Party Scripts
+- [ ] `measurement` — Performance Measurement
+- [ ] `rum` — Real User Monitoring
+- [ ] `ssr-streaming` — SSR & Streaming HTML
+- [ ] `css-performance` — CSS Performance
+- [ ] `web-workers` — Web Workers & Off-Main-Thread
+- [ ] `performance-budgets` — Performance Budgets & CI
+- [ ] `speculation-rules` — Speculation Rules API
+- [ ] `cheatsheet` — Performance Cheat Sheet (reference — no PageComplete)
+- [ ] `interview-prep` — Performance Interview Prep (reference — no PageComplete)
 
 ---
 
@@ -1186,6 +1210,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-19 — Web Performance hub Phase 3F wiring complete: routes, nav, progress (perfTotal=20), search (22 perf- entries), breadcrumb, app.scss section-performance, search.ts perf- URL routing. 21 stub components created. First full page: core-web-vitals. Build passes. Green accent #16a34a.
 - [x] 2026-06-19 — HTML hub Phase 3D complete: all 25 pages live (23 trackable topics + cheatsheet + interview-prep). htmlTotal = 23. hub-home HTML card topics: 25, available: true. Accent #e34c26, search prefix html-. Build passes.
 - [x] 2026-06-19 — CSS hub Phase 3E complete: all 24 pages live (22 trackable topics + cheatsheet + interview-prep). cssTotal = 22. hub-home CSS card topics: 24, available: true. Accent #264de4, search prefix css-. Build passes.
 - [x] 2026-06-18 — HTML hub Phase 3D Batch 2: 7 new pages (canvas-svg, performance, pwa-service-workers, seo, apis, cheatsheet, interview-prep). htmlTotal = 20. hub-home HTML card topics: 17, available: true. Build passes. 17 pages live (15 topics + 2 reference), 8 coming soon.

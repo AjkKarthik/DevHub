@@ -379,6 +379,31 @@ const CSS_LABELS: Record<string, string> = {
   'interview-prep':           'CSS Interview Prep',
 };
 
+const PERFORMANCE_LABELS: Record<string, string> = {
+  'core-web-vitals':        'Core Web Vitals',
+  'lcp':                    'Largest Contentful Paint',
+  'inp':                    'Interaction to Next Paint',
+  'cls':                    'Cumulative Layout Shift',
+  'critical-rendering-path': 'Critical Rendering Path',
+  'browser-rendering':      'Browser Rendering Pipeline',
+  'resource-hints':         'Resource Hints',
+  'http2-http3':            'HTTP/2 & HTTP/3',
+  'caching':                'Caching & Service Workers',
+  'image-optimisation':     'Image Optimisation',
+  'font-performance':       'Font Performance',
+  'js-performance':         'JavaScript Performance',
+  'third-party-scripts':    'Third-Party Scripts',
+  'measurement':            'Performance Measurement',
+  'rum':                    'Real User Monitoring (RUM)',
+  'ssr-streaming':          'SSR & Streaming HTML',
+  'css-performance':        'CSS Performance',
+  'web-workers':            'Web Workers & Off-Main-Thread',
+  'performance-budgets':    'Performance Budgets & CI',
+  'speculation-rules':      'Speculation Rules API',
+  'cheatsheet':             'Web Performance Cheat Sheet',
+  'interview-prep':         'Performance Interview Prep',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -500,14 +525,15 @@ export class BreadcrumbComponent {
     const segs = this.segments();
     if (segs.length < 2) return '';
     const key = segs[segs.length - 1];
-    const labels = segs[0] === 'csharp'      ? CSHARP_LABELS
-                 : segs[0] === 'aspnet'      ? ASPNET_LABELS
-                 : segs[0] === 'sql'         ? SQL_LABELS
-                 : segs[0] === 'typescript'  ? TYPESCRIPT_LABELS
-                 : segs[0] === 'react'       ? REACT_LABELS
-                 : segs[0] === 'javascript'  ? JAVASCRIPT_LABELS
-                 : segs[0] === 'html'        ? HTML_LABELS
-                 : segs[0] === 'css'         ? CSS_LABELS
+    const labels = segs[0] === 'csharp'       ? CSHARP_LABELS
+                 : segs[0] === 'aspnet'       ? ASPNET_LABELS
+                 : segs[0] === 'sql'          ? SQL_LABELS
+                 : segs[0] === 'typescript'   ? TYPESCRIPT_LABELS
+                 : segs[0] === 'react'        ? REACT_LABELS
+                 : segs[0] === 'javascript'   ? JAVASCRIPT_LABELS
+                 : segs[0] === 'html'         ? HTML_LABELS
+                 : segs[0] === 'css'          ? CSS_LABELS
+                 : segs[0] === 'performance'  ? PERFORMANCE_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

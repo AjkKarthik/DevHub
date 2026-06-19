@@ -14,7 +14,7 @@ export class ProgressService {
   readonly csharpTotal  = 50;
   readonly csharpCount  = computed(() => [...this._done()].filter(r => r.startsWith('csharp-')).length);
   readonly csharpPct    = computed(() => Math.round((this.csharpCount() / this.csharpTotal) * 100));
-  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-') && !r.startsWith('aspnet-') && !r.startsWith('sql-') && !r.startsWith('ts-') && !r.startsWith('react-') && !r.startsWith('js-') && !r.startsWith('html-')).length);
+  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-') && !r.startsWith('aspnet-') && !r.startsWith('sql-') && !r.startsWith('ts-') && !r.startsWith('react-') && !r.startsWith('js-') && !r.startsWith('html-') && !r.startsWith('css-') && !r.startsWith('perf-')).length);
   readonly angularPct   = computed(() => Math.round((this.angularCount() / this.total) * 100));
 
   // ── ASP.NET Core (keys prefixed 'aspnet-') ─────────────────────────────────
@@ -51,6 +51,11 @@ export class ProgressService {
   readonly cssTotal  = 22;
   readonly cssCount  = computed(() => [...this._done()].filter(r => r.startsWith('css-')).length);
   readonly cssPct    = computed(() => Math.round((this.cssCount() / this.cssTotal) * 100));
+
+  // ── Web Performance (keys prefixed 'perf-') ───────────────────────────────
+  readonly perfTotal  = 20;
+  readonly perfCount  = computed(() => [...this._done()].filter(r => r.startsWith('perf-')).length);
+  readonly perfPct    = computed(() => Math.round((this.perfCount() / this.perfTotal) * 100));
 
   toggle(route: string) {
     this._done.update(s => {

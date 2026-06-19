@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -74,6 +74,9 @@
         } @else if (currentSection() === 'css') {
           <div class="nav-progress-bar" [style.width.%]="progress.cssPct()"></div>
           <span class="nav-progress-label">{{ progress.cssCount() }}/{{ progress.cssTotal }} topics done</span>
+        } @else if (currentSection() === 'performance') {
+          <div class="nav-progress-bar" [style.width.%]="progress.perfPct()"></div>
+          <span class="nav-progress-label">{{ progress.perfCount() }}/{{ progress.perfTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -561,6 +564,65 @@
     </div>
 
     } <!-- end css nav -->
+
+    <!-- ── Web Performance Navigation ──────────────────────────────── -->
+    @if (currentSection() === 'performance') {
+
+    <a routerLink="/performance" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">⚡ Performance Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Core Web Vitals</p>
+      <a routerLink="/performance/core-web-vitals" routerLinkActive="active"><span class="nl-text">CWV Overview</span>@if(progress.isDone('perf-core-web-vitals')){<span class="nl-done">✓</span>}@if(diff('perf-core-web-vitals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/lcp" routerLinkActive="active"><span class="nl-text">Largest Contentful Paint</span>@if(progress.isDone('perf-lcp')){<span class="nl-done">✓</span>}@if(diff('perf-lcp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/inp" routerLinkActive="active"><span class="nl-text">Interaction to Next Paint</span>@if(progress.isDone('perf-inp')){<span class="nl-done">✓</span>}@if(diff('perf-inp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/cls" routerLinkActive="active"><span class="nl-text">Cumulative Layout Shift</span>@if(progress.isDone('perf-cls')){<span class="nl-done">✓</span>}@if(diff('perf-cls');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Rendering</p>
+      <a routerLink="/performance/critical-rendering-path" routerLinkActive="active"><span class="nl-text">Critical Rendering Path</span>@if(progress.isDone('perf-critical-rendering-path')){<span class="nl-done">✓</span>}@if(diff('perf-critical-rendering-path');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/browser-rendering" routerLinkActive="active"><span class="nl-text">Browser Rendering Pipeline</span>@if(progress.isDone('perf-browser-rendering')){<span class="nl-done">✓</span>}@if(diff('perf-browser-rendering');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/ssr-streaming" routerLinkActive="active"><span class="nl-text">SSR &amp; Streaming HTML</span>@if(progress.isDone('perf-ssr-streaming')){<span class="nl-done">✓</span>}@if(diff('perf-ssr-streaming');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Loading</p>
+      <a routerLink="/performance/resource-hints" routerLinkActive="active"><span class="nl-text">Resource Hints</span>@if(progress.isDone('perf-resource-hints')){<span class="nl-done">✓</span>}@if(diff('perf-resource-hints');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/http2-http3" routerLinkActive="active"><span class="nl-text">HTTP/2 &amp; HTTP/3</span>@if(progress.isDone('perf-http2-http3')){<span class="nl-done">✓</span>}@if(diff('perf-http2-http3');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/caching" routerLinkActive="active"><span class="nl-text">Caching &amp; Service Workers</span>@if(progress.isDone('perf-caching')){<span class="nl-done">✓</span>}@if(diff('perf-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/speculation-rules" routerLinkActive="active"><span class="nl-text">Speculation Rules API</span>@if(progress.isDone('perf-speculation-rules')){<span class="nl-done">✓</span>}@if(diff('perf-speculation-rules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Assets</p>
+      <a routerLink="/performance/image-optimisation" routerLinkActive="active"><span class="nl-text">Image Optimisation</span>@if(progress.isDone('perf-image-optimisation')){<span class="nl-done">✓</span>}@if(diff('perf-image-optimisation');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/font-performance" routerLinkActive="active"><span class="nl-text">Font Performance</span>@if(progress.isDone('perf-font-performance')){<span class="nl-done">✓</span>}@if(diff('perf-font-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/css-performance" routerLinkActive="active"><span class="nl-text">CSS Performance</span>@if(progress.isDone('perf-css-performance')){<span class="nl-done">✓</span>}@if(diff('perf-css-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">JavaScript</p>
+      <a routerLink="/performance/js-performance" routerLinkActive="active"><span class="nl-text">JavaScript Performance</span>@if(progress.isDone('perf-js-performance')){<span class="nl-done">✓</span>}@if(diff('perf-js-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/third-party-scripts" routerLinkActive="active"><span class="nl-text">Third-Party Scripts</span>@if(progress.isDone('perf-third-party-scripts')){<span class="nl-done">✓</span>}@if(diff('perf-third-party-scripts');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/web-workers" routerLinkActive="active"><span class="nl-text">Web Workers</span>@if(progress.isDone('perf-web-workers')){<span class="nl-done">✓</span>}@if(diff('perf-web-workers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Measurement</p>
+      <a routerLink="/performance/measurement" routerLinkActive="active"><span class="nl-text">Performance Measurement</span>@if(progress.isDone('perf-measurement')){<span class="nl-done">✓</span>}@if(diff('perf-measurement');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/rum" routerLinkActive="active"><span class="nl-text">Real User Monitoring</span>@if(progress.isDone('perf-rum')){<span class="nl-done">✓</span>}@if(diff('perf-rum');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/performance/performance-budgets" routerLinkActive="active"><span class="nl-text">Performance Budgets &amp; CI</span>@if(progress.isDone('perf-performance-budgets')){<span class="nl-done">✓</span>}@if(diff('perf-performance-budgets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/performance/cheatsheet" routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+      <a routerLink="/performance/interview-prep" routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+    </div>
+
+    } <!-- end performance nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {
