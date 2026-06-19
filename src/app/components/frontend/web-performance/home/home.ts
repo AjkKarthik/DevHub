@@ -36,7 +36,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'HTTP/2 & HTTP/3',            route: '/performance/http2-http3', badge: 'Loading', available: true,
     description: 'Multiplexing, header compression, server push (HTTP/2), QUIC (HTTP/3), and implications for bundling strategy.',
     keyPoints: ['HTTP/2 multiplexing: many requests on one connection — domain sharding is counter-productive', 'HTTP/3: QUIC over UDP — 0-RTT reconnect, no head-of-line blocking', 'HTTP/2: less need to concatenate files; HTTP/1.1: still benefits from bundles'] },
-  { title: 'Caching & Service Workers',  route: '/performance/caching', badge: 'Loading', available: false,
+  { title: 'Caching & Service Workers',  route: '/performance/caching', badge: 'Loading', available: true,
     description: 'Cache-Control, ETags, immutable assets, and Service Worker caching strategies for offline and fast loads.',
     keyPoints: ['Versioned assets (bundle.abc123.js): Cache-Control: max-age=31536000, immutable', 'index.html: Cache-Control: no-cache — always revalidate entry point', 'Workbox: stale-while-revalidate, cache-first, network-first strategies'] },
   { title: 'Image Optimisation',         route: '/performance/image-optimisation', badge: 'Assets', available: false,
