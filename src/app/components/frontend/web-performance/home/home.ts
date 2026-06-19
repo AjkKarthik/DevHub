@@ -21,7 +21,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Interaction to Next Paint',  route: '/performance/inp', badge: 'Core Web Vitals', available: true,
     description: 'INP replaced FID in March 2024 — measuring responsiveness to all user interactions.',
     keyPoints: ['INP measures the worst interaction delay (not just first)', 'Long tasks block the main thread — break up with scheduler.yield()', 'Input delay + processing time + presentation delay = full INP breakdown'] },
-  { title: 'Cumulative Layout Shift',    route: '/performance/cls', badge: 'Core Web Vitals', available: false,
+  { title: 'Cumulative Layout Shift',    route: '/performance/cls', badge: 'Core Web Vitals', available: true,
     description: 'What causes unexpected layout shifts and how to prevent them with size reservations.',
     keyPoints: ['Always set width + height on img and video elements', 'min-height on dynamic content areas prevents shift on load', 'Ads and embeds: reserve space with aspect-ratio or fixed height container'] },
   { title: 'Critical Rendering Path',   route: '/performance/critical-rendering-path', badge: 'Rendering', available: false,
