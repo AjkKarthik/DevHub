@@ -24,7 +24,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Cumulative Layout Shift',    route: '/performance/cls', badge: 'Core Web Vitals', available: true,
     description: 'What causes unexpected layout shifts and how to prevent them with size reservations.',
     keyPoints: ['Always set width + height on img and video elements', 'min-height on dynamic content areas prevents shift on load', 'Ads and embeds: reserve space with aspect-ratio or fixed height container'] },
-  { title: 'Critical Rendering Path',   route: '/performance/critical-rendering-path', badge: 'Rendering', available: false,
+  { title: 'Critical Rendering Path',   route: '/performance/critical-rendering-path', badge: 'Rendering', available: true,
     description: 'HTML parse → DOM → CSSOM → Render Tree → Layout → Paint → Composite — optimising each stage.',
     keyPoints: ['Render-blocking resources: CSS in <head> blocks paint; JS blocks HTML parsing', 'defer and async attributes defer JS execution past first render', 'Inline critical CSS: paste above-the-fold styles in <style> to unblock paint'] },
   { title: 'Browser Rendering Pipeline', route: '/performance/browser-rendering', badge: 'Rendering', available: false,
