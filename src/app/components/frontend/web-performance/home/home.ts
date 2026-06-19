@@ -69,7 +69,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Performance Budgets & CI',    route: '/performance/performance-budgets', badge: 'Measurement', available: true,
     description: 'Set performance budgets, automate Lighthouse in CI, and fail builds when budgets are exceeded.',
     keyPoints: ['Lighthouse CI (LHCI): run Lighthouse on every PR', 'Budget types: file size, Lighthouse score, CWV thresholds', 'Performance regression in CI: assert score >= baseline', 'Bundlesize: enforce JS budget per chunk in CI', 'SpeedCurve / Calibre: continuous field data monitoring'] },
-  { title: 'Speculation Rules API',       route: '/performance/speculation-rules', badge: 'Loading', available: false,
+  { title: 'Speculation Rules API',       route: '/performance/speculation-rules', badge: 'Loading', available: true,
     description: 'Instant page navigations with the new Speculation Rules API — prefetch and prerender rules.',
     keyPoints: ['<script type="speculationrules"> JSON config', 'prefetch: early resource fetch for next page', 'prerender: full background render before navigation', 'URL patterns: list, selector-based, or eager on hover', 'Currently Chrome 109+ only; feature-detect first'] },
   { title: 'Performance Cheat Sheet',    route: '/performance/cheatsheet', badge: 'Reference', available: false,
