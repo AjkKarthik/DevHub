@@ -54,7 +54,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Performance Measurement',    route: '/performance/measurement', badge: 'Measurement', available: true,
     description: 'Chrome DevTools Performance panel, Lighthouse, WebPageTest, and the Performance Observer API.',
     keyPoints: ['performance.measure() for custom marks between user interactions', 'Lighthouse: lab data; CrUX (Field Data): real user data — both matter', 'WebPageTest: filmstrip view, waterfall, and multi-location testing'] },
-  { title: 'Real User Monitoring (RUM)', route: '/performance/rum', badge: 'Measurement', available: false,
+  { title: 'Real User Monitoring (RUM)', route: '/performance/rum', badge: 'Measurement', available: true,
     description: 'Collecting Web Vitals from real users with the web-vitals library and sending to analytics.',
     keyPoints: ['web-vitals.js: onLCP, onINP, onCLS, onFCP, onTTFB callbacks', 'Send metrics to analytics on visibilitychange for accurate LCP', 'Segment by device type: mobile vs desktop CWV often differ dramatically'] },
   { title: 'Server-Side Rendering & Streaming', route: '/performance/ssr-streaming', badge: 'Rendering', available: false,
