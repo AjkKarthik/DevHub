@@ -51,7 +51,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Third-Party Scripts',        route: '/performance/third-party-scripts', badge: 'JavaScript', available: true,
     description: 'The performance cost of analytics, ads, and chat widgets — loading strategies and facade patterns.',
     keyPoints: ['Third-party scripts block main thread and inflate INP', 'Facade pattern: load YouTube/Stripe only on interaction, not on page load', 'Partytown: run third-party scripts in a Web Worker, off main thread'] },
-  { title: 'Performance Measurement',    route: '/performance/measurement', badge: 'Measurement', available: false,
+  { title: 'Performance Measurement',    route: '/performance/measurement', badge: 'Measurement', available: true,
     description: 'Chrome DevTools Performance panel, Lighthouse, WebPageTest, and the Performance Observer API.',
     keyPoints: ['performance.measure() for custom marks between user interactions', 'Lighthouse: lab data; CrUX (Field Data): real user data — both matter', 'WebPageTest: filmstrip view, waterfall, and multi-location testing'] },
   { title: 'Real User Monitoring (RUM)', route: '/performance/rum', badge: 'Measurement', available: false,
