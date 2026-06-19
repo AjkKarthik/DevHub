@@ -48,7 +48,7 @@ const ALL_TOPICS: Topic[] = [
   { title: 'Container Queries',          route: '/css', badge: 'Responsive', available: false,
     description: 'Component-scoped responsiveness — @container queries respond to element width instead of viewport.',
     keyPoints: ['container-type: inline-size on parent; @container (min-width: 500px) on children', 'Container queries unlock truly reusable components independent of their context', 'Container query units: cqw, cqh — percentage of container dimensions'] },
-  { title: 'CSS Transitions',            route: '/css', badge: 'Animation', available: false,
+  { title: 'CSS Transitions',            route: '/css/transitions', badge: 'Animation', available: true,
     description: 'Transition property, duration, timing function, and delay — performant transitions on CSS properties.',
     keyPoints: ['Only transition transform and opacity for 60fps (no layout/paint)', 'transition: all .3s is a performance anti-pattern — be specific', 'prefers-reduced-motion media query — always respect user preference'] },
   { title: 'CSS Animations',             route: '/css/animations', badge: 'Animation', available: true,

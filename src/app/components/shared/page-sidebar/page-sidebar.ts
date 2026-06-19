@@ -4154,6 +4154,29 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── CSS: Transitions ──────────────────────────────────────────────────────
+  'css/transitions': {
+    apis: ['transition', 'transition-duration', 'transition-timing-function', 'transition-delay', 'cubic-bezier()', 'prefers-reduced-motion'],
+    related: [
+      { label: 'CSS Animations', route: '/css/animations'      },
+      { label: 'Flexbox',        route: '/css/flexbox'         },
+      { label: 'Custom Properties', route: '/css/custom-properties' },
+    ],
+    tip: 'Define transition on the base state, not on :hover — otherwise the reverse transition snaps instead of animating.',
+    docs: [
+      { label: 'MDN — CSS Transitions', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_transitions/Using_CSS_transitions' },
+      { label: 'cubic-bezier.com',      url: 'https://cubic-bezier.com/' },
+      { label: 'Easing functions reference', url: 'https://easings.net/' },
+    ],
+    resources: [
+      { label: 'Easing Cheat Sheet', url: 'https://easings.net/', badge: 'tool' },
+    ],
+    gotchas: [
+      'transition: all watches every property — always list specific properties to avoid wasted recalculations.',
+      'transition on :hover only = one-way animation. Put it on the base element for both-way transitions.',
+    ],
+  },
+
   // ── CSS: Animations ───────────────────────────────────────────────────────
   'css/animations': {
     apis: ['@keyframes', 'animation-duration', 'animation-timing-function', 'animation-fill-mode', 'animation-delay', 'will-change', 'animation-play-state'],

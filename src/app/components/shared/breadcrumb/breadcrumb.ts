@@ -354,6 +354,7 @@ const CSS_LABELS: Record<string, string> = {
   'typography':        'Typography',
   'responsive':        'Responsive Design',
   'animations':        'CSS Animations',
+  'transitions':       'CSS Transitions',
 };
 
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
