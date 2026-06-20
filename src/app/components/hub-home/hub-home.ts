@@ -313,7 +313,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'Blazor', time: '~14 hrs',
       tagline: 'Full-stack web UI in C# — components, render modes, no JavaScript required.',
       icon: '🔥', gradient: 'linear-gradient(135deg, #5c2d91 0%, #3a1c5c 100%)',
-      textDark: false, route: '/blazor', available: true,
+      textDark: false, route: '/blazor', available: true, topics: 23,
       sub: 'Server · WebAssembly · SSR',
       roles: ['frontend', 'backend'],
       highlights: [
@@ -327,7 +327,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'Web Performance', time: '~3 hrs',
       tagline: 'Ship fast pages — Core Web Vitals, bundle size, lazy loading & Lighthouse.',
       icon: '⚡', gradient: 'linear-gradient(135deg, #854d0e 0%, #431a03 100%)',
-      textDark: false, route: '/performance', available: true,
+      textDark: false, route: '/performance', available: true, topics: 22,
       sub: 'LCP · CLS · INP · Lighthouse',
       roles: ['frontend', 'architect'],
       highlights: [
@@ -343,7 +343,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'backend', name: 'Node.js', time: '~8 hrs',
       tagline: 'Server-side JavaScript — Express, REST APIs, streams, npm.',
       icon: '⬡', gradient: 'linear-gradient(135deg, #339933 0%, #1a5c1a 100%)',
-      textDark: false, route: '/node', available: true,
+      textDark: false, route: '/node', available: true, topics: 25,
       roles: ['backend'],
       highlights: [
         'HTTP server, Express, Fastify',
@@ -356,7 +356,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'backend', name: 'Python', time: '~10 hrs',
       tagline: 'Versatile language for backends, scripting, automation & data.',
       icon: '🐍', gradient: 'linear-gradient(135deg, #3572a5 0%, #1f4c77 100%)',
-      textDark: false, route: '/python', available: true,
+      textDark: false, route: '/python', available: true, topics: 23,
       roles: ['backend'],
       highlights: [
         'FastAPI, Flask, Django REST Framework',
@@ -396,7 +396,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'backend', name: 'Go', time: '~8 hrs',
       tagline: 'Fast, simple, concurrent — the language behind Docker, K8s and cloud tooling.',
       icon: '🐹', gradient: 'linear-gradient(135deg, #00acd7 0%, #006b87 100%)',
-      textDark: false, route: '/go', available: true,
+      textDark: false, route: '/go', available: true, topics: 23,
       sub: 'Go · Goroutines · gRPC · CLI tools',
       roles: ['backend', 'devops', 'architect'],
       highlights: [

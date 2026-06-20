@@ -11,6 +11,7 @@ import { BreadcrumbComponent } from './components/shared/breadcrumb/breadcrumb';
 import { PageSidebarComponent } from './components/shared/page-sidebar/page-sidebar';
 import { SearchComponent } from './components/shared/search/search';
 import { BackToTopComponent } from './components/shared/back-to-top/back-to-top';
+import { GoNavComponent } from './components/shared/go-nav/go-nav';
 
 // Difficulty metadata for nav badges
 const DIFF: Record<string, string> = Object.fromEntries(
@@ -20,7 +21,7 @@ const DIFF: Record<string, string> = Object.fromEntries(
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, BreadcrumbComponent,
-            PageSidebarComponent, SearchComponent, BackToTopComponent],
+            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -64,7 +65,7 @@ export class App {
     ].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'hub'>(() => {
     const url = this.currentUrl();
     if (url.startsWith('/angular'))    return 'angular';
     if (url.startsWith('/csharp'))     return 'csharp';
@@ -76,6 +77,10 @@ export class App {
     if (url.startsWith('/html'))       return 'html';
     if (url.startsWith('/css'))        return 'css';
     if (url.startsWith('/performance')) return 'performance';
+    if (url.startsWith('/blazor'))     return 'blazor';
+    if (url.startsWith('/node'))       return 'node';
+    if (url.startsWith('/python'))     return 'python';
+    if (url.startsWith('/go'))         return 'go';
     return 'hub';
   });
 

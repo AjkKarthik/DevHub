@@ -404,6 +404,112 @@ const PERFORMANCE_LABELS: Record<string, string> = {
   'interview-prep':         'Performance Interview Prep',
 };
 
+const BLAZOR_LABELS: Record<string, string> = {
+  'fundamentals':            'Blazor Fundamentals',
+  'render-modes':            'Render Modes',
+  'razor-components':        'Razor Components',
+  'component-communication': 'Component Communication',
+  'forms':                   'Blazor Forms',
+  'data-binding':            'Data Binding',
+  'routing':                 'Blazor Routing',
+  'dependency-injection':    'Dependency Injection',
+  'state-management':        'State Management',
+  'js-interop':              'JavaScript Interop',
+  'server-signalr':          'Blazor Server & SignalR',
+  'maui-hybrid':             'MAUI Blazor Hybrid',
+  'authentication':          'Authentication in Blazor',
+  'error-handling':          'Error Handling & ErrorBoundary',
+  'streaming-rendering':     'Streaming Rendering',
+  'sections-layouts':        'Sections & Layouts',
+  'seo-metadata':            'SEO & Head Metadata',
+  'virtualization':          'Component Virtualization',
+  'progressive-enhancement': 'Progressive Enhancement',
+  'performance':             'Blazor Performance',
+  'bunit':                   'Testing with bUnit',
+  'cheatsheet':              'Blazor Cheat Sheet',
+  'interview-prep':          'Blazor Interview Prep',
+};
+
+const PYTHON_LABELS: Record<string, string> = {
+  'fundamentals':              'Python Fundamentals',
+  'functions-closures':        'Functions & Closures',
+  'comprehensions-generators': 'Comprehensions & Generators',
+  'file-io':                   'File I/O & Pathlib',
+  'oop':                       'OOP in Python',
+  'dataclasses-pydantic':      'Dataclasses & Pydantic',
+  'decorators-context-managers': 'Decorators & Context Managers',
+  'type-hints':                'Type Hints & mypy',
+  'collections-itertools':     'Collections & Itertools',
+  'asyncio':                   'Async Python (asyncio)',
+  'threading-multiprocessing': 'Threading & Multiprocessing',
+  'concurrency-patterns':      'Python Concurrency Patterns',
+  'fastapi':                   'FastAPI',
+  'django':                    'Django',
+  'sqlalchemy':                'SQLAlchemy',
+  'celery':                    'Celery & Task Queues',
+  'numpy-pandas':              'NumPy & Pandas',
+  'scikit-learn':              'Machine Learning (scikit-learn)',
+  'pytest':                    'Testing with pytest',
+  'packaging':                 'Python Packaging & venv',
+  'debugging-profiling':       'Debugging & Profiling',
+  'cheatsheet':                'Python Cheat Sheet',
+  'interview-prep':            'Python Interview Prep',
+};
+
+const GO_LABELS: Record<string, string> = {
+  'fundamentals':       'Go Fundamentals',
+  'structs-interfaces': 'Structs & Interfaces',
+  'error-handling':     'Error Handling',
+  'slices-maps':        'Slices & Maps',
+  'goroutines':         'Goroutines',
+  'channels':           'Channels',
+  'sync':               'sync & sync/atomic',
+  'context':            'context Package',
+  'net-http':           'net/http & REST APIs',
+  'gin':                'Gin Web Framework',
+  'json-encoding':      'JSON & Encoding',
+  'grpc':               'gRPC in Go',
+  'pgx':                'Database with pgx',
+  'gorm':               'GORM',
+  'generics':           'Go Generics',
+  'patterns':           'Go Patterns',
+  'modules':            'Go Modules',
+  'testing':            'Testing in Go',
+  'cli':                'Go CLI Tools',
+  'profiling':          'Go Performance & Profiling',
+  'build':              'Go Build & Deployment',
+  'cheatsheet':         'Go Cheat Sheet',
+  'interview-prep':     'Go Interview Prep',
+};
+
+const NODE_LABELS: Record<string, string> = {
+  'architecture':    'Node.js Architecture',
+  'modules':         'Modules & CommonJS',
+  'core-modules':    'Core Modules',
+  'env-config':      'Env Config & dotenv',
+  'express':         'Express.js',
+  'fastify':         'Fastify',
+  'rest-api':        'REST API Design',
+  'websockets':      'WebSockets & Socket.io',
+  'graphql':         'GraphQL API',
+  'nestjs':          'NestJS',
+  'promises-async':  'Promises & Async/Await',
+  'streams':         'Streams & Buffers',
+  'error-handling':  'Error Handling',
+  'prisma':          'Database with Prisma',
+  'mongoose':        'MongoDB with Mongoose',
+  'caching':         'Caching with Redis',
+  'jwt-auth':        'Auth with JWT & Passport',
+  'security':        'Security Best Practices',
+  'performance':     'Node.js Performance',
+  'logging':         'Logging with Pino/Winston',
+  'worker-threads':  'Worker Threads',
+  'testing':         'Testing Node.js Apps',
+  'deployment':      'Deploying Node.js Apps',
+  'cheatsheet':      'Node.js Cheat Sheet',
+  'interview-prep':  'Node.js Interview Prep',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -534,6 +640,10 @@ export class BreadcrumbComponent {
                  : segs[0] === 'html'         ? HTML_LABELS
                  : segs[0] === 'css'          ? CSS_LABELS
                  : segs[0] === 'performance'  ? PERFORMANCE_LABELS
+                 : segs[0] === 'blazor'       ? BLAZOR_LABELS
+                 : segs[0] === 'node'         ? NODE_LABELS
+                 : segs[0] === 'python'       ? PYTHON_LABELS
+                 : segs[0] === 'go'           ? GO_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

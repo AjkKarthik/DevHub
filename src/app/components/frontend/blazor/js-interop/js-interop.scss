@@ -1,0 +1,14 @@
+$accent: #5c2d91;
+$tint:   #f5f3ff;
+.blazor-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-header-icon { font-size: 1.8rem; }
+.page-title { font-size: 2rem; font-weight: 700; color: #111827; margin: .5rem 0 .4rem; }
+.page-subtitle { font-size: 1.05rem; color: #4b5563; margin-bottom: 1.5rem; line-height: 1.6;
+  code { background: $tint; color: $accent; padding: .1em .4em; border-radius: 4px; font-size: .92em; } }
+.blazor-section { margin: 2rem 0;
+  h2 { font-size: 1.25rem; font-weight: 700; color: #111827; margin-bottom: 1rem;
+       padding-bottom: .5rem; border-bottom: 2px solid $tint; } }
+:host-context(body.dark) {
+  .page-title { color: #f9fafb; }
+  .page-subtitle { color: #9ca3af; code { background: #2d1a4e; color: #c4b5fd; } }
+  .blazor-section h2 { color: #f9fafb; border-bottom-color: #3b1f6e; } }

@@ -1,0 +1,19 @@
+<div class="blazor-page">
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Virtualization in Blazor</h1>
+  <p class="page-subtitle">
+    Render huge lists efficiently with the built-in <code>Virtualize</code> component.
+    Only DOM nodes in the viewport are created; the rest are replaced by spacer elements —
+    giving you smooth scroll on 100 000-row datasets.
+  </p>
+  <app-page-meta [readingTime]="16" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="blazor-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="blazor-virtualization" nextRoute="/blazor/progressive-enhancement" nextLabel="Progressive Enhancement" />
+</div>

@@ -1,0 +1,5 @@
+$accent: #339933;
+$tint: #f0fdf4;
+.node-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.node-section { margin: 2rem 0; h2 { color: $accent; font-size: 1.25rem; margin-bottom: 1rem; } }
+:host-context(body.dark) { .node-section h2 { color: #4ade80; } }

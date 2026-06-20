@@ -1,0 +1,276 @@
+import { Component } from '@angular/core';
+import { PageMetaComponent } from '../../../../components/shared/page-meta/page-meta';
+import { QuickRefComponent, QuickRefItem } from '../../../../components/shared/quick-ref/quick-ref';
+import { TheoryBlockComponent, TheoryPoint } from '../../../../components/shared/theory-block/theory-block';
+import { CodeBlockComponent, CodeTab } from '../../../../components/shared/code-block/code-block';
+import { CommonMistakesComponent, CommonMistake } from '../../../../components/shared/common-mistakes/common-mistakes';
+import { ChallengeBlockComponent, Challenge } from '../../../../components/shared/challenge-block/challenge-block';
+import { QuizBlockComponent, QuizQuestion } from '../../../../components/shared/quiz-block/quiz-block';
+import { QnaBlockComponent, QnaItem } from '../../../../components/shared/qna-block/qna-block';
+import { RevisionCardComponent, RevisionSummary } from '../../../../components/shared/revision-card/revision-card';
+import { PageCompleteComponent } from '../../../../components/shared/page-complete/page-complete';
+
+@Component({
+  selector: 'app-node-security',
+  standalone: true,
+  imports: [PageMetaComponent, QuickRefComponent, TheoryBlockComponent, CodeBlockComponent,
+    CommonMistakesComponent, ChallengeBlockComponent, QuizBlockComponent, QnaBlockComponent,
+    RevisionCardComponent, PageCompleteComponent],
+  templateUrl: './security.html',
+  styleUrl: './security.scss'
+})
+export class NodeSecurity {
+  quickRef: QuickRefItem[] = [
+    { name: 'helmet()', type: 'function', desc: 'Sets 15+ HTTP security headers: CSP, HSTS, X-Frame-Options, no-sniff, referrer policy.' },
+    { name: 'express-rate-limit', type: 'keyword', desc: 'Rate limiting middleware. WindowMs + max controls request rate per IP.' },
+    { name: 'CORS', type: 'keyword', desc: 'Cross-Origin Resource Sharing. Set allowed origins, methods, headers explicitly.' },
+    { name: 'bcrypt.hash()', type: 'function', desc: 'Hash passwords with bcrypt (cost factor 12). Never store plain text or MD5/SHA.' },
+    { name: 'DOMPurify / validator', type: 'keyword', desc: 'Sanitise user input. validator.js for format checks, DOMPurify for HTML sanitisation.' },
+    { name: 'SQL/NoSQL injection', type: 'keyword', desc: 'Use parameterized queries and ODM/ORM. Never interpolate user input into queries.' },
+    { name: 'CSRF token', type: 'keyword', desc: 'Anti-CSRF double-submit cookie or synchronizer token for state-changing requests.' },
+    { name: 'Content-Security-Policy', type: 'keyword', desc: 'HTTP header restricting script/style sources — primary defence against XSS.' },
+  ];
+
+  theory: TheoryPoint[] = [
+    {
+      heading: 'HTTP Security Headers with Helmet',
+      points: [
+        'Helmet sets security-focused HTTP response headers. A single app.use(helmet()) adds: Content-Security-Policy, Strict-Transport-Security (HSTS), X-Content-Type-Options (no-sniff), X-Frame-Options (clickjacking), Referrer-Policy, and Permissions-Policy.',
+        'Content-Security-Policy (CSP) is the most important header. It tells the browser which script/style sources are allowed. A strict CSP prevents XSS from loading external malicious scripts. Start with default-src: "self" and incrementally add trusted domains.',
+        'HSTS forces HTTPS for all future requests for a domain (max-age=31536000 is 1 year). includeSubDomains extends to all subdomains. preload submits the domain to browser HSTS preload lists — no first-request downgrade attack possible.',
+        'X-Content-Type-Options: nosniff prevents browsers from MIME-sniffing responses (serving HTML disguised as an image to bypass XSS filters). X-Frame-Options: DENY prevents clickjacking by blocking the page from being loaded in an iframe.',
+      ]
+    },
+    {
+      heading: 'Input Validation, Injection Prevention, and Rate Limiting',
+      points: [
+        'Validate all input at system boundaries: HTTP body, query params, headers, cookies. Use Zod or Joi for schema validation — reject requests that fail validation before they reach business logic. Never trust client data.',
+        'SQL injection: use parameterized queries (prepared statements). ORM/ODM layers (Prisma, Mongoose) parameterize automatically — never bypass with string interpolation. NoSQL injection: validate that objects from user input are not passed directly to MongoDB queries ({ $where } operator injection).',
+        'Rate limiting protects against brute force, credential stuffing, and DoS. Apply more aggressive limits to auth endpoints (/login: 5/min) than API endpoints (100/min). Use redis-based sliding window limits (express-rate-limit with Redis store) for multi-instance deployments — in-memory limits only work on single processes.',
+        'CORS: always set an explicit allowlist of origins (never * for authenticated APIs). Configure allowed methods and headers. Credentials (cookies, auth headers) require { credentials: true } on the client AND explicit origin (not *) on the server.',
+      ]
+    },
+    {
+      heading: 'Password Security and Secret Management',
+      points: [
+        'Never store plain-text passwords. Use bcrypt with cost factor 12 (2^12 = 4096 hash iterations). bcrypt is intentionally slow — makes brute force expensive. Argon2id is the modern alternative and winner of the Password Hashing Competition.',
+        'Never log passwords, tokens, or credit card numbers. Sanitize error messages before logging — an error from a DB query might include the query with embedded user input. Use structured logging and configure log sanitizers.',
+        'Secrets (API keys, DB passwords, JWT secrets) must live in environment variables — never in source code. Use dotenv locally, and a secrets manager (AWS Secrets Manager, HashiCorp Vault, Doppler) in production. Rotate secrets regularly.',
+        'Dependency security: run npm audit regularly, pin dependency versions (package-lock.json), use Dependabot or Snyk for automated vulnerability alerts. A supply chain attack in a popular npm package (event-stream 2018, colors 2022) can compromise your app without any change to your code.',
+      ]
+    },
+  ];
+
+  codeTabs: CodeTab[] = [
+    {
+      label: 'Helmet, CORS, rate limiting',
+      language: 'typescript',
+      code: `import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
+
+const app = express();
+
+// Security headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc:  ["'self'", "'nonce-<%= nonce %>'"],  // allow only nonce-tagged scripts
+      imgSrc:     ["'self'", 'data:', 'https://cdn.example.com'],
+    },
+  },
+  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+}));
+
+// CORS — explicit allowlist
+const allowedOrigins = ['https://myapp.com', 'https://www.myapp.com'];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
+    else callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,           // allow cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Global rate limit
+app.use(rateLimit({ windowMs: 60 * 1000, max: 100, standardHeaders: true }));
+
+// Strict limit on auth endpoints
+const authLimiter = rateLimit({ windowMs: 60 * 1000, max: 5, message: { error: 'Too many attempts' } });
+app.use('/auth', authLimiter);`
+    },
+    {
+      label: 'Input validation and password hashing',
+      language: 'typescript',
+      code: `import { z } from 'zod';
+import bcrypt from 'bcrypt';
+import validator from 'validator';
+
+// Zod schema validation
+const registerSchema = z.object({
+  email:    z.string().email().max(255).toLowerCase(),
+  password: z.string().min(8).max(128),
+  name:     z.string().min(2).max(100).trim(),
+  website:  z.string().url().optional(),
+});
+
+app.post('/auth/register', async (req, res) => {
+  const parsed = registerSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: 'Validation failed', details: parsed.error.flatten() });
+  }
+  const { email, password, name } = parsed.data;
+
+  // Hash password — cost factor 12
+  const passwordHash = await bcrypt.hash(password, 12);
+  const user = await db.users.create({ email, passwordHash, name });
+
+  res.status(201).json({ id: user.id, email: user.email });
+});
+
+// Protect against NoSQL injection — validate operators
+function sanitizeMongoFilter(filter) {
+  for (const [key, value] of Object.entries(filter)) {
+    if (typeof value === 'object' && value !== null) {
+      const operators = Object.keys(value).filter(k => k.startsWith('$'));
+      const allowedOps = ['$in', '$nin', '$gt', '$gte', '$lt', '$lte'];
+      if (operators.some(op => !allowedOps.includes(op))) {
+        throw new Error(\`Disallowed operator: \${operators.join(',')}\`);
+      }
+    }
+  }
+  return filter;
+}`
+    },
+  ];
+
+  mistakes: CommonMistake[] = [
+    {
+      title: 'Wildcard CORS with credentials',
+      wrong: `app.use(cors({ origin: '*', credentials: true })); // browsers block this combination`,
+      right: `app.use(cors({ origin: 'https://myapp.com', credentials: true }));`,
+      explanation: 'Browsers reject Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true. This is intentional security — wildcarding origins while sending cookies would allow any site to make credentialed requests on behalf of a user. Use an explicit origin allowlist.'
+    },
+    {
+      title: 'Storing passwords with MD5 or SHA',
+      wrong: `import { createHash } from 'crypto';
+const hash = createHash('md5').update(password).digest('hex');`,
+      right: `import bcrypt from 'bcrypt';
+const hash = await bcrypt.hash(password, 12); // 2^12 iterations`,
+      explanation: 'MD5 and SHA hashes are fast by design — a GPU can compute billions per second, making brute force trivial. bcrypt is slow by design (adjustable cost factor). A bcrypt hash with cost 12 takes ~250ms — brute force of a stolen database takes thousands of years.'
+    },
+    {
+      title: 'Rate limiting in memory for multi-instance apps',
+      wrong: `app.use(rateLimit({ windowMs: 60000, max: 100 })); // in-memory — bypassed with 2+ instances`,
+      right: `import { RedisStore } from 'rate-limit-redis';
+app.use(rateLimit({ store: new RedisStore({ client: redisClient }), windowMs: 60000, max: 100 }));`,
+      explanation: 'In-memory rate limiting tracks counts per process. With 4 server instances, a user can make 4× the configured limit by distributing requests. Use a Redis-backed store to share rate limit state across all instances.'
+    },
+    {
+      title: 'Logging sensitive user data',
+      wrong: `console.log('Register request:', req.body); // logs password in plaintext`,
+      right: `const { password, ...safe } = req.body;
+logger.info('Register request', { email: safe.email }); // log only safe fields`,
+      explanation: 'Request bodies often contain passwords, tokens, and PII. Logging req.body directly stores this in log files and monitoring systems. Always destructure and log only the fields needed for debugging.'
+    },
+  ];
+
+  challenge: Challenge = {
+    title: 'Security Middleware Stack',
+    language: 'typescript',
+    description: 'Build an Express security middleware stack that: (1) applies helmet with a strict CSP, (2) validates Content-Type is application/json for POST/PUT/PATCH, (3) rejects requests with bodies larger than 10kb, (4) sanitizes all string fields in req.body to trim whitespace and remove null bytes. Apply the stack as a single use() call chain.',
+    hints: [
+      'express.json({ limit: "10kb" }) handles the body size limit',
+      'Check req.headers["content-type"] for application/json prefix',
+      'Null byte: str.replace(/\\0/g, "") prevents null byte injection',
+    ],
+    starterCode: `import express from 'express';
+import helmet from 'helmet';
+
+const app = express();
+
+// TODO: build security middleware stack
+// 1. helmet with CSP
+// 2. body size limit (10kb) + content-type validation
+// 3. body sanitizer (trim + null bytes)
+
+app.post('/data', (req, res) => res.json(req.body));
+app.listen(3000);`,
+    solution: `import express from 'express';
+import helmet from 'helmet';
+
+const app = express();
+
+// 1. Security headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: { defaultSrc: ["'self'"], scriptSrc: ["'self'"] },
+  },
+}));
+
+// 2. JSON body parser with size limit
+app.use(express.json({ limit: '10kb' }));
+
+// 3. Content-Type validation for mutation requests
+app.use((req, res, next) => {
+  if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
+    if (!req.headers['content-type']?.startsWith('application/json')) {
+      return res.status(415).json({ error: 'Content-Type must be application/json' });
+    }
+  }
+  next();
+});
+
+// 4. Body sanitizer
+function sanitizeStrings(obj) {
+  if (typeof obj === 'string') return obj.trim().replace(/\x00/g, '');
+  if (Array.isArray(obj))     return obj.map(sanitizeStrings);
+  if (obj && typeof obj === 'object') {
+    return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, sanitizeStrings(v)]));
+  }
+  return obj;
+}
+app.use((req, res, next) => {
+  if (req.body) req.body = sanitizeStrings(req.body);
+  next();
+});
+
+app.post('/data', (req, res) => res.json(req.body));
+app.listen(3000);`
+  };
+
+  quiz: QuizQuestion[] = [
+    { q: 'What does helmet() do for Node.js security?', options: ['Encrypts HTTP body', 'Sets 15+ HTTP security headers including CSP, HSTS, and X-Frame-Options', 'Validates input schemas', 'Implements rate limiting'], answer: 1, explanation: 'Helmet sets security-focused HTTP response headers that protect against common attacks: Content-Security-Policy (XSS), Strict-Transport-Security (HTTPS downgrade), X-Content-Type-Options (MIME sniffing), X-Frame-Options (clickjacking).' },
+    { q: 'Why is bcrypt preferred over SHA-256 for password hashing?', options: ['bcrypt produces longer hashes', 'bcrypt is slow by design — the cost factor makes brute force expensive', 'bcrypt is a one-way hash; SHA-256 is reversible', 'bcrypt includes a salt automatically'], answer: 1, explanation: 'SHA-256 is designed to be fast — GPUs can compute billions per second. bcrypt is designed to be slow: the cost factor (2^N iterations) is adjustable. A stolen bcrypt-hashed database takes thousands of years to brute force at cost 12.' },
+    { q: 'Why does CORS: origin: "*" with credentials: true not work?', options: ['Wildcard CORS is deprecated', 'Browsers block this combination — sending cookies to any origin would enable CSRF from any site', 'express-cors does not support it', 'It requires HTTP/2'], answer: 1, explanation: 'Browsers intentionally reject wildcard origin + credentials. If allowed, any malicious website could make authenticated requests using the victim\'s cookies. Always use an explicit origin allowlist when credentials are involved.' },
+    { q: 'What is NoSQL injection in MongoDB?', options: ['Injecting JavaScript into Mongoose schemas', 'Passing MongoDB operators like $where or $regex from user input to bypass query logic', 'SQL-style injection in aggregate pipelines', 'Overflowing MongoDB document size'], answer: 1, explanation: 'MongoDB queries use operators like $where, $regex, $gt. If user input is passed directly to a query as an object ({ password: { $gt: "" } }), it can bypass authentication. Always validate that input does not contain unexpected operators.' },
+  ];
+
+  qna: QnaItem[] = [
+    { q: 'What are the most critical security headers to set?', a: 'Content-Security-Policy (prevents XSS from loading external scripts), Strict-Transport-Security (forces HTTPS, prevents downgrade attacks), X-Content-Type-Options: nosniff (prevents MIME sniffing attacks), X-Frame-Options: DENY or SAMEORIGIN (prevents clickjacking), Referrer-Policy: no-referrer (prevents leaking URLs in referrer headers). Helmet sets all of these with sensible defaults — add it on day one.' },
+    { q: 'How do I prevent CSRF in a Node.js API?', a: 'For APIs using JWT in Authorization headers: CSRF is not a concern — browsers do not auto-send Authorization headers cross-origin. For cookie-based auth: use SameSite=Strict or Lax on cookies (prevents most CSRF), combine with a CSRF token (double-submit cookie pattern or synchronizer token). The csurf package implements synchronizer tokens for Express. If you use httpOnly + SameSite=Strict cookies for refresh tokens and send access tokens in headers, you have full protection.' },
+    { q: 'How do I audit npm packages for vulnerabilities?', a: 'Run npm audit regularly — it compares installed packages against the Node Security Advisory database. Fix with npm audit fix (auto-updates safe). Review npm audit fix --force changes manually (may introduce breaking changes). Use Dependabot (GitHub) or Snyk for automated PRs on vulnerable dependencies. Subscribe to security mailing lists for your major dependencies. Lock package versions with package-lock.json and verify integrity with npm ci in CI.' },
+  ];
+
+  revision: RevisionSummary = {
+    oneLiner: 'Node.js security requires defence in depth: helmet headers, validated inputs, bcrypt passwords, parameterized queries, explicit CORS, and rate limiting on auth endpoints.',
+    mustKnow: [
+      'helmet() sets 15+ security headers — CSP, HSTS, X-Frame-Options, no-sniff.',
+      'bcrypt cost factor 12 for passwords — never MD5/SHA/plain text.',
+      'Parameterized queries prevent SQL/NoSQL injection — never interpolate user input.',
+      'CORS: explicit origin allowlist + credentials:true — never wildcard + credentials.',
+      'Rate limit auth endpoints (5/min) harder than API endpoints (100/min).',
+      'Secrets in environment variables — never in source code.',
+      'Validate all input at boundaries with Zod/Joi before business logic.',
+    ],
+    interviewFocus: [
+      'What security headers does helmet set and why?',
+      'How do you prevent SQL/NoSQL injection in Node.js?',
+      'What is the difference between authentication and authorization?',
+    ]
+  };
+}

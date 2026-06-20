@@ -1,0 +1,220 @@
+﻿import { Component } from '@angular/core';
+import { PageMetaComponent } from '../../../../components/shared/page-meta/page-meta';
+import { QuickRefComponent, QuickRefItem } from '../../../../components/shared/quick-ref/quick-ref';
+import { TheoryBlockComponent, TheoryPoint } from '../../../../components/shared/theory-block/theory-block';
+import { CodeBlockComponent, CodeTab } from '../../../../components/shared/code-block/code-block';
+import { CommonMistakesComponent, CommonMistake } from '../../../../components/shared/common-mistakes/common-mistakes';
+import { ChallengeBlockComponent, Challenge } from '../../../../components/shared/challenge-block/challenge-block';
+import { QuizBlockComponent, QuizQuestion } from '../../../../components/shared/quiz-block/quiz-block';
+import { QnaBlockComponent, QnaItem } from '../../../../components/shared/qna-block/qna-block';
+import { RevisionCardComponent, RevisionSummary } from '../../../../components/shared/revision-card/revision-card';
+import { PageCompleteComponent } from '../../../../components/shared/page-complete/page-complete';
+
+@Component({
+  selector: 'app-blazor-data-binding',
+  standalone: true,
+  imports: [PageMetaComponent, QuickRefComponent, TheoryBlockComponent, CodeBlockComponent,
+    CommonMistakesComponent, ChallengeBlockComponent, QuizBlockComponent, QnaBlockComponent,
+    RevisionCardComponent, PageCompleteComponent],
+  templateUrl: './data-binding.html',
+  styleUrl: './data-binding.scss'
+})
+export class BlazorDataBinding {
+  quickRef: QuickRefItem[] = [
+    { name: '@value', type: 'syntax', desc: 'One-way expression binding — renders a C# value into HTML.' },
+    { name: '@bind', type: 'syntax', desc: 'Two-way binding shorthand (sets value and wires the change event).' },
+    { name: '@bind-Value', type: 'syntax', desc: 'Two-way bind on Blazor input component\'s Value parameter.' },
+    { name: '@bind:event="oninput"', type: 'syntax', desc: 'Triggers binding on the oninput event instead of onchange.' },
+    { name: '@bind:format', type: 'syntax', desc: 'Format string for date/number two-way binding.' },
+    { name: '@onclick', type: 'syntax', desc: 'Binds a C# method or lambda to the click event.' },
+    { name: '@oninput', type: 'syntax', desc: 'Fires on every keystroke — use for live search.' },
+    { name: '@onchange', type: 'syntax', desc: 'Fires when the element loses focus after a change.' },
+  ];
+
+  theory: TheoryPoint[] = [
+    {
+      heading: 'One-way binding',
+      points: ['In Blazor, `@expression` renders a C# value into the HTML output. This is strictly one-way — changing the rendered HTML (in the browser) does not update the C# field. Use it for read-only display: `<p>@user.Name</p>`. Blazor re-renders the component whenever it re-runs the render tree, updating the DOM diff.',
+      '@expression emits HTML from a C# value.', 'No DOM changes feed back to C# in one-way binding.', 'Re-rendering on state change updates all @expression values.', 'Use for display — labels, text, class names, styles.']
+    },
+    {
+      heading: 'Two-way binding with @bind',
+      points: ['`@bind` is syntactic sugar that combines reading a property and subscribing to its change event. On a native `<input>`, `@bind="text"` expands to `value="@text" @onchange="e => text = e.Value.ToString()"`. The default trigger is `onchange` (fires on blur). Switch to `oninput` for real-time updates: `@bind:event="oninput"`.',
+      '@bind = @value + @onchange wired together.', 'Default event is onchange (fires on blur).', '@bind:event="oninput" fires on every keystroke.', '@bind:format controls display of dates and numbers.']
+    },
+    {
+      heading: 'Event binding and lambda arguments',
+      points: ['Event directives like `@onclick`, `@oninput`, and `@onkeydown` accept a method reference or a lambda. Event args are available as `MouseEventArgs`, `ChangeEventArgs`, `KeyboardEventArgs`, etc. When iterating a list and capturing the loop variable in a lambda, always copy it to a local variable first to avoid the captured-variable closure bug.',
+      'Event directives accept method references or lambdas.', 'Event arg types: MouseEventArgs, ChangeEventArgs, KeyboardEventArgs, etc.', 'Capture loop variables with var local = item; before using in lambda.', 'async lambdas are fine: @onclick="async () => await Load()"']
+    },
+  ];
+
+  codeTabs: CodeTab[] = [
+    {
+      label: 'One-way & events',
+      language: 'csharp',
+      code: `@rendermode InteractiveServer
+
+<p>Count: @count</p>
+<button @onclick="Increment">+1</button>
+<button @onclick="() => count = 0">Reset</button>
+
+@code {
+    private int count = 0;
+    private void Increment() => count++;
+}`
+    },
+    {
+      label: 'Two-way @bind',
+      language: 'csharp',
+      code: `<input @bind="name" />
+<p>Hello, @name!</p>
+
+<!-- Live update on each keystroke -->
+<input @bind="search" @bind:event="oninput" />
+<p>Searching: @search</p>
+
+<!-- Date with format -->
+<input type="date" @bind="dob" @bind:format="yyyy-MM-dd" />
+<p>DOB: @dob.ToShortDateString()</p>
+
+@code {
+    private string name = "";
+    private string search = "";
+    private DateTime dob = DateTime.Today;
+}`
+    },
+    {
+      label: 'Loop variable capture',
+      language: 'csharp',
+      code: `@foreach (var item in items)
+{
+    var localItem = item;  // capture to local to avoid closure bug
+    <button @onclick="() => Select(localItem)">
+        @item.Name
+    </button>
+}
+
+@code {
+    record Product(int Id, string Name);
+    private List<Product> items = [new(1,"A"), new(2,"B"), new(3,"C")];
+    private Product? selected;
+    private void Select(Product p) => selected = p;
+}`
+    },
+    {
+      label: '@bind on component',
+      language: 'csharp',
+      code: `<!-- Child: NumberInput.razor -->
+<input type="number" value="@Value"
+       @onchange="e => ValueChanged.InvokeAsync(int.Parse(e.Value!.ToString()!))" />
+@code {
+    [Parameter] public int Value { get; set; }
+    [Parameter] public EventCallback<int> ValueChanged { get; set; }
+}
+
+<!-- Parent — @bind-Value wires up ValueChanged automatically -->
+<NumberInput @bind-Value="qty" />
+<p>Quantity: @qty</p>
+@code { private int qty = 1; }`
+    },
+  ];
+
+  mistakes: CommonMistake[] = [
+    {
+      title: 'Using @bind on a Blazor input component instead of @bind-Value',
+      wrong: '<InputText @bind="model.Name" />',
+      right: '<InputText @bind-Value="model.Name" />',
+      explanation: 'Blazor input components (InputText, InputNumber, etc.) expose a Value parameter. @bind targets an element attribute; @bind-Value targets the component parameter.'
+    },
+    {
+      title: 'Forgetting the loop variable capture',
+      wrong: '@foreach (var item in items) { <button @onclick="() => Select(item)"> }',
+      right: '@foreach (var item in items) { var local = item; <button @onclick="() => Select(local)"> }',
+      explanation: 'The foreach variable is captured by reference. By the time the button is clicked, item points to the last element. Capturing to a local fixes this.'
+    },
+    {
+      title: 'Using @oninput on an EditForm field expecting onchange',
+      wrong: '<input @bind="model.Name" @bind:event="oninput" />  // inside EditForm',
+      right: '<InputText @bind-Value="model.Name" />  // EditContext tracks on change by default',
+      explanation: 'Mixing @bind:event="oninput" with EditContext can cause premature validation messages on every keystroke. Use the built-in input components which trigger at the right time.'
+    },
+    {
+      title: 'Modifying a bound property inside OnChange',
+      wrong: '@onchange="e => { name = e.Value.ToString(); name = name.Trim(); }"',
+      right: '@bind="name" // then: private string name { get => _n; set => _n = value.Trim(); }',
+      explanation: 'Computed setter logic belongs in the property setter, not the event handler. Mixing mutation in the event handler while @bind is active can cause double-render issues.'
+    },
+    {
+      title: 'Two-way binding async lambdas without await',
+      wrong: '@onclick="async () => Load()"',
+      right: '@onclick="async () => await Load()"',
+      explanation: 'Without await, exceptions from Load() are silently swallowed. Always await async operations in event handlers.'
+    },
+  ];
+
+  challenge: Challenge = {
+    title: 'Live Character Counter Input',
+    language: 'csharp',
+    description: 'Build a textarea with a live character counter. Show "X / 200 characters" below it, updating on every keystroke. Turn the counter red when the limit is exceeded. Disable the submit button when over the limit or when the textarea is empty.',
+    hints: [
+      'Use @bind:event="oninput" on the textarea for live updates.',
+      'Compare text.Length to the limit inside the component.',
+      'Bind the disabled attribute: `<button disabled="@IsDisabled">`.',
+    ],
+    starterCode: `@rendermode InteractiveServer
+
+<textarea @bind="text" @bind:event="oninput" maxlength="250"></textarea>
+<p>@text.Length / 200</p>
+<button>Submit</button>
+
+@code {
+    private string text = "";
+    // TODO: limit, color, disabled logic
+}`,
+    solution: `@rendermode InteractiveServer
+
+<textarea @bind="text" @bind:event="oninput"></textarea>
+<p style="color: @(IsOver ? "red" : "inherit")">@text.Length / @Limit characters</p>
+<button disabled="@(IsDisabled)">Submit</button>
+
+@code {
+    private const int Limit = 200;
+    private string text = "";
+    private bool IsOver => text.Length > Limit;
+    private bool IsDisabled => text.Length == 0 || IsOver;
+}`
+  };
+
+  quiz: QuizQuestion[] = [
+    { q: 'What does @bind expand to on a native <input>?', options: ['Only @onchange', 'value="@x" + @onchange that sets x', '@oninput + @value', 'Just @value'], answer: 1, explanation: '@bind is syntactic sugar for setting the value attribute and subscribing to the change event that updates the bound field.' },
+    { q: 'Which event is triggered by @bind:event="oninput"?', options: ['On blur', 'On form submit', 'On every keystroke', 'On enter key'], answer: 2, explanation: 'oninput fires synchronously on every character input, making it suitable for live search or character counters.' },
+    { q: 'How do you fix the foreach loop variable capture bug?', options: ['Use a for loop instead', 'Assign item to a local variable inside the loop body', 'Use @key directive', 'Use index instead of item'], answer: 1, explanation: 'var local = item inside the foreach loop creates a new capture per iteration. This is a common C# closure gotcha.' },
+    { q: 'What attribute is used for two-way binding on Blazor InputText?', options: ['@bind', '@bind-Value', '@twoway', '@model'], answer: 1, explanation: '@bind-Value targets the Value parameter of Blazor input components. @bind targets the native HTML element\'s value attribute.' },
+    { q: 'What should you always do with async event lambdas?', options: ['Return void', 'Use async and await', 'Suppress warnings', 'Run on background thread'], answer: 1, explanation: 'Always await async calls in event handlers to ensure exceptions are not silently swallowed and state is updated correctly.' },
+  ];
+
+  qna: QnaItem[] = [
+    { q: 'What is the difference between @onchange and @oninput on a text field?', a: '@onchange fires when the element loses focus after its value changed (traditional DOM change event). @oninput fires on every keystroke. Use @oninput for live feedback; @onchange for less aggressive updates that are validated on blur.' },
+    { q: 'Can I use @bind on a custom component I wrote?', a: 'Yes. @bind-PropName synthesizes a PropNameChanged EventCallback. Declare both `[Parameter] public T PropName` and `[Parameter] public EventCallback<T> PropNameChanged` on your component, and parents can use `@bind-PropName="field"`.' },
+    { q: 'When does Blazor re-render after an event?', a: 'Blazor calls StateHasChanged automatically after every event handler completes. If the handler is async, a re-render happens after each awaited continuation too. You rarely need to call StateHasChanged manually from event handlers.' },
+    { q: 'How do I bind a nullable property?', a: 'Blazor input components support nullable generics: `InputNumber<int?>` binds to `int?`. For string properties, string is already nullable by reference. Ensure validation accounts for null with [Required] or nullability annotations.' },
+  ];
+
+  revision: RevisionSummary = {
+    oneLiner: 'Blazor binding: @expression for one-way display, @bind for two-way (expands to value + onchange), and @onclick/@oninput for event handling — all automatically triggering re-renders.',
+    mustKnow: [
+      '@expression renders a C# value one-way into HTML.',
+      '@bind = value attribute + onchange event; default trigger is blur.',
+      '@bind:event="oninput" fires on every keystroke for live updates.',
+      '@bind-Value is for Blazor input components (InputText, InputNumber…).',
+      'Capture foreach variables to locals to avoid the closure trap.',
+      'Always await async lambdas in event handlers.',
+    ],
+    interviewFocus: [
+      'What does @bind expand to on a native input element?',
+      'How do you implement two-way binding on a custom component?',
+      'Why must you capture foreach variables to locals in Blazor event handlers?',
+    ]
+  };
+}

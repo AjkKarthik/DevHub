@@ -1,1 +1,35 @@
+<div class="perf-page">
+  <div class="page-header-icon perf-icon">⚡</div>
+  <h1 class="page-title">SSR &amp; Streaming HTML</h1>
+  <p class="page-subtitle">
+    <code>SSR</code> sends server-rendered HTML for fast LCP; <strong>streaming</strong>
+    flushes the page shell before data is ready; <code>SSG</code> pre-builds HTML at deploy
+    time for the fastest TTFB — choose the model that fits each route.
+  </p>
 
+  <app-page-meta [readingTime]="24" difficulty="advanced" since="2022" tech="javascript" />
+
+  <app-quick-ref [items]="quickRef" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="perf-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+
+  <app-challenge-block [item]="challenge" />
+
+  <app-quiz-block [items]="quiz" />
+
+  <app-qna-block [items]="qna" />
+
+  <app-revision-card [summary]="revision" />
+
+  <app-page-complete
+    route="perf-ssr-streaming"
+    nextRoute="/performance/css-performance"
+    nextLabel="CSS Performance" />
+</div>

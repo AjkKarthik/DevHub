@@ -1,0 +1,19 @@
+<div class="blazor-page">
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">SEO & Metadata in Blazor</h1>
+  <p class="page-subtitle">
+    Control <code>&lt;title&gt;</code>, <code>&lt;meta&gt;</code>, and Open Graph tags from
+    any component using <code>HeadContent</code>, <code>PageTitle</code>, and the
+    <code>IHeadOutletHelper</code> API introduced in .NET 8.
+  </p>
+  <app-page-meta [readingTime]="16" difficulty="intermediate" since=".NET 7+" tech="csharp" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="blazor-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="blazor-seo-metadata" nextRoute="/blazor/virtualization" nextLabel="Virtualization" />
+</div>
