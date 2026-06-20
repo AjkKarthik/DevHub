@@ -102,7 +102,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | Blazor | 23 | 0 | Complete — 20 topics + 3 reference |
 | Node.js | 0 | 25 | Not started |
 | Python | 0 | 23 | Not started |
-| Go | 0 | 23 | Not started |
+| Go | 23 | 0 | Complete — 21 topics + 2 reference |
 | DevOps | 0 | 22 | Not started |
 | Containers/K8s | 0 | 23 | Not started |
 | AWS | 0 | 22 | Not started |
@@ -756,19 +756,34 @@ Tooling → Reference). 3 sessions.
 
 ---
 
-### 4C — Go hub (23 topics) `src/app/components/backend/go/`
+### 4C — Go hub ✅ COMPLETE `src/app/components/backend/go/`
 
-Accent: `#00add8` (Go blue). Search prefix: `go-`.
+All 21 trackable topics + 2 reference pages live (2026-06-21). goTotal = 21. All 23 cards `available: true`.
+Accent: `#00add8` (Go blue). Search prefix: `go-`. Hero stat updated to 400+.
 
-Batches guided by home.ts (Foundations → Concurrency → HTTP & APIs → Data → Tooling →
-Patterns → Reference). 3 sessions.
-
-**Key pages to prioritise:**
-- `go-fundamentals` (syntax, defer, multiple returns — most distinctive Go features)
-- `goroutines` (core concurrency — Go's unique strength)
-- `channels` (channel patterns — critical interview topic)
-- `gin-framework` (most-required Go framework in job listings)
-- `error-handling` (Go's error pattern — often tested in interviews)
+- [x] 2026-06-21 `go-fundamentals` — variables, types, functions, multiple returns, defer, pointers
+- [x] 2026-06-21 `go-structs-interfaces` — struct types, methods, interfaces, embedding, implicit satisfaction
+- [x] 2026-06-21 `go-error-handling` — error pattern, errors.Is/As, %w wrapping, custom error types, panic/recover
+- [x] 2026-06-21 `go-slices-maps` — slice internals (len/cap/backing array), maps, maps.Clone, slices.Clone
+- [x] 2026-06-21 `go-goroutines` — lightweight threads, GMP scheduler, goroutine leaks, GOMAXPROCS
+- [x] 2026-06-21 `go-channels` — buffered vs unbuffered, directional channels, select, closing, range over channel
+- [x] 2026-06-21 `go-sync` — Mutex, RWMutex, WaitGroup, Once, Cond, atomic operations
+- [x] 2026-06-21 `go-context` — cancellation, deadlines, timeouts, request-scoped values
+- [x] 2026-06-21 `go-net-http` — net/http server, ServeMux (Go 1.22+), middleware, JSON APIs
+- [x] 2026-06-21 `go-gin` — Gin web framework, routing, middleware, param binding, error handling
+- [x] 2026-06-21 `go-json-encoding` — JSON marshalling/unmarshalling, struct tags, custom MarshalJSON
+- [x] 2026-06-21 `go-grpc` — .proto definitions, protoc codegen, interceptors, streaming
+- [x] 2026-06-21 `go-pgx` — pgx for PostgreSQL, connection pool, prepared statements, COPY bulk insert
+- [x] 2026-06-21 `go-gorm` — GORM ORM, AutoMigrate, Preload/Joins, hooks, raw SQL
+- [x] 2026-06-21 `go-generics` — type parameters, constraints, comparable, when to use generics
+- [x] 2026-06-21 `go-patterns` — functional options, errgroup, worker pools, fan-out/fan-in, retry
+- [x] 2026-06-21 `go-modules` — go.mod, go.sum, MVS, workspaces, GOPRIVATE, build tags, cross-compilation
+- [x] 2026-06-21 `go-testing` — table-driven tests, testify, httptest, benchmarks, race detection, fuzzing
+- [x] 2026-06-21 `go-cli` — cobra, flag package, stdin/piping, spinner goroutine, goreleaser
+- [x] 2026-06-21 `go-profiling` — pprof, net/http/pprof, sync.Pool, GC tuning, execution tracer
+- [x] 2026-06-21 `go-build` — static binaries, multi-stage Docker, graceful shutdown, GitHub Actions CI, goreleaser
+- [x] 2026-06-21 `go-cheatsheet` — reference page: types, concurrency, errors, testing patterns
+- [x] 2026-06-21 `go-interview-prep` — reference page: 35+ Q&A across goroutines, interfaces, GC, generics
 
 ---
 
