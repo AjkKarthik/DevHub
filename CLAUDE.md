@@ -393,9 +393,16 @@ structure/UX, only content + accent differ.
   Challenge.language must be `'typescript'` — never `'go'`. `{}` in HTML must be escaped as `&#123;&#125;`.
   Go backticks in code examples must use string concatenation — they terminate TS template literals.
   GoNavComponent at `shared/go-nav/go-nav.ts` extracts Go navigation (prevents TS2563 in app.ts).
-- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, and Go are `available: true`. Web Performance hub home exists at `/performance` but topic cards are `available: false`. Everything else "Soon".
-- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21 (`progress.service.ts`).
-- Hero stat: "400+ Live Pages".
+- **Node.js hub**: 23 trackable topic pages + 2 reference pages (25 cards total). Feature-complete.
+  Green theme `$accent: #339933`, tint `#f0fdf4`. Search prefix `node-`. Route: `/node`.
+  CSS classes: `.node-page`, `.node-icon`, `.node-section`. Icon content: `⬡` (`&#x2B21;`) at `font-size: 1.8rem`. `tech="javascript"`.
+  Nav groups: Foundations, HTTP & APIs, Async & Streams, Database, Auth & Security, Performance, Tooling, Reference.
+  All 25 cards `available: true` in `backend/nodejs/home/home.ts`. Progress: `nodeTotal=23` in progress.service.ts.
+  Node.js pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
+  Challenge.language: `'typescript'`.
+- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, and Node.js are `available: true`. Web Performance hub home exists at `/performance` but topic cards are `available: false`. Everything else "Soon".
+- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23 (`progress.service.ts`).
+- Hero stat: "425+ Live Pages".
 
 ## Working practices
 

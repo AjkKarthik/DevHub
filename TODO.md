@@ -100,7 +100,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | CSS | 24 | 0 | Complete — 22 topics + 2 reference |
 | Web Performance | 22 | 0 | Complete — 20 topics + 2 reference |
 | Blazor | 23 | 0 | Complete — 20 topics + 3 reference |
-| Node.js | 0 | 25 | Not started |
+| Node.js | 25 | 0 | Complete — 23 topics + 2 reference |
 | Python | 0 | 23 | Not started |
 | Go | 23 | 0 | Complete — 21 topics + 2 reference |
 | DevOps | 0 | 22 | Not started |
@@ -1227,6 +1227,8 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-21 — Node.js hub Phase 4A complete: all 25 pages live (23 trackable topics + cheatsheet + interview-prep). nodeTotal = 23. hub-home Node.js card topics: 25, available: true. Hero stat updated to 425+. Build passes. Green accent #339933, search prefix node-. Icon styles added to styles.scss (go-icon, node-icon, css-icon, blazor-icon).
+- [x] 2026-06-21 — Go hub Phase 4C complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). goTotal = 21. hub-home Go card topics: 23, available: true. Teal accent #00add8, search prefix go-.
 - [x] 2026-06-20 — Web Performance hub Phase 3F complete: all 22 pages live (20 trackable topics + cheatsheet + interview-prep). perfTotal = 20. hub-home card topics: 22, available: true. Hero stat updated to 350+. Build passes. Green accent #16a34a, search prefix perf-.
 - [x] 2026-06-19 — Web Performance hub Phase 3F wiring complete: routes, nav, progress (perfTotal=20), search (22 perf- entries), breadcrumb, app.scss section-performance, search.ts perf- URL routing. 21 stub components created. First full page: core-web-vitals. Build passes. Green accent #16a34a.
 - [x] 2026-06-19 — HTML hub Phase 3D complete: all 25 pages live (23 trackable topics + cheatsheet + interview-prep). htmlTotal = 23. hub-home HTML card topics: 25, available: true. Accent #e34c26, search prefix html-. Build passes.
