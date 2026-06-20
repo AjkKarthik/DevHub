@@ -101,7 +101,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | Web Performance | 22 | 0 | Complete — 20 topics + 2 reference |
 | Blazor | 23 | 0 | Complete — 20 topics + 3 reference |
 | Node.js | 25 | 0 | Complete — 23 topics + 2 reference |
-| Python | 0 | 23 | Not started |
+| Python | 23 | 0 | Complete — 21 topics + 2 reference |
 | Go | 23 | 0 | Complete — 21 topics + 2 reference |
 | DevOps | 0 | 22 | Not started |
 | Containers/K8s | 0 | 23 | Not started |
@@ -1227,6 +1227,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-21 — Python hub Phase 4B complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). pyTotal = 21. hub-home Python card topics: 23, available: true. Hero stat updated to 450+. Blue accent #3776ab, search prefix py-. py-icon added to styles.scss.
 - [x] 2026-06-21 — Node.js hub Phase 4A complete: all 25 pages live (23 trackable topics + cheatsheet + interview-prep). nodeTotal = 23. hub-home Node.js card topics: 25, available: true. Hero stat updated to 425+. Build passes. Green accent #339933, search prefix node-. Icon styles added to styles.scss (go-icon, node-icon, css-icon, blazor-icon).
 - [x] 2026-06-21 — Go hub Phase 4C complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). goTotal = 21. hub-home Go card topics: 23, available: true. Teal accent #00add8, search prefix go-.
 - [x] 2026-06-20 — Web Performance hub Phase 3F complete: all 22 pages live (20 trackable topics + cheatsheet + interview-prep). perfTotal = 20. hub-home card topics: 22, available: true. Hero stat updated to 350+. Build passes. Green accent #16a34a, search prefix perf-.
