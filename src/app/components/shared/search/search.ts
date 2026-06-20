@@ -117,6 +117,7 @@ export class SearchComponent {
     if (route.startsWith('perf-'))   return '/performance/' + route.slice('perf-'.length);
     if (route.startsWith('blazor-')) return '/blazor/'      + route.slice('blazor-'.length);
     if (route.startsWith('node-'))   return '/node/'        + route.slice('node-'.length);
+    if (route.startsWith('py-'))     return '/python/'      + route.slice('py-'.length);
     if (route.startsWith('hub-'))    return '/'             + route.slice('hub-'.length);
     return '/angular/' + route;
   }

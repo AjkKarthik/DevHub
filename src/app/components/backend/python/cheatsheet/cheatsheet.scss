@@ -1,0 +1,42 @@
+$accent: #3776ab;
+$tint: #eff8ff;
+
+.py-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+
+  .page-header-icon.py-icon {
+    background: $tint;
+    color: $accent;
+    font-size: 1.8rem;
+  }
+
+  .page-subtitle code {
+    background: $tint;
+    color: $accent;
+    border-radius: 4px;
+    padding: 0.1em 0.35em;
+    font-size: 0.9em;
+  }
+}
+
+.py-section h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $accent;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid $tint;
+}
+
+:host-context(body.dark) {
+  .py-page .page-header-icon.py-icon {
+    background: rgba(55, 118, 171, 0.2);
+    color: #7dd3fc;
+  }
+  .py-section h2 {
+    color: #7dd3fc;
+    border-bottom-color: rgba(55, 118, 171, 0.3);
+  }
+}

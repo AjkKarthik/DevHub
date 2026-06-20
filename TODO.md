@@ -62,6 +62,12 @@ Phase 2 is not a mechanical "add more fields" pass. Each existing page must be:
 - Given a revision card based on what an interviewer would actually ask
 This is the same research step as Step 1 in Session Guidelines. Do not skip it.
 
+**9. Content generation workflow (updated 2026-06-20):**
+Use `ollama run qwen3.6:35b-a3b` to generate TypeScript content for each page.
+Claude reviews the output for correctness, data shape compliance, and dark-mode rule,
+then writes the final file. Build, commit (`git commit`), and push after **each page**.
+Claude does NOT generate content from scratch — Ollama generates, Claude reviews and fixes.
+
 ---
 
 ## Vision

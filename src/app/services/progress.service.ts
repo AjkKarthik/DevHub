@@ -67,6 +67,11 @@ export class ProgressService {
   readonly nodeCount  = computed(() => [...this._done()].filter(r => r.startsWith('node-')).length);
   readonly nodePct    = computed(() => Math.round((this.nodeCount() / this.nodeTotal) * 100));
 
+  // ── Python (keys prefixed 'py-') ─────────────────────────────────────────
+  readonly pyTotal  = 21;
+  readonly pyCount  = computed(() => [...this._done()].filter(r => r.startsWith('py-')).length);
+  readonly pyPct    = computed(() => Math.round((this.pyCount() / this.pyTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

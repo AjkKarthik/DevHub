@@ -356,7 +356,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'backend', name: 'Python', time: '~10 hrs',
       tagline: 'Versatile language for backends, scripting, automation & data.',
       icon: '🐍', gradient: 'linear-gradient(135deg, #3572a5 0%, #1f4c77 100%)',
-      textDark: false, route: '/python', available: true,
+      textDark: false, route: '/python', available: true, topics: 23,
       roles: ['backend'],
       highlights: [
         'FastAPI, Flask, Django REST Framework',

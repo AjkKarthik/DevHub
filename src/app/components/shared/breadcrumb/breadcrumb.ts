@@ -430,6 +430,32 @@ const BLAZOR_LABELS: Record<string, string> = {
   'interview-prep':          'Blazor Interview Prep',
 };
 
+const PYTHON_LABELS: Record<string, string> = {
+  'fundamentals':              'Python Fundamentals',
+  'functions-closures':        'Functions & Closures',
+  'comprehensions-generators': 'Comprehensions & Generators',
+  'file-io':                   'File I/O & Pathlib',
+  'oop':                       'OOP in Python',
+  'dataclasses-pydantic':      'Dataclasses & Pydantic',
+  'decorators-context-managers': 'Decorators & Context Managers',
+  'type-hints':                'Type Hints & mypy',
+  'collections-itertools':     'Collections & Itertools',
+  'asyncio':                   'Async Python (asyncio)',
+  'threading-multiprocessing': 'Threading & Multiprocessing',
+  'concurrency-patterns':      'Python Concurrency Patterns',
+  'fastapi':                   'FastAPI',
+  'django':                    'Django',
+  'sqlalchemy':                'SQLAlchemy',
+  'celery':                    'Celery & Task Queues',
+  'numpy-pandas':              'NumPy & Pandas',
+  'scikit-learn':              'Machine Learning (scikit-learn)',
+  'pytest':                    'Testing with pytest',
+  'packaging':                 'Python Packaging & venv',
+  'debugging-profiling':       'Debugging & Profiling',
+  'cheatsheet':                'Python Cheat Sheet',
+  'interview-prep':            'Python Interview Prep',
+};
+
 const NODE_LABELS: Record<string, string> = {
   'architecture':    'Node.js Architecture',
   'modules':         'Modules & CommonJS',
@@ -590,6 +616,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'performance'  ? PERFORMANCE_LABELS
                  : segs[0] === 'blazor'       ? BLAZOR_LABELS
                  : segs[0] === 'node'         ? NODE_LABELS
+                 : segs[0] === 'python'       ? PYTHON_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

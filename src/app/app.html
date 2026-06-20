@@ -83,6 +83,9 @@
         } @else if (currentSection() === 'node') {
           <div class="nav-progress-bar" [style.width.%]="progress.nodePct()"></div>
           <span class="nav-progress-label">{{ progress.nodeCount() }}/{{ progress.nodeTotal }} topics done</span>
+        } @else if (currentSection() === 'python') {
+          <div class="nav-progress-bar" [style.width.%]="progress.pyPct()"></div>
+          <span class="nav-progress-label">{{ progress.pyCount() }}/{{ progress.pyTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -747,6 +750,70 @@
     </div>
 
     } <!-- end node nav -->
+
+    <!-- ── Python Navigation ────────────────────────────────────────── -->
+    @if (currentSection() === 'python') {
+
+    <a routerLink="/python" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">🐍 Python Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/python/fundamentals" routerLinkActive="active"><span class="nl-text">Python Fundamentals</span>@if(progress.isDone('py-fundamentals')){<span class="nl-done">✓</span>}@if(diff('py-fundamentals');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/functions-closures" routerLinkActive="active"><span class="nl-text">Functions &amp; Closures</span>@if(progress.isDone('py-functions-closures')){<span class="nl-done">✓</span>}@if(diff('py-functions-closures');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/comprehensions-generators" routerLinkActive="active"><span class="nl-text">Comprehensions &amp; Generators</span>@if(progress.isDone('py-comprehensions-generators')){<span class="nl-done">✓</span>}@if(diff('py-comprehensions-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/file-io" routerLinkActive="active"><span class="nl-text">File I/O &amp; Pathlib</span>@if(progress.isDone('py-file-io')){<span class="nl-done">✓</span>}@if(diff('py-file-io');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">OOP &amp; Patterns</p>
+      <a routerLink="/python/oop" routerLinkActive="active"><span class="nl-text">OOP in Python</span>@if(progress.isDone('py-oop')){<span class="nl-done">✓</span>}@if(diff('py-oop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/dataclasses-pydantic" routerLinkActive="active"><span class="nl-text">Dataclasses &amp; Pydantic</span>@if(progress.isDone('py-dataclasses-pydantic')){<span class="nl-done">✓</span>}@if(diff('py-dataclasses-pydantic');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/decorators-context-managers" routerLinkActive="active"><span class="nl-text">Decorators &amp; Context Managers</span>@if(progress.isDone('py-decorators-context-managers')){<span class="nl-done">✓</span>}@if(diff('py-decorators-context-managers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Data &amp; Types</p>
+      <a routerLink="/python/type-hints" routerLinkActive="active"><span class="nl-text">Type Hints &amp; mypy</span>@if(progress.isDone('py-type-hints')){<span class="nl-done">✓</span>}@if(diff('py-type-hints');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/collections-itertools" routerLinkActive="active"><span class="nl-text">Collections &amp; Itertools</span>@if(progress.isDone('py-collections-itertools')){<span class="nl-done">✓</span>}@if(diff('py-collections-itertools');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Async</p>
+      <a routerLink="/python/asyncio" routerLinkActive="active"><span class="nl-text">Async Python (asyncio)</span>@if(progress.isDone('py-asyncio')){<span class="nl-done">✓</span>}@if(diff('py-asyncio');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/threading-multiprocessing" routerLinkActive="active"><span class="nl-text">Threading &amp; Multiprocessing</span>@if(progress.isDone('py-threading-multiprocessing')){<span class="nl-done">✓</span>}@if(diff('py-threading-multiprocessing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/concurrency-patterns" routerLinkActive="active"><span class="nl-text">Concurrency Patterns</span>@if(progress.isDone('py-concurrency-patterns')){<span class="nl-done">✓</span>}@if(diff('py-concurrency-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Web &amp; APIs</p>
+      <a routerLink="/python/fastapi" routerLinkActive="active"><span class="nl-text">FastAPI</span>@if(progress.isDone('py-fastapi')){<span class="nl-done">✓</span>}@if(diff('py-fastapi');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/django" routerLinkActive="active"><span class="nl-text">Django &amp; DRF</span>@if(progress.isDone('py-django')){<span class="nl-done">✓</span>}@if(diff('py-django');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/sqlalchemy" routerLinkActive="active"><span class="nl-text">SQLAlchemy</span>@if(progress.isDone('py-sqlalchemy')){<span class="nl-done">✓</span>}@if(diff('py-sqlalchemy');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/celery" routerLinkActive="active"><span class="nl-text">Celery &amp; Task Queues</span>@if(progress.isDone('py-celery')){<span class="nl-done">✓</span>}@if(diff('py-celery');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Data Science</p>
+      <a routerLink="/python/numpy-pandas" routerLinkActive="active"><span class="nl-text">NumPy &amp; Pandas</span>@if(progress.isDone('py-numpy-pandas')){<span class="nl-done">✓</span>}@if(diff('py-numpy-pandas');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/scikit-learn" routerLinkActive="active"><span class="nl-text">Machine Learning (scikit-learn)</span>@if(progress.isDone('py-scikit-learn')){<span class="nl-done">✓</span>}@if(diff('py-scikit-learn');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Tooling</p>
+      <a routerLink="/python/pytest" routerLinkActive="active"><span class="nl-text">Testing with pytest</span>@if(progress.isDone('py-pytest')){<span class="nl-done">✓</span>}@if(diff('py-pytest');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/packaging" routerLinkActive="active"><span class="nl-text">Packaging &amp; venv</span>@if(progress.isDone('py-packaging')){<span class="nl-done">✓</span>}@if(diff('py-packaging');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/python/debugging-profiling" routerLinkActive="active"><span class="nl-text">Debugging &amp; Profiling</span>@if(progress.isDone('py-debugging-profiling')){<span class="nl-done">✓</span>}@if(diff('py-debugging-profiling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/python/cheatsheet" routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+      <a routerLink="/python/interview-prep" routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+    </div>
+
+    } <!-- end python nav -->
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {
