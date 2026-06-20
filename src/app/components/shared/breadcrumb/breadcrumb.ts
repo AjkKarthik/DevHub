@@ -456,6 +456,32 @@ const PYTHON_LABELS: Record<string, string> = {
   'interview-prep':            'Python Interview Prep',
 };
 
+const GO_LABELS: Record<string, string> = {
+  'fundamentals':       'Go Fundamentals',
+  'structs-interfaces': 'Structs & Interfaces',
+  'error-handling':     'Error Handling',
+  'slices-maps':        'Slices & Maps',
+  'goroutines':         'Goroutines',
+  'channels':           'Channels',
+  'sync':               'sync & sync/atomic',
+  'context':            'context Package',
+  'net-http':           'net/http & REST APIs',
+  'gin':                'Gin Web Framework',
+  'json-encoding':      'JSON & Encoding',
+  'grpc':               'gRPC in Go',
+  'pgx':                'Database with pgx',
+  'gorm':               'GORM',
+  'generics':           'Go Generics',
+  'patterns':           'Go Patterns',
+  'modules':            'Go Modules',
+  'testing':            'Testing in Go',
+  'cli':                'Go CLI Tools',
+  'profiling':          'Go Performance & Profiling',
+  'build':              'Go Build & Deployment',
+  'cheatsheet':         'Go Cheat Sheet',
+  'interview-prep':     'Go Interview Prep',
+};
+
 const NODE_LABELS: Record<string, string> = {
   'architecture':    'Node.js Architecture',
   'modules':         'Modules & CommonJS',
@@ -617,6 +643,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'blazor'       ? BLAZOR_LABELS
                  : segs[0] === 'node'         ? NODE_LABELS
                  : segs[0] === 'python'       ? PYTHON_LABELS
+                 : segs[0] === 'go'           ? GO_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

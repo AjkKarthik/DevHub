@@ -207,6 +207,7 @@ header {
 .left-nav.section-blazor     .nav-progress-bar { background: linear-gradient(90deg, #5c2d91, #3a1c5c); }
 .left-nav.section-node       .nav-progress-bar { background: linear-gradient(90deg, #339933, #166534); }
 .left-nav.section-python     .nav-progress-bar { background: linear-gradient(90deg, #3776ab, #1e4d8c); }
+.left-nav.section-go         .nav-progress-bar { background: linear-gradient(90deg, #00add8, #006d94); }
 
 .nav-progress-label {
   display: block;
@@ -420,6 +421,15 @@ main {
 
   body.dark &:hover { background: #0c2340; color: #7dd3fc; }
   body.dark &.active { background: #1e4d8c; color: #fff; }
+}
+
+// Go section — cyan active state
+.left-nav.section-go a {
+  &:hover { background: #e8f8fd; color: #006d94; }
+  &.active { background: #00add8; color: #fff; }
+
+  body.dark &:hover { background: #0a1f2e; color: #67e8f9; }
+  body.dark &.active { background: #006d94; color: #fff; }
 }
 
 .nav-soon-note {

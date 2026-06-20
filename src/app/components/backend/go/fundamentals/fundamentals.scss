@@ -1,0 +1,6 @@
+$accent: #00add8;
+$tint: #e8f8fd;
+
+.go-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.go-section { margin-bottom: 2rem; h2 { font-size: 1.4rem; font-weight: 700; color: $accent; margin-bottom: 1rem; } }
+:host-context(body.dark) { .go-page {} .go-section h2 { color: #67e8f9; } }

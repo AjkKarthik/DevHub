@@ -396,7 +396,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'backend', name: 'Go', time: '~8 hrs',
       tagline: 'Fast, simple, concurrent — the language behind Docker, K8s and cloud tooling.',
       icon: '🐹', gradient: 'linear-gradient(135deg, #00acd7 0%, #006b87 100%)',
-      textDark: false, route: '/go', available: true,
+      textDark: false, route: '/go', available: true, topics: 23,
       sub: 'Go · Goroutines · gRPC · CLI tools',
       roles: ['backend', 'devops', 'architect'],
       highlights: [
