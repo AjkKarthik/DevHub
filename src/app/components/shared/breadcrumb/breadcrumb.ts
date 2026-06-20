@@ -404,6 +404,60 @@ const PERFORMANCE_LABELS: Record<string, string> = {
   'interview-prep':         'Performance Interview Prep',
 };
 
+const BLAZOR_LABELS: Record<string, string> = {
+  'fundamentals':            'Blazor Fundamentals',
+  'render-modes':            'Render Modes',
+  'razor-components':        'Razor Components',
+  'component-communication': 'Component Communication',
+  'forms':                   'Blazor Forms',
+  'data-binding':            'Data Binding',
+  'routing':                 'Blazor Routing',
+  'dependency-injection':    'Dependency Injection',
+  'state-management':        'State Management',
+  'js-interop':              'JavaScript Interop',
+  'server-signalr':          'Blazor Server & SignalR',
+  'maui-hybrid':             'MAUI Blazor Hybrid',
+  'authentication':          'Authentication in Blazor',
+  'error-handling':          'Error Handling & ErrorBoundary',
+  'streaming-rendering':     'Streaming Rendering',
+  'sections-layouts':        'Sections & Layouts',
+  'seo-metadata':            'SEO & Head Metadata',
+  'virtualization':          'Component Virtualization',
+  'progressive-enhancement': 'Progressive Enhancement',
+  'performance':             'Blazor Performance',
+  'bunit':                   'Testing with bUnit',
+  'cheatsheet':              'Blazor Cheat Sheet',
+  'interview-prep':          'Blazor Interview Prep',
+};
+
+const NODE_LABELS: Record<string, string> = {
+  'architecture':    'Node.js Architecture',
+  'modules':         'Modules & CommonJS',
+  'core-modules':    'Core Modules',
+  'env-config':      'Env Config & dotenv',
+  'express':         'Express.js',
+  'fastify':         'Fastify',
+  'rest-api':        'REST API Design',
+  'websockets':      'WebSockets & Socket.io',
+  'graphql':         'GraphQL API',
+  'nestjs':          'NestJS',
+  'promises-async':  'Promises & Async/Await',
+  'streams':         'Streams & Buffers',
+  'error-handling':  'Error Handling',
+  'prisma':          'Database with Prisma',
+  'mongoose':        'MongoDB with Mongoose',
+  'caching':         'Caching with Redis',
+  'jwt-auth':        'Auth with JWT & Passport',
+  'security':        'Security Best Practices',
+  'performance':     'Node.js Performance',
+  'logging':         'Logging with Pino/Winston',
+  'worker-threads':  'Worker Threads',
+  'testing':         'Testing Node.js Apps',
+  'deployment':      'Deploying Node.js Apps',
+  'cheatsheet':      'Node.js Cheat Sheet',
+  'interview-prep':  'Node.js Interview Prep',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -534,6 +588,8 @@ export class BreadcrumbComponent {
                  : segs[0] === 'html'         ? HTML_LABELS
                  : segs[0] === 'css'          ? CSS_LABELS
                  : segs[0] === 'performance'  ? PERFORMANCE_LABELS
+                 : segs[0] === 'blazor'       ? BLAZOR_LABELS
+                 : segs[0] === 'node'         ? NODE_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

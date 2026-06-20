@@ -313,7 +313,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'Blazor', time: '~14 hrs',
       tagline: 'Full-stack web UI in C# — components, render modes, no JavaScript required.',
       icon: '🔥', gradient: 'linear-gradient(135deg, #5c2d91 0%, #3a1c5c 100%)',
-      textDark: false, route: '/blazor', available: true,
+      textDark: false, route: '/blazor', available: true, topics: 23,
       sub: 'Server · WebAssembly · SSR',
       roles: ['frontend', 'backend'],
       highlights: [
@@ -343,7 +343,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'backend', name: 'Node.js', time: '~8 hrs',
       tagline: 'Server-side JavaScript — Express, REST APIs, streams, npm.',
       icon: '⬡', gradient: 'linear-gradient(135deg, #339933 0%, #1a5c1a 100%)',
-      textDark: false, route: '/node', available: true,
+      textDark: false, route: '/node', available: true, topics: 25,
       roles: ['backend'],
       highlights: [
         'HTTP server, Express, Fastify',

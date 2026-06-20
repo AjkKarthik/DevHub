@@ -93,7 +93,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | HTML | 25 | 0 | Complete — 23 topics + 2 reference |
 | CSS | 24 | 0 | Complete — 22 topics + 2 reference |
 | Web Performance | 22 | 0 | Complete — 20 topics + 2 reference |
-| Blazor | 0 | 23 | Not started |
+| Blazor | 23 | 0 | Complete — 20 topics + 3 reference |
 | Node.js | 0 | 25 | Not started |
 | Python | 0 | 23 | Not started |
 | Go | 0 | 23 | Not started |

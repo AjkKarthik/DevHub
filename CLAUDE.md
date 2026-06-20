@@ -376,9 +376,17 @@ structure/UX, only content + accent differ.
   All topic cards `available: false` until pages are written. Progress: `perfTotal=20` in progress.service.ts.
   Pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete. Challenge.language: `'html'` or `'typescript'`.
   First page written: `core-web-vitals` (available: false still — flip to true when wiring that card).
-- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, and HTML are `available: true`. Web Performance hub home exists at `/performance` but topic cards are `available: false`. Everything else "Soon".
-- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20 (`progress.service.ts`).
-- Hero stat: "300+ Live Pages".
+- **Blazor hub**: 20 trackable topic pages + 3 reference pages (23 cards total). Feature-complete.
+  Purple theme `$accent: #5c2d91`, tint `#f5f3ff`, dark `#c4b5fd`. Search prefix `blazor-`. Route: `/blazor`.
+  CSS classes: `.blazor-page`, `.blazor-icon`, `.blazor-section`. Icon content: `🔥` at `font-size: 1.8rem`. `tech="csharp"`.
+  Nav groups: Foundations, Components, Data & Forms, Routing, State & Services, Advanced, Reference.
+  All 23 cards `available: true` in `frontend/blazor/home/home.ts`. Progress: `blazorTotal=20` in progress.service.ts.
+  Blazor pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (bunit, cheatsheet, interview-prep) have no PageComplete.
+  Challenge.language: `'csharp'`. Pages with prerequisites: authentication, performance.
+  Data properties use plain typed arrays (NOT signals) — same pattern as all other hubs.
+- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, and Blazor are `available: true`. Web Performance hub home exists at `/performance` but topic cards are `available: false`. Everything else "Soon".
+- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20 (`progress.service.ts`).
+- Hero stat: "375+ Live Pages".
 
 ## Working practices
 

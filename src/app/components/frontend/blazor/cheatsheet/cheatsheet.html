@@ -1,0 +1,13 @@
+<div class="blazor-page">
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Blazor Cheat Sheet</h1>
+  <p class="page-subtitle">
+    Quick-reference for Blazor syntax, directives, lifecycle methods, built-in components,
+    and common patterns — everything you need in one searchable page.
+  </p>
+  <app-page-meta [readingTime]="10" difficulty="beginner" since=".NET 6+" tech="csharp" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="blazor-section"><h2>Syntax Reference</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-qna-block [items]="qna" />
+</div>

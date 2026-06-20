@@ -1,0 +1,19 @@
+<div class="blazor-page">
+  <div class="page-header-icon blazor-icon">🔥</div>
+  <h1 class="page-title">Progressive Enhancement</h1>
+  <p class="page-subtitle">
+    Build Blazor apps that work without JavaScript using Static SSR and
+    <code>&#64;formaction</code> / <code>&#64;onclick:preventDefault</code> patterns.
+    Layer interactivity only where needed — keeping accessibility and resilience first.
+  </p>
+  <app-page-meta [readingTime]="18" difficulty="advanced" since=".NET 8" tech="csharp" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="blazor-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="blazor-progressive-enhancement" nextRoute="/blazor/performance" nextLabel="Performance" />
+</div>

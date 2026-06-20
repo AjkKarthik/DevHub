@@ -57,6 +57,16 @@ export class ProgressService {
   readonly perfCount  = computed(() => [...this._done()].filter(r => r.startsWith('perf-')).length);
   readonly perfPct    = computed(() => Math.round((this.perfCount() / this.perfTotal) * 100));
 
+  // ── Blazor (keys prefixed 'blazor-') ─────────────────────────────────────
+  readonly blazorTotal  = 20;
+  readonly blazorCount  = computed(() => [...this._done()].filter(r => r.startsWith('blazor-')).length);
+  readonly blazorPct    = computed(() => Math.round((this.blazorCount() / this.blazorTotal) * 100));
+
+  // ── Node.js (keys prefixed 'node-') ──────────────────────────────────────
+  readonly nodeTotal  = 23;
+  readonly nodeCount  = computed(() => [...this._done()].filter(r => r.startsWith('node-')).length);
+  readonly nodePct    = computed(() => Math.round((this.nodeCount() / this.nodeTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);
