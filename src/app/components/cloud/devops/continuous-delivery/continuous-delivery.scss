@@ -1,0 +1,6 @@
+$accent: #ee5d25;
+$tint: #fff7ed;
+
+.devops-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.devops-section { margin: 2rem 0; h2 { color: $accent; font-size: 1.25rem; margin-bottom: 1rem; } }
+:host-context(body.dark) { .devops-section h2 { color: #fb923c; } }

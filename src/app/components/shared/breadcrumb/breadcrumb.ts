@@ -482,6 +482,31 @@ const GO_LABELS: Record<string, string> = {
   'interview-prep':     'Go Interview Prep',
 };
 
+const DEVOPS_LABELS: Record<string, string> = {
+  'culture':               'DevOps Culture & Principles',
+  'sdlc-agile':            'SDLC & Agile',
+  'environment-strategy':  'Environment Strategy',
+  'platform-engineering':  'Platform Engineering',
+  'git-workflows':         'Git Workflows',
+  'github-actions':        'GitHub Actions',
+  'azure-pipelines':       'Azure DevOps Pipelines',
+  'jenkins':               'Jenkins',
+  'continuous-integration':'Continuous Integration',
+  'continuous-delivery':   'Continuous Delivery & Deployment',
+  'gitops':                'GitOps with ArgoCD & Flux',
+  'artifact-management':   'Artifact Management',
+  'docker-cicd':           'Docker in CI/CD',
+  'kubernetes-deployments':'Kubernetes Deployments',
+  'iac':                   'Infrastructure as Code',
+  'monitoring':            'Monitoring & Alerting',
+  'logging':               'Logging Pipelines',
+  'incident-response':     'On-call & Incident Response',
+  'devsecops':             'DevSecOps',
+  'release-management':    'Release Management',
+  'sre':                   'SRE Practices',
+  'cheatsheet':            'DevOps Cheat Sheet',
+};
+
 const NODE_LABELS: Record<string, string> = {
   'architecture':    'Node.js Architecture',
   'modules':         'Modules & CommonJS',
@@ -644,6 +669,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'node'         ? NODE_LABELS
                  : segs[0] === 'python'       ? PYTHON_LABELS
                  : segs[0] === 'go'           ? GO_LABELS
+                 : segs[0] === 'devops'       ? DEVOPS_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

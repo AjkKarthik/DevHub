@@ -1,0 +1,82 @@
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ProgressService } from '../../../services/progress.service';
+import { SEARCH_INDEX } from '../../../services/search.service';
+
+const DIFF: Record<string, string> = Object.fromEntries(
+  SEARCH_INDEX.map(e => [e.route, e.difficulty])
+);
+
+@Component({
+  selector: 'app-devops-nav',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive],
+  template: `
+    <a routerLink="/devops" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">🔧 DevOps Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/devops/culture" routerLinkActive="active"><span class="nl-text">DevOps Culture</span>@if(p.isDone('devops-culture')){<span class="nl-done">✓</span>}@if(d('devops-culture');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/sdlc-agile" routerLinkActive="active"><span class="nl-text">SDLC &amp; Agile</span>@if(p.isDone('devops-sdlc-agile')){<span class="nl-done">✓</span>}@if(d('devops-sdlc-agile');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/environment-strategy" routerLinkActive="active"><span class="nl-text">Environment Strategy</span>@if(p.isDone('devops-environment-strategy')){<span class="nl-done">✓</span>}@if(d('devops-environment-strategy');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/platform-engineering" routerLinkActive="active"><span class="nl-text">Platform Engineering</span>@if(p.isDone('devops-platform-engineering')){<span class="nl-done">✓</span>}@if(d('devops-platform-engineering');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Source Control</p>
+      <a routerLink="/devops/git-workflows" routerLinkActive="active"><span class="nl-text">Git Workflows</span>@if(p.isDone('devops-git-workflows')){<span class="nl-done">✓</span>}@if(d('devops-git-workflows');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">CI/CD</p>
+      <a routerLink="/devops/github-actions" routerLinkActive="active"><span class="nl-text">GitHub Actions</span>@if(p.isDone('devops-github-actions')){<span class="nl-done">✓</span>}@if(d('devops-github-actions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/azure-pipelines" routerLinkActive="active"><span class="nl-text">Azure DevOps Pipelines</span>@if(p.isDone('devops-azure-pipelines')){<span class="nl-done">✓</span>}@if(d('devops-azure-pipelines');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/jenkins" routerLinkActive="active"><span class="nl-text">Jenkins</span>@if(p.isDone('devops-jenkins')){<span class="nl-done">✓</span>}@if(d('devops-jenkins');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/continuous-integration" routerLinkActive="active"><span class="nl-text">Continuous Integration</span>@if(p.isDone('devops-continuous-integration')){<span class="nl-done">✓</span>}@if(d('devops-continuous-integration');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/continuous-delivery" routerLinkActive="active"><span class="nl-text">Continuous Delivery</span>@if(p.isDone('devops-continuous-delivery')){<span class="nl-done">✓</span>}@if(d('devops-continuous-delivery');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/gitops" routerLinkActive="active"><span class="nl-text">GitOps (ArgoCD &amp; Flux)</span>@if(p.isDone('devops-gitops')){<span class="nl-done">✓</span>}@if(d('devops-gitops');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/artifact-management" routerLinkActive="active"><span class="nl-text">Artifact Management</span>@if(p.isDone('devops-artifact-management')){<span class="nl-done">✓</span>}@if(d('devops-artifact-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Containers</p>
+      <a routerLink="/devops/docker-cicd" routerLinkActive="active"><span class="nl-text">Docker in CI/CD</span>@if(p.isDone('devops-docker-cicd')){<span class="nl-done">✓</span>}@if(d('devops-docker-cicd');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/kubernetes-deployments" routerLinkActive="active"><span class="nl-text">Kubernetes Deployments</span>@if(p.isDone('devops-kubernetes-deployments')){<span class="nl-done">✓</span>}@if(d('devops-kubernetes-deployments');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">IaC</p>
+      <a routerLink="/devops/iac" routerLinkActive="active"><span class="nl-text">Infrastructure as Code</span>@if(p.isDone('devops-iac')){<span class="nl-done">✓</span>}@if(d('devops-iac');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Monitoring</p>
+      <a routerLink="/devops/monitoring" routerLinkActive="active"><span class="nl-text">Monitoring &amp; Alerting</span>@if(p.isDone('devops-monitoring')){<span class="nl-done">✓</span>}@if(d('devops-monitoring');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/logging" routerLinkActive="active"><span class="nl-text">Logging Pipelines</span>@if(p.isDone('devops-logging')){<span class="nl-done">✓</span>}@if(d('devops-logging');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/incident-response" routerLinkActive="active"><span class="nl-text">On-call &amp; Incident Response</span>@if(p.isDone('devops-incident-response')){<span class="nl-done">✓</span>}@if(d('devops-incident-response');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Security</p>
+      <a routerLink="/devops/devsecops" routerLinkActive="active"><span class="nl-text">DevSecOps</span>@if(p.isDone('devops-devsecops')){<span class="nl-done">✓</span>}@if(d('devops-devsecops');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Advanced</p>
+      <a routerLink="/devops/release-management" routerLinkActive="active"><span class="nl-text">Release Management</span>@if(p.isDone('devops-release-management')){<span class="nl-done">✓</span>}@if(d('devops-release-management');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/devops/sre" routerLinkActive="active"><span class="nl-text">SRE Practices</span>@if(p.isDone('devops-sre')){<span class="nl-done">✓</span>}@if(d('devops-sre');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/devops/cheatsheet" routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+    </div>
+  `,
+  styles: []
+})
+export class DevopsNavComponent {
+  p = inject(ProgressService);
+  d(route: string): string | null { return DIFF[route] ?? null; }
+}
