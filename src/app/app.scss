@@ -209,6 +209,7 @@ header {
 .left-nav.section-python     .nav-progress-bar { background: linear-gradient(90deg, #3776ab, #1e4d8c); }
 .left-nav.section-go         .nav-progress-bar { background: linear-gradient(90deg, #00add8, #006d94); }
 .left-nav.section-devops     .nav-progress-bar { background: linear-gradient(90deg, #ee5d25, #c2410c); }
+.left-nav.section-containers .nav-progress-bar { background: linear-gradient(90deg, #326ce5, #1d4ed8); }
 
 .nav-progress-label {
   display: block;
@@ -442,6 +443,15 @@ main {
   body.dark &.active { background: #c2410c; color: #fff; }
 }
 
+// Containers section — K8s blue active state
+.left-nav.section-containers a {
+  &:hover { background: #eff6ff; color: #1d4ed8; }
+  &.active { background: #326ce5; color: #fff; }
+
+  body.dark &:hover { background: #0f172a; color: #93c5fd; }
+  body.dark &.active { background: #1d4ed8; color: #fff; }
+}
+
 .nav-soon-note {
   font-size: .78rem; color: var(--text3, #9ca3af);
   margin: 0; padding: .25rem .75rem; line-height: 1.5;
@@ -563,6 +573,7 @@ footer {
 .left-nav.section-python     .nav-hub-back:hover { color: #3776ab !important; background: #eff8ff !important; }
 .left-nav.section-go         .nav-hub-back:hover { color: #006d94 !important; background: #e8f8fd !important; }
 .left-nav.section-devops     .nav-hub-back:hover { color: #9a3412 !important; background: #fff7ed !important; }
+.left-nav.section-containers .nav-hub-back:hover { color: #1d4ed8 !important; background: #eff6ff !important; }
 
 // ── Hub-aware hamburger bar colour ────────────────────────────────────────────
 // Default already uses var(--text2). Sections tint the bars to match accent.
@@ -596,3 +607,5 @@ header.section-go           .nav-toggle span { background: #00add8; }
 body.dark header.section-go          .nav-toggle span { background: #67e8f9; }
 header.section-devops       .nav-toggle span { background: #ee5d25; }
 body.dark header.section-devops      .nav-toggle span { background: #fb923c; }
+header.section-containers   .nav-toggle span { background: #326ce5; }
+body.dark header.section-containers  .nav-toggle span { background: #93c5fd; }
