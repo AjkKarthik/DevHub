@@ -105,7 +105,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | Go | 23 | 0 | Complete — 21 topics + 2 reference |
 | DevOps | 22 | 0 | Complete — 21 topics + 1 cheatsheet reference |
 | Containers/K8s | 0 | 23 | Not started |
-| AWS | 0 | 22 | Not started |
+| AWS | 22 | 0 | Complete — 21 topics + 1 cheatsheet reference |
 | Azure | 0 | 23 | Not started |
 | Linux | 0 | 21 | Not started |
 | Terraform | 0 | 21 | Not started |
@@ -826,11 +826,33 @@ Accent: `#326ce5` (Kubernetes blue). Search prefix: `k8s-`.
 Key topics: Pods/Deployments/Services (foundational), Helm, RBAC, HPA, Network Policies,
 Operators & CRDs, StatefulSets.
 
-### 5C — AWS hub (22 topics) `src/app/components/cloud/aws/`
+### 5C — AWS hub ✅ COMPLETE `src/app/components/cloud/aws/`
 
-Accent: `#ff9900` (AWS orange). Search prefix: `aws-`.
-Key topics: IAM (most tested), Lambda, VPC, EC2, S3, RDS, CloudFormation, CDK,
-SQS/SNS, ECS/EKS, CloudWatch.
+All 21 trackable topics + 1 cheatsheet reference live (2026-06-21). awsTotal = 21. All 22 cards `available: true`.
+Accent: `#ff9900` (AWS orange). Search prefix: `aws-`. hub-home topics: 22, available: true. Hero stat: 479+.
+
+- [x] 2026-06-21 `aws-fundamentals` — Regions, AZs, shared responsibility model, AWS CLI, Well-Architected Framework
+- [x] 2026-06-21 `aws-ec2` — Instance types, AMIs, EBS gp3/io2, security groups, ASG launch templates
+- [x] 2026-06-21 `aws-ecs-eks` — ECS task/service, Fargate, EKS managed node groups, ALB, IRSA
+- [x] 2026-06-21 `aws-vpc` — Subnets, route tables, IGW, NAT Gateway, security groups vs NACLs, VPC peering
+- [x] 2026-06-21 `aws-route53-cloudfront` — Route 53 routing policies, CloudFront distributions, OAC, ACM
+- [x] 2026-06-21 `aws-s3` — Storage classes, versioning, lifecycle rules, cross-region replication, presigned URLs
+- [x] 2026-06-21 `aws-ebs-efs` — EBS gp3/io2, EFS NFS multi-AZ, FSx variants, AWS Backup
+- [x] 2026-06-21 `aws-iam` — Users/groups/roles/policies, permission boundaries, SCPs, policy evaluation
+- [x] 2026-06-21 `aws-iam-roles` — Cross-account AssumeRole, OIDC federation, IRSA, IAM Identity Center, STS
+- [x] 2026-06-21 `aws-rds-aurora` — RDS Multi-AZ, Aurora Serverless v2, read replicas, parameter groups
+- [x] 2026-06-21 `aws-dynamodb` — Partition/sort key design, GSI/LSI, Streams, DAX, on-demand vs provisioned
+- [x] 2026-06-21 `aws-lambda` — Event sources, layers, concurrency, cold starts, power tuning, ESM
+- [x] 2026-06-21 `aws-api-gateway` — REST/HTTP/WebSocket APIs, Lambda authoriser, throttling, CORS, stages
+- [x] 2026-06-21 `aws-sqs-sns` — Standard/FIFO queues, visibility timeout, DLQ, SNS fan-out, message filtering
+- [x] 2026-06-21 `aws-eventbridge` — Event buses, content-based routing, schema registry, Pipes, cross-account
+- [x] 2026-06-21 `aws-step-functions` — Standard vs Express, ASL state types, Retry/Catch, Parallel/Map, SDK integrations
+- [x] 2026-06-21 `aws-cloudwatch` — Metrics/alarms, Log Insights, X-Ray tracing, EMF, dashboards, 4 Golden Signals
+- [x] 2026-06-21 `aws-cloudformation-cdk` — CloudFormation stacks, Change Sets, CDK L1/L2/L3, bootstrap, cdk deploy/diff
+- [x] 2026-06-21 `aws-load-balancing` — ALB (L7 path/host routing), NLB (L4), target groups, health checks
+- [x] 2026-06-21 `aws-security` — GuardDuty, Security Hub, Shield Standard/Advanced, WAF Web ACL, Macie, KMS envelope encryption
+- [x] 2026-06-21 `aws-cost-optimization` — Savings Plans vs RIs vs Spot, Cost Explorer, Budgets, Compute Optimizer, data transfer costs
+- [x] 2026-06-21 `aws-cheatsheet` — Reference: CLI commands (4 tabs), Service Reference grid (7 categories), IAM patterns, Architecture patterns
 
 ### 5D — Azure hub (23 topics) `src/app/components/cloud/azure/`
 
@@ -1249,6 +1271,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-21 — AWS hub Phase 5C complete: all 22 pages live (21 trackable topics + cheatsheet). awsTotal = 21. hub-home AWS card topics: 22, available: true. Hero stat updated to 479+. Orange accent #ff9900, search prefix aws-.
 - [x] 2026-06-21 — Python hub Phase 4B complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). pyTotal = 21. hub-home Python card topics: 23, available: true. Hero stat updated to 450+. Blue accent #3776ab, search prefix py-. py-icon added to styles.scss.
 - [x] 2026-06-21 — Node.js hub Phase 4A complete: all 25 pages live (23 trackable topics + cheatsheet + interview-prep). nodeTotal = 23. hub-home Node.js card topics: 25, available: true. Hero stat updated to 425+. Build passes. Green accent #339933, search prefix node-. Icon styles added to styles.scss (go-icon, node-icon, css-icon, blazor-icon).
 - [x] 2026-06-21 — Go hub Phase 4C complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). goTotal = 21. hub-home Go card topics: 23, available: true. Teal accent #00add8, search prefix go-.

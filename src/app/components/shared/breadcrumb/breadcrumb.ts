@@ -507,6 +507,32 @@ const AWS_LABELS: Record<string, string> = {
   'cheatsheet':         'AWS Cheat Sheet',
 };
 
+const AZURE_LABELS: Record<string, string> = {
+  'fundamentals':       'Azure Fundamentals',
+  'arm':                'Azure Resource Manager',
+  'virtual-machines':   'Virtual Machines',
+  'app-service':        'App Service',
+  'functions':          'Azure Functions',
+  'aks':                'Azure Kubernetes Service',
+  'virtual-network':    'Virtual Network',
+  'load-balancer':      'Load Balancer & Front Door',
+  'storage':            'Blob & Storage',
+  'entra-id':           'Entra ID (AAD)',
+  'rbac':               'Azure RBAC',
+  'sql-cosmos':         'SQL & Cosmos DB',
+  'monitor':            'Monitor & App Insights',
+  'devops-pipelines':   'DevOps & Pipelines',
+  'cost-management':    'Cost Management',
+  'security-defender':  'Security Center & Defender',
+  'key-vault':          'Key Vault',
+  'service-bus':        'Service Bus',
+  'container-apps':     'Container Apps',
+  'redis':              'Cache for Redis',
+  'api-management':     'API Management',
+  'bicep':              'Azure Bicep Deep-dive',
+  'cheatsheet':         'Azure Cheat Sheet',
+};
+
 const CONTAINERS_LABELS: Record<string, string> = {
   'fundamentals':       'Container Fundamentals',
   'docker-cli':         'Docker CLI',
@@ -723,6 +749,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'devops'       ? DEVOPS_LABELS
                  : segs[0] === 'containers'   ? CONTAINERS_LABELS
                  : segs[0] === 'aws'          ? AWS_LABELS
+                 : segs[0] === 'azure'        ? AZURE_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

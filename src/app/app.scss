@@ -211,6 +211,7 @@ header {
 .left-nav.section-devops     .nav-progress-bar { background: linear-gradient(90deg, #ee5d25, #c2410c); }
 .left-nav.section-containers .nav-progress-bar { background: linear-gradient(90deg, #326ce5, #1d4ed8); }
 .left-nav.section-aws        .nav-progress-bar { background: linear-gradient(90deg, #ff9900, #e07000); }
+.left-nav.section-azure      .nav-progress-bar { background: linear-gradient(90deg, #0089d6, #004578); }
 
 .nav-progress-label {
   display: block;
@@ -462,6 +463,15 @@ main {
   body.dark &.active { background: #e07000; color: #fff; }
 }
 
+// Azure section — Azure blue active state
+.left-nav.section-azure a {
+  &:hover { background: #e8f4fd; color: #004578; }
+  &.active { background: #0089d6; color: #fff; }
+
+  body.dark &:hover { background: #0c2340; color: #60b9f8; }
+  body.dark &.active { background: #004578; color: #fff; }
+}
+
 .nav-soon-note {
   font-size: .78rem; color: var(--text3, #9ca3af);
   margin: 0; padding: .25rem .75rem; line-height: 1.5;
@@ -585,6 +595,7 @@ footer {
 .left-nav.section-devops     .nav-hub-back:hover { color: #9a3412 !important; background: #fff7ed !important; }
 .left-nav.section-containers .nav-hub-back:hover { color: #1d4ed8 !important; background: #eff6ff !important; }
 .left-nav.section-aws        .nav-hub-back:hover { color: #7c2d12 !important; background: #fff7ed !important; }
+.left-nav.section-azure      .nav-hub-back:hover { color: #004578 !important; background: #e8f4fd !important; }
 
 // ── Hub-aware hamburger bar colour ────────────────────────────────────────────
 // Default already uses var(--text2). Sections tint the bars to match accent.
@@ -622,3 +633,5 @@ header.section-containers   .nav-toggle span { background: #326ce5; }
 body.dark header.section-containers  .nav-toggle span { background: #93c5fd; }
 header.section-aws          .nav-toggle span { background: #ff9900; }
 body.dark header.section-aws         .nav-toggle span { background: #fb923c; }
+header.section-azure        .nav-toggle span { background: #0089d6; }
+body.dark header.section-azure       .nav-toggle span { background: #60b9f8; }

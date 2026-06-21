@@ -92,6 +92,11 @@ export class ProgressService {
   readonly awsCount  = computed(() => [...this._done()].filter(r => r.startsWith('aws-')).length);
   readonly awsPct    = computed(() => Math.round((this.awsCount() / this.awsTotal) * 100));
 
+  // ── Azure (keys prefixed 'azure-') ──────────────────────────────────────
+  readonly azureTotal  = 22;
+  readonly azureCount  = computed(() => [...this._done()].filter(r => r.startsWith('azure-')).length);
+  readonly azurePct    = computed(() => Math.round((this.azureCount() / this.azureTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

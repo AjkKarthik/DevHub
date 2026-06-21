@@ -623,7 +623,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       ],
     },
     {
-      group: 'cloud', name: 'Azure', time: '~12 hrs',
+      group: 'cloud', name: 'Azure', time: '~12 hrs', topics: 23,
       tagline: 'Microsoft\'s cloud platform — App Service, Functions, Storage & DevOps.',
       icon: '☁️', gradient: 'linear-gradient(135deg, #0078d4 0%, #004578 100%)',
       textDark: false, route: '/azure', available: true,
