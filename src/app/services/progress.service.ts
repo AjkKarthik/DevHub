@@ -87,6 +87,11 @@ export class ProgressService {
   readonly k8sCount  = computed(() => [...this._done()].filter(r => r.startsWith('k8s-')).length);
   readonly k8sPct    = computed(() => Math.round((this.k8sCount() / this.k8sTotal) * 100));
 
+  // ── AWS (keys prefixed 'aws-') ───────────────────────────────────────────
+  readonly awsTotal  = 21;
+  readonly awsCount  = computed(() => [...this._done()].filter(r => r.startsWith('aws-')).length);
+  readonly awsPct    = computed(() => Math.round((this.awsCount() / this.awsTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

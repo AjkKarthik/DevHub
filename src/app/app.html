@@ -95,6 +95,9 @@
         } @else if (currentSection() === 'containers') {
           <div class="nav-progress-bar" [style.width.%]="progress.k8sPct()"></div>
           <span class="nav-progress-label">{{ progress.k8sCount() }}/{{ progress.k8sTotal }} topics done</span>
+        } @else if (currentSection() === 'aws') {
+          <div class="nav-progress-bar" [style.width.%]="progress.awsPct()"></div>
+          <span class="nav-progress-label">{{ progress.awsCount() }}/{{ progress.awsTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -837,6 +840,11 @@
     <!-- ── Containers Navigation ──────────────────────────────────── -->
     @if (currentSection() === 'containers') {
       <app-containers-nav />
+    }
+
+    <!-- ── AWS Navigation ────────────────────────────────────────── -->
+    @if (currentSection() === 'aws') {
+      <app-aws-nav />
     }
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
