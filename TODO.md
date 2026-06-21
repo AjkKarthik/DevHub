@@ -103,7 +103,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | Node.js | 25 | 0 | Complete — 23 topics + 2 reference |
 | Python | 23 | 0 | Complete — 21 topics + 2 reference |
 | Go | 23 | 0 | Complete — 21 topics + 2 reference |
-| DevOps | 0 | 22 | Not started |
+| DevOps | 22 | 0 | Complete — 21 topics + 1 cheatsheet reference |
 | Containers/K8s | 0 | 23 | Not started |
 | AWS | 0 | 22 | Not started |
 | Azure | 0 | 23 | Not started |
@@ -792,11 +792,33 @@ Accent: `#00add8` (Go blue). Search prefix: `go-`. Hero stat updated to 400+.
 **Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
 Build order: DevOps → Containers → AWS → Azure → Linux → Terraform → Service Mesh.
 
-### 5A — DevOps hub (22 topics) `src/app/components/cloud/devops/`
+### 5A — DevOps hub ✅ COMPLETE `src/app/components/cloud/devops/`
 
+All 21 trackable topics + 1 cheatsheet reference live (2026-06-21). devopsTotal = 21. All 22 cards `available: true`.
 Accent: `#ee5d25` (DevOps orange). Search prefix: `devops-`.
-Key topics: GitHub Actions, Docker fundamentals, CI/CD pipelines, GitOps, ArgoCD,
-SonarQube, container registries, deployment strategies (blue/green, canary).
+
+- [x] 2026-06-21 `devops-culture` — CALMS, three ways, feedback loops, Dev+Ops collaboration
+- [x] 2026-06-21 `devops-sdlc-agile` — Waterfall vs Agile, Scrum/Kanban, sprints, velocity
+- [x] 2026-06-21 `devops-environment-strategy` — env parity, ephemeral PR envs, secrets per env, promotion gates
+- [x] 2026-06-21 `devops-platform-engineering` — IDP, Backstage, golden paths, Team Topologies
+- [x] 2026-06-21 `devops-git-workflows` — Gitflow vs trunk-based, feature flags, branch protection, conventional commits
+- [x] 2026-06-21 `devops-github-actions` — workflow YAML, matrix, reusable workflows, environment protection rules
+- [x] 2026-06-21 `devops-azure-pipelines` — stages/jobs/steps, templates, service connections, deployment gates
+- [x] 2026-06-21 `devops-jenkins` — declarative vs scripted, Jenkinsfile, shared libraries, Blue Ocean
+- [x] 2026-06-21 `devops-continuous-integration` — fast feedback, test gates, coverage, SonarQube, artefact versioning
+- [x] 2026-06-21 `devops-continuous-delivery` — CD vs CD distinction, blue/green, canary, rolling, rollback triggers
+- [x] 2026-06-21 `devops-gitops` — ArgoCD Application CRD, Flux HelmRelease, sync policies, rollback via git revert
+- [x] 2026-06-21 `devops-artifact-management` — SemVer, GHCR/ACR/ECR, immutable tags, SBOM, Cosign signing
+- [x] 2026-06-21 `devops-docker-cicd` — multi-stage builds, layer cache ordering, registry-backed cache, Trivy, Cosign
+- [x] 2026-06-21 `devops-kubernetes-deployments` — kubectl/Helm/Kustomize, probes, Argo Rollouts, GitOps RBAC
+- [x] 2026-06-21 `devops-iac` — Terraform, Bicep, Pulumi, remote backends, Policy as Code (Checkov/OPA)
+- [x] 2026-06-21 `devops-monitoring` — four golden signals, Prometheus, SLO burn-rate, Grafana USE/RED, Azure Monitor
+- [x] 2026-06-21 `devops-logging` — structured JSON, correlation IDs, Fluent Bit DaemonSet, Loki vs ELK, Serilog/Pino
+- [x] 2026-06-21 `devops-incident-response` — P1–P4 severity, runbooks, blameless post-mortems, 5 Whys, DORA MTTR
+- [x] 2026-06-21 `devops-devsecops` — SAST (Semgrep/CodeQL), SCA/Snyk, gitleaks secrets scanning, container/IaC security
+- [x] 2026-06-21 `devops-release-management` — SemVer, conventional commits, changelogs, feature flags, hotfix process
+- [x] 2026-06-21 `devops-sre` — SLIs, SLOs, error budgets, burn-rate alerting, toil elimination, blameless post-mortems
+- [x] 2026-06-21 `devops-cheatsheet` — reference: DORA metrics, pipeline stages, Git/Docker/Helm/kubectl/Terraform/SLO
 
 ### 5B — Containers/K8s hub (23 topics) `src/app/components/cloud/containers/`
 
