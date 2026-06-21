@@ -637,7 +637,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       ],
     },
     {
-      group: 'cloud', name: 'AWS', time: '~12 hrs',
+      group: 'cloud', name: 'AWS', time: '~14 hrs', topics: 22,
       tagline: 'Amazon Web Services — EC2, Lambda, S3, RDS & cloud-native patterns.',
       icon: '🟧', gradient: 'linear-gradient(135deg, #ff9900 0%, #c47000 100%)',
       textDark: false, route: '/aws', available: true,
