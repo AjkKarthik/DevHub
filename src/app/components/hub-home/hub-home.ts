@@ -598,7 +598,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Docker & Kubernetes', time: '~8 hrs',
       tagline: 'Containerize apps and orchestrate them at scale with K8s.',
       icon: '🐳', gradient: 'linear-gradient(135deg, #0db7ed 0%, #0868a8 100%)',
-      textDark: false, route: '/containers', available: true,
+      textDark: false, route: '/containers', available: true, topics: 23,
       sub: 'Docker · Kubernetes · Helm',
       roles: ['backend', 'devops', 'architect'],
       highlights: [
