@@ -482,6 +482,57 @@ const GO_LABELS: Record<string, string> = {
   'interview-prep':     'Go Interview Prep',
 };
 
+const CONTAINERS_LABELS: Record<string, string> = {
+  'fundamentals':       'Container Fundamentals',
+  'docker-cli':         'Docker CLI',
+  'docker-images':      'Docker Images & Registry',
+  'dockerfile':         'Writing Dockerfiles',
+  'multi-stage':        'Multi-Stage Builds',
+  'compose':            'Docker Compose',
+  'compose-profiles':   'Compose Profiles & Overrides',
+  'k8s-architecture':   'Kubernetes Architecture',
+  'kubectl':            'kubectl Fundamentals',
+  'pods-deployments':   'Pods, Deployments & ReplicaSets',
+  'services-ingress':   'Services & Ingress',
+  'configmaps-secrets': 'ConfigMaps & Secrets',
+  'storage':            'Persistent Volumes & Storage',
+  'operators-crds':     'Kubernetes Operators & CRDs',
+  'helm':               'Helm',
+  'container-security': 'Container Security',
+  'rbac':               'Kubernetes RBAC',
+  'statefulsets':       'StatefulSets & DaemonSets',
+  'resource-limits':    'Resource Requests & Limits',
+  'hpa':                'Horizontal Pod Autoscaler',
+  'network-policies':   'Network Policies',
+  'troubleshooting':    'Kubernetes Troubleshooting',
+  'cheatsheet':         'Containers Cheat Sheet',
+};
+
+const DEVOPS_LABELS: Record<string, string> = {
+  'culture':               'DevOps Culture & Principles',
+  'sdlc-agile':            'SDLC & Agile',
+  'environment-strategy':  'Environment Strategy',
+  'platform-engineering':  'Platform Engineering',
+  'git-workflows':         'Git Workflows',
+  'github-actions':        'GitHub Actions',
+  'azure-pipelines':       'Azure DevOps Pipelines',
+  'jenkins':               'Jenkins',
+  'continuous-integration':'Continuous Integration',
+  'continuous-delivery':   'Continuous Delivery & Deployment',
+  'gitops':                'GitOps with ArgoCD & Flux',
+  'artifact-management':   'Artifact Management',
+  'docker-cicd':           'Docker in CI/CD',
+  'kubernetes-deployments':'Kubernetes Deployments',
+  'iac':                   'Infrastructure as Code',
+  'monitoring':            'Monitoring & Alerting',
+  'logging':               'Logging Pipelines',
+  'incident-response':     'On-call & Incident Response',
+  'devsecops':             'DevSecOps',
+  'release-management':    'Release Management',
+  'sre':                   'SRE Practices',
+  'cheatsheet':            'DevOps Cheat Sheet',
+};
+
 const NODE_LABELS: Record<string, string> = {
   'architecture':    'Node.js Architecture',
   'modules':         'Modules & CommonJS',
@@ -644,6 +695,8 @@ export class BreadcrumbComponent {
                  : segs[0] === 'node'         ? NODE_LABELS
                  : segs[0] === 'python'       ? PYTHON_LABELS
                  : segs[0] === 'go'           ? GO_LABELS
+                 : segs[0] === 'devops'       ? DEVOPS_LABELS
+                 : segs[0] === 'containers'   ? CONTAINERS_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

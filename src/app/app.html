@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -89,6 +89,12 @@
         } @else if (currentSection() === 'go') {
           <div class="nav-progress-bar" [style.width.%]="progress.goPct()"></div>
           <span class="nav-progress-label">{{ progress.goCount() }}/{{ progress.goTotal }} topics done</span>
+        } @else if (currentSection() === 'devops') {
+          <div class="nav-progress-bar" [style.width.%]="progress.devopsPct()"></div>
+          <span class="nav-progress-label">{{ progress.devopsCount() }}/{{ progress.devopsTotal }} topics done</span>
+        } @else if (currentSection() === 'containers') {
+          <div class="nav-progress-bar" [style.width.%]="progress.k8sPct()"></div>
+          <span class="nav-progress-label">{{ progress.k8sCount() }}/{{ progress.k8sTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -821,6 +827,16 @@
     <!-- ── Go Navigation ─────────────────────────────────────────── -->
     @if (currentSection() === 'go') {
       <app-go-nav />
+    }
+
+    <!-- ── DevOps Navigation ─────────────────────────────────────── -->
+    @if (currentSection() === 'devops') {
+      <app-devops-nav />
+    }
+
+    <!-- ── Containers Navigation ──────────────────────────────────── -->
+    @if (currentSection() === 'containers') {
+      <app-containers-nav />
     }
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->

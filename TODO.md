@@ -100,10 +100,10 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | CSS | 24 | 0 | Complete — 22 topics + 2 reference |
 | Web Performance | 22 | 0 | Complete — 20 topics + 2 reference |
 | Blazor | 23 | 0 | Complete — 20 topics + 3 reference |
-| Node.js | 0 | 25 | Not started |
-| Python | 0 | 23 | Not started |
-| Go | 0 | 23 | Not started |
-| DevOps | 0 | 22 | Not started |
+| Node.js | 25 | 0 | Complete — 23 topics + 2 reference |
+| Python | 23 | 0 | Complete — 21 topics + 2 reference |
+| Go | 23 | 0 | Complete — 21 topics + 2 reference |
+| DevOps | 22 | 0 | Complete — 21 topics + 1 cheatsheet reference |
 | Containers/K8s | 0 | 23 | Not started |
 | AWS | 0 | 22 | Not started |
 | Azure | 0 | 23 | Not started |
@@ -756,19 +756,34 @@ Tooling → Reference). 3 sessions.
 
 ---
 
-### 4C — Go hub (23 topics) `src/app/components/backend/go/`
+### 4C — Go hub ✅ COMPLETE `src/app/components/backend/go/`
 
-Accent: `#00add8` (Go blue). Search prefix: `go-`.
+All 21 trackable topics + 2 reference pages live (2026-06-21). goTotal = 21. All 23 cards `available: true`.
+Accent: `#00add8` (Go blue). Search prefix: `go-`. Hero stat updated to 400+.
 
-Batches guided by home.ts (Foundations → Concurrency → HTTP & APIs → Data → Tooling →
-Patterns → Reference). 3 sessions.
-
-**Key pages to prioritise:**
-- `go-fundamentals` (syntax, defer, multiple returns — most distinctive Go features)
-- `goroutines` (core concurrency — Go's unique strength)
-- `channels` (channel patterns — critical interview topic)
-- `gin-framework` (most-required Go framework in job listings)
-- `error-handling` (Go's error pattern — often tested in interviews)
+- [x] 2026-06-21 `go-fundamentals` — variables, types, functions, multiple returns, defer, pointers
+- [x] 2026-06-21 `go-structs-interfaces` — struct types, methods, interfaces, embedding, implicit satisfaction
+- [x] 2026-06-21 `go-error-handling` — error pattern, errors.Is/As, %w wrapping, custom error types, panic/recover
+- [x] 2026-06-21 `go-slices-maps` — slice internals (len/cap/backing array), maps, maps.Clone, slices.Clone
+- [x] 2026-06-21 `go-goroutines` — lightweight threads, GMP scheduler, goroutine leaks, GOMAXPROCS
+- [x] 2026-06-21 `go-channels` — buffered vs unbuffered, directional channels, select, closing, range over channel
+- [x] 2026-06-21 `go-sync` — Mutex, RWMutex, WaitGroup, Once, Cond, atomic operations
+- [x] 2026-06-21 `go-context` — cancellation, deadlines, timeouts, request-scoped values
+- [x] 2026-06-21 `go-net-http` — net/http server, ServeMux (Go 1.22+), middleware, JSON APIs
+- [x] 2026-06-21 `go-gin` — Gin web framework, routing, middleware, param binding, error handling
+- [x] 2026-06-21 `go-json-encoding` — JSON marshalling/unmarshalling, struct tags, custom MarshalJSON
+- [x] 2026-06-21 `go-grpc` — .proto definitions, protoc codegen, interceptors, streaming
+- [x] 2026-06-21 `go-pgx` — pgx for PostgreSQL, connection pool, prepared statements, COPY bulk insert
+- [x] 2026-06-21 `go-gorm` — GORM ORM, AutoMigrate, Preload/Joins, hooks, raw SQL
+- [x] 2026-06-21 `go-generics` — type parameters, constraints, comparable, when to use generics
+- [x] 2026-06-21 `go-patterns` — functional options, errgroup, worker pools, fan-out/fan-in, retry
+- [x] 2026-06-21 `go-modules` — go.mod, go.sum, MVS, workspaces, GOPRIVATE, build tags, cross-compilation
+- [x] 2026-06-21 `go-testing` — table-driven tests, testify, httptest, benchmarks, race detection, fuzzing
+- [x] 2026-06-21 `go-cli` — cobra, flag package, stdin/piping, spinner goroutine, goreleaser
+- [x] 2026-06-21 `go-profiling` — pprof, net/http/pprof, sync.Pool, GC tuning, execution tracer
+- [x] 2026-06-21 `go-build` — static binaries, multi-stage Docker, graceful shutdown, GitHub Actions CI, goreleaser
+- [x] 2026-06-21 `go-cheatsheet` — reference page: types, concurrency, errors, testing patterns
+- [x] 2026-06-21 `go-interview-prep` — reference page: 35+ Q&A across goroutines, interfaces, GC, generics
 
 ---
 
@@ -777,11 +792,33 @@ Patterns → Reference). 3 sessions.
 **Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
 Build order: DevOps → Containers → AWS → Azure → Linux → Terraform → Service Mesh.
 
-### 5A — DevOps hub (22 topics) `src/app/components/cloud/devops/`
+### 5A — DevOps hub ✅ COMPLETE `src/app/components/cloud/devops/`
 
+All 21 trackable topics + 1 cheatsheet reference live (2026-06-21). devopsTotal = 21. All 22 cards `available: true`.
 Accent: `#ee5d25` (DevOps orange). Search prefix: `devops-`.
-Key topics: GitHub Actions, Docker fundamentals, CI/CD pipelines, GitOps, ArgoCD,
-SonarQube, container registries, deployment strategies (blue/green, canary).
+
+- [x] 2026-06-21 `devops-culture` — CALMS, three ways, feedback loops, Dev+Ops collaboration
+- [x] 2026-06-21 `devops-sdlc-agile` — Waterfall vs Agile, Scrum/Kanban, sprints, velocity
+- [x] 2026-06-21 `devops-environment-strategy` — env parity, ephemeral PR envs, secrets per env, promotion gates
+- [x] 2026-06-21 `devops-platform-engineering` — IDP, Backstage, golden paths, Team Topologies
+- [x] 2026-06-21 `devops-git-workflows` — Gitflow vs trunk-based, feature flags, branch protection, conventional commits
+- [x] 2026-06-21 `devops-github-actions` — workflow YAML, matrix, reusable workflows, environment protection rules
+- [x] 2026-06-21 `devops-azure-pipelines` — stages/jobs/steps, templates, service connections, deployment gates
+- [x] 2026-06-21 `devops-jenkins` — declarative vs scripted, Jenkinsfile, shared libraries, Blue Ocean
+- [x] 2026-06-21 `devops-continuous-integration` — fast feedback, test gates, coverage, SonarQube, artefact versioning
+- [x] 2026-06-21 `devops-continuous-delivery` — CD vs CD distinction, blue/green, canary, rolling, rollback triggers
+- [x] 2026-06-21 `devops-gitops` — ArgoCD Application CRD, Flux HelmRelease, sync policies, rollback via git revert
+- [x] 2026-06-21 `devops-artifact-management` — SemVer, GHCR/ACR/ECR, immutable tags, SBOM, Cosign signing
+- [x] 2026-06-21 `devops-docker-cicd` — multi-stage builds, layer cache ordering, registry-backed cache, Trivy, Cosign
+- [x] 2026-06-21 `devops-kubernetes-deployments` — kubectl/Helm/Kustomize, probes, Argo Rollouts, GitOps RBAC
+- [x] 2026-06-21 `devops-iac` — Terraform, Bicep, Pulumi, remote backends, Policy as Code (Checkov/OPA)
+- [x] 2026-06-21 `devops-monitoring` — four golden signals, Prometheus, SLO burn-rate, Grafana USE/RED, Azure Monitor
+- [x] 2026-06-21 `devops-logging` — structured JSON, correlation IDs, Fluent Bit DaemonSet, Loki vs ELK, Serilog/Pino
+- [x] 2026-06-21 `devops-incident-response` — P1–P4 severity, runbooks, blameless post-mortems, 5 Whys, DORA MTTR
+- [x] 2026-06-21 `devops-devsecops` — SAST (Semgrep/CodeQL), SCA/Snyk, gitleaks secrets scanning, container/IaC security
+- [x] 2026-06-21 `devops-release-management` — SemVer, conventional commits, changelogs, feature flags, hotfix process
+- [x] 2026-06-21 `devops-sre` — SLIs, SLOs, error budgets, burn-rate alerting, toil elimination, blameless post-mortems
+- [x] 2026-06-21 `devops-cheatsheet` — reference: DORA metrics, pipeline stages, Git/Docker/Helm/kubectl/Terraform/SLO
 
 ### 5B — Containers/K8s hub (23 topics) `src/app/components/cloud/containers/`
 
@@ -1212,6 +1249,9 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-21 — Python hub Phase 4B complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). pyTotal = 21. hub-home Python card topics: 23, available: true. Hero stat updated to 450+. Blue accent #3776ab, search prefix py-. py-icon added to styles.scss.
+- [x] 2026-06-21 — Node.js hub Phase 4A complete: all 25 pages live (23 trackable topics + cheatsheet + interview-prep). nodeTotal = 23. hub-home Node.js card topics: 25, available: true. Hero stat updated to 425+. Build passes. Green accent #339933, search prefix node-. Icon styles added to styles.scss (go-icon, node-icon, css-icon, blazor-icon).
+- [x] 2026-06-21 — Go hub Phase 4C complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). goTotal = 21. hub-home Go card topics: 23, available: true. Teal accent #00add8, search prefix go-.
 - [x] 2026-06-20 — Web Performance hub Phase 3F complete: all 22 pages live (20 trackable topics + cheatsheet + interview-prep). perfTotal = 20. hub-home card topics: 22, available: true. Hero stat updated to 350+. Build passes. Green accent #16a34a, search prefix perf-.
 - [x] 2026-06-19 — Web Performance hub Phase 3F wiring complete: routes, nav, progress (perfTotal=20), search (22 perf- entries), breadcrumb, app.scss section-performance, search.ts perf- URL routing. 21 stub components created. First full page: core-web-vitals. Build passes. Green accent #16a34a.
 - [x] 2026-06-19 — HTML hub Phase 3D complete: all 25 pages live (23 trackable topics + cheatsheet + interview-prep). htmlTotal = 23. hub-home HTML card topics: 25, available: true. Accent #e34c26, search prefix html-. Build passes.

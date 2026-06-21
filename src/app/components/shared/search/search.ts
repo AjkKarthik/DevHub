@@ -119,6 +119,8 @@ export class SearchComponent {
     if (route.startsWith('node-'))   return '/node/'        + route.slice('node-'.length);
     if (route.startsWith('py-'))     return '/python/'      + route.slice('py-'.length);
     if (route.startsWith('go-'))     return '/go/'          + route.slice('go-'.length);
+    if (route.startsWith('devops-')) return '/devops/'      + route.slice('devops-'.length);
+    if (route.startsWith('k8s-'))    return '/containers/'  + route.slice('k8s-'.length);
     if (route.startsWith('hub-'))    return '/'             + route.slice('hub-'.length);
     return '/angular/' + route;
   }

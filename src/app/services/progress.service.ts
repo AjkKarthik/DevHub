@@ -77,6 +77,16 @@ export class ProgressService {
   readonly goCount  = computed(() => [...this._done()].filter(r => r.startsWith('go-')).length);
   readonly goPct    = computed(() => Math.round((this.goCount() / this.goTotal) * 100));
 
+  // ── DevOps (keys prefixed 'devops-') ─────────────────────────────────────
+  readonly devopsTotal  = 21;
+  readonly devopsCount  = computed(() => [...this._done()].filter(r => r.startsWith('devops-')).length);
+  readonly devopsPct    = computed(() => Math.round((this.devopsCount() / this.devopsTotal) * 100));
+
+  // ── Containers/K8s (keys prefixed 'k8s-') ────────────────────────────────
+  readonly k8sTotal  = 22;
+  readonly k8sCount  = computed(() => [...this._done()].filter(r => r.startsWith('k8s-')).length);
+  readonly k8sPct    = computed(() => Math.round((this.k8sCount() / this.k8sTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

@@ -384,9 +384,39 @@ structure/UX, only content + accent differ.
   Blazor pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (bunit, cheatsheet, interview-prep) have no PageComplete.
   Challenge.language: `'csharp'`. Pages with prerequisites: authentication, performance.
   Data properties use plain typed arrays (NOT signals) — same pattern as all other hubs.
-- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, and Blazor are `available: true`. Web Performance hub home exists at `/performance` but topic cards are `available: false`. Everything else "Soon".
-- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20 (`progress.service.ts`).
-- Hero stat: "375+ Live Pages".
+- **Go hub**: 21 trackable topic pages + 2 reference pages (23 cards total). Feature-complete.
+  Teal theme `$accent: #00add8`, tint `#e8f8fd`, dark `#67e8f9`. Search prefix `go-`. Route: `/go`.
+  CSS classes: `.go-page`, `.go-icon`, `.go-section`. Icon content: `Go`. `tech="javascript"`.
+  Nav groups: Foundations, Concurrency, HTTP & APIs, Data & Storage, Tooling, Patterns, Reference.
+  All 23 cards `available: true` in `backend/go/home/home.ts`. Progress: `goTotal=21` in progress.service.ts.
+  Go pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
+  Challenge.language must be `'typescript'` — never `'go'`. `{}` in HTML must be escaped as `&#123;&#125;`.
+  Go backticks in code examples must use string concatenation — they terminate TS template literals.
+  GoNavComponent at `shared/go-nav/go-nav.ts` extracts Go navigation (prevents TS2563 in app.ts).
+- **Python hub**: 21 trackable topic pages + 2 reference pages (23 cards total). Feature-complete.
+  Blue theme `$accent: #3776ab`, tint `#eff8ff`. Search prefix `py-`. Route: `/python`.
+  CSS classes: `.python-page`, `.py-icon`, `.python-section`. Icon content: `🐍` at `font-size: 1.8rem`. `tech="javascript"`.
+  Nav groups: Foundations, OOP & Patterns, Data & Types, Async, Web & APIs, Data Science, Tooling, Reference.
+  All 23 cards `available: true` in `backend/python/home/home.ts`. Progress: `pyTotal=21` in progress.service.ts.
+  Python pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
+  Challenge.language: `'typescript'`.
+- **Node.js hub**: 23 trackable topic pages + 2 reference pages (25 cards total). Feature-complete.
+  Green theme `$accent: #339933`, tint `#f0fdf4`. Search prefix `node-`. Route: `/node`.
+  CSS classes: `.node-page`, `.node-icon`, `.node-section`. Icon content: `⬡` (`&#x2B21;`) at `font-size: 1.8rem`. `tech="javascript"`.
+  Nav groups: Foundations, HTTP & APIs, Async & Streams, Database, Auth & Security, Performance, Tooling, Reference.
+  All 25 cards `available: true` in `backend/nodejs/home/home.ts`. Progress: `nodeTotal=23` in progress.service.ts.
+  Node.js pages use `app-common-mistakes` AND `app-revision-card`. Reference pages have no PageComplete.
+  Challenge.language: `'typescript'`.
+- **DevOps hub**: 21 trackable topic pages + 1 cheatsheet reference (22 cards total). Feature-complete.
+  Orange theme `$accent: #ee5d25`, tint `#fff7ed`, dark `#fb923c`. Search prefix `devops-`. Route: `/devops`.
+  CSS classes: `.devops-page`, `.devops-icon`, `.devops-section`. Icon content: `⚙️` at `font-size: 1.8rem`. `tech="javascript"`.
+  Nav groups: Foundations, CI/CD, Source Control, Containers, IaC, Monitoring, Security, Reference.
+  All 22 cards `available: true` in `cloud/devops/home/home.ts`. Progress: `devopsTotal=21` in progress.service.ts.
+  DevOps pages use `app-common-mistakes` AND `app-revision-card`. Reference page (cheatsheet) has no PageComplete.
+  Challenge.language: `'typescript'` or `'bash'`.
+- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, and DevOps are `available: true`. Web Performance hub home exists at `/performance` but topic cards are `available: false`. Everything else "Soon".
+- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21 (`progress.service.ts`).
+- Hero stat: "450+ Live Pages".
 
 ## Working practices
 
