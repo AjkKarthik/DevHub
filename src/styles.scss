@@ -150,6 +150,7 @@ body.dark {
 .page-header-icon.py-icon     { background: #eff8ff; color: #1d4ed8; border: 1px solid rgba(55,118,171,.2); font-size: 1.8rem; }
 .page-header-icon.devops-icon { background: #fff7ed; color: #c2410c; border: 1px solid rgba(238,93,37,.2); font-size: 1.8rem; }
 .page-header-icon.k8s-icon   { background: #eff6ff; color: #1d4ed8; border: 1px solid rgba(50,108,229,.2); font-size: 1.8rem; }
+.page-header-icon.aws-icon   { background: #fff7ed; color: #7c2d12; border: 1px solid rgba(255,153,0,.3); font-size: 1rem; font-weight: 700; letter-spacing: .04em; }
 
 body.dark {
   /* Solid-fill hubs darken the fill slightly in dark mode */
@@ -171,6 +172,7 @@ body.dark {
   .page-header-icon.py-icon     { background: #1e3a5f; color: #93c5fd; border-color: rgba(147,197,253,.2); }
   .page-header-icon.devops-icon { background: #431407; color: #fb923c; border-color: rgba(251,146,60,.2); }
   .page-header-icon.k8s-icon   { background: #0f172a; color: #93c5fd; border-color: rgba(147,197,253,.2); }
+  .page-header-icon.aws-icon   { background: #431407; color: #fb923c; border-color: rgba(251,146,60,.2); }
 }
 
 /* ── Global page wrapper defaults — canonical dimensions per hub ─────────────
