@@ -1,1 +1,15 @@
-<div class="k8s-page"><p>K8sContainerSecurity — coming soon</p></div>
+<div class="k8s-page">
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Container Security</h1>
+  <p class="page-subtitle">Run containers safely: <code>runAsNonRoot</code>, <code>readOnlyRootFilesystem</code>, security contexts, NetworkPolicies, image scanning with Trivy, and Pod Security Admission.</p>
+  <app-page-meta [readingTime]="20" difficulty="intermediate" since="Kubernetes 1.25+" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="k8s-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="k8s-container-security" nextRoute="/containers/rbac" nextLabel="Kubernetes RBAC" />
+</div>
