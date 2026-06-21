@@ -1,1 +1,15 @@
-<div class="k8s-page"><p>K8sPodsDeployments — coming soon</p></div>
+<div class="k8s-page">
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Pods, Deployments & ReplicaSets</h1>
+  <p class="page-subtitle">Understand how <code>Deployment → ReplicaSet → Pod</code> works — rolling updates, liveness and readiness probes, init containers, and zero-downtime deploys.</p>
+  <app-page-meta [readingTime]="20" difficulty="beginner" since="Kubernetes 1.2" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="k8s-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="k8s-pods-deployments" nextRoute="/containers/services-ingress" nextLabel="Services & Ingress" />
+</div>
