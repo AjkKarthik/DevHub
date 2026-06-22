@@ -1,0 +1,50 @@
+<div class="tf-page">
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Terraform Cheat Sheet</h1>
+  <p class="page-subtitle">Quick reference for CLI commands, HCL syntax, state operations, meta-arguments, and built-in functions.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Terraform 1.x+" tech="javascript" />
+
+  <div class="cs-controls">
+    <input
+      class="cs-search"
+      type="text"
+      placeholder="Search commands..."
+      [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)"
+    />
+    <div class="cs-tabs">
+      @for (cat of categories; track cat) {
+        <button
+          class="cs-tab"
+          [class.active]="activeCategory() === cat"
+          (click)="setCategory(cat)">
+          {{ cat }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="cs-table-wrap">
+    <table class="cs-table">
+      <thead>
+        <tr>
+          <th>Command / Syntax</th>
+          <th>Description</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of filtered(); track item.command) {
+          <tr>
+            <td><code>{{ item.command }}</code></td>
+            <td>{{ item.desc }}</td>
+            <td><span class="cs-badge">{{ item.category }}</span></td>
+          </tr>
+        }
+        @if (filtered().length === 0) {
+          <tr><td colspan="3" class="cs-empty">No matches found.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

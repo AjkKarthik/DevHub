@@ -1,0 +1,8 @@
+$accent: #fcc624;
+$tint: #fef9e7;
+.linux-section { margin: 2rem 0; h2, h3 { color: #92400e; font-size: 1.15rem; margin-bottom: .75rem; } }
+.page-subtitle code { background: $tint; color: #92400e; padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+:host-context(body.dark) {
+  .linux-section h2, .linux-section h3 { color: #fde68a; }
+  .page-subtitle code { background: #1c1a04; color: #fde68a; }
+}

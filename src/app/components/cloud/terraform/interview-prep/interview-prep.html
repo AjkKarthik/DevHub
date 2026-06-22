@@ -1,0 +1,44 @@
+<div class="tf-page">
+  <div class="page-header-icon tf-icon">TF</div>
+  <h1 class="page-title">Terraform Interview Prep</h1>
+  <p class="page-subtitle">30+ curated questions on state, modules, backends, CI/CD, security, and OpenTofu — from beginner to advanced.</p>
+  <app-page-meta [readingTime]="20" difficulty="intermediate" since="Terraform 1.x+" tech="javascript" />
+
+  <div class="ip-filters">
+    <div class="ip-filter-row">
+      <span class="ip-filter-label">Difficulty:</span>
+      @for (d of difficulties; track d) {
+        <button class="ip-chip" [class.active]="activeDiff() === d" [attr.data-diff]="d" (click)="setDiff(d)">{{ d }}</button>
+      }
+    </div>
+    <div class="ip-filter-row">
+      <span class="ip-filter-label">Topic:</span>
+      @for (t of topics; track t) {
+        <button class="ip-chip" [class.active]="activeTopic() === t" (click)="setTopic(t)">{{ t }}</button>
+      }
+    </div>
+  </div>
+
+  <p class="ip-count">{{ filtered().length }} question{{ filtered().length !== 1 ? 's' : '' }}</p>
+
+  <div class="ip-list">
+    @for (item of filtered(); track item.q; let i = $index) {
+      <div class="ip-card" [class.open]="openIndex() === i">
+        <button class="ip-question" (click)="toggle(i)">
+          <span class="ip-q-text">{{ item.q }}</span>
+          <span class="ip-badges">
+            <span class="ip-badge" [attr.data-diff]="item.difficulty">{{ item.difficulty }}</span>
+            <span class="ip-badge ip-topic">{{ item.topic }}</span>
+            <span class="ip-chevron">{{ openIndex() === i ? '▲' : '▼' }}</span>
+          </span>
+        </button>
+        @if (openIndex() === i) {
+          <div class="ip-answer">{{ item.a }}</div>
+        }
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <p class="ip-empty">No questions match the selected filters.</p>
+    }
+  </div>
+</div>
