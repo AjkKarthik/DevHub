@@ -482,6 +482,57 @@ const GO_LABELS: Record<string, string> = {
   'interview-prep':     'Go Interview Prep',
 };
 
+const AWS_LABELS: Record<string, string> = {
+  'fundamentals':       'AWS Fundamentals',
+  'ec2':                'EC2 & Auto Scaling',
+  'ecs-eks':            'ECS & EKS',
+  'vpc':                'VPC & Networking',
+  'route53-cloudfront': 'Route 53 & CloudFront',
+  's3':                 'S3',
+  'ebs-efs':            'EBS, EFS & FSx',
+  'iam':                'IAM',
+  'iam-roles':          'IAM Roles & Federation',
+  'rds-aurora':         'RDS & Aurora',
+  'dynamodb':           'DynamoDB',
+  'lambda':             'Lambda',
+  'api-gateway':        'API Gateway',
+  'cloudwatch':         'CloudWatch & X-Ray',
+  'cloudformation-cdk': 'CloudFormation & CDK',
+  'security':           'AWS Security Services',
+  'sqs-sns':            'SQS & SNS',
+  'eventbridge':        'EventBridge',
+  'step-functions':     'AWS Step Functions',
+  'load-balancing':     'Elastic Load Balancing',
+  'cost-optimization':  'AWS Cost Optimization',
+  'cheatsheet':         'AWS Cheat Sheet',
+};
+
+const AZURE_LABELS: Record<string, string> = {
+  'fundamentals':       'Azure Fundamentals',
+  'arm':                'Azure Resource Manager',
+  'virtual-machines':   'Virtual Machines',
+  'app-service':        'App Service',
+  'functions':          'Azure Functions',
+  'aks':                'Azure Kubernetes Service',
+  'virtual-network':    'Virtual Network',
+  'load-balancer':      'Load Balancer & Front Door',
+  'storage':            'Blob & Storage',
+  'entra-id':           'Entra ID (AAD)',
+  'rbac':               'Azure RBAC',
+  'sql-cosmos':         'SQL & Cosmos DB',
+  'monitor':            'Monitor & App Insights',
+  'devops-pipelines':   'DevOps & Pipelines',
+  'cost-management':    'Cost Management',
+  'security-defender':  'Security Center & Defender',
+  'key-vault':          'Key Vault',
+  'service-bus':        'Service Bus',
+  'container-apps':     'Container Apps',
+  'redis':              'Cache for Redis',
+  'api-management':     'API Management',
+  'bicep':              'Azure Bicep Deep-dive',
+  'cheatsheet':         'Azure Cheat Sheet',
+};
+
 const CONTAINERS_LABELS: Record<string, string> = {
   'fundamentals':       'Container Fundamentals',
   'docker-cli':         'Docker CLI',
@@ -697,6 +748,8 @@ export class BreadcrumbComponent {
                  : segs[0] === 'go'           ? GO_LABELS
                  : segs[0] === 'devops'       ? DEVOPS_LABELS
                  : segs[0] === 'containers'   ? CONTAINERS_LABELS
+                 : segs[0] === 'aws'          ? AWS_LABELS
+                 : segs[0] === 'azure'        ? AZURE_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

@@ -1,1 +1,65 @@
-<div class="k8s-page"><p>K8sCheatsheet — coming soon</p></div>
+<div class="k8s-page">
+  <div class="page-header-icon k8s-icon">⎈</div>
+  <h1 class="page-title">Containers Cheat Sheet</h1>
+  <p class="page-subtitle">Docker, <code>kubectl</code>, and Helm command quick reference — the commands you reach for every day.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Docker + K8s" tech="javascript" />
+
+  <div class="cs-tabs">
+    <button class="cs-tab" [class.active]="activeTab() === 'docker'" (click)="setTab('docker')">Docker</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'kubectl'" (click)="setTab('kubectl')">kubectl</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'helm'" (click)="setTab('helm')">Helm</button>
+  </div>
+
+  @if (activeTab() === 'docker') {
+    @for (section of dockerSections; track section.heading) {
+      <section class="k8s-section">
+        <h2>{{ section.heading }}</h2>
+        <div class="cs-grid">
+          @for (item of section.items; track item.cmd) {
+            <div class="cs-row">
+              <code class="cs-cmd">{{ item.cmd }}</code>
+              <span class="cs-desc">{{ item.desc }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  }
+
+  @if (activeTab() === 'kubectl') {
+    @for (section of kubectlSections; track section.heading) {
+      <section class="k8s-section">
+        <h2>{{ section.heading }}</h2>
+        <div class="cs-grid">
+          @for (item of section.items; track item.cmd) {
+            <div class="cs-row">
+              <code class="cs-cmd">{{ item.cmd }}</code>
+              <span class="cs-desc">{{ item.desc }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  }
+
+  @if (activeTab() === 'helm') {
+    @for (section of helmSections; track section.heading) {
+      <section class="k8s-section">
+        <h2>{{ section.heading }}</h2>
+        <div class="cs-grid">
+          @for (item of section.items; track item.cmd) {
+            <div class="cs-row">
+              <code class="cs-cmd">{{ item.cmd }}</code>
+              <span class="cs-desc">{{ item.desc }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  }
+
+  <section class="k8s-section">
+    <h2>Useful Snippets</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+</div>

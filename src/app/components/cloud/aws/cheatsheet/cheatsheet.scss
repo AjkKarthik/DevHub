@@ -1,0 +1,114 @@
+$accent: #ff9900;
+$tint: #fff7ed;
+
+.aws-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-subtitle code { background: $tint; color: $accent; padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+.aws-section { margin: 2rem 0; h2 { color: $accent; font-size: 1.25rem; margin-bottom: .5rem; } }
+
+.section-intro {
+  font-size: .9rem;
+  color: #555;
+  margin-bottom: 1rem;
+  code { background: $tint; color: $accent; padding: .1rem .35rem; border-radius: 4px; font-size: .85em; }
+}
+
+.cs-tab-bar {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0 .25rem;
+}
+.cs-tab {
+  padding: .45rem 1.1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 20px;
+  background: transparent;
+  cursor: pointer;
+  font-size: .875rem;
+  font-weight: 500;
+  color: #444;
+  transition: all .18s;
+  &:hover { border-color: $accent; color: $accent; }
+  &.active { background: $accent; border-color: $accent; color: #fff; }
+}
+
+.service-group { margin-bottom: 1.75rem; }
+.group-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $accent;
+  margin-bottom: .75rem;
+  padding-bottom: .35rem;
+  border-bottom: 1.5px solid rgba(255, 153, 0, .2);
+}
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: .75rem;
+}
+.service-card {
+  background: $tint;
+  border: 1px solid rgba(255, 153, 0, .15);
+  border-radius: 8px;
+  padding: .75rem 1rem;
+  .service-name {
+    display: block;
+    font-weight: 700;
+    font-size: .9rem;
+    color: #cc7a00;
+    margin-bottom: .3rem;
+  }
+  .service-desc { font-size: .8rem; color: #444; margin: 0; line-height: 1.45; }
+}
+
+.arch-card {
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-left: 3px solid $accent;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.arch-name { font-size: 1rem; font-weight: 700; color: #222; margin: 0 0 .5rem; }
+.arch-flow {
+  font-family: monospace;
+  font-size: .82rem;
+  background: #f0f0f0;
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  color: #333;
+  margin-bottom: .75rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.arch-notes {
+  margin: 0;
+  padding-left: 1.25rem;
+  li { font-size: .85rem; color: #444; margin-bottom: .35rem; line-height: 1.45; }
+}
+
+:host-context(body.dark) {
+  .aws-section h2 { color: #fb923c; }
+  .page-subtitle code, .section-intro code { background: #1c1008; color: #fb923c; }
+  .section-intro { color: #aaa; }
+
+  .cs-tab {
+    border-color: #444;
+    color: #ccc;
+    &:hover { border-color: #fb923c; color: #fb923c; }
+    &.active { background: #fb923c; border-color: #fb923c; color: #111; }
+  }
+
+  .group-heading { color: #fb923c; border-bottom-color: rgba(251, 163, 60, .2); }
+  .service-card {
+    background: #1e1406;
+    border-color: rgba(251, 163, 60, .15);
+    .service-name { color: #fb923c; }
+    .service-desc { color: #bbb; }
+  }
+
+  .arch-card { background: #1a1a1a; border-color: #333; border-left-color: #fb923c; }
+  .arch-name { color: #eee; }
+  .arch-flow { background: #252525; color: #ccc; }
+  .arch-notes li { color: #bbb; }
+}

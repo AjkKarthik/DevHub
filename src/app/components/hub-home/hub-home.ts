@@ -165,11 +165,11 @@ export class HubHome implements AfterViewInit, OnDestroy {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'TypeScript · 22 pages',   route: '/typescript',               label: 'New · 20 topics + 2 reference' },
-    { name: 'SQL · 53 pages',          route: '/sql',                      label: '44 topics + 9 reference' },
-    { name: 'ASP.NET Core · 54 pages', route: '/aspnet',                   label: '45 topics + 9 reference' },
-    { name: 'C# · 59 pages',           route: '/csharp',                   label: 'Full language coverage' },
-    { name: 'Angular · 68 pages',      route: '/angular',                  label: '58 topics + 10 reference' },
+    { name: 'Azure · 23 pages',        route: '/azure',                    label: 'New · 22 topics + cheatsheet' },
+    { name: 'AWS · 22 pages',          route: '/aws',                      label: '21 topics + cheatsheet' },
+    { name: 'DevOps · 22 pages',       route: '/devops',                   label: '21 topics + cheatsheet' },
+    { name: 'Go · 23 pages',           route: '/go',                       label: '21 topics + 2 reference' },
+    { name: 'Node.js · 25 pages',      route: '/node',                     label: '23 topics + 2 reference' },
   ];
 
   readonly roleChips: RoleChip[] = [
@@ -598,7 +598,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Docker & Kubernetes', time: '~8 hrs',
       tagline: 'Containerize apps and orchestrate them at scale with K8s.',
       icon: '🐳', gradient: 'linear-gradient(135deg, #0db7ed 0%, #0868a8 100%)',
-      textDark: false, route: '/containers', available: true,
+      textDark: false, route: '/containers', available: true, topics: 23,
       sub: 'Docker · Kubernetes · Helm',
       roles: ['backend', 'devops', 'architect'],
       highlights: [
@@ -623,7 +623,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       ],
     },
     {
-      group: 'cloud', name: 'Azure', time: '~12 hrs',
+      group: 'cloud', name: 'Azure', time: '~12 hrs', topics: 23,
       tagline: 'Microsoft\'s cloud platform — App Service, Functions, Storage & DevOps.',
       icon: '☁️', gradient: 'linear-gradient(135deg, #0078d4 0%, #004578 100%)',
       textDark: false, route: '/azure', available: true,
@@ -637,7 +637,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       ],
     },
     {
-      group: 'cloud', name: 'AWS', time: '~12 hrs',
+      group: 'cloud', name: 'AWS', time: '~14 hrs', topics: 22,
       tagline: 'Amazon Web Services — EC2, Lambda, S3, RDS & cloud-native patterns.',
       icon: '🟧', gradient: 'linear-gradient(135deg, #ff9900 0%, #c47000 100%)',
       textDark: false, route: '/aws', available: true,

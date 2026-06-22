@@ -1,0 +1,82 @@
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ProgressService } from '../../../services/progress.service';
+import { SEARCH_INDEX } from '../../../services/search.service';
+
+const DIFF: Record<string, string> = Object.fromEntries(
+  SEARCH_INDEX.map(e => [e.route, e.difficulty])
+);
+
+@Component({
+  selector: 'app-aws-nav',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive],
+  template: `
+    <a routerLink="/aws" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">☁ AWS Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/aws/fundamentals" routerLinkActive="active"><span class="nl-text">AWS Fundamentals</span>@if(p.isDone('aws-fundamentals')){<span class="nl-done">✓</span>}@if(d('aws-fundamentals');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Compute</p>
+      <a routerLink="/aws/ec2" routerLinkActive="active"><span class="nl-text">EC2 &amp; Auto Scaling</span>@if(p.isDone('aws-ec2')){<span class="nl-done">✓</span>}@if(d('aws-ec2');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/ecs-eks" routerLinkActive="active"><span class="nl-text">ECS &amp; EKS</span>@if(p.isDone('aws-ecs-eks')){<span class="nl-done">✓</span>}@if(d('aws-ecs-eks');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Networking</p>
+      <a routerLink="/aws/vpc" routerLinkActive="active"><span class="nl-text">VPC &amp; Networking</span>@if(p.isDone('aws-vpc')){<span class="nl-done">✓</span>}@if(d('aws-vpc');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/route53-cloudfront" routerLinkActive="active"><span class="nl-text">Route 53 &amp; CloudFront</span>@if(p.isDone('aws-route53-cloudfront')){<span class="nl-done">✓</span>}@if(d('aws-route53-cloudfront');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/load-balancing" routerLinkActive="active"><span class="nl-text">Elastic Load Balancing</span>@if(p.isDone('aws-load-balancing')){<span class="nl-done">✓</span>}@if(d('aws-load-balancing');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Storage</p>
+      <a routerLink="/aws/s3" routerLinkActive="active"><span class="nl-text">S3</span>@if(p.isDone('aws-s3')){<span class="nl-done">✓</span>}@if(d('aws-s3');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/ebs-efs" routerLinkActive="active"><span class="nl-text">EBS, EFS &amp; FSx</span>@if(p.isDone('aws-ebs-efs')){<span class="nl-done">✓</span>}@if(d('aws-ebs-efs');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">IAM</p>
+      <a routerLink="/aws/iam" routerLinkActive="active"><span class="nl-text">IAM</span>@if(p.isDone('aws-iam')){<span class="nl-done">✓</span>}@if(d('aws-iam');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/iam-roles" routerLinkActive="active"><span class="nl-text">IAM Roles &amp; Federation</span>@if(p.isDone('aws-iam-roles')){<span class="nl-done">✓</span>}@if(d('aws-iam-roles');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Databases</p>
+      <a routerLink="/aws/rds-aurora" routerLinkActive="active"><span class="nl-text">RDS &amp; Aurora</span>@if(p.isDone('aws-rds-aurora')){<span class="nl-done">✓</span>}@if(d('aws-rds-aurora');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/dynamodb" routerLinkActive="active"><span class="nl-text">DynamoDB</span>@if(p.isDone('aws-dynamodb')){<span class="nl-done">✓</span>}@if(d('aws-dynamodb');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Serverless</p>
+      <a routerLink="/aws/lambda" routerLinkActive="active"><span class="nl-text">Lambda</span>@if(p.isDone('aws-lambda')){<span class="nl-done">✓</span>}@if(d('aws-lambda');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/api-gateway" routerLinkActive="active"><span class="nl-text">API Gateway</span>@if(p.isDone('aws-api-gateway')){<span class="nl-done">✓</span>}@if(d('aws-api-gateway');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/sqs-sns" routerLinkActive="active"><span class="nl-text">SQS &amp; SNS</span>@if(p.isDone('aws-sqs-sns')){<span class="nl-done">✓</span>}@if(d('aws-sqs-sns');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/eventbridge" routerLinkActive="active"><span class="nl-text">EventBridge</span>@if(p.isDone('aws-eventbridge')){<span class="nl-done">✓</span>}@if(d('aws-eventbridge');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/step-functions" routerLinkActive="active"><span class="nl-text">Step Functions</span>@if(p.isDone('aws-step-functions')){<span class="nl-done">✓</span>}@if(d('aws-step-functions');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Operations</p>
+      <a routerLink="/aws/cloudwatch" routerLinkActive="active"><span class="nl-text">CloudWatch &amp; X-Ray</span>@if(p.isDone('aws-cloudwatch')){<span class="nl-done">✓</span>}@if(d('aws-cloudwatch');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/cloudformation-cdk" routerLinkActive="active"><span class="nl-text">CloudFormation &amp; CDK</span>@if(p.isDone('aws-cloudformation-cdk')){<span class="nl-done">✓</span>}@if(d('aws-cloudformation-cdk');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/security" routerLinkActive="active"><span class="nl-text">AWS Security Services</span>@if(p.isDone('aws-security')){<span class="nl-done">✓</span>}@if(d('aws-security');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+      <a routerLink="/aws/cost-optimization" routerLinkActive="active"><span class="nl-text">Cost Optimization</span>@if(p.isDone('aws-cost-optimization')){<span class="nl-done">✓</span>}@if(d('aws-cost-optimization');as v){<span class="nl-dot" [class]="'nl-dot--'+v"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/aws/cheatsheet" routerLinkActive="active"><span class="nl-text">AWS Cheat Sheet</span></a>
+    </div>
+  `,
+  styles: []
+})
+export class AwsNavComponent {
+  p = inject(ProgressService);
+  d(route: string): string | null { return DIFF[route] ?? null; }
+}

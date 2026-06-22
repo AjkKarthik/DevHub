@@ -1,0 +1,108 @@
+<div class="azure-page azure-cheatsheet">
+  <div class="page-header-icon azure-icon">Az</div>
+  <h1 class="page-title">Azure Cheat Sheet</h1>
+  <p class="page-subtitle">Quick reference — <code>Azure CLI</code> commands, <code>resource naming</code> conventions, <code>service limits</code>, and <code>portal shortcuts</code>.</p>
+  <app-page-meta [readingTime]="10" difficulty="beginner" since="All versions" tech="javascript" />
+
+  <!-- Tab Bar -->
+  <div class="cs-tabs">
+    <button class="cs-tab" [class.active]="activeTab() === 'cli'" (click)="setTab('cli')">Azure CLI</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'naming'" (click)="setTab('naming')">Naming Rules</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'services'" (click)="setTab('services')">Service Quick Ref</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'portal'" (click)="setTab('portal')">Portal Shortcuts</button>
+  </div>
+
+  <!-- CLI Tab -->
+  @if (activeTab() === 'cli') {
+    <div class="cs-content">
+      @for (section of cliSections; track section.heading) {
+        <div class="cs-section-block azure-section">
+          <h2>{{ section.heading }}</h2>
+          <div class="cs-command-list">
+            @for (cmd of section.commands; track cmd.cmd) {
+              <div class="cs-command-row">
+                <code class="cs-cmd">{{ cmd.cmd }}</code>
+                <span class="cs-desc">{{ cmd.desc }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Naming Rules Tab -->
+  @if (activeTab() === 'naming') {
+    <div class="cs-content">
+      <div class="cs-note azure-section">
+        <strong>Convention:</strong> &lt;prefix&gt;-&lt;workload&gt;-&lt;env&gt;-&lt;region&gt;-&lt;seq&gt; — e.g. <code>rg-myapp-prod-eus-001</code>.
+        Storage accounts and container registries <strong>cannot use hyphens</strong> — omit separators.
+      </div>
+      <div class="cs-table-wrap">
+        <table class="cs-table">
+          <thead>
+            <tr>
+              <th>Resource</th>
+              <th>Prefix</th>
+              <th>Example</th>
+              <th>Constraints</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (rule of namingRules; track rule.resource) {
+              <tr>
+                <td class="cs-resource">{{ rule.resource }}</td>
+                <td><code>{{ rule.prefix }}</code></td>
+                <td><code>{{ rule.example }}</code></td>
+                <td class="cs-constraints">{{ rule.constraints }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  <!-- Service Quick Ref Tab -->
+  @if (activeTab() === 'services') {
+    <div class="cs-content">
+      @for (svc of serviceRefs; track svc.service) {
+        <div class="cs-service-card azure-section">
+          <h3>{{ svc.service }}</h3>
+          <div class="cs-service-grid">
+            <div class="cs-svc-row">
+              <span class="cs-svc-label">Key Points</span>
+              <span class="cs-svc-val">{{ svc.key }}</span>
+            </div>
+            <div class="cs-svc-row">
+              <span class="cs-svc-label">Limits</span>
+              <span class="cs-svc-val">{{ svc.limit }}</span>
+            </div>
+            <div class="cs-svc-row">
+              <span class="cs-svc-label">SKUs</span>
+              <span class="cs-svc-val">{{ svc.sku }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Portal Shortcuts Tab -->
+  @if (activeTab() === 'portal') {
+    <div class="cs-content">
+      <div class="cs-note azure-section">
+        Press <code>?</code> in the Azure Portal to open the full keyboard shortcuts panel.
+        <br/>Shortcuts below use the global <strong>G +</strong> prefix pattern (hold G, then press the second key).
+      </div>
+      <div class="cs-command-list">
+        @for (sc of portalShortcuts; track sc.keys) {
+          <div class="cs-command-row">
+            <code class="cs-cmd cs-keys">{{ sc.keys }}</code>
+            <span class="cs-desc">{{ sc.action }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

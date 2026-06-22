@@ -1,0 +1,11 @@
+$accent: #0089d6;
+$tint: #e8f4fd;
+
+.azure-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-subtitle code { background: $tint; color: $accent; padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+.azure-section { margin: 2rem 0; h2 { color: $accent; font-size: 1.25rem; margin-bottom: 1rem; } }
+
+:host-context(body.dark) {
+  .azure-section h2 { color: #60b9f8; }
+  .page-subtitle code { background: #0c1a2e; color: #60b9f8; }
+}

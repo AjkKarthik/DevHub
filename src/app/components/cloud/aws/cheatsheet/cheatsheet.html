@@ -1,0 +1,65 @@
+<div class="aws-page">
+  <div class="page-header-icon aws-icon">AWS</div>
+  <h1 class="page-title">AWS Cheat Sheet</h1>
+  <p class="page-subtitle">CLI commands, <code>service reference</code>, IAM patterns, and common <code>architecture patterns</code> — rapid lookup for AWS developers.</p>
+  <app-page-meta [readingTime]="10" difficulty="beginner" since="2006" tech="javascript" />
+
+  <div class="cs-tab-bar">
+    <button class="cs-tab" [class.active]="activeTab() === 'cli'" (click)="activeTab.set('cli')">CLI Commands</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'services'" (click)="activeTab.set('services')">Service Reference</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'iam'" (click)="activeTab.set('iam')">IAM Patterns</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'patterns'" (click)="activeTab.set('patterns')">Architecture</button>
+  </div>
+
+  @if (activeTab() === 'cli') {
+    <section class="aws-section">
+      <h2>CLI Quick Reference</h2>
+      <p class="section-intro">Essential AWS CLI commands organized by service. Run <code>aws &lt;command&gt; help</code> for full options.</p>
+      <app-code-block [tabs]="cliTabs" />
+    </section>
+  }
+
+  @if (activeTab() === 'services') {
+    <section class="aws-section">
+      <h2>Service Reference</h2>
+      @for (group of serviceGroups; track group.category) {
+        <div class="service-group">
+          <h3 class="group-heading">{{ group.icon }} {{ group.category }}</h3>
+          <div class="service-grid">
+            @for (item of group.items; track item.name) {
+              <div class="service-card">
+                <span class="service-name">{{ item.name }}</span>
+                <p class="service-desc">{{ item.desc }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </section>
+  }
+
+  @if (activeTab() === 'iam') {
+    <section class="aws-section">
+      <h2>IAM Policy Patterns</h2>
+      <p class="section-intro">Common trust policies and permission patterns. Replace <code>ACCOUNT</code>, <code>REGION</code>, and resource ARNs for your environment.</p>
+      <app-code-block [tabs]="iamTabs" />
+    </section>
+  }
+
+  @if (activeTab() === 'patterns') {
+    <section class="aws-section">
+      <h2>Common Architecture Patterns</h2>
+      @for (pattern of patterns; track pattern.name) {
+        <div class="arch-card">
+          <h3 class="arch-name">{{ pattern.name }}</h3>
+          <div class="arch-flow">{{ pattern.flow }}</div>
+          <ul class="arch-notes">
+            @for (note of pattern.notes; track note) {
+              <li>{{ note }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </section>
+  }
+</div>
