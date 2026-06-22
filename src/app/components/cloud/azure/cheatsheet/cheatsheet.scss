@@ -1,1 +1,79 @@
+$accent: #0089d6;
+$tint: #e8f4fd;
 
+.azure-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-subtitle code { background: $tint; color: $accent; padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+.azure-section { margin: 2rem 0; h2,h3 { color: $accent; font-size: 1.15rem; margin-bottom: .75rem; } }
+
+// Cheatsheet layout
+.cs-tabs {
+  display: flex; gap: .5rem; flex-wrap: wrap; margin: 1.75rem 0 0;
+  border-bottom: 2px solid #e5e7eb; padding-bottom: 0;
+}
+.cs-tab {
+  padding: .5rem 1.1rem; border: none; background: none; cursor: pointer;
+  font-size: .9rem; font-weight: 500; color: #6b7280; border-radius: 6px 6px 0 0;
+  border-bottom: 3px solid transparent; margin-bottom: -2px;
+  transition: color .15s, border-color .15s;
+  &:hover { color: $accent; }
+  &.active { color: $accent; border-bottom-color: $accent; background: $tint; }
+}
+.cs-content { padding-top: 1.5rem; }
+.cs-section-block { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
+.cs-command-list { display: flex; flex-direction: column; gap: .55rem; }
+.cs-command-row {
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: .75rem 1.25rem;
+  align-items: start; padding: .45rem .6rem; border-radius: 6px;
+  &:nth-child(even) { background: rgba($accent,.04); }
+}
+.cs-cmd {
+  font-family: 'Courier New', monospace; font-size: .8rem; color: $accent;
+  word-break: break-all; line-height: 1.5;
+}
+.cs-keys { font-size: .82rem; font-weight: 600; }
+.cs-desc { font-size: .88rem; color: #374151; line-height: 1.5; }
+
+// Naming table
+.cs-note {
+  background: $tint; border-left: 4px solid $accent; padding: .85rem 1rem;
+  border-radius: 6px; font-size: .9rem; color: #1f2937; margin-bottom: 1.25rem;
+  code { background: rgba($accent,.12); color: $accent; padding: .1rem .3rem; border-radius: 4px; font-size: .85em; }
+}
+.cs-table-wrap { overflow-x: auto; }
+.cs-table {
+  width: 100%; border-collapse: collapse; font-size: .87rem;
+  th { background: $accent; color: #fff; padding: .6rem .9rem; text-align: left; font-weight: 600; }
+  td { padding: .55rem .9rem; border-bottom: 1px solid #e5e7eb; vertical-align: top; line-height: 1.5; }
+  tr:nth-child(even) td { background: rgba($accent,.03); }
+  code { background: $tint; color: $accent; padding: .1rem .3rem; border-radius: 4px; font-size: .82em; }
+}
+.cs-resource { font-weight: 600; color: #1f2937; white-space: nowrap; }
+.cs-constraints { color: #6b7280; font-size: .83rem; }
+
+// Service quick ref
+.cs-service-card {
+  background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px;
+  padding: 1rem 1.25rem; margin-bottom: 1rem;
+  h3 { font-size: 1rem; font-weight: 700; margin-bottom: .6rem; }
+}
+.cs-service-grid { display: flex; flex-direction: column; gap: .45rem; }
+.cs-svc-row { display: grid; grid-template-columns: 90px 1fr; gap: .75rem; align-items: start; }
+.cs-svc-label { font-size: .78rem; font-weight: 700; color: $accent; text-transform: uppercase; letter-spacing: .03em; padding-top: .1rem; }
+.cs-svc-val { font-size: .87rem; color: #374151; line-height: 1.55; }
+
+:host-context(body.dark) {
+  .azure-section h2, .azure-section h3 { color: #60b9f8; }
+  .page-subtitle code { background: #0c1a2e; color: #60b9f8; }
+  .cs-tab { color: #9ca3af; &.active { color: #60b9f8; border-bottom-color: #60b9f8; background: #0c1a2e; } &:hover { color: #60b9f8; } }
+  .cs-tabs { border-bottom-color: #334155; }
+  .cs-section-block, .cs-service-card { background: #0f172a; border-color: #1e3a5f; }
+  .cs-command-row { &:nth-child(even) { background: rgba(96,185,248,.06); } }
+  .cs-cmd { color: #60b9f8; }
+  .cs-desc { color: #cbd5e1; }
+  .cs-note { background: #0c1a2e; border-left-color: #60b9f8; color: #cbd5e1; code { background: #0f2744; color: #60b9f8; } }
+  .cs-table { th { background: #1e3a5f; } td { border-bottom-color: #1e3a5f; } tr:nth-child(even) td { background: rgba(96,185,248,.04); } code { background: #0c1a2e; color: #60b9f8; } }
+  .cs-resource { color: #e2e8f0; }
+  .cs-constraints { color: #94a3b8; }
+  .cs-svc-label { color: #60b9f8; }
+  .cs-svc-val { color: #cbd5e1; }
+}
