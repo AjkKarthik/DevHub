@@ -153,6 +153,7 @@ body.dark {
 .page-header-icon.aws-icon   { background: #fff7ed; color: #7c2d12; border: 1px solid rgba(255,153,0,.3); font-size: 1rem; font-weight: 700; letter-spacing: .04em; }
 .page-header-icon.azure-icon { background: #e8f4fd; color: #004578; border: 1px solid rgba(0,137,214,.2); font-size: 1rem; font-weight: 700; letter-spacing: .04em; }
 .page-header-icon.linux-icon { background: #fef9e7; color: #92400e; border: 1px solid rgba(252,198,36,.3); font-size: 1.8rem; }
+.page-header-icon.tf-icon    { background: #f5f3ff; color: #5b21b6; border: 1px solid rgba(123,66,188,.3);  font-size: 1.4rem; font-weight: 700; letter-spacing: .04em; }
 
 body.dark {
   /* Solid-fill hubs darken the fill slightly in dark mode */
@@ -177,6 +178,7 @@ body.dark {
   .page-header-icon.aws-icon   { background: #431407; color: #fb923c; border-color: rgba(251,146,60,.2); }
   .page-header-icon.azure-icon { background: #0c2340; color: #60b9f8; border-color: rgba(96,185,248,.2); }
   .page-header-icon.linux-icon { background: #1c1a04; color: #fde68a; border-color: rgba(253,230,138,.2); }
+  .page-header-icon.tf-icon    { background: #1a1229; color: #c4b5fd; border-color: rgba(196,181,253,.2); }
 }
 
 /* ── Global page wrapper defaults — canonical dimensions per hub ─────────────
@@ -195,6 +197,8 @@ body.dark {
 .aspnet-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem;  box-sizing: border-box; }
 /* Linux topic pages */
 .linux-page  { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; box-sizing: border-box; }
+/* Terraform topic pages */
+.tf-page     { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; box-sizing: border-box; }
 
 /* ── Global responsive page container ───────────────────────────────────────
    Fluid width — fills available space, capped at 1400px on very large screens.

@@ -612,6 +612,32 @@ const NODE_LABELS: Record<string, string> = {
   'interview-prep':  'Node.js Interview Prep',
 };
 
+const TERRAFORM_LABELS: Record<string, string> = {
+  'fundamentals':      'Terraform Fundamentals',
+  'providers':         'Providers',
+  'variables':         'Variables',
+  'outputs':           'Outputs',
+  'resources':         'Resources & Meta-Arguments',
+  'data-sources':      'Data Sources',
+  'expressions':       'Expressions & Dynamic Blocks',
+  'functions':         'Built-in Functions',
+  'state':             'Terraform State',
+  'remote-backends':   'Remote Backends',
+  'workspaces':        'Workspaces',
+  'modules':           'Modules',
+  'module-patterns':   'Module Patterns',
+  'provisioners':      'Provisioners',
+  'import':            'Import & Generated Config',
+  'cicd':              'CI/CD with Terraform',
+  'testing':           'Testing Terraform Code',
+  'security':          'Security & Compliance',
+  'drift':             'Drift Detection',
+  'refactoring':       'Refactoring & State Ops',
+  'opentofu':          'OpenTofu',
+  'cheatsheet':        'Terraform Cheatsheet',
+  'interview-prep':    'Terraform Interview Prep',
+};
+
 const LINUX_LABELS: Record<string, string> = {
   'fundamentals':          'Linux Fundamentals',
   'file-system':           'File System & Hierarchy',
@@ -775,6 +801,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'aws'          ? AWS_LABELS
                  : segs[0] === 'azure'        ? AZURE_LABELS
                  : segs[0] === 'linux'        ? LINUX_LABELS
+                 : segs[0] === 'terraform'   ? TERRAFORM_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

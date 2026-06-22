@@ -1,0 +1,115 @@
+$accent: #7b42bc;
+$tint: #f5f3ff;
+
+.ip-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.ip-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ip-filter-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b7280;
+  min-width: 6rem;
+}
+
+.ip-chip {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid #e0d7f8;
+  background: #fff;
+  color: #555;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: all .15s;
+  &:hover { border-color: $accent; color: $accent; }
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+  &[data-diff="beginner"].active    { background: #16a34a; border-color: #16a34a; }
+  &[data-diff="intermediate"].active{ background: #d97706; border-color: #d97706; }
+  &[data-diff="advanced"].active    { background: #dc2626; border-color: #dc2626; }
+}
+
+.ip-count { font-size: 0.85rem; color: #6b7280; margin-bottom: 1rem; }
+
+.ip-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.ip-card {
+  border: 1px solid #ede9fe;
+  border-radius: 10px;
+  overflow: hidden;
+  &:hover { box-shadow: 0 2px 8px rgba(123,66,188,.1); }
+  &.open { border-color: $accent; }
+}
+
+.ip-question {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ip-q-text { font-size: 0.93rem; font-weight: 500; color: #111827; flex: 1; line-height: 1.5; }
+
+.ip-badges { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
+
+.ip-badge {
+  padding: 0.15rem 0.55rem;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: $tint;
+  color: $accent;
+  &[data-diff="beginner"]    { background: #dcfce7; color: #16a34a; }
+  &[data-diff="intermediate"]{ background: #fef3c7; color: #d97706; }
+  &[data-diff="advanced"]    { background: #fee2e2; color: #dc2626; }
+}
+
+.ip-topic { background: #ede9fe; color: #5b21b6; }
+.ip-chevron { font-size: 0.75rem; color: $accent; }
+
+.ip-answer {
+  padding: 0.9rem 1.1rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #374151;
+  background: $tint;
+  border-top: 1px solid #ede9fe;
+}
+
+.ip-empty { text-align: center; color: #9ca3af; padding: 2rem; }
+
+:host-context(body.dark) {
+  .ip-chip {
+    background: #1e1b2e;
+    border-color: #3d2d6e;
+    color: #c4b5fd;
+    &:hover { border-color: #c4b5fd; }
+    &.active { background: $accent; color: #fff; }
+  }
+  .ip-card { border-color: #3d2d6e; &.open { border-color: #c4b5fd; } }
+  .ip-question { background: #1a1229; }
+  .ip-q-text { color: #f3f4f6; }
+  .ip-answer { background: #150f24; border-color: #3d2d6e; color: #d1d5db; }
+  .ip-badge { background: #2d1f5e; color: #c4b5fd; }
+  .ip-badge[data-diff="beginner"]    { background: #14532d; color: #86efac; }
+  .ip-badge[data-diff="intermediate"]{ background: #78350f; color: #fcd34d; }
+  .ip-badge[data-diff="advanced"]    { background: #7f1d1d; color: #fca5a5; }
+  .ip-topic { background: #2d1f5e; color: #c4b5fd; }
+}
