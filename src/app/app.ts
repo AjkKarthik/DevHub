@@ -16,6 +16,7 @@ import { DevopsNavComponent } from './components/shared/devops-nav/devops-nav';
 import { ContainersNavComponent } from './components/shared/containers-nav/containers-nav';
 import { AwsNavComponent } from './components/shared/aws-nav/aws-nav';
 import { AzureNavComponent } from './components/shared/azure-nav/azure-nav';
+import { LinuxNavComponent } from './components/shared/linux-nav/linux-nav';
 
 // Difficulty metadata for nav badges
 const DIFF: Record<string, string> = Object.fromEntries(
@@ -25,7 +26,7 @@ const DIFF: Record<string, string> = Object.fromEntries(
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, BreadcrumbComponent,
-            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent],
+            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -69,7 +70,7 @@ export class App {
     ].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'hub'>(() => {
     const url = this.currentUrl();
     if (url.startsWith('/angular'))    return 'angular';
     if (url.startsWith('/csharp'))     return 'csharp';
@@ -89,6 +90,7 @@ export class App {
     if (url.startsWith('/containers')) return 'containers';
     if (url.startsWith('/aws'))        return 'aws';
     if (url.startsWith('/azure'))      return 'azure';
+    if (url.startsWith('/linux'))      return 'linux';
     return 'hub';
   });
 

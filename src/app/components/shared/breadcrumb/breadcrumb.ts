@@ -612,6 +612,30 @@ const NODE_LABELS: Record<string, string> = {
   'interview-prep':  'Node.js Interview Prep',
 };
 
+const LINUX_LABELS: Record<string, string> = {
+  'fundamentals':          'Linux Fundamentals',
+  'file-system':           'File System & Hierarchy',
+  'essential-commands':    'Essential Commands',
+  'file-permissions':      'File Permissions & Ownership',
+  'users-groups':          'Users & Groups',
+  'process-management':    'Process Management',
+  'system-monitoring':     'System Monitoring',
+  'networking':            'Networking Commands',
+  'firewall':              'Firewall & iptables',
+  'ssh':                   'SSH & Remote Access',
+  'bash-scripting':        'Bash Scripting Basics',
+  'bash-advanced':         'Advanced Bash Scripting',
+  'package-management':    'Package Management',
+  'systemd':               'systemd & Services',
+  'disk-storage':          'Disk & Storage',
+  'environment-variables': 'Environment Variables & Shell Config',
+  'log-analysis':          'Log Analysis',
+  'performance-tuning':    'Performance Tuning',
+  'vim':                   'Vim & Text Editors',
+  'security-hardening':    'Linux Security Hardening',
+  'cron':                  'Cron & Scheduling',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -750,6 +774,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'containers'   ? CONTAINERS_LABELS
                  : segs[0] === 'aws'          ? AWS_LABELS
                  : segs[0] === 'azure'        ? AZURE_LABELS
+                 : segs[0] === 'linux'        ? LINUX_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

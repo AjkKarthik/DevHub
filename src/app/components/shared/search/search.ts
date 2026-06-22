@@ -123,6 +123,7 @@ export class SearchComponent {
     if (route.startsWith('k8s-'))    return '/containers/'  + route.slice('k8s-'.length);
     if (route.startsWith('aws-'))    return '/aws/'         + route.slice('aws-'.length);
     if (route.startsWith('azure-'))  return '/azure/'       + route.slice('azure-'.length);
+    if (route.startsWith('linux-'))  return '/linux/'       + route.slice('linux-'.length);
     if (route.startsWith('hub-'))    return '/'             + route.slice('hub-'.length);
     return '/angular/' + route;
   }

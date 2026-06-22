@@ -106,8 +106,8 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | DevOps | 22 | 0 | Complete — 21 topics + 1 cheatsheet reference |
 | Containers/K8s | 0 | 23 | Not started |
 | AWS | 22 | 0 | Complete — 21 topics + 1 cheatsheet reference |
-| Azure | 0 | 23 | Not started |
-| Linux | 0 | 21 | Not started |
+| Azure | 23 | 0 | Complete — 22 topics + 1 cheatsheet reference |
+| Linux | 21 | 0 | Complete — 19 topics + 2 reference |
 | Terraform | 0 | 21 | Not started |
 | Service Mesh | 0 | 21 | Not started |
 | System Design | 0 | 26 | Not started |
@@ -854,17 +854,15 @@ Accent: `#ff9900` (AWS orange). Search prefix: `aws-`. hub-home topics: 22, avai
 - [x] 2026-06-21 `aws-cost-optimization` — Savings Plans vs RIs vs Spot, Cost Explorer, Budgets, Compute Optimizer, data transfer costs
 - [x] 2026-06-21 `aws-cheatsheet` — Reference: CLI commands (4 tabs), Service Reference grid (7 categories), IAM patterns, Architecture patterns
 
-### 5D — Azure hub (23 topics) `src/app/components/cloud/azure/`
+### 5D — Azure hub ✅ COMPLETE `src/app/components/cloud/azure/`
 
+All 22 trackable topics + 1 cheatsheet reference live (2026-06-22). azureTotal = 22. All 23 cards `available: true`.
 Accent: `#0089d6` (Azure blue). Search prefix: `azure-`.
-Key topics: Entra ID, AKS, App Service, Azure Functions, Key Vault, Service Bus,
-Bicep deep-dive, Monitor + App Insights.
 
-### 5E — Linux hub (21 topics) `src/app/components/cloud/linux/`
+### 5E — Linux hub ✅ COMPLETE `src/app/components/cloud/linux/`
 
+All 19 trackable topics + 2 reference pages live (2026-06-22). linuxTotal = 19. All 21 cards `available: true`.
 Accent: `#fcc624` (Linux yellow). Search prefix: `linux-`.
-Key topics: File permissions, process management, systemd, networking (ss/netstat/curl),
-shell scripting, SSH, cron, logs.
 
 ### 5F — Terraform hub (21 topics) `src/app/components/cloud/terraform/`
 

@@ -14,7 +14,7 @@ export class ProgressService {
   readonly csharpTotal  = 50;
   readonly csharpCount  = computed(() => [...this._done()].filter(r => r.startsWith('csharp-')).length);
   readonly csharpPct    = computed(() => Math.round((this.csharpCount() / this.csharpTotal) * 100));
-  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-') && !r.startsWith('aspnet-') && !r.startsWith('sql-') && !r.startsWith('ts-') && !r.startsWith('react-') && !r.startsWith('js-') && !r.startsWith('html-') && !r.startsWith('css-') && !r.startsWith('perf-')).length);
+  readonly angularCount = computed(() => [...this._done()].filter(r => !r.startsWith('csharp-') && !r.startsWith('aspnet-') && !r.startsWith('sql-') && !r.startsWith('ts-') && !r.startsWith('react-') && !r.startsWith('js-') && !r.startsWith('html-') && !r.startsWith('css-') && !r.startsWith('perf-') && !r.startsWith('linux-')).length);
   readonly angularPct   = computed(() => Math.round((this.angularCount() / this.total) * 100));
 
   // ── ASP.NET Core (keys prefixed 'aspnet-') ─────────────────────────────────
@@ -96,6 +96,11 @@ export class ProgressService {
   readonly azureTotal  = 22;
   readonly azureCount  = computed(() => [...this._done()].filter(r => r.startsWith('azure-')).length);
   readonly azurePct    = computed(() => Math.round((this.azureCount() / this.azureTotal) * 100));
+
+  // ── Linux (keys prefixed 'linux-') ──────────────────────────────────────
+  readonly linuxTotal  = 19;
+  readonly linuxCount  = computed(() => [...this._done()].filter(r => r.startsWith('linux-')).length);
+  readonly linuxPct    = computed(() => Math.round((this.linuxCount() / this.linuxTotal) * 100));
 
   toggle(route: string) {
     this._done.update(s => {
