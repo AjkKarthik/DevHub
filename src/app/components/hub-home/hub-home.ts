@@ -609,7 +609,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       ],
     },
     {
-      group: 'cloud', name: 'Terraform / IaC', time: '~6 hrs',
+      group: 'cloud', name: 'Terraform / IaC', time: '~6 hrs', topics: 23,
       tagline: 'Define infrastructure as code — provision and manage cloud resources declaratively.',
       icon: '🔩', gradient: 'linear-gradient(135deg, #5c4ee5 0%, #3a2eb5 100%)',
       textDark: false, route: '/terraform', available: true,
@@ -654,7 +654,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Service Mesh & Istio', time: '~4 hrs',
       tagline: 'Manage microservice-to-microservice traffic — mTLS, observability & circuit breaking.',
       icon: '🕸️', gradient: 'linear-gradient(135deg, #475569 0%, #1e293b 100%)',
-      textDark: false, route: '/service-mesh', available: true,
+      textDark: false, route: '/service-mesh', available: true, topics: 21,
       sub: 'Istio · Linkerd · Envoy · Consul',
       roles: ['devops', 'architect'],
       highlights: [

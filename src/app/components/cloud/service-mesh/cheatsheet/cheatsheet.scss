@@ -1,0 +1,67 @@
+$accent: #466bb0;
+$tint: #eef2fb;
+
+.mesh-cheatsheet { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+.cs-header { margin-bottom: 1.5rem; }
+
+.cs-controls { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+
+.cs-search {
+  width: 100%; max-width: 420px; padding: 0.5rem 0.875rem;
+  border: 1.5px solid #d1d5db; border-radius: 8px; font-size: 0.95rem;
+  outline: none;
+  &:focus { border-color: $accent; }
+}
+:host-context(body.dark) .cs-search {
+  background: #1e293b; border-color: #334155; color: #e2e8f0;
+  &:focus { border-color: #93c5fd; }
+}
+
+.cs-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.cs-tab {
+  padding: 0.3rem 0.75rem; border: 1.5px solid #d1d5db; border-radius: 20px;
+  background: #fff; font-size: 0.8rem; cursor: pointer; color: #374151;
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+}
+:host-context(body.dark) .cs-tab {
+  background: #1e293b; border-color: #334155; color: #94a3b8;
+  &.active { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+}
+
+.cs-count { font-size: 0.8rem; color: #6b7280; margin-bottom: 1rem; }
+:host-context(body.dark) .cs-count { color: #94a3b8; }
+
+.cs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+
+.cs-card {
+  border: 1px solid #e5e7eb; border-radius: 10px; padding: 1rem; background: #fff;
+}
+:host-context(body.dark) .cs-card { background: #1e293b; border-color: #334155; }
+
+.cs-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+
+.cs-badge {
+  font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.5rem;
+  border-radius: 12px; background: $tint; color: $accent; white-space: nowrap;
+}
+:host-context(body.dark) .cs-badge { background: #1e3a5f; color: #93c5fd; }
+
+.cs-term { font-size: 0.85rem; font-weight: 600; color: #111827; }
+:host-context(body.dark) .cs-term { color: #e2e8f0; }
+
+.cs-syntax {
+  background: #f8fafc; border-radius: 6px; padding: 0.5rem 0.75rem;
+  font-size: 0.78rem; overflow-x: auto; margin: 0.4rem 0; white-space: pre-wrap;
+  border-left: 3px solid $accent;
+  code { font-family: 'Fira Code', monospace; color: #1e40af; }
+}
+:host-context(body.dark) .cs-syntax {
+  background: #0f172a; border-left-color: #93c5fd;
+  code { color: #93c5fd; }
+}
+
+.cs-desc { font-size: 0.82rem; color: #6b7280; margin: 0; line-height: 1.5; }
+:host-context(body.dark) .cs-desc { color: #94a3b8; }
+
+.cs-empty { color: #9ca3af; font-style: italic; padding: 2rem 0; }

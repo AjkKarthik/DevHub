@@ -17,6 +17,8 @@ import { ContainersNavComponent } from './components/shared/containers-nav/conta
 import { AwsNavComponent } from './components/shared/aws-nav/aws-nav';
 import { AzureNavComponent } from './components/shared/azure-nav/azure-nav';
 import { LinuxNavComponent } from './components/shared/linux-nav/linux-nav';
+import { TerraformNavComponent } from './components/shared/terraform-nav/terraform-nav';
+import { MeshNavComponent } from './components/shared/mesh-nav/mesh-nav';
 
 // Difficulty metadata for nav badges
 const DIFF: Record<string, string> = Object.fromEntries(
@@ -26,7 +28,7 @@ const DIFF: Record<string, string> = Object.fromEntries(
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, BreadcrumbComponent,
-            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent],
+            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent, TerraformNavComponent, MeshNavComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -70,7 +72,7 @@ export class App {
     ].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'terraform' | 'mesh' | 'hub'>(() => {
     const url = this.currentUrl();
     if (url.startsWith('/angular'))    return 'angular';
     if (url.startsWith('/csharp'))     return 'csharp';
@@ -91,6 +93,8 @@ export class App {
     if (url.startsWith('/aws'))        return 'aws';
     if (url.startsWith('/azure'))      return 'azure';
     if (url.startsWith('/linux'))      return 'linux';
+    if (url.startsWith('/terraform'))    return 'terraform';
+    if (url.startsWith('/service-mesh')) return 'mesh';
     return 'hub';
   });
 

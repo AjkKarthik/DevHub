@@ -102,6 +102,16 @@ export class ProgressService {
   readonly linuxCount  = computed(() => [...this._done()].filter(r => r.startsWith('linux-')).length);
   readonly linuxPct    = computed(() => Math.round((this.linuxCount() / this.linuxTotal) * 100));
 
+  // ── Terraform (keys prefixed 'tf-') ──────────────────────────────────────
+  readonly tfTotal  = 21;
+  readonly tfCount  = computed(() => [...this._done()].filter(r => r.startsWith('tf-')).length);
+  readonly tfPct    = computed(() => Math.round((this.tfCount() / this.tfTotal) * 100));
+
+  // ── Service Mesh (keys prefixed 'mesh-') ─────────────────────────────────
+  readonly meshTotal  = 19;
+  readonly meshCount  = computed(() => [...this._done()].filter(r => r.startsWith('mesh-')).length);
+  readonly meshPct    = computed(() => Math.round((this.meshCount() / this.meshTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

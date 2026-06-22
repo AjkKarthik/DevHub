@@ -1,0 +1,6 @@
+$accent: #466bb0;
+$tint: #eef2fb;
+
+.mesh-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.mesh-section h2 { font-size: 1.25rem; font-weight: 700; margin: 2rem 0 1rem; color: $accent; }
+:host-context(body.dark) .mesh-section h2 { color: #93c5fd; }

@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -104,6 +104,9 @@
         } @else if (currentSection() === 'linux') {
           <div class="nav-progress-bar" [style.width.%]="progress.linuxPct()"></div>
           <span class="nav-progress-label">{{ progress.linuxCount() }}/{{ progress.linuxTotal }} topics done</span>
+        } @else if (currentSection() === 'terraform') {
+          <div class="nav-progress-bar" [style.width.%]="progress.tfPct()"></div>
+          <span class="nav-progress-label">{{ progress.tfCount() }}/{{ progress.tfTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -863,6 +866,16 @@
       <app-linux-nav />
     }
 
+    <!-- ── Terraform Navigation ──────────────────────────────────── -->
+    @if (currentSection() === 'terraform') {
+      <app-terraform-nav />
+    }
+
+    <!-- ── Service Mesh Navigation ───────────────────────────────── -->
+    @if (currentSection() === 'mesh') {
+      <app-mesh-nav />
+    }
+
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {
 
@@ -1367,6 +1380,8 @@
         C# &amp; .NET &mdash; OOP &bull; Generics &bull; LINQ &bull; async/await &bull; Pattern Matching &bull; .NET 8–11
       } @else if (currentSection() === 'aspnet') {
         ASP.NET Core &mdash; Middleware &bull; Web APIs &bull; EF Core &bull; Auth &bull; Testing &bull; Deployment
+      } @else if (currentSection() === 'terraform') {
+        Terraform &mdash; HCL &bull; State &bull; Modules &bull; Backends &bull; CI/CD &bull; Workspaces &bull; OpenTofu
       } @else {
         Dev Learning Hub &mdash; Angular &bull; TypeScript &bull; JavaScript &bull; C# &bull; Node.js &bull; CSS &bull; SQL
       }

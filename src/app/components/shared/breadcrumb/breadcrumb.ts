@@ -662,6 +662,30 @@ const LINUX_LABELS: Record<string, string> = {
   'cron':                  'Cron & Scheduling',
 };
 
+const MESH_LABELS: Record<string, string> = {
+  'fundamentals':       'Service Mesh Fundamentals',
+  'istio-architecture': 'Istio Architecture',
+  'istio-install':      'Istio Installation & Configuration',
+  'linkerd':            'Linkerd',
+  'traffic-management': 'Traffic Management',
+  'resilience':         'Retries, Timeouts & Circuit Breaking',
+  'load-balancing':     'Load Balancing Algorithms',
+  'mtls':               'mTLS & Service Identity',
+  'authorization':      'Authorization Policies',
+  'metrics':            'Metrics & Telemetry',
+  'tracing':            'Distributed Tracing',
+  'kiali':              'Kiali & Dashboards',
+  'gateway-api':        'Kubernetes Gateway API',
+  'ingress-gateway':    'Ingress Gateway',
+  'performance':        'Service Mesh Performance',
+  'envoy':              'Envoy Proxy Deep Dive',
+  'ambient-mesh':       'Ambient Mesh',
+  'multi-cluster':      'Multi-cluster Mesh',
+  'consul':             'Consul Connect',
+  'cheatsheet':         'Service Mesh Cheat Sheet',
+  'interview-prep':     'Service Mesh Interview Prep',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -801,7 +825,8 @@ export class BreadcrumbComponent {
                  : segs[0] === 'aws'          ? AWS_LABELS
                  : segs[0] === 'azure'        ? AZURE_LABELS
                  : segs[0] === 'linux'        ? LINUX_LABELS
-                 : segs[0] === 'terraform'   ? TERRAFORM_LABELS
+                 : segs[0] === 'terraform'    ? TERRAFORM_LABELS
+                 : segs[0] === 'service-mesh' ? MESH_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

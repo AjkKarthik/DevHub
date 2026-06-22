@@ -1,0 +1,51 @@
+<div class="mesh-interview">
+  <div class="ip-header">
+    <div class="page-header-icon mesh-icon">🕸️</div>
+    <h1 class="page-title">Service Mesh Interview Prep</h1>
+    <p class="page-subtitle">25 real interview questions on <code>Istio</code>, traffic management, security, observability, Ambient Mesh, multi-cluster, Envoy, and Consul — from junior to senior level.</p>
+  </div>
+
+  <div class="ip-filters">
+    <div class="ip-filter-group">
+      <span class="ip-filter-label">Difficulty</span>
+      <div class="ip-chips">
+        @for (d of difficulties; track d) {
+          <button class="ip-chip" [class.active]="activeDifficulty() === d" (click)="setDifficulty(d)">
+            {{ d === 'All' ? 'All' : d.charAt(0).toUpperCase() + d.slice(1) }}
+          </button>
+        }
+      </div>
+    </div>
+    <div class="ip-filter-group">
+      <span class="ip-filter-label">Topic</span>
+      <div class="ip-chips">
+        @for (t of topics; track t) {
+          <button class="ip-chip" [class.active]="activeTopic() === t" (click)="setTopic(t)">{{ t }}</button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="ip-count">{{ filteredQuestions().length }} questions</div>
+
+  <div class="ip-list">
+    @for (item of filteredQuestions(); track item.q; let i = $index) {
+      <div class="ip-card" [class.open]="openIndex() === i">
+        <button class="ip-question" (click)="toggle(i)">
+          <div class="ip-q-meta">
+            <span class="ip-badge" [class]="'badge-' + item.difficulty">{{ item.difficulty }}</span>
+            <span class="ip-topic">{{ item.topic }}</span>
+          </div>
+          <div class="ip-q-text">{{ item.q }}</div>
+          <span class="ip-chevron">{{ openIndex() === i ? '▲' : '▼' }}</span>
+        </button>
+        @if (openIndex() === i) {
+          <div class="ip-answer" [innerHTML]="item.a"></div>
+        }
+      </div>
+    }
+    @if (filteredQuestions().length === 0) {
+      <p class="ip-empty">No questions match the selected filters.</p>
+    }
+  </div>
+</div>

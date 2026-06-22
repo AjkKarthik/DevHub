@@ -1,0 +1,40 @@
+<div class="mesh-cheatsheet">
+  <div class="cs-header">
+    <div class="page-header-icon mesh-icon">🕸️</div>
+    <h1 class="page-title">Service Mesh Cheatsheet</h1>
+    <p class="page-subtitle">Quick reference for <code>istioctl</code>, traffic management, security, observability, Ambient Mesh, multi-cluster, Envoy, and Consul.</p>
+  </div>
+
+  <div class="cs-controls">
+    <input
+      type="text"
+      class="cs-search"
+      placeholder="Search commands, CRDs, flags…"
+      [value]="searchQuery()"
+      (input)="onSearch($any($event.target).value)"
+    />
+    <div class="cs-tabs">
+      @for (cat of categories; track cat) {
+        <button class="cs-tab" [class.active]="activeCategory() === cat" (click)="setCategory(cat)">{{ cat }}</button>
+      }
+    </div>
+  </div>
+
+  <div class="cs-count">{{ filteredEntries().length }} entries</div>
+
+  <div class="cs-grid">
+    @for (entry of filteredEntries(); track entry.term) {
+      <div class="cs-card">
+        <div class="cs-card-header">
+          <span class="cs-badge">{{ entry.category }}</span>
+          <span class="cs-term">{{ entry.term }}</span>
+        </div>
+        <pre class="cs-syntax"><code>{{ entry.syntax }}</code></pre>
+        <p class="cs-desc">{{ entry.desc }}</p>
+      </div>
+    }
+    @if (filteredEntries().length === 0) {
+      <p class="cs-empty">No entries match your search.</p>
+    }
+  </div>
+</div>

@@ -124,7 +124,9 @@ export class SearchComponent {
     if (route.startsWith('aws-'))    return '/aws/'         + route.slice('aws-'.length);
     if (route.startsWith('azure-'))  return '/azure/'       + route.slice('azure-'.length);
     if (route.startsWith('linux-'))  return '/linux/'       + route.slice('linux-'.length);
-    if (route.startsWith('hub-'))    return '/'             + route.slice('hub-'.length);
+    if (route.startsWith('tf-'))     return '/terraform/'     + route.slice('tf-'.length);
+    if (route.startsWith('mesh-'))   return '/service-mesh/' + route.slice('mesh-'.length);
+    if (route.startsWith('hub-'))    return '/'              + route.slice('hub-'.length);
     return '/angular/' + route;
   }
 
