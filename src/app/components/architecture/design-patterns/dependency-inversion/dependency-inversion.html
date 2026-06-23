@@ -1,0 +1,21 @@
+<div class="dp-page">
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Dependency Inversion</h1>
+  <p class="page-subtitle">High-level modules must not depend on low-level modules — both depend on <code>abstractions</code>. Implemented via constructor injection and an IoC container wired in the Composition Root.</p>
+
+  <app-page-meta [readingTime]="20" difficulty="intermediate" since="Robert C. Martin 2000s" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="dp-dependency-inversion" nextRoute="/design-patterns/cheatsheet" nextLabel="Cheat Sheet" />
+</div>

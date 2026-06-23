@@ -714,6 +714,48 @@ const ARCH_LABELS: Record<string, string> = {
   'interview-prep':            'Architecture Interview Prep',
 };
 
+const DP_LABELS: Record<string, string> = {
+  'singleton':               'Singleton',
+  'factory-method':          'Factory Method',
+  'abstract-factory':        'Abstract Factory',
+  'builder':                 'Builder',
+  'prototype':               'Prototype',
+  'object-pool':             'Object Pool',
+  'adapter':                 'Adapter',
+  'bridge':                  'Bridge',
+  'composite':               'Composite',
+  'decorator':               'Decorator',
+  'facade':                  'Facade',
+  'flyweight':               'Flyweight',
+  'proxy':                   'Proxy',
+  'chain-of-responsibility': 'Chain of Responsibility',
+  'command':                 'Command',
+  'iterator':                'Iterator',
+  'mediator':                'Mediator',
+  'memento':                 'Memento',
+  'observer':                'Observer',
+  'state':                   'State',
+  'strategy':                'Strategy',
+  'template-method':         'Template Method',
+  'visitor':                 'Visitor',
+  'null-object':             'Null Object',
+  'repository':              'Repository',
+  'unit-of-work':            'Unit of Work',
+  'cqrs':                    'CQRS Pattern',
+  'event-sourcing':          'Event Sourcing',
+  'saga':                    'Saga Pattern',
+  'outbox':                  'Outbox Pattern',
+  'specification':           'Specification Pattern',
+  'clean-architecture':      'Clean Architecture Pattern',
+  'solid':                   'SOLID Principles',
+  'grasp':                   'GRASP Principles',
+  'dry-kiss-yagni':          'DRY, KISS & YAGNI',
+  'dependency-inversion':    'Dependency Inversion',
+  'cheatsheet':              'Design Patterns Cheat Sheet',
+  'interview-prep':          'Design Patterns Interview Prep',
+  'pattern-decision':        'Pattern Decision Guide',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -885,7 +927,8 @@ export class BreadcrumbComponent {
                  : segs[0] === 'terraform'    ? TERRAFORM_LABELS
                  : segs[0] === 'service-mesh'  ? MESH_LABELS
                  : segs[0] === 'system-design' ? SYSDESIGN_LABELS
-                 : segs[0] === 'arch-patterns' ? ARCH_LABELS
+                 : segs[0] === 'arch-patterns'    ? ARCH_LABELS
+                 : segs[0] === 'design-patterns' ? DP_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

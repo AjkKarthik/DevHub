@@ -484,7 +484,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Design Patterns', time: '~7 hrs',
       tagline: 'GoF, SOLID, GRASP, DRY — implementation patterns every developer references.',
       icon: '🧩', gradient: 'linear-gradient(135deg, #6b21a8 0%, #3b0764 100%)',
-      textDark: false, route: '/design-patterns', available: true,
+      textDark: false, route: '/design-patterns', available: true, topics: 39,
       sub: 'GoF · SOLID · Enterprise Patterns',
       roles: ['backend', 'architect'],
       highlights: [

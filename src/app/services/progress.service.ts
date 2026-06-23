@@ -122,6 +122,11 @@ export class ProgressService {
   readonly archCount  = computed(() => [...this._done()].filter(r => r.startsWith('arch-')).length);
   readonly archPct    = computed(() => Math.round((this.archCount() / this.archTotal) * 100));
 
+  // ── Design Patterns (keys prefixed 'dp-') ────────────────────────────────
+  readonly dpTotal  = 36;
+  readonly dpCount  = computed(() => [...this._done()].filter(r => r.startsWith('dp-')).length);
+  readonly dpPct    = computed(() => Math.round((this.dpCount() / this.dpTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

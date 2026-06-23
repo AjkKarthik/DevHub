@@ -1,0 +1,67 @@
+<div class="dp-page">
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Pattern Decision Guide</h1>
+  <p class="page-subtitle">Not sure which pattern to use? Use the <code>decision cards</code> and <code>comparison tables</code> to pick the right tool for the job.</p>
+
+  <section class="dp-section">
+    <h2>When to Use Which Pattern</h2>
+    <div class="pd-cards">
+      @for (card of decisionCards; track card.title) {
+        <div class="pd-card">
+          <div class="pd-card-icon">{{ card.icon }}</div>
+          <h3 class="pd-card-title">{{ card.title }}</h3>
+          <p class="pd-card-desc">{{ card.desc }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="dp-section">
+    <h2>Pattern Comparisons</h2>
+    <div class="pd-comp-tabs">
+      @for (comp of comparisons; track comp.title; let i = $index) {
+        <button class="pd-comp-tab" [class.active]="activeComparison() === i" (click)="setComparison(i)">
+          {{ comp.title }}
+        </button>
+      }
+    </div>
+
+    <div class="pd-table-wrap">
+      <table class="pd-table">
+        <thead>
+          <tr>
+            <th>Criteria</th>
+            @for (p of current.patterns; track p) {
+              <th>{{ p }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of current.criteria; track row.label) {
+            <tr>
+              <td class="pd-row-label">{{ row.label }}</td>
+              @for (val of row.values; track $index) {
+                <td>{{ val }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="dp-section">
+    <h2>Quick Anti-Pattern Checklist</h2>
+    <ul class="pd-checklist">
+      <li><strong>Singleton abuse</strong> — global mutable state? Use DI-registered singleton + interface instead.</li>
+      <li><strong>IQueryable leak</strong> — returning IQueryable from a repository? Use IReadOnlyList or Specification.</li>
+      <li><strong>SaveChanges in repository</strong> — committing per-repo? Move to Unit of Work / service layer.</li>
+      <li><strong>Domain logic in controller</strong> — business rules in HTTP handlers? Move to domain entities.</li>
+      <li><strong>Non-idempotent Saga steps</strong> — message retried twice? Add idempotency key check.</li>
+      <li><strong>Captive dependency</strong> — Scoped injected into Singleton? Use IServiceScopeFactory.</li>
+      <li><strong>Speculative generality</strong> — building plugin systems nobody asked for? YAGNI.</li>
+      <li><strong>Premature abstraction</strong> — extracting an interface for one implementation? Wait for the second.</li>
+      <li><strong>Dark mode via media query</strong> — never @media (prefers-color-scheme) — use :host-context(body.dark).</li>
+    </ul>
+  </section>
+</div>

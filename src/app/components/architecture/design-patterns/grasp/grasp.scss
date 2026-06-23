@@ -1,0 +1,9 @@
+$accent: #0369a1;
+$tint: #e0f2fe;
+.dp-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-subtitle code { background: $tint; color: $accent; border-radius: 4px; padding: .1em .35em; font-size: .9em; }
+.dp-section h2 { color: $accent; border-bottom: 2px solid $tint; padding-bottom: .4rem; margin-bottom: 1.5rem; }
+:host-context(body.dark) {
+  .page-subtitle code { background: #082f49; color: #7dd3fc; }
+  .dp-section h2 { color: #7dd3fc; border-color: #082f49; }
+}
