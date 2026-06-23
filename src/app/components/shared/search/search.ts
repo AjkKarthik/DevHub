@@ -126,7 +126,8 @@ export class SearchComponent {
     if (route.startsWith('linux-'))  return '/linux/'       + route.slice('linux-'.length);
     if (route.startsWith('tf-'))     return '/terraform/'     + route.slice('tf-'.length);
     if (route.startsWith('mesh-'))        return '/service-mesh/'  + route.slice('mesh-'.length);
-    if (route.startsWith('sysdesign-'))   return '/system-design/' + route.slice('sysdesign-'.length);
+    if (route.startsWith('sysdesign-'))   return '/system-design/'  + route.slice('sysdesign-'.length);
+    if (route.startsWith('arch-'))        return '/arch-patterns/'  + route.slice('arch-'.length);
     if (route.startsWith('hub-'))    return '/'              + route.slice('hub-'.length);
     return '/angular/' + route;
   }

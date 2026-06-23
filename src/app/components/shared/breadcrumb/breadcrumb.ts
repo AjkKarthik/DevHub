@@ -686,6 +686,34 @@ const MESH_LABELS: Record<string, string> = {
   'interview-prep':     'Service Mesh Interview Prep',
 };
 
+const ARCH_LABELS: Record<string, string> = {
+  'monolith-vs-modular':       'Monolith vs Modular Monolith',
+  'layered-architecture':      'Layered Architecture',
+  'clean-architecture':        'Clean / Onion Architecture',
+  'hexagonal-architecture':    'Hexagonal Architecture',
+  'vertical-slice':            'Vertical Slice Architecture',
+  'service-oriented':          'Service-Oriented Architecture',
+  'microservices-principles':  'Microservices Principles',
+  'service-communication':     'Service Communication',
+  'api-gateway-pattern':       'API Gateway Pattern',
+  'service-discovery':         'Service Discovery',
+  'circuit-breaker':           'Circuit Breaker',
+  'sidecar-service-mesh':      'Sidecar & Service Mesh',
+  'event-driven':              'Event-Driven Architecture',
+  'cqrs-event-sourcing':       'CQRS & Event Sourcing',
+  'saga-choreography':         'Saga & Choreography',
+  'inbox-outbox':              'Inbox & Outbox Pattern',
+  'ddd-core':                  'Domain-Driven Design Core',
+  'bounded-contexts':          'Bounded Contexts',
+  'aggregates-domain-events':  'Aggregates & Domain Events',
+  'anti-corruption-layer':     'Anti-Corruption Layer',
+  'strangler-fig':             'Strangler Fig Pattern',
+  'backend-for-frontend':      'Backend for Frontend (BFF)',
+  'adr':                       'Architecture Decision Records',
+  'pattern-comparison':        'Pattern Comparison Guide',
+  'interview-prep':            'Architecture Interview Prep',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -857,6 +885,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'terraform'    ? TERRAFORM_LABELS
                  : segs[0] === 'service-mesh'  ? MESH_LABELS
                  : segs[0] === 'system-design' ? SYSDESIGN_LABELS
+                 : segs[0] === 'arch-patterns' ? ARCH_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

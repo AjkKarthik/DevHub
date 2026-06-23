@@ -117,6 +117,11 @@ export class ProgressService {
   readonly sysdesignCount  = computed(() => [...this._done()].filter(r => r.startsWith('sysdesign-')).length);
   readonly sysdesignPct    = computed(() => Math.round((this.sysdesignCount() / this.sysdesignTotal) * 100));
 
+  // ── Architecture Patterns (keys prefixed 'arch-') ────────────────────────
+  readonly archTotal  = 22;
+  readonly archCount  = computed(() => [...this._done()].filter(r => r.startsWith('arch-')).length);
+  readonly archPct    = computed(() => Math.round((this.archCount() / this.archTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);
