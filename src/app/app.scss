@@ -218,6 +218,7 @@ header {
 .left-nav.section-sysdesign  .nav-progress-bar { background: linear-gradient(90deg, #334155, #0f172a); }
 .left-nav.section-arch       .nav-progress-bar { background: linear-gradient(90deg, #7c3aed, #5b21b6); }
 .left-nav.section-dp         .nav-progress-bar { background: linear-gradient(90deg, #0369a1, #075985); }
+.left-nav.section-security   .nav-progress-bar { background: linear-gradient(90deg, #dc2626, #991b1b); }
 
 .nav-progress-label {
   display: block;
@@ -532,6 +533,15 @@ main {
   body.dark &.active { background: #075985; color: #fff; }
 }
 
+// Security section — red active state
+.left-nav.section-security a {
+  &:hover { background: #fef2f2; color: #dc2626; }
+  &.active { background: #dc2626; color: #fff; }
+
+  body.dark &:hover { background: #450a0a; color: #fca5a5; }
+  body.dark &.active { background: #991b1b; color: #fff; }
+}
+
 .nav-soon-note {
   font-size: .78rem; color: var(--text3, #9ca3af);
   margin: 0; padding: .25rem .75rem; line-height: 1.5;
@@ -662,6 +672,7 @@ footer {
 .left-nav.section-sysdesign  .nav-hub-back:hover { color: #0f172a !important; background: #f1f5f9 !important; }
 .left-nav.section-arch       .nav-hub-back:hover { color: #5b21b6 !important; background: #f5f3ff !important; }
 .left-nav.section-dp         .nav-hub-back:hover { color: #075985 !important; background: #eff6ff !important; }
+.left-nav.section-security   .nav-hub-back:hover { color: #dc2626 !important; background: #fef2f2 !important; }
 
 // ── Hub-aware hamburger bar colour ────────────────────────────────────────────
 // Default already uses var(--text2). Sections tint the bars to match accent.
@@ -713,3 +724,5 @@ header.section-arch          .nav-toggle span { background: #7c3aed; }
 body.dark header.section-arch        .nav-toggle span { background: #c4b5fd; }
 header.section-dp            .nav-toggle span { background: #0369a1; }
 body.dark header.section-dp          .nav-toggle span { background: #7dd3fc; }
+header.section-security      .nav-toggle span { background: #dc2626; }
+body.dark header.section-security    .nav-toggle span { background: #fca5a5; }

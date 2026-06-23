@@ -756,6 +756,34 @@ const DP_LABELS: Record<string, string> = {
   'pattern-decision':        'Pattern Decision Guide',
 };
 
+const SECURITY_LABELS: Record<string, string> = {
+  'fundamentals':            'Security Fundamentals',
+  'owasp-top-10':            'OWASP Top 10',
+  'threat-modelling':        'Threat Modelling',
+  'secure-coding':           'Secure Coding',
+  'password-security':       'Password Security',
+  'oauth-oidc':              'OAuth 2.0 & OIDC',
+  'jwt':                     'JSON Web Tokens',
+  'mfa':                     'Multi-Factor Authentication',
+  'sso':                     'Single Sign-On',
+  'rbac-abac':               'RBAC & ABAC',
+  'claims-identity':         'Claims & Identity',
+  'api-security':            'API Security',
+  'xss':                     'Cross-Site Scripting (XSS)',
+  'csrf-clickjacking':       'CSRF & Clickjacking',
+  'injection':               'Injection Attacks',
+  'security-headers':        'Security Headers',
+  'tls-https':               'TLS & HTTPS',
+  'secrets-management':      'Secrets Management',
+  'container-security':      'Container Security',
+  'symmetric-encryption':    'Symmetric Encryption',
+  'asymmetric-cryptography': 'Asymmetric Cryptography',
+  'hashing':                 'Hashing & MACs',
+  'supply-chain':            'Supply Chain Security',
+  'cheatsheet':              'Security Cheat Sheet',
+  'interview-prep':          'Security Interview Prep',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -929,6 +957,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'system-design' ? SYSDESIGN_LABELS
                  : segs[0] === 'arch-patterns'    ? ARCH_LABELS
                  : segs[0] === 'design-patterns' ? DP_LABELS
+                 : segs[0] === 'security'        ? SECURITY_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

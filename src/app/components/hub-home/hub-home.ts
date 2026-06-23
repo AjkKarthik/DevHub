@@ -540,7 +540,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Security & Auth', time: '~6 hrs',
       tagline: 'OAuth 2.0, JWT, OpenID Connect, HTTPS and OWASP best practices.',
       icon: '🔐', gradient: 'linear-gradient(135deg, #374151 0%, #111827 100%)',
-      textDark: false, route: '/security', available: true,
+      textDark: false, route: '/security', available: true, topics: 25,
       sub: 'JWT · OAuth 2.0 · OpenID Connect',
       roles: ['frontend', 'backend', 'devops', 'architect'],
       highlights: [

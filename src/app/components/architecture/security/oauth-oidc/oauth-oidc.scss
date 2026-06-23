@@ -1,0 +1,9 @@
+$accent: #dc2626;
+$tint: #fef2f2;
+.sec-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-header-icon.sec-icon { font-size: 1.8rem; }
+.sec-section h2 { font-size: 1.35rem; font-weight: 700; color: $accent; margin: 2rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid rgba(220,38,38,.15); }
+.page-title { font-size: 2rem; font-weight: 800; margin: 0.5rem 0 0.25rem; }
+.page-subtitle { color: #64748b; margin-bottom: 1.5rem; }
+.page-subtitle code { background: $tint; color: $accent; padding: 0.1em 0.4em; border-radius: 4px; }
+:host-context(body.dark) { .page-title { color: #f1f5f9; } .page-subtitle { color: #94a3b8; } .sec-section h2 { color: #fca5a5; border-color: rgba(252,165,165,.15); } }

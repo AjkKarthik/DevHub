@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'" [class.section-sysdesign]="currentSection()==='system-design'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'" [class.section-sysdesign]="currentSection()==='system-design'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -116,6 +116,9 @@
         } @else if (currentSection() === 'design-patterns') {
           <div class="nav-progress-bar" [style.width.%]="progress.dpPct()"></div>
           <span class="nav-progress-label">{{ progress.dpCount() }}/{{ progress.dpTotal }} topics done</span>
+        } @else if (currentSection() === 'security') {
+          <div class="nav-progress-bar" [style.width.%]="progress.secPct()"></div>
+          <span class="nav-progress-label">{{ progress.secCount() }}/{{ progress.secTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -898,6 +901,11 @@
     <!-- ── Design Patterns Navigation ────────────────────────────── -->
     @if (currentSection() === 'design-patterns') {
       <app-dp-nav />
+    }
+
+    <!-- ── Security Navigation ───────────────────────────────────── -->
+    @if (currentSection() === 'security') {
+      <app-security-nav />
     }
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->

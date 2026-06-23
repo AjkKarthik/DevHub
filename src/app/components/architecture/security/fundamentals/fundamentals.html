@@ -1,0 +1,15 @@
+<div class="sec-page">
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Security Fundamentals</h1>
+  <p class="page-subtitle">CIA triad, defence-in-depth, least privilege, zero trust, and the security mindset every developer needs.</p>
+  <app-page-meta [readingTime]="18" difficulty="beginner" since="Always" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="sec-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="sec-fundamentals" nextRoute="/security/owasp-top-10" nextLabel="OWASP Top 10" />
+</div>

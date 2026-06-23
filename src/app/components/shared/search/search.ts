@@ -128,6 +128,8 @@ export class SearchComponent {
     if (route.startsWith('mesh-'))        return '/service-mesh/'  + route.slice('mesh-'.length);
     if (route.startsWith('sysdesign-'))   return '/system-design/'  + route.slice('sysdesign-'.length);
     if (route.startsWith('arch-'))        return '/arch-patterns/'  + route.slice('arch-'.length);
+    if (route.startsWith('dp-'))          return '/design-patterns/' + route.slice('dp-'.length);
+    if (route.startsWith('sec-'))         return '/security/'        + route.slice('sec-'.length);
     if (route.startsWith('hub-'))    return '/'              + route.slice('hub-'.length);
     return '/angular/' + route;
   }

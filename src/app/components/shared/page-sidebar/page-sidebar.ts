@@ -196,6 +196,29 @@ const ASPNET_DEFAULT: SidebarData = {
   ],
 };
 
+const SEC_DEFAULT: SidebarData = {
+  apis: ['bcrypt/argon2', 'JWT (RS256)', 'OAuth PKCE', 'AES-256-GCM', 'HMAC-SHA256', 'CSP nonces'],
+  related: [
+    { label: 'Security Home',      route: '/security' },
+    { label: 'OWASP Top 10',       route: '/security/owasp-top-10' },
+    { label: 'Security Cheatsheet', route: '/security/cheatsheet' },
+  ],
+  tip: 'Hash passwords with Argon2id (memory ≥ 64 MB, iterations ≥ 3). Never SHA-256 — it\'s too fast for passwords.',
+  docs: [
+    { label: 'OWASP Cheat Sheet Series', url: 'https://cheatsheetseries.owasp.org/' },
+    { label: 'MDN — Web Security',       url: 'https://developer.mozilla.org/en-US/docs/Web/Security' },
+    { label: 'Security Headers',         url: 'https://securityheaders.com/' },
+  ],
+  resources: [
+    { label: 'HackTricks',      url: 'https://book.hacktricks.xyz/', badge: 'docs' },
+    { label: 'PortSwigger Web Security Academy', url: 'https://portswigger.net/web-security', badge: 'blog' },
+  ],
+  gotchas: [
+    'SameSite=Strict prevents CSRF for cookies but has no effect on Authorization header tokens.',
+    'JWT "alg:none" attack: always allowlist acceptable algorithms server-side and never trust the header alone.',
+  ],
+};
+
 export const SIDEBAR_MAP: Record<string, SidebarData> = {
 
   // ── Signals & State ────────────────────────────────────────────────────────
@@ -5163,7 +5186,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security'>(() =>
     this.currentUrl().startsWith('/csharp')       ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')     ? 'aspnet'
     : this.currentUrl().startsWith('/sql')        ? 'sql'
@@ -5172,6 +5195,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/javascript') ? 'javascript'
     : this.currentUrl().startsWith('/html')       ? 'html'
     : this.currentUrl().startsWith('/css')        ? 'css'
+    : this.currentUrl().startsWith('/security')   ? 'security'
     : 'angular'
   );
 
@@ -5186,6 +5210,7 @@ export class PageSidebarComponent {
            : this.section() === 'javascript' ? JS_DEFAULT
            : this.section() === 'html'       ? HTML_DEFAULT
            : this.section() === 'css'        ? CSS_DEFAULT
+           : this.section() === 'security'   ? SEC_DEFAULT
            : DEFAULT);
   });
 

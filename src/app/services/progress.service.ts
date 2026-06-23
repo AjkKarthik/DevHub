@@ -127,6 +127,11 @@ export class ProgressService {
   readonly dpCount  = computed(() => [...this._done()].filter(r => r.startsWith('dp-')).length);
   readonly dpPct    = computed(() => Math.round((this.dpCount() / this.dpTotal) * 100));
 
+  // ── Security (keys prefixed 'sec-') ──────────────────────────────────────
+  readonly secTotal  = 23;
+  readonly secCount  = computed(() => [...this._done()].filter(r => r.startsWith('sec-')).length);
+  readonly secPct    = computed(() => Math.round((this.secCount() / this.secTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);
