@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'" [class.section-sysdesign]="currentSection()==='system-design'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -107,6 +107,9 @@
         } @else if (currentSection() === 'terraform') {
           <div class="nav-progress-bar" [style.width.%]="progress.tfPct()"></div>
           <span class="nav-progress-label">{{ progress.tfCount() }}/{{ progress.tfTotal }} topics done</span>
+        } @else if (currentSection() === 'system-design') {
+          <div class="nav-progress-bar" [style.width.%]="progress.sysdesignPct()"></div>
+          <span class="nav-progress-label">{{ progress.sysdesignCount() }}/{{ progress.sysdesignTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -874,6 +877,11 @@
     <!-- ── Service Mesh Navigation ───────────────────────────────── -->
     @if (currentSection() === 'mesh') {
       <app-mesh-nav />
+    }
+
+    <!-- ── System Design Navigation ─────────────────────────────── -->
+    @if (currentSection() === 'system-design') {
+      <app-sysdesign-nav />
     }
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->

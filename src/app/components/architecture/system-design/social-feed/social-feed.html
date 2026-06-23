@@ -1,0 +1,15 @@
+<div class="sysdesign-page">
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Design: Social Feed</h1>
+  <p class="page-subtitle">Fan-out on write, read, or hybrid — <code>Redis sorted sets</code> per user for pre-computed feeds, celebrity threshold to cap write amplification, cursor pagination for stable infinite scroll.</p>
+  <app-page-meta [readingTime]="28" difficulty="advanced" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="sysdesign-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="sysdesign-social-feed" nextRoute="/system-design/chat-application" nextLabel="Design: Chat Application" />
+</div>

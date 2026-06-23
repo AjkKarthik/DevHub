@@ -526,7 +526,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'System Design', time: '~10 hrs',
       tagline: 'Architect scalable systems — trade-offs, capacity planning & distributed patterns.',
       icon: '🏗️', gradient: 'linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)',
-      textDark: false, route: '/system-design', available: true,
+      textDark: false, route: '/system-design', available: true, topics: 26,
       sub: 'Scalability · Reliability · Trade-offs',
       roles: ['architect'],
       highlights: [

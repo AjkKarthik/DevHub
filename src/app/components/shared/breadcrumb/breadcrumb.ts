@@ -686,6 +686,35 @@ const MESH_LABELS: Record<string, string> = {
   'interview-prep':     'Service Mesh Interview Prep',
 };
 
+const SYSDESIGN_LABELS: Record<string, string> = {
+  'framework':                'System Design Framework',
+  'capacity-estimation':      'Capacity Estimation',
+  'cap-theorem':              'CAP & PACELC Theorems',
+  'networking':               'Networking Fundamentals',
+  'scaling':                  'Horizontal vs Vertical Scaling',
+  'load-balancing':           'Load Balancing',
+  'caching':                  'Caching Strategies',
+  'cdn':                      'Content Delivery Networks',
+  'sharding':                 'Database Sharding',
+  'sql-vs-nosql':             'SQL vs NoSQL',
+  'replication':              'Replication Strategies',
+  'indexes':                  'Indexes & Query Optimisation',
+  'distributed-transactions': 'Distributed Transactions',
+  'high-availability':        'High Availability Design',
+  'fault-tolerance':          'Fault Tolerance Patterns',
+  'distributed-tracing':      'Distributed Tracing',
+  'disaster-recovery':        'Disaster Recovery',
+  'url-shortener':            'Design a URL Shortener',
+  'social-feed':              'Design a Social Feed',
+  'chat-application':         'Design a Chat Application',
+  'search-engine':            'Design a Search Engine',
+  'payment-system':           'Design a Payment System',
+  'video-streaming':          'Design Netflix / YouTube',
+  'ai-ml-system-design':      'AI/ML System Design',
+  'cheatsheet':               'System Design Cheat Sheet',
+  'interview-prep':           'System Design Interview Guide',
+};
+
 const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
   'angular':         { label: 'Angular',               path: '/angular'         },
   'csharp':          { label: 'C#',                    path: '/csharp'          },
@@ -826,7 +855,8 @@ export class BreadcrumbComponent {
                  : segs[0] === 'azure'        ? AZURE_LABELS
                  : segs[0] === 'linux'        ? LINUX_LABELS
                  : segs[0] === 'terraform'    ? TERRAFORM_LABELS
-                 : segs[0] === 'service-mesh' ? MESH_LABELS
+                 : segs[0] === 'service-mesh'  ? MESH_LABELS
+                 : segs[0] === 'system-design' ? SYSDESIGN_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

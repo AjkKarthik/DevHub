@@ -1,0 +1,29 @@
+<div class="sysdesign-page">
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">System Design Interview Prep</h1>
+  <p class="page-subtitle">20 essential system design questions with structured answers — from <code>caching basics</code> to <code>globally consistent distributed transactions</code>. Covering the real patterns senior engineers use.</p>
+  <app-page-meta [readingTime]="20" difficulty="advanced" tech="javascript" />
+
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem;">
+    @for (topic of ['Caching','Scaling','Database','Availability','Consistency','Messaging','API Design','Sharding','Distributed Systems','Real Systems','Storage','Reliability','Search','Security','CDN','Distributed Transactions']; track topic) {
+      <span style="background:#f1f5f9;color:#0f172a;font-size:0.75rem;font-weight:600;padding:0.2rem 0.6rem;border-radius:20px;border:1px solid #e2e8f0;">{{ topic }}</span>
+    }
+  </div>
+
+  @for (q of questions; track q.id) {
+    <div class="ip-card">
+      <div class="ip-header">
+        <span class="ip-badge" [class]="difficultyClass(q.difficulty)">{{ q.difficulty }}</span>
+        <span class="ip-badge" style="background:#f1f5f9;color:#0f172a;">{{ q.topic }}</span>
+        <h3>Q{{ q.id }}</h3>
+      </div>
+      <div class="ip-question">{{ q.question }}</div>
+      <ul style="font-size:0.8rem;color:#64748b;margin:0 0 0.75rem;padding-left:1.2rem;">
+        @for (kp of q.keyPoints; track kp) {
+          <li>{{ kp }}</li>
+        }
+      </ul>
+      <div class="ip-answer">{{ q.answer }}</div>
+    </div>
+  }
+</div>

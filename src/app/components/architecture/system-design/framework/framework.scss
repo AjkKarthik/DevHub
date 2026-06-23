@@ -1,0 +1,8 @@
+$accent: #0f172a;
+$tint: #f1f5f9;
+
+.sysdesign-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.sysdesign-section h2 { font-size: 1.25rem; font-weight: 700; color: $accent; margin: 0 0 1rem; }
+.sysdesign-icon { font-size: 1.8rem; }
+
+:host-context(body.dark) .sysdesign-section h2 { color: #94a3b8; }

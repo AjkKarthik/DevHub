@@ -112,6 +112,11 @@ export class ProgressService {
   readonly meshCount  = computed(() => [...this._done()].filter(r => r.startsWith('mesh-')).length);
   readonly meshPct    = computed(() => Math.round((this.meshCount() / this.meshTotal) * 100));
 
+  // ── System Design (keys prefixed 'sysdesign-') ───────────────────────────
+  readonly sysdesignTotal  = 24;
+  readonly sysdesignCount  = computed(() => [...this._done()].filter(r => r.startsWith('sysdesign-')).length);
+  readonly sysdesignPct    = computed(() => Math.round((this.sysdesignCount() / this.sysdesignTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

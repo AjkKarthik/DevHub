@@ -1,0 +1,15 @@
+<div class="sysdesign-page">
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Disaster Recovery</h1>
+  <p class="page-subtitle">Design for the worst — <code>RTO</code> and <code>RPO</code> drive every decision from cold standby to active-active. Cross-region replication, automated <code>Route53</code> failover, and PITR to recover from accidental deletes.</p>
+  <app-page-meta [readingTime]="24" difficulty="advanced" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="sysdesign-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="sysdesign-disaster-recovery" nextRoute="/system-design/url-shortener" nextLabel="Design: URL Shortener" />
+</div>
