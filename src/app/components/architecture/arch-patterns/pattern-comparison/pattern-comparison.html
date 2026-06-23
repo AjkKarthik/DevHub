@@ -1,0 +1,81 @@
+<div class="arch-page">
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Pattern Comparison</h1>
+  <p class="page-subtitle">Side-by-side: when to use each pattern, what to avoid, and the key <code>trade-off</code> you accept.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" tech="javascript" />
+
+  <div class="pc-controls">
+    <div class="pc-filter-tabs">
+      @for (cat of categories; track cat) {
+        <button
+          class="pc-tab"
+          [class.active]="selectedCategory() === cat"
+          (click)="selectedCategory.set(cat)"
+        >{{ cat }}</button>
+      }
+    </div>
+    <span class="pc-count">{{ filteredPatterns().length }} patterns</span>
+  </div>
+
+  <div class="pc-table-wrap">
+    <table class="pc-table">
+      <thead>
+        <tr>
+          <th>Pattern</th>
+          <th>Use When</th>
+          <th>Avoid When</th>
+          <th>Key Trade-off</th>
+          <th>Complexity</th>
+          <th>Team</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of filteredPatterns(); track p.pattern) {
+          <tr class="pc-row" [class.pc-category-header]="false">
+            <td class="pc-name">
+              <a [href]="p.route">{{ p.pattern }}</a>
+              <span class="pc-cat-badge">{{ p.category }}</span>
+            </td>
+            <td class="pc-use">{{ p.useWhen }}</td>
+            <td class="pc-avoid">{{ p.avoidWhen }}</td>
+            <td class="pc-trade">{{ p.keyTrade }}</td>
+            <td class="pc-complexity">
+              <span class="complexity-badge" [class]="complexityClass(p.complexity)">{{ p.complexity }}</span>
+            </td>
+            <td class="pc-team">{{ p.teamSize }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pc-legend arch-section">
+    <h2>Reading the Table</h2>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <span class="complexity-badge c-low">Low</span>
+        <p>Familiar concepts; minimal boilerplate; works well in small teams new to the pattern.</p>
+      </div>
+      <div class="legend-item">
+        <span class="complexity-badge c-medium">Medium</span>
+        <p>Some infrastructure or operational setup required; team needs familiarity with async or distributed concepts.</p>
+      </div>
+      <div class="legend-item">
+        <span class="complexity-badge c-high">High</span>
+        <p>Significant learning curve or operational overhead; best introduced when simpler approaches are insufficient.</p>
+      </div>
+    </div>
+
+    <div class="pc-advice">
+      <h3>Decision heuristics</h3>
+      <ul>
+        <li><strong>Start simple:</strong> Monolith → Modular Monolith → Microservices — move right only when pain justifies complexity.</li>
+        <li><strong>Sync vs Async:</strong> Prefer synchronous REST/gRPC for simple request-response; adopt async messaging only when temporal decoupling or fan-out is genuinely needed.</li>
+        <li><strong>DDD is for complex domains:</strong> If your domain is simple CRUD, DDD overhead is not justified. Apply when multiple teams work on overlapping models.</li>
+        <li><strong>Resilience patterns always apply:</strong> Circuit breaker and Outbox are not optional in production microservices — add them from the start, not after incidents.</li>
+        <li><strong>Migration patterns are exit ramps:</strong> Strangler Fig and ACL are tools for escaping legacy systems — only relevant if you have legacy to escape.</li>
+      </ul>
+    </div>
+  </div>
+</div>

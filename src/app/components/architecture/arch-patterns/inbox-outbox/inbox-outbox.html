@@ -1,0 +1,21 @@
+<div class="arch-page">
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Inbox & Outbox Pattern</h1>
+  <p class="page-subtitle">Guarantee exactly-once delivery — <code>Outbox</code> eliminates the dual-write race on the producer side; <code>Inbox</code> prevents duplicate processing on the consumer side.</p>
+
+  <app-page-meta [readingTime]="17" difficulty="advanced" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="arch-inbox-outbox" nextRoute="/arch-patterns/ddd-core" nextLabel="Domain-Driven Design Core" />
+</div>

@@ -498,7 +498,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Architecture Patterns', time: '~8 hrs',
       tagline: 'When to use Microservices, Event-Driven, CQRS, DDD, or a Monolith.',
       icon: '◉', gradient: 'linear-gradient(135deg, #1a1a2e 0%, #4a1d8c 100%)',
-      textDark: false, route: '/arch-patterns', available: true,
+      textDark: false, route: '/arch-patterns', available: true, topics: 25,
       sub: 'Microservices · DDD · CQRS · Hexagonal',
       roles: ['architect'],
       highlights: [

@@ -1,0 +1,310 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
+import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { TheoryBlockComponent, TheoryPoint } from '../../../shared/theory-block/theory-block';
+import { CodeBlockComponent, CodeTab } from '../../../shared/code-block/code-block';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
+import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
+import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
+
+@Component({
+  selector: 'app-arch-clean-architecture',
+  standalone: true,
+  imports: [CommonModule, PageMetaComponent, QuickRefComponent, TheoryBlockComponent,
+    CodeBlockComponent, CommonMistakesComponent, ChallengeBlockComponent, QuizBlockComponent,
+    QnaBlockComponent, RevisionCardComponent, PageCompleteComponent],
+  templateUrl: './clean-architecture.html',
+  styleUrl: './clean-architecture.scss',
+})
+export class ArchCleanArchitecture {
+
+  quickRef: QuickRefItem[] = [
+    { name: 'Dependency Rule', type: 'keyword', desc: 'Source code dependencies point INWARD only — never outward' },
+    { name: 'Entities', type: 'keyword', desc: 'Innermost ring: enterprise-wide business rules and domain objects' },
+    { name: 'Use Cases', type: 'keyword', desc: 'Application-specific business rules that orchestrate entities' },
+    { name: 'Interface Adapters', type: 'keyword', desc: 'Controllers, presenters, gateways — convert formats between use cases and external systems' },
+    { name: 'Frameworks & Drivers', type: 'keyword', desc: 'Outermost ring: DB, web framework, UI — plugins to the application' },
+    { name: 'Dependency Inversion', type: 'keyword', desc: 'High-level modules define interfaces; low-level modules implement them' },
+    { name: 'Onion Architecture', type: 'keyword', desc: "Jeffrey Palermo's name for the same concentric-ring pattern" },
+  ];
+
+  theory: TheoryPoint[] = [
+    {
+      heading: 'The Dependency Rule',
+      points: [
+        'The single rule: source code dependencies point only inward toward higher-level policy.',
+        'The inner rings (Entities, Use Cases) know nothing about outer rings (Controllers, Databases, UI).',
+        'Outer rings change far more often than inner rings — the rule protects stable policy from volatile detail.',
+        'A database is a detail. An HTTP framework is a detail. They are plugins that the application does not depend on.',
+      ],
+    },
+    {
+      heading: 'The Four Rings',
+      points: [
+        'Entities: pure business objects — Order, Customer, Money — with enterprise-wide business rules.',
+        'Use Cases: application-specific scenarios — PlaceOrder, CancelSubscription — orchestrating entities.',
+        'Interface Adapters: controllers parse HTTP → command; presenters map result → response DTO; repositories implement interfaces.',
+        'Frameworks & Drivers: Express.js, Postgres, React — all plug in at the outermost ring. Replaceable.',
+      ],
+    },
+    {
+      heading: 'Testability by Design',
+      points: [
+        'Because Use Cases depend only on interfaces (IOrderRepository), they test with in-memory fakes — no database needed.',
+        'Entity unit tests have zero imports from frameworks; they run in milliseconds.',
+        'Integration tests wire up real Infrastructure; unit tests are completely isolated.',
+        'This is the payoff: a large domain that is tested without spin-up cost.',
+      ],
+    },
+  ];
+
+  codeTabs: CodeTab[] = [
+    {
+      label: 'Ring Structure',
+      language: 'bash',
+      code: `src/
+  Domain/                  # Entities ring — zero dependencies
+    Order.ts
+    IOrderRepository.ts    # interface defined HERE, not in infra
+    Money.ts
+  Application/             # Use Cases ring — depends on Domain only
+    PlaceOrderUseCase.ts
+    PlaceOrderCommand.ts
+  Infrastructure/          # Interface Adapters + Frameworks ring
+    Persistence/
+      SqlOrderRepository.ts   # implements IOrderRepository
+      AppDbContext.ts
+    Http/
+      OrdersController.ts     # adapter: HTTP → use case command
+      OrderPresenter.ts       # adapter: result → HTTP response DTO`
+    },
+    {
+      label: 'Use Case (depends only on interfaces)',
+      language: 'typescript',
+      code: `// Application/PlaceOrderUseCase.ts
+// Only depends on Domain interfaces — no DB, no HTTP
+export class PlaceOrderUseCase {
+  constructor(
+    private repo: IOrderRepository,       // Domain interface
+    private catalog: ICatalogService,     // Domain interface
+    private events: IDomainEventBus,      // Domain interface
+  ) {}
+
+  async execute(cmd: PlaceOrderCommand): Promise<PlaceOrderResult> {
+    const order = Order.create(cmd.customerId);
+
+    for (const line of cmd.lines) {
+      const price = await this.catalog.getPrice(line.productId);
+      order.addLine(line.productId, line.qty, price);
+    }
+
+    order.confirm();
+    await this.repo.save(order);
+    this.events.publish(new OrderPlacedEvent(order.id));
+
+    return { orderId: order.id };
+  }
+}`
+    },
+    {
+      label: 'Infrastructure Adapter',
+      language: 'typescript',
+      code: `// Infrastructure/Persistence/SqlOrderRepository.ts
+// Depends inward on the Domain interface — never vice versa
+import { IOrderRepository } from '../../Domain/IOrderRepository';
+import { Order } from '../../Domain/Order';
+
+export class SqlOrderRepository implements IOrderRepository {
+  constructor(private db: AppDbContext) {}
+
+  async save(order: Order): Promise<void> {
+    const record = OrderMapper.toRecord(order); // domain → DB record
+    await this.db.orders.upsert(record);
+  }
+
+  async findById(id: string): Promise<Order | null> {
+    const record = await this.db.orders.findOne({ id });
+    return record ? OrderMapper.toDomain(record) : null;
+  }
+}
+
+// Infrastructure/Http/OrdersController.ts
+export class OrdersController {
+  constructor(private useCase: PlaceOrderUseCase) {}
+
+  async post(req: Request): Promise<Response> {
+    const cmd = PlaceOrderCommand.fromRequest(req.body); // HTTP → command
+    const result = await this.useCase.execute(cmd);
+    return Response.json({ orderId: result.orderId }, { status: 201 });
+  }
+}`
+    },
+  ];
+
+  mistakes: CommonMistake[] = [
+    {
+      title: 'Placing the repository interface in Infrastructure',
+      wrong: `// Infrastructure/IOrderRepository.ts  ← wrong location
+export interface IOrderRepository { ... }`,
+      right: `// Domain/IOrderRepository.ts  ← interface belongs in Domain
+export interface IOrderRepository { ... }`,
+      explanation: 'If the interface lives in Infrastructure, Domain must import from Infrastructure to use it — violating the dependency rule.',
+    },
+    {
+      title: 'Use Case importing the concrete repository',
+      wrong: `import { SqlOrderRepository } from '../../Infrastructure/Persistence/SqlOrderRepository';`,
+      right: `// Use Case constructor receives IOrderRepository — injected at composition root
+constructor(private repo: IOrderRepository) {}`,
+      explanation: 'Depending on the concrete class ties the use case to a specific database. Dependency injection keeps Use Cases database-agnostic.',
+    },
+    {
+      title: 'Returning domain entities from HTTP controllers',
+      wrong: `return Response.json(order); // leaks domain internals`,
+      right: `return Response.json(OrderPresenter.toDto(result));`,
+      explanation: 'Domain entities are not DTOs. A presenter maps the result to an HTTP-friendly shape without coupling your API surface to domain internals.',
+    },
+    {
+      title: 'Putting business logic in the controller',
+      wrong: `if (req.body.qty > stock.available) return 409; // business rule in HTTP adapter`,
+      right: `// Use case checks the invariant; controller only maps HTTP status from the error`,
+      explanation: 'Controllers are adapters — they translate HTTP to use case input. Business rules belong in Use Cases or Entities.',
+    },
+  ];
+
+  challenge: Challenge = {
+    title: 'Define the Dependency Graph for a Notification Feature',
+    language: 'typescript',
+    description: `A SendWelcomeEmail use case needs to:
+1. Load the user by ID from a database
+2. Render the email template
+3. Send via an SMTP gateway
+
+Define the Domain interfaces, the Use Case class, and the Infrastructure adapters.
+Show the correct import chain — nothing in Domain or Application should import from Infrastructure.`,
+    hints: [
+      'Domain: IUserRepository, IEmailRenderer, IEmailGateway',
+      'Application/UseCase: SendWelcomeEmailUseCase(IUserRepository, IEmailRenderer, IEmailGateway)',
+      'Infrastructure: SqlUserRepository, HandlebarsEmailRenderer, SmtpEmailGateway',
+      'Composition root: wire concrete impls to interfaces',
+    ],
+    starterCode: `// Domain interfaces
+interface IUserRepository { /* TODO */ }
+interface IEmailRenderer  { /* TODO */ }
+interface IEmailGateway   { /* TODO */ }
+
+// Application use case
+class SendWelcomeEmailUseCase {
+  constructor(/* TODO: inject interfaces */) {}
+  async execute(userId: string): Promise<void> { /* TODO */ }
+}`,
+    solution: `// Domain interfaces (zero external deps)
+interface IUserRepository {
+  findById(id: string): Promise<User | null>;
+}
+interface IEmailRenderer {
+  render(template: string, data: Record<string, string>): string;
+}
+interface IEmailGateway {
+  send(to: string, subject: string, body: string): Promise<void>;
+}
+
+// Application use case — depends only on interfaces
+class SendWelcomeEmailUseCase {
+  constructor(
+    private users: IUserRepository,
+    private renderer: IEmailRenderer,
+    private mailer: IEmailGateway,
+  ) {}
+
+  async execute(userId: string): Promise<void> {
+    const user = await this.users.findById(userId);
+    if (!user) throw new Error('User not found');
+    const body = this.renderer.render('welcome', { name: user.name });
+    await this.mailer.send(user.email, 'Welcome!', body);
+  }
+}
+
+// Infrastructure (outermost ring)
+class SqlUserRepository implements IUserRepository { ... }
+class HandlebarsEmailRenderer implements IEmailRenderer { ... }
+class SmtpEmailGateway implements IEmailGateway { ... }
+
+// Composition root wires everything:
+const useCase = new SendWelcomeEmailUseCase(
+  new SqlUserRepository(db),
+  new HandlebarsEmailRenderer(),
+  new SmtpEmailGateway(smtpConfig),
+);`,
+  };
+
+  quiz: QuizQuestion[] = [
+    {
+      q: 'What does the Dependency Rule state?',
+      options: [
+        'Outer rings depend on inner rings only',
+        'Inner rings depend on outer rings only',
+        'All rings depend on each other',
+        'Frameworks define the domain model',
+      ],
+      answer: 0,
+      explanation: 'Dependencies point inward: Frameworks → Adapters → Use Cases → Entities. Inner rings are protected from outer ring changes.',
+    },
+    {
+      q: 'Where should a repository interface be defined?',
+      options: [
+        'Infrastructure layer',
+        'Framework layer',
+        'Domain layer',
+        'Use Case layer',
+      ],
+      answer: 2,
+      explanation: 'The interface is defined in Domain (or Application). Infrastructure implements it. This keeps the dependency rule intact.',
+    },
+    {
+      q: 'What is the primary benefit of Clean Architecture?',
+      options: [
+        'Faster HTTP responses',
+        'Use Cases and Entities testable without any infrastructure',
+        'Smaller bundle size',
+        'Single deployable unit',
+      ],
+      answer: 1,
+      explanation: 'Because inner rings have no framework or database dependencies, they can be unit-tested with pure in-memory fakes.',
+    },
+  ];
+
+  qna: QnaItem[] = [
+    {
+      q: 'Is Clean Architecture the same as Onion Architecture?',
+      a: 'Very similar — both use concentric rings with inward-pointing dependencies. Clean Architecture (Uncle Bob) uses four rings: Entities, Use Cases, Interface Adapters, Frameworks. Onion Architecture (Palermo) is the same idea with slightly different naming.',
+    },
+    {
+      q: 'Does Clean Architecture require separate assemblies/projects per ring?',
+      a: 'No. You can enforce it with linting rules or folder conventions in a single project. Separate assemblies give compile-time enforcement but add build complexity.',
+    },
+    {
+      q: 'When is Clean Architecture overkill?',
+      a: 'Small CRUD APIs with no complex business rules do not benefit from the extra mapping overhead. Use a simple layered structure. Clean Architecture pays off when the domain has complex invariants worth protecting from framework churn.',
+    },
+  ];
+
+  revision: RevisionSummary = {
+    oneLiner: 'Clean Architecture places business rules at the centre; frameworks and databases are outer-ring plugins that the domain never depends on.',
+    mustKnow: [
+      'Dependency Rule: source code dependencies point inward only',
+      'Entities → Use Cases → Interface Adapters → Frameworks (outer to inner)',
+      'Repository interfaces defined in Domain, implemented in Infrastructure',
+      'Use Cases are testable without any database or HTTP framework',
+      'Controllers and repositories are adapters — converters between formats',
+    ],
+    interviewFocus: [
+      'Explain the Dependency Rule with a concrete example',
+      'Why are repository interfaces defined in Domain, not Infrastructure?',
+      'How does Clean Architecture improve testability?',
+    ],
+  };
+}

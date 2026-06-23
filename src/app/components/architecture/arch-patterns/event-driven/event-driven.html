@@ -1,0 +1,21 @@
+<div class="arch-page">
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Event-Driven Architecture</h1>
+  <p class="page-subtitle">Services communicate by publishing immutable <code>events</code> — producers publish facts, consumers subscribe independently, enabling zero-coupling extensibility.</p>
+
+  <app-page-meta [readingTime]="18" difficulty="intermediate" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="arch-event-driven" nextRoute="/arch-patterns/cqrs-event-sourcing" nextLabel="CQRS & Event Sourcing" />
+</div>

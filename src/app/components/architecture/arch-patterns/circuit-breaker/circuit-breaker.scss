@@ -1,0 +1,6 @@
+$accent: #7c3aed;
+$tint: #f5f3ff;
+.arch-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.arch-section h2 { font-size: 1.25rem; font-weight: 700; color: $accent; margin: 0 0 1rem; }
+.arch-icon { font-size: 1.8rem; }
+:host-context(body.dark) .arch-section h2 { color: #c4b5fd; }

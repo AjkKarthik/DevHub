@@ -1,0 +1,135 @@
+<div class="arch-page">
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Architecture Decision Records</h1>
+  <p class="page-subtitle">Browse real-world ADRs — the <code>context</code>, <code>decision</code>, <code>consequences</code>, and alternatives that shaped these architecture patterns.</p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" tech="javascript" />
+
+  <div class="adr-controls">
+    <input
+      type="text"
+      class="adr-search"
+      placeholder="Search ADRs…"
+      [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)"
+    />
+    <div class="adr-filters">
+      <select [ngModel]="selectedStatus()" (ngModelChange)="selectedStatus.set($event)">
+        @for (s of statuses; track s) {
+          <option [value]="s">{{ s === 'All' ? 'All Statuses' : s }}</option>
+        }
+      </select>
+      <select [ngModel]="selectedTag()" (ngModelChange)="selectedTag.set($event)">
+        @for (t of allTags(); track t) {
+          <option [value]="t">{{ t === 'All' ? 'All Tags' : t }}</option>
+        }
+      </select>
+    </div>
+    <span class="adr-count">{{ filteredAdrs().length }} of {{ adrs.length }} ADRs</span>
+  </div>
+
+  <div class="adr-list">
+    @for (adr of filteredAdrs(); track adr.id) {
+      <div class="adr-card" [class.expanded]="expandedId() === adr.id">
+        <div class="adr-header" (click)="toggle(adr.id)">
+          <div class="adr-header-left">
+            <span class="adr-id">{{ adr.id }}</span>
+            <span class="adr-title">{{ adr.title }}</span>
+          </div>
+          <div class="adr-header-right">
+            <span class="adr-status" [class]="statusClass(adr.status)">{{ adr.status }}</span>
+            <span class="adr-date">{{ adr.date }}</span>
+            <span class="adr-chevron">{{ expandedId() === adr.id ? '▲' : '▼' }}</span>
+          </div>
+        </div>
+
+        @if (expandedId() === adr.id) {
+          <div class="adr-body">
+            <div class="adr-tags">
+              @for (tag of adr.tags; track tag) {
+                <span class="adr-tag">{{ tag }}</span>
+              }
+            </div>
+
+            <div class="adr-section">
+              <h3>Context</h3>
+              <p>{{ adr.context }}</p>
+            </div>
+
+            <div class="adr-section">
+              <h3>Decision</h3>
+              <p>{{ adr.decision }}</p>
+            </div>
+
+            <div class="adr-section">
+              <h3>Consequences</h3>
+              <div class="adr-consequences">
+                <div class="cons-col cons-positive">
+                  <h4>✓ Positive</h4>
+                  <ul>
+                    @for (p of adr.consequences.positive; track p) {
+                      <li>{{ p }}</li>
+                    }
+                  </ul>
+                </div>
+                <div class="cons-col cons-negative">
+                  <h4>✗ Negative / Trade-offs</h4>
+                  <ul>
+                    @for (n of adr.consequences.negative; track n) {
+                      <li>{{ n }}</li>
+                    }
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            @if (adr.alternatives.length > 0) {
+              <div class="adr-section">
+                <h3>Alternatives Considered</h3>
+                <ul>
+                  @for (alt of adr.alternatives; track alt) {
+                    <li>{{ alt }}</li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @if (filteredAdrs().length === 0) {
+      <div class="adr-empty">No ADRs match your search. Try a different query or filter.</div>
+    }
+  </div>
+
+  <div class="adr-guide arch-section">
+    <h2>Writing Your Own ADRs</h2>
+    <div class="adr-guide-grid">
+      <div class="adr-guide-card">
+        <h3>Status</h3>
+        <p>Proposed → Accepted → (Superseded | Deprecated). A Superseded ADR links to the ADR that replaced it.</p>
+      </div>
+      <div class="adr-guide-card">
+        <h3>Context</h3>
+        <p>The situation and forces that drove the decision. Be specific — "performance was slow" is weaker than "P99 latency exceeded 800ms under 100 concurrent users".</p>
+      </div>
+      <div class="adr-guide-card">
+        <h3>Decision</h3>
+        <p>The chosen approach. One clear paragraph. Not a list of options — that goes in Alternatives. Record what was decided, not what was considered.</p>
+      </div>
+      <div class="adr-guide-card">
+        <h3>Consequences</h3>
+        <p>Positive and negative outcomes. Include the trade-offs you accepted — this is the most valuable part for future readers.</p>
+      </div>
+      <div class="adr-guide-card">
+        <h3>Alternatives</h3>
+        <p>What else was considered and why it was rejected. Without this, future engineers repeat the same evaluation.</p>
+      </div>
+      <div class="adr-guide-card">
+        <h3>Storage</h3>
+        <p>Store ADRs as Markdown files in the repo under <code>docs/adr/</code>. They live alongside the code and evolve with it. Tools: adr-tools CLI, Architecture Decision Records GitHub template.</p>
+      </div>
+    </div>
+  </div>
+</div>

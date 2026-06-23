@@ -1,0 +1,21 @@
+<div class="arch-page">
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">CQRS & Event Sourcing</h1>
+  <p class="page-subtitle"><code>CQRS</code> splits commands from queries. Event Sourcing stores state as an append-only event log — replay it to rebuild any projection, any time.</p>
+
+  <app-page-meta [readingTime]="22" difficulty="advanced" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="arch-cqrs-event-sourcing" nextRoute="/arch-patterns/saga-choreography" nextLabel="Saga & Choreography" />
+</div>
