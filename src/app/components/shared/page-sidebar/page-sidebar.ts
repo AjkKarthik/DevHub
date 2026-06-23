@@ -196,6 +196,27 @@ const ASPNET_DEFAULT: SidebarData = {
   ],
 };
 
+const API_DESIGN_DEFAULT: SidebarData = {
+  apis: ['REST', 'GraphQL', 'gRPC', 'WebSockets', 'OpenAPI 3.1', 'Webhooks'],
+  gotchas: ['Never 200 OK with an error body', 'POST is not idempotent — use Idempotency-Key', 'CORS wildcard + credentials is rejected by browsers'],
+  related: [
+    { label: 'API Design Home',  route: '/api-design' },
+    { label: 'OpenAPI & Contracts', route: '/api-design/openapi-contracts' },
+    { label: 'API Design Cheat Sheet', route: '/api-design/cheatsheet' },
+  ],
+  tip: 'Design APIs for your consumers, not your database. Plural nouns for collections, HTTP verbs for actions, ISO 8601 dates, integer cents for money.',
+  docs: [
+    { label: 'OpenAPI Specification',  url: 'https://spec.openapis.org/oas/latest.html' },
+    { label: 'HTTP Status Codes — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status' },
+    { label: 'RFC 9110 — HTTP Semantics', url: 'https://www.rfc-editor.org/rfc/rfc9110' },
+  ],
+  resources: [
+    { label: 'Stoplight — API Design', url: 'https://stoplight.io/api-design-guide/', badge: 'docs' },
+    { label: 'Swagger Editor',         url: 'https://editor.swagger.io/', badge: 'tool' },
+    { label: 'Postman API Platform',   url: 'https://www.postman.com/', badge: 'tool' },
+  ],
+};
+
 const SEC_DEFAULT: SidebarData = {
   apis: ['bcrypt/argon2', 'JWT (RS256)', 'OAuth PKCE', 'AES-256-GCM', 'HMAC-SHA256', 'CSP nonces'],
   related: [
@@ -5186,7 +5207,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design'>(() =>
     this.currentUrl().startsWith('/csharp')       ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')     ? 'aspnet'
     : this.currentUrl().startsWith('/sql')        ? 'sql'
@@ -5196,6 +5217,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/html')       ? 'html'
     : this.currentUrl().startsWith('/css')        ? 'css'
     : this.currentUrl().startsWith('/security')   ? 'security'
+    : this.currentUrl().startsWith('/api-design') ? 'api-design'
     : 'angular'
   );
 
@@ -5211,6 +5233,7 @@ export class PageSidebarComponent {
            : this.section() === 'html'       ? HTML_DEFAULT
            : this.section() === 'css'        ? CSS_DEFAULT
            : this.section() === 'security'   ? SEC_DEFAULT
+           : this.section() === 'api-design' ? API_DESIGN_DEFAULT
            : DEFAULT);
   });
 

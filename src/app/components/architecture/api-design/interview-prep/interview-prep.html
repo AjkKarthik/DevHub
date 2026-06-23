@@ -1,0 +1,47 @@
+<div class="api-page ip-wrap">
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">API Design Interview Prep</h1>
+  <p class="page-subtitle">15 real interview questions from REST fundamentals to senior architecture — with detailed answers covering pagination, security, GraphQL, and system design.</p>
+
+  <div class="ip-filters">
+    <div class="ip-filter-group">
+      <span class="ip-filter-label">Difficulty</span>
+      <div class="ip-chips">
+        @for (d of difficulties; track d) {
+          <button class="ip-chip" [class.active]="activeDiff() === d" (click)="setDiff(d)">
+            {{ diffLabel(d) }}
+          </button>
+        }
+      </div>
+    </div>
+    <div class="ip-filter-group">
+      <span class="ip-filter-label">Topic</span>
+      <div class="ip-chips">
+        @for (t of topics; track t) {
+          <button class="ip-chip" [class.active]="activeTopic() === t" (click)="setTopic(t)">
+            {{ t }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <p class="ip-count">Showing {{ filtered().length }} question{{ filtered().length === 1 ? '' : 's' }}</p>
+
+  <div class="ip-list">
+    @for (item of filtered(); track item.id; let i = $index) {
+      <div class="ip-card" [class.open]="expanded() === item.id">
+        <button class="ip-q" (click)="toggle(item.id)">
+          <span class="ip-num">Q{{ i + 1 }}</span>
+          <span class="ip-diff" [class]="'diff-' + item.difficulty">{{ diffLabel(item.difficulty) }}</span>
+          <span class="ip-topic-badge">{{ item.topic }}</span>
+          <span class="ip-text">{{ item.q }}</span>
+          <span class="ip-arrow">{{ expanded() === item.id ? '▲' : '▼' }}</span>
+        </button>
+        @if (expanded() === item.id) {
+          <div class="ip-answer" [innerHTML]="item.a"></div>
+        }
+      </div>
+    }
+  </div>
+</div>

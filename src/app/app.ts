@@ -23,6 +23,7 @@ import { SysdesignNavComponent } from './components/shared/sysdesign-nav/sysdesi
 import { ArchNavComponent } from './components/shared/arch-nav/arch-nav';
 import { DpNavComponent } from './components/shared/dp-nav/dp-nav';
 import { SecurityNavComponent } from './components/shared/security-nav/security-nav';
+import { ApiDesignNavComponent } from './components/shared/api-design-nav/api-design-nav';
 
 // Difficulty metadata for nav badges
 const DIFF: Record<string, string> = Object.fromEntries(
@@ -32,7 +33,7 @@ const DIFF: Record<string, string> = Object.fromEntries(
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, BreadcrumbComponent,
-            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent, TerraformNavComponent, MeshNavComponent, SysdesignNavComponent, ArchNavComponent, DpNavComponent, SecurityNavComponent],
+            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent, TerraformNavComponent, MeshNavComponent, SysdesignNavComponent, ArchNavComponent, DpNavComponent, SecurityNavComponent, ApiDesignNavComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -76,7 +77,7 @@ export class App {
     ].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'terraform' | 'mesh' | 'system-design' | 'arch-patterns' | 'design-patterns' | 'security' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'terraform' | 'mesh' | 'system-design' | 'arch-patterns' | 'design-patterns' | 'security' | 'api-design' | 'hub'>(() => {
     const url = this.currentUrl();
     if (url.startsWith('/angular'))    return 'angular';
     if (url.startsWith('/csharp'))     return 'csharp';
@@ -102,7 +103,8 @@ export class App {
     if (url.startsWith('/system-design')) return 'system-design';
     if (url.startsWith('/arch-patterns')) return 'arch-patterns';
     if (url.startsWith('/design-patterns')) return 'design-patterns';
-    if (url.startsWith('/security')) return 'security';
+    if (url.startsWith('/security'))  return 'security';
+    if (url.startsWith('/api-design')) return 'api-design';
     return 'hub';
   });
 

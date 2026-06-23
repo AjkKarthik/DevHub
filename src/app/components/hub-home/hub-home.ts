@@ -512,7 +512,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'API Design', time: '~5 hrs',
       tagline: 'REST vs GraphQL vs gRPC vs WebSockets — pick the right protocol.',
       icon: '📡', gradient: 'linear-gradient(135deg, #065f46 0%, #022c22 100%)',
-      textDark: false, route: '/api-design', available: true,
+      textDark: false, route: '/api-design', available: true, topics: 21,
       sub: 'REST · gRPC · WebSockets · OpenAPI',
       roles: ['backend', 'architect'],
       highlights: [

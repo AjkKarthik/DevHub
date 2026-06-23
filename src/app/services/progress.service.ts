@@ -132,6 +132,11 @@ export class ProgressService {
   readonly secCount  = computed(() => [...this._done()].filter(r => r.startsWith('sec-')).length);
   readonly secPct    = computed(() => Math.round((this.secCount() / this.secTotal) * 100));
 
+  // ── API Design (keys prefixed 'api-') ────────────────────────────────────
+  readonly apiTotal  = 19;
+  readonly apiCount  = computed(() => [...this._done()].filter(r => r.startsWith('api-')).length);
+  readonly apiPct    = computed(() => Math.round((this.apiCount() / this.apiTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

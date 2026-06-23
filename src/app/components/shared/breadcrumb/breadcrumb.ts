@@ -756,6 +756,30 @@ const DP_LABELS: Record<string, string> = {
   'pattern-decision':        'Pattern Decision Guide',
 };
 
+const API_DESIGN_LABELS: Record<string, string> = {
+  'rest-fundamentals':       'REST Fundamentals',
+  'resource-url-design':     'Resource & URL Design',
+  'http-methods-status-codes': 'HTTP Methods & Status Codes',
+  'pagination-patterns':     'Pagination Patterns',
+  'api-versioning':          'API Versioning',
+  'error-response-design':   'Error Response Design',
+  'hateoas-hypermedia':      'HATEOAS & Hypermedia',
+  'protocol-buffers':        'Protocol Buffers',
+  'grpc-service-patterns':   'gRPC Service Patterns',
+  'grpc-web-transcoding':    'gRPC-Web & Transcoding',
+  'graphql-fundamentals':    'GraphQL Fundamentals',
+  'graphql-vs-rest':         'GraphQL vs REST',
+  'websockets-sse-polling':  'WebSockets vs SSE vs Polling',
+  'webhook-design':          'Webhook Design',
+  'api-design-principles':   'API Design Principles',
+  'openapi-contracts':       'OpenAPI & Contracts',
+  'api-security':            'API Security',
+  'breaking-changes':        'Breaking Changes',
+  'rate-limiting':           'Rate Limiting',
+  'cheatsheet':              'API Design Cheat Sheet',
+  'interview-prep':          'API Design Interview Prep',
+};
+
 const SECURITY_LABELS: Record<string, string> = {
   'fundamentals':            'Security Fundamentals',
   'owasp-top-10':            'OWASP Top 10',
@@ -958,6 +982,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'arch-patterns'    ? ARCH_LABELS
                  : segs[0] === 'design-patterns' ? DP_LABELS
                  : segs[0] === 'security'        ? SECURITY_LABELS
+                 : segs[0] === 'api-design'      ? API_DESIGN_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

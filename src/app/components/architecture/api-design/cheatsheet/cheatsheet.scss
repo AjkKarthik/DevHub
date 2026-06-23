@@ -1,0 +1,58 @@
+$accent: #0891b2;
+$tint:   #ecfeff;
+
+.api-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-title { color: $accent; font-size: 1.9rem; font-weight: 700; margin: 0.5rem 0 0.25rem; }
+.page-subtitle { color: #64748b; margin-bottom: 1.5rem; }
+
+.cs-toolbar { margin-bottom: 1rem; }
+.cs-search {
+  width: 100%; padding: 0.6rem 1rem; border: 1.5px solid #e2e8f0;
+  border-radius: 8px; font-size: 0.95rem; outline: none; box-sizing: border-box;
+  &:focus { border-color: $accent; }
+}
+
+.cs-cats {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;
+}
+.cs-cat {
+  padding: 0.35rem 0.85rem; border-radius: 20px; border: 1.5px solid #e2e8f0;
+  background: #fff; font-size: 0.82rem; cursor: pointer; transition: all 0.15s;
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+  &:hover:not(.active) { border-color: $accent; color: $accent; }
+}
+
+.cs-grid { display: grid; gap: 0.75rem; }
+.cs-card {
+  border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 1rem 1.1rem;
+  cursor: pointer; transition: border-color 0.15s;
+  &:hover { border-color: $accent; }
+  &.open { border-color: $accent; background: $tint; }
+}
+.cs-card-head { display: flex; align-items: center; gap: 0.6rem; }
+.cs-badge {
+  font-size: 0.72rem; background: rgba(8,145,178,0.1); color: $accent;
+  padding: 0.2rem 0.5rem; border-radius: 4px; white-space: nowrap;
+}
+.cs-topic { font-size: 1rem; flex: 1; font-weight: 600; }
+.cs-chevron { color: $accent; font-size: 0.8rem; }
+.cs-summary { margin: 0.4rem 0 0; font-size: 0.88rem; color: #475569; }
+.cs-detail { margin: 0.6rem 0 0; font-size: 0.85rem; color: #1e293b; line-height: 1.6; }
+.cs-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.6rem; }
+.cs-tag {
+  font-size: 0.72rem; background: rgba(8,145,178,0.12); color: #0e7490;
+  padding: 0.15rem 0.45rem; border-radius: 4px;
+}
+.cs-empty { text-align: center; color: #94a3b8; padding: 2rem; grid-column: 1/-1; }
+
+:host-context(body.dark) {
+  .page-subtitle { color: #94a3b8; }
+  .cs-search { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+  .cs-cat { background: #1e293b; border-color: #334155; color: #94a3b8;
+    &.active { background: $accent; color: #fff; } }
+  .cs-card { background: #1e293b; border-color: #334155;
+    &.open { background: #164e63; border-color: #67e8f9; } }
+  .cs-topic { color: #e2e8f0; }
+  .cs-summary { color: #94a3b8; }
+  .cs-detail { color: #cbd5e1; }
+}

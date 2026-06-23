@@ -1,0 +1,40 @@
+<div class="api-page cs-wrap">
+  <div class="page-header-icon api-icon">🔌</div>
+  <h1 class="page-title">API Design Cheat Sheet</h1>
+  <p class="page-subtitle">Quick reference for REST conventions, HTTP status codes, security headers, rate limiting, webhooks, and real-time patterns.</p>
+
+  <div class="cs-toolbar">
+    <input class="cs-search" type="text" placeholder="Search topics…"
+      [ngModel]="search()" (ngModelChange)="search.set($event)" />
+  </div>
+
+  <div class="cs-cats">
+    @for (cat of categories; track cat) {
+      <button class="cs-cat" [class.active]="activeCategory() === cat" (click)="setCategory(cat)">{{ cat }}</button>
+    }
+  </div>
+
+  <div class="cs-grid">
+    @for (item of filtered(); track item.topic) {
+      <div class="cs-card" [class.open]="expanded() === item.topic" (click)="toggle(item.topic)">
+        <div class="cs-card-head">
+          <span class="cs-badge">{{ item.category }}</span>
+          <strong class="cs-topic">{{ item.topic }}</strong>
+          <span class="cs-chevron">{{ expanded() === item.topic ? '▲' : '▼' }}</span>
+        </div>
+        <p class="cs-summary">{{ item.summary }}</p>
+        @if (expanded() === item.topic) {
+          <p class="cs-detail">{{ item.detail }}</p>
+          <div class="cs-tags">
+            @for (tag of item.tags; track tag) {
+              <span class="cs-tag">{{ tag }}</span>
+            }
+          </div>
+        }
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <p class="cs-empty">No results for "{{ search() }}"</p>
+    }
+  </div>
+</div>
