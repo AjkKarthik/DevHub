@@ -1,0 +1,21 @@
+<div class="sysdesign-page">
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">System Design Framework</h1>
+  <p class="page-subtitle">A repeatable <code>4-step skeleton</code> for any system design interview — clarify requirements, estimate scale, high-level design, then deep dive.</p>
+
+  <app-page-meta [readingTime]="20" difficulty="beginner" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="sysdesign-section">
+    <h2>Templates &amp; Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="sysdesign-framework" nextRoute="/system-design/capacity-estimation" nextLabel="Capacity Estimation" />
+</div>

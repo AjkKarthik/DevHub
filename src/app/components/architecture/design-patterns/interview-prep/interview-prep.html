@@ -1,0 +1,42 @@
+<div class="dp-page">
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Design Patterns Interview Prep</h1>
+  <p class="page-subtitle">20 common interview questions — filter by <code>category</code> and <code>seniority level</code>, click to reveal detailed answers.</p>
+
+  <div class="ip-controls">
+    <input class="ip-search" type="text" placeholder="Search questions…"
+           [ngModel]="search()" (ngModelChange)="search.set($event)" />
+    <div class="ip-filters">
+      <div class="ip-filter-group">
+        @for (cat of categories; track cat) {
+          <button class="ip-chip" [class.active]="activeCat() === cat" (click)="setCat(cat)">{{ cat }}</button>
+        }
+      </div>
+      <div class="ip-filter-group">
+        @for (d of difficulties; track d) {
+          <button class="ip-chip ip-diff-{{ d.toLowerCase() }}" [class.active]="activeDiff() === d" (click)="setDiff(d)">{{ d }}</button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <p class="ip-count">Showing {{ filtered().length }} of {{ 20 }} questions</p>
+
+  <div class="ip-list">
+    @for (item of filtered(); track item.q; let i = $index) {
+      <div class="ip-item" [class.open]="isOpen(i)">
+        <button class="ip-question" (click)="toggle(i)">
+          <span class="ip-q-text">{{ item.q }}</span>
+          <div class="ip-meta">
+            <span class="ip-badge ip-cat-{{ item.category.toLowerCase().replace(' ', '-') }}">{{ item.category }}</span>
+            <span class="ip-badge ip-diff-{{ item.difficulty.toLowerCase() }}">{{ item.difficulty }}</span>
+            <span class="ip-chevron">{{ isOpen(i) ? '▲' : '▼' }}</span>
+          </div>
+        </button>
+        @if (isOpen(i)) {
+          <div class="ip-answer">{{ item.a }}</div>
+        }
+      </div>
+    }
+  </div>
+</div>

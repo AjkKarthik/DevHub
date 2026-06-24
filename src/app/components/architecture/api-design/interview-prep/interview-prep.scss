@@ -1,0 +1,66 @@
+$accent: #0891b2;
+$tint:   #ecfeff;
+
+.api-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-title { color: $accent; font-size: 1.9rem; font-weight: 700; margin: 0.5rem 0 0.25rem; }
+.page-subtitle { color: #64748b; margin-bottom: 1.5rem; }
+
+.ip-filters { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+.ip-filter-group { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.ip-filter-label { font-size: 0.8rem; font-weight: 600; color: #64748b; min-width: 60px; }
+.ip-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ip-chip {
+  padding: 0.3rem 0.75rem; border-radius: 20px; border: 1.5px solid #e2e8f0;
+  background: #fff; font-size: 0.8rem; cursor: pointer; transition: all 0.15s;
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+  &:hover:not(.active) { border-color: $accent; color: $accent; }
+}
+
+.ip-count { font-size: 0.82rem; color: #94a3b8; margin-bottom: 1rem; }
+.ip-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.ip-card { border: 1.5px solid #e2e8f0; border-radius: 10px; overflow: hidden;
+  &.open { border-color: $accent; }
+}
+.ip-q {
+  width: 100%; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  padding: 0.9rem 1.1rem; background: none; border: none; cursor: pointer;
+  text-align: left;
+  &:hover { background: $tint; }
+}
+.ip-num { font-size: 0.78rem; font-weight: 700; color: $accent; min-width: 28px; }
+.ip-diff {
+  font-size: 0.72rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 10px;
+  &.diff-junior { background: #dcfce7; color: #15803d; }
+  &.diff-mid { background: #fef9c3; color: #92400e; }
+  &.diff-senior { background: #fce7f3; color: #9d174d; }
+}
+.ip-topic-badge {
+  font-size: 0.72rem; background: rgba(8,145,178,0.1); color: $accent;
+  padding: 0.15rem 0.45rem; border-radius: 4px;
+}
+.ip-text { flex: 1; font-size: 0.9rem; font-weight: 600; color: #1e293b; }
+.ip-arrow { color: $accent; font-size: 0.8rem; }
+
+.ip-answer {
+  padding: 1rem 1.25rem 1.1rem;
+  font-size: 0.875rem; line-height: 1.7; color: #334155;
+  border-top: 1.5px solid #e2e8f0;
+  ::ng-deep ol, ::ng-deep ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+  ::ng-deep li { margin-bottom: 0.3rem; }
+  ::ng-deep code { background: $tint; color: #0e7490; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.82rem; }
+  ::ng-deep strong { color: #0f172a; }
+}
+
+:host-context(body.dark) {
+  .page-subtitle { color: #94a3b8; }
+  .ip-chip { background: #1e293b; border-color: #334155; color: #94a3b8;
+    &.active { background: $accent; color: #fff; } }
+  .ip-card { border-color: #334155; &.open { border-color: #67e8f9; } }
+  .ip-q:hover { background: #164e63; }
+  .ip-text { color: #e2e8f0; }
+  .ip-answer { background: #1e293b; border-color: #334155; color: #cbd5e1;
+    ::ng-deep code { background: #0e7490; color: #cffafe; }
+    ::ng-deep strong { color: #e2e8f0; }
+  }
+}

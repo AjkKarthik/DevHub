@@ -1,0 +1,45 @@
+<div class="obs-page ip-page">
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Observability Interview Prep</h1>
+  <p class="page-subtitle">15 interview questions across <code>metrics</code>, tracing, SLOs, alerting, chaos engineering, and eBPF — from junior to senior level.</p>
+
+  <div class="ip-filters">
+    <div class="ip-filter-group">
+      <span class="ip-filter-label">Difficulty</span>
+      <div class="ip-chips">
+        @for (d of difficulties; track d) {
+          <button class="ip-chip" [class.active]="activeDifficulty() === d" (click)="setDifficulty(d)">{{ d | titlecase }}</button>
+        }
+      </div>
+    </div>
+    <div class="ip-filter-group">
+      <span class="ip-filter-label">Topic</span>
+      <div class="ip-chips">
+        @for (c of categories; track c) {
+          <button class="ip-chip" [class.active]="activeCategory() === c" (click)="setCategory(c)">{{ c }}</button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="ip-list">
+    @for (item of filtered(); track item.question; let i = $index) {
+      <div class="ip-card" [class.open]="openIndex() === i">
+        <button class="ip-question" (click)="toggle(i)">
+          <div class="ip-q-meta">
+            <span class="ip-badge" [class]="'badge-' + item.difficulty">{{ item.difficulty }}</span>
+            <span class="ip-category">{{ item.category }}</span>
+          </div>
+          <span class="ip-q-text">{{ item.question }}</span>
+          <span class="ip-chevron">{{ openIndex() === i ? '▲' : '▼' }}</span>
+        </button>
+        @if (openIndex() === i) {
+          <div class="ip-answer" [innerHTML]="item.answer"></div>
+        }
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <p class="ip-empty">No questions match the selected filters.</p>
+    }
+  </div>
+</div>

@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'" [class.section-sysdesign]="currentSection()==='system-design'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -104,6 +104,24 @@
         } @else if (currentSection() === 'linux') {
           <div class="nav-progress-bar" [style.width.%]="progress.linuxPct()"></div>
           <span class="nav-progress-label">{{ progress.linuxCount() }}/{{ progress.linuxTotal }} topics done</span>
+        } @else if (currentSection() === 'terraform') {
+          <div class="nav-progress-bar" [style.width.%]="progress.tfPct()"></div>
+          <span class="nav-progress-label">{{ progress.tfCount() }}/{{ progress.tfTotal }} topics done</span>
+        } @else if (currentSection() === 'system-design') {
+          <div class="nav-progress-bar" [style.width.%]="progress.sysdesignPct()"></div>
+          <span class="nav-progress-label">{{ progress.sysdesignCount() }}/{{ progress.sysdesignTotal }} topics done</span>
+        } @else if (currentSection() === 'arch-patterns') {
+          <div class="nav-progress-bar" [style.width.%]="progress.archPct()"></div>
+          <span class="nav-progress-label">{{ progress.archCount() }}/{{ progress.archTotal }} topics done</span>
+        } @else if (currentSection() === 'design-patterns') {
+          <div class="nav-progress-bar" [style.width.%]="progress.dpPct()"></div>
+          <span class="nav-progress-label">{{ progress.dpCount() }}/{{ progress.dpTotal }} topics done</span>
+        } @else if (currentSection() === 'security') {
+          <div class="nav-progress-bar" [style.width.%]="progress.secPct()"></div>
+          <span class="nav-progress-label">{{ progress.secCount() }}/{{ progress.secTotal }} topics done</span>
+        } @else if (currentSection() === 'api-design') {
+          <div class="nav-progress-bar" [style.width.%]="progress.apiPct()"></div>
+          <span class="nav-progress-label">{{ progress.apiCount() }}/{{ progress.apiTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -863,6 +881,46 @@
       <app-linux-nav />
     }
 
+    <!-- ── Terraform Navigation ──────────────────────────────────── -->
+    @if (currentSection() === 'terraform') {
+      <app-terraform-nav />
+    }
+
+    <!-- ── Service Mesh Navigation ───────────────────────────────── -->
+    @if (currentSection() === 'mesh') {
+      <app-mesh-nav />
+    }
+
+    <!-- ── System Design Navigation ─────────────────────────────── -->
+    @if (currentSection() === 'system-design') {
+      <app-sysdesign-nav />
+    }
+
+    <!-- ── Architecture Patterns Navigation ──────────────────────── -->
+    @if (currentSection() === 'arch-patterns') {
+      <app-arch-nav />
+    }
+
+    <!-- ── Design Patterns Navigation ────────────────────────────── -->
+    @if (currentSection() === 'design-patterns') {
+      <app-dp-nav />
+    }
+
+    <!-- ── Security Navigation ───────────────────────────────────── -->
+    @if (currentSection() === 'security') {
+      <app-security-nav />
+    }
+
+    <!-- ── API Design Navigation ─────────────────────────────────── -->
+    @if (currentSection() === 'api-design') {
+      <app-api-design-nav />
+    }
+
+    <!-- ── Observability Navigation ──────────────────────────────── -->
+    @if (currentSection() === 'observability') {
+      <app-obs-nav />
+    }
+
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {
 
@@ -1367,6 +1425,8 @@
         C# &amp; .NET &mdash; OOP &bull; Generics &bull; LINQ &bull; async/await &bull; Pattern Matching &bull; .NET 8–11
       } @else if (currentSection() === 'aspnet') {
         ASP.NET Core &mdash; Middleware &bull; Web APIs &bull; EF Core &bull; Auth &bull; Testing &bull; Deployment
+      } @else if (currentSection() === 'terraform') {
+        Terraform &mdash; HCL &bull; State &bull; Modules &bull; Backends &bull; CI/CD &bull; Workspaces &bull; OpenTofu
       } @else {
         Dev Learning Hub &mdash; Angular &bull; TypeScript &bull; JavaScript &bull; C# &bull; Node.js &bull; CSS &bull; SQL
       }

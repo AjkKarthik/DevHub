@@ -1,0 +1,10 @@
+$accent: #059669;
+$tint:   #ecfdf5;
+.obs-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-title { color: $accent; font-size: 1.9rem; font-weight: 700; margin: 0.5rem 0 0.25rem; }
+.page-subtitle { color: #64748b; margin-bottom: 1.5rem; code { background: $tint; color: $accent; padding: 0.1rem 0.35rem; border-radius: 4px; } }
+.obs-section { margin-top: 2rem; h2 { color: $accent; font-size: 1.3rem; margin-bottom: 1rem; border-bottom: 2px solid $tint; padding-bottom: 0.5rem; } }
+:host-context(body.dark) {
+  .page-subtitle { color: #94a3b8; code { background: #064e3b; color: #34d399; } }
+  .obs-section h2 { color: #34d399; border-color: #064e3b; }
+}

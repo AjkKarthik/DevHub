@@ -1,0 +1,95 @@
+<div class="arch-page">
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Architecture Interview Prep</h1>
+  <p class="page-subtitle">Real interview questions on architectural patterns — with full answers covering <code>trade-offs</code>, <code>when to use</code>, and <code>how to explain clearly</code>.</p>
+
+  <app-page-meta [readingTime]="20" difficulty="intermediate" tech="javascript" />
+
+  <div class="ip-controls">
+    <input
+      type="text"
+      class="ip-search"
+      placeholder="Search questions…"
+      [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)"
+    />
+    <div class="ip-filters">
+      <div class="ip-filter-group">
+        @for (d of difficulties; track d) {
+          <button
+            class="ip-filter-btn"
+            [class.active]="selectedDifficulty() === d"
+            [class]="d !== 'All' ? diffClass(d) + '-border' : ''"
+            (click)="selectedDifficulty.set(d)"
+          >{{ d }}</button>
+        }
+      </div>
+      <select [ngModel]="selectedCategory()" (ngModelChange)="selectedCategory.set($event)">
+        @for (c of categories; track c) {
+          <option [value]="c">{{ c }}</option>
+        }
+      </select>
+    </div>
+    <span class="ip-count">{{ filteredQuestions().length }} of {{ questions.length }} questions</span>
+  </div>
+
+  <div class="ip-list">
+    @for (item of filteredQuestions(); track item.q; let i = $index) {
+      <div class="ip-card" [class.expanded]="expandedIndex() === i">
+        <div class="ip-question" (click)="toggle(i)">
+          <div class="ip-q-left">
+            <span class="ip-diff" [class]="diffClass(item.difficulty)">{{ item.difficulty }}</span>
+            <span class="ip-cat">{{ item.category }}</span>
+            <span class="ip-q-text">{{ item.q }}</span>
+          </div>
+          <span class="ip-chevron">{{ expandedIndex() === i ? '▲' : '▼' }}</span>
+        </div>
+
+        @if (expandedIndex() === i) {
+          <div class="ip-answer">
+            <p>{{ item.a }}</p>
+            <div class="ip-tags">
+              @for (tag of item.tags; track tag) {
+                <span class="ip-tag">{{ tag }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (filteredQuestions().length === 0) {
+      <div class="ip-empty">No questions match your filters. Try adjusting difficulty or category.</div>
+    }
+  </div>
+
+  <div class="ip-tips arch-section">
+    <h2>How to Answer Architecture Questions Well</h2>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h3>Lead with trade-offs</h3>
+        <p>Interviewers want to see that you understand there is no "best" pattern — only context-appropriate choices. Always say "I would use X when… but not when…"</p>
+      </div>
+      <div class="tip-card">
+        <h3>Name the problem first</h3>
+        <p>Before explaining a pattern, explain the problem it solves. "Circuit breaker solves cascading failures caused by slow dependencies" is stronger than jumping straight to Closed/Open/Half-Open states.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Use concrete examples</h3>
+        <p>Abstract definitions impress less than "I used the Outbox pattern when our Order service was losing events on crashes — here is what we did and what we gained."</p>
+      </div>
+      <div class="tip-card">
+        <h3>Admit when NOT to use it</h3>
+        <p>Saying "I would not use Event Sourcing for a simple CRUD service — the overhead is not justified" shows seniority. Knowing when to avoid a pattern is as important as knowing when to apply it.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Structure system design answers</h3>
+        <p>1. Clarify requirements (scale, consistency, latency). 2. High-level design (components). 3. Deep dive (the hardest part — messaging, data, failure modes). 4. Trade-offs and alternatives.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Draw it if you can</h3>
+        <p>For architecture questions in video interviews, share your screen and draw component diagrams in real time. A diagram anchors the conversation and shows you can communicate visually — a key skill for senior engineers.</p>
+      </div>
+    </div>
+  </div>
+</div>

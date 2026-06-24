@@ -1,0 +1,21 @@
+<div class="dp-page">
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Object Pool Pattern</h1>
+  <p class="page-subtitle">Reuse a fixed set of <code>pre-initialised objects</code> rather than creating and destroying them on demand — reducing GC pressure and allocation latency in hot paths.</p>
+
+  <app-page-meta [readingTime]="16" difficulty="intermediate" since="Pattern Catalog" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="dp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="dp-object-pool" nextRoute="/design-patterns/adapter" nextLabel="Adapter" />
+</div>

@@ -484,7 +484,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Design Patterns', time: '~7 hrs',
       tagline: 'GoF, SOLID, GRASP, DRY — implementation patterns every developer references.',
       icon: '🧩', gradient: 'linear-gradient(135deg, #6b21a8 0%, #3b0764 100%)',
-      textDark: false, route: '/design-patterns', available: true,
+      textDark: false, route: '/design-patterns', available: true, topics: 39,
       sub: 'GoF · SOLID · Enterprise Patterns',
       roles: ['backend', 'architect'],
       highlights: [
@@ -498,7 +498,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Architecture Patterns', time: '~8 hrs',
       tagline: 'When to use Microservices, Event-Driven, CQRS, DDD, or a Monolith.',
       icon: '◉', gradient: 'linear-gradient(135deg, #1a1a2e 0%, #4a1d8c 100%)',
-      textDark: false, route: '/arch-patterns', available: true,
+      textDark: false, route: '/arch-patterns', available: true, topics: 25,
       sub: 'Microservices · DDD · CQRS · Hexagonal',
       roles: ['architect'],
       highlights: [
@@ -512,7 +512,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'API Design', time: '~5 hrs',
       tagline: 'REST vs GraphQL vs gRPC vs WebSockets — pick the right protocol.',
       icon: '📡', gradient: 'linear-gradient(135deg, #065f46 0%, #022c22 100%)',
-      textDark: false, route: '/api-design', available: true,
+      textDark: false, route: '/api-design', available: true, topics: 21,
       sub: 'REST · gRPC · WebSockets · OpenAPI',
       roles: ['backend', 'architect'],
       highlights: [
@@ -526,7 +526,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'System Design', time: '~10 hrs',
       tagline: 'Architect scalable systems — trade-offs, capacity planning & distributed patterns.',
       icon: '🏗️', gradient: 'linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)',
-      textDark: false, route: '/system-design', available: true,
+      textDark: false, route: '/system-design', available: true, topics: 26,
       sub: 'Scalability · Reliability · Trade-offs',
       roles: ['architect'],
       highlights: [
@@ -540,7 +540,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Security & Auth', time: '~6 hrs',
       tagline: 'OAuth 2.0, JWT, OpenID Connect, HTTPS and OWASP best practices.',
       icon: '🔐', gradient: 'linear-gradient(135deg, #374151 0%, #111827 100%)',
-      textDark: false, route: '/security', available: true,
+      textDark: false, route: '/security', available: true, topics: 25,
       sub: 'JWT · OAuth 2.0 · OpenID Connect',
       roles: ['frontend', 'backend', 'devops', 'architect'],
       highlights: [
@@ -554,7 +554,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Observability & SRE', time: '~5 hrs',
       tagline: 'Design for production — logging, metrics, tracing, SLOs & alerting.',
       icon: '📊', gradient: 'linear-gradient(135deg, #166534 0%, #052e16 100%)',
-      textDark: false, route: '/observability', available: true,
+      textDark: false, route: '/observability', available: true, topics: 22,
       sub: 'Logs · Metrics · Traces · SLO/SLI',
       roles: ['devops', 'architect'],
       highlights: [
@@ -609,7 +609,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       ],
     },
     {
-      group: 'cloud', name: 'Terraform / IaC', time: '~6 hrs',
+      group: 'cloud', name: 'Terraform / IaC', time: '~6 hrs', topics: 23,
       tagline: 'Define infrastructure as code — provision and manage cloud resources declaratively.',
       icon: '🔩', gradient: 'linear-gradient(135deg, #5c4ee5 0%, #3a2eb5 100%)',
       textDark: false, route: '/terraform', available: true,
@@ -654,7 +654,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Service Mesh & Istio', time: '~4 hrs',
       tagline: 'Manage microservice-to-microservice traffic — mTLS, observability & circuit breaking.',
       icon: '🕸️', gradient: 'linear-gradient(135deg, #475569 0%, #1e293b 100%)',
-      textDark: false, route: '/service-mesh', available: true,
+      textDark: false, route: '/service-mesh', available: true, topics: 21,
       sub: 'Istio · Linkerd · Envoy · Consul',
       roles: ['devops', 'architect'],
       highlights: [

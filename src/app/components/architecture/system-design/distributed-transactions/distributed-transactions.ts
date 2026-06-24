@@ -1,0 +1,397 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
+import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { TheoryBlockComponent, TheoryPoint } from '../../../shared/theory-block/theory-block';
+import { CodeBlockComponent, CodeTab } from '../../../shared/code-block/code-block';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
+import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
+import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
+
+const quickRef: QuickRefItem[] = [
+  { name: '2PC',             type: 'keyword', desc: 'Two-Phase Commit: Prepare phase → all nodes vote; Commit phase → coordinator commits or aborts.' },
+  { name: 'Saga',            type: 'keyword', desc: 'Long-lived transaction split into local steps, each with a compensating transaction on failure.' },
+  { name: 'Outbox pattern',  type: 'keyword', desc: 'Write event to outbox table in same DB transaction; relay polls and publishes atomically.' },
+  { name: 'TCC',             type: 'keyword', desc: 'Try-Confirm-Cancel: reserve resources (Try), confirm on success, cancel on failure.' },
+  { name: 'Idempotency key', type: 'keyword', desc: 'Unique key per operation; ensures retrying a request produces the same result once.' },
+  { name: 'Compensating tx', type: 'keyword', desc: 'Undo a committed step in a Saga — e.g. refund payment if inventory reservation fails.' },
+  { name: 'CDC',             type: 'keyword', desc: 'Change Data Capture: reads WAL to produce reliable event stream from DB changes.' },
+  { name: 'Exactly-once',    type: 'keyword', desc: 'Guarantee that a message is processed exactly once — requires idempotency on consumer side.' },
+];
+
+const theory: TheoryPoint[] = [
+  {
+    heading: 'Two-Phase Commit (2PC)',
+    points: [
+      'Phase 1 (Prepare): coordinator asks all participants "can you commit?" Each votes YES or NO.',
+      'Phase 2 (Commit): if all YES → coordinator sends Commit; any NO → sends Abort.',
+      'Pros: strong ACID across multiple databases; widely supported (XA protocol).',
+      'Cons: blocking — if coordinator crashes between phases, participants are stuck. Not suitable for microservices across the internet.',
+    ],
+  },
+  {
+    heading: 'Saga pattern',
+    points: [
+      'Break a distributed transaction into a sequence of local transactions, each publishing an event.',
+      'On failure: execute compensating transactions in reverse order to undo completed steps.',
+      'Choreography Saga: each service listens for events and publishes next event (no central coordinator).',
+      'Orchestration Saga: a Saga Orchestrator sends commands to each service and handles failures centrally.',
+      'Trade-off: eventual consistency between steps; compensations can be complex.',
+    ],
+  },
+  {
+    heading: 'Outbox pattern',
+    points: [
+      'Problem: writing to DB and publishing to message queue are two separate operations — one can fail.',
+      'Solution: write event to an outbox table in the same DB transaction as the business data.',
+      'A relay (Debezium/CDC or a polling job) reads the outbox table and publishes to Kafka/SQS.',
+      'Guarantees at-least-once delivery with no dual-write. Consumer must be idempotent.',
+    ],
+  },
+  {
+    heading: 'Idempotency and exactly-once semantics',
+    points: [
+      'Networks are unreliable — retries are mandatory. Without idempotency, retries cause duplicate effects.',
+      'Idempotency key: client sends a unique ID; server stores the result keyed by ID; duplicates return cached result.',
+      'Exactly-once processing: idempotent consumer + at-least-once delivery = effectively-exactly-once.',
+      'Kafka transactions: producer writes to topic + marks offset as committed in a single atomic operation.',
+    ],
+  },
+];
+
+const codeTabs: CodeTab[] = [
+  {
+    label: 'Saga Orchestration',
+    language: 'typescript',
+    code: `// Order Saga — orchestration pattern
+// Saga orchestrator coordinates: Order → Payment → Inventory → Fulfillment
+
+type SagaStep = {
+  name: string;
+  execute: () => Promise<void>;
+  compensate: () => Promise<void>;
+};
+
+class OrderSaga {
+  private completed: SagaStep[] = [];
+
+  async run(steps: SagaStep[]): Promise<void> {
+    for (const step of steps) {
+      try {
+        await step.execute();
+        this.completed.push(step);
+      } catch (err) {
+        console.error(\`Step \${step.name} failed — rolling back\`);
+        await this.rollback();
+        throw err;
+      }
+    }
+  }
+
+  private async rollback(): Promise<void> {
+    for (const step of [...this.completed].reverse()) {
+      try {
+        await step.compensate();
+      } catch (err) {
+        // Log and alert — compensation failure needs manual intervention
+        console.error(\`Compensation failed for \${step.name}\`, err);
+      }
+    }
+  }
+}
+
+// Usage:
+const saga = new OrderSaga();
+await saga.run([
+  {
+    name: 'CreateOrder',
+    execute: () => orderService.create(order),
+    compensate: () => orderService.cancel(order.id),
+  },
+  {
+    name: 'ChargePayment',
+    execute: () => paymentService.charge(order.total),
+    compensate: () => paymentService.refund(order.total),  // compensating tx
+  },
+  {
+    name: 'ReserveInventory',
+    execute: () => inventoryService.reserve(order.items),
+    compensate: () => inventoryService.release(order.items),
+  },
+]);`,
+  },
+  {
+    label: 'Outbox Pattern',
+    language: 'typescript',
+    code: `// Outbox pattern: atomic write to DB + event publishing
+
+// Step 1: write business data AND outbox event in same transaction
+async function placeOrder(order: Order, db: Transaction): Promise<void> {
+  await db.run('BEGIN');
+  try {
+    // Business write
+    await db.run('INSERT INTO orders (id, user_id, total) VALUES (?, ?, ?)',
+      [order.id, order.userId, order.total]);
+
+    // Outbox event — same transaction, same DB
+    await db.run(
+      'INSERT INTO outbox (id, aggregate_id, event_type, payload, published) VALUES (?, ?, ?, ?, false)',
+      [uuid(), order.id, 'OrderCreated', JSON.stringify(order)]
+    );
+    await db.run('COMMIT');
+  } catch (e) {
+    await db.run('ROLLBACK');
+    throw e;
+  }
+}
+
+// Step 2: relay polls unpublished outbox events and publishes to Kafka
+// (runs as a background job every 100ms OR via Debezium CDC reading WAL)
+async function relayOutboxEvents(db: DB, kafka: KafkaProducer): Promise<void> {
+  const events = await db.query(
+    'SELECT * FROM outbox WHERE published = false ORDER BY created_at LIMIT 100'
+  );
+  for (const event of events) {
+    await kafka.produce('domain-events', { key: event.aggregate_id, value: event.payload });
+    await db.run('UPDATE outbox SET published = true WHERE id = ?', [event.id]);
+  }
+}`,
+  },
+  {
+    label: 'Idempotency Key',
+    language: 'typescript',
+    code: `// Idempotency key pattern for payment endpoint
+
+// Client generates a unique key per request attempt
+const idempotencyKey = \`pay-\${orderId}-\${Date.now()}\`;
+
+// Server: check if already processed
+async function processPayment(req: PaymentRequest): Promise<PaymentResult> {
+  const { idempotencyKey, amount, userId } = req;
+
+  // Check idempotency store (Redis or DB table)
+  const existing = await redis.get(\`idem:\${idempotencyKey}\`);
+  if (existing) {
+    return JSON.parse(existing);  // Return cached result — do NOT charge again
+  }
+
+  // Process payment
+  const result = await chargeCard(userId, amount);
+
+  // Store result with TTL (24h is common for payments)
+  await redis.setEx(\`idem:\${idempotencyKey}\`, 86400, JSON.stringify(result));
+
+  return result;
+}
+
+// Client retries on network error — server returns same result
+// POST /payments  { idempotencyKey: "pay-123-1700000000" }
+//  → network timeout
+// POST /payments  { idempotencyKey: "pay-123-1700000000" }  (retry)
+//  → server returns cached result — no double charge`,
+  },
+];
+
+const mistakes: CommonMistake[] = [
+  {
+    title: 'Using 2PC across microservices over the internet',
+    wrong: `// 2PC across Payment Service, Inventory Service, Order Service
+// Coordinator crashes after Phase 1 → all 3 services blocked indefinitely`,
+    right: `// Use Saga pattern instead of 2PC for microservices:
+// Each service does a local transaction + publishes event
+// On failure: compensating transactions undo completed steps
+// No blocking — each step completes independently`,
+    explanation: '2PC requires participants to hold locks while waiting for the coordinator. If the coordinator crashes mid-protocol, all participants block until recovery. Saga avoids this with local transactions and compensations.',
+  },
+  {
+    title: 'Dual write without outbox',
+    wrong: `// Write to DB, then publish event
+await db.insert('orders', order);
+await kafka.produce('order-created', order);  // Can fail independently
+// If Kafka fails: DB has order, no event → inventory never updated`,
+    right: `// Use outbox: write event to DB in same transaction as business data
+await db.transaction(async tx => {
+  await tx.insert('orders', order);
+  await tx.insert('outbox', { event: 'OrderCreated', payload: order });
+});
+// Relay reads outbox and publishes — atomic, no dual-write`,
+    explanation: 'Dual write (DB write + event publish separately) creates a window where one can fail while the other succeeds. This leads to phantom orders or missing events. The outbox pattern eliminates this.',
+  },
+  {
+    title: 'Forgetting compensating transactions',
+    wrong: `// Saga steps:
+// 1. Create order ✓
+// 2. Charge payment ✓
+// 3. Reserve inventory ✗ (out of stock)
+// → payment charged but no compensating refund defined`,
+    right: `// Every Saga step MUST define a compensating transaction:
+// step 3 fails → run compensation for step 2:
+//   paymentService.refund(order.total)
+// then compensation for step 1:
+//   orderService.cancel(order.id)`,
+    explanation: 'Sagas without compensating transactions leave the system in an inconsistent state on failure. Every step that has a side effect (charge, reserve, notify) must have a corresponding undo operation.',
+  },
+  {
+    title: 'Non-idempotent message consumers',
+    wrong: `// Consumer receives "OrderCreated" event → reserves inventory
+// Kafka redelivers after consumer crash → inventory reserved twice`,
+    right: `// Check idempotency before processing:
+const alreadyProcessed = await db.query(
+  'SELECT 1 FROM processed_events WHERE event_id = ?', [eventId]);
+if (alreadyProcessed) return;
+// Process + mark as processed in same transaction`,
+    explanation: 'Message queues guarantee at-least-once delivery — consumers will see duplicates on restart. Without idempotency checks, retries cause double-charges, double-reservations, or duplicate emails.',
+  },
+];
+
+const challenge: Challenge = {
+  title: 'Design a reliable order checkout flow',
+  language: 'typescript',
+  description: `An e-commerce checkout must:
+1. Deduct stock from inventory service
+2. Charge the customer via payment service
+3. Create the order record in order service
+4. Send confirmation email
+
+All must succeed together, or all must be rolled back.
+Services are separate microservices with separate databases.
+
+Design:
+- Which pattern (2PC, Saga, TCC)?
+- Choreography or orchestration?
+- How to handle payment charged but inventory fails?
+- How to prevent double charges on retry?`,
+  hints: [
+    'Saga orchestration gives a single place to handle all failure cases',
+    'Charge payment LAST — it is hardest to undo',
+    'Idempotency key on payment prevents double charge on retry',
+    'Email is fire-and-forget — no compensation needed',
+  ],
+  starterCode: `// Current broken implementation (dual writes, no compensation):
+async function checkout(cart: Cart): Promise<Order> {
+  await inventoryService.reserve(cart.items);  // Step 1
+  const charge = await paymentService.charge(cart.total);  // Step 2
+  const order = await orderService.create(cart, charge);  // Step 3
+  await emailService.sendConfirmation(order);  // Step 4
+  return order;
+  // Problem: if step 3 fails, money was taken but no order exists!
+}`,
+  solution: `class CheckoutSaga {
+  async run(cart: Cart, idempotencyKey: string): Promise<Order> {
+    let reservationId: string | null = null;
+    let chargeId: string | null = null;
+
+    try {
+      // Step 1: Reserve inventory (compensate: release)
+      reservationId = await inventoryService.reserve(cart.items);
+
+      // Step 2: Charge payment (compensate: refund)
+      // Idempotency key prevents double charge on retry
+      chargeId = await paymentService.charge(cart.total, { idempotencyKey });
+
+      // Step 3: Create order (compensate: cancel)
+      const order = await orderService.create({ cart, chargeId, reservationId });
+
+      // Step 4: Send email (fire-and-forget — no compensation)
+      emailService.sendConfirmation(order).catch(err =>
+        console.error('Email failed — will retry via outbox', err)
+      );
+
+      return order;
+    } catch (err) {
+      // Compensate in reverse order:
+      if (chargeId) await paymentService.refund(chargeId);
+      if (reservationId) await inventoryService.release(reservationId);
+      throw err;
+    }
+  }
+}`,
+};
+
+const quiz: QuizQuestion[] = [
+  {
+    q: 'What is the main drawback of Two-Phase Commit (2PC) in microservices?',
+    options: [
+      'It only supports two services',
+      'It requires synchronous HTTP',
+      'Coordinator crash leaves participants blocked holding locks',
+      'It does not support rollback',
+    ],
+    answer: 2,
+    explanation: '2PC participants hold locks and wait for the coordinator after Phase 1. If the coordinator crashes, participants are stuck until recovery — a blocking protocol. This makes 2PC unsuitable for distributed microservices that must remain available.',
+  },
+  {
+    q: 'The outbox pattern solves which problem?',
+    options: [
+      'Slow database writes',
+      'Dual-write inconsistency between DB and message queue',
+      'High message queue latency',
+      'Database schema migration',
+    ],
+    answer: 1,
+    explanation: 'Without the outbox, writing to a DB and publishing an event are two separate operations — one can fail while the other succeeds. The outbox writes the event to the DB in the same transaction, ensuring atomic delivery to the message queue.',
+  },
+  {
+    q: 'In a Saga, what is the purpose of a compensating transaction?',
+    options: [
+      'To speed up the forward transaction',
+      'To undo the effect of a completed Saga step on failure',
+      'To lock resources during the Saga',
+      'To validate input before each step',
+    ],
+    answer: 1,
+    explanation: 'Since each Saga step commits independently, failure in a later step cannot roll back earlier steps. Compensating transactions are business-level undos — e.g. refund a charge, release a reservation — executed in reverse order on failure.',
+  },
+];
+
+const qna: QnaItem[] = [
+  {
+    q: 'Choreography vs orchestration Saga — which should I choose?',
+    a: 'Choreography: services react to events, no central coordinator. Simple for small flows (2-3 services). Harder to debug as complexity grows — distributed logic is invisible. Orchestration: a Saga Orchestrator drives the workflow. Easier to reason about, monitor, and test. Prefer orchestration for flows with many steps or complex error handling (e.g. Temporal, AWS Step Functions).',
+  },
+  {
+    q: 'What is TCC (Try-Confirm-Cancel)?',
+    a: 'TCC is a three-phase variant used when you need to lock resources across services before committing. Try: reserve the resource (e.g. block $50 from account). Confirm: finalise the reservation. Cancel: release the reservation. TCC is stricter than Saga — all participants must be reachable in Try phase. Used in financial systems that need reservation semantics.',
+  },
+];
+
+const revision: RevisionSummary = {
+  oneLiner: '2PC blocks on coordinator crash; Saga uses compensating transactions; outbox atomically publishes events; idempotency key prevents duplicate effects.',
+  mustKnow: [
+    '2PC: atomic across nodes but blocking — avoid in microservices',
+    'Saga: local transactions + compensating transactions on failure',
+    'Orchestration Saga: central coordinator; Choreography: event-driven',
+    'Outbox pattern: event in same DB transaction → relay publishes atomically',
+    'Idempotency key: retry-safe operations — store result, return on duplicate',
+    'Compensating transactions must be defined for every Saga step with side effects',
+  ],
+  interviewFocus: [
+    'Explain why 2PC fails in microservices (blocking on coordinator crash)',
+    'Walk through an Order Saga: steps + what gets compensated on payment failure',
+    'Outbox pattern: why dual-write is dangerous and how outbox fixes it',
+    'Idempotency: how to prevent double charges on payment retry',
+  ],
+};
+
+@Component({
+  selector: 'app-sysdesign-distributed-transactions',
+  standalone: true,
+  imports: [CommonModule, PageMetaComponent, QuickRefComponent, TheoryBlockComponent, CodeBlockComponent,
+    CommonMistakesComponent, ChallengeBlockComponent, QuizBlockComponent, QnaBlockComponent,
+    RevisionCardComponent, PageCompleteComponent],
+  templateUrl: './distributed-transactions.html',
+  styleUrl: './distributed-transactions.scss',
+})
+export class SysdesignDistributedTransactions {
+  quickRef = quickRef;
+  theory = theory;
+  codeTabs = codeTabs;
+  mistakes = mistakes;
+  challenge = challenge;
+  quiz = quiz;
+  qna = qna;
+  revision = revision;
+}

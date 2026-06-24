@@ -102,6 +102,46 @@ export class ProgressService {
   readonly linuxCount  = computed(() => [...this._done()].filter(r => r.startsWith('linux-')).length);
   readonly linuxPct    = computed(() => Math.round((this.linuxCount() / this.linuxTotal) * 100));
 
+  // ── Observability (keys prefixed 'obs-') ─────────────────────────────────
+  readonly obsTotal  = 20;
+  readonly obsCount  = computed(() => [...this._done()].filter(r => r.startsWith('obs-')).length);
+  readonly obsPct    = computed(() => Math.round((this.obsCount() / this.obsTotal) * 100));
+
+  // ── Terraform (keys prefixed 'tf-') ──────────────────────────────────────
+  readonly tfTotal  = 21;
+  readonly tfCount  = computed(() => [...this._done()].filter(r => r.startsWith('tf-')).length);
+  readonly tfPct    = computed(() => Math.round((this.tfCount() / this.tfTotal) * 100));
+
+  // ── Service Mesh (keys prefixed 'mesh-') ─────────────────────────────────
+  readonly meshTotal  = 19;
+  readonly meshCount  = computed(() => [...this._done()].filter(r => r.startsWith('mesh-')).length);
+  readonly meshPct    = computed(() => Math.round((this.meshCount() / this.meshTotal) * 100));
+
+  // ── System Design (keys prefixed 'sysdesign-') ───────────────────────────
+  readonly sysdesignTotal  = 24;
+  readonly sysdesignCount  = computed(() => [...this._done()].filter(r => r.startsWith('sysdesign-')).length);
+  readonly sysdesignPct    = computed(() => Math.round((this.sysdesignCount() / this.sysdesignTotal) * 100));
+
+  // ── Architecture Patterns (keys prefixed 'arch-') ────────────────────────
+  readonly archTotal  = 22;
+  readonly archCount  = computed(() => [...this._done()].filter(r => r.startsWith('arch-')).length);
+  readonly archPct    = computed(() => Math.round((this.archCount() / this.archTotal) * 100));
+
+  // ── Design Patterns (keys prefixed 'dp-') ────────────────────────────────
+  readonly dpTotal  = 36;
+  readonly dpCount  = computed(() => [...this._done()].filter(r => r.startsWith('dp-')).length);
+  readonly dpPct    = computed(() => Math.round((this.dpCount() / this.dpTotal) * 100));
+
+  // ── Security (keys prefixed 'sec-') ──────────────────────────────────────
+  readonly secTotal  = 23;
+  readonly secCount  = computed(() => [...this._done()].filter(r => r.startsWith('sec-')).length);
+  readonly secPct    = computed(() => Math.round((this.secCount() / this.secTotal) * 100));
+
+  // ── API Design (keys prefixed 'api-') ────────────────────────────────────
+  readonly apiTotal  = 19;
+  readonly apiCount  = computed(() => [...this._done()].filter(r => r.startsWith('api-')).length);
+  readonly apiPct    = computed(() => Math.round((this.apiCount() / this.apiTotal) * 100));
+
   toggle(route: string) {
     this._done.update(s => {
       const next = new Set(s);

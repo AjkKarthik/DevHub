@@ -1,0 +1,21 @@
+<div class="arch-page">
+  <div class="page-header-icon arch-icon">🏛️</div>
+  <h1 class="page-title">Layered Architecture</h1>
+  <p class="page-subtitle">Presentation → Application → Domain → Infrastructure. The most common enterprise pattern — and how to avoid the <code>anemic domain model</code> trap.</p>
+
+  <app-page-meta [readingTime]="16" difficulty="beginner" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="arch-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="arch-layered-architecture" nextRoute="/arch-patterns/clean-architecture" nextLabel="Clean / Onion Architecture" />
+</div>

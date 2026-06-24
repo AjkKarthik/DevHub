@@ -1,0 +1,368 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
+import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { TheoryBlockComponent, TheoryPoint } from '../../../shared/theory-block/theory-block';
+import { CodeBlockComponent, CodeTab } from '../../../shared/code-block/code-block';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
+import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
+import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
+
+const quickRef: QuickRefItem[] = [
+  { name: 'S — SRP', type: 'keyword', desc: 'Single Responsibility: a class has one reason to change — one job, one concern.' },
+  { name: 'O — OCP', type: 'keyword', desc: 'Open/Closed: open for extension, closed for modification — add behaviour without editing existing code.' },
+  { name: 'L — LSP', type: 'keyword', desc: 'Liskov Substitution: subclasses must be substitutable for their base class without breaking the program.' },
+  { name: 'I — ISP', type: 'keyword', desc: 'Interface Segregation: clients should not depend on methods they do not use — split fat interfaces.' },
+  { name: 'D — DIP', type: 'keyword', desc: 'Dependency Inversion: depend on abstractions, not concretions — inject interfaces, not concrete classes.' },
+  { name: 'Robert C. Martin', type: 'keyword', desc: '"Uncle Bob" coined SOLID in the early 2000s as principles for maintainable OOP design.' },
+];
+
+const theory: TheoryPoint[] = [
+  {
+    heading: 'S — Single Responsibility Principle',
+    points: [
+      'A class should have only one reason to change — it should do one thing well.',
+      'Violation: UserService that handles authentication, email, profile updates, and payments.',
+      'Fix: AuthService, EmailService, ProfileService, PaymentService — each with one responsibility.',
+      'Ask: "If X changes, does this class need to change?" If multiple X → SRP violation.',
+    ],
+  },
+  {
+    heading: 'O — Open/Closed Principle',
+    points: [
+      'Software entities should be open for extension but closed for modification.',
+      'Violation: adding a new payment method requires editing a PaymentProcessor switch statement.',
+      'Fix: IPaymentMethod interface — new providers implement it without touching existing code.',
+      'Strategy and Decorator patterns directly implement OCP.',
+    ],
+  },
+  {
+    heading: 'L — Liskov Substitution Principle',
+    points: [
+      'Subclasses must be usable in place of their base class without breaking the program.',
+      'Classic violation: Square inherits Rectangle — setting width/height independently breaks Square\'s invariant.',
+      'LSP violation signals: overriding methods to throw NotSupportedException, postconditions weaker than base.',
+      'Fix: prefer composition over inheritance when the "is-a" relationship has special constraints.',
+    ],
+  },
+  {
+    heading: 'I — Interface Segregation Principle',
+    points: [
+      'Clients should not be forced to depend on interfaces they do not use.',
+      'Violation: IWorker has Work(), Eat(), Sleep() — a Robot implements Work() but throws on Eat().',
+      'Fix: IWorkable { Work() }, IFeedable { Eat() }, ISleepable { Sleep() } — compose what each class needs.',
+      'Fat interfaces cause compilation coupling — every change to the interface forces all implementors to recompile.',
+    ],
+  },
+];
+
+const codeTabs: CodeTab[] = [
+  {
+    label: 'SRP + OCP',
+    language: 'csharp',
+    code: `// ── Single Responsibility Principle ───────────────────────────────────────────
+
+// WRONG: one class, multiple reasons to change
+public class UserManager
+{
+    public User GetUser(Guid id) { /* DB query */ }
+    public void SendWelcomeEmail(User user) { /* SMTP */ }  // email concern
+    public void UpdateUserProfile(User user) { /* DB write */ }
+    public string GenerateReport(User user) { /* formatting */ } // report concern
+}
+
+// RIGHT: each class has one responsibility
+public class UserRepository   { public User? GetUser(Guid id) { /*...*/ } }
+public class UserEmailService { public Task SendWelcomeEmailAsync(User user) { /*...*/ } }
+public class UserReportService { public string GenerateReport(User user) { /*...*/ } }
+
+// ── Open/Closed Principle ─────────────────────────────────────────────────────
+
+// WRONG: extending requires modifying existing code
+public class DiscountCalculator
+{
+    public decimal Calculate(Order order, string type) => type switch
+    {
+        "seasonal"  => order.Total * 0.1m,
+        "employee"  => order.Total * 0.2m,
+        // Adding "VIP" requires editing this class ← OCP violation
+        _ => 0m
+    };
+}
+
+// RIGHT: open for extension via interface
+public interface IDiscountStrategy
+{
+    bool Applies(Order order);
+    decimal Calculate(Order order);
+}
+
+public class SeasonalDiscount : IDiscountStrategy
+{
+    public bool Applies(Order order) => DateTime.Now.Month is 11 or 12;
+    public decimal Calculate(Order order) => order.Total * 0.1m;
+}
+
+public class EmployeeDiscount : IDiscountStrategy
+{
+    public bool Applies(Order order) => order.Customer.IsEmployee;
+    public decimal Calculate(Order order) => order.Total * 0.2m;
+}
+
+// Adding VipDiscount = new class, zero changes to existing code ← OCP satisfied
+public class VipDiscount : IDiscountStrategy
+{
+    public bool Applies(Order order) => order.Customer.Tier == Tier.Vip;
+    public decimal Calculate(Order order) => order.Total * 0.15m;
+}
+
+public class DiscountCalculator(IEnumerable<IDiscountStrategy> strategies)
+{
+    public decimal Calculate(Order order) =>
+        strategies.Where(s => s.Applies(order)).Sum(s => s.Calculate(order));
+}`,
+  },
+  {
+    label: 'LSP + ISP + DIP',
+    language: 'csharp',
+    code: `// ── Liskov Substitution Principle ────────────────────────────────────────────
+
+// WRONG: Square breaks Rectangle's contract
+public class Rectangle { public virtual int Width { get; set; } public virtual int Height { get; set; } }
+public class Square : Rectangle
+{
+    public override int Width  { set { base.Width = base.Height = value; } }  // breaks width/height independence
+    public override int Height { set { base.Width = base.Height = value; } }
+}
+// Client code: rect.Width = 5; rect.Height = 3; Assert(rect.Area == 15) → FAILS for Square
+
+// RIGHT: separate types, no inheritance
+public class Rectangle(int width, int height) { public int Area => width * height; }
+public class Square(int side) { public int Area => side * side; }
+
+// ── Interface Segregation Principle ──────────────────────────────────────────
+
+// WRONG: fat interface forces Robot to implement Eat/Sleep
+public interface IWorker { void Work(); void Eat(); void Sleep(); }
+public class Robot : IWorker
+{
+    public void Work() { /* processes */ }
+    public void Eat()  => throw new NotSupportedException(); // ISP violation
+    public void Sleep() => throw new NotSupportedException(); // ISP violation
+}
+
+// RIGHT: segregated interfaces
+public interface IWorkable  { void Work(); }
+public interface IFeedable  { void Eat(); }
+public interface ISleepable { void Sleep(); }
+
+public class Robot : IWorkable            { public void Work() { /* ok */ } }
+public class Human : IWorkable, IFeedable, ISleepable
+{
+    public void Work()  { /* ok */ }
+    public void Eat()   { /* ok */ }
+    public void Sleep() { /* ok */ }
+}
+
+// ── Dependency Inversion Principle ────────────────────────────────────────────
+
+// WRONG: high-level module depends on concrete low-level module
+public class OrderService
+{
+    private readonly SqlOrderRepository _repo = new(); // concrete dependency
+    public void Process(Order order) { _repo.Save(order); }
+}
+
+// RIGHT: both depend on the abstraction
+public interface IOrderRepository { Task SaveAsync(Order order); }
+
+public class OrderService(IOrderRepository repo) // depends on abstraction
+{
+    public async Task ProcessAsync(Order order) => await repo.SaveAsync(order);
+}
+
+// Registered via DI — concrete wired at composition root only
+builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();`,
+  },
+];
+
+const mistakes: CommonMistake[] = [
+  {
+    title: 'Applying SRP as "one method per class"',
+    wrong: `// 50 classes, each with a single method — over-engineered
+public class UserEmailSender { public void Send(User u) { } }
+public class UserEmailValidator { public bool Validate(string e) { } }`,
+    right: `// "One reason to change" — not "one method"
+// EmailService handles all email concerns: send, validate, template — one responsibility`,
+    explanation: 'SRP means one reason to change, not one method per class. A class cohesively handling all email-related behaviour is a single responsibility. Splitting by method creates excessive class proliferation and fragmented cohesion.',
+  },
+  {
+    title: 'LSP violation: throwing NotImplementedException in overrides',
+    wrong: `public class ReadOnlyRepository : IRepository
+{
+    public void Add(Entity e) => throw new NotImplementedException(); // LSP violation
+}`,
+    right: `public interface IReadRepository<T> { Task<T?> GetByIdAsync(Guid id); }
+public interface IWriteRepository<T> : IReadRepository<T> { Task AddAsync(T entity); }
+// ReadOnlyRepository implements only IReadRepository<T>`,
+    explanation: 'Throwing NotImplementedException in an override means the subtype is NOT substitutable for its base — a direct LSP violation. Fix by splitting the interface so the read-only implementation only exposes read methods.',
+  },
+  {
+    title: 'Injecting concrete classes instead of interfaces (DIP violation)',
+    wrong: `public class ReportService(SqlReportRepository repo) // tied to SQL implementation`,
+    right: `public class ReportService(IReportRepository repo) // depends on abstraction`,
+    explanation: 'Depending on concrete classes means you cannot swap implementations for testing or different environments without modifying the class. Inject interfaces and let the DI container wire the concrete class — this is the Dependency Inversion Principle.',
+  },
+  {
+    title: 'Creating one giant interface (ISP violation)',
+    wrong: `public interface IUserService
+{
+    User GetUser(Guid id);
+    void UpdateProfile(User user);
+    void SendEmail(string to, string body);
+    string GenerateReport(User user);
+    bool ValidatePassword(string password);
+}`,
+    right: `public interface IUserRepository   { User GetUser(Guid id); void UpdateProfile(User u); }
+public interface IEmailService      { void SendEmail(string to, string body); }
+public interface IReportService     { string GenerateReport(User user); }
+public interface IPasswordValidator { bool Validate(string password); }`,
+    explanation: 'A single large interface forces every implementation to depend on all methods — even the ones they don\'t use. Split into focused interfaces. Clients depend only on the interfaces relevant to their needs.',
+  },
+];
+
+const challenge: Challenge = {
+  title: 'SOLID Payment System',
+  language: 'typescript',
+  description: `Apply SOLID to a payment system.
+IPaymentProcessor has processPayment(amount): boolean.
+CreditCardProcessor and CryptoProcessor implement it (OCP/DIP).
+PaymentService depends on IPaymentProcessor (DIP).
+Each processor has one responsibility (SRP).`,
+  hints: [
+    'IPaymentProcessor is the abstraction (DIP + OCP)',
+    'PaymentService constructor takes IPaymentProcessor',
+    'CreditCardProcessor and CryptoProcessor are separate classes',
+  ],
+  starterCode: `interface IPaymentProcessor {
+  processPayment(amount: number): boolean;
+}
+
+// TODO: CreditCardProcessor, CryptoProcessor
+// TODO: PaymentService(processor: IPaymentProcessor)`,
+  solution: `interface IPaymentProcessor {
+  processPayment(amount: number): boolean;
+}
+
+// SRP: each processor has one responsibility
+// OCP: new processors added without changing PaymentService
+class CreditCardProcessor implements IPaymentProcessor {
+  processPayment(amount: number): boolean {
+    console.log(\`Credit card charged: $\${amount}\`);
+    return true;
+  }
+}
+
+class CryptoProcessor implements IPaymentProcessor {
+  processPayment(amount: number): boolean {
+    console.log(\`Crypto payment sent: \${amount} BTC equivalent\`);
+    return amount <= 1000; // crypto limit example
+  }
+}
+
+// DIP: PaymentService depends on abstraction, not concrete class
+class PaymentService {
+  constructor(private processor: IPaymentProcessor) {}
+  checkout(amount: number): void {
+    const ok = this.processor.processPayment(amount);
+    console.log(ok ? 'Payment successful' : 'Payment failed');
+  }
+}
+
+const cardService   = new PaymentService(new CreditCardProcessor());
+const cryptoService = new PaymentService(new CryptoProcessor());
+
+cardService.checkout(99.99);
+cryptoService.checkout(500);
+cryptoService.checkout(2000); // fails — over limit`,
+};
+
+const quiz: QuizQuestion[] = [
+  {
+    q: 'What does the Liskov Substitution Principle state?',
+    options: [
+      'Subclasses must override all methods of their base class',
+      'Objects of a subtype must be substitutable for their supertype without altering program correctness',
+      'Every class must implement at least one interface',
+      'Interfaces must be larger than the classes that implement them',
+    ],
+    answer: 1,
+    explanation: 'LSP states that if S is a subtype of T, then objects of type T may be replaced with objects of type S without breaking the program. Classic violation: Square inheriting Rectangle and breaking width/height independence. Fix: prefer composition when the "is-a" relationship has special constraints.',
+  },
+  {
+    q: 'Which SOLID principle is violated when a class has methods like SendEmail(), SaveToDatabase(), and GeneratePDF()?',
+    options: [
+      'Open/Closed Principle',
+      'Single Responsibility Principle',
+      'Interface Segregation Principle',
+      'Dependency Inversion Principle',
+    ],
+    answer: 1,
+    explanation: 'A class combining email, database, and PDF concerns has three reasons to change — a SRP violation. Separate into EmailService, Repository, and PdfService, each with one responsibility.',
+  },
+  {
+    q: 'The Open/Closed Principle says code should be open for extension and closed for modification. Which pattern directly implements this?',
+    options: [
+      'Singleton — ensuring one instance',
+      'Strategy — adding behaviour via new implementations without modifying existing classes',
+      'Factory Method — creating objects without specifying the class',
+      'Observer — notifying dependents of changes',
+    ],
+    answer: 1,
+    explanation: 'Strategy encapsulates algorithms behind an interface — adding a new algorithm means a new class implementing the interface, with zero changes to the context or existing strategies. This directly implements OCP. Decorator also implements OCP by wrapping existing behaviour.',
+  },
+];
+
+const qna: QnaItem[] = [
+  {
+    q: 'Are the SOLID principles always applicable?',
+    a: 'SOLID principles are guidelines, not absolute rules. In small scripts, scripts-of-record, or simple CRUD apps, strict SOLID application creates unnecessary abstractions. Apply them when: the codebase will be long-lived, multiple developers work on it, the domain is complex, or testing is important. Premature SOLID (splitting every class before the need arises) is a form of over-engineering — wait for the pain before applying the principle.',
+  },
+  {
+    q: 'What is the relationship between DIP and Dependency Injection?',
+    a: 'They are complementary but distinct. DIP is the principle: high-level modules should not depend on low-level modules; both should depend on abstractions. Dependency Injection is the mechanism: abstractions (interfaces) are injected by an external container (the DI container) rather than constructed inside the class. DI is how you implement DIP in practice. Without DI, you would have to manually inject concrete implementations; DI containers automate this wiring.',
+  },
+];
+
+const revision: RevisionSummary = {
+  oneLiner: 'SOLID is five principles for maintainable OOP: one job per class, extend without modifying, substitutable subtypes, focused interfaces, and depend on abstractions.',
+  mustKnow: [
+    'S: Single Responsibility — one reason to change per class',
+    'O: Open/Closed — extend behaviour via new classes, not by editing existing ones',
+    'L: Liskov Substitution — subtype must not break base class contract; throwing NotImplementedException is a violation',
+    'I: Interface Segregation — split fat interfaces so clients depend only on what they use',
+    'D: Dependency Inversion — depend on interfaces (IOrderRepository), inject concretions via DI',
+  ],
+  interviewFocus: [
+    'What is the LSP violation with Square/Rectangle?',
+    'How does Strategy pattern implement OCP?',
+    'What is the difference between DIP and Dependency Injection?',
+  ],
+};
+
+@Component({
+  selector: 'app-dp-solid',
+  standalone: true,
+  imports: [CommonModule, PageMetaComponent, QuickRefComponent, TheoryBlockComponent,
+    CodeBlockComponent, CommonMistakesComponent, ChallengeBlockComponent,
+    QuizBlockComponent, QnaBlockComponent, RevisionCardComponent, PageCompleteComponent],
+  templateUrl: './solid.html',
+  styleUrl: './solid.scss',
+})
+export class DpSolid {
+  quickRef = quickRef; theory = theory; codeTabs = codeTabs;
+  mistakes = mistakes; challenge = challenge; quiz = quiz; qna = qna; revision = revision;
+}

@@ -1,0 +1,15 @@
+<div class="sysdesign-page">
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Design: Chat Application</h1>
+  <p class="page-subtitle">Persistent <code>WebSocket</code> connections, <code>Redis pub/sub</code> for cross-server routing, per-conversation sequence numbers for ordering, push notifications and seq_num sync for offline users.</p>
+  <app-page-meta [readingTime]="28" difficulty="advanced" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="sysdesign-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="sysdesign-chat-application" nextRoute="/system-design/search-engine" nextLabel="Design: Search Engine" />
+</div>

@@ -1,0 +1,85 @@
+<div class="sysdesign-page">
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">System Design Cheatsheet</h1>
+  <p class="page-subtitle">Latency numbers every engineer should know, component selection guide, capacity estimation quick-math, and the interview framework template — all on one page.</p>
+  <app-page-meta [readingTime]="10" difficulty="beginner" tech="javascript" />
+
+  <section class="sysdesign-section">
+    <h2>Latency Numbers (Every Interview)</h2>
+    <table class="cs-table">
+      <thead><tr><th>Operation</th><th>Latency</th><th>Note</th></tr></thead>
+      <tbody>
+        @for (row of latencyTable; track row.operation) {
+          <tr>
+            <td>{{ row.operation }}</td>
+            <td><code>{{ row.latency }}</code></td>
+            <td>{{ row.note }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sysdesign-section">
+    <h2>Component Selection Guide</h2>
+    <table class="cs-table">
+      <thead><tr><th>Need</th><th>Solution</th><th>Key Features</th></tr></thead>
+      <tbody>
+        @for (row of componentTable; track row.need) {
+          <tr>
+            <td>{{ row.need }}</td>
+            <td><strong>{{ row.solution }}</strong></td>
+            <td><code>{{ row.examples }}</code></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sysdesign-section">
+    <h2>Capacity Estimation Quick Numbers</h2>
+    <table class="cs-table">
+      <thead><tr><th>Metric</th><th>Value</th><th>Context</th></tr></thead>
+      <tbody>
+        @for (row of numberTable; track row.metric) {
+          <tr>
+            <td>{{ row.metric }}</td>
+            <td><code>{{ row.value }}</code></td>
+            <td>{{ row.context }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sysdesign-section">
+    <h2>Scaling Decision Rules</h2>
+    <table class="cs-table">
+      <thead><tr><th>Trigger</th><th>Solution</th></tr></thead>
+      <tbody>
+        @for (row of scalingRules; track row.trigger) {
+          <tr>
+            <td><strong>{{ row.trigger }}</strong></td>
+            <td>{{ row.solution }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sysdesign-section">
+    <h2>Interview Framework (45 Min)</h2>
+    <div class="cheat-grid">
+      @for (step of interviewTemplate; track step.step) {
+        <div class="cheat-card">
+          <h3>{{ step.step }}</h3>
+          <ul>
+            @for (point of step.points; track point) {
+              <li>{{ point }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </section>
+</div>

@@ -1,0 +1,34 @@
+<div class="dp-page">
+  <div class="page-header-icon dp-icon">DP</div>
+  <h1 class="page-title">Design Patterns Cheat Sheet</h1>
+  <p class="page-subtitle">Quick reference for all <code>36 patterns</code> — filter by category or search by name, intent, or use case.</p>
+
+  <div class="cs-controls">
+    <input class="cs-search" type="text" placeholder="Search patterns…"
+           [ngModel]="search()" (ngModelChange)="search.set($event)" />
+    <div class="cs-tabs">
+      @for (cat of categories; track cat) {
+        <button class="cs-tab" [class.active]="activeTab() === cat" (click)="setTab(cat)">{{ cat }}</button>
+      }
+    </div>
+  </div>
+
+  @if (filtered().length === 0) {
+    <p class="cs-empty">No patterns match "{{ search() }}".</p>
+  }
+
+  <div class="cs-grid">
+    @for (p of filtered(); track p.name) {
+      <div class="cs-card">
+        <div class="cs-card-header">
+          <span class="cs-name">{{ p.name }}</span>
+          <span class="cs-badge cs-badge-{{ p.category.toLowerCase().replace(' ', '-') }}">{{ p.category }}</span>
+        </div>
+        <p class="cs-intent">{{ p.intent }}</p>
+        <div class="cs-row"><span class="cs-label">Use when</span><span class="cs-value">{{ p.useWhen }}</span></div>
+        <div class="cs-row"><span class="cs-label">Key class</span><span class="cs-value cs-mono">{{ p.keyClass }}</span></div>
+        <div class="cs-row"><span class="cs-label">.NET example</span><span class="cs-value">{{ p.example }}</span></div>
+      </div>
+    }
+  </div>
+</div>

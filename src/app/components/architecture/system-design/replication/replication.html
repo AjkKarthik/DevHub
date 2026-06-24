@@ -1,0 +1,15 @@
+<div class="sysdesign-page">
+  <div class="page-header-icon sysdesign-icon">🏗️</div>
+  <h1 class="page-title">Replication Strategies</h1>
+  <p class="page-subtitle">Single-leader, multi-leader, leaderless — <code>WAL</code> shipping, quorum reads (<code>W + R &gt; N</code>), replication lag, and conflict resolution.</p>
+  <app-page-meta [readingTime]="25" difficulty="advanced" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+  <section class="sysdesign-section"><h2>Code Examples</h2><app-code-block [tabs]="codeTabs" /></section>
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="sysdesign-replication" nextRoute="/system-design/indexes" nextLabel="Indexes & Query Optimisation" />
+</div>

@@ -1,0 +1,302 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
+import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { TheoryBlockComponent, TheoryPoint } from '../../../shared/theory-block/theory-block';
+import { CodeBlockComponent, CodeTab } from '../../../shared/code-block/code-block';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
+import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
+import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
+
+const quickRef: QuickRefItem[] = [
+  { name: 'Principle of Least Surprise', type: 'keyword', desc: 'API behaves exactly as a developer expects — consistent naming, predictable errors, no hidden side effects.' },
+  { name: 'Contract-First Design',        type: 'keyword', desc: 'Define the OpenAPI spec before writing code — API shape is stable before any implementation starts.' },
+  { name: 'Evolutionary Compatibility',  type: 'keyword', desc: 'New fields are additive; required fields and field types never change without a version bump.' },
+  { name: 'Idempotency',                 type: 'keyword', desc: 'Repeated identical requests produce the same result — safe to retry GET, PUT, DELETE; use Idempotency-Key for POST.' },
+  { name: 'Single Responsibility',       type: 'keyword', desc: 'Each endpoint does one thing — avoid multipurpose endpoints with mode-switching flags in the body.' },
+  { name: 'Consistency over Cleverness', type: 'keyword', desc: 'Same naming, casing, date format, and error shape across ALL endpoints in your API.' },
+];
+
+const theory: TheoryPoint[] = [
+  {
+    heading: 'Design for Developers, Not for Your Database',
+    points: [
+      'Expose domain concepts, not table names. /orders not /tbl_order; /products/{id}/reviews not /get_product_reviews_by_product_id.',
+      'Consumers should not need to know your implementation: which database you use, how many microservices are behind an endpoint, or your internal ID scheme.',
+      'Resource granularity should match consumer use cases. If every consumer always needs user + preferences together, return them together — not as two separate calls.',
+      'Principle of Least Surprise: every endpoint should behave exactly as a developer who read your docs would expect. If GET is destructive or POST returns different shapes depending on a hidden flag, you violated this principle.',
+    ],
+  },
+  {
+    heading: 'Consistency — the Most Important Design Value',
+    points: [
+      'Inconsistency is the #1 cause of API usability bugs. If some endpoints use camelCase and others use snake_case, consumers get runtime errors.',
+      'Standardise: naming convention (camelCase for JSON), date format (ISO 8601: 2024-01-15T10:30:00Z), pagination (cursor or page+limit — pick one), error shape (always the same fields).',
+      'Use a shared error envelope for ALL endpoints: `{ error: { code, message, details[] } }`. Never return raw strings or vary the error shape by endpoint.',
+      'If you have multiple teams building an API, an OpenAPI spec and a linter (Spectral) enforces consistency automatically — not a style guide that gets ignored.',
+    ],
+  },
+  {
+    heading: 'Contract-First API Design',
+    points: [
+      'Write the OpenAPI (or GraphQL schema) first. This separates "what the API does" from "how it does it" — frontend, backend, and mobile teams can work in parallel against a mock.',
+      'Contract-first catches design mistakes early (wrong response shapes, missing fields) before any implementation exists. Much cheaper to fix a YAML file than deployed code.',
+      'Tools: Swagger Editor, Stoplight, Postman — let you mock the spec and generate client code before a single server line is written.',
+      'The spec is the source of truth. Generate server stubs and client SDKs from it. If someone needs to change the API, change the spec first — not the code.',
+    ],
+  },
+  {
+    heading: 'Idempotency and Safety',
+    points: [
+      'Safe methods: GET, HEAD, OPTIONS — no state change. Clients cache them freely.',
+      'Idempotent methods: GET, PUT, DELETE — multiple identical requests produce the same result. A DELETE that returns 404 on re-request is still idempotent because server state is the same.',
+      'POST is neither safe nor idempotent by default. Use Idempotency-Key header to make POST operations idempotent: client generates a UUID, server deduplicates retries with the same key within a time window (e.g., 24h).',
+      'Design operations to be retry-safe. Network failures and timeouts are normal — consumers WILL retry. If your POST creates duplicate records on retry, you have a safety bug.',
+    ],
+  },
+];
+
+const codeTabs: CodeTab[] = [
+  {
+    label: 'Good vs Bad Design',
+    language: 'typescript',
+    code: `// ❌ BAD: implementation-leaking, inconsistent, hard to use
+GET  /tbl_order/getOrdersByUserId?user_id=42&include_deleted=true
+POST /create_order
+GET  /productReviews_List?productID=5&maxItems=10&StartIndex=0
+
+// ✅ GOOD: domain-focused, consistent, discoverable
+GET  /orders?userId=42&status=active
+POST /orders
+GET  /products/5/reviews?limit=10&cursor=<token>
+
+// ❌ BAD error shapes (varies by endpoint)
+// Endpoint A: { "message": "not found" }
+// Endpoint B: { "error_code": 404, "description": "User not found" }
+// Endpoint C: "Unauthorized"
+
+// ✅ GOOD: consistent error envelope for ALL endpoints
+interface ApiError {
+  error: {
+    code: string;       // 'not_found', 'validation_error', 'unauthorized'
+    message: string;    // human-readable
+    details?: Array<{ field: string; issue: string }>; // for validation errors
+    requestId: string;  // for support/tracing
+  };
+}
+
+// ❌ BAD: POST that is not idempotent (retry creates duplicates)
+POST /orders
+→ 201 Created { id: 'order-1' }
+POST /orders  // retry (consumer didn't see the 201)
+→ 201 Created { id: 'order-2' }  // DUPLICATE order
+
+// ✅ GOOD: Idempotency-Key makes POST retry-safe
+POST /orders
+Headers: { 'Idempotency-Key': 'client-uuid-xyz' }
+→ 201 Created { id: 'order-1' }
+
+POST /orders  // retry with same key
+Headers: { 'Idempotency-Key': 'client-uuid-xyz' }
+→ 200 OK { id: 'order-1' }  // same response — no duplicate`,
+  },
+  {
+    label: 'API Design Checklist',
+    language: 'typescript',
+    code: `// Resource naming
+// ✅ Plural nouns for collections: /orders, /users, /products
+// ✅ Singular resource: /orders/{id}, /users/{id}
+// ✅ Nested for owned resources: /users/{id}/addresses
+// ❌ Avoid verbs in URLs: /getOrders, /createUser, /deleteProduct
+
+// HTTP method semantics
+// GET    /orders          → list orders (safe, idempotent, cacheable)
+// GET    /orders/{id}     → get one order
+// POST   /orders          → create order (not idempotent — use Idempotency-Key)
+// PUT    /orders/{id}     → full replace (idempotent)
+// PATCH  /orders/{id}     → partial update (use JSON Merge Patch or JSON Patch)
+// DELETE /orders/{id}     → delete (idempotent)
+
+// Status codes
+// 200 OK         — success (GET, PUT, PATCH, POST returning existing resource)
+// 201 Created    — resource created (POST); include Location: /orders/{newId}
+// 204 No Content — success with no body (DELETE, PUT that replaces)
+// 400 Bad Request — validation error; include details[]
+// 401 Unauthorized — not authenticated (send WWW-Authenticate header)
+// 403 Forbidden   — authenticated but not authorized
+// 404 Not Found   — resource doesn't exist
+// 409 Conflict    — state conflict (e.g., duplicate, optimistic lock failed)
+// 422 Unprocessable — well-formed but semantically invalid (business logic error)
+// 429 Too Many Requests — rate limited (send Retry-After header)
+// 500 Internal Server Error — unexpected server error (log it; don't expose internals)
+
+// Naming consistency
+// ✅ camelCase for JSON fields: { userId, createdAt, orderStatus }
+// ✅ ISO 8601 dates: "2024-01-15T10:30:00Z" (UTC always)
+// ✅ Money as integer cents or string decimal — never float: 9999 (cents) or "99.99"
+// ✅ Booleans: isActive, hasPermission (not active_flag, permission_bit)`,
+  },
+];
+
+const mistakes: CommonMistake[] = [
+  {
+    title: 'Using verbs in resource URLs',
+    wrong: `GET  /getUser?id=42
+POST /createOrder
+GET  /fetchProductsByCategory?cat=electronics
+POST /deleteAccount`,
+    right: `GET    /users/42
+POST   /orders
+GET    /products?category=electronics
+DELETE /accounts/{id}`,
+    explanation: 'HTTP verbs (GET, POST, PUT, DELETE) already express the action. The URL should identify the resource, not the action. Mixing verbs in URLs creates an inconsistent API that forces consumers to learn every endpoint individually rather than understanding the pattern.',
+  },
+  {
+    title: 'Returning 200 OK for errors',
+    wrong: `// Returns 200 OK with an error in the body
+GET /orders/999
+→ 200 OK
+{ "success": false, "errorCode": 404, "message": "Not found" }`,
+    right: `// Use proper HTTP status codes — consumers can handle them without parsing body
+GET /orders/999
+→ 404 Not Found
+{ "error": { "code": "not_found", "message": "Order 999 does not exist" } }`,
+    explanation: 'HTTP status codes are the primary signaling mechanism. Returning 200 with an error body breaks HTTP clients, caching, monitoring tools, and any consumer that checks status codes (which they all should). Use proper 4xx/5xx codes — they are unambiguous and universally understood.',
+  },
+  {
+    title: 'Designing APIs around internal implementation details',
+    wrong: `// Exposes table structure and internal IDs — breaks if you refactor
+GET /tbl_users_v2/get_by_legacy_user_id?uid=42&include_soft_deleted=1
+POST /proc_create_order_with_validation`,
+    right: `// Domain-focused — implementation-agnostic
+GET  /users/42?includeDeleted=false
+POST /orders`,
+    explanation: 'API consumers should not know or care about your table names, stored procedures, legacy system naming, or internal conventions. Domain-focused URLs survive refactoring (changing database, splitting microservices) without breaking consumers.',
+  },
+  {
+    title: 'Inconsistent date and money formats across endpoints',
+    wrong: `// Endpoint A: Unix timestamp integer
+{ "createdAt": 1705312200 }
+// Endpoint B: formatted string
+{ "created_at": "15 Jan 2024 10:30 AM" }
+// Money as float
+{ "price": 9.99 }  // floating point precision issues`,
+    right: `// Always ISO 8601 UTC
+{ "createdAt": "2024-01-15T10:30:00Z" }
+// Money as integer cents OR string decimal — never float
+{ "price": 999 }  // cents: 999 = $9.99`,
+    explanation: 'Inconsistent formats force consumers to add format-detection code per endpoint. ISO 8601 is unambiguous, timezone-aware, and sortable as a string. Money as float causes rounding errors (0.1 + 0.2 ≠ 0.3 in IEEE 754) — store and transmit as integer cents or string decimal.',
+  },
+];
+
+const challenge: Challenge = {
+  title: 'Design a consistent API response',
+  language: 'typescript',
+  description: `You receive poorly designed API responses from a legacy system. Transform them into a consistent, well-designed envelope.
+Input: { success: true, data: { user_id: 42, full_name: "John", date_joined: 1705312200, balance: 9.99 } }
+Output: { data: { userId: 42, fullName: "John", joinedAt: "2024-01-15T10:30:00Z", balanceCents: 999 }, meta: { requestId: "req-001" } }
+
+Requirements:
+- Convert snake_case keys to camelCase
+- Convert Unix timestamp to ISO 8601 string (1705312200 * 1000)
+- Convert float dollars to integer cents (multiply by 100, round)
+- Wrap in { data: ..., meta: { requestId } }`,
+  hints: [
+    'Use new Date(timestamp * 1000).toISOString() for Unix → ISO 8601',
+    'Math.round(float * 100) for dollars → cents',
+  ],
+  starterCode: `function transformResponse(legacy: any, requestId: string): any {
+  // Extract the user from legacy.data
+  // Convert field names and formats
+  // Return consistent envelope
+  return {};
+}
+
+const legacy = { success: true, data: { user_id: 42, full_name: "John", date_joined: 1705312200, balance: 9.99 } };
+console.log(JSON.stringify(transformResponse(legacy, 'req-001'), null, 2));`,
+  solution: `function transformResponse(legacy: any, requestId: string): any {
+  const u = legacy.data;
+  return {
+    data: {
+      userId: u.user_id,
+      fullName: u.full_name,
+      joinedAt: new Date(u.date_joined * 1000).toISOString(),
+      balanceCents: Math.round(u.balance * 100),
+    },
+    meta: { requestId },
+  };
+}
+
+const legacy = { success: true, data: { user_id: 42, full_name: "John", date_joined: 1705312200, balance: 9.99 } };
+console.log(JSON.stringify(transformResponse(legacy, 'req-001'), null, 2));`,
+};
+
+const quiz: QuizQuestion[] = [
+  {
+    q: 'Which is the best URL design for getting reviews of a specific product?',
+    options: [
+      'GET /getProductReviews?productId=5',
+      'POST /reviews/fetch { "productId": 5 }',
+      'GET /products/5/reviews',
+      'GET /review-list?product_id=5&type=all',
+    ],
+    answer: 2,
+    explanation: 'Nested resource URLs (/products/5/reviews) express ownership and hierarchy naturally. They follow REST conventions: the collection /reviews is scoped under /products/5. Using GET expresses read intent. Avoid verbs in URLs (getProductReviews), POST for reads (breaks caching), and inconsistent casing.',
+  },
+  {
+    q: 'What is the correct approach for making a POST request idempotent?',
+    options: [
+      'POST is always idempotent because HTTP guarantees it',
+      'Use PUT instead — PUT is idempotent by definition',
+      'Include an Idempotency-Key header; the server deduplicates requests with the same key',
+      'Return 200 instead of 201 on duplicate requests',
+    ],
+    answer: 2,
+    explanation: 'POST is not idempotent by default — retrying creates duplicates. The Idempotency-Key pattern fixes this: the client generates a unique key (UUID) per logical operation, sends it in the header, and the server returns the cached response for any retry with the same key within a time window (typically 24h). This makes POST retry-safe without changing its semantics.',
+  },
+];
+
+const qna: QnaItem[] = [
+  {
+    q: 'Should we do contract-first or code-first API design?',
+    a: 'Contract-first is almost always the right approach for public or cross-team APIs. Write the OpenAPI spec first — define the resource shapes, endpoints, error responses, and auth. This gives you: <ol><li>A mockable spec (frontend can build against a mock before the server exists)</li><li>Early design feedback (catch shape mistakes in YAML, not in deployed code)</li><li>Auto-generated client SDKs and server stubs</li><li>Automatic documentation</li><li>Linting with Spectral to enforce consistency rules</li></ol>Code-first is acceptable for internal APIs in a monorepo where one team owns both sides, or when rapidly prototyping. But for APIs with external consumers, contract-first is the industry standard because changing a spec is cheaper than migrating clients away from a deployed endpoint.',
+  },
+  {
+    q: 'How do you handle filtering, sorting, and searching on list endpoints?',
+    a: 'Use query parameters for all three: <ul><li><strong>Filter</strong>: <code>GET /orders?status=pending&customerId=42</code> — field-name params directly</li><li><strong>Sort</strong>: <code>?sort=createdAt&order=desc</code> or <code>?sort=-createdAt</code> (minus prefix for descending — common convention)</li><li><strong>Search</strong>: <code>?q=laptop</code> for full-text search across relevant fields</li><li><strong>Field selection (sparse fieldsets)</strong>: <code>?fields=id,name,price</code> — return only requested fields</li></ul>For complex filtering (AND/OR, range queries), consider a filter DSL in a single query param: <code>?filter[price][gte]=100&filter[price][lte]=500</code> (JSON:API style). Avoid accepting filter logic in the body of a GET request — it breaks caching and HTTP semantics.',
+  },
+];
+
+const revision: RevisionSummary = {
+  oneLiner: 'API design is about developer experience — consistency, predictability, idempotency, and contract-first specs over implementation-leaking endpoints.',
+  mustKnow: [
+    'Design for domain concepts, not database tables — /orders not /tbl_order',
+    'Consistency beats cleverness: same naming, date format, error shape everywhere',
+    'Use proper HTTP status codes — never 200 with an error body',
+    'Verbs belong in HTTP methods, not URLs — GET/POST/PUT/PATCH/DELETE on nouns',
+    'Contract-first: write OpenAPI spec before implementation; mock early',
+    'Make POST idempotent with Idempotency-Key header; GET/PUT/DELETE are inherently idempotent',
+  ],
+  interviewFocus: [
+    'What is the principle of least surprise in API design?',
+    'How do you make a POST endpoint idempotent?',
+    'Why is contract-first design preferable for public APIs?',
+  ],
+};
+
+@Component({
+  selector: 'app-api-design-principles',
+  standalone: true,
+  imports: [CommonModule, PageMetaComponent, QuickRefComponent, TheoryBlockComponent,
+    CodeBlockComponent, CommonMistakesComponent, ChallengeBlockComponent,
+    QuizBlockComponent, QnaBlockComponent, RevisionCardComponent, PageCompleteComponent],
+  templateUrl: './api-design-principles.html',
+  styleUrl: './api-design-principles.scss',
+})
+export class ApiDesignPrinciples {
+  quickRef = quickRef; theory = theory; codeTabs = codeTabs;
+  mistakes = mistakes; challenge = challenge; quiz = quiz; qna = qna; revision = revision;
+}

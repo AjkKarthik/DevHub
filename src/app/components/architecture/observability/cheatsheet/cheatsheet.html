@@ -1,0 +1,36 @@
+<div class="obs-page cheatsheet-page">
+  <div class="page-header-icon obs-icon">📊</div>
+  <h1 class="page-title">Observability Cheatsheet</h1>
+  <p class="page-subtitle">Quick reference for <code>Prometheus PromQL</code>, SLO math, OpenTelemetry, logging patterns, alerting, and chaos engineering.</p>
+
+  <div class="cs-controls">
+    <input
+      class="cs-search"
+      type="text"
+      placeholder="Search metrics, SLO, tracing…"
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+    />
+    <div class="cs-tabs">
+      @for (cat of categories; track cat) {
+        <button class="cs-tab" [class.active]="activeCategory() === cat" (click)="setCategory(cat)">{{ cat }}</button>
+      }
+    </div>
+  </div>
+
+  <div class="cs-grid">
+    @for (item of filtered(); track item.name) {
+      <div class="cs-card">
+        <div class="cs-card-header">
+          <span class="cs-badge">{{ item.category }}</span>
+          <span class="cs-name">{{ item.name }}</span>
+        </div>
+        <pre class="cs-syntax"><code>{{ item.syntax }}</code></pre>
+        <p class="cs-desc">{{ item.description }}</p>
+      </div>
+    }
+    @if (filtered().length === 0) {
+      <p class="cs-empty">No results for "{{ search() }}"</p>
+    }
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="sec-page">
+  <div class="page-header-icon sec-icon">🔒</div>
+  <h1 class="page-title">Security Interview Prep</h1>
+  <p class="page-subtitle">Common security interview questions covering auth, injection, cryptography, and infrastructure — with detailed answers.</p>
+  <app-page-meta [readingTime]="20" difficulty="intermediate" since="2024" tech="javascript" />
+
+  <div class="filter-bar">
+    @for (t of topics; track t) {
+      <button class="filter-btn" [class.active]="selectedTopic() === t" (click)="setTopic(t)">{{ t }}</button>
+    }
+  </div>
+  <div class="filter-bar">
+    @for (d of diffs; track d) {
+      <button class="filter-btn" [class.active]="selectedDiff() === d" (click)="setDiff(d)">{{ d | titlecase }}</button>
+    }
+  </div>
+
+  <div class="q-list">
+    @for (q of filtered(); track q.q) {
+      <div class="q-card">
+        <div class="q-header" (click)="toggle(q)">
+          <span class="diff-badge {{ q.diff }}">{{ q.diff }}</span>
+          <h3>{{ q.q }}</h3>
+          <span>{{ q.open ? '▲' : '▼' }}</span>
+        </div>
+        @if (q.open) {
+          <div class="q-body">
+            <p>{{ q.a }}</p>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

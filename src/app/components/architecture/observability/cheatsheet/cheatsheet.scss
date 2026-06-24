@@ -1,0 +1,59 @@
+$accent: #059669;
+$tint:   #ecfdf5;
+
+.obs-page { max-width: 1000px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-title { color: $accent; font-size: 1.9rem; font-weight: 700; margin: 0.5rem 0 0.25rem; }
+.page-subtitle { color: #64748b; margin-bottom: 1.5rem;
+  code { background: $tint; color: $accent; padding: 0.1rem 0.35rem; border-radius: 4px; }
+}
+
+.cs-controls { margin-bottom: 1.5rem; }
+.cs-search {
+  width: 100%; padding: 0.6rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 8px;
+  font-size: 0.95rem; margin-bottom: 0.75rem; outline: none;
+  &:focus { border-color: $accent; }
+}
+.cs-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.cs-tab {
+  padding: 0.35rem 0.75rem; border-radius: 20px; border: 1.5px solid #e2e8f0;
+  background: #fff; font-size: 0.8rem; cursor: pointer; transition: all 0.15s;
+  &:hover { border-color: $accent; color: $accent; }
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+}
+
+.cs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+.cs-card {
+  border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; background: #fff;
+  transition: box-shadow 0.15s;
+  &:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+}
+.cs-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.cs-badge {
+  font-size: 0.7rem; font-weight: 600; background: $tint; color: $accent;
+  border-radius: 4px; padding: 0.1rem 0.4rem; white-space: nowrap;
+}
+.cs-name { font-weight: 600; font-size: 0.9rem; color: #1e293b; }
+.cs-syntax {
+  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;
+  padding: 0.5rem 0.75rem; font-size: 0.78rem; margin: 0 0 0.5rem; overflow-x: auto;
+  white-space: pre-wrap; word-break: break-all;
+  code { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+}
+.cs-desc { color: #64748b; font-size: 0.82rem; line-height: 1.5; margin: 0; }
+.cs-empty { color: #94a3b8; font-style: italic; grid-column: 1/-1; text-align: center; padding: 2rem; }
+
+:host-context(body.dark) {
+  .page-subtitle { color: #94a3b8; code { background: #064e3b; color: #34d399; } }
+  .cs-search { background: #1e293b; border-color: #334155; color: #e2e8f0;
+    &:focus { border-color: #34d399; }
+  }
+  .cs-tab { background: #1e293b; border-color: #334155; color: #94a3b8;
+    &:hover { border-color: #34d399; color: #34d399; }
+    &.active { background: $accent; color: #fff; border-color: $accent; }
+  }
+  .cs-card { background: #1e293b; border-color: #334155; }
+  .cs-name { color: #e2e8f0; }
+  .cs-syntax { background: #0f172a; border-color: #334155; }
+  .cs-badge { background: #064e3b; color: #34d399; }
+  .cs-desc { color: #94a3b8; }
+}

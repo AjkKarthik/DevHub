@@ -1,0 +1,70 @@
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ProgressService } from '../../../services/progress.service';
+import { SearchService, SEARCH_INDEX } from '../../../services/search.service';
+
+const DIFF: Record<string, string> = Object.fromEntries(SEARCH_INDEX.map(e => [e.route, e.difficulty]));
+
+@Component({
+  selector: 'app-security-nav',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive],
+  template: `
+    <a routerLink="/security" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">🏠 Security Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/security/fundamentals" routerLinkActive="active"><span class="nl-text">Security Fundamentals</span>@if(progress.isDone('sec-fundamentals')){<span class="nl-done">✓</span>}@if(d('sec-fundamentals');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/owasp-top-10" routerLinkActive="active"><span class="nl-text">OWASP Top 10</span>@if(progress.isDone('sec-owasp-top-10')){<span class="nl-done">✓</span>}@if(d('sec-owasp-top-10');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/threat-modelling" routerLinkActive="active"><span class="nl-text">Threat Modelling</span>@if(progress.isDone('sec-threat-modelling')){<span class="nl-done">✓</span>}@if(d('sec-threat-modelling');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/secure-coding" routerLinkActive="active"><span class="nl-text">Secure Coding</span>@if(progress.isDone('sec-secure-coding')){<span class="nl-done">✓</span>}@if(d('sec-secure-coding');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Identity &amp; Auth</p>
+      <a routerLink="/security/password-security" routerLinkActive="active"><span class="nl-text">Password Security</span>@if(progress.isDone('sec-password-security')){<span class="nl-done">✓</span>}@if(d('sec-password-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/oauth-oidc" routerLinkActive="active"><span class="nl-text">OAuth 2.0 &amp; OIDC</span>@if(progress.isDone('sec-oauth-oidc')){<span class="nl-done">✓</span>}@if(d('sec-oauth-oidc');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/jwt" routerLinkActive="active"><span class="nl-text">JSON Web Tokens</span>@if(progress.isDone('sec-jwt')){<span class="nl-done">✓</span>}@if(d('sec-jwt');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/mfa" routerLinkActive="active"><span class="nl-text">Multi-Factor Auth</span>@if(progress.isDone('sec-mfa')){<span class="nl-done">✓</span>}@if(d('sec-mfa');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/sso" routerLinkActive="active"><span class="nl-text">Single Sign-On</span>@if(progress.isDone('sec-sso')){<span class="nl-done">✓</span>}@if(d('sec-sso');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/rbac-abac" routerLinkActive="active"><span class="nl-text">RBAC &amp; ABAC</span>@if(progress.isDone('sec-rbac-abac')){<span class="nl-done">✓</span>}@if(d('sec-rbac-abac');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/claims-identity" routerLinkActive="active"><span class="nl-text">Claims &amp; Identity</span>@if(progress.isDone('sec-claims-identity')){<span class="nl-done">✓</span>}@if(d('sec-claims-identity');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/api-security" routerLinkActive="active"><span class="nl-text">API Security</span>@if(progress.isDone('sec-api-security')){<span class="nl-done">✓</span>}@if(d('sec-api-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Web Attacks</p>
+      <a routerLink="/security/xss" routerLinkActive="active"><span class="nl-text">Cross-Site Scripting</span>@if(progress.isDone('sec-xss')){<span class="nl-done">✓</span>}@if(d('sec-xss');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/csrf-clickjacking" routerLinkActive="active"><span class="nl-text">CSRF &amp; Clickjacking</span>@if(progress.isDone('sec-csrf-clickjacking')){<span class="nl-done">✓</span>}@if(d('sec-csrf-clickjacking');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/injection" routerLinkActive="active"><span class="nl-text">Injection Attacks</span>@if(progress.isDone('sec-injection')){<span class="nl-done">✓</span>}@if(d('sec-injection');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/security-headers" routerLinkActive="active"><span class="nl-text">Security Headers</span>@if(progress.isDone('sec-security-headers')){<span class="nl-done">✓</span>}@if(d('sec-security-headers');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Transport &amp; Crypto</p>
+      <a routerLink="/security/tls-https" routerLinkActive="active"><span class="nl-text">TLS &amp; HTTPS</span>@if(progress.isDone('sec-tls-https')){<span class="nl-done">✓</span>}@if(d('sec-tls-https');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/symmetric-encryption" routerLinkActive="active"><span class="nl-text">Symmetric Encryption</span>@if(progress.isDone('sec-symmetric-encryption')){<span class="nl-done">✓</span>}@if(d('sec-symmetric-encryption');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/asymmetric-cryptography" routerLinkActive="active"><span class="nl-text">Asymmetric Cryptography</span>@if(progress.isDone('sec-asymmetric-cryptography')){<span class="nl-done">✓</span>}@if(d('sec-asymmetric-cryptography');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/hashing" routerLinkActive="active"><span class="nl-text">Hashing &amp; MACs</span>@if(progress.isDone('sec-hashing')){<span class="nl-done">✓</span>}@if(d('sec-hashing');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Infrastructure</p>
+      <a routerLink="/security/secrets-management" routerLinkActive="active"><span class="nl-text">Secrets Management</span>@if(progress.isDone('sec-secrets-management')){<span class="nl-done">✓</span>}@if(d('sec-secrets-management');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/container-security" routerLinkActive="active"><span class="nl-text">Container Security</span>@if(progress.isDone('sec-container-security')){<span class="nl-done">✓</span>}@if(d('sec-container-security');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+      <a routerLink="/security/supply-chain" routerLinkActive="active"><span class="nl-text">Supply Chain Security</span>@if(progress.isDone('sec-supply-chain')){<span class="nl-done">✓</span>}@if(d('sec-supply-chain');as x){<span class="nl-dot" [class]="'nl-dot--'+x"></span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/security/cheatsheet" routerLinkActive="active"><span class="nl-text">📋 Security Cheat Sheet</span></a>
+      <a routerLink="/security/interview-prep" routerLinkActive="active"><span class="nl-text">🎤 Interview Prep</span></a>
+    </div>
+  `,
+})
+export class SecurityNavComponent {
+  progress = inject(ProgressService);
+  d(route: string) { return DIFF[route] ?? null; }
+}

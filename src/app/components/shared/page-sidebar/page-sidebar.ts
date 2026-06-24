@@ -196,6 +196,77 @@ const ASPNET_DEFAULT: SidebarData = {
   ],
 };
 
+const API_DESIGN_DEFAULT: SidebarData = {
+  apis: ['REST', 'GraphQL', 'gRPC', 'WebSockets', 'OpenAPI 3.1', 'Webhooks'],
+  gotchas: ['Never 200 OK with an error body', 'POST is not idempotent — use Idempotency-Key', 'CORS wildcard + credentials is rejected by browsers'],
+  related: [
+    { label: 'API Design Home',  route: '/api-design' },
+    { label: 'OpenAPI & Contracts', route: '/api-design/openapi-contracts' },
+    { label: 'API Design Cheat Sheet', route: '/api-design/cheatsheet' },
+  ],
+  tip: 'Design APIs for your consumers, not your database. Plural nouns for collections, HTTP verbs for actions, ISO 8601 dates, integer cents for money.',
+  docs: [
+    { label: 'OpenAPI Specification',  url: 'https://spec.openapis.org/oas/latest.html' },
+    { label: 'HTTP Status Codes — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status' },
+    { label: 'RFC 9110 — HTTP Semantics', url: 'https://www.rfc-editor.org/rfc/rfc9110' },
+  ],
+  resources: [
+    { label: 'Stoplight — API Design', url: 'https://stoplight.io/api-design-guide/', badge: 'docs' },
+    { label: 'Swagger Editor',         url: 'https://editor.swagger.io/', badge: 'tool' },
+    { label: 'Postman API Platform',   url: 'https://www.postman.com/', badge: 'tool' },
+  ],
+};
+
+const OBS_DEFAULT: SidebarData = {
+  apis: ['Prometheus', 'OpenTelemetry', 'Grafana', 'Loki', 'Jaeger/Tempo', 'Alertmanager'],
+  gotchas: [
+    'Alert on symptoms (error rate), not causes (CPU) — cause alerts produce false positives.',
+    'Never use high-cardinality fields (userId, traceId) as Prometheus metric label values.',
+    'Dead man\'s switch: always configure a watchdog heartbeat to detect Alertmanager failures.',
+  ],
+  related: [
+    { label: 'Observability Home',   route: '/observability' },
+    { label: 'OpenTelemetry',        route: '/observability/opentelemetry' },
+    { label: 'SLIs, SLOs & SLAs',   route: '/observability/sli-slo-sla' },
+    { label: 'Alerting Design',      route: '/observability/alerting-design' },
+    { label: 'Cheatsheet',           route: '/observability/cheatsheet' },
+  ],
+  tip: 'Start with RED metrics (Rate, Errors, Duration) on every service. Add SLOs only after measuring for 30+ days — you cannot set a meaningful target without real data.',
+  docs: [
+    { label: 'OpenTelemetry Docs',         url: 'https://opentelemetry.io/docs/' },
+    { label: 'Prometheus Docs',            url: 'https://prometheus.io/docs/introduction/overview/' },
+    { label: 'Grafana Docs',              url: 'https://grafana.com/docs/' },
+  ],
+  resources: [
+    { label: 'Google SRE Book',    url: 'https://sre.google/sre-book/table-of-contents/', badge: 'docs' },
+    { label: 'Grafana Play',       url: 'https://play.grafana.org/', badge: 'tool' },
+    { label: 'Awesome Prometheus', url: 'https://github.com/roaldnefs/awesome-prometheus', badge: 'code' },
+  ],
+};
+
+const SEC_DEFAULT: SidebarData = {
+  apis: ['bcrypt/argon2', 'JWT (RS256)', 'OAuth PKCE', 'AES-256-GCM', 'HMAC-SHA256', 'CSP nonces'],
+  related: [
+    { label: 'Security Home',      route: '/security' },
+    { label: 'OWASP Top 10',       route: '/security/owasp-top-10' },
+    { label: 'Security Cheatsheet', route: '/security/cheatsheet' },
+  ],
+  tip: 'Hash passwords with Argon2id (memory ≥ 64 MB, iterations ≥ 3). Never SHA-256 — it\'s too fast for passwords.',
+  docs: [
+    { label: 'OWASP Cheat Sheet Series', url: 'https://cheatsheetseries.owasp.org/' },
+    { label: 'MDN — Web Security',       url: 'https://developer.mozilla.org/en-US/docs/Web/Security' },
+    { label: 'Security Headers',         url: 'https://securityheaders.com/' },
+  ],
+  resources: [
+    { label: 'HackTricks',      url: 'https://book.hacktricks.xyz/', badge: 'docs' },
+    { label: 'PortSwigger Web Security Academy', url: 'https://portswigger.net/web-security', badge: 'blog' },
+  ],
+  gotchas: [
+    'SameSite=Strict prevents CSRF for cookies but has no effect on Authorization header tokens.',
+    'JWT "alg:none" attack: always allowlist acceptable algorithms server-side and never trust the header alone.',
+  ],
+};
+
 export const SIDEBAR_MAP: Record<string, SidebarData> = {
 
   // ── Signals & State ────────────────────────────────────────────────────────
@@ -5163,15 +5234,18 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css'>(() =>
-    this.currentUrl().startsWith('/csharp')       ? 'csharp'
-    : this.currentUrl().startsWith('/aspnet')     ? 'aspnet'
-    : this.currentUrl().startsWith('/sql')        ? 'sql'
-    : this.currentUrl().startsWith('/typescript') ? 'typescript'
-    : this.currentUrl().startsWith('/react')      ? 'react'
-    : this.currentUrl().startsWith('/javascript') ? 'javascript'
-    : this.currentUrl().startsWith('/html')       ? 'html'
-    : this.currentUrl().startsWith('/css')        ? 'css'
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability'>(() =>
+    this.currentUrl().startsWith('/csharp')         ? 'csharp'
+    : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
+    : this.currentUrl().startsWith('/sql')          ? 'sql'
+    : this.currentUrl().startsWith('/typescript')   ? 'typescript'
+    : this.currentUrl().startsWith('/react')        ? 'react'
+    : this.currentUrl().startsWith('/javascript')   ? 'javascript'
+    : this.currentUrl().startsWith('/html')         ? 'html'
+    : this.currentUrl().startsWith('/css')          ? 'css'
+    : this.currentUrl().startsWith('/security')     ? 'security'
+    : this.currentUrl().startsWith('/api-design')   ? 'api-design'
+    : this.currentUrl().startsWith('/observability') ? 'observability'
     : 'angular'
   );
 
@@ -5186,6 +5260,9 @@ export class PageSidebarComponent {
            : this.section() === 'javascript' ? JS_DEFAULT
            : this.section() === 'html'       ? HTML_DEFAULT
            : this.section() === 'css'        ? CSS_DEFAULT
+           : this.section() === 'security'   ? SEC_DEFAULT
+           : this.section() === 'api-design'     ? API_DESIGN_DEFAULT
+           : this.section() === 'observability'   ? OBS_DEFAULT
            : DEFAULT);
   });
 
