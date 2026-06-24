@@ -1,0 +1,76 @@
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ProgressService } from '../../../services/progress.service';
+
+@Component({
+  selector: 'app-mongo-nav',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive],
+  template: `
+    <a routerLink="/mongodb" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-home-link">
+      <span class="nl-text">🏠 MongoDB Home</span>
+    </a>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Foundations</p>
+      <a routerLink="/mongodb/fundamentals" routerLinkActive="active"><span class="nl-text">MongoDB Fundamentals</span>@if(p.isDone('mongo-fundamentals')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/installation-setup" routerLinkActive="active"><span class="nl-text">Installation &amp; Setup</span>@if(p.isDone('mongo-installation-setup')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">CRUD</p>
+      <a routerLink="/mongodb/crud-operations" routerLinkActive="active"><span class="nl-text">CRUD Operations</span>@if(p.isDone('mongo-crud-operations')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/update-operators" routerLinkActive="active"><span class="nl-text">Update Operators</span>@if(p.isDone('mongo-update-operators')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Querying</p>
+      <a routerLink="/mongodb/query-operators" routerLinkActive="active"><span class="nl-text">Query Operators</span>@if(p.isDone('mongo-query-operators')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/array-queries" routerLinkActive="active"><span class="nl-text">Array Queries</span>@if(p.isDone('mongo-array-queries')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/projections-sorting" routerLinkActive="active"><span class="nl-text">Projections &amp; Sorting</span>@if(p.isDone('mongo-projections-sorting')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Aggregation</p>
+      <a routerLink="/mongodb/aggregation-pipeline" routerLinkActive="active"><span class="nl-text">Aggregation Pipeline</span>@if(p.isDone('mongo-aggregation-pipeline')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/lookup-joins" routerLinkActive="active"><span class="nl-text">$lookup &amp; Joins</span>@if(p.isDone('mongo-lookup-joins')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/aggregation-expressions" routerLinkActive="active"><span class="nl-text">Aggregation Expressions</span>@if(p.isDone('mongo-aggregation-expressions')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Schema Design</p>
+      <a routerLink="/mongodb/schema-design-patterns" routerLinkActive="active"><span class="nl-text">Schema Design Patterns</span>@if(p.isDone('mongo-schema-design-patterns')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/data-modelling" routerLinkActive="active"><span class="nl-text">Data Modelling</span>@if(p.isDone('mongo-data-modelling')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/time-series" routerLinkActive="active"><span class="nl-text">Time Series Collections</span>@if(p.isDone('mongo-time-series')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Performance</p>
+      <a routerLink="/mongodb/indexes" routerLinkActive="active"><span class="nl-text">Indexes</span>@if(p.isDone('mongo-indexes')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/query-performance" routerLinkActive="active"><span class="nl-text">Query Performance</span>@if(p.isDone('mongo-query-performance')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Transactions & Streaming</p>
+      <a routerLink="/mongodb/transactions" routerLinkActive="active"><span class="nl-text">Transactions</span>@if(p.isDone('mongo-transactions')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/change-streams" routerLinkActive="active"><span class="nl-text">Change Streams</span>@if(p.isDone('mongo-change-streams')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Advanced</p>
+      <a routerLink="/mongodb/replication-sharding" routerLinkActive="active"><span class="nl-text">Replication &amp; Sharding</span>@if(p.isDone('mongo-replication-sharding')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/security" routerLinkActive="active"><span class="nl-text">Security &amp; Auth</span>@if(p.isDone('mongo-security')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/mongodb-nodejs" routerLinkActive="active"><span class="nl-text">MongoDB with Node.js</span>@if(p.isDone('mongo-mongodb-nodejs')){<span class="nl-done">✓</span>}</a>
+      <a routerLink="/mongodb/atlas-search" routerLinkActive="active"><span class="nl-text">Atlas &amp; Vector Search</span>@if(p.isDone('mongo-atlas-search')){<span class="nl-done">✓</span>}</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Reference</p>
+      <a routerLink="/mongodb/cheatsheet" routerLinkActive="active"><span class="nl-text">Cheat Sheet</span></a>
+      <a routerLink="/mongodb/interview-prep" routerLinkActive="active"><span class="nl-text">Interview Prep</span></a>
+    </div>
+  `,
+})
+export class MongoNavComponent {
+  p = inject(ProgressService);
+}

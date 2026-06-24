@@ -244,6 +244,34 @@ const OBS_DEFAULT: SidebarData = {
   ],
 };
 
+const MONGO_DEFAULT: SidebarData = {
+  apis: ['insertOne/Many', 'find/findOne', 'updateOne/Many', 'deleteOne/Many', 'aggregate()', 'watch()'],
+  gotchas: [
+    'Never use $where or server-side JavaScript — it bypasses indexes and is a security risk.',
+    'Avoid high-cardinality fields in indexes on arrays (multikey indexes fan out — one array doc = N index entries).',
+    'Transactions in MongoDB require a replica set — they do NOT work on standalone mongod instances.',
+    '_id is immutable: you cannot update it with $set. Replace the document instead.',
+  ],
+  related: [
+    { label: 'MongoDB Home',         route: '/mongodb' },
+    { label: 'CRUD Operations',      route: '/mongodb/crud-operations' },
+    { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    { label: 'Indexes',              route: '/mongodb/indexes' },
+    { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+  ],
+  tip: 'Design your schema around your most common query patterns, not your data relationships. Embed what you read together; reference what you update independently.',
+  docs: [
+    { label: 'MongoDB Docs',            url: 'https://www.mongodb.com/docs/manual/' },
+    { label: 'Aggregation Reference',   url: 'https://www.mongodb.com/docs/manual/reference/aggregation/' },
+    { label: 'Mongoose ODM Docs',       url: 'https://mongoosejs.com/docs/' },
+  ],
+  resources: [
+    { label: 'MongoDB University (Free)', url: 'https://learn.mongodb.com/', badge: 'docs' },
+    { label: 'Schema Design Patterns',    url: 'https://www.mongodb.com/blog/post/building-with-patterns-a-summary', badge: 'blog' },
+    { label: 'mongosh GitHub',            url: 'https://github.com/mongodb-js/mongosh', badge: 'code' },
+  ],
+};
+
 const SEC_DEFAULT: SidebarData = {
   apis: ['bcrypt/argon2', 'JWT (RS256)', 'OAuth PKCE', 'AES-256-GCM', 'HMAC-SHA256', 'CSP nonces'],
   related: [
@@ -5234,7 +5262,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5246,6 +5274,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/security')     ? 'security'
     : this.currentUrl().startsWith('/api-design')   ? 'api-design'
     : this.currentUrl().startsWith('/observability') ? 'observability'
+    : this.currentUrl().startsWith('/mongodb')       ? 'mongodb'
     : 'angular'
   );
 
@@ -5263,6 +5292,7 @@ export class PageSidebarComponent {
            : this.section() === 'security'   ? SEC_DEFAULT
            : this.section() === 'api-design'     ? API_DESIGN_DEFAULT
            : this.section() === 'observability'   ? OBS_DEFAULT
+           : this.section() === 'mongodb'        ? MONGO_DEFAULT
            : DEFAULT);
   });
 

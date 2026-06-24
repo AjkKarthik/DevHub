@@ -833,6 +833,32 @@ const OBS_LABELS: Record<string, string> = {
   'interview-prep':             'Observability Interview Prep',
 };
 
+const MONGO_LABELS: Record<string, string> = {
+  'fundamentals':            'MongoDB Fundamentals',
+  'installation-setup':      'Installation & Setup',
+  'crud-operations':         'CRUD Operations',
+  'update-operators':        'Update Operators',
+  'query-operators':         'Query Operators',
+  'array-queries':           'Array Queries',
+  'projections-sorting':     'Projections & Sorting',
+  'aggregation-pipeline':    'Aggregation Pipeline',
+  'lookup-joins':            '$lookup & Joins',
+  'aggregation-expressions': 'Aggregation Expressions',
+  'schema-design-patterns':  'Schema Design Patterns',
+  'data-modelling':          'Data Modelling',
+  'time-series':             'Time Series Collections',
+  'indexes':                 'Indexes',
+  'query-performance':       'Query Performance',
+  'transactions':            'Transactions',
+  'change-streams':          'Change Streams',
+  'replication-sharding':    'Replication & Sharding',
+  'security':                'Security & Authentication',
+  'mongodb-nodejs':          'MongoDB with Node.js',
+  'atlas-search':            'Atlas Search & Vector Search',
+  'cheatsheet':              'MongoDB Cheat Sheet',
+  'interview-prep':          'MongoDB Interview Prep',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -1009,6 +1035,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'security'        ? SECURITY_LABELS
                  : segs[0] === 'api-design'      ? API_DESIGN_LABELS
                  : segs[0] === 'observability'   ? OBS_LABELS
+                 : segs[0] === 'mongodb'         ? MONGO_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

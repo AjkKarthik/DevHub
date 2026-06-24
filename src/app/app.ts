@@ -25,6 +25,7 @@ import { DpNavComponent } from './components/shared/dp-nav/dp-nav';
 import { SecurityNavComponent } from './components/shared/security-nav/security-nav';
 import { ApiDesignNavComponent } from './components/shared/api-design-nav/api-design-nav';
 import { ObsNavComponent } from './components/shared/obs-nav/obs-nav';
+import { MongoNavComponent } from './components/shared/mongo-nav/mongo-nav';
 
 // Difficulty metadata for nav badges
 const DIFF: Record<string, string> = Object.fromEntries(
@@ -34,7 +35,7 @@ const DIFF: Record<string, string> = Object.fromEntries(
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, BreadcrumbComponent,
-            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent, TerraformNavComponent, MeshNavComponent, SysdesignNavComponent, ArchNavComponent, DpNavComponent, SecurityNavComponent, ApiDesignNavComponent, ObsNavComponent],
+            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent, TerraformNavComponent, MeshNavComponent, SysdesignNavComponent, ArchNavComponent, DpNavComponent, SecurityNavComponent, ApiDesignNavComponent, ObsNavComponent, MongoNavComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -78,7 +79,7 @@ export class App {
     ].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'terraform' | 'mesh' | 'system-design' | 'arch-patterns' | 'design-patterns' | 'security' | 'api-design' | 'observability' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'terraform' | 'mesh' | 'system-design' | 'arch-patterns' | 'design-patterns' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'hub'>(() => {
     const url = this.currentUrl();
     if (url.startsWith('/angular'))    return 'angular';
     if (url.startsWith('/csharp'))     return 'csharp';
@@ -107,6 +108,7 @@ export class App {
     if (url.startsWith('/security'))      return 'security';
     if (url.startsWith('/api-design'))    return 'api-design';
     if (url.startsWith('/observability')) return 'observability';
+    if (url.startsWith('/mongodb'))       return 'mongodb';
     return 'hub';
   });
 

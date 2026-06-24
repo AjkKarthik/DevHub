@@ -1,0 +1,27 @@
+<div class="mongo-page">
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">MongoDB Interview Prep</h1>
+  <p class="page-subtitle">35+ MongoDB interview questions — from document model basics to sharding, aggregation, and Atlas Search.</p>
+
+  <div class="ip-filters">
+    @for (d of difficulties; track d) {
+      <button (click)="activeDiff.set(d)" [class.active]="activeDiff() === d" class="ip-chip ip-chip--diff">{{ d }}</button>
+    }
+    @for (t of topics; track t) {
+      <button (click)="activeTopic.set(t)" [class.active]="activeTopic() === t" class="ip-chip ip-chip--topic">{{ t }}</button>
+    }
+  </div>
+
+  <div class="ip-list">
+    @for (q of filtered(); track q.q) {
+      <details class="ip-item">
+        <summary class="ip-summary">
+          <span class="ip-q">{{ q.q }}</span>
+          <span class="ip-badge ip-badge--{{ q.difficulty }}">{{ q.difficulty }}</span>
+          <span class="ip-badge ip-badge--topic">{{ q.topic }}</span>
+        </summary>
+        <div class="ip-answer" [innerHTML]="q.a"></div>
+      </details>
+    }
+  </div>
+</div>
