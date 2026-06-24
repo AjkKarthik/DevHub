@@ -1,0 +1,27 @@
+<div class="mongo-page">
+  <div class="page-header-icon mongo-icon">🍃</div>
+  <h1 class="page-title">MongoDB Cheat Sheet</h1>
+  <p class="page-subtitle">Quick reference for mongosh commands, CRUD syntax, aggregation stages, operators, and index types.</p>
+
+  <div class="cs-toolbar">
+    <div class="cs-chips">
+      @for (cat of categories; track cat) {
+        <button (click)="activeCategory.set(cat)" [class.active]="activeCategory() === cat" class="cs-chip">{{ cat }}</button>
+      }
+    </div>
+    <input type="text" placeholder="Filter…" [value]="search()" (input)="search.set($any($event.target).value)" class="cs-search" />
+  </div>
+
+  <div class="cs-grid">
+    @for (item of filtered(); track item.term) {
+      <div class="cs-card">
+        <span class="cs-cat">{{ item.category }}</span>
+        <div class="cs-term"><code>{{ item.term }}</code></div>
+        <div class="cs-desc">{{ item.desc }}</div>
+        @if (item.example) {
+          <pre class="cs-ex"><code>{{ item.example }}</code></pre>
+        }
+      </div>
+    }
+  </div>
+</div>

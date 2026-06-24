@@ -244,6 +244,62 @@ const OBS_DEFAULT: SidebarData = {
   ],
 };
 
+const REDIS_DEFAULT: SidebarData = {
+  apis: ['SET key value [EX seconds]', 'GET key', 'INCR / INCRBY key', 'EXPIRE key seconds', 'TTL key', 'SCAN cursor MATCH pattern'],
+  gotchas: [
+    'Never use KEYS in production — use SCAN with cursor',
+    'Pub/Sub messages are lost if no subscriber is connected at publish time',
+    'MULTI/EXEC does not roll back on command errors — check each result',
+    'Redis is single-threaded per core; expensive Lua blocks all other commands',
+  ],
+  related: [
+    { label: 'Redis Home',          route: '/redis' },
+    { label: 'Caching Patterns',    route: '/redis/caching-patterns' },
+    { label: 'Sorted Sets',         route: '/redis/sorted-sets' },
+    { label: 'Pub/Sub Messaging',   route: '/redis/pub-sub' },
+    { label: 'Redis Streams',       route: '/redis/streams' },
+  ],
+  tip: 'Design your key schema first: use colons as separators (user:123:profile), set TTLs aggressively, and always benchmark with realistic data sizes before choosing a data structure.',
+  docs: [
+    { label: 'Redis Docs',          url: 'https://redis.io/docs/' },
+    { label: 'Redis Commands',      url: 'https://redis.io/commands/' },
+    { label: 'ioredis GitHub',      url: 'https://github.com/redis/ioredis' },
+  ],
+  resources: [
+    { label: 'Redis University (Free)', url: 'https://university.redis.com/', badge: 'docs' },
+    { label: 'Redis Explained (blog)',  url: 'https://architecturenotes.co/redis/', badge: 'blog' },
+    { label: 'node-redis GitHub',       url: 'https://github.com/redis/node-redis', badge: 'code' },
+  ],
+};
+
+const MONGO_DEFAULT: SidebarData = {
+  apis: ['insertOne/Many', 'find/findOne', 'updateOne/Many', 'deleteOne/Many', 'aggregate()', 'watch()'],
+  gotchas: [
+    'Never use $where or server-side JavaScript — it bypasses indexes and is a security risk.',
+    'Avoid high-cardinality fields in indexes on arrays (multikey indexes fan out — one array doc = N index entries).',
+    'Transactions in MongoDB require a replica set — they do NOT work on standalone mongod instances.',
+    '_id is immutable: you cannot update it with $set. Replace the document instead.',
+  ],
+  related: [
+    { label: 'MongoDB Home',         route: '/mongodb' },
+    { label: 'CRUD Operations',      route: '/mongodb/crud-operations' },
+    { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    { label: 'Indexes',              route: '/mongodb/indexes' },
+    { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+  ],
+  tip: 'Design your schema around your most common query patterns, not your data relationships. Embed what you read together; reference what you update independently.',
+  docs: [
+    { label: 'MongoDB Docs',            url: 'https://www.mongodb.com/docs/manual/' },
+    { label: 'Aggregation Reference',   url: 'https://www.mongodb.com/docs/manual/reference/aggregation/' },
+    { label: 'Mongoose ODM Docs',       url: 'https://mongoosejs.com/docs/' },
+  ],
+  resources: [
+    { label: 'MongoDB University (Free)', url: 'https://learn.mongodb.com/', badge: 'docs' },
+    { label: 'Schema Design Patterns',    url: 'https://www.mongodb.com/blog/post/building-with-patterns-a-summary', badge: 'blog' },
+    { label: 'mongosh GitHub',            url: 'https://github.com/mongodb-js/mongosh', badge: 'code' },
+  ],
+};
+
 const SEC_DEFAULT: SidebarData = {
   apis: ['bcrypt/argon2', 'JWT (RS256)', 'OAuth PKCE', 'AES-256-GCM', 'HMAC-SHA256', 'CSP nonces'],
   related: [
@@ -5234,7 +5290,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5246,6 +5302,8 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/security')     ? 'security'
     : this.currentUrl().startsWith('/api-design')   ? 'api-design'
     : this.currentUrl().startsWith('/observability') ? 'observability'
+    : this.currentUrl().startsWith('/mongodb')       ? 'mongodb'
+    : this.currentUrl().startsWith('/redis')         ? 'redis'
     : 'angular'
   );
 
@@ -5263,6 +5321,8 @@ export class PageSidebarComponent {
            : this.section() === 'security'   ? SEC_DEFAULT
            : this.section() === 'api-design'     ? API_DESIGN_DEFAULT
            : this.section() === 'observability'   ? OBS_DEFAULT
+           : this.section() === 'mongodb'        ? MONGO_DEFAULT
+           : this.section() === 'redis'          ? REDIS_DEFAULT
            : DEFAULT);
   });
 

@@ -426,7 +426,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'MongoDB / NoSQL', time: '~5 hrs',
       tagline: 'Document databases — flexible schemas, aggregation & multi-model storage.',
       icon: '🍃', gradient: 'linear-gradient(135deg, #13aa52 0%, #0a6b34 100%)',
-      textDark: false, route: '/mongodb', available: true,
+      textDark: false, route: '/mongodb', available: true, topics: 23,
       sub: 'MongoDB · CosmosDB · DynamoDB',
       roles: ['backend', 'architect'],
       highlights: [
@@ -440,7 +440,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'Redis', time: '~4 hrs',
       tagline: 'In-memory store — caching, sessions, pub/sub, rate limiting & queues.',
       icon: '🔴', gradient: 'linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%)',
-      textDark: false, route: '/redis', available: true,
+      textDark: false, route: '/redis', available: true, topics: 23,
       sub: 'Cache · Pub/Sub · Sorted Sets',
       roles: ['backend', 'devops', 'architect'],
       highlights: [

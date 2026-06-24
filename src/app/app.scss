@@ -221,6 +221,8 @@ header {
 .left-nav.section-security   .nav-progress-bar { background: linear-gradient(90deg, #dc2626, #991b1b); }
 .left-nav.section-api-design .nav-progress-bar { background: linear-gradient(90deg, #0891b2, #0e7490); }
 .left-nav.section-observability .nav-progress-bar { background: linear-gradient(90deg, #059669, #047857); }
+.left-nav.section-mongo         .nav-progress-bar { background: linear-gradient(90deg, #13aa52, #0a6b34); }
+.left-nav.section-redis         .nav-progress-bar { background: linear-gradient(90deg, #dc382d, #991b1b); }
 
 .nav-progress-label {
   display: block;
@@ -562,6 +564,24 @@ main {
   body.dark &.active { background: #047857; color: #fff; }
 }
 
+// MongoDB section — leaf green active state
+.left-nav.section-mongo a {
+  &:hover { background: #e8fef4; color: #13aa52; }
+  &.active { background: #13aa52; color: #fff; }
+
+  body.dark &:hover { background: #052e16; color: #4ade80; }
+  body.dark &.active { background: #0a6b34; color: #fff; }
+}
+
+// Redis section — red active state
+.left-nav.section-redis a {
+  &:hover { background: #fff0ef; color: #dc382d; }
+  &.active { background: #dc382d; color: #fff; }
+
+  body.dark &:hover { background: #3d0a0a; color: #f87171; }
+  body.dark &.active { background: #b91c1c; color: #fff; }
+}
+
 .nav-soon-note {
   font-size: .78rem; color: var(--text3, #9ca3af);
   margin: 0; padding: .25rem .75rem; line-height: 1.5;
@@ -695,6 +715,8 @@ footer {
 .left-nav.section-security   .nav-hub-back:hover { color: #dc2626 !important; background: #fef2f2 !important; }
 .left-nav.section-api-design .nav-hub-back:hover { color: #0891b2 !important; background: #ecfeff !important; }
 .left-nav.section-observability .nav-hub-back:hover { color: #059669 !important; background: #ecfdf5 !important; }
+.left-nav.section-mongo         .nav-hub-back:hover { color: #13aa52 !important; background: #e8fef4 !important; }
+.left-nav.section-redis         .nav-hub-back:hover { color: #dc382d !important; background: #fff0ef !important; }
 
 // ── Hub-aware hamburger bar colour ────────────────────────────────────────────
 // Default already uses var(--text2). Sections tint the bars to match accent.
@@ -752,3 +774,7 @@ header.section-api-design    .nav-toggle span { background: #0891b2; }
 body.dark header.section-api-design  .nav-toggle span { background: #67e8f9; }
 header.section-observability .nav-toggle span { background: #059669; }
 body.dark header.section-observability .nav-toggle span { background: #34d399; }
+header.section-mongo .nav-toggle span { background: #13aa52; }
+body.dark header.section-mongo .nav-toggle span { background: #4ade80; }
+header.section-redis .nav-toggle span { background: #dc382d; }
+body.dark header.section-redis .nav-toggle span { background: #f87171; }

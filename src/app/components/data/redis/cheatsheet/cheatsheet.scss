@@ -1,0 +1,92 @@
+$accent: #dc382d;
+$tint: #fff0ef;
+
+.redis-cheatsheet {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.redis-icon { background: $tint; color: $accent; }
+.page-subtitle code { background: $tint; color: $accent; }
+
+.cs-search { margin: 1.5rem 0 1rem; }
+.cs-search-input {
+  width: 100%;
+  max-width: 360px;
+  padding: 0.5rem 0.875rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  &:focus { border-color: $accent; }
+}
+
+.cs-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+.cs-tab {
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover { border-color: $accent; color: $accent; }
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+}
+
+.cs-table-wrap { overflow-x: auto; }
+.cs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  th {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    background: $tint;
+    color: $accent;
+    font-weight: 700;
+    border-bottom: 2px solid $accent;
+  }
+  td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+  }
+  tr:hover td { background: #fafafa; }
+}
+.cmd { font-size: 0.8rem; color: $accent; white-space: nowrap; }
+.ex { font-size: 0.78rem; color: #374151; white-space: nowrap; }
+.desc { color: #374151; }
+.no-results { text-align: center; color: #94a3b8; padding: 2rem; }
+
+:host-context(body.dark) {
+  .cs-search-input {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+    &:focus { border-color: #f87171; }
+  }
+  .cs-tab {
+    background: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
+    &:hover { border-color: #f87171; color: #f87171; }
+    &.active { background: #991b1b; border-color: #991b1b; color: #fff; }
+  }
+  .cs-table {
+    th { background: #3d0a0a; color: #f87171; border-bottom-color: #f87171; }
+    td { border-bottom-color: #1e293b; color: #e2e8f0; }
+    tr:hover td { background: #1e293b; }
+  }
+  .cmd { color: #f87171; }
+  .ex { color: #94a3b8; }
+  .redis-icon { background: #3d0a0a; color: #f87171; }
+  .page-subtitle code { background: #3d0a0a; color: #f87171; }
+}
