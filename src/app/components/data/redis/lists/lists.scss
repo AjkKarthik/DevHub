@@ -1,0 +1,11 @@
+$accent: #dc382d;
+$tint: #fff0ef;
+.redis-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.redis-section { margin: 2rem 0; h2 { font-size: 1.2rem; font-weight: 700; color: $accent; margin-bottom: 1rem; } }
+.redis-icon { background: $tint; color: $accent; }
+.page-subtitle code { background: $tint; color: $accent; }
+:host-context(body.dark) {
+  .redis-section h2 { color: #f87171; }
+  .redis-icon { background: #3d0a0a; color: #f87171; }
+  .page-subtitle code { background: #3d0a0a; color: #f87171; }
+}

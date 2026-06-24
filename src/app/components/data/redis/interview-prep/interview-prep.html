@@ -1,0 +1,51 @@
+<div class="redis-interview">
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Redis Interview Prep</h1>
+  <p class="page-subtitle">20 questions covering fundamentals, data types, caching patterns, persistence, high availability, and security — from junior to senior level.</p>
+  <app-page-meta [readingTime]="30" difficulty="intermediate" since="Redis 4+" tech="javascript" />
+
+  <div class="ip-filters">
+    <div class="ip-filter-group">
+      <span class="ip-filter-label">Topic:</span>
+      @for (tag of tags; track tag) {
+        <button class="ip-chip" [class.active]="activeTag() === tag" (click)="activeTag.set(tag)">
+          {{ tag === 'all' ? 'All' : tag }}
+        </button>
+      }
+    </div>
+    <div class="ip-filter-group">
+      <span class="ip-filter-label">Level:</span>
+      @for (d of difficulties; track d) {
+        <button class="ip-chip" [class.active]="activeDiff() === d" [class]="'ip-chip diff-' + d" (click)="activeDiff.set(d)">
+          {{ d === 'all' ? 'All' : diffLabel(d) }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <p class="ip-count">{{ filtered().length }} question{{ filtered().length !== 1 ? 's' : '' }}</p>
+
+  <div class="ip-list">
+    @for (item of filtered(); track item.q; let i = $index) {
+      <div class="ip-card" [class.open]="openIndex() === i">
+        <button class="ip-question" (click)="toggle(i)">
+          <span class="ip-q-text">{{ item.q }}</span>
+          <span class="ip-meta">
+            <span class="ip-diff" [class]="'diff-' + item.difficulty">{{ diffLabel(item.difficulty) }}</span>
+            <span class="ip-toggle">{{ openIndex() === i ? '▲' : '▼' }}</span>
+          </span>
+        </button>
+        @if (openIndex() === i) {
+          <div class="ip-answer">
+            <p>{{ item.a }}</p>
+            <div class="ip-tags">
+              @for (tag of item.tags; track tag) {
+                <span class="ip-tag">{{ tag }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

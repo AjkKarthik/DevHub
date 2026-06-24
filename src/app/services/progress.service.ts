@@ -112,6 +112,11 @@ export class ProgressService {
   readonly mongoCount  = computed(() => [...this._done()].filter(r => r.startsWith('mongo-')).length);
   readonly mongoPct    = computed(() => Math.round((this.mongoCount() / this.mongoTotal) * 100));
 
+  // ── Redis (keys prefixed 'redis-') ───────────────────────────────────────
+  readonly redisTotal  = 21;
+  readonly redisCount  = computed(() => [...this._done()].filter(r => r.startsWith('redis-')).length);
+  readonly redisPct    = computed(() => Math.round((this.redisCount() / this.redisTotal) * 100));
+
   // ── Terraform (keys prefixed 'tf-') ──────────────────────────────────────
   readonly tfTotal  = 21;
   readonly tfCount  = computed(() => [...this._done()].filter(r => r.startsWith('tf-')).length);

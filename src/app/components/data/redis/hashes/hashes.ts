@@ -1,0 +1,243 @@
+import { Component } from '@angular/core';
+import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
+import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { TheoryBlockComponent, TheoryPoint } from '../../../shared/theory-block/theory-block';
+import { CodeBlockComponent, CodeTab } from '../../../shared/code-block/code-block';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
+import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
+import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
+
+@Component({
+  selector: 'app-redis-hashes',
+  standalone: true,
+  imports: [PageMetaComponent, QuickRefComponent, TheoryBlockComponent, CodeBlockComponent,
+            CommonMistakesComponent, ChallengeBlockComponent, QuizBlockComponent, QnaBlockComponent,
+            RevisionCardComponent, PageCompleteComponent],
+  templateUrl: './hashes.html',
+  styleUrl: './hashes.scss',
+})
+export class RedisHashes {
+  quickRef: QuickRefItem[] = [
+    { name: 'HSET key field value [f v...]', type: 'keyword', desc: 'Set one or more fields (Redis 4+, replaces HMSET)' },
+    { name: 'HGET key field', type: 'keyword', desc: 'Get a single field value' },
+    { name: 'HMGET key field [field...]', type: 'keyword', desc: 'Get multiple fields in one call' },
+    { name: 'HGETALL key', type: 'keyword', desc: 'Return all fields and values as a flat list' },
+    { name: 'HDEL key field [field...]', type: 'keyword', desc: 'Delete one or more fields' },
+    { name: 'HEXISTS key field', type: 'keyword', desc: 'Returns 1 if field exists' },
+    { name: 'HKEYS / HVALS / HLEN', type: 'keyword', desc: 'All field names / all values / field count' },
+    { name: 'HINCRBY key field n', type: 'keyword', desc: 'Atomically increment a numeric field' },
+    { name: 'HSCAN key cursor MATCH pattern', type: 'keyword', desc: 'Cursor-safe iteration over large hashes' },
+  ];
+
+  theory: TheoryPoint[] = [
+    {
+      heading: 'What is a Redis Hash?',
+      points: [
+        'A hash is a map of field-value pairs stored under a single key — effectively a flat object. HSET user:1 name Alice age 30 role admin creates three fields under the user:1 key.',
+        'Fields and values are both strings (same binary-safe rule as top-level keys). Numeric fields can be atomically incremented with HINCRBY.',
+        'Hashes are ideal for representing rows, documents, or configuration objects where you need independent field access without deserialising the entire value.',
+        'A single hash can hold up to 2^32 - 1 field-value pairs (over 4 billion fields).',
+      ],
+    },
+    {
+      heading: 'Memory Efficiency: ziplist vs hashtable',
+      points: [
+        'For small hashes (≤ hash-max-listpack-entries, default 128 fields, and each value ≤ hash-max-listpack-value, default 64 bytes), Redis uses a compact ziplist (listpack in Redis 7+) encoding — contiguous memory, no pointer overhead.',
+        'When either limit is exceeded, Redis converts the hash to a full hashtable. This uses more memory but provides O(1) field access.',
+        'For many small objects (e.g., 10M user profiles), storing each as a hash key-per-user is more memory-efficient than storing as JSON strings in separate top-level keys — the ziplist encoding saves pointer overhead.',
+        'The most memory-efficient pattern for millions of small objects: group 100 objects into one hash with numeric IDs as fields (the "hash-of-hashes" pattern).',
+      ],
+    },
+    {
+      heading: 'Field-Level Operations',
+      points: [
+        'HSET overwrites existing fields; HSETNX sets a field only if it does not already exist.',
+        'HINCRBY user:1 loginCount 1 — atomic counter per object field, no read-modify-write race.',
+        'HGETALL returns a flat list [field1, value1, field2, value2, ...]. Map it into an object in application code.',
+        'HDEL removes one or more fields. The key itself persists until all fields are deleted.',
+        'HMGET returns values in the same order as the fields requested, with nil for missing fields.',
+      ],
+    },
+  ];
+
+  codeTabs: CodeTab[] = [
+    {
+      label: 'Hash Commands',
+      language: 'bash',
+      code: `# Set multiple fields
+HSET user:1 name Alice age 30 role admin email alice@example.com
+
+# Get individual fields
+HGET user:1 name           # "Alice"
+HMGET user:1 name email    # ["Alice", "alice@example.com"]
+
+# Get all fields
+HGETALL user:1
+# 1) "name"  2) "Alice"
+# 3) "age"   4) "30"
+# 5) "role"  6) "admin"
+# 7) "email" 8) "alice@example.com"
+
+# Field existence
+HEXISTS user:1 name        # 1
+HEXISTS user:1 phone       # 0
+
+# Field names, values, count
+HKEYS user:1               # ["name", "age", "role", "email"]
+HVALS user:1               # ["Alice", "30", "admin", "alice@..."]
+HLEN user:1                # 4
+
+# Atomic counter field
+HINCRBY user:1 loginCount 1   # 1 (creates field if absent)
+HINCRBY user:1 loginCount 1   # 2
+
+# Delete a field
+HDEL user:1 email
+
+# Cursor-safe iteration over large hashes
+HSCAN user:1 0 MATCH name* COUNT 10`,
+    },
+    {
+      label: 'Node.js',
+      language: 'typescript',
+      code: `import Redis from 'ioredis';
+const redis = new Redis();
+
+// Store a user object
+await redis.hset('user:1', {
+  name: 'Alice',
+  age: '30',
+  role: 'admin',
+  email: 'alice@example.com',
+});
+
+// Get single field
+const name = await redis.hget('user:1', 'name');  // 'Alice'
+
+// Get multiple fields
+const [n, e] = await redis.hmget('user:1', 'name', 'email');
+
+// Get all fields as an object
+const raw = await redis.hgetall('user:1');
+// { name: 'Alice', age: '30', role: 'admin', email: '...' }
+
+// Atomic increment
+await redis.hincrby('user:1', 'loginCount', 1);
+
+// Update a single field (no need to GET+SET the whole object)
+await redis.hset('user:1', 'role', 'superadmin');
+
+// Delete a field
+await redis.hdel('user:1', 'email');
+
+// Check field existence
+const exists = await redis.hexists('user:1', 'phone');  // 0`,
+    },
+  ];
+
+  mistakes: CommonMistake[] = [
+    {
+      title: 'Storing objects as JSON strings when hash operations are needed',
+      wrong: 'await redis.set("user:1", JSON.stringify(user));',
+      right: 'await redis.hset("user:1", user);',
+      explanation: 'With JSON you must deserialise the entire object to read or update one field. Hashes let you HGET/HSET individual fields atomically and HINCRBY numeric counters.',
+    },
+    {
+      title: 'Using HGETALL on very large hashes in production',
+      wrong: 'const allData = await redis.hgetall("metrics:all");  // 100k fields',
+      right: 'const cursor = await redis.hscan("metrics:all", 0, "COUNT", 100);\n// iterate pages',
+      explanation: 'HGETALL on a massive hash blocks the event loop while Redis serialises the entire response. HSCAN iterates in batches without blocking.',
+    },
+    {
+      title: 'Setting TTLs on individual hash fields',
+      wrong: 'EXPIRE user:1 field_name 3600  // not how it works',
+      right: 'EXPIRE user:1 3600  // TTL applies to the entire key, not fields',
+      explanation: 'Redis TTLs apply to the key as a whole — you cannot expire individual hash fields. Use sorted sets (score = expiry timestamp) or separate top-level keys for per-field expiry.',
+    },
+    {
+      title: 'Using HMSET instead of HSET',
+      wrong: 'await redis.hmset("user:1", "name", "Alice", "age", "30");',
+      right: 'await redis.hset("user:1", { name: "Alice", age: "30" });',
+      explanation: 'HMSET was deprecated in Redis 4.0. HSET now accepts multiple field-value pairs in one call. Use HSET for all hash writes.',
+    },
+  ];
+
+  challenge: Challenge = {
+    title: 'Shopping Cart',
+    language: 'typescript',
+    description: 'Implement a Redis hash-based shopping cart. Write `addItem(cartId, itemId, qty)` to set/update item quantity, `removeItem(cartId, itemId)` to delete an item, and `getCart(cartId)` to return all items as `Record<string, number>`.',
+    hints: [
+      'Use the cartId as the hash key and itemId as the field',
+      'HSET for add/update, HDEL for remove, HGETALL for retrieve',
+      'Parse string values from HGETALL to numbers',
+    ],
+    starterCode: `import Redis from 'ioredis';
+const redis = new Redis();
+
+async function addItem(cartId: string, itemId: string, qty: number): Promise<void> {}
+async function removeItem(cartId: string, itemId: string): Promise<void> {}
+async function getCart(cartId: string): Promise<Record<string, number>> {}`,
+    solution: `import Redis from 'ioredis';
+const redis = new Redis();
+
+async function addItem(cartId: string, itemId: string, qty: number): Promise<void> {
+  await redis.hset(\`cart:\${cartId}\`, itemId, qty.toString());
+}
+
+async function removeItem(cartId: string, itemId: string): Promise<void> {
+  await redis.hdel(\`cart:\${cartId}\`, itemId);
+}
+
+async function getCart(cartId: string): Promise<Record<string, number>> {
+  const raw = await redis.hgetall(\`cart:\${cartId}\`);
+  return Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, parseInt(v)]));
+}`,
+  };
+
+  quiz: QuizQuestion[] = [
+    {
+      q: 'What encoding does Redis use for small hashes (< 128 fields, values < 64 bytes)?',
+      options: ['hashtable', 'ziplist / listpack', 'skiplist', 'intset'],
+      answer: 1,
+      explanation: 'Small hashes use a compact ziplist (listpack in Redis 7+) — contiguous memory without pointer overhead. This is 2-3x more memory efficient than a full hashtable for small objects.',
+    },
+    {
+      q: 'How do you atomically increment a numeric field in a hash?',
+      options: ['HGET then HSET in a transaction', 'HINCRBY key field n', 'HINCREMENT key field n', 'INCRHASH key field'],
+      answer: 1,
+      explanation: 'HINCRBY is atomic — it reads and increments the field in a single operation. No race conditions, even with many concurrent clients.',
+    },
+  ];
+
+  qna: QnaItem[] = [
+    {
+      q: 'When should I use a hash vs a JSON string vs a separate key per field?',
+      a: 'Use a hash when you have a small-to-medium number of fields (< 1000) and need field-level access or atomic HINCRBY. Use JSON when you always read/write the entire object and never need partial updates. Use separate keys (user:1:name, user:1:age) only when you need per-field TTLs — otherwise the key overhead is large.',
+    },
+    {
+      q: 'Can I set a TTL on a single field of a hash?',
+      a: 'No — Redis TTLs apply to the entire key. Workarounds: (1) store expiry timestamp as a field value and check in application code; (2) use a sorted set with score = expiry time; (3) use separate top-level keys if per-field expiry is critical.',
+    },
+  ];
+
+  revision: RevisionSummary = {
+    oneLiner: 'Redis hashes are maps of field-value pairs — ideal for objects, with atomic HGET/HSET per field and memory-efficient ziplist encoding for small hashes.',
+    mustKnow: [
+      'HSET key { field: value } — set multiple fields; HGET for single field',
+      'HGETALL returns flat list; map to object in application code',
+      'HINCRBY for atomic numeric field increments (no GET+SET needed)',
+      'Small hashes use ziplist — memory-efficient for millions of objects',
+      'TTL applies to the entire key, not individual fields',
+      'HSCAN for safe iteration over large hashes (avoid HGETALL on large sets)',
+    ],
+    interviewFocus: [
+      'Hash vs JSON string — when do you choose each?',
+      'What is the ziplist encoding and why does it matter for memory?',
+      'How do you implement per-field expiry when Redis doesn\'t support it natively?',
+      'How is HINCRBY different from GET + SET for counters?',
+    ],
+  };
+}

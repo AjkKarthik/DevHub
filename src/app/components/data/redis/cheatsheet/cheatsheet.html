@@ -1,0 +1,44 @@
+<div class="redis-cheatsheet">
+  <div class="page-header-icon redis-icon">R</div>
+  <h1 class="page-title">Redis Cheat Sheet</h1>
+  <p class="page-subtitle">Quick reference for all Redis command families — strings, hashes, lists, sets, sorted sets, streams, pub/sub, and server commands.</p>
+  <app-page-meta [readingTime]="5" difficulty="beginner" since="Redis 4+" tech="javascript" />
+
+  <div class="cs-search">
+    <input
+      type="search"
+      placeholder="Filter commands…"
+      [ngModel]="searchTerm()"
+      (ngModelChange)="searchTerm.set($event)"
+      class="cs-search-input"
+    />
+  </div>
+
+  <div class="cs-tabs">
+    @for (tab of tabs; track tab.id) {
+      <button class="cs-tab" [class.active]="activeTab() === tab.id" (click)="setTab(tab.id)">
+        {{ tab.label }}
+      </button>
+    }
+  </div>
+
+  <div class="cs-table-wrap">
+    <table class="cs-table">
+      <thead>
+        <tr><th>Command</th><th>Description</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        @for (entry of currentSection(); track entry.cmd) {
+          <tr>
+            <td><code class="cmd">{{ entry.cmd }}</code></td>
+            <td class="desc">{{ entry.desc }}</td>
+            <td><code class="ex">{{ entry.example }}</code></td>
+          </tr>
+        }
+        @if (currentSection().length === 0) {
+          <tr><td colspan="3" class="no-results">No commands match "{{ searchTerm() }}"</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

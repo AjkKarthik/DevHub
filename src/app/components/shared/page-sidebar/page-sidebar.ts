@@ -244,6 +244,34 @@ const OBS_DEFAULT: SidebarData = {
   ],
 };
 
+const REDIS_DEFAULT: SidebarData = {
+  apis: ['SET key value [EX seconds]', 'GET key', 'INCR / INCRBY key', 'EXPIRE key seconds', 'TTL key', 'SCAN cursor MATCH pattern'],
+  gotchas: [
+    'Never use KEYS in production — use SCAN with cursor',
+    'Pub/Sub messages are lost if no subscriber is connected at publish time',
+    'MULTI/EXEC does not roll back on command errors — check each result',
+    'Redis is single-threaded per core; expensive Lua blocks all other commands',
+  ],
+  related: [
+    { label: 'Redis Home',          route: '/redis' },
+    { label: 'Caching Patterns',    route: '/redis/caching-patterns' },
+    { label: 'Sorted Sets',         route: '/redis/sorted-sets' },
+    { label: 'Pub/Sub Messaging',   route: '/redis/pub-sub' },
+    { label: 'Redis Streams',       route: '/redis/streams' },
+  ],
+  tip: 'Design your key schema first: use colons as separators (user:123:profile), set TTLs aggressively, and always benchmark with realistic data sizes before choosing a data structure.',
+  docs: [
+    { label: 'Redis Docs',          url: 'https://redis.io/docs/' },
+    { label: 'Redis Commands',      url: 'https://redis.io/commands/' },
+    { label: 'ioredis GitHub',      url: 'https://github.com/redis/ioredis' },
+  ],
+  resources: [
+    { label: 'Redis University (Free)', url: 'https://university.redis.com/', badge: 'docs' },
+    { label: 'Redis Explained (blog)',  url: 'https://architecturenotes.co/redis/', badge: 'blog' },
+    { label: 'node-redis GitHub',       url: 'https://github.com/redis/node-redis', badge: 'code' },
+  ],
+};
+
 const MONGO_DEFAULT: SidebarData = {
   apis: ['insertOne/Many', 'find/findOne', 'updateOne/Many', 'deleteOne/Many', 'aggregate()', 'watch()'],
   gotchas: [
@@ -5262,7 +5290,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5275,6 +5303,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/api-design')   ? 'api-design'
     : this.currentUrl().startsWith('/observability') ? 'observability'
     : this.currentUrl().startsWith('/mongodb')       ? 'mongodb'
+    : this.currentUrl().startsWith('/redis')         ? 'redis'
     : 'angular'
   );
 
@@ -5293,6 +5322,7 @@ export class PageSidebarComponent {
            : this.section() === 'api-design'     ? API_DESIGN_DEFAULT
            : this.section() === 'observability'   ? OBS_DEFAULT
            : this.section() === 'mongodb'        ? MONGO_DEFAULT
+           : this.section() === 'redis'          ? REDIS_DEFAULT
            : DEFAULT);
   });
 

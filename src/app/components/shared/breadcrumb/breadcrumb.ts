@@ -859,6 +859,32 @@ const MONGO_LABELS: Record<string, string> = {
   'interview-prep':          'MongoDB Interview Prep',
 };
 
+const REDIS_LABELS: Record<string, string> = {
+  'fundamentals':          'Redis Fundamentals',
+  'installation-setup':    'Installation & CLI',
+  'strings':               'Strings',
+  'hashes':                'Hashes',
+  'lists':                 'Lists',
+  'sets':                  'Sets',
+  'sorted-sets':           'Sorted Sets',
+  'key-commands':          'Key Commands & Patterns',
+  'transactions':          'Transactions (MULTI/EXEC)',
+  'lua-scripting':         'Lua Scripting',
+  'persistence':           'Persistence: RDB & AOF',
+  'pub-sub':               'Pub/Sub Messaging',
+  'streams':               'Redis Streams',
+  'caching-patterns':      'Caching Patterns',
+  'eviction-policies':     'Eviction Policies',
+  'rate-limiting':         'Rate Limiting',
+  'replication-sentinel':  'Replication & Sentinel',
+  'redis-cluster':         'Redis Cluster',
+  'redis-stack':           'Redis Stack & Modules',
+  'redis-nodejs':          'Redis with Node.js',
+  'security':              'Redis Security',
+  'cheatsheet':            'Redis Cheat Sheet',
+  'interview-prep':        'Redis Interview Prep',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -1036,6 +1062,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'api-design'      ? API_DESIGN_LABELS
                  : segs[0] === 'observability'   ? OBS_LABELS
                  : segs[0] === 'mongodb'         ? MONGO_LABELS
+                 : segs[0] === 'redis'           ? REDIS_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };
