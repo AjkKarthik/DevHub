@@ -131,6 +131,7 @@ export class SearchComponent {
     if (route.startsWith('dp-'))          return '/design-patterns/' + route.slice('dp-'.length);
     if (route.startsWith('sec-'))         return '/security/'        + route.slice('sec-'.length);
     if (route.startsWith('api-'))         return '/api-design/'      + route.slice('api-'.length);
+    if (route.startsWith('obs-'))         return '/observability/'    + route.slice('obs-'.length);
     if (route.startsWith('hub-'))    return '/'              + route.slice('hub-'.length);
     return '/angular/' + route;
   }

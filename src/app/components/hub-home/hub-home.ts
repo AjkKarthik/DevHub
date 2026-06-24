@@ -554,7 +554,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'architecture', name: 'Observability & SRE', time: '~5 hrs',
       tagline: 'Design for production — logging, metrics, tracing, SLOs & alerting.',
       icon: '📊', gradient: 'linear-gradient(135deg, #166534 0%, #052e16 100%)',
-      textDark: false, route: '/observability', available: true,
+      textDark: false, route: '/observability', available: true, topics: 22,
       sub: 'Logs · Metrics · Traces · SLO/SLI',
       roles: ['devops', 'architect'],
       highlights: [

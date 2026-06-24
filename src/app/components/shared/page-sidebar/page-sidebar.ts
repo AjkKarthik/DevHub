@@ -217,6 +217,33 @@ const API_DESIGN_DEFAULT: SidebarData = {
   ],
 };
 
+const OBS_DEFAULT: SidebarData = {
+  apis: ['Prometheus', 'OpenTelemetry', 'Grafana', 'Loki', 'Jaeger/Tempo', 'Alertmanager'],
+  gotchas: [
+    'Alert on symptoms (error rate), not causes (CPU) — cause alerts produce false positives.',
+    'Never use high-cardinality fields (userId, traceId) as Prometheus metric label values.',
+    'Dead man\'s switch: always configure a watchdog heartbeat to detect Alertmanager failures.',
+  ],
+  related: [
+    { label: 'Observability Home',   route: '/observability' },
+    { label: 'OpenTelemetry',        route: '/observability/opentelemetry' },
+    { label: 'SLIs, SLOs & SLAs',   route: '/observability/sli-slo-sla' },
+    { label: 'Alerting Design',      route: '/observability/alerting-design' },
+    { label: 'Cheatsheet',           route: '/observability/cheatsheet' },
+  ],
+  tip: 'Start with RED metrics (Rate, Errors, Duration) on every service. Add SLOs only after measuring for 30+ days — you cannot set a meaningful target without real data.',
+  docs: [
+    { label: 'OpenTelemetry Docs',         url: 'https://opentelemetry.io/docs/' },
+    { label: 'Prometheus Docs',            url: 'https://prometheus.io/docs/introduction/overview/' },
+    { label: 'Grafana Docs',              url: 'https://grafana.com/docs/' },
+  ],
+  resources: [
+    { label: 'Google SRE Book',    url: 'https://sre.google/sre-book/table-of-contents/', badge: 'docs' },
+    { label: 'Grafana Play',       url: 'https://play.grafana.org/', badge: 'tool' },
+    { label: 'Awesome Prometheus', url: 'https://github.com/roaldnefs/awesome-prometheus', badge: 'code' },
+  ],
+};
+
 const SEC_DEFAULT: SidebarData = {
   apis: ['bcrypt/argon2', 'JWT (RS256)', 'OAuth PKCE', 'AES-256-GCM', 'HMAC-SHA256', 'CSP nonces'],
   related: [
@@ -5207,17 +5234,18 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design'>(() =>
-    this.currentUrl().startsWith('/csharp')       ? 'csharp'
-    : this.currentUrl().startsWith('/aspnet')     ? 'aspnet'
-    : this.currentUrl().startsWith('/sql')        ? 'sql'
-    : this.currentUrl().startsWith('/typescript') ? 'typescript'
-    : this.currentUrl().startsWith('/react')      ? 'react'
-    : this.currentUrl().startsWith('/javascript') ? 'javascript'
-    : this.currentUrl().startsWith('/html')       ? 'html'
-    : this.currentUrl().startsWith('/css')        ? 'css'
-    : this.currentUrl().startsWith('/security')   ? 'security'
-    : this.currentUrl().startsWith('/api-design') ? 'api-design'
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability'>(() =>
+    this.currentUrl().startsWith('/csharp')         ? 'csharp'
+    : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
+    : this.currentUrl().startsWith('/sql')          ? 'sql'
+    : this.currentUrl().startsWith('/typescript')   ? 'typescript'
+    : this.currentUrl().startsWith('/react')        ? 'react'
+    : this.currentUrl().startsWith('/javascript')   ? 'javascript'
+    : this.currentUrl().startsWith('/html')         ? 'html'
+    : this.currentUrl().startsWith('/css')          ? 'css'
+    : this.currentUrl().startsWith('/security')     ? 'security'
+    : this.currentUrl().startsWith('/api-design')   ? 'api-design'
+    : this.currentUrl().startsWith('/observability') ? 'observability'
     : 'angular'
   );
 
@@ -5233,7 +5261,8 @@ export class PageSidebarComponent {
            : this.section() === 'html'       ? HTML_DEFAULT
            : this.section() === 'css'        ? CSS_DEFAULT
            : this.section() === 'security'   ? SEC_DEFAULT
-           : this.section() === 'api-design' ? API_DESIGN_DEFAULT
+           : this.section() === 'api-design'     ? API_DESIGN_DEFAULT
+           : this.section() === 'observability'   ? OBS_DEFAULT
            : DEFAULT);
   });
 

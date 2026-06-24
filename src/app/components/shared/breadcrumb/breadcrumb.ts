@@ -808,6 +808,31 @@ const SECURITY_LABELS: Record<string, string> = {
   'interview-prep':          'Security Interview Prep',
 };
 
+const OBS_LABELS: Record<string, string> = {
+  'observability-fundamentals': 'Observability Fundamentals',
+  'opentelemetry':              'OpenTelemetry',
+  'sli-slo-sla':                'SLIs, SLOs & SLAs',
+  'prometheus-metrics':         'Prometheus & Metrics',
+  'grafana-dashboards':         'Grafana Dashboards',
+  'custom-app-metrics':         'Custom App Metrics',
+  'infrastructure-metrics':     'Infrastructure Metrics',
+  'cloud-native-monitoring':    'Cloud-Native Monitoring',
+  'structured-logging':         'Structured Logging',
+  'log-aggregation':            'Log Aggregation',
+  'log-best-practices':         'Log Best Practices',
+  'distributed-tracing':        'Distributed Tracing',
+  'opentelemetry-tracing':      'OTel Tracing Deep Dive',
+  'performance-profiling':      'Performance Profiling',
+  'alerting-design':            'Alerting Design',
+  'on-call-incidents':          'On-Call & Incidents',
+  'error-budgets-toil':         'Error Budgets & Toil',
+  'chaos-engineering':          'Chaos Engineering',
+  'ebpf-observability':         'eBPF Observability',
+  'observability-maturity':     'Observability Maturity',
+  'cheatsheet':                 'Observability Cheatsheet',
+  'interview-prep':             'Observability Interview Prep',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -983,6 +1008,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'design-patterns' ? DP_LABELS
                  : segs[0] === 'security'        ? SECURITY_LABELS
                  : segs[0] === 'api-design'      ? API_DESIGN_LABELS
+                 : segs[0] === 'observability'   ? OBS_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

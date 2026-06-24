@@ -1,0 +1,64 @@
+$accent: #059669;
+$tint:   #ecfdf5;
+
+.obs-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-title { color: $accent; font-size: 1.9rem; font-weight: 700; margin: 0.5rem 0 0.25rem; }
+.page-subtitle { color: #64748b; margin-bottom: 1.5rem;
+  code { background: $tint; color: $accent; padding: 0.1rem 0.35rem; border-radius: 4px; }
+}
+
+.ip-filters { margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.ip-filter-group { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.ip-filter-label { font-size: 0.8rem; font-weight: 600; color: #64748b; min-width: 64px; }
+.ip-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ip-chip {
+  padding: 0.25rem 0.7rem; border-radius: 20px; border: 1.5px solid #e2e8f0;
+  background: #fff; font-size: 0.78rem; cursor: pointer; transition: all 0.15s; text-transform: capitalize;
+  &:hover { border-color: $accent; color: $accent; }
+  &.active { background: $accent; color: #fff; border-color: $accent; }
+}
+
+.ip-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.ip-card { border: 1.5px solid #e2e8f0; border-radius: 10px; overflow: hidden; background: #fff;
+  &.open { border-color: $accent; }
+}
+.ip-question {
+  width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+  padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.35rem;
+  &:hover { background: #f8fafc; }
+}
+.ip-q-meta { display: flex; align-items: center; gap: 0.5rem; }
+.ip-badge {
+  font-size: 0.7rem; font-weight: 700; border-radius: 4px; padding: 0.1rem 0.45rem; text-transform: uppercase;
+  &.badge-junior  { background: #dcfce7; color: #166534; }
+  &.badge-mid     { background: #fef9c3; color: #92400e; }
+  &.badge-senior  { background: #fee2e2; color: #991b1b; }
+}
+.ip-category { font-size: 0.75rem; color: #94a3b8; font-weight: 500; }
+.ip-q-text { font-weight: 600; color: #1e293b; font-size: 0.95rem; line-height: 1.4; }
+.ip-chevron { align-self: flex-end; color: $accent; font-size: 0.75rem; }
+.ip-answer {
+  padding: 1rem 1.25rem 1.25rem; border-top: 1px solid $tint; color: #374151;
+  font-size: 0.9rem; line-height: 1.7;
+  strong { color: #1e293b; }
+  code { background: $tint; color: $accent; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.82rem; }
+  ul, ol { padding-left: 1.25rem; margin: 0.5rem 0; li { margin: 0.2rem 0; } }
+}
+.ip-empty { color: #94a3b8; font-style: italic; text-align: center; padding: 2rem; }
+
+:host-context(body.dark) {
+  .page-subtitle { color: #94a3b8; code { background: #064e3b; color: #34d399; } }
+  .ip-chip { background: #1e293b; border-color: #334155; color: #94a3b8;
+    &:hover { border-color: #34d399; color: #34d399; }
+    &.active { background: $accent; color: #fff; border-color: $accent; }
+  }
+  .ip-card { background: #1e293b; border-color: #334155;
+    &.open { border-color: #34d399; }
+  }
+  .ip-question { &:hover { background: #0f172a; } }
+  .ip-q-text { color: #e2e8f0; }
+  .ip-answer { border-top-color: #064e3b; color: #cbd5e1;
+    strong { color: #e2e8f0; }
+    code { background: #064e3b; color: #34d399; }
+  }
+}

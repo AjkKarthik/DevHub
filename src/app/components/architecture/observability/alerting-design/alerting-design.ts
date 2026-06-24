@@ -1,0 +1,388 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
+import { QuickRefComponent, QuickRefItem } from '../../../shared/quick-ref/quick-ref';
+import { TheoryBlockComponent, TheoryPoint } from '../../../shared/theory-block/theory-block';
+import { CodeBlockComponent, CodeTab } from '../../../shared/code-block/code-block';
+import { CommonMistakesComponent, CommonMistake } from '../../../shared/common-mistakes/common-mistakes';
+import { ChallengeBlockComponent, Challenge } from '../../../shared/challenge-block/challenge-block';
+import { QuizBlockComponent, QuizQuestion } from '../../../shared/quiz-block/quiz-block';
+import { QnaBlockComponent, QnaItem } from '../../../shared/qna-block/qna-block';
+import { RevisionCardComponent, RevisionSummary } from '../../../shared/revision-card/revision-card';
+import { PageCompleteComponent } from '../../../shared/page-complete/page-complete';
+
+const quickRef: QuickRefItem[] = [
+  { name: 'Actionable alert',  type: 'keyword', desc: 'An alert that, when fired, requires a specific human action. If the response is always "ignore it", the alert should be deleted.' },
+  { name: 'Alert fatigue',     type: 'keyword', desc: 'Engineers ignoring alerts because too many fire. The most dangerous state — real incidents get buried in noise.' },
+  { name: 'Notification policy', type: 'keyword', desc: 'Routes alerts to contact points based on label matchers (severity, team). Configured in Grafana Alertmanager or Alertmanager.' },
+  { name: 'Inhibition rule',   type: 'keyword', desc: 'Suppresses child alerts when a parent alert is already firing. e.g., suppress all service alerts when the host is down.' },
+  { name: 'Dead man\'s switch', type: 'keyword', desc: 'An alert that fires when your alerting system itself goes silent — detects when Prometheus or Alertmanager has stopped working.' },
+  { name: 'Runbook',           type: 'keyword', desc: 'Documentation for responding to a specific alert — steps to diagnose, mitigate, and resolve. Linked in alert annotations.' },
+];
+
+const theory: TheoryPoint[] = [
+  {
+    heading: 'The Principles of Good Alerting',
+    points: [
+      'Every alert page must require human action. If the response is "watch it and it recovers by itself" or "ignore it, it always does this", delete the alert. Non-actionable alerts create alert fatigue.',
+      'Alert on symptoms, not causes. "User error rate > 1%" is a symptom alert — something bad is happening to users right now. "CPU > 80%" is a cause alert — CPU is high for unknown reasons, users may or may not be affected.',
+      'Set alert thresholds from SLOs, not from intuition. Your alert should fire when you are in danger of breaching the SLO, not when you feel uncomfortable about a number.',
+      'Alert at the lowest confidence level that still requires action. The alternative — waiting for certainty before alerting — means users are already impacted when the alert fires.',
+    ],
+  },
+  {
+    heading: 'Alert Tiers: Page, Ticket, Record',
+    points: [
+      'Page (wake someone up): immediate user impact or imminent SLO breach. Error budget burning at 14× rate, payment service error rate > 5%, database unreachable. Response time: < 5 minutes.',
+      'Ticket (next business day): degraded state that is not immediately critical but must be resolved. Error budget at 80%, p99 latency trending up over 24h, disk 80% full. Response time: < 2 business days.',
+      'Record (dashboard only): interesting trends worth watching but not actionable yet. Memory growing 5% per week, cache hit rate declining. Response time: weekly review.',
+      'Most teams have too many pages and too few tickets. Move non-critical alerts from page to ticket to reduce 3am wake-ups. The page count per engineer per week is a key SRE health metric.',
+    ],
+  },
+  {
+    heading: 'Alertmanager Routing',
+    points: [
+      'Alertmanager (or Grafana Unified Alerting) receives alerts from Prometheus and routes them to contact points based on label matchers.',
+      'Contact points: Slack webhook (for ticketed alerts), PagerDuty (for pages), email (for daily summaries), OpsGenie, VictorOps. Each contact point type has different urgency and acknowledgement features.',
+      'Notification policy: route by `severity=critical` → PagerDuty, `severity=warning` → Slack #incidents, `team=platform` → platform Slack channel.',
+      'Inhibition rules: suppress alerts when a higher-level alert is already active. "Don\'t send 50 service-level alerts when the load balancer is down" — the LB alert already told on-call the root cause.',
+    ],
+  },
+  {
+    heading: 'Alert Hygiene Practices',
+    points: [
+      'Weekly alert review: look at which alerts fired in the last week. For each: was it actionable? Did on-call respond correctly? Does the threshold need adjusting?',
+      'Runbook link in every alert: `annotations: { runbook: "https://wiki.internal/runbooks/..." }`. No runbook = first responder is guessing the correct response at 3am.',
+      'Dead man\'s switch: `ALERTS{alertname="Watchdog"} absent for 5m` fires when Alertmanager stops sending heartbeats. Catches when your alerting pipeline itself is broken.',
+      'Test your alerts: write tests that generate metric data and verify the expected alert fires. An untested alert rule may have a typo in the PromQL that prevents it from ever firing.',
+    ],
+  },
+];
+
+const codeTabs: CodeTab[] = [
+  {
+    label: 'Alert Rules',
+    language: 'typescript',
+    code: `# Prometheus alert rules — tiered severity, symptom-based
+
+groups:
+  - name: slo-alerts
+    rules:
+      # ── PAGE: critical SLO burn rate (wake someone up) ───────────
+      - alert: ErrorBudgetBurningCritical
+        expr: |
+          # Short window (1h) AND long window (6h) both burning fast
+          (
+            sum(rate(http_requests_total{status_code=~"5.."}[1h])) /
+            sum(rate(http_requests_total[1h]))
+          ) > (14 * 0.001)  # 14x burn rate on 99.9% SLO
+          AND
+          (
+            sum(rate(http_requests_total{status_code=~"5.."}[6h])) /
+            sum(rate(http_requests_total[6h]))
+          ) > (14 * 0.001)
+        for: 2m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: "SLO error budget burning at 14x — page on-call"
+          description: "Error budget for {{ $labels.service }} will be exhausted in {{ $value | humanizeDuration }}"
+          runbook: "https://wiki.internal/runbooks/slo-budget-burn"
+
+      # ── TICKET: warning burn rate (next business day) ─────────────
+      - alert: ErrorBudgetBurningWarning
+        expr: |
+          (
+            sum(rate(http_requests_total{status_code=~"5.."}[6h])) /
+            sum(rate(http_requests_total[6h]))
+          ) > (3 * 0.001)
+        for: 15m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: "SLO error budget burning at 3x — create reliability ticket"
+          runbook: "https://wiki.internal/runbooks/slo-budget-warning"
+
+  - name: infrastructure-alerts
+    rules:
+      # ── PAGE: database unreachable ─────────────────────────────
+      - alert: DatabaseDown
+        expr: up{job="postgresql"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL unreachable for 1 minute"
+          runbook: "https://wiki.internal/runbooks/db-down"
+
+      # ── DEAD MAN'S SWITCH ─────────────────────────────────────
+      - alert: Watchdog
+        expr: vector(1)   # always fires
+        labels:
+          severity: watchdog
+        annotations:
+          summary: "Alertmanager is running — heartbeat"
+          # Alertmanager forwards this to a Dead Man's Snitch URL
+          # If it stops arriving, DMS sends a page`,
+  },
+  {
+    label: 'Alertmanager Config',
+    language: 'typescript',
+    code: `# alertmanager.yml — routing and contact points
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: default-receiver
+  group_by: ['alertname', 'service']
+  group_wait: 30s       # Wait for more alerts to group before sending
+  group_interval: 5m    # Resend if group changes
+  repeat_interval: 4h   # Repeat unresolved alerts every 4h
+  routes:
+    # Critical: wake someone up via PagerDuty
+    - match:
+        severity: critical
+      receiver: pagerduty-receiver
+      group_wait: 10s        # send faster for critical
+      repeat_interval: 1h
+
+    # Warning: Slack notification
+    - match:
+        severity: warning
+      receiver: slack-warnings
+      group_wait: 1m
+
+    # Watchdog heartbeat: route to Dead Man's Snitch
+    - match:
+        severity: watchdog
+      receiver: dead-mans-snitch
+      repeat_interval: 5m    # must arrive at least every 5m
+
+inhibit_rules:
+  # If host is down, suppress all service-level alerts for that host
+  - source_match:
+      alertname: NodeDown
+    target_match_re:
+      alertname: ".*"         # suppress everything else
+    equal: ['instance']       # same host
+
+receivers:
+  - name: pagerduty-receiver
+    pagerduty_configs:
+      - service_key: '<PAGERDUTY_KEY>'
+        description: '{{ template "pagerduty.default.description" . }}'
+
+  - name: slack-warnings
+    slack_configs:
+      - api_url: '<SLACK_WEBHOOK>'
+        channel: '#incidents'
+        title: '{{ .GroupLabels.alertname }}'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+
+  - name: dead-mans-snitch
+    webhook_configs:
+      - url: 'https://nosnch.in/<SNITCH_ID>'`,
+  },
+];
+
+const mistakes: CommonMistake[] = [
+  {
+    title: 'Too many page alerts — alert fatigue kills on-call culture',
+    wrong: `# 47 alert rules, all severity: critical, all fire to PagerDuty
+# On-call receives 30 pages per week
+# 25 are non-actionable or self-resolving
+# Engineers stop responding promptly — alert fatigue
+# Real incident: buried in noise, delayed response`,
+    right: `# Tiered alerts: <5 pages/week/engineer is the target
+# Page: imminent SLO breach, service completely down
+# Ticket: degraded but not critical
+# Review: track past 7 days — any alert firing > 3x non-actionably = delete or demote`,
+    explanation: 'Alert fatigue is the most dangerous state for on-call reliability. When engineers receive too many non-actionable pages, they begin ignoring all pages — including real incidents. Target fewer than 5 pages per engineer per week. Conduct a weekly alert review to identify non-actionable alerts and either fix the underlying issue, raise the threshold, or delete the alert.',
+  },
+  {
+    title: 'Alerting on causes (CPU > 80%) instead of symptoms (error rate > 1%)',
+    wrong: `# Cause-based alerts — mostly noise
+- alert: HighCPU
+  expr: cpu_usage > 0.8
+  # CPU at 85% during successful batch job → page fires
+  # Users are completely unaffected
+  # On-call checks: everything is fine, dismisses alert
+  # Repeated 5 times per week → alert fatigue`,
+    right: `# Symptom-based alerts — directly tied to user impact
+- alert: UserFacingErrorRateHigh
+  expr: |
+    rate(http_requests_total{status=~"5.."}[5m])
+    / rate(http_requests_total[5m]) > 0.01
+  # Only fires when users are actually experiencing errors
+  # CPU may be high or low — doesn't matter; user impact = actionable`,
+    explanation: 'Cause-based alerts (CPU, memory, disk) fire frequently for benign reasons — batch jobs, GC runs, legitimate load spikes. They produce false positives that train engineers to ignore pages. Symptom-based alerts (error rate, latency, user-visible failures) only fire when something users experience is actually degraded. This makes every alert fire meaningful and reduces false positives dramatically.',
+  },
+  {
+    title: 'No runbook link in alert annotations',
+    wrong: `- alert: PaymentServiceDown
+  expr: up{job="payment-service"} == 0
+  annotations:
+    summary: "Payment service is down"
+    # No runbook — on-call at 3am guesses the fix
+    # Is it a config issue? Deploy failure? Database? K8s eviction?
+    # Takes 20 minutes of investigation to get context`,
+    right: `- alert: PaymentServiceDown
+  expr: up{job="payment-service"} == 0
+  annotations:
+    summary: "Payment service unreachable — users cannot complete purchases"
+    description: "Prometheus cannot scrape payment-service for 2+ minutes"
+    runbook: "https://wiki.internal/runbooks/payment-service-down"
+    # Runbook covers: deployment check, DB connection, K8s pod status
+    # First responder has a 5-minute recovery vs 20-minute investigation`,
+    explanation: 'At 3am, the on-call engineer has no context about the service. A runbook link in the alert annotation provides the standard operating procedure: which dashboards to check, how to determine the root cause, and the steps to remediate. Missing runbooks turn every incident into an improvised investigation. Write the runbook when you write the alert rule — not after the first incident.',
+  },
+  {
+    title: 'Not testing alert rules — silent failures in alerting',
+    wrong: `# Alert rule has a typo in the metric name
+- alert: OrderServiceDown
+  expr: up{job="order_service"} == 0  # ← job label is "order-service" not "order_service"
+# Alert never fires — service goes down but nobody is paged
+# Discovered during a real incident when on-call wonders why no page came`,
+    right: `# Use promtool to validate rules
+promtool check rules alerts.yml
+
+# Write unit tests for alert rules
+# alerts_test.yml:
+rule_files:
+  - alerts.yml
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'up{job="order-service"}'
+        values: "1 1 0 0 0"  # down at minute 3
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: OrderServiceDown
+        exp_alerts:
+          - exp_labels: { severity: critical, job: "order-service" }`,
+    explanation: 'Alert rules can have typos in metric names, wrong label selectors, or PromQL errors that silently prevent them from ever firing. Use `promtool check rules` to validate syntax, and write unit tests for alert rules using `promtool test rules`. Test that alerts DO fire for the conditions they are designed to detect. An untested alert is not a safety net — it is a false sense of security.',
+  },
+];
+
+const challenge: Challenge = {
+  title: 'Alert rule evaluator',
+  language: 'typescript',
+  description: `Implement evaluateAlert(rule: AlertRule, metrics: Record<string, number>): boolean
+An alert rule has: metricName, operator ('>','<','>=','<=','=='), threshold.
+Return true if the condition is met (alert should fire).
+Return false if the metric doesn't exist.`,
+  hints: ['Look up the metric value by name', 'Use a switch or if-else for operators'],
+  starterCode: `interface AlertRule {
+  metricName: string;
+  operator: '>' | '<' | '>=' | '<=' | '==';
+  threshold: number;
+}
+
+function evaluateAlert(
+  rule: AlertRule,
+  metrics: Record<string, number>
+): boolean {
+  return false;
+}
+
+const metrics = { error_rate: 0.05, latency_p99: 1200, cpu: 0.3 };
+console.log(evaluateAlert({ metricName: 'error_rate', operator: '>', threshold: 0.01 }, metrics));   // true
+console.log(evaluateAlert({ metricName: 'latency_p99', operator: '>=', threshold: 1000 }, metrics)); // true
+console.log(evaluateAlert({ metricName: 'cpu', operator: '>', threshold: 0.9 }, metrics));           // false
+console.log(evaluateAlert({ metricName: 'missing', operator: '>', threshold: 0 }, metrics));         // false`,
+  solution: `interface AlertRule {
+  metricName: string;
+  operator: '>' | '<' | '>=' | '<=' | '==';
+  threshold: number;
+}
+
+function evaluateAlert(
+  rule: AlertRule,
+  metrics: Record<string, number>
+): boolean {
+  const value = metrics[rule.metricName];
+  if (value === undefined) return false;
+  switch (rule.operator) {
+    case '>':  return value > rule.threshold;
+    case '<':  return value < rule.threshold;
+    case '>=': return value >= rule.threshold;
+    case '<=': return value <= rule.threshold;
+    case '==': return value === rule.threshold;
+  }
+}
+
+const metrics = { error_rate: 0.05, latency_p99: 1200, cpu: 0.3 };
+console.log(evaluateAlert({ metricName: 'error_rate', operator: '>', threshold: 0.01 }, metrics));
+console.log(evaluateAlert({ metricName: 'latency_p99', operator: '>=', threshold: 1000 }, metrics));
+console.log(evaluateAlert({ metricName: 'cpu', operator: '>', threshold: 0.9 }, metrics));
+console.log(evaluateAlert({ metricName: 'missing', operator: '>', threshold: 0 }, metrics));`,
+};
+
+const quiz: QuizQuestion[] = [
+  {
+    q: 'What is an "inhibition rule" in Alertmanager and when should you use it?',
+    options: [
+      'A rule that prevents alerts from firing during scheduled maintenance windows',
+      'A rule that suppresses child alerts when a higher-level alert is already active (e.g., suppress all service alerts when the host is down)',
+      'A rule that limits how many times an alert can page per hour to prevent spam',
+      'A rule that delays alert notifications until a confirmation from a second system',
+    ],
+    answer: 1,
+    explanation: 'Inhibition rules prevent alert flooding when a root cause is already being signalled by a higher-level alert. Example: when "NodeDown" fires (the host is unreachable), all service-level alerts for services on that host are suppressed — because their root cause is already known (the host is down). Without inhibition rules, a downed host can trigger 50 service alerts, swamping the on-call engineer with redundant notifications. Configure inhibition using matching labels (e.g., same `instance`) to ensure the scope is correct.',
+  },
+  {
+    q: 'What is a "dead man\'s switch" alert and what failure does it detect?',
+    options: [
+      'An alert that fires when all replicas of a service are healthy — confirming the service is fully operational',
+      'An alert rule that always fires (expr: vector(1)), used as a heartbeat to detect when the alerting pipeline itself has stopped working',
+      'An alert that fires when a service has been running for more than 30 days without a restart — detecting stale deployments',
+      'An alert configured to fire when no traffic has been received in the last hour — detecting abandoned services',
+    ],
+    answer: 1,
+    explanation: 'A dead man\'s switch (or watchdog) alert always fires (`expr: vector(1)`). Alertmanager forwards it to a Dead Man\'s Snitch service (e.g., healthchecks.io) every few minutes. If the snitch doesn\'t receive the heartbeat within the expected interval, it pages the on-call engineer. This detects: Prometheus crashing, Alertmanager crashing, network partition isolating the monitoring stack, or any failure that would silently prevent real alerts from reaching on-call.',
+  },
+];
+
+const qna: QnaItem[] = [
+  {
+    q: 'How do I decide whether an alert should page or just create a ticket?',
+    a: 'Apply the "3am test": if this alert fires at 3am, would waking an engineer to respond immediately make a meaningful difference to user experience? <br><br><strong>Page (immediate)</strong>: <ul><li>Users are currently experiencing failures (error rate > SLO threshold)</li><li>The error budget will be exhausted within 2 days at the current burn rate</li><li>A service required for revenue is completely unreachable</li><li>Data integrity is at risk (replication lag > threshold, write errors)</li></ul><strong>Ticket (next business day)</strong>: <ul><li>Degraded but still within SLO (burn rate 2-5×, not 14×)</li><li>Resource headroom declining but not critical (disk 75%, not 95%)</li><li>Performance regression that hasn\'t yet caused user-visible impact</li></ul><strong>Record/review</strong>: <ul><li>Trends worth monitoring but no action threshold reached yet</li><li>Metrics that are interesting context but not actionable</li></ul>When in doubt, start with a ticket and promote to page if the next incident shows it needed faster response.',
+  },
+  {
+    q: 'How should I handle alert notifications during planned maintenance?',
+    a: 'Two mechanisms: <ol><li><strong>Alertmanager silence</strong>: create a silence in Alertmanager/Grafana that matches labels of alerts you want to suppress during maintenance. Silences have a defined end time — they expire automatically. Accessible via the Alertmanager UI or API. Best for one-off maintenance windows.</li><li><strong>Mute timings</strong> (Grafana Unified Alerting): recurring time windows when notifications are suppressed — e.g., every Sunday 2am-4am for weekly maintenance. Defined in the notification policy, not created ad-hoc. Best for regularly scheduled maintenance.</li></ol>Important: silences suppress notifications but the alerts still evaluate. You can see in the Alertmanager UI which alerts would have fired during the silence — useful for post-maintenance review. Never delete alert rules for maintenance — you\'ll forget to recreate them. Use silences instead.',
+  },
+];
+
+const revision: RevisionSummary = {
+  oneLiner: 'Alert on symptoms not causes. Page tier < 5/week. Every alert = runbook link. Inhibition suppresses child alerts. Dead man\'s switch detects alerting pipeline failure.',
+  mustKnow: [
+    'Symptom alerts (error rate, latency) over cause alerts (CPU, memory) — fewer false positives, more actionable',
+    'Three tiers: Page (immediate, < 5/week), Ticket (next business day), Record (dashboard only)',
+    'Runbook link in every alert annotation — first responder SOP at 3am, not improvisation',
+    'Inhibition rules: suppress 50 service alerts when host is already paged as root cause',
+    'Dead man\'s switch: always-firing watchdog heartbeat detects when Prometheus/Alertmanager itself breaks',
+    'Test alert rules with promtool test rules — untested alert rules are false security',
+  ],
+  interviewFocus: [
+    'What is alert fatigue and how do you prevent it?',
+    'What is the difference between alerting on symptoms vs causes? Give an example.',
+    'What is a dead man\'s switch and what failure mode does it detect?',
+  ],
+};
+
+@Component({
+  selector: 'app-obs-alerting',
+  standalone: true,
+  imports: [CommonModule, PageMetaComponent, QuickRefComponent, TheoryBlockComponent,
+    CodeBlockComponent, CommonMistakesComponent, ChallengeBlockComponent,
+    QuizBlockComponent, QnaBlockComponent, RevisionCardComponent, PageCompleteComponent],
+  templateUrl: './alerting-design.html',
+  styleUrl: './alerting-design.scss',
+})
+export class ObsAlertingDesign {
+  quickRef = quickRef; theory = theory; codeTabs = codeTabs;
+  mistakes = mistakes; challenge = challenge; quiz = quiz; qna = qna; revision = revision;
+}

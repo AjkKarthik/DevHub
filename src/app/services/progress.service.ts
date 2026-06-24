@@ -102,6 +102,11 @@ export class ProgressService {
   readonly linuxCount  = computed(() => [...this._done()].filter(r => r.startsWith('linux-')).length);
   readonly linuxPct    = computed(() => Math.round((this.linuxCount() / this.linuxTotal) * 100));
 
+  // ── Observability (keys prefixed 'obs-') ─────────────────────────────────
+  readonly obsTotal  = 20;
+  readonly obsCount  = computed(() => [...this._done()].filter(r => r.startsWith('obs-')).length);
+  readonly obsPct    = computed(() => Math.round((this.obsCount() / this.obsTotal) * 100));
+
   // ── Terraform (keys prefixed 'tf-') ──────────────────────────────────────
   readonly tfTotal  = 21;
   readonly tfCount  = computed(() => [...this._done()].filter(r => r.startsWith('tf-')).length);
