@@ -165,11 +165,11 @@ export class HubHome implements AfterViewInit, OnDestroy {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'Linux · 21 pages',        route: '/linux',                    label: 'New · 19 topics + 2 reference' },
+    { name: 'Messaging & Events · 22 pages', route: '/messaging',          label: 'New · 20 topics + 2 reference' },
+    { name: 'GraphQL · 22 pages',      route: '/graphql',                  label: '20 topics + 2 reference' },
+    { name: 'Redis · 23 pages',        route: '/redis',                    label: '21 topics + 2 reference' },
+    { name: 'Linux · 21 pages',        route: '/linux',                    label: '19 topics + 2 reference' },
     { name: 'Azure · 23 pages',        route: '/azure',                    label: '22 topics + cheatsheet' },
-    { name: 'AWS · 22 pages',          route: '/aws',                      label: '21 topics + cheatsheet' },
-    { name: 'DevOps · 22 pages',       route: '/devops',                   label: '21 topics + cheatsheet' },
-    { name: 'Go · 23 pages',           route: '/go',                       label: '21 topics + 2 reference' },
   ];
 
   readonly roleChips: RoleChip[] = [
@@ -454,7 +454,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'GraphQL', time: '~5 hrs',
       tagline: 'Query language for APIs — type-safe, flexible, self-documenting.',
       icon: '◈', gradient: 'linear-gradient(135deg, #e535ab 0%, #9c1f73 100%)',
-      textDark: false, route: '/graphql', available: true,
+      textDark: false, route: '/graphql', available: true, topics: 22,
       sub: 'GraphQL · Apollo · Hot Chocolate',
       roles: ['frontend', 'backend', 'architect'],
       highlights: [
@@ -468,7 +468,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'Messaging & Events', time: '~6 hrs',
       tagline: 'Event-driven architecture — Kafka, RabbitMQ, Service Bus & patterns.',
       icon: '📨', gradient: 'linear-gradient(135deg, #7c2d12 0%, #431407 100%)',
-      textDark: false, route: '/messaging', available: true,
+      textDark: false, route: '/messaging', available: true, topics: 22,
       sub: 'Kafka · RabbitMQ · Azure Service Bus',
       roles: ['backend', 'architect'],
       highlights: [

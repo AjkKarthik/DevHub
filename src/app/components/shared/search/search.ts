@@ -134,6 +134,8 @@ export class SearchComponent {
     if (route.startsWith('obs-'))         return '/observability/'    + route.slice('obs-'.length);
     if (route.startsWith('mongo-'))       return '/mongodb/'          + route.slice('mongo-'.length);
     if (route.startsWith('redis-'))       return '/redis/'            + route.slice('redis-'.length);
+    if (route.startsWith('gql-'))         return '/graphql/'          + route.slice('gql-'.length);
+    if (route.startsWith('kafka-'))       return '/messaging/'         + route.slice('kafka-'.length);
     if (route.startsWith('hub-'))    return '/'              + route.slice('hub-'.length);
     return '/angular/' + route;
   }

@@ -1,0 +1,97 @@
+<div class="gql-page">
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">GraphQL Cheatsheet</h1>
+  <p class="page-subtitle">Quick-reference for <code>schema syntax</code>, query language, directives, and client/server patterns — everything on one page.</p>
+
+  <div class="cs-tabs">
+    <button class="cs-tab" [class.active]="activeTab() === 'schema'" (click)="activeTab.set('schema')">Schema SDL</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'queries'" (click)="activeTab.set('queries')">Queries & Mutations</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'directives'" (click)="activeTab.set('directives')">Directives</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'resolvers'" (click)="activeTab.set('resolvers')">Resolvers</button>
+    <button class="cs-tab" [class.active]="activeTab() === 'client'" (click)="activeTab.set('client')">Client Patterns</button>
+  </div>
+
+  <div class="cs-search">
+    <input type="text" placeholder="Search cheatsheet..." [value]="search()" (input)="search.set($any($event.target).value)" />
+  </div>
+
+  @if (activeTab() === 'schema') {
+  <div class="cs-section-block">
+    <h2>Schema Definition Language</h2>
+    @for (item of filtered(schemaItems()); track item.title) {
+    <div class="cs-card">
+      <div class="cs-card-header">
+        <code class="cs-name">{{ item.title }}</code>
+        <span class="cs-badge">{{ item.category }}</span>
+      </div>
+      <p class="cs-desc">{{ item.desc }}</p>
+      <pre class="cs-code"><code>{{ item.code }}</code></pre>
+    </div>
+    }
+  </div>
+  }
+
+  @if (activeTab() === 'queries') {
+  <div class="cs-section-block">
+    <h2>Queries & Mutations</h2>
+    @for (item of filtered(queryItems()); track item.title) {
+    <div class="cs-card">
+      <div class="cs-card-header">
+        <code class="cs-name">{{ item.title }}</code>
+        <span class="cs-badge">{{ item.category }}</span>
+      </div>
+      <p class="cs-desc">{{ item.desc }}</p>
+      <pre class="cs-code"><code>{{ item.code }}</code></pre>
+    </div>
+    }
+  </div>
+  }
+
+  @if (activeTab() === 'directives') {
+  <div class="cs-section-block">
+    <h2>Built-in Directives</h2>
+    @for (item of filtered(directiveItems()); track item.title) {
+    <div class="cs-card">
+      <div class="cs-card-header">
+        <code class="cs-name">{{ item.title }}</code>
+        <span class="cs-badge">{{ item.category }}</span>
+      </div>
+      <p class="cs-desc">{{ item.desc }}</p>
+      <pre class="cs-code"><code>{{ item.code }}</code></pre>
+    </div>
+    }
+  </div>
+  }
+
+  @if (activeTab() === 'resolvers') {
+  <div class="cs-section-block">
+    <h2>Resolver Patterns</h2>
+    @for (item of filtered(resolverItems()); track item.title) {
+    <div class="cs-card">
+      <div class="cs-card-header">
+        <code class="cs-name">{{ item.title }}</code>
+        <span class="cs-badge">{{ item.category }}</span>
+      </div>
+      <p class="cs-desc">{{ item.desc }}</p>
+      <pre class="cs-code"><code>{{ item.code }}</code></pre>
+    </div>
+    }
+  </div>
+  }
+
+  @if (activeTab() === 'client') {
+  <div class="cs-section-block">
+    <h2>Client Patterns</h2>
+    @for (item of filtered(clientItems()); track item.title) {
+    <div class="cs-card">
+      <div class="cs-card-header">
+        <code class="cs-name">{{ item.title }}</code>
+        <span class="cs-badge">{{ item.category }}</span>
+      </div>
+      <p class="cs-desc">{{ item.desc }}</p>
+      <pre class="cs-code"><code>{{ item.code }}</code></pre>
+    </div>
+    }
+  </div>
+  }
+</div>

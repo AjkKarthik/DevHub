@@ -1,0 +1,34 @@
+<div class="gql-page">
+  <div class="page-header-icon gql-icon">◈</div>
+  <h1 class="page-title">GraphQL Interview Prep</h1>
+  <p class="page-subtitle">Common interview questions on <code>schema design</code>, N+1, caching, federation, and subscriptions — with clear, concise answers.</p>
+
+  <div class="ip-filters">
+    <button class="ip-chip" [class.active]="activeDiff() === 'all'" (click)="activeDiff.set('all')">All</button>
+    <button class="ip-chip" [class.active]="activeDiff() === 'junior'" (click)="activeDiff.set('junior')">Junior</button>
+    <button class="ip-chip" [class.active]="activeDiff() === 'mid'" (click)="activeDiff.set('mid')">Mid-level</button>
+    <button class="ip-chip" [class.active]="activeDiff() === 'senior'" (click)="activeDiff.set('senior')">Senior</button>
+  </div>
+
+  <div class="ip-search">
+    <input type="text" placeholder="Search questions..." [value]="search()" (input)="search.set($any($event.target).value)" />
+  </div>
+
+  @for (item of filtered(); track item.q) {
+  <div class="ip-card" [class]="'ip-' + item.difficulty">
+    <div class="ip-card-header" (click)="toggle(item.q)">
+      <span class="ip-diff-badge">{{ item.difficulty }}</span>
+      <p class="ip-question">{{ item.q }}</p>
+      <span class="ip-chevron">{{ expanded().has(item.q) ? '▲' : '▼' }}</span>
+    </div>
+    @if (expanded().has(item.q)) {
+    <div class="ip-answer">
+      <p>{{ item.a }}</p>
+      @if (item.code) {
+      <pre><code>{{ item.code }}</code></pre>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>

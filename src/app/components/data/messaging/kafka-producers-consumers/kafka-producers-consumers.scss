@@ -1,0 +1,16 @@
+$accent: #9a3412;
+$tint:   #fff7ed;
+
+.kafka-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-header-icon { background: $accent; color: #fff; font-size: 1.8rem; }
+.page-title { font-size: 2rem; font-weight: 700; margin: .5rem 0 .25rem; }
+.page-subtitle { color: #6b7280; margin-bottom: 1.5rem; }
+.kafka-section { margin: 2rem 0; }
+.kafka-section h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: #111; }
+
+:host-context(body.dark) {
+  .page-title { color: #f9fafb; }
+  .page-subtitle { color: #9ca3af; }
+  .kafka-section h2 { color: #f9fafb; }
+  .page-header-icon { background: #7c2d12; color: #fdba74; }
+}

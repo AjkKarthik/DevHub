@@ -1,0 +1,53 @@
+$accent: #e535ab;
+$tint: #fdf2f9;
+
+.gql-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+.gql-icon { background: $tint; color: $accent; }
+.page-subtitle code { background: $tint; color: $accent; }
+
+.cs-tabs {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0 1rem;
+  .cs-tab {
+    padding: 0.4rem 1rem; border-radius: 999px; border: 2px solid #e2e8f0;
+    background: #fff; color: #64748b; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+    &.active, &:hover { border-color: $accent; background: $tint; color: $accent; }
+  }
+}
+
+.cs-search {
+  margin-bottom: 1.25rem;
+  input { width: 100%; padding: 0.6rem 1rem; border: 2px solid #e2e8f0; border-radius: 8px;
+    font-size: 0.9rem; outline: none;
+    &:focus { border-color: $accent; } }
+}
+
+.cs-section-block { h2 { font-size: 1.1rem; font-weight: 700; color: $accent; margin-bottom: 1rem; } }
+
+.cs-card {
+  border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem; background: #fff;
+  .cs-card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem; }
+  .cs-name { font-size: 0.9rem; font-weight: 700; color: $accent; background: $tint;
+    padding: 0.15rem 0.5rem; border-radius: 4px; }
+  .cs-badge { font-size: 0.7rem; font-weight: 600; color: #64748b; background: #f1f5f9;
+    padding: 0.15rem 0.5rem; border-radius: 999px; }
+  .cs-desc { font-size: 0.85rem; color: #475569; margin-bottom: 0.5rem; }
+  .cs-code { background: #0f172a; color: #e2e8f0; border-radius: 6px; padding: 0.6rem 0.75rem;
+    font-size: 0.78rem; overflow-x: auto; margin: 0; white-space: pre; }
+}
+
+:host-context(body.dark) {
+  .gql-icon { background: #3d0a26; color: #f472b6; }
+  .page-subtitle code { background: #3d0a26; color: #f472b6; }
+  .cs-tabs .cs-tab { background: #1e293b; border-color: #334155; color: #94a3b8;
+    &.active, &:hover { border-color: #f472b6; background: #3d0a26; color: #f472b6; } }
+  .cs-search input { background: #1e293b; border-color: #334155; color: #e2e8f0;
+    &:focus { border-color: #f472b6; } }
+  .cs-section-block h2 { color: #f472b6; }
+  .cs-card { background: #1e293b; border-color: #334155;
+    .cs-name { background: #3d0a26; color: #f472b6; }
+    .cs-badge { background: #0f172a; color: #94a3b8; }
+    .cs-desc { color: #94a3b8; } }
+}

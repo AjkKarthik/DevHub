@@ -1,6 +1,4 @@
 import { Component, signal, computed } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { PageMetaComponent } from '../../../shared/page-meta/page-meta';
 
 interface CheatEntry {
   category: string;
@@ -12,7 +10,7 @@ interface CheatEntry {
 @Component({
   selector: 'app-mongo-cheatsheet',
   standalone: true,
-  imports: [PageMetaComponent, FormsModule],
+  imports: [],
   templateUrl: './cheatsheet.html',
   styleUrl: './cheatsheet.scss',
 })

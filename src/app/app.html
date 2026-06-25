@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'" [class.section-redis]="currentSection()==='redis'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'" [class.section-redis]="currentSection()==='redis'" [class.section-graphql]="currentSection()==='graphql'" [class.section-messaging]="currentSection()==='messaging'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -128,6 +128,9 @@
         } @else if (currentSection() === 'redis') {
           <div class="nav-progress-bar" [style.width.%]="progress.redisPct()"></div>
           <span class="nav-progress-label">{{ progress.redisCount() }}/{{ progress.redisTotal }} topics done</span>
+        } @else if (currentSection() === 'graphql') {
+          <div class="nav-progress-bar" [style.width.%]="progress.gqlPct()"></div>
+          <span class="nav-progress-label">{{ progress.gqlCount() }}/{{ progress.gqlTotal }} topics done</span>
         } @else {
           <div class="nav-progress-bar" [style.width.%]="progress.angularPct()"></div>
           <span class="nav-progress-label">{{ progress.angularCount() }}/{{ progress.total }} topics done</span>
@@ -935,6 +938,16 @@
     <!-- ── Redis Navigation ──────────────────────────────────────── -->
     @if (currentSection() === 'redis') {
       <app-redis-nav />
+    }
+
+    <!-- ── GraphQL Navigation ────────────────────────────────────── -->
+    @if (currentSection() === 'graphql') {
+      <app-gql-nav />
+    }
+
+    <!-- ── Messaging Navigation ──────────────────────────────────── -->
+    @if (currentSection() === 'messaging') {
+      <app-messaging-nav />
     }
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
