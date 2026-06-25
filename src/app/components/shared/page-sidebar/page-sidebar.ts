@@ -328,6 +328,88 @@ const KAFKA_DEFAULT: SidebarData = {
   ],
 };
 
+const DSA_DEFAULT: SidebarData = {
+  apis: ['Array / HashMap', 'Two Pointers', 'Sliding Window', 'BFS / DFS', 'Dynamic Programming', 'Binary Search'],
+  gotchas: [
+    'Two-pointer only works on sorted or monotonic arrays — sort first if needed.',
+    'BFS uses a queue (FIFO); DFS uses a stack or recursion. Confusing them gives wrong shortest-path results.',
+    'DP: define the state clearly before writing the recurrence — most bugs come from a fuzzy state definition.',
+    'Off-by-one in binary search: prefer left <= right with mid = left + (right - left) / 2 to avoid overflow.',
+  ],
+  related: [
+    { label: 'DSA Home',               route: '/dsa' },
+    { label: 'Big-O Notation',         route: '/dsa/big-o' },
+    { label: 'Arrays',                 route: '/dsa/arrays' },
+    { label: 'Dynamic Programming',    route: '/dsa/dynamic-programming' },
+    { label: 'Graph Algorithms',       route: '/dsa/graph-algorithms' },
+  ],
+  tip: 'Recognise the pattern first, then code. Most interview problems map to one of: two pointers, sliding window, BFS/DFS, DP, or binary search. Naming the pattern unlocks the template.',
+  docs: [
+    { label: 'LeetCode Explore',       url: 'https://leetcode.com/explore/' },
+    { label: 'NeetCode Roadmap',       url: 'https://neetcode.io/roadmap' },
+    { label: 'Big-O Cheat Sheet',      url: 'https://www.bigocheatsheet.com/' },
+  ],
+  resources: [
+    { label: 'TheAlgorithms/JavaScript', url: 'https://github.com/TheAlgorithms/JavaScript', badge: 'code' },
+    { label: 'Visualgo (algorithm viz)', url: 'https://visualgo.net/', badge: 'tool' },
+  ],
+};
+
+const AI_DEFAULT: SidebarData = {
+  apis: ['sklearn.Pipeline', 'transformers.pipeline()', 'LangChain', 'OpenAI / Anthropic SDK', 'Hugging Face Hub', 'FAISS / Chroma'],
+  gotchas: [
+    'Fine-tuning vs RAG: RAG is faster to iterate and keeps knowledge current; fine-tuning is better for tone/style, not facts.',
+    'Temperature 0 is not deterministic with all providers — some add top-p or beam search at inference.',
+    'Embeddings from different models are NOT interchangeable — always embed queries with the same model used to embed documents.',
+    'LLM-as-judge bias: models tend to prefer longer answers and their own outputs — use diverse judges and rubrics.',
+  ],
+  related: [
+    { label: 'AI/ML Home',           route: '/ai' },
+    { label: 'LLM Fundamentals',     route: '/ai/llm-fundamentals' },
+    { label: 'RAG',                  route: '/ai/rag' },
+    { label: 'AI Agents & Tool Use', route: '/ai/ai-agents' },
+    { label: 'MLOps & Deployment',   route: '/ai/mlops' },
+  ],
+  tip: 'Start with prompting, then RAG, then fine-tuning — each step is more costly. Most LLM apps never need fine-tuning if the prompt and retrieval are done well.',
+  docs: [
+    { label: 'Anthropic Docs',       url: 'https://docs.anthropic.com' },
+    { label: 'OpenAI Cookbook',      url: 'https://cookbook.openai.com' },
+    { label: 'Hugging Face Docs',    url: 'https://huggingface.co/docs' },
+  ],
+  resources: [
+    { label: 'LangChain Docs',       url: 'https://python.langchain.com/docs', badge: 'docs' },
+    { label: 'Semantic Kernel',      url: 'https://github.com/microsoft/semantic-kernel', badge: 'code' },
+  ],
+};
+
+const TESTING_DEFAULT: SidebarData = {
+  apis: ['describe()/it()', 'expect().toBe()', 'jest.fn()/jest.spyOn()', 'beforeEach/afterEach', 'render()/getByRole()', 'page.locator()'],
+  gotchas: [
+    'Test behaviour, not implementation — testing internal state breaks refactors without real bugs',
+    'Never share mutable state between tests — always reset mocks in beforeEach or afterEach',
+    'Flaky E2E tests usually mean missing awaits — Playwright auto-waits, Cypress chains are async',
+    'Snapshot tests become noise when auto-updated too eagerly — review diffs carefully',
+  ],
+  related: [
+    { label: 'Testing Home',          route: '/testing-hub' },
+    { label: 'Jest Fundamentals',     route: '/testing-hub/jest-fundamentals' },
+    { label: 'Mocking & Spies',       route: '/testing-hub/mocking-spies' },
+    { label: 'Integration Testing',   route: '/testing-hub/integration-testing' },
+    { label: 'Playwright',            route: '/testing-hub/playwright' },
+  ],
+  tip: 'Follow the testing pyramid: write many fast unit tests, fewer integration tests, and just enough E2E tests to cover critical user flows. Unit tests run in milliseconds; protect that speed.',
+  docs: [
+    { label: 'Jest Docs',             url: 'https://jestjs.io/docs/getting-started' },
+    { label: 'Playwright Docs',       url: 'https://playwright.dev/docs/intro' },
+    { label: 'Testing Library Docs',  url: 'https://testing-library.com/docs/' },
+  ],
+  resources: [
+    { label: 'Vitest',                url: 'https://vitest.dev/', badge: 'docs' },
+    { label: 'Kent C. Dodds Blog',    url: 'https://kentcdodds.com/blog', badge: 'blog' },
+    { label: 'Pact (Contract Testing)', url: 'https://docs.pact.io/', badge: 'docs' },
+  ],
+};
+
 const MONGO_DEFAULT: SidebarData = {
   apis: ['insertOne/Many', 'find/findOne', 'updateOne/Many', 'deleteOne/Many', 'aggregate()', 'watch()'],
   gotchas: [
@@ -5346,7 +5428,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'ai'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5362,6 +5444,9 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/redis')         ? 'redis'
     : this.currentUrl().startsWith('/graphql')       ? 'graphql'
     : this.currentUrl().startsWith('/messaging')     ? 'messaging'
+    : this.currentUrl().startsWith('/testing-hub')   ? 'testing-hub'
+    : this.currentUrl().startsWith('/dsa')           ? 'dsa'
+    : this.currentUrl().startsWith('/ai')            ? 'ai'
     : 'angular'
   );
 
@@ -5383,6 +5468,9 @@ export class PageSidebarComponent {
            : this.section() === 'redis'          ? REDIS_DEFAULT
            : this.section() === 'graphql'        ? GQL_DEFAULT
            : this.section() === 'messaging'      ? KAFKA_DEFAULT
+           : this.section() === 'testing-hub'   ? TESTING_DEFAULT
+           : this.section() === 'dsa'           ? DSA_DEFAULT
+           : this.section() === 'ai'            ? AI_DEFAULT
            : DEFAULT);
   });
 

@@ -1,0 +1,35 @@
+<div class="test-page">
+  <div class="page-header-icon test-icon">✓</div>
+  <h1 class="page-title">Testing Cheat Sheet</h1>
+  <p class="page-subtitle">Quick reference for Jest/Vitest matchers, mock functions, Playwright locators, RTL queries, and the TDD cycle — all in one place.</p>
+  <app-page-meta [readingTime]="10" difficulty="beginner" since="Jest 29+ / Playwright 1.40+" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="test-section">
+    <h2>Test Type Comparison</h2>
+    <table class="cheat-table">
+      <thead>
+        <tr>
+          <th>Type</th><th>Scope</th><th>Speed</th><th>Tools</th><th>When to write</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Unit</td><td>Single function/class</td><td>Very fast (&lt;1ms)</td><td>Jest, Vitest, xUnit</td><td>Every pure function and class method</td></tr>
+        <tr><td>Integration</td><td>Multiple units + real deps</td><td>Moderate (ms–s)</td><td>Jest + real DB/HTTP</td><td>Service layer, DB queries, API routes</td></tr>
+        <tr><td>E2E</td><td>Full user journey</td><td>Slow (seconds)</td><td>Playwright, Cypress</td><td>Critical user paths (login, checkout)</td></tr>
+        <tr><td>Component</td><td>Single UI component</td><td>Fast</td><td>RTL, Angular TestBed</td><td>UI logic, form validation, events</td></tr>
+        <tr><td>Visual</td><td>Pixel rendering</td><td>Slow</td><td>Playwright, Chromatic</td><td>Design-system components, layouts</td></tr>
+        <tr><td>Property</td><td>Function invariants</td><td>Moderate</td><td>fast-check, FsCheck</td><td>Encoders, parsers, calculators</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="test-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+</div>

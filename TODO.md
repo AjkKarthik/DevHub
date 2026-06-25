@@ -104,25 +104,25 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | Python | 23 | 0 | Complete — 21 topics + 2 reference |
 | Go | 23 | 0 | Complete — 21 topics + 2 reference |
 | DevOps | 22 | 0 | Complete — 21 topics + 1 cheatsheet reference |
-| Containers/K8s | 0 | 23 | Not started |
+| Containers/K8s | 23 | 0 | Complete — 22 topics + 1 reference |
 | AWS | 22 | 0 | Complete — 21 topics + 1 cheatsheet reference |
 | Azure | 23 | 0 | Complete — 22 topics + 1 cheatsheet reference |
 | Linux | 21 | 0 | Complete — 19 topics + 2 reference |
-| Terraform | 0 | 21 | Not started |
-| Service Mesh | 0 | 21 | Not started |
-| System Design | 0 | 26 | Not started |
-| Architecture Patterns | 0 | 25 | Not started |
-| Design Patterns | 0 | 39 | Not started |
-| Security | 0 | 25 | Not started |
-| API Design | 0 | 21 | Not started |
-| Observability | 0 | 22 | Not started |
+| Terraform | 23 | 0 | Complete — 21 topics + 2 reference |
+| Service Mesh | 21 | 0 | Complete — 19 topics + 2 reference |
+| System Design | 26 | 0 | Complete — 24 topics + 2 reference |
+| Architecture Patterns | 25 | 0 | Complete — 22 topics + 3 reference |
+| Design Patterns | 39 | 0 | Complete — 36 topics + 3 reference |
+| Security | 25 | 0 | Complete — 23 topics + 2 reference |
+| API Design | 21 | 0 | Complete — 19 topics + 2 reference |
+| Observability | 22 | 0 | Complete — 20 topics + 2 reference |
 | MongoDB | 23 | 0 | Complete — 21 topics + 2 reference |
 | Redis | 23 | 0 | Complete — 21 topics + 2 reference |
 | GraphQL | 22 | 0 | Complete — 20 topics + 2 reference |
 | Messaging/Kafka | 22 | 0 | Complete — 20 topics + 2 reference |
-| DSA | 0 | 21 | Not started |
-| Testing | 0 | 22 | Not started |
-| AI/ML | 0 | 22 | Not started |
+| DSA | 22 | 0 | Complete — 21 topics + home |
+| Testing | 22 | 0 | Complete — 19 topics + 3 reference |
+| AI/ML | 22 | 0 | Complete — 19 topics + 3 reference |
 
 ---
 
@@ -820,11 +820,10 @@ Accent: `#ee5d25` (DevOps orange). Search prefix: `devops-`.
 - [x] 2026-06-21 `devops-sre` — SLIs, SLOs, error budgets, burn-rate alerting, toil elimination, blameless post-mortems
 - [x] 2026-06-21 `devops-cheatsheet` — reference: DORA metrics, pipeline stages, Git/Docker/Helm/kubectl/Terraform/SLO
 
-### 5B — Containers/K8s hub (23 topics) `src/app/components/cloud/containers/`
+### 5B — Containers/K8s hub ✅ COMPLETE `src/app/components/cloud/containers/`
 
+All 22 trackable topics + 1 reference live (2026-06-25). k8sTotal = 22. All 23 cards `available: true`.
 Accent: `#326ce5` (Kubernetes blue). Search prefix: `k8s-`.
-Key topics: Pods/Deployments/Services (foundational), Helm, RBAC, HPA, Network Policies,
-Operators & CRDs, StatefulSets.
 
 ### 5C — AWS hub ✅ COMPLETE `src/app/components/cloud/aws/`
 
@@ -864,17 +863,15 @@ Accent: `#0089d6` (Azure blue). Search prefix: `azure-`.
 All 19 trackable topics + 2 reference pages live (2026-06-22). linuxTotal = 19. All 21 cards `available: true`.
 Accent: `#fcc624` (Linux yellow). Search prefix: `linux-`.
 
-### 5F — Terraform hub (21 topics) `src/app/components/cloud/terraform/`
+### 5F — Terraform hub ✅ COMPLETE `src/app/components/cloud/terraform/`
 
+All 21 trackable topics + 2 reference live (2026-06-25). tfTotal = 21. All 23 cards `available: true`.
 Accent: `#7b42bc` (Terraform purple). Search prefix: `tf-`.
-Key topics: State, modules, variables, remote backends, CI/CD integration,
-Terratest, workspace patterns, security scanning.
 
-### 5G — Service Mesh hub (21 topics) `src/app/components/cloud/service-mesh/`
+### 5G — Service Mesh hub ✅ COMPLETE `src/app/components/cloud/service-mesh/`
 
+All 19 trackable topics + 2 reference live (2026-06-25). meshTotal = 19. All 21 cards `available: true`.
 Accent: `#466bb0` (Istio blue). Search prefix: `mesh-`.
-Key topics: Istio architecture, mTLS, traffic management, circuit breaking, Kiali,
-ambient mesh, Gateway API.
 
 ---
 
@@ -882,42 +879,35 @@ ambient mesh, Gateway API.
 
 **Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
 
-### 6A — System Design hub (26 topics) `src/app/components/architecture/system-design/`
+### 6A — System Design hub ✅ COMPLETE `src/app/components/architecture/system-design/`
 
+All 24 trackable topics + 2 reference live (2026-06-25). sysdesignTotal = 24. All 26 cards `available: true`.
 Accent: `#0f172a` (slate). Search prefix: `sysdesign-`.
-Key topics: URL shortener (canonical beginner), rate limiter, distributed cache,
-message queue, news feed, payment system, AI/ML system design.
 
-### 6B — Architecture Patterns hub (25 topics) `src/app/components/architecture/arch-patterns/`
+### 6B — Architecture Patterns hub ✅ COMPLETE `src/app/components/architecture/arch-patterns/`
 
+All 22 trackable topics + 3 reference live (2026-06-25). archTotal = 22. All 25 cards `available: true`.
 Accent: `#7c3aed` (violet). Search prefix: `arch-`.
-Key topics: Microservices, event-driven, CQRS+Event Sourcing, DDD aggregates,
-hexagonal architecture, strangler fig, saga pattern.
 
-### 6C — Design Patterns hub (39 topics) `src/app/components/architecture/design-patterns/`
+### 6C — Design Patterns hub ✅ COMPLETE `src/app/components/architecture/design-patterns/`
 
+All 36 trackable topics + 3 reference live (2026-06-25). dpTotal = 36. All 39 cards `available: true`.
 Accent: `#0369a1` (blue). Search prefix: `dp-`.
-Largest hub — 39 topics. Build in 5 sessions of ~7 topics each.
-Groups: Creational (6) → Structural (7) → Behavioral (9) → Enterprise (7) →
-Principles (4) + Clean Architecture → Reference (3+).
 
-### 6D — Security hub (25 topics) `src/app/components/architecture/security/`
+### 6D — Security hub ✅ COMPLETE `src/app/components/architecture/security/`
 
+All 23 trackable topics + 2 reference live (2026-06-25). secTotal = 23. All 25 cards `available: true`.
 Accent: `#dc2626` (red). Search prefix: `sec-`.
-Key topics: OWASP Top 10, JWT security, OAuth 2.0 + OIDC, mTLS, secrets management,
-supply chain security, threat modelling, SAST/DAST.
 
-### 6E — API Design hub (21 topics) `src/app/components/architecture/api-design/`
+### 6E — API Design hub ✅ COMPLETE `src/app/components/architecture/api-design/`
 
+All 19 trackable topics + 2 reference live (2026-06-25). apiTotal = 19. All 21 cards `available: true`.
 Accent: `#0891b2` (cyan). Search prefix: `api-`.
-Key topics: REST maturity model, OpenAPI 3.1, versioning strategies, gRPC, GraphQL
-schema design, rate limiting, pagination patterns.
 
-### 6F — Observability hub (22 topics) `src/app/components/architecture/observability/`
+### 6F — Observability hub ✅ COMPLETE `src/app/components/architecture/observability/`
 
+All 20 trackable topics + 2 reference live (2026-06-25). obsTotal = 20. All 22 cards `available: true`.
 Accent: `#059669` (emerald). Search prefix: `obs-`.
-Key topics: OpenTelemetry SDK setup, PromQL, Grafana dashboards, distributed tracing,
-SLO/error budget design, alerting, chaos engineering.
 
 ---
 
@@ -955,28 +945,43 @@ exactly-once semantics, Schema Registry, Kafka Connect, Kafka Streams.
 
 **Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
 
-### 8A — Testing hub (22 topics) `src/app/components/fundamentals/testing/`
+### 8A — Testing hub ✅ COMPLETE `src/app/components/fundamentals/testing/`
 
-Accent: `#16a34a` (green). Search prefix: `test-`.
-Key topics: Jest, TDD/Red-Green-Refactor, test doubles, Playwright, MSW,
-contract testing (Pact), mutation testing, property-based testing.
+All 19 trackable topics + 3 reference pages live (2026-06-25). testTotal = 19. All 22 cards `available: true`.
+Accent: `#6366f1` (indigo). Search prefix: `test-`. Route: `/testing-hub`. Hero stat: 793+.
 
-### 8B — DSA hub (21 topics) `src/app/components/fundamentals/dsa/`
+- [x] 2026-06-25 `test-testing-fundamentals`, `test-jest-fundamentals`, `test-mocking-spies`, `test-xunit`, `test-tdd`
+- [x] 2026-06-25 `test-test-doubles`, `test-integration-testing`, `test-testing-databases`, `test-angular-testing`
+- [x] 2026-06-25 `test-react-testing-library`, `test-playwright`, `test-cypress`, `test-api-testing`
+- [x] 2026-06-25 `test-contract-testing`, `test-snapshot-testing`, `test-vitest`, `test-msw`
+- [x] 2026-06-25 `test-visual-regression`, `test-property-based-testing`
+- [x] 2026-06-25 `cheatsheet` (reference), `performance-testing` (reference), `mutation-testing` (reference)
 
-Accent: `#ea580c` (orange). Search prefix: `dsa-`.
-Key topics: Big-O, arrays/strings, linked lists, stacks/queues, trees (BFS/DFS),
-graphs, dynamic programming, sorting algorithms.
-Each page: 2 code tabs (theory pattern + LeetCode-style problem with solution).
+### 8B — DSA hub (21 topics) `src/app/components/fundamentals/dsa/` ✅ 2026-06-25
 
-### 8C — AI/ML hub (22 topics) `src/app/components/fundamentals/ai/`
+All 21 topic pages live. Wiring complete (routes, search, nav, progress, breadcrumb, sidebar).
+Hero stat updated to 815+. CLAUDE.md updated.
 
+### 8C — AI/ML hub ✅ COMPLETE `src/app/components/fundamentals/ai/`
+
+All 19 trackable topics + 3 reference live (2026-06-25). aiTotal = 19. All 22 cards `available: true`.
 Accent: `#7c3aed` (violet). Search prefix: `ai-`.
-Key topics: ML fundamentals, transformers, LLM fine-tuning, RAG pipeline,
-prompt engineering, AI agents/tool use, vector databases, MLOps.
 
 ---
 
 ## Phase 9 — Final Quality Audit (every page, every hub)
+
+**Structural grep-based audit: COMPLETE (2026-06-26)**
+All 928 pages passed or were fixed:
+- Dark mode violations — zero ✅ | Missing revision-card — fixed 3 pages ✅
+- Missing common-mistakes — zero ✅ | Wrong CSS wrapper class — fixed 5 pages ✅
+- Wrong icon class — fixed generics + linq ✅ | Light-tint icon in solid-fill hubs — zero ✅
+- Wrong padding — all correct ✅ | Wrong hub section class — zero ✅
+- SQL pages with forbidden components — zero ✅ | tech= missing — fixed 3 pages ✅
+- nav-home-link inside nav-group — zero ✅ | content-grid gap — correct ✅
+- Old .page wrapper on topic pages — all fixed ✅
+
+**Remaining:** Deep content-quality review (theory depth ≥5 sections×5 points, quiz difficulty spread, Q&A trap questions) — requires page-by-page review.
 
 **When to do this:** after all hubs are built (after Phase 8). This is the last pass before
 the site can be considered "done." Every single topic page across every hub — including pages
@@ -1269,6 +1274,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-26 — Phase 9 structural audit complete across all 928 pages: fixed JS/React cheatsheet wrong cs-page wrapper, C# csharp/generics/linq old .page wrapper + icon classes, Angular defer-demo + ngrx-signals ng-page wrapper + icon + tech= + revision-card, csharp intro missing revision-card + tech=. Zero dark-mode violations, zero missing revision-cards, zero wrong common-mistakes remaining. Content-quality review (theory depth, quiz spread) is the outstanding Phase 9 work.
 - [x] 2026-06-25 — Messaging/Kafka hub Phase 7D complete: all 22 pages live (20 trackable topics + monitoring + messaging-security reference). kafkaTotal = 20. hub-home Messaging card topics: 22, available: true. Hero stat updated to 771+. Burnt-orange accent #9a3412, search prefix kafka-, icon ⇄, MessagingNavComponent.
 - [x] 2026-06-22 — Azure hub Phase 5D complete: all 23 pages live (22 trackable topics + cheatsheet). azureTotal = 22. hub-home Azure card topics: 23, available: true. Hero stat updated to 505+. Blue accent #0089d6, search prefix azure-. Pages: fundamentals, arm, bicep, virtual-machines, app-service, functions, aks, container-apps, virtual-network, load-balancer, storage, entra-id, rbac, key-vault, sql-cosmos, redis, monitor, devops-pipelines, service-bus, api-management, cost-management, security-defender, cheatsheet.
 - [x] 2026-06-21 — AWS hub Phase 5C complete: all 22 pages live (21 trackable topics + cheatsheet). awsTotal = 21. hub-home AWS card topics: 22, available: true. Hero stat updated to 479+. Orange accent #ff9900, search prefix aws-.

@@ -1,0 +1,26 @@
+$accent: #6366f1;
+$tint:   #eef2ff;
+
+.test-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.page-header-icon { background: $accent; color: #fff; font-size: 1.8rem; }
+
+:host-context(body.dark) {
+  .page-title { color: #e2e8f0; }
+  .page-subtitle { color: #94a3b8; }
+  .page-header-icon { background: #a5b4fc; color: #1e1b4b; }
+  .test-section { border-color: #312e81; }
+  .test-section h2 { color: #a5b4fc; }
+  .cheat-table { border-color: #312e81; }
+  .cheat-table th { background: #1e1b4b; color: #a5b4fc; }
+  .cheat-table td { border-color: #312e81; color: #e2e8f0; }
+  .cheat-table tr:nth-child(even) td { background: #1a1040; }
+}
+
+.test-section { margin: 2rem 0; padding: 1.5rem; border: 1px solid #c7d2fe; border-radius: 12px; }
+.test-section h2 { margin: 0 0 1rem; color: $accent; font-size: 1.25rem; }
+
+.cheat-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+.cheat-table th { background: $tint; color: $accent; padding: 0.6rem 0.8rem; text-align: left; border: 1px solid #c7d2fe; }
+.cheat-table td { padding: 0.5rem 0.8rem; border: 1px solid #e0e7ff; vertical-align: top; }
+.cheat-table tr:nth-child(even) td { background: #f8f9ff; }
+.cheat-table code { background: $tint; color: $accent; padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.85em; }

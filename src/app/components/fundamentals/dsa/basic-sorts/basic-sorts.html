@@ -1,0 +1,21 @@
+<div class="dsa-page">
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Basic Sorting Algorithms</h1>
+  <p class="page-subtitle">Bubble, selection, and insertion sort are all <code>O(n²)</code> — but insertion sort shines on nearly-sorted data with an <code>O(n)</code> best case and is used inside Timsort.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="beginner" since="Interview Prep" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="dsa-basic-sorts" nextRoute="/dsa/advanced-sorts" nextLabel="Advanced Sorting Algorithms" />
+</div>

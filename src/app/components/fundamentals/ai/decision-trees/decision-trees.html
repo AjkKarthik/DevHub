@@ -1,0 +1,21 @@
+<div class="ai-page">
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Decision Trees & Random Forests</h1>
+  <p class="page-subtitle">Tree-based models that partition data by asking yes/no questions. A single tree is interpretable but overfits; <code>Random Forest</code> bags many trees with random feature subsets to achieve robust, high-accuracy predictions on tabular data.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since="Classical ML" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="ai-decision-trees" nextRoute="/ai/gradient-boosting" nextLabel="Gradient Boosting (XGBoost)" />
+</div>

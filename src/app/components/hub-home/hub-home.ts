@@ -165,11 +165,11 @@ export class HubHome implements AfterViewInit, OnDestroy {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'Messaging & Events · 22 pages', route: '/messaging',          label: 'New · 20 topics + 2 reference' },
-    { name: 'GraphQL · 22 pages',      route: '/graphql',                  label: '20 topics + 2 reference' },
-    { name: 'Redis · 23 pages',        route: '/redis',                    label: '21 topics + 2 reference' },
-    { name: 'Linux · 21 pages',        route: '/linux',                    label: '19 topics + 2 reference' },
-    { name: 'Azure · 23 pages',        route: '/azure',                    label: '22 topics + cheatsheet' },
+    { name: 'AI & LLMs · 22 pages',          route: '/ai',                 label: 'New · 19 topics + 3 reference' },
+    { name: 'Testing · 22 pages',            route: '/testing-hub',        label: 'New · 19 topics + 3 reference' },
+    { name: 'DSA · 22 pages',                route: '/dsa',                label: '21 topics + home' },
+    { name: 'Messaging & Events · 22 pages', route: '/messaging',          label: '20 topics + 2 reference' },
+    { name: 'GraphQL · 22 pages',            route: '/graphql',            label: '20 topics + 2 reference' },
   ];
 
   readonly roleChips: RoleChip[] = [
@@ -570,7 +570,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'cloud', name: 'Git & DevOps', time: '~6 hrs',
       tagline: 'Version control, CI/CD pipelines and deployment workflows.',
       icon: '🔧', gradient: 'linear-gradient(135deg, #f05032 0%, #9c2f1a 100%)',
-      textDark: false, route: '/devops', available: true,
+      textDark: false, route: '/devops', available: true, topics: 22,
       sub: 'Git · GitHub Actions · Pipelines',
       roles: ['frontend', 'backend', 'devops', 'architect'],
       highlights: [
@@ -670,7 +670,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'fundamentals', name: 'DSA', time: '~15 hrs',
       tagline: 'Data Structures & Algorithms — complexity, trade-offs & interview patterns.',
       icon: '🔢', gradient: 'linear-gradient(135deg, #92400e 0%, #451a03 100%)',
-      textDark: false, route: '/dsa', available: true,
+      textDark: false, route: '/dsa', available: true, topics: 22,
       sub: 'Arrays · Trees · Graphs · DP',
       roles: ['backend', 'architect'],
       highlights: [
@@ -684,7 +684,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'fundamentals', name: 'Testing', time: '~7 hrs',
       tagline: 'Unit, integration, E2E & contract testing — TDD, BDD and test strategy.',
       icon: '🧪', gradient: 'linear-gradient(135deg, #0369a1 0%, #0c4a6e 100%)',
-      textDark: false, route: '/testing-hub', available: true,
+      textDark: false, route: '/testing-hub', available: true, topics: 22,
       sub: 'Jest · Cypress · Playwright · Pact',
       roles: ['frontend', 'backend', 'architect'],
       highlights: [
@@ -700,7 +700,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'ai', name: 'AI & LLMs', time: '~8 hrs',
       tagline: 'Build AI-powered apps — prompt engineering, RAG, embeddings & agents.',
       icon: '🤖', gradient: 'linear-gradient(135deg, #6366f1 0%, #06b6d4 100%)',
-      textDark: false, route: '/ai', available: true,
+      textDark: false, route: '/ai', available: true, topics: 22,
       sub: 'OpenAI · Copilot · LangChain',
       roles: ['backend', 'architect'],
       highlights: [

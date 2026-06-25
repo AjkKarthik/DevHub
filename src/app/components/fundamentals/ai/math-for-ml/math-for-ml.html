@@ -1,0 +1,21 @@
+<div class="ai-page">
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Mathematics for ML</h1>
+  <p class="page-subtitle">Linear algebra, calculus, and probability — the three mathematical pillars behind every ML algorithm. You don't need to derive everything, but understanding <code>gradient</code>, <code>matrix multiply</code>, and <code>softmax</code> unlocks every model.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="beginner" since="Foundational" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="ai-math-for-ml" nextRoute="/ai/linear-logistic-regression" nextLabel="Linear & Logistic Regression" />
+</div>

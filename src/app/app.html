@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'" [class.section-sysdesign]="currentSection()==='system-design'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'" [class.section-sysdesign]="currentSection()==='system-design'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'" [class.section-ai]="currentSection()==='ai'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'" [class.section-redis]="currentSection()==='redis'" [class.section-graphql]="currentSection()==='graphql'" [class.section-messaging]="currentSection()==='messaging'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'" [class.section-redis]="currentSection()==='redis'" [class.section-graphql]="currentSection()==='graphql'" [class.section-messaging]="currentSection()==='messaging'" [class.section-ai]="currentSection()==='ai'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -948,6 +948,21 @@
     <!-- ── Messaging Navigation ──────────────────────────────────── -->
     @if (currentSection() === 'messaging') {
       <app-messaging-nav />
+    }
+
+    <!-- ── Testing Navigation ────────────────────────────────────── -->
+    @if (currentSection() === 'testing-hub') {
+      <app-testing-nav />
+    }
+
+    <!-- ── DSA Navigation ────────────────────────────────────────── -->
+    @if (currentSection() === 'dsa') {
+      <app-dsa-nav />
+    }
+
+    <!-- ── AI/ML Navigation ──────────────────────────────────────── -->
+    @if (currentSection() === 'ai') {
+      <app-ai-nav />
     }
 
     <!-- ── C# Navigation ──────────────────────────────────────────── -->

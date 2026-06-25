@@ -935,6 +935,80 @@ const MESSAGING_LABELS: Record<string, string> = {
   'messaging-security':        'Messaging Security',
 };
 
+const DSA_LABELS: Record<string, string> = {
+  'big-o':                  'Big-O Notation',
+  'arrays':                 'Arrays',
+  'strings':                'Strings',
+  'hash-tables':            'Hash Tables',
+  'stacks-queues':          'Stacks & Queues',
+  'linked-lists':           'Singly Linked Lists',
+  'doubly-linked-lists':    'Doubly Linked Lists',
+  'binary-trees':           'Binary Trees',
+  'bst':                    'Binary Search Trees',
+  'heaps':                  'Heaps & Priority Queues',
+  'graphs-bfs-dfs':         'Graphs — BFS & DFS',
+  'graph-algorithms':       'Graph Algorithms',
+  'basic-sorts':            'Basic Sorts',
+  'advanced-sorts':         'Merge Sort & Quick Sort',
+  'binary-search':          'Binary Search',
+  'recursion-backtracking': 'Recursion & Backtracking',
+  'dynamic-programming':    'Dynamic Programming',
+  'dp-patterns':            'DP Patterns',
+  'trie':                   'Trie',
+  'bit-manipulation':       'Bit Manipulation',
+  'greedy':                 'Greedy Algorithms',
+};
+
+const AI_LABELS: Record<string, string> = {
+  'ml-fundamentals':             'AI & ML Fundamentals',
+  'math-for-ml':                 'Mathematics for ML',
+  'linear-logistic-regression':  'Linear & Logistic Regression',
+  'decision-trees':              'Decision Trees & Random Forests',
+  'gradient-boosting':           'Gradient Boosting (XGBoost)',
+  'clustering':                  'Clustering & Dimensionality Reduction',
+  'neural-networks':             'Neural Networks',
+  'computer-vision':             'CNNs & Computer Vision',
+  'transformers':                'Transformers & Attention',
+  'llm-fundamentals':            'LLM Fundamentals',
+  'fine-tuning':                 'Fine-tuning & RLHF',
+  'rag':                         'RAG',
+  'prompt-engineering':          'Prompt Engineering',
+  'ai-agents':                   'AI Agents & Tool Use',
+  'vector-databases':            'Vector Databases',
+  'mlops':                       'MLOps & Model Deployment',
+  'hugging-face':                'Hugging Face & Model Hub',
+  'evaluating-llms':             'Evaluating LLM Outputs',
+  'ai-engineering':              'AI Engineering Patterns',
+  'interview-prep':              'AI Interview Prep',
+  'responsible-ai':              'Responsible AI & Ethics',
+  'ai-dotnet':                   'AI with .NET & C#',
+};
+
+const TESTING_LABELS: Record<string, string> = {
+  'testing-fundamentals':    'Testing Fundamentals',
+  'jest-fundamentals':       'Jest Fundamentals',
+  'mocking-spies':           'Mocking & Spies',
+  'xunit':                   'xUnit (.NET Testing)',
+  'tdd':                     'Test-Driven Development',
+  'test-doubles':            'Test Doubles',
+  'integration-testing':     'Integration Testing',
+  'testing-databases':       'Testing with Databases',
+  'angular-testing':         'Angular Testing',
+  'react-testing-library':   'React Testing Library',
+  'playwright':              'Playwright',
+  'cypress':                 'Cypress',
+  'api-testing':             'API Testing',
+  'contract-testing':        'Contract Testing (Pact)',
+  'snapshot-testing':        'Snapshot Testing',
+  'vitest':                  'Vitest',
+  'msw':                     'MSW — Mock Service Worker',
+  'visual-regression':       'Visual Regression Testing',
+  'property-based-testing':  'Property-Based Testing',
+  'cheatsheet':              'Testing Cheat Sheet',
+  'performance-testing':     'Performance & Load Testing',
+  'mutation-testing':        'Mutation Testing',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -1115,6 +1189,9 @@ export class BreadcrumbComponent {
                  : segs[0] === 'redis'           ? REDIS_LABELS
                  : segs[0] === 'graphql'         ? GQL_LABELS
                  : segs[0] === 'messaging'       ? MESSAGING_LABELS
+                 : segs[0] === 'testing-hub'    ? TESTING_LABELS
+                 : segs[0] === 'dsa'            ? DSA_LABELS
+                 : segs[0] === 'ai'             ? AI_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

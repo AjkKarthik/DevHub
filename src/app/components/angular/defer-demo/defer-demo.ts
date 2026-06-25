@@ -11,10 +11,11 @@ import { CommonMistakesComponent, CommonMistake } from '../../shared/common-mist
 import { VersionBadgeComponent, VersionInfo } from '../../shared/version-badge/version-badge';
 import { PageMetaComponent } from '../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../shared/page-complete/page-complete';
+import { RevisionCardComponent, RevisionSummary } from '../../shared/revision-card/revision-card';
 
 @Component({
   selector: 'app-defer-demo',
-  imports: [HeavyChartComponent, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, VersionBadgeComponent, PageMetaComponent, PageCompleteComponent],
+  imports: [HeavyChartComponent, CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent, QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent, BeforeAfterComponent, CommonMistakesComponent, VersionBadgeComponent, PageMetaComponent, PageCompleteComponent, RevisionCardComponent],
   templateUrl: './defer-demo.html',
   styleUrl: './defer-demo.scss',
 })
@@ -168,6 +169,25 @@ export class DeferDemo {
     { version: '17', label: 'Angular 17 — @defer introduced', features: ['@defer block with on viewport, on interaction, on hover, on idle, on timer triggers', '@placeholder, @loading, @error companion blocks with minimum/after options', 'when expression trigger for signal-driven or boolean-driven lazy loading', 'Automatic code-splitting at build time — no manual dynamic import() required'] },
     { version: '19', label: 'Angular 19 — @defer stabilized and hydration support', features: ['@defer is no longer developer preview — fully stable API', 'Server-side rendering (SSR) hydration support for deferred blocks'] },
   ];
+
+  revision: RevisionSummary = {
+    oneLiner: '@defer lazy-loads a standalone component\'s JS bundle into its own split chunk, downloading it only when a trigger condition (viewport, interaction, hover, idle, when, timer) fires — replacing manual dynamic import() with a declarative template syntax.',
+    mustKnow: [
+      '@defer requires the deferred component to be standalone and listed in the host\'s imports[] — Angular uses this to know which chunk to split',
+      '@placeholder renders before any trigger fires; @loading renders while the chunk downloads; @error renders on download failure',
+      'on viewport uses IntersectionObserver; on interaction fires on first click/focus/touch; when expr fires when a signal or boolean becomes truthy',
+      '(minimum Xms) on @loading prevents a spinner flash on fast networks by keeping the loading state visible for at least that duration',
+      'Without a trigger, @defer defaults to on idle — loads when the browser is idle, equivalent to requestIdleCallback',
+      '@defer is template-level lazy loading — complements (not replaces) loadComponent() route-level lazy loading',
+      'Nesting is supported — a deferred component can itself contain @defer blocks; each has its own independent chunk',
+    ],
+    interviewFocus: [
+      'What is the difference between @defer and loadComponent() — when would you use each?',
+      'What renders inside a @placeholder vs @loading block and when does each show?',
+      'How does the when trigger differ from on interaction for programmatic control?',
+      'Why is @defer limited to standalone components only?',
+    ],
+  };
 
   challenge: Challenge = {
     title: 'Build a Signal-Triggered Deferred Panel',

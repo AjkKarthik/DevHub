@@ -9,6 +9,7 @@ import { BeforeAfterComponent, BeforeAfterExample } from '../../shared/before-af
 import { CommonMistakesComponent, CommonMistake } from '../../shared/common-mistakes/common-mistakes';
 import { PageMetaComponent } from '../../shared/page-meta/page-meta';
 import { PageCompleteComponent } from '../../shared/page-complete/page-complete';
+import { RevisionCardComponent, RevisionSummary } from '../../shared/revision-card/revision-card';
 
 @Component({
   selector: 'app-csharp',
@@ -17,7 +18,7 @@ import { PageCompleteComponent } from '../../shared/page-complete/page-complete'
     CodeBlockComponent, TheoryBlockComponent, QnaBlockComponent,
     QuizBlockComponent, ChallengeBlockComponent, QuickRefComponent,
     BeforeAfterComponent, CommonMistakesComponent,
-    PageMetaComponent, PageCompleteComponent,
+    PageMetaComponent, PageCompleteComponent, RevisionCardComponent,
   ],
   templateUrl: './csharp.html',
   styleUrl: './csharp.scss',
@@ -707,5 +708,24 @@ public List<SubjectSummary> Analyse(List<Student> students)
         .OrderByDescending(s => s.AverageGrade)
         .ToList();
 }`,
+  };
+
+  revision: RevisionSummary = {
+    oneLiner: 'C# is a statically typed, multi-paradigm .NET language combining OOP (classes, interfaces), functional patterns (records, LINQ, pattern matching), and modern async/await concurrency into a single coherent type system.',
+    mustKnow: [
+      '<code>class</code> vs <code>record</code> vs <code>struct</code>: class = reference + mutable identity; record = value equality + immutability; struct = stack-allocated value type',
+      'Interfaces define capabilities (<code>I</code> prefix by convention); classes implement multiple interfaces but inherit one class',
+      '<code>async</code>/<code>await</code> wraps <code>Task&lt;T&gt;</code> — never block with <code>.Result</code> or <code>.Wait()</code> in async code or you risk deadlocks',
+      'LINQ operators (<code>Where</code>, <code>Select</code>, <code>GroupBy</code>, <code>FirstOrDefault</code>) compose lazily on <code>IEnumerable&lt;T&gt;</code> and translate to SQL via <code>IQueryable&lt;T&gt;</code> in EF Core',
+      'Generics produce one type-safe implementation reused for any type — constraints (<code>where T : class</code>, <code>new()</code>, interface) restrict the type parameter',
+      'Pattern matching (<code>switch</code> expressions, <code>is</code> patterns, <code>when</code> guards) replaces long <code>if/else</code> chains with exhaustive, readable dispatch',
+      'Null safety: <code>string?</code> signals nullable; <code>??</code> coalesces; <code>?.</code> safe-navigates; enable <code>&lt;Nullable&gt;enable&lt;/Nullable&gt;</code> in csproj to catch nulls at compile time',
+    ],
+    interviewFocus: [
+      'What is the difference between a class and a record in C#? When would you choose each?',
+      'Explain how async/await works under the hood — what does <code>await</code> actually do to the thread?',
+      'How does LINQ\'s deferred execution work and why does it matter for performance?',
+      'What are generic constraints and when would you use <code>where T : new()</code>?',
+    ],
   };
 }
