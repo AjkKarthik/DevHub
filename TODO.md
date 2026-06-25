@@ -116,10 +116,10 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | Security | 0 | 25 | Not started |
 | API Design | 0 | 21 | Not started |
 | Observability | 0 | 22 | Not started |
-| MongoDB | 0 | 21 | Not started |
-| Redis | 0 | 21 | Not started |
-| GraphQL | 0 | 20 | Not started |
-| Messaging/Kafka | 0 | 22 | Not started |
+| MongoDB | 23 | 0 | Complete — 21 topics + 2 reference |
+| Redis | 23 | 0 | Complete — 21 topics + 2 reference |
+| GraphQL | 22 | 0 | Complete — 20 topics + 2 reference |
+| Messaging/Kafka | 22 | 0 | Complete — 20 topics + 2 reference |
 | DSA | 0 | 21 | Not started |
 | Testing | 0 | 22 | Not started |
 | AI/ML | 0 | 22 | Not started |
@@ -1269,6 +1269,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-25 — Messaging/Kafka hub Phase 7D complete: all 22 pages live (20 trackable topics + monitoring + messaging-security reference). kafkaTotal = 20. hub-home Messaging card topics: 22, available: true. Hero stat updated to 771+. Burnt-orange accent #9a3412, search prefix kafka-, icon ⇄, MessagingNavComponent.
 - [x] 2026-06-22 — Azure hub Phase 5D complete: all 23 pages live (22 trackable topics + cheatsheet). azureTotal = 22. hub-home Azure card topics: 23, available: true. Hero stat updated to 505+. Blue accent #0089d6, search prefix azure-. Pages: fundamentals, arm, bicep, virtual-machines, app-service, functions, aks, container-apps, virtual-network, load-balancer, storage, entra-id, rbac, key-vault, sql-cosmos, redis, monitor, devops-pipelines, service-bus, api-management, cost-management, security-defender, cheatsheet.
 - [x] 2026-06-21 — AWS hub Phase 5C complete: all 22 pages live (21 trackable topics + cheatsheet). awsTotal = 21. hub-home AWS card topics: 22, available: true. Hero stat updated to 479+. Orange accent #ff9900, search prefix aws-.
 - [x] 2026-06-21 — Python hub Phase 4B complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). pyTotal = 21. hub-home Python card topics: 23, available: true. Hero stat updated to 450+. Blue accent #3776ab, search prefix py-. py-icon added to styles.scss.
