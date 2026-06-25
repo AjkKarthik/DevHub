@@ -1,0 +1,21 @@
+<div class="ai-page">
+  <div class="page-header-icon ai-icon">🤖</div>
+  <h1 class="page-title">Prompt Engineering</h1>
+  <p class="page-subtitle">The art of communicating with LLMs precisely. <code>Few-shot examples</code>, <code>chain-of-thought</code>, and <code>structured output</code> are the core toolkit — paired with systematic eval to measure what actually works.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since="LLMs" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="ai-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="ai-prompt-engineering" nextRoute="/ai/ai-agents" nextLabel="AI Agents & Tool Use" />
+</div>

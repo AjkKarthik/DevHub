@@ -959,6 +959,31 @@ const DSA_LABELS: Record<string, string> = {
   'greedy':                 'Greedy Algorithms',
 };
 
+const AI_LABELS: Record<string, string> = {
+  'ml-fundamentals':             'AI & ML Fundamentals',
+  'math-for-ml':                 'Mathematics for ML',
+  'linear-logistic-regression':  'Linear & Logistic Regression',
+  'decision-trees':              'Decision Trees & Random Forests',
+  'gradient-boosting':           'Gradient Boosting (XGBoost)',
+  'clustering':                  'Clustering & Dimensionality Reduction',
+  'neural-networks':             'Neural Networks',
+  'computer-vision':             'CNNs & Computer Vision',
+  'transformers':                'Transformers & Attention',
+  'llm-fundamentals':            'LLM Fundamentals',
+  'fine-tuning':                 'Fine-tuning & RLHF',
+  'rag':                         'RAG',
+  'prompt-engineering':          'Prompt Engineering',
+  'ai-agents':                   'AI Agents & Tool Use',
+  'vector-databases':            'Vector Databases',
+  'mlops':                       'MLOps & Model Deployment',
+  'hugging-face':                'Hugging Face & Model Hub',
+  'evaluating-llms':             'Evaluating LLM Outputs',
+  'ai-engineering':              'AI Engineering Patterns',
+  'interview-prep':              'AI Interview Prep',
+  'responsible-ai':              'Responsible AI & Ethics',
+  'ai-dotnet':                   'AI with .NET & C#',
+};
+
 const TESTING_LABELS: Record<string, string> = {
   'testing-fundamentals':    'Testing Fundamentals',
   'jest-fundamentals':       'Jest Fundamentals',
@@ -1166,6 +1191,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'messaging'       ? MESSAGING_LABELS
                  : segs[0] === 'testing-hub'    ? TESTING_LABELS
                  : segs[0] === 'dsa'            ? DSA_LABELS
+                 : segs[0] === 'ai'             ? AI_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

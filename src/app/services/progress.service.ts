@@ -137,6 +137,11 @@ export class ProgressService {
   readonly dsaCount  = computed(() => [...this._done()].filter(r => r.startsWith('dsa-')).length);
   readonly dsaPct    = computed(() => Math.round((this.dsaCount() / this.dsaTotal) * 100));
 
+  // ── AI/ML (keys prefixed 'ai-') ──────────────────────────────────────────
+  readonly aiTotal   = 19;
+  readonly aiCount   = computed(() => [...this._done()].filter(r => r.startsWith('ai-')).length);
+  readonly aiPct     = computed(() => Math.round((this.aiCount() / this.aiTotal) * 100));
+
   // ── Terraform (keys prefixed 'tf-') ──────────────────────────────────────
   readonly tfTotal  = 21;
   readonly tfCount  = computed(() => [...this._done()].filter(r => r.startsWith('tf-')).length);

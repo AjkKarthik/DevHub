@@ -138,6 +138,7 @@ export class SearchComponent {
     if (route.startsWith('kafka-'))       return '/messaging/'         + route.slice('kafka-'.length);
     if (route.startsWith('test-'))        return '/testing-hub/'       + route.slice('test-'.length);
     if (route.startsWith('dsa-'))         return '/dsa/'               + route.slice('dsa-'.length);
+    if (route.startsWith('ai-'))          return '/ai/'                + route.slice('ai-'.length);
     if (route.startsWith('hub-'))    return '/'              + route.slice('hub-'.length);
     return '/angular/' + route;
   }

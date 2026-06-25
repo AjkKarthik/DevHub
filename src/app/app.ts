@@ -31,6 +31,7 @@ import { GqlNavComponent } from './components/shared/gql-nav/gql-nav';
 import { MessagingNavComponent } from './components/shared/messaging-nav/messaging-nav';
 import { TestingNavComponent } from './components/shared/testing-nav/testing-nav';
 import { DsaNavComponent } from './components/shared/dsa-nav/dsa-nav';
+import { AiNavComponent } from './components/shared/ai-nav/ai-nav';
 
 // Difficulty metadata for nav badges
 const DIFF: Record<string, string> = Object.fromEntries(
@@ -40,7 +41,7 @@ const DIFF: Record<string, string> = Object.fromEntries(
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, BreadcrumbComponent,
-            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent, TerraformNavComponent, MeshNavComponent, SysdesignNavComponent, ArchNavComponent, DpNavComponent, SecurityNavComponent, ApiDesignNavComponent, ObsNavComponent, MongoNavComponent, RedisNavComponent, GqlNavComponent, MessagingNavComponent, TestingNavComponent, DsaNavComponent],
+            PageSidebarComponent, SearchComponent, BackToTopComponent, GoNavComponent, DevopsNavComponent, ContainersNavComponent, AwsNavComponent, AzureNavComponent, LinuxNavComponent, TerraformNavComponent, MeshNavComponent, SysdesignNavComponent, ArchNavComponent, DpNavComponent, SecurityNavComponent, ApiDesignNavComponent, ObsNavComponent, MongoNavComponent, RedisNavComponent, GqlNavComponent, MessagingNavComponent, TestingNavComponent, DsaNavComponent, AiNavComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -84,7 +85,7 @@ export class App {
     ].includes(url);
   });
 
-  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'terraform' | 'mesh' | 'system-design' | 'arch-patterns' | 'design-patterns' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'hub'>(() => {
+  currentSection = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'performance' | 'blazor' | 'node' | 'python' | 'go' | 'devops' | 'containers' | 'aws' | 'azure' | 'linux' | 'terraform' | 'mesh' | 'system-design' | 'arch-patterns' | 'design-patterns' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'ai' | 'hub'>(() => {
     const url = this.currentUrl();
     if (url.startsWith('/angular'))    return 'angular';
     if (url.startsWith('/csharp'))     return 'csharp';
@@ -119,6 +120,7 @@ export class App {
     if (url.startsWith('/messaging'))     return 'messaging';
     if (url.startsWith('/testing-hub'))  return 'testing-hub';
     if (url.startsWith('/dsa'))          return 'dsa';
+    if (url.startsWith('/ai'))           return 'ai';
     return 'hub';
   });
 

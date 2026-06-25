@@ -355,6 +355,33 @@ const DSA_DEFAULT: SidebarData = {
   ],
 };
 
+const AI_DEFAULT: SidebarData = {
+  apis: ['sklearn.Pipeline', 'transformers.pipeline()', 'LangChain', 'OpenAI / Anthropic SDK', 'Hugging Face Hub', 'FAISS / Chroma'],
+  gotchas: [
+    'Fine-tuning vs RAG: RAG is faster to iterate and keeps knowledge current; fine-tuning is better for tone/style, not facts.',
+    'Temperature 0 is not deterministic with all providers — some add top-p or beam search at inference.',
+    'Embeddings from different models are NOT interchangeable — always embed queries with the same model used to embed documents.',
+    'LLM-as-judge bias: models tend to prefer longer answers and their own outputs — use diverse judges and rubrics.',
+  ],
+  related: [
+    { label: 'AI/ML Home',           route: '/ai' },
+    { label: 'LLM Fundamentals',     route: '/ai/llm-fundamentals' },
+    { label: 'RAG',                  route: '/ai/rag' },
+    { label: 'AI Agents & Tool Use', route: '/ai/ai-agents' },
+    { label: 'MLOps & Deployment',   route: '/ai/mlops' },
+  ],
+  tip: 'Start with prompting, then RAG, then fine-tuning — each step is more costly. Most LLM apps never need fine-tuning if the prompt and retrieval are done well.',
+  docs: [
+    { label: 'Anthropic Docs',       url: 'https://docs.anthropic.com' },
+    { label: 'OpenAI Cookbook',      url: 'https://cookbook.openai.com' },
+    { label: 'Hugging Face Docs',    url: 'https://huggingface.co/docs' },
+  ],
+  resources: [
+    { label: 'LangChain Docs',       url: 'https://python.langchain.com/docs', badge: 'docs' },
+    { label: 'Semantic Kernel',      url: 'https://github.com/microsoft/semantic-kernel', badge: 'code' },
+  ],
+};
+
 const TESTING_DEFAULT: SidebarData = {
   apis: ['describe()/it()', 'expect().toBe()', 'jest.fn()/jest.spyOn()', 'beforeEach/afterEach', 'render()/getByRole()', 'page.locator()'],
   gotchas: [
@@ -5401,7 +5428,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'ai'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5419,6 +5446,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/messaging')     ? 'messaging'
     : this.currentUrl().startsWith('/testing-hub')   ? 'testing-hub'
     : this.currentUrl().startsWith('/dsa')           ? 'dsa'
+    : this.currentUrl().startsWith('/ai')            ? 'ai'
     : 'angular'
   );
 
@@ -5442,6 +5470,7 @@ export class PageSidebarComponent {
            : this.section() === 'messaging'      ? KAFKA_DEFAULT
            : this.section() === 'testing-hub'   ? TESTING_DEFAULT
            : this.section() === 'dsa'           ? DSA_DEFAULT
+           : this.section() === 'ai'            ? AI_DEFAULT
            : DEFAULT);
   });
 
