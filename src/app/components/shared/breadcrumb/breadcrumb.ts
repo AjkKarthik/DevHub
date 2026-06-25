@@ -910,6 +910,31 @@ const GQL_LABELS: Record<string, string> = {
   'interview-prep':             'GraphQL Interview Prep',
 };
 
+const MESSAGING_LABELS: Record<string, string> = {
+  'messaging-fundamentals':    'Messaging Fundamentals',
+  'message-queues-vs-streams': 'Queues vs Event Streams',
+  'rabbitmq-core':             'RabbitMQ Core Concepts',
+  'rabbitmq-exchanges':        'RabbitMQ Exchanges',
+  'rabbitmq-patterns':         'RabbitMQ Patterns',
+  'kafka-architecture':        'Kafka Architecture',
+  'kafka-producers-consumers': 'Producers & Consumers',
+  'kafka-streams':             'Kafka Streams & KSQL',
+  'kafka-connect':             'Kafka Connect',
+  'schema-registry':           'Schema Registry',
+  'messaging-patterns':        'Enterprise Messaging Patterns',
+  'saga-pattern':              'Saga Pattern',
+  'outbox-pattern':            'Outbox Pattern',
+  'azure-service-bus':         'Azure Service Bus',
+  'azure-event-grid':          'Event Grid & Event Hubs',
+  'aws-sqs':                   'AWS SQS',
+  'aws-sns-eventbridge':       'AWS SNS & EventBridge',
+  'idempotency':               'Idempotency & Exactly-Once',
+  'message-ordering':          'Message Ordering',
+  'backpressure':              'Backpressure & Flow Control',
+  'monitoring':                'Monitoring Messaging Systems',
+  'messaging-security':        'Messaging Security',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -1089,6 +1114,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'mongodb'         ? MONGO_LABELS
                  : segs[0] === 'redis'           ? REDIS_LABELS
                  : segs[0] === 'graphql'         ? GQL_LABELS
+                 : segs[0] === 'messaging'       ? MESSAGING_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

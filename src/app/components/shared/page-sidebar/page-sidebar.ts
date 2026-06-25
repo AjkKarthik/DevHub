@@ -300,6 +300,34 @@ const GQL_DEFAULT: SidebarData = {
   ],
 };
 
+const KAFKA_DEFAULT: SidebarData = {
+  apis: ['producer.send({ topic, messages })', 'consumer.subscribe({ topic })', 'channel.sendToQueue(q, msg)', 'channel.consume(q, handler)', 'bus.CreatePublishEndpoint()', 'connection.publish(exchange, key, content)'],
+  gotchas: [
+    'At-least-once delivery is the default — always design consumers to be idempotent',
+    'Kafka consumer group: only one consumer per partition — add partitions to scale consumers',
+    'RabbitMQ ack is per-message, not per-batch — nack + requeue can cause infinite loops on poison messages',
+    'Schema changes without backward compatibility will break consumers that are not redeployed first',
+  ],
+  related: [
+    { label: 'Messaging Home',        route: '/messaging' },
+    { label: 'Kafka Architecture',    route: '/messaging/kafka-architecture' },
+    { label: 'Saga Pattern',          route: '/messaging/saga-pattern' },
+    { label: 'Outbox Pattern',        route: '/messaging/outbox-pattern' },
+    { label: 'Idempotency',           route: '/messaging/idempotency' },
+  ],
+  tip: 'Design consumers to be idempotent first, then worry about delivery semantics. Exactly-once is complex to implement correctly — at-least-once with idempotent consumers is usually the right default.',
+  docs: [
+    { label: 'Apache Kafka Docs',       url: 'https://kafka.apache.org/documentation/' },
+    { label: 'RabbitMQ Documentation',  url: 'https://www.rabbitmq.com/documentation.html' },
+    { label: 'Azure Service Bus Docs',  url: 'https://learn.microsoft.com/en-us/azure/service-bus-messaging/' },
+  ],
+  resources: [
+    { label: 'Confluent Learning',      url: 'https://developer.confluent.io/learn/', badge: 'docs' },
+    { label: 'Enterprise Integration Patterns', url: 'https://www.enterpriseintegrationpatterns.com/', badge: 'blog' },
+    { label: 'confluentinc/kafka-dotnet-getting-started', url: 'https://github.com/confluentinc/kafka-dotnet-getting-started', badge: 'code' },
+  ],
+};
+
 const MONGO_DEFAULT: SidebarData = {
   apis: ['insertOne/Many', 'find/findOne', 'updateOne/Many', 'deleteOne/Many', 'aggregate()', 'watch()'],
   gotchas: [
@@ -5318,7 +5346,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5333,6 +5361,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/mongodb')       ? 'mongodb'
     : this.currentUrl().startsWith('/redis')         ? 'redis'
     : this.currentUrl().startsWith('/graphql')       ? 'graphql'
+    : this.currentUrl().startsWith('/messaging')     ? 'messaging'
     : 'angular'
   );
 
@@ -5353,6 +5382,7 @@ export class PageSidebarComponent {
            : this.section() === 'mongodb'        ? MONGO_DEFAULT
            : this.section() === 'redis'          ? REDIS_DEFAULT
            : this.section() === 'graphql'        ? GQL_DEFAULT
+           : this.section() === 'messaging'      ? KAFKA_DEFAULT
            : DEFAULT);
   });
 
