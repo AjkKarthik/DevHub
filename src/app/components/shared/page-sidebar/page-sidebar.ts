@@ -328,6 +328,34 @@ const KAFKA_DEFAULT: SidebarData = {
   ],
 };
 
+const TESTING_DEFAULT: SidebarData = {
+  apis: ['describe()/it()', 'expect().toBe()', 'jest.fn()/jest.spyOn()', 'beforeEach/afterEach', 'render()/getByRole()', 'page.locator()'],
+  gotchas: [
+    'Test behaviour, not implementation — testing internal state breaks refactors without real bugs',
+    'Never share mutable state between tests — always reset mocks in beforeEach or afterEach',
+    'Flaky E2E tests usually mean missing awaits — Playwright auto-waits, Cypress chains are async',
+    'Snapshot tests become noise when auto-updated too eagerly — review diffs carefully',
+  ],
+  related: [
+    { label: 'Testing Home',          route: '/testing-hub' },
+    { label: 'Jest Fundamentals',     route: '/testing-hub/jest-fundamentals' },
+    { label: 'Mocking & Spies',       route: '/testing-hub/mocking-spies' },
+    { label: 'Integration Testing',   route: '/testing-hub/integration-testing' },
+    { label: 'Playwright',            route: '/testing-hub/playwright' },
+  ],
+  tip: 'Follow the testing pyramid: write many fast unit tests, fewer integration tests, and just enough E2E tests to cover critical user flows. Unit tests run in milliseconds; protect that speed.',
+  docs: [
+    { label: 'Jest Docs',             url: 'https://jestjs.io/docs/getting-started' },
+    { label: 'Playwright Docs',       url: 'https://playwright.dev/docs/intro' },
+    { label: 'Testing Library Docs',  url: 'https://testing-library.com/docs/' },
+  ],
+  resources: [
+    { label: 'Vitest',                url: 'https://vitest.dev/', badge: 'docs' },
+    { label: 'Kent C. Dodds Blog',    url: 'https://kentcdodds.com/blog', badge: 'blog' },
+    { label: 'Pact (Contract Testing)', url: 'https://docs.pact.io/', badge: 'docs' },
+  ],
+};
+
 const MONGO_DEFAULT: SidebarData = {
   apis: ['insertOne/Many', 'find/findOne', 'updateOne/Many', 'deleteOne/Many', 'aggregate()', 'watch()'],
   gotchas: [
@@ -5346,7 +5374,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5362,6 +5390,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/redis')         ? 'redis'
     : this.currentUrl().startsWith('/graphql')       ? 'graphql'
     : this.currentUrl().startsWith('/messaging')     ? 'messaging'
+    : this.currentUrl().startsWith('/testing-hub')   ? 'testing-hub'
     : 'angular'
   );
 
@@ -5383,6 +5412,7 @@ export class PageSidebarComponent {
            : this.section() === 'redis'          ? REDIS_DEFAULT
            : this.section() === 'graphql'        ? GQL_DEFAULT
            : this.section() === 'messaging'      ? KAFKA_DEFAULT
+           : this.section() === 'testing-hub'   ? TESTING_DEFAULT
            : DEFAULT);
   });
 

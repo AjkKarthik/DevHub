@@ -127,6 +127,11 @@ export class ProgressService {
   readonly kafkaCount  = computed(() => [...this._done()].filter(r => r.startsWith('kafka-')).length);
   readonly kafkaPct    = computed(() => Math.round((this.kafkaCount() / this.kafkaTotal) * 100));
 
+  // ── Testing (keys prefixed 'test-') ──────────────────────────────────────
+  readonly testTotal   = 19;
+  readonly testCount   = computed(() => [...this._done()].filter(r => r.startsWith('test-')).length);
+  readonly testPct     = computed(() => Math.round((this.testCount() / this.testTotal) * 100));
+
   // ── Terraform (keys prefixed 'tf-') ──────────────────────────────────────
   readonly tfTotal  = 21;
   readonly tfCount  = computed(() => [...this._done()].filter(r => r.startsWith('tf-')).length);

@@ -950,6 +950,11 @@
       <app-messaging-nav />
     }
 
+    <!-- ── Testing Navigation ────────────────────────────────────── -->
+    @if (currentSection() === 'testing-hub') {
+      <app-testing-nav />
+    }
+
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {
 

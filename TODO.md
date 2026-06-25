@@ -955,11 +955,17 @@ exactly-once semantics, Schema Registry, Kafka Connect, Kafka Streams.
 
 **Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
 
-### 8A — Testing hub (22 topics) `src/app/components/fundamentals/testing/`
+### 8A — Testing hub ✅ COMPLETE `src/app/components/fundamentals/testing/`
 
-Accent: `#16a34a` (green). Search prefix: `test-`.
-Key topics: Jest, TDD/Red-Green-Refactor, test doubles, Playwright, MSW,
-contract testing (Pact), mutation testing, property-based testing.
+All 19 trackable topics + 3 reference pages live (2026-06-25). testTotal = 19. All 22 cards `available: true`.
+Accent: `#6366f1` (indigo). Search prefix: `test-`. Route: `/testing-hub`. Hero stat: 793+.
+
+- [x] 2026-06-25 `test-testing-fundamentals`, `test-jest-fundamentals`, `test-mocking-spies`, `test-xunit`, `test-tdd`
+- [x] 2026-06-25 `test-test-doubles`, `test-integration-testing`, `test-testing-databases`, `test-angular-testing`
+- [x] 2026-06-25 `test-react-testing-library`, `test-playwright`, `test-cypress`, `test-api-testing`
+- [x] 2026-06-25 `test-contract-testing`, `test-snapshot-testing`, `test-vitest`, `test-msw`
+- [x] 2026-06-25 `test-visual-regression`, `test-property-based-testing`
+- [x] 2026-06-25 `cheatsheet` (reference), `performance-testing` (reference), `mutation-testing` (reference)
 
 ### 8B — DSA hub (21 topics) `src/app/components/fundamentals/dsa/`
 

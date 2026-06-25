@@ -935,6 +935,31 @@ const MESSAGING_LABELS: Record<string, string> = {
   'messaging-security':        'Messaging Security',
 };
 
+const TESTING_LABELS: Record<string, string> = {
+  'testing-fundamentals':    'Testing Fundamentals',
+  'jest-fundamentals':       'Jest Fundamentals',
+  'mocking-spies':           'Mocking & Spies',
+  'xunit':                   'xUnit (.NET Testing)',
+  'tdd':                     'Test-Driven Development',
+  'test-doubles':            'Test Doubles',
+  'integration-testing':     'Integration Testing',
+  'testing-databases':       'Testing with Databases',
+  'angular-testing':         'Angular Testing',
+  'react-testing-library':   'React Testing Library',
+  'playwright':              'Playwright',
+  'cypress':                 'Cypress',
+  'api-testing':             'API Testing',
+  'contract-testing':        'Contract Testing (Pact)',
+  'snapshot-testing':        'Snapshot Testing',
+  'vitest':                  'Vitest',
+  'msw':                     'MSW — Mock Service Worker',
+  'visual-regression':       'Visual Regression Testing',
+  'property-based-testing':  'Property-Based Testing',
+  'cheatsheet':              'Testing Cheat Sheet',
+  'performance-testing':     'Performance & Load Testing',
+  'mutation-testing':        'Mutation Testing',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -1115,6 +1140,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'redis'           ? REDIS_LABELS
                  : segs[0] === 'graphql'         ? GQL_LABELS
                  : segs[0] === 'messaging'       ? MESSAGING_LABELS
+                 : segs[0] === 'testing-hub'    ? TESTING_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };
