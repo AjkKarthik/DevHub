@@ -1,13 +1,13 @@
 $accent: #0ea5e9;
 $tint: #f0f9ff;
 
-.cs-page {
+.react-page {
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1rem 4rem;
 }
 
-.cs-icon {
+.react-icon {
   width: 64px;
   height: 64px;
   background: $tint;
@@ -15,7 +15,7 @@ $tint: #f0f9ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: .85rem;
+  font-size: 1.8rem;
   font-weight: 800;
   color: $accent;
   border: 2px solid rgba($accent, 0.2);
@@ -218,7 +218,7 @@ $tint: #f0f9ff;
 
 // ── Dark mode ───────────────────────────────────────────────────────────────
 :host-context(body.dark) {
-  .cs-icon         { background: #083344; color: #67e8f9; border-color: rgba(103,232,249,.2); }
+  .react-icon      { background: #083344; color: #67e8f9; border-color: rgba(103,232,249,.2); }
   .page-title      { color: #f9fafb; }
   .page-subtitle   { color: #9ca3af; }
 
