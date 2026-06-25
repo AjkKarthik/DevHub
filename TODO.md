@@ -971,6 +971,18 @@ Accent: `#7c3aed` (violet). Search prefix: `ai-`.
 
 ## Phase 9 — Final Quality Audit (every page, every hub)
 
+**Structural grep-based audit: COMPLETE (2026-06-26)**
+All 928 pages passed or were fixed:
+- Dark mode violations — zero ✅ | Missing revision-card — fixed 3 pages ✅
+- Missing common-mistakes — zero ✅ | Wrong CSS wrapper class — fixed 5 pages ✅
+- Wrong icon class — fixed generics + linq ✅ | Light-tint icon in solid-fill hubs — zero ✅
+- Wrong padding — all correct ✅ | Wrong hub section class — zero ✅
+- SQL pages with forbidden components — zero ✅ | tech= missing — fixed 3 pages ✅
+- nav-home-link inside nav-group — zero ✅ | content-grid gap — correct ✅
+- Old .page wrapper on topic pages — all fixed ✅
+
+**Remaining:** Deep content-quality review (theory depth ≥5 sections×5 points, quiz difficulty spread, Q&A trap questions) — requires page-by-page review.
+
 **When to do this:** after all hubs are built (after Phase 8). This is the last pass before
 the site can be considered "done." Every single topic page across every hub — including pages
 written in Phases 1–8 — gets a structured review and fix pass.
@@ -1262,6 +1274,7 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 
 ## Done History
 
+- [x] 2026-06-26 — Phase 9 structural audit complete across all 928 pages: fixed JS/React cheatsheet wrong cs-page wrapper, C# csharp/generics/linq old .page wrapper + icon classes, Angular defer-demo + ngrx-signals ng-page wrapper + icon + tech= + revision-card, csharp intro missing revision-card + tech=. Zero dark-mode violations, zero missing revision-cards, zero wrong common-mistakes remaining. Content-quality review (theory depth, quiz spread) is the outstanding Phase 9 work.
 - [x] 2026-06-25 — Messaging/Kafka hub Phase 7D complete: all 22 pages live (20 trackable topics + monitoring + messaging-security reference). kafkaTotal = 20. hub-home Messaging card topics: 22, available: true. Hero stat updated to 771+. Burnt-orange accent #9a3412, search prefix kafka-, icon ⇄, MessagingNavComponent.
 - [x] 2026-06-22 — Azure hub Phase 5D complete: all 23 pages live (22 trackable topics + cheatsheet). azureTotal = 22. hub-home Azure card topics: 23, available: true. Hero stat updated to 505+. Blue accent #0089d6, search prefix azure-. Pages: fundamentals, arm, bicep, virtual-machines, app-service, functions, aks, container-apps, virtual-network, load-balancer, storage, entra-id, rbac, key-vault, sql-cosmos, redis, monitor, devops-pipelines, service-bus, api-management, cost-management, security-defender, cheatsheet.
 - [x] 2026-06-21 — AWS hub Phase 5C complete: all 22 pages live (21 trackable topics + cheatsheet). awsTotal = 21. hub-home AWS card topics: 22, available: true. Hero stat updated to 479+. Orange accent #ff9900, search prefix aws-.
