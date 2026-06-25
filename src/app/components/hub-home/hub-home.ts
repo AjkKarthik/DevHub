@@ -165,11 +165,11 @@ export class HubHome implements AfterViewInit, OnDestroy {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'Linux · 21 pages',        route: '/linux',                    label: 'New · 19 topics + 2 reference' },
+    { name: 'GraphQL · 22 pages',      route: '/graphql',                  label: 'New · 20 topics + 2 reference' },
+    { name: 'Redis · 23 pages',        route: '/redis',                    label: '21 topics + 2 reference' },
+    { name: 'Linux · 21 pages',        route: '/linux',                    label: '19 topics + 2 reference' },
     { name: 'Azure · 23 pages',        route: '/azure',                    label: '22 topics + cheatsheet' },
     { name: 'AWS · 22 pages',          route: '/aws',                      label: '21 topics + cheatsheet' },
-    { name: 'DevOps · 22 pages',       route: '/devops',                   label: '21 topics + cheatsheet' },
-    { name: 'Go · 23 pages',           route: '/go',                       label: '21 topics + 2 reference' },
   ];
 
   readonly roleChips: RoleChip[] = [
