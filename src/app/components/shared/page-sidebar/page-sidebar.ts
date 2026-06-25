@@ -272,6 +272,34 @@ const REDIS_DEFAULT: SidebarData = {
   ],
 };
 
+const GQL_DEFAULT: SidebarData = {
+  apis: ['query { field }', 'mutation { op(input: {}) { ... } }', 'subscription { event { ... } }', 'fragment F on Type { ... }', 'DataLoader.load(id)', 'context.user'],
+  gotchas: [
+    'N+1 problem: one query per field in a list — always use DataLoader for nested entity lookups',
+    'MULTI/EXEC is not a GraphQL concept — errors[] in the response are partial, not all-or-nothing',
+    'Subscription connections are long-lived WebSockets — handle reconnection and auth token refresh',
+    'Disable introspection in production to prevent schema leakage to attackers',
+  ],
+  related: [
+    { label: 'GraphQL Home',        route: '/graphql' },
+    { label: 'Resolvers',           route: '/graphql/resolvers' },
+    { label: 'DataLoader & N+1',    route: '/graphql/dataloader' },
+    { label: 'Pagination Patterns', route: '/graphql/pagination' },
+    { label: 'Federation',          route: '/graphql/federation' },
+  ],
+  tip: 'Keep resolvers thin — push all data-fetching logic into DataLoaders or service classes injected via context. This makes resolvers testable and prevents N+1 queries.',
+  docs: [
+    { label: 'GraphQL Spec',        url: 'https://spec.graphql.org/' },
+    { label: 'Apollo Server Docs',  url: 'https://www.apollographql.com/docs/apollo-server/' },
+    { label: 'graphql-js GitHub',   url: 'https://github.com/graphql/graphql-js' },
+  ],
+  resources: [
+    { label: 'How to GraphQL (tutorial)', url: 'https://www.howtographql.com/', badge: 'docs' },
+    { label: 'Apollo GraphQL Blog',        url: 'https://www.apollographql.com/blog/', badge: 'blog' },
+    { label: 'DataLoader GitHub',          url: 'https://github.com/graphql/dataloader', badge: 'code' },
+  ],
+};
+
 const MONGO_DEFAULT: SidebarData = {
   apis: ['insertOne/Many', 'find/findOne', 'updateOne/Many', 'deleteOne/Many', 'aggregate()', 'watch()'],
   gotchas: [
@@ -5290,7 +5318,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5304,6 +5332,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/observability') ? 'observability'
     : this.currentUrl().startsWith('/mongodb')       ? 'mongodb'
     : this.currentUrl().startsWith('/redis')         ? 'redis'
+    : this.currentUrl().startsWith('/graphql')       ? 'graphql'
     : 'angular'
   );
 
@@ -5323,6 +5352,7 @@ export class PageSidebarComponent {
            : this.section() === 'observability'   ? OBS_DEFAULT
            : this.section() === 'mongodb'        ? MONGO_DEFAULT
            : this.section() === 'redis'          ? REDIS_DEFAULT
+           : this.section() === 'graphql'        ? GQL_DEFAULT
            : DEFAULT);
   });
 

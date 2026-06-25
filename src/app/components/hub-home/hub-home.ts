@@ -454,7 +454,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'data', name: 'GraphQL', time: '~5 hrs',
       tagline: 'Query language for APIs — type-safe, flexible, self-documenting.',
       icon: '◈', gradient: 'linear-gradient(135deg, #e535ab 0%, #9c1f73 100%)',
-      textDark: false, route: '/graphql', available: true,
+      textDark: false, route: '/graphql', available: true, topics: 22,
       sub: 'GraphQL · Apollo · Hot Chocolate',
       roles: ['frontend', 'backend', 'architect'],
       highlights: [

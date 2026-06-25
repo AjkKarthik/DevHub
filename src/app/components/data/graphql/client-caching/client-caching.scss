@@ -1,0 +1,11 @@
+$accent: #e535ab;
+$tint: #fdf2f9;
+.gql-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.gql-section { margin: 2rem 0; h2 { font-size: 1.2rem; font-weight: 700; color: $accent; margin-bottom: 1rem; } }
+.gql-icon { background: $tint; color: $accent; }
+.page-subtitle code { background: $tint; color: $accent; }
+:host-context(body.dark) {
+  .gql-section h2 { color: #f472b6; }
+  .gql-icon { background: #3d0a26; color: #f472b6; }
+  .page-subtitle code { background: #3d0a26; color: #f472b6; }
+}

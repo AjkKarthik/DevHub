@@ -885,6 +885,31 @@ const REDIS_LABELS: Record<string, string> = {
   'interview-prep':        'Redis Interview Prep',
 };
 
+const GQL_LABELS: Record<string, string> = {
+  'fundamentals':               'GraphQL Fundamentals',
+  'schema-definition-language': 'Schema Definition Language',
+  'type-system':                'Type System Deep Dive',
+  'queries':                    'Queries',
+  'variables-arguments':        'Variables & Arguments',
+  'directives':                 'Directives',
+  'mutations':                  'Mutations',
+  'error-handling':             'Mutation Error Handling',
+  'subscriptions':              'Subscriptions',
+  'resolvers':                  'Resolvers',
+  'dataloader':                 'DataLoader & N+1 Problem',
+  'auth':                       'Authentication & Authorization',
+  'apollo-server':              'Apollo Server',
+  'pagination':                 'Pagination Patterns',
+  'apollo-client':              'Apollo Client',
+  'client-caching':             'Client Caching',
+  'code-generation':            'Code Generation',
+  'performance':                'Performance & Best Practices',
+  'federation':                 'Schema Stitching & Federation',
+  'testing':                    'Testing GraphQL APIs',
+  'cheatsheet':                 'GraphQL Cheat Sheet',
+  'interview-prep':             'GraphQL Interview Prep',
+};
+
 const SYSDESIGN_LABELS: Record<string, string> = {
   'framework':                'System Design Framework',
   'capacity-estimation':      'Capacity Estimation',
@@ -1063,6 +1088,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'observability'   ? OBS_LABELS
                  : segs[0] === 'mongodb'         ? MONGO_LABELS
                  : segs[0] === 'redis'           ? REDIS_LABELS
+                 : segs[0] === 'graphql'         ? GQL_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

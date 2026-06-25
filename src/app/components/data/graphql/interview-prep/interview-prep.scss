@@ -1,0 +1,73 @@
+$accent: #e535ab;
+$tint: #fdf2f9;
+
+.gql-page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+.gql-icon { background: $tint; color: $accent; }
+.page-subtitle code { background: $tint; color: $accent; }
+
+.ip-filters {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0 1rem;
+  .ip-chip {
+    padding: 0.35rem 0.9rem; border-radius: 999px; border: 2px solid #e2e8f0;
+    background: #fff; color: #64748b; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+    &.active, &:hover { border-color: $accent; background: $tint; color: $accent; }
+  }
+}
+
+.ip-search {
+  margin-bottom: 1.25rem;
+  input { width: 100%; padding: 0.6rem 1rem; border: 2px solid #e2e8f0; border-radius: 8px;
+    font-size: 0.9rem; outline: none;
+    &:focus { border-color: $accent; } }
+}
+
+.ip-card {
+  border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 0.75rem;
+  background: #fff; overflow: hidden;
+  &.ip-junior { border-left: 4px solid #22c55e; }
+  &.ip-mid    { border-left: 4px solid #f59e0b; }
+  &.ip-senior { border-left: 4px solid $accent; }
+
+  .ip-card-header {
+    display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.9rem 1.25rem;
+    cursor: pointer; user-select: none;
+    &:hover { background: #f8fafc; }
+  }
+  .ip-diff-badge {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    padding: 0.15rem 0.5rem; border-radius: 999px; flex-shrink: 0; margin-top: 2px;
+  }
+  &.ip-junior .ip-diff-badge { background: #dcfce7; color: #15803d; }
+  &.ip-mid    .ip-diff-badge { background: #fef3c7; color: #b45309; }
+  &.ip-senior .ip-diff-badge { background: $tint;   color: $accent; }
+
+  .ip-question { flex: 1; font-size: 0.92rem; font-weight: 600; color: #1e293b; margin: 0; }
+  .ip-chevron { color: #94a3b8; font-size: 0.75rem; flex-shrink: 0; }
+
+  .ip-answer {
+    padding: 0 1.25rem 1rem; border-top: 1px solid #f1f5f9;
+    p { font-size: 0.88rem; color: #475569; line-height: 1.7; margin: 0.75rem 0 0; }
+    pre { background: #0f172a; color: #e2e8f0; border-radius: 6px; padding: 0.75rem;
+      font-size: 0.78rem; overflow-x: auto; margin-top: 0.75rem; white-space: pre; }
+  }
+}
+
+:host-context(body.dark) {
+  .gql-icon { background: #3d0a26; color: #f472b6; }
+  .page-subtitle code { background: #3d0a26; color: #f472b6; }
+  .ip-filters .ip-chip { background: #1e293b; border-color: #334155; color: #94a3b8;
+    &.active, &:hover { border-color: #f472b6; background: #3d0a26; color: #f472b6; } }
+  .ip-search input { background: #1e293b; border-color: #334155; color: #e2e8f0;
+    &:focus { border-color: #f472b6; } }
+  .ip-card { background: #1e293b; border-color: #334155;
+    .ip-card-header:hover { background: #0f172a; }
+    .ip-question { color: #e2e8f0; }
+    .ip-answer { border-top-color: #334155;
+      p { color: #94a3b8; } }
+  }
+  &.ip-junior .ip-diff-badge { background: #14532d; color: #86efac; }
+  &.ip-mid    .ip-diff-badge { background: #78350f; color: #fde68a; }
+  &.ip-senior .ip-diff-badge { background: #3d0a26; color: #f472b6; }
+}
