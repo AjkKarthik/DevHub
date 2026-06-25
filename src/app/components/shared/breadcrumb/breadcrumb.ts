@@ -935,6 +935,30 @@ const MESSAGING_LABELS: Record<string, string> = {
   'messaging-security':        'Messaging Security',
 };
 
+const DSA_LABELS: Record<string, string> = {
+  'big-o':                  'Big-O Notation',
+  'arrays':                 'Arrays',
+  'strings':                'Strings',
+  'hash-tables':            'Hash Tables',
+  'stacks-queues':          'Stacks & Queues',
+  'linked-lists':           'Singly Linked Lists',
+  'doubly-linked-lists':    'Doubly Linked Lists',
+  'binary-trees':           'Binary Trees',
+  'bst':                    'Binary Search Trees',
+  'heaps':                  'Heaps & Priority Queues',
+  'graphs-bfs-dfs':         'Graphs — BFS & DFS',
+  'graph-algorithms':       'Graph Algorithms',
+  'basic-sorts':            'Basic Sorts',
+  'advanced-sorts':         'Merge Sort & Quick Sort',
+  'binary-search':          'Binary Search',
+  'recursion-backtracking': 'Recursion & Backtracking',
+  'dynamic-programming':    'Dynamic Programming',
+  'dp-patterns':            'DP Patterns',
+  'trie':                   'Trie',
+  'bit-manipulation':       'Bit Manipulation',
+  'greedy':                 'Greedy Algorithms',
+};
+
 const TESTING_LABELS: Record<string, string> = {
   'testing-fundamentals':    'Testing Fundamentals',
   'jest-fundamentals':       'Jest Fundamentals',
@@ -1141,6 +1165,7 @@ export class BreadcrumbComponent {
                  : segs[0] === 'graphql'         ? GQL_LABELS
                  : segs[0] === 'messaging'       ? MESSAGING_LABELS
                  : segs[0] === 'testing-hub'    ? TESTING_LABELS
+                 : segs[0] === 'dsa'            ? DSA_LABELS
                  : ROUTE_LABELS;
     return labels[key] ?? key;
   };

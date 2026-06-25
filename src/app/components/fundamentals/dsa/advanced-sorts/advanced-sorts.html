@@ -1,0 +1,21 @@
+<div class="dsa-page">
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Advanced Sorting Algorithms</h1>
+  <p class="page-subtitle">Merge sort is stable <code>O(n log n)</code> with <code>O(n)</code> space. Quicksort is in-place <code>O(n log n)</code> average. Heap sort is <code>O(n log n)</code> worst-case in-place. Counting sort breaks the comparison barrier.</p>
+
+  <app-page-meta [readingTime]="30" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="dsa-advanced-sorts" nextRoute="/dsa/binary-search" nextLabel="Binary Search" />
+</div>

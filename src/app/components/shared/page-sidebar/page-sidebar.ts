@@ -328,6 +328,33 @@ const KAFKA_DEFAULT: SidebarData = {
   ],
 };
 
+const DSA_DEFAULT: SidebarData = {
+  apis: ['Array / HashMap', 'Two Pointers', 'Sliding Window', 'BFS / DFS', 'Dynamic Programming', 'Binary Search'],
+  gotchas: [
+    'Two-pointer only works on sorted or monotonic arrays — sort first if needed.',
+    'BFS uses a queue (FIFO); DFS uses a stack or recursion. Confusing them gives wrong shortest-path results.',
+    'DP: define the state clearly before writing the recurrence — most bugs come from a fuzzy state definition.',
+    'Off-by-one in binary search: prefer left <= right with mid = left + (right - left) / 2 to avoid overflow.',
+  ],
+  related: [
+    { label: 'DSA Home',               route: '/dsa' },
+    { label: 'Big-O Notation',         route: '/dsa/big-o' },
+    { label: 'Arrays',                 route: '/dsa/arrays' },
+    { label: 'Dynamic Programming',    route: '/dsa/dynamic-programming' },
+    { label: 'Graph Algorithms',       route: '/dsa/graph-algorithms' },
+  ],
+  tip: 'Recognise the pattern first, then code. Most interview problems map to one of: two pointers, sliding window, BFS/DFS, DP, or binary search. Naming the pattern unlocks the template.',
+  docs: [
+    { label: 'LeetCode Explore',       url: 'https://leetcode.com/explore/' },
+    { label: 'NeetCode Roadmap',       url: 'https://neetcode.io/roadmap' },
+    { label: 'Big-O Cheat Sheet',      url: 'https://www.bigocheatsheet.com/' },
+  ],
+  resources: [
+    { label: 'TheAlgorithms/JavaScript', url: 'https://github.com/TheAlgorithms/JavaScript', badge: 'code' },
+    { label: 'Visualgo (algorithm viz)', url: 'https://visualgo.net/', badge: 'tool' },
+  ],
+};
+
 const TESTING_DEFAULT: SidebarData = {
   apis: ['describe()/it()', 'expect().toBe()', 'jest.fn()/jest.spyOn()', 'beforeEach/afterEach', 'render()/getByRole()', 'page.locator()'],
   gotchas: [
@@ -5374,7 +5401,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5391,6 +5418,7 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/graphql')       ? 'graphql'
     : this.currentUrl().startsWith('/messaging')     ? 'messaging'
     : this.currentUrl().startsWith('/testing-hub')   ? 'testing-hub'
+    : this.currentUrl().startsWith('/dsa')           ? 'dsa'
     : 'angular'
   );
 
@@ -5413,6 +5441,7 @@ export class PageSidebarComponent {
            : this.section() === 'graphql'        ? GQL_DEFAULT
            : this.section() === 'messaging'      ? KAFKA_DEFAULT
            : this.section() === 'testing-hub'   ? TESTING_DEFAULT
+           : this.section() === 'dsa'           ? DSA_DEFAULT
            : DEFAULT);
   });
 

@@ -1,0 +1,21 @@
+<div class="dsa-page">
+  <div class="page-header-icon dsa-icon">DSA</div>
+  <h1 class="page-title">Tries</h1>
+  <p class="page-subtitle">A Trie stores words as character paths from the root — <code>O(L)</code> insert, search, and prefix queries. Shared prefixes save space and enable autocomplete that a <code>HashSet</code> can't match.</p>
+
+  <app-page-meta [readingTime]="25" difficulty="intermediate" since="Interview Prep" tech="javascript" />
+  <app-quick-ref [items]="quickRef" />
+  <app-theory-block [sections]="theory" />
+
+  <section class="dsa-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-common-mistakes [items]="mistakes" />
+  <app-challenge-block [item]="challenge" />
+  <app-quiz-block [items]="quiz" />
+  <app-qna-block [items]="qna" />
+  <app-revision-card [summary]="revision" />
+  <app-page-complete route="dsa-trie" nextRoute="/dsa/bit-manipulation" nextLabel="Bit Manipulation" />
+</div>

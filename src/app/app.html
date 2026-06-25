@@ -955,6 +955,11 @@
       <app-testing-nav />
     }
 
+    <!-- ── DSA Navigation ────────────────────────────────────────── -->
+    @if (currentSection() === 'dsa') {
+      <app-dsa-nav />
+    }
+
     <!-- ── C# Navigation ──────────────────────────────────────────── -->
     @if (currentSection() === 'csharp') {
 

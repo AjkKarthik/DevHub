@@ -967,12 +967,10 @@ Accent: `#6366f1` (indigo). Search prefix: `test-`. Route: `/testing-hub`. Hero 
 - [x] 2026-06-25 `test-visual-regression`, `test-property-based-testing`
 - [x] 2026-06-25 `cheatsheet` (reference), `performance-testing` (reference), `mutation-testing` (reference)
 
-### 8B — DSA hub (21 topics) `src/app/components/fundamentals/dsa/`
+### 8B — DSA hub (21 topics) `src/app/components/fundamentals/dsa/` ✅ 2026-06-25
 
-Accent: `#ea580c` (orange). Search prefix: `dsa-`.
-Key topics: Big-O, arrays/strings, linked lists, stacks/queues, trees (BFS/DFS),
-graphs, dynamic programming, sorting algorithms.
-Each page: 2 code tabs (theory pattern + LeetCode-style problem with solution).
+All 21 topic pages live. Wiring complete (routes, search, nav, progress, breadcrumb, sidebar).
+Hero stat updated to 815+. CLAUDE.md updated.
 
 ### 8C — AI/ML hub (22 topics) `src/app/components/fundamentals/ai/`
 

@@ -165,9 +165,9 @@ export class HubHome implements AfterViewInit, OnDestroy {
 
   // ── What's New (last 3 available topics by array order) ────────────────────
   readonly whatsNew = [
-    { name: 'Messaging & Events · 22 pages', route: '/messaging',          label: 'New · 20 topics + 2 reference' },
+    { name: 'DSA · 22 pages',                 route: '/dsa',                label: 'New · 21 topics + home' },
+    { name: 'Messaging & Events · 22 pages', route: '/messaging',          label: '20 topics + 2 reference' },
     { name: 'GraphQL · 22 pages',      route: '/graphql',                  label: '20 topics + 2 reference' },
-    { name: 'Redis · 23 pages',        route: '/redis',                    label: '21 topics + 2 reference' },
     { name: 'Linux · 21 pages',        route: '/linux',                    label: '19 topics + 2 reference' },
     { name: 'Azure · 23 pages',        route: '/azure',                    label: '22 topics + cheatsheet' },
   ];
@@ -670,7 +670,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'fundamentals', name: 'DSA', time: '~15 hrs',
       tagline: 'Data Structures & Algorithms — complexity, trade-offs & interview patterns.',
       icon: '🔢', gradient: 'linear-gradient(135deg, #92400e 0%, #451a03 100%)',
-      textDark: false, route: '/dsa', available: true,
+      textDark: false, route: '/dsa', available: true, topics: 22,
       sub: 'Arrays · Trees · Graphs · DP',
       roles: ['backend', 'architect'],
       highlights: [

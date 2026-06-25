@@ -456,9 +456,16 @@ structure/UX, only content + accent differ.
   All 22 cards `available: true` in `fundamentals/testing/home/home.ts`. Progress: `testTotal=19` in progress.service.ts.
   Testing pages use `app-common-mistakes` AND `app-revision-card`. Reference pages (cheatsheet, performance-testing, mutation-testing) have no PageComplete.
   Challenge.language: `'typescript'`. TestingNavComponent at `shared/testing-nav/testing-nav.ts`.
-- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, and Testing are `available: true`. Web Performance hub home exists at `/performance` but topic cards are `available: false`. MongoDB hub also `available: true`. Everything else "Soon".
-- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19 (`progress.service.ts`).
-- Hero stat: "793+ Live Pages".
+- **DSA hub**: 21 trackable topic pages + 1 home (22 cards total). Feature-complete.
+  Amber theme `$accent: #92400e`, `$tint: #fffbeb`, dark `#fcd34d`, dark bg `#1c1007`. Search prefix `dsa-`. Route: `/dsa`.
+  CSS classes: `.dsa-page`, `.dsa-icon`, `.dsa-section`. Icon content: `DSA` text. `tech="javascript"`.
+  Nav groups: Foundations, Linear DS, Trees, Graphs, Algorithms, Advanced, Dynamic Programming.
+  All 22 cards `available: true` in `fundamentals/dsa/home/home.ts`. Progress: `dsaTotal=21` in progress.service.ts.
+  DSA pages use `app-common-mistakes` AND `app-revision-card`. Challenge.language: `'typescript'`.
+  DsaNavComponent at `shared/dsa-nav/dsa-nav.ts`.
+- **Hub home**: Angular, C#, ASP.NET Core, SQL, TypeScript, React, JavaScript, CSS, HTML, Blazor, Go, Node.js, Python, DevOps, AWS, Azure, Linux, Redis, GraphQL, Messaging, Testing, and DSA are `available: true`. Web Performance hub home exists at `/performance` but topic cards are `available: false`. MongoDB hub also `available: true`. Everything else "Soon".
+- Progress totals: Angular 58, C# 50, ASP.NET Core 45, SQL 44, TypeScript 20, React 17, JavaScript 22, CSS 22, HTML 23, Web Performance 20, Blazor 20, Go 21, Node.js 23, Python 21, DevOps 21, AWS 21, Azure 22, Linux 19, Redis 21, GraphQL 20, Messaging 20, Testing 19, DSA 21 (`progress.service.ts`).
+- Hero stat: "815+ Live Pages".
 
 ## Working practices
 
