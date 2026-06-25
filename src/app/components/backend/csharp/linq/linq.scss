@@ -1,7 +1,7 @@
-.page {
+.cs-page {
   max-width: 900px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 1.5rem 4rem;
 }
 
 // ── Page header ──────────────────────────────────────────────────────────────
@@ -10,40 +10,6 @@
   align-items: flex-start;
   gap: 1rem;
   margin-bottom: 1.5rem;
-
-  &__icon {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &__text {
-    flex: 1;
-  }
-}
-
-// ── C# purple icon badge ──────────────────────────────────────────────────────
-.cs-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: #fff;
-  font-size: .9rem;
-  font-weight: 900;
-  letter-spacing: -.5px;
-  font-family: 'Cascadia Code', 'Fira Code', monospace;
-  box-shadow: 0 4px 14px rgba(109, 40, 217, .35);
-  user-select: none;
-
-  :host-context(body.dark) & {
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-    box-shadow: 0 4px 18px rgba(139, 92, 246, .45);
-  }
 }
 
 // ── Typography ────────────────────────────────────────────────────────────────

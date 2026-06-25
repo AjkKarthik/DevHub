@@ -1,4 +1,4 @@
-.page {
+.cs-page {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
@@ -11,19 +11,6 @@
   margin-bottom: 2rem;
 }
 
-.page-header-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #512bd4 0%, #311a8a 100%);
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
 
 .page-title {
   font-size: 2rem;
