@@ -597,6 +597,17 @@ public class CsvBenchmarks
       answer: 1,
       explanation: '[Benchmark(Baseline = true)] marks one method as the reference for the Ratio column. All other benchmarks in the class show their Mean divided by the baseline Mean. 1.00 = same speed, 0.50 = twice as fast, 2.00 = twice as slow. This is the standard way to communicate before/after improvements.',
     },
+    {
+      q: 'What does the [Params(10, 100, 1000)] attribute do in a BenchmarkDotNet class?',
+      options: [
+        'It configures BDN to run each benchmark 10, 100, or 1000 times and report the average',
+        'It sets the property to each value in turn and runs the benchmark for every combination — producing separate rows per parameter value in the results table',
+        'It limits the benchmark to 1000 iterations regardless of BDN\'s auto-tuning',
+        'It specifies the number of warmup runs before measurement begins',
+      ],
+      answer: 1,
+      explanation: '[Params] declares a property that varies across benchmark runs. BDN generates a Cartesian product of all [Params] values across all benchmark methods and runs each combination independently. Results appear as separate rows with parameter columns (e.g. N=10, N=100, N=1000), making it easy to see how performance scales with input size.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -615,6 +626,14 @@ public class CsvBenchmarks
     {
       q: 'Can BenchmarkDotNet measure I/O, network calls, or database queries?',
       a: 'Yes, but with caveats. BDN can time any async or synchronous code, including I/O. The challenge is variability — network/disk latency varies widely between runs, making statistical confidence harder to achieve. BDN will run many more iterations to compensate. For database benchmarks, mock the DB or use a local in-memory DB (SQLite :memory:). Measuring real network calls in BDN is generally not recommended — use load testing tools (k6, NBomber) instead.',
+    },
+    {
+      q: 'What do the Gen0, Gen1, and Gen2 columns in BenchmarkDotNet results represent?',
+      a: 'These columns show how many garbage collections occurred per 1000 operations for each generation. Gen0 collections are cheap and frequent (short-lived objects). Gen1 and Gen2 are progressively more expensive — Gen2 is a full GC. A well-optimised hot-path method shows 0 for all three columns (no heap allocations per call). The Allocated column shows bytes; the Gen columns show collection pressure. Both together tell the full GC story.',
+    },
+    {
+      q: 'How do I run a specific benchmark method or class from the command line without running all benchmarks?',
+      a: 'Run with the --filter option: dotnet run -c Release -- --filter "*ClassName.MethodName*". The filter accepts glob patterns and matches against the fully-qualified benchmark name. You can also use --filter "*Baseline*" to run all baselines. Use --list tree before running to see all available benchmark names. BDN also accepts multiple --filter arguments if you need to run several specific benchmarks from different classes.',
     },
   ];
 
