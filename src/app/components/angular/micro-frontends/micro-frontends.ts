@@ -481,6 +481,17 @@ export function onDataRefresh(handler: (source: string) => void): () => void {
       answer: 1,
       explanation: 'Angular Elements wraps Angular components as standard Web Components (custom elements). This makes them consumable from any framework or plain HTML. Use it when the shell is not Angular or when framework-agnostic distribution is needed.',
     },
+    {
+      q: 'How do you handle CSS style isolation between micro-frontends on the same page?',
+      options: [
+        'CSS classes never conflict because micro-frontends run in iframes',
+        'Use Angular\'s component ViewEncapsulation (Emulated or ShadowDom), a unique CSS prefix per MFE, or CSS Modules to prevent class name collisions',
+        'Global styles.scss is shared automatically between all micro-frontends',
+        'Style conflicts are handled by Native Federation\'s style registry',
+      ],
+      answer: 1,
+      explanation: 'Multiple Angular apps on the same page share the same DOM, so global CSS classes collide. Solutions: Angular\'s Emulated encapsulation scopes component styles with _ngcontent attributes; ShadowDom uses true browser shadow roots. For global resets, assign a unique BEM namespace per MFE (e.g., .mfe-shell-*, .mfe-cart-*).',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -499,6 +510,14 @@ export function onDataRefresh(handler: (source: string) => void): () => void {
     {
       q: 'How do I test micro-frontend integration locally?',
       a: 'Run each app on its own port (shell on 4200, remotes on 4201, 4202...). The shell\'s initFederation points to localhost URLs for development. For CI, use concurrently or a tool like @nx/web:dev-server to start all apps, then run e2e tests against the shell URL. Each remote should also have its own e2e suite so it can be tested standalone. Consider mocking remote entries in shell unit tests so they don\'t require live remote servers.',
+    },
+    {
+      q: 'What is the key difference between Module Federation and Native Federation?',
+      a: 'Module Federation (from Webpack) was the original Angular MFE solution — it requires Webpack, works with Webpack-specific plugins, and injects federation runtime into bundles. Native Federation (@angular-architects/native-federation) is the modern replacement — it uses esbuild (the Angular 17+ default builder), ES import maps, and native ESM. Native Federation is significantly faster to build and does not require Webpack, making it the recommended choice for new Angular 17+ MFE projects.',
+    },
+    {
+      q: 'What are Angular Elements and when should I use them?',
+      a: 'Angular Elements (createCustomElement from @angular/elements) wraps an Angular component as a custom HTML element (Web Component) — usable in any framework or plain HTML without Angular on the page. Use them when embedding an Angular component into a non-Angular shell (React, Vue, plain HTML), or when distributing a widget to teams who may not use Angular. They are heavier than Native Federation for full Angular remotes because they bundle Angular itself. For Angular-to-Angular MFEs, use Native Federation instead.',
     },
   ];
 

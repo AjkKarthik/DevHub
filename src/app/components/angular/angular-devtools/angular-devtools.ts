@@ -447,6 +447,28 @@ export class ProductListComponent {
       answer: 1,
       explanation: 'If a component appears in every CD cycle with a wide bar but its displayed data doesn\'t change, it\'s being checked unnecessarily. OnPush makes Angular skip the check unless an input reference changes, an async pipe emits, or markForCheck is called — eliminating the wasted cycles.',
     },
+    {
+      q: 'What does the Angular DevTools Injector Tree view show?',
+      options: [
+        'The HTTP interceptor chain in order of registration',
+        'The hierarchical tree of Angular injectors — component, route, module, and environment injectors',
+        'The list of all currently instantiated services in the app',
+        'The dependency graph showing which services depend on which others',
+      ],
+      answer: 1,
+      explanation: 'The Injector Tree view shows the full hierarchy of Angular DI injectors — environment, module, route, and component-level. It helps debug provider scope issues: seeing why a service is being created multiple times or why an injection fails because the provider is in the wrong injector level.',
+    },
+    {
+      q: 'Which Angular DevTools feature tells you the current value of a component\'s signal?',
+      options: [
+        'The Profiler timeline — signals show as spikes',
+        'The Component Explorer — selecting a component shows its state including signal values in the right panel',
+        'The Network tab — signals emit network requests visible in waterfall',
+        'The Injector Tree — signals are shown as injected tokens',
+      ],
+      answer: 1,
+      explanation: 'In the Component Explorer, selecting any component shows its inputs, state properties (including signals), and template variables in the right-hand panel. You can also edit writable signal values directly from DevTools to test UI states without code changes.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -465,6 +487,14 @@ export class ProductListComponent {
     {
       q: 'Is it safe to use ng.applyChanges() to test UI updates in the console?',
       a: 'It is safe for debugging — it triggers CD on the specific component instance. Changes made via the console do not persist (component state resets on next real CD cycle unless the signal/property was permanently mutated). It is a read-eval-play-loop for exploring component behaviour without modifying source. Never use it in production code — it only exists in development builds.',
+    },
+    {
+      q: 'How do I enable Angular DevTools on a staging or production build?',
+      a: 'Angular DevTools is disabled in production mode (the ng global is absent). To enable it on a staging build, call enableDebugTools(applicationRef.components[0]) after bootstrapApplication() resolves. Import enableDebugTools from @angular/platform-browser. This attaches the ng global and allows DevTools to connect. Never do this in a customer-facing production build — it exposes component internals and can be a security risk.',
+    },
+    {
+      q: 'What does the "Source" column in the profiler flame chart tell me?',
+      a: 'The Source column shows where the change detection for that component was triggered from — the specific code path or event that caused it. For Zone.js apps this might show "setTimeout" or "XMLHttpRequest"; for signal-based apps it shows the signal or event that changed. This is the most actionable data in the profiler — it tells you which code to investigate, not just which component was slow.',
     },
   ];
 

@@ -76,6 +76,16 @@ export class LetTemplateVarsDemo {
         'Rule of thumb: "if the expression belongs in the template and is only used in the template, put it in <code>@let</code>". If it\'s logic, put it in <code>computed()</code> or a service.',
       ],
     },
+    {
+      heading: 'Change detection, performance, and TypeScript integration',
+      points: [
+        '<code>@let</code> evaluates its expression on <strong>every change detection cycle</strong>, not just when its inputs change. This means calling <code>expensiveSort(items())</code> in a <code>@let</code> runs the sort on every CD tick — whether items changed or not. For expensive derivations, use <code>computed()</code> which is memoised.',
+        'With OnPush change detection, <code>@let</code> expressions still only re-evaluate when Angular runs CD for that component (i.e., after an input changes, a signal changes, or an event fires). The memoisation gap between <code>@let</code> and <code>computed()</code> only matters during a single CD cycle — once per tick is usually acceptable.',
+        'TypeScript fully understands <code>@let</code> — the variable\'s type is inferred from the expression. However, <code>@let</code> does <strong>not</strong> narrow nullable types: <code>@let user = maybeUser()</code> still types <code>user</code> as <code>User | null</code>. To get narrowed non-null access, use <code>@if (maybeUser(); as user)</code> or <code>@if (user) { … }</code> after the <code>@let</code>.',
+        'Multiple <code>@let</code> declarations in the same block are independent and evaluated top-to-bottom. A later <code>@let</code> can reference an earlier one: <code>@let subtotal = …; @let tax = subtotal * 0.2;</code> is valid. A forward reference (referencing a later <code>@let</code>) is not — Angular evaluates them in declaration order.',
+        '<code>@let</code> declarations do not exist in compiled component metadata — they are purely template-time constructs that the compiler inlines. This means they have zero impact on the component\'s public API, testability boundary, or AOT bundle metadata. They are erased before runtime.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -392,6 +402,28 @@ The template uses: products() signal (array), cart() signal (array), activeFilte
       answer: 1,
       explanation: 'computed() is memoised — it only recomputes when its signal dependencies change. @let recomputes every change detection cycle. Use computed() for expensive derivations (array filters, sorts, reduces) to avoid repeated computation.',
     },
+    {
+      q: 'Can a @let variable reference another @let variable declared in the same block?',
+      options: [
+        'No — @let variables are completely isolated from each other',
+        'Yes, but only if both are declared at the root template level',
+        'Yes — a later @let can reference an earlier one; forward references are not allowed',
+        'Yes — they can reference each other in any order',
+      ],
+      answer: 2,
+      explanation: '@let declarations are evaluated top-to-bottom. A later @let can reference an earlier one (e.g., @let tax = subtotal * 0.2 where subtotal was declared above). Forward references — referencing a @let that appears later — are invalid because Angular evaluates them in declaration order.',
+    },
+    {
+      q: 'Does @let do TypeScript type narrowing on nullable values?',
+      options: [
+        'Yes — @let name = maybeUser() narrows the type to User (non-null) if the expression is truthy',
+        'No — @let preserves the full expression type including null/undefined; use @if for narrowing',
+        'Only if you use the ! non-null assertion: @let user = maybeUser()!',
+        'Yes, but only when used with the async pipe',
+      ],
+      answer: 1,
+      explanation: '@let does not narrow types. @let user = maybeUser() types user as User | null. To access user.name safely, use @if (user) { … } after the @let, or use @if (maybeUser(); as user) { … } which narrows inside the block.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -410,6 +442,14 @@ The template uses: products() signal (array), cart() signal (array), activeFilte
     {
       q: 'Does @let work with template type checking (strict mode)?',
       a: 'Yes — Angular\'s template type checker fully understands @let. The variable\'s type is inferred from the expression. If the expression can return null, the variable\'s type includes null. Use @if to narrow after @let if you need non-null access: @let user = maybeUser(); then @if (user) { {{ user.name }} }.',
+    },
+    {
+      q: 'What is the performance difference between @let and computed() and when does it matter?',
+      a: '<code>@let</code> recomputes its expression on <strong>every change detection cycle</strong>. <code>computed()</code> is <strong>memoised</strong> — it only recomputes when its signal dependencies change. For cheap expressions (property access, simple arithmetic), the difference is negligible. For expensive ones (array filter/sort/reduce over large collections), using <code>@let</code> means re-running the full operation on every CD tick even if the input didn\'t change. In those cases, move the derivation to a <code>computed()</code> in the class.',
+    },
+    {
+      q: 'Is @let available in Angular templates outside component files (e.g., ng-template)?',
+      a: 'Yes — <code>@let</code> works anywhere Angular template syntax is valid: inside component templates, inside <code>&lt;ng-template&gt;</code> blocks, and inside structural directive templates. The scoping rules are the same: a <code>@let</code> declared in an <code>&lt;ng-template&gt;</code> is scoped to that template\'s context. A <code>@let</code> from the outer template is accessible inside a nested <code>&lt;ng-template&gt;</code> because inner templates close over the outer scope.',
     },
   ];
 

@@ -514,6 +514,17 @@ describe('ProductListComponent', () => {
       answer: 1,
       explanation: '"warn" prints a console warning for unhandled requests. Use "error" in tests to fail fast when a request has no handler (catches URL mismatches early). Use "bypass" to silently forward unhandled requests to the real network.',
     },
+    {
+      q: 'How do you write an MSW handler that returns a specific HTTP status code and JSON body?',
+      options: [
+        'http.get("/api/users", () => new Response(null, { status: 404 }))',
+        'http.get("/api/users", () => HttpResponse.json({ error: "Not found" }, { status: 404 }))',
+        'http.get("/api/users", { status: 404, body: { error: "Not found" } })',
+        'handler.respondWith(404, { error: "Not found" })',
+      ],
+      answer: 1,
+      explanation: 'MSW 2.x uses HttpResponse.json(body, options) to create typed JSON responses. The first argument is the response body; the second is an options object with status, headers etc. This produces a properly-typed Response with Content-Type: application/json set automatically.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -532,6 +543,14 @@ describe('ProductListComponent', () => {
     {
       q: 'What is the mockServiceWorker.js file and where does it go?',
       a: 'It is the actual Service Worker script that MSW registers in the browser. Generate it once with: npx msw init src --save (for Angular projects, put it in the src/ folder). Then add "src/mockServiceWorker.js" to the assets array in angular.json so it is copied to the build output. This file only needs to be regenerated when you upgrade MSW.',
+    },
+    {
+      q: 'What does passthrough() do in an MSW handler?',
+      a: 'passthrough() tells MSW to let the request proceed to the real network without intercepting it. Use it inside a handler when you want to mock most endpoints but allow specific ones to hit the real API: if (request.url.includes("/analytics")) return passthrough(). It is especially useful in Storybook setups where you want real image/font requests to succeed but API calls to be mocked. In tests, prefer explicit 200 responses over passthrough — real network calls make tests slow and flaky.',
+    },
+    {
+      q: 'How do I use MSW with Angular\'s HTTP testing controller at the same time?',
+      a: 'You cannot — HttpClientTestingModule replaces the HTTP backend with a test controller that intercepts before requests leave Angular. MSW intercepts at the fetch/XHR layer after the request leaves Angular. If you use both in the same test, MSW never sees the requests because HttpClientTestingModule swallowed them. Choose one approach per test suite: MSW for high-fidelity integration tests with real HTTP stacks; HttpClientTestingModule for unit tests that need precise request inspection without a service worker.',
     },
   ];
 

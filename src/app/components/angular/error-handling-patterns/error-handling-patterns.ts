@@ -534,6 +534,17 @@ export class ProductListComponent implements OnInit {
       answer: 1,
       explanation: 'RFC 7807 ProblemDetails responses include a "detail" field meant for human consumption. err.error is the parsed response body, so err.error?.detail gives you that message. statusText is often generic ("Internal Server Error"); stack is never user-safe.',
     },
+    {
+      q: 'What is the correct lifecycle method to retry after an Angular component rendering error?',
+      options: [
+        'ngOnError() — Angular\'s built-in error lifecycle hook',
+        'There is no built-in retry — use ErrorHandler to log the error and reset state manually',
+        'ngOnChanges() re-runs automatically after any error',
+        'Call this.changeDetectorRef.reattach() to resume rendering',
+      ],
+      answer: 1,
+      explanation: 'Angular has no automatic error recovery lifecycle hook for components. When a component throws during rendering, the component is destroyed and left empty. Your ErrorHandler can log the error, but recovery requires external control: resetting the route, showing an error page, or re-mounting a fresh component instance.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -552,6 +563,14 @@ export class ProductListComponent implements OnInit {
     {
       q: 'What is the difference between retry() and retryWhen() in RxJS?',
       a: 'retry(n) retries the source observable immediately up to n times before propagating the error — good for transient network failures. retryWhen(fn) / retryWhen with delayWhen gives you control over the retry timing: exponential backoff, waiting for online events, limiting retries by error type. In modern RxJS 7+, use retry({ count: 3, delay: 1000 }) for a simple delay between retries without custom operators.',
+    },
+    {
+      q: 'How should I handle 401 Unauthorized globally so the user is redirected to login?',
+      a: 'In an HTTP interceptor, intercept errors with catchError. When the status is 401: (1) clear the auth token from storage, (2) call Router.navigate([\'/login\']), (3) return EMPTY or throwError. Be careful not to create an infinite redirect loop if the login page itself makes HTTP calls — use HttpContextToken to mark requests that should skip the 401 handler, or check that the URL is not the auth endpoint before redirecting.',
+    },
+    {
+      q: 'What is the @error block in @defer and how does it differ from ErrorHandler?',
+      a: '@defer @error { } is a template-level fallback rendered when the lazy-loaded component throws during initialisation. It isolates the error to that one defer block — the rest of the page continues to render. ErrorHandler is a global last-resort that catches all uncaught errors across the application. Use @error for graceful fallback UI on optional page sections; use ErrorHandler for logging and crash reporting. They work together: @error prevents the error from propagating to ErrorHandler in its scope.',
     },
   ];
 
