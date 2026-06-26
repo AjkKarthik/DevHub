@@ -1,5 +1,5 @@
 <!-- ── Top header ─────────────────────────────────────────────────────────── -->
-<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'" [class.section-sysdesign]="currentSection()==='system-design'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'" [class.section-ai]="currentSection()==='ai'">
+<header [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-terraform]="currentSection()==='terraform'" [class.section-sysdesign]="currentSection()==='system-design'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'" [class.section-redis]="currentSection()==='redis'" [class.section-graphql]="currentSection()==='graphql'" [class.section-messaging]="currentSection()==='messaging'" [class.section-testing-hub]="currentSection()==='testing-hub'" [class.section-dsa]="currentSection()==='dsa'" [class.section-mesh]="currentSection()==='mesh'" [class.section-ai]="currentSection()==='ai'">
   <div class="header-left">
     @if (showLeftNav()) {
       <button type="button" class="nav-toggle" (click)="toggleNav()"
@@ -43,7 +43,7 @@
 
   <!-- Left navigation -->
   @if (showLeftNav()) {
-  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'" [class.section-redis]="currentSection()==='redis'" [class.section-graphql]="currentSection()==='graphql'" [class.section-messaging]="currentSection()==='messaging'" [class.section-ai]="currentSection()==='ai'" aria-label="Main navigation">
+  <nav class="left-nav" [class.open]="navOpen()" [class.section-csharp]="currentSection()==='csharp'" [class.section-aspnet]="currentSection()==='aspnet'" [class.section-sql]="currentSection()==='sql'" [class.section-typescript]="currentSection()==='typescript'" [class.section-react]="currentSection()==='react'" [class.section-javascript]="currentSection()==='javascript'" [class.section-html]="currentSection()==='html'" [class.section-css]="currentSection()==='css'" [class.section-performance]="currentSection()==='performance'" [class.section-blazor]="currentSection()==='blazor'" [class.section-node]="currentSection()==='node'" [class.section-python]="currentSection()==='python'" [class.section-go]="currentSection()==='go'" [class.section-devops]="currentSection()==='devops'" [class.section-containers]="currentSection()==='containers'" [class.section-aws]="currentSection()==='aws'" [class.section-azure]="currentSection()==='azure'" [class.section-linux]="currentSection()==='linux'" [class.section-arch]="currentSection()==='arch-patterns'" [class.section-dp]="currentSection()==='design-patterns'" [class.section-security]="currentSection()==='security'" [class.section-api-design]="currentSection()==='api-design'" [class.section-observability]="currentSection()==='observability'" [class.section-mongo]="currentSection()==='mongodb'" [class.section-redis]="currentSection()==='redis'" [class.section-graphql]="currentSection()==='graphql'" [class.section-messaging]="currentSection()==='messaging'" [class.section-terraform]="currentSection()==='terraform'" [class.section-sysdesign]="currentSection()==='system-design'" [class.section-mesh]="currentSection()==='mesh'" [class.section-testing-hub]="currentSection()==='testing-hub'" [class.section-dsa]="currentSection()==='dsa'" [class.section-ai]="currentSection()==='ai'" aria-label="Main navigation">
 
     <!-- Back to hub -->
     <a routerLink="/" class="nav-hub-back">
@@ -1466,11 +1466,71 @@
       @if (currentSection() === 'angular') {
         Angular 22 &mdash; Standalone &bull; Signals &bull; Material &bull; Lazy Routing &bull; Guards &bull; Interceptors
       } @else if (currentSection() === 'csharp') {
-        C# &amp; .NET &mdash; OOP &bull; Generics &bull; LINQ &bull; async/await &bull; Pattern Matching &bull; .NET 8–11
+        C# &amp; .NET &mdash; OOP &bull; Generics &bull; LINQ &bull; async/await &bull; Pattern Matching &bull; .NET 8&ndash;11
       } @else if (currentSection() === 'aspnet') {
         ASP.NET Core &mdash; Middleware &bull; Web APIs &bull; EF Core &bull; Auth &bull; Testing &bull; Deployment
+      } @else if (currentSection() === 'sql') {
+        SQL &amp; Databases &mdash; Queries &bull; Joins &bull; CTEs &bull; Window Functions &bull; Indexes &bull; T-SQL &bull; PostgreSQL
+      } @else if (currentSection() === 'typescript') {
+        TypeScript &mdash; Type System &bull; Generics &bull; Utility Types &bull; Decorators &bull; Strict Mode &bull; Mapped Types
+      } @else if (currentSection() === 'react') {
+        React &mdash; Hooks &bull; JSX &bull; State &bull; Context &bull; Next.js &bull; TanStack Query &bull; React 19
+      } @else if (currentSection() === 'javascript') {
+        JavaScript &mdash; Closures &bull; Prototypes &bull; Async &bull; Event Loop &bull; Generators &bull; Modules &bull; Proxy
+      } @else if (currentSection() === 'html') {
+        HTML &mdash; Semantics &bull; Forms &bull; Accessibility &bull; Web Components &bull; APIs &bull; Performance &bull; SEO
+      } @else if (currentSection() === 'css') {
+        CSS &mdash; Flexbox &bull; Grid &bull; Custom Properties &bull; Animations &bull; Container Queries &bull; Layers &bull; Nesting
+      } @else if (currentSection() === 'performance') {
+        Web Performance &mdash; Core Web Vitals &bull; LCP &bull; INP &bull; CLS &bull; Caching &bull; HTTP/3 &bull; RUM
+      } @else if (currentSection() === 'blazor') {
+        Blazor &mdash; Components &bull; Routing &bull; Forms &bull; State &bull; JS Interop &bull; WASM &bull; Server
+      } @else if (currentSection() === 'node') {
+        Node.js &mdash; Event Loop &bull; Streams &bull; Express &bull; NestJS &bull; Prisma &bull; Auth &bull; Clustering
+      } @else if (currentSection() === 'python') {
+        Python &mdash; Data Types &bull; OOP &bull; FastAPI &bull; Asyncio &bull; Pydantic &bull; Data Science &bull; Tooling
+      } @else if (currentSection() === 'go') {
+        Go &mdash; Goroutines &bull; Channels &bull; Interfaces &bull; Context &bull; HTTP &bull; Gin &bull; Generics
+      } @else if (currentSection() === 'devops') {
+        DevOps &mdash; CI/CD &bull; GitHub Actions &bull; GitOps &bull; ArgoCD &bull; Docker &bull; Kubernetes &bull; SRE
+      } @else if (currentSection() === 'containers') {
+        Containers &amp; K8s &mdash; Docker &bull; Compose &bull; Kubernetes &bull; Helm &bull; RBAC &bull; Networking &bull; Security
+      } @else if (currentSection() === 'aws') {
+        AWS &mdash; EC2 &bull; ECS/EKS &bull; Lambda &bull; S3 &bull; IAM &bull; CloudFormation &bull; CDK
+      } @else if (currentSection() === 'azure') {
+        Azure &mdash; App Service &bull; Functions &bull; AKS &bull; Entra ID &bull; Key Vault &bull; Cosmos DB &bull; Monitor
+      } @else if (currentSection() === 'linux') {
+        Linux &mdash; File System &bull; Processes &bull; Networking &bull; Shell Scripting &bull; Package Management &bull; Hardening
       } @else if (currentSection() === 'terraform') {
         Terraform &mdash; HCL &bull; State &bull; Modules &bull; Backends &bull; CI/CD &bull; Workspaces &bull; OpenTofu
+      } @else if (currentSection() === 'mesh') {
+        Service Mesh &mdash; Istio &bull; Traffic Management &bull; mTLS &bull; Observability &bull; Circuit Breaking &bull; Envoy
+      } @else if (currentSection() === 'system-design') {
+        System Design &mdash; Scalability &bull; Databases &bull; Caching &bull; Messaging &bull; CAP Theorem &bull; Real Systems
+      } @else if (currentSection() === 'arch-patterns') {
+        Architecture Patterns &mdash; Microservices &bull; Event Sourcing &bull; CQRS &bull; Saga &bull; BFF &bull; Sidecar
+      } @else if (currentSection() === 'design-patterns') {
+        Design Patterns &mdash; Creational &bull; Structural &bull; Behavioral &bull; Enterprise &bull; SOLID &bull; DRY
+      } @else if (currentSection() === 'security') {
+        Security &amp; Auth &mdash; JWT &bull; OAuth2 &bull; Cryptography &bull; OWASP &bull; CSP &bull; Secrets Management
+      } @else if (currentSection() === 'api-design') {
+        API Design &mdash; REST &bull; gRPC &bull; GraphQL &bull; WebSockets &bull; Versioning &bull; Rate Limiting &bull; OpenAPI
+      } @else if (currentSection() === 'observability') {
+        Observability &amp; SRE &mdash; Metrics &bull; Logging &bull; Tracing &bull; SLOs &bull; Alerting &bull; Incident Management
+      } @else if (currentSection() === 'mongodb') {
+        MongoDB &mdash; CRUD &bull; Aggregation &bull; Indexing &bull; Schema Design &bull; Atlas &bull; Transactions
+      } @else if (currentSection() === 'redis') {
+        Redis &mdash; Data Structures &bull; Persistence &bull; Pub/Sub &bull; Streams &bull; Caching &bull; Redis Stack
+      } @else if (currentSection() === 'graphql') {
+        GraphQL &mdash; SDL &bull; Resolvers &bull; DataLoader &bull; Subscriptions &bull; Apollo &bull; Federation &bull; Code-Gen
+      } @else if (currentSection() === 'messaging') {
+        Messaging &amp; Kafka &mdash; RabbitMQ &bull; Kafka &bull; Partitions &bull; Consumer Groups &bull; Schema Registry
+      } @else if (currentSection() === 'testing-hub') {
+        Testing &mdash; Unit &bull; Integration &bull; E2E &bull; TDD &bull; Jest &bull; Playwright &bull; Contract Testing
+      } @else if (currentSection() === 'dsa') {
+        DSA &mdash; Arrays &bull; Trees &bull; Graphs &bull; Sorting &bull; BFS/DFS &bull; Dynamic Programming &bull; Big O
+      } @else if (currentSection() === 'ai') {
+        AI &amp; ML &mdash; Neural Networks &bull; Transformers &bull; LLMs &bull; RAG &bull; Agents &bull; MLOps &bull; Prompt Eng.
       } @else {
         Dev Learning Hub &mdash; Angular &bull; TypeScript &bull; JavaScript &bull; C# &bull; Node.js &bull; CSS &bull; SQL
       }
