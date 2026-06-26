@@ -85,7 +85,7 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 
 ---
 
-## Current State (as of 2026-06-14)
+## Current State (as of 2026-06-26)
 
 | Hub | Live | Coming Soon | Status |
 |---|---|---|---|
@@ -713,10 +713,12 @@ All 22 pages written and committed (2026-06-20). perfTotal=20. Hub-home topics: 
 
 ---
 
-### 3G — Blazor hub (23 topics) — already detailed in home
+### 3G — Blazor hub ✅ COMPLETE `src/app/components/frontend/blazor/`
 
-Accent: `#5c2d91` (Blazor purple). Search prefix: `blazor-`.
-Build in 3 sessions of ~7 topics each. (Detailed topic list is in home.ts.)
+All 20 trackable topics + 3 reference pages live (2026-06-21). blazorTotal = 20. All 23 cards `available: true`.
+Accent: `#5c2d91` (Blazor purple). Search prefix: `blazor-`. Route: `/blazor`.
+Nav groups: Foundations, Components, Data & Forms, Routing, State & Services, Advanced, Reference.
+Reference pages: bunit, cheatsheet, interview-prep (no PageComplete on these).
 
 ---
 
@@ -724,35 +726,19 @@ Build in 3 sessions of ~7 topics each. (Detailed topic list is in home.ts.)
 
 **Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
 
-### 4A — Node.js hub (25 topics) `src/app/components/backend/nodejs/`
+### 4A — Node.js hub ✅ COMPLETE `src/app/components/backend/nodejs/`
 
-Accent: `#339933` (Node green). Search prefix: `node-`.
-
-Batches guided by home.ts topic list (Foundations → HTTP & APIs → Async → Database →
-Auth → Performance → Tooling → Reference). 3 sessions of ~7 topics each.
-
-**Key pages to prioritise:**
-- `node-architecture` (event loop deep-dive — most-asked Node interview topic)
-- `express` (most common framework, foundational)
-- `nestjs` (enterprise, increasingly required in job listings)
-- `database-prisma` (most popular modern ORM)
-- `auth-jwt-passport` (every production app needs this)
+All 23 trackable topics + 2 reference pages live (2026-06-21). nodeTotal = 23. All 25 cards `available: true`.
+Accent: `#339933` (Node green). Search prefix: `node-`. Route: `/node`.
+Nav groups: Foundations, HTTP & APIs, Async & Streams, Database, Auth & Security, Performance, Tooling, Reference.
 
 ---
 
-### 4B — Python hub (23 topics) `src/app/components/backend/python/`
+### 4B — Python hub ✅ COMPLETE `src/app/components/backend/python/`
 
-Accent: `#3776ab` (Python blue). Search prefix: `py-`.
-
-Batches guided by home.ts (Foundations → OOP → Web & APIs → Async → Data Science →
-Tooling → Reference). 3 sessions.
-
-**Key pages to prioritise:**
-- `python-data-types` (foundational — dicts, lists, sets, tuples)
-- `fastapi` (most demanded Python web framework 2024-2025)
-- `pydantic` (ubiquitous in modern Python)
-- `async-python` (asyncio — essential for FastAPI and modern Python)
-- `celery-task-queues` (appears in most production job specs)
+All 21 trackable topics + 2 reference pages live (2026-06-21). pyTotal = 21. All 23 cards `available: true`.
+Accent: `#3776ab` (Python blue). Search prefix: `py-`. Route: `/python`.
+Nav groups: Foundations, OOP & Patterns, Data & Types, Async, Web & APIs, Data Science, Tooling, Reference.
 
 ---
 
@@ -915,29 +901,28 @@ Accent: `#059669` (emerald). Search prefix: `obs-`.
 
 **Before writing the first page of each hub:** run pre-hub research (Working Method rule 4).
 
-### 7A — MongoDB hub (21 topics) `src/app/components/data/mongodb/`
+### 7A — MongoDB hub ✅ COMPLETE `src/app/components/data/mongodb/`
 
-Accent: `#00ed64` (MongoDB green). Search prefix: `mongo-`.
-Key topics: CRUD, aggregation pipeline, indexing, schema design patterns,
-transactions, Atlas Search, time series collections.
+All 21 trackable topics + 2 reference pages live (2026-06-25). mongoTotal = 21. All 23 cards `available: true`.
+Accent: `#00ed64` (MongoDB green). Search prefix: `mongo-`. Route: `/mongodb`.
 
-### 7B — Redis hub (21 topics) `src/app/components/data/redis/`
+### 7B — Redis hub ✅ COMPLETE `src/app/components/data/redis/`
 
-Accent: `#dc382d` (Redis red). Search prefix: `redis-`.
-Key topics: Data structures (string/hash/list/set/zset), persistence (RDB/AOF),
-pub/sub, streams, Lua scripting, Redis Stack (JSON/Search/TimeSeries).
+All 21 trackable topics + 2 reference pages live (2026-06-25). redisTotal = 21. All 23 cards `available: true`.
+Accent: `#dc382d` (Redis red). Search prefix: `redis-`. Route: `/redis`.
+Nav groups: Foundations, Data Structures, Commands, Persistence, Pub/Sub & Streams, Caching, Cluster & HA, Ecosystem, Reference.
 
-### 7C — GraphQL hub (20 topics) `src/app/components/data/graphql/`
+### 7C — GraphQL hub ✅ COMPLETE `src/app/components/data/graphql/`
 
-Accent: `#e535ab` (GraphQL pink). Search prefix: `gql-`.
-Key topics: Schema SDL, resolvers, DataLoader (N+1 fix), mutations, subscriptions,
-Federation, persisted queries, error handling.
+All 20 trackable topics + 2 reference pages live (2026-06-25). gqlTotal = 20. All 22 cards `available: true`.
+Accent: `#e535ab` (GraphQL pink). Search prefix: `gql-`. Route: `/graphql`.
+Nav groups: Foundations, Operations, Server, Client, Advanced, Reference.
 
-### 7D — Messaging/Kafka hub (22 topics) `src/app/components/data/messaging/`
+### 7D — Messaging/Kafka hub ✅ COMPLETE `src/app/components/data/messaging/`
 
-Accent: `#231f20` (Kafka dark). Search prefix: `kafka-`.
-Key topics: Producer/consumer, partitioning, consumer groups, offsets,
-exactly-once semantics, Schema Registry, Kafka Connect, Kafka Streams.
+All 20 trackable topics + 2 reference pages live (2026-06-25). kafkaTotal = 20. All 22 cards `available: true`.
+Accent: `#9a3412` (burnt orange). Search prefix: `kafka-`. Route: `/messaging`.
+Nav groups: Foundations, RabbitMQ, Kafka, Patterns, Cloud Messaging, Reliability, Reference.
 
 ---
 
@@ -957,10 +942,10 @@ Accent: `#6366f1` (indigo). Search prefix: `test-`. Route: `/testing-hub`. Hero 
 - [x] 2026-06-25 `test-visual-regression`, `test-property-based-testing`
 - [x] 2026-06-25 `cheatsheet` (reference), `performance-testing` (reference), `mutation-testing` (reference)
 
-### 8B — DSA hub (21 topics) `src/app/components/fundamentals/dsa/` ✅ 2026-06-25
+### 8B — DSA hub ✅ COMPLETE `src/app/components/fundamentals/dsa/`
 
-All 21 topic pages live. Wiring complete (routes, search, nav, progress, breadcrumb, sidebar).
-Hero stat updated to 815+. CLAUDE.md updated.
+All 21 trackable topics live (2026-06-25). dsaTotal = 21. All 22 cards `available: true`. Wiring complete (routes, search, nav, progress, breadcrumb, sidebar).
+Accent: `#92400e` (amber). Search prefix: `dsa-`. Route: `/dsa`. Hero stat updated to 815+. DsaNavComponent.
 
 ### 8C — AI/ML hub ✅ COMPLETE `src/app/components/fundamentals/ai/`
 
@@ -1275,11 +1260,29 @@ Always `:host-context(body.dark) { ... }` — NEVER `@media (prefers-color-schem
 ## Done History
 
 - [x] 2026-06-26 — Phase 9 structural audit complete across all 928 pages: fixed JS/React cheatsheet wrong cs-page wrapper, C# csharp/generics/linq old .page wrapper + icon classes, Angular defer-demo + ngrx-signals ng-page wrapper + icon + tech= + revision-card, csharp intro missing revision-card + tech=. Zero dark-mode violations, zero missing revision-cards, zero wrong common-mistakes remaining. Content-quality review (theory depth, quiz spread) is the outstanding Phase 9 work.
+- [x] 2026-06-25 — DSA hub Phase 8B complete: all 21 topic pages live. dsaTotal = 21. All 22 cards available: true. Amber accent #92400e, search prefix dsa-, icon DSA, DsaNavComponent. Hero stat updated to 815+.
+- [x] 2026-06-25 — AI/ML hub Phase 8C complete: all 22 pages live (19 trackable topics + 3 reference). aiTotal = 19. All 22 cards available: true. Violet accent #7c3aed, search prefix ai-, icon 🤖, AiNavComponent.
+- [x] 2026-06-25 — Testing hub Phase 8A complete: all 22 pages live (19 trackable topics + 3 reference). testTotal = 19. All 22 cards available: true. Indigo accent #6366f1, search prefix test-, route /testing-hub, icon ✓, TestingNavComponent.
 - [x] 2026-06-25 — Messaging/Kafka hub Phase 7D complete: all 22 pages live (20 trackable topics + monitoring + messaging-security reference). kafkaTotal = 20. hub-home Messaging card topics: 22, available: true. Hero stat updated to 771+. Burnt-orange accent #9a3412, search prefix kafka-, icon ⇄, MessagingNavComponent.
+- [x] 2026-06-25 — GraphQL hub Phase 7C complete: all 22 pages live (20 trackable topics + 2 reference). gqlTotal = 20. All 22 cards available: true. Pink accent #e535ab, search prefix gql-, icon ◈, GqlNavComponent.
+- [x] 2026-06-25 — Redis hub Phase 7B complete: all 23 pages live (21 trackable topics + 2 reference). redisTotal = 21. All 23 cards available: true. Red accent #dc382d, search prefix redis-, icon R, RedisNavComponent.
+- [x] 2026-06-25 — MongoDB hub Phase 7A complete: all 23 pages live (21 trackable topics + 2 reference). mongoTotal = 21. All 23 cards available: true. Green accent #00ed64, search prefix mongo-.
+- [x] 2026-06-25 — Observability hub Phase 6F complete: all 22 pages live (20 trackable topics + 2 reference). obsTotal = 20. All 22 cards available: true. Emerald accent #059669, search prefix obs-, ObsNavComponent.
+- [x] 2026-06-25 — API Design hub Phase 6E complete: all 21 pages live (19 trackable topics + 2 reference). apiTotal = 19. All 21 cards available: true. Cyan accent #0891b2, search prefix api-, ApiDesignNavComponent.
+- [x] 2026-06-25 — Security hub Phase 6D complete: all 25 pages live (23 trackable topics + 2 reference). secTotal = 23. All 25 cards available: true. Red accent #dc2626, search prefix sec-, SecurityNavComponent.
+- [x] 2026-06-25 — Design Patterns hub Phase 6C complete: all 39 pages live (36 trackable topics + 3 reference). dpTotal = 36. All 39 cards available: true. Blue accent #0369a1, search prefix dp-, DpNavComponent.
+- [x] 2026-06-25 — Architecture Patterns hub Phase 6B complete: all 25 pages live (22 trackable topics + 3 reference). archTotal = 22. All 25 cards available: true. Violet accent #7c3aed, search prefix arch-, ArchNavComponent.
+- [x] 2026-06-25 — System Design hub Phase 6A complete: all 26 pages live (24 trackable topics + 2 reference). sysdesignTotal = 24. All 26 cards available: true. Slate accent #0f172a, search prefix sysdesign-, SysdesignNavComponent.
+- [x] 2026-06-25 — Service Mesh hub Phase 5G complete: all 21 pages live (19 trackable topics + 2 reference). meshTotal = 19. All 21 cards available: true. Blue accent #466bb0, search prefix mesh-, MeshNavComponent.
+- [x] 2026-06-25 — Terraform hub Phase 5F complete: all 23 pages live (21 trackable topics + 2 reference). tfTotal = 21. All 23 cards available: true. Purple accent #7b42bc, search prefix tf-, TerraformNavComponent.
+- [x] 2026-06-25 — Containers/K8s hub Phase 5B complete: all 23 pages live (22 trackable topics + 1 reference). k8sTotal = 22. All 23 cards available: true. Blue accent #326ce5, search prefix k8s-, ContainersNavComponent.
+- [x] 2026-06-22 — Linux hub Phase 5E complete: all 21 pages live (19 trackable topics + 2 reference). linuxTotal = 19. All 21 cards available: true. Yellow accent #fcc624, search prefix linux-, route /linux. Build passes.
 - [x] 2026-06-22 — Azure hub Phase 5D complete: all 23 pages live (22 trackable topics + cheatsheet). azureTotal = 22. hub-home Azure card topics: 23, available: true. Hero stat updated to 505+. Blue accent #0089d6, search prefix azure-. Pages: fundamentals, arm, bicep, virtual-machines, app-service, functions, aks, container-apps, virtual-network, load-balancer, storage, entra-id, rbac, key-vault, sql-cosmos, redis, monitor, devops-pipelines, service-bus, api-management, cost-management, security-defender, cheatsheet.
+- [x] 2026-06-21 — DevOps hub Phase 5A complete: all 22 pages live (21 trackable topics + cheatsheet). devopsTotal = 21. All 22 cards available: true. Orange accent #ee5d25, search prefix devops-, route /devops. Build passes.
 - [x] 2026-06-21 — AWS hub Phase 5C complete: all 22 pages live (21 trackable topics + cheatsheet). awsTotal = 21. hub-home AWS card topics: 22, available: true. Hero stat updated to 479+. Orange accent #ff9900, search prefix aws-.
 - [x] 2026-06-21 — Python hub Phase 4B complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). pyTotal = 21. hub-home Python card topics: 23, available: true. Hero stat updated to 450+. Blue accent #3776ab, search prefix py-. py-icon added to styles.scss.
 - [x] 2026-06-21 — Node.js hub Phase 4A complete: all 25 pages live (23 trackable topics + cheatsheet + interview-prep). nodeTotal = 23. hub-home Node.js card topics: 25, available: true. Hero stat updated to 425+. Build passes. Green accent #339933, search prefix node-. Icon styles added to styles.scss (go-icon, node-icon, css-icon, blazor-icon).
+- [x] 2026-06-21 — Blazor hub Phase 3G complete: all 23 pages live (20 trackable topics + bunit + cheatsheet + interview-prep reference). blazorTotal = 20. hub-home Blazor card topics: 23, available: true. Purple accent #5c2d91, search prefix blazor-, route /blazor. Build passes.
 - [x] 2026-06-21 — Go hub Phase 4C complete: all 23 pages live (21 trackable topics + cheatsheet + interview-prep). goTotal = 21. hub-home Go card topics: 23, available: true. Teal accent #00add8, search prefix go-.
 - [x] 2026-06-20 — Web Performance hub Phase 3F complete: all 22 pages live (20 trackable topics + cheatsheet + interview-prep). perfTotal = 20. hub-home card topics: 22, available: true. Hero stat updated to 350+. Build passes. Green accent #16a34a, search prefix perf-.
 - [x] 2026-06-19 — Web Performance hub Phase 3F wiring complete: routes, nav, progress (perfTotal=20), search (22 perf- entries), breadcrumb, app.scss section-performance, search.ts perf- URL routing. 21 stub components created. First full page: core-web-vitals. Build passes. Green accent #16a34a.
