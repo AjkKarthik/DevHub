@@ -307,6 +307,17 @@ app.MapPost("/categories", async (
       answer: 2,
       explanation: 'Cache entries must be tagged at storage time with .Tag("products"). Without a tag on the endpoint, eviction is a no-op.',
     },
+    {
+      q: 'How do you vary the output cache by the current authenticated user?',
+      options: [
+        'Output caching cannot work with authenticated users',
+        'Use VaryByHeader("Authorization") — the full token becomes part of the cache key',
+        'Implement a custom IOutputCachePolicy that varies the key by user ID, and mark the base policy to allow authenticated caching',
+        'Use [OutputCache(VaryByUser = true)] attribute on the controller action',
+      ],
+      answer: 2,
+      explanation: 'By default, output caching does not cache authenticated requests. To enable per-user caching, implement IOutputCachePolicy: in CacheRequestAsync, build a cache key that includes the user ID from context.HttpContext.User. Set context.AllowCacheLookup = true and context.AllowCacheStorage = true to override the default rejection of authenticated requests.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -325,6 +336,14 @@ app.MapPost("/categories", async (
     {
       q: 'How do I disable output caching for a specific endpoint when a base policy is active?',
       a: 'Use .CacheOutput(b => b.NoStore()) on the endpoint or add [OutputCache(NoStore = true)] on the controller action. This explicitly opts the endpoint out of caching even when a base policy is configured.',
+    },
+    {
+      q: 'How do I trigger cache eviction when a product is updated in a separate background job?',
+      a: 'Inject IOutputCacheStore into the service or background job and call await store.EvictByTagAsync("products", cancellationToken). The tag must match what was set at cache time with .Tag("products"). For database-driven eviction at scale, consider a change-feed or CDC trigger that publishes an event, and a background service that calls EvictByTagAsync on receipt. This keeps the cache coherent without tightly coupling the domain logic to the cache layer.',
+    },
+    {
+      q: 'Does ASP.NET Core output caching work with SignalR or SSE endpoints?',
+      a: 'No. Output caching is designed for request-response HTTP endpoints — it captures the entire response and replays it. SignalR (WebSocket/LongPolling) and Server-Sent Events maintain persistent connections that stream data over time — there is no single response to cache. Disable output caching for these endpoints with .CacheOutput(b => b.NoStore()) and rely on application-level caching (IMemoryCache, IDistributedCache) for the data being pushed.',
     },
   ];
 

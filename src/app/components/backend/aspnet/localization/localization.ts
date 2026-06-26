@@ -279,6 +279,17 @@ app.MapGet("/greet", (string name, IStringLocalizer<GreetingResources> localizer
       answer: 2,
       explanation: 'UseRequestLocalization must run early so the culture is set before middleware that may produce localised content (error messages, model validation errors).',
     },
+    {
+      q: 'When a resource string key is missing in the requested culture but exists in the default culture, what does IStringLocalizer return?',
+      options: [
+        'null — the key is not found',
+        'An empty string',
+        'It throws a KeyNotFoundException',
+        'The key string itself (the fallback) — ResourceNotFound is true but Value is the key name',
+      ],
+      answer: 3,
+      explanation: 'IStringLocalizer falls back gracefully — if fr-FR.resx has no "WelcomeMessage" key, it tries the neutral "fr.resx", then the default resource, and finally returns the key name as the value. The LocalizedString.ResourceNotFound property is true to signal the miss. This prevents NullReferenceExceptions in localized UIs.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -297,6 +308,14 @@ app.MapGet("/greet", (string name, IStringLocalizer<GreetingResources> localizer
     {
       q: 'How do I handle right-to-left languages like Arabic or Hebrew?',
       a: 'Add the culture to supported cultures, create .ar.resx resource files, and in the HTML set dir="rtl" based on CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft. CSS should also use logical properties (margin-inline-start instead of margin-left) for layout mirroring.',
+    },
+    {
+      q: 'How do I test that my ASP.NET Core application returns correctly localised responses?',
+      a: 'In integration tests using WebApplicationFactory, send requests with the Accept-Language header: client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("fr-FR")). Assert the response body contains the French strings. You can also override the culture provider in the test host by registering a custom IRequestCultureProvider that returns a fixed culture, making all tests deterministic regardless of test runner locale.',
+    },
+    {
+      q: 'What is the PluralForms problem in localisation and how does .NET address it?',
+      a: 'Many languages have complex plural rules — Russian has four plural forms, Arabic has six, English has two. .NET\'s built-in IStringLocalizer has no plural-aware API. The workaround is to create separate resource keys for each plural form (OrderCount_One, OrderCount_Few, OrderCount_Many) and select the key in code based on the count, using CultureInfo rules. Libraries like OrchardCore.Localization or NGettext provide proper plural-aware localisation on top of ASP.NET Core.',
     },
   ];
 

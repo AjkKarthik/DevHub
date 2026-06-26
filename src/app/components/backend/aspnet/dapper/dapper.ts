@@ -279,6 +279,17 @@ public async Task<Order?> GetOrderWithCustomerAsync(int orderId)
       answer: 2,
       explanation: 'QueryMultipleAsync() runs a batch SQL with multiple statements, returning a GridReader. Call multi.ReadAsync<T>() for each result set.',
     },
+    {
+      q: 'How do you wrap multiple Dapper operations in a transaction?',
+      options: [
+        'Pass TransactionScope to the Dapper method',
+        'Begin a transaction with connection.BeginTransaction() and pass it as the transaction parameter to each Dapper call',
+        'Use Dapper.TransactionAsync() which wraps all operations automatically',
+        'Dapper does not support transactions — use EF Core for that',
+      ],
+      answer: 1,
+      explanation: 'Every Dapper extension method accepts an optional IDbTransaction parameter. Begin one with connection.BeginTransaction() (or BeginTransactionAsync in .NET 7+), pass it to each QueryAsync/ExecuteAsync call, then commit or rollback. Dapper relies on ADO.NET transactions — no extra abstraction is added.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -297,6 +308,14 @@ public async Task<Order?> GetOrderWithCustomerAsync(int orderId)
     {
       q: 'How do I map a column with a different name to a C# property?',
       a: 'Dapper maps by column name (case-insensitive) to property name. Use a SQL alias (SELECT created_at AS CreatedAt) to match the property name. Alternatively, register a custom SqlMapper.ITypeMap if you need a global convention such as snake_case to PascalCase.',
+    },
+    {
+      q: 'How do I call a stored procedure with Dapper?',
+      a: 'Pass the procedure name and commandType: CommandType.StoredProcedure: await conn.QueryAsync<Order>("sp_GetOrders", new { CustomerId = id }, commandType: CommandType.StoredProcedure). For output parameters, use DynamicParameters: var p = new DynamicParameters(); p.Add("@Count", dbType: DbType.Int32, direction: ParameterDirection.Output); then read with p.Get<int>("@Count").',
+    },
+    {
+      q: 'How can I process a very large result set without loading all rows into memory at once?',
+      a: 'Pass buffered: false to QueryAsync: await conn.QueryAsync<Row>(sql, params, buffered: false). This returns an IEnumerable<T> backed by a live DataReader — rows are streamed one at a time. Process them in a foreach loop without calling .ToList(). The connection must stay open for the duration. This approach is essential for bulk exports or reports returning millions of rows.',
     },
   ];
 

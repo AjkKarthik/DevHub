@@ -307,6 +307,17 @@ products.MapPost("/", (CreateProductRequest req) =>
       answer: 1,
       explanation: '.WithName(name) sets the operationId in OpenAPI and makes the endpoint resolvable by LinkGenerator.GetUriByName().',
     },
+    {
+      q: 'How does TypedResults.Stream() work and what is it used for?',
+      options: [
+        'It streams JSON responses incrementally to reduce time-to-first-byte',
+        'It returns a file stream directly to the response, enabling downloads without buffering to memory',
+        'It converts an IAsyncEnumerable into a server-sent event stream',
+        'It enables HTTP/2 server push for the specified stream',
+      ],
+      answer: 1,
+      explanation: 'TypedResults.Stream(stream, contentType, fileDownloadName) writes a Stream directly to the HTTP response. The stream is read and forwarded to the client without buffering in memory — essential for large file downloads. Setting fileDownloadName adds a Content-Disposition: attachment header. Strongly typed, it enables OpenAPI inference of a binary response.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -325,6 +336,14 @@ products.MapPost("/", (CreateProductRequest req) =>
     {
       q: 'What is the difference between endpoint filters and middleware?',
       a: 'Middleware runs for every request before routing resolves the endpoint. Endpoint filters run after routing, targeting specific endpoints or groups. Filters have access to the endpoint metadata and handler arguments, making them better for per-endpoint cross-cutting concerns like validation.',
+    },
+    {
+      q: 'How do I handle exceptions and return ProblemDetails in minimal API endpoints?',
+      a: 'Two approaches: (1) Use UseExceptionHandler() middleware with app.UseExceptionHandler(h => h.Run(async ctx => { var ex = ctx.Features.Get<IExceptionHandlerFeature>(); ... return Results.Problem(...); })). (2) In .NET 8+, call builder.Services.AddProblemDetails() and app.UseExceptionHandler() — this automatically maps unhandled exceptions to RFC 9457 ProblemDetails responses. For business exceptions, return TypedResults.Problem() directly from the endpoint handler.',
+    },
+    {
+      q: 'What is the [FromServices] attribute for in minimal API parameters and when do you need it?',
+      a: 'For minimal API handlers, ASP.NET Core automatically infers that parameters registered in DI are services — you rarely need [FromServices]. The attribute becomes necessary when a type is both a registered service AND a valid body type (e.g., a class that could come from the request body). [FromServices] explicitly marks the parameter as a DI service injection, preventing ambiguity. It also documents intent clearly in code.',
     },
   ];
 

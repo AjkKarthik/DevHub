@@ -338,6 +338,17 @@ app.MapPost("/orders", async (OrderRequest req) =>
       answer: 1,
       explanation: 'The OTel Collector is a standalone process that receives telemetry via OTLP, applies processors (batching, filtering, enrichment), and exports to one or more backends (Jaeger, Prometheus, Datadog, etc.).',
     },
+    {
+      q: 'What is tail-based sampling in OpenTelemetry and how does it differ from head-based?',
+      options: [
+        'Tail-based samples the last X requests of each session; head-based samples the first X',
+        'Head-based makes the sampling decision at the start of a request; tail-based waits until the trace is complete to decide based on outcome (e.g., only keep error traces)',
+        'They are identical — just different naming conventions per vendor',
+        'Tail-based sampling is only available with the OTel Collector; head-based runs in the SDK',
+      ],
+      answer: 1,
+      explanation: 'Head-based sampling (ParentBasedSampler, TraceIdRatioBased) decides at trace start — fast but blind to errors. Tail-based sampling buffers the complete trace and samples based on outcome — always keep errors and slow traces, drop fast successes. Tail-based requires the OTel Collector\'s tail_sampling processor since the app cannot buffer full traces itself.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -356,6 +367,14 @@ app.MapPost("/orders", async (OrderRequest req) =>
     {
       q: 'How do I add baggage (cross-service context) to a trace?',
       a: 'Use Activity.Current?.AddBaggage("key", "value") to set propagated context. Baggage is transmitted in the traceparent/tracestate W3C headers and available in downstream services via Activity.Current?.GetBaggageItem("key"). Use sparingly — baggage adds overhead to every hop.',
+    },
+    {
+      q: 'How do I add custom attributes (tags) to an existing span?',
+      a: 'Call Activity.Current?.SetTag("key", "value") anywhere in the request pipeline — in the controller, in a service, or inside a using (var activity = activitySource.StartActivity("name")) block. For semantic conventions, prefer the OpenTelemetry Semantic Conventions package for standard attribute names (e.g., SemanticConventions.AttributeDbSystem = "mssql"). Tags are searchable in most tracing backends.',
+    },
+    {
+      q: 'What is the difference between a Meter/Counter and a Trace/Span?',
+      a: 'A Counter (or Histogram) in the Metrics pillar aggregates numeric measurements over time — request counts, error rates, latency percentiles. It is pre-aggregated before export and ideal for dashboards and alerting thresholds. A Span in the Traces pillar records one specific unit of work — its exact start/end time, attributes, and parent-child relationships. It is ideal for debugging individual requests. Use metrics for operational dashboards; use traces for root-cause analysis of specific incidents.',
     },
   ];
 

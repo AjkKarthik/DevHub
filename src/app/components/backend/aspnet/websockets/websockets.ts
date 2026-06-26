@@ -363,6 +363,17 @@ app.Map("/ws/ping", async (HttpContext ctx) =>
       answer: 2,
       explanation: 'WebSocket.SendAsync and ReceiveAsync must not be called concurrently on the same socket. Use separate tasks carefully and do not overlap sends — or use a channel to serialize sends.',
     },
+    {
+      q: 'What are WebSocket ping and pong frames used for?',
+      options: [
+        'They are used to measure round-trip latency between client and server',
+        'Ping frames are heartbeats that keep the connection alive and detect broken connections; pong is the mandatory reply',
+        'They are application-level message types for high-priority data',
+        'Ping frames trigger a protocol upgrade; pong confirms the new protocol version',
+      ],
+      answer: 1,
+      explanation: 'Ping/pong are WebSocket control frames (RFC 6455). Sending a Ping frame requires the other side to respond with Pong. This proves the connection is alive and detects silently dropped connections (e.g., a NAT timeout that closed the TCP connection without a FIN). In .NET, KeepAliveInterval on UseWebSockets() sends automatic Ping frames to maintain idle connections.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -381,6 +392,14 @@ app.Map("/ws/ping", async (HttpContext ctx) =>
     {
       q: 'How do I handle large messages that span multiple frames?',
       a: 'ReceiveAsync sets EndOfMessage = false when a message spans multiple frames. Keep calling ReceiveAsync and appending to a MemoryStream until EndOfMessage is true, then process the complete message.',
+    },
+    {
+      q: 'How do I implement a heartbeat (keep-alive) mechanism for WebSocket connections?',
+      a: 'Two approaches: (1) Use ASP.NET Core\'s built-in: configure UseWebSockets(new WebSocketOptions { KeepAliveInterval = TimeSpan.FromSeconds(30) }) — the server automatically sends Ping frames. (2) Application-level heartbeat: start a timer that sends a custom "ping" text message every N seconds; the client responds with "pong". The application heartbeat is more visible (you can track it in logs) and works when the client is a browser that does not expose raw WebSocket control frames.',
+    },
+    {
+      q: 'How do I limit the number of concurrent WebSocket connections to prevent resource exhaustion?',
+      a: 'Track connections in a ConcurrentDictionary and check count before calling AcceptWebSocketAsync(). Return 503 if the limit is exceeded: if (_connections.Count >= MAX_CONNECTIONS) { context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable; return; } You can also use a SemaphoreSlim to queue connections rather than reject them. For multi-instance deployments, the per-instance limit must be coordinated via a distributed counter (Redis INCR/DECR) to enforce a global limit.',
     },
   ];
 
