@@ -566,6 +566,17 @@ app.Run();`,
       answer: 2,
       explanation: 'A JsonSerializerContext (partial class with [JsonSerializable] attributes) triggers the STJ source generator to emit TypeInfo<T> for each annotated type at compile time. This replaces runtime reflection entirely. Pass the context to ConfigureHttpJsonOptions so ASP.NET Core uses it for all request/response serialisation.',
     },
+    {
+      q: 'What is the difference between PublishReadyToRun and PublishAot?',
+      options: [
+        'They are identical — ReadyToRun is the old name for AOT',
+        'ReadyToRun pre-JITs assemblies into R2R images but still ships the JIT for fallback; AOT compiles everything to native code and ships no JIT at all',
+        'ReadyToRun is for Linux; AOT is for Windows and macOS',
+        'ReadyToRun reduces binary size; AOT reduces startup time only',
+      ],
+      answer: 1,
+      explanation: 'ReadyToRun (R2R) produces MSIL assemblies with pre-compiled native code embedded. At startup, the pre-compiled paths run without JIT; uncompiled paths still JIT. The .NET runtime is still required. Native AOT goes further: all code is compiled to machine code at publish; no JIT, no runtime required. AOT startup is 10–30× faster than JIT and 2–3× faster than R2R.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -584,6 +595,14 @@ app.Run();`,
     {
       q: 'What are the cold-start improvements in AWS Lambda and Azure Functions?',
       a: 'AWS Lambda with Native AOT has cold-start times of 10–50ms vs 500ms–2s for a JIT .NET Lambda. Azure Functions Isolated worker with Native AOT similarly reduces cold starts from seconds to tens of milliseconds. Both platforms officially support .NET Native AOT as of .NET 8. The improvement is most impactful for sporadic/bursty workloads where cold starts happen frequently.',
+    },
+    {
+      q: 'How do I suppress a specific trimmer warning that I know is safe to ignore?',
+      a: 'Use [UnconditionalSuppressMessage("TrimAnalysis", "IL2026", Justification = "Types registered manually")]. This is the correct way to silence specific IL2026 warnings when you have manually ensured the referenced types survive trimming. Alternatively, add <TrimmerRootDescriptor Include="linker.xml" /> in the .csproj to keep specific types. Never use <TrimmerRootAssembly> or SuppressAllWarnings — they mask real issues.',
+    },
+    {
+      q: 'What limitations exist for third-party libraries in a Native AOT application?',
+      a: 'Many popular libraries are not yet AOT-compatible: runtime code generation (Roslyn scripting, Expression.Compile at runtime, IL.Emit), dynamic proxies (Castle Windsor, Moq, older Autofac), conventional EF Core (use compiled models), and libraries that do heavy reflection-based registration (some MediatR versions). Check the library\'s GitHub for an AOT compatibility issue or PR. The .NET team maintains a compatibility list. Run your app with trimmer analysis (<IsAotCompatible>true</IsAotCompatible>) to surface issues early.',
     },
   ];
 

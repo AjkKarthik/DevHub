@@ -517,6 +517,17 @@ bootstrapApplication(AppComponent, appConfig)
       answer: 1,
       explanation: 'After migrating to standalone, import only what your template uses (NgClass, AsyncPipe, etc.) — not CommonModule. With Angular 17+ @if/@for built-in control flow, NgIf and NgFor are not needed at all. CommonModule ships unused code.',
     },
+    {
+      q: 'The migration schematic adds standalone: true but leaves NgModules in place. What should you do with them?',
+      options: [
+        'Leave them — Angular requires at least one NgModule even in standalone apps',
+        'Run pass 3 of the schematic to remove NgModules, or delete them manually after verifying the app still builds',
+        'Convert them to SCAM modules for backwards compatibility',
+        'Rename them to *.config.ts files so Angular ignores them',
+      ],
+      answer: 1,
+      explanation: 'Pass 1 makes components standalone but leaves NgModules. Pass 3 of the schematic (ng generate @angular/core:standalone --mode=prune-modules) removes the now-redundant NgModules. You can also delete them manually — once components are standalone and AppModule is replaced by bootstrapApplication, NgModules serve no purpose.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -535,6 +546,14 @@ bootstrapApplication(AppComponent, appConfig)
     {
       q: 'What if the migration schematic fails or produces wrong output?',
       a: 'The schematic is generated code — verify after each pass. Common issues: (1) a component used a directive via a re-exporting shared module that the schematic didn\'t trace — add the import manually, (2) template-only directives (CDK, Material) were not added to imports[] — add them, (3) lazy-loaded modules with complex route configs may need manual cleanup. Always run ng build after each pass to surface compile errors immediately.',
+    },
+    {
+      q: 'How do I migrate services that were provided in AppModule\'s providers array?',
+      a: 'Move them to app.config.ts in the providers array of the ApplicationConfig object passed to bootstrapApplication(). For services with providedIn: "root", no change is needed — Angular registers them automatically. For services that need lazy-loaded scope or per-component scope, use the component\'s providers: [] input. If the service was only in AppModule providers because it had side effects at startup (router guards etc.), provide it in the route config instead.',
+    },
+    {
+      q: 'What replaces RouterModule.forChild() in a lazy-loaded feature after standalone migration?',
+      a: 'In standalone apps, lazy routes export a Routes array directly instead of a RouterModule. The route config uses loadChildren: () => import("./feature/feature.routes").then(m => m.FEATURE_ROUTES). The FEATURE_ROUTES file exports a plain Routes constant — no NgModule, no forChild(). This is tree-shakeable and works with standalone components natively. For component-level routing, loadComponent does the same for a single component with a route.',
     },
   ];
 

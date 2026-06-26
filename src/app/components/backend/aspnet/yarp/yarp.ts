@@ -325,6 +325,17 @@ app.MapReverseProxy();`,
       answer: 2,
       explanation: 'LeastRequests routes each new request to the destination currently handling the fewest in-flight requests — good for variable-duration backend operations.',
     },
+    {
+      q: 'How does YARP handle passive health checking for backend destinations?',
+      options: [
+        'YARP pings each destination every 30 seconds and marks unhealthy ones',
+        'Passive health checking monitors real traffic — if a destination returns 5xx errors above a threshold, YARP marks it unhealthy and stops routing to it',
+        'Passive health checking is not supported — YARP only supports active (probe) health checks',
+        'YARP delegates health checking entirely to the load balancer policy',
+      ],
+      answer: 1,
+      explanation: 'Passive health checking in YARP observes actual proxy responses. Configure ThresholdFailureRateDetector — if error responses exceed a threshold within a time window, the destination is marked unhealthy and excluded from routing. Active health checking sends scheduled probe requests to a health endpoint. Using both together provides the most robust failure detection.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -343,6 +354,14 @@ app.MapReverseProxy();`,
     {
       q: 'Does YARP support gRPC proxying?',
       a: 'Yes. YARP supports HTTP/2 and gRPC proxying when the backend accepts HTTP/2. Set the HttpVersion to "2" in the cluster\'s HttpClient options and ensure TLS or plaintext H2 is configured on both sides.',
+    },
+    {
+      q: 'How do I add custom request headers to proxied requests in YARP?',
+      a: 'Use the RequestHeaderTransform: in routes config, add "Transforms": [{ "RequestHeader": "X-Forwarded-App", "Set": "my-gateway" }]. For code-based transforms, use the pipeline builder in MapReverseProxy: proxy.UseAfterProxy((ctx, next) => { ctx.ProxyRequest?.Headers.Add("X-Custom", "value"); return next(ctx); }). For dynamic headers (e.g., from auth context), implement ITransformProvider and inject it.',
+    },
+    {
+      q: 'How do I implement circuit breaking for YARP backend destinations?',
+      a: 'YARP does not include a built-in circuit breaker, but integrates cleanly with Polly. Register an HttpMessageHandler on the cluster\'s HttpClient with a ResiliencePipelineBuilder: services.AddHttpClient("cluster-id").AddResilienceHandler("circuit-breaker", builder => { builder.AddCircuitBreaker(new CircuitBreakerStrategyOptions<HttpResponseMessage> { ... }); }). Passive health checking complements this — together they handle both rapid failure detection (circuit breaker) and graceful re-admission (health checks).',
     },
   ];
 

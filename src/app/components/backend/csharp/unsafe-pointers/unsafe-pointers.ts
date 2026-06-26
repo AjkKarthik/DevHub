@@ -556,6 +556,17 @@ class Program
       answer: 1,
       explanation: 'Span<T> and its companion APIs (MemoryMarshal, MemoryExtensions, System.Runtime.CompilerServices.Unsafe) cover the vast majority of high-performance buffer processing needs without any unsafe code. They are bounds-checked, GC-tracked, and work with stack, heap, and native memory. Reach for unsafe pointers only for P/Invoke or genuinely unavoidable cases.',
     },
+    {
+      q: 'What is the purpose of the GCHandle.Alloc(obj, GCHandleType.Pinned) overload and when is it needed?',
+      options: [
+        'It keeps the object alive indefinitely without a rooted reference',
+        'It pins the object at a fixed memory address for the handle\'s lifetime — required when passing a managed object\'s address to native code outside a fixed block',
+        'It moves the object to a non-moving LOH segment',
+        'It prevents the GC from accessing the object during a concurrent collection',
+      ],
+      answer: 1,
+      explanation: 'The fixed statement pins an object only within its block — the pin is released on exit. GCHandle.Alloc(obj, GCHandleType.Pinned) pins the object indefinitely until GCHandle.Free() is called, making the address valid for the handle\'s full lifetime. Use this when a native callback will reference the managed object\'s address across multiple calls. Always call Free() in a finally block to prevent the pin from preventing GC compaction permanently.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -574,6 +585,14 @@ class Program
     {
       q: 'How do I call a C native function that takes a char* from C#?',
       a: 'For simple strings, [DllImport] with string marshalling handles it automatically. For manual control, pin the string with fixed (char* pStr = myString) and pass pStr. For byte* (UTF-8), use System.Text.Encoding.UTF8.GetBytes(), pin the byte array, and pass the pointer. In .NET 7+, the [LibraryImport] attribute with source generation is the preferred modern approach — it is AOT-safe and avoids the reflection overhead of [DllImport].',
+    },
+    {
+      q: 'What are the performance implications of using unsafe code versus safe code?',
+      a: 'Unsafe code can be faster by eliminating bounds checks on array access — the JIT emits a check before every array index in safe code. However, modern JIT and the runtime already optimise many bounds checks away (loop vectorisation, range proof elimination). In practice, the measurable speedup from unsafe code is most significant in tight inner loops processing large arrays. Profile first — BenchmarkDotNet with [MemoryDiagnoser] — before adding unsafe complexity. For most application code, the safety of bounds checking is worth the negligible overhead.',
+    },
+    {
+      q: 'How do I write a managed object\'s bytes directly to a Span<byte> without boxing?',
+      a: 'For unmanaged structs, use MemoryMarshal.Write<T>(destination, in value) — it writes the raw bytes of value into destination without any allocation. The struct must be unmanaged (no reference fields). Alternatively, MemoryMarshal.Cast<T, byte>(MemoryMarshal.CreateReadOnlySpan(ref value, 1)) creates a byte view over the struct. For classes or structs with reference fields, you must serialise to bytes explicitly — the GC must be able to track all object references.',
     },
   ];
 

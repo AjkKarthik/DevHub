@@ -616,6 +616,10 @@ export class RegistrationComponent {
       q: 'What happens to the type of valueChanges on a typed FormControl?',
       a: 'valueChanges is typed as Observable<T> where T is the control\'s value type including null if nullable. For a FormControl<string | null>, valueChanges is Observable<string | null>. For a nonNullable FormControl<string>, valueChanges is Observable<string>. This means switchMap, map, and subscribe callbacks all receive correctly typed values.',
     },
+    {
+      q: 'When should I use FormRecord instead of FormGroup?',
+      a: 'FormRecord is for dynamic forms where control keys are not known at compile time — they are strings added and removed at runtime. fb.nonNullable.record<FormControl<string>>({}) creates a FormRecord where addControl(key, control) and removeControl(key) are type-safe. FormGroup is for forms with a fixed, known set of keys declared at type-time. Use FormRecord for tag editors, permission matrices, or any pattern where the user can add or remove named fields dynamically.',
+    },
   ];
 
   revision: RevisionSummary = {

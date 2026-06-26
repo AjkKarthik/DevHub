@@ -291,6 +291,17 @@ app.MapPost("/feedback", ([FromForm] string message) =>
       answer: 2,
       explanation: 'The double-submit pattern sends the token in a cookie and in a second channel (form field or header). The server verifies they match — an attacker who cannot read the cookie cannot forge the second copy.',
     },
+    {
+      q: 'A CSRF token is embedded in a form. What is the most important security property it must have?',
+      options: [
+        'It must be the same for all users to reduce server storage',
+        'It must be short (< 16 bytes) to reduce request size',
+        'It must be unpredictable and unique per session or request so an attacker cannot guess it',
+        'It must expire within 60 seconds to limit the attack window',
+      ],
+      answer: 2,
+      explanation: 'A CSRF token\'s security relies entirely on it being secret and unpredictable. ASP.NET Core generates cryptographically random tokens tied to the session. If the token were predictable (e.g., a timestamp), an attacker could forge a valid request without needing to read the cookie.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -309,6 +320,14 @@ app.MapPost("/feedback", ([FromForm] string message) =>
     {
       q: 'Is SameSite=Strict enough on its own without antiforgery tokens?',
       a: 'It provides strong protection in modern browsers but is not sufficient alone. Older browsers may not enforce SameSite. Sub-domain attacks can still work if a sub-domain is compromised. Defence in depth means using both SameSite cookies AND antiforgery tokens.',
+    },
+    {
+      q: 'How do I handle CSRF protection in an Angular SPA that uses cookie-based auth (BFF pattern)?',
+      a: 'Angular\'s HttpClient can automatically read a CSRF cookie and add it as a header using HttpClientXsrfModule.withOptions({ cookieName: "XSRF-TOKEN", headerName: "X-XSRF-TOKEN" }). In ASP.NET Core, call services.AddAntiforgery(o => { o.HeaderName = "X-XSRF-TOKEN"; o.Cookie.Name = "XSRF-TOKEN"; }) and generate the token on the first request (e.g., in a middleware). Angular reads the cookie automatically and sends the header on subsequent mutating requests.',
+    },
+    {
+      q: 'What is the Synchronizer Token Pattern and how does it differ from the Double Submit Cookie Pattern?',
+      a: 'In the Synchronizer Token Pattern, the server generates a token per session, stores it server-side, embeds it in forms/responses, and verifies it on the next request — the server has ground truth. In the Double Submit Cookie Pattern, the server generates a token but stores it only in a cookie (not server-side), and the client echoes it in a header/form field. The server just checks they match — no server-side state needed, better for stateless/distributed APIs.',
     },
   ];
 

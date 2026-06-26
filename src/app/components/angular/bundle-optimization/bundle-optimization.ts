@@ -523,6 +523,17 @@ groupedData = groupBy(this.items, 'category');`,
       answer: 1,
       explanation: 'LCP measures when the largest visible element becomes visible. Deferring it delays render — the browser cannot paint it until the chunk downloads. This directly hurts your LCP score. Never defer above-fold or LCP elements.',
     },
+    {
+      q: 'What does the Angular compiler\'s "common chunk" configuration do for lazy routes?',
+      options: [
+        'It merges all lazy chunks into one file for easier caching',
+        'It extracts shared code used by multiple lazy chunks into a separate common chunk, reducing total download size when the user visits multiple lazy routes',
+        'It inlines shared code into every lazy chunk to avoid extra HTTP requests',
+        'It prevents lazy chunks from sharing any code to ensure complete isolation',
+      ],
+      answer: 1,
+      explanation: 'When two lazy chunks both use the same library (e.g., @angular/forms), the build creates a "common" chunk with the shared code. Without it, each lazy chunk would bundle its own copy — wasting bytes on the second chunk the user downloads.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -541,6 +552,14 @@ groupedData = groupBy(this.items, 'category');`,
     {
       q: 'Does Angular\'s esbuild builder automatically tree-shake CommonJS dependencies?',
       a: 'No — esbuild can tree-shake ESM (ES module) dependencies via static import/export analysis. CommonJS uses dynamic require() which cannot be statically analysed, so the entire module is bundled. The Angular esbuild builder does apply some CommonJS annotations (/*#__PURE__*/) to help, but it cannot fully tree-shake CommonJS. Switching to ESM alternatives is the reliable fix.',
+    },
+    {
+      q: 'How do I use source-map-explorer to find what is bloating my Angular bundle?',
+      a: 'Run: ng build --source-map then npx source-map-explorer dist/my-app/browser/main*.js. It opens an interactive treemap where each rectangle represents a module — larger rectangles are bigger contributors. Look for unexpected duplicates (the same library appearing twice under different import paths) and oversized dependencies (e.g. moment.js taking 60% of a utility chunk). The explore command also accepts a glob: source-map-explorer "dist/**/*.js" to analyse all chunks.',
+    },
+    {
+      q: 'What are Angular build budgets and how do I set them?',
+      a: 'Build budgets are size limits in angular.json that cause the Angular CLI to warn or error when a bundle exceeds a threshold. In angular.json, under configurations.production.budgets, set: { "type": "initial", "maximumWarning": "500kb", "maximumError": "1mb" }. This gates bundle size in CI — a PR that balloons the bundle will fail the build. Set warning at your current size and error 20% above it. Use type: "anyComponentStyle" for SCSS-heavy apps to catch style regressions.',
     },
   ];
 

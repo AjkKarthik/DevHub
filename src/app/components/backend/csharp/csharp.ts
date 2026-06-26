@@ -648,6 +648,17 @@ catch (IOException ex)       { /* handle file/network error */ }
       answer: 1,
       explanation: 'CancellationToken is a signal. The caller creates a CancellationTokenSource, passes its Token to async methods, and calls Cancel() to request early termination. The async method checks IsCancellationRequested or passes the token to awaited APIs.',
     },
+    {
+      q: 'What is pattern matching with a when guard clause?',
+      options: [
+        'A C# preprocessor directive that conditionally compiles code based on a condition',
+        'An additional boolean condition in a switch arm or is expression — the arm only matches if both the pattern and the when condition are true',
+        'A null-check shorthand that throws when the pattern does not match',
+        'A LINQ operator for filtering elements that match a specific type',
+      ],
+      answer: 1,
+      explanation: 'switch (shape) { case Circle c when c.Radius > 10 => "large circle" } — the arm matches only when the shape is a Circle AND its Radius exceeds 10. The when clause can reference variables bound by the pattern (here c). Without the guard, any Circle would match regardless of size. Guards enable fine-grained branching that type patterns alone cannot express.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -670,6 +681,10 @@ catch (IOException ex)       { /* handle file/network error */ }
     {
       q: 'How does pattern matching with switch expressions work?',
       a: 'A switch expression tests the input against patterns in order and returns the value of the matching arm. Patterns include type patterns (<code>is string s</code>), property patterns (<code>{ Name: "Alice" }</code>), relational patterns (<code>&lt; 0</code>), and the discard <code>_</code> as a catch-all. The compiler warns if the switch is not exhaustive.',
+    },
+    {
+      q: 'What is the difference between ref and out parameters in C#?',
+      a: '<code>ref</code> parameters must be initialised by the caller before passing — the method can both read and write the value. <code>out</code> parameters do not need to be initialised by the caller — the method is responsible for assigning them before returning (the compiler enforces this). Both are passed by reference (no copy). Use <code>ref</code> when the current value matters to the method; use <code>out</code> for secondary return values (the classic pattern: <code>int.TryParse(str, out int result)</code>).',
     },
   ];
 

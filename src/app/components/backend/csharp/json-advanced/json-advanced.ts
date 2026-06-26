@@ -608,6 +608,17 @@ Console.WriteLine(restored[1] is OrderPlaced op ? \$"Amount: {op.TotalAmount}" :
       answer: 1,
       explanation: '.NET 7 added [JsonPolymorphic] and [JsonDerivedType] attributes. Decorate the base class with these to opt in to automatic discriminator writing and type resolution. Before .NET 7, a custom converter was required. The new approach also works with source generation.',
     },
+    {
+      q: 'What is the performance advantage of Utf8JsonWriter over JsonSerializer.Serialize for high-throughput scenarios?',
+      options: [
+        'Utf8JsonWriter automatically uses source generation — it is AOT-safe by default',
+        'Utf8JsonWriter writes directly to a byte stream as UTF-8 without building an intermediate string or object model — avoiding a heap allocation per serialization',
+        'Utf8JsonWriter is faster because it skips all validation and writes raw bytes directly',
+        'Utf8JsonWriter uses SIMD instructions to write multiple bytes per CPU cycle',
+      ],
+      answer: 1,
+      explanation: 'JsonSerializer.Serialize creates a string (UTF-16 on .NET) and the HTTP pipeline then converts it to UTF-8 for the response. Utf8JsonWriter writes UTF-8 bytes directly to a PipeWriter or Stream — eliminating the intermediate string allocation. For responses serialising millions of small objects, this can halve allocations on the serialisation path.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -626,6 +637,14 @@ Console.WriteLine(restored[1] is OrderPlaced op ? \$"Amount: {op.TotalAmount}" :
     {
       q: 'How do I serialize enums as strings instead of numbers?',
       a: 'Add new JsonStringEnumConverter() to options.Converters. This uses the enum member name by default. For custom name mappings (e.g., snake_case), pass a JsonNamingPolicy to the constructor: new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower). In .NET 8+, you can also use [JsonStringEnumMemberName("custom_name")] on individual enum values.',
+    },
+    {
+      q: 'How do I ignore null values when serializing with System.Text.Json?',
+      a: 'Set options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull. This omits all properties whose value is null. To ignore defaults (null for reference types AND 0/false for value types), use WhenWritingDefault. Per-property control: [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] on individual properties. This is the most common option needed when generating lean API payloads.',
+    },
+    {
+      q: 'How do I process a multi-GB JSON file without loading it all into memory?',
+      a: 'Use Utf8JsonReader in a streaming loop, or JsonDocument.Parse(stream) for a structured DOM approach. For true streaming, read the file as a stream and pass it to JsonSerializer.DeserializeAsyncEnumerable<T>(stream) — it yields T objects one at a time as they are parsed without buffering the entire file. This requires a JSON lines format (one root object per line) or a JSON array at the root. For arbitrary large objects within the array, use Utf8JsonReader directly.',
     },
   ];
 

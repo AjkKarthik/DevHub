@@ -623,6 +623,17 @@ await host.RunAsync();`,
       answer: 1,
       explanation: 'GetService<T>() returns null for unregistered services — which may propagate as a NullReferenceException later, making the root cause hard to find. GetRequiredService<T>() throws InvalidOperationException immediately with a clear message. Prefer GetRequiredService<T>() in application code so bugs surface early and clearly.',
     },
+    {
+      q: 'How do keyed services (.NET 8) differ from registering multiple implementations?',
+      options: [
+        'Keyed services allow only one implementation per key; multiple registrations allow any number',
+        'services.AddKeyedScoped<IService, Impl>("key") registers a service with a string/enum key — resolvers inject [FromKeyedServices("key")] IService to get that specific implementation without IEnumerable<IService>',
+        'Keyed services auto-select the right implementation based on the request path',
+        'Keyed services are only for Singleton lifetime; non-keyed for Scoped and Transient',
+      ],
+      answer: 1,
+      explanation: 'Before keyed services, getting a specific implementation required IEnumerable<IService> + filtering or a factory. Keyed services assign a key (any object, typically a string or enum) at registration: AddKeyedScoped<IEmailSender, SmtpSender>("smtp"). Consumers inject [FromKeyedServices("smtp")] IEmailSender to get the specific one — no enumeration needed. This is the cleanest multiple-implementation pattern in .NET 8+.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -641,6 +652,14 @@ await host.RunAsync();`,
     {
       q: 'How do I validate that all required services are registered correctly before the app starts?',
       a: 'In .NET 6+, set builder.Host.UseDefaultServiceProvider(o => { o.ValidateOnBuild = true; o.ValidateScopes = true; }) (the defaults in development). ValidateOnBuild constructs the dependency graph at startup and throws for any missing or misconfigured registrations — much better than discovering them at runtime under production load.',
+    },
+    {
+      q: 'How do I implement the Decorator pattern with the built-in DI container?',
+      a: 'Manually: register the concrete type first, then register the decorator to resolve the inner service via IServiceProvider: services.AddScoped<IOrderService>(sp => new CachedOrderService(sp.GetRequiredService<SqlOrderService>())). There is no built-in Decorate() method unlike Autofac. The Scrutor library adds services.Decorate<IOrderService, CachedOrderService>() as a cleaner alternative. The pattern is useful for adding caching, logging, or circuit-breaking around an existing service without modifying it.',
+    },
+    {
+      q: 'Can I use DI services in Middleware and what lifetime should I use?',
+      a: 'Yes. Middleware is registered as a class and can receive Singleton or Transient services via constructor injection. For Scoped services (like DbContext), inject them via InvokeAsync(HttpContext ctx, IScopedService svc) — ASP.NET Core resolves them from the request scope each call. Never inject Scoped services into the middleware constructor — middleware is instantiated once (effectively a singleton).',
     },
   ];
 

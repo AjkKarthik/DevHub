@@ -686,6 +686,17 @@ foreach (var file in PosixDir.ListDirectory("/tmp"))
       answer: 1,
       explanation: 'By default, the CLR may reorder struct fields for performance. [StructLayout(LayoutKind.Sequential)] enforces field ordering in declaration order — the same as C compilers default to. Without this, a C# struct used in P/Invoke may have fields at different offsets than the native struct, causing incorrect data reads/writes.',
     },
+    {
+      q: 'How do you load a native library from a custom path at runtime instead of relying on the default OS search?',
+      options: [
+        'Pass the full path string to [DllImport] — it accepts absolute paths',
+        'Use NativeLibrary.SetDllImportResolver() to intercept the load and call NativeLibrary.Load(fullPath) for specific library names',
+        'Set the PATH or LD_LIBRARY_PATH environment variable before the app starts',
+        'Use [DllImport(EntryPoint="full/path/to/lib")] with the absolute path as the entry point',
+      ],
+      answer: 1,
+      explanation: 'NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), (name, asm, searchPath) => { if (name == "mylib") return NativeLibrary.Load("/opt/custom/libmylib.so"); return IntPtr.Zero; }) intercepts all DllImport loads for the assembly. Returning Zero falls back to the default search. This is the correct, cross-platform, AOT-safe approach to custom native library paths.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -704,6 +715,14 @@ foreach (var file in PosixDir.ListDirectory("/tmp"))
     {
       q: 'Can P/Invoke be used in Blazor WebAssembly?',
       a: 'Yes, but with significant limitations. Blazor WASM runs on the Mono WASM runtime, which supports a subset of P/Invoke. You can call JavaScript functions via [JSImport] (preferred, .NET 7+) or call WASM functions exported from other WASM modules via [DllImport]. The standard Win32/POSIX APIs are not available in the browser sandbox. [JSImport]/[JSExport] with source generation is the AOT-safe way to interop with JavaScript from Blazor WASM.',
+    },
+    {
+      q: 'What is COM interop and how does it differ from P/Invoke?',
+      a: 'COM (Component Object Model) is a Windows binary interface standard used by Office, Shell, WMI, and many Windows APIs. COM interop wraps COM interfaces as C# classes — the CLR manages vtable dispatching and IUnknown reference counting. You interact with COM objects through C# interface declarations marked [ComImport] and [Guid]. P/Invoke calls plain C-exported functions; COM interop calls methods on COM objects through their interface vtable. The .NET 7+ COM source generator ([GeneratedComInterface]) provides AOT-safe COM interop without runtime IL generation.',
+    },
+    {
+      q: 'How do calling conventions (cdecl, stdcall, etc.) affect P/Invoke and when do you need to specify them?',
+      a: 'The calling convention determines who cleans up the stack after a native call. Win32 APIs use stdcall (the caller\'s convention); most C libraries use cdecl. On 64-bit Windows and Linux x64, there is only one system calling convention so it rarely matters. On 32-bit Windows, a mismatch causes a stack imbalance — wrong number of bytes popped — often manifesting as a BadImageFormatException or AccessViolationException. Specify with [DllImport(CallingConvention = CallingConvention.Cdecl)] when using 32-bit C libraries. [LibraryImport] also supports [UnmanagedCallConv] for source-generated interop.',
     },
   ];
 

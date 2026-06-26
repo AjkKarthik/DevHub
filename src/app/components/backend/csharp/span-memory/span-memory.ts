@@ -550,6 +550,17 @@ Console.WriteLine(\$"Salary: {salary}");  // 95000`,
       answer: 1,
       explanation: 'stackalloc reserves space on the thread\'s stack (typically 1–4 MB). A user-controlled size with no upper bound can exhaust the stack instantly — StackOverflowException is fatal and cannot be caught. Always cap the size: if (size > threshold) use ArrayPool instead.',
     },
+    {
+      q: 'What does MemoryMarshal.Cast<TFrom,TTo>(ReadOnlySpan<TFrom>) do?',
+      options: [
+        'It converts each element from TFrom to TTo using implicit cast operators',
+        'It reinterprets the raw bytes of the span as a different type — zero-copy, zero-allocation type punning for blittable types',
+        'It creates a copy of the span with each element cast to TTo',
+        'It checks if each TFrom value can be converted to TTo and returns a subset of valid elements',
+      ],
+      answer: 1,
+      explanation: 'MemoryMarshal.Cast<byte, int>(bytes) reinterprets the same memory as ints — the byte count must be divisible by sizeof(int). This is zero-copy type punning: no allocation, no data copying. Both types must be unmanaged (primitive or struct of primitives). Used in network parsers and binary serialisers to read multi-byte values directly from a byte span without copying.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -568,6 +579,14 @@ Console.WriteLine(\$"Salary: {salary}");  // 95000`,
     {
       q: 'What is System.IO.Pipelines and when should I use it over Stream?',
       a: 'Pipelines is a high-performance I/O abstraction built on Span<T> and Memory<T>. It solves the "I don\'t know how much data is coming" parsing problem efficiently: PipeReader gives you a ReadOnlySequence<byte> of what arrived, you examine it, tell the reader how much you consumed, and it manages the buffer lifecycle. Use it for high-throughput network servers (ASP.NET Core uses it internally). For simple file I/O or one-off reads, Stream is simpler and more than adequate.',
+    },
+    {
+      q: 'How do you safely use stackalloc in C# without the unsafe keyword in modern .NET?',
+      a: 'Use Span<T> = stackalloc T[n]: Span<byte> buffer = stackalloc byte[256]. This is legal in safe context (no unsafe keyword needed) when assigned directly to a Span<T>. The Span<T> enforces bounds checking and prevents the pointer from escaping the method. The C# compiler emits a fixed-size stack allocation and wraps it in a Span. Always validate the size before stackalloc: if (n > 1024) { /* use ArrayPool */ }.',
+    },
+    {
+      q: 'What is the difference between ReadOnlySpan<T> and ReadOnlyMemory<T>?',
+      a: 'ReadOnlySpan<T> is a ref struct: stack-only, cannot cross async boundaries, cannot be stored in class fields. It is the fastest way to pass a read-only slice of data through synchronous code — zero allocation. ReadOnlyMemory<T> is a regular struct: can be stored in fields, passed across async/await, and converted to ReadOnlySpan<T> when needed via .Span. Use ReadOnlySpan<T> in pure synchronous paths; use ReadOnlyMemory<T> when the buffer reference needs to outlive a single call frame.',
     },
   ];
 

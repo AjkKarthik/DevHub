@@ -326,6 +326,17 @@ public class ProductValidator : AbstractValidator<CreateProductRequest>
       answer: 1,
       explanation: 'Without registered validators, FluentValidation has no rules to run so all models appear valid. No error is thrown — it silently passes.',
     },
+    {
+      q: 'How do you create a fully custom validation rule in FluentValidation?',
+      options: [
+        'Override Validate() in AbstractValidator<T>',
+        'Use .Custom((value, context) => { if (!valid) context.AddFailure("message"); }) to execute arbitrary logic',
+        'Use .Must(x => false) with a custom message',
+        'Inherit ValidationRule and add it to the Rules collection',
+      ],
+      answer: 1,
+      explanation: '.Custom() is for complex validation logic that does not fit the built-in validators. The context.AddFailure() overload that accepts a ValidationFailure gives full control over the property name and error message. .Must() is simpler for single-condition checks; .Custom() is for multiple failure conditions or reuse across validators.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -344,6 +355,14 @@ public class ProductValidator : AbstractValidator<CreateProductRequest>
     {
       q: 'How do I return custom HTTP status codes on validation failure?',
       a: 'When using auto-validation with controllers, FluentValidation returns 400 with ModelState errors by default. To customize this, implement IActionFilter or use the FluentValidation.AspNetCore options to set a custom handler.',
+    },
+    {
+      q: 'How do I localise FluentValidation error messages?',
+      a: 'Two approaches: (1) Per-rule: .WithMessage(x => localizer["ValidationKey"]) with an injected IStringLocalizer. (2) Global: Implement ILanguageManager and register with ValidatorOptions.Global.LanguageManager. FluentValidation includes built-in translations for 30+ languages for its built-in validators — they activate automatically based on CultureInfo.CurrentUICulture. For custom messages, always use the localizer approach rather than hardcoding strings.',
+    },
+    {
+      q: 'Can FluentValidation validators be unit tested in isolation?',
+      a: 'Yes — and this is one of its main advantages over Data Annotations. Instantiate the validator directly: var validator = new CreateOrderValidator(); var result = validator.Validate(model); Assert.False(result.IsValid); Assert.Contains(result.Errors, e => e.PropertyName == "CustomerId"). No HTTP context or ASP.NET pipeline needed. The validator is a plain class — test it like any business logic.',
     },
   ];
 

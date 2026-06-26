@@ -303,6 +303,17 @@ app.MapGet("/reports/beta", async (IFeatureManager fm) =>
       answer: 1,
       explanation: 'A static class with public const strings (e.g., public const string BetaDashboard = "BetaDashboard") gives compile-time safety and a single point of change.',
     },
+    {
+      q: 'What does TargetingFilter enable that PercentageFilter does not?',
+      options: [
+        'It enables a flag for a higher percentage of users than PercentageFilter allows',
+        'It enables a flag for specific named users or groups, allowing targeted beta access without affecting the general rollout percentage',
+        'It applies percentage-based rollout with time-window constraints',
+        'It automatically tracks which users have seen the flag in analytics',
+      ],
+      answer: 1,
+      explanation: 'PercentageFilter enables a flag randomly for X% of requests — useful for canary releases but you cannot control which users see the feature. TargetingFilter targets specific usernames or group memberships: { "Groups": [{ "Name": "beta-testers", "RolloutPercentage": 100 }] }. Both filters can be combined for graduated rollouts to known users first, then general population.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -321,6 +332,14 @@ app.MapGet("/reports/beta", async (IFeatureManager fm) =>
     {
       q: 'How do I test code that checks feature flags?',
       a: 'Inject IFeatureManager as a mock in unit tests. In integration tests, configure the FeatureManagement section in the test host\'s appsettings or use the test-only InMemoryFeatureProvider to set flag states explicitly per test.',
+    },
+    {
+      q: 'How should I handle cleaning up retired feature flags in the codebase?',
+      a: 'Schedule flag removal as a tracked task when a flag reaches 100% rollout. Remove the flag check from code (the branch that was behind the flag becomes permanent), delete the flag from configuration, and remove the constant. Leave a brief git commit message explaining which feature this was. Teams that skip cleanup accumulate permanent "flag debt" — code paths that are always-enabled but still wrapped in if-flag checks that nobody dares remove.',
+    },
+    {
+      q: 'What is the difference between feature flags and configuration values (appsettings)?',
+      a: 'Configuration values are deployment-time settings that require a redeploy or app restart to change. Feature flags are runtime switches designed to be changed without deployment, often with audience targeting and gradual rollout. Use configuration for infrastructure settings (connection strings, timeouts, URLs); use feature flags for product features, A/B tests, and kill switches. Mixing them causes confusion — a setting that looks like config but must be changed immediately in production should be a feature flag.',
     },
   ];
 

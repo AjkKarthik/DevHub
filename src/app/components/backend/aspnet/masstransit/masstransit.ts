@@ -310,6 +310,17 @@ app.MapPost("/orders", async (IPublishEndpoint bus) =>
       answer: 1,
       explanation: 'Sagas are state machines that track the progress of a business workflow across multiple messages and service boundaries, with state persisted to a database.',
     },
+    {
+      q: 'What is the MassTransit request/response pattern and how does IRequestClient<T> work?',
+      options: [
+        'IRequestClient<T> sends a message to a queue and returns a Task that resolves when a correlation ID matches in the error queue',
+        'IRequestClient<T> publishes a request message and awaits a typed response — MassTransit uses a temporary response queue and correlates the reply automatically',
+        'It is an HTTP wrapper that translates MassTransit messages to REST API calls',
+        'It sends messages synchronously by blocking the consumer thread until a reply arrives',
+      ],
+      answer: 1,
+      explanation: 'IRequestClient<T> sends a request message to the consumer\'s endpoint and awaits a response. MassTransit creates a temporary reply queue, embeds the reply address and correlation ID in the request, and the consumer calls context.RespondAsync<TResponse>(response). The IRequestClient resolves the Task when the correlated response arrives. Default timeout is 30 seconds.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -328,6 +339,14 @@ app.MapPost("/orders", async (IPublishEndpoint bus) =>
     {
       q: 'Can MassTransit work with minimal APIs?',
       a: 'Yes. Inject IPublishEndpoint or ISendEndpointProvider directly into the minimal API handler lambda. MassTransit is registered in DI and works the same way regardless of whether you use controllers or minimal APIs.',
+    },
+    {
+      q: 'What is the Outbox pattern and does MassTransit support it?',
+      a: 'The Outbox pattern writes messages to the database in the same transaction as the business entity change, ensuring the message is never lost if the broker is unavailable. MassTransit supports this natively with UseMessageData or the Entity Framework Outbox: cfg.UseEntityFrameworkOutbox<MyDbContext>(). Messages are stored to the database outbox table, then a background job delivers them to the broker. This guarantees at-least-once delivery without two-phase commit.',
+    },
+    {
+      q: 'How do I configure MassTransit for Azure Service Bus?',
+      a: 'Install MassTransit.Azure.ServiceBus.Core and call x.UsingAzureServiceBus((ctx, cfg) => { cfg.Host("Endpoint=sb://...;"); cfg.ConfigureEndpoints(ctx); }). Topics are created automatically for publish fan-out; queues for send point-to-point. Set RetryPolicy and PrefetchCount on the receive endpoint. Use Managed Identity authentication by omitting the key from the connection string and granting the app\'s identity the Service Bus Data Receiver/Sender roles.',
     },
   ];
 

@@ -280,6 +280,17 @@ app.MapGet("/report", () =>
       answer: 1,
       explanation: 'The Accept-Encoding request header lists the compression algorithms the client supports. The server responds with Content-Encoding to indicate which one was applied.',
     },
+    {
+      q: 'What is the difference between CompressionLevel.Fastest and CompressionLevel.SmallestSize?',
+      options: [
+        'Fastest is for binary data; SmallestSize is for text — they use different algorithms',
+        'Fastest minimises CPU time at the cost of larger output; SmallestSize maximises compression ratio at higher CPU cost',
+        'SmallestSize uses Brotli; Fastest uses Gzip regardless of Accept-Encoding',
+        'They are identical — the level is ignored in .NET 8+',
+      ],
+      answer: 1,
+      explanation: 'CompressionLevel controls the trade-off between CPU usage and output size. Fastest produces slightly larger compressed files but completes quickly — good for high-throughput APIs where CPU is the bottleneck. SmallestSize spends more CPU to produce smaller output — good for static assets or low-traffic APIs where bandwidth savings matter more.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -298,6 +309,14 @@ app.MapGet("/report", () =>
     {
       q: 'Does the middleware compress responses that already have a Content-Encoding header?',
       a: 'No. The middleware checks for an existing Content-Encoding header and skips compression if one is present, preventing double-compression.',
+    },
+    {
+      q: 'How do I verify in development that responses are actually being compressed?',
+      a: 'Use browser DevTools (Network tab → click the request → Headers tab) and check that the response has Content-Encoding: gzip or Content-Encoding: br. The response size shown should be significantly smaller than the transferred size. Alternatively, use curl --compressed -I https://localhost/api/data which requests compression and shows the Content-Encoding in the response headers. If the header is absent, check that UseResponseCompression() is placed correctly in the pipeline and that the MIME type is in the compression list.',
+    },
+    {
+      q: 'What is the difference between Content-Encoding and Transfer-Encoding in HTTP?',
+      a: 'Content-Encoding describes a transformation applied to the content\'s representation — it is permanent and the client must decode it to use the data (e.g., Content-Encoding: gzip means the body is gzip-compressed; decompress to get the actual data). Transfer-Encoding describes how the body is transferred over the wire (e.g., Transfer-Encoding: chunked means the body is sent in chunks for streaming). Transfer-Encoding is a transport-layer concern; Content-Encoding is a content-layer concern. Response compression uses Content-Encoding.',
     },
   ];
 

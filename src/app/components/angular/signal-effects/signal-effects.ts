@@ -571,6 +571,10 @@ export class ThemeToggleComponent {
       q: 'What is the difference between effect() and afterRenderEffect()?',
       a: 'effect() runs in response to signal changes, scheduled in Angular\'s reactive graph. afterRenderEffect() runs after every Angular render cycle completes (after the DOM is updated). Use afterRenderEffect() for DOM measurements (getBoundingClientRect, scroll positions, focus management) that must read the actual DOM after Angular has rendered it. Use effect() for non-DOM side effects.',
     },
+    {
+      q: 'How do I create an effect that automatically stops after running once?',
+      a: 'Inside the effect callback, call the cleanup ref\'s destroy() method: const ref = effect(() => { doWork(); ref.destroy(); }). The effect runs once synchronously on creation (tracking any signals read), executes the side effect, then immediately destroys itself. This is useful for one-time initialisation that needs signal values but should not re-run — though in most cases ngOnInit or a constructor-time call is cleaner.',
+    },
   ];
 
   revision: RevisionSummary = {

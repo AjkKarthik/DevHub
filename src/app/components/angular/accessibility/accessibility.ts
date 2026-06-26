@@ -542,6 +542,28 @@ export class ToastsComponent {
       answer: 1,
       explanation: 'cdkTrapFocus intercepts Tab and Shift+Tab keypresses and wraps focus within the tabbable elements inside the container. It is essential for modal dialogs: without it, Tab can move focus behind the overlay to content the user cannot see.',
     },
+    {
+      q: 'Which ARIA attribute should you add to a modal dialog to tell screen readers its purpose?',
+      options: [
+        'role="region" and aria-label="Dialog"',
+        'role="dialog" with aria-labelledby pointing to the dialog title id',
+        'aria-modal="true" alone is sufficient',
+        'role="alert" so the dialog is announced immediately',
+      ],
+      answer: 1,
+      explanation: 'role="dialog" tells assistive technology this is a modal. aria-labelledby="titleId" links it to its visible heading, which screen readers announce when focus enters. aria-modal="true" additionally hints that background content is hidden — use both together.',
+    },
+    {
+      q: 'What is the purpose of adding aria-describedby to a form input?',
+      options: [
+        'It replaces aria-label — only one of the two is needed',
+        'It associates the input with hint text or an error message so screen readers announce the description after the label',
+        'It hides the element from visual display while keeping it accessible',
+        'It marks the element as required for screen readers to announce',
+      ],
+      answer: 1,
+      explanation: 'aria-describedby links an input to supplementary text (a hint, format example, or error message) by ID. The screen reader announces the label first, then the description. This is how you connect a visible error message to the input that caused it without restructuring the DOM.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -560,6 +582,14 @@ export class ToastsComponent {
     {
       q: 'When should I use tabindex="0" vs tabindex="-1"?',
       a: 'tabindex="0" adds an element to the natural tab order — use it on custom interactive elements that should be reachable by Tab (custom controls built from divs/spans). tabindex="-1" removes an element from the tab order but keeps it programmatically focusable via .focus() — use it on elements you need to focus programmatically (dialog headings, main landmark after route change, error summary) without polluting the tab order.',
+    },
+    {
+      q: 'What is the difference between aria-label and aria-labelledby?',
+      a: 'aria-label provides an accessible name as a literal string directly on the element — use it when there is no visible text label to reference (icon buttons, close buttons). aria-labelledby references another element\'s id and uses its text as the accessible name — use it when a visible label already exists on the page. aria-labelledby wins over aria-label when both are present. For form inputs, aria-labelledby is generally preferred because it links visible and accessible names, preventing discrepancies.',
+    },
+    {
+      q: 'How do I implement a focus trap for a modal dialog in Angular?',
+      a: 'Angular CDK provides cdkTrapFocus directive — add it to the modal container: <div cdkTrapFocus cdkFocusInitial>. cdkTrapFocus confines Tab/Shift+Tab cycling to elements within the container. cdkFocusInitial moves focus to the first focusable child when the directive initialises. On close, restore focus to the trigger element by saving a reference before opening: const trigger = document.activeElement as HTMLElement and calling trigger.focus() in the close handler.',
     },
   ];
 

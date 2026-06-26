@@ -547,6 +547,17 @@ if ($failed) {
       answer: 1,
       explanation: 'dotnet-counters monitor --process-id <pid> shows live metrics: CPU%, GC heap size, GC collection counts, exception rate, thread pool queue length, and custom EventCounters. It is the first tool to reach for when diagnosing a misbehaving production process — it gives an instant picture without stopping the process or requiring a profiler.',
     },
+    {
+      q: 'What does dotnet watch do and how does it differ from dotnet run?',
+      options: [
+        'dotnet watch monitors NuGet feeds for updates and auto-installs new package versions',
+        'dotnet watch rebuilds and restarts the app when source files change — and in .NET 6+ applies hot reload for many changes without a full restart',
+        'dotnet watch is a diagnostic tool that tracks all file system changes made by the running process',
+        'dotnet watch is identical to dotnet run but outputs a progress bar',
+      ],
+      answer: 1,
+      explanation: 'dotnet watch monitors source files and rebuilds/restarts the app on changes — the inner development loop equivalent of npm run dev. With .NET 6+ hot reload, many code changes (method bodies, static readonly fields) are applied in-place without restarting. Larger structural changes (new types, attribute changes) still trigger a full restart. Use dotnet watch instead of dotnet run during development.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -565,6 +576,14 @@ if ($failed) {
     {
       q: 'What is the dotnet workload command and when do I need it?',
       a: 'Workloads are optional SDK components for specific platforms — MAUI (mobile/desktop), Blazor WebAssembly, Tizen, watchOS. Install with dotnet workload install maui or dotnet workload install wasm-tools. List installed: dotnet workload list. Update: dotnet workload update. They are not needed for standard web/console/class library projects — only when targeting platform-specific capabilities.',
+    },
+    {
+      q: 'What is the difference between dotnet build and dotnet publish?',
+      a: 'dotnet build compiles the code into the output directory (bin/) suitable for local development — it does not bundle dependencies or produce a deployable artefact. dotnet publish (-c Release) builds, trims unused assets, copies all dependencies (DLLs, config, native libs), and produces a self-contained output in a publish/ folder ready to deploy. Always use dotnet publish for CI/CD; never deploy from bin/ directly.',
+    },
+    {
+      q: 'How do I add a NuGet package from a local directory or private feed rather than nuget.org?',
+      a: 'For a local directory: add a NuGet.Config file with <add key="Local" value="/path/to/local/packages" /> under <packageSources>. For a private feed (Azure Artifacts, GitHub Packages, Nexus): add the feed URL with credentials in NuGet.Config or via environment variables (NUGET_AUTH_TOKEN). Run dotnet nuget add source <url> --name <name> to register a feed. dotnet add package will then search all registered sources in priority order.',
     },
   ];
 

@@ -495,6 +495,17 @@ export class CardComponent {
       answer: 1,
       explanation: 'Multiple host directives all activate on the host element simultaneously. Their host bindings, listeners, and class/style changes all apply. There is no override — they coexist.',
     },
+    {
+      q: 'How do you expose a host directive\'s output to consumers of the component?',
+      options: [
+        'Outputs are automatically exposed — no configuration needed',
+        'List the output in the outputs array of the hostDirectives config: outputs: ["cdkDragMoved"]',
+        'Declare an @Output() with the same name on the component class',
+        'Host directive outputs cannot be forwarded to consumers',
+      ],
+      answer: 1,
+      explanation: 'Like inputs, host directive outputs are private by default. Add them to the outputs array in the hostDirectives config: outputs: ["cdkDragMoved"] or with an alias outputs: ["cdkDragMoved: moved"]. The consumer can then listen with (moved)="onMoved($event)".',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -513,6 +524,14 @@ export class CardComponent {
     {
       q: 'Can a host directive emit its own outputs that the component re-exposes?',
       a: 'Yes — use outputs: ["cdkDragStarted: dragStarted"] in the hostDirectives config. The host directive emits cdkDragStarted; the component exposes it as dragStarted to its consumers. In the component class, inject(CdkDrag).cdkDragStarted is the EventEmitter you can listen to programmatically.',
+    },
+    {
+      q: 'How do I access a host directive instance from inside the component class?',
+      a: 'Use inject() in the component\'s constructor: private drag = inject(CdkDrag). Angular adds host directives to the same component injector, so inject() resolves them without any provider configuration. You can then call methods or subscribe to observables on the directive instance. This is the main advantage over a composed base class — the component and directive are fully decoupled at the class level but share an injector.',
+    },
+    {
+      q: 'Are host directives instantiated in a guaranteed order, and does it matter?',
+      a: 'Host directives are instantiated in the order they appear in the hostDirectives array. Each directive\'s constructor runs in that order, then lifecycle hooks (ngOnInit etc.) run in the same order after all constructors complete. In practice, order matters when one host directive depends on inject()ing another — the earlier directive in the array is already in the injector when later ones initialise. Design directives to be independent to avoid ordering bugs.',
     },
   ];
 
