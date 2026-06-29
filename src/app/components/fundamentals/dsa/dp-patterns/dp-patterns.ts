@@ -226,6 +226,9 @@ dp[i][0] = i; dp[0][j] = j; // first row and column are 0,1,2,...,n/m`,
       answer: 2,
       explanation: 'n centers × O(n) expansion each = O(n²). The DP table approach is also O(n²). Both are better than brute force O(n³).',
     },
+  { q: 'Which DP pattern is used to solve the 0/1 Knapsack problem?', options: ['Kadane (max subarray)', 'Inclusion-exclusion on items with weight constraint', 'Interval DP', 'Digit DP'], answer: 1, explanation: '0/1 Knapsack: dp[i][w] = max value using first i items with capacity w. Either include item i (dp[i-1][w-weight_i] + value_i) or exclude (dp[i-1][w]). Can be space-optimized to 1D O(W) array by iterating w in reverse.' },
+  { q: 'What defines a problem that can be solved with interval DP?', options: ['The problem has overlapping subproblems on prefixes', 'The optimal solution for a range [i, j] depends on subranges of [i, j]', 'The problem involves choosing items from a list', 'The state depends only on the previous row'], answer: 1, explanation: 'Interval DP: dp[i][j] = answer for range [i, j]. Base: length-1 intervals. Transition: try all split points k: dp[i][j] = best over k of merge(dp[i][k], dp[k+1][j]). Examples: Matrix Chain Multiplication, Burst Balloons, Optimal BST.' },
+  { q: 'What is the key insight of the unbounded knapsack pattern?', options: ['Each item can be used at most once', 'Each item can be reused unlimited times — iterate capacity forward (not reverse)', 'The problem requires sorting items first', 'Only the last item matters'], answer: 1, explanation: 'Unbounded knapsack: iterate capacity w from 0 to W (forward), allowing an item to be used multiple times. Coin Change and Rod Cutting use this. 0/1 Knapsack iterates w reverse to prevent reuse.' },
   ];
 
   qna: QnaItem[] = [
@@ -241,6 +244,9 @@ dp[i][0] = i; dp[0][j] = j; // first row and column are 0,1,2,...,n/m`,
       q: 'When is interval DP the right approach?',
       a: 'When the answer for a range [i,j] depends on answers for sub-ranges — and you need to try all possible split points k within [i,j]. Classic examples: Matrix Chain Multiplication (split matrix sequence), Burst Balloons (split which balloon to burst last), Palindrome Partitioning II (split into palindromic partitions).',
     },
+  { q: 'How do you identify if a problem fits the Longest Common Subsequence pattern?', a: 'LCS pattern: two sequences, need to find their longest common subsequence (elements need not be contiguous). dp[i][j] = LCS length of s1[0..i-1] and s2[0..j-1]. If s1[i-1] == s2[j-1]: dp[i][j] = dp[i-1][j-1] + 1. Else: max(dp[i-1][j], dp[i][j-1]). O(n*m) time and space (space-optimizable to O(m)). Variants: Edit Distance, Shortest Common Supersequence, Delete Operation for Two Strings.' },
+  { q: 'What is the state machine DP pattern and when do you use it?', a: 'State machine DP models transitions between states (e.g., holding/not-holding a stock, on cooldown/not). Define dp[state] at each step; transition based on decisions. Example: Best Time to Buy and Sell Stock with Cooldown: states are HELD (have stock), SOLD (just sold, cooldown), REST (available to buy). At each price, compute the max profit in each state from previous states. O(n * states) time.' },
+  { q: 'How do you use DP on trees?', a: 'Tree DP (rerooting technique): compute a value for each node based on its subtree. (1) First DFS: compute down-values (result if the subtree is rooted at each node). (2) Second DFS (rerooting): propagate answers upward to compute results for each node considering the whole tree. Example: Find the maximum distance from each node, sum of distances in tree. O(n) total.' },
   ];
 
   revision: RevisionSummary = {

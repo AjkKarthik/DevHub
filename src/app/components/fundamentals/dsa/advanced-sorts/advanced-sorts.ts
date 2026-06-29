@@ -229,6 +229,9 @@ count[arr[i] - min]++; // offset by min`,
       answer: 2,
       explanation: 'Counting sort is O(n + k): O(n) to count, O(k) to build cumulative counts, O(n) to reconstruct. Only works for integers in bounded range.',
     },
+  { q: 'What is QuickSort worst-case time complexity and when does it occur?', options: ['O(n log n), always', 'O(n^2), when the pivot is always the smallest or largest element', 'O(n^2), always', 'O(n), on sorted input'], answer: 1, explanation: 'QuickSort degrades to O(n^2) when the pivot is always the min or max (sorted/reverse-sorted input with naive pivot). Use median-of-three or random pivot to avoid this.' },
+  { q: 'What makes TimSort well-suited for real-world data?', options: ['It has O(n) average case', 'It exploits existing sorted runs (natural order) in the data', 'It requires no extra space', 'It uses hashing for equal elements'], answer: 1, explanation: 'TimSort (Python/Java default) finds natural ascending runs in the input and merges them using MergeSort. Real data often has partially sorted regions, making TimSort faster than O(n log n) in practice.' },
+  { q: 'What is the space complexity of MergeSort?', options: ['O(1)', 'O(log n)', 'O(n)', 'O(n log n)'], answer: 2, explanation: 'MergeSort requires O(n) auxiliary space for the merge step. This is its main disadvantage vs QuickSort (O(log n) stack space). In-place merge variants exist but are complex.' },
   ];
 
   qna: QnaItem[] = [
@@ -244,6 +247,9 @@ count[arr[i] - min]++; // offset by min`,
       q: 'What is radix sort and how does it relate to counting sort?',
       a: 'Radix sort processes integer keys digit by digit from least significant to most significant. It uses counting sort as a stable subroutine for each digit. Total complexity: O(d × (n+k)) where d is number of digits. Useful for large n with bounded integer keys.',
     },
+  { q: 'When should you choose MergeSort over QuickSort?', a: 'Choose MergeSort when: (1) Stability is required (equal elements keep original order); (2) Worst-case O(n log n) is needed (linked lists, external sort); (3) Sorting linked lists (no random access needed). Choose QuickSort when: average-case speed matters and you can use randomized pivot; in-place sorting is needed (O(log n) stack vs O(n) for merge).' },
+  { q: 'How does HeapSort achieve O(n log n) worst-case without extra space?', a: 'HeapSort: (1) Build a max-heap in O(n) using heapify-down from the middle; (2) Repeatedly extract the max (swap root with last, heapify-down) in O(log n) each. Total: O(n log n). In-place (O(1) extra space). Downside: poor cache locality vs QuickSort, so slower in practice despite same asymptotic bound.' },
+  { q: 'What is counting sort and what is its limitation?', a: 'Counting sort counts occurrences of each value, computes prefix sums for positions, then places elements. O(n + k) time where k is the value range. Limitation: only works on integers (or mappable keys) with a bounded range. If k >> n (sparse values like sorting 10 numbers in range 0-10^9), it wastes O(k) space and time.' },
   ];
 
   revision: RevisionSummary = {

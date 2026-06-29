@@ -228,6 +228,9 @@ dp[0] = 0; // 0 coins needed for amount 0`,
       answer: 2,
       explanation: 'Two nested loops over strings of lengths m and n, each computing dp[i][j] in O(1) → O(m × n) total.',
     },
+  { q: 'What are the two necessary conditions for a problem to be solvable with dynamic programming?', options: ['Sorted input and recursive structure', 'Optimal substructure and overlapping subproblems', 'Monotonic function and binary search', 'Greedy choice and backtracking'], answer: 1, explanation: 'DP requires: (1) Optimal substructure — optimal solution to the whole problem contains optimal solutions to subproblems; (2) Overlapping subproblems — same subproblems are solved multiple times, so caching is beneficial.' },
+  { q: 'What is the space optimization technique for 1D DP problems?', options: ['Use a 2D array', 'Only keep the previous row or a rolling variable', 'Sort the array first', 'Use memoization instead'], answer: 1, explanation: 'Many 1D DP problems only need dp[i-1] to compute dp[i] — store just one variable or two variables instead of the full array. Fibonacci: only prev and curr needed. Staircase problem: only two variables.' },
+  { q: 'Which is generally faster: top-down memoization or bottom-up tabulation?', options: ['Top-down memoization is always faster', 'Bottom-up tabulation is usually faster due to no recursion overhead', 'They are always identical in speed', 'Top-down is faster for sparse subproblems'], answer: 3, explanation: 'Top-down (memoization) only computes needed subproblems — faster when most subproblems are not reached (sparse). Bottom-up (tabulation) computes all subproblems in order — better cache performance, no recursion overhead. For dense problems, bottom-up usually wins.' },
   ];
 
   qna: QnaItem[] = [
@@ -243,6 +246,9 @@ dp[0] = 0; // 0 coins needed for amount 0`,
       q: 'What\'s the difference between the coin change problem (count of ways) and (minimum coins)?',
       a: 'Minimum coins: dp[i] = min coins, initialize to Infinity, transition dp[i] = min(dp[i], dp[i-c]+1). Count of ways: dp[i] = number of combinations, initialize dp[0]=1, transition dp[i] += dp[i-c]. Same structure, different operation (min vs sum) and initialization.',
     },
+  { q: 'How do you decide between greedy and DP for an optimization problem?', a: 'Try greedy first: if a locally optimal choice is always globally optimal (greedy choice property), use greedy O(n log n) or O(n). If optimal choices depend on future decisions, use DP. Example: Coin Change with canonical coins (US coins) -> greedy works. With arbitrary coin denominations, greedy fails (coins=[1,3,4], amount=6: greedy gives 4+1+1=3 coins; DP gives 3+3=2 coins).' },
+  { q: 'What is memoization and how does it differ from caching?', a: 'Memoization is caching specifically for recursive function calls — store results of pure function calls keyed by their arguments. If called again with same args, return cached result. Implemented with a dictionary/map. Transforms naive exponential recursion (e.g., Fibonacci O(2^n)) to O(n). General caching applies to any computation; memoization is the DP-specific term for top-down DP.' },
+  { q: 'How do you reconstruct the actual solution (not just the value) from a DP table?', a: 'Track parent/choice pointers alongside the DP values: for each dp[i][j], record which choice led to the optimal value. After filling the table, backtrack from dp[n][m] following parent pointers to reconstruct the path. Example: LCS — at each dp[i][j], record whether we took a match or came from dp[i-1][j] or dp[i][j-1]. Backtrack to reconstruct the common subsequence.' },
   ];
 
   revision: RevisionSummary = {

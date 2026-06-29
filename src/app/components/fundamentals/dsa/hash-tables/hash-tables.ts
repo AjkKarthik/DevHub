@@ -239,6 +239,9 @@ map.set([1,2], 5); // reference equality — but use primitives as keys`,
       answer: 2,
       explanation: 'Store each value in a map. For each element, check if target - element exists in the map — O(1) per check, O(n) total.',
     },
+  { q: 'What is the load factor of a hash table and why does it matter?', options: ['Number of buckets divided by number of elements', 'Number of elements divided by number of buckets', 'The hash function complexity', 'The number of collisions'], answer: 1, explanation: 'Load factor = n/m (elements / buckets). As load factor increases, collision probability increases. Most implementations resize (rehash) when load factor exceeds a threshold (Java HashMap: 0.75). Rehashing copies all elements to a larger table in O(n).' },
+  { q: 'What is the difference between separate chaining and open addressing for collision resolution?', options: ['Separate chaining is faster; open addressing uses less memory', 'Separate chaining: each bucket is a linked list; open addressing: probe for the next empty slot', 'Open addressing: each bucket is a list; separate chaining: elements stored inline', 'They are identical'], answer: 1, explanation: 'Separate chaining stores colliding elements in a list at each bucket — no capacity limit, but extra pointer memory. Open addressing (linear probe, quadratic probe, double hash) stores all elements in the array — better cache locality but needs higher load factor management.' },
+  { q: 'What makes a good hash function for string keys?', options: ['XOR all character codes', 'Use polynomial rolling hash: h = sum(s[i] * p^i) mod M', 'Sum all ASCII values', 'Use the first character only'], answer: 1, explanation: 'Polynomial rolling hash: h = s[0]*p^(n-1) + s[1]*p^(n-2) + ... + s[n-1], mod a large prime M. Distributes values well, minimizes collisions. Used in Rabin-Karp algorithm. Common values: p=31 (lowercase), p=53 (mixed case).' },
   ];
 
   qna: QnaItem[] = [
@@ -254,6 +257,9 @@ map.set([1,2], 5); // reference equality — but use primitives as keys`,
       q: 'When is a hash map NOT the right choice?',
       a: 'When you need sorted order (use a BST/TreeMap instead), when keys are objects needing deep equality (Map uses reference equality), or when memory is very constrained and the load factor is high.',
     },
+  { q: 'How do you implement a hash map from scratch?', a: 'Components: (1) Array of buckets (e.g., size 1024); (2) Hash function: bucket = hash(key) % buckets.size; (3) Each bucket stores a list of (key, value) pairs; (4) get(key): hash key, linear search in bucket list; (5) put(key, val): hash key, check if key exists in bucket, update or append; (6) Resize: when load factor > threshold, create new array 2x size, rehash all elements. O(1) average, O(n) worst case.' },
+  { q: 'How do you find the first non-repeating character in a string using a hash map?', a: 'Two passes: (1) Count character frequencies using a hash map O(n); (2) Iterate the string again, return the first character with count == 1 O(n). Total O(n) time O(k) space where k is the character set size. Alternative: single-pass using an ordered map or LinkedHashMap that preserves insertion order.' },
+  { q: 'What is consistent hashing and where is it used?', a: 'Consistent hashing arranges keys and server nodes on a hash ring. A key is assigned to the next server clockwise on the ring. Adding or removing a server only remaps keys from/to adjacent servers (not all keys). Used in distributed systems: caching (memcached), distributed hash tables, load balancers. Minimizes cache invalidation on server changes vs simple modulo hashing.' },
   ];
 
   revision: RevisionSummary = {

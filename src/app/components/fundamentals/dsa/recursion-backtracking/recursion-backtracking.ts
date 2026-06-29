@@ -250,6 +250,9 @@ current.pop(); // restore state — essential for backtracking`,
       answer: 1,
       explanation: 'Passing i means the same index can be chosen again in the next recursive call. Passing i+1 would prevent reusing the same element.',
     },
+  { q: 'What is the base case in recursion and why is it critical?', options: ['The recursive call with modified arguments', 'The stopping condition that returns without making further recursive calls', 'The initial function call', 'The memoization check'], answer: 1, explanation: 'The base case terminates recursion. Without it, infinite recursion causes a stack overflow. Every recursive function must have at least one base case and must progress toward it with each call. Design: identify the smallest valid input, handle it directly.' },
+  { q: 'What is the difference between backtracking and recursion?', options: ['Backtracking is iterative; recursion is recursive', 'Backtracking undoes choices that lead to dead ends and tries other options; plain recursion just decomposes the problem', 'They are identical', 'Backtracking always uses a stack explicitly'], answer: 1, explanation: 'Backtracking = recursion + undo. Make a choice, recurse; if the path leads to a dead end (constraint violated), undo the choice (backtrack) and try the next option. Used for: permutations, N-Queens, Sudoku, subset generation.' },
+  { q: 'What pruning technique reduces backtracking search space?', options: ['Always try all options first', 'Check constraints early (before recursing) and skip invalid branches', 'Use DP to cache results', 'Sort the candidates before backtracking'], answer: 1, explanation: 'Pruning: before making a recursive call, check if the current partial solution can possibly lead to a valid solution. If not, skip. Example in N-Queens: before placing a queen, check if the column/diagonal is already attacked. Dramatically reduces the search tree.' },
   ];
 
   qna: QnaItem[] = [
@@ -265,6 +268,9 @@ current.pop(); // restore state — essential for backtracking`,
       q: 'How do you avoid duplicate subsets when input has duplicate elements?',
       a: 'Sort the input first. In the loop, skip nums[i] if i > start && nums[i] === nums[i-1]. The i > start check ensures you only skip duplicates at the same level of the recursion tree, not within a valid path.',
     },
+  { q: 'How do you generate all permutations of a list using backtracking?', a: 'Use a swap-based approach: permute(arr, start). Base: if start == arr.length, record the current arr. Recursive: for each i from start to end, swap arr[start] with arr[i], recurse permute(arr, start+1), then swap back (backtrack). This generates n! permutations in O(n * n!) time (n per permutation). Use a visited set approach for lists with duplicates (skip duplicate values at the same position).' },
+  { q: 'How do you solve the N-Queens problem with backtracking?', a: 'Place one queen per row. State: track which columns, diagonals (\) and anti-diagonals (/) are under attack (use three boolean sets). Try each column in the current row: if column/diagonals are safe, place queen (mark sets), recurse next row, then remove queen (unmark). Base: all n rows placed -> add solution. O(n!) worst case but pruning makes it much faster.' },
+  { q: 'How does memoization improve backtracking performance?', a: 'Pure backtracking re-explores identical states. If a subproblem is uniquely defined by its state (not the path to reach it), cache results (memoize). Example: Word Break — recursive backtracking with memoization of indices already evaluated converts O(2^n) to O(n^2). Key distinction: memoization only applies when the result is state-dependent (same state -> same result), not when the path matters.' },
   ];
 
   revision: RevisionSummary = {

@@ -236,6 +236,9 @@ for (let i = 0; i < size; i++) { ... }`,
       answer: 2,
       explanation: 'Postorder processes children first, then the parent — you need the children\'s heights/sizes before computing the parent\'s.',
     },
+  { q: 'What is the height of a complete binary tree with n nodes?', options: ['n', 'n/2', 'floor(log2(n))', 'ceil(log2(n + 1))'], answer: 2, explanation: 'Height = floor(log2(n)). A complete binary tree fills each level before the next. The maximum number of nodes at height h is 2^(h+1) - 1, so height = floor(log2(n)).' },
+  { q: 'What traversal order produces a sorted sequence from a BST?', options: ['Pre-order', 'Post-order', 'Level-order', 'In-order'], answer: 3, explanation: 'In-order traversal (left -> root -> right) of a BST visits nodes in ascending key order. This is the basis for BST-based sorting and for checking if a tree is a valid BST.' },
+  { q: 'What is the time complexity of finding the lowest common ancestor (LCA) in a binary tree?', options: ['O(1)', 'O(log n)', 'O(n)', 'O(n^2)'], answer: 2, explanation: 'LCA in an unordered binary tree requires O(n) in the worst case — you must traverse potentially all nodes to find both targets. In a BST, LCA is O(h) = O(log n) for balanced trees.' },
   ];
 
   qna: QnaItem[] = [
@@ -251,6 +254,9 @@ for (let i = 0; i < size; i++) { ... }`,
       q: 'What is the space complexity of recursive tree traversal?',
       a: 'O(h) where h is the height. In the worst case (skewed tree), h = n → O(n). In a balanced tree, h = log n → O(log n). The call stack holds one frame per level of recursion depth.',
     },
+  { q: 'How do you check if a binary tree is balanced?', a: 'A tree is balanced if the height difference of left and right subtrees is at most 1 for EVERY node. Recursive O(n): compute height bottom-up (postorder DFS). If left or right is unbalanced, propagate -1 as a sentinel. At each node: if |leftH - rightH| > 1, return -1 (unbalanced). Avoids recomputing height for each node (unlike the naive O(n^2) approach that calls height() repeatedly).' },
+  { q: 'What is the difference between a full, complete, and perfect binary tree?', a: 'Full binary tree: every node has 0 or 2 children (no node has exactly 1 child). Complete binary tree: all levels except possibly the last are fully filled; the last level is filled from left to right. Perfect binary tree: all levels are fully filled (2^(h+1) - 1 nodes total). A perfect tree is both full and complete.' },
+  { q: 'How do you serialize and deserialize a binary tree?', a: 'Preorder with null markers: serialize using DFS, write each value and a marker for nulls. Deserialize: consume the preorder sequence, recursively build left then right. O(n) time and space. BFS (level-order) serialization is also common (LeetCode format). Key: null markers allow unambiguous reconstruction — without them, preorder alone is not unique.' },
   ];
 
   revision: RevisionSummary = {

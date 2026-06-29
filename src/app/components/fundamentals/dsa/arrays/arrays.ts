@@ -220,6 +220,9 @@ for (let i = 0; i < n; i++) prefix[i + 1] = prefix[i] + arr[i];
       answer: 2,
       explanation: 'After O(n) build time, prefix[r+1] - prefix[l] gives the sum of any range in O(1).',
     },
+  { q: 'Which technique is best for finding a subarray with a given sum in a non-negative array?', options: ['Two pointers from both ends', 'Sliding window with variable size', 'Binary search on prefix sums', 'Sort then scan'], answer: 1, explanation: 'Sliding window (expandright/contractleft): expand right pointer until sum exceeds target, then contract left. Works in O(n) for non-negative values because sum only increases when expanding and decreases when contracting.' },
+  { q: 'What is the Dutch National Flag algorithm used for?', options: ['Sorting strings', 'Partitioning an array into three groups (e.g. 0s, 1s, 2s) in one pass', 'Finding duplicates', 'Rotating an array'], answer: 1, explanation: 'Dutch National Flag (Dijkstra): three-pointer partition (lo, mid, hi) in one pass O(n) O(1) space. Used in 3-way QuickSort and the Sort Colors problem (LeetCode 75).' },
+  { q: 'What is the time complexity of rotating an array by k positions using the reversal algorithm?', options: ['O(k)', 'O(n)', 'O(n log n)', 'O(n * k)'], answer: 1, explanation: 'Reversal algorithm: reverse all, reverse first k, reverse remaining — three O(n) reversals = O(n) total. In-place O(1) space. Alternative: GCD-cycle approach is also O(n) O(1).' },
   ];
 
   qna: QnaItem[] = [
@@ -235,6 +238,9 @@ for (let i = 0; i < n; i++) prefix[i + 1] = prefix[i] + arr[i];
       q: 'When is an array a poor data structure choice?',
       a: 'When you need frequent insertions or deletions in the middle (use a linked list or deque), when you don\'t know the size upfront and resizing is expensive, or when you need O(1) lookup by key rather than index (use a hash map).',
     },
+  { q: 'How does Kadane algorithm find the maximum subarray sum?', a: 'Kadane: at each index, decide whether to extend the current subarray or start fresh. Track curSum = max(curSum + nums[i], nums[i]) and globalMax = max(globalMax, curSum). O(n) time O(1) space. Key insight: if curSum becomes negative, starting a new subarray from the current element is always better.' },
+  { q: 'When should you use two pointers vs a hash map for array problems?', a: 'Two pointers: use when the array is sorted (or can be sorted) and you need pairs/triplets summing to a target — O(n) after sort vs O(n^2) brute force. Hash map: use when the array is unsorted and you need O(1) lookups — Two Sum unsorted is O(n) with a hash map. If sorting is not allowed and you need pairs, hash map wins.' },
+  { q: 'What is the purpose of a prefix sum array and what does it enable?', a: 'A prefix sum array prefix[i] = sum of elements 0..i-1 (with prefix[0]=0). After O(n) build: range sum query [l, r] = prefix[r+1] - prefix[l] in O(1). Enables: subarray sum queries, counting subarrays with target sum (hash map on prefix sums), and 2D range queries with a 2D prefix sum matrix.' },
   ];
 
   revision: RevisionSummary = {

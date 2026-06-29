@@ -241,6 +241,9 @@ let curr = dummy;
       answer: 1,
       explanation: 'A dummy head means the "real" head is always dummy.next, so head deletion is just a regular middle-node deletion.',
     },
+  { q: 'How do you detect a cycle in a linked list?', options: ['Hash all visited nodes', 'Floyd cycle detection: two pointers (slow and fast); if they meet, a cycle exists', 'Check if any next pointer is null', 'Compare adjacent node values'], answer: 1, explanation: 'Floyd (tortoise and hare): slow moves 1 step, fast moves 2. If there is a cycle, fast will lap slow and they meet. If fast reaches null, no cycle. O(n) time O(1) space.' },
+  { q: 'What is the technique for reversing a singly linked list in-place?', options: ['Create a new list in reverse order', 'Three-pointer iteration: prev, curr, next — redirect curr.next to prev at each step', 'Recursion with O(n) space', 'Sort the list by position'], answer: 1, explanation: 'Three-pointer reverse: prev=null, curr=head. While curr: next=curr.next; curr.next=prev; prev=curr; curr=next. After loop, prev is the new head. O(n) time O(1) space. New head is the last node of original list.' },
+  { q: 'How do you find the middle of a linked list in one pass?', options: ['Count nodes then traverse again', 'Slow and fast pointers: fast moves 2 steps, slow 1 step; when fast reaches end, slow is at middle', 'Store all nodes in an array', 'Use a stack'], answer: 1, explanation: 'Slow/fast pointer (Floyd): slow at head, fast at head. While fast and fast.next exist: slow = slow.next, fast = fast.next.next. When fast reaches end, slow is at the middle. O(n) time O(1) space.' },
   ];
 
   qna: QnaItem[] = [
@@ -256,6 +259,9 @@ let curr = dummy;
       q: 'Can you reverse a linked list recursively?',
       a: 'Yes: base case is head == null or head.next == null. Recursively reverse from head.next, then set head.next.next = head and head.next = null. But recursive reversal uses O(n) stack space — prefer iterative for large lists.',
     },
+  { q: 'How do you merge two sorted linked lists?', a: 'Iterative approach: use a dummy head to simplify edge cases. Compare l1.val and l2.val; append the smaller to the result; advance that pointer. When one list is exhausted, append the remaining other list. O(n + m) time O(1) space. Recursive: merge(l1, l2) = if l1.val < l2.val: l1.next = merge(l1.next, l2), return l1; else l2.next = merge(l1, l2.next), return l2. O(n+m) time O(n+m) stack space.' },
+  { q: 'How do you find the nth node from the end of a linked list in one pass?', a: 'Two-pointer technique: advance fast pointer n steps ahead; then move both slow and fast one step at a time until fast reaches the end. Slow pointer is now at the nth-from-end node. O(n) time O(1) space. For deletion of nth from end: use a dummy head and find the (n+1)th from end to remove the next node.' },
+  { q: 'How do you check if a linked list is a palindrome?', a: '(1) Find the middle (slow/fast pointers); (2) Reverse the second half in-place; (3) Compare the first and second halves node by node; (4) Restore the list (reverse second half again) if needed. O(n) time O(1) space. Alternative: push first half to a stack, compare with second half — O(n) time O(n) space.' },
   ];
 
   revision: RevisionSummary = {

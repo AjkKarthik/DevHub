@@ -212,6 +212,9 @@ arr.sort((a, b) => a - b);`,
       answer: 2,
       explanation: 'Selection sort always does exactly n-1 swaps — it finds the minimum and places it with a single swap per pass.',
     },
+  { q: 'What is the best-case time complexity of Insertion Sort?', options: ['O(n^2)', 'O(n log n)', 'O(n)', 'O(1)'], answer: 2, explanation: 'Insertion Sort is O(n) on already-sorted input — it makes one pass and each element requires zero swaps. This makes it excellent for nearly-sorted data or small arrays (used by TimSort for runs < 64 elements).' },
+  { q: 'Which basic sort is the only stable and adaptive one among bubble, selection, and insertion?', options: ['Bubble Sort only', 'Insertion Sort only', 'Both bubble and insertion', 'All three are stable and adaptive'], answer: 2, explanation: 'Bubble Sort: stable (swaps adjacent equal elements only when strictly less than), adaptive (can be O(n) with an early-exit flag). Selection Sort: NOT stable (swaps non-adjacent elements), NOT adaptive (always O(n^2)).' },
+  { q: 'Why is Selection Sort rarely used in practice?', options: ['It is unstable and always O(n^2)', 'It uses too much memory', 'It only works on integers', 'It requires sorted input'], answer: 0, explanation: 'Selection Sort does exactly n-1 swaps (useful if writes are expensive) but always makes O(n^2) comparisons regardless of input order. It is also unstable. Insertion Sort is preferred for small arrays.' },
   ];
 
   qna: QnaItem[] = [
@@ -223,6 +226,10 @@ arr.sort((a, b) => a - b);`,
       q: 'How do you sort an array of objects by multiple keys stably?',
       a: 'Use a stable sort (Timsort — JavaScript\'s Array.sort() is stable since ECMAScript 2019). Sort by least important key first, then most important. Because stable sort preserves existing order, equal elements from earlier sort steps keep their relative positions.',
     },
+  { q: 'When is Insertion Sort faster than O(n log n) algorithms like MergeSort?', a: 'Insertion Sort outperforms MergeSort/QuickSort on: (1) Very small arrays (n < 10-20) due to low constant factors and cache efficiency; (2) Nearly sorted arrays (each element is k positions from its sorted position, O(nk) total); (3) Online sorting (elements arrive one at a time — insert each in O(n) into a sorted prefix). TimSort uses Insertion Sort for small runs.' },
+  { q: 'How does Bubble Sort adaptive optimization work?', a: 'Add an early-exit flag: set swapped=false before each pass; if no swap occurs during a full pass, the array is sorted and you can stop. Best case becomes O(n). In practice, Bubble Sort is still rarely used because Insertion Sort has identical best case but fewer comparisons on average. The optimization does make Bubble Sort linear on nearly-sorted input.' },
+  { q: 'What is the difference between a stable and unstable sort?', a: 'A stable sort preserves the relative order of equal elements. Example: sorting [{name:Alice, age:30}, {name:Bob, age:30}] by age — a stable sort keeps Alice before Bob. Importance: multi-key sorts (sort by last name then first name) require stability. JavaScript Array.sort() is stable since ES2019. Unstable sorts: Selection Sort, HeapSort, naive QuickSort.' },
+  { q: 'What is the space complexity of bubble, selection, and insertion sort?', a: 'All three are O(1) space (in-place). They sort the array using only a constant amount of additional variables (loop indices, a temporary swap variable). This contrasts with MergeSort O(n) and some QuickSort implementations. In-place sorting is important for memory-constrained environments.' },
   ];
 
   revision: RevisionSummary = {

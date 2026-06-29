@@ -237,6 +237,9 @@ const maxVal = -lo.pop()!; // negate back when extracting`,
       answer: 1,
       explanation: 'Min-heap of size k keeps the k largest elements. The root (minimum of the heap) is the kth largest. O(n log k).',
     },
+  { q: 'What is the time complexity of building a heap from an unsorted array?', options: ['O(n log n)', 'O(n)', 'O(log n)', 'O(n^2)'], answer: 1, explanation: 'Heapify-down from the middle: O(n). Intuitively, half the nodes are at the last level with height 0 (no work), so the total work converges to O(n), not O(n log n) like inserting n elements one by one.' },
+  { q: 'How do you find the kth largest element in an array efficiently?', options: ['Sort the array, index n-k', 'Use a min-heap of size k: push each element, pop when size > k; root is kth largest', 'Use a max-heap of size n', 'Use binary search on a sorted array'], answer: 1, explanation: 'Min-heap of size k: for each element, push it; if heap size exceeds k, pop the minimum. After processing all elements, the heap root is the kth largest. O(n log k) time. Works for streaming data where you can\'t store all elements.' },
+  { q: 'What is a heap used for in the Dijkstra shortest path algorithm?', options: ['To store visited nodes', 'As a priority queue to always extract the minimum-distance unvisited node', 'To detect cycles', 'To store the adjacency list'], answer: 1, explanation: 'Dijkstra uses a min-heap (priority queue) keyed by tentative distance. Always extract the minimum-distance node next. When a shorter path to a neighbor is found, push (distance, node) to the heap. O((V + E) log V) with binary heap.' },
   ];
 
   qna: QnaItem[] = [
@@ -252,6 +255,9 @@ const maxVal = -lo.pop()!; // negate back when extracting`,
       q: 'What is the difference between a heap and a priority queue?',
       a: 'A priority queue is an abstract data type — it defines the interface (insert, extractMin/Max, peek). A heap is a concrete implementation of a priority queue. Other implementations exist (sorted list, Fibonacci heap), but heap is the most common due to O(log n) insert/extract and O(1) peek.',
     },
+  { q: 'How do you merge k sorted arrays efficiently using a heap?', a: 'Min-heap approach: push the first element of each array with its (value, array_index, element_index) into a min-heap. Extract the minimum, add it to the result, push the next element from the same array. Repeat until heap is empty. O(n log k) time where n is total elements and k is number of arrays. Each element is pushed and popped once: O(log k) per operation.' },
+  { q: 'How do you implement a running median using two heaps?', a: 'Use a max-heap for the lower half and a min-heap for the upper half. Invariant: max-heap size >= min-heap size. (1) Push to max-heap; (2) If max-heap top > min-heap top, rebalance by moving max-heap top to min-heap; (3) If min-heap size > max-heap size, move min-heap top to max-heap. Median: if sizes equal, average of both tops; else max-heap top. O(log n) per insert, O(1) median query.' },
+  { q: 'What is the difference between a binary heap and a Fibonacci heap?', a: 'Binary heap: insert O(log n), extract-min O(log n), decrease-key O(log n). Fibonacci heap: insert O(1) amortized, extract-min O(log n) amortized, decrease-key O(1) amortized. Fibonacci heap makes Dijkstra O(E + V log V) (vs O(E log V) with binary heap). In practice, binary heaps are preferred due to lower constant factors and simpler implementation. Fibonacci heaps are theoretically optimal for dense graphs.' },
   ];
 
   revision: RevisionSummary = {

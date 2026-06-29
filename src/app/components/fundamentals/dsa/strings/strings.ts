@@ -234,6 +234,9 @@ const result = parts.join(''); // O(n)`,
       answer: 1,
       explanation: 'str += char copies the entire current string each time — total copies = 1+2+...+n = O(n²).',
     },
+  { q: 'What is the time complexity of the KMP string matching algorithm?', options: ['O(n * m)', 'O(n + m)', 'O(n log n)', 'O(m^2)'], answer: 1, explanation: 'KMP (Knuth-Morris-Pratt): O(n + m) where n is text length and m is pattern length. Preprocessing builds the failure function (LPS array) in O(m). Matching runs in O(n) by using the LPS array to avoid redundant comparisons.' },
+  { q: 'What is the Rabin-Karp algorithm used for?', options: ['Finding the longest palindrome', 'Multiple pattern matching using rolling hash', 'Checking string anagrams', 'Counting distinct substrings'], answer: 1, explanation: 'Rabin-Karp uses a rolling hash to efficiently search for a pattern in text. O(n + m) average case. Strength: can search for multiple patterns simultaneously. Used in plagiarism detection, DNA sequence matching. Worst case O(nm) on hash collisions.' },
+  { q: 'How do you find the longest palindromic substring efficiently?', options: ['Check all substrings: O(n^3)', 'Expand around each center: O(n^2)', 'Manacher algorithm: O(n)', 'Both B and C are O(n)'], answer: 2, explanation: 'Manacher algorithm finds the longest palindromic substring in O(n) by computing palindrome radii for each center using previously computed information. Practical O(n^2) expand-around-center is acceptable for most interviews (n <= 10^3).' },
   ];
 
   qna: QnaItem[] = [
@@ -249,6 +252,9 @@ const result = parts.join(''); // O(n)`,
       q: 'How do you handle Unicode strings in interviews?',
       a: 'Mention it as a clarification: "I\'ll assume ASCII/English for now." If Unicode matters, use a Map instead of a fixed 26-size array, and be aware that some characters (emoji, CJK) may span multiple code units in JS.',
     },
+  { q: 'How do you check if two strings are anagrams of each other?', a: 'Sort both strings and compare: O(n log n). Or use a frequency count array (for fixed alphabets): count chars in s1 (increment), count chars in s2 (decrement); if all counts are 0, they are anagrams. O(n) time O(k) space (k = alphabet size). For general Unicode: use a hash map. Extension: find all anagram substrings in a text (sliding window with frequency map).' },
+  { q: 'What is the Z-algorithm and how does it work?', a: 'Z-algorithm computes Z[i] = length of the longest substring starting at i that is also a prefix of the string. O(n). Used for: pattern matching (concatenate pattern + separator + text, look for Z values = pattern length), finding all occurrences of a pattern. Simpler to implement than KMP with similar performance. Z[0] is undefined (conventionally the string length or 0).' },
+  { q: 'How do you efficiently count distinct substrings of a string?', a: 'Suffix Array + LCP array: total distinct substrings = n*(n+1)/2 - sum(LCP). Suffix array sorts all suffixes lexicographically in O(n log n) or O(n). LCP (Longest Common Prefix) array between adjacent sorted suffixes is computed in O(n) using Kasai algorithm. Alternative: Suffix Automaton counts distinct substrings in O(n). Both O(n) for counting once built.' },
   ];
 
   revision: RevisionSummary = {

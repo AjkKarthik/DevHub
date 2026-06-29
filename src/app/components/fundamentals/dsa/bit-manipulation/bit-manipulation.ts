@@ -230,6 +230,9 @@ function countBits(n: number): number[] {
       answer: 1,
       explanation: 'Right shift n by k positions brings bit k to position 0. ANDing with 1 isolates that bit — result is 0 or 1.',
     },
+  { q: 'What does x & (x - 1) compute?', options: ['x with all bits flipped', 'x with the lowest set bit cleared', 'x - 1', 'x rounded down to power of 2'], answer: 1, explanation: 'x & (x - 1) clears the lowest set bit of x. Used to: count set bits (Brian Kernighan: loop until x=0, count iterations), check if x is a power of 2 (x & (x-1) == 0 for x > 0).' },
+  { q: 'How do you find the only non-duplicate element in an array where every other element appears twice?', options: ['Sort and scan', 'Hash map count', 'XOR all elements together', 'Prefix XOR'], answer: 2, explanation: 'XOR all elements: duplicates cancel (a XOR a = 0) and 0 XOR x = x. The result is the unique element. O(n) time O(1) space. Extension: find two unique elements using XOR and a rightmost-set-bit mask.' },
+  { q: 'What is the result of left-shifting an integer by 1 (x << 1)?', options: ['Divides by 2', 'Multiplies by 2', 'Rounds to nearest even', 'Clears the highest bit'], answer: 1, explanation: 'x << k multiplies x by 2^k (for non-negative x). x >> k divides by 2^k (arithmetic shift for signed, logical for unsigned). Bit shifts are faster than multiplication/division on most hardware.' },
   ];
 
   qna: QnaItem[] = [
@@ -245,6 +248,9 @@ function countBits(n: number): number[] {
       q: 'What is the difference between >> and >>> in JavaScript?',
       a: '>>(signed right shift) fills with the sign bit — negative numbers stay negative. >>>(unsigned right shift) fills with 0 — always positive result. Use >>> 0 to convert a 32-bit signed integer to unsigned, which is needed after reverseBits or other operations that may produce a negative JS number from a positive 32-bit pattern.',
     },
+  { q: 'How do you swap two integers without a temporary variable using XOR?', a: 'XOR swap: a = a ^ b; b = a ^ b; (b is now original a); a = a ^ b; (a is now original b). Proof: after first step, a = A^B. Then b = (A^B)^B = A (since B^B=0). Then a = (A^B)^A = B. Caution: if a and b are the same variable (aliased), a ^= a makes it 0 — check for same reference before using.' },
+  { q: 'How do you get, set, and clear the nth bit of an integer?', a: 'Get bit n: (x >> n) & 1 (shift right by n, mask lowest bit). Set bit n: x | (1 << n) (OR with mask that has only bit n set). Clear bit n: x & ~(1 << n) (AND with mask that has all bits set except n). Toggle bit n: x ^ (1 << n) (XOR with mask). These are the four fundamental bit manipulation operations.' },
+  { q: 'What is the application of bit masks in competitive programming?', a: 'Bitmasks represent subsets of a set of n elements (2^n subsets). Enumerate all subsets: for (int mask = 0; mask < (1 << n); mask++). Check if element i is in subset: (mask >> i) & 1. Add element i: mask | (1 << i). Remove element i: mask & ~(1 << i). Used in: bitmask DP (Travelling Salesman O(n^2 * 2^n)), subset sum, assignment problems.' },
   ];
 
   revision: RevisionSummary = {

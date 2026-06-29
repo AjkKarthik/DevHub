@@ -232,6 +232,9 @@ maxReach = Math.max(maxReach, i + nums[i]);`,
       answer: 1,
       explanation: 'If total gas >= total cost, the circuit can always be completed — a valid starting position always exists. The greedy scan finds it in O(n).',
     },
+  { q: 'What is the greedy choice property?', options: ['The optimal solution always uses the same choice at every step', 'A locally optimal choice at each step leads to a globally optimal solution', 'Greedy always sorts input first', 'Greedy applies only to graph problems'], answer: 1, explanation: 'Greedy choice property: at each decision point, the locally optimal choice (greedy pick) is safe — it is part of some globally optimal solution. Combined with optimal substructure, this justifies greedy over DP.' },
+  { q: 'Which problem is correctly solved by the greedy algorithm?', options: ['0/1 Knapsack', 'Longest Common Subsequence', 'Activity Selection (interval scheduling)', 'Coin Change with arbitrary denominations'], answer: 2, explanation: 'Activity Selection: sort activities by end time, greedily pick the first compatible activity. Provably optimal. 0/1 Knapsack requires DP (greedy on value/weight ratio fails). Coin Change with arbitrary coins requires DP.' },
+  { q: 'What is the greedy algorithm for Huffman coding?', options: ['Sort characters by frequency, assign binary codes', 'Use a min-heap: repeatedly merge two lowest-frequency nodes into a parent node', 'Assign 0 to all characters', 'Use a balanced binary tree'], answer: 1, explanation: 'Huffman coding builds an optimal prefix-free code. Min-heap: extract two minimum frequency nodes, create parent with sum frequency, re-insert. Repeat until one tree. O(n log n). Characters with higher frequency get shorter codes.' },
   ];
 
   qna: QnaItem[] = [
@@ -247,6 +250,9 @@ maxReach = Math.max(maxReach, i + nums[i]);`,
       q: 'What is the exchange argument and why does it matter?',
       a: 'The exchange argument formally proves greedy correctness: take any optimal solution, and show you can transform it into the greedy solution step-by-step without worsening the objective. This is stronger than just "it works on examples" — it proves the greedy choice is always safe to make.',
     },
+  { q: 'How do you prove that a greedy algorithm is correct?', a: 'Two standard proofs: (1) Greedy stays ahead: show that after each step, the greedy solution is at least as good as any other solution at that point. (2) Exchange argument: take any optimal solution; show you can swap non-greedy choices for greedy choices without worsening the result. If every swap maintains optimality, greedy is optimal. Failure of exchange argument usually means you need DP.' },
+  { q: 'What is the fractional knapsack problem and why does greedy work for it but not 0/1 knapsack?', a: 'Fractional knapsack allows taking fractions of items. Greedy: sort by value/weight ratio, take items in order, take fraction of last item if needed. Works because taking the highest-ratio item is always optimal when fractions are allowed. In 0/1 knapsack, you cannot take fractions, so a high-ratio item that wastes capacity may be suboptimal vs two lower-ratio items that fill the knapsack exactly.' },
+  { q: 'How does the interval scheduling maximization problem differ from interval scheduling with deadlines?', a: 'Interval scheduling maximization: select max number of non-overlapping intervals. Greedy: sort by END TIME, pick earliest-ending compatible interval. Optimal. Interval scheduling with deadlines (weighted): each job has a profit and deadline; maximize profit. Greedy by deadline and use a greedy-with-backtracking approach or DP. Weighted interval scheduling requires DP (binary search on sorted intervals).' },
   ];
 
   revision: RevisionSummary = {
