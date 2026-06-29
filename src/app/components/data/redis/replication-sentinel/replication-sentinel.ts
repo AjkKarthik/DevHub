@@ -220,12 +220,56 @@ async function getReplicationLag(redis: Redis) {
       answer: 1,
       explanation: 'Because Redis replication is asynchronous, writes acknowledged by the old master but not yet replicated to the new master can be lost during failover. min-replicas-to-write reduces this risk at the cost of availability.',
     },
+    {
+      q: 'What is the minimum number of Sentinels for a reliable Redis Sentinel setup?',
+      options: ['1', '2', '3', '5'],
+      answer: 2,
+      explanation: '3 Sentinels is the minimum for quorum-based failover. With 2, losing one leaves 1 Sentinel which cannot form a quorum. 3 Sentinels means losing 1 still allows 2 to agree. Place Sentinels on separate machines/failure domains.',
+    },
+    {
+      q: 'What does REPLICAOF command do?',
+      options: ['Creates a cluster partition', 'Makes the current Redis instance a replica of the specified master', 'Promotes a replica to master', 'Disconnects from the current master'],
+      answer: 1,
+      explanation: 'REPLICAOF host port makes the current instance replicate from the specified master. REPLICAOF NO ONE promotes it to a standalone master (used during failover). Previously called SLAVEOF.',
+    },
+    {
+      q: 'What is the quorum setting in Redis Sentinel?',
+      options: ['Maximum replicas per master', 'Minimum number of Sentinels that must agree a master is down before triggering failover', 'The number of writes required before acknowledging', 'The timeout for replica sync'],
+      answer: 1,
+      explanation: 'quorum is the minimum Sentinels that must agree the master is unreachable (marking it subjective down). If quorum is met, one Sentinel is elected leader to run the failover. Set quorum to majority of Sentinel count.',
+    },
+    {
+      q: 'How does Redis replication handle data on a new replica?',
+      options: ['Replication starts from a specific OFFSET provided by the master', 'Master performs BGSAVE, sends the RDB file to the replica, then streams the write backlog', 'Replica copies keys one by one over time', 'Replication requires manual data export and import'],
+      answer: 1,
+      explanation: 'Full sync: master generates RDB snapshot (BGSAVE) and streams it to the replica while buffering new writes. Replica loads RDB then applies the buffered commands. Subsequent incremental replication uses a replication offset and backlog.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'How does Sentinel select which replica to promote during failover?',
       a: 'Sentinel ranks eligible replicas by: (1) replica-priority config (lower = preferred; 0 = never promote); (2) replication offset (most up-to-date wins); (3) run ID as a tiebreaker. Replicas with SDOWN status or that have been disconnected for longer than down-after-milliseconds × 10 are excluded from selection.',
+    },
+    {
+      q: 'How does Redis replication work at a high level?',
+      a: 'Replica connects to master and requests replication. Master forks (BGSAVE), streams the RDB snapshot to replica, then sends the replication backlog (buffered writes since fork). Replica loads RDB and applies backlog. Ongoing: replica receives a replication stream. On reconnect, replica uses replication offset to request only missed commands (partial sync).',
+    },
+    {
+      q: 'What is the replication backlog in Redis?',
+      a: 'The replication backlog (<code>repl-backlog-size</code>, default 1MB) is a circular buffer on the master storing recent write commands. On replica reconnect, if the replica offset is still within the backlog, partial resync happens (much faster than full RDB sync). Increase backlog size for replicas with unreliable connections or high write rates.',
+    },
+    {
+      q: 'How does Redis Sentinel detect and handle master failure?',
+      a: 'Sentinels ping the master every second. If no response within <code>down-after-milliseconds</code>, the Sentinel marks it subjective down. If a quorum of Sentinels agree, it is objective down. A Sentinel leader is elected, selects the best replica (lowest replication lag), promotes it with REPLICAOF NO ONE, and configures other replicas and Sentinels to follow the new master.',
+    },
+    {
+      q: 'How do client libraries connect to Redis via Sentinel?',
+      a: 'Client connects to any Sentinel, asks for the master address: <code>SENTINEL get-master-addr-by-name mymaster</code>. Client then connects to the returned master address. On failover, Sentinel publishes <code>+switch-master</code> event. Smart clients (ioredis, Jedis) subscribe to this and automatically reconnect to the new master without application code changes.',
+    },
+    {
+      q: 'What is min-replicas-to-write in Redis?',
+      a: '<code>min-replicas-to-write N</code> and <code>min-replicas-max-lag S</code>: the master refuses writes if fewer than N replicas are connected with lag <= S seconds. This prevents data divergence in split-brain scenarios — master stops accepting writes when too few replicas are replicating. Trade-off: availability vs consistency guarantee.',
     },
   ];
 

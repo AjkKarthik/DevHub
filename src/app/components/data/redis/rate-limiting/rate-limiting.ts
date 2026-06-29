@@ -282,12 +282,56 @@ async function slidingCounterLimit(redis: Redis, identifier: string, limit: numb
       answer: 1,
       explanation: 'Token bucket requires reading the current token count, computing the new count, and writing it back. Without a Lua script (or WATCH/MULTI), two concurrent requests could both see sufficient tokens and both be allowed, exceeding the limit.',
     },
+    {
+      q: 'How does the INCR + EXPIRE pattern implement rate limiting?',
+      options: ['It stores user requests in a sorted set', 'INCR atomically increments a counter key; EXPIRE sets its TTL so the window resets automatically — if counter exceeds limit, reject', 'It uses Lua to check and increment in one call', 'It uses Redis Streams to track requests'],
+      answer: 1,
+      explanation: 'SET key 1 EX window or INCR + EXPIRE on miss: key=user:endpoint, value=count. If INCR returns > limit, reject. EXPIRE ensures the window resets. Race condition: use SET NX EX or Lua for atomic INCR+EXPIRE on first request.',
+    },
+    {
+      q: 'How do sorted sets enable a sliding window rate limiter?',
+      options: ['By storing events as members with request count as score', 'By storing each request as a member with timestamp as score; remove old timestamps with ZREMRANGEBYSCORE then count with ZCARD', 'By using ZADD NX to prevent duplicates', 'Sorted sets do not support sliding window rate limiting'],
+      answer: 1,
+      explanation: 'ZADD key timestamp timestamp; ZREMRANGEBYSCORE key 0 (now-window); ZCARD key. If count <= limit, allow and set EXPIRE. This gives exact sliding window but uses more memory than fixed window counters.',
+    },
+    {
+      q: 'What is a token bucket rate limiter in Redis?',
+      options: ['A counter that resets every fixed time period', 'A bucket that refills at a fixed rate; requests consume tokens; if bucket is empty the request is rejected', 'A set that tracks allowed user tokens', 'A Lua script that calls INCR on a list'],
+      answer: 1,
+      explanation: 'Token bucket allows burst traffic up to bucket capacity, then enforces steady-state rate. Implement in Redis with a Lua script: calculate tokens refilled since last request, add to stored count (capped at max), subtract for current request, store with timestamp.',
+    },
+    {
+      q: 'Why should rate limiting logic use Lua scripts in Redis?',
+      options: ['Lua is faster than native Redis commands', 'Lua scripts execute atomically — combining the check-and-decrement into a single atomic operation without race conditions', 'Lua bypasses the maxmemory limit', 'Lua supports floating point counters'],
+      answer: 1,
+      explanation: 'Without atomicity, two concurrent requests can both pass the check before either decrements the counter — allowing double the rate limit. A Lua script makes the read-check-write atomic, eliminating this race condition.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'How do I rate limit across a Redis Cluster?',
       a: 'In Redis Cluster, all keys for a rate limiter must hash to the same slot. Use hash tags in your key: `rl:{user:42}:window` — Redis Cluster uses only the content inside `{}` for slot assignment. This ensures all keys for a user are on the same node, making Lua scripts safe. Without hash tags, a Lua script accessing keys on different slots returns a CROSSSLOT error.',
+    },
+    {
+      q: 'What is the difference between fixed window and sliding window rate limiting?',
+      a: '<strong>Fixed window</strong>: count resets at fixed intervals (e.g., every minute boundary). Simple but allows burst at window edges (2x rate for a short period). <strong>Sliding window</strong>: uses current time minus window to count requests — more accurate, no edge burst. Redis sorted set implementation: store timestamps as members, ZREMRANGEBYSCORE to trim old entries.',
+    },
+    {
+      q: 'How do you implement rate limiting without race conditions in Redis?',
+      a: 'Use a Lua script for atomic check-and-increment: (1) GET counter, (2) if >= limit return 0, (3) INCR counter, (4) EXPIRE on first increment. This is atomic — no other client can interleave. Alternatively: <code>SET key 1 NX EX window</code> + <code>INCR</code> on existence. The Lua approach is more robust.',
+    },
+    {
+      q: 'How do you implement per-user rate limiting in Redis?',
+      a: 'Key pattern: <code>ratelimit:endpoint:userId</code>. On each request: INCR the key, set EXPIRE on first increment (or use SET EX NX). Check if count > limit. Use different limits per tier: <code>ratelimit:api:userId:tier</code>. Sliding window variant: ZADD <code>ratelimit:userId</code> timestamp timestamp; ZREMRANGEBYSCORE to trim; ZCARD to count.',
+    },
+    {
+      q: 'What is a leaky bucket rate limiter and how does it differ from token bucket?',
+      a: '<strong>Leaky bucket</strong>: requests enter a queue, processed at fixed rate — smooths bursts, excess dropped. <strong>Token bucket</strong>: tokens accumulate at rate R up to capacity B; requests consume tokens; allows bursts up to B. Token bucket is more common in APIs. Implement token bucket in Redis with Lua: store tokens + last refill timestamp, calculate tokens added since last call.',
+    },
+    {
+      q: 'How do you handle distributed rate limiting across multiple app servers?',
+      a: 'All app servers share a single Redis instance — rate limiting is naturally distributed. Each server atomically INCRs the same key. For multi-region, use a Redis Cluster or replicated setup. Watch for Redis latency adding to API response time — use pipeline or Lua for efficiency. Consider circuit breakers: if Redis is unavailable, fail open (no rate limit) or fail closed (reject all).',
     },
   ];
 

@@ -253,12 +253,56 @@ async function cachedFetch<T>(redis: Redis, key: string, ttlSec: number, fetcher
       answer: 2,
       explanation: 'In Cache-Aside (Lazy Loading), the application code checks the cache, and on a miss, it fetches from the DB and writes to the cache. The cache itself is passive — it never self-populates.',
     },
+    {
+      q: 'What is the cache-aside (lazy loading) pattern?',
+      options: ['Cache is populated on write; reads bypass the cache', 'The application checks the cache first; on miss it loads from DB and populates the cache', 'The cache automatically syncs with the DB in the background', 'Data is written to cache only, never to DB directly'],
+      answer: 1,
+      explanation: 'Cache-aside: app checks cache first. On hit, return value. On miss, load from DB, store in cache, return to caller. Simple and resilient — if cache fails, app still works from DB.',
+    },
+    {
+      q: 'What causes a cache stampede (thundering herd)?',
+      options: ['Too many simultaneous cache writes', 'Many concurrent requests hit the DB simultaneously when a popular cached key expires', 'Cache eviction of unimportant keys', 'Writing to cache faster than the DB can handle'],
+      answer: 1,
+      explanation: 'When a hot key expires, many concurrent requests find a cache miss and all hit the DB at once — causing a spike. Solutions: probabilistic early expiration, mutex/lock, background refresh before expiry.',
+    },
+    {
+      q: 'What is the write-through caching pattern?',
+      options: ['Data is written to DB first, then asynchronously to cache', 'Data is written to both cache and DB synchronously on every write', 'Writes only go to cache; DB sync happens later', 'Only reads update the cache'],
+      answer: 1,
+      explanation: 'Write-through writes to cache and DB synchronously. Cache is always consistent with DB. Downside: write latency doubles. Benefit: no cache miss on subsequent reads.',
+    },
+    {
+      q: 'What is the write-behind (write-back) caching pattern?',
+      options: ['Write to DB first, then update cache', 'Write to cache immediately; asynchronously persist to DB later', 'Invalidate cache on every write', 'Write to cache only for read-heavy workloads'],
+      answer: 1,
+      explanation: 'Write-behind writes to cache first and asynchronously flushes to the DB. Lower write latency but risk of data loss if cache fails before flush. Suitable for high-write, loss-tolerant workloads.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'Should I cache database query results or computed values?',
       a: 'Cache the most expensive-to-produce value — which is often the computed/serialised output rather than raw DB rows. Caching processed API responses (already serialised to JSON) saves both DB query time AND serialisation cost on each request. Cache raw DB results when multiple code paths need the same data with different computations.',
+    },
+    {
+      q: 'What is the read-through cache pattern?',
+      a: 'The cache sits in front of the DB and handles misses automatically — when the app requests data not in cache, the cache fetches from DB and stores it. The app always reads from cache. Redis does not natively implement read-through; you need a caching library or proxy layer.',
+    },
+    {
+      q: 'How do you implement cache invalidation when source data changes?',
+      a: 'Strategies: (1) <strong>TTL expiration</strong> — set TTL, accept stale reads; (2) <strong>Active invalidation</strong> — on DB change, DEL the cache key; (3) <strong>Event-driven</strong> — DB change triggers cache DEL via CDC (Change Data Capture). Active invalidation is most consistent but requires coupling.',
+    },
+    {
+      q: 'What is cache warming and when do you use it?',
+      a: 'Cache warming pre-populates the cache before traffic arrives — prevents cold start where all requests miss and hammer the DB. Strategies: on deploy load top-N records; replay recent traffic; use a standby Redis instance. Essential for services with predictable hot keys or after Redis restart.',
+    },
+    {
+      q: 'How do you prevent the thundering herd (cache stampede)?',
+      a: 'Solutions: (1) <strong>Mutex/lock</strong> — only one request rebuilds cache; others wait or return stale (SET NX EX); (2) <strong>Probabilistic early expiry</strong> — some requests refresh before TTL expires; (3) <strong>Background refresh</strong> — a job refreshes proactively; (4) <strong>Stale-while-revalidate</strong> — serve stale while asynchronously refreshing.',
+    },
+    {
+      q: 'What is a write-around caching strategy?',
+      a: 'Write-around bypasses the cache on writes — data goes directly to DB and is only cached on a subsequent read (cache-aside style). Avoids polluting the cache with data that may never be re-read. Good for infrequently-accessed data or large objects. Tradeoff: first read after write always misses.',
     },
   ];
 

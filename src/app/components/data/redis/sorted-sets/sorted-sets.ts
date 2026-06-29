@@ -218,12 +218,56 @@ async function getTopN(n: number): Promise<Array<{userId: string; score: number}
       answer: 1,
       explanation: 'ZINCRBY creates the member if absent, treating the initial score as 0. So ZINCRBY leaderboard 50 "alice" adds alice with score 50 if she didn\'t exist.',
     },
+    {
+      q: 'What does ZADD NX do differently from ZADD?',
+      options: ['NX sorts in reverse order', 'NX only adds new members — it does not update the score of existing members', 'NX removes members with score 0', 'NX adds to multiple sorted sets simultaneously'],
+      answer: 1,
+      explanation: 'ZADD key NX score member only adds the member if it does not already exist. ZADD key XX only updates existing members. ZADD key GT updates if new score > current. ZADD key LT updates if new score < current. These flags enable conditional operations.',
+    },
+    {
+      q: 'What does ZRANGEBYSCORE return?',
+      options: ['Members sorted alphabetically within a score range', 'Members with scores between min and max (inclusive by default)', 'The rank of members in a score range', 'All members sorted by score descending'],
+      answer: 1,
+      explanation: 'ZRANGEBYSCORE key min max returns members with scores between min and max in ascending order. Use -inf and +inf for unbounded. Add WITHSCORES to include scores. ZREVRANGEBYSCORE goes descending. In Redis 6.2+, use ZRANGE with BYSCORE.',
+    },
+    {
+      q: 'What is the internal data structure of a large Redis sorted set?',
+      options: ['Binary search tree', 'Skiplist combined with a hash table', 'B-tree', 'Red-black tree'],
+      answer: 1,
+      explanation: 'Large sorted sets use a skiplist (for O(log N) range queries and ordered iteration) plus a hash table (for O(1) member-to-score lookup). Small sorted sets (< zset-max-listpack-entries entries of small values) use listpack encoding.',
+    },
+    {
+      q: 'How do you implement a leaderboard with Redis sorted sets?',
+      options: ['Use ZADD with user ID as score and rank as member', 'Use ZADD key score userID for each update; ZREVRANGE key 0 N-1 WITHSCORES for top-N; ZRANK for position', 'Use SORT on a list of user IDs', 'Store leaderboard in a hash and sort in application'],
+      answer: 1,
+      explanation: 'ZADD leaderboard score userId (use ZADD key INCR for additive updates). ZREVRANGE leaderboard 0 9 WITHSCORES returns top 10. ZREVRANK leaderboard userId returns position (0-indexed). ZINCRBY leaderboard points userId increments score.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'Can sorted set scores be negative or very large?',
       a: 'Scores are IEEE 754 double-precision floats — range ±1.8×10^308. Special values +inf and -inf are also valid. Integer precision is exact up to 2^53. For very large integer IDs used as scores, stay within 2^53 to avoid floating-point rounding.',
+    },
+    {
+      q: 'What is the difference between ZRANK and ZREVRANK?',
+      a: 'ZRANK key member returns the rank (0-indexed) of member sorted ascending by score. ZREVRANK returns rank sorted descending. ZRANK mykey user1 WITHSCORE (Redis 7.2+) also returns the score. Use ZREVRANK for leaderboards where rank 0 = top player. Returns nil if member does not exist.',
+    },
+    {
+      q: 'How does ZPOPMIN / ZPOPMAX work?',
+      a: 'ZPOPMIN key [count] removes and returns the member(s) with the lowest score. ZPOPMAX removes the highest score member(s). Both are atomic. BZPOPMIN / BZPOPMAX are blocking variants (wait for elements). Use ZPOPMIN for priority queues (lowest score = highest priority) and ZPOPMAX for leaderboard consumption.',
+    },
+    {
+      q: 'How do you implement time-based expiry with sorted sets?',
+      a: 'Use Unix timestamp as score: ZADD key timestamp member. To expire old entries: ZREMRANGEBYSCORE key 0 (now-cutoff). Check membership with ZSCORE (non-nil = active). This pattern implements sliding-window rate limits, session tracking, and time-based leaderboards. Run ZREMRANGEBYSCORE periodically or on each access.',
+    },
+    {
+      q: 'What does ZRANGEBYLEX do?',
+      a: 'When all members have the same score, ZRANGEBYLEX key [min [max performs lexicographic range queries. Example: ZRANGEBYLEX dict [a [b returns all entries starting with a or b. Uses - and + for negative/positive infinity. Useful for autocomplete (ZRANGEBYLEX prefix [searchterm [searchterm\xff) and alphabetical pagination.',
+    },
+    {
+      q: 'How do you use ZUNIONSTORE for aggregating scores across sorted sets?',
+      a: 'ZUNIONSTORE dest numkeys key1 key2... WEIGHTS w1 w2 AGGREGATE SUM|MIN|MAX. Merges sorted sets with optional score weighting and aggregation. Example: combine weekly and monthly leaderboards with different weights. ZINTERSTORE for intersection (shared members only). Useful for composite ranking across multiple scoring dimensions.',
     },
   ];
 

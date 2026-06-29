@@ -195,12 +195,56 @@ async function checkPersistenceHealth(redis: Redis) {
       answer: 1,
       explanation: 'Hybrid persistence writes an RDB binary snapshot at the head of the AOF file followed by incremental commands. This gives fast restarts (binary RDB) with AOF durability.',
     },
+    {
+      q: 'What is the key trade-off between RDB and AOF persistence?',
+      options: ['RDB is faster for reads; AOF is faster for writes', 'RDB provides compact point-in-time snapshots with potential data loss; AOF logs every write for durability at the cost of larger files and slower restarts', 'AOF is compressed; RDB is plain text', 'RDB replays the log; AOF takes snapshots'],
+      answer: 1,
+      explanation: 'RDB: smaller file, faster restart, potential data loss (last snapshot to crash). AOF: logs every write (configurable fsync), near-zero data loss, larger file, slower restart due to log replay.',
+    },
+    {
+      q: 'What does appendfsync everysec do?',
+      options: ['Flushes AOF to disk every second — potential 1 second of data loss but good performance', 'Flushes AOF to disk on every write command — maximum durability but slowest', 'Lets the OS decide when to flush — fastest but highest data loss risk', 'Disables AOF syncing'],
+      answer: 0,
+      explanation: 'appendfsync everysec calls fsync every second in a background thread. A crash could lose up to 1 second of writes. It is the recommended balance between performance and durability. always gives maximum durability; no gives best performance.',
+    },
+    {
+      q: 'What is Redis AOF rewrite and why is it needed?',
+      options: ['Rewrites the AOF in JSON format for readability', 'Compacts the AOF by replaying current dataset state and writing only the minimal commands needed — reducing file size', 'Splits the AOF into multiple files', 'Converts AOF to RDB format'],
+      answer: 1,
+      explanation: 'AOF grows indefinitely as every write is logged. BGREWRITEAOF (or auto-triggered by auto-aof-rewrite-percentage) rewrites the AOF by representing the current dataset with minimal commands — removing redundant SET/DEL pairs.',
+    },
+    {
+      q: 'What is Redis hybrid persistence (RDB+AOF)?',
+      options: ['Two separate Redis instances — one for RDB, one for AOF', 'Enabling both RDB and AOF: RDB provides a compact snapshot; AOF records changes since the last snapshot — combining fast startup and durability', 'Alternating between RDB and AOF on each restart', 'Writing RDB format inside the AOF file'],
+      answer: 1,
+      explanation: 'Enable both save (RDB) and appendonly yes (AOF). On restart, Redis prefers AOF if enabled. The aof-use-rdb-preamble option (default on) writes an RDB snapshot at the start of the AOF file for faster restart.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'How much extra memory does BGSAVE use?',
       a: 'BGSAVE uses fork() which implements copy-on-write (COW). Initially, the child shares all memory pages with the parent. Pages modified by the parent while the child is writing get copied. In the worst case (all keys written during save), memory usage can temporarily double. Monitor `rdb_current_bgsave_type` and `used_memory` via INFO to track this.',
+    },
+    {
+      q: 'What is the difference between BGSAVE and SAVE?',
+      a: '<strong>BGSAVE</strong> forks a child process to write the RDB snapshot — the parent continues serving requests. <strong>SAVE</strong> blocks the entire Redis server while writing RDB — never use in production. BGSAVE is triggered automatically by the save config directive. LASTSAVE returns the Unix timestamp of the last successful RDB.',
+    },
+    {
+      q: 'How does RDB snapshot configuration work in redis.conf?',
+      a: 'The <code>save</code> directive triggers BGSAVE: <code>save 900 1</code> (save after 900s if 1 key changed), <code>save 300 10</code>, <code>save 60 10000</code>. Multiple directives are OR-ed. <code>save ""</code> disables RDB. On restart, Redis loads the RDB file first (or AOF if enabled). Use <code>BGSAVE</code> for manual snapshots.',
+    },
+    {
+      q: 'How do you recover Redis data after a crash?',
+      a: 'Redis restores from persistence files on startup. If AOF enabled: <code>redis-check-aof --fix appendonly.aof</code> repairs a truncated AOF. If RDB: <code>redis-check-rdb dump.rdb</code> validates it. AOF takes precedence over RDB when both are enabled. Point the data dir to the backup files and restart. Test recovery procedures regularly.',
+    },
+    {
+      q: 'What is AOF rewrite and why is it needed?',
+      a: 'The AOF log grows indefinitely (every write is appended). <strong>BGREWRITEAOF</strong> compacts it by writing the minimal commands to recreate the current dataset. Auto-triggered by <code>auto-aof-rewrite-percentage</code> (100% growth) and <code>auto-aof-rewrite-min-size</code>. The rewrite runs in a child process; Redis continues appending to the current AOF meanwhile.',
+    },
+    {
+      q: 'What is the aof-use-rdb-preamble option?',
+      a: 'When enabled (default), AOF rewrite starts with an RDB snapshot preamble followed by AOF commands for changes since the snapshot. This dramatically reduces restart time — loading an RDB is much faster than replaying a long AOF. The resulting file is a hybrid: starts with binary RDB, followed by text AOF commands.',
     },
   ];
 

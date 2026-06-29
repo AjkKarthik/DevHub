@@ -203,12 +203,56 @@ async function nextJob(): Promise<object | null> {
       answer: 1,
       explanation: 'LMOVE (Redis 6.2+) atomically moves an element from one list to another. The deprecated RPOPLPUSH is equivalent to LMOVE src dst RIGHT LEFT.',
     },
+    {
+      q: 'How does BLPOP differ from LPOP?',
+      options: ['BLPOP returns multiple elements; LPOP returns one', 'BLPOP blocks until an element is available or timeout is reached; LPOP returns nil immediately on empty list', 'BLPOP works on right side; LPOP on left side', 'There is no difference'],
+      answer: 1,
+      explanation: 'BLPOP key [key...] timeout blocks if all specified lists are empty, waiting up to timeout seconds for an element. Timeout 0 blocks indefinitely. Perfect for producer-consumer queues without polling.',
+    },
+    {
+      q: 'What makes Redis lists suitable for a message queue?',
+      options: ['Lists support message deduplication', 'LPUSH/RPOP (or RPUSH/LPOP) provides FIFO queue semantics; BLPOP enables blocking consumer without polling', 'Lists have built-in message persistence across restarts', 'Lists support publish-subscribe patterns'],
+      answer: 1,
+      explanation: 'Producer: RPUSH queue message. Consumer: BLPOP queue 0 (blocking dequeue). This gives a reliable FIFO queue. For advanced features (consumer groups, redelivery), use Redis Streams instead.',
+    },
+    {
+      q: 'What does LINSERT do?',
+      options: ['Inserts at the beginning of a list', 'Inserts an element before or after a pivot element in a list', 'Inserts multiple elements atomically', 'Sets an element at a specific index'],
+      answer: 1,
+      explanation: 'LINSERT key BEFORE|AFTER pivot element scans the list for the pivot value and inserts the element before or after it. O(N) operation. For index-based insertion use LSET (sets existing index) — lists are not designed for random inserts.',
+    },
+    {
+      q: 'What memory encoding does Redis use for small lists?',
+      options: ['skiplist', 'hashtable', 'quicklist with listpack nodes', 'linkedlist'],
+      answer: 2,
+      explanation: 'Redis lists use quicklist: a doubly-linked list of listpack (formerly ziplist) nodes. Small lists (< list-max-listpack-size entries of small values) use a single listpack node — very memory-efficient. Larger lists split into multiple nodes.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'How do I implement a capped activity feed with Redis lists?',
       a: 'LPUSH feed:userId newEvent then LTRIM feed:userId 0 N-1. The LTRIM keeps only the N most recent events. This is O(1) amortised — LTRIM removes from the tail of the list, which is constant time for doubly-linked lists.',
+    },
+    {
+      q: 'What is the difference between LPUSH and RPUSH?',
+      a: '<strong>LPUSH</strong> adds elements to the head (left) of the list. <strong>RPUSH</strong> adds to the tail (right). Multiple elements: LPUSH key a b c adds c then b then a (result: [c, b, a, ...]). Queue: RPUSH + LPOP. Stack: LPUSH + LPOP. LPUSHX/RPUSHX only push if key already exists.',
+    },
+    {
+      q: 'How do you implement a reliable queue with Redis lists?',
+      a: 'Producer: <code>RPUSH queue task</code>. Consumer: <code>BRPOPLPUSH queue processing 0</code> (atomically moves to processing list while blocking). On success: <code>LREM processing 1 task</code>. On failure: tasks remain in processing and can be recovered. This pattern is safer than BLPOP alone — tasks are not lost if consumer crashes.',
+    },
+    {
+      q: 'What is LPOS and when do you use it?',
+      a: 'LPOS key element [RANK rank] [COUNT count] finds positions of an element in a list. Returns index (0-based) or array of indices. RANK skips first N-1 matches. COUNT 0 returns all occurrences. Useful for finding an element without scanning manually. Redis 6.0.6+.',
+    },
+    {
+      q: 'What is the quicklist encoding in Redis lists?',
+      a: 'Redis lists use <strong>quicklist</strong>: a linked list of listpack nodes. Small lists use a single listpack node. As the list grows, it splits into multiple listpack nodes. This balances memory efficiency (listpack is compact) with operation performance. Configure node size with <code>list-max-listpack-size</code>.',
+    },
+    {
+      q: 'What is the difference between LRANGE and LINDEX?',
+      a: 'LRANGE key start stop returns all elements from index start to stop (inclusive, negative indices from end). LINDEX key index returns the single element at a specific index. LLEN returns list length. LRANGE 0 -1 returns all elements. For large lists, LRANGE on arbitrary ranges is O(N) — consider using streams for large ordered datasets.',
     },
   ];
 

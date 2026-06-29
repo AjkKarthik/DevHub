@@ -259,12 +259,56 @@ async function searchProducts(client: RedisClient, query: string, maxPrice: numb
       answer: 1,
       explanation: 'Bloom filters have no false negatives: if BF.EXISTS returns 0, the item is definitely not in the filter. If it returns 1, the item is probably in the filter (small chance of false positive depending on filter size and fill rate).',
     },
+    {
+      q: 'What does the Redis Search module (FT.*) provide?',
+      options: ['Full-text indexing and querying on Redis hash and JSON documents using an inverted index', 'A SQL query interface for Redis strings', 'Real-time stream processing', 'Graph traversal algorithms'],
+      answer: 0,
+      explanation: 'RediSearch provides secondary indexes, full-text search, numeric range queries, geospatial queries, and aggregations on Redis Hashes and JSON documents. FT.CREATE defines an index; FT.SEARCH queries it.',
+    },
+    {
+      q: 'What does RedisJSON enable?',
+      options: ['Storing Redis data as JSON files on disk', 'Native JSON document storage and manipulation using JSONPath queries without serialising/deserialising in the application', 'Exporting Redis data to JSON format', 'Converting JSON config to Redis commands'],
+      answer: 1,
+      explanation: 'RedisJSON adds a JSON data type with commands like JSON.SET, JSON.GET, JSON.ARRAPPEND. JSONPath (like JSON.GET key $.name) navigates the document. Documents are stored efficiently and can be indexed with RediSearch.',
+    },
+    {
+      q: 'What is RESP3 and how does it differ from RESP2?',
+      options: ['RESP3 is a binary protocol; RESP2 uses text', 'RESP3 adds richer data types (maps, sets, doubles, attributes) and server-push for out-of-band messages, reducing parsing overhead', 'RESP3 requires TLS; RESP2 does not', 'RESP3 is only for cluster connections'],
+      answer: 1,
+      explanation: 'RESP3 (Redis 6+) adds native map, set, double, and boolean types — clients receive typed data without parsing. It also supports client tracking (server pushes invalidation messages for client-side caching). RESP2 clients still work.',
+    },
+    {
+      q: 'What does Redis TimeSeries provide over storing time series in sorted sets?',
+      options: ['TimeSeries is stored on disk, sorted sets are in memory', 'TimeSeries has native downsampling, compaction rules, and range queries — much more efficient than sorted sets for large time-series', 'TimeSeries supports pub/sub; sorted sets do not', 'Both are equally efficient'],
+      answer: 1,
+      explanation: 'RedisTimeSeries: TS.ADD, TS.RANGE, TS.CREATERULE (automatic downsampling). Efficient for high-cardinality time-series data: aggregations (avg, sum, min, max), retention policies, and compression. Sorted sets require manual TTL and no built-in aggregation.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'Does Redis Stack work with Redis Cluster?',
       a: 'Yes, but with constraints. RedisSearch indexes are per-node — in Cluster mode, each master indexes its own subset of data. FT.SEARCH queries one node. For cross-cluster search, you need redis-search with a coordinator (available in Redis Enterprise) or run all searchable keys on the same slot using hash tags. RedisJSON and RedisBloom work normally in Cluster (keys are still distributed by slot). For large-scale search, Redis Enterprise or a dedicated search service is often a better fit.',
+    },
+    {
+      q: 'What is Redis Stack and how does it differ from open-source Redis?',
+      a: 'Redis Stack bundles open-source Redis with modules: <strong>RedisJSON</strong> (native JSON), <strong>RediSearch</strong> (full-text search), <strong>RedisTimeSeries</strong> (time series), <strong>RedisBloom</strong> (probabilistic data structures). Available as redis-stack Docker image or via Redis Cloud. Enterprise features (clustering, ACL, TLS) still require Redis Enterprise or Redis Cloud.',
+    },
+    {
+      q: 'How do you create a full-text search index with RediSearch?',
+      a: '<code>FT.CREATE idx ON HASH PREFIX 1 product: SCHEMA title TEXT WEIGHT 5 price NUMERIC SORTABLE tags TAG</code>. Then search: <code>FT.SEARCH idx "@title:laptop @price:[0 1000]" SORTBY price ASC LIMIT 0 10</code>. Supports full-text, numeric ranges, tags, geo. FT.AGGREGATE for grouping and aggregations.',
+    },
+    {
+      q: 'What is RedisBloom and when do you use it?',
+      a: 'RedisBloom provides probabilistic data structures: <strong>Bloom filter</strong> (BF.ADD, BF.EXISTS) — fast membership testing with tunable false positive rate; <strong>Count-Min Sketch</strong> — frequency estimation; <strong>Top-K</strong> — top N most frequent items; <strong>HyperLogLog</strong> (built-in Redis). Use Bloom filters to prevent unnecessary DB lookups.',
+    },
+    {
+      q: 'How do you store and query JSON in RedisJSON?',
+      a: 'JSON.SET key path value sets a JSON document or sub-document. JSON.GET key path retrieves. Paths use JSONPath syntax: <code>JSON.GET user:1 $.name</code>. JSON.ARRAPPEND adds to arrays. JSON.NUMINCRBY increments numeric fields. Documents can be indexed with RediSearch FT.CREATE ON JSON SCHEMA.',
+    },
+    {
+      q: 'What is client-side caching in Redis 6+ with RESP3?',
+      a: 'Redis 6 supports server-assisted client-side caching: the server tracks which keys each client has cached and pushes invalidation messages when those keys change. Clients subscribe to invalidation channel with <code>CLIENT TRACKING on</code>. Requires RESP3 protocol. Smart clients cache values locally; Redis notifies them on change — eliminates network round trips for hot data.',
     },
   ];
 

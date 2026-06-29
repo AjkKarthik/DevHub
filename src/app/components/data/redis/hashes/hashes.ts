@@ -210,6 +210,30 @@ async function getCart(cartId: string): Promise<Record<string, number>> {
       answer: 1,
       explanation: 'HINCRBY is atomic — it reads and increments the field in a single operation. No race conditions, even with many concurrent clients.',
     },
+    {
+      q: 'What does HINCRBY do?',
+      options: ['Increments a hash key TTL', 'Increments the integer value of a hash field by a given amount', 'Adds a new hash field', 'Returns hash field count'],
+      answer: 1,
+      explanation: 'HINCRBY key field increment atomically increments the value of field in hash key by increment. If the field does not exist it is created with value 0 before applying. Use for counters within a hash (per-user metrics, aggregates).',
+    },
+    {
+      q: 'Which command retrieves all field-value pairs from a hash?',
+      options: ['HVALS key', 'HKEYS key', 'HGETALL key', 'HMGET key *'],
+      answer: 2,
+      explanation: 'HGETALL key returns all fields and values as alternating field/value pairs. HKEYS returns field names only; HVALS returns values only. HMGET key f1 f2 returns values for specific fields. Use HSCAN for large hashes to avoid blocking.',
+    },
+    {
+      q: 'How do you check if a specific field exists in a Redis hash?',
+      options: ['HGET key field (returns null if absent)', 'HEXISTS key field (returns 1 if exists, 0 if not)', 'HTYPE key field', 'HHAS key field'],
+      answer: 1,
+      explanation: 'HEXISTS key field returns 1 if the field exists in the hash, 0 if the hash or field does not exist. More explicit than checking HGET for nil when you only need existence, not the value.',
+    },
+    {
+      q: 'What is the memory encoding optimisation for small Redis hashes?',
+      options: ['Hashes always use a standard dictionary', 'Small hashes use listpack (ziplist) encoding, converting to a hash table when field count or value size exceeds thresholds', 'Hashes are always stored as sorted sets internally', 'No encoding optimisation exists for hashes'],
+      answer: 1,
+      explanation: 'Redis stores small hashes as listpack (formerly ziplist) — a compact sequential structure much more memory-efficient than a hash table. Configured via hash-max-listpack-entries (128) and hash-max-listpack-value (64). Exceeding thresholds converts to hashtable.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -220,6 +244,22 @@ async function getCart(cartId: string): Promise<Record<string, number>> {
     {
       q: 'Can I set a TTL on a single field of a hash?',
       a: 'No — Redis TTLs apply to the entire key. Workarounds: (1) store expiry timestamp as a field value and check in application code; (2) use a sorted set with score = expiry time; (3) use separate top-level keys if per-field expiry is critical.',
+    },
+    {
+      q: 'When should you use a Redis hash instead of multiple string keys?',
+      a: 'Use hashes for multi-field entities (user profile with name, email, score). A hash <code>user:1001</code> is more memory-efficient than separate keys <code>user:1001:name</code>, <code>user:1001:email</code> — especially under the listpack threshold (128 fields default). You also get atomic multi-field reads with HGETALL.',
+    },
+    {
+      q: 'How do you atomically update multiple hash fields?',
+      a: '<strong>HSET key field1 val1 field2 val2</strong> (Redis 4.0+) sets multiple fields atomically — the old HMSET is deprecated. For conditional updates, use Lua or MULTI/EXEC. HSET returns the count of new fields added (0 for updated existing fields). HSETNX sets a field only if it does not exist.',
+    },
+    {
+      q: 'How do you safely iterate a large hash?',
+      a: 'Use <strong>HSCAN key cursor [MATCH pattern] [COUNT count]</strong>. Start cursor at 0; use the returned cursor for next call; repeat until returned cursor is 0. COUNT is a hint not a guarantee. Never use HGETALL on a large hash — it blocks Redis and returns potentially millions of fields in one shot.',
+    },
+    {
+      q: 'What is the listpack (ziplist) optimisation for small Redis hashes?',
+      a: 'Small hashes use <strong>listpack</strong> encoding — a compact sequential memory layout much more efficient than a hash table. Thresholds: <code>hash-max-listpack-entries</code> (default 128) and <code>hash-max-listpack-value</code> (default 64 bytes). Exceeding either converts to hashtable. Keeping values small keeps hashes in listpack, saving significant memory.',
     },
   ];
 

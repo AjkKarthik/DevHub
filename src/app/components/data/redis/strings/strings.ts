@@ -224,6 +224,24 @@ async function isAllowed(userId: string, limit: number, windowSeconds: number): 
       answer: 2,
       explanation: 'When a string value can be represented as a long integer, Redis uses the int encoding — storing the number directly in the Redis object without heap allocation. INCR/DECR operate on this type without serialisation.',
     },
+    {
+      q: 'What does SETNX do and why is it important?',
+      options: ['Deletes a string if it has no TTL', 'Sets a key only if it does not exist — atomically — used for distributed locking', 'Sets a negative TTL', 'Creates a set from a string'],
+      answer: 1,
+      explanation: 'SETNX key value is atomic — either sets the key or returns 0 if already exists. Foundation of distributed locks: acquire = SETNX lock owner; release = check + DEL. Modern usage: SET key value NX EX seconds (combines NX + expiry atomically).',
+    },
+    {
+      q: 'What does INCRBYFLOAT do and what precision issue should you know?',
+      options: ['Increments a key by a float, storing the result as a float — but floating-point precision issues may occur', 'Rounds all float increments to 2 decimal places automatically', 'Only works on keys created with HSET', 'Converts integers to floats before incrementing'],
+      answer: 0,
+      explanation: 'INCRBYFLOAT key increment increments the stored float. Redis stores the result as a string. Standard IEEE 754 double precision applies — avoid for exact financial calculations. For currency, store amounts in integer cents and use INCR.',
+    },
+    {
+      q: 'What does GETRANGE do?',
+      options: ['Returns a random substring', 'Returns a substring of the string stored at a key, specified by start and end byte offsets', 'Returns the type of a value', 'Returns the range of keys matching a pattern'],
+      answer: 1,
+      explanation: 'GETRANGE key start end returns the substring (0-indexed, negative indices from end). Example: GETRANGE key 0 3 returns first 4 bytes. SETRANGE key offset value overwrites part of the string. Useful for compact binary storage.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -234,6 +252,22 @@ async function isAllowed(userId: string, limit: number, windowSeconds: number): 
     {
       q: 'How do I atomically get an old value and set a new one?',
       a: 'Use GETSET (deprecated in Redis 6.2) or SET key newvalue GET. The GET option on SET returns the previous value while atomically writing the new one. For conditional swap, use a Lua script.',
+    },
+    {
+      q: 'What replaced GETSET in Redis 6.2 and why?',
+      a: 'GETSET is deprecated in Redis 6.2. Use <code>SET key newvalue GET</code> — the GET option returns the old value atomically. Cleaner API and works with all SET options (EX, PX, NX, XX). GETDEL (get and delete atomically) and GETEX (get and optionally set expiry) were also added in 6.2.',
+    },
+    {
+      q: 'What is the difference between SETNX and SET key value NX?',
+      a: 'Both set a key only if it does not exist. <strong>SETNX</strong> (old) has no option to set expiry atomically — you needed SETNX + EXPIRE (two commands, non-atomic). <strong>SET key value NX EX seconds</strong> (Redis 2.6.12+) is atomic — no risk of a zombie key with no expiry. SETNX is deprecated; use SET with NX.',
+    },
+    {
+      q: 'How do Redis INCR commands handle non-integer values?',
+      a: 'INCR / INCRBY / DECR / DECRBY fail with an error if the stored value is not representable as a 64-bit signed integer. INCRBYFLOAT works on float values. If the key does not exist, Redis treats it as 0 before incrementing. Strings used as counters are stored as integers internally for efficiency.',
+    },
+    {
+      q: 'What is MSET and when should you use it?',
+      a: 'MSET key1 val1 key2 val2 ... sets multiple keys atomically in a single round trip. MSETNX sets all keys only if none of them exist (all-or-nothing). MGET key1 key2 ... retrieves multiple values in one call. Use MSET/MGET to batch operations and reduce round trips — significant latency saving over individual SET/GET in loops.',
     },
   ];
 

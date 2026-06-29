@@ -252,12 +252,56 @@ async function getStreamStats(streamKey: string, groupName: string) {
       answer: 1,
       explanation: 'The PEL (Pending Entry List) tracks messages delivered to a consumer group consumer but not yet acknowledged with XACK. It enables at-least-once delivery and crash recovery via XCLAIM/XAUTOCLAIM.',
     },
+    {
+      q: 'What is a Redis Stream consumer group?',
+      options: ['A group of Redis instances sharing a stream', 'A named group of consumers that cooperatively consume stream messages — each message delivered to one consumer in the group', 'A pub/sub channel backed by a stream', 'A redundant copy of the stream for failover'],
+      answer: 1,
+      explanation: 'Consumer groups (XGROUP CREATE) enable multiple consumers to divide stream entries. XREADGROUP reads pending entries for a consumer. Each message goes to one consumer. XACK marks it processed. Unacknowledged messages go into the Pending Entries List (PEL).',
+    },
+    {
+      q: 'What does XACK do?',
+      options: ['Adds an acknowledgment message to the stream', 'Confirms that a consumer has successfully processed a message, removing it from the Pending Entries List', 'Deletes processed entries from the stream', 'Acknowledges a consumer group creation'],
+      answer: 1,
+      explanation: 'XACK key group id... removes entries from the consumer group Pending Entries List. Without XACK, unprocessed messages remain in the PEL and can be reclaimed by XAUTOCLAIM or XCLAIM after a timeout for redelivery to another consumer.',
+    },
+    {
+      q: 'What does the MAXLEN option in XADD do?',
+      options: ['Sets the maximum entry ID', 'Trims the stream to at most N entries, removing oldest entries first', 'Sets the maximum consumer group count', 'Limits the entry value size'],
+      answer: 1,
+      explanation: 'XADD key MAXLEN ~ N * entry trims the stream to approximately N entries (~ for efficient trimming). Without MAXLEN, streams grow indefinitely. Use MAXLEN for bounded memory: XADD events MAXLEN ~ 10000 * ...',
+    },
+    {
+      q: 'How does Redis Streams differ from Pub/Sub for message delivery?',
+      options: ['Streams are faster than Pub/Sub', 'Streams persist messages and support consumer groups with acknowledgment; Pub/Sub is ephemeral with no delivery guarantee for offline subscribers', 'Pub/Sub supports consumer groups; Streams do not', 'They are identical in terms of persistence'],
+      answer: 1,
+      explanation: 'Pub/Sub: ephemeral, offline subscribers miss messages. Streams: messages persist until trimmed, consumer groups enable reliable delivery with redelivery on failure. Use Streams for message queues; Pub/Sub for broadcast events.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'How do Streams compare to Kafka?',
       a: 'Redis Streams and Kafka share the append-only log model with consumer groups, but differ in scale and features. Redis Streams are in-memory (with optional persistence), have lower latency, and are simpler to operate. Kafka is designed for massive throughput (millions of events/sec), long-term retention, partitioning across brokers, and exactly-once semantics. Use Redis Streams for moderate-volume, low-latency event processing within your existing Redis infrastructure. Use Kafka for high-volume event streaming, multi-datacenter replication, or long-term event sourcing.',
+    },
+    {
+      q: 'How do you read new messages from a Redis Stream?',
+      a: 'XREAD COUNT 10 STREAMS mystream 0: reads up to 10 entries from the beginning. XREAD COUNT 10 STREAMS mystream $: reads only new messages after this command. XREAD BLOCK 5000 STREAMS mystream $: blocks 5s for new messages. For consumer groups use XREADGROUP.',
+    },
+    {
+      q: 'What is the Pending Entries List (PEL) in Redis Streams?',
+      a: 'The PEL tracks delivered-but-unacknowledged messages per consumer in a consumer group. XPENDING shows the PEL. XCLAIM transfers a pending entry to another consumer (for redelivery after timeout). XAUTOCLAIM (Redis 7+) automatically reclaims stale entries. PEL entries are removed by XACK. Monitor PEL size — growing PEL indicates processing failures.',
+    },
+    {
+      q: 'How do you create and use a consumer group?',
+      a: 'Create: <code>XGROUP CREATE stream group $ MKSTREAM</code> ($ = from now, 0 = from beginning). Read: <code>XREADGROUP GROUP group consumer COUNT 10 STREAMS stream ></code> (> = new undelivered). Acknowledge: <code>XACK stream group id</code>. Recover: <code>XAUTOCLAIM stream group newconsumer 60000 0-0</code>.',
+    },
+    {
+      q: 'What is XADD and how are stream IDs structured?',
+      a: 'XADD stream [MAXLEN ~ N] * field value [field value...]. * auto-generates ID as millisecondsTimestamp-sequenceNumber (e.g., 1703123456789-0). IDs are monotonically increasing. Custom IDs: XADD stream 12345-0 name value. Use MAXLEN ~ N to cap stream size. XLEN returns entry count. XRANGE for range queries by ID.',
+    },
+    {
+      q: 'How do you trim a Redis Stream to control memory usage?',
+      a: 'Options: (1) <strong>XADD MAXLEN ~ N</strong>: trim on every append (~ = approximate, faster). (2) <strong>XTRIM stream MAXLEN ~ N</strong>: explicit trim. (3) <strong>MINID</strong>: trim entries older than a given ID (Redis 6.2+). Use approximate trimming (~) — exact trimming must scan to a precise count. Set retention based on consumer group lag to avoid trimming unprocessed messages.',
     },
   ];
 
