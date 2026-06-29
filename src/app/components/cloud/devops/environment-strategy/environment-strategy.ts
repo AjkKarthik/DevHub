@@ -452,6 +452,16 @@ const result = validateEnvConfig({
       answer: 2,
       explanation: 'Per-environment secrets from a secrets manager (Vault, Key Vault, Secrets Manager) is the correct approach. Each environment has isolated credentials so rotating prod secrets does not affect staging. Base64 is encoding, not encryption — it provides no security.',
     },
+    {
+      q: 'What is "environment parity" and why does it matter?',
+      options: [
+        'Running the same number of instances in dev and production',
+        'Keeping dev, staging, and production environments as similar as possible — same OS, same dependencies, same config structure — to eliminate "works on my machine" failures',
+        'Using the same deployment pipeline for all environments',
+        'Ensuring all environments use the same cloud provider'],
+      answer: 1,
+      explanation: 'Environment parity (from 12-Factor App) means minimising differences between environments. When dev uses SQLite and prod uses PostgreSQL, bugs only appearing in production. When dev uses an older Node.js version, code that passes locally fails in CI. Strategies: Docker containers (same runtime everywhere), docker-compose for local service dependencies, same Terraform modules with different variable files, environment-specific config injected via env vars not code.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -474,6 +484,10 @@ const result = validateEnvConfig({
     {
       q: 'When should you use separate AWS accounts vs separate namespaces for environments?',
       a: 'Separate AWS accounts give the strongest isolation: independent IAM, billing, service limits, and blast radius. Use for prod vs non-prod at minimum. Separate Kubernetes namespaces within one account are cheaper but share IAM and the control plane — good for ephemeral PR environments or dev tiers. The rule: the higher the risk of a non-prod action affecting prod, the stronger the isolation needed.',
+    },
+    {
+      q: 'How do you manage configuration differences across environments without hardcoding them?',
+      a: 'The 12-Factor App principle: config belongs in the environment, not the code. Strategies: (1) Environment variables — store all env-specific config (DB URLs, API keys, feature flags) in env vars. Inject via Docker --env-file, Kubernetes ConfigMaps/Secrets, or cloud-native parameter stores (AWS SSM, Azure App Config). (2) Config maps per environment — Helm values files (values-dev.yaml, values-prod.yaml) with environment-specific overrides. (3) External config services — AWS AppConfig, Azure App Configuration, HashiCorp Consul — enable runtime config changes without redeployment. Never commit secrets to Git; use sealed secrets, external-secrets-operator, or Vault for production secrets.',
     },
   ];
 

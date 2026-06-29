@@ -479,6 +479,16 @@ console.log(detectDrift(desired, actual));
       answer: 1,
       explanation: 'Configuration drift occurs when someone makes a direct change to the cluster (kubectl apply, scale, edit) without updating Git — the "source of truth" then disagrees with reality. GitOps controllers continuously compare Git state with cluster state and reconcile any differences, preventing drift from accumulating.',
     },
+    {
+      q: 'What is the reconciliation loop in GitOps and what does it do?',
+      options: [
+        'A scheduled backup process for Git repositories',
+        'The controller continuously compares actual cluster state with desired state in Git and applies changes to eliminate drift',
+        'A merge request approval process',
+        'A CI pipeline that runs on every commit'],
+      answer: 1,
+      explanation: 'The GitOps operator (ArgoCD, Flux) runs a reconciliation loop: observe actual state → compare to desired state in Git → if drift detected, apply changes to make actual = desired. This loop runs continuously (typically every few minutes) or is triggered by Git push events. Crucially, manual kubectl changes are also detected as drift and overwritten — the cluster can only be changed through Git. This guarantees auditability and self-healing.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -501,6 +511,10 @@ console.log(detectDrift(desired, actual));
     {
       q: 'How do you handle multi-cluster GitOps with ArgoCD?',
       a: 'ArgoCD supports multi-cluster natively: register additional clusters with `argocd cluster add <context>`. Each Application specifies `destination.server` pointing to the cluster API endpoint. For fleet management: use ArgoCD ApplicationSets — a single CR that generates Applications across multiple clusters based on cluster selectors, Git directories, or a cluster list. Example: a single ApplicationSet deploys your app to all clusters tagged `env=production`. Changes in Git propagate to all production clusters simultaneously. Alternatively, run one ArgoCD instance per cluster (simpler blast radius isolation, more ops overhead).',
+    },
+    {
+      q: 'How do you manage secrets in a GitOps workflow without committing them to Git?',
+      a: 'Secrets must not be in the Git repo (even a private one). Options: (1) Sealed Secrets (Bitnami) — encrypt a Secret with a public key; the sealed secret CipherText is safe to commit; only the controller in the cluster can decrypt it with the private key. (2) External Secrets Operator — define ExternalSecret CRDs that reference secrets in AWS Secrets Manager, Azure Key Vault, or HashiCorp Vault; the operator syncs them to native Kubernetes Secrets. (3) Vault Agent Sidecar — inject secrets into pods at runtime from Vault. (4) SOPS — Mozilla SOPS encrypts YAML/JSON files with cloud KMS keys; only users with KMS access can decrypt; safe to commit the encrypted file. External Secrets Operator is the most popular GitOps-native approach for cloud-hosted secrets.',
     },
   ];
 

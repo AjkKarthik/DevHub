@@ -410,6 +410,16 @@ console.log(lintCommitMessage('feat!: remove deprecated v1 API endpoints'));
       answer: 2,
       explanation: 'Gitflow is designed for versioned software where multiple release versions are maintained simultaneously. For web apps with continuous delivery, the develop/release branch overhead adds friction without benefit — GitHub Flow or TBD is simpler and faster.',
     },
+    {
+      q: 'What is trunk-based development and how does it differ from Gitflow?',
+      options: [
+        'Trunk-based uses more branches; Gitflow uses one branch',
+        'Trunk-based: all developers commit directly to main (or very short-lived feature branches ≤2 days); Gitflow: long-lived feature, develop, release, and hotfix branches',
+        'Gitflow is faster; trunk-based is safer',
+        'They are the same workflow with different naming conventions'],
+      answer: 1,
+      explanation: 'Trunk-based development: developers integrate to main multiple times per day using feature flags to hide incomplete work. Short-lived branches (≤2 days) prevent divergence. Requires strong CI. Gitflow uses long-lived develop, feature/*, release/*, and hotfix/* branches — managing parallel version streams. Gitflow was designed for scheduled releases; trunk-based enables continuous delivery. High-performing DevOps teams predominantly use trunk-based development.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -432,6 +442,10 @@ console.log(lintCommitMessage('feat!: remove deprecated v1 API endpoints'));
     {
       q: 'What is the difference between `git merge` and `git rebase` in terms of history?',
       a: '`git merge` creates a merge commit that preserves the full branching history — you can see exactly when branches diverged and rejoined. `git rebase` replays commits linearly on the target branch — no merge commits, cleaner `git log`, but the original branch topology is erased. Teams that value historical accuracy prefer merge; teams that value readability prefer rebase. Many projects use both: rebase to update feature branches, merge commits (or squash) for PR integration.',
+    },
+    {
+      q: 'What branch protection rules should you enforce on the main branch?',
+      a: 'Recommended branch protection rules on main: (1) Require pull request reviews (≥1 approver, dismiss stale approvals on new commits) — prevents direct pushes and ensures peer review. (2) Require status checks to pass before merging — CI pipeline (tests, lint, build) must be green. (3) Require branches to be up to date before merging — prevents race conditions where two PRs both pass CI against an old main but conflict. (4) Restrict who can push to main — typically only CI system and admins (for emergency hotfixes). (5) Require signed commits (optional, high-security environments) — GPG or SSH signed commits prove authorship. (6) Require linear history (optional) — enforces squash or rebase merge, keeping history clean.',
     },
   ];
 

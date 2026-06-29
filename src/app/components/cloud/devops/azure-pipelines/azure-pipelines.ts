@@ -511,6 +511,17 @@ console.log(resolveStageOrder(stages));
       answer: 1,
       explanation: 'Azure Pipelines templates let you extract common steps, jobs, or stages into YAML files in a shared repository. Other pipelines reference them with `template: path/to/template.yml@shared-repo`. When the template changes, all consuming pipelines get the update — eliminating copy-paste drift across repos.',
     },
+    {
+      q: 'What is the difference between self-hosted and Microsoft-hosted agents in Azure Pipelines?',
+      options: [
+        'Self-hosted agents are faster for all workloads',
+        'Microsoft-hosted agents are ephemeral VMs managed by Microsoft (clean slate per job); self-hosted agents are VMs you manage that persist state between jobs',
+        'Self-hosted agents cannot access private networks',
+        'Microsoft-hosted agents support unlimited parallel jobs',
+      ],
+      answer: 1,
+      explanation: 'Microsoft-hosted agents: clean VM provisioned per job, maintained and updated by Microsoft, supports Ubuntu/Windows/macOS, billed by parallel jobs. Self-hosted agents: your own VMs registered in ADO — persistent state (tool cache, Docker layer cache) speeds up builds, can access private network resources (on-prem DB, internal package feeds), but you manage patching and scaling. Use self-hosted for private network access or when tool installation time dominates build time.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -533,6 +544,10 @@ console.log(resolveStageOrder(stages));
     {
       q: 'How do you run the same job on both Windows and Linux?',
       a: 'Use `strategy: matrix:` on the job to create parallel runs with different `vmImage` values. Define matrix entries like `{ Ubuntu: { vmImage: "ubuntu-latest" }, Windows: { vmImage: "windows-latest" } }`, then set `pool: vmImage: $(vmImage)` on the job. Each matrix entry creates a separate job run on the specified agent. Use `bash:` steps (not `script:`) to ensure shell compatibility across OS. You can also set `fail-fast: false` equivalent via `maxParallel` to keep all matrix runs going even if one fails.',
+    },
+    {
+      q: 'When would you choose Azure Pipelines over GitHub Actions?',
+      a: 'Azure Pipelines is preferred when: (1) Deep Azure DevOps integration — your work items, repos, and boards are in ADO, not GitHub. (2) Complex deployment environments — ADO environments with approvals, deployment history, and resource locks are more mature than GitHub Environments. (3) Large scale with parallelism — ADO has more mature parallel job management and self-hosted agent pools with VMSS auto-scaling. (4) Enterprise compliance — ADO has more detailed audit logs and compliance certifications for regulated industries. GitHub Actions is preferred for: open-source projects, GitHub-hosted repos, simpler event triggers, and the Marketplace ecosystem.',
     },
   ];
 

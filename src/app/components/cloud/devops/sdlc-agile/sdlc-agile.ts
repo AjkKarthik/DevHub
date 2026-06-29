@@ -414,6 +414,16 @@ const f = forecastSprints(v, 120);
       answer: 2,
       explanation: 'Little\'s Law: Lead Time = WIP / Throughput = 20 / 4 = 5 weeks. This is why reducing WIP (not working faster) is the fastest lever for reducing lead time in Kanban systems.',
     },
+    {
+      q: 'What are the four DORA metrics and which two measure speed vs stability?',
+      options: [
+        'Deployment Frequency, Lead Time, MTTR, Change Failure Rate — Frequency+Lead Time = speed; MTTR+CFR = stability',
+        'Sprint Velocity, Bug Count, Test Coverage, Deployment Size',
+        'Uptime, MTTD, MTTR, Throughput',
+        'Lines of Code, Pull Request Size, Review Time, Deploy Time'],
+      answer: 0,
+      explanation: 'DORA (DevOps Research and Assessment) metrics: Speed — Deployment Frequency (how often you deploy to production) and Lead Time for Changes (commit to production). Stability — Change Failure Rate (% of deployments causing incidents) and Mean Time to Recover (time to restore service). Elite performers: DF=multiple/day, LTC<1hr, CFR<5%, MTTR<1hr. The key insight: speed and stability are NOT trade-offs — elite teams excel at all four simultaneously.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -436,6 +446,10 @@ const f = forecastSprints(v, 120);
     {
       q: 'What is the difference between Cycle Time and Lead Time?',
       a: 'Lead Time starts when the item enters the backlog (customer request time). Cycle Time starts when the team begins working on it. Lead Time ≥ Cycle Time — the gap between them is queue/wait time. In Kanban, both metrics are tracked; reducing the gap (wait time) is as important as reducing active work time.',
+    },
+    {
+      q: 'What is the difference between Scrum and Kanban in a DevOps context?',
+      a: 'Scrum uses fixed-length sprints (1–4 weeks) with defined scope: sprint planning, daily standup, sprint review, retrospective. Work is batched into sprints; no scope changes mid-sprint. Best for: feature development teams with predictable planning horizons. Kanban has no sprints: work flows continuously, team pulls new items when capacity is available. WIP (Work-in-Progress) limits prevent overloading. Best for: operations, support, and DevOps teams with unpredictable incoming work (incidents, bug reports). Many DevOps teams use Scrumban — Kanban-style continuous flow with lightweight Scrum ceremonies. The key DevOps insight: the deployment pipeline should operate like Kanban (continuous), even if the development process uses Scrum sprints.',
     },
   ];
 

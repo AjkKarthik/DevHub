@@ -585,6 +585,16 @@ console.log(scoreVulnerabilities(vulns));
       answer: 1,
       explanation: 'The SolarWinds, Log4Shell (Log4j), and xz-utils attacks are famous supply chain examples. By compromising a widely-used library, tool, or build pipeline, attackers can inject malicious code into thousands of downstream applications without touching any of them directly. Defences: pin dependency versions, verify checksums/SBOMs, sign images, use private registries with scanning, monitor for unexpected dependency changes.',
     },
+    {
+      q: 'What is the difference between SAST and DAST in DevSecOps?',
+      options: [
+        'SAST scans running applications; DAST scans source code',
+        'SAST (Static) analyses source code without running it; DAST (Dynamic) tests a running application by sending requests and analysing responses',
+        'SAST is manual; DAST is automated',
+        'They are identical — both scan for the same vulnerability types'],
+      answer: 1,
+      explanation: 'SAST (Static Application Security Testing) analyses source code, bytecode, or binary at rest — finds injection flaws, hardcoded secrets, insecure patterns. Runs in pre-commit or CI without deploying. DAST (Dynamic Application Security Testing) sends HTTP requests to a running app and analyses responses — finds SQL injection, XSS, broken auth, configuration issues. Needs a deployed environment. Use both: SAST for early feedback, DAST for runtime vulnerabilities SAST misses.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -607,6 +617,10 @@ console.log(scoreVulnerabilities(vulns));
     {
       q: 'What is the difference between Checkov and Trivy for IaC security?',
       a: 'Checkov (Bridgecrew/Palo Alto) is a dedicated IaC security scanner: deep Terraform, Bicep, CloudFormation, Kubernetes manifest, Dockerfile analysis with 1000+ built-in checks. It has the richest IaC policy library and integrates with Prisma Cloud. Trivy (Aqua Security) is a multi-purpose scanner: container images, filesystems, Git repos, IaC configs, and Kubernetes cluster scanning in one tool. Its IaC coverage is good but less deep than Checkov. Use Trivy when you want one tool for containers + IaC in a simple pipeline; use Checkov when IaC security depth is the priority.',
+    },
+    {
+      q: 'How do you handle a critical CVE discovered in a third-party dependency in production?',
+      a: 'Triage first: (1) Confirm exploitability — is the vulnerable code path actually reachable? Many CVEs are in code paths your application never calls. Check the CVE description and your usage pattern. (2) Assess severity in context — CVSS score is generic; your exposure matters more (is it on a public endpoint? Does it require auth?). (3) Patch or mitigate: if a patched version exists, update and deploy immediately for critical/high severity. If no patch, consider: WAF rule, input validation workaround, or disable the feature using the vulnerable code path. (4) Update your SBOM and verify the fix with a rescan. (5) Prevent recurrence: add the dependency to your vulnerability gate in CI — new images fail if critical CVEs are detected unpatched.',
     },
   ];
 

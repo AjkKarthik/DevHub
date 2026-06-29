@@ -538,6 +538,10 @@ function classifyBudgetStatus(config: SloInput, window: WindowData): BudgetResul
       q: 'How do you handle a service where achieving the SLO requires more infrastructure cost than the business can justify?',
       a: 'This is a business decision, not a technical one. Present the options clearly: (a) fund the infrastructure to hit the SLO; (b) lower the SLO to match what the current infrastructure can sustain; (c) accept a higher-than-normal error rate and inform customers via the SLA. The SRE role is to make the trade-offs visible and quantified, not to silently over-engineer reliability that the business did not budget for.'
     },
+    {
+      q: 'What is an error budget and how does it change engineering priorities?',
+      a: 'An error budget is the maximum allowed downtime/failures implied by your SLO. 99.9% availability = 0.1% error budget = ~8.7 hours downtime/year, or 43.8 minutes/month. How it changes priorities: (1) When budget is healthy (plenty remaining) — the team has permission to take risks, deploy frequently, experiment. Speed over caution. (2) When budget is nearly exhausted — new feature deployments pause; the team focuses exclusively on reliability improvements, reducing toil, fixing the root causes of failures. (3) SRE teams use error budgets to negotiate with product teams: "we cannot ship the new feature this week — our error budget is 80% consumed". This replaces subjective arguments with data. Google invented the error budget concept; it is the core mechanism that balances feature velocity with reliability.',
+    },
   ];
 
   revision: RevisionSummary = {

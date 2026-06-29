@@ -583,6 +583,16 @@ result.forEach(i => console.log(\`[\${i.severity.toUpperCase()}] \${i.message}\`
       answer: 1,
       explanation: 'CI runners are ephemeral — local layer cache is lost between runs. Registry-backed cache exports the build cache to a special registry tag after building, and imports it at the start of the next run. This gives stateless runners the benefit of incremental builds.',
     },
+    {
+      q: 'What is the main benefit of multi-stage Docker builds?',
+      options: [
+        'Faster build times by parallelising build stages',
+        'Smaller final images — build dependencies (compilers, test tools) stay in build stages and are not included in the final runtime image',
+        'Enables building for multiple architectures simultaneously',
+        'Reduces the number of image layers'],
+      answer: 1,
+      explanation: 'Multi-stage builds use multiple FROM instructions. The build stage installs compilers, test deps, and builds binaries. The final stage copies only the built artifacts from the build stage — no compilers, no source code, no test deps. A Node.js app might go from 1.2GB (with node_modules and dev tools) to 150MB (just the production runtime). Smaller images = faster pulls, smaller attack surface, lower storage cost.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -605,6 +615,10 @@ result.forEach(i => console.log(\`[\${i.severity.toUpperCase()}] \${i.message}\`
     {
       q: 'What is the difference between COPY and ADD in a Dockerfile?',
       a: 'COPY is the preferred instruction — it copies files or directories from the build context into the image. ADD does everything COPY does but also auto-extracts .tar.gz archives and can download from URLs (not recommended — downloads are uncacheable and non-deterministic). The Docker team recommends always using COPY unless you specifically need ADD\'s extraction feature, in which case document why.',
+    },
+    {
+      q: 'How do you optimise Docker layer caching in CI to speed up builds?',
+      a: 'Docker rebuilds a layer and all subsequent layers when a layer changes. Optimise by: (1) Order layers from least-to-most frequently changed. Copy package.json and run npm install BEFORE copying source code — dependencies change rarely, source code changes every commit. (2) Use --mount=type=cache in BuildKit to persist the npm/pip/apt cache between builds without baking it into layers. (3) Use Docker BuildKit inline cache (--cache-from, --cache-to) to share the layer cache across CI runners — push cache to a registry and pull on the next build. (4) Use multi-stage builds — each stage has its own cache. Install deps in stage 1 (cached frequently); copy source in stage 2 (invalidates less of stage 1).',
     },
   ];
 
