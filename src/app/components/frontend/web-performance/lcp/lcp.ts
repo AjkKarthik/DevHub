@@ -349,6 +349,12 @@ new PerformanceObserver((list) => {
       answer: 2,
       explanation: 'Client-side rendering produces an empty HTML shell. LCP cannot fire until JS downloads, parses, and renders the DOM — which can be several seconds. SSR (or SSG) pre-renders the hero content into the HTML response so the browser can paint LCP as soon as it parses the first response.',
     },
+    {
+      q: 'Why should the LCP image never have loading="lazy"?',
+      options: ['Lazy loading is not supported for images', 'Lazy loading delays the fetch until the image enters the viewport, which directly delays LCP', 'It prevents the image from being indexed by Google', 'Lazy loading disables preloading'],
+      answer: 1,
+      explanation: 'loading="lazy" tells the browser to defer fetching the image until it is near the viewport. For the LCP image (which is almost always in the initial viewport), this means the browser does NOT start fetching during HTML parsing — it waits until layout is done, adding hundreds of milliseconds. Always use loading="eager" (or omit the attribute) on the LCP element, and add fetchpriority="high".',
+    },
   ];
 
   qna: QnaItem[] = [

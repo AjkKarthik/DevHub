@@ -416,6 +416,12 @@ slow LCP and first-paint times. Add the correct hints:
       answer: 2,
       explanation: 'preconnect opens a TCP/TLS connection and holds it for ~10 seconds. If the connection is never used, you\'ve wasted system resources and bandwidth. Use dns-prefetch for uncertain origins instead.',
     },
+    {
+      q: 'What is the Fetch Priority API (fetchpriority attribute) and what is its primary use case?',
+      options: ['It sets the HTTP priority header', 'It signals to the browser the relative importance of a resource for scheduling its download', 'It forces synchronous fetching', 'It bypasses the HTTP cache'],
+      answer: 1,
+      explanation: 'fetchpriority="high" on the LCP image tells the browser to download it with higher priority than other images, even above below-the-fold images that might otherwise compete for bandwidth. fetchpriority="low" is useful for non-critical images loaded in the initial HTML. This is different from preload — it doesn\'t change when the resource is discovered, only its priority in the fetch queue.',
+    },
   ];
 
   qna: QnaItem[] = [

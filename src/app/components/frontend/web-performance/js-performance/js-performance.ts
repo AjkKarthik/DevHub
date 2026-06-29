@@ -438,6 +438,12 @@ const routes = [
       answer: 1,
       explanation: '"sideEffects": false marks a package as side-effect-free — meaning if a module\'s exports are unused, the bundler can remove the entire module without breaking anything. This is a prerequisite for effective tree shaking.',
     },
+    {
+      q: 'What is the performance advantage of dynamic import() over static import?',
+      options: ['It is faster to parse', 'It defers loading a module until it is actually needed, reducing the initial JS bundle size', 'It enables tree shaking', 'It works in older browsers without transpiling'],
+      answer: 1,
+      explanation: 'Static imports are always bundled into the initial chunk and parsed at page load. Dynamic import() returns a Promise and loads the module only when called — enabling code splitting. Example: import(\'./heavyModule\').then(m => m.doWork()). Route-based code splitting in frameworks like Angular and Next.js uses dynamic imports automatically to reduce TTI.',
+    },
   ];
 
   qna: QnaItem[] = [

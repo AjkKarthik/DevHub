@@ -305,6 +305,12 @@ function yieldToMain() {
       answer: 1,
       explanation: 'The INP "Good" threshold is under 200ms. "Needs improvement" is under 500ms. 500ms or more is "Poor". These thresholds are based on user perception research — delays above 200ms are noticeable as sluggish.',
     },
+    {
+      q: 'Which tool should you use to observe Core Web Vitals from real users (field data), not a lab simulation?',
+      options: ['Lighthouse in DevTools', 'WebPageTest', 'The web-vitals JS library + RUM dashboard', 'Chrome Performance panel'],
+      answer: 2,
+      explanation: 'Lighthouse, WebPageTest, and the Performance panel all run lab simulations on a controlled machine. The web-vitals library\'s onLCP/onINP/onCLS callbacks fire in real browsers and let you send CWV data to your own analytics. Google Search Console\'s Core Web Vitals report aggregates this same CrUX field data across all your users.',
+    },
   ];
 
   qna: QnaItem[] = [

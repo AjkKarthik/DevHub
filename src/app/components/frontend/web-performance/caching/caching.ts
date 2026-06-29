@@ -442,6 +442,12 @@ window.addEventListener('load', () => {
       answer: 1,
       explanation: 'SW installation downloads sw.js and runs the install handler, which may fetch assets to precache. Doing this before the page\'s own critical resources load competes for bandwidth and can delay LCP. Waiting for the load event ensures the page renders first.',
     },
+    {
+      q: 'Which Cache-Control directive tells intermediate proxies not to cache the response but allows the browser to cache it?',
+      options: ['no-store', 'no-cache', 'private', 'must-revalidate'],
+      answer: 2,
+      explanation: 'private restricts caching to the end-user\'s browser only — CDNs and shared proxies must not store it. no-cache allows caching but requires revalidation with the server before each use. no-store prevents caching entirely. Use private for user-specific data (profile pages, cart) and public for shared resources (CSS, JS bundles).',
+    },
   ];
 
   qna: QnaItem[] = [

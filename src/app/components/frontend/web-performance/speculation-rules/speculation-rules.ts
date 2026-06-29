@@ -545,6 +545,12 @@ Add Speculation Rules to make navigations between checkout steps feel instant:
       answer: 1,
       explanation: 'The Speculation Rules API shipped in Chrome 109 (stable, January 2023) and Edge follows Chrome\'s implementation. Firefox and Safari do not support it yet. The inline <script type="speculationrules"> is safely ignored by unsupported browsers, but dynamic injection should include a feature-detect and <link rel="prefetch"> fallback.',
     },
+    {
+      q: 'What is the difference between prefetch and prerender in Speculation Rules?',
+      options: ['prefetch and prerender are identical', 'prefetch downloads only the HTML document; prerender downloads AND executes the page in a hidden browsing context', 'prefetch is for images; prerender is for scripts', 'prefetch works on mobile; prerender only on desktop'],
+      answer: 1,
+      explanation: 'prefetch fetches the URL\'s HTML into the HTTP cache — when the user navigates, the HTML is already cached but JS/CSS still need to parse and run. prerender goes further: the browser creates a hidden tab, fetches all subresources, runs JavaScript, and renders the full page. Navigation becomes instant (< 100ms). The cost is significant CPU/memory usage on the speculated page.',
+    },
   ];
 
   qna: QnaItem[] = [

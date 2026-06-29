@@ -398,6 +398,12 @@ Write the corrected HTML head and a brief explanation for each fix.`,
       answer: 1,
       explanation: 'DevTools → Network panel → right-click any column header → enable "Protocol". Each resource shows h2, h3, or http/1.1. h2-push indicates the resource was delivered via HTTP/2 Server Push.',
     },
+    {
+      q: 'What problem does QUIC (the transport underlying HTTP/3) solve that TCP (HTTP/2) cannot?',
+      options: ['Slower connection setup', 'Head-of-line blocking at the transport layer', 'Lack of multiplexing', 'No TLS support'],
+      answer: 1,
+      explanation: 'HTTP/2 multiplexes streams over a single TCP connection — but TCP\'s ordered delivery means a lost packet blocks ALL streams until it is retransmitted (transport-layer HoL blocking). QUIC uses UDP and implements its own stream abstraction where a lost packet only blocks the stream it belongs to. HTTP/3 therefore has no head-of-line blocking even on lossy networks.',
+    },
   ];
 
   qna: QnaItem[] = [

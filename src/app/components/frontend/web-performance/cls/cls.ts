@@ -406,6 +406,12 @@ Write the corrected HTML/CSS.`,
       answer: 1,
       explanation: 'Shifts caused by user interactions (click, tap, key press) within 500 ms are excluded from CLS — they are considered expected. Only unexpected shifts count toward the score.',
     },
+    {
+      q: 'A cookie banner slides in from the top and pushes all page content down. What is the correct way to prevent it from causing CLS?',
+      options: ['Use animation: slideIn', 'Position it fixed or sticky instead of static/relative in the page flow', 'Add will-change: transform', 'Use setTimeout to delay showing it'],
+      answer: 1,
+      explanation: 'Fixed or sticky positioned elements are taken out of the normal document flow — they overlay content rather than pushing it down. A static/relative cookie banner that inserts above existing content shifts every element below it, generating a large CLS score. Using position: fixed with a bottom: 0 or top: 0 placement is the standard solution for banners.',
+    },
   ];
 
   qna: QnaItem[] = [

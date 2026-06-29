@@ -399,6 +399,12 @@ Identify and fix all five:
       answer: 1,
       explanation: '14 KB (roughly) fits within the initial TCP congestion window — meaning it can be delivered in the first network round-trip along with the HTML. Larger inline CSS pushes the HTML response itself into a second round-trip.',
     },
+    {
+      q: 'Which attribute allows the browser to continue parsing HTML while a script downloads, then executes it in order?',
+      options: ['async', 'defer', 'type="module"', 'loading="lazy"'],
+      answer: 1,
+      explanation: 'defer downloads the script in parallel with HTML parsing and executes it after parsing completes, in document order. async downloads in parallel and executes immediately when downloaded — which can interrupt parsing. Both defer and type="module" maintain execution order; async does not. Use defer for app scripts, async for independent analytics.',
+    },
   ];
 
   qna: QnaItem[] = [

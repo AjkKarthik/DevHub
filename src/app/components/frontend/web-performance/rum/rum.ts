@@ -472,6 +472,12 @@ document.addEventListener('visibilitychange', () => {
       answer: 1,
       explanation: 'The /attribution import of web-vitals adds attribution data to each metric. For INP, this includes the eventType (click/keydown/pointerdown), the eventTarget (which element was interacted with), and the three phases: inputDelay, processingDuration, and presentationDelay.',
     },
+    {
+      q: 'What is the delta property on web-vitals metric objects and why does it matter for analytics?',
+      options: ['The difference from the previous page\'s score', 'The incremental change since the last time the callback fired — allows summing partial updates', 'The margin of error in the measurement', 'The gap between lab and field data'],
+      answer: 1,
+      explanation: 'CLS fires multiple times during page lifetime as shifts accumulate. Each callback fires with the current cumulative value (value) and the change since the last callback (delta). When sending to analytics, send delta instead of value to avoid double-counting — your server can sum all deltas for the session to get the final score. For LCP and INP, late callbacks may also update the value.',
+    },
   ];
 
   qna: QnaItem[] = [
