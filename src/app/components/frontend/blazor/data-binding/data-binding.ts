@@ -192,6 +192,7 @@ export class BlazorDataBinding {
     { q: 'How do you fix the foreach loop variable capture bug?', options: ['Use a for loop instead', 'Assign item to a local variable inside the loop body', 'Use @key directive', 'Use index instead of item'], answer: 1, explanation: 'var local = item inside the foreach loop creates a new capture per iteration. This is a common C# closure gotcha.' },
     { q: 'What attribute is used for two-way binding on Blazor InputText?', options: ['@bind', '@bind-Value', '@twoway', '@model'], answer: 1, explanation: '@bind-Value targets the Value parameter of Blazor input components. @bind targets the native HTML element\'s value attribute.' },
     { q: 'What should you always do with async event lambdas?', options: ['Return void', 'Use async and await', 'Suppress warnings', 'Run on background thread'], answer: 1, explanation: 'Always await async calls in event handlers to ensure exceptions are not silently swallowed and state is updated correctly.' },
+    { q: 'How do you set the format string for date inputs with @bind?', options: ['@bind-format="yyyy-MM-dd"', '@bind:format="yyyy-MM-dd"', 'format="yyyy-MM-dd"', 'Use a custom converter'], answer: 1, explanation: '@bind:format="yyyy-MM-dd" on an <input type="date"> tells Blazor how to parse and format the DateTime. Without it, browsers and locales may parse dates differently, causing silent null/wrong-value bugs.' },
   ];
 
   qna: QnaItem[] = [

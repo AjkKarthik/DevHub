@@ -195,6 +195,7 @@ app.Run();` },
     { q: 'Which file contains global @using statements shared across all Razor components in a folder?',
       options: ['App.razor', 'Program.cs', '_Imports.razor', 'Routes.razor'],
       answer: 2, explanation: '_Imports.razor automatically applies @using, @inject, and other directives to all .razor files in the same folder and its subfolders.' },
+    { q: 'What is the role of Routes.razor in a Blazor Web App (.NET 8+)?', options: ['It defines all page routes manually', 'It hosts the Router component and is rendered by App.razor to enable automatic page discovery', 'It is a configuration file', 'It replaces Program.cs'], answer: 1, explanation: 'Routes.razor wraps the <Router> component and is the entry point for Blazor\'s page routing system. App.razor renders <Routes /> alongside HeadOutlet, providing the root layout shell. The Router scans assemblies for @page directives to build the route table automatically.' },
   ];
 
   qna: QnaItem[] = [

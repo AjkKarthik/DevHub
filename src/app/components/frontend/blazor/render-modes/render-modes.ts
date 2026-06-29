@@ -218,6 +218,7 @@ else
     { q: 'Which service must be registered for InteractiveServer?', options: ['AddServerSideBlazor()', 'AddInteractiveServerComponents()', 'AddSignalR()', 'AddBlazorServer()'], answer: 1, explanation: 'AddInteractiveServerComponents() is the .NET 8 method. AddServerSideBlazor() is the older pre-.NET 8 API.' },
     { q: 'Can a WASM component directly access EF Core?', options: ['Yes, via DI', 'No, it runs in the browser', 'Only with Scoped lifetime', 'Only in development'], answer: 1, explanation: 'WASM executes in the browser. It must call HTTP APIs to reach server-side resources like databases.' },
     { q: 'What attribute enables progressive HTML flushing on a Static SSR page?', options: ['[StreamRendering]', '[ProgressiveRender]', '[AsyncFlush]', '[LazyLoad]'], answer: 0, explanation: '[StreamRendering] tells Blazor to send placeholder HTML immediately and stream updated content as async work completes.' },
+    { q: 'Can different components on the same page use different render modes?', options: ['No — one render mode per page', 'Yes — each component can independently declare @rendermode', 'Only in Blazor WASM', 'Only two render modes per page'], answer: 1, explanation: 'Per-component render mode is a key .NET 8 Blazor feature. A page can be Static SSR while specific interactive islands are InteractiveServer or InteractiveWebAssembly. The constraint is that a child component cannot have a higher interactivity than its parent — a static parent cannot host an interactive child in the same request.' },
   ];
 
   qna: QnaItem[] = [
