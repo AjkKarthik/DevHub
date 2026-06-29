@@ -293,6 +293,28 @@ SELECT order_id, NOW() FROM updated;`
       answer: 2,
       explanation: 'When you must call a stored procedure (or external process) once per row and it has no batch-capable interface, a cursor is sometimes the only practical option. All the other choices have direct set-based solutions.'
     },
+    {
+      q: 'What does @@FETCH_STATUS = 0 indicate in MSSQL cursor processing?',
+      options: [
+        'The cursor has reached the end of the result set',
+        'The last FETCH succeeded and returned a valid row',
+        'The cursor is closed',
+        'Zero rows matched the cursor query'
+      ],
+      answer: 1,
+      explanation: '@@FETCH_STATUS returns 0 for a successful fetch, -1 when past the end of the result set, and -2 when the fetched row was deleted. The standard cursor loop is: FETCH NEXT … WHILE @@FETCH_STATUS = 0 BEGIN … FETCH NEXT … END.'
+    },
+    {
+      q: 'In PostgreSQL PL/pgSQL, how do you open and use a cursor with parameters?',
+      options: [
+        'DECLARE cur CURSOR FOR SELECT ... WHERE id = param; OPEN cur;',
+        'OPEN cur FOR SELECT ... WHERE id = param; -- works directly without a prior DECLARE',
+        'DECLARE cur REFCURSOR; OPEN cur FOR SELECT ... WHERE id = param;',
+        'Only FOR loops support parameters; explicit cursors cannot be parameterised'
+      ],
+      answer: 2,
+      explanation: 'In PL/pgSQL, declare the cursor as a refcursor variable: DECLARE cur REFCURSOR; then OPEN cur FOR SELECT … WHERE id = param;. FETCH cur INTO rec; retrieves rows. This allows dynamic query parameterisation inside a procedure.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -307,6 +329,18 @@ SELECT order_id, NOW() FROM updated;`
     {
       q: 'My cursor runs fine on 100 rows but times out on 100,000. What should I do?',
       a: 'Almost certainly rewrite it as a set-based query. If that is impossible, consider: (1) committing in batches (e.g. every 1 000 rows) inside a loop rather than one big transaction; (2) adding NOLOCK / READ UNCOMMITTED to avoid blocking; (3) running the loop off-hours. But the real answer is almost always to find the set-based equivalent.',
+    },
+    {
+      q: 'What is the difference between a SCROLL cursor and a FORWARD ONLY cursor?',
+      a: 'A FORWARD ONLY (FAST_FORWARD in MSSQL) cursor can only move forward one row at a time with FETCH NEXT. A SCROLL cursor supports all fetch directions: PRIOR, FIRST, LAST, ABSOLUTE N, and RELATIVE N. Scroll cursors are more resource-intensive because the database must materialise the result set to support random access. Only use SCROLL when you genuinely need to navigate backwards.',
+    },
+    {
+      q: 'Can I return a cursor result set from a PostgreSQL function to a client application?',
+      a: 'Yes — declare a function that returns SETOF refcursor. Inside, OPEN the cursors and RETURN NEXT cursorvar; the calling code (e.g. PL/pgSQL or JDBC) then FETCHes from each returned cursor name. However, for most use cases, RETURNS TABLE or RETURNS SETOF is simpler and more idiomatic in PostgreSQL.',
+    },
+    {
+      q: 'How many rows does @@ROWCOUNT return after a cursor FETCH?',
+      a: '@@ROWCOUNT after a FETCH is always 0 or 1 — 1 if a row was fetched, 0 if @@FETCH_STATUS is -1 (past end) or -2 (deleted). This is different from @@ROWCOUNT after a set-based statement, which returns the total rows affected. Do not confuse them when mixing cursor and set-based code in the same procedure.',
     },
   ];
 }

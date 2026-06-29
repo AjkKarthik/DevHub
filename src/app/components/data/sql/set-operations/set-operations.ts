@@ -257,6 +257,17 @@ ORDER BY status, product_id;`,
       answer: 2,
       explanation: 'SQL takes column names from the first SELECT branch. To control output names, alias the columns in the first branch.',
     },
+    {
+      q: 'How does EXCEPT compare to NOT EXISTS for performance?',
+      options: [
+        'EXCEPT is always faster because it uses a hash algorithm',
+        'NOT EXISTS is always faster because it short-circuits',
+        'EXCEPT materialises both result sets then computes the set difference; NOT EXISTS is evaluated row by row and can short-circuit — NOT EXISTS is often faster for selective filters',
+        'They are identical in performance'
+      ],
+      answer: 2,
+      explanation: 'EXCEPT must read both complete result sets to compute the difference. NOT EXISTS can stop scanning the subquery as soon as it finds a matching row (short-circuit). For large right-hand sets with a selective left query, NOT EXISTS is usually faster. EXCEPT is simpler to write when comparing multi-column rows.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -275,6 +286,14 @@ ORDER BY status, product_id;`,
     {
       q: 'What is the performance difference between UNION and UNION ALL?',
       a: 'UNION sorts and deduplicates the combined result, adding O(n log n) overhead. UNION ALL simply concatenates the results, making it O(n). If your data is guaranteed unique across branches — e.g., year-partitioned tables — always use UNION ALL.',
+    },
+    {
+      q: 'What happens when UNION branches have different column types?',
+      a: 'SQL coerces columns to a common type using implicit type precedence rules. NVARCHAR has higher precedence than VARCHAR; DECIMAL has higher precedence than INT. If coercion is not possible (e.g., INT and DATE) a type error is raised. Be explicit: cast columns in each branch to a common type to avoid surprising implicit conversions.',
+    },
+    {
+      q: 'Can you use ORDER BY inside individual UNION branches?',
+      a: 'No — ORDER BY inside a branch is a syntax error in most databases. ORDER BY only applies to the final combined result and must be placed after the last SELECT. In PostgreSQL, you can wrap a branch in a subquery with ORDER BY and LIMIT, but that is to filter (take top-N per branch), not to sort the final output.',
     },
   ];
 }

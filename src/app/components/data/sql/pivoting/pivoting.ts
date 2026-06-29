@@ -226,6 +226,28 @@ ORDER BY product_category;
       answer: 2,
       explanation: 'UNPIVOT rotates column values back into rows, which is useful for normalising wide tables for further processing.'
     },
+    {
+      q: 'What is the main limitation of the MSSQL PIVOT operator vs conditional aggregation?',
+      options: [
+        'PIVOT is slower than conditional aggregation',
+        'PIVOT requires the column values to be known at query write time — dynamic values require dynamic SQL',
+        'PIVOT can only aggregate COUNT, not SUM or MAX',
+        'PIVOT requires a primary key on the source table'
+      ],
+      answer: 1,
+      explanation: 'The PIVOT IN list must be a static set of literals. If the pivot columns come from data (e.g., product names in a table), you must query those values, build a dynamic SQL string, and EXEC it. Conditional aggregation with CASE is equally static but is easier to extend dynamically.'
+    },
+    {
+      q: 'How do you handle NULL in a MSSQL PIVOT cell — showing 0 instead of NULL?',
+      options: [
+        'Use ISNULL() in the source query before pivoting',
+        'Wrap each pivoted column in ISNULL([col], 0) in the outer SELECT',
+        'Add ELSE 0 inside the PIVOT aggregate function',
+        'NULL cannot appear in PIVOT output'
+      ],
+      answer: 1,
+      explanation: 'PIVOT outputs NULL for missing category/row combinations. Wrap the column references in the outer SELECT with ISNULL([Jan], 0), ISNULL([Feb], 0) etc. to replace NULL with zero. Alternatively, use COALESCE for portability.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -240,6 +262,18 @@ ORDER BY product_category;
     {
       q: 'How do I pivot with NULL values instead of 0 for missing data?',
       a: 'Drop the ELSE 0 clause: SUM(CASE WHEN category=\'X\' THEN amount END). Without an ELSE, CASE returns NULL for non-matching rows, and SUM of all NULLs returns NULL rather than 0.',
+    },
+    {
+      q: 'How do I build a dynamic PIVOT in MSSQL when column values come from the data?',
+      a: 'Query the distinct pivot values: SELECT @cols = STRING_AGG(QUOTENAME(category), \',\') FROM (SELECT DISTINCT category FROM sales) t; then build the dynamic SQL: SET @sql = \'SELECT date, \' + @cols + \' FROM sales PIVOT (SUM(amount) FOR category IN (\' + @cols + \')) p;\'; EXEC sp_executesql @sql;',
+    },
+    {
+      q: 'Can I use UNPIVOT with multiple value columns?',
+      a: 'Standard UNPIVOT only handles one value column at a time. For multiple value columns (e.g., qty and price for each month), use CROSS APPLY with VALUES: SELECT month, metric, value FROM sales CROSS APPLY (VALUES (\'qty\', jan_qty), (\'qty\', feb_qty), (\'price\', jan_price)) v(metric, value). This is more flexible and portable.',
+    },
+    {
+      q: 'What is the performance impact of pivoting large datasets?',
+      a: 'Conditional aggregation and PIVOT both require a single pass through the source data with GROUP BY — O(n) with a sort or hash aggregate. Performance depends on GROUP BY column cardinality and aggregate column count. For very wide pivots (hundreds of columns), consider materialising the pivoted result into a temp table or indexed view rather than computing it on every report request.',
     },
   ];
 }

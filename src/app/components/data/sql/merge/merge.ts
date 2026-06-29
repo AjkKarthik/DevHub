@@ -262,6 +262,17 @@ DO UPDATE SET
       answer: 2,
       explanation: 'MSSQL requires a semicolon at the end of a MERGE statement. Omitting it causes a parser error on the next statement. This is a known quirk of the MERGE syntax.',
     },
+    {
+      q: 'Is MSSQL MERGE atomic — can it partially succeed?',
+      options: [
+        'Yes — each WHEN clause commits independently',
+        'No — MERGE runs in a single atomic statement; either all matched/unmatched actions succeed or none do',
+        'Only the INSERT action is atomic; UPDATE and DELETE can partially succeed',
+        'MERGE is atomic only when wrapped in an explicit BEGIN TRANSACTION'
+      ],
+      answer: 1,
+      explanation: 'MERGE is a single DML statement and is fully atomic. If any WHEN clause raises an error (constraint violation, etc.), the entire MERGE is rolled back — no partial inserts or updates survive. This atomicity is one of the key advantages of MERGE over separate INSERT + UPDATE statements.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -276,6 +287,18 @@ DO UPDATE SET
     {
       q: 'How do I upsert and get the resulting ID in both dialects?',
       a: 'PostgreSQL: use RETURNING id after ON CONFLICT DO UPDATE. MSSQL: use the OUTPUT clause — OUTPUT inserted.id INTO @ids — or chain a SELECT after the MERGE.',
+    },
+    {
+      q: 'How do I test a MERGE without committing its changes?',
+      a: 'Wrap the MERGE in a transaction: BEGIN TRANSACTION; MERGE … ; SELECT * FROM target WHERE …; -- inspect results ROLLBACK; — this lets you verify the upsert logic before committing. Alternatively, run the equivalent SELECT with the same ON conditions to preview matched/unmatched rows before writing the MERGE.',
+    },
+    {
+      q: 'Is MERGE faster than separate INSERT + UPDATE statements?',
+      a: 'For bulk upserts, MERGE usually wins because it scans the target table once and applies all three actions (INSERT/UPDATE/DELETE) in a single pass. Separate INSERT + UPDATE require two passes. For single-row upserts, the overhead of MERGE (parsing, join planning) can exceed two simple statements — ON CONFLICT (PG) or TRY/CATCH INSERT then UPDATE (MSSQL) is lighter.',
+    },
+    {
+      q: 'What is the OUTPUT clause in MSSQL MERGE and how do you use it?',
+      a: 'OUTPUT returns rows from the MERGE showing old and new values: MERGE … OUTPUT $action, inserted.id, deleted.id, inserted.name INTO @log. $action returns \'INSERT\', \'UPDATE\', or \'DELETE\'. This is invaluable for audit logging — you capture every change with its action type in one step without a separate trigger.',
     },
   ];
 }

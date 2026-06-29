@@ -264,6 +264,28 @@ CREATE INDEX ON order_lines (discounted_price);`
       answer: 1,
       explanation: 'NOW() / GETDATE() return the current time, which changes. A generated column must be deterministic so the stored value equals what the expression would return now. Non-deterministic functions are rejected.'
     },
+    {
+      q: 'In MSSQL, can you update a persisted computed column directly with an UPDATE statement?',
+      options: [
+        'Yes — writing the column recalculates and stores the new value',
+        'No — the column is read-only; the database recalculates it whenever source columns change',
+        'Yes, but only when the table is not indexed',
+        'No — you must drop and recreate the column to change the expression'
+      ],
+      answer: 1,
+      explanation: 'Computed/generated columns are always read-only. The value is derived from the expression and updated automatically when source columns change. Attempting a direct UPDATE raises an error.'
+    },
+    {
+      q: 'What is the performance trade-off of PERSISTED computed columns vs querying the expression directly?',
+      options: [
+        'PERSISTED is always slower — it uses extra storage',
+        'PERSISTED pays a small storage cost on INSERT/UPDATE but eliminates recalculation on every SELECT and enables indexing',
+        'Non-persisted computed columns are cached per session',
+        'PERSISTED columns are only faster if the expression is deterministic'
+      ],
+      answer: 1,
+      explanation: 'A PERSISTED column stores the computed value once and reads it directly. A non-persisted column recalculates on every row access. For expensive expressions or when the column is used in filters or sorts, persisting and indexing it avoids repeated computation.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -278,6 +300,18 @@ CREATE INDEX ON order_lines (discounted_price);`
     {
       q: 'Should I use a computed column or a view for a full-name field?',
       a: 'Use a computed column when you need the derived value indexed, stored compactly, or available without joining. Use a view when you want to derive the field without altering the base table schema — useful when you do not own the table or need to combine columns from multiple tables.',
+    },
+    {
+      q: 'Can I use a JSON path expression inside a generated column in PostgreSQL?',
+      a: 'Yes — you can use ->> operator or jsonb_extract_path_text() in a generated column expression. Example: ALTER TABLE events ADD COLUMN event_type TEXT GENERATED ALWAYS AS (payload->>\'type\') STORED; This indexes a specific JSON field without a separate column update.',
+    },
+    {
+      q: 'What is the difference between a computed column and a DEFAULT constraint?',
+      a: 'A DEFAULT provides a one-time initial value on INSERT when no value is supplied — after that, the column behaves like any regular column and can be updated independently. A computed/generated column derives its value from an expression every time source columns change and cannot be manually set.',
+    },
+    {
+      q: 'When would you use a trigger instead of a computed column for a derived value?',
+      a: 'Use a trigger when: (1) the derived value depends on values from another table (computed columns cannot cross tables); (2) you need complex procedural logic that exceeds a single expression; (3) you want to log the old vs new derived value for audit purposes. For simple single-row arithmetic or string operations, a computed/generated column is cleaner and faster.',
     },
   ];
 }

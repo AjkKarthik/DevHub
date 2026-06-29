@@ -267,6 +267,17 @@ FROM products;`,
       answer: 2,
       explanation: 'TABLESAMPLE SYSTEM samples at the page level without reading every row, making it efficient for large tables. ORDER BY RANDOM() does a full scan and sort.',
     },
+    {
+      q: 'What does TRUNC do differently from FLOOR for negative numbers?',
+      options: [
+        'They are identical — TRUNC is just an alias for FLOOR',
+        'TRUNC(-3.7) = -3 (truncates toward zero); FLOOR(-3.7) = -4 (rounds toward negative infinity)',
+        'TRUNC(-3.7) = -4 (rounds down); FLOOR(-3.7) = -3 (rounds toward zero)',
+        'TRUNC is for decimal places; FLOOR is for integers only'
+      ],
+      answer: 1,
+      explanation: 'TRUNC always removes the fractional part toward zero. FLOOR always rounds toward negative infinity. For positive numbers they are identical; for negative numbers they diverge. PostgreSQL has TRUNC(); MSSQL uses ROUND(x, 0, 1) as an equivalent.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -281,6 +292,18 @@ FROM products;`,
     {
       q: 'Why does AVG on an integer column sometimes give wrong results?',
       a: 'AVG(integer_col) computes an integer average in some cases — e.g., AVG of 1,2,3 is 2, not 2.0. To force decimal precision: AVG(col * 1.0) or AVG(CAST(col AS DECIMAL(10,4))). Always check the return type when computing averages on integer columns.',
+    },
+    {
+      q: 'How do I avoid floating-point precision loss when doing monetary calculations?',
+      a: 'Use DECIMAL(precision, scale) or NUMERIC — never FLOAT or REAL for money. FLOAT is binary floating-point and cannot represent 0.1 exactly. If you must use floats (e.g., ingesting sensor data), round the final result with ROUND(value, 2) before comparing or storing. The MONEY type in MSSQL uses 4 decimal places internally but still has floating-point representation issues in intermediate arithmetic.',
+    },
+    {
+      q: 'What is MOD (%) in SQL and are there differences between MSSQL and PostgreSQL?',
+      a: 'Both support x % y for modulo. PostgreSQL also has MOD(x, y) and the result sign follows the dividend: -7 % 3 = -1. MSSQL % also follows the dividend sign. Behaviour for negative divisors: (-7) % (-3) = -1 in both. Use ABS(x % y) when you need a non-negative result.',
+    },
+    {
+      q: 'How do you generate a series of numbers for testing or date-spine queries?',
+      a: 'PostgreSQL: SELECT generate_series(1, 100) AS n; or generate_series(start_date, end_date, \'1 day\'::interval) for date ranges. MSSQL: use a recursive CTE — WITH nums AS (SELECT 1 AS n UNION ALL SELECT n+1 FROM nums WHERE n < 100) SELECT n FROM nums OPTION (MAXRECURSION 1000); — or the spt_values table for small ranges.',
     },
   ];
 }

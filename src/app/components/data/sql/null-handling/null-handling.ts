@@ -250,6 +250,17 @@ FROM employees;`,
       answer: 2,
       explanation: 'NULLIF returns NULL when both arguments are equal. Dividing by NULL returns NULL instead of a division-by-zero error.',
     },
+    {
+      q: 'How does NULL propagate through string concatenation in MSSQL and PostgreSQL?',
+      options: [
+        'NULL is treated as an empty string in all string functions',
+        'In MSSQL + operator: NULL + anything = NULL; CONCAT() treats NULL as empty string. In PostgreSQL || operator: NULL || anything = NULL; CONCAT() treats NULL as empty string.',
+        'Both dialects always treat NULL as empty string in concatenation',
+        'NULL propagation only affects numeric operations, not strings'
+      ],
+      answer: 1,
+      explanation: 'The behaviour differs by operator and function. The + operator in MSSQL and the || operator in PostgreSQL both propagate NULL. But CONCAT() in both dialects silently converts NULL arguments to empty string. Choose the operator or function deliberately based on whether you want NULL propagation.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -264,6 +275,18 @@ FROM employees;`,
     {
       q: 'Can I join two tables on NULL values?',
       a: 'No — `a.col = b.col` does not match when both sides are NULL (evaluates to UNKNOWN). Use `a.col = b.col OR (a.col IS NULL AND b.col IS NULL)`. In SQL Server 2022+ you can use `a.col IS NOT DISTINCT FROM b.col`. Always prefer surrogate non-nullable keys for join columns.',
+    },
+    {
+      q: 'What is the ANSI_NULLS setting in MSSQL and why does it matter?',
+      a: 'ANSI_NULLS ON (the default) makes NULL comparisons follow the SQL standard: NULL = NULL → UNKNOWN. ANSI_NULLS OFF makes NULL = NULL → TRUE and NULL <> NULL → FALSE. The OFF setting is deprecated and should never be used — it breaks portability and can cause subtle query differences between connections. Always ensure SET ANSI_NULLS ON.',
+    },
+    {
+      q: 'How do aggregate functions handle NULL values?',
+      a: 'COUNT(*) counts all rows. COUNT(col) ignores NULL values. SUM, AVG, MIN, MAX all ignore NULLs entirely — they aggregate only non-NULL values. If ALL values are NULL, these aggregates return NULL (not 0). Use COALESCE(SUM(col), 0) to return 0 when the sum is over all-NULL inputs.',
+    },
+    {
+      q: 'What is the difference between NULL and an empty string in PostgreSQL?',
+      a: 'PostgreSQL distinguishes NULL (unknown/absent) from \'\'  (empty string) at the type level. A NOT NULL constraint blocks NULL but allows empty strings. LENGTH(NULL) = NULL; LENGTH(\'\') = 0. Use NULLIF(col, \'\') to convert empty strings to NULL for consistent treatment. In MSSQL, both exist independently as well — never assume an empty string and NULL are equivalent.',
     },
   ];
 }

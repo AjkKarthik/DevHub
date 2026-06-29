@@ -253,6 +253,28 @@ WHERE  tenant_id = CAST(SESSION_CONTEXT(N'tenant_id') AS INT);`
       answer: 2,
       explanation: 'WITH SCHEMABINDING binds the view to the schema of referenced objects. You cannot drop or alter those tables in a way that affects the view without first removing the binding.'
     },
+    {
+      q: 'What makes a view non-updatable and how do you work around it?',
+      options: [
+        'Any view that has more than one table is non-updatable',
+        'Views with GROUP BY, DISTINCT, aggregates, UNION, subqueries in SELECT, or no key-preserved table cannot be updated directly — use INSTEAD OF triggers to handle DML on them',
+        'Non-updatable views have WITH READ ONLY specified',
+        'All views are non-updatable unless created with WITH CHECK OPTION'
+      ],
+      answer: 1,
+      explanation: 'SQL cannot determine how to translate an INSERT/UPDATE on an aggregated or UNION view back to the base tables. INSTEAD OF triggers intercept the DML and let you write T-SQL that performs the actual base-table updates, giving full control over the translation.'
+    },
+    {
+      q: 'What does an INSTEAD OF trigger on a view enable that would otherwise be impossible?',
+      options: [
+        'Faster SELECT queries on the view',
+        'DML operations (INSERT/UPDATE/DELETE) on views that are not directly updatable, such as views over JOINs or aggregates',
+        'Automatic schema binding for the view',
+        'Concurrent refresh of materialized views'
+      ],
+      answer: 1,
+      explanation: 'An INSTEAD OF trigger intercepts DML on the view and lets you manually propagate the change to the underlying tables. This is the standard pattern for making complex views writable — for example, a view joining customers and addresses can have an INSTEAD OF INSERT that populates both tables correctly.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -267,6 +289,18 @@ WHERE  tenant_id = CAST(SESSION_CONTEXT(N'tenant_id') AS INT);`
     {
       q: 'How do I grant access to a view but not the underlying tables?',
       a: 'GRANT SELECT ON v_customers_public TO reporting_role; — then ensure reporting_role has no direct SELECT on the customers table. This is a standard pattern for data security layers: users query the view, the view definition owner has table access, and permission chains through ownership.',
+    },
+    {
+      q: 'How can I use a view for data masking and column-level security?',
+      a: 'Create a view that returns NULL or a masked value for sensitive columns for unprivileged users: SELECT id, LEFT(ssn, 0) + \'***-**-\' + RIGHT(ssn, 4) AS ssn FROM customers. Grant SELECT on the view, not the table. In MSSQL, Dynamic Data Masking (ALTER TABLE … ADD MASKED WITH (FUNCTION = \'partial()\')) is an alternative that applies at query time without a view.',
+    },
+    {
+      q: 'What is the difference between indexed views in MSSQL and materialized views in PostgreSQL?',
+      a: 'Both pre-compute and store the query result. MSSQL indexed views are automatically maintained on every INSERT/UPDATE/DELETE to the base tables — the database keeps them current. PostgreSQL materialized views require explicit REFRESH MATERIALIZED VIEW [CONCURRENTLY] — they can become stale. Use MSSQL indexed views for real-time accuracy; PostgreSQL materialized views for large aggregations that are acceptable with periodic refresh.',
+    },
+    {
+      q: 'Can a view reference another view and does it hurt performance?',
+      a: 'Yes, views can nest. The optimizer typically expands nested views into a single query plan — nesting does not inherently cause multiple scans. However, deeply nested views can make query plans complex and hard to read, and if an inner view is a multi-statement TVF (MSSQL), the optimizer treats it as a black box. For performance-critical paths, flatten nested views into a single SQL statement and verify the execution plan.',
     },
   ];
 }

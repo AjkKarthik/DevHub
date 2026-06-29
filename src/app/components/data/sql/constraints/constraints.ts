@@ -239,6 +239,28 @@ CREATE TABLE products (
       answer: 1,
       explanation: 'DEFERRABLE INITIALLY DEFERRED postpones constraint validation until the transaction COMMITs, allowing circular or out-of-order inserts within a single transaction.'
     },
+    {
+      q: 'Can a FOREIGN KEY reference a UNIQUE constraint instead of a PRIMARY KEY?',
+      options: [
+        'No — FKs can only reference PRIMARY KEY columns',
+        'Yes — a FK can reference any column(s) covered by a UNIQUE constraint',
+        'Yes in PostgreSQL, but not in MSSQL',
+        'Only if the referenced column is also NOT NULL'
+      ],
+      answer: 1,
+      explanation: 'Both MSSQL and PostgreSQL allow a FOREIGN KEY to reference a UNIQUE constraint (not just a PRIMARY KEY). This is useful when a natural key in the referenced table is unique but not the primary key.'
+    },
+    {
+      q: 'In PostgreSQL, what does ALTER TABLE … ADD CONSTRAINT … NOT VALID do?',
+      options: [
+        'Creates an invalid constraint that must be manually enabled',
+        'Adds the constraint definition immediately without scanning existing rows — existing rows are not validated until VALIDATE CONSTRAINT is run',
+        'Marks the constraint as optional',
+        'Creates the constraint on a copy of the table without locking it'
+      ],
+      answer: 1,
+      explanation: 'NOT VALID adds the constraint in metadata instantly (no table scan, no lock). Existing rows are not checked. A subsequent ALTER TABLE … VALIDATE CONSTRAINT runs the scan with a weaker ShareUpdateExclusiveLock, allowing reads/writes during validation. Ideal for zero-downtime FK additions on large tables.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -253,6 +275,18 @@ CREATE TABLE products (
     {
       q: 'Does adding a UNIQUE constraint automatically create an index?',
       a: 'Yes in both MSSQL and PostgreSQL. A UNIQUE constraint is backed by a unique index. This means the constraint also speeds up equality lookups on those columns.',
+    },
+    {
+      q: 'How do I disable constraints for a bulk load and safely re-enable them?',
+      a: 'MSSQL: ALTER TABLE orders NOCHECK CONSTRAINT ALL — disables all constraints. After load: ALTER TABLE orders WITH CHECK CHECK CONSTRAINT ALL — re-enables and validates. The WITH CHECK keyword causes a full scan to validate existing rows; omitting it re-enables without validating (faster but leaves data in an unvalidated state). PostgreSQL: SET session_replication_role = replica — disables FK triggers. Reset with SET session_replication_role = DEFAULT after load.',
+    },
+    {
+      q: 'Can a UNIQUE constraint allow multiple NULL values?',
+      a: 'In standard SQL and PostgreSQL, NULL is considered distinct from all other values including itself — multiple NULLs are allowed in a UNIQUE column. MSSQL behaves the same by default (NULLs are not considered duplicates). However, be careful: if your business logic treats NULL as "only one allowed," enforce it with a filtered unique index: CREATE UNIQUE INDEX ON table (col) WHERE col IS NOT NULL.',
+    },
+    {
+      q: 'Can a CHECK constraint call a user-defined function?',
+      a: 'MSSQL allows user-defined scalar functions in CHECK constraints, but this is generally discouraged — the function is called for every row on INSERT/UPDATE and is not parallelisable; it also adds a hidden dependency. PostgreSQL CHECK constraints can use built-in functions and operators but cannot call SQL functions that access other tables (which would make them foreign-key-like). Use triggers or application logic for complex cross-row or cross-table validation.',
     },
   ];
 }

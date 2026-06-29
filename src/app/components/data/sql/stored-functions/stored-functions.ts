@@ -309,6 +309,28 @@ ORDER  BY customer_id;`
       answer: 0,
       explanation: 'An IMMUTABLE SQL or PL/pgSQL function can be used in a column DEFAULT expression. IMMUTABLE tells the planner the function always returns the same output for the same input — required for use in indexes and some generated contexts.'
     },
+    {
+      q: 'Can a MSSQL scalar user-defined function prevent parallel execution plans?',
+      options: [
+        'No — scalar UDFs never affect parallelism',
+        'Yes — before SQL Server 2019, any scalar UDF in a query forces a serial plan for the entire query',
+        'Only if the function is declared WITH SCHEMABINDING',
+        'Only if the function is called in the WHERE clause'
+      ],
+      answer: 1,
+      explanation: 'Pre-2019 MSSQL serialises any query containing a scalar UDF because the optimizer cannot safely parallelise calls to arbitrary T-SQL code. SQL Server 2019 adds scalar UDF inlining for simple functions, but complex UDFs still force serial execution. Replace with inline TVFs or CTEs for parallelism.'
+    },
+    {
+      q: 'How do you create a custom aggregate function in PostgreSQL?',
+      options: [
+        'CREATE AGGREGATE name(type) USING (aggregate_function)',
+        'CREATE AGGREGATE name(sfunc, stype, finalfunc) following the CREATE AGGREGATE syntax with state function, state type, and optional final function',
+        'Extend an existing aggregate with CREATE FUNCTION … AGGREGATE = true',
+        'Only built-in aggregate functions are supported in PostgreSQL'
+      ],
+      answer: 1,
+      explanation: 'CREATE AGGREGATE requires at minimum an SFUNC (state accumulation function) and STYPE (state type). Example: CREATE AGGREGATE string_agg_custom(text) (SFUNC = string_append, STYPE = text). An optional FINALFUNC transforms the accumulated state to the final output type.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -323,6 +345,18 @@ ORDER  BY customer_id;`
     {
       q: 'Can MSSQL scalar functions cause performance problems?',
       a: 'Yes — a scalar UDF in MSSQL is called once per row (or even per predicate evaluation) and is not parallelised by the optimizer before SQL Server 2019. On large tables this adds millions of function calls. SQL Server 2019 introduced scalar UDF inlining to mitigate this, but it only applies to eligible simple functions. Prefer inline TVFs or computed columns for set-based scenarios.',
+    },
+    {
+      q: 'Should I use table-valued functions or stored procedures for returning result sets?',
+      a: 'Use inline TVFs when the result will be further filtered, joined, or aggregated by the caller — the optimizer can look inside and push predicates. Use stored procedures when you need multiple result sets, output parameters, transaction control, or error handling beyond what a function allows. Never put a stored procedure result into a temp table just to filter it — that defeats optimizer pushdown.',
+    },
+    {
+      q: 'How do I debug a slow user-defined function in PostgreSQL?',
+      a: 'For SQL functions, use EXPLAIN ANALYZE on the function body directly. For PL/pgSQL, enable auto_explain: SET auto_explain.log_min_duration = 0; and call the function — each SQL inside will be logged with its plan. Use RAISE NOTICE to emit debug values. For timing, wrap the call in SELECT clock_timestamp(), func(), clock_timestamp() to measure wall-clock time across multiple calls.',
+    },
+    {
+      q: 'How do you handle schema changes (add column) without breaking existing functions?',
+      a: 'Functions that SELECT specific columns are immune to new columns being added. Beware of SELECT * in function bodies — if the view or table adds a column, the function\'s cached plan may become stale. In PostgreSQL, ALTER FUNCTION … CALLED ON NULL INPUT / SECURITY… does NOT revalidate the body — you must recreate or replace the function to pick up schema changes. MSSQL: sp_refreshsqlmodule refreshes metadata.',
     },
   ];
 }

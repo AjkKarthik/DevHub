@@ -277,6 +277,28 @@ INCLUDE (order_id, customer_id, amount);
       answer: 1,
       explanation: 'Applying a function to an indexed column prevents the optimizer from using the index\'s B-tree structure to find a range. The engine must evaluate YEAR(order_date) for every row. Rewrite as a range predicate (order_date >= \'2024-01-01\') to restore the seek.'
     },
+    {
+      q: 'What does a Hash Join in MSSQL/PostgreSQL usually indicate about the join?',
+      options: [
+        'Both input tables are fully indexed on the join key',
+        'The join involves two large unordered inputs where sorting or index seeks are not cost-effective',
+        'The join is performed in parallel across multiple cores',
+        'One side of the join is a temporary table'
+      ],
+      answer: 1,
+      explanation: 'Hash joins build an in-memory hash table from the smaller input, then probe it with each row from the larger input. They appear when neither input has a useful index and sorting (Merge Join) is also too expensive. High-memory-grant hash joins can spill to disk — a warning in execution plans.'
+    },
+    {
+      q: 'What is an implicit conversion warning in a MSSQL execution plan?',
+      options: [
+        'The engine automatically cast a column to NVARCHAR, preventing index use',
+        'A comparison between two columns of different but compatible types (e.g. VARCHAR vs NVARCHAR) that forces the engine to convert every index key before comparing, preventing index seeks',
+        'An integer column was compared to a floating-point value',
+        'The plan converted NULLs to zeros automatically'
+      ],
+      answer: 1,
+      explanation: 'An implicit conversion happens when a predicate compares a column to a value of a different data type. The engine converts the index values at each row comparison, preventing the B-tree seek. Fix: match parameter/literal types to column types — e.g., use N\'value\' for NVARCHAR columns.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -291,6 +313,18 @@ INCLUDE (order_id, customer_id, amount);
     {
       q: 'How do I use pg_stat_statements to find slow queries in PostgreSQL?',
       a: 'Enable pg_stat_statements in postgresql.conf (shared_preload_libraries = \'pg_stat_statements\'). Then: SELECT query, calls, mean_exec_time, total_exec_time FROM pg_stat_statements ORDER BY total_exec_time DESC LIMIT 20; — this shows the queries consuming the most total time. EXPLAIN ANALYZE the top offenders to understand and fix them.',
+    },
+    {
+      q: 'How do I save and compare execution plans in SQL Server Management Studio?',
+      a: 'Right-click the plan in SSMS → Save Execution Plan As (.sqlplan file). Open two plans side by side with Compare Showplan (SQL Server 2016+). For a programmatic approach, capture XML plans from sys.dm_exec_query_plan or Query Store and diff them with an XML diff tool. This workflow is invaluable when comparing before/after an index change.',
+    },
+    {
+      q: 'What does EXPLAIN (ANALYZE, BUFFERS) add over plain EXPLAIN in PostgreSQL?',
+      a: 'ANALYZE actually executes the query and returns real timing and row counts per node. BUFFERS adds hit/read/written counts showing buffer pool usage — high "read" counts relative to "hit" indicate memory pressure or cold cache. Always use ANALYZE, BUFFERS together when diagnosing slow queries; plain EXPLAIN shows only estimates.',
+    },
+    {
+      q: 'What does a "Sort" operator with a spill warning mean in MSSQL?',
+      a: 'A sort that cannot fit in the granted memory spills to tempdb (a "Sort Spill" or memory grant warning). This drastically slows the operation. Fixes: (1) Add ORDER BY-matching indexes to eliminate the sort. (2) Add covering columns to reduce row width. (3) Update statistics so the memory grant is sized correctly. (4) Increase the server\'s memory if the grant is genuinely too small.',
     },
   ];
 }

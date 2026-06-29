@@ -293,6 +293,28 @@ ANALYZE orders;`
       answer: 1,
       explanation: 'ALTER INDEX … REBUILD updates the associated statistics as part of the operation (equivalent to WITH FULLSCAN by default). ALTER INDEX … REORGANIZE only defragments index pages — it does not update statistics. Run UPDATE STATISTICS separately after a REORGANIZE.'
     },
+    {
+      q: 'What does the density vector in a MSSQL statistics object represent?',
+      options: [
+        'The percentage of pages that are fragmented',
+        'The average selectivity of each column prefix in the index — lower density means higher selectivity',
+        'The number of distinct values in each column',
+        'The correlation between column order and physical storage order'
+      ],
+      answer: 1,
+      explanation: 'Density = 1 / (distinct_values). A density of 0.001 means the optimizer expects about 1 000 rows per distinct value when estimating join cardinality. The density vector covers each leading column prefix of a multi-column statistics object.'
+    },
+    {
+      q: 'How do you update statistics on a specific index in MSSQL?',
+      options: [
+        'REBUILD STATISTICS ON table_name.index_name',
+        'UPDATE STATISTICS table_name index_name WITH FULLSCAN',
+        'ALTER INDEX index_name REBUILD WITH (STATISTICS_NORECOMPUTE = OFF)',
+        'REFRESH STATISTICS table_name'
+      ],
+      answer: 1,
+      explanation: 'UPDATE STATISTICS table_name index_name updates the statistics for a single index. Add WITH FULLSCAN for a full scan or WITH SAMPLE N PERCENT for a sample. Without specifying an index name, all statistics on the table are updated.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -307,6 +329,18 @@ ANALYZE orders;`
     {
       q: 'What is AUTO_UPDATE_STATISTICS_ASYNC in MSSQL?',
       a: 'When set ON, statistics updates happen asynchronously — the current query runs with the stale statistics, and the update happens in a background thread for future queries. This avoids the latency spike of synchronous updates on hot queries. Trade-off: the first query after a threshold may still use a bad plan. Useful for latency-sensitive OLTP workloads.',
+    },
+    {
+      q: 'What are multi-column statistics and when should you create them?',
+      a: 'MSSQL auto-creates single-column statistics but not multi-column ones. If a query filters on two correlated columns (e.g., city AND country), the optimizer assumes independence and may severely underestimate cardinality. Create a manual multi-column statistics object: CREATE STATISTICS st_city_country ON customers(city, country); — the optimizer will use the combined histogram for better estimates.',
+    },
+    {
+      q: 'How do statistics affect JOIN order in the query optimizer?',
+      a: 'The optimizer estimates the number of rows produced by each join using statistics histograms. It generally tries to reduce the intermediate result set as early as possible by joining the most selective predicate first. Stale or missing statistics on join columns can cause the optimizer to choose a suboptimal join order — leading to nested loops where a hash join would be better or vice versa.',
+    },
+    {
+      q: 'How do you view the histogram for a statistics object in MSSQL?',
+      a: 'DBCC SHOW_STATISTICS(\'table_name\', \'statistics_name\') WITH HISTOGRAM; — shows the RANGE_HI_KEY, EQ_ROWS, RANGE_ROWS, DISTINCT_RANGE_ROWS, and AVG_RANGE_ROWS for each histogram bucket. Review it when cardinality estimates look wrong — the histogram reveals exactly what the optimizer believes about data distribution.',
     },
   ];
 }

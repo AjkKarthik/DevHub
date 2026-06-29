@@ -295,6 +295,28 @@ DETACH PARTITION sensor_readings_2025_01 CONCURRENTLY;
       answer: 1,
       explanation: 'Pruning requires the optimizer to compare the partition boundaries against the WHERE predicate. If the partition key is wrapped in a function (YEAR(order_date)) or an implicit type conversion occurs, the optimizer cannot prune partitions and scans them all.'
     },
+    {
+      q: 'In PostgreSQL declarative partitioning, can a child partition have its own local indexes?',
+      options: [
+        'No — only the parent table can have indexes',
+        'Yes — local indexes can be created on each partition and are used when queries prune to that partition',
+        'Yes, but only UNIQUE indexes are supported on partitions',
+        'No — indexes must span all partitions (global indexes)'
+      ],
+      answer: 1,
+      explanation: 'Each partition can have its own local indexes. PostgreSQL 11+ also supports creating indexes on the parent table, which automatically propagates to all existing and future partitions. Local indexes are efficient when queries always prune to a single partition.'
+    },
+    {
+      q: 'What is the difference between splitting and merging partition boundaries in MSSQL?',
+      options: [
+        'SPLIT adds a new boundary value, dividing one range into two; MERGE removes a boundary value, combining two adjacent ranges into one',
+        'SPLIT moves data between filegroups; MERGE copies data to a backup',
+        'They are synonyms — both restructure partitions the same way',
+        'SPLIT can only be used on empty partitions; MERGE works on any partition'
+      ],
+      answer: 0,
+      explanation: 'ALTER PARTITION FUNCTION … SPLIT RANGE (value) inserts a new boundary, creating an extra partition. MERGE RANGE (value) removes a boundary, collapsing two adjacent partitions into one. Both are metadata-only if the affected partition is on a single filegroup — otherwise data movement occurs.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -309,6 +331,18 @@ DETACH PARTITION sensor_readings_2025_01 CONCURRENTLY;
     {
       q: 'Does partitioning replace indexing?',
       a: 'No — partitioning complements indexing. Pruning eliminates whole partitions; indexes speed up lookups within a partition. The combination is powerful: a date-range query prunes to one monthly partition then seeks within it via an index. Without indexes, a query still scans the entire retained partition row by row.',
+    },
+    {
+      q: 'How do I archive old partitions efficiently in MSSQL?',
+      a: 'Use SWITCH: create an empty archive table with identical schema and filegroup, then ALTER TABLE orders SWITCH PARTITION 1 TO orders_archive PARTITION 1. This is an instantaneous metadata operation regardless of data size. The archived partition can then be backed up separately, compressed, or moved to cheaper storage.',
+    },
+    {
+      q: 'What is the trade-off between RANGE LEFT and RANGE RIGHT in MSSQL partition functions?',
+      a: 'RANGE LEFT: the boundary value belongs to the left (lower) partition. RANGE RIGHT: the boundary value belongs to the right (upper) partition. For date partitions, RANGE RIGHT is usually more natural — a boundary of 2024-01-01 means "2024-01-01 and later go right", so each partition contains exactly one month\'s data. Choose consistently and document which convention you use.',
+    },
+    {
+      q: 'What are the risks of over-partitioning (e.g., daily partitions for 10 years)?',
+      a: 'MSSQL: query plan compilation time grows with partition count as the optimizer evaluates each boundary. Statistics objects are per-partition, so auto-update triggers more frequently. PostgreSQL: planning overhead increases with hundreds of child tables (PG 11+ is significantly better but still has limits). Memory for partition metadata scales with partition count. Prefer wider partitions (monthly/quarterly) and archive aggressively rather than retaining thousands of partitions online.',
     },
   ];
 }
