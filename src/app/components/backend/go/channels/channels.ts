@@ -526,6 +526,12 @@ func main() {
       answer: 0,
       explanation: 'Only the sender should close a channel. Closing signals "no more values will be sent." Closing from the receiver is dangerous if another sender goroutine still exists — it would panic when it tries to send. Channels are garbage collected when unreachable; no explicit close is needed for GC.'
     },
+    {
+      q: 'What happens when you select on multiple channels that are all ready simultaneously?',
+      options: ['The first case always wins', 'The runtime selects a ready case uniformly at random', 'It panics', 'The case with the smallest buffer wins'],
+      answer: 1,
+      explanation: 'When multiple cases in a select statement are simultaneously ready, Go picks one at random with equal probability. This prevents starvation and is by design. If you need prioritised selection (one channel has higher priority), implement it explicitly: first check the high-priority channel with a non-blocking select, then fall through to the regular select.'
+    },
   ];
 
   qna: QnaItem[] = [

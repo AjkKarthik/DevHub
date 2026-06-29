@@ -526,6 +526,12 @@ func main() {
       answer: 0,
       explanation: 'errors.As traverses the error chain and assigns to target the first error value that is assignable to target\'s type. It returns true if found. This is used to extract custom error types (e.g., *ValidationError) from a wrapped chain.'
     },
+    {
+      q: 'What is a sentinel error and what are the trade-offs of using one?',
+      options: ['An error that triggers a panic', 'A predefined package-level error value (e.g., io.EOF) checked with errors.Is — enables callers to match specific conditions without type assertions', 'An error that is never returned', 'An error wrapped with fmt.Errorf'],
+      answer: 1,
+      explanation: 'Sentinel errors (var ErrNotFound = errors.New("not found")) are package-level variables callers check with errors.Is(err, ErrNotFound). Pros: simple, efficient, no type assertion. Cons: they carry no context (no "which record was not found?"). Prefer typed errors (implementing the error interface on a struct with fields) when callers need the underlying data. Use sentinels for simple "is this the expected condition?" checks like io.EOF.'
+    },
   ];
 
   qna: QnaItem[] = [

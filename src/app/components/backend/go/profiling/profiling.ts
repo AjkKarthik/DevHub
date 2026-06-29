@@ -615,6 +615,12 @@ func TestBothVersionsMatch(t *testing.T) {
       answer: 0,
       explanation: 'sync.Pool is a cache of objects that can be reused across goroutines. Get() returns a pooled object or calls New() if the pool is empty. Put() returns an object to the pool. This reduces allocations (and thus GC pressure) for objects that are frequently created and discarded — like byte buffers, encoder/decoder instances, and temporary structs in hot paths.'
     },
+    {
+      q: 'What does GOGC control and how does adjusting it affect performance?',
+      options: ['The number of goroutines', 'The GC trigger threshold as a percentage of live heap growth — lower values = more frequent GC, higher = less frequent but larger pauses', 'The OS thread count', 'The stack size'],
+      answer: 1,
+      explanation: 'GOGC=100 (default) means GC triggers when the heap grows 100% over the previous live heap. GOGC=50 triggers more often (less memory, more CPU). GOGC=400 triggers rarely (more memory, less CPU overhead). Setting GOGC=off disables GC entirely (useful for very short-lived batch programs). Go 1.19+ adds GOMEMLIMIT as a complementary control — it triggers GC before exceeding a memory cap.'
+    },
   ];
 
   qna: QnaItem[] = [

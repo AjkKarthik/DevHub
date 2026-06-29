@@ -659,6 +659,12 @@ func ListByAuthor(db *gorm.DB, authorID uint) ([]Post, error) {
       answer: 0,
       explanation: 'db.First returns gorm.ErrRecordNotFound when no row matches. Always use errors.Is(result.Error, gorm.ErrRecordNotFound) — not equality (==), because errors may be wrapped. In GORM v1 there was gorm.IsRecordNotFoundError, but v2 removed it in favour of the standard errors.Is pattern.'
     },
+    {
+      q: 'What is a GORM "soft delete" and how is it enabled?',
+      options: ['Deletes only the first matching row', 'Embeds gorm.DeletedAt in the struct — GORM sets the timestamp instead of DELETE; records are excluded from queries automatically', 'Marks records as inactive with a boolean', 'Requires a separate audit table'],
+      answer: 1,
+      explanation: 'Add gorm.Model or the gorm.DeletedAt field to your struct. db.Delete() sets deleted_at to the current timestamp instead of issuing DELETE SQL. All subsequent queries automatically add WHERE deleted_at IS NULL. Use db.Unscoped().Find() to include soft-deleted records, or db.Unscoped().Delete() to permanently delete. Soft delete is the default behavior when DeletedAt is present.'
+    },
   ];
 
   qna: QnaItem[] = [

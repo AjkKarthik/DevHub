@@ -680,6 +680,12 @@ func main() {
       answer: 0,
       explanation: 'If a function only calls methods on a value and does not need to return the concrete type, store it, or use ==/<, an interface is simpler and more idiomatic Go. Use type parameters when: you return T, store T in a data structure, need comparable (==) or Ordered (<) operations, or need the concrete type at the call site.'
     },
+    {
+      q: 'What constraint must a type parameter satisfy to use it as a map key?',
+      options: ['any', 'comparable', 'Ordered', 'interface{}'],
+      answer: 1,
+      explanation: 'Map keys must be comparable (==). The comparable constraint in a type parameter (func F[K comparable, V any](m map[K]V)) allows K to be used as a map key. comparable includes all types that support ==: integers, strings, pointers, structs whose all fields are comparable. Slices and maps are NOT comparable. The any constraint allows any type but would not compile as a map key.'
+    },
   ];
 
   qna: QnaItem[] = [

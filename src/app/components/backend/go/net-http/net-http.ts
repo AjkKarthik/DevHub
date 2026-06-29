@@ -662,6 +662,12 @@ func main() {
       answer: 0,
       explanation: 'Headers must be set before WriteHeader() is called. The correct sequence is: w.Header().Set("Content-Type", "application/json") → w.WriteHeader(status) → json.NewEncoder(w).Encode(v).'
     },
+    {
+      q: 'What is http.ServeMux.Handle vs HandleFunc and when do you use each?',
+      options: ['They are identical', 'Handle registers an http.Handler interface; HandleFunc wraps a func(ResponseWriter, *Request) as a handler — use HandleFunc for simple functions, Handle for reusable middleware types', 'HandleFunc is deprecated', 'Handle requires a separate mux'],
+      answer: 1,
+      explanation: 'http.HandleFunc("/path", myFunc) is shorthand for http.Handle("/path", http.HandlerFunc(myFunc)). Use HandleFunc for simple one-off route handlers. Use Handle when you have a type that implements http.Handler (e.g., a file server, reverse proxy, or custom middleware chain). Go 1.22+ pattern-matched mux supports method routing: mux.HandleFunc("GET /users/{id}", handler).'
+    },
   ];
 
   qna: QnaItem[] = [

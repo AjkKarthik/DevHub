@@ -787,6 +787,12 @@ func main() {
       answer: 0,
       explanation: 'A large interface requires mocks to implement every method even if the function under test uses only one. Small interfaces can be satisfied by many types (accidentally or intentionally), making code more composable. io.Reader (1 method) can be satisfied by files, buffers, HTTP bodies, and any custom type — a large interface would exclude most of them.'
     },
+    {
+      q: 'What is the functional options pattern in Go and what problem does it solve?',
+      options: ['A way to implement functional programming', 'A way to provide optional constructor parameters without breaking backward compatibility — using variadic ...Option functions that modify a config struct', 'A pattern for pure functions only', 'Replaces dependency injection'],
+      answer: 1,
+      explanation: 'Functional options solve the "how do you add optional config to a New() function without breaking callers?" problem. Define a type Option func(*Config), provide WithX() functions that return Options, and accept ...Option in New(). Callers use only the options they care about. Adding a new option is backward-compatible. This pattern is used by gRPC, zap, and many standard Go libraries.'
+    },
   ];
 
   qna: QnaItem[] = [

@@ -699,6 +699,12 @@ func main() {
       answer: 0,
       explanation: 'gin.Context has its own key-value store for passing data within a request chain. c.Set("key", value) stores a value; c.Get("key") returns (value, exists); c.MustGet("key") panics if missing. This is idiomatic for passing auth user, trace IDs, etc. from middleware to handlers.'
     },
+    {
+      q: 'What is the difference between gin.Default() and gin.New()?',
+      options: ['They are identical', 'gin.Default() includes the Logger and Recovery middleware; gin.New() creates a bare engine with no middleware', 'gin.New() is deprecated', 'gin.Default() only works in debug mode'],
+      answer: 1,
+      explanation: 'gin.Default() is a convenience constructor that attaches the Logger (request logging) and Recovery (panic → 500 response) middleware. gin.New() creates a clean engine with no middleware — use it in production when you want to add only your own structured logging, custom recovery handler, or observability middleware without the default output format.'
+    },
   ];
 
   qna: QnaItem[] = [

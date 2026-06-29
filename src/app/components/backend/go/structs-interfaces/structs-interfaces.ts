@@ -527,6 +527,12 @@ func main() {
       answer: 0,
       explanation: 'An interface value is nil only when both its type and value components are nil. Assigning a nil *Person to an interface gives it a non-nil type (*Person), making it non-nil even though the pointer is nil.'
     },
+    {
+      q: 'When should you use a value receiver vs a pointer receiver on a method?',
+      options: ['Always use pointer receivers', 'Use pointer receivers when the method modifies the receiver, or when the type is large; use value receivers for small, read-only types where copying is cheap', 'Always use value receivers for interfaces', 'It makes no functional difference'],
+      answer: 1,
+      explanation: 'Pointer receiver (*T): needed when the method mutates the receiver, or when T is large (avoids copying). Value receiver (T): for read-only methods on small types. Critical rule: if any method uses a pointer receiver, all methods should use pointer receivers for consistency — otherwise the interface satisfaction rules become confusing (only *T satisfies the interface, not T). sync.Mutex must always use pointer receivers to avoid copying the lock state.'
+    },
   ];
 
   qna: QnaItem[] = [

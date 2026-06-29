@@ -593,6 +593,12 @@ func main() {
       answer: 0,
       explanation: 'A goroutine leak is a goroutine that blocks forever — typically on a channel that is never written to, or a context that is never cancelled. Leaking goroutines accumulate memory and exhaust resources over time.'
     },
+    {
+      q: 'What is the GOMAXPROCS setting and what is its default value in modern Go?',
+      options: ['1 — Go runs on a single OS thread by default', 'Equal to the number of logical CPU cores — Go sets it automatically from runtime.NumCPU()', 'Always 8 regardless of hardware', 'Unlimited'],
+      answer: 1,
+      explanation: 'Since Go 1.5, GOMAXPROCS defaults to runtime.NumCPU() — the number of logical CPUs. This means Go can run goroutines in true parallelism on multi-core machines. You can override it with runtime.GOMAXPROCS(n) or the GOMAXPROCS environment variable. In containers, be aware that NumCPU() reads the host CPU count, not the container CPU limit — use the automaxprocs library to automatically set GOMAXPROCS from cgroup limits.'
+    },
   ];
 
   qna: QnaItem[] = [

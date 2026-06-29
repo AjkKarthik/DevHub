@@ -533,6 +533,12 @@ func main() {
       answer: 0,
       explanation: 'Unused imports are a compile error in Go, not a warning. This enforces clean dependencies and faster compile times. Use the blank identifier _ as the alias if you need a side-effect import: import _ "pkg".'
     },
+    {
+      q: 'What is the difference between := and = in Go?',
+      options: ['They are identical', ':= declares and assigns a new variable; = assigns to an existing one. := requires at least one new variable on the left side', '= is for constants only', ':= only works in function bodies'],
+      answer: 1,
+      explanation: 'x := 42 is a short variable declaration — it infers the type and creates the variable. x = 42 assigns to an already-declared x. := in a block with multiple variables requires at least one new variable on the left: x, err := f() is valid even if x exists, as long as err is new. Using := to shadow outer variables (same name in inner scope) is a common source of bugs.'
+    },
   ];
 
   qna: QnaItem[] = [

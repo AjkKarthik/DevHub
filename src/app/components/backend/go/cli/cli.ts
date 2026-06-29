@@ -721,6 +721,12 @@ func main() {
       answer: 0,
       explanation: 'Create a context that is cancelled on SIGINT: ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt); defer cancel(). Pass it to cobra: rootCmd.ExecuteContext(ctx). Cobra sets cmd.Context() to this context for all commands. RunE functions retrieve it with cmd.Context() and pass it to long-running operations so they cancel cleanly on Ctrl+C.'
     },
+    {
+      q: 'What is the difference between RunE and Run in a Cobra command?',
+      options: ['They are identical', 'RunE returns an error; Run returns nothing — prefer RunE so Cobra can propagate the error and set the exit code', 'Run is async; RunE is synchronous', 'RunE is deprecated'],
+      answer: 1,
+      explanation: 'Run func(cmd *cobra.Command, args []string) has no return value — errors must be handled internally or trigger os.Exit. RunE func(cmd *cobra.Command, args []string) error returns an error. Cobra prints the error and exits with code 1. Use RunE: it enables proper error propagation, cleaner testing, and you can check cmd.SilenceErrors and cmd.SilenceUsage to control output.'
+    },
   ];
 
   qna: QnaItem[] = [
