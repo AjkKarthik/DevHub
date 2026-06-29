@@ -312,6 +312,17 @@ async function deleteUser(userId: string) {
       answer: 1,
       explanation: 'A point read (reading one item by its id + partition key) of a 1 KB item costs exactly 1 RU — the cheapest possible operation. A cross-partition query scanning many items can cost hundreds or thousands of RUs. This is why the access pattern "always look up by id + partition key" is preferred in Cosmos DB — design your data model around this to minimise RU cost.'
     },
+    {
+      q: 'Which Cosmos DB consistency level provides the strongest consistency guarantee?',
+      options: [
+        'Eventual',
+        'Consistent Prefix',
+        'Session',
+        'Strong',
+      ],
+      answer: 3,
+      explanation: 'Strong consistency guarantees linearisability reads always return the most recently committed write. It has the highest latency and lowest throughput. Eventual consistency offers the best performance but weakest guarantees.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -334,6 +345,10 @@ async function deleteUser(userId: string) {
     {
       q: 'What is Cosmos DB Change Feed and what can you use it for?',
       a: '<strong>Change Feed</strong> is an ordered log of all inserts and updates to items in a Cosmos container. It does not include deletes (unless you use soft-delete pattern with a "deleted" flag). Common use cases: (1) <strong>Event sourcing</strong>: downstream systems react to data changes. (2) <strong>Materialised views</strong>: maintain a read-optimised projection of data in another container. (3) <strong>Cache invalidation</strong>: invalidate Redis cache when underlying data changes. (4) <strong>Audit trail</strong>: record all changes to a separate audit container. Consumed via Azure Functions Cosmos trigger or the SDK\'s change feed processor.'
+    },
+    {
+      q: 'What is the RU (Request Unit) in Cosmos DB and why does it matter for cost?',
+      a: 'A Request Unit (RU) is a normalised unit of database operations — CPU, memory, and IOPS combined. You provision RU/s (throughput) and pay per-RU. Every operation (read, write, query) costs a predictable number of RUs. Underprovisioning causes 429 throttling; overprovisioning wastes cost. Use autoscale to elastically adjust between min and max RU/s.',
     },
   ];
 

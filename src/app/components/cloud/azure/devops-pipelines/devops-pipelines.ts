@@ -342,6 +342,17 @@ console.log(getExecutionOrder(stages));
       answer: 1,
       explanation: 'Cache@2 stores a directory (e.g., node_modules, NuGet packages, pip cache) keyed on a hash (e.g., package-lock.json content). On the next run, if the key matches, the cached directory is restored — skipping the download step. If the key doesn\'t match (lock file changed), the cache is rebuilt. Dramatically reduces build time for dependency-heavy projects on Microsoft-hosted agents that start fresh each run.'
     },
+    {
+      q: 'What is the purpose of Azure DevOps Environments with approvals?',
+      options: [
+        'To automatically roll back failed deployments',
+        'To gate deployments so a human must approve before a pipeline continues to a protected environment',
+        'To restrict which agents can run pipeline jobs',
+        'To set Azure RBAC on resource groups',
+      ],
+      answer: 1,
+      explanation: 'Azure DevOps Environments let you define deployment targets like production with approval gates a designated reviewer must approve before the pipeline deploys to that environment.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -364,6 +375,10 @@ console.log(getExecutionOrder(stages));
     {
       q: 'What are pipeline conditions and how do you use them?',
       a: 'Conditions control whether a stage, job, or step runs. Built-in conditions: <code>succeeded()</code> (default), <code>failed()</code>, <code>always()</code>, <code>succeededOrFailed()</code>. Custom conditions combine these with variable checks: <code>and(succeeded(), eq(variables[\'Build.SourceBranch\'], \'refs/heads/main\'))</code> — only run on main branch success. Use cases: (1) Deploy to production only on main branch. (2) Run cleanup step even if the build fails. (3) Skip tests if only documentation changed. (4) Conditional variable group: load prod secrets only for prod deployments. Conditions are evaluated at the start of each stage/job/step — they cannot reference variables set later in the same run.'
+    },
+    {
+      q: 'How do Azure DevOps service connections work?',
+      a: 'Service connections store credentials (service principal, workload identity, token) that pipelines use to authenticate to external services (Azure, Docker Hub, Kubernetes). They are scoped to a project and can be restricted to specific pipelines. Workload identity federation is the modern approach — no secrets stored, just federated trust.',
     },
   ];
 

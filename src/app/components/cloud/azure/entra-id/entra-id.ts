@@ -292,6 +292,17 @@ console.log(claims);
       answer: 1,
       explanation: 'Conditional Access evaluates every sign-in against configured policies (conditions: who, where, what device, what app, risk level) and applies controls: require MFA, require Intune-compliant device, require hybrid Azure AD join, block access, or require password change. It is the primary zero-trust enforcement mechanism in Entra ID.'
     },
+    {
+      q: 'What do Conditional Access policies in Microsoft Entra ID control?',
+      options: [
+        'The billing scope for subscriptions',
+        'Which Azure regions users can access resources from',
+        'Access decisions based on signals like user, location, device, and risk enforcing MFA or blocking access',
+        'Password expiry schedules for service principals',
+      ],
+      answer: 2,
+      explanation: 'Conditional Access evaluates signals (identity, location, device compliance, app, risk) and enforces policies such as requiring MFA, blocking legacy auth, or requiring compliant devices.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -314,6 +325,10 @@ console.log(claims);
     {
       q: 'Why is certificate authentication preferred over client secrets for service principals?',
       a: 'Client secrets are shared strings — if exposed (in logs, git, env files), anyone can use them. They expire (1–2 years) and rotation requires a coordinated deployment. <strong>Certificate credentials</strong> use asymmetric cryptography: the private key never leaves your key store (Key Vault HSM-protected). Entra ID only stores the public key. Authentication requires proving possession of the private key — a stolen certificate hash is useless without the private key. Rotation can be done with key overlap (upload new cert, update app, revoke old cert) with zero downtime.'
+    },
+    {
+      q: 'What is the difference between a service principal and a managed identity in Azure?',
+      a: 'A <strong>service principal</strong> is an Entra ID app identity with client ID and secret/certificate that must be managed manually. A <strong>managed identity</strong> (system-assigned or user-assigned) is an automatically managed identity for Azure resources — no credentials to rotate, Azure handles the lifecycle. Always prefer managed identities for Azure-to-Azure auth.',
     },
   ];
 

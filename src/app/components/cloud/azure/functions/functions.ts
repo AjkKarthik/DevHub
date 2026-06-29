@@ -299,6 +299,17 @@ retry(() => {
       answer: 1,
       explanation: 'Input bindings declaratively inject data from external sources (Cosmos DB, Blob, Table) as function parameters. The Functions runtime handles authentication, connection pooling, and retry — you just declare the binding attributes. Output bindings write to sinks; triggers invoke the function.'
     },
+    {
+      q: 'Which Durable Functions orchestration pattern splits work into parallel activities and waits for all to complete?',
+      options: [
+        'Function chaining',
+        'Fan-out/fan-in',
+        'Eternal orchestration',
+        'Human interaction pattern',
+      ],
+      answer: 1,
+      explanation: 'The fan-out/fan-in pattern fires multiple activity functions in parallel (fan-out), then waits for all results using Task.WhenAll before continuing (fan-in) ideal for batch processing.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -321,6 +332,10 @@ retry(() => {
     {
       q: 'What storage does Durable Functions use and can you change it?',
       a: 'By default, Durable Functions stores orchestration state in <strong>Azure Storage</strong> (history table, instance table, work-item queue, large message blobs). For high-throughput scenarios, switch to the <strong>Netherite backend</strong> (EventHubs + Azure Storage, much higher throughput and lower latency). The <strong>MSSQL backend</strong> stores state in a SQL database — useful for SQL-native visibility and querying of orchestration state. Configure the backend in host.json under extensions.durableTask.storageProvider.'
+    },
+    {
+      q: 'When should you use Durable Functions instead of regular Azure Functions?',
+      a: 'Use Durable Functions when you need stateful orchestration: long-running workflows (minutes to days), fan-out/fan-in over many activities, human approval steps, or reliable retry across multiple activities. Regular Functions are stateless and run for seconds/minutes — they cannot reliably coordinate multi-step workflows without Durable.',
     },
   ];
 

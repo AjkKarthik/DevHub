@@ -354,6 +354,17 @@ export function calculateSecureScore(controls: SecurityControl[]) {
       answer: 1,
       explanation: 'Defender for Cloud generates alerts per resource, but each alert is seen in isolation. Microsoft Sentinel is a SIEM/SOAR that correlates signals from multiple sources: Defender alerts, Entra ID sign-in logs, NSG flow logs, Azure Activity logs, and endpoint telemetry (Defender for Endpoint). This correlation exposes the full attack chain: e.g., a suspicious process on VM X → correlates with an Entra ID sign-in from an anomalous IP → plus NSG logs showing lateral movement — a full incident Sentinel can automatically raise and trigger a response playbook for.'
     },
+    {
+      q: 'What does the Defender for Cloud secure score represent?',
+      options: [
+        'The number of active security alerts across all subscriptions',
+        'A percentage score measuring how closely your resources follow security best practice recommendations',
+        'The total cost of Defender plans enabled across your environment',
+        'A compliance score based on regulatory standards only',
+      ],
+      answer: 1,
+      explanation: 'The secure score aggregates security findings into a percentage the higher the score, the fewer recommendations remain unresolved. Remediating recommendations increases the score and improves your security posture.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -376,6 +387,10 @@ export function calculateSecureScore(controls: SecurityControl[]) {
     {
       q: 'How does Defender for Cloud handle multi-cloud environments (AWS, GCP)?',
       a: '<strong>Multi-cloud connectors</strong> bring non-Azure clouds into Defender for Cloud\'s single pane. (1) <strong>AWS connector</strong>: uses a cross-account IAM role (no credentials stored in Azure — role trust relationship only) to read AWS resource inventory via AWS Security Hub, GuardDuty, and Config. Discovers: EC2, S3, RDS, EKS, Lambda. Applies Defender CSPM recommendations (e.g., "S3 bucket should not allow public access") and can run Defender for Servers on EC2 via Arc. (2) <strong>GCP connector</strong>: reads GCP projects via Workload Identity Federation. Discovers: Compute Engine, GKE, Cloud SQL, Cloud Storage. (3) <strong>Azure Arc</strong>: onboard on-premises servers as Azure resources. Once Arc-enabled, Defender for Servers protects them exactly like Azure VMs — same Secure Score, JIT access, FIM, and threat detection. Multi-cloud data appears in a unified inventory and Secure Score per cloud.'
+    },
+    {
+      q: 'What is the difference between Defender for Cloud and Microsoft Sentinel?',
+      a: '<strong>Defender for Cloud</strong> is a CSPM (Cloud Security Posture Management) + CWPP (Cloud Workload Protection) tool focused on Azure resource security posture, compliance, and threat detection for workloads. <strong>Microsoft Sentinel</strong> is a SIEM/SOAR for collecting security events across your entire estate (cloud + on-premises) for investigation, hunting, and automated response.',
     },
   ];
 

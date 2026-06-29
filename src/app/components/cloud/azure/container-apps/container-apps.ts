@@ -299,6 +299,17 @@ console.log(validateWeights([{ name: 'v1', weight: 50 }])); // false (50 ≠ 100
       answer: 1,
       explanation: 'Container Apps Jobs are designed for run-to-completion workloads: database migrations, scheduled reports, event-triggered batch processing. They exit with a success/failure code after completing their task. Regular container apps run continuously and serve traffic; jobs execute once and stop.'
     },
+    {
+      q: 'How does Azure Container Apps autoscaling differ from AKS?',
+      options: [
+        'Container Apps uses VM scale sets; AKS uses KEDA',
+        'Container Apps uses KEDA-based autoscaling out of the box; AKS requires manual KEDA setup',
+        'Container Apps cannot scale to zero; AKS can',
+        'Both use identical autoscaling mechanisms',
+      ],
+      answer: 1,
+      explanation: 'Azure Container Apps integrates KEDA (Kubernetes Event-driven Autoscaling) natively including scale-to-zero. AKS can use KEDA but requires manual installation and configuration.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -321,6 +332,10 @@ console.log(validateWeights([{ name: 'v1', weight: 50 }])); // false (50 ≠ 100
     {
       q: 'How do Container Apps Jobs differ from a regular container app with KEDA?',
       a: 'A regular container app with KEDA scales replicas up/down but <em>stays running</em> — replicas process events continuously. A <strong>Job</strong> starts a new container instance per event (or on schedule), runs it to completion, and terminates. Jobs are better for: database migrations (must run exactly once), report generation (one container per report), and batch tasks where you need a completion guarantee and exit code. Regular apps with KEDA are better for persistent workers that poll continuously.'
+    },
+    {
+      q: 'What is a Container Apps environment and why does it matter?',
+      a: 'A Container Apps environment is the isolation boundary — all apps within it share the same virtual network, Log Analytics workspace, and Dapr configuration. Apps in the same environment can communicate via Dapr or direct service invocation. Different environments are fully isolated, useful for separating dev/prod.',
     },
   ];
 

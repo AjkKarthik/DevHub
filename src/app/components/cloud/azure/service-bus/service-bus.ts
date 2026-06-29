@@ -341,6 +341,17 @@ console.log(result, 'after', calls, 'attempts'); // 'success' after 3 attempts`
       answer: 1,
       explanation: 'Classic Geo-Disaster Recovery (GDR) replicates only metadata (namespace entities: queues, topics, subscriptions, rules) to the secondary namespace. Messages already in the primary namespace at failover time are not replicated and are lost after failover. The newer Geo-Replication feature (Premium tier) replicates both metadata AND messages — use it when message loss on failover is unacceptable.'
     },
+    {
+      q: 'How do Azure Service Bus topics differ from queues?',
+      options: [
+        'Queues support multiple consumers reading the same message; topics support only one',
+        'Topics enable publish/subscribe via subscriptions so multiple consumers each receive a copy; queues deliver each message to exactly one consumer',
+        'Topics are for FIFO ordering; queues are for unordered delivery',
+        'There is no functional difference topics are deprecated aliases for queues',
+      ],
+      answer: 1,
+      explanation: 'Service Bus queues use competing-consumer pattern (one receiver per message). Topics use pub/sub each subscription gets its own filtered copy of every message, enabling fan-out to multiple independent consumers.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -363,6 +374,10 @@ console.log(result, 'after', calls, 'attempts'); // 'success' after 3 attempts`
     {
       q: 'What is message deferral in Service Bus and when do you use it?',
       a: '<strong>Message deferral</strong> (DeferMessageAsync): a receiver defers a message it is not ready to process yet — it stays in the queue but is no longer visible to competing consumers. Only the consumer that deferred it can retrieve it later by its sequence number (stored by the deferring consumer). Use deferral when messages arrive out of order but must be processed in sequence — defer early-arriving messages until their prerequisites complete. Unlike abandon (which returns the message to the queue for any consumer), deferral hides it exclusively for the same consumer. Use sessions instead when possible — they handle ordering more elegantly.'
+    },
+    {
+      q: 'What is the dead-letter queue in Azure Service Bus and when are messages moved there?',
+      a: 'The dead-letter queue (DLQ) is a sub-queue that receives messages that cannot be delivered or processed. Messages are moved there when: max delivery count is exceeded, TTL expires with DeadLetterOnMessageExpiration enabled, or an application explicitly dead-letters a message. Monitor the DLQ to detect processing failures and implement alerting on its count.',
     },
   ];
 

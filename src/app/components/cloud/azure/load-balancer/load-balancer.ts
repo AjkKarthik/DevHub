@@ -311,6 +311,17 @@ console.log(lb.getNext()); // 'vm1'`
       answer: 1,
       explanation: 'Traffic Manager returns a DNS answer pointing the client to a regional endpoint — the client then connects directly. Front Door Anycast terminates connections at the nearest PoP and proxies to the origin, enabling WAF, caching, and TLS termination that Traffic Manager cannot provide.'
     },
+    {
+      q: 'What is the key difference between Azure Load Balancer and Azure Application Gateway?',
+      options: [
+        'Load Balancer operates at Layer 7; Application Gateway at Layer 4',
+        'Load Balancer operates at Layer 4 (TCP/UDP); Application Gateway is a Layer 7 (HTTP/HTTPS) load balancer with WAF and SSL offload',
+        'Both operate at Layer 4 but Application Gateway adds DNS support',
+        'Application Gateway is only for internal (private) traffic',
+      ],
+      answer: 1,
+      explanation: 'Azure Load Balancer works at Layer 4 (transport layer) for TCP/UDP traffic. Application Gateway works at Layer 7 (application layer) supporting URL-based routing, SSL termination, and Web Application Firewall (WAF).',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -333,6 +344,10 @@ console.log(lb.getNext()); // 'vm1'`
     {
       q: 'What is the difference between WAF Detection and Prevention mode?',
       a: '<strong>Detection mode</strong>: WAF logs rule matches but does NOT block requests — all traffic passes through. Use during initial deployment to understand which rules fire before blocking. <strong>Prevention mode</strong>: WAF blocks and logs requests matching rules. The recommended production setting. You can exclude specific rules or paths from Prevention mode to tune false positives without fully disabling the WAF.'
+    },
+    {
+      q: 'When should you use Azure Front Door instead of Application Gateway?',
+      a: 'Use <strong>Azure Front Door</strong> for global HTTP/S load balancing across multiple Azure regions — it provides global anycast, CDN, WAF, and failover at the edge. Use <strong>Application Gateway</strong> for regional Layer 7 load balancing within a single region. Front Door sits in front of Application Gateways for multi-region deployments.',
     },
   ];
 

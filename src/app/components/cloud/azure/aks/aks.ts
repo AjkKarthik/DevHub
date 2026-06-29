@@ -297,6 +297,17 @@ console.log(parseMemoryMi('1Gi'));   // 1024`
       answer: 1,
       explanation: 'The Kubernetes scheduler places pods based on resource requests (guaranteed minimum). Without requests, pods appear to need zero resources and land anywhere — nodes become over-committed. The Cluster Autoscaler also cannot trigger scale-out without accurate pending resource requests.'
     },
+    {
+      q: 'What is the difference between a System node pool and a User node pool in AKS?',
+      options: [
+        'System pools are for Windows nodes; User pools are for Linux nodes',
+        'System pools run critical cluster components (CoreDNS, kube-proxy, tunnelfront); User pools run application workloads and can be scaled to zero',
+        'User pools are managed by Microsoft; System pools are managed by the customer',
+        'System pools support autoscaling; User pools do not',
+      ],
+      answer: 1,
+      explanation: 'AKS requires at least one System node pool which hosts cluster add-ons and system pods. System pools cannot be scaled to zero. User node pools run application workloads — they can be scaled to zero (pause costs when idle), use spot/preemptible VMs, or be dedicated to specific workload types (GPU, high-memory). Taint User pools with dedicated=app:NoSchedule to prevent system pods from being scheduled there.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -319,6 +330,10 @@ console.log(parseMemoryMi('1Gi'));   // 1024`
     {
       q: 'How do node pool upgrades work in AKS and how do you minimise disruption?',
       a: 'AKS upgrades one node at a time: it cordons the node (prevents new scheduling), drains it (evicts pods to other nodes), provisions a new node with the new k8s version, and deletes the old node. Set <code>--max-surge</code> to provision N extra nodes before draining — this speeds up the upgrade and keeps capacity available throughout. Use <code>PodDisruptionBudgets</code> to ensure at least N replicas of each deployment stay available during drain.'
+    },
+    {
+      q: 'How do you upgrade an AKS cluster with minimal downtime?',
+      a: 'Use <strong>az aks upgrade</strong> with node surge to add extra nodes before draining old ones, or use blue/green cluster swapping via Traffic Manager. Upgrade the control plane first, then node pools. Enable PodDisruptionBudgets and test in staging before production.',
     },
   ];
 

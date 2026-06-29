@@ -298,6 +298,17 @@ console.log(parseScope('/subscriptions/abc/resourceGroups/my-rg/providers/Micros
       answer: 1,
       explanation: 'NotActions is subtracted from Actions to compute the effective allowed control-plane operations. It is NOT a deny — it is a set subtraction. This means a user with another role assignment that grants the NotActions permission can still perform those actions through that other role. For true deny semantics, Deny Assignments (created by Blueprints) are required.'
     },
+    {
+      q: 'What problem does Azure Privileged Identity Management (PIM) solve?',
+      options: [
+        'It replaces Conditional Access for MFA enforcement',
+        'It provides just-in-time, time-bound privileged role activation with approval workflows and audit logs',
+        'It automatically assigns Contributor roles to new users',
+        'It monitors resource health and revokes roles when issues are detected',
+      ],
+      answer: 1,
+      explanation: 'PIM enables just-in-time privileged access users activate high-privilege roles only when needed, for a limited time, with optional approval and full audit trail, reducing standing access risk.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -320,6 +331,10 @@ console.log(parseScope('/subscriptions/abc/resourceGroups/my-rg/providers/Micros
     {
       q: 'Can RBAC roles control data plane access (reading/writing blob data)?',
       a: 'Yes — RBAC has both <strong>control-plane</strong> roles (operating on the storage account resource itself via ARM: create, delete, configure) and <strong>data-plane</strong> roles (operating on the data inside: read/write/delete blobs, list containers). Examples: Storage Blob Data Reader (read blobs), Storage Blob Data Contributor (read/write/delete blobs), Storage Queue Data Message Processor. Data-plane RBAC is strongly preferred over Shared Key / SAS for application access — it uses Entra ID tokens, is auditable, and can be revoked instantly by removing the role assignment.'
+    },
+    {
+      q: 'What are the four built-in Azure roles and when do you use them?',
+      a: '<strong>Owner</strong>: full access + can manage access (use for resource owners who need to delegate). <strong>Contributor</strong>: full resource management, cannot manage access (developers, ops). <strong>Reader</strong>: view-only (auditors, stakeholders). <strong>User Access Administrator</strong>: manage access only, no resource access (security admins who assign roles). Always follow least privilege.',
     },
   ];
 

@@ -290,6 +290,17 @@ console.log(checkHealth(results));
       answer: 2,
       explanation: 'By default, all app settings swap with the slot. If your connection string is not slot-sticky, after a swap staging gets the production DB string — your test environment now points to production data. Mark environment-specific values as slot settings to keep them bound to their slot.'
     },
+    {
+      q: 'What is the purpose of deployment slots in Azure App Service?',
+      options: [
+        'Deployment slots allow running multiple versions of the app simultaneously for A/B testing permanently',
+        'Deployment slots are staging environments — swap a warmed-up slot to production with zero downtime and instant rollback',
+        'Deployment slots are separate App Service Plans at lower cost',
+        'Deployment slots only work with static web apps',
+      ],
+      answer: 1,
+      explanation: 'Deployment slots (staging, QA, etc.) are live instances of the app with their own hostnames. Deploy to staging, warm it up (health checks, cache fill), then swap: Azure atomically redirects production traffic to the staging slot. Rollback is another swap. Slot-specific settings (connection strings, app settings marked sticky) stay with their slot across swaps — so staging can point to a staging DB while production points to the prod DB.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -312,6 +323,10 @@ console.log(checkHealth(results));
     {
       q: 'How does App Service autoscale work and what are its limits?',
       a: 'Autoscale operates on the App Service Plan — it adds or removes VM instances based on metric thresholds (CPU %, memory, HTTP queue length) or a schedule. Scale-out adds an instance; scale-in removes one. The Standard tier supports up to 10 instances; Premium up to 30. Autoscale has a cool-down period (default 5 minutes) between actions to avoid oscillation. All apps sharing the plan scale together — there is no per-app instance count.'
+    },
+    {
+      q: 'What is the purpose of App Service Deployment Slots?',
+      a: 'Deployment slots are live environments (staging, QA) within the same App Service. You deploy to a slot, warm it up, then <strong>swap</strong> it into production with zero downtime. Azure swaps the routing instantly; if issues arise, swap back. Slot settings can be marked as slot-specific (not swapped) or shared.',
     },
   ];
 

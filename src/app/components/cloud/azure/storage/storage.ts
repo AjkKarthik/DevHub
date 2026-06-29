@@ -300,6 +300,17 @@ console.log(result);
       answer: 1,
       explanation: 'When the storage account default action is Deny, many trusted Azure services (Azure Monitor, Azure Backup, Azure Site Recovery, Azure Data Factory) cannot reach the storage account unless you enable the "Allow trusted Microsoft services" exception (--bypass AzureServices). Without it, diagnostic logs, backups, and other Azure-native integrations break silently.'
     },
+    {
+      q: 'What does GZRS (Geo-Zone-Redundant Storage) combine?',
+      options: [
+        'LRS within a single zone plus a secondary region with LRS',
+        'ZRS within the primary region plus asynchronous replication to a secondary region with LRS',
+        'GRS across two regions with no zone redundancy',
+        'Three synchronous copies in one zone plus two in a remote region',
+      ],
+      answer: 1,
+      explanation: 'GZRS combines ZRS (three synchronous copies across availability zones in the primary region) with GRS (one asynchronous copy in a secondary region) protecting against both zone-level and regional failures.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -322,6 +333,10 @@ console.log(result);
     {
       q: 'How does blob versioning differ from soft delete?',
       a: '<strong>Soft delete</strong>: when a blob is deleted or overwritten, Azure retains it in a deleted state for a configurable retention period (1–365 days). You can restore it within that window. <strong>Blob versioning</strong>: every write (overwrite, metadata update) automatically creates a new version — you retain a full history of all versions. Versioning is stronger (preserves every change) but costs more in storage. Enable both for critical data: soft delete catches accidental deletes, versioning enables point-in-time rollback to any prior state.'
+    },
+    {
+      q: 'What is Azure Blob Storage lifecycle management and how does it reduce cost?',
+      a: 'Lifecycle management policies automatically transition blobs between tiers (Hot > Cool > Cold > Archive) or delete them based on rules (last modified time, last access time). Example: move to Cool after 30 days, Archive after 90 days, delete after 365 days. Archive tier is 80%+ cheaper than Hot but has rehydration latency of hours.',
     },
   ];
 

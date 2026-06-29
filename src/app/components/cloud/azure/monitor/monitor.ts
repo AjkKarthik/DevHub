@@ -332,6 +332,17 @@ export function summariseRequests(requests: RequestTelemetry[]): {
       answer: 1,
       explanation: 'Distributed tracing links all the work done across services for a single user request using a correlation ID (operation_Id). App Insights propagates W3C traceparent headers between services. When you look up a request in Transaction Search, you see the full chain: frontend request → API call → database dependency → downstream service call — all as a waterfall timeline, even across separate App Insights resources.'
     },
+    {
+      q: 'What is a Log Analytics workspace in Azure Monitor?',
+      options: [
+        'A storage account specifically for diagnostic logs',
+        'A centralised repository where Azure Monitor collects, stores, and queries log and metric data using KQL',
+        'A dashboard for visualising Azure metrics in real time',
+        'An alerting engine that sends notifications to action groups',
+      ],
+      answer: 1,
+      explanation: 'A Log Analytics workspace is the data store for Azure Monitor Logs. Resources send diagnostic data there; you query it using Kusto Query Language (KQL) for troubleshooting, alerting, and insights.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -354,6 +365,10 @@ export function summariseRequests(requests: RequestTelemetry[]): {
     {
       q: 'How do you avoid alert fatigue in Azure Monitor?',
       a: 'Alert fatigue (too many noisy alerts) leads teams to ignore alerts — exactly when real incidents are missed. Mitigations: (1) <strong>Dynamic thresholds</strong> on metric alerts — learn normal patterns and alert on deviations, reducing false positives for metrics with natural variation. (2) <strong>Alert suppression</strong> via Alert Processing Rules during maintenance windows. (3) <strong>Severity routing</strong> — Sev 0/1 pages on-call immediately, Sev 2/3 sends email only. (4) <strong>Multi-condition alerts</strong> — fire only when multiple metrics breach simultaneously (CPU high AND error rate high). (5) <strong>Alert deduplication</strong> — aggregation period prevents the same condition from firing repeatedly within a window.'
+    },
+    {
+      q: 'What is the difference between Azure Monitor Metrics and Azure Monitor Logs?',
+      a: '<strong>Metrics</strong> are numerical time-series data (CPU %, request count) stored for 93 days, queried with Metrics Explorer, and great for real-time alerting. <strong>Logs</strong> are structured/unstructured records stored in Log Analytics workspaces, queried with KQL, and better for diagnostics, traces, and complex correlation across resources.',
     },
   ];
 
