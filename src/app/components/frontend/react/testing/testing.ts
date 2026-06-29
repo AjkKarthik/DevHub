@@ -617,6 +617,10 @@ describe('useCart', () => {
       q: 'How do I test custom hooks that use Context?',
       a: 'Pass a wrapper to renderHook: const wrapper = ({ children }) => <MyProvider>{children}</MyProvider>; then renderHook(() => useMyHook(), { wrapper }). The hook runs inside the provider and receives the context value. To test different context values, create different wrappers for different scenarios.',
     },
+    {
+      q: 'How do I test error states in a component that uses TanStack Query?',
+      a: 'Set up an MSW handler that returns an HTTP error for the relevant endpoint, then wrap the component in a QueryClientProvider with a QueryClient configured with retry: 0 (so tests don\'t wait for retries). Assert the error message is visible after the query settles. Use `await waitFor(() => expect(screen.getByText(/error/i)).toBeInTheDocument())` because the error state is asynchronous.',
+    },
   ];
 
   revision: RevisionSummary = {

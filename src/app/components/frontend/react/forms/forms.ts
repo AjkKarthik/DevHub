@@ -629,6 +629,10 @@ export default MultiStepForm;`,
       q: 'What is the difference between formState.isDirty and formState.dirtyFields?',
       a: 'isDirty is true if any field differs from its defaultValues. dirtyFields is an object with a key for each field that has changed. Use isDirty to show "unsaved changes" warnings; use dirtyFields for patch-style partial updates (only send changed fields).',
     },
+    {
+      q: 'How do I debounce validation in React Hook Form to avoid calling an async API on every keystroke?',
+      a: 'Use mode: "onBlur" or mode: "onChange" with a custom async validate function wrapped in a debounce utility: validate: { unique: debounce(async (v) => await checkUnique(v) || "Taken", 400) }. Alternatively, validate on submit only (mode: "onSubmit") and use setError() to show server-returned errors after the API call.',
+    },
   ];
 
   revision: RevisionSummary = {

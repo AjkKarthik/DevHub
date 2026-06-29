@@ -676,6 +676,10 @@ const styles = StyleSheet.create({
       q: 'When should I use Reanimated vs the built-in Animated API?',
       a: 'Always prefer Reanimated 3 for new code. The built-in Animated API runs on the JS thread — animations stutter when the JS thread is busy. Reanimated runs animations via worklets on the UI thread, staying smooth even during heavy JS work. The API is also cleaner with useSharedValue and useAnimatedStyle.',
     },
+    {
+      q: 'How do I handle deep linking in React Native?',
+      a: 'Configure a linking object in NavigationContainer: define scheme ("myapp://") and pathMappings for each screen. On iOS, add the URL scheme to Info.plist; on Android, add an intent filter to AndroidManifest.xml. Expo Router handles deep links automatically based on file-system routes. Test with the CLI: npx uri-scheme open myapp://profile/123 --ios.',
+    },
   ];
 
   revision: RevisionSummary = {

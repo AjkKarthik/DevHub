@@ -656,6 +656,10 @@ Tabs.Panel = function Panel({ id, children }: { id: string; children: ReactNode 
       q: 'When is a HOC still the right choice over a hook?',
       a: 'Error boundaries — class components only support componentDidCatch and getDerivedStateFromError, so withErrorBoundary HOCs are the standard pattern. Also when wrapping third-party components whose source you cannot modify (injecting props into a legacy component).',
     },
+    {
+      q: 'What is the difference between a controlled and an uncontrolled component pattern?',
+      a: 'Controlled: the parent owns the value and passes it down via props; every change goes through the parent\'s handler. Uncontrolled: the component owns its own state via a ref or internal useState — the parent asks for the value only when needed (e.g. on submit). Use controlled for forms that need live validation or cross-field logic; use uncontrolled (with defaultValue) for simple inputs where you only need the final value.',
+    },
   ];
 
   revision: RevisionSummary = {
