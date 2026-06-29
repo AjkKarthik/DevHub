@@ -221,6 +221,28 @@ function parseNginxLog(line: string): LogEntry | null {
       answer: 1,
       explanation: 'NR is the current line/record number. NF is the number of fields on the current line. $0 is the whole line, $1..$NF are individual fields.',
     },
+    {
+      q: 'What is the difference between > and >> for output redirection?',
+      options: [
+        '> appends to a file; >> overwrites it',
+        '> overwrites (truncates) a file; >> appends to it',
+        '> redirects stderr; >> redirects stdout',
+        'Both overwrite; the difference is only in the file descriptor used',
+      ],
+      answer: 1,
+      explanation: '> redirects stdout to a file, truncating it first. >> appends to the file without truncating. Use 2> for stderr, 2>&1 to redirect stderr to the same destination as stdout.',
+    },
+    {
+      q: 'How does xargs differ from piping to a command?',
+      options: [
+        'xargs passes stdin as a file argument; pipe passes it as stdin',
+        'xargs converts stdin lines into command arguments; pipe passes data as stdin to the next command',
+        'xargs is only for the find command',
+        'There is no functional difference',
+      ],
+      answer: 1,
+      explanation: 'A pipe passes stdin to the next command. xargs reads stdin and converts it to command-line arguments — useful when commands do not accept stdin (e.g., rm, mkdir). Example: find . -name *.tmp | xargs rm.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -235,6 +257,18 @@ function parseNginxLog(line: string): LogEntry | null {
     {
       q: 'How do I search inside compressed log files?',
       a: 'Use zgrep for .gz files, bzgrep for .bz2, or zcat file.gz | grep pattern. For arbitrary formats, zstdcat / lzcat / xzcat | grep work similarly. journalctl handles its own compression transparently.',
+    },
+    {
+      q: 'How do you recursively find files by name?',
+      a: '<code>find /path -name "*.log"</code> finds files matching the pattern. Key options: <code>-type f</code> (files only), <code>-type d</code> (directories), <code>-mtime -7</code> (modified in last 7 days), <code>-size +100M</code> (larger than 100MB). Combine with <code>-exec cmd {} \;</code> or <code>-exec cmd {} +</code> (batched) to act on results.',
+    },
+    {
+      q: 'What does the tee command do?',
+      a: '<strong>tee</strong> reads from stdin and writes to both stdout and one or more files simultaneously. Example: <code>cmd | tee output.log</code> shows output in terminal and saves it. <code>tee -a</code> appends instead of overwriting. Useful in pipelines where you want to both see output and save it.',
+    },
+    {
+      q: 'How do you search for text across multiple files recursively?',
+      a: '<code>grep -r "pattern" /path</code> or <code>grep -rn "pattern" /path</code> (with line numbers). Options: <code>-l</code> (filenames only), <code>-i</code> (case-insensitive), <code>-E</code> (extended regex). Modern alternative: <strong>ripgrep</strong> (rg) is faster and respects .gitignore. <code>grep -r --include="*.py" "pattern" .</code> filters by extension.',
     },
   ];
 

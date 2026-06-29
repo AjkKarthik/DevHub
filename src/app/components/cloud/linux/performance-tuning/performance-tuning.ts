@@ -282,6 +282,28 @@ console.log(params.get('net.ipv4.tcp_rmem'));  // "4096 87380 16777216"`,
       answer: 1,
       explanation: 'taskset -c sets CPU affinity — constrains the process to run only on the specified CPU cores. This prevents the scheduler from migrating the process across cores, which helps CPU cache efficiency.',
     },
+    {
+      q: 'What does the nice value of a process control?',
+      options: [
+        'The memory allocation priority',
+        'The CPU scheduling priority, ranging from -20 (highest priority) to 19 (lowest)',
+        'The I/O priority in cgroups',
+        'The process memory protection level',
+      ],
+      answer: 1,
+      explanation: 'nice values range from -20 (most favoured, highest CPU priority) to 19 (least favoured). Regular users can only increase niceness (lower priority). Root can set negative nice values. Use: nice -n 10 cmd, renice -n 5 -p PID.',
+    },
+    {
+      q: 'What does the vm.swappiness kernel parameter control?',
+      options: [
+        'The maximum swap file size',
+        'The kernel tendency to use swap space (0=avoid swap, 100=aggressive swap use)',
+        'The swap encryption algorithm',
+        'The number of swap partitions allowed',
+      ],
+      answer: 1,
+      explanation: 'vm.swappiness (0-200, default 60) controls how aggressively the kernel moves anonymous memory to swap. Low values keep more in RAM; high values swap more aggressively. Set in /etc/sysctl.conf: vm.swappiness=10 for workloads needing low latency.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -296,6 +318,18 @@ console.log(params.get('net.ipv4.tcp_rmem'));  // "4096 87380 16777216"`,
     {
       q: 'How do I profile a slow application to find the bottleneck?',
       a: 'Start with perf top to see CPU hotspots by function. Use strace -c -p PID to see which syscalls consume time. For I/O: iotop -p PID or lsof -p PID. For memory: valgrind --tool=massif or /usr/bin/time -v. For profiling at the code level, use language-specific tools (perf for C, async_profiler for Java, cProfile for Python).',
+    },
+    {
+      q: 'What do the three load average numbers mean?',
+      a: 'Load average shows the average number of processes in the run queue (running + waiting for CPU or uninterruptible I/O) over 1, 5, and 15 minutes. A value equal to the number of CPU cores = 100% utilisation. Above that = overloaded; below = idle headroom. High 1-min with low 15-min = short spike; high 15-min = sustained load.',
+    },
+    {
+      q: 'How do you identify which process is consuming the most I/O?',
+      a: '<code>iotop -o</code> shows only processes actively doing I/O in real time (requires root). <code>iostat -x 1</code> shows per-device I/O stats. <code>pidstat -d 1</code> shows per-process disk I/O. For a one-shot: <code>sudo iotop -b -n 1 | head -20</code>. High await in iostat -x indicates storage latency.',
+    },
+    {
+      q: 'What is the OOM killer and how do you protect a process from it?',
+      a: 'The OOM (Out-of-Memory) killer terminates processes when the system runs out of memory. It selects victims based on <strong>oom_score</strong> (high score = more likely to be killed). Protect a critical process: <code>echo -17 > /proc/PID/oom_adj</code> or <code>echo -1000 > /proc/PID/oom_score_adj</code>. To completely disable OOM killing (risky): <code>echo 2 > /proc/sys/vm/overcommit_memory</code>.',
     },
   ];
 

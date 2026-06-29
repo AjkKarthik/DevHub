@@ -237,6 +237,28 @@ console.log(result.VERSION_ID); // 22.04`,
       answer: 1,
       explanation: '~/.bashrc is sourced for every new interactive non-login shell (e.g. opening a terminal in a desktop). ~/.bash_profile is only for login shells.',
     },
+    {
+      q: 'Which command shows the Linux kernel version?',
+      options: [
+        'cat /etc/os-release',
+        'uname -r',
+        'lsb_release -a',
+        'hostnamectl',
+      ],
+      answer: 1,
+      explanation: 'uname -r prints the running kernel release (e.g., 6.8.0-45-generic). uname -a prints all system info. /etc/os-release contains distribution info, not kernel version.',
+    },
+    {
+      q: 'What is the /proc filesystem in Linux?',
+      options: [
+        'A disk partition for process core dumps',
+        'A virtual filesystem exposing kernel and process information as files',
+        'The directory where process binaries are stored',
+        'A swap partition for process memory overflow',
+      ],
+      answer: 1,
+      explanation: '/proc is a virtual pseudo-filesystem — no disk storage. It exposes kernel state and process info as readable files. /proc/cpuinfo, /proc/meminfo, /proc/PID/status give runtime system and process data.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -255,6 +277,14 @@ console.log(result.VERSION_ID); // 22.04`,
     {
       q: 'What are load averages in the uptime output?',
       a: 'The three numbers (e.g. 0.52 1.03 1.25) are the average number of runnable processes over the past 1, 5, and 15 minutes. A value equal to the number of CPU cores means full utilisation. Values above core count indicate queuing/overload.',
+    },
+    {
+      q: 'What is the difference between a process and a thread in Linux?',
+      a: 'A <strong>process</strong> has its own address space, file descriptors, and resources. A <strong>thread</strong> (lightweight process) shares the address space with other threads in the same process but has its own stack and registers. Linux implements threads as processes via clone() with shared resources. Multiple threads in a process see the same memory — enabling fast communication but requiring synchronisation.',
+    },
+    {
+      q: 'How does Linux handle hardware via device files?',
+      a: 'Linux exposes hardware as files in <strong>/dev</strong>. <strong>Character devices</strong> (c in ls -l) handle streaming data byte-by-byte (serial ports, terminals). <strong>Block devices</strong> (b) handle fixed-size blocks (disks). Device files have major (driver) and minor (instance) numbers. <code>mknod</code> creates them; <strong>udev</strong> creates them dynamically on device attachment.',
     },
   ];
 

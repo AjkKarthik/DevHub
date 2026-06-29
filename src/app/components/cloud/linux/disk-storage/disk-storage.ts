@@ -262,6 +262,28 @@ function parseFstab(content: string): FstabEntry[] {
       answer: 1,
       explanation: 'tmpfs is a virtual filesystem stored in RAM (and swap if needed). Very fast for temp files. Contents are lost on reboot. Commonly mounted on /tmp and /run/shm.',
     },
+    {
+      q: 'What information does lsblk display?',
+      options: [
+        'Filesystem usage statistics like df',
+        'Block devices in a tree layout showing device names, sizes, and mount points',
+        'Running disk I/O statistics',
+        'SMART health status of disks',
+      ],
+      answer: 1,
+      explanation: 'lsblk lists block devices (disks, partitions, LVM volumes) in a tree view showing NAME, SIZE, TYPE, and MOUNTPOINT. Unlike df, it shows unmounted devices too.',
+    },
+    {
+      q: 'Which command creates an ext4 filesystem on a partition?',
+      options: [
+        'mkpart ext4',
+        'mkfs.ext4 /dev/sdX1',
+        'format -t ext4 /dev/sdX1',
+        'fdisk --ext4 /dev/sdX1',
+      ],
+      answer: 1,
+      explanation: 'mkfs.ext4 (or mkfs -t ext4) creates an ext4 filesystem on the specified device. Always unmount the partition first. Other filesystem types: mkfs.xfs, mkfs.btrfs, mkfs.fat.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -276,6 +298,18 @@ function parseFstab(content: string): FstabEntry[] {
     {
       q: 'What is the difference between ext4 and xfs?',
       a: 'ext4 is the default on Ubuntu/Debian. xfs is the default on RHEL/CentOS. Both are journaling filesystems. Key differences: xfs handles large files and parallel I/O better (good for databases and NAS). ext4 has better small-file performance. xfs cannot be shrunk (only grown). ext4 can be resized with resize2fs. For most uses, performance difference is negligible.',
+    },
+    {
+      q: 'How do you persistently mount a filesystem using /etc/fstab?',
+      a: 'Add a line to /etc/fstab: <code>UUID=xxx /mnt/data ext4 defaults 0 2</code>. Fields: device (UUID preferred over /dev/sdX which can change), mount point, filesystem type, options, dump (0=skip), fsck order (1=root, 2=others, 0=skip). Test before rebooting: <code>mount -a</code>. Get UUID with <code>blkid /dev/sdX1</code>.',
+    },
+    {
+      q: 'What is LVM and when should you use it?',
+      a: '<strong>LVM</strong> (Logical Volume Manager) adds a layer between physical disks and filesystems: <strong>PV</strong> (Physical Volume) → <strong>VG</strong> (Volume Group) → <strong>LV</strong> (Logical Volume). Benefits: resize volumes online without unmounting, span multiple disks, take snapshots. Use when you need flexible resizing, thin provisioning, or disk aggregation. Cloud VMs often use LVM for root partitions.',
+    },
+    {
+      q: 'What is the difference between fdisk and parted?',
+      a: '<strong>fdisk</strong> is interactive and works well for MBR/GPT partitions up to 2TB. <strong>parted</strong> is the modern tool supporting both MBR and GPT, handles disks over 2TB, and can be scripted non-interactively (<code>parted /dev/sdb mklabel gpt</code>). For UEFI systems and large disks, prefer <strong>parted</strong> or <strong>gdisk</strong>.',
     },
   ];
 

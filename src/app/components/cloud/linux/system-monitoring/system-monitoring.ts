@@ -219,6 +219,28 @@ console.log(analyseLoad(5.0, 3.0, 2.0, 4));  // critical (>100% per core)`,
       answer: 1,
       explanation: 'iotop (similar to top but for I/O) shows per-process I/O rates. The -o flag shows only processes currently doing I/O rather than all processes.',
     },
+    {
+      q: 'What do the three load average numbers in top/uptime represent?',
+      options: [
+        'CPU, memory, and disk usage percentages',
+        'Average number of runnable processes over the last 1, 5, and 15 minutes',
+        'System uptime in days, hours, and minutes',
+        'Load from user, kernel, and I/O processes',
+      ],
+      answer: 1,
+      explanation: 'Load average represents the average number of processes in the run queue (running or waiting for CPU/disk). Three values: 1-minute, 5-minute, 15-minute averages. A value equal to CPU core count means 100% utilisation.',
+    },
+    {
+      q: 'What does vmstat report?',
+      options: [
+        'Virtual machine status and hypervisor metrics',
+        'Virtual memory statistics including processes, memory, swap, I/O, system calls, and CPU activity',
+        'Volume manager (LVM) statistics',
+        'Network interface packet statistics',
+      ],
+      answer: 1,
+      explanation: 'vmstat provides a snapshot of system performance: run/block process counts, memory (swpd, free, buff, cache), swap in/out, disk I/O (bi/bo), system calls (in, cs), and CPU percentages (us, sy, id, wa).',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -233,6 +255,18 @@ console.log(analyseLoad(5.0, 3.0, 2.0, 4));  // critical (>100% per core)`,
     {
       q: 'How do load averages relate to CPU count and scheduling?',
       a: 'Load average counts runnable + uninterruptible-sleep processes averaged over time. A load equal to CPU count = 100% utilisation with no queuing. Load above CPU count means processes queue for CPU. A rising trend (1min > 15min) is more concerning than a falling one. nproc shows CPU count.',
+    },
+    {
+      q: 'How do you monitor disk I/O performance?',
+      a: '<strong>iostat -x 1</strong> shows extended I/O stats per device: %util (device busy %), await (average I/O wait ms), r/s, w/s (reads/writes per second). <strong>iotop</strong> shows per-process I/O in real time. <strong>dstat</strong> provides combined CPU, disk, network stats. High await (>20ms for HDD, >1ms for SSD) indicates I/O bottleneck. Check <code>/sys/block/device/queue/scheduler</code> for I/O scheduler.',
+    },
+    {
+      q: 'What historical performance data does sar provide?',
+      a: '<strong>sar</strong> (System Activity Reporter from sysstat) records and reports historical performance data. <code>sar -u 1 5</code> CPU usage; <code>sar -r</code> memory; <code>sar -d</code> disk I/O; <code>sar -n DEV</code> network. Historical data in <code>/var/log/sysstat/</code>: <code>sar -f /var/log/sysstat/sa30</code> reads today\'s data. Invaluable for post-incident analysis.',
+    },
+    {
+      q: 'How do you check memory usage breakdown in Linux?',
+      a: '<code>free -h</code> shows total/used/free/available RAM and swap. <strong>available</strong> (not free) is what new processes can use — includes reclaimable buffers/cache. <code>/proc/meminfo</code> gives detailed breakdown. <strong>top</strong>/htop show per-process RSS (Resident Set Size). <code>smem</code> shows PSS (Proportional Set Size) — better for shared library accounting.',
     },
   ];
 

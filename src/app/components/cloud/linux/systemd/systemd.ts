@@ -283,6 +283,28 @@ function parseServiceStatus(output: string): ServiceHealth {
       answer: 1,
       explanation: 'Restart=on-failure restarts the service if the main process exits with non-zero status or is killed by a signal (not SIGTERM). Intentional stops via systemctl stop are not restarted.',
     },
+    {
+      q: 'What is the difference between systemctl start and systemctl enable?',
+      options: [
+        'start makes the service boot on startup; enable starts it immediately',
+        'start runs the service now (single session); enable configures it to start automatically at boot',
+        'start applies to socket units; enable applies to service units',
+        'They are aliases for the same action',
+      ],
+      answer: 1,
+      explanation: 'systemctl start runs the service immediately in the current session. systemctl enable creates symlinks so it starts at boot. Use both together: systemctl enable --now servicename. disable removes the boot symlinks.',
+    },
+    {
+      q: 'When must you run systemctl daemon-reload?',
+      options: [
+        'After every systemctl restart command',
+        'After modifying unit files, to reload systemd manager configuration without restarting services',
+        'Only after installing new packages',
+        'Before every systemctl start to refresh state',
+      ],
+      answer: 1,
+      explanation: 'daemon-reload re-reads all unit files without restarting running services. Run it after creating or editing a unit file in /etc/systemd/system/. Forgetting it means systemd uses the old unit definition.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -297,6 +319,18 @@ function parseServiceStatus(output: string): ServiceHealth {
     {
       q: 'How do I see why a systemd service failed to start?',
       a: 'systemctl status myapp shows the last few log lines and exit code. For full logs: journalctl -u myapp -n 100 or journalctl -u myapp --since "5 minutes ago". Check for permission errors, missing files, or config syntax errors. journalctl -p err shows only error-level messages.',
+    },
+    {
+      q: 'What are the sections of a systemd unit file?',
+      a: 'A service unit (.service) has three sections: <strong>[Unit]</strong> — metadata (Description, After, Requires, Wants, documentation); <strong>[Service]</strong> — how to run (Type, ExecStart, ExecStop, Restart, User, Environment, WorkingDirectory); <strong>[Install]</strong> — when to enable (WantedBy=multi-user.target). Place custom units in <strong>/etc/systemd/system/</strong>; override package units with drop-in files in <strong>/etc/systemd/system/service.d/override.conf</strong>.',
+    },
+    {
+      q: 'What are systemd targets and how do they replace SysV runlevels?',
+      a: 'Targets are synchronisation points grouping units. Key targets: <strong>multi-user.target</strong> (runlevel 3 — text multi-user), <strong>graphical.target</strong> (runlevel 5 — GUI), <strong>rescue.target</strong> (runlevel 1 — single user), <strong>emergency.target</strong> (minimal). Change default: <code>systemctl set-default multi-user.target</code>. Switch target: <code>systemctl isolate rescue.target</code>.',
+    },
+    {
+      q: 'How do you create a custom systemd service?',
+      a: 'Create <code>/etc/systemd/system/myapp.service</code> with [Unit], [Service], [Install] sections. Set <code>ExecStart=/usr/local/bin/myapp</code>, <code>User=myapp</code>, <code>Restart=on-failure</code>, <code>WantedBy=multi-user.target</code>. Then: <code>systemctl daemon-reload && systemctl enable --now myapp</code>. Check: <code>systemctl status myapp</code> and <code>journalctl -u myapp -f</code>.',
     },
   ];
 

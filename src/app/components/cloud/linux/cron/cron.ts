@@ -213,6 +213,28 @@ journalctl -u mybackup.service -n 50`,
       answer: 1,
       explanation: 'With Persistent=true, a systemd timer that was due while the system was off will fire as soon as the system comes back up. cron simply misses the scheduled run if the system was down.',
     },
+    {
+      q: 'What does the cron expression */5 * * * * mean?',
+      options: [
+        'At minute 5 of every hour',
+        'Every 5 minutes',
+        'Every 5 hours',
+        'On the 5th of every month',
+      ],
+      answer: 1,
+      explanation: '*/5 in the minute field means every 5 minutes (0, 5, 10, 15...). The */N syntax means every N units. The five fields are: minute, hour, day-of-month, month, day-of-week.',
+    },
+    {
+      q: 'What does @reboot do in a crontab?',
+      options: [
+        'Reboots the system daily',
+        'Runs the command once when the cron daemon starts (system boot)',
+        'Runs the command every reboot cycle',
+        'It is an invalid cron expression',
+      ],
+      answer: 1,
+      explanation: '@reboot runs the command once after every system boot when crond starts. It is equivalent to @reboot and useful for starting services or initialising state after restart.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -231,6 +253,14 @@ journalctl -u mybackup.service -n 50`,
     {
       q: 'How do I run a cron job as a different user?',
       a: 'In /etc/crontab or /etc/cron.d/: "0 2 * * * www-data /opt/app/cleanup.sh". The username field specifies who runs the command. Alternatively: sudo crontab -u www-data -e edits www-data\'s crontab. User crontabs always run as that user.',
+    },
+    {
+      q: 'Where are system-wide cron jobs stored and how do they differ from user crontabs?',
+      a: 'System cron locations: <strong>/etc/crontab</strong> (system crontab with user field), <strong>/etc/cron.d/</strong> (package-managed jobs), <strong>/etc/cron.daily|weekly|monthly/</strong> (scripts run by run-parts). User crontabs (crontab -e) are stored in <strong>/var/spool/cron/crontabs/username</strong> — no user field required since the cron daemon runs them as that user.',
+    },
+    {
+      q: 'How do you debug a cron job that is not running?',
+      a: 'Steps: (1) Check <strong>/var/log/syslog</strong> or <strong>journalctl -u cron</strong> for cron execution logs. (2) Test the command manually as the correct user. (3) Ensure PATH is set in crontab (cron has minimal PATH). (4) Redirect output: <code>cmd >> /tmp/out.log 2>&1</code>. (5) Check permissions on the script (must be executable). (6) Verify no syntax errors with <code>crontab -l</code>.',
     },
   ];
 }

@@ -296,6 +296,28 @@ console.log(analyseScript(script));
       answer: 1,
       explanation: 'trap "cleanup" EXIT runs the cleanup function whenever the script exits, regardless of exit code or reason (normal exit, Ctrl+C, set -e failure, etc.). It is the standard cleanup pattern.',
     },
+    {
+      q: 'Which special variable holds the exit code of the last executed command?',
+      options: [
+        '$0',
+        '$?',
+        '$#',
+        '$@',
+      ],
+      answer: 1,
+      explanation: '$? contains the exit code of the most recently executed command. 0 means success; non-zero means failure. Always check $? or use set -e to exit on error automatically.',
+    },
+    {
+      q: 'What is the key advantage of [[ over [ for conditionals in bash?',
+      options: [
+        '[[ is POSIX portable; [ is bash-only',
+        '[[ is a bash built-in supporting regex, pattern matching, and logical operators without word splitting',
+        '[ supports more comparison operators',
+        'There is no difference; they are aliases',
+      ],
+      answer: 1,
+      explanation: '[[ is a bash keyword that avoids word splitting and supports =~ for regex matching, == with glob patterns, and && / || without quoting issues. [ is POSIX but more fragile.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -310,6 +332,18 @@ console.log(analyseScript(script));
     {
       q: 'What is the difference between $@ and $* in bash?',
       a: '"$@" expands each positional parameter as a separate quoted word — safe for filenames with spaces. "$*" expands all parameters as a single word joined by IFS (default space). Use "$@" in loops and when passing args to commands: cmd "$@" preserves argument boundaries.',
+    },
+    {
+      q: 'Why should you always quote variables in bash?',
+      a: 'Unquoted variables undergo word splitting and glob expansion. <code>rm $file</code> fails dangerously if $file contains spaces or globs. Always quote: <code>rm "$file"</code>. Exception: arithmetic context <code>(( $n + 1 ))</code> and array index notation do not require quotes.',
+    },
+    {
+      q: 'What is the shebang line and why use /usr/bin/env bash?',
+      a: 'The shebang (#!) on line 1 tells the OS which interpreter to use. <code>#!/usr/bin/env bash</code> is preferred over <code>#!/bin/bash</code> because env searches PATH for bash, making scripts portable across systems where bash is not at /bin/bash (e.g., macOS with Homebrew bash, NixOS). Always include it — without it, the script runs in /bin/sh which may not be bash.',
+    },
+    {
+      q: 'How do you write a reusable function in bash?',
+      a: 'Define with <code>function_name() { ... }</code> or <code>function function_name { ... }</code>. Return values: use <code>return N</code> for exit codes (0-255) or echo/printf to stdout and capture with <code>$( )</code>. Local variables: use <code>local varname</code> to scope them. Functions must be defined before they are called.',
     },
   ];
 

@@ -236,6 +236,28 @@ sudo aide --check                    # compare current to baseline`,
       answer: 1,
       explanation: 'AIDE (Advanced Intrusion Detection Environment) is a file integrity checker. It creates a baseline database of file hashes, permissions, and attributes. Running aide --check compares the current state to the baseline and reports changes.',
     },
+    {
+      q: 'What does setting PasswordAuthentication no in sshd_config achieve?',
+      options: [
+        'Disables SSH entirely',
+        'Requires key-based authentication only, disabling password login via SSH',
+        'Sets a minimum password length requirement',
+        'Disables root login only',
+      ],
+      answer: 1,
+      explanation: 'PasswordAuthentication no forces key-based authentication, preventing brute-force password attacks. Ensure your public key is in ~/.ssh/authorized_keys before applying, then restart sshd. Combine with PermitRootLogin no.',
+    },
+    {
+      q: 'What is the purpose of fail2ban?',
+      options: [
+        'Encrypts SSH connections',
+        'Monitors logs for repeated failed login attempts and temporarily bans offending IPs via firewall rules',
+        'Validates SSH key fingerprints',
+        'Audits file system changes',
+      ],
+      answer: 1,
+      explanation: 'fail2ban scans log files (auth.log, secure) for repeated failures and creates temporary firewall rules (iptables/nftables) to ban the offending IP. Configurable ban time, max retries, and which services to protect.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -250,6 +272,18 @@ sudo aide --check                    # compare current to baseline`,
     {
       q: 'How do fail2ban and ufw interact?',
       a: 'fail2ban uses iptables (or nftables) to add DROP rules for banned IPs. When using ufw, configure fail2ban to use ufw as the action: action = %(action_mwl)s in jail.local. Or use banaction = ufw. This ensures bans work through ufw\'s rules. fail2ban-client status shows which IPs are banned regardless of backend.',
+    },
+    {
+      q: 'What is the principle of least privilege in Linux?',
+      a: 'Users and processes should have only the minimum permissions necessary to perform their task. Implementation: run services as dedicated non-root users, use sudo for specific commands instead of root shell, set restrictive file permissions (640/750), restrict setuid binaries, use capabilities (setcap) instead of full root for network services, and use namespaces/containers for isolation.',
+    },
+    {
+      q: 'What is visudo and why must you use it to edit sudoers?',
+      a: '<strong>visudo</strong> edits /etc/sudoers in a locked, syntax-checked session. It prevents saving a broken sudoers file that could lock you out of sudo. Never edit /etc/sudoers directly. Add custom rules in <strong>/etc/sudoers.d/</strong> files — they survive package upgrades and are easier to manage.',
+    },
+    {
+      q: 'How does AppArmor differ from SELinux?',
+      a: 'Both are Mandatory Access Control (MAC) frameworks. <strong>AppArmor</strong> (Ubuntu/SUSE) uses file paths in profiles — simpler to configure with complain/enforce modes. <strong>SELinux</strong> (RHEL/Fedora) uses security labels on every file and process — more granular but harder to configure. Check: <code>aa-status</code> (AppArmor) or <code>getenforce</code> (SELinux).',
     },
   ];
 }

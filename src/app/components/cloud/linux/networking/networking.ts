@@ -237,6 +237,28 @@ function calcSubnet(cidr: string): SubnetInfo {
       answer: 2,
       explanation: '/etc/hosts is checked first (by default, per /etc/nsswitch.conf "hosts: files dns"). Entries here override DNS. 127.0.0.1 localhost and ::1 localhost are always present.',
     },
+    {
+      q: 'What is the modern replacement for ifconfig?',
+      options: [
+        'netstat',
+        'ip addr (ip a)',
+        'ipconfig',
+        'route',
+      ],
+      answer: 1,
+      explanation: 'ip (iproute2) replaces the legacy net-tools (ifconfig, route, netstat). ip addr shows interfaces, ip route shows routing table, ip link manages interfaces. netstat is replaced by ss.',
+    },
+    {
+      q: 'What does ss -tulpn display?',
+      options: [
+        'SSL certificate information',
+        'TCP and UDP listening sockets with process names and port numbers',
+        'Network route statistics',
+        'System socket buffer sizes',
+      ],
+      answer: 1,
+      explanation: 'ss -tulpn: t=TCP, u=UDP, l=listening, p=process info, n=numeric (no DNS). Shows which ports are open and which process owns them. Replaces netstat -tulpn.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -251,6 +273,18 @@ function calcSubnet(cidr: string): SubnetInfo {
     {
       q: 'What is the difference between ss and netstat?',
       a: 'Both show socket information, but ss reads directly from kernel socket tables (faster, no parsing /proc/net/ like netstat). ss supports more filter syntax, is pre-installed on modern systems, and is actively maintained. netstat comes from net-tools which is unmaintained. Prefer ss for new scripts.',
+    },
+    {
+      q: 'How do you diagnose a DNS resolution failure?',
+      a: 'Steps: (1) <code>cat /etc/resolv.conf</code> — check nameserver is set. (2) <code>dig google.com @8.8.8.8</code> — test with a known-good DNS server. (3) <code>ping 8.8.8.8</code> — check basic connectivity (if this works but DNS fails, it is a DNS issue). (4) <code>systemctl status systemd-resolved</code> — check resolver service. (5) <code>/etc/nsswitch.conf</code> — check name resolution order.',
+    },
+    {
+      q: 'What is the difference between a subnet and a VLAN?',
+      a: 'A <strong>subnet</strong> is a logical IP address range (e.g., 192.168.1.0/24) partitioning an IP network for routing. A <strong>VLAN</strong> (Virtual LAN) is a Layer 2 (data link) technology that segments a physical network into isolated broadcast domains using 802.1Q tagging. VLANs separate traffic before routing; subnets determine routing. A single VLAN often maps to a single subnet but they are different concepts.',
+    },
+    {
+      q: 'How do you trace the route packets take to a destination?',
+      a: '<strong>traceroute hostname</strong> (UDP by default on Linux) or <strong>mtr hostname</strong> (real-time). traceroute sends packets with incrementing TTL and records each router that sends an ICMP Time Exceeded back. Options: <code>-T</code> for TCP (useful through firewalls), <code>-I</code> for ICMP. <code>mtr</code> combines ping and traceroute, showing packet loss per hop in real time.',
     },
   ];
 

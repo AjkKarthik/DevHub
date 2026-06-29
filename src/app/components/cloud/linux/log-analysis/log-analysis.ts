@@ -286,6 +286,28 @@ function analyseLog(lines: string[]): LogSummary {
       answer: 1,
       explanation: 'zgrep is grep for gzip files — it decompresses on the fly and searches. zcat file.gz | grep ERROR also works. cat file.gz outputs binary (does not decompress).',
     },
+    {
+      q: 'Which flag follows new log entries in real time with journalctl?',
+      options: [
+        '-r',
+        '-f',
+        '-t',
+        '-n',
+      ],
+      answer: 1,
+      explanation: 'journalctl -f follows the journal in real time, similar to tail -f. Combine with -u servicename to follow a specific unit: journalctl -fu nginx.',
+    },
+    {
+      q: 'What does grep -v pattern file do?',
+      options: [
+        'Prints lines matching the pattern verbosely',
+        'Prints lines that do NOT match the pattern',
+        'Searches for the pattern in verbose mode',
+        'Inverts the file and searches it',
+      ],
+      answer: 1,
+      explanation: '-v (--invert-match) inverts the match, printing lines that do not match. Useful for filtering out noise: grep -v DEBUG app.log shows everything except DEBUG lines.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -300,6 +322,18 @@ function analyseLog(lines: string[]): LogSummary {
     {
       q: 'How do I know if log rotation is working correctly?',
       a: 'Check /var/lib/logrotate/status for last rotation times. Test with logrotate -d /etc/logrotate.d/nginx (dry run). Verify compressed old logs exist: ls -la /var/log/nginx/. Run logrotate -f to force rotation and verify postrotate script works (nginx reopens log files). Monitor disk usage over time.',
+    },
+    {
+      q: 'Where are traditional system logs stored and what key files should you know?',
+      a: 'Key log files: <strong>/var/log/syslog</strong> or <strong>/var/log/messages</strong> (general system), <strong>/var/log/auth.log</strong> or <strong>/var/log/secure</strong> (authentication), <strong>/var/log/kern.log</strong> (kernel), <strong>/var/log/dmesg</strong> (boot messages). On systemd systems, <code>journalctl</code> is the primary log viewer — traditional files may or may not exist depending on whether rsyslog is installed.',
+    },
+    {
+      q: 'How do you view logs for a specific systemd service?',
+      a: '<code>journalctl -u servicename</code> shows all journal entries for that unit. Add <code>-f</code> to follow in real time, <code>-n 100</code> for last 100 lines, <code>--since today</code> or <code>--since "2024-01-01 10:00:00"</code> to filter by time. <code>journalctl -u nginx --no-pager | grep ERROR</code> pipes to grep for filtering.',
+    },
+    {
+      q: 'How do you filter log entries by time range?',
+      a: 'With journalctl: <code>journalctl --since "1 hour ago" --until "30 min ago"</code> or <code>--since 2024-01-01 --until 2024-01-02</code>. With traditional log files use: <code>awk</code> to filter by timestamp prefix or <code>grep</code> for date patterns. <code>tail -f /var/log/syslog</code> follows in real time. <code>logrotate</code> manages log rotation to prevent disk fill.',
     },
   ];
 

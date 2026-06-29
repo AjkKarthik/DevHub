@@ -287,6 +287,28 @@ console.log(renderTemplate(tmpl, ctx));
       answer: 2,
       explanation: 'The & operator runs each command in the background. wait with no args waits for all background jobs to complete. Capture PIDs with $! and wait individually if you need exit codes.',
     },
+    {
+      q: 'What does set -euo pipefail do in a bash script?',
+      options: [
+        'Enables extended glob patterns only',
+        'Exits on error, errors on unset variables, and fails the pipeline if any command fails',
+        'Disables all error output',
+        'Enables errexit but not pipefail',
+      ],
+      answer: 1,
+      explanation: 'set -e exits on error, -u errors on unset variable references, -o pipefail makes the pipeline fail if any command fails not just the last one. Combined they enforce strict error handling.',
+    },
+    {
+      q: 'What is process substitution in bash?',
+      options: [
+        'Running a process as a background job',
+        'Substituting a command output as a named file descriptor using <(cmd) or >(cmd)',
+        'Replacing a process with another using exec',
+        'Substituting environment variables into a command',
+      ],
+      answer: 1,
+      explanation: 'Process substitution <(cmd) runs cmd and presents its output as a file, allowing it to be used where a filename is expected. Example: diff <(sort file1) <(sort file2).',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -301,6 +323,18 @@ console.log(renderTemplate(tmpl, ctx));
     {
       q: 'What is the difference between declare -a and declare -A in bash?',
       a: 'declare -a creates an indexed array where keys are integers (0, 1, 2...). declare -A creates an associative array where keys can be any string. arr=() creates an indexed array implicitly. Associative arrays require explicit declare -A.',
+    },
+    {
+      q: 'What is the difference between sourcing and executing a script?',
+      a: '<strong>source script.sh</strong> (or . script.sh) runs the script in the current shell — variables and functions defined persist in the current session. <strong>./script.sh</strong> spawns a subshell; its environment does not affect the parent. Use source for configuration files (.bashrc) and scripts that set variables you need after they run.',
+    },
+    {
+      q: 'How does trap work in bash?',
+      a: '<strong>trap</strong> registers a handler to run when the script receives a signal or exits. Example: <code>trap cleanup EXIT</code> ensures cleanup() runs on exit (normal or error). <code>trap - INT</code> resets the SIGINT handler. Useful for cleaning temp files, releasing locks, or printing diagnostic info on failure.',
+    },
+    {
+      q: 'What are the common pitfalls with arrays in bash?',
+      a: 'Common pitfalls: (1) Always quote array expansions: use <code>"" </code> not <code>${arr[*]}</code> to preserve elements with spaces. (2) Iterate with <code>for item in ""</code>. (3) Get length with <code>${#arr[@]}</code>. (4) Arrays are 0-indexed. (5) Avoid associative arrays in scripts that must be POSIX-portable.',
     },
   ];
 

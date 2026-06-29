@@ -276,6 +276,28 @@ function parseSshConfig(content: string): Map<string, HostConfig> {
       answer: 1,
       explanation: 'sshd -t (test) parses /etc/ssh/sshd_config and reports any syntax errors without starting or restarting the daemon. Always run this after editing sshd_config before reloading.',
     },
+    {
+      q: 'Which file on the remote server authorises a user to connect with an SSH key?',
+      options: [
+        '~/.ssh/id_rsa.pub',
+        '~/.ssh/authorized_keys',
+        '~/.ssh/known_hosts',
+        '/etc/ssh/ssh_keys',
+      ],
+      answer: 1,
+      explanation: '~/.ssh/authorized_keys on the remote server contains public keys that are allowed to authenticate. Add your public key there (or use ssh-copy-id user@host) to enable passwordless key-based login.',
+    },
+    {
+      q: 'What does ssh -L 8080:localhost:3000 user@host create?',
+      options: [
+        'A reverse tunnel from the remote host to local port 8080',
+        'A local port forward: connections to local port 8080 are tunnelled through host and forwarded to host port 3000',
+        'An SSH tunnel with SOCKS proxy on port 8080',
+        'A direct connection bypassing the firewall on port 3000',
+      ],
+      answer: 1,
+      explanation: '-L localPort:remoteHost:remotePort creates local port forwarding. Traffic to localhost:8080 is encrypted through the SSH connection and forwarded to host:3000. Useful for accessing remote services through a bastion host.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -290,6 +312,18 @@ function parseSshConfig(content: string): Map<string, HostConfig> {
     {
       q: 'How do I harden an SSH server for production?',
       a: 'In /etc/ssh/sshd_config: PermitRootLogin no, PasswordAuthentication no (keys only), PubkeyAuthentication yes, AllowUsers alice bob, MaxAuthTries 3, LoginGraceTime 20. Also: change Port from 22 (reduces noise), install fail2ban to block brute-force IPs, use ufw limit 22/tcp for rate limiting. Validate with sshd -t before reloading.',
+    },
+    {
+      q: 'How do you configure multiple SSH hosts with aliases?',
+      a: 'Edit <strong>~/.ssh/config</strong>: each <code>Host alias</code> block sets HostName, User, Port, IdentityFile, and other options. Example: <code>Host prod</code> → <code>HostName 10.0.1.5</code> → <code>User ubuntu</code> → <code>IdentityFile ~/.ssh/prod_key</code>. Then <code>ssh prod</code> connects with all configured options. Set <code>ServerAliveInterval 60</code> globally to prevent dropped connections.',
+    },
+    {
+      q: 'What is ssh-agent and why should you use it?',
+      a: '<strong>ssh-agent</strong> holds decrypted private keys in memory so you enter the passphrase once per session. Start: <code>eval $(ssh-agent -s)</code>; add key: <code>ssh-add ~/.ssh/id_ed25519</code>. The agent forwards identities to remote hosts when <code>ForwardAgent yes</code> is set in config (use carefully — anyone with root on the remote host can use your keys). <strong>ssh-add -l</strong> lists loaded keys.',
+    },
+    {
+      q: 'What is the difference between scp and rsync?',
+      a: '<strong>scp</strong> is simple: copies files/directories over SSH, always transfers everything. <strong>rsync</strong> is smarter: only transfers changed blocks (delta sync), preserves permissions/timestamps (-a flag), supports --exclude patterns, and can resume interrupted transfers. For large or repeated transfers rsync is far more efficient. <code>rsync -avz src/ user@host:/dest/</code> is the common idiom.',
     },
   ];
 

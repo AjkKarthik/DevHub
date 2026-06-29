@@ -234,6 +234,28 @@ function parsePasswd(content: string): UserEntry[] {
       answer: 2,
       explanation: 'visudo opens a temp copy of /etc/sudoers, checks syntax before saving, and prevents concurrent edits. Direct editing with vi/nano risks a syntax error that breaks sudo.',
     },
+    {
+      q: 'What information does /etc/shadow store?',
+      options: [
+        'User home directories and shell preferences',
+        'Hashed passwords and password aging policy per user, readable only by root',
+        'Group membership and GID mappings',
+        'User login history and timestamps',
+      ],
+      answer: 1,
+      explanation: '/etc/shadow stores hashed passwords (using SHA-512 or similar) and aging fields (last change, min/max days, warning period, expiry). It is readable only by root unlike /etc/passwd which is world-readable.',
+    },
+    {
+      q: 'Which command adds an existing user to a supplementary group without removing current groups?',
+      options: [
+        'groupadd username groupname',
+        'usermod -aG groupname username',
+        'addgroup username groupname',
+        'chgrp groupname username',
+      ],
+      answer: 1,
+      explanation: 'usermod -aG groupname username: -a means append (do not replace existing groups), -G sets supplementary groups. Without -a, -G replaces all supplementary groups. User must log out and back in for the change to take effect.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -248,6 +270,18 @@ function parsePasswd(content: string): UserEntry[] {
     {
       q: 'How do I run a cron job as a different user?',
       a: 'Edit the system crontab (/etc/crontab or /etc/cron.d/) which has a username field: "0 2 * * * www-data /usr/bin/cleanup.sh". Alternatively use sudo crontab -u www-data -e. User crontabs (crontab -e) always run as that user.',
+    },
+    {
+      q: 'What is the difference between useradd and adduser?',
+      a: '<strong>useradd</strong> is the low-level utility that creates a user entry with minimal setup (no home dir, no password by default without flags). <strong>adduser</strong> (on Debian/Ubuntu) is a higher-level wrapper that interactively prompts for password, creates the home directory, copies /etc/skel, and sets up the user properly. For scripts use useradd -m -s /bin/bash username; for interactive use adduser.',
+    },
+    {
+      q: 'How does sudo differ from su?',
+      a: '<strong>sudo cmd</strong> runs a single command as another user (usually root) after authenticating as yourself — actions are logged. <strong>su - user</strong> switches to another user account for a full session (requires the target user\'s password, or root can su to anyone without password). <code>sudo -i</code> gives an interactive root shell via sudo. Prefer sudo: it provides granular control and audit trails.',
+    },
+    {
+      q: 'What is the wheel/sudo group and how do you manage it?',
+      a: 'The <strong>sudo</strong> group (Ubuntu) or <strong>wheel</strong> group (RHEL/CentOS) grants members the ability to run commands with sudo. Add a user: <code>usermod -aG sudo username</code> (Ubuntu) or <code>usermod -aG wheel username</code> (RHEL). The sudoers file (/etc/sudoers) contains the rule: <code>%sudo ALL=(ALL:ALL) ALL</code>. Users must log out and back in for group changes to take effect.',
     },
   ];
 
