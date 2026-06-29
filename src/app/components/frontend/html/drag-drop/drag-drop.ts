@@ -209,6 +209,12 @@ quiz: QuizQuestion[] = [
         options: ['copy', 'move', 'all'],
         answer: 2,
         explanation: '<code>effectAllowed="all"</code> allows both copy and move operations.'
+    },
+    {
+        q: 'Which dataTransfer method sets data to be passed to the drop target?',
+        options: ['dataTransfer.addData()', 'dataTransfer.setData(type, data)', 'dataTransfer.pass(data)', 'event.data = value'],
+        answer: 1,
+        explanation: 'dataTransfer.setData("text/plain", value) stores data during dragstart. The drop handler retrieves it with dataTransfer.getData("text/plain"). Multiple types can be set for different target compatibility.',
     }
 ];
 
@@ -224,6 +230,18 @@ qna: QnaItem[] = [
     {
         q: 'What should be returned in the solution code of this challenge?',
         a: '<code>document.getElementById(\'dropzone\').innerHTML = data;</code>'
+    },
+    {
+        q: 'How do you make drag-and-drop accessible to keyboard users?',
+        a: 'The HTML5 Drag and Drop API has no keyboard equivalent — keyboard users cannot use it without extra work. Solutions: (1) add keyboard handlers (Space to pick up, arrow keys to move, Enter/Space to drop) as a parallel interaction path, (2) provide an alternative UI (an "Up/Down" button pair for list reordering), or (3) use a library that abstracts both. Screen readers also cannot follow drag operation progress — announce state changes with ARIA live regions.',
+    },
+    {
+        q: 'What is the difference between dragenter and dragover events?',
+        a: 'dragenter fires once when the drag first enters an element. dragover fires continuously while the dragged item is over the element (many times per second). You must call preventDefault() on dragover (not just dragenter) to allow dropping. Use dragenter to apply a visual "accepting drop" style; use dragover to call preventDefault(). Remove the style on dragleave or drop.',
+    },
+    {
+        q: 'How do you prevent a drop target from accepting all types of dragged content?',
+        a: 'Check dataTransfer.types in the dragover handler and only call preventDefault() for accepted types: <code>if (e.dataTransfer.types.includes("text/plain")) e.preventDefault()</code>. You can also check dataTransfer.items for file drops. Without this check, your drop zone accepts any dragged element on the page — including images, links, and text from other apps.',
     }
 ];
 

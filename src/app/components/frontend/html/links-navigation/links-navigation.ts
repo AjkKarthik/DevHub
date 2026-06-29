@@ -369,6 +369,12 @@ a:active  { color: #dd0031; }`
       answer: 2,
       explanation: '<a> is for navigation (href required). <button> is for actions. An <a> without a valid href is not keyboard-focusable, not announced as interactive, and not semantically correct for click-only actions.'
     },
+    {
+      q: 'What attribute makes a link open in a new tab safely?',
+      options: ['target="_blank" alone', 'target="_blank" rel="noopener noreferrer"', 'target="_new"', 'data-external="true"'],
+      answer: 1,
+      explanation: 'target="_blank" alone allows the new page to access window.opener — a tab-napping attack vector where the new page redirects the original tab. rel="noopener" blocks opener access. rel="noreferrer" also hides the Referer header. Modern browsers set noopener automatically for target="_blank", but adding it explicitly remains best practice for compatibility.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -387,6 +393,14 @@ a:active  { color: #dd0031; }`
     {
       q: 'Why are :visited styles so limited in CSS?',
       a: 'History sniffing: a malicious page could render visited links in a detectable colour and use getComputedStyle() to discover which sites a user has visited. Browsers restrict :visited to only a safe subset of visual-only properties (color, background-color, outline) and block JS from reading their computed values.'
+    },
+    {
+      q: 'What is the purpose of the download attribute on an anchor tag?',
+      a: 'The download attribute tells the browser to download the resource rather than navigate to it: <code>&lt;a href="/report.pdf" download="Q3-Report"&gt;</code>. The filename attribute value becomes the suggested save name. Works only for same-origin resources or URLs with a Content-Disposition: attachment header for cross-origin. Without download, the browser opens the file if it can display it (e.g. PDF, image).',
+    },
+    {
+      q: 'How should you handle navigation between pages in a Single Page Application?',
+      a: 'In a SPA, use client-side routing instead of full page reloads — the router intercepts link clicks and updates the URL with pushState while rendering the new "page" in place. Announce route changes to screen readers with an ARIA live region or by moving focus to the main heading. Always update document.title on route change. Use proper &lt;a href="..."&gt; elements (not onClick spans) so users get right-click context menus and middle-click new-tab behaviour.',
     },
   ];
 

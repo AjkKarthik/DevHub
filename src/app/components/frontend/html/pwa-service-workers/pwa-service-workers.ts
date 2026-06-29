@@ -270,6 +270,12 @@ self.addEventListener('fetch', (event) => {
       options: ["Service worker only", "User permission via Notification API", "Web App Manifest only", "HTTPS certificate"],
       answer: 1,
       explanation: "User permission is mandatory for push notifications"
+    },
+    {
+      q: "What is the service worker lifecycle: install → ? → activate?",
+      options: ["fetch", "waiting", "register", "cache"],
+      answer: 1,
+      explanation: "After install completes, a new service worker enters the waiting state — it cannot activate until all pages using the old worker are closed. Call self.skipWaiting() inside install to bypass waiting. The activate event fires when the worker takes control and is the right place to clean up old caches.",
     }
   ];
 
@@ -289,7 +295,15 @@ self.addEventListener('fetch', (event) => {
     {
       q: "What is the difference between cache-first and network-first strategies?",
       a: "Cache-first serves cached content immediately and falls back to the network if not cached — best for offline availability. Network-first always tries the network and falls back to the cache if offline — best for frequently updated content."
-    }
+    },
+    {
+      q: "What is the stale-while-revalidate caching strategy?",
+      a: "Stale-while-revalidate serves a cached response immediately (stale) while simultaneously fetching a fresh version from the network to update the cache for next time. The user gets instant response; the next visit sees updated content. This is the best strategy for assets where some staleness is acceptable (CSS, JS chunks) but a guaranteed offline fallback is needed. Workbox implements this as a one-line strategy.",
+    },
+    {
+      q: "What are the Core PWA requirements?",
+      a: "A Progressive Web App requires: (1) HTTPS — service workers only register on secure origins, (2) a Web App Manifest with name, icons, start_url, and display fields, (3) a Service Worker that handles the fetch event for offline capability. These three unlock the browser's install prompt. Beyond the minimum, PWAs benefit from responsive design, push notifications, background sync, and core web vital optimisation.",
+    },
   ];
 
   revision: RevisionSummary = {

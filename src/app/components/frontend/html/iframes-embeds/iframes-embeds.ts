@@ -343,6 +343,12 @@ export class HtmlIframesEmbeds {
       answer: 1,
       explanation: 'Inline SVG is part of the DOM — you can apply CSS classes, change fill colors with currentColor, animate with JS, and query individual paths. An SVG loaded via <img> is isolated and opaque to the parent page\'s CSS and JS.',
     },
+    {
+      q: 'What does the referrerpolicy attribute on an iframe control?',
+      options: ['The iframe\'s loading priority', 'What referrer information is sent with requests from within the iframe', 'Whether the iframe can be crawled by search engines', 'The Content Security Policy for the iframe\'s content'],
+      answer: 1,
+      explanation: 'referrerpolicy controls the Referer header sent by the iframe when making requests. Values include no-referrer (never send), same-origin (only for same-origin requests), and strict-origin-when-cross-origin (recommended: full URL for same-origin, origin only for cross-origin). Reduces information leakage to third-party content.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -361,6 +367,14 @@ export class HtmlIframesEmbeds {
     {
       q: 'Why is combining allow-scripts and allow-same-origin in sandbox dangerous?',
       a: 'A sandboxed iframe with both tokens can run JavaScript that has same-origin access to the parent DOM. That script can call window.parent.document.querySelector("iframe").removeAttribute("sandbox"), removing the sandbox at runtime and escaping all restrictions. This effectively defeats the purpose of sandboxing. If you need same-origin content with scripts, skip sandbox entirely and use CSP and CORS instead.',
+    },
+    {
+      q: 'How do you enable lazy loading of an iframe?',
+      a: 'Add loading="lazy" to the iframe element: <code>&lt;iframe src="..." loading="lazy"&gt;</code>. The browser defers loading until the iframe is near the viewport (similar to lazy-loading images). Supported in Chrome, Edge, and Firefox. Use it for below-the-fold iframes (YouTube embeds, maps, comment sections) to improve initial page load and reduce bandwidth.',
+    },
+    {
+      q: 'What is the difference between <object>, <embed>, and <iframe> for embedding content?',
+      a: '<iframe> embeds a full HTML document — the most common choice for embedding third-party content (maps, videos, widgets). <embed> is a void element for embedding plugin content (historically Flash, now rarely used). <object> is the general-purpose embedding element with fallback content support. Today: use <iframe> for most embedding needs, native elements (&lt;video&gt;, &lt;audio&gt;, &lt;img&gt;) for media, and avoid &lt;embed&gt;/&lt;object&gt; unless required by a legacy integration.',
     },
   ];
 

@@ -443,6 +443,12 @@ customElements.define('user-card', UserCard);`,
       answer: 1,
       explanation: 'The HTML spec guarantees that native elements will never contain a hyphen. Requiring it in custom element names creates a permanent safe namespace and allows parsers to distinguish them without ambiguity.',
     },
+    {
+      q: 'What is the difference between open and closed Shadow DOM mode?',
+      options: ['open allows external JS to access shadowRoot; closed returns null to external JS', 'closed is faster', 'open requires polyfills', 'closed allows CSS variables to pierce the boundary'],
+      answer: 0,
+      explanation: 'attachShadow({ mode: "open" }) makes element.shadowRoot accessible to external JS. attachShadow({ mode: "closed" }) returns null — the reference is lost unless the component stores it internally. Closed mode is NOT a true security boundary; determined code can still access the shadow root via devtools or monkey-patching.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -461,6 +467,14 @@ customElements.define('user-card', UserCard);`,
     {
       q: 'How do you communicate from a Web Component to its parent document?',
       a: 'Dispatch a CustomEvent with both bubbles: true and composed: true. The composed flag is essential — without it, the event stops at the shadow root boundary and never reaches parent document listeners. The parent listens with element.addEventListener("my-event", handler). You can also expose properties and methods directly (element.open() etc.) since the custom element is a plain JavaScript object.',
+    },
+    {
+      q: 'What are CSS custom properties (variables) and do they pierce Shadow DOM?',
+      a: 'CSS custom properties (--color-primary: #f00) DO cross shadow DOM boundaries — they are inherited and cascade into shadow trees. This is the intended mechanism for theming web components: the host page defines design tokens, the component uses var(--color-primary, fallback). Contrast with regular CSS selectors and classes, which are scoped and do NOT pierce shadow DOM.',
+    },
+    {
+      q: 'How do you register a custom element as an upgrade of an existing HTML element (customised built-ins)?',
+      a: 'Pass an extends option: <code>customElements.define("my-button", MyButton, { extends: "button" })</code> and use <code>&lt;button is="my-button"&gt;</code> in HTML. Customised built-ins extend native elements and inherit all their semantics and accessibility — a great pattern for progressively enhancing a native element. Note: Safari requires a polyfill (Apple objects to the spec) so autonomous custom elements (extending HTMLElement) are more portable today.',
     },
   ];
 

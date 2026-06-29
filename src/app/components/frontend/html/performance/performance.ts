@@ -287,6 +287,12 @@ export class HtmlPerformance {
       options: ["display: none", "visibility: hidden", "content-visibility: auto", "opacity: 0"],
       answer: 2,
       explanation: "Content-visibility: auto allows the browser to skip layout and paint for off-screen content."
+    },
+    {
+      q: "What is the purpose of the fetchpriority attribute on resources?",
+      options: ["Sets the HTTP priority header", "Hints to the browser about the relative priority for fetching the resource", "Replaces preload links", "Controls caching priority"],
+      answer: 1,
+      explanation: "fetchpriority='high' tells the browser this resource is critical (LCP image, critical CSS). fetchpriority='low' downgrades priority (decorative images, non-critical scripts). The browser's preload scanner already prioritises correctly for most cases — use fetchpriority to override only when you see a specific LCP issue.",
     }
   ];
 
@@ -306,7 +312,15 @@ export class HtmlPerformance {
     {
       q: "What is content-visibility: auto?",
       a: "It instructs the browser to skip rendering off-screen elements and their descendants until they scroll into view. This reduces initial layout, style, and paint work — significantly improving LCP and page load time for long pages."
-    }
+    },
+    {
+      q: "What is the difference between DOMContentLoaded and the load event?",
+      a: "DOMContentLoaded fires when the HTML is fully parsed and the DOM is built — stylesheets, images, and iframes may still be loading. The window load event fires when everything (including all dependent resources like images, stylesheets, iframes) has finished loading. For most performance measurements use DOMContentLoaded or PerformanceObserver APIs (LCP, FCP) rather than load — load can be delayed by large images.",
+    },
+    {
+      q: "How does resource prioritization work in the browser?",
+      a: "The browser assigns priority based on resource type and position: HTML (highest), critical CSS in &lt;head&gt; (very high), scripts in &lt;head&gt; without defer/async (high), fonts, LCP images (high). Resources below the fold or in &lt;body&gt; get lower priority. preload links boost priority; fetchpriority='high'/'low' fine-tunes it. Understanding this helps you avoid render-blocking resources and ensure LCP candidates load first.",
+    },
   ];
 
   revision: RevisionSummary = {

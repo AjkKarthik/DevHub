@@ -369,6 +369,12 @@ All inputs must have proper labels (for/id pairing). Required fields should be m
       answer: 2,
       explanation: 'novalidate tells the browser to skip its built-in validation on submit, allowing you to implement custom validation logic with JavaScript while keeping the required/pattern attributes as hints for your own code.'
     },
+    {
+      q: 'Which input attribute allows users to paste or scan from camera on mobile?',
+      options: ['autocapture', 'camera', 'capture', 'accept'],
+      answer: 2,
+      explanation: 'The capture attribute on <input type="file"> with accept="image/*" hints to mobile browsers to open the camera directly instead of the file picker. Values: capture="user" for front camera, capture="environment" for rear camera. Ignored on desktops.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -387,6 +393,14 @@ All inputs must have proper labels (for/id pairing). Required fields should be m
     {
       q: 'Is HTML5 form validation good enough, or do I still need server-side validation?',
       a: 'Always validate server-side too. Browser validation can be bypassed trivially (DevTools, curl, Postman). HTML5 validation is a UX convenience — it catches mistakes early and avoids a round-trip for obvious errors. Server-side validation is your actual security boundary.'
+    },
+    {
+      q: 'What is the difference between the change and input events on a form field?',
+      a: 'input fires immediately on every character typed or value change. change fires when the element loses focus (blur) after the value has changed — or for checkboxes/selects, on every change. Use input for real-time search and live validation feedback; use change when you want to wait until the user has finished editing a field.'
+    },
+    {
+      q: 'How do you associate multiple error messages with a single input for accessibility?',
+      a: 'Use aria-describedby pointing to one or more error message element IDs: <code>aria-describedby="email-error hint-text"</code>. The values are space-separated IDs. Screen readers read the input label first, then append all described-by text when the input is focused. Also set aria-invalid="true" on the input when it has an error — this announces the error state before the description.'
     },
   ];
 

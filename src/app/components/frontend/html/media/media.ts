@@ -356,6 +356,12 @@ export class HtmlMedia {
       answer: 3,
       explanation: 'kind="captions" provides visible timed text including dialogue and sound effects for hearing-impaired users. kind="subtitles" is for translation only. Captions are a legal requirement in many countries.'
     },
+    {
+      q: 'What does the preload attribute on <video> or <audio> control?',
+      options: ['Whether the media autoplays', 'How much media data the browser loads before the user plays it', 'The media quality level', 'Whether captions are shown by default'],
+      answer: 1,
+      explanation: 'preload="none" avoids loading anything until play is requested. preload="metadata" loads only duration/dimensions/track list. preload="auto" lets the browser decide how much to buffer. On mobile, browsers ignore preload to save data. Default is browser-dependent.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -374,6 +380,14 @@ export class HtmlMedia {
     {
       q: 'What does the sandbox attribute on iframe actually restrict?',
       a: 'An empty sandbox attribute blocks all of: script execution, form submission, pointer lock, popups, top-frame navigation, same-origin access. You re-enable each permission with a token: allow-scripts, allow-forms, allow-same-origin, allow-popups, etc. Always start with an empty sandbox and add only what the embed needs.'
+    },
+    {
+      q: 'How do you make a video accessible for screen reader users?',
+      a: 'Provide: (1) <code>&lt;track kind="captions"&gt;</code> for dialogue/audio description of sounds, (2) <code>&lt;track kind="descriptions"&gt;</code> for audio description of visual content for blind users, (3) a text transcript as a visible or linked alternative. Add aria-label or title to the video element to give it an accessible name. Ensure custom controls (if replacing native ones) are keyboard-navigable and properly labeled.',
+    },
+    {
+      q: 'What is the difference between lazy and eager loading of images?',
+      a: '<code>loading="eager"</code> (default) fetches the image immediately regardless of viewport position — correct for LCP images and above-the-fold content. <code>loading="lazy"</code> defers loading until the image nears the viewport, reducing initial bandwidth. Do NOT lazy-load the hero image or any LCP candidate — it delays the Largest Contentful Paint metric. Add <code>fetchpriority="high"</code> to the LCP image to signal it should load as fast as possible.',
     },
   ];
 
