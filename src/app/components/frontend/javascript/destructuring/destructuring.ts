@@ -333,6 +333,12 @@ console.log(tags);        // [{ title: 'Part 2', ... }]`,
       answer: 1,
       explanation: '[a, b] = [b, a] uses array destructuring to atomically swap the values. The right side creates a new array [b, a], which is then destructured into a and b.',
     },
+    {
+      q: 'Which syntax correctly renames a destructured property?',
+      options: ['const { name: firstName } = user', 'const { firstName = name } = user', 'const { name as firstName } = user', 'const firstName = { name } = user'],
+      answer: 0,
+      explanation: 'The rename syntax is { original: alias }. So { name: firstName } reads the name property and binds it to a local variable called firstName. The alias is on the right of the colon.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -347,6 +353,18 @@ console.log(tags);        // [{ title: 'Part 2', ... }]`,
     {
       q: 'How do I do a partial assignment — destructure some keys and keep the rest?',
       a: 'Use rest destructuring: <code>const { id, name, ...rest } = user</code>. The <code>rest</code> object contains all own enumerable properties not named explicitly. This is a one-liner for the "omit" pattern without modifying the original object.',
+    },
+    {
+      q: 'Can you destructure function parameters directly?',
+      a: 'Yes — destructuring in function parameters is idiomatic: <code>function draw({ color = "black", size = 10 } = {}) { ... }</code>. The default <code>= {}</code> makes the entire argument optional. This pattern is common in component props and option bags, replacing the verbose <code>const { color = "black" } = options</code> in the function body.',
+    },
+    {
+      q: 'How do you handle missing keys when destructuring deeply nested objects?',
+      a: 'Use optional chaining before destructuring for deeply nested paths: <code>const { street } = user?.address ?? {}</code>. Or chain defaults at each level: <code>const { address: { street = "" } = {} } = user</code>. Avoid deeply nested destructuring in one expression — it is error-prone. Extract intermediate values first.',
+    },
+    {
+      q: 'What is the difference between destructuring assignment and destructuring declaration?',
+      a: 'A <strong>declaration</strong> (<code>const { x } = obj</code>) creates a new binding. An <strong>assignment</strong> (<code>({ x } = obj)</code> or <code>[a, b] = arr</code>) assigns to existing variables. For object assignment you must wrap in parens (without <code>const/let/var</code>) because the parser sees <code>{</code> as a block otherwise.',
     },
   ];
 

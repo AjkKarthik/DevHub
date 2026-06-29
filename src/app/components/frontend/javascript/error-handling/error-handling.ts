@@ -446,6 +446,12 @@ async function safeFetch(url, options = {}, retries = 2) {
       answer: 2,
       explanation: 'Error base sets name to "Error". Subclasses inherit this unless they override it. Without setting this.name, all custom errors show as "Error" in stack traces, making debugging harder.',
     },
+    {
+      q: 'Which is not a built-in JavaScript error type?',
+      options: ['RangeError', 'NetworkError', 'SyntaxError', 'EvalError'],
+      answer: 1,
+      explanation: 'NetworkError is not a built-in JavaScript error. The built-in types are: Error, EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError. Network fetch failures use DOMException or a custom error depending on the API.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -460,6 +466,18 @@ async function safeFetch(url, options = {}, retries = 2) {
     {
       q: 'How do I globally log all errors in a web app?',
       a: 'Two handlers: (1) <code>window.onerror</code> for uncaught synchronous errors — receives message, source, line, col, error object. (2) <code>window.addEventListener("unhandledrejection", e => ...)</code> for unhandled Promise rejections — receives <code>e.reason</code>. Send both to your error monitoring service (Sentry, Datadog). In a framework, combine with error boundaries for component-level errors.',
+    },
+    {
+      q: 'What is the difference between throwing an Error and throwing a string?',
+      a: 'Throwing an <code>Error</code> (or subclass) includes a stack trace, a <code>name</code>, and a <code>message</code> — making it inspectable in catch blocks and monitoring tools. Throwing a string gives you only the string — no stack trace, no type, nothing catch blocks can reliably inspect. Always throw <code>Error</code> instances or subclasses; never throw strings, numbers, or plain objects.',
+    },
+    {
+      q: 'How does the finally block behave when a return statement is inside try or catch?',
+      a: 'The <code>finally</code> block always runs, even if <code>try</code> or <code>catch</code> has a <code>return</code>. If <code>finally</code> itself has a <code>return</code>, it overrides the value returned by <code>try</code> or <code>catch</code>. This is usually a bug — avoid returning from <code>finally</code> unless intentional.',
+    },
+    {
+      q: 'What does AggregateError represent and when is it thrown?',
+      a: '<code>AggregateError</code> wraps multiple errors into one, with an <code>errors</code> array. It is thrown by <code>Promise.any()</code> when ALL promises reject — it packages all the rejection reasons together so you can inspect every failure, not just the first. You can also throw it manually when you want to report multiple validation errors at once.',
     },
   ];
 

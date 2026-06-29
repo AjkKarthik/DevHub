@@ -324,6 +324,18 @@ console.log(chart === chart2);  // true`,
       answer: 2,
       explanation: 'Each module can have exactly one default export. It represents the "main" export of the module. You can have zero or one — but never more than one.',
     },
+    {
+      q: 'What is circular dependency in modules and how do you detect it?',
+      options: ['A module that imports itself directly', 'A cycle where A imports B which imports A (directly or indirectly)', 'Importing the same module twice', 'A dependency with no exports'],
+      answer: 1,
+      explanation: 'Circular deps occur when module A imports B and B imports A. ESM handles this via live bindings (values can be undefined until the cycle resolves). CommonJS may get incomplete exports. Detect with bundler warnings, madge, or eslint-plugin-import.',
+    },
+    {
+      q: 'What is import.meta and what does it provide?',
+      options: ['A way to import metadata files', 'Module-level metadata: import.meta.url, import.meta.env, import.meta.resolve', 'A method to inspect exports', 'A Node.js-only feature'],
+      answer: 1,
+      explanation: 'import.meta is an object available inside ES modules containing context about the current module. import.meta.url gives the module\'s URL. Bundlers add custom properties like import.meta.env (Vite) or import.meta.hot (HMR). It replaces __dirname/__filename in ESM.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -338,6 +350,18 @@ console.log(chart === chart2);  // true`,
     {
       q: 'What is top-level await and when can I use it?',
       a: 'Top-level await lets you use <code>await</code> at the root of a module without wrapping in an <code>async</code> function. It\'s an ESM-only feature (not available in CommonJS). Great for async initialization like fetching config or connecting to a database at module load time. Other modules that import this module will wait for it to complete.',
+    },
+    {
+      q: 'What is the difference between named exports and default exports in terms of refactoring?',
+      a: 'Named exports are explicitly named — they are refactorable by IDEs and statically analysable for tree-shaking. Renaming a named export and its usages is a safe, automated operation. Default exports can be imported under ANY name (<code>import Foo</code>, <code>import Bar</code>), making global renames unreliable. Prefer named exports in shared code; default exports suit components and pages that are the sole export of a file.',
+    },
+    {
+      q: 'How does tree-shaking work and what prevents it?',
+      a: 'Tree-shaking removes unused exported code at build time by statically analysing import/export statements. It only works with static ESM (<code>import/export</code>), not dynamic <code>require()</code>. Things that prevent tree-shaking: side-effectful imports (running code on import), missing <code>sideEffects: false</code> in package.json, dynamic property access (<code>module[key]</code>), and importing entire namespaces (<code>import * as lib</code>).',
+    },
+    {
+      q: 'How do you share constants between a Node.js server and a browser client without duplicating code?',
+      a: 'Place shared constants in an ESM file (e.g. <code>shared/constants.ts</code>) with no platform-specific code. Both server (Node.js 12+ with ESM or a bundler) and client bundler can import it. Bundlers like Vite/webpack resolve the same ESM source for both targets. This eliminates manual duplication and keeps the single source of truth for error codes, status values, and type guards.',
     },
   ];
 

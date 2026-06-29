@@ -358,6 +358,12 @@ Promise.resolve()
       answer: 1,
       explanation: 'This yields control back to the event loop as a macrotask. It lets setTimeout callbacks, I/O events, and browser rendering happen before resuming — essential for chunked processing.',
     },
+    {
+      q: 'Where in the event loop does a resolved Promise callback run?',
+      options: ['Immediately, synchronously', 'In the microtask queue after current task', 'In the macrotask queue like setTimeout(fn, 0)', 'In a Web Worker thread'],
+      answer: 1,
+      explanation: 'Promise .then()/.catch()/.finally() callbacks are microtasks. They run after the current synchronous task completes but before the browser paints or the next macrotask starts.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -372,6 +378,18 @@ Promise.resolve()
     {
       q: 'When should I use a Web Worker?',
       a: 'Use Web Workers for CPU-intensive work that would block the main thread: parsing large JSON/CSV, image processing, cryptography, complex data transformations, WebAssembly execution. If a task takes more than ~16ms on the main thread, it risks dropping frames at 60fps — that\'s a good indicator to consider a worker.',
+    },
+    {
+      q: 'What is queueMicrotask() and when would you use it?',
+      a: '<code>queueMicrotask(fn)</code> schedules a function to run as a microtask — after the current synchronous code but before any macrotasks. Use it when you need to defer work minimally without creating a full Promise chain. It is lighter than <code>Promise.resolve().then(fn)</code> and clearer in intent. Common use: scheduling a callback that must run before the browser paints but after state updates settle.',
+    },
+    {
+      q: 'Can infinite microtask loops block the event loop?',
+      a: 'Yes — if a microtask schedules another microtask infinitely, the microtask queue never drains and the event loop never moves to the next macrotask or render. This starves I/O events, timers, and UI updates, effectively blocking the page. Always ensure microtask chains terminate. This contrasts with <code>setTimeout</code> loops which yield to the event loop between iterations.',
+    },
+    {
+      q: 'What is the call stack and how is it related to the event loop?',
+      a: 'The call stack is where JavaScript tracks function execution — each function call pushes a frame, each return pops one. The event loop only picks up the next task (macro or micro) when the call stack is empty. A synchronous infinite loop (<code>while(true){}</code>) fills the stack and prevents the event loop from ever running queued tasks.',
     },
   ];
 

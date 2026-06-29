@@ -390,6 +390,18 @@ console.log(config.$raw);    // { timeout: 3000, debug: true }`,
       answer: 2,
       explanation: 'The apply trap intercepts calls to a proxied function: handler.apply(target, thisArg, argumentsList). It corresponds to Function.prototype.apply and Reflect.apply.',
     },
+    {
+      q: 'What does Reflect.get() do and how does it differ from just reading a property?',
+      options: ['Returns undefined for missing properties instead of throwing', 'Same as direct access but respects the receiver for inherited getters', 'It clones the value before returning it', 'It bypasses Proxy traps'],
+      answer: 1,
+      explanation: 'Reflect.get(target, prop, receiver) is like target[prop] but passes the receiver — important when a getter in the prototype chain uses "this". Without the correct receiver, inherited getters reference the wrong object. Inside a Proxy get trap, always use Reflect.get(target, prop, receiver) to forward correctly.',
+    },
+    {
+      q: 'Can you create a Proxy for a primitive value?',
+      options: ['Yes, wrapping it in a Proxy wrapper', 'No — only objects and functions can be proxied', 'Yes, but only for strings', 'Yes, using Symbol.proxy'],
+      answer: 1,
+      explanation: 'Proxies can only wrap objects (including functions, arrays, and other objects). Primitives (string, number, boolean, etc.) cannot be proxied. You would need a wrapper object, but that changes the semantics significantly.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -404,6 +416,18 @@ console.log(config.$raw);    // { timeout: 3000, debug: true }`,
     {
       q: 'What are Proxy invariants?',
       a: 'Invariants are rules Proxy traps must not violate — they protect JavaScript\'s fundamental guarantees. For example: the get trap must return the actual value for non-configurable, non-writable properties; the set trap must return false if the property is non-writable; the has trap must return true for non-configurable own properties. Violating invariants throws a TypeError to prevent security bypasses.',
+    },
+    {
+      q: 'How does Vue 3 use Proxy for reactivity?',
+      a: 'Vue 3\'s <code>reactive()</code> wraps objects in a Proxy. The <code>get</code> trap tracks which reactive property was accessed (dependency tracking). The <code>set</code> trap triggers re-renders/effects when a property changes. Unlike Vue 2\'s Object.defineProperty approach, Proxy can intercept new property additions and array index writes automatically — no special <code>Vue.set()</code> required.',
+    },
+    {
+      q: 'What is the deleteProperty trap and when would you use it?',
+      a: 'The <code>deleteProperty</code> trap intercepts <code>delete obj.prop</code>. Use it to: (1) make properties undeletable (<code>return false</code>), (2) run cleanup when a property is removed (e.g. clear a cache entry), or (3) log/audit deletion operations. Return <code>Reflect.deleteProperty(target, prop)</code> to actually perform the deletion after your logic.',
+    },
+    {
+      q: 'What are the performance implications of using Proxy?',
+      a: 'Proxies add overhead to every intercepted operation — property reads, writes, and function calls go through the handler instead of being direct. For hot code paths (tight loops, high-frequency rendering), this overhead is measurable. Vue 3 benchmarks show the overhead is acceptable for UI reactivity but inadvisable for large numeric array computations. Profile before adding Proxy to performance-sensitive code.',
     },
   ];
 

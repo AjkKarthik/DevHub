@@ -409,6 +409,12 @@ function foo() { console.log("foo called"); }
       answer: 2,
       explanation: 'var is function-scoped, not block-scoped. A var declared inside an if/for/while block gets hoisted to the enclosing function (or global scope), leaking outside the block.',
     },
+    {
+      q: 'What is the value of a var variable before its initializer runs?',
+      options: ['ReferenceError', 'null', 'undefined', 'The uninitialized state'],
+      answer: 2,
+      explanation: 'var declarations are hoisted and initialized to undefined. Only the declaration is moved up, not the assignment. So accessing it before the line of code where it is assigned gives undefined, not an error.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -423,6 +429,18 @@ function foo() { console.log("foo called"); }
     {
       q: 'Why do function declarations get fully hoisted but function expressions don\'t?',
       a: 'Function declarations are a statement form — their purpose is to define a named function in the current scope, and JavaScript was designed so you can write helper functions below the code that uses them (like C header files). Function expressions are values assigned to variables — the hoisting behavior follows the variable\'s declaration keyword (<code>var</code>/<code>let</code>/<code>const</code>).',
+    },
+    {
+      q: 'Does class hoisting behave like function hoisting?',
+      a: 'No — classes are hoisted (the engine knows the name exists) but NOT initialized. Accessing a class before its declaration throws a <code>ReferenceError</code> — the same Temporal Dead Zone behavior as <code>let</code>/<code>const</code>. Unlike function declarations, you cannot call a class constructor before its definition in the source code.',
+    },
+    {
+      q: 'What happens when you have both a var and a function declaration with the same name?',
+      a: 'Function declarations win over <code>var</code> declarations at hoisting time. The function binding replaces the <code>undefined</code> that <code>var</code> would have set. However, if a <code>var</code> has an explicit assignment in the code (not just a declaration), that assignment still runs and can overwrite the function at runtime.',
+    },
+    {
+      q: 'How does hoisting interact with modules (ESM)?',
+      a: 'In ES modules, <code>import</code> bindings are hoisted and live-bound — you can use an imported value before the <code>import</code> statement in source order because the module graph is fully evaluated before any module code runs. However, within a module, <code>let</code>/<code>const</code>/<code>class</code> still have TDZ behavior, and <code>var</code> is function-scoped to the module\'s top-level scope (no global leakage).',
     },
   ];
 

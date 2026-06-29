@@ -342,6 +342,24 @@ console.log(analyzeImports(code));
       answer: 1,
       explanation: 'Build tools are only needed during development/build — not at runtime. devDependencies are excluded from production deploys and signal that these are development-time tools, not runtime requirements.',
     },
+    {
+      q: 'What is the role of a source map in production debugging?',
+      options: ['It speeds up the build', 'It maps minified/bundled code back to original source files for readable stack traces', 'It enables HMR', 'It is only used in development'],
+      answer: 1,
+      explanation: 'Source maps (.js.map files) store the mapping from minified positions to original file/line/column. Error monitoring tools (Sentry, Datadog) use them to de-obfuscate stack traces. Never expose source maps publicly if your source is proprietary.',
+    },
+    {
+      q: 'What is the purpose of chunks in a bundled application?',
+      options: ['To merge all files into one', 'To split code so browsers download only what is needed for the current route/feature', 'To compress images', 'To run code in parallel threads'],
+      answer: 1,
+      explanation: 'Chunks are separate JS files produced by code splitting. Route-based chunks load lazily — the user only downloads the code for the current page. Vendor chunks (node_modules) are separated for better cache hit rates since they change less often than app code.',
+    },
+    {
+      q: 'What is an asset hash and why is it added to filenames?',
+      options: ['A security token', 'A content hash appended to enable long-term caching (e.g. main.a3f4e1.js)', 'A version number', 'A random string for privacy'],
+      answer: 1,
+      explanation: 'A content hash (e.g. main.a3f4e1.js) changes only when the file content changes. This lets you set "Cache-Control: max-age=31536000, immutable" — browsers cache files for a year and only re-fetch when the hash changes. Without hashes, you need shorter cache TTLs or manual cache-busting.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -356,6 +374,18 @@ console.log(analyzeImports(code));
     {
       q: 'Should I use Vite or webpack for new projects?',
       a: 'For most new projects, prefer Vite — faster dev server (native ESM), simpler config, and modern defaults. webpack is still the right choice when you need: deep integration with an existing webpack ecosystem (Angular CLI, CRA), complex custom loaders, or features not yet in Vite. Both are production-ready; the difference is mainly in DX speed and config complexity.',
+    },
+    {
+      q: 'What is the difference between Rollup and webpack in terms of output?',
+      a: 'Rollup produces smaller, cleaner bundles — it was designed for libraries and uses ES module output. webpack is designed for apps: it handles non-JS assets (CSS, images), complex code splitting, and HMR out of the box. Most modern bundlers (Vite, Parcel) use Rollup for production builds and their own dev server for fast iteration. Choose Rollup for publishable libraries; webpack/Vite for applications.',
+    },
+    {
+      q: 'How does HMR (Hot Module Replacement) work?',
+      a: 'HMR keeps the page live while swapping individual changed modules without a full reload. The dev server detects a file change, recompiles the module, and pushes the update over a WebSocket. The runtime replaces the old module and runs the module\'s accept() handler if defined. Frameworks (React, Vue) ship HMR handlers that patch components and preserve state. Without HMR support, the page reloads instead.',
+    },
+    {
+      q: 'What is a loader (webpack) or plugin (Rollup/Vite) and when do you write one?',
+      a: 'A <strong>webpack loader</strong> transforms a file before it is added to the module graph (e.g. <code>babel-loader</code> transpiles JS, <code>css-loader</code> turns CSS into a module). A <strong>Rollup/Vite plugin</strong> can intercept file resolution, transform content, or inject code at build time. Write one when you need custom transforms, virtual files, or build-time code generation that existing plugins don\'t cover.',
     },
   ];
 

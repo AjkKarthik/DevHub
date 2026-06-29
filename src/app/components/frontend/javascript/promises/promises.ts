@@ -405,6 +405,12 @@ runWithConcurrency(tasks, 2).then(results => {
       answer: 1,
       explanation: 'Sequential await waits for each to finish before starting the next. Promise.all starts all simultaneously, taking max(a, b) time instead of time(a) + time(b).',
     },
+    {
+      q: 'What is the difference between Promise.all and Promise.allSettled?',
+      options: ['No difference', 'Promise.all rejects on the first rejection; allSettled waits for all and reports each result', 'Promise.allSettled is faster', 'Promise.all waits for all even if one rejects'],
+      answer: 1,
+      explanation: 'Promise.all short-circuits on the first rejection, discarding other results. Promise.allSettled always waits for every promise and returns an array of { status: "fulfilled"|"rejected", value/reason } objects — useful when you want results even if some fail.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -419,6 +425,18 @@ runWithConcurrency(tasks, 2).then(results => {
     {
       q: 'Can I use await outside an async function?',
       a: 'Yes — in ES modules (files with <code>type: "module"</code> in package.json or <code>.mjs</code> extension), you can use <code>await</code> at the top level without wrapping in <code>async function</code>. This is called top-level await. In CommonJS modules (<code>require()</code> style), top-level await is not available.',
+    },
+    {
+      q: 'What does Promise.any() do and when would you use it?',
+      a: '<code>Promise.any()</code> resolves as soon as the FIRST promise fulfills, ignoring rejections. If ALL reject, it rejects with an <code>AggregateError</code>. Use it for "race to success" scenarios: fetch the same resource from multiple CDN endpoints, and use whichever responds first successfully. Contrast with <code>Promise.race()</code> which settles on the first outcome — fulfilled OR rejected.',
+    },
+    {
+      q: 'How do you cancel a fetch request in JavaScript?',
+      a: 'Use <code>AbortController</code>: <code>const ctrl = new AbortController(); fetch(url, { signal: ctrl.signal })</code>. Call <code>ctrl.abort()</code> to cancel — the fetch rejects with an <code>AbortError</code>. Check the signal in the catch block: <code>if (err.name === "AbortError") return</code>. Useful for cancelling stale requests on component unmount or user navigation.',
+    },
+    {
+      q: 'What is Promise chaining and what is the pitfall of not returning from .then()?',
+      a: 'Each <code>.then()</code> returns a new Promise. If the callback returns a value, the next <code>.then()</code> receives it. If it returns a Promise, the chain waits for it. The pitfall: if you forget to <code>return</code> from a <code>.then()</code>, the chain receives <code>undefined</code> instead of the inner value — a common source of "why is my data undefined?" bugs.',
     },
   ];
 

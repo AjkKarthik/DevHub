@@ -351,6 +351,24 @@ function curry(fn) {
       answer: 1,
       explanation: 'pipe(f, g, h)(x) = h(g(f(x))) — left-to-right, data flows top-to-bottom. compose(f, g, h)(x) = f(g(h(x))) — right-to-left, mathematical notation. pipe is more readable for data transformation pipelines.',
     },
+    {
+      q: 'What is referential transparency?',
+      options: ['An object that refers to itself', 'An expression that can be replaced by its result without changing program behavior', 'A transparent proxy', 'A type that exposes its internals'],
+      answer: 1,
+      explanation: 'A referentially transparent expression always evaluates to the same value and has no side effects, so you can safely substitute it with its result anywhere in the code. Pure functions are referentially transparent. This property enables memoization, caching, and safe refactoring.',
+    },
+    {
+      q: 'What is point-free style in functional programming?',
+      options: ['Functions with no arguments', 'Defining functions by composing others without mentioning the data argument', 'Functions that return void', 'A style that avoids semicolons'],
+      answer: 1,
+      explanation: 'Point-free (tacit) style defines functions by composing existing functions without explicitly naming the data they operate on. Example: const getNames = map(prop("name")) — no explicit x => ... The function is defined purely as a composition. It is concise but can become unreadable when overused.',
+    },
+    {
+      q: 'What is an algebraic data type (ADT) and how does it appear in JavaScript?',
+      options: ['A type from a math library', 'A type formed by combining other types (product types and sum types)', 'Only available in TypeScript', 'A type for database queries'],
+      answer: 1,
+      explanation: 'ADTs are composable type structures. A <strong>product type</strong> (AND — object/tuple: has field A AND field B). A <strong>sum type</strong> (OR — discriminated union: is either A OR B). In JS/TS, discriminated unions model sum types: { kind: "ok"; value: T } | { kind: "err"; error: E }. Libraries like fp-ts formalise Option, Result, and Either as ADTs.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -365,6 +383,18 @@ function curry(fn) {
     {
       q: 'What is a monad (simply)?',
       a: 'A monad is a functor that also has <code>flatMap/chain</code> (called <code>.then</code> in Promises). The key difference from a plain functor: flatMap flattens one level, preventing nested containers. Without it, <code>Promise.then(fn)</code> where fn returns another Promise would give you <code>Promise&lt;Promise&lt;T&gt;&gt;</code>. flatMap auto-unwraps the inner container.',
+    },
+    {
+      q: 'What is currying and how does it differ from partial application?',
+      a: '<strong>Currying</strong> transforms a function of N args into a chain of N single-argument functions: <code>add(a)(b)</code>. It is a structural transformation — the function is always called one arg at a time. <strong>Partial application</strong> fixes some args to produce a function with fewer args: <code>add5 = add.bind(null, 5)</code>. Currying enables point-free style and function composition; partial application is more pragmatic for quick specialization.',
+    },
+    {
+      q: 'How does immutability help with debugging and concurrent programming?',
+      a: 'Immutable data cannot be changed after creation — every update produces a new value. This means you can log a value and trust it won\'t change later (no time-of-log vs time-of-inspection confusion). In concurrent JavaScript (Workers, async), immutable data passed via <code>postMessage</code> as a structured clone is safe — no shared mutable state, no race conditions. Libraries like Immer give you a mutable-looking API that produces immutable output.',
+    },
+    {
+      q: 'What is a lens in functional programming?',
+      a: 'A lens is a composable abstraction for getting and setting a value deep inside an immutable data structure. It has two operations: <code>view(lens, obj)</code> (get) and <code>set(lens, value, obj)</code> (produce a new object with the value changed). Lenses compose: <code>compose(nameLens, firstLens)</code> zooms into a nested field. Libraries like Ramda provide lens implementations. They replace verbose spread-based nested updates.',
     },
   ];
 

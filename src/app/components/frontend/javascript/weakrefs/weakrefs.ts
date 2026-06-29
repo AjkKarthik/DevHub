@@ -388,6 +388,18 @@ handler = null;  // handler can now be GC'd
       answer: 1,
       explanation: 'If WeakMap were iterable, you could observe WHEN entries disappear — effectively making GC behavior observable. That would make programs non-deterministic and cause security concerns. Non-iterability is intentional.',
     },
+    {
+      q: 'What does FinalizationRegistry do?',
+      options: ['Prevents GC of registered objects', 'Runs a callback after a registered object is garbage collected', 'Tracks all live WeakRefs', 'Flushes WeakMap entries on demand'],
+      answer: 1,
+      explanation: 'FinalizationRegistry lets you register a callback that fires after an object is garbage collected. The callback receives the registered held value (not the GC\'d object — that is gone). Useful for cleanup tasks like releasing native resources when a JS wrapper is collected.',
+    },
+    {
+      q: 'What is the difference between WeakSet and Set for storing DOM nodes?',
+      options: ['WeakSet is faster', 'WeakSet allows nodes to be GC\'d when removed from the DOM; Set keeps them alive', 'Set allows duplicates; WeakSet does not', 'WeakSet is iterable; Set is not'],
+      answer: 1,
+      explanation: 'A regular Set holding DOM nodes prevents GC — even when nodes are removed from the document, the Set reference keeps them alive (memory leak). WeakSet holds nodes weakly — once a node is detached and has no other references, it can be GC\'d. WeakSet is the right container for "track which elements have been processed" use cases.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -402,6 +414,10 @@ handler = null;  // handler can now be GC'd
     {
       q: 'Can you use non-object keys in WeakMap?',
       a: 'No (with one exception). WeakMap keys must be objects or non-registered Symbols (ES2023+). Primitives (strings, numbers, booleans) cannot be WeakMap keys. The reason: primitives are value-typed and have no identity — the GC cannot track "this specific string" going out of scope. Objects have identity, which is what makes weak references meaningful.',
+    },
+    {
+      q: 'When would you choose WeakRef over WeakMap for caching?',
+      a: 'Use <code>WeakRef</code> when you want to optionally hold onto a value and the cache key is the value itself (self-referential or keyed by something else). Use <code>WeakMap</code> when you want to associate extra data with an object key. Example: a DOM node → computed style cache → use WeakMap (key is the node, value is derived data). An optional memoised result cache → use WeakRef on the result. If unsure, WeakMap is almost always the cleaner choice.',
     },
   ];
 

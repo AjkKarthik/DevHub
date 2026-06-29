@@ -377,6 +377,12 @@ bus.emit('user:login', { id: 2 });  // nothing — unsubscribed`,
       answer: 1,
       explanation: 'stopPropagation() stops the event from traveling further through the DOM (up in bubble, down in capture). It does NOT cancel the browser default action — that requires preventDefault().',
     },
+    {
+      q: 'Which events do NOT bubble by default?',
+      options: ['click, keydown', 'focus, blur, scroll, load, error', 'mouseover, mouseout', 'input, change'],
+      answer: 1,
+      explanation: 'focus, blur, scroll, load, and error do not bubble. For delegation of focus/blur, use the bubbling alternatives: focusin/focusout. scroll does not bubble on document; you need to attach the listener directly to the scrollable element.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -391,6 +397,18 @@ bus.emit('user:login', { id: 2 });  // nothing — unsubscribed`,
     {
       q: 'Can I use EventTarget outside the DOM?',
       a: 'Yes! Any class can extend <code>EventTarget</code> to get a full event system. This is perfect for non-DOM objects like stores, services, or data models. No need for custom EventEmitter implementations — the native EventTarget is already built-in and available in modern browsers and Node.js 14+.',
+    },
+    {
+      q: 'What is event delegation and why is it preferred for dynamic lists?',
+      a: 'Event delegation attaches ONE listener to a parent instead of many listeners on individual children. The listener checks <code>event.target</code> to determine which child was clicked. Benefits: (1) works for dynamically added children automatically, (2) far fewer listeners in memory, (3) simpler cleanup. Use <code>event.target.closest(".item")</code> to safely handle clicks on nested child elements.',
+    },
+    {
+      q: 'What is the difference between passive and non-passive event listeners?',
+      a: 'Passive listeners (<code>{ passive: true }</code>) promise the browser they will never call <code>preventDefault()</code>. The browser can then scroll and animate immediately without waiting for the listener to finish — major performance win for scroll and touch events. Non-passive listeners block rendering until the callback returns. Modern browsers default scroll/touch listeners to passive; override to <code>{ passive: false }</code> only when you must call <code>preventDefault()</code>.',
+    },
+    {
+      q: 'How do you dispatch and listen to custom events?',
+      a: 'Create with <code>new CustomEvent("my-event", { detail: { data }, bubbles: true, composed: true })</code>. Dispatch with <code>element.dispatchEvent(event)</code>. Listen with <code>element.addEventListener("my-event", e => e.detail.data)</code>. <code>bubbles: true</code> makes it propagate up. <code>composed: true</code> makes it cross shadow DOM boundaries.',
     },
   ];
 
