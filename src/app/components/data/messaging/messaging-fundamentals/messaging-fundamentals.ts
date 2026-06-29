@@ -232,6 +232,18 @@ async function handleMessage(ch: Channel, msg: Message | null) {
       answer: 1,
       explanation: 'Pub/Sub topics fan-out one message to all subscribers, whereas queues deliver each message to exactly one consumer.',
     },
+    {
+      q: 'What is the difference between synchronous and asynchronous messaging?',
+      options: ['Synchronous messages are faster', 'Synchronous: caller blocks waiting for response; asynchronous: caller sends and continues without waiting', 'Asynchronous requires a broker', 'Synchronous scales better'],
+      answer: 1,
+      explanation: 'Synchronous (HTTP, RPC): tight coupling, caller blocks. Asynchronous (queues, events): decoupled, caller continues after send. Async improves resilience and throughput at the cost of complexity.',
+    },
+    {
+      q: 'What is the at-most-once, at-least-once, exactly-once delivery spectrum?',
+      options: ['All are equivalent with correct implementation', 'At-most-once: may lose messages; at-least-once: may duplicate; exactly-once: no loss, no duplicate', 'Exactly-once is always the correct choice', 'At-most-once is the most reliable'],
+      answer: 1,
+      explanation: 'At-most-once: fire-and-forget (may lose). At-least-once: retry on failure (may duplicate — idempotent consumers required). Exactly-once: hardest to achieve, requires coordination between producer, broker, and consumer.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -246,6 +258,18 @@ async function handleMessage(ch: Channel, msg: Message | null) {
     {
       q: 'How do I achieve exactly-once processing?',
       a: 'True exactly-once requires either: (1) a broker with transactional support (Kafka EOS, SQS FIFO deduplication), or (2) idempotent consumers that check a deduplication store before processing. The latter is simpler and more portable.',
+    },
+    {
+      q: 'What is message fanout and how is it implemented?',
+      a: 'Fanout delivers one message to multiple subscribers simultaneously. In Kafka: multiple consumer groups each read all messages. In SNS: publishes to all subscribed endpoints. In RabbitMQ: fanout exchange routes to all bound queues. Fanout decouples publishers from subscribers — add a new subscriber without changing the publisher.',
+    },
+    {
+      q: 'What is a poison pill message and how do you handle it?',
+      a: 'A poison pill is a message that always causes consumer processing failures (invalid format, missing data, unhandled edge case). Without handling, it blocks the queue. Solutions: dead-letter queue after N retries, exponential backoff, validation before processing. Always alert on DLQ growth to catch stuck messages early.',
+    },
+    {
+      q: 'What is the difference between push and pull message delivery?',
+      a: 'Push (SNS, EventBridge, webhooks): broker sends to subscriber endpoint — low latency but subscriber must handle burst load. Pull (SQS, Kafka, RabbitMQ poll): consumer fetches at its own pace — easier backpressure but higher latency. Long-polling bridges both: consumer waits up to N seconds for a message before returning empty.',
     },
   ];
 
