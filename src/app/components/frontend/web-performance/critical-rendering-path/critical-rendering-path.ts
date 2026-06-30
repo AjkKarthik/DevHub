@@ -428,6 +428,10 @@ Identify and fix all five:
       q: 'What does the renderBlockingStatus property in Resource Timing API tell you?',
       a: 'It indicates whether a resource was render-blocking ("blocking"), potentially render-blocking ("potentially-blocking" — e.g. CSS in <head> that wasn\'t needed for above-the-fold render), or non-blocking ("non-blocking"). Available in Chrome 107+ and useful for programmatic CRP auditing.',
     },
+    {
+      q: 'Why does inlining critical CSS sometimes hurt performance instead of helping it?',
+      a: 'Inlining critical CSS removes a render-blocking request, but it also increases the size of the initial HTML document, which delays Time to First Byte completion and can push the HTML itself past the TCP slow-start congestion window (typically ~14KB for the first round trip). If the inlined critical CSS is too large (tens of KB), the HTML download itself becomes the bottleneck instead of the external stylesheet. The fix is keeping the critical CSS extract genuinely minimal (above-the-fold styles only) and loading the rest asynchronously with a preload + onload swap or rel="stylesheet" media trick.',
+    },
   ];
 
   revision: RevisionSummary = {

@@ -378,6 +378,10 @@ new PerformanceObserver((list) => {
       q: 'How do I verify my preload is actually working and not wasted?',
       a: 'In Chrome DevTools Network panel, filter by "Img". Look for the LCP image request — if the preload is working, its "Priority" column will show "High" and its waterfall bar will start very early (before or simultaneously with render-blocking CSS). If the priority is "Low" or the request starts late, the preload is not being matched correctly (check that the href exactly matches what the browser requests, and use imagesrcset/imagesizes for srcset images). Also check the "Initiator" column — a successful preload shows "Other" or "Parser" rather than "document.getElementById" or a specific script.',
     },
+    {
+      q: 'Why does preloading the LCP image not always improve LCP as expected?',
+      a: 'A <link rel="preload"> hint only helps if it actually starts the download earlier than the browser would have discovered it naturally — if the image is already discoverable early in the HTML (e.g., a plain <img> near the top with no lazy-loading), preloading adds no benefit and can even compete for bandwidth with other critical requests. Preloading helps most when the LCP image is hidden behind JavaScript rendering, a CSS background-image, or buried deep in the DOM/CSSOM where the browser\'s preload scanner cannot find it early. Misapplied preload hints on non-LCP images are also a common mistake — they consume priority bandwidth that should go to the actual largest contentful element, sometimes worsening LCP.',
+    },
   ];
 
   revision: RevisionSummary = {

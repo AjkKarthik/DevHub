@@ -334,6 +334,10 @@ function yieldToMain() {
       q: 'How do I identify which specific interaction is causing poor INP?',
       a: 'Use Chrome DevTools: open the Performance panel, check "Web Vitals" in the toolbar, then click around the page. Each interaction appears as an INP marker in the timeline. Click the marker to see input delay, processing time (event handler duration), and presentation delay in the flame chart. The web-vitals library\'s onINP callback also returns an attribution object with the specific element and event type that triggered the worst INP.',
     },
+    {
+      q: 'Do Core Web Vitals thresholds apply per page or per origin?',
+      a: 'Google evaluates and reports Core Web Vitals per URL group (similar pages bucketed together) in Search Console, and per individual page in CrUX when enough traffic exists. There is no single "site-wide" CWV score — a marketing landing page and a checkout flow on the same domain can have very different scores. This is why teams should monitor CWV per template/route rather than relying on one aggregate number, since a single slow page type can hide in an averaged metric.',
+    },
   ];
 
   revision: RevisionSummary = {

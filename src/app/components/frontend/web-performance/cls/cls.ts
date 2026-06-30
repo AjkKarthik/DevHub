@@ -435,6 +435,10 @@ Write the corrected HTML/CSS.`,
       q: 'What is the session window rule for CLS?',
       a: 'Layout shifts within 1 second of each other are grouped into a "session". A session ends after 5 seconds of no shifts. CLS uses the worst session score, not the lifetime sum — this prevents a single burst of shifts from being unfairly spread across a long visit.',
     },
+    {
+      q: 'How do you debug a CLS regression that only happens in production, not locally?',
+      a: 'Local dev usually has a warm cache, fast localhost network, and no real ads/third-party scripts — all of which mask layout shift sources. To debug in production: use the web-vitals library with attribution build (onCLS with reportAllChanges) to log which DOM node shifted and by how much, sent to your analytics/RUM tool. Chrome DevTools Performance panel recorded against a throttled network profile, or Chrome UX Report (CrUX) data in PageSpeed Insights, also surfaces real-world shift sources that a fast local environment will never reproduce.',
+    },
   ];
 
   revision: RevisionSummary = {

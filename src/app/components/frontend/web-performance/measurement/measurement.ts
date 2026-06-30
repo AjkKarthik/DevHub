@@ -511,6 +511,10 @@ document.getElementById('search')?.addEventListener('input', (e) => {
       q: 'How do I know if my performance improvements are actually helping real users?',
       a: 'Check CrUX data via PageSpeed Insights 28 days after deploying the fix — look for the metric moving from "Poor" to "Needs Improvement" or "Good" at the 75th percentile. For faster feedback, use a RUM (Real User Monitoring) tool like web-vitals.js sending to GA4 or a custom endpoint — you\'ll see field data within hours of deploying. Search Console Core Web Vitals report shows the same CrUX data on a per-URL basis over time.',
     },
+    {
+      q: 'Why can lab testing tools like Lighthouse report a "Good" score while real users experience poor performance?',
+      a: 'Lighthouse runs on a single, controlled device/network profile, on a cold or simulated-throttled connection, typically without any of the user\'s installed browser extensions, ad blockers, or real-world variance in device CPU power. Field data (CrUX, RUM) aggregates the actual diversity of your real user base — older Android phones, congested mobile networks, third-party scripts that lab tests do not load identically. A page tuned to pass Lighthouse audits ("lab green") can still fail field thresholds if the real audience skews toward lower-end devices than the lab simulation assumes — this is why both lab and field measurement are necessary, not just one.',
+    },
   ];
 
   revision: RevisionSummary = {

@@ -491,6 +491,10 @@ body { font-family: 'Playfair Display', 'Playfair Fallback', Georgia, serif; }`,
       q: 'What is the Font Loading API (document.fonts) useful for?',
       a: 'It lets you programmatically check if a font is loaded (document.fonts.check(\'400 1em Inter\')), wait for a specific font (document.fonts.load(\'400 1em Inter\')), or know when all fonts are ready (document.fonts.ready). Use it to trigger a CSS class switch (e.g. .fonts-loaded) that enables font-dependent layout, avoiding layout glitches before the font arrives.',
     },
+    {
+      q: 'What is the difference between font-display: swap, fallback, and optional, and which should you default to?',
+      a: 'swap: shows the fallback font immediately and swaps to the web font whenever it loads, even very late — guarantees text is visible (good for CLS-free text-visible-first strategies) but can cause a visible font swap/reflow. fallback: gives a very short (~100ms) block period, then shows fallback, swapping only if the web font arrives within a short swap window (~3s) — otherwise it never swaps this load. optional: similar to fallback but the browser may skip the web font download entirely on slow connections and never swap, prioritizing speed over brand consistency. Default recommendation: use swap with explicit font metric overrides (size-adjust, ascent-override) to minimize the visual jump, since invisible text (font-display: block, the default) is a worse user experience than a brief flash of unstyled text.',
+    },
   ];
 
   revision: RevisionSummary = {

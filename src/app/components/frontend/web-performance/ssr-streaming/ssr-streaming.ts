@@ -513,6 +513,10 @@ export const serverRoutes: ServerRoute[] = [
       q: 'How do I handle SSR with components that use window or document?',
       a: 'During SSR, window and document don\'t exist — accessing them throws ReferenceError. In Angular, use isPlatformBrowser (inject PLATFORM_ID) to guard browser-only code. In React/Next.js, use typeof window !== "undefined" or move the code to useEffect (which only runs client-side). For third-party libraries that access window, use dynamic import with ssr: false (Next.js) or skip the import in server.ts.',
     },
+    {
+      q: 'How does streaming SSR improve perceived performance compared to traditional SSR that waits for all data?',
+      a: 'Traditional SSR blocks the entire HTML response until every data dependency for the page has resolved server-side, meaning a single slow API call (a recommendations widget, a comments count) delays Time to First Byte for the whole page, even for content that was ready instantly. Streaming SSR sends the HTML shell and any immediately-available content first, then streams in additional HTML chunks (often paired with Suspense boundaries in React or similar primitives in other frameworks) as slower data resolves — the browser can start parsing, painting, and even hydrating the fast parts while slow parts are still loading. This converts an "all-or-nothing" wait into a progressive reveal, directly improving both Time to First Byte and perceived completeness without requiring the slow dependency to be removed entirely.',
+    },
   ];
 
   revision: RevisionSummary = {

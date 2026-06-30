@@ -450,6 +450,10 @@ function showNotification(el) {
       q: 'Is there a performance cost to using contain: strict on many elements?',
       a: 'Yes — contain: strict includes size containment, meaning the element\'s size is not affected by its children. This can break layouts if the element doesn\'t have explicit dimensions set. Also, each contained element is isolated from the parent\'s layout context, which can increase rendering complexity if misused. Use it on widget-like isolated components, not fine-grained elements.',
     },
+    {
+      q: 'Why does adding a single CSS rule sometimes trigger a full page reflow instead of a cheap repaint?',
+      a: 'Reflow (layout) happens whenever a change affects geometry — width, height, position, font size, or content that shifts other elements. Repaint (no layout) happens when only visual properties change without affecting geometry — color, background, visibility. Animating geometric properties (width, top, left, margin) forces the browser to recompute layout for the changed element and everything affected by it, which is expensive. Animating transform and opacity instead avoids layout entirely — these are composited properties handled on the GPU without involving the main thread layout/paint pipeline.',
+    },
   ];
 
   revision: RevisionSummary = {

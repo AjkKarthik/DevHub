@@ -380,6 +380,10 @@ btn.addEventListener('click', async () => {
       q: 'What is the 98th-percentile trimming rule for long sessions?',
       a: 'For sessions with many interactions, Chrome uses the 98th percentile rather than the absolute worst to avoid outliers from accidental clicks or background tab activity inflating the score.',
     },
+    {
+      q: 'Why did Google replace First Input Delay (FID) with Interaction to Next Paint (INP) as a Core Web Vital?',
+      a: 'FID only measured the delay before an event handler started running for the FIRST interaction on a page — it said nothing about how long the handler itself took to run, and ignored every interaction after the first one. A page could have excellent FID but still feel janky on every subsequent click because long-running handlers were never measured. INP measures the full interaction latency (input delay + processing time + presentation delay) across ALL interactions during the page lifecycle, reporting a high-percentile value — giving a far more accurate picture of real responsiveness throughout the session, not just the very first tap.',
+    },
   ];
 
   revision: RevisionSummary = {

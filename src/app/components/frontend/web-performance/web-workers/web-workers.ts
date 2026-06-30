@@ -513,6 +513,10 @@ async function loadData() {
       q: 'What is the difference between postMessage structured clone and JSON.stringify for transferring data?',
       a: 'Structured clone (used by postMessage) supports more types than JSON: TypedArrays, ArrayBuffer, Map, Set, Date, RegExp, Blob, ImageData — without conversion. JSON.stringify/parse only handles plain objects, arrays, strings, and numbers — it cannot handle undefined, NaN (becomes null), Dates (becomes string), or circular references. For large binary data, use Transferable objects to avoid cloning entirely.',
     },
+    {
+      q: 'What kinds of work are NOT good candidates for offloading to a Web Worker, even though they are slow?',
+      a: 'Web Workers cannot access the DOM directly, so any work that requires reading or writing layout, styles, or DOM nodes mid-computation (most UI rendering logic) cannot be moved to a worker without significant restructuring (or libraries like Comlink/OffscreenCanvas for specific rendering cases). Work that is already fast (under a few milliseconds) is also a poor candidate — the overhead of serializing data across the postMessage boundary (structured clone, which is not free for large objects) can outweigh the benefit, and worker communication is inherently asynchronous, adding complexity for what may have been a simple synchronous call. The best candidates are genuinely CPU-heavy, DOM-independent tasks: large JSON parsing/transformation, image/data processing, complex calculations, or client-side search/filtering over large datasets.',
+    },
   ];
 
   revision: RevisionSummary = {

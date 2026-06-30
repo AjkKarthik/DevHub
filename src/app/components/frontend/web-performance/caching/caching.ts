@@ -471,6 +471,10 @@ window.addEventListener('load', () => {
       q: 'What is stale-while-revalidate and when should you use it?',
       a: 'stale-while-revalidate is a Cache-Control directive (and Workbox strategy) that serves the cached (possibly stale) response immediately while fetching a fresh copy in the background. Use it for content where a brief period of staleness is acceptable — e.g. product listings, blog posts, font stylesheets. Not suitable for prices, stock levels, or authenticated session data.',
     },
+    {
+      q: 'What is stale-while-revalidate and when should you use it over a simple max-age?',
+      a: 'stale-while-revalidate lets the browser serve a cached (stale) response immediately while fetching a fresh copy in the background for the next request — the user never waits on the network for that resource. Cache-Control: max-age=60, stale-while-revalidate=86400 means: serve fresh for 60s, then for up to 24 hours serve stale instantly while revalidating async. Use it for resources that change occasionally but where instant response matters more than absolute freshness (navigation HTML, API responses for dashboards) — pure max-age forces a blocking revalidation once expired, hurting perceived performance.',
+    },
   ];
 
   revision: RevisionSummary = {
