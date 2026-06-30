@@ -599,6 +599,12 @@ func main() {
       answer: 0,
       explanation: 'CompareAndSwap (CAS) atomically checks if the current value equals old, and if so, sets it to new and returns true. If the current value differs from old, it does nothing and returns false. CAS is the foundation of lock-free algorithms.'
     },
+    {
+      q: 'What is the difference between sync.Mutex and sync.RWMutex and when do you choose each?',
+      options: ['They are identical', 'Mutex: exclusive lock for all access; RWMutex: allows concurrent readers (RLock) but exclusive writer (Lock) — use RWMutex when reads dominate writes', 'RWMutex is deprecated', 'Mutex is only for goroutines; RWMutex is for OS threads'],
+      answer: 1,
+      explanation: 'sync.Mutex: every operation (read or write) requires an exclusive lock — only one goroutine at a time. sync.RWMutex: multiple goroutines can hold RLock() simultaneously; Lock() is exclusive. Use RWMutex for read-heavy workloads like in-memory caches or config maps where reads far outnumber writes. For write-heavy workloads, RWMutex overhead (maintaining reader count) can be worse than a plain Mutex.'
+    },
   ];
 
   qna: QnaItem[] = [

@@ -377,6 +377,12 @@ function deepMerge(target, source) {
       answer: 1,
       explanation: 'In spread merges, the rightmost value wins for duplicate keys. { ...a, ...b } → b wins. { ...b, ...a } → a wins. This is "last write wins."',
     },
+    {
+      q: 'What is the purpose of Object.freeze() and what does it NOT do?',
+      options: ['Deep-freezes an object including nested objects', 'Prevents adding, removing, or changing properties on the object itself (shallow)', 'Makes the variable binding const', 'Prevents the object from being garbage collected'],
+      answer: 1,
+      explanation: 'Object.freeze() is shallow — it freezes the top-level properties of the object. Nested objects are not frozen; you must recursively freeze them. It does NOT affect the variable binding (let vs const).',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -391,6 +397,18 @@ function deepMerge(target, source) {
     {
       q: 'What does structuredClone NOT support?',
       a: '<code>structuredClone()</code> cannot clone: <strong>functions</strong> (throws), <strong>DOM nodes</strong> (throws), class instances lose their prototype (become plain objects), <strong>WeakMap/WeakSet</strong> (throws). For those, write a custom cloner or use <code>lodash.cloneDeep</code>.',
+    },
+    {
+      q: 'What does Object.create(null) give you and when is it useful?',
+      a: '<code>Object.create(null)</code> creates an object with NO prototype — no <code>toString</code>, <code>hasOwnProperty</code>, <code>valueOf</code>, or any inherited method. Useful as a safe dictionary when keys are user-controlled, because prototype pollution attacks that target <code>__proto__</code> or <code>constructor</code> can\'t reach anything useful. Also slightly faster property lookup due to shorter prototype chain.',
+    },
+    {
+      q: 'What is property shadowing in prototype chains?',
+      a: 'When you set a property on an instance that already exists on its prototype, the instance gets its own copy that "shadows" the prototype property. Reads on the instance get the own property; the prototype\'s property is unchanged. This is different from inheritance overriding — the prototype property still exists and is accessible via <code>Object.getPrototypeOf(obj).propName</code>.',
+    },
+    {
+      q: 'How do computed property names work in object literals?',
+      a: 'Use square bracket syntax in an object literal to compute the key at creation time: <code>const key = "name"; const obj = { [key]: "Alice" }</code> produces <code>{ name: "Alice" }</code>. The expression inside <code>[]</code> is evaluated and coerced to string. Useful for dynamic keys, Symbol keys, and building objects from maps.',
     },
   ];
 

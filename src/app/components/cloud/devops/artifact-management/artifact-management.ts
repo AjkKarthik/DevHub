@@ -446,6 +446,17 @@ console.log(resolveDeployTarget(versions, 'production')); // "1.2.1" (latest wit
       answer: 1,
       explanation: 'Artifact promotion retagging or copying the exact artifact (same Docker image digest, same binary file) from a dev registry to a staging registry, then to a prod registry as it passes tests at each stage. This guarantees that what was tested in staging is exactly what runs in production. Rebuilding risks subtle differences from changed dependencies, updated build tools, or non-deterministic build steps.',
     },
+    {
+      q: 'What is the difference between a Docker image tag and a digest?',
+      options: [
+        'Tags and digests are identical — both identify the same image uniquely',
+        'A tag is a mutable pointer that can be overwritten; a digest (sha256:...) is an immutable content hash that always refers to exactly the same image bytes',
+        'Digests are only used in production; tags are for development',
+        'Tags are content-addressed; digests are human-readable aliases',
+      ],
+      answer: 1,
+      explanation: 'A tag like myapp:1.2.3 can be overwritten — a new push to the same tag points to different bytes. A digest like myapp@sha256:abc123 is the SHA256 hash of the image manifest — immutable. For production security, pin to digest: if the tag gets overwritten, digest pinning still pulls the exact tested image. Use tags for human readability; use digests for reproducibility.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -468,6 +479,10 @@ console.log(resolveDeployTarget(versions, 'production')); // "1.2.1" (latest wit
     {
       q: 'How do you version Docker images when using a monorepo with multiple services?',
       a: 'Two strategies: (1) **Per-service SemVer** — each service has its own version, bumped by conventional commits scoped to that service (`fix(auth-service): ...`). Tools like `nx affected` or `changesets` determine which services need new versions. Each service image is tagged independently: `auth-service:2.1.3`, `payment-service:1.4.0`. (2) **Monorepo build SHA** — all services use the same Git SHA tag for images from the same commit: `auth-service:main-abc1234`, `payment-service:main-abc1234`. Simple to implement; harder to communicate what changed in a given release. For teams that deploy services independently, per-service SemVer gives clearer change semantics; for teams that deploy together, the SHA approach is simpler.',
+    },
+    {
+      q: 'How do you implement artifact retention without deleting images that are currently deployed?',
+      a: 'Two approaches: (1) Tag-based protection — before deleting old tags, query your deployment systems (Kubernetes namespaces, ECS task definitions) for all currently-used image references, and exclude them from the retention sweep. A script can kubectl get pods -A -o jsonpath="{.items[*].spec.containers[*].image}" to get live images. (2) Registry features — registries like ACR, ECR, and Harbor let you set lifecycle policies with exemptions for images tagged with specific prefixes (e.g., prod-* or pinned-*). Tag images with prod-<version> at promotion time and the lifecycle policy skips them. Always test retention policies in a non-production registry first.',
     },
   ];
 

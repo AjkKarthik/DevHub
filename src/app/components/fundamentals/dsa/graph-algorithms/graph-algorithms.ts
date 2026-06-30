@@ -239,6 +239,9 @@ if (color[neighbor] === 1) return true; // back edge = cycle`,
       answer: 1,
       explanation: 'Path compression points nodes directly to the root during find, flattening the tree. Future finds for those nodes become O(1).',
     },
+  { q: 'What is the time complexity of Dijkstra with a binary min-heap?', options: ['O(V + E)', 'O((V + E) log V)', 'O(V^2)', 'O(E log E)'], answer: 1, explanation: 'With a binary min-heap: each vertex is extracted once O(V log V), each edge may trigger a decrease-key O(E log V). Total: O((V + E) log V). With a Fibonacci heap: O(E + V log V), but constant factors make it slower in practice.' },
+  { q: 'When should you use Bellman-Ford over Dijkstra?', options: ['When the graph has no cycles', 'When the graph has negative-weight edges', 'When the graph is dense', 'When you need all-pairs shortest paths'], answer: 1, explanation: 'Dijkstra fails with negative edges (it assumes the shortest path only grows). Bellman-Ford: O(V * E) — relaxes all edges V-1 times. Also detects negative cycles (if a Vth relaxation still improves, a negative cycle exists).' },
+  { q: 'What algorithm finds the minimum spanning tree of a graph?', options: ['Dijkstra', 'Prim or Kruskal', 'Floyd-Warshall', 'Topological sort'], answer: 1, explanation: 'Minimum Spanning Tree: Prim (greedy, similar to Dijkstra, builds MST one vertex at a time, O(E log V)) or Kruskal (sort edges by weight, add edge if no cycle using Union-Find, O(E log E)). Both produce an MST of minimum total edge weight.' },
   ];
 
   qna: QnaItem[] = [
@@ -254,6 +257,9 @@ if (color[neighbor] === 1) return true; // back edge = cycle`,
       q: 'What is topological sort used for in practice?',
       a: 'Build systems (compile order), task scheduling with dependencies, course prerequisites, package managers (npm install order). Any problem where you need to process nodes in dependency order on a DAG.',
     },
+  { q: 'How does Dijkstra differ from BFS for shortest paths?', a: 'BFS finds shortest paths (by hop count) in unweighted graphs — each edge has cost 1. Dijkstra handles weighted graphs — uses a min-heap to always expand the lowest-cost frontier node. BFS is O(V + E); Dijkstra is O((V+E) log V). If all weights are equal, BFS is sufficient and faster. Use Dijkstra when edges have non-negative varying weights.' },
+  { q: 'How does topological sort work and what is it used for?', a: 'Topological sort orders vertices of a DAG so that for every directed edge u->v, u comes before v. Kahn algorithm: find nodes with in-degree 0, process them (reducing neighbor in-degrees), repeat. DFS version: run DFS, push nodes to stack on finish. O(V + E). Applications: build order (Gradle/Maven dependencies), course scheduling, task dependencies. Cycle detection: if not all nodes are processed, a cycle exists.' },
+  { q: 'What is the Union-Find (Disjoint Set Union) data structure and when is it used?', a: 'Union-Find tracks which elements belong to the same connected component. Operations: find(x) returns the root of x\'s component; union(x, y) merges x and y\'s components. With path compression and union by rank: nearly O(1) amortized per operation (O(alpha(n)) = inverse Ackermann). Used in: Kruskal MST, detecting cycles in undirected graphs, connected components in dynamic graphs.' },
   ];
 
   revision: RevisionSummary = {

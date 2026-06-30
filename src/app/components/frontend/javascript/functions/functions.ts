@@ -442,6 +442,12 @@ const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);`,
       answer: 2,
       explanation: 'new binding is highest priority. Explicit (call/apply/bind) comes next. Then method/implicit binding. Default (undefined in strict, global in sloppy) is lowest.',
     },
+    {
+      q: 'What does a generator function return when called?',
+      options: ['The first yielded value', 'undefined', 'A generator object (iterator)', 'A Promise'],
+      answer: 2,
+      explanation: 'Calling a generator function does not execute its body. It returns a generator object with .next(), .return(), and .throw() methods. Execution begins only on the first .next() call.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -456,6 +462,18 @@ const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);`,
     {
       q: 'What is the difference between debounce and throttle?',
       a: '<strong>Debounce</strong>: delay execution until N ms after the LAST call. Good for search-as-you-type (wait until typing stops). <strong>Throttle</strong>: execute at most once every N ms regardless of call frequency. Good for scroll/resize handlers (limit how often they fire).',
+    },
+    {
+      q: 'What is the difference between pure and impure functions?',
+      a: 'A <strong>pure function</strong> always returns the same output for the same input and has no side effects (no mutations, no I/O, no external state). An <strong>impure function</strong> may produce different results on each call or affect external state. Pure functions are easier to test, cache (memoize), and reason about. Strive for pure functions at the business logic layer; isolate impure I/O at system boundaries.',
+    },
+    {
+      q: 'How does memoization work and when should you use it?',
+      a: 'Memoization caches the return value of a function keyed by its arguments. On repeated calls with the same args, it returns the cached result instantly. Implement with a Map: <code>const memo = new Map(); const memoFn = (n) => memo.has(n) ? memo.get(n) : memo.set(n, expensiveFn(n)).get(n)</code>. Use it for pure functions with expensive computation and a small argument space (e.g. Fibonacci, route cost calculation).',
+    },
+    {
+      q: 'What is function composition and how does pipe differ from compose?',
+      a: '<strong>Compose</strong> applies functions right-to-left: <code>compose(f, g)(x) = f(g(x))</code>. <strong>Pipe</strong> applies left-to-right: <code>pipe(f, g)(x) = g(f(x))</code>. Pipe reads top-to-bottom, matching data flow and is more intuitive for most developers. Compose mirrors mathematical notation. Both are implemented with <code>reduceRight</code> (compose) or <code>reduce</code> (pipe).',
     },
   ];
 

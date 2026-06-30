@@ -486,6 +486,12 @@ go build -mod=vendor ./...`,
       answer: 0,
       explanation: 'For application repositories, committing go.work is sometimes fine if the whole team shares the same directory structure. For libraries, committing go.work forces all cloners to have matching local paths that likely don\'t exist on their machines. The rule: go.work.gitignore it from library repos; set GOWORK=off in CI.'
     },
+    {
+      q: 'What does go mod tidy do and when should you run it?',
+      options: ['It upgrades all dependencies to the latest version', 'It adds missing and removes unused dependencies from go.mod and go.sum, then verifies that both files are consistent', 'It only updates go.sum', 'It removes the vendor directory'],
+      answer: 1,
+      explanation: 'go mod tidy reconciles go.mod with the actual imports in your code: it adds any packages you import but have not listed, and removes packages you list but no longer use. It also updates go.sum with the checksums for all required modules. Run it after: adding/removing imports, upgrading dependencies, or before committing to ensure go.mod and go.sum are not stale. CI should fail if go mod tidy changes anything.'
+    },
   ];
 
   qna: QnaItem[] = [

@@ -227,6 +227,28 @@ function scheduleProcesses(procs: Process[]): number[] {
       answer: 1,
       explanation: 'A zombie (Z state in ps) has terminated but its exit status has not been collected by its parent via wait(). It occupies a PID in the table but uses no CPU or memory.',
     },
+    {
+      q: 'What is the difference between kill -9 and kill -15 (SIGTERM)?',
+      options: [
+        'kill -9 sends a graceful shutdown; kill -15 forces termination',
+        'kill -15 is SIGTERM (graceful shutdown request); kill -9 is SIGKILL (cannot be caught or ignored, forces immediate termination)',
+        'kill -9 only works on root processes',
+        'Both signals are identical; only the signal number differs',
+      ],
+      answer: 1,
+      explanation: 'SIGTERM (15) requests a graceful shutdown — the process can catch it, clean up, and exit. SIGKILL (9) cannot be caught, blocked, or ignored — the kernel terminates the process immediately with no cleanup. Always try SIGTERM first.',
+    },
+    {
+      q: 'What is a zombie process?',
+      options: [
+        'A process consuming excessive CPU',
+        'A process that has exited but whose entry remains in the process table because the parent has not called wait()',
+        'A process running in the background',
+        'A process with no controlling terminal',
+      ],
+      answer: 1,
+      explanation: 'A zombie (defunct) process has finished execution but its process table entry remains because the parent has not read its exit status via wait(). Zombies consume minimal resources but accumulate if the parent is buggy. Kill the parent to clean them up.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -241,6 +263,18 @@ function scheduleProcesses(procs: Process[]): number[] {
     {
       q: 'Why would a process be in D (uninterruptible sleep) state?',
       a: 'D state means the process is waiting for I/O (typically disk or NFS) and cannot be interrupted — even SIGKILL won\'t terminate it. This is intentional to prevent data corruption during I/O. If it persists, suspect a hung NFS mount, a failing disk, or kernel bug. The only fix is usually a reboot.',
+    },
+    {
+      q: 'How do you run a process that persists after terminal close?',
+      a: 'Options: (1) <strong>nohup cmd &</strong> — ignores SIGHUP, stdout goes to nohup.out; (2) <strong>screen</strong> or <strong>tmux</strong> — multiplexers that keep sessions alive; (3) <strong>disown</strong> — removes a background job from the job table; (4) <strong>setsid</strong> — starts a process in a new session; (5) run as a <strong>systemd service</strong> for production workloads. tmux/screen is best for interactive sessions; systemd for services.',
+    },
+    {
+      q: 'What is nohup and when do you use it?',
+      a: '<strong>nohup</strong> runs a command immune to SIGHUP (sent when the terminal closes). Usage: <code>nohup long-running-script.sh > output.log 2>&1 &</code>. The & backgrounds it; redirect stdout/stderr explicitly since nohup.out in the current directory may not be where you want logs. For production workloads, systemd services are preferable.',
+    },
+    {
+      q: 'How do you list and sort processes by memory usage?',
+      a: '<code>ps aux --sort=-%mem | head -20</code> shows top memory consumers. <code>ps aux --sort=-%cpu | head</code> for CPU. In <strong>top</strong>: press M to sort by memory, P for CPU, N for PID. <code>pgrep -l processname</code> finds PIDs by name. <code>pmap PID</code> shows memory map of a process. /proc/PID/smaps has detailed memory breakdown.',
     },
   ];
 

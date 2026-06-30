@@ -411,6 +411,12 @@ All column and row headers must have correct scope attributes.`,
       answer: 1,
       explanation: 'overflow-x: auto on a wrapper div allows horizontal scrolling for wide tables without breaking the surrounding page layout. Setting width: 100% forces the table to compress, breaking cell content.'
     },
+    {
+      q: 'What does the caption element do in a table?',
+      options: ['Adds a footer row', 'Provides a visible title and accessible description for the table', 'Replaces the <th> header row', 'Only affects screen readers, not visual output'],
+      answer: 1,
+      explanation: '<caption> must be the first child of <table>. It provides a visible title above the table and also serves as the table\'s accessible name for screen readers (equivalent to aria-label). A table without a caption or aria-label has no name in the accessibility tree.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -429,6 +435,14 @@ All column and row headers must have correct scope attributes.`,
     {
       q: 'My table has 10 columns. How do I make it accessible for screen readers?',
       a: 'For simple tables: scope="col" on all column headers and scope="row" on all row headers is sufficient. For complex tables with merged cells: add id attributes to header cells and reference them from data cells with headers="id1 id2". Consider whether a simpler table structure (or multiple tables) would serve users better.'
+    },
+    {
+      q: 'How do you make a sortable table accessible?',
+      a: 'Add aria-sort to the currently sorted column header: "ascending", "descending", or "none". Set it to "other" if the sort order is non-standard. Mark unsorted columns with aria-sort="none" so users know sorting is available. Make sort buttons keyboard-focusable and announce the new order with an ARIA live region after sorting: "Sorted by Name, ascending."',
+    },
+    {
+      q: 'What is the performance cost of large HTML tables and how do you mitigate it?',
+      a: 'Large tables (1000+ rows) cause slow layout because the browser must measure every cell to calculate column widths. Mitigate with table-layout: fixed (use first-row widths, no measurement of all cells) and width: 100% on the table. For very large data sets, implement virtual scrolling — render only visible rows in the DOM and replace them as the user scrolls. This keeps the DOM small regardless of data size.',
     },
   ];
 

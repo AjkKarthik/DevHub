@@ -404,6 +404,7 @@ console.log(getIstioOperatorConfig());`,
       q: 'What does the `minimal` profile install and when should you use it?',
       a: 'The <code>minimal</code> profile installs <em>only Istiod</em> — no ingress gateway, no telemetry add-ons, no egress gateway. Use it when: <ul><li>You manage gateways independently using the Kubernetes Gateway API or a dedicated Helm chart</li><li>You use an external load balancer/CDN for ingress instead of istio-ingressgateway</li><li>You only need mesh features (mTLS, retries, observability) and handle ingress elsewhere</li></ul>This is the leanest option — add only what you need to avoid resource waste.',
     },
+  { q: 'What are the recommended approaches for installing Istio in production?', a: 'Three main approaches: (1) istioctl install with an IstioOperator manifest file for direct installation and full control over all settings. (2) Helm charts from the official Istio Helm repository, preferred for GitOps workflows and teams already using Helm for other components. (3) The Istio operator (deprecated in newer versions) for declarative management. For production: always use a minimal profile and add only the components you need, pin the Istio version explicitly, store the IstioOperator or Helm values in git, and test upgrades in a non-production environment first using canary control plane upgrades.' },
   ];
 
   revision: RevisionSummary = {

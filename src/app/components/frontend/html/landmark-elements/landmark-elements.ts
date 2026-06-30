@@ -202,6 +202,12 @@ export class HtmlLandmarkElements {
       options: ['header', 'nav', 'main', 'search'],
       answer: 3,
       explanation: '<search> is used for search functionality.'
+    },
+    {
+      q: 'What should you do when a page has multiple <nav> elements?',
+      options: ['Use only one <nav> — multiple is invalid HTML', 'Label each with aria-label or aria-labelledby to distinguish them', 'Wrap them all in a single parent <nav>', 'Replace extra navs with <div role="navigation">'],
+      answer: 1,
+      explanation: 'Multiple <nav> elements are valid — a page might have primary navigation, breadcrumbs, and a footer nav. Label each uniquely with aria-label="Primary" or aria-labelledby pointing to a visually hidden heading so screen reader users can distinguish them in the landmark navigation list.',
     }
   ];
 
@@ -221,7 +227,15 @@ export class HtmlLandmarkElements {
     {
       q: 'What is the <region> landmark role used for?',
       a: '<region> is used for any section of a page that has a unique heading or label, such as a sidebar or a main content area with a specific topic.'
-    }
+    },
+    {
+      q: 'What is the difference between <header> and <head>?',
+      a: '<code>&lt;head&gt;</code> is a required document metadata container — it holds title, meta tags, stylesheet links, and scripts. It is not rendered on the page. <code>&lt;header&gt;</code> is a sectioning element rendered on the page — typically contains the logo, site navigation, and introductory content. A page can have multiple <code>&lt;header&gt;</code> elements (one per article/section); there is only ever one <code>&lt;head&gt;</code>.',
+    },
+    {
+      q: 'When is <section> more appropriate than <div>?',
+      a: 'Use <code>&lt;section&gt;</code> when the content forms a thematically distinct unit that would warrant its own heading (h2–h6) — e.g. a "Features" section, a "Contact" section. Use <code>&lt;div&gt;</code> when you only need a CSS hook or a layout container with no semantic meaning. A good rule: if you would label it in a table of contents, it is probably a section. If you are just grouping for styling, use div.',
+    },
   ];
 
   revision: RevisionSummary = {

@@ -614,6 +614,16 @@ console.log(parseTerraformPlan("No changes. Infrastructure is up-to-date."));
       answer: 2,
       explanation: 'terraform import <resource_address> <resource_id> associates an existing cloud resource with a Terraform resource block without destroying and recreating it. After import, you must write the matching HCL resource block so that future plans produce no changes. It\'s used to adopt resources that were created manually or by other tools.',
     },
+    {
+      q: 'What is configuration drift in IaC and why is it a problem?',
+      options: [
+        'When Terraform state files become out of sync with provider APIs',
+        'When the actual infrastructure state diverges from the IaC definition — usually from manual console changes or failed partial applies',
+        'When different team members use different IaC tools',
+        'When cloud provider APIs change without notice'],
+      answer: 1,
+      explanation: 'Configuration drift occurs when infrastructure is modified outside the IaC tool (manual console changes, direct CLI commands, failed partial applies). The IaC tool then has a stale view of reality. Consequences: future applies may fail or produce unexpected changes; you cannot trust the IaC to reflect real state. Prevention: enforce all changes through IaC (IAM SCPs blocking console writes), regular drift detection (`terraform plan` in CI showing unexpected changes), and immutable infrastructure (replace vs modify).',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -636,6 +646,10 @@ console.log(parseTerraformPlan("No changes. Infrastructure is up-to-date."));
     {
       q: 'What is Pulumi and how does it differ from Terraform?',
       a: 'Pulumi is an IaC tool where infrastructure is defined using real programming languages (TypeScript, Python, Go, C#, Java) rather than a DSL. You get full language features: loops, conditionals, functions, type checking, IDE autocomplete. Pulumi uses a state backend similar to Terraform. It\'s a strong choice when your team is already proficient in a language and the infrastructure logic is complex. Terraform\'s HCL has a gentler learning curve for simple configurations; Pulumi shines when you need real abstraction and code reuse.',
+    },
+    {
+      q: 'When should you use Terraform modules and how do you version them?',
+      a: 'Use Terraform modules when: (1) You repeat the same infrastructure pattern across environments or services (VPC, EKS cluster, RDS instance). A module encapsulates the pattern with variables. (2) You want to enforce standards — a "blessed" module for your organisation\'s networking pattern ensures consistent security group rules, tags, and naming conventions. (3) You want to abstract complexity — consumers call module "vpc" with simple inputs (cidr, region) without knowing the implementation details. Module versioning: host modules in a separate Git repo, tag with SemVer (v1.2.0). Reference with source = "git::https://github.com/org/modules.git//vpc?ref=v1.2.0". Pin to specific versions — never use ?ref=main which is a moving target. Use Terraform Registry for public modules (registry.terraform.io).',
     },
   ];
 

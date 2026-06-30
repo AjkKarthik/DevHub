@@ -140,6 +140,12 @@ This is a paragraph.<br>This is some <strong>bold</strong> text.<br>This is some
       options: ['Emphasizes text semantically', 'Bold text', 'Italic text', 'Line break'],
       answer: 0,
       explanation: '<em> emphasizes text semantically, not just makes it italic.'
+    },
+    {
+      q: 'Can there be more than one <h1> on a page?',
+      options: ['No — only one h1 is allowed per page', 'Yes — one per sectioning element is valid, but one per page is still the SEO best practice', 'Yes — unlimited h1 elements are required', 'Only if nested inside article elements'],
+      answer: 1,
+      explanation: 'The HTML5 document outline algorithm allowed multiple h1s (one per section). However, browsers never implemented the outline algorithm, and multiple h1s confused screen readers. Best practice today: one h1 per page (the main topic), use h2–h6 for subsections.',
     }
   ];
 
@@ -147,7 +153,9 @@ This is a paragraph.<br>This is some <strong>bold</strong> text.<br>This is some
     { q: 'What is the difference between <strong> and <i>?', a: '<strong> emphasizes text semantically, while <i> is used for styling purposes only.' },
     { q: 'How do you create a line break without using <br> tag?', a: 'Use CSS to control line breaks.' },
     { q: 'What are the heading levels in HTML?', a: '<h1> to <h6>' },
-    { q: 'How can you add emphasis to text in HTML?', a: 'Use <strong> or <em> tags.' }
+    { q: 'How can you add emphasis to text in HTML?', a: 'Use <strong> or <em> tags.' },
+    { q: 'What is the difference between <b> and <strong>, and <i> and <em>?', a: '<strong> conveys strong importance (semantic); <b> is just bold with no semantic meaning. Similarly, <em> conveys emphasis (semantic — changes meaning); <i> is just italic (used for technical terms, foreign words, titles in running text). Assistive technologies may treat <strong> and <em> differently from <b> and <i>. Prefer the semantic versions for content; use <b> and <i> only for typographic convention.' },
+    { q: 'When should you use <blockquote> vs <q>?', a: '<blockquote> is for extended block-level quotations — paragraphs of quoted text with a cite attribute pointing to the source URL. <q> is for short inline quotations — browsers add quotation marks automatically based on locale. Use <cite> (inline) for referencing the title of a work (book, film). Do NOT use <blockquote> just for visual indentation — use CSS margin/padding for that.' }
   ];
 
   revision: RevisionSummary = {

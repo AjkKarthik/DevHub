@@ -548,6 +548,12 @@ func main() {
       answer: 0,
       explanation: 'ctx.Err() returns nil while the context is active. Once Done() is closed, it returns context.Canceled (if cancel() was called) or context.DeadlineExceeded (if the timeout or deadline fired). Wrap it: fmt.Errorf("operation: %w", ctx.Err()).'
     },
+    {
+      q: 'What is the difference between context.WithTimeout and context.WithDeadline?',
+      options: ['They are identical', 'WithTimeout takes a duration (relative); WithDeadline takes an absolute time.Time', 'WithDeadline is deprecated', 'WithTimeout creates a child context; WithDeadline does not'],
+      answer: 1,
+      explanation: 'context.WithTimeout(ctx, 5*time.Second) cancels after 5 seconds from now. context.WithDeadline(ctx, time.Now().Add(5*time.Second)) cancels at an absolute time — equivalent in this case but necessary when the deadline is calculated externally (e.g., from an HTTP request deadline). Both return a cancel function that must be deferred to avoid resource leaks.'
+    },
   ];
 
   qna: QnaItem[] = [

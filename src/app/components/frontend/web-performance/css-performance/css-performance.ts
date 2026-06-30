@@ -477,6 +477,12 @@ article > section {
       answer: 1,
       explanation: 'will-change promotes an element to a GPU compositing layer, consuming GPU memory (roughly 1MB per layer). Adding it to many elements simultaneously exhausts GPU memory and can cause the browser to de-promote layers — resulting in worse performance than without will-change.',
     },
+    {
+      q: 'Which animation approach achieves the best performance because it runs on the compositor thread?',
+      options: ['Animating margin-top', 'Animating transform and opacity only', 'Animating background-color', 'Animating width and height'],
+      answer: 1,
+      explanation: 'transform and opacity are the only CSS properties the compositor can animate without involving the main thread — even if the main thread is busy with JS, these animations remain smooth. All other CSS properties (margin, width, background-color) require the main thread to recalculate styles, layout, or paint before the frame can be composited.',
+    },
   ];
 
   qna: QnaItem[] = [

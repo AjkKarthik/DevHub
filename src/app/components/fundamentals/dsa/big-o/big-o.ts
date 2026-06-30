@@ -219,6 +219,9 @@ for (let i = 0; i < n; i++)
       answer: 2,
       explanation: 'Merge sort needs O(n) auxiliary space for the temporary merge array.',
     },
+  { q: 'What is the time complexity of binary search?', options: ['O(n)', 'O(log n)', 'O(n log n)', 'O(1)'], answer: 1, explanation: 'Binary search halves the search space each step. After k steps, 2^k >= n, so k >= log2(n). Binary search is O(log n) — the most common logarithmic algorithm.' },
+  { q: 'What does O(n!) represent and what algorithm has this complexity?', options: ['Sorting algorithms', 'Brute-force permutation algorithms', 'Hash table operations', 'Tree traversals'], answer: 1, explanation: 'O(n!) grows faster than exponential. Brute-force Traveling Salesman (checking all permutations), naive permutation generation, and some backtracking solutions without pruning. Completely impractical for n > 12-15.' },
+  { q: 'What is the amortized time complexity of appending to a dynamic array?', options: ['O(n) every time', 'O(log n)', 'O(1) amortized', 'O(n) amortized'], answer: 2, explanation: 'Dynamic arrays double in size when full (1, 2, 4, 8... capacity). Over n appends, resizing costs total 1+2+4+...+n = 2n work, amortized to O(1) per append. Individual appends can be O(n) but averaged out they are O(1).' },
   ];
 
   qna: QnaItem[] = [
@@ -234,6 +237,9 @@ for (let i = 0; i < n; i++)
       q: 'How do you analyse the complexity of hash table operations?',
       a: 'Average case: O(1) insert, lookup, delete. Worst case: O(n) if all keys hash to the same bucket (hash collision). In interviews, assume O(1) average unless told to consider worst case.',
     },
+  { q: 'How do you determine the time complexity of a recursive algorithm?', a: 'Use the Master Theorem for T(n) = aT(n/b) + f(n): compare f(n) to n^log_b(a). Three cases: (1) f(n) < n^log_b(a) -> O(n^log_b(a)); (2) f(n) = n^log_b(a) -> O(n^log_b(a) * log n); (3) f(n) > n^log_b(a) -> O(f(n)). Example: MergeSort T(n) = 2T(n/2) + O(n): a=2, b=2, log_b(a)=1, f(n)=n -> case 2, O(n log n).' },
+  { q: 'What is the difference between best case, average case, and worst case complexity?', a: 'Best case: most favorable input (QuickSort on already-sorted with good pivot: O(n log n)). Worst case: most adversarial input (QuickSort with bad pivot always: O(n^2)). Average case: over all possible inputs with uniform distribution (QuickSort average: O(n log n)). Algorithm design targets worst case; amortized analysis averages over a sequence of operations.' },
+  { q: 'How do you calculate the space complexity of a recursive function?', a: 'Space complexity of recursion = call stack depth * space per frame. Binary search recursive: O(log n) stack frames * O(1) per frame = O(log n) space. Fibonacci recursive: O(n) depth * O(1) per frame = O(n). Merge sort: O(log n) stack depth + O(n) merge buffer = O(n). Always consider both auxiliary space and call stack depth.' },
   ];
 
   revision: RevisionSummary = {

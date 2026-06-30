@@ -319,6 +319,28 @@ ORDER BY ft.RANK DESC;`
       answer: 1,
       explanation: 'setweight(tsvector, \'A\'|\'B\'|\'C\'|\'D\') annotates each token with a weight class. ts_rank and ts_rank_cd use these weights when scoring — A is the highest weight, D the lowest. Combine title (weight A) with body (weight B) so title matches rank higher.'
     },
+    {
+      q: 'What does ts_rank() return and how is it used?',
+      options: [
+        'The row ID of the best matching document',
+        'A floating-point relevance score between 0.0 and 1.0 based on term frequency in the tsvector',
+        'The position of the first matching token in the document',
+        'A count of how many terms in the tsquery matched'
+      ],
+      answer: 1,
+      explanation: 'ts_rank(tsvector, tsquery) returns a relevance score; ts_rank_cd also factors in document length. Use ORDER BY ts_rank(search_col, query) DESC to sort by relevance. The score is relative — it is only meaningful when comparing rows within the same query.'
+    },
+    {
+      q: 'Which index type is preferred for PostgreSQL full-text search on a tsvector column and why?',
+      options: [
+        'GiST — it is faster for exact lookups',
+        'GIN — it stores each lexeme separately, making @@ queries fast for exact token lookup',
+        'BRIN — it is the most compact for text data',
+        'B-tree — it supports sorting which tsvector needs'
+      ],
+      answer: 1,
+      explanation: 'GIN (Generalized Inverted Index) is the recommended index for full-text search. It maps each lexeme to the list of rows containing it, making @@ queries very fast. GiST is an alternative but has slower lookups and faster updates — appropriate only when updates far outnumber searches.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -333,6 +355,18 @@ ORDER BY ft.RANK DESC;`
     {
       q: 'Full-text population in MSSQL is slow — what can I do?',
       a: 'Check FULLTEXTCATALOGPROPERTY(\'catalog\', \'PopulateStatus\') — a value of 1 means population is active. For initial population of large tables: (1) Use CHANGE_TRACKING = MANUAL during migration, populate, then switch to AUTO. (2) Increase ft.crawl_bandwidth_limit and max_range_size in sp_fulltext_service. (3) Ensure the Full-Text Daemon has enough I/O bandwidth. Incremental population (based on timestamp column) is faster than full population for updates.',
+    },
+    {
+      q: 'How do I do phrase search and proximity search in PostgreSQL and MSSQL?',
+      a: 'PostgreSQL: use phraseto_tsquery(\'hello world\') to match the words adjacent in order. For proximity, use the <N> operator in tsquery: to_tsquery(\'cat <2> dog\') matches "cat" within 2 positions of "dog". MSSQL: CONTAINS(col, \'NEAR((cat, dog), 2)\') for proximity; exact phrase: CONTAINS(col, \'"hello world"\').',
+    },
+    {
+      q: 'How do I combine full-text search with fuzzy matching in PostgreSQL?',
+      a: 'pg_trgm (CREATE EXTENSION pg_trgm) enables trigram similarity search: col % \'search\' or similarity(col, \'search\') > 0.3. This handles typos and partial matches but does not understand word stems. Combine both: use tsvector for precise keyword search and trgm GIN index for fuzzy matching, unioning the result sets or weighting scores.',
+    },
+    {
+      q: 'What language configuration should I choose for a tsvector in PostgreSQL and how does it affect results?',
+      a: 'to_tsvector(\'english\', text) uses the English dictionary — it stems words (running → run) and removes stop words (the, a, is). Choose the language matching your content: \'simple\' disables stemming (preserves exact words). \'pg_catalog.english\' is the default. For multilingual content, store the language per row and compute tsvector dynamically or use unaccent + simple configuration.',
     },
   ];
 }

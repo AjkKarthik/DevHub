@@ -200,12 +200,56 @@ async function validateCoLocation(cluster: Redis.Cluster, keys: string[]) {
       answer: 1,
       explanation: 'CROSSSLOT error occurs when a multi-key command (MGET, MSET, Lua script, etc.) accesses keys that belong to different hash slots — and thus different nodes. Use hash tags to force co-location.',
     },
+    {
+      q: 'How many hash slots does Redis Cluster have?',
+      options: ['1024', '4096', '16384', '65536'],
+      answer: 2,
+      explanation: 'Redis Cluster uses 16384 hash slots. Keys are mapped to slots using CRC16(key) % 16384. Slots are distributed across master nodes. The number 16384 was chosen to fit the cluster config in a small gossip message.',
+    },
+    {
+      q: 'What happens when a Redis Cluster command accesses keys on different slots?',
+      options: ['Redis automatically redirects to the correct node', 'The command returns a CROSSSLOT error — multi-key commands require all keys in the same slot', 'Redis executes the command on the node with the most keys', 'Multi-key commands are queued and executed later'],
+      answer: 1,
+      explanation: 'Redis Cluster requires all keys in a multi-key command to be in the same slot. Use hash tags {user1} to force key co-location: keys like {user1}:session and {user1}:profile share the slot of user1.',
+    },
+    {
+      q: 'What is CLUSTER KEYSLOT and when do you use it?',
+      options: ['Lists all keys in a given slot', 'Returns the hash slot for a given key — useful for debugging co-location and verifying hash tags', 'Migrates a slot between nodes', 'Returns cluster topology'],
+      answer: 1,
+      explanation: 'CLUSTER KEYSLOT key returns the integer slot (0-16383) that the key maps to. Use it to verify that keys with hash tags land in the same slot: CLUSTER KEYSLOT {user1}:a and CLUSTER KEYSLOT {user1}:b should return the same value.',
+    },
+    {
+      q: 'What is the minimum number of master nodes required for Redis Cluster?',
+      options: ['1', '2', '3', '6'],
+      answer: 2,
+      explanation: 'Redis Cluster requires at least 3 master nodes for quorum-based failure detection. With 3 masters you can also have 3 replicas (one per master) for a typical 6-node production cluster with failover capability.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'Can I use Redis Cluster with a single-node Redis client library?',
       a: 'Technically yes — a single-node client will receive MOVED redirects and can manually follow them. But this is inefficient (extra round-trips) and error-prone. Use a Cluster-aware client (ioredis Redis.Cluster, node-redis in cluster mode) that maintains a slot map and auto-routes commands to the correct node. Cluster-aware clients also handle ASK redirects during slot migrations.',
+    },
+    {
+      q: 'What is a hash tag in Redis Cluster and why do you use it?',
+      a: 'A hash tag is the substring between <code>{}</code> in a key name. Only the tagged part is hashed for slot assignment. Example: <code>{user:1001}:session</code> and <code>{user:1001}:profile</code> both hash <code>user:1001</code> — landing in the same slot. This enables multi-key operations on related data without CROSSSLOT errors.',
+    },
+    {
+      q: 'How do you add a new node to a Redis Cluster?',
+      a: 'Use <code>redis-cli --cluster add-node new-node:6379 existing-node:6379</code>. Then rebalance slot distribution: <code>redis-cli --cluster rebalance existing-node:6379</code> or manually migrate slots with <code>--cluster reshard</code>. New nodes start empty — slots must be migrated before they serve traffic. Add replicas with --cluster-slave flag.',
+    },
+    {
+      q: 'What happens during a Redis Cluster failover?',
+      a: 'When a master fails: replicas detect failure via gossip protocol after <code>cluster-node-timeout</code>. A replica starts a failover election — collects votes from other masters. Majority vote → replica promotes to master and updates cluster config. Slots owned by the failed master are now served by the new master. Clients receive MOVED/ASK redirects.',
+    },
+    {
+      q: 'What are MOVED and ASK errors in Redis Cluster?',
+      a: '<strong>MOVED error</strong>: the key is permanently in the indicated node — update your routing table and retry. <strong>ASK error</strong>: the key is being migrated (slot resharding in progress) — send ASKING to the new node and retry once. MOVED is permanent; ASK is transient. Smart clients (ioredis, Jedis) handle these automatically.',
+    },
+    {
+      q: 'What consistency model does Redis Cluster provide?',
+      a: 'Redis Cluster provides <strong>eventual consistency</strong> — asynchronous replication means recent writes to a master can be lost if it fails before replicating. <strong>cluster-require-full-coverage yes</strong> (default): cluster rejects writes if any slot is unavailable. <strong>no</strong>: continues serving available slots. Use WAIT command to request synchronous replica acknowledgment when consistency matters.',
     },
   ];
 

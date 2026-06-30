@@ -295,6 +295,28 @@ END;
       answer: 1,
       explanation: 'FORMAT with %I uses quote_ident() internally to safely quote the identifier. Option A is a raw concatenation (injection risk). Option C is wrong — $1 placeholders work for values, not identifiers. Option D uses quote_literal which adds single quotes (value quoting), not double quotes (identifier quoting).'
     },
+    {
+      q: 'How can you debug dynamic SQL before executing it in MSSQL?',
+      options: [
+        'There is no way to inspect dynamic SQL before it runs',
+        'PRINT or SELECT the @sql string before executing it so you can review the generated SQL',
+        'Use TRY … CATCH around sp_executesql to capture the query',
+        'Enable Query Store to capture the dynamic text automatically'
+      ],
+      answer: 1,
+      explanation: 'Before calling EXEC or sp_executesql, add PRINT @sql; (or SELECT @sql; for longer strings). This lets you copy the generated SQL into a query window, verify it is correct, and test it independently before running it live.'
+    },
+    {
+      q: 'How do you return an OUTPUT parameter value from dynamic SQL in MSSQL?',
+      options: [
+        'Dynamic SQL cannot return output — use a temp table instead',
+        'Declare the variable as OUTPUT in @params and pass it with OUTPUT in the sp_executesql call',
+        'Use RETURN inside the dynamic SQL string',
+        'Only SELECT can return values from dynamic SQL'
+      ],
+      answer: 1,
+      explanation: 'sp_executesql supports OUTPUT parameters: declare @result INT; EXEC sp_executesql @sql, N\'@r INT OUTPUT\', @r = @result OUTPUT; The value is written back to @result after execution — no temp table needed.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -309,6 +331,18 @@ END;
     {
       q: 'What is the risk of the "optional filter" dynamic WHERE pattern?',
       a: 'When all filters are NULL, the query degenerates to SELECT * FROM table — potentially scanning millions of rows with no WHERE clause. Always add a TOP / LIMIT safety guard, or require at least one filter to be non-NULL. Also, each combination of active filters may need a different index, so test the execution plans for common filter combinations.',
+    },
+    {
+      q: 'How do I use dynamic SQL for multi-tenant schema switching?',
+      a: 'In a schema-per-tenant model, build the table reference dynamically: EXECUTE FORMAT(\'SELECT * FROM %I.orders WHERE …\', p_schema). Use %I to safely quote the schema name and prevent injection. Validate the schema name against a whitelist (tenant table) before using it in the query — never trust a raw caller-supplied schema string.',
+    },
+    {
+      q: 'What is plan cache bloat and how does dynamic SQL cause it?',
+      a: 'The plan cache stores a compiled plan for each unique SQL string. If dynamic SQL generates slightly different text per call (e.g., literal values embedded instead of parameters), each call creates a new cache entry. Thousands of near-identical plans waste memory and slow down cache lookups. Fix: always use sp_executesql with @params so the parameterised SQL string is identical across calls.',
+    },
+    {
+      q: 'Can I use EXECUTE in a transaction and roll it back on failure?',
+      a: 'Yes — dynamic SQL executed via sp_executesql or EXEC runs in the same transaction as the caller. If the dynamic SQL raises an error (or you roll back the outer transaction), the changes made by the dynamic statement are also rolled back. Wrap the call in BEGIN TRAN / COMMIT / ROLLBACK as you would any other DML.',
     },
   ];
 }

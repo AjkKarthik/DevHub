@@ -275,12 +275,56 @@ function cacheMiddleware(redis: Redis, ttlSec: number) {
       answer: 1,
       explanation: 'Once a connection enters subscribe mode (after SUBSCRIBE/PSUBSCRIBE), it can only run SUBSCRIBE, UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PING, and QUIT. Regular commands (GET, SET) return errors. Always use a dedicated connection for pub/sub.',
     },
+    {
+      q: 'What is the difference between pipeline and MULTI/EXEC in node-redis/ioredis?',
+      options: ['MULTI/EXEC is faster; pipeline is for large datasets', 'Pipeline batches commands for fewer round trips without atomicity; MULTI/EXEC is atomic — commands execute as a transaction', 'Pipeline supports watches; MULTI/EXEC does not', 'There is no functional difference'],
+      answer: 1,
+      explanation: 'Pipeline: sends commands in batch, reducing RTT. Not atomic — other clients can interleave between commands. MULTI/EXEC: groups commands into a transaction that Redis executes atomically. Use pipeline for performance; use MULTI for correctness.',
+    },
+    {
+      q: 'Why do Pub/Sub subscribers need a dedicated Redis connection?',
+      options: ['For performance isolation', 'A subscribed connection enters subscriber mode and cannot issue regular Redis commands — using a separate connection prevents blocking the main client', 'Redis limits commands per connection in subscriber mode', 'To support pattern subscriptions'],
+      answer: 1,
+      explanation: 'node-redis and ioredis both recommend a separate client for subscriptions because subscribed connections only handle SUBSCRIBE/UNSUBSCRIBE commands. Sharing with the main client would block all regular operations while waiting for messages.',
+    },
+    {
+      q: 'What is ioredis auto-reconnect and why does it matter?',
+      options: ['It reconnects only when the connection is explicitly closed', 'ioredis automatically reconnects and re-subscribes after disconnection, with configurable retry strategy — preventing manual connection management', 'Auto-reconnect only works in cluster mode', 'It is disabled by default'],
+      answer: 1,
+      explanation: 'ioredis reconnects automatically with a retry delay strategy. Commands sent during disconnection are queued and replayed. This resilience is critical in production to survive Redis restarts, network blips, or failovers without application errors.',
+    },
+    {
+      q: 'How do you handle connection pooling in a Node.js Redis application?',
+      options: ['Create a new Redis client per request', 'Create a single shared client (or small pool) at startup and reuse it across all requests — Redis connections are stateful and creation is expensive', 'Use HTTP connection pooling to wrap Redis calls', 'Set maxConnections to 100 per client'],
+      answer: 1,
+      explanation: 'Creating Redis clients per-request is wasteful (TCP setup overhead, server-side connection limits). Create one (or a small pool for pipelining) at startup and share across the application. ioredis and node-redis are both async-safe for concurrent use.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'Should I use ioredis or node-redis for a new project?',
       a: 'For vanilla Redis features (strings, hashes, lists, sorted sets, streams, transactions): either works — ioredis has a slightly more mature Sentinel/Cluster API and has been around longer. For Redis Stack (RedisSearch, RedisJSON, RedisTimeSeries): prefer node-redis which ships typed helpers for all Stack commands. For new projects, node-redis v4+ is a solid choice as the official maintained client with TypeScript-first design. For migration from existing ioredis codebases, the effort rarely justifies switching.',
+    },
+    {
+      q: 'What is the difference between node-redis and ioredis?',
+      a: 'Both are popular Redis clients for Node.js. <strong>node-redis</strong> (v4+): official client, promise-based, TypeScript support, supports Redis 6+ features. <strong>ioredis</strong>: cluster support, Sentinel, transparent reconnect, Lua scripting helpers, offline queue. Choose node-redis for simplicity; ioredis for advanced cluster/Sentinel setups.',
+    },
+    {
+      q: 'How do you handle Redis connection errors in Node.js?',
+      a: 'ioredis: listen to <code>error</code> event on the client; commands queue during disconnection and replay on reconnect (offline queue). node-redis v4: client emits <code>error</code> events — add an error listener to prevent unhandled rejections. Both: implement exponential backoff in reconnect strategy. Log errors and alert on repeated failures.',
+    },
+    {
+      q: 'How do you use Redis transactions in Node.js?',
+      a: 'With ioredis: <code>const pipeline = redis.multi(); pipeline.set(...); pipeline.get(...); const results = await pipeline.exec()</code>. With node-redis: <code>await client.multi().set(...).get(...).exec()</code>. For WATCH: use <code>redis.watch(key)</code>, then MULTI/EXEC in a retry loop — if exec returns null (optimistic lock failed), retry.',
+    },
+    {
+      q: 'How do you implement caching in a Node.js Express app with Redis?',
+      a: 'Middleware pattern: (1) Check <code>redis.get(cacheKey)</code>; (2) On hit: return JSON.parse(cached); (3) On miss: call DB, JSON.stringify result, <code>redis.setEx(cacheKey, ttl, json)</code>, return to client. Use URL + query params as cache key. Add cache headers for downstream caching. Consider redis-cache-middleware libraries.',
+    },
+    {
+      q: 'How do you use Redis Pub/Sub in Node.js?',
+      a: 'Create a dedicated subscriber client (required — subscribed connections cannot run regular commands). ioredis: <code>subscriber.subscribe(\'channel\', (msg, channel) => {...})</code>. node-redis v4: <code>await subscriber.subscribe(\'channel\', callback)</code>. Publisher: use the main client, <code>redis.publish(\'channel\', message)</code>. Always handle reconnection and re-subscription.',
     },
   ];
 

@@ -371,6 +371,24 @@ flaky().then(console.log).catch(console.error);`,
       answer: 1,
       explanation: 'A decorator wraps existing functionality and adds new behavior (logging, caching, retry, auth) transparently. The original function/class is unchanged. Decorators compose — stack them to layer behaviors.',
     },
+    {
+      q: 'What problem does the Facade pattern solve?',
+      options: ['Prevents a class from being instantiated more than once', 'Hides a complex subsystem behind a simple interface', 'Allows incompatible interfaces to work together', 'Adds state to a stateless function'],
+      answer: 1,
+      explanation: 'Facade provides a simplified interface to a complex subsystem. Example: a PaymentFacade.charge() that internally coordinates card tokenisation, fraud check, and ledger update — callers only see one method. Reduces coupling between callers and the complex internals.',
+    },
+    {
+      q: 'What is the Strategy pattern?',
+      options: ['Runs code at a set time interval', 'Defines a family of algorithms and makes them interchangeable at runtime', 'Ensures a class has only one instance', 'Notifies subscribers of state changes'],
+      answer: 1,
+      explanation: 'Strategy encapsulates a family of algorithms (sort by price, sort by name, sort by rating) and makes them swappable without changing the calling code. In JS this is often just a function parameter — passing different comparators to Array.sort() is a Strategy pattern.',
+    },
+    {
+      q: 'When should you use the Factory pattern instead of calling `new` directly?',
+      options: ['Never — new is always preferred', 'When the concrete class depends on config, or when you want to abstract instantiation from callers', 'Only in TypeScript', 'When you need exactly two instances'],
+      answer: 1,
+      explanation: 'Factories are valuable when: the concrete type to create depends on runtime data, construction has complex logic (loading config, pooling resources), or you want to swap implementations without changing call sites. They also make code easier to test — inject a mock factory instead of mocking the constructor.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -385,6 +403,10 @@ flaky().then(console.log).catch(console.error);`,
     {
       q: 'Is the Observer pattern the same as event emitters?',
       a: 'Yes — event emitters (Node.js EventEmitter), EventTarget (browser), RxJS Observables, and reactive stores (Redux, Zustand) are all Observer implementations. The pattern: publishers emit events, subscribers register callbacks, both sides know nothing about each other beyond the event contract.',
+    },
+    {
+      q: 'What is the Proxy pattern (structural) and how is it different from JavaScript\'s Proxy object?',
+      a: 'The Proxy <strong>design pattern</strong> is about providing a substitute object that controls access to another — adding logging, lazy initialisation, or access control. JavaScript\'s <code>Proxy</code> object is a built-in runtime mechanism that intercepts fundamental operations (get, set, call) at the VM level. The design pattern and the language feature solve the same concept but at different layers — the design pattern can be implemented without <code>Proxy</code> objects.',
     },
   ];
 

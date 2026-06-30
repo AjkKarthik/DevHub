@@ -434,6 +434,12 @@ emitter.emit('data', 99);  // "got: 99"  (once handler removed)`,
       answer: 1,
       explanation: '#field is enforced by the JavaScript engine — no reflection, computed access, or workaround can reach it. _field is just a convention; it\'s completely public.',
     },
+    {
+      q: 'What does Object.getPrototypeOf() return for an array?',
+      options: ['Object.prototype', 'Array.prototype', 'null', 'Array'],
+      answer: 1,
+      explanation: 'Arrays inherit from Array.prototype, which in turn inherits from Object.prototype. Object.getPrototypeOf([]) === Array.prototype. That is how arrays get map, filter, reduce, etc.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -448,6 +454,18 @@ emitter.emit('data', 99);  // "got: 99"  (once handler removed)`,
     {
       q: 'What is prototype pollution and why is it dangerous?',
       a: 'Prototype pollution occurs when attacker-controlled input is used to set a property on <code>Object.prototype</code> (typically via <code>__proto__</code> or <code>constructor.prototype</code>). Since all objects inherit from <code>Object.prototype</code>, this contaminates every object in the application. Prevent it by using <code>Object.keys()</code> (not <code>for...in</code>), sanitizing user keys, or using <code>Object.create(null)</code> for user-keyed data.',
+    },
+    {
+      q: 'What is the difference between hasOwnProperty and the in operator?',
+      a: '<code>obj.hasOwnProperty("key")</code> returns true only if the property is an own (non-inherited) property. The <code>in</code> operator checks own AND prototype chain. Example: <code>"toString" in {}</code> is true; <code>({}).hasOwnProperty("toString")</code> is false. Use <code>Object.hasOwn(obj, key)</code> (ES2022) as the safe modern alternative to <code>hasOwnProperty</code> — works with <code>Object.create(null)</code> objects too.',
+    },
+    {
+      q: 'How do mixins work with prototypes in JavaScript?',
+      a: 'A mixin copies methods from one or more source objects onto a target prototype: <code>Object.assign(Dog.prototype, Serializable, Loggable)</code>. This enables multiple-source code reuse without inheritance. The copied methods become own properties of the prototype. Pattern: define mixin objects with only methods (no constructor) and mix them onto classes that need those capabilities.',
+    },
+    {
+      q: 'What is the instanceof operator actually checking?',
+      a: '<code>obj instanceof Cls</code> walks <code>obj</code>\'s prototype chain looking for <code>Cls.prototype</code>. It does NOT check if <code>obj</code> was created by <code>Cls</code>. This means it fails across realms (different iframes — each realm has its own Array.prototype) and can be fooled by reassigning <code>Cls.prototype</code>. Use <code>Array.isArray()</code> for arrays and <code>Object.prototype.toString.call(obj)</code> for robust type checking.',
     },
   ];
 

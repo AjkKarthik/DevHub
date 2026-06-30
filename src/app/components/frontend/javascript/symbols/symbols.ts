@@ -393,6 +393,12 @@ function zip(iterableA, iterableB) {
       answer: 1,
       explanation: 'Symbol() always creates a brand-new unique symbol. Symbol.for(key) looks up (or creates) a symbol in the global registry — same key returns the same symbol across calls, modules, and realms.',
     },
+    {
+      q: 'Are Symbol keys visible in JSON.stringify()?',
+      options: ['Yes, always', 'No — Symbol properties are silently omitted', 'Yes, but encoded as strings', 'Only with a replacer function'],
+      answer: 1,
+      explanation: 'Symbol-keyed properties are non-enumerable from JSON\'s perspective. JSON.stringify() silently ignores them. They are also omitted from Object.keys(), for...in, and Object.assign(). Use Object.getOwnPropertySymbols() to explicitly retrieve them.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -407,6 +413,18 @@ function zip(iterableA, iterableB) {
     {
       q: 'What is the difference between an iterable and an iterator?',
       a: 'An <strong>iterable</strong> is an object with a <code>[Symbol.iterator]()</code> method that returns an iterator. An <strong>iterator</strong> is an object with a <code>next()</code> method returning <code>{value, done}</code>. Arrays are iterables (not iterators). Generators return objects that are both — they have <code>[Symbol.iterator]()</code> that returns <code>this</code>, plus <code>next()</code>.',
+    },
+    {
+      q: 'What is Symbol.toPrimitive and when is it called?',
+      a: '<code>[Symbol.toPrimitive](hint)</code> is called when JavaScript needs to convert an object to a primitive. The <code>hint</code> is <code>"number"</code>, <code>"string"</code>, or <code>"default"</code>. Define it on your class: <code>[Symbol.toPrimitive](hint) { return hint === "number" ? this.value : this.label }</code>. Overrides <code>valueOf</code> and <code>toString</code> for precise control over coercion in arithmetic and string contexts.',
+    },
+    {
+      q: 'How do well-known Symbols let you customise built-in JavaScript behaviour?',
+      a: 'Well-known Symbols are hooks into the JS engine: <code>Symbol.iterator</code> makes objects iterable, <code>Symbol.toPrimitive</code> controls coercion, <code>Symbol.hasInstance</code> customises <code>instanceof</code>, <code>Symbol.species</code> controls derived class construction (e.g. what class Array methods return), <code>Symbol.asyncIterator</code> makes objects async-iterable. They let library authors integrate custom types seamlessly with language syntax.',
+    },
+    {
+      q: 'Can Symbols be used as WeakMap keys?',
+      a: 'In ES2023+, non-registered Symbols (created with <code>Symbol()</code>, not <code>Symbol.for()</code>) can be used as WeakMap keys. Registered symbols are forbidden because they live forever in the global registry and cannot be GC\'d — defeating the purpose of a weak reference. In older environments, only objects are valid WeakMap keys.',
     },
   ];
 

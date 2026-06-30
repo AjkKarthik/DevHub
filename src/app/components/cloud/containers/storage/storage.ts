@@ -188,6 +188,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: 'Retain keeps the PV and underlying cloud disk when a PVC is deleted — even accidentally. The PV enters Released state and must be manually cleaned up or rebound. For production databases, this is the safe choice: data survives accidental PVC deletion.',
   },
+  { q: 'What is the difference between a PersistentVolume and a PersistentVolumeClaim in Kubernetes?', options: ['PVs are namespace-scoped resources while PVCs are cluster-wide resources', 'A PV is the actual storage resource at cluster scope; a PVC is a namespace-scoped request for storage by a pod', 'PVCs are only for block storage while PVs are only for file storage', 'They are identical concepts with different names for historical reasons'], answer: 1, explanation: 'PV (PersistentVolume) is a cluster-level storage resource provisioned by an admin or dynamically via a StorageClass. It has capacity, access mode (RWO/ROX/RWX), and a reclaim policy. PVC (PersistentVolumeClaim) is a namespace-level request for storage by a pod that specifies size, access mode, and optional StorageClass. Kubernetes binds a PVC to a matching PV. StorageClass enables dynamic provisioning: creating a PVC triggers the CSI driver to provision a new PV automatically.' },
 ];
 
 const qna: QnaItem[] = [
@@ -211,6 +212,7 @@ const qna: QnaItem[] = [
     q: 'Can two Pods share the same PVC?',
     a: 'Only if the PV\'s access mode is RWX (ReadWriteMany). With RWO, only one node can mount the volume at a time — if two Pods on different nodes both claim the same RWO PVC, the second Pod fails to start. For shared storage between replicas, use RWX with a compatible backend (NFS, EFS, Ceph) or give each Pod its own PVC via StatefulSet volumeClaimTemplates.',
   },
+  { q: 'What are the three Kubernetes PersistentVolume access modes?', a: 'ReadWriteOnce (RWO): mounted as read-write by ONE node. Most block storage supports this including AWS EBS, GCP PD, and Azure Disk. ReadOnlyMany (ROX): mounted as read-only by MANY nodes simultaneously, rarely used in practice. ReadWriteMany (RWX): mounted as read-write by MANY nodes simultaneously, requires shared or distributed storage such as NFS, CephFS, Azure Files, or AWS EFS; only specific CSI drivers support RWX. Note that RWO is node-level not pod-level, so multiple pods on the SAME node can share a RWO volume. For true single-pod exclusivity, use pod anti-affinity rules or StatefulSets.' },
 ];
 
 const revision: RevisionSummary = {

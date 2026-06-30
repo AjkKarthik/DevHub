@@ -250,6 +250,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: 'ARG values appear in docker history even after they go out of scope. ENV variables are stored in each committed layer. Anyone who can pull or inspect the image can read them. Pass secrets at runtime via environment injection or Docker/K8s secret mounts.',
   },
+  { q: 'What is the purpose of HEALTHCHECK in a Dockerfile?', options: ['It restricts the container CPU usage during health monitoring intervals', 'It defines a command Docker runs periodically to determine if the container is healthy', 'It runs automated tests during the image build process', 'It validates the syntax of RUN commands before execution'], answer: 1, explanation: 'HEALTHCHECK CMD curl -f http://localhost/health || exit 1 runs the command periodically: default 30s interval, 30s timeout, 3 retries. Status becomes healthy, unhealthy, or starting. Docker Compose uses this for depends_on with condition: service_healthy. Kubernetes does NOT use Docker healthchecks; define livenessProbe and readinessProbe in the pod spec separately.' },
 ];
 
 const qna: QnaItem[] = [
@@ -273,6 +274,7 @@ const qna: QnaItem[] = [
     q: 'What is a HEALTHCHECK and how does Kubernetes use it?',
     a: 'HEALTHCHECK runs a command periodically inside the container to determine if it\'s healthy. docker ps shows healthy/unhealthy status. Kubernetes does NOT use HEALTHCHECK — it uses readinessProbe and livenessProbe in the Pod spec instead. However, HEALTHCHECK is useful for Docker Compose and standalone Docker deployments.',
   },
+  { q: 'What is the difference between COPY and ADD in a Dockerfile?', a: 'COPY copies files or directories from the build context to the image. It is simple and predictable and the preferred choice for almost all use cases. ADD does everything COPY does plus it extracts tar archives automatically and can fetch files from URLs. Both of these extra behaviors are anti-patterns: URL fetching caches poorly and adds security risk, and tar auto-extraction makes the Dockerfile less explicit. Rule: always use COPY unless you specifically need tar auto-extraction. For remote files, use a RUN layer with curl so you control caching and cleanup explicitly.' },
 ];
 
 const revision: RevisionSummary = {

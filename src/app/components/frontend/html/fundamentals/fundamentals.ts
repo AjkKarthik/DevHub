@@ -173,6 +173,12 @@ This is a line of text.<br> This is another line of text.`
       options: ['&lt;header&gt;', '&lt;footer&gt;', '&lt;section&gt;', '&lt;article&gt;'],
       answer: 3,
       explanation: '&lt;article&gt; is used to define a self-contained piece of content.'
+    },
+    {
+      q: 'What is the difference between HTML attributes and DOM properties?',
+      options: ['They are identical', 'Attributes are the initial values in HTML; properties reflect the current live state in the DOM', 'Properties are only available in JavaScript', 'Attributes change dynamically; properties are static'],
+      answer: 1,
+      explanation: 'Attributes are what you write in HTML (initial value, always strings). DOM properties are live object values in JavaScript. Example: <input value="hello"> — the value attribute stays "hello" forever; the value property reflects what the user has typed.',
     }
   ];
 
@@ -180,7 +186,9 @@ This is a line of text.<br> This is another line of text.`
     { q: 'Explain the difference between &lt;div&gt; and &lt;p&gt;.', a: '&lt;div&gt; is a block element that creates a new block in the layout, while &lt;p&gt; is an inline element that flows within existing blocks.' },
     { q: 'What happens if you forget to close a tag?', a: 'If you forget to close a tag, the browser may interpret the rest of the content incorrectly, leading to rendering errors or unexpected behavior.' },
     { q: 'Can void elements have attributes?', a: 'No, void elements cannot have attributes. They are self-closing and do not require a closing tag.' },
-    { q: 'How does character encoding affect HTML documents?', a: 'Character encoding determines how characters are represented in the document. Incorrect or missing character encoding can cause乱码 or other rendering issues.' }
+    { q: 'How does character encoding affect HTML documents?', a: 'Character encoding determines how characters are represented in the document. Incorrect or missing character encoding can cause乱码 or other rendering issues.' },
+    { q: 'What is the void element category in HTML?', a: 'Void elements are HTML elements that cannot have child nodes and must not have a closing tag: &lt;br&gt;, &lt;hr&gt;, &lt;img&gt;, &lt;input&gt;, &lt;link&gt;, &lt;meta&gt;, &lt;area&gt;, &lt;base&gt;, &lt;col&gt;, &lt;embed&gt;, &lt;param&gt;, &lt;source&gt;, &lt;track&gt;, &lt;wbr&gt;. In HTML5 you write them as &lt;br&gt; (no slash); in XHTML you write &lt;br /&gt;. Adding &lt;/br&gt; is an error.' },
+    { q: 'What happens when a browser encounters an unknown HTML element?', a: 'Browsers render unknown elements as anonymous inline elements (like &lt;span&gt;) and add them to the DOM. This is how custom elements work — the browser lets them exist in the tree and JavaScript upgrades them later. This "unknown element" fallback is why HTML5 semantic elements (&lt;article&gt;, &lt;section&gt;) worked in older browsers after a polyfill created the elements via document.createElement().' }
   ];
 
   revision: RevisionSummary = {

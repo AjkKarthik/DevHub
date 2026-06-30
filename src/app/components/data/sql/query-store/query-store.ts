@@ -302,6 +302,28 @@ LIMIT 20;`
       answer: 1,
       explanation: 'AUTO mode applies significance thresholds (minimum execution count, CPU, duration) so that trivial or infrequent queries do not fill the Query Store. ALL captures everything — useful for debugging but noisy in production.'
     },
+    {
+      q: 'What does Automatic Plan Correction (APC) do in SQL Server 2017+?',
+      options: [
+        'Rewrites queries to use better indexes automatically',
+        'Detects when a forced plan regresses performance and auto-forces the last-known-good plan from Query Store history',
+        'Rebuilds statistics and indexes during off-peak hours',
+        'Identifies and removes duplicate plans from the cache'
+      ],
+      answer: 1,
+      explanation: 'APC monitors Query Store plan history. If a plan change causes a significant CPU increase, APC forces the previously-good plan and logs the correction in sys.dm_db_tuning_recommendations. It is enabled with ALTER DATABASE … SET AUTOMATIC_TUNING (FORCE_LAST_GOOD_PLAN = ON).'
+    },
+    {
+      q: 'What must be configured in postgresql.conf before pg_stat_statements works?',
+      options: [
+        'enable_query_tracking = on',
+        'pg_stat_statements must be added to shared_preload_libraries and the server restarted',
+        'Only CREATE EXTENSION pg_stat_statements is needed — no server restart required',
+        'query_logging = pg_stat_statements in pg_hba.conf'
+      ],
+      answer: 1,
+      explanation: 'pg_stat_statements is a background worker that hooks into the executor at startup. It must be listed in shared_preload_libraries before the server starts. After a restart, CREATE EXTENSION pg_stat_statements; makes its view available.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -316,6 +338,18 @@ LIMIT 20;`
     {
       q: 'Can Query Store help with parameter sniffing?',
       a: 'Yes — Query Store tracks multiple plans per query. If a query has many plans (visible in the "Plan Summary" SSMS report), each compiled for different parameter values, you can identify the best general-purpose plan and force it. Alternatively, enable Automatic Plan Correction (SQL Server 2017+) which detects regressions and forces the last-known-good plan automatically.',
+    },
+    {
+      q: 'How do I export Query Store data for offline analysis?',
+      a: 'Query the sys.query_store_query, sys.query_store_plan, and sys.query_store_runtime_stats tables directly and export to CSV or a reporting tool. For cross-server comparison, use SSMS "Export Data" or a linked server query. The tables are in the user database, so any backup includes the Query Store data.',
+    },
+    {
+      q: 'How do I find the top CPU-consuming queries using pg_stat_statements?',
+      a: 'SELECT query, calls, total_exec_time, mean_exec_time, stddev_exec_time FROM pg_stat_statements ORDER BY total_exec_time DESC LIMIT 10; — total_exec_time is the total wall-clock time across all calls. Sort by mean_exec_time to find the slowest individual calls. Use stddev_exec_time to identify queries with inconsistent performance (high variance often indicates parameter sniffing or locking).',
+    },
+    {
+      q: 'How does Query Store compare to Extended Events for performance monitoring?',
+      a: 'Query Store persists pre-aggregated metrics (avg/min/max duration, CPU, reads per plan) automatically with minimal overhead. Extended Events give you raw event data (individual query executions, lock waits, deadlocks) with more detail but require configuration and consume more storage. Use Query Store for ongoing trend analysis and plan regression detection; use XEvents for deep-dive investigation of specific incidents.',
     },
   ];
 }

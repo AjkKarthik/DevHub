@@ -640,6 +640,10 @@ export default function App() { return <RouterProvider router={router} />; }`,
       q: 'Can I use React Router loaders with TanStack Query together?',
       a: 'Yes — a common pattern is to call queryClient.ensureQueryData() inside loaders. The loader populates the TanStack Query cache; the component calls useQuery() with the same key and immediately gets the cached data. This gives you both the no-loading-flash benefit of loaders and TanStack Query\'s background refetch.',
     },
+    {
+      q: 'How do I protect a route so only authenticated users can access it?',
+      a: 'Create an AuthGuard component that reads your auth state and returns <Navigate to="/login" replace /> if unauthenticated, or <Outlet /> if authenticated. Wrap private route groups with it: `{ element: <AuthGuard />, children: [...privateRoutes] }`. Use `replace` so the browser Back button skips the login redirect after signing in.',
+    },
   ];
 
   revision: RevisionSummary = {

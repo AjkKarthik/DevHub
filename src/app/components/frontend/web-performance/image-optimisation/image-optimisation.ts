@@ -400,6 +400,12 @@ export default defineConfig({
       answer: 2,
       explanation: 'Image decoding (converting compressed bytes to raw pixels) normally happens on the main thread and can block script execution, increasing INP. decoding="async" tells the browser to decode off the main thread. Use decoding="sync" only for the LCP image.',
     },
+    {
+      q: 'What is the key difference between WebP and AVIF image formats?',
+      options: ['WebP has wider browser support; AVIF has better compression ratios at the same visual quality', 'AVIF is a Google format; WebP is Apple\'s format', 'WebP supports animation; AVIF does not', 'AVIF is only for video, not static images'],
+      answer: 0,
+      explanation: 'AVIF offers 30–50% smaller files than WebP at the same visual quality — but it has slightly less browser support (no IE, limited old Safari). WebP is supported in all modern browsers and is the safe default. Use <picture> with <source type="image/avif"> first and <img src=".webp"> as fallback to serve AVIF where supported and WebP elsewhere.',
+    },
   ];
 
   qna: QnaItem[] = [

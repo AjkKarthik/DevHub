@@ -226,6 +226,24 @@ async function getSession(token: string): Promise<string | null> {
       answer: 2,
       explanation: 'PERSIST key removes the expiry, making the key permanent. EXPIRE key 0 would immediately expire (and delete) the key. DEL deletes the key entirely.',
     },
+    {
+      q: 'What command returns comprehensive Redis server information?',
+      options: ['STATUS', 'INFO', 'STATS', 'SERVER'],
+      answer: 1,
+      explanation: 'INFO (or INFO section) returns server statistics, replication state, keyspace info, memory usage, clients, CPU, persistence state, and more. INFO memory and INFO replication are commonly used sub-sections.',
+    },
+    {
+      q: 'What is Redis pipelining?',
+      options: ['Streaming persistence to disk in batches', 'Sending multiple commands to Redis in a single network round trip without waiting for each reply', 'Background replication to replicas', 'Compressing multiple keys into one'],
+      answer: 1,
+      explanation: 'Pipelining batches multiple commands and sends them in one TCP packet. Redis processes them sequentially and returns all replies at once. Dramatically reduces RTT latency overhead for bulk operations — not atomic, unlike MULTI/EXEC.',
+    },
+    {
+      q: 'How does Redis handle multiple clients concurrently given it is single-threaded?',
+      options: ['Each client gets a dedicated thread', 'Redis uses an event loop (I/O multiplexing) to handle many connections without blocking on individual clients', 'Redis queues requests and processes them with a worker pool', 'Clients are limited to 1000 simultaneous connections'],
+      answer: 1,
+      explanation: 'Redis uses an event-driven I/O multiplexing loop (epoll/kqueue). It handles thousands of clients by processing one command at a time in order — no context switching overhead. I/O is non-blocking; command execution is fast in-memory.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -240,6 +258,18 @@ async function getSession(token: string): Promise<string | null> {
     {
       q: 'What is the difference between TTL and PTTL?',
       a: 'TTL returns the remaining time-to-live in seconds. PTTL returns it in milliseconds for higher precision. Both return -1 if the key has no expiry, -2 if the key does not exist.',
+    },
+    {
+      q: 'What are the main Redis data types and their primary use cases?',
+      a: '<strong>Strings</strong>: caching, counters, sessions. <strong>Hashes</strong>: object representation. <strong>Lists</strong>: queues, activity feeds. <strong>Sets</strong>: unique collections, intersections. <strong>Sorted Sets</strong>: leaderboards, time-ordered data. <strong>Streams</strong>: event sourcing, message queues. <strong>HyperLogLog</strong>: cardinality estimation. <strong>Geo</strong>: geospatial queries.',
+    },
+    {
+      q: 'What is the Redis event loop and why does it matter?',
+      a: 'Redis uses a single-threaded event loop (epoll on Linux, kqueue on macOS) for command processing. I/O multiplexing handles thousands of clients without threads. Commands execute atomically — no race conditions within a command. I/O threads (Redis 6+) offload network I/O. Keep commands O(1) or O(log N); avoid O(N) on large datasets.',
+    },
+    {
+      q: 'How does Redis keyspace notification work?',
+      a: 'Enable with <code>notify-keyspace-events</code> in redis.conf (e.g., KEA for all events). Redis publishes on <code>__keyevent@db__:event</code> and <code>__keyspace@db__:key</code> channels. Example: subscribe to <code>__keyevent@0__:expired</code> to react when any key expires. Performance cost — only enable what you need.',
     },
   ];
 

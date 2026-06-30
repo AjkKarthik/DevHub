@@ -283,6 +283,28 @@ console.log(parseEnvFile(env));
       answer: 2,
       explanation: 'source ~/.bashrc (or . ~/.bashrc) runs the file in the current shell, applying changes immediately. exec bash replaces the current shell with a new one (also works but loses session state).',
     },
+    {
+      q: 'What is the difference between VAR=value and export VAR=value?',
+      options: [
+        'No difference; both set variables in the current and child processes',
+        'VAR=value sets a shell variable visible only in the current shell; export makes it available to child processes',
+        'export is only for system-wide variables in /etc/environment',
+        'VAR=value is read-only; export allows modification',
+      ],
+      answer: 1,
+      explanation: 'Without export, a variable is a shell-local variable not inherited by child processes. export marks it for export to the environment of child processes spawned from the current shell.',
+    },
+    {
+      q: 'Which file is the correct place to set environment variables for interactive login shells?',
+      options: [
+        '~/.bashrc',
+        '~/.bash_profile or ~/.profile',
+        '/etc/bashrc',
+        '~/.bash_history',
+      ],
+      answer: 1,
+      explanation: '~/.bash_profile (or ~/.profile) is sourced for login shells. ~/.bashrc is for interactive non-login shells. Typically .bash_profile sources .bashrc for consistency. /etc/environment sets system-wide variables.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -297,6 +319,18 @@ console.log(parseEnvFile(env));
     {
       q: 'What is the difference between login and non-login shells for variable loading?',
       a: 'Login shells (ssh login, su -, terminal emulator at startup) read /etc/profile then ~/.bash_profile or ~/.profile. Non-login interactive shells (terminal tab, bash command) read ~/.bashrc. Many setups source ~/.bashrc from ~/.bash_profile to ensure both get the same vars. Scripts (non-interactive) read neither by default.',
+    },
+    {
+      q: 'What is the difference between .bashrc and .bash_profile?',
+      a: '<strong>.bash_profile</strong> (or .profile) is sourced for login shells (SSH sessions, tty login, su -). <strong>.bashrc</strong> is sourced for interactive non-login shells (new terminal tabs, bash within bash). Typically .bash_profile sources .bashrc so both cases see the same config. Set PATH in .bash_profile; aliases and functions in .bashrc.',
+    },
+    {
+      q: 'How do you view all currently set environment variables?',
+      a: '<strong>env</strong> or <strong>printenv</strong> shows all exported environment variables. <strong>set</strong> shows all shell variables (including non-exported). <strong>declare -p</strong> shows all with types. To see a specific variable: <code>echo $VAR</code> or <code>printenv VAR</code>. Unset with <code>unset VAR</code>.',
+    },
+    {
+      q: 'How do you permanently add a directory to PATH?',
+      a: 'Add to ~/.bash_profile or ~/.bashrc: <code>export PATH="$HOME/bin:$PATH"</code>. Prepend to add priority before system directories; append ($PATH:$HOME/bin) to add lower priority. Then run <code>source ~/.bash_profile</code> to apply. For system-wide changes, edit <strong>/etc/environment</strong> or add a file to <strong>/etc/profile.d/</strong>.',
     },
   ];
 

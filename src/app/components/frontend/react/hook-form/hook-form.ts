@@ -718,6 +718,10 @@ export default function RegistrationForm() {
       q: 'What is the difference between mode: "onChange" and mode: "onBlur"?',
       a: '"onChange" validates after every keystroke — highest re-render count, best for real-time feedback (password strength, format checks). "onBlur" validates when the user leaves a field — fewer re-renders, lower anxiety UX since errors only appear after you try to leave. "onSubmit" (default) validates only when the form is submitted — zero re-renders during typing, errors appear all at once. Most forms use "onBlur" or "onSubmit".',
     },
+    {
+      q: 'How do I conditionally show or hide fields and preserve their values in RHF?',
+      a: 'By default, unregistered (hidden) fields retain their values in the RHF store. If you want to clear the value when the field is hidden, pass shouldUnregister: true to useForm(). With shouldUnregister: true, RHF automatically removes the value when the component unmounts. Pair this with Zod .optional() so the schema does not require the hidden field.',
+    },
   ];
 
   revision: RevisionSummary = {

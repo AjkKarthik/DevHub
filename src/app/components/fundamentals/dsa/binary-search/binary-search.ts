@@ -227,6 +227,9 @@ return lo;`,
       answer: 1,
       explanation: 'arr[lo] <= arr[mid] means the left half is in sorted order (including the edge case where lo === mid).',
     },
+  { q: 'How do you binary search for the leftmost element equal to target?', options: ['Standard binary search works', 'Move right boundary when equal (hi = mid), return lo', 'Move left boundary when equal (lo = mid + 1), return hi', 'Use linear scan after finding any match'], answer: 1, explanation: 'Leftmost: when nums[mid] == target, set hi = mid (do not stop). When nums[mid] < target, lo = mid + 1. Loop ends when lo == hi. This finds the first occurrence in O(log n).' },
+  { q: 'What is binary search on the answer and when do you apply it?', options: ['Binary search on a sorted array only', 'Apply when: the answer is monotonic (larger capacity -> feasible) and checking feasibility is O(n)', 'Apply only to integer arrays', 'Apply when the array has no duplicates'], answer: 1, explanation: 'Binary search on the answer: instead of searching an array, search the answer space [lo, hi]. At each mid, check if mid is feasible in O(n). Example: Koko Eating Bananas, Minimum Capacity Ship. Works when feasibility is monotonic.' },
+  { q: 'What is the time complexity of binary search in a 2D sorted matrix?', options: ['O(n * m)', 'O(log(n * m))', 'O(n + m)', 'O(n * log m)'], answer: 1, explanation: 'Treat the n*m matrix as a 1D sorted array of size n*m. Map index i to row=i/m, col=i%m. Binary search on the virtual 1D array: O(log(n*m)).' },
   ];
 
   qna: QnaItem[] = [
@@ -242,6 +245,9 @@ return lo;`,
       q: 'When does binary search NOT work?',
       a: 'Binary search requires a monotone property — either a sorted array or a condition that flips exactly once from invalid to valid (or valid to invalid). It doesn\'t work on unsorted arrays, non-monotone functions, or when you can\'t efficiently evaluate the condition at a given midpoint.',
     },
+  { q: 'How do you binary search in a rotated sorted array?', a: 'Key insight: one half of a rotated sorted array is always sorted. At each step: (1) Check if nums[lo] <= nums[mid] (left half sorted); (2) If target is in [nums[lo], nums[mid]], search left; else search right. Otherwise right half is sorted — apply symmetric logic. Handles duplicates with a lo++ fallback when nums[lo] == nums[mid] == nums[hi].' },
+  { q: 'What are common off-by-one errors in binary search and how to avoid them?', a: 'Common errors: (1) Infinite loop when lo = hi - 1 and mid = lo but hi is never updated (fix: use lo = mid + 1 not lo = mid when searching right); (2) Wrong answer when loop condition is lo < hi vs lo <= hi (use lo < hi when lo == answer on exit; lo <= hi when returning inside the loop). Template: lo=0, hi=n-1, mid=lo+(hi-lo)/2, lo=mid+1 or hi=mid-1.' },
+  { q: 'How do you find the peak element in an unsorted array in O(log n)?', a: 'A peak element is nums[i] > nums[i-1] and nums[i] > nums[i+1]. Binary search: if nums[mid] < nums[mid+1], the peak is to the right (set lo = mid + 1); otherwise the peak is at mid or left (set hi = mid). When lo == hi, that is the peak index. O(log n) because we always move toward a peak.' },
   ];
 
   revision: RevisionSummary = {

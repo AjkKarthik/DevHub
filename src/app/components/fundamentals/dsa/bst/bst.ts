@@ -222,6 +222,9 @@ let count = 0; function dfs(n) { ... if(++count === k) result = n.val; ... }`,
       answer: 1,
       explanation: 'BST property: left < root < right at every node. Inorder (L→Root→R) visits nodes in ascending sorted order.',
     },
+  { q: 'What is the worst-case time complexity of BST operations on an unbalanced tree?', options: ['O(log n)', 'O(n)', 'O(n log n)', 'O(1)'], answer: 1, explanation: 'An unbalanced BST can degenerate into a linked list (e.g., inserting sorted values). All operations become O(n). Balanced BSTs (AVL, Red-Black) guarantee O(log n) by maintaining balance invariants.' },
+  { q: 'What invariant must hold for every node in a valid BST?', options: ['Left child < parent < right child', 'All values in left subtree < node < all values in right subtree', 'Left child < right child', 'Node is smaller than its parent'], answer: 1, explanation: 'The BST property applies to entire subtrees, not just direct children. For every node N: all keys in N.left subtree < N.key < all keys in N.right subtree. Direct child comparison alone is insufficient for validation.' },
+  { q: 'How do you find the kth smallest element in a BST efficiently?', options: ['BFS and sort', 'In-order traversal, stop at kth node', 'Binary search the root', 'Store all nodes then index'], answer: 1, explanation: 'In-order traversal (left->root->right) visits BST nodes in sorted order. Stop when you have visited k nodes — the kth node is the answer. O(h + k) time, O(h) space for the stack (h = height).' },
   ];
 
   qna: QnaItem[] = [
@@ -233,6 +236,10 @@ let count = 0; function dfs(n) { ... if(++count === k) result = n.val; ... }`,
       q: 'How do you find the lowest common ancestor in a generic binary tree (not BST)?',
       a: 'Without BST ordering, you must use DFS. For each node, check if it equals p or q. If left subtree contains one and right contains the other, the current node is the LCA. If both are in the same subtree, recurse down that side.',
     },
+  { q: 'How do you validate that a binary tree is a valid BST?', a: 'Pass down min/max bounds: validate(node, minVal, maxVal). Node is valid if minVal < node.val < maxVal. Recurse: left subtree gets maxVal = node.val; right subtree gets minVal = node.val. Base case: null is valid. O(n) time. Common mistake: only comparing with direct parent instead of using inherited bounds.' },
+  { q: 'What is the algorithm for deleting a node from a BST?', a: '3 cases: (1) Node has no children: remove it. (2) Node has one child: replace node with its child. (3) Node has two children: find in-order successor (smallest value in right subtree), copy its value to the node, then delete the successor (which has at most one right child). All cases O(h) time.' },
+  { q: 'What is the difference between a BST and a balanced BST?', a: 'A plain BST has O(h) operations where h can be O(n) in the worst case (degenerate tree). A self-balancing BST (AVL tree, Red-Black tree) maintains h = O(log n) through rotations on insert/delete, guaranteeing O(log n) operations. Practically: Java TreeMap/TreeSet use Red-Black tree; Python uses sorted containers. Use when you need both ordering and O(log n) updates.' },
+  { q: 'How do you find the lowest common ancestor in a BST?', a: 'Exploit BST ordering: for nodes p and q, if both p.val < node.val and q.val < node.val, LCA is in the left subtree. If both are greater, LCA is in the right. Otherwise, the current node is the LCA (the paths diverge here). O(h) time. Much faster than the O(n) LCA for general binary trees because you can navigate directly without searching both subtrees.' },
   ];
 
   revision: RevisionSummary = {

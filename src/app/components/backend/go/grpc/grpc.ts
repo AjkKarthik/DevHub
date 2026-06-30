@@ -660,6 +660,12 @@ func main() {
       answer: 0,
       explanation: 'gRPC errors are wrapped Status types. status.FromError(err) extracts the typed Status; st.Code() returns the codes.Code. Never string-match error messages — codes are stable across languages and library versions, but the message format can change.'
     },
+    {
+      q: 'What is the difference between unary and streaming gRPC RPCs?',
+      options: ['They are identical at the transport level', 'Unary = one request/one response; streaming allows sending multiple messages in sequence on either the client, server, or both sides', 'Streaming requires WebSockets', 'Unary is deprecated'],
+      answer: 1,
+      explanation: 'gRPC supports four patterns: Unary (1 req / 1 resp), Server Streaming (1 req / N resp — e.g., live data feed), Client Streaming (N req / 1 resp — e.g., file upload), Bidirectional Streaming (N req / N resp interleaved — e.g., chat). All use the same HTTP/2 connection with multiplexed streams. Define them in the .proto with the stream keyword on the message type.'
+    },
   ];
 
   qna: QnaItem[] = [

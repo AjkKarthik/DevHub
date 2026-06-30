@@ -218,6 +218,17 @@ console.log(parseResourceId(id));
       answer: 1,
       explanation: 'Reserved Instances (RIs) give up to 72% off pay-as-you-go prices in exchange for a 1 or 3-year commitment on specific VM families in a specific region.'
     },
+    {
+      q: 'How do Azure Availability Zones differ from Azure Regions?',
+      options: [
+        'Regions are logical groupings; Availability Zones are separate Azure accounts',
+        'Availability Zones are physically separate datacentres within a single region, providing intra-region fault isolation',
+        'Availability Zones span multiple regions for geo-redundancy',
+        'A region contains one Availability Zone; zones span regions',
+      ],
+      answer: 1,
+      explanation: 'An Azure Region is a geographic area with multiple datacentres. Availability Zones are physically separate locations within a region with independent power, cooling, and networking enabling 99.99% VM SLA.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -240,6 +251,10 @@ console.log(parseResourceId(id));
     {
       q: 'What is a Management Group and when do you need one?',
       a: 'Management Groups sit above subscriptions in the hierarchy. They let you apply Azure Policy, RBAC and compliance rules across multiple subscriptions in one operation. You need them in enterprise setups with many subscriptions — for example, applying a "no public IPs" policy across all 20 production subscriptions at once instead of configuring each subscription individually.'
+    },
+    {
+      q: 'What is the Azure Resource Manager (ARM) and why is it important?',
+      a: 'ARM is the deployment and management layer for Azure — every Azure portal click, CLI command, or SDK call goes through ARM. It provides consistent auth via Entra ID, RBAC, resource groups, tagging, locks, and idempotent declarative deployments (ARM templates/Bicep). Understanding ARM is fundamental to IaC and automation.',
     },
   ];
 

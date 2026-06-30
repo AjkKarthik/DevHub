@@ -351,6 +351,12 @@ btn.addEventListener('click', async () => {
       answer: 2,
       explanation: 'Writing to DOM then immediately reading a layout property (offsetHeight, getBoundingClientRect) forces the browser to flush pending style/layout changes synchronously before returning the value. Repeated write-read-write cycles multiply the cost.',
     },
+    {
+      q: 'What is the purpose of scheduler.yield() for improving INP?',
+      options: ['It pauses the event loop permanently', 'It yields control back to the browser mid-task so pending renders and other interactions can be processed', 'It schedules work on a Web Worker', 'It batches DOM updates'],
+      answer: 1,
+      explanation: 'scheduler.yield() is a Promise-based API that pauses the current task and returns control to the browser — allowing it to process any pending user interactions (paint frame, other events) before resuming. Unlike setTimeout(0), it has higher priority and resumes in the correct task origin. Use it to break up long event handlers that would otherwise block INP.',
+    },
   ];
 
   qna: QnaItem[] = [

@@ -364,6 +364,12 @@ export class HtmlSemanticElements {
       answer: 2,
       explanation: 'The datetime attribute holds a machine-parseable date/time string (ISO 8601 format). Without it, <time> provides no extra value over a <span>.'
     },
+    {
+      q: 'What is the difference between <figure> and <picture>?',
+      options: ['They are identical', '<figure> is a semantic grouping for self-contained content with a caption; <picture> is for responsive image sources', '<picture> has captions; <figure> is for responsive images', '<figure> only wraps images; <picture> works with any media'],
+      answer: 1,
+      explanation: '<figure> wraps any self-contained content (image, code, chart, quote) with an optional <figcaption>. <picture> specifically provides multiple <source> elements for responsive images — different formats (WebP/AVIF vs JPEG) or different crops for different screen sizes. An image inside <picture> can also be inside a <figure>.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -382,6 +388,14 @@ export class HtmlSemanticElements {
     {
       q: 'Is <address> for any mailing address?',
       a: 'No. <address> is for contact information related to the nearest <article> or <body>. It is not a generic postal address element — for street addresses inside content (e.g. a store locator), use plain text or <p>.'
+    },
+    {
+      q: 'What is the <details> and <summary> combination used for?',
+      a: '<code>&lt;details&gt;</code> is a disclosure widget — its content is hidden by default and shown when the user clicks <code>&lt;summary&gt;</code>. It provides native accordion/FAQ functionality with no JavaScript required. The open attribute controls the expanded state. Style with CSS; the browser handles toggle behaviour and keyboard access. The open attribute can also be toggled via JS (element.open = true) for programmatic control.',
+    },
+    {
+      q: 'What is the semantic meaning of <mark>?',
+      a: '<code>&lt;mark&gt;</code> highlights text that is relevant to a search query or context — not for general emphasis. Example: in search results, wrapping the matched term in <mark> tells screen readers "this text is highlighted because it matched your query." Default styling is yellow background; override with CSS. Do not use it for decorative highlighting — use CSS ::selection or a <span> with a class for that.',
     },
   ];
 

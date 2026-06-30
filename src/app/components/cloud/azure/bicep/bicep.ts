@@ -293,6 +293,17 @@ console.log(uniqueString('/subscriptions/abc/resourceGroups/my-rg')); // identic
       answer: 1,
       explanation: 'A resource block declares one Azure resource (e.g. a storage account). A module block references another .bicep file, which can itself contain multiple resources and outputs — enabling reuse and encapsulation.'
     },
+    {
+      q: 'What is the primary purpose of Bicep modules?',
+      options: [
+        'To enable multi-region deployments automatically',
+        'To split templates into reusable, composable files',
+        'To replace ARM template parameters',
+        'To enforce RBAC policies on resources',
+      ],
+      answer: 1,
+      explanation: 'Bicep modules allow you to break large templates into smaller, reusable files that can be composed together improving maintainability and enabling sharing across teams.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -315,6 +326,10 @@ console.log(uniqueString('/subscriptions/abc/resourceGroups/my-rg')); // identic
     {
       q: 'How do Bicep modules communicate — how do you pass values in and get values out?',
       a: 'Pass values in via the <strong>params</strong> property: <code>module m \'./m.bicep\' = { name: \'deploy\', params: { sku: \'Standard_LRS\' } }</code>. Get values out via the module\'s outputs: <code>output endpoint string = m.outputs.blobEndpoint</code> (the child template must declare the output). The parent consumes it as <code>m.outputs.blobEndpoint</code> in expressions or other resource properties.'
+    },
+    {
+      q: 'How do Bicep for loops differ from ARM copy elements?',
+      a: 'Bicep for loops use clean syntax: <code>[for i in range(0, count): { ... }]</code> for arrays, or <code>for item in items</code> to iterate a parameter array. They compile to ARM copy elements but are far more readable. You can use them on resources, variables, properties, and outputs.',
     },
   ];
 

@@ -264,6 +264,17 @@ ORDER BY month_start;`,
       answer: 2,
       explanation: 'GETUTCDATE() returns the current UTC time. GETDATE() and CURRENT_TIMESTAMP return the local server time, which depends on server configuration.',
     },
+    {
+      q: 'How does AT TIME ZONE work in MSSQL?',
+      options: [
+        'It displays the UTC offset of the given time zone as a number',
+        'It converts a datetime or datetimeoffset to the specified named Windows time zone, handling DST automatically',
+        'It is equivalent to DATEADD with an offset constant',
+        'It converts a TIMESTAMPTZ to a plain TIMESTAMP'
+      ],
+      answer: 1,
+      explanation: 'SELECT created_at AT TIME ZONE \'UTC\' AT TIME ZONE \'Eastern Standard Time\' returns a DATETIMEOFFSET adjusted to Eastern time. It uses the Windows time zone database (including DST rules), so the offset changes in March and November automatically.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -278,6 +289,18 @@ ORDER BY month_start;`,
     {
       q: 'How do I handle daylight saving time correctly when storing and querying dates?',
       a: 'Store everything as UTC (DATETIMEOFFSET in MSSQL, TIMESTAMPTZ in PostgreSQL). Convert to local time zones only in the application layer or in a view. Never add DST offsets manually — use the database\'s AT TIME ZONE feature with named time zones (e.g., \'America/New_York\') which handles DST automatically.',
+    },
+    {
+      q: 'How do I calculate a person\'s age correctly in SQL?',
+      a: 'Simple subtraction underestimates for birthdays not yet reached this year. In PostgreSQL: EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) — AGE() returns an interval. In MSSQL: DATEDIFF(year, birth_date, GETDATE()) - CASE WHEN MONTH(birth_date) > MONTH(GETDATE()) OR (MONTH(birth_date) = MONTH(GETDATE()) AND DAY(birth_date) > DAY(GETDATE())) THEN 1 ELSE 0 END.',
+    },
+    {
+      q: 'How do I truncate a date to the start of the fiscal year (April 1) in SQL?',
+      a: 'Compute the calendar year of the fiscal year start: fiscal_year_start = CASE WHEN MONTH(dt) >= 4 THEN DATEFROMPARTS(YEAR(dt), 4, 1) ELSE DATEFROMPARTS(YEAR(dt) - 1, 4, 1) END (MSSQL). PostgreSQL: CASE WHEN EXTRACT(MONTH FROM dt) >= 4 THEN DATE_TRUNC(\'year\', dt) + INTERVAL \'3 months\' ELSE DATE_TRUNC(\'year\', dt) - INTERVAL \'9 months\' END.',
+    },
+    {
+      q: 'How do I group sales data by month when the datetime column has both date and time?',
+      a: 'Truncate to month before grouping: MSSQL: GROUP BY DATEADD(month, DATEDIFF(month, 0, order_date), 0) — returns the first of the month. PostgreSQL: GROUP BY DATE_TRUNC(\'month\', order_date). Both approaches let the optimizer use a range index on the raw order_date column rather than wrapping it in a function.',
     },
   ];
 }

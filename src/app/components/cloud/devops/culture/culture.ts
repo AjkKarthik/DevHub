@@ -391,6 +391,16 @@ function calculateDORA(
       answer: 2,
       explanation: 'Large batches increase risk (more changes = harder to find root cause), increase stress around release windows, and make rollback difficult. DevOps favours small, frequent, automated deploys to reduce batch size and blast radius.',
     },
+    {
+      q: 'What does "you build it, you run it" mean in DevOps?',
+      options: [
+        'Developers must build and deploy all infrastructure themselves',
+        'The team that builds a service is also responsible for operating it in production — on-call, monitoring, and incident response',
+        'Each developer runs their own separate production environment',
+        'Operations builds services based on developer specifications'],
+      answer: 1,
+      explanation: '"You build it, you run it" (Werner Vogels, Amazon) means the team that writes the code owns production — they set up monitoring, respond to alerts, and fix incidents. This eliminates the wall between dev and ops: developers care about reliability because they feel the pain of outages. It drives better software design (testability, observability) and faster incident resolution.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -413,6 +423,10 @@ function calculateDORA(
     {
       q: 'How do you measure psychological safety in a team?',
       a: 'Amy Edmondson\'s seven-question survey is the standard tool. Questions like "If you make a mistake on this team, it is often held against you" (reversed scale). Quantitatively: track incident report rates (low reporting = low safety), retrospective participation, and near-miss disclosures. Qualitatively: 1:1s and anonymous feedback.',
+    },
+    {
+      q: 'What is a blameless postmortem and why is it culturally important?',
+      a: 'A blameless postmortem (post-incident review) focuses on systemic causes of an incident rather than individual fault. The premise: individuals are rarely the root cause — they work within systems, processes, and constraints that shaped their decisions. A blameless culture means people share the full timeline, including their mistakes, without fear of punishment. This produces better incident reports (no omissions), encourages psychological safety, surfaces real system weaknesses (not "user error"), and enables learning. Contrast: blame cultures hide information (people omit mistakes to avoid blame), problems recur, engineers fear taking responsibility for production. Google, Netflix, and Etsy popularised blameless postmortems as a core reliability practice.',
     },
   ];
 

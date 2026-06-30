@@ -180,12 +180,56 @@ async function reserveItem(itemId: string, qty: number): Promise<boolean> {
       answer: 2,
       explanation: 'Redis does NOT roll back on runtime errors. Commands 4 and 5 still execute. Only syntax errors at queue time abort the entire transaction.',
     },
+    {
+      q: 'What does WATCH do in a Redis transaction?',
+      options: ['Monitors transaction execution time', 'Marks keys for optimistic locking — if any watched key changes before EXEC, the transaction is aborted', 'Watches the AOF file for changes', 'Enables transaction logging'],
+      answer: 1,
+      explanation: 'WATCH key1 key2... marks keys for optimistic locking. If any watched key is modified between WATCH and EXEC, EXEC returns nil (aborts). Client must retry. Use for check-and-set (CAS) operations without pessimistic locks.',
+    },
+    {
+      q: 'What happens if a command in a MULTI/EXEC block fails at execution time?',
+      options: ['The entire transaction is rolled back', 'Only the failed command is rejected; other commands in the block still execute', 'Redis rolls back all commands after the failure', 'EXEC returns an error and aborts all commands'],
+      answer: 1,
+      explanation: 'Redis transactions do NOT have rollback. If a command fails during EXEC (e.g., INCR on a string), other commands still execute. Only syntax errors (queued before EXEC) abort the entire transaction. This is a key difference from SQL transactions.',
+    },
+    {
+      q: 'What does DISCARD do in a Redis transaction?',
+      options: ['Discards all keys in the transaction', 'Cancels the queued transaction, flushing the command queue and unwatching all watched keys', 'Rollbacks completed commands', 'Disconnects from Redis'],
+      answer: 1,
+      explanation: 'DISCARD abandons the current MULTI block, discarding all queued commands and unwatching WATCH keys. Use it when your application detects it cannot proceed with the transaction (e.g., business logic check fails after MULTI).',
+    },
+    {
+      q: 'Can you use Redis MULTI/EXEC inside a Lua script?',
+      options: ['Yes, Lua fully supports MULTI/EXEC', 'No, Lua scripts are already atomic — MULTI/EXEC is not allowed inside Lua', 'Yes, but only in cluster mode', 'Only MULTI is allowed; EXEC is implicit at script end'],
+      answer: 1,
+      explanation: 'Lua scripts are inherently atomic in Redis — using MULTI/EXEC inside a Lua script is redundant and not allowed. Use redis.call(). For the same atomicity reason, you also cannot use WATCH inside Lua scripts.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'Can I use conditional logic inside a MULTI/EXEC transaction?',
       a: 'No — commands inside MULTI are queued and executed later, so you cannot read a value mid-transaction and branch on it. Use WATCH for optimistic CAS patterns or Lua scripts (EVAL) for richer conditional logic within a single atomic operation.',
+    },
+    {
+      q: 'How does WATCH implement optimistic locking in Redis?',
+      a: 'WATCH key1 key2... marks keys to monitor. If any watched key is modified before EXEC is called (by any client), EXEC returns nil (transaction aborted) instead of executing commands. Pattern: WATCH key, GET key, compute new value, MULTI, SET key newvalue, EXEC — retry loop if EXEC returns nil. CAS (check-and-set) without locks.',
+    },
+    {
+      q: 'Why does Redis MULTI not support rollback?',
+      a: 'Redis transactions do not support rollback because: (1) command errors (wrong type) indicate programmer bugs, not runtime conditions; (2) rollback would sacrifice performance (Redis is optimised for simplicity and speed). If a command in MULTI/EXEC fails, other commands still execute. Only syntax errors at queue time abort the whole transaction.',
+    },
+    {
+      q: 'What is the DISCARD command?',
+      a: 'DISCARD aborts a MULTI/EXEC transaction — flushes the queued commands and exits transaction mode. Also unWATCHes all watched keys. Use when you detect a condition mid-queue that means the transaction should not proceed. After DISCARD, the connection returns to normal command mode.',
+    },
+    {
+      q: 'How does Lua scripting compare to MULTI/EXEC for atomic operations?',
+      a: 'Both are atomic. <strong>MULTI/EXEC</strong>: queues commands, executes atomically — but no conditional logic (cannot branch on intermediate values during execution). <strong>Lua</strong>: full scripting — can read a value, compute, and conditionally write, all atomically. Use Lua when you need if/else or loops across commands. Lua has higher complexity but more power.',
+    },
+    {
+      q: 'What happens to a MULTI/EXEC transaction if a command has a syntax error?',
+      a: 'If a command has a <strong>syntax error at queue time</strong> (e.g., wrong number of args), Redis returns an error immediately and the entire transaction is aborted on EXEC — no commands execute. If a command has a <strong>runtime error</strong> (e.g., wrong type at execution time), other commands in the queue still run — partial execution. This differs from SQL transactions.',
     },
   ];
 

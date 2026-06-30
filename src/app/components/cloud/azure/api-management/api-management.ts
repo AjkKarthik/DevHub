@@ -349,6 +349,17 @@ console.log(limiter.isAllowed('sub-456')); // true (different client)`
       answer: 1,
       explanation: 'validate-jwt runs in the inbound section and verifies: JWT signature (against signing keys fetched from the OIDC well-known endpoint), expiry (exp claim), issuer (iss must match), audience (aud must match), and any required-claims. If validation fails, APIM returns 401 immediately — the backend is never called. This offloads authentication from every individual backend service to a single APIM policy.'
     },
+    {
+      q: 'What is the purpose of an APIM policy and where in the request pipeline can they be applied?',
+      options: [
+        'Policies only apply to responses, not requests',
+        'Policies are XML rules applied in inbound, backend, outbound, and on-error scopes to transform, validate, throttle, or augment API traffic',
+        'Policies replace the backend API entirely',
+        'Policies only apply at the product level, not per-operation',
+      ],
+      answer: 1,
+      explanation: 'APIM policies are XML-based transformation rules applied at four pipeline stages: inbound (before the backend — add headers, validate JWT, rate-limit), backend (control backend call — retry, circuit break), outbound (transform response — strip headers, set-body, mock-response), and on-error (handle pipeline failures). Apply at global, product, API, or operation scope — narrower scope overrides broader. Use policies for cross-cutting concerns without touching the backend code.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -371,6 +382,10 @@ console.log(limiter.isAllowed('sub-456')); // true (different client)`
     {
       q: 'How do you implement backend circuit breaking in APIM?',
       a: 'APIM (2023+) has a native <strong>circuit-breaker policy</strong> on backend entities: configure trip conditions (e.g., 5xx responses or latency > threshold) and a break duration (e.g., 30 seconds). When the circuit trips, APIM returns 503 immediately without calling the backend — giving it time to recover. Before the native circuit breaker, teams used: (1) <strong>retry policy</strong> with exponential back-off for transient errors. (2) <strong>Multiple backends</strong> with APIM\'s load balancer: route to a secondary backend when the primary fails. (3) <strong>send-request</strong> + conditional forwarding: check a health endpoint before routing. The native circuit-breaker policy is the simplest modern approach.'
+    },
+    {
+      q: 'How do you secure an API in APIM so only authorised clients can call it?',
+      a: 'Options include: (1) subscription keys via Ocp-Apim-Subscription-Key header; (2) OAuth 2.0 via the validate-jwt policy; (3) mutual TLS client certificate validation; (4) IP filtering in inbound policy. For internal APIs, also restrict to VNet or Private Link to prevent public internet access.',
     },
   ];
 

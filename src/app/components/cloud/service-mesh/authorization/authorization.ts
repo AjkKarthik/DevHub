@@ -457,6 +457,7 @@ console.log(getBillingPolicies());`,
       q: 'How can you implement a global default-deny policy across the entire mesh?',
       a: 'Create a mesh-wide ALLOW policy in the <code>istio-system</code> namespace with no selector and empty rules — this results in default-deny for all workloads: <pre><code>apiVersion: security.istio.io/v1beta1\nkind: AuthorizationPolicy\nmetadata:\n  name: deny-all\n  namespace: istio-system\nspec: {}  # No selector, no action, no rules = mesh-wide deny</code></pre>After this, each service needs its own explicit ALLOW policy. This is the strictest zero-trust posture — start here only in new clusters or when you have full visibility into all traffic patterns. In existing clusters, use AUDIT mode first to discover what needs to be explicitly allowed.',
     },
+  { q: 'How do you debug authorization policy rejections in Istio?', a: 'Enable access logging on the sidecar to see denied requests: add the EnvoyFilter or set accessLogFile in the mesh config. Check the Envoy admin interface at port 15000 on the pod for the effective filter chain. Use istioctl analyze to check for misconfigured policies. The Authorization log level can be raised on a specific pod with istioctl proxy-config log pod/name --level rbac:debug. Kiali visualizes authorization policies and shows which traffic is allowed or denied between services in the service graph.' },
   ];
 
   revision: RevisionSummary = {

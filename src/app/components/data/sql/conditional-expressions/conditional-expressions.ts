@@ -288,6 +288,17 @@ ORDER BY month;`,
       answer: 1,
       explanation: "FILTER (WHERE …) is a PostgreSQL extension that applies a condition within an aggregate. It's cleaner than the CASE-inside-SUM pattern and produces the same result.",
     },
+    {
+      q: 'What is the difference between COALESCE and ISNULL in MSSQL for performance?',
+      options: [
+        'COALESCE is always slower because it evaluates all arguments even when the first is non-NULL',
+        'ISNULL is a T-SQL function that takes exactly 2 args and is sometimes inlined more efficiently by the optimizer; COALESCE is ANSI SQL and always evaluates args lazily',
+        'ISNULL converts the second argument to the type of the first; COALESCE returns the widest compatible type',
+        'They are identical in all respects'
+      ],
+      answer: 2,
+      explanation: 'ISNULL(x, y) uses the data type of x (truncating y if necessary). COALESCE(x, y) returns the highest-precedence type from all arguments. This matters for string lengths: ISNULL(CAST(NULL AS VARCHAR(5)), \'default\') returns VARCHAR(5), potentially truncating \'default\'.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -302,6 +313,18 @@ ORDER BY month;`,
     {
       q: 'How do I use CASE for dynamic column ordering?',
       a: 'Use CASE in the ORDER BY clause: ORDER BY CASE WHEN @sort = \'name\' THEN name END, CASE WHEN @sort = \'date\' THEN order_date END. Each CASE returns a value for that column; unmatched branches return NULL and sort last. This enables parameter-driven sorting without dynamic SQL.',
+    },
+    {
+      q: 'Can I use CASE inside a GROUP BY clause?',
+      a: 'Yes — GROUP BY CASE WHEN amount < 100 THEN \'small\' WHEN amount < 1000 THEN \'medium\' ELSE \'large\' END groups rows into buckets. The expression in GROUP BY must exactly match the one in SELECT. In PostgreSQL you can reference a SELECT alias in GROUP BY; MSSQL requires repeating the full expression.',
+    },
+    {
+      q: 'How do I handle complex nested CASE expressions readably?',
+      a: 'Break deeply nested CASE into a CTE or subquery that computes intermediate values. For example: WITH category AS (SELECT id, CASE status WHEN \'A\' THEN \'active\' ELSE \'inactive\' END AS cat FROM orders) SELECT … CASE WHEN cat = \'active\' AND amount > 100 THEN \'priority\' … END FROM category. This keeps each CASE to a single level and makes the logic auditable.',
+    },
+    {
+      q: 'When is IIF() preferable to CASE WHEN in MSSQL?',
+      a: 'IIF(condition, true_val, false_val) is syntactic sugar for a two-branch CASE — it is slightly shorter when you only need one TRUE/FALSE branch and no ELSE. Both compile to the same plan. IIF is T-SQL-specific; use CASE WHEN for portable code. Avoid nesting IIF() — it becomes unreadable; use CASE for multi-branch logic.',
     },
   ];
 }

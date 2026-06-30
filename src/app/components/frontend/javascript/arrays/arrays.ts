@@ -360,6 +360,12 @@ console.log(revenueByCategory(orders));
       answer: 2,
       explanation: 'includes() uses SameValueZero comparison which correctly handles NaN. indexOf() uses === which fails since NaN !== NaN. find/some with === also fail.',
     },
+    {
+      q: 'What does Array.from({ length: 3 }, (_, i) => i) produce?',
+      options: ['[undefined, undefined, undefined]', '[0, 1, 2]', '[1, 2, 3]', 'SyntaxError'],
+      answer: 1,
+      explanation: 'Array.from with a mapping function receives (value, index). Since the array-like has no values, value is undefined, but index gives 0, 1, 2. This is the standard pattern for creating a sequence.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -374,6 +380,18 @@ console.log(revenueByCategory(orders));
     {
       q: 'How do I efficiently deduplicate an array?',
       a: '<code>[...new Set(arr)]</code> or <code>Array.from(new Set(arr))</code> deduplicates primitives in O(n). For objects (where you want unique by a key): <code>arr.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i)</code> — O(n²). For large datasets, use a Map: <code>[...new Map(arr.map(x => [x.id, x])).values()]</code> — O(n).',
+    },
+    {
+      q: 'What is the difference between Array.prototype.sort() and a stable sort?',
+      a: 'A stable sort preserves the original relative order of equal elements. Since V8 10.0 (Chrome 90 / Node.js 16) and all modern engines, Array.prototype.sort() is guaranteed to be stable. Before that, engines could use unstable algorithms for large arrays. Today you can rely on sort() stability for tie-breaking (e.g. sort by name, then city).',
+    },
+    {
+      q: 'When should I use reduceRight instead of reduce?',
+      a: '<code>reduceRight</code> iterates from the last element to the first. Use it when order matters and you want right-to-left processing: composing functions right-to-left (<code>f(g(h(x)))</code>), reversing accumulation logic, or processing nested right-associative data. For most use cases (summing, flattening) the direction doesn\'t matter — prefer <code>reduce</code>.',
+    },
+    {
+      q: 'What is the pitfall of using forEach with async/await?',
+      a: '<code>forEach</code> ignores the return value of its callback, so returning a Promise from it does nothing — the loop does not await each iteration. Use <code>for...of</code> with <code>await</code> for sequential async iteration, or <code>await Promise.all(arr.map(async fn))</code> for parallel. <code>forEach</code> with async functions leads to uncaught rejection warnings and race conditions.',
     },
   ];
 

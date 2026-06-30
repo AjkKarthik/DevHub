@@ -333,6 +333,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'docker stop sends SIGTERM and waits (default 10 seconds) for a graceful shutdown before sending SIGKILL. docker kill sends SIGKILL immediately. Always prefer docker stop in production to allow in-flight requests to finish.',
   },
+  { q: 'What Linux kernel features make containers possible?', options: ['Virtual machines and type-2 hypervisors like VMware or KVM', 'Namespaces for process isolation and cgroups for resource limits', 'POSIX threads and shared memory segments', 'Swap space and NUMA memory topology'], answer: 1, explanation: 'Containers use Linux namespaces to isolate: PID (process trees), NET (network interfaces), MNT (filesystem mounts), UTS (hostname), IPC, and USER (user/group IDs). cgroups enforce resource limits: CPU, memory, I/O, and network bandwidth. Seccomp restricts syscalls. Union filesystems like overlayfs stack read-only image layers. No hypervisor is required because containers share the host kernel, which is why they start in milliseconds.' },
 ];
 
 const qna: QnaItem[] = [
@@ -356,6 +357,7 @@ const qna: QnaItem[] = [
     q: 'Why should containers run as non-root?',
     a: 'A root process (UID 0) inside a container that escapes the namespace boundary via a kernel exploit becomes root on the host. Best practices: add `USER nonroot` in the Dockerfile, set `runAsNonRoot: true` in Kubernetes securityContext, and enable user namespaces to map container root to an unprivileged host UID for rootless operation.',
   },
+  { q: 'What is the fundamental difference between a container and a VM?', a: 'VMs: each has its own OS kernel with hardware virtualized by a hypervisor. Strong isolation, slow to start (seconds to minutes), large footprint (gigabytes per VM). Containers: share the host kernel, isolated via namespaces and cgroups, start in milliseconds, tiny footprint (megabytes). The tradeoff: containers offer weaker isolation because a kernel exploit affects all containers on the host; VMs provide stronger security boundaries. Use VMs for untrusted code or compliance requiring OS-level isolation. Use containers for microservices, fast scaling, and consistent dev and production environments.' },
 ];
 
 const revision: RevisionSummary = {

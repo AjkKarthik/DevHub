@@ -305,6 +305,17 @@ console.log(subnetInfo('10.0.2.0/28'));
       answer: 1,
       explanation: 'Without a private DNS zone, the PaaS hostname resolves to its public IP even from within the VNet. Create a privatelink DNS zone, add an A record pointing to the private endpoint\'s private IP, and link the zone to the VNet — then the hostname resolves privately.'
     },
+    {
+      q: 'What is the key difference between Azure NSGs and Azure Firewall?',
+      options: [
+        'NSGs filter traffic at the VNet level; Azure Firewall works at the subnet level',
+        'NSGs provide stateful L3/L4 filtering at NIC/subnet level; Azure Firewall is a managed L4/L7 service with FQDN filtering, threat intelligence, and centralised policy',
+        'Azure Firewall replaces NSGs and both cannot be used together',
+        'NSGs support FQDN-based rules; Azure Firewall only supports IP-based rules',
+      ],
+      answer: 1,
+      explanation: 'NSGs are free, stateful L3/L4 rules on NICs or subnets. Azure Firewall is a managed service with L7 inspection, FQDN filtering, TLS inspection, threat intelligence integration, and centralised management used for hub-spoke or egress control.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -327,6 +338,10 @@ console.log(subnetInfo('10.0.2.0/28'));
     {
       q: 'What are User-Defined Routes (UDRs) and when do you need them?',
       a: 'UDRs override Azure\'s default system routes. Use them to: (1) <strong>force internet-bound traffic through Azure Firewall</strong> (next hop = firewall private IP), (2) <strong>route inter-VNet traffic through an NVA</strong> for deep-packet inspection, (3) <strong>prevent spoke-to-spoke traffic</strong> in a hub-and-spoke without going through the hub NVA. Apply UDRs to route tables and associate the route table with a subnet.'
+    },
+    {
+      q: 'What is VNet peering and what are its key constraints?',
+      a: 'VNet peering connects two VNets enabling private traffic routing via the Azure backbone. Key constraints: (1) address spaces must not overlap; (2) peering is non-transitive (A-B + B-C does not mean A-C can route without hub or VPN); (3) peering is regional or global (cross-region). Use hub-spoke topology with Azure Firewall or route tables for transitive routing.',
     },
   ];
 

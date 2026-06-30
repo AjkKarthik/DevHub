@@ -399,6 +399,12 @@ const result = [...take(
       answer: 1,
       explanation: 'The return value appears in the { done: true, value: returnValue } object. Spread and for...of stop at done:true and do NOT include the return value in the results.',
     },
+    {
+      q: 'What does passing a value to generator.next(value) do?',
+      options: ['It is ignored', 'It becomes the result of the yield expression inside the generator', 'It appends to the yielded sequence', 'It throws inside the generator'],
+      answer: 1,
+      explanation: 'The value passed to .next(value) becomes the value of the yield expression on the left of the = inside the generator. The first .next() call starts execution and its argument is ignored.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -413,6 +419,18 @@ const result = [...take(
     {
       q: 'What happens to generator cleanup if the consumer breaks early?',
       a: 'When a <code>for...of</code> loop breaks early (or throws), JavaScript calls <code>generator.return()</code> which causes the generator to run any <code>finally</code> blocks and terminate cleanly. This is how resource cleanup works: wrap resource acquisition in <code>try/finally</code> inside the generator — the finally block runs even on early termination.',
+    },
+    {
+      q: 'What is an async generator and when would you use one?',
+      a: 'An async generator is declared with <code>async function*</code> and can use both <code>yield</code> and <code>await</code>. It returns an AsyncIterator consumed with <code>for await...of</code>. Use it for paginated API calls, server-sent events, reading streams chunk by chunk, or any scenario where you produce values asynchronously one at a time. It combines the lazy pull model of generators with async I/O.',
+    },
+    {
+      q: 'How do generators differ from iterators?',
+      a: 'An <strong>iterator</strong> is any object with a <code>next()</code> method returning <code>{value, done}</code> — you implement all the state management manually. A <strong>generator</strong> is a function that automatically creates an iterator for you — state, pausing, and resuming are handled by the engine via <code>yield</code>. All generators produce iterators, but not all iterators are generators.',
+    },
+    {
+      q: 'How can generators implement the observer pattern?',
+      a: 'By receiving values via <code>yield</code> and processing them: <code>const result = yield nextValue</code> — the sender calls <code>gen.next(incomingValue)</code>. This creates a coroutine where the generator is both a producer (yielding) and a consumer (receiving). Libraries like Redux-Saga use this to create testable async workflows where effects are plain values that the middleware interprets.',
     },
   ];
 

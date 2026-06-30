@@ -316,6 +316,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: '--exit-code 1 makes Trivy exit with code 1 when vulnerabilities matching the severity filter are found. CI systems treat a non-zero exit code as a failed step, blocking the push.',
   },
+  { q: 'What is the relationship between image layers and the container layer?', options: ['Images have no layers; only running containers have layers', 'Image layers are read-only and shared across containers; the container adds a writable copy-on-write layer at runtime', 'Image layers are temporary per build; container layers are permanent across restarts', 'All layers are read-write in both images and containers'], answer: 1, explanation: 'Docker images consist of stacked read-only layers: each FROM, RUN, and COPY instruction adds one. When a container starts, Docker adds a thin writable layer on top using copy-on-write. Reading a file from a lower layer is fast; modifying it copies it up to the writable layer first. This writable layer is discarded when the container is removed. Use named volumes for data that must persist beyond container removal.' },
 ];
 
 const qna: QnaItem[] = [
@@ -339,6 +340,7 @@ const qna: QnaItem[] = [
     q: 'What is a dangling image and why should you prune them?',
     a: 'A dangling image is an image layer that has no tag and is not referenced by any container. They accumulate during repeated builds when the same tag is rebuilt — the old manifest becomes untagged. They consume disk space but cannot be pulled or run. `docker image prune` removes them; `docker image prune -a` also removes tagged images not currently in use by any container.',
   },
+  { q: 'How do you reduce Docker image size effectively?', a: 'Key techniques: use minimal base images such as alpine, distroless, or scratch. Use multi-stage builds to compile in a full SDK image and copy only built artifacts to a minimal runtime image. Combine RUN commands with && to minimize the number of layers. Use .dockerignore to exclude node_modules, .git, and test files from the build context. Remove package manager caches in the same RUN step as installation so they do not persist in a layer. Use docker image history and docker image inspect to identify large layers before optimizing.' },
 ];
 
 const revision: RevisionSummary = {

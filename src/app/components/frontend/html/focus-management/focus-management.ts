@@ -168,6 +168,12 @@ export class HtmlFocusManagement {
       options: ['A descriptive link text.', 'An icon.', 'The URL of the destination.'],
       answer: 0,
       explanation: 'Skip links should include a descriptive link text for better accessibility.'
+    },
+    {
+      q: 'What is the tabindex value that makes an element focusable but keeps it in natural DOM order?',
+      options: ['-1', '0', '1', '100'],
+      answer: 1,
+      explanation: 'tabindex="0" adds an element to the natural tab order based on its position in the DOM. tabindex="-1" makes it focusable programmatically only (via .focus()). Positive tabindex values override the natural order and should be avoided — they create confusing tab sequences.',
     }
   ];
 
@@ -187,7 +193,15 @@ export class HtmlFocusManagement {
     {
       q: 'What is the purpose of the `.focus-visible` class?',
       a: '.focus-visible applies styles when an element is focused using keyboard navigation, ensuring that visual cues are available for keyboard users.'
-    }
+    },
+    {
+      q: 'How do you programmatically move focus when opening a modal?',
+      a: 'When a modal opens, call focus() on the first interactive element inside it (the close button or the first form field) or on the modal container itself if given tabindex="-1". Use requestAnimationFrame or a short setTimeout if the element needs a render cycle before focus works. On close, return focus to the element that triggered the modal (store a reference before opening).'
+    },
+    {
+      q: 'What is the roving tabindex pattern and when is it used?',
+      a: 'Roving tabindex is used in composite widgets (toolbars, tab lists, carousels, grids) where arrow keys navigate between items. Only ONE item in the group has tabindex="0" (the current item) — all others have tabindex="-1". Tab moves in/out of the widget; arrow keys move within. When a new item is selected via arrow, set its tabindex to 0 and the previous item\'s to -1, then call focus() on it.'
+    },
   ];
 
   revision: RevisionSummary = {

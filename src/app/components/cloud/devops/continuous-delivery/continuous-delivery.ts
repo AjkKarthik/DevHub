@@ -492,6 +492,17 @@ console.log(scoreDeploymentRisk({
       answer: 2,
       explanation: 'Change Failure Rate (CFR) directly measures deployment quality: what percentage of your deployments cause a production incident requiring hotfix or rollback. Elite performers achieve 0–15% CFR. A high deployment frequency with a high CFR means you are deploying problems frequently. CFR is the best signal for "are our releases actually safe?"',
     },
+    {
+      q: 'What is a deployment gate in a CD pipeline?',
+      options: [
+        'A manual approval step that pauses all pipelines',
+        'An automated check that must pass before the pipeline proceeds to the next stage — e.g. error rate below threshold, smoke tests green',
+        'A network firewall rule between environments',
+        'A feature flag that controls access to a deployment',
+      ],
+      answer: 1,
+      explanation: 'Deployment gates are automated quality checks inserted between pipeline stages. Examples: "error rate < 0.1% for 10 minutes after deployment" (using APM data), "integration tests pass", "vulnerability scan clean". If a gate fails, the pipeline halts and can auto-rollback. Gates replace fragile manual sign-offs with objective, measurable criteria — crucial for high-frequency CD.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -514,6 +525,10 @@ console.log(scoreDeploymentRisk({
     {
       q: 'What is a "feature flag" and how does it relate to continuous deployment?',
       a: 'A feature flag (or feature toggle) wraps a code path so it can be enabled/disabled at runtime without redeployment: `if (flags.newCheckout) { newFlow() } else { oldFlow() }`. In continuous deployment, feature flags decouple deployment from release: you deploy the new code to 100% of servers with the flag OFF (dark launch), then gradually enable it for 1% → 10% → 100% of users, monitoring at each step. Flags enable: (1) deploying incomplete features safely (no need for long-lived feature branches), (2) instant rollback (flip the flag instead of redeploying), (3) A/B testing and progressive rollouts. Tools: LaunchDarkly, Unleash, AWS AppConfig.',
+    },
+    {
+      q: 'What is the difference between Continuous Delivery and Continuous Deployment?',
+      a: 'Continuous Delivery: every commit passes through the full pipeline and produces a deployable artifact, but deployment to production requires a manual trigger or approval gate. A human decides when and what to deploy. Continuous Deployment: every commit that passes all automated checks is automatically deployed to production — no human gate. CD (Delivery) is appropriate when business or regulatory processes require manual release approval (change advisory boards, compliance windows). CD (Deployment) requires high confidence in test coverage, rollback speed, and monitoring — mistakes go to production automatically.',
     },
   ];
 

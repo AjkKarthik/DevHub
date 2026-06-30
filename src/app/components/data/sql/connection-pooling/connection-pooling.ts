@@ -344,6 +344,28 @@ LIMIT 5;`
       answer: 1,
       explanation: 'Databases are ultimately limited by CPU cores and I/O throughput. Adding more simultaneous connections beyond that limit causes the OS to context-switch more, and SQL engines contend more on internal latches. The sweet spot (often 2× CPU cores for CPU-bound workloads) with a request queue frequently outperforms large pools where all connections compete.'
     },
+    {
+      q: 'What does HikariCP (Java) recommend as the formula for pool size?',
+      options: [
+        'pool_size = threads × 2',
+        'pool_size = (cores × 2) + effective_spindle_count',
+        'pool_size = max_connections / app_instances',
+        'pool_size = average_query_time_ms × requests_per_second'
+      ],
+      answer: 1,
+      explanation: 'The HikariCP "about pool sizing" article recommends: connections = (core_count × 2) + effective_spindle_count. For an 8-core server with SSDs (spindle count ≈ 1), that is 17 connections. This often surprises developers expecting a much larger pool.'
+    },
+    {
+      q: 'What does the Min Pool Size (or min_size) setting control in a connection pool?',
+      options: [
+        'The minimum number of queries per connection before the connection is recycled',
+        'The minimum number of connections the pool keeps open even during idle periods',
+        'The minimum allowed connection timeout in milliseconds',
+        'The minimum connection pool size across all application instances'
+      ],
+      answer: 1,
+      explanation: 'Min Pool Size keeps a floor of open connections alive so that bursts of traffic do not incur reconnection latency. Set it to the baseline concurrency expected during off-peak hours. Setting it too high wastes database connections during idle periods.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -358,6 +380,18 @@ LIMIT 5;`
     {
       q: 'Can I use PgBouncer with prepared statements?',
       a: 'Not transparently in transaction mode. Prepared statements are session-scoped in PostgreSQL, but in transaction mode the server connection changes between transactions — the prepared statement is gone. Solutions: (1) Use simple query protocol instead of prepared statements. (2) Use PgBouncer\'s session mode (less efficient). (3) Use pgpool-II which has protocol-aware prepared statement tracking. (4) Use Npgsql\'s max_auto_prepare = 0 to disable prepared statements when behind PgBouncer.',
+    },
+    {
+      q: 'How do I detect connection leaks in a pool?',
+      a: 'Monitor pool metrics: if the "active connections" gauge grows over time without a corresponding increase in load, connections are being borrowed and not returned. In HikariCP set leakDetectionThreshold to log a warning when a connection is held longer than that threshold. In ADO.NET, enable connection lifetime and check sys.dm_exec_sessions for sessions in "sleeping" state longer than expected. Always use using blocks or try/finally to ensure disposal.',
+    },
+    {
+      q: 'When should I use pgpool-II vs PgBouncer?',
+      a: 'PgBouncer is a lightweight, fast proxy focused purely on connection pooling — it adds minimal overhead and is the default recommendation for most workloads. pgpool-II adds query load balancing (distribute SELECTs across replicas), connection pooling, and replication management. Choose pgpool-II when you need transparent read-scaling across multiple PostgreSQL nodes; otherwise PgBouncer is simpler to operate and debug.',
+    },
+    {
+      q: 'How does the database enforce a maximum connection limit?',
+      a: 'PostgreSQL enforces max_connections in postgresql.conf — new connection attempts beyond that limit immediately receive "sorry, too many clients already." MSSQL uses the max connections server property (0 = unlimited, but OS/hardware constrained). At the pool layer, Max Pool Size (ADO.NET/HikariCP) throttles the app before hitting the database limit — the pool queue absorbs burst traffic rather than letting clients hit database errors.',
     },
   ];
 }

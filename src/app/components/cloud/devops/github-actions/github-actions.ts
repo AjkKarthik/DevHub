@@ -510,6 +510,16 @@ console.log(validateWorkflow({
       answer: 1,
       explanation: 'Reusable workflows (workflow_call) spin up their own runner and have full job-level isolation — they have their own environment, secrets, and concurrency. Composite actions run within the calling job\'s runner, sharing its workspace and environment. Use reusable workflows for full pipelines; composite actions for groups of steps.',
     },
+    {
+      q: 'What is a composite action in GitHub Actions and when would you use it?',
+      options: [
+        'An action that runs multiple jobs in parallel',
+        'A reusable action defined in YAML that combines multiple steps — shareable across workflows without publishing to the Marketplace',
+        'An action that builds Docker composite images',
+        'An action that aggregates results from multiple previous steps'],
+      answer: 1,
+      explanation: 'A composite action (action.yml with runs.using: composite) bundles multiple shell steps into a single reusable action. Unlike reusable workflows, composite actions are lightweight — they run in the caller\'s job context and do not require a separate job. Use composite actions for repeated step sequences (setup Node + install + cache) that you want to share across multiple workflows within a repo or organisation. Publish to the Marketplace or reference via path for internal use.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -532,6 +542,10 @@ console.log(validateWorkflow({
     {
       q: 'How do I handle secret rotation without breaking running workflows?',
       a: 'Add the new secret value under a new name first (e.g., `DATABASE_URL_V2`), update your workflow to reference it, merge to main, let the new workflow run successfully. Then delete the old secret. This zero-downtime rotation ensures no running workflow loses its secret mid-run. For infrastructure-managed secrets (AWS, Azure, Vault), use short-lived OIDC tokens instead of long-lived secret values — the workflow fetches a temporary credential via `aws-actions/configure-aws-credentials` without storing any secret at all.',
+    },
+    {
+      q: 'How do you securely handle secrets in GitHub Actions?',
+      a: 'Best practices for GitHub Actions secrets: (1) Store in GitHub Secrets (Settings → Secrets and variables) — they are encrypted at rest, masked in logs, and not available to forked repo workflows. (2) Never echo secrets in run steps — GitHub will mask them but it is still bad practice. (3) Use environment-scoped secrets (not repo-wide) — different secrets for staging and production; restrict environment access to specific branches. (4) Use OIDC for cloud access — instead of storing AWS/Azure credentials as secrets, configure OIDC trust between GitHub Actions and your cloud provider; the workflow exchanges a short-lived JWT for cloud credentials. (5) Audit secret access — use the GitHub Actions audit log to see who accessed secrets and which workflows used them. (6) Rotate regularly and after engineer offboarding.',
     },
   ];
 

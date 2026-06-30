@@ -534,6 +534,12 @@ func main() {
       answer: 0,
       explanation: 's[1:3] creates a slice from index 1 (inclusive) to 3 (exclusive), containing s[1] and s[2]. It shares the same backing array — mutations through sub affect s and vice versa.'
     },
+    {
+      q: 'Why do maps in Go not have a guaranteed iteration order?',
+      options: ['It is a bug that was never fixed', 'Go intentionally randomises map iteration order to prevent code from depending on an undefined ordering — each range loop may produce a different order', 'Maps are sorted alphabetically', 'Order depends on the hash function'],
+      answer: 1,
+      explanation: 'Go deliberately randomises map iteration order (since Go 1.0) to prevent developers from relying on implementation-specific behaviour. The hash table\'s internal bucket layout depends on the runtime, machine, and Go version. Sort the keys explicitly (sort.Strings(keys)) if you need deterministic output — for logging, JSON, or tests. Use a slice of structs or a sorted external list for ordered data.'
+    },
   ];
 
   qna: QnaItem[] = [

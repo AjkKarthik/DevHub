@@ -669,6 +669,10 @@ export default function Loading() {
       q: 'Does "use server" mean the code only runs on the server?',
       a: 'Yes — "use server" marks a function as a Server Action. The function body runs exclusively on the server; only a reference is passed to the client. The client calls it via a network request. This means you can safely access secrets, databases, and server-only APIs inside a Server Action.',
     },
+    {
+      q: 'How do I implement incremental static regeneration (ISR) in Next.js App Router?',
+      a: 'Export a revalidate number from a layout or page: `export const revalidate = 60` (seconds). For on-demand ISR, call `revalidatePath("/blog/[slug]")` or `revalidateTag("posts")` inside a Server Action or Route Handler. The route stays cached until the next request after the interval, or until explicitly invalidated — no background worker needed.',
+    },
   ];
 
   revision: RevisionSummary = {

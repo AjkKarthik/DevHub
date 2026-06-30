@@ -252,6 +252,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: 'kubectl top pod shows current CPU and memory usage for pods. kubectl top node shows node-level usage. Both require metrics-server to be installed in the cluster. Without metrics-server, the command returns an error.',
   },
+  { q: 'What does kubectl rollout undo deployment/myapp do?', options: ['It deletes the deployment and recreates it from scratch', 'It rolls back to the previous ReplicaSet revision stored in rollout history', 'It scales the deployment to 0 replicas then back to the desired count', 'It removes only the most recently added pod from the deployment'], answer: 1, explanation: 'kubectl rollout undo reverts a Deployment to the previous revision. Kubernetes retains ReplicaSet history controlled by revisionHistoryLimit (default 10). To roll back to a specific revision use --to-revision=3. To view history use kubectl rollout history deployment/myapp. The undo restores the previous pod template spec including image, env vars, and resource limits, then triggers a new rolling update back to that state.' },
 ];
 
 const qna: QnaItem[] = [
@@ -275,6 +276,7 @@ const qna: QnaItem[] = [
     q: 'What is kubectl port-forward and when is it useful?',
     a: 'kubectl port-forward creates a temporary tunnel from a local port to a port on a Pod, Service, or Deployment. It\'s useful for testing a service locally without exposing it to the network: kubectl port-forward svc/api 8080:80. The tunnel exists only while the command is running — it is not a permanent networking solution.',
   },
+  { q: 'How do you get logs from a crashed or restarting pod?', a: 'Use kubectl logs <pod> --previous to get logs from the PREVIOUS container instance before it crashed. For multi-container pods specify the container with -c <container>. For streaming logs use kubectl logs -f <pod>. To get logs from all pods matching a label use kubectl logs -l app=myapp --all-containers=true. For persistent log access after pod deletion, use a log aggregation system like Loki, Elasticsearch, or Datadog that tails container logs via a DaemonSet before pods are removed.' },
 ];
 
 const revision: RevisionSummary = {

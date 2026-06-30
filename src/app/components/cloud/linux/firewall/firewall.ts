@@ -259,6 +259,28 @@ function evaluate(rules: Rule[], conn: Connection): 'ALLOWED' | 'DENIED' {
       answer: 2,
       explanation: 'nftables replaced iptables as the preferred userspace tool for Netfilter since Linux 3.13. It has a unified syntax for IPv4/IPv6/ARP rules and better performance.',
     },
+    {
+      q: 'What are the three default chains in the iptables filter table?',
+      options: [
+        'ACCEPT, DROP, REJECT',
+        'INPUT, OUTPUT, FORWARD',
+        'PREROUTING, POSTROUTING, MANGLE',
+        'ALLOW, DENY, LOG',
+      ],
+      answer: 1,
+      explanation: 'The filter table has INPUT (packets destined for the local host), OUTPUT (packets from the local host), and FORWARD (packets routed through). Default policies of DROP or ACCEPT apply when no rule matches.',
+    },
+    {
+      q: 'What does ufw default deny incoming achieve?',
+      options: [
+        'Drops outgoing traffic by default',
+        'Sets the default INPUT policy to DROP so no incoming connections are allowed unless explicitly permitted',
+        'Disables UFW entirely',
+        'Only applies to IPv6 traffic',
+      ],
+      answer: 1,
+      explanation: 'ufw default deny incoming sets the default policy for incoming connections to deny. You then allow specific ports/services with ufw allow 22/tcp, etc. Combined with ufw default allow outgoing for a typical server setup.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -273,6 +295,18 @@ function evaluate(rules: Rule[], conn: Connection): 'ALLOWED' | 'DENIED' {
     {
       q: 'How do I check if a firewall is blocking traffic?',
       a: 'Use tcpdump on the server to see if packets arrive (sudo tcpdump -i eth0 port 8080). If packets arrive but get no response, check iptables/ufw rules. Use ufw status verbose or iptables -L -n -v. If packets do not arrive at all, the firewall may be upstream (cloud security group, hardware firewall). Also check ss -tulpn to verify the service is listening.',
+    },
+    {
+      q: 'What is the difference between iptables and nftables?',
+      a: '<strong>iptables</strong> is the legacy Linux firewall (separate IPv4/IPv6 tools, complex syntax). <strong>nftables</strong> is the modern replacement: unified IPv4/IPv6, cleaner syntax, better performance via nft command. Most distributions (Debian 10+, RHEL 8+) default to nftables. UFW and firewalld are frontends that may use either backend. New deployments should prefer nftables or a frontend like UFW.',
+    },
+    {
+      q: 'How do you list and flush current iptables rules?',
+      a: '<code>iptables -L -n -v</code> lists all rules with packet/byte counters (no DNS lookup). <code>iptables -L -n -v --line-numbers</code> shows rule numbers for deletion. <code>iptables -D CHAIN rule-num</code> deletes a specific rule. <code>iptables -F</code> flushes all rules (removes ALL rules — dangerous on remote servers!). Save rules: <code>iptables-save > /etc/iptables/rules.v4</code>.',
+    },
+    {
+      q: 'What is a stateful firewall and why does it matter?',
+      a: 'A stateful firewall tracks connection state (NEW, ESTABLISHED, RELATED, INVALID) and allows return traffic automatically. Rule: <code>-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT</code> allows responses to outbound connections without writing separate inbound rules. This is far more secure than stateless (per-packet) filtering where you must explicitly allow return traffic.',
     },
   ];
 

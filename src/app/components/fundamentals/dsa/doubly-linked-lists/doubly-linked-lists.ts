@@ -230,6 +230,9 @@ class LRUCache {
       answer: 1,
       explanation: 'Sentinel nodes mean real nodes always have non-null prev/next — removes all if-null boundary conditions.',
     },
+  { q: 'What advantage does a doubly linked list have over a singly linked list?', options: ['O(1) random access', 'O(1) deletion given a pointer to the node (no need to find predecessor)', 'Less memory usage', 'Faster search'], answer: 1, explanation: 'With a pointer to a node, deletion in a DLL is O(1) — use node.prev and node.next to unlink. In a singly linked list, deletion requires finding the predecessor, which takes O(n).' },
+  { q: 'What data structure combines a doubly linked list with a hash map to achieve O(1) get and put?', options: ['Priority queue', 'LRU Cache', 'Deque', 'Skip list'], answer: 1, explanation: 'LRU Cache: doubly linked list maintains order (most recently used at head, LRU at tail); hash map provides O(1) key lookup to node. On access, move node to head. On eviction, remove tail. Both operations O(1).' },
+  { q: 'How is a browser history (back/forward) typically implemented?', options: ['Two stacks', 'Doubly linked list with a current pointer', 'Circular buffer', 'Array with index'], answer: 1, explanation: 'Browser history: doubly linked list with current node pointer. Go back: move current to current.prev. Go forward: move to current.next. Visit new page: insert after current, truncate forward history. O(1) back/forward.' },
   ];
 
   qna: QnaItem[] = [
@@ -241,6 +244,10 @@ class LRUCache {
       q: 'Where are doubly linked lists used in real systems?',
       a: 'Browser history (forward/back navigation), OS process scheduling, text editor undo/redo, LRU/LFU caches, JavaScript\'s Map internally (for insertion-order iteration), and database buffer pool management.',
     },
+  { q: 'How do you reverse a doubly linked list?', a: 'Swap next and prev pointers for every node, then swap head and tail. For each node: temp = node.next; node.next = node.prev; node.prev = temp; advance to temp. After the loop, what was tail is now head. O(n) time O(1) space. Contrast with singly linked list reversal where you only reassign next pointers.' },
+  { q: 'What is a sentinel (dummy) node in a doubly linked list and why use it?', a: 'Sentinel nodes are dummy head and tail nodes that always exist (never removed). They eliminate edge cases: no need to check if head/tail is null during insert/delete. With sentinels: insert between sentinel_head and first real node is always valid; delete any node just requires updating its neighbors. Used in LRU Cache and many production DLL implementations.' },
+  { q: 'How does a deque (double-ended queue) differ from a doubly linked list?', a: 'A deque is an abstract data type supporting O(1) push/pop at both ends. It can be implemented with a doubly linked list (perfect fit: O(1) insertions/deletions at both ends) or a circular array (better cache performance, O(1) amortized). The DLL-based deque has O(1) worst-case for all operations but worse cache behavior than array-based implementations.' },
+  { q: 'When should you prefer a doubly linked list over an array-based list?', a: 'Prefer DLL when: (1) Frequent insertions/deletions in the middle with a node pointer (O(1) vs O(n) for arrays); (2) Implementing undo/redo, LRU cache, browser history; (3) No need for random access (DLL is O(n) to reach index k). Prefer arrays when: random access is needed (O(1)), or cache performance matters (contiguous memory). Java LinkedList is rarely the right choice — use ArrayDeque instead.' },
   ];
 
   revision: RevisionSummary = {

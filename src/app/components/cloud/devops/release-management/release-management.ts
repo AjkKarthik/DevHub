@@ -507,6 +507,10 @@ console.log(determineNextVersion("1.4.2", [
       q: 'What is the difference between release notes and a changelog?',
       a: 'A changelog (CHANGELOG.md) is a comprehensive, cumulative, developer-oriented record of all changes in every version — machine-parseable, every commit type included. Release notes are a curated, user-facing summary for a specific release — written in plain language, highlighting features that matter to end users, reviewed by product/marketing before publishing. Many teams auto-generate a changelog and then hand-write release notes from it for major versions.'
     },
+    {
+      q: 'What is a Change Advisory Board (CAB) and when is it appropriate vs excessive overhead?',
+      a: 'A CAB is a committee that reviews and approves changes before they are deployed to production — typically in regulated industries (finance, healthcare, government). Members: operations, security, business stakeholders. Each change is documented with risk assessment, rollback plan, and testing evidence. CABs are appropriate when: regulatory compliance requires documented approval (change tickets for audit), the cost of a production failure is catastrophic (hospital patient systems, financial transaction platforms), or the change affects many interconnected systems simultaneously. CABs are excessive overhead for: standard software deployments with automated testing and rollback, frequent small changes (multiple/day), organisations where the CAB approval cycle is slower than the deployment risk warrants. Modern alternatives: automated change management with policy-as-code, deployment gates replacing manual approval for low-risk changes.',
+    },
   ];
 
   revision: RevisionSummary = {

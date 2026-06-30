@@ -381,6 +381,18 @@ fetchWithRetry('/api/data', { signal: ctrl.signal })
       answer: 2,
       explanation: 'pushState adds a new entry to the browser history and updates the URL bar without triggering a page reload. Essential for SPA client-side routing. replaceState modifies the current entry instead.',
     },
+    {
+      q: 'What is the main difference between the Fetch API and XMLHttpRequest?',
+      options: ['Fetch is synchronous, XHR is async', 'Fetch returns Promises and is cleaner; XHR uses callbacks and events', 'XHR supports streaming; Fetch does not', 'Fetch does not support CORS'],
+      answer: 1,
+      explanation: 'Fetch uses Promises (composable, async/await compatible) while XHR uses callbacks and event listeners. Fetch also integrates with Service Workers. Fetch does support streaming via Response.body (a ReadableStream).',
+    },
+    {
+      q: 'What does the Web Storage API store and what are its limits?',
+      options: ['Binary data, up to 50 MB', 'Serialized strings only, ~5 MB per origin', 'JSON objects, unlimited', 'Files and Blobs, ~10 MB'],
+      answer: 1,
+      explanation: 'localStorage and sessionStorage store strings only (values are automatically coerced). The limit is typically 5–10 MB per origin, enforced by the browser. Use JSON.stringify/parse for objects. For binary or large data use IndexedDB.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -395,6 +407,18 @@ fetchWithRetry('/api/data', { signal: ctrl.signal })
     {
       q: 'How do I read current query params from the URL in a SPA?',
       a: '<code>new URLSearchParams(location.search)</code> gives you a <code>URLSearchParams</code> object. Call <code>.get("key")</code> for a single param, <code>.getAll("key")</code> for multi-value params, or spread <code>Object.fromEntries(params)</code> to get all params as an object.',
+    },
+    {
+      q: 'What is the Web Workers API and what problem does it solve?',
+      a: 'Web Workers run JavaScript on a background thread, separate from the main thread. This prevents CPU-heavy tasks (parsing large files, cryptography, complex calculations) from blocking the UI. Workers communicate with the main thread via <code>postMessage()</code> — passing structured-clone-capable data (no functions, no DOM). Shared Workers and Service Workers are specialised variants for shared state and offline caching respectively.',
+    },
+    {
+      q: 'How does the Geolocation API work and what permissions does it require?',
+      a: '<code>navigator.geolocation.getCurrentPosition(success, error, options)</code> requests the device\'s current location. The browser prompts for permission on first call — once granted, future calls succeed silently. Use <code>watchPosition</code> for continuous updates. Options include <code>enableHighAccuracy</code>, <code>timeout</code>, and <code>maximumAge</code>. Always handle the error callback — users can deny permission or the device may not have GPS.',
+    },
+    {
+      q: 'What is the Broadcast Channel API and when would you use it?',
+      a: '<code>new BroadcastChannel("channel-name")</code> creates a message bus between same-origin pages (tabs, iframes, workers). Post with <code>channel.postMessage(data)</code>; listen with <code>channel.onmessage</code>. Use it to sync logout, cart state, or theme changes across multiple open tabs without a server round-trip — a lightweight alternative to SharedWorker for simple cross-tab communication.',
     },
   ];
 

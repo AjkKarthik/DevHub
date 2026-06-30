@@ -672,6 +672,12 @@ func (r *userRepo) Delete(ctx context.Context, id int) (bool, error) {
       answer: 0,
       explanation: 'pgx.Rows borrows a connection from the pool for the duration of the result scan. If you do not call Close (or drain all rows), that connection is never returned to the pool. The pool fills up, subsequent pool.Query calls block waiting for a free connection, and the server appears to hang.'
     },
+    {
+      q: 'What is pgx batch querying and when should you use it?',
+      options: ['Running queries in parallel goroutines', 'Sending multiple queries to PostgreSQL in a single network round-trip — useful for N+1 query elimination or bulk inserts', 'A way to use transactions', 'Deprecated in pgx v5'],
+      answer: 1,
+      explanation: 'pgx.Batch lets you queue multiple queries and send them all in one network round-trip. The server processes them in order and returns results in order. Use it for: N+1 query patterns (queue one query per ID, send all at once), bulk inserts (instead of a loop of individual inserts), or when you need multiple related reads without a JOIN. Results are read sequentially from pgx.BatchResults.'
+    },
   ];
 
   qna: QnaItem[] = [

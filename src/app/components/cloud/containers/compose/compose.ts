@@ -273,6 +273,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: 'docker compose config prints the effective compose.yml after merging override files and expanding all ${VARIABLE} substitutions. Use it to verify that environment variables from .env are being loaded correctly.',
   },
+  { q: 'What does depends_on do in Docker Compose and what does it NOT guarantee?', options: ['It sets port bindings between services', 'It ensures a service starts before another but does NOT wait for the service to be ready', 'It shares environment variables between services', 'It links services to an external network'], answer: 1, explanation: 'depends_on controls startup ORDER only. It does NOT wait for a service to be ready (database accepting connections). For readiness, use healthcheck on the dependency and depends_on.condition: service_healthy. Without this, the dependent service may start before the dependency is accepting connections.' },
 ];
 
 const qna: QnaItem[] = [
@@ -296,6 +297,7 @@ const qna: QnaItem[] = [
     q: 'Can I use Docker Compose in production?',
     a: 'For small single-host deployments, yes. Compose lacks built-in clustering, self-healing across multiple nodes, or advanced scheduling. For multi-host or highly available deployments, Kubernetes or Docker Swarm is a better choice. Some teams use Compose on a single cloud VM as a low-ops alternative to Kubernetes for small services.',
   },
+  { q: 'How do you scale a service in Docker Compose?', a: 'Use docker compose up --scale web=3 to run 3 replicas of the web service. In compose.yaml you can also set deploy.replicas: 3 (Compose V2 supports Docker Swarm-style deploy config). Each replica gets its own container name with an index suffix. Note: services with fixed host port bindings like ports: 80:80 will fail on replicas > 1 since multiple containers cannot bind the same host port simultaneously.' },
 ];
 
 const revision: RevisionSummary = {

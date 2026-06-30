@@ -429,6 +429,10 @@ function safeDiv(a, b) {
       q: 'What is the Temporal Dead Zone (TDZ)?',
       a: 'The TDZ is the period between entering a block scope and reaching the <code>let</code>/<code>const</code> declaration. During this period, accessing the variable throws a <code>ReferenceError</code>. This is why <code>let</code>/<code>const</code> appear "not hoisted" — they are hoisted (the engine knows they exist) but uninitialized.',
     },
+    {
+      q: 'What is type coercion and when does it cause unexpected bugs?',
+      a: 'Type coercion is JavaScript\'s implicit conversion of values to a different type. It causes bugs most often in: (1) equality checks — <code>0 == ""</code> is <code>true</code>; use <code>===</code>. (2) addition vs concatenation — <code>"5" + 3 = "53"</code> because <code>+</code> prefers strings. (3) boolean contexts — <code>if ([]) {}</code> executes (empty array is truthy). Always use <code>===</code>, be explicit about conversions with <code>Number()</code>, <code>String()</code>, <code>Boolean()</code>.',
+    },
   ];
 
   revision: RevisionSummary = {

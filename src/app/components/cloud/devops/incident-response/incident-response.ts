@@ -552,6 +552,16 @@ console.log(classifyIncident({ affectedUserPct: 25, isDataLoss: false, isSecurit
       answer: 1,
       explanation: 'Vague action items ("improve monitoring", "add more tests") are never completed. Effective action items are: specific and testable, assigned to one named person (not "the team"), time-boxed (due by a specific date), and tracked as a ticket in your issue tracker. Review them in the next sprint retrospective.',
     },
+    {
+      q: 'What is MTTR (Mean Time to Recover) and what does a high MTTR indicate?',
+      options: [
+        'Mean Time to Release — how long deployments take',
+        'Mean Time to Recover — average time from incident detection to service restoration; high MTTR indicates slow diagnosis, poor runbooks, or complex systems',
+        'Maximum Time to Resolve — SLA commitment to customers',
+        'Mean Time to Report — how quickly incidents are logged'],
+      answer: 1,
+      explanation: 'MTTR = (total downtime) / (number of incidents). Elite DevOps performers have MTTR under 1 hour. High MTTR signals: poor observability (slow to diagnose), missing runbooks (repeating same diagnosis steps), complex deployments (slow rollbacks), or excessive blast radius (one failure cascades). Reducing MTTR requires: pre-written runbooks, feature flags for instant rollback, chaos engineering to practice recovery, and progressive delivery to limit blast radius.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -574,6 +584,10 @@ console.log(classifyIncident({ affectedUserPct: 25, isDataLoss: false, isSecurit
     {
       q: 'What is a status page and what should you post on it during an incident?',
       a: 'A status page (Statuspage.io, Atlassian, Cachet) is a public-facing page that shows the current operational status of your service. During an incident: (1) Post within 5 minutes of declaring P1: "We are aware of an issue affecting [feature]. Our team is investigating." (2) Update every 15–30 minutes with what you know: "We have identified the cause and are rolling back a recent change." (3) Post resolution: "This incident has been resolved as of [time]. We will publish a post-mortem within 5 business days." Customers tolerate outages much better when they get timely, honest communication.',
+    },
+    {
+      q: 'What are the best practices for a sustainable on-call rotation?',
+      a: 'Sustainable on-call: (1) Limit alert volume — if engineers are paged more than 2-3 times per on-call shift, the alert signal is lost in noise. Tune alerts ruthlessly: only page for actionable, urgent issues. (2) Document runbooks — every alert should link to a runbook. Engineers should not be debugging from scratch at 3am. (3) Primary + secondary rotation — primary is first contact; secondary provides backup if primary is unreachable. (4) Follow-the-sun — for global teams, route on-call by time zone so nobody is on-call overnight in their region. (5) No hero culture — if the same person handles all incidents because they are the only one who understands a system, that is a bus factor problem, not an on-call problem. (6) Handover documentation — end-of-shift notes on open issues, incidents in progress, and context for the next person.',
     },
   ];
 

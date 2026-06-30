@@ -648,6 +648,10 @@ function UserProfile({ user, redirectTo }: { user: any; redirectTo: string }) {
       q: 'How do I prevent sensitive data from appearing in Sentry/error logs?',
       a: 'Configure Sentry\'s beforeSend hook to scrub sensitive fields: Sentry.init({ beforeSend(event) { delete event.request?.cookies; return event; } }). Never pass credentials in the extras or tags objects. Log only the error type and a safe contextual identifier (e.g. the user\'s ID, not email). For network errors, log the URL path but not query parameters that might contain tokens.',
     },
+    {
+      q: 'How do I implement Content Security Policy (CSP) in a React app?',
+      a: 'Set the Content-Security-Policy HTTP header on the server (or a <meta http-equiv="Content-Security-Policy"> for static hosting). Start with a strict base: `default-src \'self\'; script-src \'self\'; style-src \'self\' \'unsafe-inline\'`. Avoid `unsafe-eval` (blocks eval) and `unsafe-inline` for scripts — use nonces or hashes instead. In Next.js, configure headers in next.config.js or via middleware. CSP is a critical second line of defence even when you sanitise inputs.',
+    },
   ];
 
   revision: RevisionSummary = {

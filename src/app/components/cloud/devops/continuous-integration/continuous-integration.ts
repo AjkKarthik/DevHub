@@ -460,6 +460,16 @@ console.log(analysePipeline(logs));
       answer: 1,
       explanation: 'The test pyramid has many fast unit tests at the base, fewer integration tests in the middle, and very few slow E2E tests at the top. In CI: unit tests on every commit (fastest, most reliable signal); integration tests on PR merge; E2E tests on a schedule or post-merge on main. This gives fast PR feedback while keeping the expensive E2E suite from blocking developers.',
     },
+    {
+      q: 'What is test flakiness in CI and why is it a serious problem?',
+      options: [
+        'Tests that fail due to slow network connections only',
+        'Tests that pass sometimes and fail other times without code changes — erodes trust in the test suite and forces ignoring failures',
+        'Tests that take more than 5 minutes to run',
+        'Tests that only run on certain operating systems'],
+      answer: 1,
+      explanation: 'A flaky test fails intermittently without code changes — due to race conditions, time-dependent logic, network calls, or random data. When developers see failures, they assume "probably flaky, rerun" and merge failing code. Once a team ignores CI failures, CI loses all value. Fix: quarantine flaky tests immediately, fix or delete them. Track flakiness metrics to prevent accumulation.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -482,6 +492,10 @@ console.log(analysePipeline(logs));
     {
       q: 'What is mutation testing and is it practical for CI?',
       a: 'Mutation testing (Stryker for JS/TS, PIT for Java) modifies your source code in small ways (negate conditions, change operators) and checks that your tests catch each change. A test suite with 90% line coverage but poor assertion quality might catch only 50% of mutations. Mutation testing is too slow to run on every commit (hours for large codebases) — run it weekly, nightly, or gate it only on changed files. Use it as a code quality diagnostic, not a blocking CI check. The mutation score tells you if your tests actually test behaviour or just exercise code paths.',
+    },
+    {
+      q: 'What properties make a good CI pipeline from a developer experience perspective?',
+      a: 'A good CI pipeline has: (1) Fast feedback — under 10 minutes ideally, under 5 for small changes. Parallelise tests, cache dependencies, fail fast on the cheapest checks (lint, type check before running tests). (2) Reliable — no flaky tests, no order-dependent tests. Flakiness destroys trust. (3) Clear failure messages — pinpoint the broken test and the line causing failure, not just "build failed". (4) Deterministic — same inputs always produce same outputs. No network calls to unstable services. (5) Comprehensive — catches the bugs that would reach production. 100% unit test pass without integration tests is insufficient. (6) Automated rollback trigger — if a deployment fails its smoke tests, revert automatically.',
     },
   ];
 

@@ -229,12 +229,56 @@ async function auditKeys(pattern: string) {
       answer: 2,
       explanation: 'TTL returns -1 for a key that exists but has no expiry. It returns -2 for a key that does not exist at all.',
     },
+    {
+      q: 'Why should you use SCAN instead of KEYS in production?',
+      options: ['SCAN is faster than KEYS', 'SCAN is cursor-based and non-blocking; KEYS blocks Redis for the entire iteration', 'KEYS requires authentication; SCAN does not', 'SCAN returns results in alphabetical order'],
+      answer: 1,
+      explanation: 'KEYS pattern blocks the Redis event loop while iterating all keys — catastrophic on large datasets. SCAN returns a cursor-based batch, spreading work across multiple calls without blocking. Always use SCAN (or HSCAN/SSCAN/ZSCAN) in production.',
+    },
+    {
+      q: 'What does the OBJECT ENCODING command return?',
+      options: ['The Redis data type of the key', 'The internal memory encoding used for the key value (e.g., listpack, skiplist, embstr)', 'The TTL encoding format', 'The serialisation protocol version'],
+      answer: 1,
+      explanation: 'OBJECT ENCODING key returns the internal representation: embstr/raw (strings), ziplist/listpack/quicklist (lists), intset/listpack/hashtable (sets), etc. Useful for memory optimisation — listpack is much smaller than full structures.',
+    },
+    {
+      q: 'What does DUMP / RESTORE do in Redis?',
+      options: ['Deletes and recreates a key', 'Serialises a key value to RDB format (DUMP) and deserialises it into a key (RESTORE) — enabling key migration between instances', 'Creates a backup of the entire database', 'Compresses a key value'],
+      answer: 1,
+      explanation: 'DUMP key returns the RDB-serialised value of a key. RESTORE key ttl serialised-value creates a key from the serialised value. Used by MIGRATE command to move individual keys between Redis instances atomically.',
+    },
+    {
+      q: 'What happens to TTL when you rename a key with RENAME?',
+      options: ['The TTL is preserved on the new key name', 'The TTL is reset to -1 (no expiry) after rename', 'The rename fails if the source has a TTL', 'The TTL is transferred only if both keys are of the same type'],
+      answer: 0,
+      explanation: 'RENAME copies the key with its TTL to the new name and deletes the old key. The TTL is preserved. If the destination key already exists, it is overwritten (including its TTL). Use RENAMENX to rename only if destination does not exist.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'How do I find which keys are using the most memory?',
       a: 'Use `redis-cli --bigkeys` which scans all keys and reports the largest by data type. For more granular analysis, use `redis-cli --memkeys` (Redis 7+) to sort all keys by memory usage. In production, run during low-traffic periods since it uses SCAN internally.',
+    },
+    {
+      q: 'How do you check the remaining TTL of a key?',
+      a: '<strong>TTL key</strong> returns remaining TTL in seconds (-1 = no expiry, -2 = key does not exist). <strong>PTTL key</strong> returns in milliseconds for higher precision. <strong>PERSIST key</strong> removes the expiry making the key permanent. <strong>EXPIRETIME key</strong> (Redis 7+) returns the Unix timestamp when the key expires.',
+    },
+    {
+      q: 'What does the TYPE command return and when do you use it?',
+      a: 'TYPE key returns the type: <code>string</code>, <code>list</code>, <code>set</code>, <code>zset</code>, <code>hash</code>, <code>stream</code>, or <code>none</code> (key not found). Use it to inspect unknown keys. For memory encoding details use OBJECT ENCODING key. For size use OBJECT FREQ, MEMORY USAGE key.',
+    },
+    {
+      q: 'What does MEMORY USAGE return and why is it useful?',
+      a: 'MEMORY USAGE key [SAMPLES count] returns the total memory in bytes consumed by the key including value, metadata, and pointer overhead. Useful for identifying large keys. Use with SCAN to find memory hogs: scan all keys and check MEMORY USAGE on samples. Redis 4.0+.',
+    },
+    {
+      q: 'How do you atomically set a key with an expiry?',
+      a: 'Use <code>SET key value EX seconds</code> or <code>SET key value PX milliseconds</code> — atomically sets value and expiry. Old pattern (SETNX + EXPIRE) was non-atomic: a crash between the two commands left immortal keys. The modern SET options are the correct approach. Also: SETEX (deprecated but still works), GETSET (replaced by SET ... GET).',
+    },
+    {
+      q: 'What is the OBJECT ENCODING command used for?',
+      a: 'OBJECT ENCODING key shows the internal memory encoding: <code>embstr</code>/<code>raw</code> (strings), <code>listpack</code>/<code>quicklist</code> (lists), <code>intset</code>/<code>hashtable</code> (sets), <code>listpack</code>/<code>skiplist</code> (sorted sets), <code>listpack</code>/<code>hashtable</code> (hashes). Small structures use compact encodings — understand thresholds to optimise memory.',
     },
   ];
 

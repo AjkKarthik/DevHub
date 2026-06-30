@@ -446,6 +446,12 @@ setTimeout(() => log('e'), 1100);  // logged again`,
       answer: 2,
       explanation: 'The Module/IIFE pattern uses an immediately invoked function expression to create a scope, then returns only the public API. The private variables remain accessible via closure but not from outside.',
     },
+    {
+      q: 'What happens to closed-over variables when the closure is garbage collected?',
+      options: ['They are kept alive forever', 'They are freed when the closure itself is unreachable', 'They move to global scope', 'They throw a ReferenceError'],
+      answer: 1,
+      explanation: 'Closed-over variables are kept alive as long as the closure is reachable. When the closure itself becomes unreachable (no references to it), the GC can collect it and reclaim the closed-over variables.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -460,6 +466,18 @@ setTimeout(() => log('e'), 1100);  // logged again`,
     {
       q: 'What is the difference between a closure and a callback?',
       a: 'A callback is a function passed as an argument to be called later. A closure is a function that retains access to its outer scope. A callback can be a closure (and usually is, if it references variables from the surrounding scope), but not all closures are callbacks. The concepts describe different aspects of functions.',
+    },
+    {
+      q: 'How do closures cause memory leaks and how do you prevent them?',
+      a: 'A leak occurs when a closure keeps alive more than you expect — e.g. a long-lived event listener holds a reference to a large object through its scope. Prevention: (1) remove event listeners when no longer needed, (2) avoid capturing large objects unnecessarily (destructure only what you need), (3) set closed-over references to null when done. DevTools Memory tab → heap snapshot can reveal detached closures.',
+    },
+    {
+      q: 'What is a partial application and how does it use closures?',
+      a: 'Partial application fixes some arguments of a function and returns a new function that accepts the rest. It uses closures to remember the fixed arguments: <code>const add5 = add.bind(null, 5)</code>. You can also implement it manually: <code>const partial = (fn, ...args) => (...rest) => fn(...args, ...rest)</code>. The returned function closes over <code>args</code>.',
+    },
+    {
+      q: 'Why do closures inside a loop share the same variable?',
+      a: 'When you use <code>var</code> in a loop, all iterations share a single variable binding in the enclosing function scope. Closures created in each iteration all close over the same reference, so by the time they execute, the variable has its final value. Fix: use <code>let</code> (block-scoped, one binding per iteration) or wrap in an IIFE: <code>(function(i) { ... })(i)</code>.',
     },
   ];
 

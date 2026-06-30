@@ -421,6 +421,12 @@ function showNotification(el) {
       answer: 1,
       explanation: 'DevTools → More Tools → Rendering → enable "Paint Flashing" overlays repainted regions with a green highlight in real time, making it easy to spot unexpected repaints during interactions or animations.',
     },
+    {
+      q: 'Which CSS property change does NOT trigger a layout reflow?',
+      options: ['width', 'margin', 'opacity', 'padding'],
+      answer: 2,
+      explanation: 'opacity only affects the compositing layer — the browser does not need to recalculate layout or repaint other elements. It is one of the cheapest CSS properties to animate. width, margin, and padding all affect the element\'s geometry and trigger layout (reflow), which invalidates layout for all affected elements in the same formatting context.',
+    },
   ];
 
   qna: QnaItem[] = [

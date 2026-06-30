@@ -203,12 +203,56 @@ async function checkMemoryPressure(redis: Redis) {
       answer: 1,
       explanation: 'LRU removes the key not accessed for the longest time (recency). LFU removes the key accessed the fewest times overall (frequency, with time decay). LFU is better for workloads with clear hot/cold distributions.',
     },
+    {
+      q: 'What does the volatile-lru eviction policy do?',
+      options: ['Evicts any key using LRU', 'Evicts the least recently used key that has a TTL set', 'Evicts keys with the shortest TTL', 'Evicts all volatile (TTL) keys randomly'],
+      answer: 1,
+      explanation: 'volatile-lru only considers keys with an expiry set and removes the least recently used among them. Keys without TTL are never evicted. Use when you want to protect permanent data while caching ephemeral data.',
+    },
+    {
+      q: 'What happens when Redis reaches maxmemory with noeviction policy?',
+      options: ['Redis deletes the oldest key', 'Redis returns an OOM error on write commands', 'Redis writes to disk', 'Redis restarts automatically'],
+      answer: 1,
+      explanation: 'With noeviction, Redis returns an error for writes (SET, LPUSH, etc.) when maxmemory is reached. Reads still work. Use this when you cannot tolerate data loss — your app handles the OOM error explicitly.',
+    },
+    {
+      q: 'What is LFU (Least Frequently Used) eviction in Redis?',
+      options: ['Evicts keys that expire soonest', 'Evicts keys accessed fewest times over time, using a counter with decay', 'Evicts the largest keys first', 'Evicts randomly among all keys'],
+      answer: 1,
+      explanation: 'LFU tracks access frequency with a logarithmic counter that decays over time. Keys accessed rarely are evicted before recently-popular-but-less-frequent keys. Better than LRU for Zipfian distributions. Available as allkeys-lfu or volatile-lfu.',
+    },
+    {
+      q: 'What does allkeys-random eviction do?',
+      options: ['Removes the key with the longest TTL', 'Randomly removes any key regardless of TTL or access pattern', 'Removes random keys that have TTLs', 'Same as volatile-random but only for new keys'],
+      answer: 1,
+      explanation: 'allkeys-random removes a random key from the entire keyspace when maxmemory is reached. Useful when your workload is uniform and you do not need LRU/LFU approximations — simpler and marginally faster than LRU sampling.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'How much memory overhead does Redis add on top of stored data?',
       a: 'Redis stores metadata per key: pointer + key string + value object + LRU/LFU field + expiry entry. For small strings, the overhead can be 50-100 bytes per key — sometimes more than the value itself. For large values the overhead is proportionally smaller. Monitor `mem_fragmentation_ratio` (ideally 1.0–1.5). A high ratio (>2) indicates fragmentation; use MEMORY PURGE or restart to reclaim.',
+    },
+    {
+      q: 'How do you choose the right eviction policy for a Redis cache?',
+      a: '<strong>allkeys-lru</strong>: all keys are cache entries — use when every key can be evicted. <strong>volatile-lru</strong>: mix of cache (TTL) and persistent data (no TTL). <strong>allkeys-lfu</strong>: hot keys re-used frequently (Zipfian distribution). <strong>noeviction</strong>: queues, sessions — never lose data (handle OOM in app instead).',
+    },
+    {
+      q: 'What is volatile-ttl eviction?',
+      a: 'volatile-ttl evicts the key with the shortest remaining TTL when maxmemory is reached. Logic: keys about to expire anyway are the best candidates for early eviction. Only considers keys with TTL set; keys without TTL are never evicted by this policy.',
+    },
+    {
+      q: 'How does Redis approximate LRU instead of true LRU?',
+      a: 'True LRU requires tracking access order for all keys — expensive. Redis uses sampling: pick N random keys (default maxmemory-samples=5), evict the least recently accessed from that sample. More samples = more accurate but slower eviction. LFU uses a logarithmic counter per key with time decay.',
+    },
+    {
+      q: 'How do you monitor what Redis is evicting?',
+      a: '<code>INFO stats</code> shows <strong>evicted_keys</strong> counter. Monitor cache hit rate: <code>keyspace_hits / (keyspace_hits + keyspace_misses)</code>. High evictions + high miss rate = maxmemory too low. Use Redis keyspace notifications with expired event to react to evictions in real time.',
+    },
+    {
+      q: 'Should you always set maxmemory in Redis?',
+      a: 'Yes — always set maxmemory in production. Without it Redis uses all available RAM, potentially causing OS-level OOM kills or swapping (which destroys Redis performance). Set to 70-80% of available RAM. Configure via redis.conf or dynamically: <code>CONFIG SET maxmemory 4gb</code>. Always pair with an eviction policy.',
     },
   ];
 

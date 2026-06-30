@@ -269,6 +269,28 @@ console.log(compareVersions("1.18.0-1", "1.18.0-2")); // -1`,
       answer: 1,
       explanation: 'apt remove removes the package binaries but keeps /etc configuration files. apt purge additionally removes those configuration files. Logs in /var/log are not removed by either.',
     },
+    {
+      q: 'Which command shows package details including dependencies on Debian/Ubuntu?',
+      options: [
+        'dpkg --info <package>',
+        'apt-cache show <package>',
+        'apt list <package>',
+        'dpkg -s <package>',
+      ],
+      answer: 1,
+      explanation: 'apt-cache show <package> displays detailed package information from the repository cache: description, dependencies, maintainer, version, size. dpkg -s <package> shows info about an installed package.',
+    },
+    {
+      q: 'What does apt-get autoremove do?',
+      options: [
+        'Removes all cached package files',
+        'Removes packages that were installed as dependencies but are no longer needed',
+        'Removes packages not in the official repositories',
+        'Removes duplicate package versions',
+      ],
+      answer: 1,
+      explanation: 'autoremove removes packages automatically installed as dependencies that are no longer required (because the dependent package was removed). Run after removing packages to clean up orphaned dependencies.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -283,6 +305,18 @@ console.log(compareVersions("1.18.0-1", "1.18.0-2")); // -1`,
     {
       q: 'How do I set up automatic security updates on Ubuntu?',
       a: 'Install: apt install unattended-upgrades. Configure: dpkg-reconfigure -plow unattended-upgrades. The config in /etc/apt/apt.conf.d/50unattended-upgrades controls which repos are auto-updated (default: security only). Check logs at /var/log/unattended-upgrades/. For RHEL use dnf-automatic.',
+    },
+    {
+      q: 'What is the difference between apt and apt-get?',
+      a: '<strong>apt</strong> is a higher-level, user-friendly CLI (coloured output, progress bars, sensible defaults). <strong>apt-get</strong> is the lower-level tool intended for scripts (stable output format, more options). For scripting/automation use apt-get; for interactive use apt is friendlier. Both use the same dpkg backend. apt install = apt-get install; apt update = apt-get update.',
+    },
+    {
+      q: 'How do you hold a package at a specific version to prevent upgrades?',
+      a: '<code>apt-mark hold packagename</code> prevents a package from being upgraded automatically. <code>apt-mark unhold packagename</code> releases it. To install a specific version: <code>apt install package=version</code>. Check held packages with <code>apt-mark showhold</code>. Alternatively use <code>dpkg --set-selections</code> or pin via /etc/apt/preferences.d/.',
+    },
+    {
+      q: 'What is a PPA and how do you add one on Ubuntu?',
+      a: 'A <strong>PPA</strong> (Personal Package Archive) on Launchpad hosts third-party packages for Ubuntu. Add with: <code>add-apt-repository ppa:user/ppa-name && apt update</code>. The command adds the GPG key and a source entry to /etc/apt/sources.list.d/. Be cautious: PPAs are not officially vetted. Prefer official repos or Snap/Flatpak for security-critical software.',
     },
   ];
 

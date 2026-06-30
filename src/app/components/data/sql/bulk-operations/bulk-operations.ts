@@ -303,6 +303,28 @@ TRUNCATE TABLE products_staging;`
       answer: 1,
       explanation: 'A staging table with no constraints accepts all rows regardless of data quality. You can then inspect, filter, and transform bad rows in SQL before inserting only valid data into the target. This also decouples load speed from validation complexity.'
     },
+    {
+      q: 'What batch size should you use for SqlBulkCopy to maximise throughput?',
+      options: [
+        '1 row per batch to minimise transaction log growth',
+        '100 000–500 000 rows is usually optimal — large enough to amortise round-trip overhead, small enough to avoid excessive log growth and memory pressure',
+        'Always the entire dataset in one batch',
+        'Exactly 1 000 rows — the documented .NET default'
+      ],
+      answer: 1,
+      explanation: 'Very small batches waste round-trip overhead; very large batches hold long-running transactions and consume memory. Testing on your data usually shows 100k–500k rows per batch as the sweet spot, but the optimal size depends on row width and hardware.'
+    },
+    {
+      q: 'What does the ERRORFILE option of MSSQL BULK INSERT do?',
+      options: [
+        'Aborts the entire load on any error',
+        'Writes rows that fail parsing or type conversion to a separate file for inspection, while allowing the rest of the load to continue',
+        'Redirects error messages to the Windows Event Log',
+        'Retries failed rows automatically up to 3 times'
+      ],
+      answer: 1,
+      explanation: 'ERRORFILE = \'path\' (combined with MAXERRORS N) allows the load to continue past bad rows and writes rejected rows to a separate file. This is essential for loading dirty data where you want to capture errors without halting the entire job.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -317,6 +339,18 @@ TRUNCATE TABLE products_staging;`
     {
       q: 'How do I handle duplicate rows during a bulk load upsert?',
       a: 'PostgreSQL: INSERT … ON CONFLICT (key) DO UPDATE SET col = EXCLUDED.col — atomic upsert. MSSQL: use MERGE with WHEN MATCHED THEN UPDATE / WHEN NOT MATCHED THEN INSERT. For very large staging tables, add an index on the key column in staging before the MERGE to speed up the join.',
+    },
+    {
+      q: 'How do I load data from a cloud storage bucket (S3, Azure Blob) directly into the database?',
+      a: 'PostgreSQL on AWS RDS/Aurora: use COPY … FROM \'s3://…\' WITH (format csv, …) via the aws_s3 extension. Azure SQL: use BULK INSERT with FROM \'https://…\' and a SHARED ACCESS SIGNATURE credential or IDENTITY = \'Managed Identity\'. Google Cloud SQL: use the import from Cloud Storage feature via the console or gcloud CLI. All avoid the need to download the file to an intermediary host.',
+    },
+    {
+      q: 'What happens if a BULK INSERT or COPY fails midway through — is data rolled back?',
+      a: 'MSSQL: if ROWS_PER_BATCH is set, committed batches remain — only the current batch rolls back. Without batching, the entire load is one transaction and rolls back on failure. PostgreSQL COPY is a single statement inside the current transaction — it rolls back completely if not in auto-commit mode. Always test error recovery in a staging environment before running a large production load.',
+    },
+    {
+      q: 'How can I validate data quality before committing a bulk load?',
+      a: 'Load into a staging table without constraints, then run validation queries: SELECT * FROM staging WHERE amount < 0; SELECT * FROM staging WHERE customer_id NOT IN (SELECT id FROM customers); Count violations. If counts are within tolerance, proceed with INSERT … SELECT or MERGE into the target. If not, investigate and clean before loading.',
     },
   ];
 }

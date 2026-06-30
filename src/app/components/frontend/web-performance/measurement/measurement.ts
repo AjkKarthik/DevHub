@@ -482,6 +482,12 @@ document.getElementById('search')?.addEventListener('input', (e) => {
       answer: 1,
       explanation: 'Chrome extensions (ad blockers, password managers, screen readers) can inject scripts or intercept network requests, artificially inflating timing measurements. Incognito mode disables extensions by default, producing measurements representative of what users without those extensions experience.',
     },
+    {
+      q: 'What does the Navigation Timing API\'s responseStart mark, and what metric is it related to?',
+      options: ['When the user clicked a link', 'The time the server sent the first byte of the response — used to compute TTFB', 'When the page is fully interactive', 'The time CSS is applied to the DOM'],
+      answer: 1,
+      explanation: 'TTFB (Time to First Byte) = responseStart - requestStart. It measures server processing time + network latency for the first byte to arrive. High TTFB (>800ms) usually indicates slow server-side rendering, database queries, or CDN misconfiguration. Access it via performance.getEntriesByType("navigation")[0].responseStart.',
+    },
   ];
 
   qna: QnaItem[] = [

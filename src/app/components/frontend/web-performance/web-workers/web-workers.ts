@@ -484,6 +484,12 @@ async function loadData() {
       answer: 1,
       explanation: 'navigator.hardwareConcurrency returns the number of logical CPU cores (typically 4–16 on modern devices). Using more Workers than cores doesn\'t increase parallelism — excess Workers context-switch, adding overhead. Matching pool size to core count maximises throughput without over-subscription.',
     },
+    {
+      q: 'What types of data can be transferred between a Web Worker and the main thread via postMessage?',
+      options: ['Only strings', 'Any JSON-serializable object; ArrayBuffers and transferable objects can be transferred (zero-copy)', 'DOM nodes and functions', 'Only primitive values'],
+      answer: 1,
+      explanation: 'postMessage uses the Structured Clone algorithm — it can copy objects, arrays, Dates, Maps, ArrayBuffers, ImageData, and more. Transferable objects (ArrayBuffer, MessagePort, ImageBitmap) are transferred with zero-copy using the transfer argument: postMessage(buffer, [buffer]). After transfer, the original reference is neutered (ArrayBuffer.byteLength === 0). Functions and DOM nodes cannot be cloned or transferred.',
+    },
   ];
 
   qna: QnaItem[] = [

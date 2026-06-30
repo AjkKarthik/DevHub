@@ -270,6 +270,9 @@ queue[head++]; // O(1) dequeue with pointer`,
       answer: 1,
       explanation: 'Mark visited when enqueuing. If you mark on dequeue, the same node can be enqueued multiple times before being visited.',
     },
+  { q: 'Which traversal is best for finding the shortest path in an unweighted graph?', options: ['DFS', 'BFS', 'Both are equivalent', 'Topological sort'], answer: 1, explanation: 'BFS explores all neighbors at distance d before distance d+1 — guarantees shortest path (by hop count). DFS can find a path but not necessarily the shortest. BFS: O(V + E), uses a queue. Use BFS for shortest path in unweighted/equal-weight graphs.' },
+  { q: 'How do you detect a cycle in an undirected graph using DFS?', options: ['Check for back edges during DFS', 'DFS will naturally visit all nodes without cycles', 'Use topological sort', 'Compare DFS and BFS traversal orders'], answer: 0, explanation: 'In undirected graph DFS: if you visit a node that is already visited and is not the parent, a cycle exists. Track parent to avoid false positives from the undirected edge to the direct parent.' },
+  { q: 'What is the difference between a connected component and a strongly connected component?', options: ['Same concept for directed vs undirected graphs', 'Connected component: undirected (path exists between any two nodes); SCC: directed (path in BOTH directions)', 'SCC requires BFS; connected component uses DFS', 'SCCs only exist in DAGs'], answer: 1, explanation: 'Connected component: in undirected graph, all nodes reachable from each other. SCC: in directed graph, every node is reachable from every other node IN BOTH DIRECTIONS. Kosaraju or Tarjan algorithms find SCCs in O(V + E).' },
   ];
 
   qna: QnaItem[] = [
@@ -285,6 +288,9 @@ queue[head++]; // O(1) dequeue with pointer`,
       q: 'Can DFS be used on a directed graph to detect cycles?',
       a: 'Yes. Track three states: unvisited, in-progress (on current DFS path), and done. A cycle exists if DFS encounters an in-progress node. This is different from undirected graphs where just tracking visited is enough.',
     },
+  { q: 'How do you detect bipartiteness (two-colorability) of a graph?', a: 'BFS/DFS with 2-coloring: assign color 0 to starting node, then alternate colors 0/1 for each neighbor. If you ever try to assign a node the same color as its neighbor, the graph is NOT bipartite (has an odd-length cycle). O(V + E). A graph is bipartite if and only if it contains no odd-length cycles. Applications: matching problems, scheduling.' },
+  { q: 'How do you find all islands in a 2D grid?', a: '2D grid: treat each cell as a graph node; edges go to 4-directional neighbors. Count islands: iterate all cells; when you find an unvisited land cell (1), increment count and run BFS/DFS to mark all connected land cells as visited. O(m * n) time. Common pattern for: number of islands, max area of island, flood fill, surrounded regions.' },
+  { q: 'What is iterative DFS and how does it handle the call stack limitation?', a: 'Iterative DFS uses an explicit stack instead of the call stack. Push start node; while stack not empty: pop a node, process it, push unvisited neighbors. This avoids stack overflow on very deep graphs (Python default recursion limit is 1000). Iterative DFS may visit nodes in a different order than recursive DFS depending on push order — push neighbors in reverse order to match recursive DFS order.' },
   ];
 
   revision: RevisionSummary = {

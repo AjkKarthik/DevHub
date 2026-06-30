@@ -274,6 +274,17 @@ console.log(isValidResourceId(id)); // true`
       answer: 1,
       explanation: 'Bicep is a DSL that compiles 1:1 to ARM JSON. There is no separate Bicep runtime — az deployment group create with a .bicep file runs bicep build first, then sends the resulting ARM JSON to the ARM REST API.'
     },
+    {
+      q: 'What does the ARM template what-if operation do?',
+      options: [
+        'Deploys resources immediately without confirmation',
+        'Performs a dry run to preview changes before deployment',
+        'Rolls back the last deployment',
+        'Validates template syntax only',
+      ],
+      answer: 1,
+      explanation: 'What-if (az deployment group what-if) performs a dry run showing what resources would be created, modified, or deleted without actually making changes.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -296,6 +307,10 @@ console.log(isValidResourceId(id)); // true`
     {
       q: 'How do you pass secrets to ARM templates without logging them?',
       a: 'Use a <code>secureString</code> parameter type. Secure parameters are never written to deployment logs or ARM deployment history. For production, reference a Key Vault secret in a parameters file using a reference object pointing to the Key Vault resource ID and secret name — the value flows directly from Key Vault to the resource without ever appearing in logs.'
+    },
+    {
+      q: 'What is the ARM template copy element used for?',
+      a: 'The <strong>copy</strong> element creates multiple instances of a resource, property, or variable in a loop. Use <code>copy.count</code> to specify iterations and <code>copyIndex()</code> to reference the current index. It replaces manual duplication for creating N storage accounts, VM NICs, or subnets.',
     },
   ];
 

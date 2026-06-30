@@ -382,6 +382,12 @@ createVirtualList(document.querySelector('#list'), items);`,
       answer: 1,
       explanation: 'closest() walks UP the DOM tree from the element (including itself) and returns the first ancestor matching the selector, or null if none matches.',
     },
+    {
+      q: 'What does requestAnimationFrame guarantee that setTimeout(fn, 0) does not?',
+      options: ['A 60fps callback', 'The callback runs before the browser paints, synced to display refresh', 'The callback runs on the GPU', 'The callback runs in a microtask'],
+      answer: 1,
+      explanation: 'rAF runs the callback at the beginning of the next frame, just before the browser paints. This guarantees visual changes are applied before the next render. setTimeout(fn, 0) has no such guarantee and may fire after a paint.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -396,6 +402,18 @@ createVirtualList(document.querySelector('#list'), items);`,
     {
       q: 'Should I use innerHTML or createElement for dynamic content?',
       a: '<code>innerHTML</code> is convenient for HTML templates with safe/escaped data and is fast for initial rendering. <code>createElement</code> is safer (no XSS risk) and better when attaching event listeners (innerHTML destroys them on reassignment). Rule: use <code>createElement</code> for dynamic user-controlled content; use a sanitized template or <code>innerHTML</code> with escaped content for static structure.',
+    },
+    {
+      q: 'What is the difference between getBoundingClientRect() and offsetTop?',
+      a: '<code>getBoundingClientRect()</code> returns the element\'s size and position relative to the viewport, accounting for scrolling, transforms, and stacking. Values update on every call. <code>offsetTop</code> is relative to the nearest positioned ancestor, ignores transforms, and reflects the rendered layout position. Use <code>getBoundingClientRect()</code> for position-relative-to-viewport needs (tooltips, sticky elements); <code>offsetTop</code> for layout calculations.',
+    },
+    {
+      q: 'How does the Intersection Observer API differ from a scroll event listener?',
+      a: 'Scroll event fires synchronously on every scroll step, potentially 60+ times per second, on the main thread. IntersectionObserver runs off the main thread and fires callbacks only when elements enter/leave defined thresholds — much more performant. Use IntersectionObserver for lazy loading, infinite scroll, analytics visibility tracking, and sticky headers. Only use scroll events when you need precise per-pixel scroll position.',
+    },
+    {
+      q: 'What is layout thrashing and how do you avoid it?',
+      a: 'Layout thrashing (forced synchronous layouts) happens when you interleave DOM reads and writes in a loop: read offsetHeight → write style → read offsetHeight → write style… Each read after a write forces the browser to recompute layout immediately. Fix: batch all reads first, then all writes. Or use <code>requestAnimationFrame</code> to batch writes to the next frame. Libraries like FastDOM automate read/write batching.',
     },
   ];
 

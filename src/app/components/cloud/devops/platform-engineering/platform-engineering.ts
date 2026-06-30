@@ -461,6 +461,16 @@ const result = auditCatalogue([
       answer: 1,
       explanation: 'Cognitive load reduction is measured by whether developers can accomplish common tasks (deploy a service, add a database, view logs) without needing platform team help. If developers still raise tickets for everyday tasks, cognitive load has not been reduced.',
     },
+    {
+      q: 'What is an Internal Developer Portal (IDP) and what problem does it solve?',
+      options: [
+        'An internal version of npm for private packages',
+        'A self-service web UI that gives developers visibility into services, infrastructure, documentation, and tools — reducing cognitive overhead and dependency on platform team tickets',
+        'A portal for employees to request cloud resources via IT tickets',
+        'A dashboard showing CI/CD pipeline status across all repositories'],
+      answer: 1,
+      explanation: 'An IDP (Backstage, Port, Cortex) provides developers with a single pane of glass: service catalog (who owns what), documentation, CI/CD status, cloud cost, security posture, and self-service actions (create a new service, provision a database, onboard to monitoring). Without an IDP, developers waste hours in Slack asking "where do I find X?" or opening tickets. IDPs encode platform knowledge into a UI, scaling platform teams\' impact without linear headcount growth.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -483,6 +493,10 @@ const result = auditCatalogue([
     {
       q: 'How does a software catalogue help with incident response?',
       a: 'During an incident, responders need to quickly answer: who owns this service? What does it depend on? Where is the runbook? What monitoring dashboard shows its health? A software catalogue with ownership metadata, dependency links, runbook URLs, and dashboard links reduces the time to find this information from minutes (Slack detective work) to seconds (one search in Backstage).',
+    },
+    {
+      q: 'What is a "golden path" in platform engineering and why does it matter?',
+      a: 'A golden path (popularised by Spotify) is the opinionated, well-supported path for accomplishing a common task — e.g., "how to create a new service" or "how to add a new API endpoint". It is not mandatory but it is so easy and well-supported (scaffolding templates, documentation, integrated monitoring out-of-the-box) that most engineers choose it voluntarily. Why it matters: (1) Consistency — services created via the golden path all have logging, metrics, and CI/CD pre-configured. (2) Productivity — engineers start productive immediately without spending days on boilerplate. (3) Standards enforcement — security, compliance, and reliability practices are baked in, not bolted on. (4) Platform adoption — engineers adopt the platform because it makes their life easier, not because they are forced to.',
     },
   ];
 

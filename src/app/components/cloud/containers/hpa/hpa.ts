@@ -183,6 +183,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'VPA adjusts CPU requests; HPA calculates utilization as usage/requests. If VPA raises requests, HPA sees lower utilization and scales down. With fewer pods, VPA sees higher per-pod usage and raises requests again. This feedback loop causes continuous oscillation. The safe pattern: VPA manages memory; HPA manages custom/external metrics — or use KEDA which handles event-driven scaling without this conflict.',
   },
+  { q: 'What metrics can a Kubernetes HPA scale on?', options: ['Only CPU utilization as a percentage of requests', 'CPU and memory via metrics-server, custom metrics via adapters, and external metrics via the External Metrics API', 'Only custom metrics sourced from Prometheus', 'Only HTTP request count from the Ingress controller'], answer: 1, explanation: 'HPA v2 supports: built-in metrics (CPU, memory via metrics-server), custom metrics such as HTTP requests per second or queue depth via a custom metrics adapter like prometheus-adapter, and external metrics from outside the cluster such as SQS queue length via KEDA. Scale on the metric most relevant to actual load: for HTTP services, requests per second is usually better than CPU since CPU lags behind actual saturation.' },
 ];
 
 const qna: QnaItem[] = [
@@ -206,6 +207,7 @@ const qna: QnaItem[] = [
     q: 'What is the difference between HPA scale-up and scale-down behavior defaults?',
     a: 'Scale-up defaults to immediate and aggressive: stabilizationWindowSeconds: 0 (no delay), allows doubling replicas every 15 seconds. The goal is to respond to traffic spikes quickly. Scale-down defaults to conservative: stabilizationWindowSeconds: 300 (5 minutes), removes at most 100% of excess pods but only after the window passes. The goal is to avoid thrashing after a spike. You can tune both behaviors independently with spec.behavior.',
   },
+  { q: 'What is the difference between HPA and VPA in Kubernetes?', a: 'HPA (Horizontal Pod Autoscaler) adjusts the NUMBER of pod replicas based on metrics. It scales out by adding more pods or scales in by removing pods. Best for stateless workloads that tolerate multiple parallel instances. VPA (Vertical Pod Autoscaler) adjusts the CPU and memory REQUESTS of pods, which requires a pod restart to apply in most Kubernetes versions. Best for stateful workloads where horizontal scaling is not feasible. Do not combine HPA on CPU and VPA on CPU for the same deployment because they will conflict with each other. HPA on custom metrics combined with VPA on resources is safe.' },
 ];
 
 const revision: RevisionSummary = {

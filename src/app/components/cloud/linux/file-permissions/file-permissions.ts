@@ -228,6 +228,28 @@ console.log(octalToPermString("1777")); // rwxrwxrwt`,
       answer: 2,
       explanation: 'Execute on a directory means "traverse" — you can cd into it and access known filenames inside. Read (r) lets you list contents with ls. Both are often needed together.',
     },
+    {
+      q: 'What permissions does chmod 755 file set?',
+      options: [
+        'Owner: rwx, Group: rwx, Others: r-x',
+        'Owner: rwx, Group: r-x, Others: r-x',
+        'Owner: rw-, Group: r-x, Others: r-x',
+        'Owner: rwx, Group: rw-, Others: r--',
+      ],
+      answer: 1,
+      explanation: '755 in octal: 7=rwx (owner), 5=r-x (group), 5=r-x (others). Execute permission on a directory means ability to enter (traverse) it. Common for scripts and directories.',
+    },
+    {
+      q: 'What is the effect of the sticky bit on a directory?',
+      options: [
+        'Prevents the directory from being deleted',
+        'Allows only the file owner (and root) to delete or rename files within the directory',
+        'Makes the directory executable by all users',
+        'Sets the GID on all files created inside',
+      ],
+      answer: 1,
+      explanation: 'The sticky bit (chmod +t or o+t) on a directory prevents users from deleting or renaming files they do not own, even if they have write permission on the directory. Classic example: /tmp.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -242,6 +264,18 @@ console.log(octalToPermString("1777")); // rwxrwxrwt`,
     {
       q: 'Why does SSH say "bad permissions" for my key?',
       a: 'SSH enforces that private keys (~/.ssh/id_rsa, id_ed25519) have mode 600 (only owner can read) and that ~/.ssh/ has mode 700. If group or others can read the key, SSH refuses to use it as a security measure. Fix: chmod 600 ~/.ssh/id_rsa && chmod 700 ~/.ssh/',
+    },
+    {
+      q: 'What is umask and how does it affect new files?',
+      a: '<strong>umask</strong> is a bit mask subtracted from default permissions when creating new files/directories. Default file permissions are 666 (rw-rw-rw-), directories 777 (rwxrwxrwx). With umask 022: files get 644 (666-022), directories get 755 (777-022). View with <code>umask</code>, set with <code>umask 027</code>. Set in .bashrc for persistent change.',
+    },
+    {
+      q: 'What is the setuid bit and when is it used?',
+      a: '<strong>setuid</strong> (chmod u+s or chmod 4xxx) causes a file to run with the permissions of its owner rather than the executing user. Classic example: <strong>/usr/bin/passwd</strong> needs to write /etc/shadow (root-owned) but runs as regular users — setuid root grants this. Setuid on directories has no effect. Use sparingly as it is a security risk if the binary is exploitable.',
+    },
+    {
+      q: 'How do you change file ownership in Linux?',
+      a: '<strong>chown user:group file</strong> changes owner and group. <code>chown user file</code> changes owner only. <code>chown :group file</code> changes group only. <code>chown -R user:group /dir</code> changes recursively. Only root can change file owner. Group can be changed by root or by the current owner if they belong to the target group.',
     },
   ];
 

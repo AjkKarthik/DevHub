@@ -610,6 +610,10 @@ export default function App() {
       q: 'How do I show a toast after a successful mutation?',
       a: 'Add an onSuccess callback in useMutation — it runs after the mutation completes successfully. For a global approach, pass onSuccess to queryClient\'s MutationCache: new QueryClient({ mutationCache: new MutationCache({ onError: (err) => toast.error(err.message) }) }).',
     },
+    {
+      q: 'How do I prefetch data on the server with TanStack Query in Next.js?',
+      a: 'Use the HydrationBoundary pattern (TanStack Query v5): in a Server Component, create a queryClient, call `await queryClient.prefetchQuery(...)`, then pass `<HydrationBoundary state={dehydrate(queryClient)}>` as a wrapper around the Client Component tree. The client picks up the pre-fetched cache and useQuery() returns data immediately without a loading state.',
+    },
   ];
 
   revision: RevisionSummary = {

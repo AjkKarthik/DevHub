@@ -246,6 +246,24 @@ async function checkRedisHealth(): Promise<{ status: 'ok' | 'error'; latencyMs: 
       answer: 1,
       explanation: '--pipe mode reads Redis protocol commands from stdin and sends them in one batch, dramatically reducing latency for bulk loading compared to sending commands one by one.',
     },
+    {
+      q: 'What does bind 127.0.0.1 in redis.conf do?',
+      options: ['Sets the authentication password', 'Restricts Redis to accept connections only from localhost', 'Binds Redis to a Unix socket', 'Sets the maximum number of connected clients'],
+      answer: 1,
+      explanation: 'bind specifies which network interfaces Redis listens on. bind 127.0.0.1 means only local connections — protects against external access. For multi-host: bind 0.0.0.0 (with protected-mode no and firewall). Always restrict in production.',
+    },
+    {
+      q: 'What is protected-mode in Redis?',
+      options: ['Encrypts all data at rest', 'A safety measure that rejects all external connections unless bind is configured or requirepass is set', 'Prevents CONFIG SET commands', 'Blocks Lua scripting'],
+      answer: 1,
+      explanation: 'Protected-mode (default: yes) blocks connections from addresses other than 127.0.0.1 unless: (a) a bind address is explicitly configured, or (b) requirepass is set. Prevents accidentally exposing Redis to the internet.',
+    },
+    {
+      q: 'What does maxmemory-policy default to if not configured?',
+      options: ['allkeys-lru', 'volatile-lru', 'noeviction', 'allkeys-random'],
+      answer: 2,
+      explanation: 'The default maxmemory-policy is noeviction — Redis returns an error on write commands when maxmemory is reached rather than evicting data. Set an appropriate policy (allkeys-lru for pure cache use) based on your workload.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -256,6 +274,22 @@ async function checkRedisHealth(): Promise<{ status: 'ok' | 'error'; latencyMs: 
     {
       q: 'What is the difference between redis-server and redis-sentinel?',
       a: 'redis-server is the main Redis data server. redis-sentinel is a separate process that monitors Redis instances, performs automatic failover, and notifies clients when the primary changes. Sentinel runs alongside redis-server instances, not instead of them.',
+    },
+    {
+      q: 'How do you verify a Redis instance is running correctly?',
+      a: '<code>redis-cli ping</code> → PONG confirms connectivity. <code>redis-cli info server</code> shows version. <code>redis-cli info memory</code> checks RAM usage. <code>redis-cli monitor</code> streams all commands (debug only). <code>redis-cli --latency</code> measures round-trip latency. <code>redis-benchmark</code> runs throughput tests.',
+    },
+    {
+      q: 'What is the recommended way to run Redis in production?',
+      a: 'Run as a <strong>systemd service</strong> (not daemonize yes for systemd-managed). Set <code>maxmemory</code> and <code>maxmemory-policy</code>. Enable AOF + RDB persistence. Set requirepass or ACL. Disable dangerous commands (rename-command CONFIG """"). Run as non-root. Monitor with Redis Exporter + Prometheus.',
+    },
+    {
+      q: 'How do you persist configuration changes made with CONFIG SET?',
+      a: '<code>CONFIG SET maxmemory 2gb</code> changes running config immediately. To persist across restarts: <code>CONFIG REWRITE</code> writes the current in-memory config back to redis.conf. Without CONFIG REWRITE, dynamic changes are lost on restart. Always test config changes with CONFIG SET before committing to redis.conf.',
+    },
+    {
+      q: 'What does the daemonize option in redis.conf control?',
+      a: '<code>daemonize yes</code> runs Redis as a background daemon. <code>daemonize no</code> runs in foreground — preferred under process supervisors like systemd or Docker which manage the process lifecycle. In Docker always use <code>daemonize no</code> so the container stays alive. Set <code>loglevel notice</code> and <code>logfile /var/log/redis/redis.log</code> for production logging.',
     },
   ];
 

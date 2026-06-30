@@ -251,12 +251,56 @@ async function auditAclViolations(redis: Redis) {
       answer: 1,
       explanation: 'In Redis 6+, use ACL per-user rules (-FLUSHALL or -@dangerous) to disable dangerous commands. rename-command still works but is a global config change. ACL is more flexible as it can be applied per user while still allowing admin access.',
     },
+    {
+      q: 'What does Redis ACL (Access Control List) provide beyond requirepass?',
+      options: ['ACL provides TLS encryption', 'ACL allows per-user authentication with command and key-pattern restrictions; requirepass gives all clients the same password with no access control', 'ACL stores passwords encrypted; requirepass stores them in plain text', 'ACL is only available in Redis Enterprise'],
+      answer: 1,
+      explanation: 'Redis 6+ ACL: create users with individual passwords, restrict which commands they can run (nocommands, +GET), and which key patterns they can access (~user:*). requirepass is a single shared password with no per-user control.',
+    },
+    {
+      q: 'How do you enable TLS in Redis?',
+      options: ['Set tls-enabled yes in redis.conf', 'Compile Redis with --tls flag', 'Set tls-port, tls-cert-file, tls-key-file, tls-ca-cert-file in redis.conf and use --tls-port when starting', 'TLS is not supported in open-source Redis'],
+      answer: 2,
+      explanation: 'Redis 6+ supports TLS natively. Configure tls-port 6380, tls-cert-file, tls-key-file, tls-ca-cert-file (for mTLS). Clients connect with TLS. Use tls-auth-clients yes to require client certificates. Replicas and Sentinels also need TLS config.',
+    },
+    {
+      q: 'What is the rename-command security technique in Redis?',
+      options: ['Renames all keys in a database', 'Renames dangerous commands (like CONFIG, FLUSHALL, DEBUG) to empty string (disabling them) or a secret name', 'Renames the Redis database', 'Changes the command prefix from Redis to a custom string'],
+      answer: 1,
+      explanation: 'rename-command CONFIG "" (empty string) in redis.conf disables the command. rename-command FLUSHALL "" prevents accidental data wipe. This is a defence-in-depth measure — still use ACL for fine-grained control in Redis 6+.',
+    },
+    {
+      q: 'What network security measure should you always apply to Redis?',
+      options: ['Enable protected-mode and use SSL only', 'Bind to 127.0.0.1 or private network interface and use a firewall to block port 6379 from the internet', 'Enable password hashing on the config file', 'Limit to 10 simultaneous connections'],
+      answer: 1,
+      explanation: 'Redis has no authentication by default. Exposed to the internet, anyone can read/write all data and run dangerous commands. Always: bind to private interface, use firewall rules (allow only app servers), set requirepass/ACL, run Redis as non-root.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'Does Redis encrypt data at rest?',
       a: 'No — Redis does not natively encrypt data at rest. Data in memory and RDB/AOF files on disk is stored in plaintext. For data-at-rest encryption, rely on OS-level filesystem encryption (dm-crypt/LUKS on Linux, encrypted EBS volumes on AWS) or use a managed Redis service (AWS ElastiCache with encrypted storage, Redis Cloud). TLS only encrypts data in transit between clients and Redis.',
+    },
+    {
+      q: 'What is Redis ACL and how do you create a restricted user?',
+      a: '<code>ACL SETUSER readonly on >password ~readonly:* +GET +MGET +HGET +HGETALL</code>: creates user readonly with password, key pattern restriction (readonly:* prefix), and only GET-type commands allowed. <code>ACL LIST</code> shows all users. <code>ACL LOG</code> shows denied command attempts. Redis 6+ feature — more granular than requirepass.',
+    },
+    {
+      q: 'How do you harden Redis against common attack vectors?',
+      a: 'Hardening checklist: (1) Bind to private IP only; (2) Firewall port 6379 to app servers only; (3) Set requirepass/ACL; (4) Disable/rename dangerous commands (FLUSHALL, CONFIG, DEBUG); (5) Enable TLS in transit; (6) Run as non-root; (7) Keep Redis updated; (8) Enable protected-mode; (9) Monitor AUTH failures with keyspace notifications or fail2ban.',
+    },
+    {
+      q: 'What is the Redis RESET command used for?',
+      a: 'RESET (Redis 6+) resets the connection state: exits subscriber/monitor mode, resets MULTI/EXEC, unsubscribes from all channels, resets AUTH state. Useful for connection pool implementations to clean up client state without disconnecting and reconnecting. More efficient than a full reconnect.',
+    },
+    {
+      q: 'How do you use Redis ACL to restrict key access per user?',
+      a: 'Key patterns in ACL use glob matching: <code>~user:*</code> allows access to keys starting with user:, <code>~*</code> allows all. <code>%R~pattern</code> for read-only key patterns, <code>%W~pattern</code> for write-only. <code>nokeys</code> denies all key access (for admin users who only need INFO/CONFIG). Apply ACLs from file: <code>aclfile /etc/redis/users.acl</code>.',
+    },
+    {
+      q: 'What is Redis protected-mode and when does it trigger?',
+      a: 'Protected-mode (default on) blocks external connections unless: (a) a bind directive explicitly configures an external interface, OR (b) requirepass is set. When triggered, clients from non-loopback addresses receive an error explaining how to disable protected-mode. This prevents accidental internet exposure of a default Redis install.',
     },
   ];
 

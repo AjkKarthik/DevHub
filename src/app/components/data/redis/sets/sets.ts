@@ -203,12 +203,56 @@ async function getSuggestions(user: string): Promise<string[]> {
       answer: 1,
       explanation: 'Intset is a sorted array of integers — extremely compact. Used when all members are integers and the set is below set-max-intset-entries (default 512). Faster SISMEMBER than hashtable for small integer sets.',
     },
+    {
+      q: 'What does SINTERSTORE do?',
+      options: ['Returns the intersection of sets without storing', 'Computes the intersection of two or more sets and stores the result in a destination key', 'Stores a single set', 'Merges all sets into one'],
+      answer: 1,
+      explanation: 'SINTERSTORE dest key1 key2... computes the set intersection and stores the result in dest. Returns the size of the result. SUNIONSTORE and SDIFFSTORE work similarly. Useful for materialising intersection results for frequent queries.',
+    },
+    {
+      q: 'What does SRANDMEMBER return?',
+      options: ['The most recently added member', 'A random member (or N random members) without removing it from the set', 'The alphabetically first member', 'A random member, removing it from the set'],
+      answer: 1,
+      explanation: 'SRANDMEMBER key [count] returns random members without removing them. Positive count returns distinct members; negative count allows repeats. SPOP removes a random member. Use SRANDMEMBER for sampling, SPOP for random consumption.',
+    },
+    {
+      q: 'What memory encoding does Redis use for small sets of integers?',
+      options: ['skiplist', 'hashtable', 'intset', 'listpack'],
+      answer: 2,
+      explanation: 'Redis stores sets of small integers as intset — a sorted array of integers. Very memory-efficient and fast for operations like SISMEMBER. When the set contains non-integer members or exceeds set-max-intset-entries (512), it converts to hashtable.',
+    },
+    {
+      q: 'When would you use a Redis set instead of a sorted set?',
+      options: ['When you need range queries on scores', 'When members have no ranking/score — you only need membership testing, union, intersection, and random access (sets are simpler and more memory-efficient)', 'When you need timestamp-based ordering', 'Sets and sorted sets are equivalent'],
+      answer: 1,
+      explanation: 'Use sets when order does not matter: tag tracking, unique visitor sets, friend lists (for intersection/union operations). Use sorted sets when you need ranking by score, range queries, or ordered iteration.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'When should I use a set vs a sorted set for unique membership?',
       a: 'Use a set when you need membership only (is X a member?) or set algebra (SINTER/SUNION/SDIFF). Use a sorted set when you also need ordering by score (leaderboard, expiry-based eviction, timeline ordering). Sorted sets use more memory than sets for the same number of members.',
+    },
+    {
+      q: 'What is the difference between SUNION and SUNIONSTORE?',
+      a: 'SUNION key1 key2... returns the union of all sets to the client. SUNIONSTORE dest key1 key2... stores the result in dest and returns its size. SDIFF / SDIFFSTORE, SINTER / SINTERSTORE follow the same pattern. Store variants are O(N) and do not transfer the full result set over the network — more efficient for subsequent operations on the result.',
+    },
+    {
+      q: 'What is SMOVE and when do you use it?',
+      a: 'SMOVE source dest member atomically moves a member from source set to dest set — removes from source and adds to dest in one operation. Returns 1 on success, 0 if member was not in source. Use for state transitions where an item must move between categories (e.g., pending to processed sets) atomically without MULTI/EXEC.',
+    },
+    {
+      q: 'How does Redis sets SINTER perform on large sets?',
+      a: 'SINTER is O(N*M) where N is the smallest set size and M is the number of sets. Redis optimises by starting with the smallest set and checking membership in others. For very large sets (millions of members), SSCAN or SINTERCARD with LIMIT may be more practical. SINTERCARD (Redis 7+) returns just the count, not all members — useful for estimating overlap.',
+    },
+    {
+      q: 'What is the intset encoding for Redis sets?',
+      a: 'When a set contains only integers and is small (< set-max-intset-entries, default 512), Redis uses <strong>intset</strong> — a sorted array of integers in memory. Very memory-efficient and fast for SISMEMBER (binary search). Adding a non-integer or exceeding the threshold converts to hashtable. Use integer member sets for token/session IDs to exploit this optimisation.',
+    },
+    {
+      q: 'How do you use Redis sets for unique visitor counting?',
+      a: 'SADD visitors:page:date userId (1 if new, 0 if already counted). SCARD visitors:page:date returns total unique visitors. Expire with EXPIRE for daily/weekly rollups. Downside: memory grows with each unique user (8 bytes per integer ID). For massive scale (billions of users), use HyperLogLog: PFADD visitors userId; PFCOUNT visitors (2% error, 12KB).',
     },
   ];
 

@@ -224,12 +224,56 @@ class DashboardBroadcaster {
       answer: 1,
       explanation: 'PUBSUB NUMSUB channel returns the subscriber count for each specified channel. PUBSUB CHANNELS lists active channels; PUBSUB NUMPAT returns the total count of pattern subscriptions.',
     },
+    {
+      q: 'Are Redis Pub/Sub messages persisted?',
+      options: ['Yes, for 24 hours by default', 'No, messages are fire-and-forget — subscribers that are offline miss messages', 'Yes, until acknowledged', 'Yes, if AOF is enabled'],
+      answer: 1,
+      explanation: 'Redis Pub/Sub is fire-and-forget — messages are not stored. If a subscriber is offline, they miss messages. For durability and consumer groups with replay, use Redis Streams instead of Pub/Sub.',
+    },
+    {
+      q: 'What does PSUBSCRIBE do differently from SUBSCRIBE?',
+      options: ['PSUBSCRIBE persists messages; SUBSCRIBE does not', 'PSUBSCRIBE subscribes to channels matching a glob pattern; SUBSCRIBE subscribes to exact channel names', 'PSUBSCRIBE is for private channels', 'PSUBSCRIBE uses push protocol; SUBSCRIBE uses pull'],
+      answer: 1,
+      explanation: 'PSUBSCRIBE pattern (e.g., news.*) subscribes to all channels matching the glob. Messages arrive as pmessage events with the matched pattern and channel. Useful when you do not know channel names in advance.',
+    },
+    {
+      q: 'Can you use regular Redis commands on a connection in SUBSCRIBE mode?',
+      options: ['Yes, all commands work normally', 'No, a subscribed connection can only use SUBSCRIBE, UNSUBSCRIBE, PSUBSCRIBE, PUNSUBSCRIBE, PING, and RESET', 'Yes, but only read commands', 'Only after unsubscribing from all channels'],
+      answer: 1,
+      explanation: 'Once you SUBSCRIBE, the connection enters subscriber mode — it can only receive messages and use the listed commands. Other commands return errors. Always use a dedicated connection for Pub/Sub; do not share it with regular commands.',
+    },
+    {
+      q: 'What are Redis keyspace notifications?',
+      options: ['Notifications sent to the Redis admin when memory is low', 'Pub/Sub events published when keys are modified — enabling subscribers to react to SET, DEL, EXPIRE events', 'Alerts triggered by slow queries', 'Notifications for cluster topology changes'],
+      answer: 1,
+      explanation: 'Keyspace notifications (notify-keyspace-events config) publish messages on __keyevent@db__:event or __keyspace@db__:key channels when keys are modified. Useful for cache invalidation or TTL expiry triggers. Disabled by default (performance cost).',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'Can I use Redis Pub/Sub across a Redis Cluster?',
       a: 'Yes, but with limitations. In Cluster mode, PUBLISH broadcasts to all nodes, and each node fans out to its local subscribers. PUBSUB CHANNELS only shows channels on the node it is sent to, not the full cluster view. For cross-cluster pub/sub visibility, query all nodes. This makes PUBLISH work correctly, but administrative commands like PUBSUB CHANNELS need per-node querying.',
+    },
+    {
+      q: 'How do you subscribe to multiple channels in Redis?',
+      a: '<code>SUBSCRIBE ch1 ch2 ch3</code> subscribes to multiple exact channels in one command. Messages arrive as arrays: [type, channel, message]. <code>PSUBSCRIBE news.* sports.*</code> subscribes to glob patterns. Use separate SUBSCRIBE/PSUBSCRIBE calls or pass multiple names to a single call. Each subscription returns a confirmation message.',
+    },
+    {
+      q: 'What is the difference between Pub/Sub and Redis Streams for messaging?',
+      a: 'Pub/Sub: real-time broadcast, no persistence, offline subscribers miss messages, no consumer groups. Streams: persistent (until trimmed), consumer groups for reliable delivery, message acknowledgment, replay from any offset. Use Pub/Sub for ephemeral broadcasts (live updates, presence); use Streams for reliable message queues.',
+    },
+    {
+      q: 'How do you implement presence detection with Redis Pub/Sub?',
+      a: 'On connect: PUBLISH presence:join userId. On disconnect: PUBLISH presence:leave userId. Subscribers track online users in a set. Add a heartbeat: publish every 30s with SETEX user:online:id 60 1 (auto-expires = offline detection). Keyspace notifications on expired events can also detect disconnection.',
+    },
+    {
+      q: 'What are Redis keyspace notifications used for?',
+      a: 'Keyspace notifications fire Pub/Sub events when keys change. Enable: <code>notify-keyspace-events KEA</code> (K=keyspace, E=keyevent, A=all, x=expired, g=generic, l=list, z=zset). Subscribe to <code>__keyevent@0__:expired</code> to react when any key expires — useful for TTL-based workflows like session cleanup.',
+    },
+    {
+      q: 'Can Redis Pub/Sub messages be delivered to offline subscribers?',
+      a: 'No. Pub/Sub is fire-and-forget — if a subscriber is offline, the message is lost. This is a fundamental design constraint. If you need guaranteed delivery to offline consumers, use <strong>Redis Streams</strong> (persisted, consumer groups, replay) or a dedicated message broker like RabbitMQ or Kafka.',
     },
   ];
 

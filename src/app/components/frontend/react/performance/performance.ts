@@ -609,6 +609,10 @@ function Dashboard() {
       q: 'When should I use the React Profiler component vs DevTools Profiler?',
       a: 'React DevTools Profiler is for development — interactive flame charts, "why did this render?". The Profiler component (API) is for production — programmatic capture of render duration that you can send to analytics. Use both: DevTools to find the problem, the API to monitor it in production.',
     },
+    {
+      q: 'How does useTransition differ from useDeferredValue?',
+      a: 'useTransition wraps a state setter you control: `startTransition(() => setState(next))` — the update is marked low-priority so the UI stays responsive. useDeferredValue accepts an external value you receive (e.g., a prop) and defers its use: `const deferred = useDeferredValue(propValue)`. Rule of thumb: if you own the update, use useTransition; if you receive the value from outside, use useDeferredValue.',
+    },
   ];
 
   revision: RevisionSummary = {

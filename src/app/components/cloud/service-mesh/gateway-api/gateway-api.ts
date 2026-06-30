@@ -497,6 +497,7 @@ console.log(getShopConfig());`,
       q: 'How do HTTPRoute timeouts and retry policies work in Gateway API?',
       a: 'Retry and timeout support in HTTPRoute is in the "experimental" Gateway API channel (not yet in standard): <pre><code>spec.rules[0].timeouts:\n  request: 5s\n  backendRequest: 3s</code></pre>For retries, the experimental <code>HTTPRouteFilter</code> with <code>type: ExtensionRef</code> is used — implementation-specific. In Istio, the preferred approach for retries with Gateway API is to use a DestinationRule alongside the HTTPRoute for resilience policies (connection pool, outlier detection) while using HTTPRoute for routing. The Gateway API standard is catching up — check the API version for the latest feature availability.',
     },
+  { q: 'How does Kubernetes Gateway API differ from the Ingress API?', a: 'Kubernetes Gateway API is the successor to the Ingress API, designed to be more expressive and extensible. Key differences: Gateway API has separate resources for infrastructure concerns (GatewayClass, Gateway) and routing concerns (HTTPRoute, GRPCRoute, TCPRoute) enabling role-based management. Ingress is a single resource mixing infrastructure and routing. Gateway API supports L4 and L7 routing, multiple protocols, and traffic splitting natively. HTTPRoute supports header-based routing, URL rewrites, and cross-namespace references that Ingress requires vendor-specific annotations to achieve. Gateway API is now the recommended approach for new Kubernetes ingress configurations.' },
   ];
 
   revision: RevisionSummary = {

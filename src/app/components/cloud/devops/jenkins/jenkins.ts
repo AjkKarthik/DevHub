@@ -541,6 +541,16 @@ console.log(JSON.stringify(parseJenkinsfile(jf), null, 2));`,
       answer: 1,
       explanation: '`buildDiscarder(logRotator(numToKeepStr: "30"))` tells Jenkins to keep only the last N build records and their associated logs/artifacts. Without it, Jenkins accumulates builds indefinitely — causing disk space exhaustion and UI slowness over months of active use. Set it on every pipeline.',
     },
+    {
+      q: 'What is the difference between Declarative and Scripted Pipeline in Jenkins?',
+      options: [
+        'Declarative is older; Scripted is the modern standard',
+        'Declarative uses structured pipeline {} syntax with built-in validation; Scripted uses Groovy code in node {} blocks with full programming flexibility',
+        'Scripted runs faster than Declarative',
+        'They are interchangeable — both produce identical Jenkinsfiles'],
+      answer: 1,
+      explanation: 'Declarative Pipeline: structured YAML-like syntax within pipeline { agent, stages, steps, post }. Validates syntax before running. Easier to read and write. Recommended for most use cases. Scripted Pipeline: Groovy code in node { } blocks — full programming power (loops, conditionals, exceptions) but no syntax validation and harder to maintain. Use Declarative by default; drop into `script { }` blocks for Groovy when Declarative is insufficient.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -563,6 +573,10 @@ console.log(JSON.stringify(parseJenkinsfile(jf), null, 2));`,
     {
       q: 'How do you pass information between stages in a Declarative Jenkinsfile?',
       a: 'Use `env` variables: in a `script {}` block, set `env.MY_VAR = "value"`. This persists across all subsequent stages on the same agent. For file artifacts between stages that use different agents, use `stash` and `unstash`: `stash name: "build-output", includes: "dist/**"` in Build, `unstash "build-output"` in Deploy. `stash` serializes files to the Jenkins controller; `unstash` restores them on any agent — the standard mechanism when different stages run on different agents.',
+    },
+    {
+      q: 'What are Jenkins shared libraries and when would you use them?',
+      a: 'Jenkins Shared Libraries are Groovy code stored in a separate Git repository, loaded into Jenkins pipelines. They allow you to extract common pipeline steps into reusable functions: def runTests(args) { ... }, def deployToKubernetes(args) { ... }. Usage: configure the shared library in Jenkins (Manage Jenkins → Configure System → Global Pipeline Libraries), then @Library("my-lib") _ at the top of a Jenkinsfile. Use shared libraries when: (1) Multiple pipelines repeat the same steps (build, test, deploy) — consolidate into one place. (2) You want to enforce company standards (security scans, notification patterns) — one update to the library propagates to all consuming pipelines. (3) You need to share complex Groovy logic that is impractical to inline. The library is versioned via Git tags/branches.',
     },
   ];
 

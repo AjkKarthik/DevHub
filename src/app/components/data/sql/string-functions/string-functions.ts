@@ -272,6 +272,17 @@ FROM customers;`,
       answer: 1,
       explanation: 'ILIKE is the PostgreSQL case-insensitive variant of LIKE. MSSQL LIKE is already case-insensitive by default when the collation is case-insensitive.',
     },
+    {
+      q: 'What does the TRANSLATE() function do in SQL?',
+      options: [
+        'Translates a string between character encodings (UTF-8 to ASCII)',
+        'Replaces individual characters in a string with specified substitute characters — a character-by-character substitution map',
+        'Reverses a string character by character',
+        'Converts a string to a specified language locale'
+      ],
+      answer: 1,
+      explanation: 'TRANSLATE(string, from_chars, to_chars) replaces each character in from_chars with the corresponding character in to_chars. Example: TRANSLATE(\'hello\', \'aeiou\', \'12345\') → \'h2ll4\'. Useful for removing special characters, converting separators, or simple cipher substitutions. Available in MSSQL 2017+ and PostgreSQL.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -286,6 +297,18 @@ FROM customers;`,
     {
       q: 'What is the PostgreSQL equivalent of MSSQL\'s STRING_SPLIT?',
       a: 'Use REGEXP_SPLIT_TO_TABLE(string, pattern) or STRING_TO_ARRAY(string, delimiter) combined with UNNEST. Example: SELECT unnest(STRING_TO_ARRAY(\'a,b,c\', \',\')) AS item.',
+    },
+    {
+      q: 'How do I efficiently split a large delimited string in MSSQL?',
+      a: 'Use STRING_SPLIT(string, delimiter) (SQL Server 2016+) which returns a table — it is set-based and much faster than a loop-based splitter. Join the result directly: SELECT value FROM STRING_SPLIT(@csv, \',\'). For older versions, use a CLR splitter or a numbers-table tally approach. STRING_SPLIT does not guarantee order; add WITH (ENABLE_ORDINAL) in SQL Server 2022+ to get positional indexes.',
+    },
+    {
+      q: 'How do I use regular expressions in MSSQL vs PostgreSQL?',
+      a: 'PostgreSQL supports full regex with ~ (match), !~ (not match), REGEXP_REPLACE, REGEXP_MATCHES, REGEXP_SPLIT_TO_TABLE. MSSQL has no built-in regex — use LIKE for simple patterns, or deploy a CLR function or use PATINDEX for limited pattern matching. For complex regex in MSSQL, push the logic to the application layer or use a CLR assembly.',
+    },
+    {
+      q: 'How do I trim specific characters (not just spaces) in MSSQL and PostgreSQL?',
+      a: 'PostgreSQL: TRIM(BOTH \'xy\' FROM str) removes leading and trailing x or y characters. LTRIM/RTRIM with a character list: LTRIM(str, \'0\') strips leading zeros. MSSQL: TRIM(chars FROM str) was added in SQL Server 2022. For earlier versions: use REPLACE or a recursive loop in a function to strip specific characters, as LTRIM/RTRIM in MSSQL only trim spaces.',
     },
   ];
 }

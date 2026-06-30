@@ -119,7 +119,7 @@ const redis = new Redis();
 
 // Compare-and-swap: set key to newVal only if current value is expectedVal
 const casScript = \`
-local current = redis.call('GET', KEYS[1])
+local current = redis.call(\'GET\', KEYS[1])
 if current == ARGV[1] then
   redis.call('SET', KEYS[1], ARGV[2])
   return 1
@@ -155,7 +155,7 @@ return count
     {
       title: 'Hardcoding key names inside the script body',
       wrong: `local script = \`redis.call('GET', 'user:42:session')\``,
-      right: `local script = \`redis.call('GET', KEYS[1])\`
+      right: `local script = \`redis.call(\'GET\', KEYS[1])\`
 // call: redis.eval(script, 1, 'user:42:session')`,
       explanation: 'Hardcoding keys prevents Redis Cluster from correctly routing the script. Redis uses the KEYS[] list to determine which cluster node the script should run on. Keys not declared in numkeys may be on a different slot.',
     },
@@ -240,12 +240,56 @@ async function consume(bucketKey: string, rate: number, capacity: number): Promi
       answer: 1,
       explanation: 'Lua scripts are cached in memory only. A restart clears the script cache. EVALSHA will return a NOSCRIPT error. Applications must reload scripts (SCRIPT LOAD) on startup.',
     },
+    {
+      q: 'Why are Redis Lua scripts atomic?',
+      options: ['Lua uses its own transaction system', 'Redis executes the entire Lua script without interruption — no other command can run between script instructions', 'Scripts run in a separate thread with a lock', 'Lua scripts use MULTI/EXEC internally'],
+      answer: 1,
+      explanation: 'Lua scripts run atomically in Redis — the event loop is blocked for the script duration. This guarantees no race conditions between script steps. Keep scripts short to avoid blocking other clients for too long.',
+    },
+    {
+      q: 'What is the difference between redis.call() and redis.pcall() in Lua?',
+      options: ['redis.call() is async; redis.pcall() is sync', 'redis.call() raises an error on command failure; redis.pcall() catches errors and returns them as a Lua table', 'redis.pcall() only works with read commands', 'There is no functional difference'],
+      answer: 1,
+      explanation: 'redis.call() propagates command errors as Lua errors (aborting the script). redis.pcall() catches errors and returns {err: msg} — enabling per-command error handling within the script without aborting.',
+    },
+    {
+      q: 'What is EVALSHA and why use it instead of EVAL?',
+      options: ['EVALSHA runs scripts faster by compiling them', 'EVALSHA executes a pre-loaded script by SHA1 hash, avoiding resending the script body on every call', 'EVALSHA supports more Lua functions than EVAL', 'EVALSHA is for read-only scripts'],
+      answer: 1,
+      explanation: 'SCRIPT LOAD script returns a SHA1 hash. EVALSHA sha1 numkeys keys argv runs the cached script. This avoids sending the full script body on each call, reducing network traffic. NOSCRIPT error means the script was not loaded.',
+    },
+    {
+      q: 'How should Redis keys be passed to Lua scripts and why?',
+      options: ['Keys can be hardcoded inside the Lua script', 'Keys should be passed via the KEYS array so Redis Cluster can determine key slots and route correctly', 'Keys should be passed in ARGV for flexibility', 'Keys are automatically detected by the script'],
+      answer: 1,
+      explanation: 'Pass keys via KEYS[1], KEYS[2]... so Redis Cluster knows which slot the script accesses and can verify all keys are on the same slot. Hardcoding key names makes cluster routing impossible — a scripting best practice.',
+    },
   ];
 
   qna: QnaItem[] = [
     {
       q: 'Can Lua scripts access external systems or make HTTP calls?',
       a: 'No. Redis runs Lua in a sandboxed environment with no file I/O, network access, or system calls. The only I/O is through redis.call() / redis.pcall() to the Redis server itself. This sandbox is intentional — it prevents scripts from causing side effects or hanging Redis while waiting on external resources.',
+    },
+    {
+      q: 'How do you pass arguments to a Redis Lua script?',
+      a: 'EVAL script numkeys [key...] [arg...]: keys are in KEYS table (KEYS[1], KEYS[2]...), args in ARGV table (ARGV[1], ARGV[2]...). Example: <code>EVAL "return redis.call(\'GET\', KEYS[1])" 1 mykey</code>. Always pass keys via KEYS — required for Redis Cluster routing and script analysis tools.',
+    },
+    {
+      q: 'What are the limitations of Lua scripts in Redis?',
+      a: 'Limitations: (1) Scripts block the event loop — keep them short; (2) No global state between calls (use Redis keys); (3) Cannot use SUBSCRIBE/PUBLISH; (4) No external network calls; (5) No access to file system; (6) Deterministic required (no math.random without seed — use RANDOM workarounds). Scripts must be deterministic for AOF/replication.',
+    },
+    {
+      q: 'How do you handle errors in Redis Lua scripts?',
+      a: '<code>redis.call()</code> raises a Lua error on Redis command failure (e.g., wrong type). <code>redis.pcall()</code> returns <code>{err: msg}</code> on error without aborting. For validation, use <code>return redis.error_reply(\'msg\')</code> to return an error to the client. <code>return redis.status_reply(\'OK\')</code> for OK responses.',
+    },
+    {
+      q: 'What is SCRIPT FLUSH and when do you use it?',
+      a: 'SCRIPT FLUSH clears all cached Lua scripts from the server. Use after deploying new script versions to ensure old SHA1s are invalidated. Also use for debugging when EVALSHA returns NOSCRIPT. In production, SCRIPT LOAD new scripts first, then update client code to use the new SHA1 atomically.',
+    },
+    {
+      q: 'How do Lua scripts work in Redis Cluster?',
+      a: 'In cluster mode, all keys a script accesses must be in the same hash slot. Pass all keys in KEYS[] so Redis can verify slot ownership. Use hash tags <code>{tag}</code> to co-locate related keys. Lua scripts cannot access keys in different slots — this is enforced. EVALSHA is sent to the node owning the slot of KEYS[1].',
     },
   ];
 

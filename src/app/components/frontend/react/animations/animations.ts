@@ -810,6 +810,10 @@ export default function NotificationStack() {
       q: 'How do I animate an element entering based on scroll position?',
       a: 'Use the whileInView prop: <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>. This replaces IntersectionObserver boilerplate entirely. viewport.once: true ensures the animation only plays once. viewport.margin lets you trigger earlier (margin: "-100px" fires 100px before the element enters the viewport).',
     },
+    {
+      q: 'How do I keep Framer Motion bundle size small in a production app?',
+      a: 'Import only what you use from "framer-motion" — tree-shaking removes unused exports. Avoid importing the full m namespace; import { motion, AnimatePresence } directly. For minimal animations (fades, slides), consider the LazyMotion API with domAnimation feature set (~18kB) instead of the full bundle (~50kB). Defer the framer-motion import with dynamic() in Next.js for pages that animate below the fold.',
+    },
   ];
 
   revision: RevisionSummary = {

@@ -665,6 +665,10 @@ export default function App() {
       q: 'What is Zustand\'s immer middleware?',
       a: 'Zustand has an optional immer middleware that lets you write mutating code in Zustand set() calls, the same way RTK does: set(s => { s.count++ }). Install it from zustand/middleware. Useful if your store has deeply nested objects.',
     },
+    {
+      q: 'How do I persist Zustand state across page refreshes?',
+      a: 'Wrap your store with the persist middleware from zustand/middleware: `create(persist(stateCreator, { name: "store-key", storage: createJSONStorage(() => localStorage) }))`. Only persist the fields you need by using the partialize option: `partialize: (s) => ({ theme: s.theme })`. Avoid persisting server state — let TanStack Query re-fetch it on mount instead.',
+    },
   ];
 
   revision: RevisionSummary = {

@@ -244,6 +244,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: 'FROM scratch starts with a completely empty filesystem — no /etc/ssl/certs, no libc, nothing. If your binary makes any HTTPS connections, TLS verification fails because there are no root CA certificates. Copy them explicitly from the builder stage.',
   },
+  { q: 'What is the main advantage of multi-stage Docker builds?', options: ['They make individual build steps run faster through parallelism', 'They produce significantly smaller production images by discarding build-time dependencies', 'They allow using multiple different base operating systems in one image', 'They enable automatic parallel layer caching across all build stages'], answer: 1, explanation: 'Multi-stage builds let you use a full SDK image for compilation and copy only the compiled binary to a minimal runtime image. Build tools, source code, test dependencies, and package managers never reach the final image. A Go application might shrink from 800 MB in the build image to 10 MB in a distroless final image. This reduces attack surface, image pull time, and storage costs significantly.' },
 ];
 
 const qna: QnaItem[] = [
@@ -267,6 +268,7 @@ const qna: QnaItem[] = [
     q: 'Should I always use FROM scratch for Go binaries?',
     a: 'Only if your binary is fully statically compiled (CGO_ENABLED=0). If you use cgo or need standard system libraries, use distroless/static or alpine instead. scratch also lacks timezone data and CA certificates, so add those explicitly with COPY --from if your binary needs them.',
   },
+  { q: 'How do you optimize Docker layer caching in multi-stage builds?', a: 'Order instructions from least-changing to most-changing: first install system dependencies because they change rarely, then copy dependency manifests such as package.json or csproj files and install dependencies so this step is cached until manifests change, then copy application source code last because it changes every build. Each COPY . . instruction invalidates the cache for all subsequent layers. Separate COPY package.json . from COPY . . so npm install stays cached between code changes. Use --mount=type=cache with BuildKit to persist package manager caches across builds without adding cache files to the image.' },
 ];
 
 const revision: RevisionSummary = {

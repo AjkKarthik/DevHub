@@ -353,6 +353,17 @@ export function analyseCosts(records: CostRecord[]) {
       answer: 2,
       explanation: 'Shared scope allows the RI discount to apply to matching VMs across all subscriptions in your enterprise agreement or billing account. If one team\'s VMs are scaled down, the RI automatically covers another team\'s matching VMs — maximising utilisation. Single Subscription scope restricts the RI to one subscription; if those VMs scale down, the RI goes unused. There is no "Global" scope for RIs — they are region-specific.'
     },
+    {
+      q: 'What does Azure Advisor provide in the context of cost management?',
+      options: [
+        'Real-time billing alerts only',
+        'Automated resource deletion for unused resources',
+        'Personalised recommendations to reduce cost, improve performance, and increase reliability',
+        'A fixed discount on reserved instances',
+      ],
+      answer: 2,
+      explanation: 'Azure Advisor analyses your usage and configuration to provide personalised recommendations across cost, performance, reliability, security, and operational excellence.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -375,6 +386,10 @@ export function analyseCosts(records: CostRecord[]) {
     {
       q: 'How does Azure Spot pricing work and when should you use it?',
       a: '<strong>Azure Spot VMs</strong> use excess Azure capacity at discounts up to 90% vs pay-as-you-go. The trade-off: Azure can evict Spot VMs with only a 2-minute eviction notice when it needs the capacity back. <strong>When to use</strong>: batch processing jobs (ML training, rendering, data processing), stateless workloads, CI/CD build agents, dev/test environments that tolerate interruption. <strong>When NOT to use</strong>: production stateful workloads, databases, real-time user-facing services, or anything requiring an SLA. <strong>Best practices</strong>: use VMSS with Spot + on-demand mix (e.g., 80% Spot, 20% on-demand as baseline); save work frequently; handle eviction gracefully; use Azure Container Apps or AKS node pools with Spot for containerised batch jobs.'
+    },
+    {
+      q: 'What is the difference between Azure Cost Alerts and Budgets?',
+      a: 'A <strong>Budget</strong> defines a spending threshold for a scope (subscription, resource group). Azure sends alerts when actual or forecasted spend reaches configured percentages (e.g., 80%, 100%). Budgets can also trigger <strong>action groups</strong> (runbooks, Logic Apps) to automatically react to overspend — not just notify.',
     },
   ];
 

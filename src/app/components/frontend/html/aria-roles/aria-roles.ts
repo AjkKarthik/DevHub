@@ -154,7 +154,19 @@ export class HtmlAriaRoles {
       options: ['aria-label', 'aria-labelledby', 'aria-describedby', 'aria-required'],
       answer: 3,
       explanation: '<code>aria-required="true"</code> tells assistive technologies that the field must be filled before submitting. Prefer the native <code>required</code> attribute when possible.'
-    }
+    },
+    {
+      q: 'What does role="presentation" do to an element?',
+      options: ['Makes it visible only in presentations', 'Removes the element\'s semantic role from the accessibility tree while keeping it visually', 'Adds a slideshow role', 'Prevents the element from being focusable'],
+      answer: 1,
+      explanation: 'role="presentation" (or role="none") strips an element\'s implicit ARIA semantics. Commonly used on layout tables (<table role="presentation">) to prevent screen readers from announcing it as a "table with X rows".',
+    },
+    {
+      q: 'What is the difference between aria-disabled and the HTML disabled attribute?',
+      options: ['They are identical', 'disabled removes the element from the tab order and prevents events; aria-disabled only announces it as disabled but keeps it focusable', 'aria-disabled is only for ARIA widgets', 'disabled is deprecated'],
+      answer: 1,
+      explanation: 'The native disabled attribute removes the element from the tab order, prevents events, and tells AT it is disabled. aria-disabled="true" keeps the element in the tab order and receives events — useful when you want keyboard users to still discover the element and be told why it is unavailable.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -169,7 +181,19 @@ export class HtmlAriaRoles {
     {
       q: 'How does <code>aria-expanded</code> help with interactive elements?',
       a: 'It indicates whether an element, such as a dropdown menu, is currently expanded or collapsed, allowing assistive technologies to provide context to the user.'
-    }
+    },
+    {
+      q: 'What is the first rule of ARIA?',
+      a: 'The first rule of ARIA use is: "Do not use ARIA if you can use a native HTML element or attribute with the semantics and behaviour you need." Native elements are more reliable, require no JavaScript to maintain state, and are already well-tested across browsers and assistive technologies. ARIA supplements HTML when custom widgets are unavoidable — it does not replace semantic HTML.',
+    },
+    {
+      q: 'What does role="alert" do and how does it differ from role="status"?',
+      a: 'role="alert" creates an implicit ARIA live region with aria-live="assertive" — the screen reader interrupts what it is currently saying to announce the new content immediately. Use it for time-sensitive errors (form submission failure, payment error). role="status" is polite — it waits until the current utterance finishes. Use status for success messages and informational updates that do not require immediate attention.',
+    },
+    {
+      q: 'When should you add a role to a <div> vs using a semantic element?',
+      a: 'Use a semantic element first: <code>&lt;button&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;article&gt;</code>. Add role to a div only when no HTML element matches the widget pattern — interactive roles like role="tab", role="treeitem", role="combobox" have no native HTML equivalent. When you add a role, you take on full responsibility for keyboard behaviour (arrow key navigation, state management), focus management, and maintaining all required ARIA states and properties.',
+    },
   ];
 
   revision: RevisionSummary = {

@@ -612,6 +612,10 @@ function ToastContainer() {
       q: 'Is useContext the same as Redux?',
       a: 'No. Redux has a single global store, DevTools with time-travel, middleware, and strict action/reducer conventions. Context is just a React mechanism to avoid prop-drilling. useReducer + Context replicates some of the pattern without the tooling. For most apps, start with Context; graduate to Redux Toolkit when you need the DevTools or middleware.',
     },
+    {
+      q: 'How do I lazy-initialise expensive Context values?',
+      a: 'Pass an initialiser function to useState inside the Provider: const [state, setState] = useState(() => computeExpensiveDefault()). This ensures the computation runs only once on mount, not on every re-render. Alternatively, use useReducer with an init function argument: useReducer(reducer, undefined, init) — the init function receives the second argument and is called once.',
+    },
   ];
 
   revision: RevisionSummary = {

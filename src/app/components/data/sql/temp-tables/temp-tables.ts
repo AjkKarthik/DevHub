@@ -260,6 +260,28 @@ DROP TABLE IF EXISTS #top_customers;`
       answer: 1,
       explanation: 'A global temp table (##name) is dropped when the session that created it ends AND no other sessions are actively using it. It is not safe for sharing long-lived data across sessions.'
     },
+    {
+      q: 'In PostgreSQL, how do you limit a TEMP TABLE to the current transaction only?',
+      options: [
+        'DECLARE TEMP TABLE name … — it is dropped at COMMIT',
+        'CREATE TEMP TABLE name … ON COMMIT DROP — drops the table when the transaction commits',
+        'CREATE TEMP TABLE VOLATILE name …',
+        'TEMP tables are always transaction-scoped in PostgreSQL'
+      ],
+      answer: 1,
+      explanation: 'ON COMMIT DROP creates a temp table that is automatically dropped at the end of the current transaction — useful in functions or batches where cleanup would otherwise be manual. Without this clause, the table persists until session end.'
+    },
+    {
+      q: 'Why might a CTE be faster than a #temp table for a small intermediate result in MSSQL?',
+      options: [
+        'CTEs use an in-memory B-tree; temp tables use disk',
+        'A CTE avoids materialising the result — the optimizer can push predicates into it and skip rows that are never needed by the outer query',
+        'CTEs always use parallelism; temp tables are serial',
+        'They are always identical in performance'
+      ],
+      answer: 1,
+      explanation: 'A CTE is a named subquery — the optimizer can inline it and apply outer predicates inside, potentially avoiding a full materialisation. A temp table always materialises the full result first. For small, single-use intermediate results, a CTE is often faster; for large or multiply-referenced results, a temp table with an index wins.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -274,6 +296,18 @@ DROP TABLE IF EXISTS #top_customers;`
     {
       q: 'How do I avoid "There is already an object named \'#temp\'" errors in stored procedures?',
       a: 'Add DROP TABLE IF EXISTS #temp; at the top of the procedure (or after each use). Without it, if the procedure errors mid-way and is re-run, the temp table may already exist from the previous run.',
+    },
+    {
+      q: 'How large can tempdb grow with heavy temp table use and how do I control it?',
+      a: 'tempdb grows as long as active sessions hold temp objects, sorted/hash data, or version store rows. Control growth by: (1) Setting a fixed maximum size on tempdb data files. (2) Using multiple tempdb data files (one per CPU core up to 8) to reduce allocation bitmap contention. (3) Ensuring temp tables are dropped promptly. Monitor sys.dm_db_task_space_usage for per-session usage.',
+    },
+    {
+      q: 'Can I pass a temp table between stored procedures in MSSQL?',
+      a: 'Yes — a #temp table created in a parent scope (session or outer procedure) is visible to all child stored procedures called within the same session. The child proc can INSERT/SELECT/UPDATE the temp table by name. However, the child proc cannot CREATE the same #temp table (it already exists). This scoping makes temp tables a practical alternative to table-valued parameters for passing sets between procedures.',
+    },
+    {
+      q: 'When should I use a permanent staging table instead of a #temp table?',
+      a: 'Use a permanent staging table (e.g. stg.orders_load) when: the load job runs from multiple connections (each with its own #temp scope), you need to inspect or recover the staged data after a failed load, the ETL pipeline is long-running and the data must survive reconnects, or you want to index the staging data before the final INSERT. Truncate the staging table at the start of each load run.',
     },
   ];
 }

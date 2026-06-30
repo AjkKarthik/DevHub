@@ -372,6 +372,28 @@ FOR EACH ROW EXECUTE FUNCTION fn_log_delete();`
       answer: 1,
       explanation: 'A filter predicate is silently added as a WHERE clause to every SELECT against the protected table. Rows where the predicate returns no result are invisible to the user — they do not appear in query results, COUNT(), or aggregates. Block predicates can additionally prevent INSERT/UPDATE/DELETE of rows that fail the predicate.'
     },
+    {
+      q: 'What does DENY do in MSSQL and how does it differ from REVOKE?',
+      options: [
+        'DENY removes a previously granted permission; REVOKE blocks the permission even if a role grants it',
+        'DENY explicitly blocks a permission even if the user\'s role grants it; REVOKE removes a previously granted or denied permission',
+        'They are identical — DENY is the older syntax for REVOKE',
+        'DENY only works on table-level permissions; REVOKE works on any object'
+      ],
+      answer: 1,
+      explanation: 'GRANT and DENY can both exist for the same principal. DENY always wins over GRANT — even if a role grants SELECT, a DENY on the user blocks it. REVOKE removes a prior GRANT or DENY entry without adding a new one, so the effective permission falls through to the role hierarchy.'
+    },
+    {
+      q: 'How do you audit data access in MSSQL without using triggers?',
+      options: [
+        'Enable Transparent Data Encryption (TDE)',
+        'Use SQL Server Audit (CREATE SERVER AUDIT) to capture SELECT/INSERT/UPDATE/DELETE events to a file or Windows Event Log',
+        'Query sys.dm_exec_sessions for historical access records',
+        'Enable CHANGE_DATA_CAPTURE on the tables of interest'
+      ],
+      answer: 1,
+      explanation: 'SQL Server Audit creates an audit specification that logs object-level events (SELECT, INSERT, etc.) per database or server. Audit records are written to a target (file, Application Event Log, or Security Event Log). CDC and Change Tracking capture data changes, but neither logs read (SELECT) access.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -386,6 +408,18 @@ FOR EACH ROW EXECUTE FUNCTION fn_log_delete();`
     {
       q: 'Should I store passwords in the database?',
       a: 'Never store plaintext passwords. Preferred pattern: hash passwords in the application with bcrypt/Argon2 (slow, salted hashes) before storing. Do not use MD5 or SHA-256 alone — they are fast, making brute-force feasible. If you must hash in the database, PostgreSQL\'s pgcrypto provides crypt(password, gen_salt(\'bf\', 12)) (bcrypt), but application-layer hashing keeps the unhashed password off the wire entirely.',
+    },
+    {
+      q: 'What is the principle of least privilege and how do I apply it to database roles?',
+      a: 'Grant only the permissions a user or application needs — no more. Application accounts should have SELECT/INSERT/UPDATE/DELETE on specific tables they use, never db_owner or dbo. Create role-based access: app_reader (SELECT only), app_writer (INSERT/UPDATE/DELETE), app_admin (schema changes). This limits blast radius if credentials are compromised.',
+    },
+    {
+      q: 'How do you prevent SQL injection in a stored procedure that accepts a search string?',
+      a: 'Use the parameter directly in the predicate — never concatenate it into the SQL text: WHERE name LIKE @search + \'%\' (the parameter is bound separately). If you need dynamic predicates, use sp_executesql with typed @params. Validate the input against a whitelist if it drives an identifier (table name, column name). Never use EXEC(\'SELECT … WHERE name LIKE \\\'\' + @search + \'%\'\')\' — that is textbook injection.',
+    },
+    {
+      q: 'What is column-level encryption vs Always Encrypted in MSSQL?',
+      a: 'MSSQL provides both: EncryptByKey() / DecryptByKey() encrypts data in T-SQL using a symmetric key stored in the database — the server decrypts on demand, so DBAs can read plaintext. Always Encrypted uses column master keys stored client-side; the server only ever sees ciphertext and cannot decrypt. Use Always Encrypted for highly sensitive columns (SSN, card numbers) where even DBAs must not see plaintext.',
     },
   ];
 }

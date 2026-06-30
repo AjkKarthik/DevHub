@@ -646,6 +646,10 @@ function App() {
       q: 'How do I share state type between a component and its context?',
       a: 'Export the state interface from the component file and import it in the context file, or define the types in a shared types.ts file. For small features, a single file with the Context, types, hook, and provider is cleanest. For larger features, split into context.ts (types, context, hook) and provider.tsx (the Provider component with logic).',
     },
+    {
+      q: 'How do I type a custom hook that returns multiple values?',
+      a: 'Return a typed tuple or an object. For a tuple: `return [value, setValue] as const` — the `as const` narrows the type from `(T | Dispatch<...>)[]` to a proper tuple `[T, Dispatch<...>]`. For an object return (more readable for >2 values): `return { data, isLoading, refetch }` and let TypeScript infer the return type. Prefer objects over tuples when there are 3+ return values.',
+    },
   ];
 
   revision: RevisionSummary = {

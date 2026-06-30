@@ -235,6 +235,28 @@ console.log(classifyPath('/home/alice/.bashrc'));    // user-data`,
       answer: 1,
       explanation: '/etc/fstab (filesystem table) defines persistent mounts. /proc/mounts shows currently active mounts (read from the kernel).',
     },
+    {
+      q: 'What is an inode in Linux?',
+      options: [
+        'The filename stored in a directory entry',
+        'A data structure storing file metadata (permissions, timestamps, size, data block pointers) but not the filename',
+        'A virtual memory page for file caching',
+        'A journal entry in ext4',
+      ],
+      answer: 1,
+      explanation: 'An inode stores metadata about a file: permissions, owner, timestamps, size, and pointers to data blocks. The filename is stored in the directory entry. Multiple filenames (hard links) can point to the same inode.',
+    },
+    {
+      q: 'What is the difference between a hard link and a symbolic link?',
+      options: [
+        'Hard links can cross filesystems; symbolic links cannot',
+        'A hard link is a directory entry pointing to the same inode; a symbolic link is a file containing a path to the target',
+        'Hard links preserve the target if deleted; symbolic links do not',
+        'They are functionally identical',
+      ],
+      answer: 1,
+      explanation: 'A hard link shares the same inode — deleting the original does not remove the data. A symbolic link is a separate file storing the target path — it breaks if the target is deleted. Symbolic links can cross filesystems; hard links cannot.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -249,6 +271,18 @@ console.log(classifyPath('/home/alice/.bashrc'));    // user-data`,
     {
       q: 'How do you make a sysctl change permanent?',
       a: 'Add the setting to /etc/sysctl.conf or a file in /etc/sysctl.d/ (e.g. /etc/sysctl.d/99-custom.conf), then run sysctl --system to apply all drop-in files. The sysctl -w command applies immediately but is not persistent across reboots.',
+    },
+    {
+      q: 'What directories are in the Linux FHS and what do they contain?',
+      a: 'Key FHS directories: <strong>/bin, /usr/bin</strong> (user commands), <strong>/sbin, /usr/sbin</strong> (system admin commands), <strong>/etc</strong> (config files), <strong>/var</strong> (variable data: logs, spools), <strong>/tmp</strong> (temporary, cleared on boot), <strong>/home</strong> (user home dirs), <strong>/opt</strong> (optional software), <strong>/proc</strong> (kernel virtual fs), <strong>/dev</strong> (device files), <strong>/mnt, /media</strong> (mount points).',
+    },
+    {
+      q: 'What is /proc and how is it useful?',
+      a: '/proc is a virtual filesystem — files exist only in memory, not on disk. It exposes kernel and process information: <code>/proc/cpuinfo</code> (CPU details), <code>/proc/meminfo</code> (memory stats), <code>/proc/PID/</code> (per-process info: status, maps, fd, cmdline). You can tune kernel parameters live via <code>/proc/sys/</code> (e.g., echo 1 > /proc/sys/net/ipv4/ip_forward).',
+    },
+    {
+      q: 'How do you check disk space usage in Linux?',
+      a: '<strong>df -h</strong> shows filesystem usage (used/available/%) for all mounted filesystems in human-readable form. <strong>du -sh /path</strong> shows total disk usage of a directory. <strong>du -sh /* | sort -rh | head</strong> finds the largest directories. <code>ncdu</code> provides an interactive TUI for disk usage analysis.',
     },
   ];
 

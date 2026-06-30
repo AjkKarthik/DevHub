@@ -188,6 +188,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'Building a production-grade Operator is significant engineering work. OperatorHub.io lists hundreds of community and certified Operators. For databases (PostgreSQL, MySQL, Kafka), mature Operators already exist (CloudNativePG, Strimzi). Only build custom Operators for your own application\'s specific operational logic.',
   },
+  { q: 'What is a Kubernetes Operator?', options: ['A human administrator who manages the cluster on a daily basis', 'A custom controller that encodes operational knowledge for a specific application using CRDs', 'A wrapper around Helm charts that adds health monitoring and alerting', 'A built-in Kubernetes component for managing StatefulSets automatically'], answer: 1, explanation: 'An Operator is a custom controller that manages complex stateful applications like Postgres, Kafka, or Elasticsearch by encoding human operational knowledge. It uses CRDs to define new resource types such as PostgresCluster. The controller watches these custom resources and reconciles actual state to desired state, handling tasks like backups, failover, schema migrations, and scaling that generic Kubernetes primitives cannot do automatically.' },
 ];
 
 const qna: QnaItem[] = [
@@ -211,6 +212,7 @@ const qna: QnaItem[] = [
     q: 'What is the difference between the Operator SDK and kubebuilder?',
     a: 'kubebuilder is the official Kubernetes SIG project for building Go-based controllers. Operator SDK (by Red Hat) extends kubebuilder\'s scaffolding with additional support for Ansible-based and Helm-based Operators (for teams not writing Go). Both use controller-runtime under the hood. For Go controllers, they are nearly equivalent — kubebuilder is the leaner upstream choice.',
   },
+  { q: 'How do you build a simple Kubernetes Operator?', a: 'Three main options: Operator SDK from Red Hat generates controller-runtime scaffolding with operator-sdk init; you define the CRD schema in api/v1/ and implement the reconcile loop in controllers/. Kubebuilder provides similar scaffolding and actually underpins the Operator SDK. Using controller-runtime directly in Go gives full control. The reconcile loop pattern is: watch for CRD events, fetch current cluster state, compute the difference, apply changes to reach desired state, and requeue on error. For non-Go use cases, Metacontroller lets you write reconcile logic as a webhook in any language.' },
 ];
 
 const revision: RevisionSummary = {

@@ -300,6 +300,28 @@ AFTER UPDATE ON order_items FOR EACH STATEMENT EXECUTE FUNCTION fn_check_low_sto
       answer: 1,
       explanation: 'AFTER triggers fire after the DML succeeds (constraints already satisfied). INSTEAD OF triggers completely replace the triggering DML — the original statement is never executed. INSTEAD OF is the only type allowed on views.'
     },
+    {
+      q: 'What is a DDL trigger used for in MSSQL?',
+      options: [
+        'Modifying DML (INSERT/UPDATE/DELETE) behaviour',
+        'Capturing or preventing DDL events like CREATE TABLE, ALTER TABLE, or DROP INDEX at database or server scope',
+        'Running SQL after a backup completes',
+        'Scheduling periodic maintenance tasks'
+      ],
+      answer: 1,
+      explanation: 'DDL triggers fire on database schema change events (CREATE, ALTER, DROP). Common uses: auditing schema changes, preventing accidental table drops in production, enforcing naming conventions. EVENTDATA() inside the trigger returns an XML document describing the DDL statement.'
+    },
+    {
+      q: 'In PostgreSQL, what do NEW and OLD refer to in a row-level trigger function?',
+      options: [
+        'NEW is the inserted/updated row; OLD is the deleted/pre-update row',
+        'NEW is the next row to be processed; OLD is the already-processed rows',
+        'NEW and OLD are table aliases for the trigger\'s source and target tables',
+        'Both are identical references to the trigger\'s affected row'
+      ],
+      answer: 0,
+      explanation: 'NEW contains the new row image (available in INSERT and UPDATE triggers). OLD contains the old row image (available in UPDATE and DELETE triggers). In a BEFORE UPDATE trigger you can modify NEW fields to override the incoming values before they are written.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -314,6 +336,18 @@ AFTER UPDATE ON order_items FOR EACH STATEMENT EXECUTE FUNCTION fn_check_low_sto
     {
       q: 'Should I use triggers for application business logic?',
       a: 'Generally no. Triggers are invisible to application developers, make debugging hard, and can cause surprising side effects (hidden performance costs, recursive firing). Keep business logic in the application or in stored procedures that are explicitly called. Use triggers only for cross-cutting database-level concerns like audit logging, enforcing invariants that constraints cannot express, or maintaining denormalised columns.',
+    },
+    {
+      q: 'How do I implement audit logging with triggers?',
+      a: 'Create an audit table with columns for table_name, operation (INSERT/UPDATE/DELETE), old_values (JSON/XML), new_values, changed_by, and changed_at. In the trigger, INSERT a row using CURRENT_USER and GETDATE()/NOW(), and serialize OLD/NEW using JSON_OBJECT (PostgreSQL/MSSQL 2016+) or FOR XML. Partition the audit table by month for efficient retention management.',
+    },
+    {
+      q: 'What is the performance impact of triggers on a high-volume INSERT?',
+      a: 'Each trigger fires once per statement in MSSQL (all affected rows available in inserted/deleted). In PostgreSQL, row-level triggers fire per row — a BULK INSERT of 100k rows fires the trigger 100k times. For audit logging on high-volume tables, consider using CDC (Change Data Capture in MSSQL) or logical replication (PostgreSQL) instead — they are asynchronous and have far lower transaction overhead.',
+    },
+    {
+      q: 'How do AFTER and BEFORE trigger ordering work when multiple triggers exist on the same event?',
+      a: 'MSSQL: use sp_settriggerorder to designate a FIRST or LAST trigger; intermediate triggers fire in an undefined order. PostgreSQL: multiple triggers on the same event fire in alphabetical name order (BEFORE triggers first, then AFTER, then INSTEAD OF). Name triggers with a numeric prefix (e.g., 01_audit, 02_validate) to enforce a predictable execution sequence.',
     },
   ];
 }

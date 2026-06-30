@@ -732,6 +732,12 @@ func BenchmarkPushPop(b *testing.B) {
       answer: 0,
       explanation: 'TestMain is an optional hook — if defined, the testing framework calls it instead of running tests directly. You perform shared setup (start a DB, seed test data, spin up a test server), call m.Run() to run all tests in the package, then perform teardown, then os.Exit(m.Run()). Without TestMain, tests run automatically.'
     },
+    {
+      q: 'What does the -race flag do and when should you use it?',
+      options: ['It runs tests in a random order', 'It enables the Go race detector — instruments memory accesses to detect concurrent data races at runtime', 'It parallelises test execution', 'It skips slow tests'],
+      answer: 1,
+      explanation: 'go test -race instruments every memory read and write with shadow memory tracking. If two goroutines access the same variable concurrently and at least one write is not protected by a synchronisation primitive, the race detector panics with a detailed report showing the conflicting goroutine stacks. Always run -race in CI. It carries ~5–10x runtime overhead, so avoid it in production binaries. Some race conditions only manifest under specific timing — -race catches them deterministically.'
+    },
   ];
 
   qna: QnaItem[] = [

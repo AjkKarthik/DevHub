@@ -484,6 +484,12 @@ export const serverRoutes: ServerRoute[] = [
       answer: 1,
       explanation: 'ISR (Next.js) lets you set a revalidate TTL on SSG pages. The page is served from CDN cache (fast, like SSG) until the TTL expires, then rebuilt in the background on the next request — giving CDN speed with eventual freshness without a full site rebuild.',
     },
+    {
+      q: 'What is Partial Hydration and how does it differ from full SSR hydration?',
+      options: ['Partial Hydration means hydrating only the HTML <head>', 'Only interactive components receive hydration JS — static content remains as HTML without any JS bundle attached', 'Partial Hydration defers hydration until user scroll', 'It is the same as Progressive Enhancement'],
+      answer: 1,
+      explanation: 'Full SSR hydration sends JavaScript for every component so the browser can "take over" the entire DOM. Partial Hydration (or Island Architecture, used by Astro) sends zero JS for static components — only interactive "islands" get hydration code. This drastically reduces JS bundle size and TTI. Progressive Hydration is related but different — it hydrates all components but in priority order (visible first).',
+    },
   ];
 
   qna: QnaItem[] = [

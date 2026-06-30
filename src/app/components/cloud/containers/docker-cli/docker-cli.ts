@@ -331,6 +331,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'docker system prune -f removes: stopped containers, dangling images (no tag/no reference), unused networks, and build cache. It does NOT remove running containers or named volumes (use --volumes flag to include those).',
   },
+  { q: 'What is the difference between docker stop and docker kill?', options: ['docker kill is deprecated and should always be replaced with docker stop', 'docker stop sends SIGTERM then waits a grace period before SIGKILL; docker kill sends SIGKILL immediately with no grace period', 'docker stop only works on running containers; docker kill works on any container state', 'docker stop uses more CPU resources than docker kill'], answer: 1, explanation: 'docker stop sends SIGTERM to the container, waits 10 seconds (configurable with -t) for graceful shutdown, then sends SIGKILL. This allows applications to catch SIGTERM and flush data or close connections cleanly. docker kill sends SIGKILL or any signal via --signal immediately with no grace period. Always prefer docker stop in production; use kill only when a container is unresponsive to SIGTERM.' },
 ];
 
 const qna: QnaItem[] = [
@@ -354,6 +355,7 @@ const qna: QnaItem[] = [
     q: 'How do you copy a file from a container to the host without using exec?',
     a: '`docker cp CONTAINER:/path/inside/container ./local/path` copies files from a running or stopped container to the host. The reverse works too: `docker cp ./local/file CONTAINER:/path/`. This is useful for extracting logs, config files, or generated artefacts from containers that have no shell (e.g., distroless images).',
   },
+  { q: 'How do you debug a running container without installing tools into it?', a: 'Several approaches avoid modifying the production image: (1) docker exec -it <id> sh runs a shell inside the container if one is available. (2) Kubernetes ephemeral debug containers: kubectl debug -it <pod> --image=busybox --target=<container> attaches a new debug container sharing the same PID and network namespaces. (3) docker run --pid=container:<id> --net=container:<id> busybox sh starts a separate container sharing namespaces. (4) nsenter enters namespaces of a running process by PID. Use ephemeral containers for Kubernetes pods in production.' },
 ];
 
 const revision: RevisionSummary = {

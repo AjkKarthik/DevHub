@@ -188,6 +188,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'Helm v3 stores release state as Kubernetes Secrets (type helm.sh/release.v1) in the release\'s namespace. Each revision is a separate Secret. This is why kubectl get secrets -n myns shows helm secrets alongside your application secrets. Helm v2 used Configmaps or Tiller.',
   },
+  { q: 'What is the purpose of helm upgrade --install?', options: ['It reinstalls the Helm CLI from scratch on the current system', 'It upgrades an existing release or installs it if it does not exist, making it idempotent for CI/CD', 'It removes a release and reinstalls the chart from a clean state', 'It upgrades only the chart dependencies without modifying the release'], answer: 1, explanation: 'helm upgrade --install is idempotent: it installs if the release does not exist, or upgrades if it does. This is the standard CI/CD pattern because it works correctly on both first deploy and subsequent updates without needing separate helm install versus helm upgrade logic. Add --atomic to auto-rollback on upgrade failure and --wait to pause until resources are Ready before the command returns.' },
 ];
 
 const qna: QnaItem[] = [
@@ -211,6 +212,7 @@ const qna: QnaItem[] = [
     q: 'How do you test a Helm chart after installation?',
     a: 'Add a Job or Pod in templates/tests/ annotated with helm.sh/hook: test and helm.sh/hook-delete-policy: before-hook-creation. Then run helm test <release-name>. The test Jobs run and Helm reports pass/fail. Common tests: curl the app\'s health endpoint, verify a DB connection, check a config value was injected correctly.',
   },
+  { q: 'How do you manage Helm chart secrets securely?', a: 'Never commit plaintext secrets to values files because they end up stored in Helm release history inside the cluster. Options: (1) Helm Secrets plugin encrypts values files with SOPS and GPG before commit. (2) External Secrets Operator syncs values from HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault into Kubernetes Secrets automatically. (3) Override at deploy time with helm upgrade --set db.password= where the value comes from your CI secret store. (4) Store secrets as Kubernetes Secrets separately and reference them with valueFrom.secretKeyRef in chart templates. External Secrets Operator is preferred for automated rotation.' },
 ];
 
 const revision: RevisionSummary = {

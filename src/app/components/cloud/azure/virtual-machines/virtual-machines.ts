@@ -276,6 +276,17 @@ console.log(estimateMonthlyCost(100, 0.096, 64, 0.0513));
       answer: 1,
       explanation: 'Azure Bastion is a PaaS jump host deployed in your VNet. It enables SSH and RDP connections via the Azure portal using TLS — no public IP on the VM, no port 22/3389 in the NSG. This eliminates the attack surface of internet-facing management ports.'
     },
+    {
+      q: 'What is the key difference between VMSS Uniform and Flexible orchestration modes?',
+      options: [
+        'Uniform supports heterogeneous VM sizes; Flexible requires identical VMs',
+        'Flexible allows mixing VM sizes and manual+automatic scaling, and supports Availability Zones; Uniform uses identical VM instances managed by a single profile',
+        'Uniform is for Linux; Flexible is for Windows VMs',
+        'Flexible mode removes support for Azure autoscale rules',
+      ],
+      answer: 1,
+      explanation: 'VMSS Flexible orchestration supports heterogeneous VM sizes, mix of manual and auto-scaling, and works with Azure availability sets/zones. Uniform mode uses a single VM profile optimised for stateless scale-out scenarios.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -298,6 +309,10 @@ console.log(estimateMonthlyCost(100, 0.096, 64, 0.0513));
     {
       q: 'What managed disk type should you use for dev/test vs production?',
       a: '<strong>Dev/test</strong>: Standard HDD or Standard SSD — sufficient performance at lower cost. <strong>Production web/app servers</strong>: Standard SSD (E) or Premium SSD (P) depending on I/O requirements. <strong>Production databases and high-IOPS workloads</strong>: Premium SSD (P) minimum. <strong>Mission-critical, ultra-low-latency</strong>: Ultra Disk (configurable IOPS/throughput, no caching support). The VM size must support premium storage (s suffix) to use Premium SSD or Ultra.'
+    },
+    {
+      q: 'What is the difference between Azure Spot VMs and Reserved Instances?',
+      a: '<strong>Spot VMs</strong> use Azure surplus capacity at up to 90% discount but can be evicted with 30 seconds notice — suitable for fault-tolerant batch jobs. <strong>Reserved Instances</strong> are 1- or 3-year capacity commitments at 40-72% discount with guaranteed availability — suitable for predictable, always-on workloads. They serve opposite risk profiles.',
     },
   ];
 

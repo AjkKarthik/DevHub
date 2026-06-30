@@ -494,6 +494,12 @@ modal.addEventListener('keydown', (e) => {
       answer: 1,
       explanation: 'aria-hidden removes an element from the accessibility tree (no name, no role announced) but does NOT remove it from the tab order. A keyboard user can tab to an invisible, unnamed control — they hear nothing but lose their place. Either remove the element from the DOM, use display:none, or remove the tabindex.'
     },
+    {
+      q: 'Which WCAG success criterion covers keyboard accessibility?',
+      options: ['1.1.1 Non-text Content', '2.1.1 Keyboard', '3.1.1 Language of Page', '4.1.2 Name, Role, Value'],
+      answer: 1,
+      explanation: 'WCAG 2.1.1 (Keyboard) requires that all functionality be operable via keyboard without requiring specific timings for keystrokes. This covers form controls, links, modals, and custom widgets. 4.1.2 (Name, Role, Value) is the ARIA semantic requirement.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -512,6 +518,14 @@ modal.addEventListener('keydown', (e) => {
     {
       q: 'Is colour contrast an ARIA concern?',
       a: 'No — colour contrast is a CSS/design concern covered by WCAG Success Criterion 1.4.3 (Contrast Minimum, AA level). The requirement is a minimum 4.5:1 ratio for normal text and 3:1 for large text (18pt/14pt bold). ARIA does not affect contrast. Use tools like the WebAIM Contrast Checker or browser DevTools accessibility panel to verify.'
+    },
+    {
+      q: 'What is the difference between aria-label and aria-labelledby?',
+      a: 'aria-label provides an inline string as the accessible name: <code>aria-label="Close dialog"</code>. aria-labelledby references the ID of another element whose text content becomes the accessible name: <code>aria-labelledby="dialog-title"</code>. Prefer aria-labelledby — it reuses visible text and stays in sync automatically. Use aria-label only when there is no visible text to reference.'
+    },
+    {
+      q: 'What is a focus trap and when should you implement one?',
+      a: 'A focus trap keeps keyboard focus within a container (like a modal dialog) so Tab cycles through only the elements inside. Without it, users can tab behind the overlay, interacting with hidden content. Implement it when: modal dialogs are open, off-canvas menus are open, or any overlay that covers the rest of the page. Release the trap on close and return focus to the triggering element.'
     },
   ];
 

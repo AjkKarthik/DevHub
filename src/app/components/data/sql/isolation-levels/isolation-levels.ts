@@ -288,6 +288,28 @@ COMMIT;`
       answer: 2,
       explanation: 'A phantom read is when a range query (e.g. WHERE amount > 100) returns a different set of rows on re-execution because another transaction inserted or deleted qualifying rows and committed. SERIALIZABLE prevents phantoms.'
     },
+    {
+      q: 'Which anomaly does SERIALIZABLE prevent that REPEATABLE READ does not?',
+      options: [
+        'Non-repeatable reads',
+        'Dirty reads',
+        'Phantom reads caused by range inserts/deletes from concurrent transactions',
+        'Lost updates'
+      ],
+      answer: 2,
+      explanation: 'REPEATABLE READ locks rows you have already read, preventing them from changing. However, a concurrent transaction can still INSERT new rows matching your range query — those phantom rows appear on re-execution. SERIALIZABLE prevents phantoms by also locking the ranges that match your predicates.'
+    },
+    {
+      q: 'Which T-SQL keyword enables SNAPSHOT isolation for a specific transaction in MSSQL?',
+      options: [
+        'SET TRANSACTION ISOLATION LEVEL SNAPSHOT',
+        'BEGIN SNAPSHOT TRANSACTION',
+        'WITH (SNAPSHOT) table hint',
+        'ALTER SESSION SET ISOLATION = SNAPSHOT'
+      ],
+      answer: 0,
+      explanation: 'SET TRANSACTION ISOLATION LEVEL SNAPSHOT enables snapshot isolation for the current session. The database must first have ALLOW_SNAPSHOT_ISOLATION enabled via ALTER DATABASE … SET ALLOW_SNAPSHOT_ISOLATION ON.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -302,6 +324,18 @@ COMMIT;`
     {
       q: 'When is READ UNCOMMITTED safe to use?',
       a: 'For approximate aggregate reporting (total order count, rough revenue sum) where slight staleness is acceptable and blocking is undesirable. Never use it for anything that drives a decision based on exact values — balances, inventory counts, seat availability. In PostgreSQL it is never "unsafe" because dirty reads are never returned, but the annotation is still misleading for code reviewers.',
+    },
+    {
+      q: 'How do you check the current isolation level of a session?',
+      a: 'MSSQL: SELECT session_id, transaction_isolation_level FROM sys.dm_exec_sessions WHERE session_id = @@SPID; (values 0–5 map to the isolation level enum). PostgreSQL: SHOW transaction_isolation; inside a transaction, or SELECT current_setting(\'transaction_isolation\');',
+    },
+    {
+      q: 'Are isolation levels set per-connection or per-transaction?',
+      a: 'They are set per-session (or per-statement in some dialects) and persist until changed. A SET TRANSACTION ISOLATION LEVEL command in MSSQL applies to all subsequent transactions in the session until reset. PostgreSQL\'s SET TRANSACTION applies only to the current transaction. Connection pooling can cause unexpected isolation level leakage — always reset the isolation level when returning a connection to a pool.',
+    },
+    {
+      q: 'How does isolation level choice affect replication in MSSQL?',
+      a: 'If ALLOW_SNAPSHOT_ISOLATION is ON, the version store in tempdb grows — the server must retain old row versions as long as any snapshot transaction is open. Long-running snapshot transactions can cause tempdb bloat and slow cleanup. For AlwaysOn readable secondaries, reads run under SNAPSHOT isolation by default to avoid blocking primary transactions.',
     },
   ];
 }

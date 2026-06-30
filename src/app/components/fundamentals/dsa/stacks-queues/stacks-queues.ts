@@ -243,6 +243,9 @@ while (stack.length && nums[stack.at(-1)!] < current) {
       answer: 2,
       explanation: 'Incrementing the head pointer is O(1) — no element shifting required.',
     },
+  { q: 'How do you implement a queue using two stacks?', options: ['Cannot be done efficiently', 'Push to stack1; for dequeue, if stack2 is empty, pour stack1 into stack2; pop from stack2', 'Push and pop from the same stack in alternation', 'Use a circular buffer instead'], answer: 1, explanation: 'Two-stack queue: enqueue to stack1 (O(1)). Dequeue: if stack2 is empty, move all from stack1 to stack2 (amortized O(1)). Each element is moved at most once from stack1 to stack2. Amortized O(1) per operation.' },
+  { q: 'What is a monotonic stack and what problems does it solve?', options: ['A stack that only stores increasing values permanently', 'A stack maintained in monotonic (increasing or decreasing) order — used to find next/previous greater or smaller element', 'A thread-safe stack', 'A stack with O(1) min/max access'], answer: 1, explanation: 'Monotonic stack: maintain a stack in strictly increasing (or decreasing) order. When adding an element, pop elements that violate the order. Used for: Next Greater Element, Largest Rectangle in Histogram, Daily Temperatures. O(n) total because each element is pushed and popped at most once.' },
+  { q: 'What is the purpose of a deque (double-ended queue) in sliding window problems?', options: ['Store all window elements', 'Maintain a monotonic deque of candidate indices for max/min in the current window', 'Replace a hash map', 'Sort elements in the window'], answer: 1, explanation: 'Sliding window maximum (monotonic deque): maintain a deque of indices in decreasing order of value. The front is always the maximum of the current window. When window moves, remove indices outside the window from front; remove smaller elements from back. O(n) total.' },
   ];
 
   qna: QnaItem[] = [
@@ -258,6 +261,9 @@ while (stack.length && nums[stack.at(-1)!] < current) {
       q: 'When should I choose iterative DFS (explicit stack) over recursive DFS?',
       a: 'Use iterative DFS when the input is large enough to risk stack overflow (deep trees, large graphs). Recursion uses the call stack, which is limited (~10k–100k frames). Iterative DFS gives you explicit control over the stack size.',
     },
+  { q: 'How do you implement a min-stack with O(1) getMin()?', a: 'Two stacks: main stack for values, aux stack for minimums. Push: always push to main; push to aux if aux is empty or val <= aux.top(). Pop: always pop from main; if popped value == aux.top(), pop from aux. getMin(): return aux.top(). All operations O(1). Alternative: single stack storing (value, current_min) pairs.' },
+  { q: 'How do you evaluate an expression using a stack?', a: 'Postfix (Reverse Polish Notation): scan left to right; push operands; when operator found, pop two operands, apply operator, push result. No parentheses needed. O(n). Infix evaluation: two stacks (operands, operators). For each token: push operands; for operators, pop and apply while stack operator has higher/equal precedence. Handle parentheses by pushing ( and popping when ).' },
+  { q: 'How is a call stack used in function execution and what causes stack overflow?', a: 'Each function call pushes a stack frame (local variables, return address, parameters). When function returns, frame is popped. Stack overflow: too many nested calls before any return (deep recursion on large input). Prevention: (1) Convert recursion to iteration with explicit stack; (2) Increase stack size (JVM: -Xss); (3) Use tail recursion (tail-call optimization). Default recursion limits: Python ~1000, Java ~5000-10000.' },
   ];
 
   revision: RevisionSummary = {

@@ -608,6 +608,16 @@ report.risks.forEach(r => console.log(\`[\${r.severity.toUpperCase()}] \${r.mess
       answer: 2,
       explanation: 'Least-privilege: the pipeline only needs to update Deployment images and check rollout status in one namespace. A namespaced Role with verbs: [get, patch, update] on apps/deployments and [get, list] on pods gives exactly what is needed without exposing the rest of the cluster.',
     },
+    {
+      q: 'What does maxUnavailable: 0 in a rolling update strategy ensure?',
+      options: [
+        'That all old pods are replaced simultaneously',
+        'That zero old pods are terminated until at least one new pod is ready — no capacity is lost during the rollout',
+        'That the deployment never updates automatically',
+        'That rollbacks are disabled'],
+      answer: 1,
+      explanation: 'maxUnavailable: 0 means Kubernetes cannot terminate any old pod until a new pod passes its readiness probe. Combined with maxSurge: 1 (one extra pod during rollout), the deployment always maintains full desired capacity. This is the safest rolling update: capacity never drops below 100%. Downside: rollout takes longer. For zero-downtime deployments where losing even one pod\'s capacity is unacceptable (e.g., running at capacity), use maxUnavailable: 0.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -630,6 +640,10 @@ report.risks.forEach(r => console.log(\`[\${r.severity.toUpperCase()}] \${r.mess
     {
       q: 'What is image pull policy and which setting should production use?',
       a: 'imagePullPolicy controls when Kubernetes pulls the container image: Always (pull on every Pod start), IfNotPresent (pull only if not cached on the node), Never (never pull — must be pre-pulled). Production should use IfNotPresent with immutable SHA-tagged images. Always causes unnecessary registry roundtrips and introduces registry availability as a dependency for Pod scheduling. Never risks stale or absent images. IfNotPresent + SHA tags = cached after first pull, always the correct version.',
+    },
+    {
+      q: 'What is a PodDisruptionBudget (PDB) and why is it important for deployments?',
+      a: 'A PodDisruptionBudget limits the number of pods of a deployment that can be unavailable simultaneously during voluntary disruptions (node upgrades, rolling deployments, cluster scaling). spec.minAvailable: 2 means at least 2 replicas must always be running; Kubernetes will not evict more pods than this allows. Without a PDB: a node upgrade might evict all pods of a stateful application simultaneously, causing downtime. With PDB: Kubernetes evicts pods one at a time, waiting for replacements. Set PDB for any stateful service or service with strict availability requirements. PDBs do not prevent involuntary disruptions (hardware failures, OOM kills) — only voluntary ones like kubectl drain.',
     },
   ];
 

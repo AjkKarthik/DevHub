@@ -462,6 +462,12 @@ body { font-family: 'Playfair Display', 'Playfair Fallback', Georgia, serif; }`,
       answer: 1,
       explanation: 'The browser always fetches fonts in CORS mode regardless of origin. A preload without crossorigin creates a non-CORS request that cannot be matched to the CORS font-face request — causing a double fetch. Always include crossorigin on font preloads.',
     },
+    {
+      q: 'What is the purpose of the size-adjust descriptor in @font-face?',
+      options: ['Sets the font weight', 'Adjusts the font metric to match a fallback font, reducing CLS during font swap', 'Controls the font size on mobile', 'Enables variable font interpolation'],
+      answer: 1,
+      explanation: 'size-adjust scales the fallback font\'s advance widths to match the web font\'s metrics. When the web font loads and swaps in, text doesn\'t reflow because both fonts have the same effective metrics — eliminating CLS from font loading. Tools like Font Style Matcher and the Fontaine library automate calculating the correct size-adjust value.',
+    },
   ];
 
   qna: QnaItem[] = [

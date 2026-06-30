@@ -457,6 +457,12 @@ Implement a facade pattern:
       answer: 1,
       explanation: '"Reduce the impact of third-party code" lists every third-party origin, its total transfer size, and its main-thread blocking time — giving you a prioritised list of which third parties to defer, facade, or remove.',
     },
+    {
+      q: 'What is a script facade and when should you use one?',
+      options: ['A polyfill for older browsers', 'A lightweight placeholder that defers loading the real third-party script until user interaction', 'A CDN-hosted version of the script', 'A web worker wrapper for scripts'],
+      answer: 1,
+      explanation: 'A facade is a static HTML/CSS/image that looks like the widget (e.g., a YouTube thumbnail and play button) but only loads the real third-party JavaScript when the user clicks. The lite-youtube-embed web component is a popular YouTube facade. Facades are ideal for chat widgets, video players, and social sharing buttons that are rarely interacted with on the initial load.',
+    },
   ];
 
   qna: QnaItem[] = [

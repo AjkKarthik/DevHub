@@ -188,6 +188,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'CrashLoopBackOff causes rapid restarts. kubectl logs shows the CURRENT running container, which may have just started and produced no output yet. The error that caused the crash is in the PREVIOUS container\'s output. Use kubectl logs <pod> --previous to read the last terminated container\'s stdout/stderr.',
   },
+  { q: 'A pod is stuck in CrashLoopBackOff. What is the most likely cause and how do you diagnose it?', options: ['The node has run out of memory and is evicting the pod repeatedly', 'The container starts but immediately exits due to application errors, missing config, or a failed healthcheck; diagnose with kubectl logs --previous', 'The service account lacks permissions required to start the container process', 'The container image is corrupted in the registry and cannot be executed'], answer: 1, explanation: 'CrashLoopBackOff means the container starts, crashes, and Kubernetes restarts it with exponential backoff from 10 seconds up to 5 minutes max. Common causes: unhandled exception at startup, missing required env var or config file, wrong entrypoint command, or failed liveness probe. Debug with kubectl logs pod --previous for logs before the crash, and kubectl describe pod pod to see the Events section with exit code and restart count.' },
 ];
 
 const qna: QnaItem[] = [
@@ -211,6 +212,7 @@ const qna: QnaItem[] = [
     q: 'How do I troubleshoot an Ingress that returns 404 or 502?',
     a: '404: check that the Ingress path rules match the request path exactly (regex vs prefix); check backend serviceName and servicePort match an existing Service. 502 Bad Gateway: the Ingress controller reached the Service but got an error — check pod logs and kubectl get endpoints to verify pods are running. Check Ingress controller logs: kubectl logs -n ingress-nginx deploy/ingress-nginx-controller. Use kubectl describe ingress to see annotations and backend configuration.',
   },
+  { q: 'How do you diagnose a pod stuck in Pending state?', a: 'kubectl describe pod pod-name is the first command; check the Events section at the bottom. Common causes: (1) Insufficient resources: no nodes have enough CPU or memory - scale the node group or reduce resource requests. (2) No matching nodes for nodeSelector or affinity rules - check node labels with kubectl get nodes --show-labels. (3) PVC not bound - kubectl describe pvc pvc-name shows if StorageClass is missing or quota is exceeded. (4) Image pull failure showing as ImagePullBackOff - check image name, tag, and registry credentials via imagePullSecrets. (5) Pod disruption budget blocking scheduling - check PDBs in the namespace.' },
 ];
 
 const revision: RevisionSummary = {

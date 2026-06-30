@@ -269,6 +269,28 @@ console.log(vimSim("hello\\nworld", ["dd", "p", ":wq"]));
       answer: 1,
       explanation: '* searches forward for the exact word under the cursor (with word boundaries). # does the same backward. Then n/N navigates between matches. Faster than typing /word manually.',
     },
+    {
+      q: 'What is the difference between :wq and :x in vim?',
+      options: [
+        ':wq always writes; :x writes only if the file has been modified',
+        ':x always writes; :wq writes only if modified',
+        'They are identical in all cases',
+        ':wq is for binary files; :x is for text files',
+      ],
+      answer: 0,
+      explanation: ':wq always writes the file and quits (even if unchanged, updating mtime). :x (or ZZ) only writes if the buffer was modified, leaving the file unchanged if no edits were made. :x is generally preferred.',
+    },
+    {
+      q: 'What does pressing . (dot) do in vim normal mode?',
+      options: [
+        'Jumps to the next occurrence of the last search pattern',
+        'Repeats the last change (insert, delete, substitute)',
+        'Moves to the end of the current line',
+        'Opens a new file in the current buffer',
+      ],
+      answer: 1,
+      explanation: 'The dot command repeats the last change — whether it was inserting text, deleting a word, or running a substitution. Combined with navigation commands it enables efficient repetitive editing without macros.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -283,6 +305,18 @@ console.log(vimSim("hello\\nworld", ["dd", "p", ":wq"]));
     {
       q: 'How do I edit multiple files with vim and switch between them?',
       a: 'Open multiple: vim file1.txt file2.txt. :n or :next goes to next file, :prev to previous. :args *.conf opens all conf files. :buffers lists open buffers; :b2 switches to buffer 2. :bn / :bp = next/previous buffer. For split windows: :split file2 (horizontal) or :vsplit file2 (vertical). Ctrl+w followed by hjkl moves between splits.',
+    },
+    {
+      q: 'What are vim\'s main modes and how do you switch between them?',
+      a: 'Main modes: <strong>Normal</strong> (default — for navigation and commands), <strong>Insert</strong> (i, a, o — for typing text), <strong>Visual</strong> (v, V, Ctrl-v — for selecting text), <strong>Command</strong> (: — for ex commands like :wq, :s, :e). Press <strong>Esc</strong> to return to Normal from any mode. <strong>i</strong> inserts before cursor, <strong>a</strong> after, <strong>o</strong> opens a new line below.',
+    },
+    {
+      q: 'How do you search and replace text in vim?',
+      a: 'Search: <code>/pattern</code> (forward), <code>?pattern</code> (backward), <code>n</code>/<code>N</code> for next/previous. Replace: <code>:s/old/new/</code> (current line), <code>:s/old/new/g</code> (all on line), <code>:%s/old/new/g</code> (whole file), <code>:%s/old/new/gc</code> (confirm each). Use <code>\c</code> for case-insensitive: <code>:%s/foo/bar/gi</code>.',
+    },
+    {
+      q: 'How do you run a shell command from within vim?',
+      a: '<code>:!cmd</code> runs a shell command and shows output (e.g., :!ls -la). <code>:r !cmd</code> inserts command output below the cursor. <code>:shell</code> or <code>:sh</code> opens an interactive shell (type exit to return). In visual mode, <code>!cmd</code> filters the selection through a command (e.g., !sort sorts selected lines). This makes vim a powerful environment for combining text editing with shell operations.',
     },
   ];
 

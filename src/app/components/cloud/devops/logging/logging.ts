@@ -597,6 +597,16 @@ console.log(analyselogs(logs));
       answer: 1,
       explanation: 'ILM automates the data tier progression: hot (fast SSDs, frequent queries) → warm (compressed, less frequent) → cold (frozen, rare queries) → delete. For example: roll over at 50GB or 1 day, move to warm after 7 days, freeze after 30 days, delete after 90. This keeps query performance high on recent data while controlling storage costs for older logs.',
     },
+    {
+      q: 'What is log sampling and when should you use it?',
+      options: [
+        'Randomly deleting log entries to save space',
+        'Only logging a percentage of requests — e.g. 10% of debug logs — to reduce volume while preserving statistical patterns for high-traffic services',
+        'Sampling is only for metrics, not logs',
+        'Logging every 10th error to prevent log flooding'],
+      answer: 1,
+      explanation: 'At 100K req/s, logging every request at DEBUG level generates ~1TB/day — prohibitively expensive. Log sampling logs a configurable percentage of traces (e.g., 1% of normal traffic, 100% of errors). The sampled data provides statistically representative insights. Always sample on trace ID so all spans of a sampled trace are kept together. Libraries like OpenTelemetry SDK support head-based and tail-based sampling.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -619,6 +629,10 @@ console.log(analyselogs(logs));
     {
       q: 'What KQL query finds all exceptions for a specific operation in Azure Application Insights?',
       a: 'exceptions | where timestamp > ago(1h) | where operation_Name == "POST /api/orders" | project timestamp, outerMessage, details, operation_Id, user_Id | order by timestamp desc. To correlate with the request: exceptions | join kind=inner (requests | where name == "POST /api/orders") on operation_Id | project timestamp, outerMessage, resultCode, duration, user_Id. The operation_Id is Application Insights\' correlation ID — it links requests, dependencies, traces, and exceptions from the same logical operation.',
+    },
+    {
+      q: 'What log retention strategy should you implement and what factors determine retention period?',
+      a: 'Log retention is a balance of cost, compliance, and operational need. Factors: (1) Compliance — HIPAA (6 years), PCI-DSS (1 year minimum), SOC 2 (typically 90 days to 1 year). Security audit logs often need longer retention than application logs. (2) Incident investigation — most production incidents are diagnosed from logs in the last 30–90 days. (3) Cost — hot storage (searchable) is expensive; tiered retention is common. Implementation: 7 days hot (immediate search), 30–90 days warm (slower but still searchable), 1+ year cold (S3 Glacier/Azure Archive, retrieval in hours). Compression and indexing reduce costs significantly — JSON logs compress 5–10×. Set up lifecycle policies in your logging platform (Datadog retention policies, CloudWatch log group retention) to auto-delete or archive.',
     },
   ];
 

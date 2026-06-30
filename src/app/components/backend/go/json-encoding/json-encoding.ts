@@ -592,6 +592,12 @@ func main() {
       answer: 0,
       explanation: 'By default, interface{} JSON numbers become float64, which can only represent integers exactly up to 2^53. Use dec.UseNumber() on a json.Decoder — numbers then decode as json.Number (a string type), and you call .Int64() or .Float64() explicitly, preserving full precision.'
     },
+    {
+      q: 'How do you implement custom JSON marshaling for a Go type?',
+      options: ['Use struct tags only', 'Implement the json.Marshaler interface with a MarshalJSON() ([]byte, error) method', 'Implement Stringer interface', 'Use json.RegisterType'],
+      answer: 1,
+      explanation: 'Any type that implements MarshalJSON() ([]byte, error) controls its own JSON output. Similarly, UnmarshalJSON([]byte) error controls deserialization. This is used for: custom date formats (time.Time default is RFC3339), base64-encoding bytes, flattening nested structs, or adding computed fields. json.RawMessage is a []byte alias that implements both, useful for deferring or forwarding raw JSON.'
+    },
   ];
 
   qna: QnaItem[] = [

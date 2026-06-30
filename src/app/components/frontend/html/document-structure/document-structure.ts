@@ -301,6 +301,12 @@ export class HtmlDocumentStructure {
       answer: 1,
       explanation: 'The lang attribute specifies the document\'s primary language using BCP 47 tags (e.g. lang="en", lang="fr", lang="zh-Hant"). Screen readers use it to select the right TTS voice and pronunciation rules.'
     },
+    {
+      q: 'What is the purpose of the <base> element in the <head>?',
+      options: ['Defines the page title base', 'Sets the base URL for all relative links and target attribute for all links in the document', 'Provides SEO base keywords', 'Links the base stylesheet'],
+      answer: 1,
+      explanation: '<base href="/app/"> makes all relative links resolve relative to /app/ instead of the current URL. Also accepts target="_blank" to set the default link target for the whole page. Use with care in SPAs — client-side routing may conflict with it.'
+    },
   ];
 
   qna: QnaItem[] = [
@@ -319,6 +325,14 @@ export class HtmlDocumentStructure {
     {
       q: 'What\'s the difference between &nbsp; and a regular space?',
       a: 'A regular space can wrap (the browser may break a line there). A non-breaking space (&nbsp;) prevents line breaks between the words on either side. Use it to keep short pairs together (e.g. "10&nbsp;px", "Dr.&nbsp;Smith") — but never for indentation; use CSS margin/padding for that.'
+    },
+    {
+      q: 'Why should the <title> element be unique on every page?',
+      a: 'Screen readers announce the title when a page loads — it is the first thing a user hears. Unique, descriptive titles (format: "Page Name — Site Name") help users distinguish open tabs and bookmarks. Search engines use the title as the primary link text in results. Duplicate titles across pages confuse users and harm SEO. Keep them under 60 characters to avoid truncation in SERPs.'
+    },
+    {
+      q: 'What is the difference between inline and block-level elements and how is this changing?',
+      a: 'In classic CSS, inline elements (span, a, strong) flow in text and cannot have top/bottom margin; block elements (div, p, h1) start on a new line and take full width. The HTML5 content model replaced this with a more nuanced categorisation (flow, phrasing, sectioning, embedded, interactive content). In practice, the rendering is now entirely controlled by CSS display property — an element\'s "inline/block" nature is just its default display value, not a fundamental constraint.'
     },
   ];
 

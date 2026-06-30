@@ -586,6 +586,16 @@ console.log(classifyAlert({ errorRatePct: 0, p99LatencyMs: 150, memoryPct: 45, c
       answer: 2,
       explanation: 'If your SLO allows 0.1% errors over 30 days, and you\'re currently seeing 1.44% errors (14.4× the allowance), the 30-day budget will be fully consumed in 30d ÷ 14.4 ≈ 2 days — but with a 1-hour confirmation window, the worst case is ~2 hours. This is the trigger for an immediate page — you\'re burning budget fast enough to violate the SLO very soon.',
     },
+    {
+      q: 'What are the Four Golden Signals for monitoring a service?',
+      options: [
+        'CPU, memory, disk, network',
+        'Latency, traffic, errors, and saturation — the signals most indicative of whether a service is healthy from a user perspective',
+        'P50, P95, P99, P99.9 latency percentiles',
+        'Availability, reliability, scalability, maintainability'],
+      answer: 1,
+      explanation: 'Google SRE\'s Four Golden Signals: Latency (how long requests take — distinguish successful vs error latency), Traffic (request rate — qps, transactions/sec), Errors (rate of failed requests — HTTP 5xx, exceptions, policy violations), Saturation (how "full" the service is — CPU, queue depth, disk). These four signals give the most actionable signal for service health. Alert on all four; correlate them during incidents.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -608,6 +618,10 @@ console.log(classifyAlert({ errorRatePct: 0, p99LatencyMs: 150, memoryPct: 45, c
     {
       q: 'How does Azure Monitor Smart Detection work?',
       a: 'Smart Detection uses machine learning to establish a baseline of your application\'s normal behaviour (request rates, failure rates, response times) over the first few days. It then continuously monitors for anomalies — unusual spikes in failure rates, degraded dependency performance, or memory leak patterns — without you defining thresholds. When it detects an anomaly, it sends a Smart Detection notification to the configured Action Group with context about what changed and when. It\'s complementary to, not a replacement for, manual alert rules.',
+    },
+    {
+      q: 'What is the difference between SLO, SLA, and SLI?',
+      a: 'SLI (Service Level Indicator): a quantitative measure of a service characteristic — e.g., request success rate = (successful requests / total requests) × 100%. The raw metric. SLO (Service Level Objective): an internal target for an SLI — e.g., "99.9% of requests should succeed". Defined by the engineering team, drives reliability work. SLA (Service Level Agreement): a contractual commitment to a customer with financial penalties for breach — usually slightly looser than your SLO (SLO 99.9%, SLA 99.5%) to give buffer. SLOs drive internal behaviour (error budget, engineering priorities). SLAs drive business consequences (refunds, penalties). Set SLOs first, derive SLAs from them with buffer, measure SLIs continuously to track both.',
     },
   ];
 

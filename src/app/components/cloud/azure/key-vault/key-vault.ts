@@ -317,6 +317,17 @@ console.log(kv.listVersions('db-pass'));            // ['v1', 'v2']`
       answer: 1,
       explanation: 'A versionless URI (https://my-kv.vault.azure.net/secrets/db-password/) always resolves to the current version. When you rotate a secret (create a new version), App Service picks up the new value automatically at the next platform resolution cycle. A versioned URI pins the app to a specific version — rotation creates a new version, but the app still reads the old one until the reference is manually updated.'
     },
+    {
+      q: 'What is the difference between Key Vault access policies and Azure RBAC for Key Vault?',
+      options: [
+        'Access policies support more granular permissions than RBAC',
+        'RBAC is the legacy model; access policies are the modern approach',
+        'Access policies are vault-level; Azure RBAC supports per-object (key/secret/certificate) permissions',
+        'There is no functional difference they are identical',
+      ],
+      answer: 2,
+      explanation: 'Key Vault access policies grant permissions at the vault level. Azure RBAC for Key Vault supports finer-grained permissions at the individual key, secret, or certificate level using standard Azure roles.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -339,6 +350,10 @@ console.log(kv.listVersions('db-pass'));            // ['v1', 'v2']`
     {
       q: 'What is Managed HSM and how does it differ from Key Vault Premium?',
       a: '<strong>Key Vault Premium</strong>: shared multi-tenant HSM pool. Your keys are HSM-protected, but the HSM is shared with other Azure customers (hardware partitioning). Meets FIPS 140-2 Level 2. <strong>Azure Managed HSM</strong>: a dedicated single-tenant HSM cluster (3 HSM instances) that only you control. The HSM quorum keys are managed by you — even Microsoft cannot access them. Meets FIPS 140-2 Level 3. Required for the highest compliance regimes (government, financial, healthcare). Significantly more expensive than Key Vault Premium.'
+    },
+    {
+      q: 'How should applications retrieve Key Vault secrets without storing credentials?',
+      a: 'Use a <strong>managed identity</strong> assigned to the compute resource (VM, App Service, Function, AKS pod). Grant the identity <code>Key Vault Secrets User</code> role (RBAC) or a get permission (access policy). The app calls the Key Vault SDK or REST API — Azure transparently provides a token for the managed identity with no stored credentials.',
     },
   ];
 

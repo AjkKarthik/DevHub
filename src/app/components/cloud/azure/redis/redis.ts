@@ -314,6 +314,17 @@ console.log(cache.get('a')); // 1 — still present`
       answer: 2,
       explanation: 'Sorted Sets (ZSet) store members with a floating-point score, automatically kept in sorted order. ZADD updates scores atomically. ZRANGE/ZREVRANGE retrieves members by rank. ZRANK/ZREVRANK gets a member\'s position. All these operations are O(log N) — efficient at scale. Leaderboard queries like "top 10 players" or "player rank" map directly to ZREVRANGE and ZREVRANK commands.'
     },
+    {
+      q: 'Which Azure Cache for Redis tier supports clustering, geo-replication, and zone redundancy?',
+      options: [
+        'Basic',
+        'Standard',
+        'Premium',
+        'Basic and Standard equally',
+      ],
+      answer: 2,
+      explanation: 'The Premium tier supports Redis Cluster, active geo-replication, zone redundancy, and VNet injection. Basic offers a single node; Standard adds replication.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -336,6 +347,10 @@ console.log(cache.get('a')); // 1 — still present`
     {
       q: 'What happens when Redis runs out of memory (maxmemory reached)?',
       a: 'Azure Redis sets a maxmemory limit based on the cache size. When reached, Redis applies the configured <strong>maxmemory-policy</strong>: <code>noeviction</code> (return errors on write — default for session workloads), <code>allkeys-lru</code> (evict least recently used across all keys — good for general caching), <code>volatile-lru</code> (evict LRU among keys with TTL set — preserves keys without TTL), <code>allkeys-lfu</code> (evict least frequently used — better for access-pattern-aware caching). Monitor the used_memory metric and set alerts at 80% — add more memory before hitting the limit to avoid eviction-driven data loss.'
+    },
+    {
+      q: 'What eviction policies does Azure Cache for Redis support and when do you choose each?',
+      a: '<strong>volatile-lru</strong>: evict LRU keys with TTL set (default for caches where some keys have expiry). <strong>allkeys-lru</strong>: evict any LRU key (pure cache use case). <strong>noeviction</strong>: return errors when memory full (for queues/pub-sub where data loss is unacceptable). Set via <code>maxmemory-policy</code> in Redis config.',
     },
   ];
 

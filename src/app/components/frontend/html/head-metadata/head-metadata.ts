@@ -366,6 +366,12 @@ export class HtmlHeadMetadata {
       answer: 1,
       explanation: 'dns-prefetch only performs DNS resolution — it finds the IP for a domain before it is needed. rel="preconnect" goes further and also does the TCP + TLS handshake, which is more expensive but saves more time.',
     },
+    {
+      q: 'What does the <meta name="robots"> tag control?',
+      options: ['Robots.txt file content', 'How search engine crawlers index and follow links on the page', 'Automated test runner behavior', 'Bot-detection thresholds'],
+      answer: 1,
+      explanation: '<meta name="robots" content="noindex, nofollow"> tells crawlers not to index the page and not to follow its links. Common values: index/noindex (include in search results), follow/nofollow (follow links), noarchive (no cached version). Applies only to crawlers that respect the meta tag — use robots.txt for stronger crawl blocking.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -384,6 +390,14 @@ export class HtmlHeadMetadata {
     {
       q: 'What is the difference between rel="preconnect" and rel="dns-prefetch"?',
       a: 'dns-prefetch only resolves the IP address for a domain (DNS lookup). preconnect also establishes the full TCP connection and performs the TLS handshake — saving 100–500 ms per origin on first request. Use preconnect for origins you will definitely use (Google Fonts, your CDN); use dns-prefetch for origins that are possible but not certain, because each open preconnect consumes browser memory and bandwidth.',
+    },
+    {
+      q: 'What is the purpose of the <link rel="manifest"> tag?',
+      a: '<code>&lt;link rel="manifest" href="/manifest.json"&gt;</code> links the Web App Manifest — a JSON file that defines how the app appears when installed on a home screen (name, icons, start URL, display mode, theme color). Required for browsers to show the "Install App" prompt and for the app to appear as a standalone window without browser chrome. The manifest is a core PWA requirement.',
+    },
+    {
+      q: 'How do you prevent a page from being rendered in an iframe (clickjacking protection)?',
+      a: 'Two mechanisms: (1) <code>X-Frame-Options: DENY</code> HTTP header — legacy, browser-supported, simple. (2) <code>Content-Security-Policy: frame-ancestors \'none\'</code> — modern, more flexible, allows specifying trusted origins. CSP frame-ancestors supersedes X-Frame-Options in modern browsers. Never rely solely on meta tags — they are not processed in the right context to prevent framing.',
     },
   ];
 

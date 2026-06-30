@@ -477,6 +477,12 @@ module.exports = {
       answer: 1,
       explanation: 'Raising the budget defeats its purpose — it normalises the regression. The correct first step is diagnosis: run rollup-plugin-visualizer to find unexpected bundle size increases, or check which specific Lighthouse audit regressed (render-blocking resource added, LCP image preload removed, etc.) and fix that.',
     },
+    {
+      q: 'What is the RAIL performance model and which budget does it define for user response?',
+      options: ['Response < 100ms, Animation < 16ms, Idle < 50ms, Load < 1s', 'Response < 100ms, Animation < 10ms, Idle < 100ms, Load < 5s', 'Response < 200ms, Animation < 16ms, Idle < 50ms, Load < 2s', 'Response < 500ms, Animation < 60fps, Idle < 1s, Load < 3s'],
+      answer: 0,
+      explanation: 'RAIL defines: Response < 100ms (input to visible feedback), Animation < 16ms per frame (60fps), Idle < 50ms tasks (so the main thread stays available), Load < 1s on fast connections (LCP). These targets underpin how budgets should be set: a 50ms task budget leaves the main thread free to respond to user input within the 100ms response window.',
+    },
   ];
 
   qna: QnaItem[] = [

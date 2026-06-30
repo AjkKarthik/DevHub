@@ -603,6 +603,12 @@ docker run -p 8080:8080 myapp:latest
       answer: 0,
       explanation: 'go vet analyses source code for common mistakes that are syntactically valid but semantically wrong: passing an int to Printf %s (format mismatch), comparing a function value with nil instead of calling it, copying a Mutex by value, unreachable code after return. These bugs compile and tests may pass — vet catches them without running anything. Always run go vet before go test in CI.'
     },
+    {
+      q: 'What is the purpose of go generate and when do you use it?',
+      options: ['It generates Go project scaffolding', 'It runs commands embedded in //go:generate directives in source files — used to regenerate mocks, proto stubs, and embedded assets', 'It generates documentation', 'It replaces go build for code generation projects'],
+      answer: 1,
+      explanation: '//go:generate <command> is a comment directive. Running go generate in a package executes those commands in sequence. Common uses: mockgen for interface mocks, protoc for protobuf, stringer for Stringer implementations, go-bindata for embedded files. go generate is never called automatically — it must be run explicitly before go build when generated files are out of date.'
+    },
   ];
 
   qna: QnaItem[] = [
