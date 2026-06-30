@@ -244,6 +244,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'Pods are long-running processes managed by the container runtime via kubelet — they keep running independently. However, with no controller-manager, no reconciliation happens. If a Pod crashes or a node goes down, the Deployment will not create replacement Pods until the controller-manager is restored.',
   },
+  { q: 'What is the role of etcd in Kubernetes?', options: ['It runs container workloads on worker nodes', 'It is the distributed key-value store that holds all cluster state including objects, config, and secrets', 'It routes network traffic between pods across nodes', 'It schedules pods to available nodes based on resource availability'], answer: 1, explanation: 'etcd is the single source of truth for all Kubernetes cluster state. Every object you create such as Pod, Deployment, Service, or Secret is stored as a key-value pair. Only the API server communicates with etcd directly. etcd uses the Raft consensus algorithm for leader election and consistency. Back up etcd regularly with etcdctl snapshot save because losing etcd without a backup means losing all cluster state.' },
 ];
 
 const qna: QnaItem[] = [
@@ -267,6 +268,7 @@ const qna: QnaItem[] = [
     q: 'What is a kubeconfig context?',
     a: 'A context is a named combination of a cluster, a user, and a namespace, stored in ~/.kube/config. Switching contexts (kubectl config use-context) lets you quickly switch between different clusters or users. Tools like kubectx make this even faster. Each context tells kubectl which API server to connect to and which credentials to use.',
   },
+  { q: 'What happens to running workloads when the Kubernetes API server goes down?', a: 'Running workloads CONTINUE to run because kubelet on each node maintains the desired state locally and keeps existing containers alive. New pods cannot be scheduled because the scheduler requires the API server. kubectl commands fail with connection errors. Controllers such as Deployment and ReplicaSet stop reconciling. The cluster is effectively frozen in its current state. This is why control plane HA is critical: multiple API server replicas behind a load balancer and a 3-node etcd cluster prevent single points of failure. Recovery requires restoring etcd from backup or bringing the API server back online.' },
 ];
 
 const revision: RevisionSummary = {

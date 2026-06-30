@@ -188,6 +188,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'Ingress only supports basic HTTP host/path routing. Gateway API (GA in K8s 1.28) adds traffic splitting (canary), header/method-based routing, TCP/UDP routing, and a role-oriented model (GatewayClass → Gateway → HTTPRoute). Most major controllers now support it.',
   },
+  { q: 'What is the difference between a ClusterIP and a NodePort service in Kubernetes?', options: ['ClusterIP is for external traffic while NodePort is for internal pod-to-pod traffic', 'ClusterIP is accessible only within the cluster; NodePort exposes the service on a port on every node for external access', 'NodePort supports automatic load balancing while ClusterIP does not', 'ClusterIP requires a dedicated IP address assignment while NodePort does not'], answer: 1, explanation: 'ClusterIP is the default service type and creates a virtual IP accessible only within the cluster, used for pod-to-pod communication. NodePort exposes the service on a static port in the range 30000 to 32767 on every node IP so external traffic can reach it. LoadBalancer provisions a cloud load balancer in front of NodePort. Ingress provides HTTP-level routing by path and host and is not a service type but uses a ClusterIP service behind an Ingress controller.' },
 ];
 
 const qna: QnaItem[] = [
@@ -211,6 +212,7 @@ const qna: QnaItem[] = [
     q: 'What is cert-manager and how does it relate to Ingress TLS?',
     a: 'cert-manager is a Kubernetes add-on that automates TLS certificate lifecycle — it watches for Ingress resources with tls annotations, requests certificates from Let\'s Encrypt (or another CA via ACME), and stores them as Secrets. The Ingress controller then uses those Secrets for TLS termination. Without cert-manager, you manage certificate rotation manually.',
   },
+  { q: 'How does Kubernetes DNS service discovery work?', a: 'Kubernetes runs CoreDNS as a cluster add-on. Every Service gets a DNS record in the format service.namespace.svc.cluster.local. Pods in the same namespace can use just the service name; cross-namespace access requires service.namespace format. StatefulSets give each pod a stable DNS name in the format pod-name.service.namespace.svc.cluster.local, which is essential for peer discovery in databases. To debug DNS: run kubectl exec -it pod -- nslookup service or start a temporary busybox pod with kubectl run tmp --image=busybox --rm -it -- nslookup kubernetes to test the cluster DNS directly.' },
 ];
 
 const revision: RevisionSummary = {

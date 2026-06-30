@@ -188,6 +188,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: 'list and watch on Secrets return all secrets in scope — a compromised workload with list access can read every secret in a namespace or cluster. Restrict to get on specific secret names using resourceNames. Never grant list/watch unless explicitly required.',
   },
+  { q: 'What is the key difference between ConfigMaps and Secrets in Kubernetes?', options: ['ConfigMaps are immutable by default; Secrets are mutable', 'Secrets are Base64-encoded with additional RBAC controls; ConfigMaps store plaintext with no special protection', 'ConfigMaps support live updates into pods; Secrets require pod restarts', 'Secrets are encrypted at rest by default in all Kubernetes clusters'], answer: 1, explanation: 'ConfigMaps store plaintext configuration data. Secrets store sensitive data as Base64 encoding (not encryption). Secrets get additional protections: memory-only storage on nodes via tmpfs, stricter RBAC defaults, and optional envelope encryption at rest via kube-apiserver EncryptionConfiguration. Never put sensitive data in ConfigMaps. Enable EncryptionConfiguration to actually encrypt Secrets at rest.' },
 ];
 
 const qna: QnaItem[] = [
@@ -211,6 +212,7 @@ const qna: QnaItem[] = [
     q: 'What does immutable: true on a ConfigMap or Secret do?',
     a: 'Setting immutable: true prevents any updates to the data or binaryData fields. Kubernetes stops watching the object for changes, reducing API server load in clusters with many ConfigMaps. To change an immutable ConfigMap/Secret, you must delete and recreate it (or create a new one and update the Deployment to reference it). Use this for config that should never change after deployment.',
   },
+  { q: 'How do you rotate a Kubernetes Secret without restarting pods?', a: 'If the Secret is mounted as a volume (not as an env var), Kubernetes automatically propagates updates to pods within about 1 minute via the kubelet sync period. The application must re-read the file to pick up the new value. For env var injection via envFrom or env.valueFrom.secretKeyRef, pods do NOT receive updates automatically and must be restarted. For zero-downtime rotation: mount as a volume and implement hot-reload in your app, or use a rolling update. ExternalSecrets Operator can automate rotation from HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault.' },
 ];
 
 const revision: RevisionSummary = {

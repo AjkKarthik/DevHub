@@ -187,6 +187,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'volumeClaimTemplates creates a dedicated PVC for each replica: data-postgres-0, data-postgres-1, etc. When postgres-0 restarts (on the same or different node), it remounts its own PVC with the data intact. This is fundamentally different from a volume shared by all replicas — each pod owns its own data disk.',
   },
+  { q: 'What is a headless service and why do StatefulSets require one?', options: ['A service with no selector that routes traffic through manual endpoint management', 'A service with clusterIP: None that returns pod IPs directly via DNS instead of a virtual IP', 'A deprecated service type that has been replaced by EndpointSlices in modern Kubernetes', 'A service used only for debugging purposes with no active port mappings'], answer: 1, explanation: 'A headless service with clusterIP: None does not create a virtual IP and does not load balance. DNS queries return the actual pod IPs directly. For StatefulSets each pod also gets a stable DNS record in the format pod-name.service.namespace.svc.cluster.local. This enables direct pod addressing needed for consensus protocols like Raft and Paxos, client-side load balancing, and peer discovery. Kafka, ZooKeeper, Cassandra, and Elasticsearch all require headless services for cluster formation.' },
 ];
 
 const qna: QnaItem[] = [
@@ -210,6 +211,7 @@ const qna: QnaItem[] = [
     q: 'What happens to PVCs when I delete a StatefulSet?',
     a: 'PVCs created by volumeClaimTemplates are NOT deleted when the StatefulSet is deleted — Kubernetes keeps them to prevent accidental data loss. This is intentional. To clean up PVCs: kubectl delete pvc -l app=<name> -n <namespace> after you have confirmed the data is backed up or no longer needed. Alternatively, some Operators manage PVC lifecycle via finalizers and will delete PVCs as part of resource cleanup.',
   },
+  { q: 'How does StatefulSet pod deletion and re-creation differ from a Deployment?', a: 'StatefulSet pods are re-created with the SAME name and ordinal such as web-0 and web-1, reattach to the SAME PersistentVolumeClaim, and keep the same stable DNS name across restarts. Deployment pods get a random name suffix, may bind any available PVC from a pool, and their DNS entries change with each restart. StatefulSet guarantees: ordered deployment where web-0 must be Running and Ready before web-1 starts, ordered termination in reverse order, and stable network identity across restarts. Deleting a StatefulSet does NOT delete its PVCs so manual cleanup is required to avoid accumulating storage costs.' },
 ];
 
 const revision: RevisionSummary = {

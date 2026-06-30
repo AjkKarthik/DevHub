@@ -182,6 +182,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: 'Flannel is a simple overlay network CNI focused on pod connectivity — it does not implement NetworkPolicy enforcement. If you apply a NetworkPolicy in a cluster using Flannel, the API server stores the object but Flannel ignores it completely — traffic flows as if no policy exists. Calico, Cilium, Weave Net, and Antrea all enforce NetworkPolicy.',
   },
+  { q: 'What is the default Kubernetes network behavior if no NetworkPolicies exist?', options: ['All pod-to-pod traffic is blocked by default requiring explicit allow rules', 'All pods can communicate with all other pods and external endpoints with no restrictions', 'Only pods within the same namespace can communicate with each other', 'Traffic is only allowed through Services, not directly between pod IPs'], answer: 1, explanation: 'By default with no NetworkPolicies, Kubernetes allows ALL pod-to-pod communication across namespaces and pods can reach the internet freely. NetworkPolicies are additive and enforced by the CNI plugin such as Calico or Cilium (Flannel does not support NetworkPolicies by default). A namespace with ANY NetworkPolicy selecting a pod activates enforcement for that pod. Best practice: deploy a default-deny-all policy, then explicitly allow required traffic paths.' },
 ];
 
 const qna: QnaItem[] = [
@@ -205,6 +206,7 @@ const qna: QnaItem[] = [
     q: 'What is the difference between Calico and Cilium for NetworkPolicy?',
     a: 'Both enforce Kubernetes NetworkPolicy, but differ in implementation and features. Calico uses iptables (or eBPF in newer versions) and is the most widely deployed CNI for NetworkPolicy — it also adds GlobalNetworkPolicy CRDs. Cilium uses eBPF exclusively, enabling L7 policies, superior observability (Hubble), and better performance at high throughput. Cilium is the more modern choice for new clusters; Calico has broader compatibility with existing infrastructure.',
   },
+  { q: 'How do you create a default-deny-all NetworkPolicy in Kubernetes?', a: 'Apply a NetworkPolicy with an empty podSelector (which matches all pods) and list both Ingress and Egress in policyTypes with no ingress or egress rules. Having policyTypes listed with no corresponding rules means deny all traffic of those types. Then add specific allow policies as needed for your application. Remember to allow egress to port 53 UDP and TCP for DNS resolution to kube-dns. Test connectivity with kubectl exec and nc or curl between pods to verify that the policies are enforced correctly by your CNI plugin.' },
 ];
 
 const revision: RevisionSummary = {

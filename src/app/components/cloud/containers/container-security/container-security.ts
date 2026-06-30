@@ -190,6 +190,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'A NetworkPolicy with an empty podSelector (matches all Pods) and policyTypes: [Ingress] blocks all inbound Pod-to-Pod traffic in the namespace. You then add specific NetworkPolicy rules to allow only the traffic you need. This zero-trust model limits blast radius if a Pod is compromised.',
   },
+  { q: 'What does running a container with --privileged do?', options: ['Limits CPU usage to a privileged resource tier', 'Grants the container nearly all Linux capabilities and host device access, equivalent to running as root on the host', 'Enables SELinux policy enforcement inside the container', 'Creates a read-only container filesystem for security'], answer: 1, explanation: '--privileged removes nearly all container isolation: the container gets ALL Linux capabilities, can access ALL host devices, mount filesystems, load kernel modules, and modify host network settings. Avoid in production. Instead grant only specific capabilities needed with --cap-add and drop all others with --cap-drop ALL. Use securityContext in the Kubernetes pod spec for fine-grained control per container.' },
 ];
 
 const qna: QnaItem[] = [
@@ -213,6 +214,7 @@ const qna: QnaItem[] = [
     q: 'What is a "privileged" container and when is it legitimate?',
     a: 'A privileged container (securityContext: privileged: true) runs with nearly all Linux capabilities, disables seccomp and AppArmor, and can mount host filesystems. It is essentially a root process on the node. Legitimate uses are very narrow: device drivers, kernel module loaders, and some node-level agents (e.g. a Cilium CNI DaemonSet). Never run application workloads as privileged.',
   },
+  { q: 'What is a Pod Security Standard and how do you enforce it?', a: 'Pod Security Standards replace deprecated PodSecurityPolicies in Kubernetes 1.25 and later. Three levels: Privileged (no restrictions), Baseline (prevents known privilege escalations such as hostPID, hostNetwork, and privileged containers), Restricted (heavily restricted: no root user, no privilege escalation, seccomp profile required). Enforce via namespace labels: kubectl label namespace myns pod-security.kubernetes.io/enforce=restricted. Also set warn and audit modes to surface violations without blocking deployments. Audit violations appear in the API server audit log.' },
 ];
 
 const revision: RevisionSummary = {

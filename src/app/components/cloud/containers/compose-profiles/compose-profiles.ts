@@ -276,6 +276,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: 'Set COMPOSE_PROFILES=debug,monitoring in your shell environment or .env file. Compose reads this variable and activates all listed profiles, equivalent to passing --profile debug --profile monitoring on the command line.',
   },
+  { q: 'What is the purpose of Docker Compose profiles?', options: ['To name your project differently per environment', 'To conditionally include services without modifying the compose file', 'To enable GPU access for specific services', 'To share named volumes between projects'], answer: 1, explanation: 'Profiles allow you to group services so only relevant ones start per environment. Assign a profile with profiles: [debug] on a service. Start with docker compose --profile debug up to include those services. Services without a profile always start. Useful for optional tools like DB admin UIs, debuggers, or integration-test services you do not want running in production.' },
 ];
 
 const qna: QnaItem[] = [
@@ -299,6 +300,7 @@ const qna: QnaItem[] = [
     q: 'When should I use extends: vs override files?',
     a: 'Use extends: when you have multiple similar services (e.g. multiple worker types) that share a base configuration within the same project. Use override files when you need environment-specific variants of the entire stack (dev vs prod). extends: is service-level inheritance; overrides are file-level merging.',
   },
+  { q: 'How do you merge multiple Docker Compose files for different environments?', a: 'Docker Compose merges files in order: compose.yaml (base) plus compose.override.yaml (auto-loaded if present). For explicit overrides use -f: docker compose -f compose.yaml -f compose.prod.yaml up. Later files take precedence for scalar values; arrays like ports and volumes are merged. A common pattern: base file defines services, compose.dev.yaml adds volume mounts and debug ports, compose.prod.yaml sets production resource limits and removes dev-only services.' },
 ];
 
 const revision: RevisionSummary = {

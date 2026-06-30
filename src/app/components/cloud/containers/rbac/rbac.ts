@@ -188,6 +188,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'A RoleBinding can reference either a Role OR a ClusterRole in its roleRef. When a RoleBinding references a ClusterRole, the permissions are scoped to the namespace of the RoleBinding. This is a common pattern for reusing a ClusterRole definition without granting cluster-wide access.',
   },
+  { q: 'What is the difference between a Role and a ClusterRole in Kubernetes RBAC?', options: ['Roles are deprecated in Kubernetes 1.25 and later in favor of ClusterRoles', 'A Role is namespace-scoped; a ClusterRole is cluster-wide and can be bound in any namespace via RoleBinding', 'ClusterRoles automatically have more permissions than Roles by default', 'Roles apply only to service accounts while ClusterRoles apply only to human users'], answer: 1, explanation: 'Role grants permissions within a SINGLE namespace. ClusterRole grants permissions cluster-wide, or it can be reused in any namespace via a RoleBinding. Using ClusterRole plus RoleBinding gives namespace-scoped permissions while reusing the same ClusterRole definition. Using ClusterRole plus ClusterRoleBinding gives cluster-wide permissions. Use ClusterRoles for common permission sets to avoid duplicating Role definitions in every namespace.' },
 ];
 
 const qna: QnaItem[] = [
@@ -211,6 +212,7 @@ const qna: QnaItem[] = [
     q: 'What are aggregated ClusterRoles and when are they useful?',
     a: 'Aggregated ClusterRoles let you compose permissions by label selector. The built-in admin, edit, and view ClusterRoles support aggregation — you can add custom rules to them by creating a ClusterRole with the matching aggregation label (rbac.authorization.k8s.io/aggregate-to-view: "true"). Useful when you install a CRD and want to automatically extend existing roles to cover the new resource without modifying the base role.',
   },
+  { q: 'How do you audit what permissions a service account has in Kubernetes?', a: 'Use kubectl auth can-i --list --as=system:serviceaccount:namespace:sa-name to list all permissions for a service account. To check a specific action: kubectl auth can-i create pods --as=system:serviceaccount:default:mysa. To find all bindings for a SA: kubectl get rolebindings,clusterrolebindings -A -o yaml and grep for the SA name. Tools like rbac-lookup show all bindings for a subject, rakkess shows permissions in a matrix view, and kube-bench runs CIS benchmark checks including RBAC. Apply the principle of least privilege by scoping to specific resources, verbs, and namespaces.' },
 ];
 
 const revision: RevisionSummary = {

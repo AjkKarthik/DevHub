@@ -188,6 +188,7 @@ const quiz: QuizQuestion[] = [
     answer: 1,
     explanation: 'The scheduler uses requests (not limits) to decide node placement. If requests are set too low, the scheduler overcommits the node — placing 10 pods that each request 100m CPU but actually use 500m each. When they all run at actual usage, the node is overloaded, causing CPU throttling and potentially memory OOMKills across all pods.',
   },
+  { q: 'What happens when a Kubernetes pod exceeds its memory limit?', options: ['The pod is rescheduled to a node with more available memory', 'The container is OOMKilled immediately by the Linux kernel with no grace period', 'The pod enters a Pending state until memory is freed on the node', 'Memory usage is throttled like CPU so the pod slows down but keeps running'], answer: 1, explanation: 'Memory limits are HARD limits. The Linux OOM killer terminates the container immediately when it exceeds the limit, unlike CPU which is throttled. The container then restarts based on the pod restartPolicy. Set requests.memory close to actual usage for scheduling accuracy and set limits.memory with a buffer for spikes. Always set memory limits in production because an unlimited container can exhaust node memory and take down all other pods on that node.' },
 ];
 
 const qna: QnaItem[] = [
@@ -211,6 +212,7 @@ const qna: QnaItem[] = [
     q: 'What is the Vertical Pod Autoscaler (VPA) and how does it differ from HPA?',
     a: 'HPA scales the number of pod replicas based on metrics (CPU, memory, custom). VPA adjusts the requests and limits of existing pods based on observed usage — it right-sizes pods vertically. VPA cannot run concurrently with HPA on the same metric (both would fight each other). Common pattern: use VPA in Recommend mode to gather sizing data, then manually apply the recommendations as static requests/limits, and use HPA for replica scaling.',
   },
+  { q: 'What is the difference between CPU requests and CPU limits in Kubernetes?', a: 'CPU request is the amount guaranteed for scheduling: Kubernetes only places the pod on a node with at least this much CPU available. CPU limit is the maximum the container can use: if exceeded the container is throttled via CFS bandwidth throttling but not killed. A container without a CPU limit can use spare capacity on the node. Setting CPU limit equal to CPU request creates the Guaranteed QoS class which is the highest priority under node pressure. Setting only a CPU request with no limit creates the Burstable QoS class. Common mistake: setting CPU limit too low causes latency spikes from throttling even when the node has idle CPU capacity.' },
 ];
 
 const revision: RevisionSummary = {

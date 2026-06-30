@@ -268,6 +268,7 @@ const quiz: QuizQuestion[] = [
     answer: 2,
     explanation: 'Init containers run sequentially before the app containers start. They must exit with code 0 — if any fail, Kubernetes restarts them until they succeed. Common uses: run DB migrations, wait for a dependency to be ready, or pre-populate a shared volume.',
   },
+  { q: 'What is the difference between a Pod and a Deployment in Kubernetes?', options: ['Pods are permanent resources while Deployments are temporary', 'A Pod is the smallest deployable unit; a Deployment manages a ReplicaSet to maintain desired pod count and handle rolling updates', 'Deployments run on control plane nodes while Pods run only on worker nodes', 'A single Pod can contain and manage multiple Deployments inside it'], answer: 1, explanation: 'A Pod is one or more co-located containers sharing a network and storage. A Deployment wraps a ReplicaSet which ensures N pod replicas are always running. Deployments add rolling update strategy via maxSurge and maxUnavailable, rollback history, and declarative updates. Never manage bare Pods directly in production: use Deployments for stateless workloads, StatefulSets for stateful workloads, or DaemonSets for one-per-node workloads. Direct pods are lost on node failure with no automatic recovery.' },
 ];
 
 const qna: QnaItem[] = [
@@ -291,6 +292,7 @@ const qna: QnaItem[] = [
     q: 'Why should terminationGracePeriodSeconds be set carefully?',
     a: 'When a Pod is deleted, Kubernetes sends SIGTERM to the container and waits terminationGracePeriodSeconds (default 30s) for it to shut down gracefully. If it does not exit, SIGKILL is sent. For apps that need to finish in-flight requests or flush data, increase this value. For fast-starting workers, decrease it to speed up rolling updates.',
   },
+  { q: 'How does a Kubernetes rolling update work?', a: 'When you update a Deployment such as changing the image tag, Kubernetes creates a new ReplicaSet with the updated pod template. It scales up the new ReplicaSet and scales down the old one incrementally, controlled by maxUnavailable (default 25%, meaning that many pods can be unavailable during the update) and maxSurge (default 25%, meaning that many pods above the desired count are allowed temporarily). The update pauses automatically if new pods fail their readinessProbe. Use kubectl rollout status to monitor progress. For zero-downtime deploys, set maxUnavailable to 0 and maxSurge to 1 to add one new pod before removing any old pod.' },
 ];
 
 const revision: RevisionSummary = {
