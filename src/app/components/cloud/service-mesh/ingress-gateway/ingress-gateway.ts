@@ -512,6 +512,7 @@ console.log(getIngressConfig());`,
       q: 'How do you configure CORS at the Istio ingress gateway?',
       a: 'CORS is configured in VirtualService using the `corsPolicy` field on HTTP routes: <pre><code>spec:\n  http:\n  - corsPolicy:\n      allowOrigins:\n      - exact: https://myapp.com\n      allowMethods: [GET, POST, PUT, DELETE, OPTIONS]\n      allowHeaders: [authorization, content-type, x-custom-header]\n      allowCredentials: true\n      maxAge: "24h"\n    route:\n    - destination:\n        host: api-service</code></pre>Istio handles the OPTIONS preflight response automatically — your backend services don\'t need CORS headers. Configure CORS at the gateway-facing VirtualService (with <code>gateways:</code> field) to centralise it for all traffic entering via that gateway.',
     },
+  { q: 'How do you expose multiple services through an Istio Ingress Gateway?', a: 'Use a single Gateway resource specifying the port and TLS configuration, then create separate VirtualService resources for each service, each referencing the same Gateway. Route traffic to different services using the match conditions: host matching routes traffic based on the SNI hostname, and URI prefix matching routes to different backends based on the URL path. Each VirtualService specifies its hosts field matching the incoming hostname and its gateways field listing the Gateway to bind to. This allows a single load balancer IP to serve multiple domains and paths.' },
   ];
 
   revision: RevisionSummary = {

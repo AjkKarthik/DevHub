@@ -407,6 +407,7 @@ console.log(getTrafficSplit(100));`,
       q: 'Can Linkerd and Istio coexist in the same cluster?',
       a: 'Technically yes, but it is strongly discouraged. Both install MutatingAdmissionWebhooks for pod injection, and both claim the iptables proxy port (15001 for Istio, 4143 for Linkerd). Pods would have conflicting sidecars if labelled for both meshes. In practice: <ul><li>Some teams run Linkerd for most workloads and Istio for specific namespaces needing advanced routing</li><li>You must carefully control which namespaces are labelled for which mesh</li><li>Debugging cross-mesh communication issues is very complex</li></ul>The safer approach is to pick one mesh for the cluster and use the Kubernetes Gateway API for advanced routing features if choosing Linkerd.',
     },
+  { q: 'How does Linkerd handle mTLS compared to Istio?', a: 'Linkerd automatically enables mTLS between all meshed pods using a Rust-based micro-proxy called linkerd2-proxy. Unlike Istio where mTLS can be configured in PERMISSIVE mode (plaintext allowed) or STRICT mode, Linkerd enables mTLS by default for all meshed traffic with no configuration required. Certificate rotation is handled automatically by the Linkerd control plane. Linkerd uses a smaller, purpose-built proxy rather than Envoy, which results in lower resource usage and latency overhead. The tradeoff is that Linkerd has less extensibility for custom L7 protocols compared to Envoy WASM filters.' },
   ];
 
   revision: RevisionSummary = {

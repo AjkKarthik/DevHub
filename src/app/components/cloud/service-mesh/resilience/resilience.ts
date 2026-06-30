@@ -404,6 +404,7 @@ console.log(getResilienceConfig());`,
       q: 'How does minHealthPercent in outlierDetection work as a safety valve?',
       a: '<code>minHealthPercent</code> (default 50%) is an emergency brake: when the percentage of healthy hosts in the load balancer pool drops below this threshold, Istio <em>stops ejecting</em> any more hosts — regardless of their error rate. This prevents outlier detection from draining the entire pool during a widespread failure. Example: with <code>maxEjectionPercent: 70</code> and <code>minHealthPercent: 30</code>, Istio will eject up to 70% of pods, but if ejecting the next pod would put healthy pods below 30%, it stops ejecting. The cluster degrades gracefully rather than being completely blacked out.',
     },
+  { q: 'How do you implement circuit breaking for downstream dependencies in Istio?', a: 'Configure circuit breaking in a DestinationRule using the trafficPolicy.outlierDetection block. Key settings: consecutiveGatewayErrors sets how many consecutive 5xx errors before ejecting an endpoint from the load balancing pool. interval is how often outlier detection runs. baseEjectionTime is the minimum time an endpoint is ejected. maxEjectionPercent limits what fraction of endpoints can be ejected simultaneously to prevent cascading failures. consecutiveLocalOriginFailures counts connection-level failures. When a specific pod is consistently failing, it is temporarily removed from the pool and traffic shifts to healthy instances automatically without client-side logic.' },
   ];
 
   revision: RevisionSummary = {

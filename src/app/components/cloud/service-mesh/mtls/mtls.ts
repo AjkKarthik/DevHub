@@ -406,6 +406,7 @@ console.log(getMtlsConfig());`,
       q: 'What is the X-Forwarded-Client-Cert header and how is it useful?',
       a: 'When Envoy terminates mTLS on behalf of a destination service, it adds the <code>X-Forwarded-Client-Cert</code> (XFCC) header to the request forwarded to the app. This header contains the client\'s SPIFFE URI (<code>By=spiffe://...;Hash=...;URI=spiffe://cluster.local/ns/prod/sa/api</code>). Applications can read this header to: <ul><li>Log which service made a request (audit trail without modifying the calling service)</li><li>Implement application-level service identity checks as a secondary authorization layer</li><li>Debug "who called me?" without deploying additional tooling</li></ul>Note: XFCC is controlled by Istio\'s <code>meshConfig.h2UpgradePolicy</code> and can be stripped or forwarded per route.',
     },
+  { q: 'How does Istio rotate mTLS certificates automatically?', a: 'Istio uses a built-in certificate authority called istiod (or an external CA like HashiCorp Vault or cert-manager). When a sidecar proxy starts, it generates a private key and sends a certificate signing request to istiod via the Secret Discovery Service (SDS). istiod signs the certificate using the mesh root CA and returns it. Certificates have a short default lifetime of 24 hours and are rotated automatically before expiry without any pod restart. The Envoy SDS API allows hot-reloading of certificates. To use an external CA, configure the meshConfig.ca settings and provide the CA endpoint and credentials.' },
   ];
 
   revision: RevisionSummary = {
