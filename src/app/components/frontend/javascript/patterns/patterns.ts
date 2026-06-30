@@ -408,6 +408,14 @@ flaky().then(console.log).catch(console.error);`,
       q: 'What is the Proxy pattern (structural) and how is it different from JavaScript\'s Proxy object?',
       a: 'The Proxy <strong>design pattern</strong> is about providing a substitute object that controls access to another — adding logging, lazy initialisation, or access control. JavaScript\'s <code>Proxy</code> object is a built-in runtime mechanism that intercepts fundamental operations (get, set, call) at the VM level. The design pattern and the language feature solve the same concept but at different layers — the design pattern can be implemented without <code>Proxy</code> objects.',
     },
+    {
+      q: 'What is the difference between the Strategy pattern and simply passing a function as a parameter?',
+      a: 'They are closely related — passing a function IS a lightweight implementation of Strategy in a language with first-class functions like JavaScript. The formal Strategy pattern (with a class per strategy implementing a shared interface) matters more in languages without first-class functions, or when a "strategy" needs to carry meaningful internal state and multiple methods beyond a single callable. In idiomatic JavaScript, a higher-order function parameter (array.sort(compareFn)) is usually the simpler, equally valid expression of the same pattern.',
+    },
+    {
+      q: 'When does the Singleton pattern become an anti-pattern in JavaScript applications?',
+      a: 'Singletons introduce global mutable state and hidden dependencies — code anywhere in the app can read or mutate the singleton without it appearing in any function signature, making the codebase harder to reason about and test in isolation (tests can leak state between each other via the shared singleton instance). In module-based JavaScript, a module\'s top-level exported state already behaves like a singleton implicitly — explicitly wrapping it in a "Singleton class" pattern rarely adds value and often signals an opportunity to instead pass dependencies explicitly (dependency injection) for better testability.',
+    },
   ];
 
   revision: RevisionSummary = {

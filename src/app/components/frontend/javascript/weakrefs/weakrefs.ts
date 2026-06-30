@@ -419,6 +419,14 @@ handler = null;  // handler can now be GC'd
       q: 'When would you choose WeakRef over WeakMap for caching?',
       a: 'Use <code>WeakRef</code> when you want to optionally hold onto a value and the cache key is the value itself (self-referential or keyed by something else). Use <code>WeakMap</code> when you want to associate extra data with an object key. Example: a DOM node → computed style cache → use WeakMap (key is the node, value is derived data). An optional memoised result cache → use WeakRef on the result. If unsure, WeakMap is almost always the cleaner choice.',
     },
+    {
+      q: 'How does FinalizationRegistry differ from WeakRef, and why is it considered unreliable for critical cleanup logic?',
+      a: 'FinalizationRegistry lets you register a callback to run after an object has been garbage collected, useful for releasing associated external resources (closing a file handle tied to a JS wrapper object). The spec explicitly does NOT guarantee the callback will ever run — the engine may delay it indefinitely, batch it, or skip it entirely if the process exits first. This makes it unsuitable for anything requiring deterministic cleanup (closing database connections, releasing locks) — use explicit dispose patterns or try/finally for guaranteed cleanup, reserving FinalizationRegistry purely as a best-effort backstop or for development-time leak detection.',
+    },
+    {
+      q: 'Why can holding a WeakRef to an object still prevent garbage collection if you are not careful?',
+      a: 'A WeakRef itself does not prevent collection — but if your code also holds any STRONG reference to the same object elsewhere (a variable, a closure, an array), that strong reference keeps the object alive regardless of any WeakRefs pointing to it. A common mistake is creating a WeakRef expecting it to enable collection, while a forgotten strong reference (e.g., still captured in an event listener closure that was never removed) silently keeps the object alive — WeakRef only matters once ALL strong references to the object are gone.',
+    },
   ];
 
   revision: RevisionSummary = {
