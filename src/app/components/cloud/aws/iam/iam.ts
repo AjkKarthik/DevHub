@@ -433,6 +433,12 @@ const trustPolicy = {
       answer: 1,
       explanation: 'SCPs set the maximum permissions boundary for ALL principals in a member account, including admins. An SCP Deny cannot be overridden by any IAM policy — even AdministratorAccess.',
     },
+    {
+      q: 'What is the principle of least privilege as applied to IAM policies?',
+      options: ['Granting AdministratorAccess to all new users by default for convenience', 'Granting only the specific permissions required to perform a task, nothing more', 'Using only managed policies, never custom policies', 'Disabling all IAM users and using root credentials instead'],
+      answer: 1,
+      explanation: 'Least privilege means an identity (user, role, service) should have exactly the permissions it needs to perform its function and no more — reducing the blast radius if credentials are ever compromised. AWS provides tools like IAM Access Analyzer to help identify and trim overly permissive policies down to actual usage patterns.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -451,6 +457,14 @@ const trustPolicy = {
     {
       q: 'What is the IAM policy evaluation order?',
       a: 'AWS evaluates policies in this order: (1) SCPs from AWS Organizations; (2) Resource-based policies; (3) IAM identity-based policies; (4) IAM Permission Boundaries; (5) Session policies. At each layer, explicit Deny wins. Final effective permissions are the intersection of allows across all applicable layers, with no explicit deny.',
+    },
+    {
+      q: 'What is the difference between an IAM identity-based policy and a resource-based policy?',
+      a: 'An identity-based policy is attached to a user, group, or role, defining what that identity can do. A resource-based policy is attached directly to a resource (like an S3 bucket policy or a Lambda resource policy), defining who can access THAT resource regardless of their own identity-based permissions. Both are evaluated together — for cross-account access, a resource-based policy is often required since the calling identity exists in a different account that cannot be granted permissions via an identity-based policy alone.',
+    },
+    {
+      q: 'How does IAM policy evaluation logic handle an explicit Deny versus an Allow?',
+      a: 'AWS IAM evaluates all applicable policies (identity-based, resource-based, SCPs, permission boundaries) for a request, and an explicit Deny in ANY policy always overrides any Allow, regardless of how many other policies grant the permission. By default, all actions are implicitly denied unless explicitly allowed somewhere. This "explicit deny wins" rule is commonly used for guardrails — for example, an SCP that explicitly denies disabling CloudTrail, which no identity-based Allow policy can override.',
     },
   ];
 

@@ -531,6 +531,12 @@ const orderSaga = {
       answer: 2,
       explanation: 'Express workflows support up to 100,000 executions per second and are priced per execution duration — far cheaper than Standard at high volume. Use Express for API orchestration, event processing, and ETL pipelines that complete in under 5 minutes. Standard is needed for long durations, audit history, and at-most-once semantics.',
     },
+    {
+      q: 'What is the difference between Standard and Express Step Functions workflows?',
+      options: ['They are identical except for pricing', 'Standard workflows support long-running (up to 1 year) executions with exactly-once semantics; Express workflows are optimized for high-volume, short-duration workloads with at-least-once semantics', 'Express workflows cannot integrate with Lambda', 'Standard workflows have no execution history'],
+      answer: 1,
+      explanation: 'Standard workflows are designed for long-running, auditable processes (up to 1 year), with exactly-once execution and full execution history visible in the console — suited for order processing or human-approval workflows. Express workflows are optimized for high-event-rate, short-duration (under 5 minutes) workloads at a much lower cost per execution, trading exactly-once for at-least-once semantics — suited for IoT data processing or streaming ETL.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -549,6 +555,14 @@ const orderSaga = {
     {
       q: 'How do I debug a failing Step Functions execution?',
       a: 'For Standard workflows, open the execution in the console — the visual workflow highlights the failed state in red, and clicking it shows the input, output, and error cause. Use GetExecutionHistory via CLI for programmatic access. Enable X-Ray tracing to see Lambda invocation traces within the workflow. For Express workflows (no built-in history), configure logging to CloudWatch Logs with level ERROR and includeExecutionData: true — query with CloudWatch Logs Insights. Common causes: payload > 256 KB, missing IAM permissions on the execution role, Lambda timeout shorter than state HeartbeatSeconds.',
+    },
+    {
+      q: 'What is the benefit of using Step Functions over chaining multiple Lambda functions together with direct invocations?',
+      a: 'Directly chaining Lambda invocations (one function calling another) couples the orchestration logic into application code, makes the overall workflow state and progress invisible without custom logging, and complicates error handling/retries across the chain. Step Functions externalizes the orchestration as a visual, declarative state machine — providing built-in retry/catch logic per step, a visual execution history showing exactly which step succeeded/failed and with what input/output, and the ability to run steps in parallel or wait for external callbacks, all without embedding that coordination logic inside the Lambda functions themselves.',
+    },
+    {
+      q: 'What is a Step Functions "callback pattern" (waitForTaskToken), and when is it needed?',
+      a: 'The callback pattern lets a Step Functions execution pause a task and wait for an external system to explicitly resume it by calling SendTaskSuccess or SendTaskFailure with a task token, rather than the state machine immediately continuing after invoking a service. This is essential for workflows requiring human approval steps, integration with third-party systems that process asynchronously, or any long-running external process where Step Functions needs to wait an indeterminate amount of time for a result that cannot be returned synchronously from the initial invocation.',
     },
   ];
 

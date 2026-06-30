@@ -408,6 +408,12 @@ console.log(JSON.stringify(lifecycleConfig, null, 2));
       answer: 1,
       explanation: 'Both source and destination buckets must have versioning enabled for CRR or SRR to work. Replication operates on a per-version basis — without versioning, S3 cannot track which objects need replication.'
     },
+    {
+      q: 'What is the difference between S3 Standard, S3 Intelligent-Tiering, and S3 Glacier storage classes?',
+      options: ['They all have identical pricing and retrieval times', 'Standard is for frequently accessed data; Intelligent-Tiering automatically moves objects between tiers based on access patterns; Glacier is for long-term archival with slower, cheaper retrieval', 'Glacier provides the fastest retrieval of all storage classes', 'Intelligent-Tiering requires manual configuration for every object'],
+      answer: 1,
+      explanation: 'S3 Standard suits frequently accessed data at higher per-GB cost. Intelligent-Tiering automatically monitors access patterns and moves objects between frequent/infrequent/archive tiers without manual intervention or retrieval penalties, ideal for unpredictable access patterns. Glacier classes offer the lowest storage cost in exchange for retrieval delays (minutes to hours) and retrieval fees, suited for compliance archives or rarely-accessed backups.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -426,6 +432,14 @@ console.log(JSON.stringify(lifecycleConfig, null, 2));
     {
       q: 'How do S3 bucket policies differ from IAM policies for access control?',
       a: 'IAM policies are identity-based — attached to IAM users/roles and define what S3 actions that identity can perform across any bucket. Bucket policies are resource-based — attached to the bucket and define who (any principal, including cross-account and anonymous) can access that bucket. For cross-account access, bucket policies are required (IAM alone cannot grant cross-account S3 access). For anonymous public access (website hosting), bucket policies grant s3:GetObject to Principal: "*". For same-account controlled access, either works but bucket policies are simpler for S3-specific access patterns.'
+    },
+    {
+      q: 'How does S3 achieve strong read-after-write consistency, and why did this matter for application design?',
+      a: 'As of December 2020, S3 provides strong read-after-write consistency for all operations (PUTs and DELETEs) — a GET request immediately after a successful PUT will always return the latest version, including for overwrite PUTs and LIST operations. Previously, S3 had eventual consistency for overwrite PUTs and deletes, requiring applications to build in retry/wait logic to handle the rare case of reading stale data right after a write — this is no longer necessary, simplifying application logic that depends on immediately reading just-written objects.',
+    },
+    {
+      q: 'What is S3 Object Lock and what compliance use case does it solve?',
+      a: 'S3 Object Lock implements WORM (Write Once, Read Many) storage — once enabled with a retention period or legal hold, an object cannot be deleted or overwritten by ANYONE, including the root account, until the retention period expires (Compliance mode) or the legal hold is explicitly removed (Governance mode allows privileged users to override). This is used to meet regulatory requirements (SEC 17a-4, FINRA) for immutable retention of financial records, audit logs, or other data that must be provably tamper-proof for a defined period.',
     },
   ];
 

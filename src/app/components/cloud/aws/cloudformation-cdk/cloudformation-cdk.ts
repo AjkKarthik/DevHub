@@ -541,6 +541,12 @@ export class ProductApiStack extends cdk.Stack {
       answer: 1,
       explanation: 'CloudFormation stack outputs can be exported with a unique name using Export.Name. Other stacks in the same account/region consume them with Fn::ImportValue. This creates a dependency — the exporting stack cannot be deleted while a consuming stack references its export.',
     },
+    {
+      q: 'What is a CloudFormation drift, and how do you detect it?',
+      options: ['A pricing fluctuation in your stack resources', 'When a resource\'s actual configuration differs from what the CloudFormation template declares (due to manual console changes)', 'A delay in stack creation', 'A region failover event'],
+      answer: 1,
+      explanation: 'Drift occurs when someone manually modifies a resource outside of CloudFormation (e.g., changing a security group rule in the console). Use "Detect Drift" in the console or aws cloudformation detect-stack-drift to find resources that no longer match the template — drifted resources can cause unexpected behavior on the next stack update.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -559,6 +565,14 @@ export class ProductApiStack extends cdk.Stack {
     {
       q: 'How do I safely update a CloudFormation stack that has stateful resources?',
       a: 'Safe update process: (1) run cdk diff or create a change set — look for any resource with Action=Replace, which means delete + recreate; (2) for database updates, take a manual snapshot first outside of CloudFormation; (3) enable rollback triggers (CloudWatch alarms) so CloudFormation automatically rolls back if an alarm fires during the update; (4) use maintenance windows or deployment windows with traffic drained from the affected services; (5) for zero-downtime database schema changes, separate the schema migration from the CloudFormation update — deploy code that handles both old and new schema, then apply the migration, then update CloudFormation.',
+    },
+    {
+      q: 'What is the difference between CloudFormation and AWS CDK?',
+      a: 'CloudFormation uses declarative JSON/YAML templates directly. AWS CDK (Cloud Development Kit) lets you define infrastructure using real programming languages (TypeScript, Python, Java, C#) with loops, conditionals, and reusable constructs — CDK code is compiled ("synthesized") down to a CloudFormation template under the hood. CDK is generally preferred for complex infrastructure where you want type safety, IDE autocomplete, and the ability to share infrastructure as versioned npm/PyPI packages.',
+    },
+    {
+      q: 'What is a CloudFormation stack set, and when would you use one?',
+      a: 'A StackSet lets you deploy the same CloudFormation stack across multiple AWS accounts and regions from a single operation — essential for organization-wide guardrails (e.g., deploying a mandatory CloudTrail or GuardDuty configuration to every account) without manually deploying to each account individually. StackSets integrate with AWS Organizations for automatic deployment to new accounts as they are created.',
     },
   ];
 

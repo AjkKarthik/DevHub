@@ -457,6 +457,12 @@ export const handler = async (event: S3Event): Promise<void> => {
       answer: 2,
       explanation: 'Lambda queues async invocations internally and retries them for up to 6 hours with exponential backoff. Only after exhausting retries are events sent to the DLQ (if configured).',
     },
+    {
+      q: 'What causes a Lambda "cold start" and how can it be mitigated?',
+      options: ['Cold starts happen on every invocation regardless of recent activity', 'A cold start occurs when Lambda must initialize a new execution environment (download code, start runtime) because no warm instance is available; mitigated via Provisioned Concurrency or smaller deployment packages', 'Cold starts only affect Lambda functions written in Python', 'Cold starts are caused by exceeding the memory limit'],
+      answer: 1,
+      explanation: 'A cold start happens when AWS must provision a fresh execution environment for a Lambda invocation, including downloading the deployment package and initializing the runtime/dependencies — adding noticeable latency, especially for languages with heavier runtime initialization (Java, .NET). Provisioned Concurrency keeps a specified number of execution environments pre-warmed and ready, eliminating cold start latency for those invocations at an additional cost.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -475,6 +481,14 @@ export const handler = async (event: S3Event): Promise<void> => {
     {
       q: 'How do Lambda Layers work and when should I use them?',
       a: 'Layers are immutable ZIP archives extracted to /opt in the execution environment before the handler runs. Use layers for: large shared libraries (AWS SDK, Sharp, Pandas) to avoid bloating each deployment package; custom runtimes; Lambda extensions (monitoring agents). Layers count toward the 250 MB total unzipped size limit. Build native modules (Sharp, bcrypt) for Amazon Linux 2023 matching the function architecture (x86_64 or arm64).',
+    },
+    {
+      q: 'What is the difference between Lambda execution role permissions and Lambda resource-based policy?',
+      a: 'The execution role (an IAM role attached to the function) determines what AWS resources the function\'s CODE can access while running (e.g., permission to read from a specific S3 bucket or write to DynamoDB). The resource-based policy determines who/what is allowed to INVOKE the function from outside (e.g., allowing API Gateway or S3 event notifications to trigger it). Both are necessary for many integrations — the resource policy grants invoke permission, the execution role grants runtime access to other services.',
+    },
+    {
+      q: 'Why does Lambda function memory configuration also affect CPU and network performance, not just available RAM?',
+      a: 'AWS Lambda allocates CPU power, network bandwidth, and other resources proportionally to the configured memory setting — a function configured with more memory also receives a proportionally larger share of CPU, which can make a CPU-bound function run significantly FASTER (and sometimes cheaper overall, since billing is duration × memory) at a higher memory setting, even though the function itself does not actually need that much RAM. This makes memory tuning an important performance lever, not just a memory-capacity decision.',
     },
   ];
 

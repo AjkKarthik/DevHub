@@ -449,6 +449,12 @@ console.log(JSON.stringify(bucketPolicy, null, 2));
       answer: 1,
       explanation: 'Content-hash filenames (e.g. app.abc123.js) are unique per build — safe to cache indefinitely. On deploy, only /index.html changes (it references the new hash). Invalidating only /index.html is fast, cheap (1 path), and the new assets are fetched on the first user request.'
     },
+    {
+      q: 'What is the purpose of a Route 53 health check combined with a failover routing policy?',
+      options: ['Health checks only monitor CPU usage on EC2 instances', 'Health checks monitor endpoint availability; failover routing automatically routes traffic to a backup resource if the primary fails its health check', 'Health checks are required for all Route 53 records regardless of routing policy', 'Failover routing requires manual DNS updates after a health check failure'],
+      answer: 1,
+      explanation: 'A Route 53 health check periodically probes an endpoint (HTTP, HTTPS, or TCP) for availability. Combined with a Failover routing policy, Route 53 automatically directs DNS queries to a designated secondary resource when the primary resource\'s health check fails, enabling automated disaster recovery without manual DNS intervention.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -467,6 +473,14 @@ console.log(JSON.stringify(bucketPolicy, null, 2));
     {
       q: 'What happens during a CloudFront cache invalidation, and how long does it take?',
       a: 'An invalidation instructs all CloudFront edge locations worldwide to remove the specified objects from cache on the next request. It typically takes 1-3 minutes for the invalidation to propagate to all edge locations (~450 globally). During propagation, some edge locations may still serve the old cached version. You receive 1,000 free invalidation paths per month; additional paths cost $0.005 each. The /* wildcard counts as one path in the free tier but invalidates everything.'
+    },
+    {
+      q: 'Why does CloudFront caching reduce both latency and origin load, and what determines cache duration?',
+      a: 'CloudFront caches responses at edge locations geographically close to users, so repeat requests for the same content are served directly from the edge without a round trip to the origin server — reducing both latency (closer physical distance) and load on the origin (fewer requests reach it). Cache duration (TTL) is controlled by Cache-Control/Expires headers from the origin, or can be overridden by CloudFront cache behavior settings, balancing freshness against cache hit ratio.',
+    },
+    {
+      q: 'What is the difference between a Route 53 Alias record and a standard CNAME record?',
+      a: 'A standard CNAME cannot be used at a zone apex (the root domain, e.g., example.com) per DNS specification, and always requires an extra DNS lookup to resolve. A Route 53 Alias record is an AWS-specific extension that works at the zone apex AND resolves directly to the target AWS resource (like a CloudFront distribution or ALB) without the extra lookup, and is free of charge for queries to AWS resources — making it the preferred way to point a root domain at AWS-hosted infrastructure.',
     },
   ];
 

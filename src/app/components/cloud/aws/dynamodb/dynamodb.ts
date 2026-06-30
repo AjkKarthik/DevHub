@@ -468,6 +468,12 @@ console.log({ userItem, postItem, commentItem, gsi });`,
       answer: 2,
       explanation: 'TTL (Time To Live) allows you to define a numeric Unix timestamp attribute on items. DynamoDB automatically deletes items once the timestamp is in the past, typically within 48 hours, at no charge. Commonly used for session tokens, OTP codes, and temporary data.'
     },
+    {
+      q: 'What is a DynamoDB Global Secondary Index (GSI) used for?',
+      options: ['Replicating a table to another AWS region', 'Querying a table using a different partition/sort key than the table\'s primary key', 'Encrypting table data at rest', 'Backing up a table automatically'],
+      answer: 1,
+      explanation: 'A GSI lets you query a DynamoDB table efficiently using an attribute other than the primary key — since DynamoDB only supports efficient lookups by primary key or index key, GSIs are essential for supporting multiple access patterns on the same table without expensive full table scans.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -486,6 +492,14 @@ console.log({ userItem, postItem, commentItem, gsi });`,
     {
       q: 'What is write sharding and when do you need it?',
       a: 'Write sharding distributes writes across multiple logical partitions by appending a random suffix to the partition key: PK = status#0 through status#9 instead of just status. When reading, you query all 10 shards in parallel and merge results. Use write sharding when: your partition key has low cardinality (status, type, date) and you expect high write throughput on specific values. Symptoms requiring sharding: ProvisionedThroughputExceededException on specific partition keys even when overall table capacity is not exhausted.'
+    },
+    {
+      q: 'What is the difference between DynamoDB on-demand and provisioned capacity modes?',
+      a: 'Provisioned capacity requires you to specify read/write capacity units (RCU/WCU) upfront — cost-efficient for predictable, steady traffic, but requires capacity planning and can throttle on unexpected spikes unless auto-scaling is configured. On-demand mode automatically scales to handle any traffic level with no capacity planning, charging per request — simpler to operate and better for unpredictable or spiky traffic, at a higher per-request cost than well-utilized provisioned capacity.',
+    },
+    {
+      q: 'Why does DynamoDB table design emphasize single-table design rather than normalized relational schemas?',
+      a: 'DynamoDB has no native JOIN operation, so spreading related data across multiple tables (as a relational database would) forces the application to make multiple round-trip queries and join data client-side, which is slow and does not scale. Single-table design stores multiple entity types in one table, using composite partition/sort keys and GSIs to support all required access patterns with a single query — this requires designing the table around your application\'s known query patterns upfront, a significant mindset shift from relational normalization.',
     },
   ];
 

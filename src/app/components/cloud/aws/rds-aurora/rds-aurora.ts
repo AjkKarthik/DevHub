@@ -453,6 +453,12 @@ console.log(clusterCmd, instanceCmd, proxyCmd, registerCmd);`,
       answer: 2,
       explanation: 'Setting minimum ACU to 0.5 keeps the cluster warm at very low cost (~$0.06/hour) — no cold start penalty. To pause completely (scale to zero), set minimum ACU to 0 in the scaling configuration. Resuming from pause adds ~25 seconds of latency on the first connection.'
     },
+    {
+      q: 'What is the key architectural advantage of Aurora over standard RDS MySQL/PostgreSQL?',
+      options: ['Aurora is simply a rebranded version of RDS with no technical differences', 'Aurora separates compute from a distributed, self-healing storage layer replicated across multiple AZs, enabling faster failover and higher throughput', 'Aurora only supports a single Availability Zone', 'Aurora requires manual replication configuration unlike RDS'],
+      answer: 1,
+      explanation: 'Aurora\'s storage layer is a distributed, log-structured system automatically replicated 6 ways across 3 Availability Zones, decoupled from the compute (database engine) layer — enabling much faster failover (typically under 30 seconds), higher throughput, and automatic storage healing, compared to standard RDS where storage is tied more directly to a single instance with traditional replication.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -471,6 +477,14 @@ console.log(clusterCmd, instanceCmd, proxyCmd, registerCmd);`,
     {
       q: 'What is the impact of a database parameter group change requiring a restart?',
       a: 'Parameter groups have two types: static parameters (require DB restart, e.g. max_connections, shared_buffers) and dynamic parameters (apply without restart, e.g. log_min_duration_statement). Before making changes: identify whether the parameter is static or dynamic, plan a maintenance window, verify the change in a staging environment first. For Aurora, a cluster parameter group change can be applied to individual instances one at a time to avoid full-cluster downtime. Use the pending-reboot status to check which parameters are waiting for a restart.'
+    },
+    {
+      q: 'What is the difference between an RDS read replica and a Multi-AZ deployment?',
+      a: 'A Multi-AZ deployment maintains a synchronously-replicated standby in a different AZ purely for HIGH AVAILABILITY — the standby is not accessible for reads and only takes over automatically on a primary failure. A read replica is an asynchronously-replicated copy you can actively query for READ SCALING, offloading read traffic from the primary — it can be promoted to a standalone primary but does not provide automatic failover like Multi-AZ. Production setups often use both together: Multi-AZ for availability, read replicas for scaling reads.',
+    },
+    {
+      q: 'What is RDS Proxy and what problem does it solve for serverless/Lambda database connections?',
+      a: 'Lambda functions can scale to thousands of concurrent executions, each potentially opening its own database connection — quickly exhausting a traditional database\'s maximum connection limit and degrading performance. RDS Proxy sits between your application (Lambda) and the database, pooling and multiplexing many application-level connections over a smaller number of actual database connections, while also handling automatic failover and credential management via IAM/Secrets Manager — solving the connection exhaustion problem inherent to highly concurrent, ephemeral compute like Lambda.',
     },
   ];
 

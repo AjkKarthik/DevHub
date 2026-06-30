@@ -501,6 +501,12 @@ export class SecurityStack extends cdk.Stack {
       answer: 2,
       explanation: 'Macie generates a SensitiveData finding and sends it to Security Hub (ASFF) and EventBridge. Macie does NOT take any remediation action — you must build an EventBridge → Lambda pipeline to restrict access or enforce encryption.',
     },
+    {
+      q: 'What is the role of AWS Security Hub in a multi-account security posture?',
+      options: ['It is a firewall service for VPCs', 'It aggregates and prioritizes security findings from GuardDuty, Inspector, IAM Access Analyzer, and other tools across accounts into a unified dashboard against compliance standards', 'It replaces IAM for access control', 'It only works within a single AWS account'],
+      answer: 1,
+      explanation: 'Security Hub acts as a central aggregation point for security findings from multiple AWS security services and third-party tools, scoring them against standards like CIS AWS Foundations Benchmark and PCI DSS, giving security teams a single dashboard instead of checking each service\'s console individually across every account in an organization.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -523,6 +529,10 @@ export class SecurityStack extends cdk.Stack {
     {
       q: 'How do WAF rate-based rules handle a sudden traffic spike?',
       a: 'WAF rate-based rules aggregate request counts per IP over a rolling 5-minute window. An IP is blocked only after its rolling count exceeds the configured threshold — there can be a window before blocking activates. For faster bot mitigation, combine rate-based rules with the Bot Control managed rule group, which uses device fingerprinting and behavioural signals that act more immediately than pure count-based rules.',
+    },
+    {
+      q: 'What is the difference between GuardDuty and AWS WAF in terms of what each protects against?',
+      a: 'GuardDuty is a threat DETECTION service that continuously analyzes account activity (CloudTrail logs, VPC flow logs, DNS logs) using machine learning to identify suspicious behavior — compromised credentials, cryptocurrency mining, reconnaissance activity — after it has already started happening. AWS WAF is a PREVENTIVE web application firewall that sits in front of CloudFront/ALB/API Gateway, blocking known attack patterns (SQL injection, XSS) in incoming HTTP requests before they reach your application. They serve complementary roles: WAF blocks known attack patterns proactively, GuardDuty detects anomalous activity that got through or originated internally.',
     },
   ];
 

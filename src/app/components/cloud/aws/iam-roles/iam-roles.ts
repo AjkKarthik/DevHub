@@ -409,6 +409,12 @@ console.log(JSON.stringify(permissionPolicy, null, 2));`,
       answer: 2,
       explanation: 'Role chaining always caps the resulting session at 1 hour — a hard AWS limit. Plan your architecture to avoid role chaining when long sessions are required.'
     },
+    {
+      q: 'What is an IAM trust policy, and how does it differ from a permissions policy?',
+      options: ['They are the same thing', 'A trust policy defines WHO (which principal) can assume the role; a permissions policy defines WHAT the role can do once assumed', 'A trust policy is only used for S3 buckets', 'Permissions policies are deprecated in favor of trust policies'],
+      answer: 1,
+      explanation: 'Every IAM role has a trust policy (also called an assume role policy) specifying which principals — an AWS service, another account, a federated identity — are allowed to assume the role. Separately, one or more permissions policies attached to the role define what actions it can perform once assumed. Both must be correctly configured for a role to function as intended.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -427,6 +433,14 @@ console.log(JSON.stringify(permissionPolicy, null, 2));`,
     {
       q: 'What happens if the trust policy allows AssumeRole but the caller has no identity policy allowing it?',
       a: 'The call fails with "is not authorized to perform: sts:AssumeRole". IAM requires both sides: the target role trust policy must grant sts:AssumeRole to the caller, AND the caller must have an identity-based policy allowing sts:AssumeRole on that role ARN. Missing either half blocks the request.'
+    },
+    {
+      q: 'How does an EC2 instance profile let an application access AWS services without hardcoded credentials?',
+      a: 'An instance profile is a container that holds an IAM role and is attached to an EC2 instance at launch. The AWS SDK running on that instance automatically retrieves temporary credentials from the Instance Metadata Service (IMDS) for the attached role — no access keys are ever stored on the instance or in application code. These temporary credentials automatically rotate, eliminating the long-term credential leakage risk of hardcoded access keys.',
+    },
+    {
+      q: 'What is cross-account role assumption, and why is it preferred over sharing IAM user credentials between accounts?',
+      a: 'Cross-account role assumption lets a principal in Account A assume a role defined in Account B (whose trust policy explicitly allows Account A), receiving temporary credentials scoped to that role\'s permissions in Account B. This is the standard pattern for multi-account AWS organizations — it avoids ever sharing long-lived IAM user credentials across account boundaries, provides a full audit trail via CloudTrail of exactly which role was assumed by whom, and credentials automatically expire rather than persisting indefinitely.',
     },
   ];
 

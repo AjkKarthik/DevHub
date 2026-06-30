@@ -429,6 +429,12 @@ console.log(keyCommands);`,
       answer: 1,
       explanation: 'Stateless means NACLs evaluate each packet independently with no knowledge of prior packets. If you allow inbound TCP port 443, the response packets (outbound on ephemeral ports 1024-65535) are blocked unless you also add an outbound allow rule.'
     },
+    {
+      q: 'What is the key difference between a VPC Security Group and a Network ACL (NACL)?',
+      options: ['They are functionally identical with different names', 'Security Groups are stateful and operate at the instance level; NACLs are stateless and operate at the subnet level', 'NACLs only support allow rules, never deny rules', 'Security Groups can deny specific traffic; NACLs cannot'],
+      answer: 1,
+      explanation: 'Security Groups are stateful (return traffic is automatically allowed regardless of outbound rules) and attached to individual ENIs/instances, supporting only Allow rules. NACLs are stateless (you must explicitly allow both inbound AND outbound return traffic) and operate at the subnet level as a coarser-grained additional layer of defense, supporting both Allow and explicit Deny rules evaluated in numbered order.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -447,6 +453,14 @@ console.log(keyCommands);`,
     {
       q: 'What is an Elastic IP, and when do you need one?',
       a: 'An Elastic IP is a static, public IPv4 address allocated to your AWS account that persists independently of any specific instance. You need one when: your EC2 instance must be reachable on a consistent IP after stop/start cycles (public IPs change on restart by default); NAT Gateways require an EIP to perform address translation; or you need a whitelisted IP for external partners. EIPs are free while attached to a running instance, but cost $0.005/hour when allocated but not associated.'
+    },
+    {
+      q: 'What is a VPC endpoint and why does it improve both security and cost for accessing AWS services like S3?',
+      a: 'A VPC endpoint lets resources in a private subnet (with no internet gateway or NAT) access AWS services (S3, DynamoDB via Gateway endpoints; most other services via Interface endpoints/PrivateLink) without traffic ever leaving the AWS network or traversing the public internet. This improves security (no exposure to internet-based attacks on that traffic path, traffic stays within AWS\'s backbone) and can reduce cost (avoiding NAT Gateway data processing charges for traffic that would otherwise route through a NAT Gateway to reach the public AWS service endpoint).',
+    },
+    {
+      q: 'Why does deploying resources across multiple Availability Zones within a VPC improve resilience, and what is required to do so correctly?',
+      a: 'Each Availability Zone is a physically isolated set of data centers with independent power, cooling, and networking — deploying redundant resources (EC2 instances, RDS standbys) across multiple AZs means a failure affecting one AZ (power outage, network issue) does not take down your entire application, only the portion in that AZ. Correct implementation requires creating a subnet in each AZ you want to use (subnets are AZ-specific, cannot span AZs), then placing resources and configuring load balancers or Multi-AZ database deployments to span those subnets.',
     },
   ];
 

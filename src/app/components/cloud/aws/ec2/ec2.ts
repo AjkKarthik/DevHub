@@ -435,6 +435,12 @@ console.log(sgCommand, ltCommand, asgCommand, policyCommand);`,
       answer: 2,
       explanation: 'R-series instances have the highest memory-to-vCPU ratio in EC2 — designed for memory-intensive workloads like in-memory databases, big-data analytics, and real-time caches. X-series goes even higher for the largest SAP HANA deployments.'
     },
+    {
+      q: 'What is the difference between an EC2 Spot Instance and an On-Demand Instance?',
+      options: ['Spot Instances are always more expensive but guaranteed availability', 'Spot Instances use spare AWS capacity at up to 90% discount but can be reclaimed by AWS with a 2-minute warning', 'On-Demand instances cannot be stopped or terminated', 'Spot Instances are only available for GPU workloads'],
+      answer: 1,
+      explanation: 'Spot Instances let you bid on unused EC2 capacity at significant discounts, but AWS can reclaim the instance with a 2-minute interruption notice when capacity is needed elsewhere — ideal for fault-tolerant, flexible workloads (batch processing, CI/CD runners) but unsuitable for stateful, always-on production services without careful interruption handling.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -453,6 +459,14 @@ console.log(sgCommand, ltCommand, asgCommand, policyCommand);`,
     {
       q: 'What happens when an ASG instance fails an ELB health check?',
       a: 'The ALB marks the target as unhealthy. After the ASG\'s health check grace period expires, the ASG detects the failure and terminates the unhealthy instance. It then launches a replacement in the same or another AZ to maintain the desired capacity. The terminated instance is quarantined and its lifecycle hooks fire before actual termination.'
+    },
+    {
+      q: 'What is the difference between stopping and terminating an EC2 instance?',
+      a: 'Stopping an instance shuts it down but preserves its EBS root volume and instance ID — you can start it again later, and you stop paying for compute (but still pay for the attached EBS storage). Terminating permanently deletes the instance; by default the root EBS volume is also deleted (unless DeleteOnTermination is disabled), and the instance ID can never be reused. Use Stop for temporary pauses (development environments overnight) and Terminate only when you are certain you no longer need that specific instance.',
+    },
+    {
+      q: 'What is an EC2 instance metadata service (IMDS) and why is IMDSv2 recommended over IMDSv1?',
+      a: 'The Instance Metadata Service (accessible at 169.254.169.254 from within the instance) lets running code retrieve instance details and temporary IAM role credentials without embedding secrets. IMDSv1 used simple GET requests, which made it vulnerable to Server-Side Request Forgery (SSRF) attacks where a compromised web application could be tricked into fetching and leaking instance credentials. IMDSv2 requires a session token obtained via a PUT request first, which most SSRF vulnerabilities cannot replicate, significantly reducing this attack surface — AWS now recommends (and can enforce) IMDSv2-only.',
     },
   ];
 

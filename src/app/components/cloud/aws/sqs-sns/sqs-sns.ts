@@ -488,6 +488,12 @@ async function fulfillOrder(order: Order): Promise<void> {
       answer: 1,
       explanation: 'When the visibility timeout expires, the message reappears in the queue and another consumer (or another Lambda instance) can pick it up, causing duplicate processing. Set visibility timeout to at least 6x the Lambda timeout (AWS recommendation).',
     },
+    {
+      q: 'What is the difference between SQS Standard and SQS FIFO queues?',
+      options: ['They are functionally identical with different pricing', 'Standard queues offer at-least-once delivery with best-effort ordering and nearly unlimited throughput; FIFO queues guarantee exactly-once processing and strict ordering at lower throughput', 'FIFO queues cannot be used with Lambda', 'Standard queues guarantee message ordering by default'],
+      answer: 1,
+      explanation: 'Standard queues maximize throughput and scalability at the cost of occasional duplicate delivery and out-of-order messages — suitable when message order does not strictly matter. FIFO queues guarantee messages are processed exactly once, in the exact order sent (within a message group), at significantly lower throughput limits — necessary for use cases like financial transactions where order and exactly-once processing are critical.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -506,6 +512,14 @@ async function fulfillOrder(order: Order): Promise<void> {
     {
       q: 'How do I handle large messages (>256 KB) in SQS?',
       a: 'SQS has a 256 KB message limit. For larger payloads, use the S3 Extended Client pattern: store the payload in S3, put the S3 bucket + key reference in the SQS message, and have consumers fetch from S3. The AWS Java SDK has an official SQS Extended Client library that handles this automatically. Set S3 object lifecycle rules (e.g. 1-day TTL) to clean up processed payloads. For SNS, use the same pattern — publish S3 reference in the SNS message attribute.',
+    },
+    {
+      q: 'What is a Dead Letter Queue (DLQ) in SQS, and why is configuring one a best practice?',
+      a: 'A DLQ is a separate queue that automatically receives messages which have failed processing a configured maximum number of times (maxReceiveCount) — rather than being retried indefinitely or silently lost. Without a DLQ, a malformed or "poison pill" message can be redelivered and fail repeatedly forever, consuming consumer resources without resolution. Configuring a DLQ lets you isolate and inspect these failed messages separately, alerting on DLQ depth to catch processing bugs without blocking the main queue\'s healthy message flow.',
+    },
+    {
+      q: 'How does the SNS-to-SQS fan-out pattern work, and what problem does it solve?',
+      a: 'In this pattern, a single SNS topic publishes one message that is automatically delivered to MULTIPLE subscribed SQS queues simultaneously, each consumed independently by a different downstream service. This solves the problem of one event needing to trigger several independent, decoupled processes (e.g., an "order placed" event needing to trigger inventory update, email notification, and analytics tracking) without the publisher needing to know about or directly call each consumer — each consumer just subscribes its own queue to the topic.',
     },
   ];
 
