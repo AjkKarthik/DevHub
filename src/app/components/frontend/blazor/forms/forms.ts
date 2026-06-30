@@ -248,6 +248,10 @@ public class ContactModel
     { q: 'How do I reset a form?', a: 'Replace the model instance with a new one and recreate the EditContext: `model = new(); ctx = new EditContext(model); msgs = new ValidationMessageStore(ctx);`. This clears all validation state and field values.' },
     { q: 'Can I use FluentValidation instead of DataAnnotations?', a: 'Yes. Install the Blazor.FluentValidation NuGet package and replace DataAnnotationsValidator with FluentValidationValidator. The EditContext and ValidationMessage components work the same way.' },
     { q: 'How does @bind-Value differ from @bind on Blazor input components?', a: '@bind-Value is the correct directive for Blazor input components (InputText, InputNumber, etc.) — it binds to the component\'s Value parameter. @bind on a raw HTML element binds to the element\'s value attribute and bypasses EditContext tracking.' },
+    { q: 'What is the role of EditContext in a Blazor EditForm, and why would you create one manually?',
+      a: 'EditContext tracks the state of a form being edited — which fields have been modified, current validation messages, and provides events (OnFieldChanged, OnValidationRequested) that validation components subscribe to. EditForm creates one implicitly from its Model parameter, but you create an EditContext manually when you need more control — for example, triggering validation programmatically, building a custom validation UI, or sharing form state across components outside the standard EditForm structure.' },
+    { q: 'How does DataAnnotationsValidator integrate with EditForm to provide automatic validation?',
+      a: 'Adding <DataAnnotationsValidator /> inside an EditForm wires up validation based on standard .NET data annotation attributes ([Required], [StringLength], [Range], etc.) applied to the bound model\'s properties — when the form is submitted or a field changes, it automatically validates the model against these attributes and populates the EditContext with any validation errors, which <ValidationMessage> and <ValidationSummary> components then display, all without writing manual validation logic.' },
   ];
 
   revision: RevisionSummary = {

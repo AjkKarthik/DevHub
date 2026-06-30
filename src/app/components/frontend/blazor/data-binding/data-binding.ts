@@ -200,6 +200,10 @@ export class BlazorDataBinding {
     { q: 'Can I use @bind on a custom component I wrote?', a: 'Yes. @bind-PropName synthesizes a PropNameChanged EventCallback. Declare both `[Parameter] public T PropName` and `[Parameter] public EventCallback<T> PropNameChanged` on your component, and parents can use `@bind-PropName="field"`.' },
     { q: 'When does Blazor re-render after an event?', a: 'Blazor calls StateHasChanged automatically after every event handler completes. If the handler is async, a re-render happens after each awaited continuation too. You rarely need to call StateHasChanged manually from event handlers.' },
     { q: 'How do I bind a nullable property?', a: 'Blazor input components support nullable generics: `InputNumber<int?>` binds to `int?`. For string properties, string is already nullable by reference. Ensure validation accounts for null with [Required] or nullability annotations.' },
+    { q: 'What is the difference between one-way binding (@value) and two-way binding (@bind) in Blazor?',
+      a: 'One-way binding (value="@field") only flows data FROM the component\'s C# state TO the rendered HTML element — user input into that element does not automatically update the underlying field. Two-way binding (@bind="field") additionally wires up an event handler (oninput or onchange depending on the bind modifier) so that user changes to the element flow back and update the C# field automatically, keeping both in sync without manually writing the event handler yourself.' },
+    { q: 'How does @bind:event let you customize when a two-way bound value updates?',
+      a: 'By default, @bind="field" on a text input uses the onchange event, which only fires when the input loses focus, not on every keystroke. Adding @bind:event="oninput" changes the bound event to oninput, updating the underlying field on every keystroke instead — useful for live character counters, search-as-you-type filtering, or any UI that needs to react immediately rather than waiting for the field to lose focus.' },
   ];
 
   revision: RevisionSummary = {
