@@ -534,8 +534,8 @@ var c = new Config();   // CS7036: no argument given for required parameter 'pat
       a: 'No — a constructor can only have one initializer, either <code>: this(...)</code> or <code>: base(...)</code>. The typical workaround: chain through <code>: this(...)</code> to a sibling constructor that itself calls <code>: base(...)</code>.',
     },
     {
-      q: 'What happens if a static constructor throws an exception?',
-      a: 'The runtime wraps it in a <code>TypeInitializationException</code> and marks the type as permanently failed. Every subsequent attempt to use the type throws the same exception for the rest of the AppDomain\'s lifetime. Guard static constructor logic carefully — validate resources, handle failures explicitly. For optional, deferrable initialization prefer <code>Lazy&lt;T&gt;</code>.',
+      q: 'Does a static constructor run once per type or once per instance?',
+      a: 'Once per <strong>type</strong>, regardless of how many instances get created — the CLR guarantees it runs at most once, triggered automatically before the first instance is created or the first static member is accessed. It never re-runs, even if you create a thousand instances of the type across the AppDomain\'s lifetime — this is distinct from an instance constructor, which runs once per <code>new</code> call.',
     },
     {
       q: 'When should I prefer primary constructors over traditional constructors?',

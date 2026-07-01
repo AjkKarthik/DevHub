@@ -543,8 +543,8 @@ func main() {
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between := and = in Go?',
-      a: ':= is the short variable declaration operator — it declares a new variable AND assigns it a value, inferring the type. It can only be used inside function bodies. = is the assignment operator — it assigns to an already-declared variable. At least one name on the left of := must be new; others can already exist (in which case they are just reassigned).'
+      q: 'What happens if you accidentally use := instead of = inside a nested block (like an if statement) when you meant to reassign an outer variable?',
+      a: 'Go silently creates a NEW variable scoped to that inner block, shadowing the outer one — this compiles without error and is one of Go\'s most common subtle bugs. Example: err is declared outside an if block, then if cond { val, err := doSomething(); ... } inside creates a brand-new err local to the if block (because val is new, := is legal), leaving the OUTER err completely untouched. Code after the if block that checks the outer err never sees the inner error at all.'
     },
     {
       q: 'Why does Go have multiple return values instead of exceptions?',

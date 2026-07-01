@@ -520,8 +520,8 @@ modal.addEventListener('keydown', (e) => {
       a: 'No — colour contrast is a CSS/design concern covered by WCAG Success Criterion 1.4.3 (Contrast Minimum, AA level). The requirement is a minimum 4.5:1 ratio for normal text and 3:1 for large text (18pt/14pt bold). ARIA does not affect contrast. Use tools like the WebAIM Contrast Checker or browser DevTools accessibility panel to verify.'
     },
     {
-      q: 'What is the difference between aria-label and aria-labelledby?',
-      a: 'aria-label provides an inline string as the accessible name: <code>aria-label="Close dialog"</code>. aria-labelledby references the ID of another element whose text content becomes the accessible name: <code>aria-labelledby="dialog-title"</code>. Prefer aria-labelledby — it reuses visible text and stays in sync automatically. Use aria-label only when there is no visible text to reference.'
+      q: 'If an element has both a visible text label AND an aria-label attribute, which one does a screen reader announce?',
+      a: 'The aria-label — it takes precedence over the element\'s own visible text content when computing the accessible name. This is a common, hard-to-spot bug: a developer adds aria-label="Submit" for a button whose visible text has since been changed to "Save Changes," and screen reader users hear the STALE "Submit" label while sighted users see "Save Changes" — the two experiences silently diverge. If visible text already exists and is accurate, it is usually safer to omit aria-label entirely and let the visible text serve as the accessible name.'
     },
     {
       q: 'What is a focus trap and when should you implement one?',
