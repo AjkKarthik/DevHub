@@ -60,6 +60,15 @@ export class JsEvents {
         'The <code>detail</code> property carries custom data with the event. Access it in the handler as <code>e.detail</code>.',
       ]
     },
+    {
+      heading: 'Event Delegation',
+      points: [
+        'Event delegation attaches a single listener to a common ancestor element rather than individual listeners on every child — relying on event bubbling, the ancestor\'s handler inspects <code>event.target</code> to determine which specific child was actually interacted with.',
+        'This dramatically reduces memory usage and listener-attachment overhead for lists with many items (a table with hundreds of rows needs one click listener on the table, not one per row) and automatically handles dynamically added children without re-attaching listeners.',
+        'Delegation requires checking <code>event.target</code> (or using <code>closest()</code> to find the nearest matching ancestor) inside the handler to determine what was actually clicked, since the event technically fires on the delegating parent, not the originally clicked element.',
+        'Not every event bubbles — <code>focus</code> and <code>blur</code> do not bubble by default (use <code>focusin</code>/<code>focusout</code> instead if delegation is needed for those), which is a common surprise when trying to delegate focus-related handling.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

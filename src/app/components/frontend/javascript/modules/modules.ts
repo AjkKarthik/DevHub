@@ -59,6 +59,15 @@ export class JsModules {
         'Top-level await (<code>await fetch(...)</code> at module root) is an ESM-only feature — modules can be async without wrapper functions.',
       ]
     },
+    {
+      heading: 'Named Exports vs Default Exports',
+      points: [
+        'Named exports (<code>export const foo = ...</code>) require the importer to use the exact same name (or explicitly rename via <code>as</code>), enabling better tooling support — IDEs can reliably auto-import and rename across a codebase since the export name is fixed and statically known.',
+        'Default exports (<code>export default foo</code>) let the importer choose any name they like on import, which sacrifices some tooling consistency (the same module might be imported under different names in different files) for a slightly shorter import syntax.',
+        'Many style guides now prefer named exports exclusively for this reason — consistent naming across a codebase, better auto-import/refactor tooling support, and the ability to export multiple things from one module without an awkward object-wrapping default export.',
+        'Mixing both (a default export plus several named exports from the same module) is valid but can be confusing — pick one convention (usually named-only) and apply it consistently across a project.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

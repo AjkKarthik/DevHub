@@ -59,6 +59,15 @@ export class JsBundlers {
         'Semantic versioning: <code>^1.2.3</code> allows minor updates (1.x.x); <code>~1.2.3</code> allows patch updates (1.2.x); <code>1.2.3</code> exact.',
       ]
     },
+    {
+      heading: 'Code Splitting and Dynamic Import',
+      points: [
+        'Dynamic <code>import()</code> (as opposed to static top-level <code>import</code>) returns a Promise and lets a bundler automatically split that imported module into a separate chunk, loaded on demand rather than in the initial bundle.',
+        'Route-based code splitting (loading a page\'s JS only when that route is visited) is the highest-impact splitting strategy for most SPAs — it directly reduces the initial bundle size users must download before the app becomes interactive.',
+        'Bundlers use the dynamic import syntax as a signal for where chunk boundaries should be created — this is a build-time decision baked into the output, not something the runtime decides dynamically at execution time.',
+        'Over-splitting (creating too many tiny chunks) can hurt performance due to per-request overhead — bundlers provide chunk size/count heuristics (webpack\'s splitChunks, Vite\'s manualChunks) to balance chunk granularity against request overhead.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

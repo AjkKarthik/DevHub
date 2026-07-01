@@ -60,6 +60,15 @@ export class JsBrowserApis {
         'These APIs all require HTTPS in production (except localhost). Check <code>navigator.permissions.query</code> for current permission state before calling.',
       ]
     },
+    {
+      heading: 'Intersection Observer & Performance APIs',
+      points: [
+        '<code>IntersectionObserver</code> efficiently detects when an element enters or leaves the viewport without expensive scroll-event polling — the browser notifies your callback only when the intersection ratio actually crosses a configured threshold.',
+        'Common uses: lazy-loading images/components as they scroll into view, infinite scroll pagination triggers, and tracking ad/content visibility for analytics — all without the performance cost of a scroll listener firing dozens of times per second.',
+        '<code>performance.now()</code> provides a high-resolution, monotonic timestamp (unaffected by system clock changes) ideal for measuring elapsed time in performance-sensitive code, unlike <code>Date.now()</code> which can jump backward if the system clock is adjusted.',
+        'The Performance Observer API (<code>PerformanceObserver</code>) lets you subscribe to browser-reported timing entries (navigation timing, resource timing, Core Web Vitals like LCP/CLS) programmatically, without polling — essential for building real user monitoring (RUM).',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

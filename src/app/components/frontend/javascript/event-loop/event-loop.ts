@@ -59,6 +59,15 @@ export class JsEventLoop {
         '<code>requestAnimationFrame(fn)</code> schedules <code>fn</code> before the next browser paint — ideal for animations, ensuring you update at display refresh rate (60fps).',
       ]
     },
+    {
+      heading: 'Microtasks vs Macrotasks',
+      points: [
+        'Promise callbacks (<code>.then()</code>, <code>.catch()</code>, <code>async/await</code> continuations) are microtasks, queued in the microtask queue. <code>setTimeout</code>, <code>setInterval</code>, and I/O callbacks are macrotasks, queued separately.',
+        'The event loop always drains the ENTIRE microtask queue before moving to the next macrotask — this is why a chain of resolved promises all run before a <code>setTimeout(fn, 0)</code> callback, even one scheduled earlier.',
+        'A microtask that schedules another microtask (a <code>.then()</code> that returns a promise handled by another <code>.then()</code>) keeps extending the current microtask drain — an infinite chain of synchronously-resolving microtasks can starve macrotasks (and rendering) indefinitely.',
+        'Understanding this ordering is essential for debugging "why did my setTimeout run after all my promises" surprises — it is not a bug, it is the deterministic, spec-defined priority of microtasks over macrotasks on every event loop tick.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

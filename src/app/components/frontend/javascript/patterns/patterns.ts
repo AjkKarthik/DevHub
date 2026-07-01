@@ -49,6 +49,24 @@ export class JsPatterns {
         '<strong>Middleware/Pipeline</strong>: chain functions where each receives a value and a <code>next</code> function. Express.js middleware, Redux middleware, and Angular interceptors all use this pattern.',
       ]
     },
+    {
+      heading: 'The Factory Pattern',
+      points: [
+        'A factory function encapsulates object creation logic behind a function call (<code>createUser(data)</code>) rather than exposing a constructor directly — useful when creation involves conditional logic, validation, or choosing between multiple concrete implementations.',
+        'Factories decouple calling code from the specific class being instantiated — a factory can return different concrete types based on input (a <code>createShape(type)</code> factory returning a Circle, Square, or Triangle instance) without the caller needing to know which class is used.',
+        'In JavaScript, factories are often simpler than in class-based languages since functions are first-class and object literals do not require an explicit class definition — a factory can just be a function returning a plain object with the desired shape.',
+        'Factories are particularly useful for testing — a factory function that creates test fixtures with sensible defaults (<code>createTestUser({ name: "Custom" })</code> overriding just what a specific test needs) reduces repetitive test setup boilerplate significantly.',
+      ]
+    },
+    {
+      heading: 'The Module Pattern and Encapsulation',
+      points: [
+        'The module pattern uses a closure (historically an IIFE, now typically an ES module) to create private state that is inaccessible from outside, exposing only a deliberately chosen public API — the original mechanism for encapsulation before ES2022 class private fields existed.',
+        'ES modules themselves are a native implementation of this pattern — every module has its own private scope by default, and only explicitly exported bindings are accessible to importers, with no need for a manual IIFE wrapper.',
+        'The Revealing Module Pattern variant defines all functions and variables privately first, then returns an object literal explicitly mapping which of those private members should be public — making the public API clearly visible in one place at the end of the module.',
+        'Modern JavaScript increasingly favors class private fields (<code>#field</code>) or plain module-scoped state over manual closure-based encapsulation tricks, since they are more readable and have first-class language and tooling support.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

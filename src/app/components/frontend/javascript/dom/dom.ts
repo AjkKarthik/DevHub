@@ -61,6 +61,15 @@ export class JsDom {
         'All three observers use a callback-based async API — no polling, no event listeners on scroll/resize. Disconnect them when no longer needed to avoid memory leaks.',
       ]
     },
+    {
+      heading: 'Document Fragments and Batch DOM Updates',
+      points: [
+        'A <code>DocumentFragment</code> is an in-memory, lightweight container for DOM nodes that is not part of the visible document tree — appending multiple children to a fragment and then inserting the fragment once triggers only a single reflow/repaint, instead of one per individual append.',
+        'Repeatedly appending elements directly to a live DOM node inside a loop forces the browser to recalculate layout on every single append (in the worst case) — batching changes via a fragment (or building an HTML string and setting innerHTML once) avoids this "layout thrashing."',
+        'Reading a layout property (like <code>offsetHeight</code>) immediately after writing a style change forces a synchronous layout recalculation ("forced reflow") — interleaving many reads and writes in a loop is a common, often-overlooked performance bug.',
+        'Modern frameworks (React, Vue) solve DOM batching automatically via a virtual DOM diff or fine-grained reactivity — but understanding the underlying reflow/repaint cost is essential when writing vanilla JS DOM manipulation code directly.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

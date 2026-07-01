@@ -61,6 +61,24 @@ export class JsSymbols {
         'Symbol-keyed properties survive <code>Object.assign()</code> and spread — they are not lost when cloning objects, just hidden from enumeration.',
       ]
     },
+    {
+      heading: 'Well-Known Symbols',
+      points: [
+        'JavaScript defines several built-in "well-known" symbols that customize core language behavior — <code>Symbol.iterator</code> makes an object iterable (usable in for-of loops and spread syntax), <code>Symbol.toPrimitive</code> customizes type coercion behavior.',
+        'Implementing <code>[Symbol.iterator]()</code> on a custom class makes instances work seamlessly with <code>for...of</code>, spread (<code>[...myObject]</code>), and destructuring — the same protocol that makes arrays, strings, and Maps iterable.',
+        '<code>Symbol.toStringTag</code> customizes what <code>Object.prototype.toString.call(obj)</code> reports (used internally by many type-checking utilities) — setting it lets a custom class report a meaningful type name instead of generic "[object Object]".',
+        'These well-known symbols are how JavaScript allows user-defined objects to plug into built-in language mechanisms (iteration, coercion, type detection) without requiring special-case syntax — the language uses the same extensibility mechanism available to any developer.',
+      ]
+    },
+    {
+      heading: 'Symbols for True Private-ish Properties',
+      points: [
+        'Before ES2022 class private fields (<code>#field</code>) existed, symbols were commonly used to create properties that would not appear in normal enumeration (<code>for...in</code>, <code>Object.keys()</code>) — a symbol-keyed property is not truly private, but is hidden from casual inspection.',
+        'A symbol used as a property key is genuinely unique — even two symbols created with <code>Symbol("id")</code> using the identical description string are different, non-colliding keys, which is why symbols work well for defining metadata keys that should never accidentally clash with a regular string property.',
+        'Unlike true class private fields, code that has a reference to the actual symbol value CAN still access the property (<code>obj[mySymbol]</code>) — symbols provide collision-avoidance and reduced discoverability, not genuine access-control privacy enforced by the language.',
+        'Since ES2022, class private fields (<code>#field</code>) are now the preferred mechanism for genuine encapsulation, since they are enforced by the language itself (a syntax error to access from outside the class) — symbols remain useful for their original purpose: unique, collision-free property keys.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

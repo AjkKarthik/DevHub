@@ -51,6 +51,24 @@ export class JsProxy {
         'Outside Proxy, Reflect provides a cleaner, functional API for meta-programming operations that used to require awkward patterns like <code>Object.defineProperty</code> or <code>Function.prototype.apply.call</code>.',
       ]
     },
+    {
+      heading: 'Common Proxy Traps',
+      points: [
+        'The <code>get</code> trap intercepts property reads, enabling default values for missing properties, computed/virtual properties, or logging every property access — commonly used to implement reactive systems that track which properties were read.',
+        'The <code>set</code> trap intercepts property writes, enabling validation (rejecting an invalid value by returning false or throwing), change tracking, or triggering side effects (like Vue 3\'s reactivity system notifying subscribers when a tracked property changes).',
+        'The <code>has</code> trap intercepts the <code>in</code> operator, and <code>deleteProperty</code> intercepts <code>delete obj.prop</code> — together with get/set, these four traps cover the majority of real-world Proxy use cases.',
+        'Proxy traps must obey certain invariants enforced by the JS engine (you cannot report a non-configurable property as absent, for example) — violating these invariants throws a TypeError, which exists to prevent a Proxy from lying about a target\'s fundamental, unchangeable characteristics.',
+      ]
+    },
+    {
+      heading: 'Reflect as the Proxy Companion API',
+      points: [
+        'The Reflect object provides methods (<code>Reflect.get</code>, <code>Reflect.set</code>, etc.) that mirror the default behavior of each Proxy trap — inside a trap, calling the corresponding Reflect method forwards the operation to the target with correct default semantics.',
+        'Using Reflect inside traps (rather than manually accessing <code>target[prop]</code>) correctly preserves <code>this</code> binding and prototype chain behavior in edge cases involving inheritance — a common source of subtle Proxy bugs is bypassing Reflect and getting these semantics slightly wrong.',
+        'A minimal pass-through trap that adds logging without changing behavior looks like: <code>get(target, prop, receiver) { console.log(prop); return Reflect.get(target, prop, receiver); }</code> — Reflect.get correctly passes the receiver through for proper getter/setter behavior on the prototype chain.',
+        'Reflect and Proxy were introduced together in ES2015 specifically as a matched pair — Proxy intercepts operations, Reflect provides the corresponding default implementation, together forming a complete meta-programming toolkit for JavaScript.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

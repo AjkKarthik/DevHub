@@ -58,6 +58,15 @@ export class JsGenerators {
         '<code>ReadableStream</code> (Streams API) can be consumed with <code>for await...of</code> in modern environments.',
       ]
     },
+    {
+      heading: 'Delegating to Other Generators with yield*',
+      points: [
+        '<code>yield*</code> delegates iteration to another iterable (typically another generator), effectively "flattening" nested generator calls — <code>function* outer() { yield* inner(); }</code> yields every value that <code>inner()</code> would yield, as if inlined.',
+        'This is essential for composing generators — building a complex generator out of smaller, reusable generator pieces without manually re-implementing a for-loop to forward each yielded value individually.',
+        '<code>yield*</code> also correctly forwards the RETURN value of the delegated generator, and propagates any values passed back in via <code>.next(value)</code> or errors thrown via <code>.throw()</code> down into the inner generator — a plain manual loop over the inner generator would not replicate this two-way communication.',
+        'Any iterable (not just generators) works with <code>yield*</code> — <code>yield* [1, 2, 3]</code> yields each array element in sequence, since arrays implement the iterable protocol that <code>yield*</code> relies on.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

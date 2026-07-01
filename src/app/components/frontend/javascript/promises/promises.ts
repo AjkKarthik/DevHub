@@ -61,6 +61,15 @@ export class JsPromises {
         'Avoid the "Promise constructor anti-pattern": don\'t wrap async code in <code>new Promise</code> — just return the async call directly.',
       ]
     },
+    {
+      heading: 'Promise Chaining and Error Propagation',
+      points: [
+        'Each <code>.then()</code> call returns a NEW promise, resolved with whatever the callback returns — this is what enables chaining (<code>.then(a).then(b).then(c)</code>), with each step receiving the previous step\'s resolved value.',
+        'A single <code>.catch()</code> at the end of a chain catches an error from ANY preceding step — once an error occurs, subsequent <code>.then()</code> callbacks are skipped entirely until a <code>.catch()</code> (or the second argument of a <code>.then()</code>) handles it.',
+        'Returning a promise from inside a <code>.then()</code> callback automatically "flattens" it — the outer chain waits for that inner promise to settle before continuing, rather than resolving immediately with a promise-wrapping-a-promise (avoiding manual nested <code>.then()</code> pyramids).',
+        'A common mistake is forgetting to <code>return</code> inside a <code>.then()</code> callback that starts another async operation — without the return, the chain does not actually wait for that inner operation, breaking the intended sequential flow silently.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [
