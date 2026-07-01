@@ -506,8 +506,8 @@ onInput(event: Event) {
 
   qna: QnaItem[] = [
     {
-      q: 'How do you provide HttpClient in Angular 15+ without HttpClientModule?',
-      a: '<code>provideHttpClient()</code> in <code>app.config.ts</code> replaces <code>HttpClientModule</code>. Add interceptors with <code>provideHttpClient(withInterceptors([myFn]))</code>. Without this, injecting <code>HttpClient</code> throws <code>NullInjectorError: No provider for HttpClient</code>.',
+      q: 'A component tree has provideHttpClient() at the root (app.config.ts) AND a lazy-loaded feature route provides its own provideHttpClient(withInterceptors([featureInterceptor])) at the route level. Does the feature-level interceptor apply only within that feature, or does it also affect requests made by other parts of the app?',
+      a: 'Providing HttpClient again at a route/component level creates a NEW, separate HttpClient instance scoped to that injector subtree — components within the lazy-loaded feature (and anything injecting HttpClient below that provider) get the feature-scoped instance with featureInterceptor applied, while the rest of the app continues using the root-provided HttpClient with only the root interceptors. This is a legitimate pattern for feature-specific concerns (e.g. a feature that talks to a different backend needing its own auth header interceptor) but it is easy to get wrong: code that assumes "there is only one HttpClient in the app" can be surprised when a request made from inside that feature does NOT go through interceptors registered only at the root, since the feature-level provider fully shadows rather than merges with the root one.',
     },
     {
       q: 'How does an interceptor work?',
@@ -526,8 +526,8 @@ onInput(event: Event) {
       a: '<code>http.get(...).pipe(catchError(err =&gt; of(defaultValue)))</code> returns a fallback and keeps the stream alive. For component-level handling: <code>catchError((err: HttpErrorResponse) =&gt; { this.error.set(err.status === 0 ? \'Network error\' : \'Server error\'); return of([]); })</code>. Use <code>retry({ count: 3, delay: 1000 })</code> before <code>catchError</code> to retry automatically.',
     },
     {
-      q: 'What is the difference between httpResource() and http.get() + toSignal()?',
-      a: '<code>httpResource()</code> (Angular 19+) combines both into one reactive primitive with <code>isLoading()</code>, <code>error()</code>, and <code>value()</code> signals. It automatically re-fetches when signal dependencies in the URL factory change, and cancels in-flight requests. Use it for new code; <code>http.get() + toSignal()</code> still works fine for simple one-shot fetches.',
+      q: 'A URL factory passed to httpResource() reads TWO signals: a search term and a page number. The user types quickly, changing the search term signal 5 times within 200ms while the page number stays fixed. How many actual HTTP requests does httpResource() end up firing, and why?',
+      a: 'httpResource() automatically cancels an in-flight request when its dependency signals change again before the previous request resolves — so of the 5 rapid search-term changes, only the LAST one\'s corresponding request is likely to actually reach the server and resolve; the earlier 4 requests get aborted mid-flight as each new signal change supersedes the previous fetch (similar in effect to what switchMap achieves manually with RxJS, but built into the resource primitive itself). This automatic cancel-and-refetch-on-dependency-change behavior is one of httpResource()\'s core advantages over toSignal(http.get(...)) — replicating it manually with plain HttpClient requires wiring up switchMap and a signal-to-observable bridge yourself, whereas httpResource() gives it by default just by reading multiple signals in the URL factory.',
     },
     {
       q: 'When should you use subscribe() directly vs toSignal()?',
