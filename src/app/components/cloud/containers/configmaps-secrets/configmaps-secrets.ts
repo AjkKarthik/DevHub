@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'IRSA (AWS): annotate the ServiceAccount with the IAM role ARN; the Pod gets short-lived AWS credentials automatically.',
     ],
   },
+  {
+    heading: 'ConfigMap and Secret Update Propagation Behavior',
+    points: [
+      'A ConfigMap or Secret mounted as a VOLUME is updated in the running container automatically (with some propagation delay via kubelet\'s sync loop) — mounted as an ENVIRONMENT VARIABLE, updates require a pod restart, since env vars are only read once at container start.',
+      'Applications that need to react to live config changes should watch the mounted file for changes (or use a sidecar/reload mechanism) rather than assuming a ConfigMap update alone triggers any reload behavior — Kubernetes itself does not restart pods on ConfigMap changes.',
+      'immutable: true on a ConfigMap or Secret prevents accidental updates and improves kubelet performance (it can stop watching for changes), at the cost of requiring a new object (with a new name) rather than an in-place update for any config change.',
+      'Tools like Reloader or Kustomize\'s configMapGenerator with content-hash suffixes solve the "pods don\'t restart on config change" problem by generating a new ConfigMap name per content change, forcing a rolling deployment when the referencing Deployment updates.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

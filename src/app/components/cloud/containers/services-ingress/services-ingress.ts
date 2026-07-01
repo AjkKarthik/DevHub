@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Ingress still works and will not be removed, but new projects should prefer Gateway API.',
     ],
   },
+  {
+    heading: 'Service Types and When Each Is Appropriate',
+    points: [
+      'ClusterIP (the default) exposes a Service only within the cluster\'s internal network — appropriate for internal-only communication between services, like a backend API that should never be directly reachable from outside the cluster.',
+      'NodePort exposes a Service on a static port on every node\'s IP, making it reachable from outside the cluster without any additional infrastructure — simple but exposes a somewhat unwieldy high-numbered port directly on node IPs, rarely used directly in production.',
+      'LoadBalancer provisions an actual cloud load balancer (via the cloud provider\'s integration) pointing at the Service, providing a clean external IP/DNS entry point — the standard choice for exposing a service externally in a cloud-hosted cluster, though it provisions one load balancer per Service, which can become costly at scale.',
+      'Ingress operates at a higher layer than Service types — a single Ingress (backed by one load balancer) can route HTTP/HTTPS traffic to MANY different Services based on hostname or path, which is why Ingress is generally preferred over provisioning a separate LoadBalancer Service per application.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

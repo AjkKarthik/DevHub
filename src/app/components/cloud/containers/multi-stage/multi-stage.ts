@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'In CI, use --cache-from type=registry,ref=myimage:cache to warm the build cache from the registry.',
     ],
   },
+  {
+    heading: 'Why Multi-Stage Builds Reduce Attack Surface, Not Just Size',
+    points: [
+      'Beyond the well-known size benefit, multi-stage builds exclude build-time tooling (compilers, package managers, build caches) from the final image — this directly reduces the attack surface available to an attacker who compromises a running container, since fewer installed tools means fewer potential exploitation paths.',
+      'Build secrets (API tokens needed only during the build, like a private registry credential) that are only used in an early build stage never appear in the final image\'s layers when multi-stage builds are structured correctly — a security benefit distinct from simple size reduction.',
+      'A minimal final-stage base image (distroless, scratch, or Alpine) combined with multi-stage builds compounds this benefit — the build stage can use a full-featured image with all necessary tooling, while the runtime stage carries only the compiled artifact and its minimal runtime dependencies.',
+      'Multi-stage builds also improve build cache reuse across unrelated final images — a shared early build stage (like a common dependency-installation layer) can be cached and reused across multiple final-stage variants built from the same Dockerfile pattern.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

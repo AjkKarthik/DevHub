@@ -62,6 +62,15 @@ const theory: TheoryPoint[] = [
       'Podman is a daemonless alternative: each container is a direct child of the calling process. No dockerd socket needed — better for rootless containers and systemd integration.',
     ],
   },
+  {
+    heading: 'Container Image Layers and Union Filesystems',
+    points: [
+      'Each Dockerfile instruction that modifies the filesystem produces a new read-only layer, and a union filesystem (OverlayFS) stacks these layers together to present a single unified view — this is the mechanism underlying image reuse and efficient storage across many images sharing common base layers.',
+      'When a running container writes to the filesystem, that write goes to a thin, writable layer on top of the read-only image layers (copy-on-write) — the underlying image layers themselves are never modified, which is why the same image can back many independent running containers simultaneously.',
+      'This layered, copy-on-write design is why building images with unnecessary layers or overly broad COPY instructions bloats image size — every layer persists in the final image even if a later layer deletes the same files, since deletion in a later layer does not reclaim space from an earlier one.',
+      'Understanding layers is essential for writing efficient Dockerfiles — combining related RUN commands into a single layer (using && chains) and cleaning up temporary files within the SAME layer they were created in avoids leaving unreachable bloat in earlier layers.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

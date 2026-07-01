@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Init containers share the same volumes as the main container — write a config file in init, read it in app.',
     ],
   },
+  {
+    heading: 'Stable Identity: What StatefulSets Guarantee That Deployments Don\'t',
+    points: [
+      'StatefulSet pods get stable, predictable names (web-0, web-1, web-2) that persist across restarts — a Deployment\'s pods get random suffixes and are fully interchangeable, which is why Deployments cannot support workloads where a specific pod\'s identity matters (like a database replica knowing its own role).',
+      'Each StatefulSet pod gets its own persistent volume claim that follows that specific pod across rescheduling — pod web-1 always reattaches to ITS OWN volume, not a randomly assigned one, which is essential for stateful workloads like databases where data must stay associated with a specific replica.',
+      'StatefulSet pods are created and terminated in strict ORDER (0, then 1, then 2, and reverse order for termination) by default — this ordered rollout matters for clustered stateful applications where a later replica may depend on an earlier one already being initialized.',
+      'Because of these guarantees, StatefulSets are reserved for genuinely stateful, identity-sensitive workloads (databases, distributed consensus systems) — using a StatefulSet for a stateless application adds unnecessary operational complexity (ordered rollouts, stable storage) with no corresponding benefit.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Set HEALTHCHECK to let Docker (and Compose/K8s) know when the container is ready.',
     ],
   },
+  {
+    heading: 'Layer Caching and Dockerfile Instruction Order',
+    points: [
+      'Docker caches each instruction\'s resulting layer — if an instruction and its inputs are unchanged from a previous build, Docker reuses the cached layer instead of re-executing it, meaningfully speeding up rebuilds.',
+      'Ordering instructions from least-to-most frequently changing (copying dependency manifests and installing dependencies BEFORE copying application source code) maximizes cache hits, since source code changes far more often than dependency lists.',
+      'A single change anywhere in a layer invalidates the cache for that layer AND every layer after it — this is why placing a frequently-changing COPY . . early in the Dockerfile defeats caching for all subsequent instructions, even unrelated ones.',
+      'CI build caching (via --cache-from or BuildKit\'s remote cache export) extends this same layer-caching benefit across separate CI runs on ephemeral build machines, which otherwise would have no local cache to reuse between builds.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

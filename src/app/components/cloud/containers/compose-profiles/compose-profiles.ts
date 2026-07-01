@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Use for shared base images, env vars, and resource limits across multiple similar services.',
     ],
   },
+  {
+    heading: 'Profile-Driven Environment Composition',
+    points: [
+      'Profiles let a single compose file describe multiple deployment configurations (dev, test, debug tooling) without maintaining separate compose files that would drift out of sync with each other over time.',
+      'A service with no profiles assigned always starts by default — only services explicitly tagged with a profile are conditionally included, meaning core services stay running while optional tooling (a debug proxy, a seed-data job) is opt-in.',
+      'Combining profiles with COMPOSE_PROFILES environment variable lets CI pipelines and local development activate different service subsets without changing command-line invocation, keeping developer and CI workflows consistent.',
+      'Overusing profiles to cram every possible environment variation into one compose file can make the file harder to read than simply maintaining a small number of purpose-specific compose files with override layering.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [
