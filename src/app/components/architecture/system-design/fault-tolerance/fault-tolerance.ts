@@ -60,6 +60,15 @@ const theory: TheoryPoint[] = [
       'Priority queues: shed background jobs first; protect critical user-facing paths.',
     ],
   },
+  {
+    heading: 'Bulkheads and Failure Isolation',
+    points: [
+      'The bulkhead pattern (named after ship compartmentalization) isolates resources per dependency or client so a failure in one does not exhaust resources needed by others — separate thread pools or connection pools per downstream dependency prevent one slow dependency from starving requests to a healthy one.',
+      'Without bulkheads, a single misbehaving dependency can trigger cascading failure across an entire service — all available threads get stuck waiting on the slow dependency, leaving none available to serve requests that do not even depend on it.',
+      'Timeouts are a necessary companion to bulkheads — a bulkhead limits how many requests can be stuck waiting on a dependency, but without a timeout those requests could wait indefinitely, eventually exhausting even an isolated resource pool.',
+      'Graceful degradation (returning a cached or simplified response when a non-critical dependency fails, rather than failing the entire request) preserves core functionality during partial outages — reserving hard failures for only the dependencies that are truly essential to the request.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

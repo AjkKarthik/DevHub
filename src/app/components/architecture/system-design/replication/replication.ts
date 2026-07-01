@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'PostgreSQL: synchronous_standby_names = 1 makes one replica synchronous.',
     ],
   },
+  {
+    heading: 'Replication Lag and Its Application Implications',
+    points: [
+      'Asynchronous replication (the common default for read replicas) means a replica may lag behind the primary by anywhere from milliseconds to seconds under load — a write followed immediately by a read from a replica can return stale data, a phenomenon called "read-your-own-writes" inconsistency.',
+      'Applications that need read-your-own-writes consistency for specific operations (a user updating their profile and immediately viewing it) must route those specific reads to the primary, or use a "read-after-write" pattern that tracks a recency requirement and waits for the replica to catch up.',
+      'Monitoring replication lag as a first-class metric is essential — a replica that has fallen significantly behind is effectively serving increasingly stale data, and if the primary fails, a lagging replica promoted to primary can also mean measurable data loss for writes that never made it to that replica.',
+      'Synchronous replication (waiting for a replica to confirm before acknowledging a write) eliminates lag-related staleness entirely but adds latency to every write and reduces availability, since a write cannot complete if the synchronous replica is unreachable — a direct tradeoff between consistency and both latency and availability.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

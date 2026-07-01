@@ -61,6 +61,15 @@ const theory: TheoryPoint[] = [
       'Message queue: Kafka multi-broker, SQS (AWS-managed HA), RabbitMQ mirrored queues.',
     ],
   },
+  {
+    heading: 'Measuring and Communicating Availability',
+    points: [
+      'Availability is typically expressed as a percentage of uptime over a period — "three nines" (99.9%) allows roughly 8.7 hours of downtime per year, "five nines" (99.999%) allows only about 5 minutes, and each additional nine roughly multiplies the required engineering investment.',
+      'Availability targets should be set per-component based on actual business impact, not uniformly applied — a payment processing path may need 99.99%, while an internal analytics dashboard may be perfectly acceptable at 99.5%, and treating all components identically wastes engineering effort on low-impact systems.',
+      'Redundancy alone does not guarantee availability if failover is not automatic and fast — a system with a hot standby that requires manual intervention to activate has effectively the same availability as a system with no standby, since human response time dominates the actual downtime.',
+      'Error budgets (derived from an availability SLO — a 99.9% target implies an 0.1% error budget) give teams a data-driven way to balance reliability work against feature velocity, since spending the full error budget on planned changes is an acceptable, quantified risk rather than an emergency.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

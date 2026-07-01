@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Experiment tracking: MLflow/W&B logs hyperparameters, metrics, and artefacts per run.',
     ],
   },
+  {
+    heading: 'Feature Stores and Training-Serving Skew',
+    points: [
+      'A feature store centralizes the computation and storage of ML features, ensuring the exact same feature computation logic is used both during model training and at inference time — inconsistency between these two paths (training-serving skew) is one of the most common causes of models performing worse in production than in offline evaluation.',
+      'Online feature stores serve low-latency feature lookups for real-time inference (a recommendation model needing a user\'s recent activity in milliseconds), while offline feature stores serve batch feature computation for training — both must derive from the same underlying feature definitions to avoid skew.',
+      'Model serving infrastructure must handle versioning carefully — deploying a new model version alongside the old one (shadow deployment or canary rollout) lets you validate the new model\'s real-world performance against production traffic before fully cutting over, catching regressions that offline evaluation metrics might miss.',
+      'Monitoring for ML systems extends beyond typical infrastructure metrics to include model-specific signals — prediction distribution drift, feature distribution drift, and label delay (the time between a prediction and knowing whether it was correct) all require dedicated monitoring beyond standard latency/error-rate dashboards.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

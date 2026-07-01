@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Low-latency HLS (LLHLS): 1-3s latency vs standard HLS 10-30s.',
     ],
   },
+  {
+    heading: 'Adaptive Bitrate Streaming',
+    points: [
+      'Adaptive bitrate streaming (HLS, DASH) encodes the same video at multiple quality/bitrate levels and splits each into small segments (typically 2-10 seconds) — the client player continuously measures available bandwidth and switches between quality levels segment-by-segment for a smooth playback experience.',
+      'This segment-based approach is what allows seamless quality switching without restarting playback — unlike a single fixed-bitrate stream that either buffers badly on a slow connection or wastes bandwidth on a fast one, adaptive streaming responds dynamically to changing network conditions mid-playback.',
+      'Video encoding for streaming is computationally expensive and typically done asynchronously after upload — a transcoding pipeline (often using a distributed job queue) generates all required quality levels and segment formats before the video becomes available for playback, with the original upload not directly served to viewers.',
+      'A CDN is essential for video delivery at any meaningful scale — video segments are cached at edge locations close to viewers, since re-fetching every segment from a central origin for every viewer would be both slow and prohibitively expensive in bandwidth costs.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

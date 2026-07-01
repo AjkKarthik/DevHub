@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Dashboard queries ClickHouse — never the operational DB.',
     ],
   },
+  {
+    heading: 'Handling Collisions and Custom Aliases',
+    points: [
+      'Base62 encoding of an auto-incrementing counter guarantees no collisions by construction, since each counter value maps to exactly one short code — this is simpler and more reliable than generating random codes and checking for collisions after the fact.',
+      'Custom aliases (a user-chosen short code like /my-brand) require a uniqueness check against the existing key space before insertion — implemented with a unique constraint at the database level as the authoritative guarantee, with application-level checks only as a fast-path optimization.',
+      'A distributed counter (rather than a single auto-increment column) is needed at scale — range-based ID allocation (each application server reserves a block of IDs upfront, like 1000-1999) avoids a single point of contention while still guaranteeing global uniqueness.',
+      'Reserved word filtering (blocking obviously offensive or confusing short codes) and a moderation queue for custom aliases are often overlooked non-functional requirements that matter for any public-facing URL shortener.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

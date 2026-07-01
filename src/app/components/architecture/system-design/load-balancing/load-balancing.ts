@@ -61,6 +61,15 @@ const theory: TheoryPoint[] = [
       'Cloud-managed LBs (AWS ALB/NLB) are inherently HA across multiple AZs.',
     ],
   },
+  {
+    heading: 'Load Balancing Algorithms and When Each Fits',
+    points: [
+      'Round-robin distributes requests sequentially and evenly across all backend instances — simple and effective when all instances have equal capacity and requests have similar cost, but suboptimal when instances have varying capacity or requests vary significantly in processing cost.',
+      'Least-connections routing sends new requests to whichever backend currently has the fewest active connections — better suited to workloads with highly variable request duration, since round-robin can overload an instance that happens to be handling several slow requests simultaneously.',
+      'Consistent hashing routes requests based on a hash of some request attribute (often a user or session ID) to the same backend consistently — essential when backend-local caching or session affinity matters, since it minimizes cache misses and connection churn when the backend pool scales up or down.',
+      'Health-check-aware routing removes unhealthy backends from rotation automatically — a load balancer that keeps routing traffic to instances that are running but not actually able to serve requests correctly turns a partial outage into a worse one by continuing to send users to broken instances.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

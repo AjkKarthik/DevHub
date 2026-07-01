@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Cursor pagination: return the timestamp of the last returned post as cursor — stable even as new posts arrive.',
     ],
   },
+  {
+    heading: 'Fan-out on Write vs Fan-out on Read',
+    points: [
+      'Fan-out on write (push model): when a user posts, the post is immediately written to the feed storage of every follower — feed reads are then extremely fast (just read a pre-computed list), but a user with millions of followers triggers millions of writes per post.',
+      'Fan-out on read (pull model): a feed is computed at read time by querying and merging recent posts from everyone the user follows — writes are cheap (a single post write), but reads become expensive, especially for users following many accounts.',
+      'Most production systems use a hybrid: fan-out on write for typical users (bounded follower counts make the write cost manageable), but fan-out on read for celebrity/high-follower accounts (avoiding a single post triggering millions of writes), merging both at feed-read time.',
+      'Feed ranking (not just chronological ordering) adds further complexity — a relevance-ranked feed requires scoring candidate posts (engagement prediction, recency, relationship strength) at read time, which is a meaningfully different and more expensive problem than simply merging chronologically sorted lists.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [
