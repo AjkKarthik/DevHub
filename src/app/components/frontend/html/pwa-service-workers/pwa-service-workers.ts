@@ -256,8 +256,8 @@ self.addEventListener('fetch', (event) => {
     {
       q: "Which cache strategy serves the cached version immediately and updates in background?",
       options: ["Network-first", "Cache-only", "Stale-while-revalidate", "Cache-first"],
-      answer: 3,
-      explanation: "Cache-first prioritizes speed by serving from cache immediately"
+      answer: 2,
+      explanation: "Stale-while-revalidate serves the cached ('stale') response immediately for speed, then fetches a fresh version from the network in the background to update the cache for the next request. Cache-first also serves from cache immediately, but it does NOT proactively refresh the cache in the background — it only hits the network when the cache misses entirely."
     },
     {
       q: "How do you force a new service worker to take control of pages immediately?",
@@ -285,8 +285,8 @@ self.addEventListener('fetch', (event) => {
       a: "The location of the service worker script file determines its scope. It can only control pages within its directory and subdirectories."
     },
     {
-      q: "Explain the stale-while-revalidate cache strategy.",
-      a: "It serves the cached version immediately for speed, while simultaneously fetching a fresh version from the network to update the cache for future requests."
+      q: "A stale-while-revalidate strategy serves the cached CSS bundle instantly, then fetches a fresh version in the background for NEXT time. If the CSS structure changed between versions (a class was renamed), what user-visible glitch can this specific caching strategy introduce that cache-first would not?",
+      a: "Nothing breaks on THIS visit (the user sees the old, internally-consistent cached CSS matched against the old cached HTML/JS, assuming those are also still on the old version) — the actual risk surfaces on the user's NEXT visit if the background revalidation updated the CSS but other cached assets (HTML shell, JS bundle) were not updated in the same pass, producing a mismatched combination: new CSS class names with old JS code still referencing the old class names, or vice versa. This is the core tradeoff stale-while-revalidate accepts in exchange for instant repeat-load speed — it optimizes each asset's freshness independently rather than atomically versioning the whole bundle together, so teams using it for interdependent assets (CSS+JS that must match) typically pair it with content-hashed filenames (so a changed CSS file gets a genuinely new URL, not an in-place update) to sidestep the mismatch risk entirely.",
     },
     {
       q: "How does a service worker update itself?",

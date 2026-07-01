@@ -504,8 +504,8 @@ modal.addEventListener('keydown', (e) => {
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between aria-label and aria-labelledby?',
-      a: '<code>aria-label</code> provides an inline string as the accessible name — good for icon buttons and controls with no visible label. <code>aria-labelledby</code> references the id(s) of existing visible elements — the referenced text becomes the accessible name. <code>aria-labelledby</code> is preferred when visible text exists: it stays in sync with visual content and works with translation tools automatically.'
+      q: 'An element has `aria-labelledby="title subtitle"` referencing two separate elements. How does the browser combine their text into a single accessible name, and what happens if one of the referenced ids does not exist in the document?',
+      a: 'When aria-labelledby references multiple space-separated ids, the browser concatenates the text content of each referenced element IN THE ORDER LISTED (not DOM order), joined with spaces, to form the single accessible name — this is actually a capability aria-label does not have, since aria-label can only ever be one literal string, while aria-labelledby can compose a name from multiple visually-separate pieces (e.g. a heading plus a status badge). If one of the referenced ids does not exist in the document, that reference is simply skipped/ignored when building the accessible name — it does not throw an error or invalidate the whole attribute, but it does mean the accessible name silently ends up incomplete, which is a common accessibility bug when an id gets renamed in markup but the aria-labelledby reference is not updated to match.'
     },
     {
       q: 'Does adding ARIA make a site more accessible?',

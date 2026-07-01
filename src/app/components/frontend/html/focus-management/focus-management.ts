@@ -191,8 +191,8 @@ export class HtmlFocusManagement {
       a: 'Set `aria-modal="true"` on the dialog and use JavaScript to manage focus within the modal and return it to the trigger element when closed.'
     },
     {
-      q: 'What is the purpose of the `.focus-visible` class?',
-      a: '.focus-visible applies styles when an element is focused using keyboard navigation, ensuring that visual cues are available for keyboard users.'
+      q: 'A button is focused programmatically via element.focus() called from a click handler (not from keyboard Tab navigation). Does :focus-visible match in this case, and why does that distinction matter for the resulting UX?',
+      a: 'It depends on context, not just "was .focus() called" — the browser\'s heuristic for :focus-visible considers whether the focus resulted from an interaction pattern that suggests the user is keyboard-navigating (e.g. focus following a click on a DIFFERENT element that then programmatically focuses this one, especially inside form-like flows, often does NOT trigger focus-visible) versus focus that follows directly from a keyboard action, which does. This matters practically: a modal that calls element.focus() on itself when it opens (in response to a button click) generally should NOT show a heavy focus ring, since the user didn\'t navigate there with a keyboard — and browsers\' focus-visible heuristics are specifically tuned to approximate "would a sighted keyboard user want to see this," not merely "is this element currently focused," which is exactly why :focus-visible exists as distinct from the older :focus pseudo-class that matches unconditionally.'
     },
     {
       q: 'How do you programmatically move focus when opening a modal?',

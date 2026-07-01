@@ -289,17 +289,17 @@ export class HtmlPerformance {
       explanation: "Content-visibility: auto allows the browser to skip layout and paint for off-screen content."
     },
     {
-      q: "What is the purpose of the fetchpriority attribute on resources?",
-      options: ["Sets the HTTP priority header", "Hints to the browser about the relative priority for fetching the resource", "Replaces preload links", "Controls caching priority"],
+      q: "A page sets fetchpriority='high' on FIVE different images, assuming each one now loads faster. What actually happens to the relative loading order of those five images compared to leaving none of them prioritized?",
+      options: ["All five load simultaneously with no ordering", "Marking many resources 'high' priority dilutes the signal — the browser still has finite bandwidth/connections, so five 'high' resources compete with each other the same way five unmarked resources would, defeating the purpose of using the hint to single out the ONE genuinely critical resource", "The browser automatically picks the largest one to prioritize despite all being marked high", "fetchpriority is ignored entirely when applied to more than one element on a page"],
       answer: 1,
-      explanation: "fetchpriority='high' tells the browser this resource is critical (LCP image, critical CSS). fetchpriority='low' downgrades priority (decorative images, non-critical scripts). The browser's preload scanner already prioritises correctly for most cases — use fetchpriority to override only when you see a specific LCP issue.",
+      explanation: "fetchpriority is a relative hint, not a guarantee of parallel first-class treatment — it tells the browser 'prioritize this over other same-type resources,' but if everything is marked high, the browser is back to making its own ordering decisions among a pool of equally-high-priority items, essentially the same problem as having no hints at all. The hint is most effective when used sparingly on the single resource that actually determines a Core Web Vital (typically one hero/LCP image), not scattered across every image on the page — over-application is a common misuse that provides little to no real benefit over the browser's own default preload-scanner heuristics.",
     }
   ];
 
   qna: QnaItem[] = [
     {
-      q: "Why is fetchpriority='high' important for LCP images?",
-      a: "It ensures the browser prioritizes fetching the Largest Contentful Paint image, improving perceived load time and Core Web Vitals."
+      q: "An LCP image is already discovered early by the browser's preload scanner (it's a plain <img> near the top of the HTML, not injected by JavaScript). Does adding fetchpriority='high' to it still provide a meaningful improvement, or is the preload scanner already doing that job?",
+      a: "For an image the preload scanner finds early and easily (a static <img> tag visible in the initial HTML), fetchpriority='high' typically provides only a marginal improvement, since the browser's default heuristics were already likely to prioritize it reasonably well as one of the first resources discovered. fetchpriority earns its keep specifically in cases the preload scanner handles POORLY: an LCP image loaded via JavaScript (not discoverable until JS executes and inserts the <img> into the DOM), an image buried deep in the document after many other resources, or one competing against other same-priority-class resources the browser can't tell apart without an explicit hint. Applying it reflexively to every LCP image regardless of how it's already being discovered is a common cargo-cult performance optimization that measures poorly against its actual cost/benefit — verifying with a Lighthouse/WebPageTest before-and-after comparison is worth doing rather than assuming the hint always helps."
     },
     {
       q: "What is the difference between preload and prefetch?",
