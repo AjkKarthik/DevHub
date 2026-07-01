@@ -8226,6 +8226,250 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Understanding basic sorts builds the invariant-reasoning skill needed to analyze and debug more advanced algorithms.',
     ],
   },
+
+  // ── MongoDB: per-page entries ────────────────────────────────────────────────
+  'mongodb/fundamentals': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations',  route: '/mongodb/crud-operations' },
+      { label: 'Data Modelling',   route: '/mongodb/data-modelling' },
+    ],
+    tip: 'MongoDB stores documents as BSON (a binary superset of JSON) — this is why it natively supports types JSON lacks (dates, binary data, precise decimals) that a plain JSON document store would need to encode as strings.',
+    gotchas: [
+      'A collection has no enforced schema by default — schema validation rules must be explicitly added if consistency across documents matters.',
+      'Documents are limited to 16MB — a document approaching this limit is usually a modeling smell (embedding too much unbounded data).',
+    ],
+  },
+  'mongodb/installation-setup': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/mongodb/fundamentals' },
+      { label: 'Security',     route: '/mongodb/security' },
+    ],
+    tip: 'A fresh MongoDB install binds to localhost by default with no authentication configured out of the box in many setups — enabling auth and binding only to needed interfaces before exposing a deployment is a critical first step, not an afterthought.',
+    gotchas: [
+      'MongoDB Atlas (managed) handles patching, backups, and scaling automatically — self-hosting takes on that operational burden directly.',
+      'Connection string format differences (srv vs standard) trip up many developers moving between Atlas and self-hosted setups.',
+    ],
+  },
+  'mongodb/crud-operations': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Operators',      route: '/mongodb/query-operators' },
+      { label: 'Update Operators',     route: '/mongodb/update-operators' },
+    ],
+    tip: 'updateOne/updateMany with $set only modify the specified fields — replacing a document entirely with a plain object (no operators) silently DROPS every field not included, a common accidental-data-loss bug.',
+    gotchas: [
+      'insertMany is not atomic across documents by default — a failure partway through leaves earlier documents inserted unless ordered:false semantics are understood.',
+      'deleteMany with an empty filter {} deletes EVERY document in the collection — a classic production incident waiting to happen.',
+    ],
+  },
+  'mongodb/query-operators': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations',  route: '/mongodb/crud-operations' },
+      { label: 'Indexes',          route: '/mongodb/indexes' },
+    ],
+    tip: '$in with a large array of values still benefits from an index on that field — but $regex with a leading wildcard (/^.*foo/) cannot use an index efficiently and forces a full collection scan.',
+    gotchas: [
+      'Comparison operators ($gt, $lt) on a missing field behave differently than expected — a document without the field is excluded, not treated as null/0.',
+      '$or queries generally cannot use a single compound index as efficiently as an equivalent $and — check explain() output before assuming an index is used.',
+    ],
+  },
+  'mongodb/update-operators': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations', route: '/mongodb/crud-operations' },
+    ],
+    tip: '$inc is atomic at the document level — safe for concurrent counter updates without a separate read-modify-write cycle, unlike reading a value in application code, incrementing it, and writing it back.',
+    gotchas: [
+      '$push without $each appends a single element; forgetting $each when trying to append multiple elements silently pushes an array as one nested element instead.',
+      'upsert:true creates a new document if no match is found — a typo in the filter can silently create unwanted duplicate documents instead of updating the intended one.',
+    ],
+  },
+  'mongodb/array-queries': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Operators',  route: '/mongodb/query-operators' },
+      { label: 'Projections & Sorting', route: '/mongodb/projections-sorting' },
+    ],
+    tip: '$elemMatch is required to match multiple conditions against the SAME array element — without it, MongoDB matches conditions independently across ANY elements, a subtle and common bug when querying arrays of objects.',
+    gotchas: [
+      'A multikey index (on an array field) has different performance characteristics and limitations (only one array field per compound index) versus a single-value index.',
+      '$size only matches an exact array length — it cannot be combined with range comparisons in the same operator.',
+    ],
+  },
+  'mongodb/projections-sorting': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Operators', route: '/mongodb/query-operators' },
+      { label: 'Indexes',         route: '/mongodb/indexes' },
+    ],
+    tip: 'A sort without a supporting index requires an in-memory sort with a 32MB working-set limit by default — sorting large result sets without the right index can silently fail or fall back to disk with a real performance cliff.',
+    gotchas: [
+      'Projections reduce network transfer but do NOT reduce the work MongoDB does to find matching documents — an inefficient query stays inefficient regardless of the projection.',
+      'Excluding _id explicitly (_id: 0) is required, since it is included by default even when other fields are excluded.',
+    ],
+  },
+  'mongodb/aggregation-pipeline': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Expressions', route: '/mongodb/aggregation-expressions' },
+      { label: 'Lookup & Joins',          route: '/mongodb/lookup-joins' },
+    ],
+    tip: 'Placing a $match stage as EARLY as possible in the pipeline lets MongoDB use an index and reduce the document count before expensive downstream stages ($group, $sort) — reordering stages for this reason is one of the most impactful pipeline optimizations.',
+    gotchas: [
+      '$group with _id: null aggregates ALL documents into one result — a very common way to accidentally lose the intended per-key grouping.',
+      'Each pipeline stage receives the OUTPUT of the previous stage, not the original collection — field names from an early $project affect what later stages can reference.',
+    ],
+  },
+  'mongodb/aggregation-expressions': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+    ],
+    tip: '$$ROOT captures the entire current document within an expression — useful for preserving original fields through a $group stage that would otherwise only retain explicitly listed fields.',
+    gotchas: [
+      'Expression operators ($cond, $switch) evaluate at the document level within a stage — they cannot reference fields introduced by a LATER stage.',
+      '$dateToString and similar date operators require the field to actually be a BSON Date type, not a string that merely looks like a date.',
+    ],
+  },
+  'mongodb/lookup-joins': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Aggregation Pipeline', route: '/mongodb/aggregation-pipeline' },
+      { label: 'Data Modelling',       route: '/mongodb/data-modelling' },
+    ],
+    tip: '$lookup performs a left outer join, but without a supporting index on the foreign field, it degrades to a full collection scan PER document in the local collection — a major, easy-to-miss performance trap at scale.',
+    gotchas: [
+      'Overusing $lookup where embedding would be more appropriate reintroduces relational-style joins that MongoDB\'s document model was meant to reduce the need for.',
+      'The pipeline variant of $lookup (with a nested pipeline) enables more complex join conditions than the simple localField/foreignField form.',
+    ],
+  },
+  'mongodb/data-modelling': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+      { label: 'Lookup & Joins',         route: '/mongodb/lookup-joins' },
+    ],
+    tip: 'Embedding data that is read together and rarely changes independently avoids a $lookup at read time; referencing data that grows unboundedly or is shared across many parents avoids hitting the 16MB document limit — the choice should follow actual access patterns, not habit.',
+    gotchas: [
+      'An unbounded array (like comments on a wildly popular post) embedded in a parent document risks eventually exceeding the document size limit.',
+      'Denormalizing for read performance means writes must update multiple copies of the same data — a real consistency tradeoff to weigh deliberately.',
+    ],
+  },
+  'mongodb/schema-design-patterns': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Data Modelling', route: '/mongodb/data-modelling' },
+    ],
+    tip: 'The bucket pattern groups many small, frequently-inserted documents (like time-series sensor readings) into larger documents by time window, reducing index overhead and improving write throughput versus one document per reading.',
+    gotchas: [
+      'The polymorphic pattern (documents in one collection with varying shapes, distinguished by a type field) trades schema flexibility for more complex application-level validation.',
+      'Applying a design pattern without matching the actual read/write access pattern of the application often makes performance worse, not better.',
+    ],
+  },
+  'mongodb/indexes': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Performance', route: '/mongodb/query-performance' },
+      { label: 'Query Operators',   route: '/mongodb/query-operators' },
+    ],
+    tip: 'Compound index field ORDER matters — a query filtering on fields (A, B) can use an index defined as {A:1, B:1} but generally cannot efficiently use one defined as {B:1, A:1} for the same filter, following the ESR (Equality, Sort, Range) rule.',
+    gotchas: [
+      'Every index speeds up reads but slows down writes (each write must update every index) — indexing every field "just in case" has a real cost.',
+      'A covered query (index contains every field the query needs) avoids touching the actual documents at all, a significant performance win.',
+    ],
+  },
+  'mongodb/query-performance': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Indexes', route: '/mongodb/indexes' },
+    ],
+    tip: 'explain("executionStats") reveals whether a query used an index scan or a full COLLSCAN, and how many documents were examined versus returned — a query examining far more documents than it returns is a strong signal a better index is needed.',
+    gotchas: [
+      'A high "totalDocsExamined" relative to "nReturned" indicates the index (or lack of one) is not effectively filtering — a classic performance red flag.',
+      'The profiler (db.setProfilingLevel) captures slow queries in production without requiring explain() to be run manually on every suspect query.',
+    ],
+  },
+  'mongodb/transactions': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sharding', route: '/mongodb/replication-sharding' },
+    ],
+    tip: 'Multi-document transactions require a replica set (even a single-node one) — they are not available on a truly standalone MongoDB instance, since the transaction mechanism relies on the oplog used for replication.',
+    gotchas: [
+      'Transactions add real overhead — reach for good document design (embedding related data) FIRST, using multi-document transactions only when genuinely needed.',
+      'A transaction held open too long can hit the default timeout and abort — keep transactional operations short and focused.',
+    ],
+  },
+  'mongodb/change-streams': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Transactions', route: '/mongodb/transactions' },
+    ],
+    tip: 'Change streams let an application react to data changes in real time without polling — built on the same oplog mechanism that powers replication, meaning they also require a replica set (or sharded cluster) to function.',
+    gotchas: [
+      'A resume token must be persisted to correctly resume a change stream after an application restart without missing or duplicating events.',
+      'Change streams only capture changes AFTER they start — they are not a substitute for an initial full data sync when bootstrapping a new consumer.',
+    ],
+  },
+  'mongodb/replication-sharding': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Transactions',    route: '/mongodb/transactions' },
+      { label: 'Change Streams',  route: '/mongodb/change-streams' },
+    ],
+    tip: 'A replica set provides high availability (automatic failover if the primary fails); sharding provides horizontal scale by distributing data across multiple shards — these solve DIFFERENT problems and are often combined, not interchangeable.',
+    gotchas: [
+      'A poorly chosen shard key creates unbalanced chunks (hot shards) that bottleneck throughput regardless of how many shards exist — much like a poor partition key in other distributed databases.',
+      'Read preference settings (primary, secondary, nearest) trade consistency for read scalability and latency — choose deliberately per use case.',
+    ],
+  },
+  'mongodb/time-series': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Schema Design Patterns', route: '/mongodb/schema-design-patterns' },
+    ],
+    tip: 'Native time-series collections automatically apply the bucket pattern internally, storing measurements more compactly and with better compression than a naive one-document-per-reading approach.',
+    gotchas: [
+      'Time-series collections have restrictions on updates and index types compared to regular collections — check compatibility before migrating existing time-based data.',
+      'Choosing the right granularity (seconds, minutes, hours) setting affects both storage efficiency and query performance for a given workload.',
+    ],
+  },
+  'mongodb/atlas-search': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Query Performance', route: '/mongodb/query-performance' },
+    ],
+    tip: 'Atlas Search (built on Lucene) provides full-text search capabilities MongoDB\'s standard query language cannot express efficiently — relevance scoring, fuzzy matching, and faceted search, at the cost of requiring Atlas (not available on self-hosted deployments).',
+    gotchas: [
+      'A $search aggregation stage must typically be the FIRST stage in a pipeline — placing it elsewhere often fails or behaves unexpectedly.',
+      'Atlas Search indexes are managed separately from regular MongoDB indexes and have their own dedicated syntax for defining analyzers and mappings.',
+    ],
+  },
+  'mongodb/security': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/mongodb/installation-setup' },
+    ],
+    tip: 'Role-based access control should grant the narrowest role a given application or user genuinely needs — a read-only reporting service with readWrite or dbAdmin access is unnecessary risk if that credential is ever compromised.',
+    gotchas: [
+      'Field-level encryption (client-side field level encryption) protects sensitive data even from a database administrator with full server access.',
+      'Network exposure (binding to 0.0.0.0 without a firewall) combined with weak or no authentication is one of the most common causes of publicly exposed, unsecured MongoDB instances found by security researchers.',
+    ],
+  },
+  'mongodb/mongodb-nodejs': {
+    apis: MONGO_DEFAULT.apis, docs: MONGO_DEFAULT.docs, resources: MONGO_DEFAULT.resources,
+    related: [
+      { label: 'CRUD Operations', route: '/mongodb/crud-operations' },
+    ],
+    tip: 'Mongoose (a popular Node.js ODM) adds schema validation, middleware hooks, and query builders on top of the native driver — the native MongoDB Node.js driver alone provides no schema enforcement at all, by design matching MongoDB\'s own flexible-schema philosophy.',
+    gotchas: [
+      'Reusing a single MongoClient instance (connection pooling) across the application lifetime is the correct pattern — creating a new client per request exhausts connections under load.',
+      'Mongoose\'s automatic type casting can silently coerce unexpected input types — understand its casting behavior before trusting it for validation.',
+    ],
+  },
 };
 
 @Component({
