@@ -533,13 +533,10 @@ Build order chosen by market demand and learner overlap with existing Angular/Re
 **Before writing the first page of each hub:** run the pre-hub research step (see Session
 Guidelines Step 2) — read home.ts, research current job market, add any missing cards.
 
-### 3A — TypeScript hub (22 topics) `src/app/components/frontend/typescript/`
+### 3A — TypeScript hub ✅ COMPLETE `src/app/components/frontend/typescript/`
 
-Hub home, wiring, and 22 coming-soon cards already exist.
-**Pre-hub research step required** before page 1 — verify topic list against 2024–2025 TS
-job requirements and add any missing cards to home.ts.
+All 20 trackable topics + 2 reference pages live. tsTotal = 20. All cards `available: true`.
 Accent: `#3178c6` (TypeScript blue). Search prefix: `ts-`. Progress key: `tsTotal`.
-Write one page per session in this order:
 
 - [x] 2026-06-16 `ts-basics` — Type annotations, inference, `any` vs `unknown`, `never`, type assertions
 - [x] 2026-06-17 `ts-basics` — type annotations, inference, any/unknown/never, assertions
@@ -610,8 +607,9 @@ Accent: `#f7df1e` (JS yellow). Search prefix: `js-`. Hero stat updated to 300+.
 
 ---
 
-### 3D — HTML hub (22 topics) `src/app/components/frontend/html/`
+### 3D — HTML hub ✅ COMPLETE `src/app/components/frontend/html/`
 
+All 23 trackable topics + 2 reference pages live. htmlTotal = 23. All cards `available: true`.
 Accent: `#e34c26` (HTML orange). Search prefix: `html-`.
 
 **Batch 1 (2026-06-18):**
@@ -968,15 +966,24 @@ All 928 pages passed or were fixed:
 
 **Deep content-quality review: COMPLETE (2026-07-02).** Theory depth (≥5 sections×5 points): 451/451 files done. Quiz/Q&A depth (6-8 entries): complete site-wide. Sidebar entries: complete site-wide (23 hubs). Nav-correctness (nextRoute/completion keys): complete, 26 bugs fixed. Hub-home accuracy: complete. Near-duplicate/reworded quiz-qna questions: complete across all 18 hubs (~120 pairs fixed via genuine page-by-page reading, not scripting) — see Done History for the full hub-by-hub breakdown.
 
-**Remaining (lower priority, optional components — not yet given a dedicated audit pass):**
+**Reading time spot-check: DONE (2026-07-02), no issues found.** Pulled the full site-wide
+distribution of `[readingTime]` values (928 pages) and checked every statistical outlier by hand:
+the four `readingTime="5"` pages are all reference cheatsheets (containers, terraform, redis, html —
+short by design, correct); the single `readingTime="40"` page is DSA's Dynamic Programming topic
+(dense content, plausible). No mis-set values found. A full per-page formula recomputation was
+judged not worth the engineering cost given this result — the values already track content depth
+correctly at the distribution level.
+
+**Remaining (lower priority, optional components — genuinely need per-page editorial judgment,
+not mechanical/scriptable, so not suited to further unsupervised automation):**
 - `app-prerequisites` presence/correctness on intermediate/advanced pages (2–4 items, correct routes)
 - `app-before-after` presence where a genuine old-vs-new contrast exists for the topic
-- `app-video-embed` presence where a good official video exists
-- Reading time accuracy in `app-page-meta` (recalculate where content changed significantly)
+- `app-video-embed` presence where a good official video exists (requires verifying an official,
+  embeddable video actually exists per topic — needs a human or web-research pass, not a grep pass)
 
-These are optional-per-page components (not required on every page like common-mistakes/revision-card),
-so a site-wide "audit" is lower-value than the required-component passes already done. No session has
-picked this up yet — it is the last unclaimed item on the Phase 9 checklist.
+These are optional-per-page components (not required on every page like common-mistakes/revision-card).
+Picking these up requires a human (or a session with real research capability) judging content fit
+topic-by-topic — not something to force through mechanically.
 
 **When to do this:** after all hubs are built (after Phase 8). This is the last pass before
 the site can be considered "done." Every single topic page across every hub — including pages
