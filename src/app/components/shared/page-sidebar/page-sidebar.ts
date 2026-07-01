@@ -9662,6 +9662,274 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overly generic generated types (falling back to any/unknown for complex union/interface cases) can reduce the actual type-safety benefit if not configured carefully.',
     ],
   },
+
+  // ── Node.js: per-page entries ───────────────────────────────────────────────
+  'node/core-modules': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Architecture',  route: '/node/architecture' },
+      { label: 'Modules',       route: '/node/modules' },
+    ],
+    tip: 'The fs, path, and http core modules require no npm install — understanding them well reduces unnecessary third-party dependencies for tasks Node already solves natively.',
+    gotchas: [
+      'fs synchronous methods (readFileSync) block the entire event loop — appropriate only at startup/config-load time, never inside a request handler.',
+      'path.join correctly handles OS-specific separators — string-concatenating paths manually breaks cross-platform compatibility.',
+    ],
+  },
+  'node/architecture': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Core Modules',       route: '/node/core-modules' },
+      { label: 'Promises & Async',   route: '/node/promises-async' },
+    ],
+    tip: 'The event loop is single-threaded — a synchronous CPU-bound operation blocks EVERY concurrent request being handled, not just the one that triggered it, which is why offloading heavy computation to a worker thread matters for a Node server\'s overall responsiveness.',
+    gotchas: [
+      'libuv\'s thread pool (default size 4) handles some async I/O under the hood — exhausting it with many concurrent fs/crypto operations can cause unexpected queuing.',
+      'Understanding the phases of the event loop (timers, I/O callbacks, setImmediate) explains subtle ordering bugs between setTimeout(fn, 0) and process.nextTick.',
+    ],
+  },
+  'node/modules': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Core Modules', route: '/node/core-modules' },
+    ],
+    tip: 'require() caches modules by resolved file path — mutating a required module\'s exports affects EVERY other file that requires it, a subtle source of shared-state bugs across seemingly unrelated files.',
+    gotchas: [
+      'ESM (import/export) and CommonJS (require) have different module resolution and top-level-await semantics — mixing them in one project requires understanding the interop rules.',
+      'Circular requires between two modules can silently produce a partially-initialized export depending on load order.',
+    ],
+  },
+  'node/promises-async': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Architecture',       route: '/node/architecture' },
+      { label: 'Error Handling',     route: '/node/error-handling' },
+    ],
+    tip: 'An unhandled promise rejection crashes the process in modern Node by default — every async operation needs either a .catch() or a try/catch around its await, unlike older Node versions that merely logged a warning.',
+    gotchas: [
+      'Promise.all rejects as soon as ANY promise rejects, potentially leaving other in-flight operations dangling — Promise.allSettled is often more appropriate when partial failures should be handled individually.',
+      'Forgetting await before an async function call means the calling code continues without waiting for it — a subtle and common source of race conditions.',
+    ],
+  },
+  'node/error-handling': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Promises & Async', route: '/node/promises-async' },
+      { label: 'Logging',          route: '/node/logging' },
+    ],
+    tip: 'Operational errors (a failed network call, invalid user input) should be handled gracefully; programmer errors (a null reference bug) generally SHOULD crash the process — restart via a process manager rather than trying to keep running in a corrupted state.',
+    gotchas: [
+      'A try/catch around synchronous code does NOT catch errors from an async callback executed later — the async boundary breaks the normal exception-propagation path.',
+      'Global uncaughtException/unhandledRejection handlers are a last-resort safety net for logging, not a substitute for proper error handling at the source.',
+    ],
+  },
+  'node/streams': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Core Modules',   route: '/node/core-modules' },
+      { label: 'Performance',    route: '/node/performance' },
+    ],
+    tip: 'Streams process data in CHUNKS rather than loading an entire file/response into memory at once — essential for handling large files or long-lived connections without exhausting memory, at the cost of more complex backpressure-aware code.',
+    gotchas: [
+      'Piping without handling backpressure (writing faster than a destination can consume) can cause unbounded memory growth — .pipe() handles this automatically, manual write() calls do not.',
+      'Forgetting to handle the "error" event on a stream lets stream errors go completely unhandled, unlike a promise rejection which at least crashes visibly.',
+    ],
+  },
+  'node/worker-threads': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Architecture',  route: '/node/architecture' },
+      { label: 'Performance',   route: '/node/performance' },
+    ],
+    tip: 'Worker threads run genuinely parallel JavaScript execution on separate threads — the correct tool for CPU-bound work (image processing, heavy computation) that would otherwise block the single-threaded event loop for every concurrent request.',
+    gotchas: [
+      'Data passed between the main thread and a worker is COPIED by default (structured clone), not shared — SharedArrayBuffer is required for genuine shared memory, with its own synchronization concerns.',
+      'Spawning a new worker thread has real startup overhead — a worker pool reused across requests is usually more appropriate than spawning one per request.',
+    ],
+  },
+  'node/express': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'REST API',    route: '/node/rest-api' },
+      { label: 'Fastify',     route: '/node/fastify' },
+    ],
+    tip: 'Express middleware executes in the ORDER it is registered — a middleware that forgets to call next() silently halts the request pipeline, one of the most common Express debugging headaches for newcomers.',
+    gotchas: [
+      'An error-handling middleware must have exactly FOUR parameters (err, req, res, next) — Express uses the function\'s arity to distinguish it from regular middleware.',
+      'Unhandled errors in an async route handler are NOT automatically caught by Express\'s error middleware in versions before Express 5 — a try/catch or wrapper utility is needed.',
+    ],
+  },
+  'node/fastify': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Express',  route: '/node/express' },
+    ],
+    tip: 'Fastify\'s schema-based request/response validation (using JSON Schema) both validates input AND serializes output faster than a generic JSON.stringify, since Fastify pre-compiles a serializer from the declared schema.',
+    gotchas: [
+      'Fastify\'s plugin encapsulation model means a plugin\'s decorators/hooks are scoped to that plugin\'s context by default — a common surprise for developers used to Express\'s global middleware model.',
+      'The performance advantage over Express is most pronounced under high request volume with JSON-heavy payloads — for low-traffic services, the difference is rarely the deciding factor.',
+    ],
+  },
+  'node/nestjs': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Express',  route: '/node/express' },
+    ],
+    tip: 'NestJS layers a structured, dependency-injection-based architecture (modules, controllers, providers) on top of Express or Fastify — bringing Angular-like organizational patterns to backend Node development, at the cost of more upfront structure than a minimal Express app.',
+    gotchas: [
+      'NestJS\'s DI container requires understanding provider scopes (singleton, request, transient) — using the wrong scope for stateful providers can leak data across requests.',
+      'The framework\'s opinionated structure pays off most for larger, longer-lived services — a tiny microservice may not need its full ceremony.',
+    ],
+  },
+  'node/rest-api': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Express',   route: '/node/express' },
+      { label: 'Security',  route: '/node/security' },
+    ],
+    tip: 'Input validation should happen at the API boundary BEFORE business logic runs — a request body trusted without validation is one of the most common sources of both bugs and security vulnerabilities in Node REST APIs.',
+    gotchas: [
+      'Returning inconsistent error response shapes across endpoints forces every client integration to special-case each endpoint\'s error format.',
+      'Not setting explicit request body size limits can let a single oversized request exhaust server memory.',
+    ],
+  },
+  'node/graphql': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'REST API', route: '/node/rest-api' },
+    ],
+    tip: 'A naive GraphQL resolver implementation in Node is prone to the N+1 query problem exactly like in any other language — DataLoader-style request-scoped batching and caching is the standard Node-ecosystem fix.',
+    gotchas: [
+      'Apollo Server\'s context function runs once per request — the correct place to instantiate a fresh DataLoader instance, avoiding cross-request cache leaks.',
+      'GraphQL\'s single endpoint bypasses traditional URL-based HTTP caching that a REST API in the same Express app would benefit from.',
+    ],
+  },
+  'node/jwt-auth': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Security',   route: '/node/security' },
+      { label: 'REST API',   route: '/node/rest-api' },
+    ],
+    tip: 'A JWT\'s payload is Base64-encoded, NOT encrypted — verify the signature server-side on EVERY request; trusting a decoded payload without signature verification lets a client forge arbitrary claims.',
+    gotchas: [
+      'Storing a JWT in localStorage exposes it to XSS; an httpOnly cookie protects against XSS but reopens CSRF concerns — the right storage choice depends on the app\'s actual threat model.',
+      'JWTs are stateless and cannot be revoked before expiry without an additional server-side revocation mechanism.',
+    ],
+  },
+  'node/security': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'JWT Auth',   route: '/node/jwt-auth' },
+      { label: 'REST API',   route: '/node/rest-api' },
+    ],
+    tip: 'helmet.js sets a collection of security-related HTTP headers with sensible defaults in one line — a quick, high-value hardening step for any Express app that is trivially easy to skip if not deliberately added.',
+    gotchas: [
+      'npm audit surfaces known vulnerabilities in dependencies, but does not catch vulnerabilities in your OWN application logic — it complements, not replaces, secure coding practices.',
+      'Environment variables holding secrets should never be logged or included in error responses — a surprisingly common accidental leak.',
+    ],
+  },
+  'node/env-config': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Deployment',  route: '/node/deployment' },
+      { label: 'Security',    route: '/node/security' },
+    ],
+    tip: 'Environment-based configuration (via process.env) lets the SAME build artifact run across dev/staging/production with different config — baking environment-specific values into the build instead requires a separate build per environment, undermining "build once, deploy everywhere."',
+    gotchas: [
+      'A .env file should never be committed to git — it belongs in .gitignore, with a .env.example template committed instead showing expected keys.',
+      'Missing required environment variables should fail LOUDLY at startup, not silently default to undefined and fail mysteriously later at runtime.',
+    ],
+  },
+  'node/logging': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Error Handling', route: '/node/error-handling' },
+    ],
+    tip: 'Structured logging (JSON with consistent fields) is queryable at scale, unlike free-text console.log lines which require fragile regex parsing to extract information from a centralized log aggregator.',
+    gotchas: [
+      'console.log is synchronous and can become a real bottleneck under high request volume — a proper logging library (pino, winston) handles this more efficiently.',
+      'Logging sensitive data (passwords, tokens, full request bodies) is a common compliance and security failure mode worth explicitly guarding against.',
+    ],
+  },
+  'node/testing': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Express',   route: '/node/express' },
+    ],
+    tip: 'Testing an Express/Fastify app with supertest lets you make real HTTP requests against the app in-process, without actually binding to a network port — fast, reliable integration-style tests of routing and middleware behavior.',
+    gotchas: [
+      'Mocking a database call versus using a real test database (via Testcontainers) is the same integration-vs-unit tradeoff that applies to testing any backend — both have their place.',
+      'Async test code that forgets to await a promise can report false passes, since the test completes before the assertion actually runs.',
+    ],
+  },
+  'node/performance': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Worker Threads', route: '/node/worker-threads' },
+      { label: 'Caching',        route: '/node/caching' },
+    ],
+    tip: 'Profiling BEFORE optimizing avoids wasted effort — the Node.js built-in profiler (--prof) or clinic.js reveal actual bottlenecks, since intuition about "what\'s slow" is frequently wrong.',
+    gotchas: [
+      'A memory leak in a long-running Node process (event listeners never removed, a growing cache with no eviction) often only surfaces after hours or days of uptime, not in quick local testing.',
+      'Clustering (running multiple Node processes) is required to use more than one CPU core, since a single Node process is fundamentally single-threaded for JS execution.',
+    ],
+  },
+  'node/caching': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Performance', route: '/node/performance' },
+    ],
+    tip: 'An in-memory cache (a plain Map or LRU cache) is fast but not shared across multiple Node instances — a distributed cache (Redis) is required once an application scales horizontally across more than one process.',
+    gotchas: [
+      'Cache invalidation on writes must be deliberate — forgetting to invalidate on update serves stale data indefinitely until a TTL naturally expires.',
+      'An unbounded in-memory cache (no max size, no eviction) is a memory leak waiting to happen in a long-running process.',
+    ],
+  },
+  'node/mongoose': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Prisma', route: '/node/prisma' },
+    ],
+    tip: 'Mongoose adds schema validation, middleware hooks, and query builders on top of the native MongoDB driver — the native driver alone provides no schema enforcement at all, by design matching MongoDB\'s flexible-schema philosophy.',
+    gotchas: [
+      'Mongoose\'s automatic type casting can silently coerce unexpected input types — understand its casting behavior before relying on it as validation.',
+      'Reusing a single connection (not creating one per request) is essential — Mongoose manages connection pooling internally when used correctly.',
+    ],
+  },
+  'node/prisma': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Mongoose', route: '/node/mongoose' },
+    ],
+    tip: 'Prisma generates a fully-typed client FROM the schema file — catching a mistyped field name or wrong type at COMPILE time, unlike a raw SQL query string where the same mistake only surfaces at runtime.',
+    gotchas: [
+      'Prisma migrations should be reviewed before applying in production — an auto-generated migration can occasionally include a destructive operation (a column drop) that needs manual confirmation.',
+      'The Prisma Client instance should be a SINGLETON reused across the app, not instantiated per request, to avoid exhausting database connections.',
+    ],
+  },
+  'node/deployment': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Env Config',   route: '/node/env-config' },
+      { label: 'Performance',  route: '/node/performance' },
+    ],
+    tip: 'Graceful shutdown (handling SIGTERM to finish in-flight requests and close DB connections before exiting) is essential for zero-downtime deployments — an abrupt process kill can drop active requests and leave connections in an inconsistent state.',
+    gotchas: [
+      'A process manager (PM2, or a container orchestrator\'s own restart policy) that immediately restarts a crashing process can mask an underlying bug that should actually be fixed, not just auto-recovered from.',
+      'Health check endpoints should verify genuine readiness (DB connectivity, dependent service availability), not just "the process is running."',
+    ],
+  },
+  'node/websockets': {
+    apis: NODE_DEFAULT.apis, docs: NODE_DEFAULT.docs, resources: NODE_DEFAULT.resources,
+    related: [
+      { label: 'Streams', route: '/node/streams' },
+    ],
+    tip: 'A WebSocket connection is inherently stateful — scaling across multiple Node instances requires either sticky sessions (routing a client to the same instance) or a shared pub/sub backend (Redis) so a message published on one instance reaches clients connected to another.',
+    gotchas: [
+      'Each open WebSocket connection consumes server memory for as long as it stays open — capacity planning for WebSocket-heavy services is about CONCURRENT CONNECTION count, not request rate.',
+      'Forgetting to handle the "close" event to clean up associated resources (subscriptions, timers) per connection is a common memory-leak source.',
+    ],
+  },
 };
 
 @Component({
