@@ -6424,6 +6424,273 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'When a rule spans multiple aggregates, a domain event published AFTER the originating transaction commits achieves eventual consistency without violating the boundary.',
     ],
   },
+
+  // ── Containers/K8s: per-page entries ───────────────────────────────────────
+  'containers/fundamentals': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Dockerfile',     route: '/containers/dockerfile' },
+      { label: 'Docker Images',  route: '/containers/docker-images' },
+      { label: 'Docker CLI',     route: '/containers/docker-cli' },
+    ],
+    tip: 'Each Dockerfile instruction that modifies the filesystem produces a new read-only layer, stacked via a union filesystem — this is why ordering instructions least-to-most frequently changing matters for build cache reuse.',
+    gotchas: [
+      'A container\'s writable layer (copy-on-write) is destroyed on docker rm — volumes are the only way to persist data across container recreation.',
+      'Deleting files in a later layer does not reclaim space from an earlier layer — bloat persists in the image regardless.',
+    ],
+  },
+  'containers/dockerfile': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Stage Builds', route: '/containers/multi-stage' },
+      { label: 'Docker Images',      route: '/containers/docker-images' },
+    ],
+    tip: 'Docker caches each instruction\'s resulting layer — a single change anywhere in a layer invalidates the cache for that layer AND every layer after it, which is why frequently-changing COPY . . should come late, not early.',
+    gotchas: [
+      'CI build caching (--cache-from, BuildKit remote cache) extends this same layer-caching benefit across separate ephemeral CI runs.',
+      'Combining related RUN commands into a single layer (using && chains) avoids leaving unreachable bloat in earlier layers.',
+    ],
+  },
+  'containers/multi-stage': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Dockerfile',          route: '/containers/dockerfile' },
+      { label: 'Container Security',  route: '/containers/container-security' },
+    ],
+    tip: 'Multi-stage builds reduce attack surface, not just size — excluding build-time tooling (compilers, package managers) from the final image means fewer installed tools an attacker who compromises the container could exploit.',
+    gotchas: [
+      'Build secrets used only in an early stage never appear in the final image\'s layers when multi-stage builds are structured correctly.',
+      'A minimal final-stage base image (distroless, Alpine) combined with multi-stage builds compounds the security benefit.',
+    ],
+  },
+  'containers/docker-images': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals',   route: '/containers/fundamentals' },
+      { label: 'Docker CLI',     route: '/containers/docker-cli' },
+    ],
+    tip: '"latest" is just a mutable convention, not a guarantee of freshness — production deployments should pin to a specific version tag or, more robustly, an image digest.',
+    gotchas: [
+      'Retagging an image does not create new content — it creates an additional pointer to the same underlying layers.',
+      'Digest-pinned deployment references guarantee you are always pulling the exact same image bytes, eliminating silent tag-reassignment risk.',
+    ],
+  },
+  'containers/docker-cli': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Docker Images',   route: '/containers/docker-images' },
+      { label: 'Troubleshooting', route: '/containers/troubleshooting' },
+    ],
+    tip: 'docker exec starts a new process INSIDE an already-running container, sharing its filesystem and network namespace — unlike docker run, which always creates a brand-new container.',
+    gotchas: [
+      'Commands run via docker exec are purely transient debugging — they never persist to the image and vanish once the container stops.',
+      'docker exec fails against a stopped container — it requires an existing running container to attach to.',
+    ],
+  },
+  'containers/compose': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Compose Profiles', route: '/containers/compose-profiles' },
+      { label: 'Fundamentals',     route: '/containers/fundamentals' },
+    ],
+    tip: 'Compose automatically creates a dedicated bridge network per project, and every service can reach every other by its service NAME as a DNS hostname — no manual network config needed for basic inter-service communication.',
+    gotchas: [
+      'depends_on controls startup ORDER but does not by itself wait for a dependent service to be READY — combine with a healthcheck and condition: service_healthy.',
+      'Custom networks let you segment services for defense-in-depth rather than relying solely on the single default shared network.',
+    ],
+  },
+  'containers/compose-profiles': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Compose',        route: '/containers/compose' },
+    ],
+    tip: 'Profiles let ONE compose file describe multiple deployment configurations (dev, test, debug tooling) — a service with no profile assigned always starts by default; profile-tagged services are opt-in.',
+    gotchas: [
+      'COMPOSE_PROFILES lets CI and local dev activate different service subsets without changing the invocation command.',
+      'Cramming every environment variation into one compose file via profiles can become harder to read than a small number of purpose-specific files.',
+    ],
+  },
+  'containers/configmaps-secrets': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Pods & Deployments', route: '/containers/pods-deployments' },
+      { label: 'RBAC',               route: '/containers/rbac' },
+    ],
+    tip: 'A ConfigMap mounted as a VOLUME updates automatically in a running container (with propagation delay) — mounted as an environment variable, updates require a pod restart, since env vars are read only once at startup.',
+    gotchas: [
+      'Kubernetes does not automatically restart pods on a ConfigMap change — tools like Reloader or content-hash-suffixed names force a rolling deployment when needed.',
+      'immutable: true prevents accidental updates and improves kubelet performance, at the cost of requiring a new object name for any config change.',
+    ],
+  },
+  'containers/container-security': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Multi-Stage Builds', route: '/containers/multi-stage' },
+      { label: 'RBAC',               route: '/containers/rbac' },
+      { label: 'Network Policies',   route: '/containers/network-policies' },
+    ],
+    tip: 'Vulnerability scanning (Trivy, Grype) integrated into CI blocks known-vulnerable images from ever reaching production — a minimal distroless/Alpine base further reduces attack surface by carrying far fewer installed packages.',
+    gotchas: [
+      'New CVEs are discovered continuously — periodic re-scanning of already-deployed images is necessary, not just a build-time check.',
+      'Image signing (Cosign/Sigstore) addresses supply-chain tampering risks that vulnerability scanning alone does not cover.',
+    ],
+  },
+  'containers/helm': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Operators & CRDs',  route: '/containers/operators-crds' },
+      { label: 'Kubectl',           route: '/containers/kubectl' },
+    ],
+    tip: 'Values files layer in order of specificity — a base values.yaml plus an environment-specific override file lets one chart serve dev, staging, and production with different config, later flags overriding earlier ones.',
+    gotchas: [
+      'helm rollback only reverts Kubernetes objects Helm manages — it does not undo external side effects like data migrations.',
+      'helm template renders manifests locally without touching the cluster, useful for reviewing exact output before install.',
+    ],
+  },
+  'containers/hpa': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Resource Limits', route: '/containers/resource-limits' },
+      { label: 'K8s Architecture', route: '/containers/k8s-architecture' },
+    ],
+    tip: 'Without stabilization, an HPA can "flap" — rapidly scaling up and down for short-lived metric spikes. Scale-up is typically configured to react faster than scale-down, since under-provisioning during a real spike is usually costlier.',
+    gotchas: [
+      'HPA decisions are only as good as the chosen metric — average CPU when the real bottleneck is memory or queue depth scales confidently in the wrong direction.',
+      'behavior.scaleDown.stabilizationWindowSeconds prevents premature scale-down from a brief dip that doesn\'t represent sustained reduced load.',
+    ],
+  },
+  'containers/k8s-architecture': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Pods & Deployments', route: '/containers/pods-deployments' },
+      { label: 'Kubectl',            route: '/containers/kubectl' },
+    ],
+    tip: 'The control plane (API server, etcd, scheduler) makes decisions and stores state — it does NOT run application workloads itself, keeping cluster management logically separate from what it manages.',
+    gotchas: [
+      'etcd is the single source of truth for all cluster state — losing it without backups means losing the entire cluster\'s configuration.',
+      'A control plane outage does not immediately stop already-running pods, since kubelet continues managing existing pods independently for a period.',
+    ],
+  },
+  'containers/kubectl': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Troubleshooting',  route: '/containers/troubleshooting' },
+      { label: 'K8s Architecture', route: '/containers/k8s-architecture' },
+    ],
+    tip: 'kubectl apply reconciles a manifest declaratively, computing and applying only the diff — the standard for GitOps workflows, unlike imperative commands (kubectl run/create) that modify a specific object right now with no source-controlled record.',
+    gotchas: [
+      'Mixing imperative changes with declarative manifests causes drift — a manually kubectl edit-ed object no longer matches its source-controlled file.',
+      'kubectl diff (comparing a local manifest against live state before applying) is a useful safety check against unexpected drift.',
+    ],
+  },
+  'containers/network-policies': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'RBAC',              route: '/containers/rbac' },
+      { label: 'Container Security', route: '/containers/container-security' },
+    ],
+    tip: 'Without any NetworkPolicy, Kubernetes allows unrestricted pod-to-pod communication cluster-wide by default — a default-deny-all policy establishes a secure baseline before adding specific allow rules incrementally.',
+    gotchas: [
+      'NetworkPolicies are enforced by the CNI plugin, not Kubernetes core — some CNI plugins don\'t enforce them at all, meaning a policy can exist with zero actual effect.',
+      'Egress policies (restricting what a compromised pod can reach outbound) are just as important as ingress and are more commonly overlooked.',
+    ],
+  },
+  'containers/operators-crds': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Helm',              route: '/containers/helm' },
+      { label: 'StatefulSets',      route: '/containers/statefulsets' },
+    ],
+    tip: 'A CRD alone just defines a new object schema — without a controller watching and reconciling it, creating a custom resource does nothing. An Operator pairs a CRD with a controller encoding real operational knowledge.',
+    gotchas: [
+      'Operators are most valuable for stateful, operationally-complex applications (databases, message brokers) — a plain Deployment is usually sufficient for simple stateless apps.',
+      'The reconciliation loop (observe, compare, act, repeat) is the same core mechanism underlying both built-in controllers and custom Operators.',
+    ],
+  },
+  'containers/pods-deployments': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'StatefulSets',       route: '/containers/statefulsets' },
+      { label: 'Services & Ingress', route: '/containers/services-ingress' },
+    ],
+    tip: 'A Deployment does not manage Pods directly — it manages a ReplicaSet, which manages the actual Pods, adding the layer that enables rollout history and rollback.',
+    gotchas: [
+      'All containers in a Pod are scheduled to the SAME node and share the Pod\'s IP — this co-location is what makes sidecar patterns practical.',
+      'Pods are inherently ephemeral — applications must tolerate restarts rather than assuming long-lived process identity.',
+    ],
+  },
+  'containers/rbac': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Network Policies',    route: '/containers/network-policies' },
+      { label: 'Container Security',  route: '/containers/container-security' },
+    ],
+    tip: 'A Role grants permissions scoped to a single namespace; a ClusterRole can be bound cluster-wide OR namespace-scoped, giving it dual-use flexibility.',
+    gotchas: [
+      'RBAC is purely additive — there is no explicit "deny" rule, meaning effective permissions are the union of every applicable binding.',
+      'Granting cluster-admin to a service account that only ever needs read access to one namespace is unnecessary risk if that account is ever compromised.',
+    ],
+  },
+  'containers/resource-limits': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'HPA',              route: '/containers/hpa' },
+      { label: 'Troubleshooting',  route: '/containers/troubleshooting' },
+    ],
+    tip: 'Requests are used by the SCHEDULER to decide placement; limits cap actual runtime usage. Exceeding a CPU limit throttles the container — exceeding a memory limit gets it OOMKilled, a far more severe failure mode.',
+    gotchas: [
+      'QoS class (Guaranteed/Burstable/BestEffort) is derived from how requests/limits are set and directly determines eviction priority under node pressure.',
+      'A pod with no request but a limit gets unpredictable scheduling behavior depending on configuration defaults.',
+    ],
+  },
+  'containers/services-ingress': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Pods & Deployments', route: '/containers/pods-deployments' },
+      { label: 'K8s Architecture',   route: '/containers/k8s-architecture' },
+    ],
+    tip: 'A single Ingress (backed by one load balancer) can route HTTP/HTTPS traffic to MANY Services based on hostname or path — generally preferred over provisioning a separate LoadBalancer Service per application.',
+    gotchas: [
+      'ClusterIP (the default) only exposes a Service internally — LoadBalancer provisions an actual cloud load balancer per Service, which can become costly at scale.',
+      'NodePort exposes a static port on every node\'s IP directly — simple but rarely used directly in production.',
+    ],
+  },
+  'containers/statefulsets': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Storage',              route: '/containers/storage' },
+      { label: 'Pods & Deployments',   route: '/containers/pods-deployments' },
+    ],
+    tip: 'StatefulSet pods get stable, predictable names (web-0, web-1) that persist across restarts, and each gets its own PVC that follows it across rescheduling — a Deployment\'s interchangeable pods cannot support workloads where specific identity matters.',
+    gotchas: [
+      'Pods are created and terminated in strict ORDER by default — later replicas may depend on earlier ones already being initialized.',
+      'Using a StatefulSet for a stateless application adds unnecessary operational complexity with no corresponding benefit.',
+    ],
+  },
+  'containers/storage': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'StatefulSets',       route: '/containers/statefulsets' },
+      { label: 'ConfigMaps & Secrets', route: '/containers/configmaps-secrets' },
+    ],
+    tip: 'A PersistentVolume represents actual provisioned storage; a PersistentVolumeClaim is a request matching criteria (size, access mode) — this separation lets manifests request storage generically without knowing infrastructure details.',
+    gotchas: [
+      'Many cloud block storage types only support ReadWriteOnce — a volume can only attach to Pods on one node at a time, a common surprise when scaling stateful workloads.',
+      'The reclaim policy (Retain vs Delete) determines whether underlying storage survives after its PVC is deleted — get this wrong and data disappears permanently.',
+    ],
+  },
+  'containers/troubleshooting': {
+    apis: K8S_DEFAULT.apis, docs: K8S_DEFAULT.docs, resources: K8S_DEFAULT.resources,
+    related: [
+      { label: 'Kubectl',          route: '/containers/kubectl' },
+      { label: 'Resource Limits',  route: '/containers/resource-limits' },
+    ],
+    tip: 'kubectl describe pod surfaces EVENTS (scheduling failures, image pull errors) — often the fastest first step, before diving into logs which are useless if the container never actually started.',
+    gotchas: [
+      'kubectl logs --previous is required to see logs from a crashed container\'s PREVIOUS instance — without it, the crash-causing logs are lost.',
+      'CrashLoopBackOff\'s exponential backoff is normal, expected behavior — the actual root cause is virtually always in the previous container\'s logs or exit code.',
+    ],
+  },
 };
 
 @Component({
