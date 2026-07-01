@@ -258,8 +258,8 @@ const quiz: QuizQuestion[] = [
 
 const qna: QnaItem[] = [
   {
-    q: 'How is Adapter different from Facade?',
-    a: 'Adapter makes two existing incompatible interfaces work together — it adapts ONE interface to look like another. Facade defines a new simplified interface over a complex subsystem. Adapter changes the interface shape; Facade simplifies a large number of interfaces into one convenient surface.',
+    q: 'Can a class be both an Adapter and expose a Facade-like simplified interface at the same time?',
+    a: 'Yes — the two roles are not mutually exclusive, and a well-designed wrapper class around a third-party SDK often does both simultaneously: it adapts the SDK\'s specific method signatures to match an interface your application already expects (Adapter role), while also collapsing what might be several SDK calls into one simpler method your callers actually need (Facade role). Whether to think of it as "an Adapter" or "a Facade" in that case is mostly about which aspect you are emphasizing in the conversation — the code itself can legitimately serve both purposes at once.',
   },
   {
     q: 'Should adapters be registered in DI?',

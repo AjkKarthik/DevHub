@@ -290,8 +290,8 @@ const qna: QnaItem[] = [
     a: 'No — DbContext is registered as Scoped (one instance per HTTP request). Making it Singleton would cause concurrency bugs because EF Core\'s change tracker is not thread-safe. Use IDbContextFactory<T> if you need a DbContext outside of the DI scope.',
   },
   {
-    q: 'What is the difference between Singleton (pattern) and AddSingleton (DI)?',
-    a: 'The GoF Singleton pattern is a self-managed, globally accessible instance via static access. AddSingleton in .NET DI registers a type so the container creates one instance for the application lifetime and injects it wherever the interface is requested — still one instance, but without static coupling, enabling testability.',
+    q: 'Can a class registered with AddSingleton in DI still cause the same testing problems the classic Singleton pattern is criticized for?',
+    a: 'Mostly no, but there is one lingering risk: if a DI-registered singleton holds MUTABLE shared state that persists across test runs within the same test process (e.g. an in-memory cache that is never reset between tests), tests can still leak state into each other even though the class itself has no static Instance property and is fully injectable/mockable. The DI container solves the coupling problem (callers depend on an abstraction, and the container can substitute a test double per test), but it does not automatically solve a shared-mutable-state problem if the singleton\'s own design accumulates state that outlives a single test — that still requires the singleton class itself to be designed for resettable or per-test-scoped state.',
   },
   {
     q: 'Can you use Singleton with async initialization?',

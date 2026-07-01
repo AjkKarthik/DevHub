@@ -284,8 +284,8 @@ const quiz: QuizQuestion[] = [
 
 const qna: QnaItem[] = [
   {
-    q: 'When should I use Factory Method over just newing up objects?',
-    a: 'When the exact type to create varies by context, configuration, or subclass, and you want callers to be decoupled from concrete types. If you always create the same concrete type, just new it directly — the pattern adds complexity without benefit.',
+    q: 'Can adding a new subclass to a Factory Method hierarchy require changes to existing client code, and if so, how do you avoid it?',
+    a: 'If clients directly reference concrete Creator subclasses (e.g. new PdfDocumentCreator()) to get the desired factory, adding a new document type still requires touching client code to instantiate the new Creator — the Open/Closed benefit is only fully realized when the CHOICE of which concrete Creator to use is itself decoupled from the client, typically via dependency injection registration, a configuration-driven factory-of-factories, or a registry pattern that maps a type key to the appropriate Creator. Factory Method alone decouples "what gets created" from "how it\'s used," but does not automatically decouple "which factory to instantiate" unless that selection is also injected or configured rather than hardcoded at each call site.',
   },
   {
     q: 'Can Factory Method work without inheritance (abstract class)?',
