@@ -245,8 +245,8 @@ const quiz: QuizQuestion[] = [
 
 const qna: QnaItem[] = [
   {
-    q: 'How do you revoke a JWT before it expires?',
-    a: 'JWTs are stateless — there is no built-in revocation. Options: <ol><li><strong>Short expiry</strong>: 15-minute access tokens — theft window is naturally limited. Pair with refresh token rotation.</li><li><strong>Token blacklist</strong>: store revoked token JTIs (JWT ID claim) in Redis; check on every request. Reintroduces state but enables instant revocation.</li><li><strong>Token version</strong>: store a <code>tokenVersion</code> per user in DB; include it in the JWT. On revocation, increment the DB version — all old tokens fail version check. Cheaper than per-token blacklisting.</li></ol>',
+    q: 'What is the tradeoff between the "token version" revocation approach and per-token JTI blacklisting, in terms of granularity?',
+    a: 'The tokenVersion approach revokes ALL of a user\'s tokens at once — bumping the version invalidates every token that user currently holds, across every device and session, which is efficient (a single integer check, no growing blacklist) but blunt: you cannot revoke just the token issued to a specific stolen device while leaving the user\'s other active sessions (laptop, mobile) untouched. Per-token JTI blacklisting is the opposite tradeoff — it stores each revoked token individually, so you CAN target one specific compromised token precisely, but this requires a growing lookup store (Redis) that must be checked on every request and cleaned up as tokens naturally expire. Choose tokenVersion when "log out everywhere" is an acceptable/desired response to compromise; choose JTI blacklisting when you need per-device, per-session revocation granularity.',
   },
   {
     q: 'What is the difference between a JWT and a session cookie?',

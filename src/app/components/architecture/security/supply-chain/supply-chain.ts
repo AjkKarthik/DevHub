@@ -240,15 +240,15 @@ console.log(scoreDependency({ name: 'risky-pkg', hasKnownCVE: true, weeksSinceLa
 
 const quiz: QuizQuestion[] = [
   {
-    q: 'What is a dependency confusion attack?',
+    q: 'Why does using scoped packages (@myorg/package-name) reduce dependency confusion risk more effectively than just choosing an obscure internal package name?',
     options: [
-      'Installing two packages with conflicting APIs',
-      'Publishing a malicious public package with the same name as an internal private one at a higher version — npm resolves public over private',
-      'A typo in a package name that installs the wrong library',
-      'A circular dependency that causes infinite imports',
+      'Scoped packages are automatically private and can never be published publicly by anyone',
+      'A scope can be explicitly claimed on the public registry (even with no published packages under it) or explicitly routed in .npmrc to always resolve from a specific registry — closing off the ambiguity of "which registry does this exact name belong to" that unscoped internal package names are exposed to',
+      'Scoped packages use a different version numbering scheme that public attackers cannot replicate',
+      'Scoping has no actual security effect — it is purely an organizational naming convention',
     ],
     answer: 1,
-    explanation: 'If your org uses a private npm package `@myorg/utils` and an attacker publishes a public package named `@myorg/utils` at a higher version, npm\'s version resolution may prefer the public package — installing the attacker\'s code. Prevent with scoped packages routed to your private registry in `.npmrc`.',
+    explanation: 'An unscoped internal package name (utils) is just a bare string that could plausibly exist on either the private registry or the public one — the package manager has to guess or follow a resolution order, which is exactly the ambiguity dependency confusion exploits. A scope (@myorg/utils) can be explicitly configured in .npmrc to ALWAYS resolve from your private registry regardless of what a public package with the same scoped name claims to be, and organizations can additionally claim their scope on the public registry defensively (publishing empty placeholder packages) so an attacker cannot even register that scope publicly in the first place.',
   },
   {
     q: 'Why should `npm ci` be used in CI instead of `npm install`?',
