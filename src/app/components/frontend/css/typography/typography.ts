@@ -62,6 +62,15 @@ const theory: TheoryPoint[] = [
       'font-variant-ligatures: common-ligatures enables fi, fl, ff ligatures for refined typography.',
     ],
   },
+  {
+    heading: 'Fluid Typography with clamp()',
+    points: [
+      'clamp(min, preferred, max) lets font-size scale fluidly between a minimum and maximum based on viewport width, eliminating the need for multiple discrete media-query-based font-size overrides at each breakpoint — the text size smoothly interpolates rather than jumping abruptly at fixed breakpoints.',
+      'The "preferred" middle value in clamp() is typically expressed using viewport units (like 4vw) so it scales proportionally with viewport width, while the min and max values (often in rem) cap the range so text never becomes unreadably small or excessively large at extreme viewport sizes.',
+      'Fluid typography with clamp() should still respect user font-size preferences and browser zoom — combining rem-based min/max bounds (which scale with the user\'s base font size setting) with vw-based scaling in the middle preserves accessibility while still achieving fluid responsive behavior.',
+      'Testing fluid typography across the full range of realistic viewport widths (not just a couple of common breakpoints) catches awkward intermediate sizes that discrete breakpoint-based font sizing would never reveal, since clamp() produces a continuous range of possible sizes.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

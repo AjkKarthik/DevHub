@@ -54,6 +54,24 @@ const theory: TheoryPoint[] = [
       'Avoid animating top/left/margin/width — these cause layout recalculation on every frame. Use translate() instead of top/left; scale() instead of width/height changes.',
     ],
   },
+  {
+    heading: '2D vs 3D Transforms and perspective',
+    points: [
+      '2D transforms (translate, rotate, scale, skew operating on the X/Y plane) are simpler and sufficient for most UI interactions — hover effects, simple animations — while 3D transforms (translateZ, rotateX, rotateY) add depth along a Z-axis, enabling card-flip effects and depth-based visual hierarchy.',
+      'The perspective property (set on a PARENT element, not the transformed element itself) establishes the viewing distance for 3D transforms on its children — without a perspective value set somewhere in the ancestor chain, 3D transforms like rotateY render with no visible depth/foreshortening effect at all.',
+      'transform-style: preserve-3d on a parent element is required for nested 3D-transformed children to maintain their 3D positioning relative to each other — without it, child elements are flattened into the 2D plane of their parent, losing the intended 3D spatial relationship.',
+      'transform-origin determines the point around which a transform (especially rotate and scale) is applied — the default center origin is appropriate for many cases, but effects like a door-hinge rotation or a corner-anchored scale require explicitly repositioning the transform origin to the relevant edge or corner.',
+    ],
+  },
+  {
+    heading: 'Combining Multiple Transform Functions',
+    points: [
+      'Multiple transform functions listed in a single transform property (transform: translateX(20px) rotate(45deg) scale(1.5)) are applied in the ORDER LISTED, and changing that order produces different visual results — rotating then translating is not equivalent to translating then rotating.',
+      'The translate3d(), scale3d(), and similar 3d-suffixed functions can trigger GPU compositing even for what is visually a 2D-only transform — a common performance technique ("hack") to force an element onto its own compositor layer for smoother animation, even when no actual 3D effect is desired.',
+      'Combining transform with transition or animation lets multiple transform functions animate together smoothly as a single compositor-friendly operation — animating translate and scale together in one transform declaration is more efficient than animating separate CSS properties that would each trigger independent layout/paint work.',
+      'CSS custom properties can hold individual transform values (--x, --rotation) referenced within a single transform: translateX(var(--x)) rotate(var(--rotation)) declaration — enabling JavaScript to update just the specific values needed via custom property changes, without needing to reconstruct and reassign the entire transform string.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

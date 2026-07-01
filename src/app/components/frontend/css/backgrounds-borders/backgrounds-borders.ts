@@ -52,6 +52,24 @@ const theory: TheoryPoint[] = [
       'Use aspect-ratio on image wrappers to prevent Cumulative Layout Shift (CLS) while images load.',
     ],
   },
+  {
+    heading: 'Border-Radius and Border-Image Techniques',
+    points: [
+      'border-radius accepts up to four values for each corner independently, and can accept a slash-separated second set of values to create elliptical (non-circular) corner curves — a single value applies uniformly, while granular per-corner control enables asymmetric shapes.',
+      'border-image lets you use a raster or vector image as a border, sliced into nine regions (corners, edges, center) via border-image-slice — the corners remain unstretched while the edges tile or stretch to fill the border length, enabling decorative borders impossible with solid border colors alone.',
+      'Multiple backgrounds can be layered on a single element via comma-separated background-image values, with each layer independently positioned and sized — the first listed background renders on top, useful for combining a gradient overlay with a background image in one declaration.',
+      'background-clip: text (combined with a transparent text color) clips a background (often a gradient) to the shape of the text itself, a common technique for gradient-colored headings — though it requires vendor prefixing for full cross-browser compatibility.',
+    ],
+  },
+  {
+    heading: 'Gradients as Flexible Background Tools',
+    points: [
+      'linear-gradient, radial-gradient, and conic-gradient each solve different visual needs — linear for directional fades, radial for circular/elliptical glows or spotlights, conic for pie-chart-like or color-wheel effects that sweep around a center point.',
+      'Gradients can be layered with actual images in the background-image property (comma-separated), commonly used to apply a semi-transparent dark gradient overlay on top of a photo to ensure text remains readable regardless of the underlying image content.',
+      'CSS gradients are rendered by the browser rather than downloaded as an image asset, meaning they scale infinitely without any loss of quality or additional network request — a meaningful performance and flexibility advantage over using a gradient PNG background image.',
+      'Named color stops with explicit percentage positions (not just relying on even distribution) give fine control over exactly where a gradient transitions between colors, essential for precisely matching a specific design mockup rather than accepting the default even spacing.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

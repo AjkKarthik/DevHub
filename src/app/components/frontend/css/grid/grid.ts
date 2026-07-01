@@ -60,6 +60,15 @@ const theory: TheoryPoint[] = [
       'subgrid: grid-template-columns: subgrid lets nested grids align to the parent grid lines.',
     ],
   },
+  {
+    heading: 'Grid Template Areas for Readable Layout',
+    points: [
+      'grid-template-areas lets you name and visually lay out grid regions as an ASCII-art-like string directly in the CSS, making the overall page structure immediately readable from the CSS alone — often clearer than deducing layout from a series of grid-column/grid-row line number declarations.',
+      'Each named area is assigned to a child element via grid-area: name, decoupling the visual layout definition (in the parent\'s grid-template-areas) from individual child element styling — the layout can be restructured entirely by changing the template string, without touching any child element rules.',
+      'Empty cells in the layout are represented with a period (.) in the template string, letting you deliberately leave gaps in the grid — useful for responsive designs where a specific region should be empty at certain breakpoints without needing a placeholder element.',
+      'Combining grid-template-areas with different template definitions inside media queries is a powerful, highly readable technique for responsive layout — the same named areas can be completely rearranged (sidebar moving from side-by-side to stacked) by redefining the template string per breakpoint.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

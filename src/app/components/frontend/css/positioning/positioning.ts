@@ -61,6 +61,15 @@ const theory: TheoryPoint[] = [
       'overflow: hidden on a parent disables sticky — the parent becomes the scroll container and may be too short.',
     ],
   },
+  {
+    heading: 'Stacking Contexts and z-index Behavior',
+    points: [
+      'z-index only has meaning between elements within the SAME stacking context — a child with z-index: 9999 inside a parent with a lower stacking position can never visually appear above a sibling of that parent, regardless of how high its own z-index value is set.',
+      'A new stacking context is created not just by position + z-index, but also by properties like opacity less than 1, transform, filter, and will-change — this is a common source of confusing z-index bugs where adding an unrelated property like a CSS transform unexpectedly changes stacking behavior.',
+      'Understanding stacking contexts as a tree (each context can contain nested child stacking contexts) rather than a single flat global z-index ordering is essential for debugging why a high z-index value is not producing the expected visual stacking result.',
+      'Browser DevTools (Chrome\'s 3D view of layers, or simply inspecting computed styles for stacking-context-triggering properties on ancestors) is the practical way to diagnose an unexpected stacking issue, rather than guessing and incrementing z-index values arbitrarily.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

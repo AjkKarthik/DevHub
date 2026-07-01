@@ -52,6 +52,24 @@ const theory: TheoryPoint[] = [
       'Style queries enable theme-aware components: set --variant on a wrapper and child components respond without JS.',
     ],
   },
+  {
+    heading: 'Container Queries vs Media Queries: When Each Applies',
+    points: [
+      'Media queries respond to the VIEWPORT size, while container queries respond to the size of a specific CONTAINER element — this distinction matters enormously for reusable components that may be placed in contexts of varying width (a sidebar vs a main content area) regardless of overall viewport size.',
+      'A card component using container queries can adapt its internal layout based on the width of whatever container it happens to be placed in — the same component renders differently in a narrow sidebar versus a wide main content area, something media queries (which only know viewport width) cannot express.',
+      'Establishing a containment context (container-type: inline-size on a parent) is required before container queries can be used on its descendants — forgetting this declaration is the most common reason container queries silently fail to have any effect.',
+      'Container queries and media queries are complementary, not competing — media queries remain the right tool for page-level layout decisions (overall navigation structure), while container queries excel at making individual reusable components self-adapting regardless of where they are placed.',
+    ],
+  },
+  {
+    heading: 'Container Query Units and Named Containers',
+    points: [
+      'Container query length units (cqw, cqh, cqi, cqb) let you size elements relative to the container\'s dimensions rather than the viewport — a font-size in cqi (container query inline size) scales proportionally with the container\'s width, similar to how vw scales with viewport width.',
+      'Named containers (container-name: sidebar combined with @container sidebar (min-width: 300px)) let a component query a SPECIFIC ancestor container rather than simply the nearest one — essential when a component is nested inside multiple containment contexts and needs to respond to a particular one.',
+      'Container queries can also query container STYLE (via @container style()), not just size — an emerging capability allowing components to adapt based on a custom property value set on the container, extending the "respond to context" pattern beyond just dimensions.',
+      'Because container queries require establishing containment (which affects layout, style, and paint isolation), applying container-type broadly across many elements "just in case" has a real performance cost — apply it deliberately to specific components that genuinely need container-relative responsiveness.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

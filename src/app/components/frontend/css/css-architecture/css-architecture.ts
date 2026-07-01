@@ -54,6 +54,24 @@ const theory: TheoryPoint[] = [
       'Choice guide: BEM+ITCSS for traditional multi-page sites; CSS Modules for React/Vue SPAs; Tailwind for rapid prototyping and design-system-first teams.',
     ],
   },
+  {
+    heading: 'BEM and Component-Scoped Naming Conventions',
+    points: [
+      'BEM (Block__Element--Modifier) enforces a flat, predictable class naming structure that avoids specificity conflicts and makes the relationship between a component and its parts explicit purely from the class name, without needing to inspect the HTML structure to understand the hierarchy.',
+      'The flat specificity BEM produces (every selector is a single class, never nested selectors targeting descendants) makes styles easy to override predictably — a common pain point in less disciplined CSS architectures where deeply nested selectors create escalating specificity that becomes hard to override cleanly.',
+      'Component-scoped styling (CSS Modules, Angular/Vue/Svelte component-scoped styles) solves the same fundamental problem BEM addresses — preventing style leakage and naming collisions — but through build-tool-enforced scoping rather than a manual naming discipline that must be consistently applied by every developer.',
+      'Choosing a CSS architecture methodology (BEM, utility-first, CSS Modules, or a framework\'s built-in scoping) should be a deliberate team decision made early and applied consistently — mixing multiple conflicting methodologies within the same codebase is a common source of specificity confusion and maintenance difficulty.',
+    ],
+  },
+  {
+    heading: 'Managing CSS at Scale: ITCSS and Layered Organization',
+    points: [
+      'ITCSS (Inverted Triangle CSS) organizes stylesheets into layers of increasing specificity and explicitness — settings, tools, generic, elements, objects, components, utilities — ensuring that broad, low-specificity rules are defined first and narrow, high-specificity overrides come last, matching the natural cascade order.',
+      'This layered approach prevents the common large-codebase problem of specificity creeping upward over time as developers add !important or overly specific selectors just to override earlier rules — because the architecture itself enforces a predictable specificity progression.',
+      'A well-organized CSS architecture makes it possible to safely delete or modify styles without fear of unknown side effects elsewhere in the codebase — a hallmark of unmaintainable CSS is the reluctance to touch existing rules because their full impact across the site is unknown.',
+      'Documenting the chosen architecture (which layer new styles belong in, naming conventions, when to use utilities vs components) as an explicit style guide is what keeps a growing team consistently applying the methodology, rather than relying on tribal knowledge that erodes as team membership changes.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

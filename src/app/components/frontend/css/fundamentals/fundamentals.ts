@@ -63,6 +63,15 @@ const theory: TheoryPoint[] = [
       'Margin collapse: adjacent vertical margins between block elements collapse to the larger value. Horizontal margins never collapse. Flex/grid children do not collapse.',
     ],
   },
+  {
+    heading: 'CSS Selectors and Specificity Interactions',
+    points: [
+      'Specificity is calculated as a tuple (inline styles, IDs, classes/attributes/pseudo-classes, elements/pseudo-elements) — comparing selectors by this tuple, not by simply counting total selector segments, which is why a single ID selector beats any number of class selectors combined.',
+      'The !important flag overrides normal specificity rules entirely, but at the cost of making the cascade significantly harder to reason about — a codebase using !important liberally often ends up needing even more !important declarations to override the previous ones, escalating into unmaintainable specificity wars.',
+      'CSS custom properties (--variable) have no inherent specificity of their own since they are just custom-named values — but the specificity of the SELECTOR that sets the variable follows normal cascade rules, determining which declared value actually takes effect where the variable is used.',
+      'Source order matters as a final tiebreaker only when specificity is exactly equal — a later rule with identical specificity to an earlier one wins, which is why the order stylesheets and style blocks are loaded/declared in can silently change which rule actually applies.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

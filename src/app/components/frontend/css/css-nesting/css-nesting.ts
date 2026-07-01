@@ -51,6 +51,24 @@ const theory: TheoryPoint[] = [
       '@container can be nested inside rules to combine container queries with component styles in one block.',
     ],
   },
+  {
+    heading: 'Native CSS Nesting vs Preprocessor Nesting',
+    points: [
+      'Native CSS nesting (supported directly by modern browsers without a build step) requires the & symbol to reference the parent selector when combining with a pseudo-class or combining directly (like &:hover or &.active), whereas Sass nesting allows more implicit, flexible nesting patterns without this requirement.',
+      'Because native nesting compiles to real CSS understood natively by the browser, there is no build step overhead and no risk of preprocessor-specific syntax that becomes a dependency on a build toolchain — a meaningful simplification for projects that do not otherwise need a CSS preprocessor.',
+      'Excessive nesting depth (whether native or Sass) produces increasingly specific, hard-to-override selectors — the same specificity escalation problem that flat naming conventions like BEM were designed to avoid; nesting should generally be kept shallow (2-3 levels) even when the syntax technically permits deeper nesting.',
+      'Native CSS nesting has slightly different scoping and specificity calculation rules compared to Sass nesting in some edge cases — teams migrating from Sass nesting to native CSS nesting should verify the compiled output matches expectations rather than assuming byte-for-byte identical behavior.',
+    ],
+  },
+  {
+    heading: 'When Nesting Improves vs Hurts Readability',
+    points: [
+      'Nesting genuinely improves readability when it mirrors the actual DOM structure being styled (a .card containing nested .card-title and .card-body rules) — the visual nesting in the CSS matches the mental model of the HTML structure, making the relationship between rules immediately clear.',
+      'Nesting hurts readability when used purely to avoid repeating a parent selector for unrelated, loosely-connected rules — deeply nested selectors targeting elements several DOM levels away from the nesting root obscure rather than clarify the actual specificity and applicability of the resulting compiled selector.',
+      'A useful heuristic: nest pseudo-classes, pseudo-elements, and direct state modifiers of the current selector (&:hover, &.is-active, &::before) freely, since these clearly belong to the parent — but be more cautious about nesting unrelated descendant selectors many levels deep.',
+      'Tooling (browser DevTools showing the fully compiled selector, or a CSS linter enforcing a maximum nesting depth) helps catch nesting that has grown beyond what is genuinely readable, since deeply nested source code can visually "look fine" while producing an unexpectedly specific and hard-to-override compiled selector.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

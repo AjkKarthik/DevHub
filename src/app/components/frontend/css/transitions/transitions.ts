@@ -52,6 +52,24 @@ const theory: TheoryPoint[] = [
       'Use transition-play-state via JavaScript to pause transitions for users or debugging.',
     ],
   },
+  {
+    heading: 'Timing Functions and Perceived Motion Quality',
+    points: [
+      'The transition-timing-function controls the RATE of change over the transition duration, not just the start/end values — ease-in-out (slow start, fast middle, slow end) feels more natural for most UI motion than linear (constant speed), which can feel mechanical and less polished.',
+      'Custom cubic-bezier() timing functions let you fine-tune exactly how a transition accelerates and decelerates beyond the handful of predefined keywords (ease, ease-in, ease-out) — useful for matching a specific design system\'s motion language or achieving a particular feel like a slight overshoot.',
+      'Transitioning multiple properties with different timing functions and durations (comma-separated in the transition shorthand) allows more sophisticated, layered motion — a color change might use a quick linear transition while an accompanying transform uses a slower, eased curve.',
+      'Respecting prefers-reduced-motion by disabling or significantly simplifying transitions for users who have indicated a preference for reduced motion (via the media query) is both an accessibility best practice and, in some contexts, a legal accessibility requirement — never assume all users want elaborate animated transitions.',
+    ],
+  },
+  {
+    heading: 'Transitions vs Animations: Choosing the Right Tool',
+    points: [
+      'CSS transitions animate between two states (a starting value and an ending value) triggered by a state change (hover, class toggle, focus) — appropriate for simple, discrete state-to-state motion like a button color change or a menu sliding open.',
+      'CSS animations (@keyframes) support multiple intermediate steps, looping, and can run automatically on page load without requiring a triggering state change — appropriate for more complex, multi-stage motion sequences like a loading spinner or an attention-grabbing pulse effect.',
+      'Transitions are generally simpler to reason about and debug for straightforward interactive feedback, since they only ever describe a single before/after state pair, while animations require thinking through the full timeline of keyframe percentages.',
+      'A common practical distinction: use transitions for anything directly tied to user interaction state changes (hover, active, focus, a toggled class), and reserve @keyframes animations for motion that is not simply "state A to state B" but involves a genuine sequence or repetition.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

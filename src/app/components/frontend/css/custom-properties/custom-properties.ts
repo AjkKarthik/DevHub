@@ -62,6 +62,15 @@ const theory: TheoryPoint[] = [
       'Registered properties unlock CSS animations driven by custom property changes.',
     ],
   },
+  {
+    heading: 'Custom Properties vs Sass/Preprocessor Variables',
+    points: [
+      'CSS custom properties (--variable-name) are resolved at runtime in the browser and are genuinely part of the DOM/CSSOM, meaning they can be read, written, and changed dynamically via JavaScript and respond live to changes — Sass variables are compiled away entirely at build time into static values.',
+      'This runtime nature is what enables custom properties to change based on context — a custom property can have a different value inside a specific component, media query, or user-toggled theme, cascading and inheriting just like any other CSS property.',
+      'Custom properties integrate naturally with the cascade and inheritance model — a value set on a parent element automatically flows down to children unless overridden, exactly like color or font-size, which Sass variables (resolved entirely at compile time) cannot replicate.',
+      'For genuinely static values that never change at runtime (a fixed set of breakpoint values used only in media queries, for example), Sass variables remain perfectly reasonable — custom properties add the most value specifically for values that need to respond to runtime context like theming or user preference.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [
