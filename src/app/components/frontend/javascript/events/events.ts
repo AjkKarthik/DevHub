@@ -408,8 +408,8 @@ bus.emit('user:login', { id: 2 });  // nothing — unsubscribed`,
       a: 'Yes! Any class can extend <code>EventTarget</code> to get a full event system. This is perfect for non-DOM objects like stores, services, or data models. No need for custom EventEmitter implementations — the native EventTarget is already built-in and available in modern browsers and Node.js 14+.',
     },
     {
-      q: 'What is event delegation and why is it preferred for dynamic lists?',
-      a: 'Event delegation attaches ONE listener to a parent instead of many listeners on individual children. The listener checks <code>event.target</code> to determine which child was clicked. Benefits: (1) works for dynamically added children automatically, (2) far fewer listeners in memory, (3) simpler cleanup. Use <code>event.target.closest(".item")</code> to safely handle clicks on nested child elements.',
+      q: 'A delegated click listener on a <ul> uses `e.target.closest(".item")` to find the clicked list item, but the list items contain an SVG icon built from multiple nested <path> elements. When a user clicks directly on one of those inner <path> elements, does closest() still correctly find the ancestor ".item"?',
+      a: 'Yes, as long as the SVG elements are genuinely part of the DOM tree under the .item element — closest() walks up the actual DOM ancestor chain starting from e.target regardless of how deeply nested or what kind of element (SVG, custom element, etc.) the click landed on, so a click on a <path> five levels deep still correctly resolves to the enclosing .item via its ancestor chain. The one real gotcha here is event.target versus what you might expect: SVG elements dispatch events with e.target set to the specific SVG child that was actually clicked (the <path>, not the outer <svg>), which is exactly why closest() — walking UP from wherever the click precisely landed — is the robust pattern, rather than assuming e.target itself is always the element you attached semantic meaning to.',
     },
     {
       q: 'What is the difference between passive and non-passive event listeners?',
