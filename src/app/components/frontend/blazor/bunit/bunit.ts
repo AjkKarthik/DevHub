@@ -44,6 +44,24 @@ export class BlazorBunit {
       points: ['Register services on `ctx.Services` before rendering: `ctx.Services.AddScoped<IProductService, FakeProductService>()`. For IJSRuntime, bUnit provides a built-in `JSInterop` object: `ctx.JSInterop.SetupVoid("window.init")` mocks JS calls without a real browser. You can verify JS calls were made, return fake values, and throw exceptions to test error paths.',
       'ctx.Services mirrors the real DI container — register stubs/mocks there.', 'ctx.JSInterop.Setup() mocks specific JS interop calls.', 'Use Moq or NSubstitute for service mocks.', 'ctx.JSInterop.VerifyInvoke() asserts a JS function was called.']
     },
+    {
+      heading: 'What bUnit Tests and What It Deliberately Does Not',
+      points: [
+        'bUnit renders components headlessly using a test double of the Blazor rendering pipeline — it verifies component logic, markup output, and event handling without needing a real browser or a running server, making tests fast enough to run in the hundreds during a typical CI run.',
+        'bUnit does NOT test actual browser rendering, CSS layout, or JavaScript interop behavior beyond what you explicitly mock — visual regressions, CSS issues, and real browser-specific quirks require a genuine browser-based E2E tool (Playwright) rather than bUnit.',
+        'Testing a component in isolation with bUnit means mocking its dependencies (injected services, cascading parameters) explicitly via the TestContext — this isolation is a feature, letting you verify one component\'s logic without the overhead and flakiness of spinning up its entire dependency graph.',
+        'A healthy testing strategy for a Blazor application uses bUnit extensively for fast, numerous unit/component tests, reserving a smaller number of Playwright E2E tests for critical user journeys that genuinely need to verify the full rendered application working end-to-end in a real browser.',
+      ],
+    },
+    {
+      heading: 'Snapshot and Semantic Markup Comparison in bUnit',
+      points: [
+        'cut.MarkupMatches() performs semantic HTML comparison rather than exact string matching — attribute order, insignificant whitespace, and self-closing tag variations are normalized before comparison, making tests resilient to cosmetic rendering differences that do not represent genuine behavioral changes.',
+        'Snapshot-style testing (asserting a component\'s full rendered markup matches an expected string) is convenient for catching unintended markup changes, but can become brittle if used for every component — reserving full markup assertions for components where the exact rendered structure genuinely matters, and using targeted Find()-based assertions elsewhere, balances thoroughness against maintenance burden.',
+        'bUnit\'s WaitForState() and WaitForAssertion() methods poll until a condition becomes true (or a timeout elapses) — essential for testing components with asynchronous behavior (data loading, debounced input) where a synchronous assertion immediately after rendering would run before the async operation has completed.',
+        'Testing accessibility-relevant markup (ARIA attributes, semantic HTML elements) with bUnit\'s Find() and markup assertions helps catch accessibility regressions early in the development cycle, before they reach a manual or automated accessibility audit later in the process.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

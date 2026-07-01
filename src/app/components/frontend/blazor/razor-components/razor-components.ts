@@ -52,6 +52,15 @@ export class BlazorRazorComponents {
       points: ['Blazor automatically calls StateHasChanged() after event handlers complete. You only need to call it manually when state changes outside an event handler — for example, in a timer callback or when a service raises an event. On Blazor Server, use InvokeAsync(StateHasChanged) to marshal back to the render thread.',
       'Event handlers trigger a re-render automatically.', 'Timer and async continuations need explicit StateHasChanged().', 'InvokeAsync ensures thread-safety on Blazor Server.', 'Calling StateHasChanged in a tight loop wastes render cycles.']
     },
+    {
+      heading: 'Component Lifecycle Method Execution Order',
+      points: [
+        'Blazor component lifecycle methods execute in a defined order: SetParametersAsync, OnInitialized/OnInitializedAsync (only on first render), OnParametersSet/OnParametersSetAsync (on every parameter update including the first), then rendering occurs, followed by OnAfterRender/OnAfterRenderAsync.',
+        'OnInitializedAsync is the correct place for one-time setup logic (initial data fetching) since it runs only once per component instance, while OnParametersSetAsync runs every time parent-supplied parameters change, making it appropriate for logic that must react to parameter updates after the initial render.',
+        'OnAfterRenderAsync(firstRender) is the only lifecycle method with guaranteed access to a fully rendered DOM — JavaScript interop calls that need to interact with rendered elements should happen here, guarded by the firstRender parameter when the interop should only run once rather than after every re-render.',
+        'IDisposable/IAsyncDisposable implementation on a component (releasing event subscriptions, timers, or JS interop references) is essential for components with a non-trivial lifecycle — Blazor calls Dispose automatically when a component is removed from the render tree, but only if the component actually implements the interface.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

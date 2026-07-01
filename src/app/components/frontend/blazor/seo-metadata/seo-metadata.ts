@@ -47,6 +47,24 @@ export class BlazorSeoMetadata {
       points: ['Open Graph meta tags (`og:title`, `og:description`, `og:image`) control how your pages appear when shared on social media. Add them in `<HeadContent>`. For structured data (JSON-LD), add a `<script type="application/ld+json">` tag inside HeadContent. Canonical links prevent duplicate-content penalties when the same content is accessible at multiple URLs.',
       'og:title and og:image control social media card previews.', 'JSON-LD structured data improves rich snippet eligibility in search.', 'Canonical link tag points to the preferred URL for duplicate content.', 'robots meta controls per-page indexing independently of robots.txt.']
     },
+    {
+      heading: 'PageTitle and HeadContent for Server-Rendered Metadata',
+      points: [
+        '<PageTitle> and <HeadContent> components let each page declaratively set its own title and meta tags, with the values correctly rendered into the actual server-generated HTML <head> during Static SSR or InteractiveServer rendering — critical for SEO, since search engine crawlers see the correct per-page metadata without needing to execute JavaScript.',
+        'Manually manipulating document.title or meta tags via JavaScript interop only takes effect after the page has loaded and JS has executed client-side, which is invisible to crawlers that do not run JavaScript — making PageTitle/HeadContent the SEO-correct approach for any content-facing Blazor page.',
+        'For Blazor WebAssembly-only apps (without server rendering), search engine crawlers see the initial near-empty HTML shell before WASM loads and populates content — meaningful SEO for content-heavy public pages generally requires Static SSR or a hybrid render mode, not pure client-side WASM rendering.',
+        'Structured data (JSON-LD schema markup for rich search results) can be injected via HeadContent similarly to meta tags — letting individual pages declare structured data relevant to their specific content (product info, article metadata) that search engines use to render enhanced search result snippets.',
+      ],
+    },
+    {
+      heading: 'Sitemaps and Crawlability Beyond Per-Page Metadata',
+      points: [
+        'A generated sitemap.xml listing all public, crawlable routes helps search engines discover pages that might not be reachable through normal internal link crawling alone — particularly valuable for a large Blazor application with many dynamically-generated or deeply-nested content routes.',
+        'robots.txt configuration should explicitly account for any Blazor-specific paths that should not be crawled (API endpoints, internal admin routes) — a Blazor application\'s routing structure may differ significantly from a traditional server-rendered site, requiring deliberate robots.txt review rather than relying on defaults.',
+        'Canonical URLs (via a <link rel="canonical"> tag set through HeadContent) prevent duplicate content penalties when the same logical content is reachable through multiple URL variations (with or without trailing slashes, different query parameter orderings) — an easy-to-overlook SEO detail for dynamically-routed content.',
+        'Core Web Vitals (LCP, CLS, INP) matter for Blazor apps just as they do for any web application, and are factored into search ranking — a slow-loading InteractiveWebAssembly page can hurt SEO rankings independently of having otherwise correct metadata, making performance and SEO closely related concerns.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

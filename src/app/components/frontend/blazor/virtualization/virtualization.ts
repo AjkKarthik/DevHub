@@ -47,6 +47,24 @@ export class BlazorVirtualization {
       points: ['Set `ItemSize` as accurately as possible — an incorrect size causes the scrollbar to jump when real items render. Use `OverscanCount` (default 3) to buffer scroll momentum. For variable-height items, consider grouping items into fixed-size rows or using a third-party library. Avoid complex Blazor components as list items — they add per-item component instantiation overhead; prefer simple HTML fragments.',
       'Accurate ItemSize prevents scrollbar jumping.', 'OverscanCount=10 smooths fast scrolling at the cost of more DOM nodes.', 'Variable-height items require workarounds — Virtualize assumes fixed size.', 'Prefer simple HTML over component-per-item for maximum performance.']
     },
+    {
+      heading: 'Virtualize Component Sizing and Scroll Container Requirements',
+      points: [
+        'The <Virtualize> component requires its parent container to have a defined, scrollable height (either an explicit CSS height or being within a container that provides one) — without a properly sized scroll container, Virtualize cannot correctly calculate which items are currently visible and will not function as intended.',
+        'ItemSize (an estimated pixel height per item) helps Virtualize calculate initial scroll positioning and placeholder sizing accurately — providing an inaccurate estimate causes visible jumping or incorrect scrollbar sizing as the component corrects its calculations once real items are measured.',
+        'For lists with significantly varying item heights (not uniform), Virtualize\'s fixed-size assumption becomes less accurate, potentially causing visual jank during scrolling — very heterogeneous item heights may need a different virtualization strategy or careful ItemSize tuning to minimize the visual impact.',
+        'Virtualization trades some scrolling behavior fidelity (browser-native scroll physics can behave slightly differently with virtualized content) for the substantial performance benefit of only rendering visible DOM nodes — this tradeoff is almost always worthwhile for genuinely large lists, but unnecessary and potentially counterproductive for short lists that would render fine without it.',
+      ],
+    },
+    {
+      heading: 'Combining Virtualization with Search, Filtering, and Sorting',
+      points: [
+        'When a virtualized list also supports client-side filtering or sorting, the Virtualize component must be re-rendered with the new filtered/sorted item source (or its ItemsProvider re-invoked) — Virtualize itself has no built-in filtering or sorting logic, expecting the consuming component to supply an already-filtered/sorted collection or provider.',
+        'For server-side filtering combined with virtualization (searching a massive dataset that cannot be loaded client-side), the ItemsProvider delegate should incorporate the current filter/sort state into its query, refetching the appropriate page of already-filtered results as the user scrolls through the filtered view.',
+        'Resetting Virtualize\'s internal scroll and rendering state when the underlying item source changes significantly (a new search query producing an entirely different result set) may require forcing a fresh render via a changed @key on the Virtualize component, since it does not automatically detect that "the same list" is now conceptually a different dataset.',
+        'Combining virtualization with animated list transitions (items smoothly appearing/disappearing) is genuinely difficult, since Virtualize aggressively creates and destroys DOM elements outside the visible range — applications needing both smooth animated transitions AND virtualization for very large lists often need custom, carefully-tuned solutions rather than combining both features naively.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

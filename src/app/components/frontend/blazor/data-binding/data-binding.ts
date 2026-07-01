@@ -47,6 +47,24 @@ export class BlazorDataBinding {
       points: ['Event directives like `@onclick`, `@oninput`, and `@onkeydown` accept a method reference or a lambda. Event args are available as `MouseEventArgs`, `ChangeEventArgs`, `KeyboardEventArgs`, etc. When iterating a list and capturing the loop variable in a lambda, always copy it to a local variable first to avoid the captured-variable closure bug.',
       'Event directives accept method references or lambdas.', 'Event arg types: MouseEventArgs, ChangeEventArgs, KeyboardEventArgs, etc.', 'Capture loop variables with var local = item; before using in lambda.', 'async lambdas are fine: @onclick="async () => await Load()"']
     },
+    {
+      heading: 'Custom Component Two-Way Binding with @bind-Value',
+      points: [
+        'Creating a custom component that supports @bind-Value (the same syntax used with built-in input elements) requires exposing a Value parameter and a matching ValueChanged EventCallback<T> parameter, following Blazor\'s naming convention that pairs a parameter with a ParameterChanged callback.',
+        'The consuming component then binds with <MyCustomInput @bind-Value="myField" /> — Blazor automatically wires this to pass myField as Value and update myField whenever ValueChanged fires, without the consumer needing to manually write out the equivalent Value and ValueChanged wiring explicitly.',
+        'For components binding a complex object rather than a simple primitive, consider whether two-way binding is even the right pattern — sometimes explicit, one-directional parameter passing plus an explicit "save" callback better expresses the actual intended interaction than implicit continuous two-way synchronization.',
+        'Binding expressions can include format strings for certain types (@bind:format="yyyy-MM-dd" for dates) — controlling how a bound value is displayed and parsed without needing separate manual formatting logic in the component.',
+      ],
+    },
+    {
+      heading: 'Debouncing Bound Input for Performance',
+      points: [
+        'Binding a text input with @bind:event="oninput" for live filtering or search-as-you-type triggers an update (and potential re-render or server round-trip) on every single keystroke — for expensive downstream operations (an API call, a large list filter), this can create noticeable performance issues or excessive server load.',
+        'Debouncing (waiting for a brief pause in typing before actually triggering the expensive operation) is not built into Blazor\'s binding system directly and typically requires a small amount of custom logic — a Timer or Task.Delay-based debounce wrapper around the bound value\'s change handler.',
+        'In Blazor Server specifically, un-debounced binding on a fast typist sends a SignalR message to the server for every keystroke — debouncing here has a doubly important benefit, reducing both unnecessary re-render work AND unnecessary network round-trips over the circuit.',
+        'Libraries and community components exist specifically to provide debounced input components as a drop-in replacement for standard bound inputs, avoiding the need to hand-roll debounce logic repeatedly across different parts of an application that need this same behavior.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

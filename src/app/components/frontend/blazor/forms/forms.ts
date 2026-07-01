@@ -47,6 +47,24 @@ export class BlazorForms {
       points: ['In .NET 8, Static SSR forms use `method="post"` and a `@formname` attribute. Blazor automatically injects an antiforgery token — you do not need `Html.AntiForgeryToken()`. Use `[SupplyParameterFromForm]` to bind the posted model. This requires a named EditForm with `FormName=` matching the `@formname`.',
       'Static SSR forms use @formname and method="post".', '[SupplyParameterFromForm] binds POST values to a property.', 'Antiforgery tokens are injected automatically in .NET 8.', 'Interactive forms work as they did pre-.NET 8 — no @formname needed.']
     },
+    {
+      heading: 'Custom Validation Beyond Data Annotations',
+      points: [
+        'When built-in data annotation attributes ([Required], [Range], [RegularExpression]) are insufficient for a validation rule (like a cross-field comparison, e.g., "end date must be after start date"), implement IValidatableObject on the model or use FluentValidation for more expressive, composable validation logic.',
+        'A custom ValidationAttribute subclass can encapsulate reusable business validation rules (a custom [ValidZipCode] attribute) that can be applied declaratively across multiple models, keeping validation logic DRY rather than duplicating the same custom check in multiple places.',
+        'EditContext exposes an OnValidationRequested event that custom validation logic can hook into, letting you integrate entirely custom, non-data-annotation-based validation frameworks (like FluentValidation) into the standard EditForm validation pipeline seamlessly.',
+        'Server-side validation must always be performed independently of client-side EditForm validation — client-side validation is a UX convenience improving form usability, but a malicious or buggy client could submit data that bypasses it entirely, so the server must never trust that client-side validation actually ran.',
+      ],
+    },
+    {
+      heading: 'EditForm Model Binding for Complex Nested Objects',
+      points: [
+        'EditForm binds to a Model parameter representing the entire form\'s backing object — nested complex properties (an Address object within a Customer model) require nested validation attributes and, for DataAnnotationsValidator to catch nested validation errors, the nested object types must also carry appropriate validation attributes.',
+        'For deeply nested or dynamically-structured forms (a form generated from a variable list of fields), building the form UI dynamically based on the model\'s shape (via reflection or a schema-driven approach) avoids hand-writing every individual field binding, at the cost of losing some compile-time type safety in the generated form markup.',
+        'InputSelect and other typed input components require the bound property type to correctly implement equality comparison for the selected option to be correctly identified — a common bug with enum or custom-type-bound dropdowns not showing the expected pre-selected value traces back to this equality matching requirement.',
+        'Resetting a form to its initial state (after a successful submission, or a cancel action) requires either creating a fresh model instance and re-rendering the EditForm with a new @key, or manually resetting each field value — EditForm does not provide a built-in "reset" method, since it operates on whatever model instance is currently bound.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

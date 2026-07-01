@@ -47,6 +47,24 @@ export class BlazorServerSignalr {
       points: ['Circuit connection settings (timeout, buffer size) are configured via `AddInteractiveServerComponents(options => ...)`. For multi-server deployments, circuits are pinned to one server — use sticky sessions (load balancer affinity) or move to Azure SignalR Service which handles connection routing. CircuitHandler lets you react to circuit connect/disconnect events for cleanup or logging.',
       'Sticky sessions required for multi-server Blazor Server — or use Azure SignalR Service.', 'CircuitHandler.OnConnectionUpAsync/DownAsync fires on circuit changes.', 'Disconnected circuit timeout default is 0 seconds (server-configurable).', 'Azure SignalR Service decouples the WebSocket from the app server.']
     },
+    {
+      heading: 'Circuit Lifecycle and Resource Cleanup',
+      points: [
+        'Each connected Blazor Server user maintains a "circuit" — a server-side representation of their session holding component state, event handlers, and the SignalR connection — which consumes server memory for the entire duration the user is connected, unlike a stateless HTTP request/response cycle.',
+        'Implementing IDisposable/IAsyncDisposable on components that hold resources (event subscriptions to a singleton service, timers, database connections held open) is essential to prevent resource leaks — a circuit that never properly cleans up accumulates leaked resources across every connected session over the server\'s uptime.',
+        'The CircuitOptions.DisconnectedCircuitMaxRetained and DisconnectedCircuitRetentionPeriod settings control how long a disconnected circuit\'s state is retained in server memory awaiting possible reconnection — tuning these settings balances reconnection resilience against server memory consumption from many abandoned circuits.',
+        'Monitoring active circuit count and per-circuit memory usage in production is important operational visibility for Blazor Server — a memory leak in commonly-used component code multiplies across every active circuit, potentially causing server-wide memory exhaustion under load that would not manifest in local single-session development testing.',
+      ],
+    },
+    {
+      heading: 'Scaling Blazor Server Beyond a Single Instance',
+      points: [
+        'Horizontally scaling Blazor Server across multiple server instances requires sticky sessions (session affinity at the load balancer) since a circuit lives entirely on the specific instance that created it — a load balancer routing a reconnection attempt to a different instance than the original would lose that circuit\'s state entirely.',
+        'Azure SignalR Service (or a similar managed SignalR backplane) can offload the actual persistent WebSocket connections from your application servers to a dedicated scaling service, decoupling connection count from application server capacity and simplifying horizontal scaling of the underlying transport layer.',
+        'Each additional connected user consumes server memory for their circuit\'s entire duration — capacity planning for Blazor Server must account for concurrent USER count (not request rate, as with typical stateless APIs), a fundamentally different scaling model than most traditional web application capacity planning.',
+        'For applications expecting very large numbers of concurrent users where per-user server memory cost becomes prohibitive, Blazor WebAssembly (which shifts state to the client browser rather than server memory) may be a more scalable architectural choice than Blazor Server, despite WASM\'s own tradeoffs around initial download size.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

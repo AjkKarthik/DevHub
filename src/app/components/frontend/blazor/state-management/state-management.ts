@@ -47,6 +47,24 @@ export class BlazorStateManagement {
       points: ['When a Blazor page is pre-rendered on the server and then made interactive, data fetched during pre-rendering is lost and re-fetched — causing a double-request. `PersistentComponentState` solves this: during pre-render, serialize data with `PersistAsJson`. When the interactive component starts, deserialize it with `TryTakeFromJson` before hitting the API.',
       'Eliminates double data-fetch during SSR → interactive hydration.', 'Call PersistAsJson during OnInitializedAsync in the pre-render phase.', 'Call TryTakeFromJson to restore data before making an API call.', 'Works transparently — same @code branch handles both phases.']
     },
+    {
+      heading: 'Persisting State Across Blazor WebAssembly Page Reloads',
+      points: [
+        'Blazor WebAssembly application state lives entirely in browser memory and is lost on a full page reload — for state that should survive a reload (user preferences, in-progress form data), explicit persistence to browser localStorage or sessionStorage via JS interop is required.',
+        'ProtectedLocalStorage and ProtectedSessionStorage (available for Blazor Server) provide server-side data protection (encryption) for values stored client-side, appropriate when the persisted state contains sensitive information that should not be readable or tamperable via browser dev tools.',
+        'PersistentComponentState (used with Static SSR and enhanced navigation) lets state computed during the initial server render be serialized and passed to the client, avoiding a redundant re-fetch of the same data when a component subsequently becomes interactive — a specific optimization for the Static SSR to interactive transition.',
+        'Choosing where state should live (component-local, a shared service, browser storage, or server-persisted) should be driven by the actual lifetime and sharing requirements of that specific piece of state — defaulting everything to the broadest-scoped option (a singleton service) when narrower scoping would suffice adds unnecessary complexity and potential for state leaking between unrelated parts of the application.',
+      ],
+    },
+    {
+      heading: 'State Management Libraries and Patterns for Larger Applications',
+      points: [
+        'For applications with genuinely complex, cross-cutting state (many components reading and writing shared application state), a dedicated state management pattern (Flux/Redux-style unidirectional data flow, implemented via a custom service or a library like Fluxor) provides more structure and predictability than ad-hoc shared services with scattered mutation points.',
+        'A unidirectional data flow pattern (state changes only through explicit, traceable actions/dispatches rather than direct mutation from anywhere) makes it significantly easier to reason about how and why state changed, especially valuable as an application and team grows beyond what a single developer can hold in their head.',
+        'Not every application needs a formal state management library — for smaller applications with limited shared state, a simple injected service with an OnChange event (the pattern covered in earlier sections) is often perfectly sufficient, and introducing a heavier state management framework prematurely adds complexity without proportional benefit.',
+        'Whatever state management approach is chosen, keeping state changes traceable (through logging, dev tools integration, or simply clear, consistent code patterns) pays dividends during debugging — untraceable state mutations scattered throughout a codebase are one of the hardest categories of bug to track down in any stateful UI application.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

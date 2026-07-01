@@ -47,6 +47,24 @@ export class BlazorErrorHandling {
       points: ['For HTTP errors on server-rendered pages, use `app.UseExceptionHandler("/Error")` with a custom Error page. For Blazor Server, unhandled exceptions that escape all ErrorBoundaries terminate the circuit — implement a custom `CircuitHandler.OnUnhandledExceptionAsync()` to log them. For WASM, unhandled exceptions terminate the WASM runtime instance — the user must reload.',
       'app.UseExceptionHandler maps unhandled HTTP exceptions to an error page.', 'Blazor Server: unhandled exception kills the circuit — user sees the reconnect overlay.', 'CircuitHandler.OnUnhandledExceptionAsync is the last-resort log hook for Server.', 'On WASM, an unhandled exception crashes the runtime — reload is required.']
     },
+    {
+      heading: 'ErrorBoundary Scope and Composition',
+      points: [
+        'An ErrorBoundary only catches exceptions thrown by its CHILD content during rendering or synchronous event handling — it does not catch exceptions thrown in its own code, in parent components, or in unrelated sibling component trees, so placement matters for what a given boundary actually protects.',
+        'Multiple ErrorBoundary components can be nested at different levels of granularity — a boundary around an entire page provides a coarse fallback, while boundaries around individual widgets let one broken widget fail gracefully without taking down the surrounding page content.',
+        'Calling ErrorBoundary.Recover() (available via a reference to the boundary) lets you programmatically reset a boundary after displaying an error, allowing the user to retry the failed operation without needing a full page reload — useful for transient failures like a temporarily unavailable API.',
+        'Logging the exception captured by an ErrorBoundary (via its RecursiveTemplate or the exception passed to a custom fallback content template) ensures errors are still tracked in your monitoring system even though the user sees a graceful fallback UI instead of a raw error page.',
+      ],
+    },
+    {
+      heading: 'Global Exception Handling Beyond ErrorBoundary',
+      points: [
+        'Unhandled exceptions in fire-and-forget async void event handlers (a common Blazor anti-pattern) do not propagate to an ErrorBoundary at all — they surface as an unhandled task exception that can crash a Blazor Server circuit entirely, making async Task (not async void) the required pattern for event handlers that might throw.',
+        'AppDomain.UnhandledException and TaskScheduler.UnobservedTaskException provide a last-resort, application-wide safety net for exceptions that escape all other handling — useful for logging genuinely unexpected failures, though by the time an exception reaches this level, the application state is likely already compromised.',
+        'Structured logging of caught exceptions (including correlation IDs matching what the user sees in a friendly error message) bridges the gap between a clean user-facing error experience and the detailed diagnostic information engineers need to actually investigate and fix the underlying issue.',
+        'Distinguishing between exceptions worth catching and gracefully handling (an expected API timeout) versus exceptions that indicate a genuine programming bug (a null reference from unexpected state) helps decide where to add explicit try/catch versus where to let an ErrorBoundary or global handler catch it as a true unexpected failure.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

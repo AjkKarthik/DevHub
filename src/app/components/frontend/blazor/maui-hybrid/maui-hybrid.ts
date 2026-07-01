@@ -47,6 +47,24 @@ export class BlazorMauiHybrid {
       points: ['Inside a Blazor component in a MAUI Hybrid app, inject MAUI Essentials services (IFileSystem, IDeviceInfo, IGeolocation, etc.) directly — they are registered in the DI container by MAUI. Avoid using these interfaces in the shared RCL directly; instead define abstractions and inject platform-specific implementations, so the same component can render in a web context without MAUI.',
       'MAUI Essentials APIs are available via DI injection.', 'Wrap platform-specific APIs behind interfaces for web compatibility.', 'IJSRuntime is still available in Hybrid — calls execute in the embedded WebView.', 'There is no network latency — JS interop is in-process.']
     },
+    {
+      heading: 'Sharing Code Between Web and MAUI Hybrid Targets',
+      points: [
+        'A .NET MAUI Blazor Hybrid app and a separate Blazor web app can share the same Razor component library — components written without direct dependencies on browser-only or native-only APIs work unmodified across both targets, maximizing code reuse.',
+        'Platform-specific functionality (camera access, native file system, push notifications) requires abstracting behind an interface implemented differently per platform — a shared component depends on the interface, while platform-specific projects (MAUI native, or a JS interop shim for web) provide the concrete implementation.',
+        'Dependency injection registration differs slightly between a pure web Blazor app and a MAUI Hybrid app\'s MauiProgram.cs — shared component libraries should avoid assuming any specific DI registration pattern, instead documenting what services they expect to be registered by whichever host application consumes them.',
+        'Testing a MAUI Hybrid app\'s Blazor components can still use bUnit for the component logic itself, since bUnit does not care whether the components are ultimately hosted in a browser or a native WebView — platform-specific integration (native API calls) still requires MAUI-specific testing or manual verification.',
+      ],
+    },
+    {
+      heading: 'Debugging Hybrid Apps Across the Native/Web Boundary',
+      points: [
+        'Debugging a MAUI Blazor Hybrid app spans two distinct layers — the native .NET/MAUI code (debuggable with standard .NET debugging tools) and the Blazor component code running inside the embedded WebView, which may require browser-style DevTools access to the WebView\'s rendering for full visibility into the web layer.',
+        'Platform-specific WebView debugging tools (Chrome DevTools for Android\'s WebView, Safari Web Inspector for iOS/macOS WKWebView) can be attached to inspect the actual rendered DOM and JavaScript console output within a running Hybrid app, similar to debugging a regular web page.',
+        'Performance profiling a Hybrid app requires considering both native startup overhead (MAUI app launch, WebView initialization) and web-layer rendering performance (Blazor component rendering within the WebView) — a slow-feeling Hybrid app could have its bottleneck in either layer, requiring different diagnostic tools to identify which.',
+        'Platform-specific quirks in WebView implementations (older Android WebView versions, WKWebView\'s stricter security policies) can cause behavior differences between platforms even with identical Blazor component code — testing on all actually-targeted platforms, not just one, is necessary to catch these platform-specific WebView behavior differences.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

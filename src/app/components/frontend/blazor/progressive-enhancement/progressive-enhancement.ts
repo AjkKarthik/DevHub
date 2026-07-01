@@ -47,6 +47,24 @@ export class BlazorProgressiveEnhancement {
       points: ['Use `data-enhance` on forms that benefit from partial page updates — search boxes, filter forms, pagination. Avoid it for forms that need the full page lifecycle (login redirects, payment flows). For full page navigation after submit, use a plain form without `data-enhance` so the redirect response loads cleanly. Always test the no-JS fallback for any form used in critical user flows.',
       'data-enhance enables enhanced form submission on a per-form basis.', 'Forms with redirect-on-success should stay as plain forms.', 'Test the no-JS path for all critical forms.', 'Enhanced navigation is on by default; opt out with data-enhance-nav="false".']
     },
+    {
+      heading: 'Balancing Enhanced Navigation with Full Interactivity',
+      points: [
+        'Static Server-Side Rendering with enhanced navigation provides fast, SEO-friendly initial page loads with SPA-like navigation, but the page has no persistent interactive state — form validation feedback and dynamic UI updates require either full page reloads or upgrading specific components to an interactive render mode.',
+        'A common progressive enhancement strategy renders most of a page as Static SSR for speed and SEO, while opting individual interactive widgets (a shopping cart icon, a live search box) into InteractiveServer or InteractiveWebAssembly render mode — getting the performance benefits of static rendering everywhere it is not needed.',
+        'Testing that a page genuinely degrades gracefully without JavaScript (disabling JS in browser dev tools and verifying core functionality like navigation and form submission still work) validates that the progressive enhancement is actually functioning as intended, not just theoretically present.',
+        'Progressive enhancement particularly benefits users on slow connections or older devices, and improves resilience against a JavaScript error anywhere on the page breaking the entire application — a philosophy of "core functionality works without JS, enhanced functionality layers on top" produces more robust applications overall.',
+      ],
+    },
+    {
+      heading: 'Enhanced Forms and Progressive Form Submission',
+      points: [
+        'A standard HTML form (with correct method and action attributes) submits and works correctly even with JavaScript entirely disabled — a genuine progressive enhancement baseline, since it functions as a normal browser form submission without any dependency on client-side script.',
+        'When the Blazor enhancement script is active, form submissions are intercepted and handled via a background fetch with DOM patching instead of a full page reload — improving perceived responsiveness for users with JavaScript enabled, without requiring a separate implementation for the no-JS fallback case.',
+        'Enhanced form submission preserves scroll position and avoids the visual flash of a full page reload, closely approximating an SPA-like experience while the underlying implementation remains a standard, accessible HTML form that degrades gracefully.',
+        'Testing both the enhanced (JS-enabled) and baseline (JS-disabled) submission paths ensures the progressive enhancement genuinely works as intended — a form that silently breaks with JS disabled (perhaps due to a client-side-only validation check with no server-side equivalent) fails the core promise of progressive enhancement.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
