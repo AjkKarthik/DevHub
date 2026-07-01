@@ -234,15 +234,15 @@ journalctl -u mybackup.service -n 50`,
       explanation: '*/5 in the minute field means every 5 minutes (0, 5, 10, 15...). The */N syntax means every N units. The five fields are: minute, hour, day-of-month, month, day-of-week.',
     },
     {
-      q: 'What does @reboot do in a crontab?',
+      q: 'A server crashes and reboots multiple times in quick succession due to a hardware issue (a "boot loop"). What happens to an @reboot job each time, and what risk does this create for a job that is not idempotent?',
       options: [
-        'Reboots the system daily',
-        'Runs the command once when the cron daemon starts (system boot)',
-        'Runs the command every reboot cycle',
-        'It is an invalid cron expression',
+        'Cron detects the boot loop and only runs the @reboot job once total',
+        '@reboot fires again on every single boot, with no memory of prior runs — a boot loop means the job runs repeatedly in a short window, which is dangerous for any @reboot job that has a one-time side effect (like inserting a startup record) rather than being safe to run redundantly',
+        'The system automatically disables cron after 3 reboots in an hour',
+        '@reboot jobs are skipped entirely if the previous boot was less than 5 minutes ago',
       ],
       answer: 1,
-      explanation: '@reboot runs the command once after every system boot when crond starts. It is equivalent to @reboot and useful for starting services or initialising state after restart.',
+      explanation: 'Cron has no concept of "already ran this @reboot job once" across boots — it purely reacts to the daemon starting, so a boot loop (common during a failing disk, a bad kernel update, or a crash-restart cycle) causes the @reboot job to fire on every single boot attempt, however many times that happens in a short span. This is a real operational trap: an @reboot job that sends a "server started" notification is harmless if it fires 10 times during a boot loop, but an @reboot job that runs a non-idempotent migration or increments a counter can cause real damage — the same idempotency discipline needed for retried distributed-systems operations applies here.',
     },
   ];
 
@@ -264,12 +264,12 @@ journalctl -u mybackup.service -n 50`,
       a: 'In /etc/crontab or /etc/cron.d/: "0 2 * * * www-data /opt/app/cleanup.sh". The username field specifies who runs the command. Alternatively: sudo crontab -u www-data -e edits www-data\'s crontab. User crontabs always run as that user.',
     },
     {
-      q: 'Where are system-wide cron jobs stored and how do they differ from user crontabs?',
-      a: 'System cron locations: <strong>/etc/crontab</strong> (system crontab with user field), <strong>/etc/cron.d/</strong> (package-managed jobs), <strong>/etc/cron.daily|weekly|monthly/</strong> (scripts run by run-parts). User crontabs (crontab -e) are stored in <strong>/var/spool/cron/crontabs/username</strong> — no user field required since the cron daemon runs them as that user.',
+      q: 'A package uninstall leaves behind a stale job in /etc/cron.d/ that keeps running a script the package removed. Why does this happen, and what makes /etc/cron.d/ riskier for orphaned jobs than /etc/cron.daily/?',
+      a: 'A well-behaved package should remove its own /etc/cron.d/ file in its uninstall/purge script, but poorly-packaged or manually-installed software often skips this cleanup — the cron.d file is just a plain text file with no lifecycle tracking of its own, so cron keeps reading and executing it regardless of whether the script it references still exists (producing a "No such file or directory" cron error email, if mail is even configured, rather than a loud failure). /etc/cron.daily/ (and weekly/monthly) is somewhat less prone to this specific issue because run-parts scripts are more commonly owned and cleanly removed by their package\'s uninstall hooks, but the underlying risk is the same category: cron itself has no awareness of whether the software that installed a job is still present, so periodic audits of /etc/cron.d/ and /etc/cron.daily/ for orphaned entries are worth doing after any package removal.',
     },
     {
-      q: 'How do you debug a cron job that is not running?',
-      a: 'Steps: (1) Check <strong>/var/log/syslog</strong> or <strong>journalctl -u cron</strong> for cron execution logs. (2) Test the command manually as the correct user. (3) Ensure PATH is set in crontab (cron has minimal PATH). (4) Redirect output: <code>cmd >> /tmp/out.log 2>&1</code>. (5) Check permissions on the script (must be executable). (6) Verify no syntax errors with <code>crontab -l</code>.',
+      q: 'A cron job\'s log file shows it ran and exited with status 0, but the expected downstream side effect (a file that should have been created) never happened. What debugging step catches this specific class of "silently wrong, not silently failing" bug that a simple exit-code check misses?',
+      a: 'Exit code 0 only proves the last command in the script\'s pipeline returned success — it does not prove EVERY command in a multi-step script succeeded, especially inside a pipeline (cmd1 | cmd2 reports cmd2\'s exit code even if cmd1 failed) or when a script continues past a failed command without set -e. The fix is adding `set -euo pipefail` at the top of the cron script so any failing command anywhere in the pipeline aborts the script and produces a nonzero exit code cron can report, combined with explicit logging at each meaningful step (echo "Step X: creating file" >> logfile) so a re-run of the log shows exactly which step silently no-op\'d rather than just "the script finished."',
     },
   ];
 }

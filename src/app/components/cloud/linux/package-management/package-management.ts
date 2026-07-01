@@ -324,8 +324,8 @@ console.log(compareVersions("1.18.0-1", "1.18.0-2")); // -1`,
       a: '<code>apt-mark hold packagename</code> prevents a package from being upgraded automatically. <code>apt-mark unhold packagename</code> releases it. To install a specific version: <code>apt install package=version</code>. Check held packages with <code>apt-mark showhold</code>. Alternatively use <code>dpkg --set-selections</code> or pin via /etc/apt/preferences.d/.',
     },
     {
-      q: 'What is a PPA and how do you add one on Ubuntu?',
-      a: 'A <strong>PPA</strong> (Personal Package Archive) on Launchpad hosts third-party packages for Ubuntu. Add with: <code>add-apt-repository ppa:user/ppa-name && apt update</code>. The command adds the GPG key and a source entry to /etc/apt/sources.list.d/. Be cautious: PPAs are not officially vetted. Prefer official repos or Snap/Flatpak for security-critical software.',
+      q: 'A team adds a PPA to get a newer version of one package, and a routine `apt upgrade` later unexpectedly pulls in updates to several OTHER, unrelated packages that also happen to be provided by that same PPA. Why does this happen, and how do you prevent a PPA from affecting packages beyond the one you actually wanted?',
+      a: 'A PPA is a whole repository, not a single package — once added, apt considers every package the PPA provides as a candidate source for updates, and if the PPA happens to publish a version of a package you already have installed (even one unrelated to why you added the PPA), apt may prefer the PPA\'s version if it has a higher version number, silently widening your upgrade surface beyond the one package you actually wanted. The safer approach is `apt-cache policy <package>` after adding a PPA to review exactly which packages and versions it would affect, and using apt pinning (a file in /etc/apt/preferences.d/) to pin specific packages to their official-repo version while still allowing the PPA to provide just the one package you actually need, rather than letting the PPA freely compete for every package it happens to also publish.',
     },
   ];
 

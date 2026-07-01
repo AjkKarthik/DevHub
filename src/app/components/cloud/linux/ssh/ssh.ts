@@ -297,15 +297,15 @@ function parseSshConfig(content: string): Map<string, HostConfig> {
       explanation: '~/.ssh/authorized_keys on the remote server contains public keys that are allowed to authenticate. Add your public key there (or use ssh-copy-id user@host) to enable passwordless key-based login.',
     },
     {
-      q: 'What does ssh -L 8080:localhost:3000 user@host create?',
+      q: 'What does ssh -R 9000:localhost:3000 user@remote-host create, and why is this the OPPOSITE direction of -L port forwarding?',
       options: [
-        'A reverse tunnel from the remote host to local port 8080',
-        'A local port forward: connections to local port 8080 are tunnelled through host and forwarded to host port 3000',
-        'An SSH tunnel with SOCKS proxy on port 8080',
-        'A direct connection bypassing the firewall on port 3000',
+        'It is identical to -L, just different flag naming',
+        'A remote port forward: the remote-host listens on its own port 9000, and connections TO that remote port are tunnelled back through the SSH connection to localhost:3000 on the machine that initiated the SSH session — useful for exposing a local dev server to a remote machine',
+        'It forwards all traffic on the remote host through a SOCKS proxy',
+        'It creates a bidirectional tunnel usable from either end equally',
       ],
       answer: 1,
-      explanation: '-L localPort:remoteHost:remotePort creates local port forwarding. Traffic to localhost:8080 is encrypted through the SSH connection and forwarded to host:3000. Useful for accessing remote services through a bastion host.',
+      explanation: '-R reverses the direction of -L: instead of the LOCAL machine exposing a port that tunnels to the remote side, the REMOTE machine exposes a port (9000 here) that tunnels connections back to the local machine\'s port 3000. This is useful when you need to expose something running on your own laptop/dev machine to a remote server that cannot otherwise reach you directly (e.g. demoing a local dev server to a colleague via a shared remote box, or letting a remote CI runner reach back to a local webhook receiver) — the direction of initiation for the SSH connection itself and the direction of the forwarded TRAFFIC are independent, which is the part people most often find confusing about -R.',
     },
   ];
 
