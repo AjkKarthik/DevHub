@@ -10413,6 +10413,251 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Overusing full-markup snapshot assertions for every component becomes brittle — reserve them for components where exact rendered structure genuinely matters.',
     ],
   },
+
+  // ── DevOps: per-page entries ─────────────────────────────────────────────────
+  'devops/sdlc-agile': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Culture',                   route: '/devops/culture' },
+      { label: 'Continuous Integration',    route: '/devops/continuous-integration' },
+    ],
+    tip: 'DevOps grew out of applying Agile\'s iterative, feedback-driven philosophy to OPERATIONS, not just development — the goal is shortening the feedback loop from "code written" to "value delivered and validated in production," not merely shipping code faster.',
+    gotchas: [
+      'Agile ceremonies (standups, retros) without the underlying feedback-loop mindset become empty ritual — the practices only pay off when paired with genuine iterative learning.',
+      'DevOps is as much an organizational/cultural shift as a toolchain — adopting the tools without the collaboration model behind them rarely delivers the expected benefit.',
+    ],
+  },
+  'devops/culture': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'SDLC & Agile',       route: '/devops/sdlc-agile' },
+      { label: 'Incident Response',  route: '/devops/incident-response' },
+    ],
+    tip: 'Breaking down the traditional wall between Dev and Ops means shared ownership of production outcomes — a team that only writes code and hands it off has no direct feedback loop from what actually happens when that code runs in production.',
+    gotchas: [
+      'Blameless postmortems are a cultural practice, not just a document template — blame-focused incident reviews teach people to hide information, making future incidents harder to learn from.',
+      '"You build it, you run it" only works with genuine on-call support and tooling investment — without them, it just shifts operational burden onto developers without the means to handle it well.',
+    ],
+  },
+  'devops/git-workflows': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Continuous Integration', route: '/devops/continuous-integration' },
+    ],
+    tip: 'Trunk-based development (short-lived branches, frequent merges to main) enables more frequent, lower-risk integration than long-lived feature branches — the longer a branch diverges from main, the more painful its eventual merge becomes.',
+    gotchas: [
+      'Long-lived feature branches accumulate merge conflict risk proportional to how long they diverge — this is a direct argument for trunk-based development at scale.',
+      'A branching strategy should match team size and release cadence — GitFlow\'s heavier ceremony fits some release schedules better than others, not universally.',
+    ],
+  },
+  'devops/continuous-integration': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Git Workflows',           route: '/devops/git-workflows' },
+      { label: 'Continuous Delivery',     route: '/devops/continuous-delivery' },
+    ],
+    tip: 'CI\'s core value is catching integration problems EARLY and FREQUENTLY — a build that only runs nightly or weekly defeats the purpose, since the whole point is surfacing a broken integration within minutes of the change that caused it, while context is still fresh.',
+    gotchas: [
+      'A flaky test suite that developers learn to ignore or re-run blindly defeats CI\'s trust model entirely — flaky tests need fixing, not routine dismissal.',
+      'CI pipeline speed matters — a 45-minute pipeline gets run less often locally and delays feedback, undermining the fast-feedback goal CI exists to serve.',
+    ],
+  },
+  'devops/continuous-delivery': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Continuous Integration', route: '/devops/continuous-integration' },
+      { label: 'Release Management',     route: '/devops/release-management' },
+    ],
+    tip: 'Continuous Delivery means every change that passes the pipeline is DEPLOYABLE at any time — this is distinct from Continuous Deployment, where every passing change is AUTOMATICALLY deployed with no manual gate; conflating the two is a common terminology mistake.',
+    gotchas: [
+      'A pipeline that "could" deploy but requires manual approval at every stage isn\'t genuinely continuous — the discipline is in removing unnecessary manual gates, not just having automation exist.',
+      'Feature flags let code be deployed without being immediately user-visible, decoupling deployment from release — a key enabler of safe continuous delivery.',
+    ],
+  },
+  'devops/environment-strategy': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Continuous Delivery', route: '/devops/continuous-delivery' },
+    ],
+    tip: 'Environment PARITY (staging closely mirroring production\'s configuration and scale) is what makes staging tests actually predictive of production behavior — a staging environment that diverges significantly from production gives false confidence.',
+    gotchas: [
+      'Configuration drift between environments (a manually-applied hotfix in production never backported to staging) silently erodes parity over time.',
+      'Ephemeral environments (spun up per PR, torn down after) avoid drift entirely by always starting from a known-clean baseline, at the cost of provisioning overhead per environment.',
+    ],
+  },
+  'devops/release-management': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Continuous Delivery', route: '/devops/continuous-delivery' },
+    ],
+    tip: 'Blue-green and canary deployments both reduce release risk but differently — blue-green switches ALL traffic to a new version atomically (fast rollback, doubled infrastructure cost); canary gradually shifts a SMALL percentage of traffic first (slower, but catches issues before full exposure).',
+    gotchas: [
+      'A rollback plan that has never actually been tested is not a real rollback plan — practicing the rollback path is as important as practicing the deploy path.',
+      'Feature flags decouple deployment from release, letting a "released" feature be toggled off instantly without a full redeploy if something goes wrong.',
+    ],
+  },
+  'devops/iac': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'GitOps', route: '/devops/gitops' },
+    ],
+    tip: 'Infrastructure as Code treats infrastructure provisioning as a versioned, reviewable, repeatable artifact — the alternative (manual console clicks) produces infrastructure that can\'t be reliably reproduced, audited, or rolled back the way code can.',
+    gotchas: [
+      'IaC configuration drift (a manual change made directly in the cloud console, bypassing the IaC tool) silently diverges from what the code describes until the next apply forcibly reconciles it.',
+      'Always reviewing a plan/diff before applying is essential — an unexpected "destroy" in a plan output is the single most common way teams accidentally lose production infrastructure.',
+    ],
+  },
+  'devops/gitops': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'IaC',                     route: '/devops/iac' },
+      { label: 'Kubernetes Deployments',   route: '/devops/kubernetes-deployments' },
+    ],
+    tip: 'GitOps uses Git as the SINGLE SOURCE OF TRUTH for desired system state — a reconciliation controller (Argo CD, Flux) continuously compares actual cluster state to the Git-declared state and automatically corrects any drift, rather than a human running imperative deploy commands.',
+    gotchas: [
+      'GitOps\'s automatic reconciliation means a manual kubectl edit against a GitOps-managed resource gets silently reverted on the next reconciliation cycle — changes must go through Git.',
+      'Secrets in a GitOps repo need special handling (sealed secrets, external secret operators) since the repo itself shouldn\'t contain plaintext credentials.',
+    ],
+  },
+  'devops/kubernetes-deployments': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'GitOps',           route: '/devops/gitops' },
+      { label: 'Docker & CI/CD',   route: '/devops/docker-cicd' },
+    ],
+    tip: 'A rolling update deployment strategy replaces pods gradually (a batch at a time) rather than all at once — reducing the risk that a bad image takes down the entire application simultaneously, at the cost of briefly running mixed old/new versions during rollout.',
+    gotchas: [
+      'Readiness probes must accurately reflect genuine readiness — a rolling update routing traffic to a not-yet-ready pod causes real request failures during the deploy.',
+      'A deployment with no resource limits set can starve other workloads on a shared node during a rollout that temporarily runs both old and new pod versions.',
+    ],
+  },
+  'devops/docker-cicd': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Kubernetes Deployments', route: '/devops/kubernetes-deployments' },
+      { label: 'Artifact Management',    route: '/devops/artifact-management' },
+    ],
+    tip: 'Building a Docker image once in CI and promoting the SAME immutable image artifact through staging then production (rather than rebuilding per environment) guarantees what was actually tested is exactly what ships — rebuilding per environment risks subtle differences slipping in.',
+    gotchas: [
+      'CI layer caching speeds up repeated builds significantly — a pipeline not preserving the Docker build cache across runs pays the full build cost every time.',
+      'Tagging images by content digest (not just a mutable version tag) in the deployment manifest guarantees exactly which image bytes are actually running.',
+    ],
+  },
+  'devops/artifact-management': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Docker & CI/CD', route: '/devops/docker-cicd' },
+    ],
+    tip: 'A private artifact registry (for container images, packages, binaries) provides a controlled, audited source of truth for what CAN be deployed — pulling directly from public registries in production bypasses vulnerability scanning and provenance checks the private registry enforces.',
+    gotchas: [
+      'Retention policies need explicit configuration — an unbounded artifact registry accumulates storage cost indefinitely without cleanup of old, unused versions.',
+      'Artifact signing and provenance attestation address supply-chain tampering risks that storage alone does not cover.',
+    ],
+  },
+  'devops/github-actions': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Jenkins',           route: '/devops/jenkins' },
+      { label: 'Azure Pipelines',   route: '/devops/azure-pipelines' },
+    ],
+    tip: 'GitHub Actions workflows are defined as YAML checked into the SAME repository as the code — pipeline changes go through the same code review and version history as any other change, unlike a pipeline configured purely through an external CI tool\'s UI.',
+    gotchas: [
+      'Reusable workflows and composite actions reduce duplication across multiple pipelines that share common stages — copy-pasting the same steps everywhere becomes a maintenance burden.',
+      'Secrets referenced in a workflow are masked in logs by default, but a poorly-written step can still accidentally echo a secret value into output.',
+    ],
+  },
+  'devops/jenkins': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'GitHub Actions',   route: '/devops/github-actions' },
+    ],
+    tip: 'Jenkins\'s plugin ecosystem gives it enormous flexibility but also a real maintenance burden — plugin version incompatibilities and abandoned plugins are a common source of Jenkins upgrade pain that newer, more opinionated CI platforms deliberately avoid.',
+    gotchas: [
+      'Declarative Jenkinsfile pipelines (checked into source control) are strongly preferred over configuring jobs purely through the Jenkins UI, for the same code-review/versioning reasons as any pipeline-as-code approach.',
+      'A Jenkins master that also runs build agents directly can be starved of resources by heavy builds — dedicated agent nodes isolate this.',
+    ],
+  },
+  'devops/azure-pipelines': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'GitHub Actions', route: '/devops/github-actions' },
+    ],
+    tip: 'YAML pipelines in Azure DevOps are defined as code, checked into the repo — replacing the older Classic (GUI-based) editor, whose configuration lived outside source control and couldn\'t vary per branch the way pipeline-as-code naturally can.',
+    gotchas: [
+      'Templates let common stages be defined once and reused across many pipelines, reducing duplication versus copy-pasting the same steps into every pipeline.',
+      'YAML pipelines have a steeper initial learning curve than the Classic editor\'s drag-and-drop interface, but pay off in long-term maintainability.',
+    ],
+  },
+  'devops/incident-response': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Monitoring',   route: '/devops/monitoring' },
+      { label: 'SRE',          route: '/devops/sre' },
+    ],
+    tip: 'A blameless postmortem asks WHAT in the system and process allowed an incident to happen, not WHO made a mistake — this isn\'t just a nicety, it directly affects whether future incidents get reported honestly and quickly or hidden out of fear.',
+    gotchas: [
+      'A postmortem without concrete, assigned, TRACKED follow-up action items is a well-written story that prevents nothing.',
+      'Declaring an incident resolved once symptoms disappear, without confirming root cause, risks the same issue recurring shortly after.',
+    ],
+  },
+  'devops/monitoring': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Incident Response', route: '/devops/incident-response' },
+      { label: 'Logging',           route: '/devops/logging' },
+    ],
+    tip: 'Alert on SYMPTOMS users actually experience (elevated error rate, slow responses), not every possible internal CAUSE (a CPU spike, one pod restarting) — cause-based alerting produces fatigue from noisy, often self-resolving conditions that never actually reach the user.',
+    gotchas: [
+      'An alert with no clear, actionable runbook trains on-call to acknowledge and ignore it — every alert needs a defined response action.',
+      'Dashboards are not a substitute for alerting — nobody watches a dashboard 24/7, which is why alerting design matters as its own discipline.',
+    ],
+  },
+  'devops/logging': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Monitoring', route: '/devops/monitoring' },
+    ],
+    tip: 'Centralized log aggregation (shipping logs from every instance to one searchable store) becomes essential once an application runs across multiple instances — grepping individual server log files stops scaling past a handful of hosts.',
+    gotchas: [
+      'Structured logs (JSON with consistent fields) are queryable at scale; free-text logs require fragile regex parsing to extract the same information.',
+      'Sensitive data (passwords, tokens) must never be logged — a common compliance and security failure mode across CI/CD pipelines too, not just application code.',
+    ],
+  },
+  'devops/devsecops': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'CI/CD',            route: '/devops/continuous-integration' },
+      { label: 'Artifact Management', route: '/devops/artifact-management' },
+    ],
+    tip: 'DevSecOps means security scanning (dependency vulnerabilities, container image scanning, SAST) runs AS PART of the CI/CD pipeline itself — catching issues before they merge or deploy, rather than as a separate, later security review that discovers problems after the fact.',
+    gotchas: [
+      'Security gates that block every merge on any finding (even low-severity) train developers to seek workarounds — a graduated severity policy keeps the gate meaningful without becoming an obstacle developers route around.',
+      'Shifting security "left" (earlier in the pipeline) doesn\'t eliminate the need for runtime/production security monitoring — both are needed, not one instead of the other.',
+    ],
+  },
+  'devops/platform-engineering': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'GitOps', route: '/devops/gitops' },
+    ],
+    tip: 'Platform engineering builds INTERNAL DEVELOPER PLATFORMS (self-service tooling, golden paths) so product teams can provision infrastructure and deploy without needing deep infrastructure expertise themselves — treating the platform itself as a product with its own users (the internal dev teams).',
+    gotchas: [
+      'A platform team building tooling nobody asked for (or that ignores actual developer pain points) produces shelf-ware — platform engineering succeeds specifically by treating internal developers as real customers with real feedback loops.',
+      'Too rigid a "golden path" without escape hatches for genuinely unusual needs frustrates teams with legitimate edge cases.',
+    ],
+  },
+  'devops/sre': {
+    apis: DEVOPS_DEFAULT.apis, docs: DEVOPS_DEFAULT.docs, resources: DEVOPS_DEFAULT.resources,
+    related: [
+      { label: 'Incident Response', route: '/devops/incident-response' },
+      { label: 'Monitoring',        route: '/devops/monitoring' },
+    ],
+    tip: 'SRE treats reliability as a QUANTIFIED, engineered property (via SLOs and error budgets) rather than an aspiration — an error budget (100% minus the SLO target) gives a team a concrete, agreed-upon amount of acceptable failure to spend on shipping features versus reliability work.',
+    gotchas: [
+      'An error budget policy only works if it has real teeth — a budget that gets overridden every time it\'s exhausted provides no actual behavioral incentive.',
+      'Toil (manual, repetitive, automatable operational work) directly competes with an SRE team\'s capacity to improve reliability — time spent on toil is time not spent reducing future toil.',
+    ],
+  },
 };
 
 @Component({
