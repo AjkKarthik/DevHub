@@ -60,6 +60,24 @@ export class RedisPubSub {
         'Use Pub/Sub for real-time fanout (chat, live dashboards, cache invalidation signals). Use Redis Streams for reliable, ordered, at-least-once delivery with consumer groups.',
       ],
     },
+    {
+      heading: 'Redis Pub/Sub Limitations Compared to a Message Queue',
+      points: [
+        'Redis Pub/Sub is fire-and-forget — messages published to a channel are delivered only to subscribers currently connected at the moment of publish; a subscriber that connects even a moment after a message was published will never see it, unlike a durable message queue.',
+        'There is no message persistence or replay capability in basic Pub/Sub — if no subscribers are connected when a message is published, that message is simply lost forever, making Pub/Sub unsuitable for use cases requiring guaranteed delivery.',
+        'Redis Streams (a separate, more capable data structure) address these limitations by persisting messages and supporting consumer groups with acknowledgment — appropriate for use cases genuinely requiring reliable message delivery, while Pub/Sub remains appropriate for real-time, ephemeral notifications where occasional missed messages are acceptable.',
+        'Pub/Sub is commonly used for cross-instance coordination in a horizontally-scaled application — such as notifying all connected WebSocket server instances that a specific user\'s data changed, so each instance can push an update to any of that user\'s connections it happens to be holding.',
+      ],
+    },
+    {
+      heading: 'Pattern Subscriptions and Sharded Pub/Sub',
+      points: [
+        'PSUBSCRIBE lets a client subscribe to a pattern (like news.* to receive all messages published to any channel starting with "news.") rather than a single exact channel name — useful for building flexible routing where the exact set of channels is not known in advance.',
+        'Sharded Pub/Sub (introduced in Redis 7, using SSUBSCRIBE) is specifically designed for Redis Cluster deployments — regular Pub/Sub messages are broadcast to every node in a cluster regardless of where subscribers are connected, while sharded Pub/Sub routes messages only to the specific shard responsible for that channel, reducing unnecessary cross-node traffic.',
+        'Because Pub/Sub delivery is not persisted, a client experiencing a brief disconnect and reconnect will have missed any messages published during that gap — application logic that requires no message loss must use Streams instead, or implement its own gap-detection and recovery mechanism on top of Pub/Sub.',
+        'Monitoring the number of active subscribers per channel (PUBSUB NUMSUB) helps verify that a publish-side feature is actually reaching the expected number of connected consumers, useful for debugging situations where published messages appear to have no effect.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

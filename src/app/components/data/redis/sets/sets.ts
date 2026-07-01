@@ -65,6 +65,24 @@ export class RedisSets {
         'Eligibility gates: SADD feature:beta user1 user2. SISMEMBER feature:beta currentUser — O(1) flag check.',
       ],
     },
+    {
+      heading: 'Set Operations for Tags, Relationships, and Deduplication',
+      points: [
+        'Redis Sets naturally enforce uniqueness (SADD ignores an element already present) making them ideal for tracking distinct values — unique visitor tracking, tag lists, or deduplicating a stream of IDs without needing to check for existence before adding.',
+        'SINTER, SUNION, and SDIFF perform set intersection, union, and difference respectively as server-side operations — computing "users who follow both accountA and accountB" via SINTER on two follower sets is far more efficient than fetching both full sets to the client and computing the intersection in application code.',
+        'SISMEMBER provides O(1) membership testing — checking whether a specific value exists in a potentially large set is a constant-time operation, making sets an efficient choice for "is this item in my collection" checks compared to scanning a list.',
+        'SRANDMEMBER and SPOP support random sampling from a set — useful for features like randomly selecting a subset of items (a random daily featured product) without needing to fetch the entire set and randomize in application code.',
+      ],
+    },
+    {
+      heading: 'Sets vs Sorted Sets: Choosing the Right Structure',
+      points: [
+        'Plain Sets are appropriate when you only need membership and uniqueness with no ordering requirement — tag collections, unique visitor tracking, or set algebra operations (intersection, union) between collections of unordered values.',
+        'Sorted Sets add a score to each member, enabling ordered iteration and range queries — choose sorted sets over plain sets whenever ranking, ordering, or range-based retrieval (top N, items within a score range) is part of the actual requirement, since plain sets provide no ordering guarantee at all.',
+        'Converting from a plain set to a sorted set later (if ordering requirements emerge after initial design) requires migrating the data structure entirely — considering whether ordering might eventually be needed during initial data modeling avoids this migration cost later.',
+        'Both structures share O(1) average-case membership testing, but sorted sets have additional overhead (maintaining the score-ordered structure) for insertions and updates — for genuinely unordered use cases, plain sets remain the more memory- and CPU-efficient choice.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

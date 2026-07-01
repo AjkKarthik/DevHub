@@ -62,6 +62,24 @@ export class RedisReplicationSentinel {
         'Sentinel is simpler to operate and understand. Cluster adds complexity (slot assignment, CROSSSLOT constraints, multi-key commands limitations).',
       ],
     },
+    {
+      heading: 'Automatic Failover with Redis Sentinel',
+      points: [
+        'Sentinel is a separate, dedicated process (run as a quorum of multiple Sentinel instances) that monitors Redis primary and replica health, and automatically promotes a replica to primary if the current primary becomes unreachable — providing automatic failover without manual intervention.',
+        'A quorum of at least 3 Sentinel instances (an odd number, to avoid split-brain ties) is recommended for production — a single Sentinel instance is itself a single point of failure for the failover mechanism, defeating the purpose of having automated failover at all.',
+        'Applications connect to Sentinel (not directly to a hardcoded primary address) to discover the CURRENT primary\'s address — this indirection is what allows the actual primary to change during a failover event without requiring every client to be manually reconfigured with a new address.',
+        'Failover is not instantaneous — there is a detection window (Sentinel must confirm the primary is genuinely down, not just experiencing transient network issues) before promoting a replica, meaning a brief window of write unavailability is expected during any failover event, not a truly zero-downtime transition.',
+      ],
+    },
+    {
+      heading: 'Replication Lag and Read Scaling Tradeoffs',
+      points: [
+        'Redis replication is asynchronous by default — a write is acknowledged to the client as soon as the primary applies it, without waiting for replicas to confirm, meaning replicas can lag behind the primary under heavy write load or network delay.',
+        'Reading from replicas to scale read throughput introduces the same staleness tradeoff as any asynchronously replicated system — an application reading a just-written value from a lagging replica may see the previous value momentarily, which must be an acceptable tradeoff for that specific read path.',
+        'WAIT (blocking until a specified number of replicas acknowledge a write, up to a timeout) can be used selectively for genuinely critical writes needing stronger durability guarantees — at the cost of added write latency, so it should be reserved for writes where the durability guarantee is worth that cost.',
+        'Monitoring replication lag (via INFO replication, specifically the master_repl_offset vs slave_repl_offset difference) is essential for any deployment relying on read replicas — a replica falling significantly behind indicates either resource constraints or network issues that should be investigated before it becomes a bigger consistency problem.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

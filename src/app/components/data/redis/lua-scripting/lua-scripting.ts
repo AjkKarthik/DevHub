@@ -72,6 +72,15 @@ export class RedisLuaScripting {
         'Atomic pop from sorted set + store to hash: dequeue a job and mark it in-progress in one step.',
       ],
     },
+    {
+      heading: 'Why Lua Scripts Execute Atomically',
+      points: [
+        'A Lua script run via EVAL executes as a single atomic operation — no other client\'s commands can interleave with the script\'s execution, since Redis\'s single-threaded model guarantees the entire script runs to completion before processing any other client\'s request.',
+        'This atomicity is what makes Lua scripting valuable for compound operations that must be all-or-nothing — a script that checks a value and conditionally updates it (implementing compare-and-swap logic) cannot suffer a race condition from another client modifying the value between the check and the update.',
+        'Scripts should avoid genuinely long-running loops or expensive computation, since the single-threaded execution model means a slow script blocks every other client for its entire duration — Lua scripting is meant for fast, atomic compound operations, not general-purpose application logic.',
+        'EVALSHA (running a previously cached script by its SHA1 hash rather than resending the full script text) reduces network overhead for frequently-executed scripts — Redis caches scripts loaded via SCRIPT LOAD or a prior EVAL call, letting subsequent invocations reference just the hash.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

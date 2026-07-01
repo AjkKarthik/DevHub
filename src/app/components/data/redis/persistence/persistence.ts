@@ -68,6 +68,15 @@ export class RedisPersistence {
         'Even in no-persistence mode, replication still works — replicas receive data via the replication stream.',
       ],
     },
+    {
+      heading: 'Combining RDB and AOF for Durability and Recovery Speed',
+      points: [
+        'RDB (point-in-time snapshots) produces compact files ideal for backups and fast restarts, but can lose data between the last snapshot and a crash — appropriate when some data loss on crash is acceptable and fast restart time matters more than absolute durability.',
+        'AOF (Append Only File, logging every write operation) provides much stronger durability — with appropriate fsync settings, at most one second of writes can be lost on crash, at the cost of larger log files and slower restart (since Redis must replay the entire log to rebuild state).',
+        'Using both RDB and AOF together (a common production configuration) combines RDB\'s fast restart capability with AOF\'s stronger durability guarantee — Redis loads from AOF on restart when both are enabled, since it more accurately reflects the most recent state.',
+        'AOF rewrite (compacting the log file by writing the current dataset state rather than replaying every historical command) prevents the AOF file from growing unboundedly over time — this happens automatically based on configured growth thresholds, or can be triggered manually via BGREWRITEAOF.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
