@@ -72,6 +72,15 @@ export class AiFineTuning {
         'β (beta) controls the KL penalty strength — how far the model can deviate from the reference model. Typical: 0.1–0.5.',
       ],
     },
+    {
+      heading: 'When Fine-Tuning Is (and Isn\'t) the Right Tool',
+      points: [
+        'Fine-tuning is appropriate for teaching a model a specific STYLE, FORMAT, or narrow domain vocabulary it does not already know well — it is a poor tool for injecting NEW FACTUAL KNOWLEDGE, since fine-tuning does not reliably teach a model new facts the way retrieval-augmented generation does.',
+        'Prompt engineering and RAG should typically be exhausted before reaching for fine-tuning, since fine-tuning requires curated training data, compute cost, and ongoing maintenance as the base model updates — a significantly higher-cost intervention than adjusting prompts or retrieval.',
+        'Parameter-efficient fine-tuning methods (LoRA, QLoRA) train a small number of additional parameters rather than the entire model, dramatically reducing the compute and storage cost of fine-tuning compared to full fine-tuning of every model weight.',
+        'A fine-tuned model must be re-evaluated and potentially re-tuned whenever the underlying base model is upgraded, since fine-tuning adjustments are specific to the exact base model version they were trained against — a maintenance cost easy to underestimate upfront.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

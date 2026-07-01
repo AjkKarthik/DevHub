@@ -71,6 +71,15 @@ export class AiMathForMl {
         'Log-sum-exp trick: compute log(Σe^{zᵢ}) = max + log(Σe^{zᵢ-max}) for numerical stability — prevents overflow.',
       ],
     },
+    {
+      heading: 'Why Linear Algebra Underlies Nearly All of ML',
+      points: [
+        'Data in ML is represented as vectors and matrices (a dataset is a matrix of feature vectors, a neural network layer is a matrix multiplication) — nearly every ML operation, from a simple dot product to a full forward pass, reduces to linear algebra operations.',
+        'Matrix multiplication\'s associativity and the ability to batch operations across many data points simultaneously (rather than looping element-by-element) is precisely why GPUs — which excel at parallel matrix operations — dramatically accelerate ML training and inference.',
+        'Eigenvalues and eigenvectors underlie techniques like PCA (dimensionality reduction), revealing the directions of greatest variance in data — a concept directly applicable to compressing high-dimensional data while preserving the most informative structure.',
+        'Gradients (vectors of partial derivatives) are the mathematical foundation of how neural networks learn — backpropagation is fundamentally an efficient algorithm for computing these gradients via the chain rule across many layers of matrix operations.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

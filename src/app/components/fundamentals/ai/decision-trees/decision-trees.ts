@@ -70,6 +70,15 @@ export class AiDecisionTrees {
         'Better than neural networks when: dataset is small-to-medium (< 100k rows), interpretability is needed, training time matters.',
       ],
     },
+    {
+      heading: 'Why Decision Trees Overfit and How Pruning Helps',
+      points: [
+        'An unconstrained decision tree can keep splitting until every leaf contains a single training example, achieving perfect training accuracy while memorizing noise rather than learning generalizable patterns — a textbook overfitting failure mode.',
+        'Pre-pruning (setting max_depth, min_samples_leaf, or min_samples_split before training) limits tree growth during construction, directly trading some training accuracy for better generalization to unseen data.',
+        'Post-pruning (growing a full tree, then removing branches that do not improve validation performance) can find a better bias-variance tradeoff than pre-pruning, since it evaluates actual branch usefulness rather than guessing at limits in advance.',
+        'Ensemble methods (random forests, gradient boosting) largely superseded single decision trees in practice specifically because they address overfitting more robustly by combining many trees, though a single tree remains valuable for its interpretability.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

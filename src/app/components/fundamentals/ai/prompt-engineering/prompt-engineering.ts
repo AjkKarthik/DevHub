@@ -72,6 +72,15 @@ export class AiPromptEngineering {
         'Evaluation: A/B test prompts on 50–100 representative examples. One anecdote is not evidence; systematic eval is.',
       ],
     },
+    {
+      heading: 'Why Prompt Structure Affects Output Quality',
+      points: [
+        'Placing instructions clearly separated from context/data (using delimiters, XML-like tags, or structured sections) reduces the chance the model confuses instructions with content to be processed — a common source of failure in poorly structured prompts.',
+        'Few-shot examples (showing the model 2-3 examples of the desired input-output pattern) often improve output consistency far more than lengthy prose instructions alone, since the model can pattern-match against concrete examples rather than interpreting abstract descriptions.',
+        'Chain-of-thought prompting (asking the model to reason step-by-step before giving a final answer) measurably improves accuracy on multi-step reasoning tasks, since it gives the model computational "space" to work through intermediate steps rather than jumping directly to an answer.',
+        'Prompt engineering is empirical, not purely theoretical — the same prompt can behave differently across model versions and providers, meaning prompts that work well should be systematically tested and re-validated rather than assumed to transfer unchanged.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

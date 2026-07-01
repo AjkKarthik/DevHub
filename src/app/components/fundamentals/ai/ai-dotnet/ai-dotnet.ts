@@ -65,6 +65,15 @@ export class AiDotnet {
         'Authentication: use Azure Managed Identity — no API keys in config files. AzureCliCredential for local dev, DefaultAzureCredential for deployed services.',
       ],
     },
+    {
+      heading: 'Semantic Kernel vs. Direct SDK Calls in .NET',
+      points: [
+        'Semantic Kernel provides an abstraction layer over multiple LLM providers (OpenAI, Azure OpenAI, others), plugin/function-calling orchestration, and memory management — useful when an application needs to remain provider-agnostic or compose multiple AI capabilities.',
+        'Calling the OpenAI or Azure OpenAI SDK directly is simpler and has less abstraction overhead for applications that only need straightforward completions against a single known provider, without the added complexity of an orchestration framework.',
+        'Semantic Kernel\'s planner and plugin system enables more complex agentic workflows (multi-step reasoning, tool composition) that would require significantly more hand-rolled orchestration code if built directly against a raw SDK.',
+        'The choice between these approaches should be driven by actual application complexity — adopting Semantic Kernel for a simple single-call use case adds unnecessary abstraction overhead without proportional benefit.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -72,6 +72,15 @@ export class AiEvaluatingLlms {
         'RAGAS: Python library that computes all four metrics using GPT-4 as a judge. No ground-truth labels needed for most metrics.',
       ],
     },
+    {
+      heading: 'Why LLM Evaluation Is Harder Than Traditional ML Evaluation',
+      points: [
+        'Traditional ML evaluation (accuracy, precision, recall) assumes a single correct answer to compare against — open-ended LLM outputs often have many valid phrasings, making simple exact-match comparison inappropriate for most generative tasks.',
+        'LLM-as-judge evaluation (using a stronger model to score a weaker model\'s output against a rubric) scales better than human evaluation, but introduces its own biases and inconsistencies, requiring careful rubric design and periodic human calibration to trust its scores.',
+        'Task-specific automated metrics (BLEU/ROUGE for translation/summarization, exact-match for QA, RAGAS for retrieval-augmented generation) each capture a narrow slice of quality — no single metric captures overall usefulness, which is why production evaluation pipelines typically combine several.',
+        'Evaluation must be re-run whenever the underlying model, prompt, or retrieval pipeline changes, since LLM behavior shifts even with seemingly minor changes — treating evaluation as a one-time check rather than a continuous process is a common and costly mistake.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

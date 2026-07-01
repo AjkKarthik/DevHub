@@ -72,6 +72,15 @@ export class AiAgents {
         'Frameworks: LangGraph (stateful multi-agent graphs), CrewAI (role-based crews), AutoGen (conversational agents), Claude agent SDK.',
       ],
     },
+    {
+      heading: 'Why Agents Need Guardrails, Not Just Capability',
+      points: [
+        'An agent with tool access (file system, code execution, API calls) can take real, irreversible actions — unlike a plain chatbot, this means a hallucinated plan or misunderstood instruction can cause actual damage, not just an incorrect text response.',
+        'Human-in-the-loop checkpoints (requiring explicit approval before destructive or high-stakes actions) are the standard mitigation, trading some autonomy for a safety net against the agent confidently executing a wrong plan.',
+        'Scoped, least-privilege tool access (an agent that can only read files, not delete them, unless explicitly needed) limits the blast radius of a bad decision, following the same principle as least-privilege access control in traditional software security.',
+        'Agent loops that lack a clear termination condition or budget (max steps, max cost) risk running indefinitely on a stuck or looping plan, silently consuming API cost and compute without producing useful progress — explicit limits are a necessary safeguard, not an optional nicety.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

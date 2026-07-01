@@ -72,6 +72,15 @@ export class AiMlops {
         'Canary deployment: route 5% of traffic to new model, monitor for regressions, gradually increase to 100% — or roll back.',
       ],
     },
+    {
+      heading: 'Model Drift and Why Deployed Models Need Ongoing Monitoring',
+      points: [
+        'Data drift occurs when the statistical properties of production input data diverge from the training data distribution over time (user behavior changes, seasonal patterns, market shifts) — a model that was accurate at deployment can silently degrade without any code changes.',
+        'Concept drift occurs when the actual relationship between inputs and the target outcome changes over time (what constitutes "fraud" evolves as fraudsters adapt) — this is a fundamentally different problem than data drift, since even a perfectly representative input distribution no longer predicts the correct outcome.',
+        'Without monitoring prediction distributions and downstream business metrics (not just uptime and latency), a model can silently degrade in production for weeks before anyone notices, since a model serving predictions does not fail loudly the way a crashing service does.',
+        'Automated retraining pipelines (triggered by detected drift or on a fixed schedule) address the reality that ML models are not "finished" at deployment the way traditional software often is — they require ongoing maintenance as the world they were trained to model keeps changing.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

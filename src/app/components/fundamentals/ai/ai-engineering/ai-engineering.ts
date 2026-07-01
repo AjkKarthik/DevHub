@@ -72,6 +72,15 @@ export class AiEngineering {
         'Cost alerts: set hard spend limits per API key. Alert on spend > $X/hour. Most cloud providers support programmatic billing alerts.',
       ],
     },
+    {
+      heading: 'AI Engineering as a Distinct Discipline From ML Research',
+      points: [
+        'AI engineering focuses on integrating and productionizing existing models (prompt design, retrieval pipelines, evaluation, deployment) rather than training new models from scratch — a meaningfully different skill set from traditional ML research.',
+        'Most production AI applications today are built on top of pre-trained foundation models accessed via API, meaning the engineering challenge shifts from model architecture to prompt engineering, context management, and reliable system integration.',
+        'Evaluation is a first-class engineering concern in AI systems, not an afterthought — since LLM outputs are non-deterministic and quality is often subjective, building systematic evaluation pipelines is as important as the integration code itself.',
+        'The rapid pace of foundation model improvement means AI engineering systems should be designed with model-swappability in mind — hardcoding assumptions about a specific model\'s quirks creates technical debt as newer, better models become available.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

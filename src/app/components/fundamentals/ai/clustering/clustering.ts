@@ -71,6 +71,15 @@ export class AiClustering {
         'Both are used only for visualisation, not for feature engineering or downstream ML — the resulting coordinates have no consistent meaning across runs.',
       ],
     },
+    {
+      heading: 'Choosing the Number of Clusters',
+      points: [
+        'K-means requires specifying K (the number of clusters) in advance, but the "correct" number of clusters is rarely known ahead of time — the elbow method (plotting within-cluster variance against K and looking for a bend) is a common heuristic to estimate a reasonable K.',
+        'Silhouette score measures how similar a point is to its own cluster versus other clusters, giving a quantitative way to compare different values of K objectively, rather than relying purely on the visual judgment the elbow method requires.',
+        'DBSCAN and hierarchical clustering do not require specifying K in advance, making them more suitable when the number of natural clusters is genuinely unknown — but they introduce their own hyperparameters (epsilon, linkage method) requiring similar tuning judgment.',
+        'Clustering quality metrics are ultimately a proxy — the real test of a clustering result is whether the discovered groups are meaningful and actionable for the actual business or research question being asked.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

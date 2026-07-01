@@ -72,6 +72,15 @@ export class AiVectorDatabases {
         'Multi-tenancy: use a user_id metadata field to filter per-user data, or use namespaces/collections to physically separate tenant data.',
       ],
     },
+    {
+      heading: 'Approximate Nearest Neighbor Search: The Speed-Accuracy Tradeoff',
+      points: [
+        'Exact nearest-neighbor search (comparing a query vector against every stored vector) is accurate but scales linearly with dataset size — impractically slow for the millions of vectors typical of production RAG or recommendation systems.',
+        'Approximate nearest-neighbor algorithms (HNSW, IVF) trade a small amount of retrieval accuracy for dramatically faster query times by building an index structure that avoids comparing against every single vector, typically achieving sub-linear or near-constant query time at scale.',
+        'HNSW (Hierarchical Navigable Small World graphs) builds a multi-layer graph structure enabling fast approximate search with strong recall — it has become a popular default across many vector database implementations due to this favorable speed-accuracy balance.',
+        'Index-building parameters (like HNSW\'s ef_construction and M) directly control the speed-accuracy-memory tradeoff — higher values improve recall at the cost of slower index construction and higher memory usage, a tuning decision that should reflect the actual application\'s accuracy requirements.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

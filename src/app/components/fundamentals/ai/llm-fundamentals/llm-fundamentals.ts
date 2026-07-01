@@ -72,6 +72,15 @@ export class AiLlmFundamentals {
         'Instruction-tuned models (ChatGPT, Claude, LLaMA-Chat) undergo SFT+RLHF/DPO on top of the pre-trained base model.',
       ],
     },
+    {
+      heading: 'Why Tokenization Affects LLM Behavior in Subtle Ways',
+      points: [
+        'LLMs process text as tokens (subword units), not raw characters or whole words — this is why LLMs historically struggled with tasks like counting letters in a word, since a word may be split into tokens that do not align with its individual characters.',
+        'Different tokenizers produce different token counts for the same text, directly affecting both API cost (billed per token) and how much content fits within a model\'s context window — a detail that matters when comparing costs or context limits across different model providers.',
+        'Rare words, unusual formatting, or non-English text often tokenize into MORE tokens than common English words, since tokenizer vocabularies are typically trained on data dominated by common patterns — a practical cost and context-window consideration for non-English applications.',
+        'Understanding token-level processing helps explain why LLMs can struggle with precise character-level tasks despite excelling at higher-level language understanding — the model\'s internal representation simply does not operate at the character granularity those tasks require.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
