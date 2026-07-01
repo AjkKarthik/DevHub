@@ -54,6 +54,12 @@ export class MutationTesting {
       'Dashboard reporter integrates with the Stryker Dashboard at dashboard.stryker-mutator.io.',
       'Run per project: dotnet stryker --project MyProject.csproj.',
     ]},
+    { heading: 'Interpreting a Mutation Score', points: [
+      'A mutation score reports the percentage of introduced bugs (mutants) that the test suite actually caught — unlike line coverage, a high mutation score is direct evidence the tests would catch real regressions, not just that the code ran.',
+      'Surviving mutants (bugs the test suite failed to catch) pinpoint exactly which lines have weak or missing assertions, giving far more actionable feedback than a coverage report showing only which lines executed.',
+      'Mutation testing is computationally expensive, since the entire test suite reruns for every generated mutant — this is why it is typically run less frequently (nightly, or on a schedule) rather than on every commit like regular tests.',
+      'A team chasing 100% line coverage but skipping mutation testing can have a false sense of security — tests that execute every line without meaningfully asserting on behavior will show 100% coverage yet catch almost no real bugs.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

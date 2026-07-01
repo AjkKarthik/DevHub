@@ -54,6 +54,12 @@ export class AngularTesting {
       'Call req.flush(data) to respond with test data.',
       'Call controller.verify() in afterEach to ensure no unexpected HTTP calls were made.',
     ]},
+    { heading: 'TestBed Configuration Overhead', points: [
+      'TestBed.configureTestingModule() compiles a mini Angular module for each test — this compilation is relatively expensive, which is why TestBed.resetTestingModule() or per-suite reuse matters for large test suites.',
+      'Standalone components simplify TestBed setup since there is no NgModule to declare — imports go directly into the component under test, reducing test boilerplate compared to the older module-based pattern.',
+      'Shallow testing (using NO_ERRORS_SCHEMA or stubbing child components) isolates the component under test from its children\'s implementation details, trading full-render fidelity for faster, more focused unit tests.',
+      'Zone.js-based change detection means fakeAsync/tick() are needed to flush microtasks and timers deterministically — omitting them causes tests to assert on stale DOM state before async operations complete.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

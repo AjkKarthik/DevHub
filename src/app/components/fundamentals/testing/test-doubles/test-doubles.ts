@@ -50,6 +50,18 @@ export class TestDoubles {
       'Fakes are maintained alongside production code — they must stay in sync.',
       'Fakes enable fast integration-style tests without real infrastructure.',
     ]},
+    { heading: 'Dummy, Stub, Spy, Mock, Fake — Precise Terminology', points: [
+      'A dummy is passed to satisfy a parameter list but never actually used — like passing null or an empty object where a required argument exists but its value is irrelevant to the test.',
+      'A stub returns pre-programmed responses to calls but does not record how it was called — useful for supplying test data without caring whether or how the collaborator was invoked.',
+      'A mock is a stub PLUS built-in verification — the test explicitly asserts the mock was called with specific arguments a specific number of times, making the interaction itself part of what is being tested.',
+      'A fake is a working but simplified implementation (an in-memory database standing in for a real one) — faster and more predictable than the real thing while still exhibiting genuinely realistic behavior, unlike a stub\'s canned responses.',
+    ]},
+    { heading: 'Choosing the Right Test Double for the Situation', points: [
+      'Overusing mocks (verifying HOW a collaborator was called) couples tests tightly to implementation details — preferring stubs or fakes (verifying WHAT the result was) produces tests that survive refactoring better.',
+      'Fakes are worth the extra implementation effort when a dependency is used across many tests, since the upfront cost of building a realistic fake pays off across the whole suite rather than per individual test.',
+      'Spies are appropriate when a test genuinely needs to verify a side effect occurred (an email was "sent", an event was "published") without caring about the return value of that call.',
+      'Reaching for the heaviest test double (a full mock with call verification) when a simple stub would suffice adds unnecessary brittleness — matching the double\'s complexity to what the test actually needs to verify keeps suites maintainable.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

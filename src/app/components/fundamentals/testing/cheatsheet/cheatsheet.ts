@@ -52,6 +52,12 @@ export class TestingCheatsheet {
       'Refactor: clean up duplication/naming — tests must still be green.',
       'Commit when green; never commit red tests to main.',
     ]},
+    { heading: 'Test Naming Conventions Quick Reference', points: [
+      'Given-When-Then naming (describe the setup, action, and expected outcome) makes a failing test\'s intent clear from its name alone, without needing to read the test body first.',
+      'Should-style naming ("should return 404 when user not found") reads naturally as a specification of behavior, which is why many BDD-influenced frameworks default to this convention.',
+      'Avoid vague names like "test1" or "works correctly" — a failing test with an uninformative name forces a developer to read the full implementation just to understand what broke.',
+      'Consistent naming across a suite (picking one convention and sticking to it) makes scanning test output for a specific failure meaningfully faster during debugging.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

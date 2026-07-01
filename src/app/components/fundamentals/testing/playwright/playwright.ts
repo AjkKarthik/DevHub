@@ -56,6 +56,12 @@ export class PlaywrightTesting {
       'Use route.abort() to simulate network failures.',
       'Intercept is useful for making E2E tests deterministic without a seeded backend.',
     ]},
+    { heading: 'Playwright Auto-Waiting and Actionability Checks', points: [
+      'Playwright automatically waits for an element to be visible, stable, and enabled before interacting with it, eliminating the explicit sleep() calls that plagued older E2E frameworks like early Selenium usage.',
+      'This actionability checking happens before every interaction (click, fill, check), meaning a test does not need manual retry logic even when the UI has animations or async rendering delays.',
+      'Playwright\'s single API drives Chromium, Firefox, and WebKit with the same test code, catching browser-specific rendering or behavior bugs that a Chromium-only test suite would never surface.',
+      'Trace viewer (recording a full trace of a test run — DOM snapshots, network, console) turns debugging a flaky or failing CI test from guesswork into replaying an exact timeline of what happened.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

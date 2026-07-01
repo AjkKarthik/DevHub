@@ -55,6 +55,12 @@ export class ContractTesting {
       'Not a replacement for integration tests — it tests the contract shape, not business logic.',
       'GraphQL: use GraphQL-specific contract tools (schema comparison, operation compatibility).',
     ]},
+    { heading: 'Consumer-Driven Contracts vs. Traditional Integration Tests', points: [
+      'Consumer-driven contracts let the consuming service define its expectations of a provider API, and the provider verifies it satisfies those expectations — catching breaking changes before deployment rather than in production.',
+      'Traditional end-to-end integration tests require both services running together, which is slow and environment-fragile — contract tests verify the same compatibility guarantee without needing a full integrated environment.',
+      'Pact (a popular contract testing tool) generates a contract file from consumer tests that the provider replays against its own implementation, creating an executable, versioned agreement between teams.',
+      'Contract testing scales better than full integration testing across many microservices, since each pairwise consumer-provider relationship is verified independently rather than requiring the entire system to be deployed together.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

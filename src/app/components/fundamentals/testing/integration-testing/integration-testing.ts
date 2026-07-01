@@ -54,6 +54,12 @@ export class IntegrationTesting {
       'Option 3: Seed + delete — insert test data, delete after. Works across connections.',
       'Never share mutable state between tests — use beforeEach to reset.',
     ]},
+    { heading: 'Test Doubles at Integration Boundaries', points: [
+      'Integration tests deliberately use REAL collaborators (a real database, a real internal service) instead of mocks, since the entire point is verifying that components actually work together correctly, not in isolation.',
+      'External third-party services are still commonly stubbed even in integration tests, since real calls introduce network flakiness, cost, and rate limits that make CI pipelines unreliable and slow.',
+      'Testcontainers (spinning up a real database in a Docker container per test run) gives integration tests a real database engine without the shared-state risks of a persistent test database.',
+      'Integration tests sit deliberately in the middle of the testing pyramid — fewer than unit tests but more thorough, since verifying real component interaction catches bugs that mocked unit tests structurally cannot.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

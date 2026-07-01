@@ -57,6 +57,12 @@ export class JestFundamentals {
       'moduleNameMapper: alias paths, e.g. "@/components/*" → "<rootDir>/src/components/$1".',
       'coverage.provider: "babel" or "v8". v8 is faster; babel gives branch coverage for non-ESM.',
     ]},
+    { heading: 'Snapshot Testing Tradeoffs in Jest', points: [
+      'Jest snapshot tests capture a serialized representation of output and compare future runs against it — convenient for catching unintended changes, but prone to becoming a rubber-stamped update rather than a meaningful assertion if developers blindly run --updateSnapshot.',
+      'Large, unfocused snapshots (an entire rendered component tree) make it hard to tell WHAT changed and WHY from a failing snapshot diff — targeted assertions on specific values are often more maintainable than one giant snapshot.',
+      'Snapshots work best for stable, rarely-changing output (a generated config object, a formatted error message) rather than frequently-evolving UI, where they generate more noise than signal.',
+      'Reviewing a snapshot diff in a pull request requires the reviewer to actually verify the new snapshot is correct, not just approve it — an easy step to skip that undermines the entire safety net snapshot testing is meant to provide.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

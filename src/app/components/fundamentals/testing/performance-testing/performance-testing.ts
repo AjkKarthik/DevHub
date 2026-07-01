@@ -53,6 +53,12 @@ export class PerformanceLoadTesting {
       'JMeter: GUI-driven, XML config, huge plugin ecosystem — legacy but still widely used.',
       'All three can integrate with CI/CD — k6 is easiest to script and version-control.',
     ]},
+    { heading: 'Load Testing vs. Stress Testing vs. Soak Testing', points: [
+      'Load testing verifies a system behaves correctly under expected production traffic — the goal is confirming normal capacity is handled correctly, not finding the breaking point.',
+      'Stress testing deliberately pushes traffic beyond expected capacity to find the system\'s actual breaking point and observe how it fails — does it degrade gracefully or crash catastrophically.',
+      'Soak testing (running sustained moderate load for an extended period, hours or days) surfaces issues that only appear over time — memory leaks, connection pool exhaustion, disk space growth — that a short load test would never reveal.',
+      'Choosing the wrong test type for the question being asked wastes effort — running a brief load test to find a breaking point, or a stress test to validate steady-state capacity, produces misleading conclusions.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

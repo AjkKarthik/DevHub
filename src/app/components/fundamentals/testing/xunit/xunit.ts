@@ -56,6 +56,12 @@ export class XunitDotnet {
       'Supports collections, exceptions, async, strings, dates, and more.',
       'Install via NuGet: FluentAssertions. No test framework dependency — works with xUnit, NUnit, MSTest.',
     ]},
+    { heading: 'xUnit\'s Constructor-Based Test Isolation', points: [
+      'xUnit creates a NEW instance of the test class for every single test method, meaning constructor logic runs fresh before each test — this structurally prevents the shared-mutable-state-between-tests bugs that plague frameworks reusing one instance across a suite.',
+      'IClassFixture<T> and ICollectionFixture<T> provide explicit, opt-in mechanisms for sharing expensive setup (like a database connection) across tests, making shared state a deliberate choice rather than an accidental default.',
+      'This per-test-instance model differs from NUnit and MSTest\'s [SetUp]/[TestInitialize] attribute-based approach, which achieves similar isolation but relies on convention (a developer correctly resetting all state in the setup method) rather than the language\'s own instantiation guarantees.',
+      'Theory-based tests ([Theory] with [InlineData]/[MemberData]) let a single test method run against multiple data-driven cases, reducing duplication compared to writing a nearly-identical [Fact] test per input combination.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

@@ -54,6 +54,12 @@ export class VisualRegression {
       'Use deterministic data — seed the same data before every visual test.',
       'Wait for fonts and images to load before capturing: await page.waitForLoadState("networkidle").',
     ]},
+    { heading: 'Handling Visual Diff Noise in CI', points: [
+      'Font rendering, anti-aliasing, and GPU differences between local machines and CI runners commonly produce pixel-level differences that are not genuine regressions — running visual tests in a consistent, containerized environment minimizes this noise.',
+      'A pixel-diff threshold (allowing a small percentage of changed pixels before flagging a failure) balances catching real visual regressions against false positives from sub-pixel rendering variance across environments.',
+      'Dynamic content (timestamps, random IDs, ads) must be masked or stubbed before capturing a screenshot, since unmasked dynamic content guarantees every single run produces a "different" screenshot regardless of actual visual regressions.',
+      'Visual regression testing complements but does not replace functional testing — a screenshot matching pixel-for-pixel says nothing about whether a button actually works when clicked, only that it looks the same.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

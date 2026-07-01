@@ -55,6 +55,12 @@ export class CypressTesting {
       'Component testing (Cypress ct): mount() a single component in a real browser — no full app needed.',
       'cy.mount(<Counter />) + assertions — same Cypress API, faster than full E2E, real browser rendering.',
     ]},
+    { heading: 'Cypress Retry-Ability and Automatic Waiting', points: [
+      'Cypress commands automatically retry against the DOM until an assertion passes or a timeout is reached, eliminating most explicit waits or sleeps that plague less integrated E2E tools.',
+      'This retry-ability only applies to Cypress-native commands and chained assertions — wrapping arbitrary async logic (like a raw Promise) bypasses this mechanism and can reintroduce flakiness.',
+      'cy.intercept() lets tests stub or spy on network requests, decoupling frontend test reliability from backend availability and making tests deterministic regardless of real API response times.',
+      'Cypress runs inside the browser itself (not via a remote WebDriver protocol like Selenium), giving it direct access to the DOM and network layer, which is why its automatic waiting works more reliably than polling-based alternatives.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

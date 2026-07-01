@@ -48,6 +48,18 @@ export class TestingFundamentals {
       'Automated CI runs tests on every commit — bugs never reach production silently.',
       'A good test suite makes developers confident to move fast without fear.',
     ]},
+    { heading: 'The Arrange-Act-Assert Pattern', points: [
+      'Arrange sets up the test\'s preconditions (creating objects, seeding data) — keeping this section focused and minimal makes it immediately clear what state the test begins in.',
+      'Act performs the single action being tested — ideally exactly one method call or operation, since testing multiple actions in one test obscures which action actually caused a subsequent failure.',
+      'Assert verifies the expected outcome — multiple related assertions about the same single action are fine, but assertions about unrelated actions belong in a separate test entirely.',
+      'This three-part structure, even when not explicitly commented in code, gives every well-written test a predictable shape that makes any test in the suite easy to read regardless of who wrote it.',
+    ]},
+    { heading: 'What Makes a Test Suite Trustworthy', points: [
+      'A trustworthy suite fails ONLY when there is a real bug — flaky tests that fail intermittently for unrelated reasons erode trust, leading developers to re-run failing CI rather than investigate, which defeats the entire purpose of automated testing.',
+      'Fast feedback matters as much as correctness — a comprehensive suite that takes 45 minutes to run gets skipped locally and only caught in CI, delaying bug discovery compared to a suite fast enough to run before every commit.',
+      'Independent tests (no shared mutable state, no dependency on execution order) can run in parallel and be safely re-ordered, both speeding up CI and preventing the "test B only passes because test A ran first" class of hidden coupling bug.',
+      'A trustworthy suite is treated as first-class code — reviewed, refactored, and maintained with the same care as production code, not left to rot as an afterthought that developers stop trusting and start ignoring.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [
