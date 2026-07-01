@@ -9930,6 +9930,248 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Forgetting to handle the "close" event to clean up associated resources (subscriptions, timers) per connection is a common memory-leak source.',
     ],
   },
+
+  // ── Go: per-page entries ────────────────────────────────────────────────────
+  'go/fundamentals': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Structs & Interfaces', route: '/go/structs-interfaces' },
+      { label: 'Error Handling',       route: '/go/error-handling' },
+    ],
+    tip: 'Go has no exceptions — errors are ordinary return values, checked explicitly with if err != nil — this is a deliberate design choice forcing error handling to be visible in the code path, not hidden in an invisible try/catch control flow.',
+    gotchas: [
+      'Unused imports and unused local variables are COMPILE ERRORS in Go, not warnings — this is deliberate, catching dead code before it ships.',
+      'Go has no generics-style function overloading — a function name can only have one signature per package scope.',
+    ],
+  },
+  'go/structs-interfaces': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/go/fundamentals' },
+      { label: 'Generics',     route: '/go/generics' },
+    ],
+    tip: 'Go interfaces are satisfied IMPLICITLY — a type never declares "implements InterfaceX"; it simply satisfies the interface by having the right methods, enabling loose coupling without inheritance-style explicit declarations.',
+    gotchas: [
+      'A nil interface holding a typed nil pointer is NOT itself nil — err != nil can be true even when the underlying concrete value is nil, a classic Go gotcha.',
+      'Embedding a struct promotes its fields/methods to the outer struct, but this is composition, not inheritance — there is no polymorphic dispatch to the embedded type.',
+    ],
+  },
+  'go/slices-maps': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Structs & Interfaces', route: '/go/structs-interfaces' },
+    ],
+    tip: 'A Go slice is a view (pointer, length, capacity) over an underlying array — appending beyond capacity allocates a NEW underlying array, meaning two slices that once shared memory can silently diverge after an append on one of them.',
+    gotchas: [
+      'Map iteration order is intentionally RANDOMIZED in Go — code that depends on a specific iteration order is relying on undefined behavior.',
+      'A nil map can be READ from safely (returns zero value) but WRITING to a nil map panics — a common source of confusion for newcomers.',
+    ],
+  },
+  'go/generics': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Structs & Interfaces', route: '/go/structs-interfaces' },
+    ],
+    tip: 'Go generics (since 1.18) use TYPE PARAMETERS with constraints — a constraint is itself an interface describing what operations a type parameter must support, letting a single function work across multiple types while preserving compile-time type safety.',
+    gotchas: [
+      'Generics do not eliminate the need for interfaces — they solve a DIFFERENT problem (type-safe reuse across concrete types) than interfaces (behavioral abstraction).',
+      'Overusing generics where a plain interface or duplication would be clearer can hurt readability — Go\'s culture leans toward simplicity over generic-everything.',
+    ],
+  },
+  'go/goroutines': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Channels', route: '/go/channels' },
+      { label: 'Sync',     route: '/go/sync' },
+    ],
+    tip: 'A goroutine leak (one blocked forever on a channel with no reader) is silent — it never panics, it just quietly consumes memory forever; always give long-running goroutines a way to be cancelled, typically via context.',
+    gotchas: [
+      'A loop variable captured in a goroutine closure (pre-Go 1.22) reused the SAME variable across iterations — Go 1.22+ changed this to per-iteration semantics, but older code and tutorials still show the old pattern.',
+      'Spawning goroutines without any bound (one per incoming request with no limit) can exhaust memory under high load — a worker pool or semaphore pattern caps concurrency deliberately.',
+    ],
+  },
+  'go/channels': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Goroutines', route: '/go/goroutines' },
+      { label: 'Context',    route: '/go/context' },
+    ],
+    tip: 'Sending on a closed channel PANICS; receiving from a closed channel returns the zero value immediately without blocking — this asymmetry is a frequent source of bugs when multiple goroutines share responsibility for closing a channel.',
+    gotchas: [
+      'Only the SENDER should close a channel, never the receiver — closing from the receiver side (or closing twice) causes a panic.',
+      'An unbuffered channel send blocks until a receiver is ready — this can deadlock if no other goroutine is set up to receive.',
+    ],
+  },
+  'go/sync': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Goroutines', route: '/go/goroutines' },
+      { label: 'Channels',   route: '/go/channels' },
+    ],
+    tip: 'sync.WaitGroup coordinates waiting for a group of goroutines to finish — Add() must happen BEFORE the goroutine starts (not inside it), or a race condition can let Wait() return before all goroutines have actually been counted.',
+    gotchas: [
+      'sync.Mutex is not reentrant — a goroutine that locks a mutex it already holds deadlocks itself, unlike some other languages\' reentrant locks.',
+      'sync.RWMutex allows multiple concurrent readers OR one writer — using it for write-heavy workloads provides no benefit over a plain Mutex and adds overhead.',
+    ],
+  },
+  'go/context': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Channels', route: '/go/channels' },
+      { label: 'Net/HTTP', route: '/go/net-http' },
+    ],
+    tip: 'context.Context propagates cancellation, deadlines, and request-scoped values across API boundaries and goroutines — a function performing I/O should accept and respect a context, checking ctx.Done() to stop work promptly when the caller cancels or times out.',
+    gotchas: [
+      'context.Value should be reserved for request-scoped metadata (a trace ID), not for passing optional function parameters — overusing it for general data passing is considered an anti-pattern.',
+      'Forgetting to call the cancel function returned by context.WithCancel/WithTimeout leaks resources, even if the context itself is never explicitly cancelled.',
+    ],
+  },
+  'go/error-handling': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/go/fundamentals' },
+    ],
+    tip: 'errors.Is and errors.As let you check for and unwrap WRAPPED errors (created with fmt.Errorf("...: %w", err)) — essential for checking a specific underlying error type through several layers of wrapping without losing the original error\'s identity.',
+    gotchas: [
+      'Ignoring an error with the blank identifier (_, err := ...) is a deliberate choice that should be rare and commented — silently swallowing errors is a common source of hard-to-diagnose bugs.',
+      'panic/recover should be reserved for genuinely unrecoverable programmer errors, not as a general error-handling mechanism — idiomatic Go prefers explicit error returns.',
+    ],
+  },
+  'go/net-http': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Context', route: '/go/context' },
+      { label: 'Gin',      route: '/go/gin' },
+    ],
+    tip: 'The standard library net/http package is genuinely production-capable on its own — many Go services need no third-party web framework at all, unlike ecosystems where a framework is nearly always required for basic HTTP serving.',
+    gotchas: [
+      'http.Client without an explicit Timeout can hang indefinitely on a slow or unresponsive server — always set one explicitly in production code.',
+      'The default http.Client reuses connections via a shared Transport — creating a new client per request defeats connection pooling and hurts performance under load.',
+    ],
+  },
+  'go/gin': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Net/HTTP', route: '/go/net-http' },
+    ],
+    tip: 'Gin\'s middleware chain and routing conveniences sit on top of net/http — understanding the underlying standard library first makes it easier to reason about what Gin\'s abstractions are actually doing under the hood.',
+    gotchas: [
+      'Gin panics inside a handler are recovered by the default Recovery middleware — but relying on this as your ONLY error handling strategy hides bugs that should be fixed at the source.',
+      'Binding request bodies (c.ShouldBindJSON) validates structure but not business rules — additional validation is still needed for domain-specific constraints.',
+    ],
+  },
+  'go/grpc': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Net/HTTP', route: '/go/net-http' },
+    ],
+    tip: 'Go is one of the most common languages for implementing gRPC services, given Protocol Buffers\' code-generation tooling and Go\'s strong standard library support for HTTP/2 — a natural fit for internal service-to-service communication.',
+    gotchas: [
+      'Streaming RPCs require careful context handling — a client disconnecting mid-stream needs the server-side handler to detect ctx.Done() and stop processing promptly.',
+      'Generated gRPC code from .proto files should be regenerated and committed whenever the schema changes — a stale generated file silently drifts from the actual contract.',
+    ],
+  },
+  'go/json-encoding': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Structs & Interfaces', route: '/go/structs-interfaces' },
+    ],
+    tip: 'Struct field tags (`json:"fieldName"`) control JSON marshaling — an unexported (lowercase) struct field is NEVER included in JSON output regardless of tags, a common source of "why is this field missing" confusion.',
+    gotchas: [
+      'omitempty on a field omits it from JSON output when the field holds its zero value — but this means a genuinely-set false or 0 is indistinguishable from "not set" without using a pointer type instead.',
+      'json.Unmarshal silently ignores unknown fields in the input by default unless a DisallowUnknownFields decoder option is explicitly set.',
+    ],
+  },
+  'go/modules': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/go/fundamentals' },
+    ],
+    tip: 'go.mod and go.sum together pin exact dependency versions AND their cryptographic checksums — go.sum specifically protects against a dependency being silently swapped for different content at the same version number.',
+    gotchas: [
+      'Semantic import versioning means a v2+ module must include the major version in its import path (/v2) — a detail that surprises developers moving past a module\'s first major version.',
+      'go mod tidy removes unused dependencies from go.mod — running it periodically keeps the dependency graph accurate as code changes.',
+    ],
+  },
+  'go/testing': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/go/fundamentals' },
+    ],
+    tip: 'Table-driven tests (a slice of input/expected-output structs looped over in one test function) are the idiomatic Go pattern for testing many cases without duplicating test function boilerplate for each one.',
+    gotchas: [
+      't.Parallel() marks a test safe to run concurrently with other parallel tests — calling it on a test with shared mutable state can introduce race conditions the test suite itself creates.',
+      'go test -race enables the race detector — running the full suite with it periodically catches data races that would otherwise only manifest intermittently in production.',
+    ],
+  },
+  'go/profiling': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Testing', route: '/go/testing' },
+    ],
+    tip: 'pprof (Go\'s built-in profiler) can be exposed via an HTTP endpoint (net/http/pprof) even in a running production service — profiling a live production workload often reveals bottlenecks a synthetic local benchmark never would.',
+    gotchas: [
+      'CPU profiling and memory profiling answer DIFFERENT questions — a function can be fast but leak memory, a distinct problem CPU profiling alone would miss entirely.',
+      'Benchmark functions (BenchmarkXxx) should avoid unintentionally including setup cost in the timed portion — use b.ResetTimer() after expensive setup.',
+    ],
+  },
+  'go/gorm': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'PGX', route: '/go/pgx' },
+    ],
+    tip: 'GORM is a full-featured ORM providing struct-to-table mapping, migrations, and hooks — trading some of Go\'s "explicit over implicit" philosophy for developer convenience, a real tradeoff versus writing raw SQL with a lighter query builder.',
+    gotchas: [
+      'GORM\'s automatic preloading of associations can trigger the N+1 query problem exactly like ORMs in other languages if not configured carefully.',
+      'Silent failures (GORM\'s default error handling in some chained calls) can mask a failed operation — always check the returned error explicitly.',
+    ],
+  },
+  'go/pgx': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'GORM', route: '/go/gorm' },
+    ],
+    tip: 'pgx is a lower-level, PostgreSQL-specific driver offering better performance and more direct control than database/sql\'s generic interface — the tradeoff for GORM\'s convenience is exactly the control and performance pgx provides instead.',
+    gotchas: [
+      'Connection pooling (pgxpool) must be configured explicitly — a default pool size that doesn\'t match actual concurrency needs can bottleneck or waste database connections.',
+      'Using pgx-specific types (like pgtype.Text) instead of standard library types requires understanding pgx\'s specific null-handling conventions.',
+    ],
+  },
+  'go/patterns': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Structs & Interfaces', route: '/go/structs-interfaces' },
+      { label: 'Goroutines',           route: '/go/goroutines' },
+    ],
+    tip: 'The functional options pattern (variadic functions setting struct fields) is Go\'s idiomatic answer to optional constructor parameters, since Go has no function overloading or default parameter values like some other languages.',
+    gotchas: [
+      'The worker pool pattern (a fixed number of goroutines consuming from a shared channel) is the standard way to bound concurrency for CPU or I/O-bound batch work in Go.',
+      'Overusing interfaces for "future flexibility" that never materializes adds indirection Go\'s culture generally discourages — define interfaces at the CONSUMER, not preemptively at the producer.',
+    ],
+  },
+  'go/cli': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'Modules', route: '/go/modules' },
+    ],
+    tip: 'Go compiles to a SINGLE static binary with no runtime dependency — this is a major reason Go is popular for CLI tools, since distribution is just "copy the binary," unlike languages requiring an installed runtime on the target machine.',
+    gotchas: [
+      'Cross-compiling for a different OS/architecture (GOOS/GOARCH) is built into the toolchain with no extra tooling required — a genuine advantage for distributing CLI tools across platforms.',
+      'CGO-dependent code breaks the "single static binary, cross-compile trivially" advantage, since it links against a C library — pure-Go dependencies preserve this benefit.',
+    ],
+  },
+  'go/build': {
+    apis: GO_DEFAULT.apis, docs: GO_DEFAULT.docs, resources: GO_DEFAULT.resources,
+    related: [
+      { label: 'CLI',      route: '/go/cli' },
+      { label: 'Modules',  route: '/go/modules' },
+    ],
+    tip: 'Build tags and constraint comments let a single codebase compile differently per platform or feature flag — a common pattern for isolating OS-specific code paths without runtime branching.',
+    gotchas: [
+      'The Go build cache speeds up repeated builds significantly — a CI pipeline not preserving the cache across runs pays the full compile cost every single time.',
+      'Stripping debug symbols (-ldflags="-s -w") reduces binary size for distribution but also removes information useful for later debugging a shipped binary.',
+    ],
+  },
 };
 
 @Component({
