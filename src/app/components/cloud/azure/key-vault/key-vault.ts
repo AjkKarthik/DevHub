@@ -73,6 +73,15 @@ export class AzureKeyVault {
         'Alerts: configure Key Vault to emit diagnostic logs and create Azure Monitor alerts for high error rates (throttling), or for unusual access patterns (many failed get operations may indicate credential stuffing).',
       ]
     },
+    {
+      heading: 'Managed Identity as the Preferred Access Pattern',
+      points: [
+        'Using a Managed Identity to authenticate to Key Vault (rather than a stored connection string or service principal secret) eliminates the "secret needed to access secrets" bootstrapping problem — the identity itself is tied to the Azure resource and requires no credential to be stored or rotated by the application.',
+        'System-assigned managed identities are tied to a single resource\'s lifecycle (deleted when the resource is deleted), while user-assigned managed identities can be shared across multiple resources and managed independently — the choice affects both flexibility and the blast radius of identity compromise.',
+        'Key Vault access policies or RBAC (the newer, recommended model) determine which identities can perform which operations (get, list, set) on secrets/keys/certificates — following least-privilege here means granting only the specific operations an application genuinely needs, not blanket Key Vault access.',
+        'Soft-delete and purge protection prevent accidental or malicious permanent deletion of secrets — without these enabled, a deleted secret (or an entire deleted vault) is immediately and irrecoverably gone, a serious risk for vaults holding critical production credentials.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -73,6 +73,15 @@ export class AzureApiManagement {
         'Self-hosted gateway: deploy the APIM gateway component as a container in on-premises environments, other clouds, or Kubernetes clusters. Manages to the cloud APIM control plane. Use for: hybrid cloud APIs, latency-sensitive on-premises backends, edge deployments.',
       ]
     },
+    {
+      heading: 'APIM as a Policy Enforcement and Abstraction Layer',
+      points: [
+        'API Management sits in front of backend APIs, letting you apply cross-cutting policies (rate limiting, authentication, request/response transformation) centrally without modifying the backend services themselves — a significant advantage when backends are owned by different teams or written in different languages.',
+        'Versioning and revisions in APIM let you evolve an API\'s public contract independently of the backend implementation\'s actual version, giving consumers a stable, documented interface even as the backend changes underneath.',
+        'The developer portal automatically generates interactive API documentation and lets external developers self-service API key provisioning, reducing the operational burden of manually onboarding API consumers.',
+        'Policies are applied at the gateway level in XML-based policy documents, executed at request/response time — this centralizes cross-cutting concerns but adds a small amount of latency per request compared to calling a backend directly.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

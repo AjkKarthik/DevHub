@@ -73,6 +73,15 @@ export class AzureEntraId {
         'Entra ID Protection monitors for leaked credentials (dark-web breach lists), impossible travel, and anonymous proxy sign-ins. Configure risk-based CA policies to auto-remediate high-risk users by requiring password change.',
       ]
     },
+    {
+      heading: 'Conditional Access as Risk-Based Policy Enforcement',
+      points: [
+        'Conditional Access policies evaluate signals (user location, device compliance, sign-in risk level) at authentication time and apply access controls (require MFA, block access, require a compliant device) accordingly — a fundamentally more adaptive model than a static "always require MFA" rule.',
+        'This risk-based approach means a low-risk sign-in (known device, trusted location) can have a smoother experience while a high-risk sign-in (new device, unusual location, leaked credential signal) is challenged more strongly — balancing security against user friction dynamically rather than uniformly.',
+        'Conditional Access policies are evaluated for every sign-in, not just the first one — a session that becomes risky mid-flow (a token reused from a different location) can be re-evaluated and challenged, providing ongoing protection beyond the initial login moment.',
+        'Misconfigured Conditional Access policies (an overly broad exclusion, a policy that inadvertently locks out all admins) can cause serious availability incidents — testing policies in report-only mode before enforcing them is a critical safety practice before rolling out a new policy broadly.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

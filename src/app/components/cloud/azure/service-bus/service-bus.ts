@@ -73,6 +73,15 @@ export class AzureServiceBus {
         'Message TTL: set TimeToLive on messages or as a queue/subscription default. Expired messages are either discarded or moved to DLQ (DeadLetteringOnMessageExpiration=true). Set TTLs to prevent stale messages accumulating — a message still valid after 7 days may no longer be actionable.',
       ]
     },
+    {
+      heading: 'Queues vs. Topics — Choosing the Right Messaging Model',
+      points: [
+        'A Service Bus queue implements point-to-point messaging — each message is consumed by exactly ONE receiver, appropriate for work-distribution scenarios where a pool of workers competes to process items from a shared queue.',
+        'A Service Bus topic implements publish-subscribe — each message is delivered to EVERY subscription on the topic, appropriate when multiple independent consumers each need their own copy of every message (an order-placed event triggering both a shipping process and an analytics update).',
+        'Subscriptions on a topic can apply SQL-like filters to receive only a subset of messages matching specific criteria, letting a single topic serve many different consumer interests without each subscriber needing to filter irrelevant messages after receiving them.',
+        'Choosing a topic when a queue would suffice adds unnecessary overhead (managing subscriptions, filters) for a use case that only ever needs one consumer per message — the choice should reflect the actual number of independent consumers the message needs to reach.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

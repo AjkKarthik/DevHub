@@ -74,6 +74,15 @@ export class AzureAppService {
         'Diagnostic Logs: Enable Application Logging (App Service logs, stored to blob or filesystem), Detailed Error Messages, and Web Server Logs. Stream live with az webapp log tail for real-time debugging.',
       ]
     },
+    {
+      heading: 'App Service Plans and the Shared Resource Model',
+      points: [
+        'An App Service Plan defines the underlying compute (VM size, tier) that one or more Web Apps run on — multiple apps can share a single plan, sharing its compute resources, which is cost-efficient for smaller apps but means one app\'s heavy load can affect others sharing the same plan.',
+        'Scaling in App Service can be vertical (moving to a larger plan tier/size) or horizontal (adding more instances of the same plan) — horizontal scaling requires the application to be stateless or use external session storage, since instances are not guaranteed to share in-memory state.',
+        'Deployment slots (staging, production) allow zero-downtime deployments via slot swapping — the new version is warmed up in a staging slot before traffic is switched, avoiding the cold-start delay users would otherwise experience on a direct production deployment.',
+        'The Free and Shared tiers run on shared infrastructure with other customers\' apps, with no SLA guarantee — production workloads should use Standard tier or above, which provides dedicated compute and an actual availability SLA.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -73,6 +73,15 @@ export class AzureSecurityDefender {
         'Microsoft Sentinel integration: Defender for Cloud acts as a data source for Microsoft Sentinel. Connect the Defender connector in Sentinel to pull all security alerts and recommendations into Sentinel\'s SIEM. Sentinel then correlates Defender alerts with identity signals (Entra ID), network signals (NSG logs), and endpoint signals (Defender for Endpoint) for comprehensive threat detection.',
       ]
     },
+    {
+      heading: 'Secure Score as an Actionable Security Posture Metric',
+      points: [
+        'Microsoft Defender for Cloud\'s Secure Score aggregates many individual security recommendations into a single percentage, giving a quick, trackable indicator of overall security posture that can be monitored over time and compared across subscriptions.',
+        'Each recommendation contributing to Secure Score comes with specific remediation guidance and impact weighting — recommendations are not all equally important, and the scoring reflects relative risk reduction, helping teams prioritize which gaps to close first.',
+        'Secure Score is a POINT-IN-TIME snapshot that changes as new resources are deployed or configurations drift — treating it as a one-time compliance check rather than a continuously monitored metric misses newly introduced misconfigurations.',
+        'A high Secure Score reduces but does not eliminate risk — it measures adherence to known best-practice configurations, not protection against zero-day vulnerabilities or application-layer logic flaws that fall outside its recommendation set.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

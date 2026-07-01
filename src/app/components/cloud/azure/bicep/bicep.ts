@@ -74,6 +74,15 @@ export class AzureBicep {
         'az deployment group create --template-file main.bicep automatically runs bicep build internally — you can deploy .bicep directly without a manual build step.',
       ]
     },
+    {
+      heading: 'Why Bicep Compiles to ARM Rather Than Replacing It',
+      points: [
+        'Bicep is a domain-specific language that transpiles directly to ARM JSON — every Bicep file has an exact ARM JSON equivalent, meaning Bicep gains no new deployment capabilities beyond what ARM itself supports, only a cleaner authoring syntax.',
+        'This compilation approach means Bicep benefits automatically from any new ARM feature without needing a separate update, since Bicep is a thin syntactic layer over the same underlying ARM deployment engine that has always processed the resulting JSON.',
+        'Bicep\'s type-safety and IntelliSense (via the Bicep VS Code extension) catch resource property errors before deployment — errors that would only surface as a runtime ARM deployment failure when authoring raw JSON directly.',
+        'Modules in Bicep provide reusable, parametrized deployment units (a network module, a database module) that compile down to nested ARM deployments — the same modularity concept ARM has always supported, but with dramatically less boilerplate to express it.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

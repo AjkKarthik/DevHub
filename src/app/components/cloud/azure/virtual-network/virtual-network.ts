@@ -73,6 +73,15 @@ export class AzureVirtualNetwork {
         'Azure DNS Private Resolver (2022): a managed inbound/outbound DNS resolver that can conditionally forward queries to on-premises DNS or resolve private DNS zones from on-premises — no VM-based DNS forwarder required.',
       ]
     },
+    {
+      heading: 'Network Security Groups and Layered Traffic Filtering',
+      points: [
+        'Network Security Groups (NSGs) can be applied at both the subnet level and the individual network interface level — traffic must pass BOTH applicable NSGs (if both are configured) to be allowed, meaning effective security rules are the intersection, not the union, of subnet and NIC-level rules.',
+        'NSG rules are evaluated by PRIORITY (lower numbers evaluated first), and the first matching rule wins — a common misconfiguration is placing a broad allow rule at a lower priority number than a more specific deny rule that was intended to take precedence.',
+        'Default NSG rules allow all outbound traffic and deny all inbound traffic from outside the virtual network by default — understanding these implicit defaults is necessary before assuming a specific traffic pattern is blocked or allowed without an explicit rule covering it.',
+        'VNet peering connects two virtual networks with private IP connectivity (no public internet transit, no gateway needed) but does NOT automatically transit through a peered network\'s own peering connections — this non-transitive property is a common source of "why can\'t VNet A reach VNet C through VNet B" confusion.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

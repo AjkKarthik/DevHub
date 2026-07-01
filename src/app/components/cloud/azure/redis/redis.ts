@@ -73,6 +73,15 @@ export class AzureRedis {
         'Redis ACLs (Enterprise tier): fine-grained command and key pattern restrictions per user. Standard/Premium tiers only support the single auth password model. For multi-tenant scenarios requiring access isolation, deploy separate Redis instances.',
       ]
     },
+    {
+      heading: 'Azure Cache for Redis Tiers and High Availability',
+      points: [
+        'The Basic tier runs a single Redis node with no SLA and no replication — appropriate only for development/testing, since any node failure or maintenance event causes a complete cache outage with data loss.',
+        'Standard tier adds a replicated secondary node with automatic failover, providing an SLA-backed availability guarantee — the baseline tier appropriate for most production workloads that cannot tolerate a single point of failure.',
+        'Premium tier adds features like clustering (for horizontal scale beyond a single node\'s memory), persistence (RDB/AOF, protecting against full data loss on restart), and virtual network isolation — necessary for large-scale or security-sensitive production deployments.',
+        'Redis is fundamentally an in-memory cache — even with Premium tier persistence enabled, applications should treat cached data as ephemeral and be able to reconstruct it from the source of truth, rather than relying on Redis as a durable primary data store.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

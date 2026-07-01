@@ -73,6 +73,15 @@ export class AzureCostManagement {
         'Untagged resources: run periodic audits via Azure Resource Graph Queries to find resources missing required tags. Use `az tag create` to apply tags retroactively. Set up Defender for Cloud recommendations or Policy non-compliance reports to track tagging coverage.',
       ]
     },
+    {
+      heading: 'Cost Attribution Through Tagging and Resource Organization',
+      points: [
+        'Consistent resource tagging (by team, project, environment, cost center) is what makes Cost Analysis actually useful for chargeback or showback reporting — without tags, costs can only be broken down by resource type or resource group, not by the organizational dimensions that actually matter for accountability.',
+        'Resource groups provide a natural cost-boundary for related resources, but a single team\'s resources spanning multiple resource groups (or a resource group containing multiple teams\' resources) makes tag-based cost attribution more reliable than relying on resource group boundaries alone.',
+        'Budgets with action-group-triggered alerts (not just passive notification) can automatically trigger a response (like disabling a service principal or sending a Teams message) when spending approaches a threshold, turning cost monitoring from reactive reporting into proactive control.',
+        'Azure Advisor\'s cost recommendations (identifying underutilized VMs, orphaned disks, or opportunities for reserved instance purchases) surface savings opportunities that manual cost review would likely miss across a large, sprawling subscription.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

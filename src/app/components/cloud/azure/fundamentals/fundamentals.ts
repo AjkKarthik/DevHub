@@ -71,6 +71,15 @@ export class AzureFundamentals {
         'Cost Management + Billing (portal.azure.com): set budgets, create alerts, and use Cost Analysis to break down spending by resource, tag or service.',
       ]
     },
+    {
+      heading: 'Regions, Availability Zones, and Fault Isolation',
+      points: [
+        'An Azure region is a set of datacenters within a defined geography — deploying across multiple regions protects against a region-wide outage, but requires deliberate architecture (data replication, traffic routing) since regions are not automatically synchronized.',
+        'Availability Zones are physically separate datacenter groups WITHIN a single region, each with independent power, cooling, and networking — spreading resources across zones protects against a datacenter-level failure without the latency and data-residency complexity of a full multi-region deployment.',
+        'Not every Azure service or region supports Availability Zones — checking zone support before architecting for zone-redundancy is necessary, since assuming zone redundancy where it is not actually available leaves a false sense of resilience.',
+        'The choice between zone-redundant (same region, multiple zones) and multi-region deployment should be driven by the actual failure modes being protected against — zone redundancy handles datacenter failures cheaply, while multi-region is needed for true regional-outage or disaster-recovery scenarios.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
