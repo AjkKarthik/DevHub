@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Date-based versioning (e.g., 2024-01-15) avoids the semantic debate of major vs minor; each date is a snapshot of the API contract.',
     ],
   },
+  {
+    heading: 'Communicating Version Changes to Consumers',
+    points: [
+      'A published changelog (documenting what changed in each version, with breaking changes clearly flagged) is essential infrastructure for any versioned API — consumers should never have to diff two versions of the spec themselves to discover what changed and whether it affects their integration.',
+      'Deprecation headers (Deprecation and Sunset, per RFC 8594) embedded directly in API responses reach consumers who monitor headers programmatically, complementing documentation-based announcements that some consumers may never actually read.',
+      'A generous, clearly communicated migration window between announcing a breaking change and actually removing the old version gives consumers realistic time to update — the appropriate window length depends heavily on the consumer base (internal services can migrate faster than an unknown public developer audience).',
+      'Monitoring actual usage of deprecated endpoints/versions after announcing deprecation lets you make data-driven decisions about whether to extend the sunset date — a sunset date that arrives while significant traffic still uses the deprecated version is a production incident waiting to happen, not just a broken promise.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Validate Content-Type and reject unexpected types. If you expect application/json, reject text/xml requests — parsers can behave unexpectedly with unexpected content types.',
     ],
   },
+  {
+    heading: 'Defense in Depth for API Security',
+    points: [
+      'No single security control is sufficient on its own — authentication verifies identity, authorization verifies permission, input validation prevents injection, and rate limiting prevents abuse; a genuinely secure API layers all of these rather than relying on any single mechanism to catch every threat.',
+      'The OWASP API Security Top 10 (a curated list of the most common and impactful API-specific vulnerabilities) is a practical starting checklist for any API security review — Broken Object Level Authorization consistently ranks as the most prevalent and damaging API vulnerability across real-world assessments.',
+      'Security should be validated at every layer independently — a client-side check is a UX convenience, never a security boundary; even data validated by an API gateway should typically be re-validated at the service level, since assuming upstream validation was correctly applied is a common source of security gaps.',
+      'Security is not a one-time design decision but an ongoing practice — regular dependency scanning, penetration testing, and security-focused code review are necessary because new vulnerabilities are discovered continuously in both custom code and third-party dependencies used to build the API.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

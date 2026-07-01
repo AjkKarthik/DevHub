@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Subscription schema: `type Subscription { orderStatusChanged(orderId: ID!): Order! }`.',
     ],
   },
+  {
+    heading: 'The GraphQL Schema as a Contract and Documentation',
+    points: [
+      'The GraphQL schema (written in Schema Definition Language) serves simultaneously as the API contract, the source of type-safe code generation, and the primary documentation — a single source of truth that eliminates the common REST problem of documentation drifting out of sync with actual API behavior.',
+      'Schema introspection (querying the schema itself via __schema and __type) is a built-in GraphQL capability that powers tooling like GraphiQL and Apollo Sandbox, giving every GraphQL API a consistent, interactive exploration experience without requiring custom documentation tooling to be built separately.',
+      'Because clients declare exactly which fields they need in every query, the schema can grow substantially over time (adding new types and fields) without impacting existing clients at all — they simply continue requesting the same fields they always have, unaware of unrelated schema additions.',
+      'Schema design deserves the same upfront design rigor as REST resource modeling — a poorly designed GraphQL schema (overly generic types, unclear naming, missing descriptions) is just as confusing and hard to integrate against as a poorly designed REST API, despite GraphQL\'s reputation for being inherently more flexible.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

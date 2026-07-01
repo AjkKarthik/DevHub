@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Most complex pattern — only reach for it when truly bidirectional, low-latency, or high-throughput scenarios justify the complexity.',
     ],
   },
+  {
+    heading: 'Designing gRPC Services for Evolvability',
+    points: [
+      'Service and message design in .proto files benefits from the same forward-thinking discipline as REST resource design — grouping related RPCs into cohesive services, using clear and consistent naming, and anticipating future extensibility from the start avoids painful refactors once clients depend on the generated code.',
+      'Wrapping primitive request/response types in named messages (rather than passing bare primitives) — even when a method conceptually needs just one value — preserves the ability to add fields later without changing the method signature, since adding a field to an existing message is non-breaking while changing a method\'s parameter type is not.',
+      'Streaming APIs (server, client, or bidirectional) require more careful error handling design than unary calls — a mid-stream error must be communicated in a way that lets the client distinguish "the stream ended normally" from "the stream failed partway through," which unary request-response does not need to consider at all.',
+      'gRPC service versioning through package naming (orders.v1, orders.v2) combined with careful, disciplined use of the Protocol Buffers backward-compatibility rules lets most evolution happen without ever needing a new major version — reserving version bumps for the rare, genuinely incompatible redesigns.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

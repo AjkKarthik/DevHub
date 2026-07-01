@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Connect simplifies the stack: one server handles native gRPC clients (other microservices) AND browser clients (Connect/fetch) without a separate proxy.',
     ],
   },
+  {
+    heading: 'Choosing the Right Browser-Compatible Protocol',
+    points: [
+      'gRPC-Web requires an Envoy (or similar) proxy for transcoding, adding an operational dependency and a network hop that native gRPC-to-gRPC service calls do not have — a genuine infrastructure cost that should be weighed against the benefits of exposing gRPC services to browser clients.',
+      'The Connect protocol (from Buf) eliminates the proxy requirement entirely by working natively over standard HTTP without special framing, making it an increasingly attractive alternative to gRPC-Web for new projects wanting gRPC-style typed APIs accessible directly from browsers.',
+      'gRPC-JSON transcoding via grpc-gateway serves a different need than gRPC-Web — it exposes a REST/JSON-compatible interface for clients that expect standard REST semantics entirely, rather than exposing the gRPC protocol itself in a browser-compatible form.',
+      'The choice between these approaches often comes down to whether the priority is preserving gRPC\'s binary efficiency and streaming for browser clients (gRPC-Web, Connect) versus providing a familiar REST/JSON interface for broader compatibility with existing REST-oriented tooling and client expectations (grpc-gateway).',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

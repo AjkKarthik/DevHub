@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'The "fetch limit+1" trick for hasNextPage: request 21 items when the limit is 20. If you get 21 back, there is a next page — drop the 21st from the response.',
     ],
   },
+  {
+    heading: 'Designing Pagination as Part of the Initial API Contract',
+    points: [
+      'Pagination strategy should be decided during initial API design, not retrofitted later — switching from offset-based to cursor-based pagination after an API has shipped and consumers have integrated against the original approach is a breaking change requiring careful, coordinated migration.',
+      'Even a collection that currently has few items should be paginated from day one if it could realistically grow unbounded — adding pagination retroactively to a previously unpaginated endpoint is itself a breaking change, since it changes the response shape from a bare array to a paginated envelope.',
+      'Documenting pagination behavior explicitly (default page size, maximum allowed page size, what happens with an out-of-range page) prevents consumers from making incorrect assumptions that only surface as bugs once their integration encounters edge cases like large datasets or empty result sets.',
+      'Consistency in pagination parameter naming and response shape across every paginated endpoint in an API (not varying between limit/offset here and page/size there) reduces the cognitive load for consumers integrating with multiple endpoints of the same API.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

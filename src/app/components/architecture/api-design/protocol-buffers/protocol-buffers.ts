@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'buf lint catches schema anti-patterns; `buf breaking` detects wire-breaking changes between versions of your .proto files.',
     ],
   },
+  {
+    heading: 'Protocol Buffers as Organizational Schema Infrastructure',
+    points: [
+      'A shared, centrally-managed repository of .proto schema files (rather than each service maintaining its own copy) prevents schema drift between services that are supposed to agree on the same message definitions, and provides a natural place to enforce organization-wide naming and style conventions.',
+      'CI-enforced breaking-change detection (via buf breaking or equivalent) on every schema pull request is what actually gives teams confidence to evolve shared schemas without manual coordination — without it, schema changes require careful manual review to catch potential breaking changes.',
+      'Well-documented schemas (using .proto comments) directly become the generated API documentation in most tooling — investing in clear field-level and message-level comments pays off across every language and service that consumes the generated code from that schema.',
+      'Treating Protocol Buffer schemas as a long-term, carefully evolved contract (with the same discipline as REST API design) rather than a quick implementation detail avoids the accumulation of poorly-named fields, inconsistent conventions, and awkward workarounds that make a growing schema increasingly painful to maintain.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Consumer-driven contract tests (Pact): consumers write expectations; providers run them. A breaking change fails the provider\'s Pact tests before deployment.',
     ],
   },
+  {
+    heading: 'Building Organizational Discipline Around Breaking Changes',
+    points: [
+      'A formal breaking-change review process (requiring explicit sign-off before any breaking change ships) creates a deliberate checkpoint that catches accidental breaking changes before they reach consumers — many breaking changes are unintentional side effects of an otherwise unrelated change, not deliberate API redesigns.',
+      'Automated breaking-change detection in CI (comparing the API spec on every pull request against the currently deployed spec) catches breaking changes at the moment they are introduced, when they are cheapest to fix, rather than after they have already been deployed and consumers have started encountering failures.',
+      'Consumer-driven contract tests (where each known consumer publishes example requests/responses they depend on) provide the strongest safety net — a proposed change that would violate an actual consumer\'s recorded expectations fails CI before deployment, rather than being caught only after real consumers start reporting errors.',
+      'Building institutional muscle memory around the Expand-Contract pattern (treating every "breaking" change as a series of non-breaking steps) turns breaking changes from a rare, high-risk, high-coordination event into a routine, well-understood, low-risk engineering practice.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

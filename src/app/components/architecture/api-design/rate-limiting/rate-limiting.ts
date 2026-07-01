@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Emerging standard: IETF draft "RateLimit Fields for HTTP" proposes standardised `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` headers.',
     ],
   },
+  {
+    heading: 'Rate Limiting as a Product and Business Decision',
+    points: [
+      'Rate limits communicate implicit product tiers — a generous free-tier limit combined with substantially higher paid-tier limits is both a technical protection mechanism and a monetization lever, meaning rate limit design decisions often require input from product and business stakeholders, not engineering alone.',
+      'Overly restrictive rate limits frustrate legitimate high-volume users and push them toward workarounds (aggressive caching, scraping via multiple accounts) that can be worse for system load than simply granting a higher limit in the first place — rate limits should be calibrated against genuine legitimate usage patterns, not set arbitrarily low out of caution.',
+      'Transparent rate limit communication (documented limits, response headers showing remaining quota) is what allows well-behaved API consumers to build their own client-side throttling and avoid ever actually hitting a 429 — poor communication forces consumers to discover limits through trial and error, creating a worse integration experience.',
+      'Rate limiting should be designed and load-tested before launch, not added reactively after a rate-limit-related incident — retrofitting rate limiting onto an API with existing high-volume consumers who have built integrations assuming no limits exist is a much more disruptive change than designing it in from the start.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

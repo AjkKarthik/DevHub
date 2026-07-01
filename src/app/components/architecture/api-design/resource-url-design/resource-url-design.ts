@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Avoid GET for mutations. Never use GET /users/42/delete — bots, link prefetchers, and browser history will trigger it accidentally.',
     ],
   },
+  {
+    heading: 'URL Design as Long-Term API Surface Investment',
+    points: [
+      'URL structure is one of the hardest things to change after an API ships — unlike internal implementation details, resource URLs are directly embedded in every client integration, bookmark, and piece of documentation, making upfront URL design decisions unusually consequential and expensive to reverse.',
+      'A consistent naming and structure convention applied across an entire API (not just individual endpoints designed in isolation) helps consumers predict URLs for resources they have not yet used, based on patterns they have already learned from other parts of the same API.',
+      'Establishing URL conventions as a documented style guide (not just implicit tribal knowledge) is what keeps a growing API, built by multiple teams over time, structurally consistent — without an explicit, referenceable guide, different teams naturally converge on subtly different conventions.',
+      'Reviewing proposed URL structures during API design review (before implementation begins) is far cheaper than discovering an awkward or inconsistent URL structure after the endpoint has shipped and consumers have already integrated against it.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

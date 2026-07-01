@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Retry strategy: 429 (rate limit) → retry after Retry-After header; 5xx (server error) → exponential backoff with jitter; 4xx → don\'t retry (client bug, fix the request).',
     ],
   },
+  {
+    heading: 'Error Response Design as a First-Class API Concern',
+    points: [
+      'Error responses are consumed by developers writing error-handling code, not just by end users seeing an error message — a well-designed, consistent, machine-parseable error format directly reduces integration friction and support burden, just as much as well-designed success responses do.',
+      'Standardizing on a single error format (like RFC 7807 Problem Details) across every endpoint in an API — rather than letting error shapes vary by endpoint or team — means consumers write error-handling logic once and reuse it everywhere, instead of special-casing every individual endpoint\'s unique error format.',
+      'Error responses should be designed with the same rigor as success responses from the start of API design, not bolted on as an afterthought once the "happy path" endpoints are already built — retrofitting a consistent error format across an already-shipped API is a genuinely painful, breaking-change-heavy migration.',
+      'Providing actionable guidance in error responses (not just describing what went wrong, but hinting at how to fix it — "the email field must be a valid email address" rather than just "validation failed") measurably reduces the number of support tickets and back-and-forth debugging cycles consumers need.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

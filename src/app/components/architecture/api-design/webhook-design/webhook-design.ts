@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Include the API version or schema version in the payload so consumers can adapt as your schema evolves.',
     ],
   },
+  {
+    heading: 'Designing Webhooks for a Trustworthy Developer Experience',
+    points: [
+      'Webhook consumers are trusting your service to reliably deliver events to their endpoint — this trust relationship means webhook reliability (retry logic, delivery guarantees, clear failure communication) deserves the same engineering rigor as any core API functionality, not an afterthought bolted onto the main product.',
+      'Providing a webhook testing/replay tool (letting developers trigger test events and replay past deliveries against their endpoint) dramatically improves the integration experience — without it, developers must trigger real production events just to test their webhook handler, which is often impractical or risky.',
+      'Clear documentation of webhook payload schemas (with versioning) and delivery semantics (at-least-once, ordering guarantees or lack thereof) sets correct expectations upfront — ambiguity here leads directly to consumer bugs when their assumptions about delivery guarantees turn out to be wrong.',
+      'A webhook management dashboard (showing delivery history, success/failure rates, and easy resend capability) is genuinely valuable operational tooling for consumers — building this well is a meaningful differentiator between a webhook system developers trust and one they are constantly anxious about.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

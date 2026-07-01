@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Design operations to be retry-safe. Network failures and timeouts are normal — consumers WILL retry. If your POST creates duplicate records on retry, you have a safety bug.',
     ],
   },
+  {
+    heading: 'API Design as a Product Decision, Not Just a Technical One',
+    points: [
+      'An API is a user interface for developers — every naming choice, error format, and endpoint structure directly shapes how easy or frustrating the API is to integrate with, making API design fundamentally a product design discipline, not purely a technical implementation detail.',
+      'Designing for the consumer\'s mental model (organizing endpoints around what a developer is trying to accomplish, not around internal database tables) produces APIs that feel intuitive, reducing both integration time and the volume of support questions from confused consumers.',
+      'Documentation quality is as much a part of API design as the endpoints themselves — an excellently designed API with poor or missing documentation is functionally almost as unusable as a poorly designed one, since developers cannot discover and correctly use capabilities they do not know exist.',
+      'Treating the API contract as a durable product surface (not an implementation detail that can change freely) forces disciplined thinking about backward compatibility from the very first design, rather than accumulating breaking-change debt that becomes progressively more painful to address later.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

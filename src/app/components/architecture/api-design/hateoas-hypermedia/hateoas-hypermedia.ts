@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Link templating (RFC 6570): use URI templates for parameterized links. E.g., "/users/{id}/orders{?status,page}" allows clients to expand the template.',
     ],
   },
+  {
+    heading: 'Evaluating Whether HATEOAS Investment Is Worth It',
+    points: [
+      'HATEOAS delivers its strongest value in long-lived, evolving public APIs with many independent consumers, where URL structure changes over years of API evolution would otherwise silently break every client that hard-coded URLs — the loose coupling HATEOAS provides is precisely valuable in this scenario.',
+      'For internal APIs with a small, known set of consumers (a handful of internal services all deployed by the same team), the coordination cost of updating hard-coded URLs directly is usually far lower than the ongoing complexity of implementing and correctly maintaining a full hypermedia-driven API.',
+      'Teams considering HATEOAS should honestly assess whether their client tooling and team practices actually support link-following navigation — building a HATEOAS-compliant API that all consuming clients then simply hard-code URLs against anyway captures none of the architectural benefit while still paying the full implementation cost.',
+      'A middle-ground approach — using Link headers for well-established, universally understood relations (like pagination next/prev) without implementing full HATEOAS response bodies — captures some practical benefit at a fraction of the implementation and consumption complexity of complete hypermedia-driven design.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

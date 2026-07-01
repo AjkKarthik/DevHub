@@ -60,6 +60,15 @@ const theory: TheoryPoint[] = [
       'HTTP/2 note: SSE over HTTP/2 multiplexes over one TCP connection — you get many SSE streams sharing one connection, unlike HTTP/1.1 where each SSE stream holds one connection.',
     ],
   },
+  {
+    heading: 'Choosing the Right Real-Time Strategy for the Actual Use Case',
+    points: [
+      'The decision between polling, SSE, and WebSockets should be driven by the actual communication pattern needed (one-way vs bidirectional) and update frequency, not by which technology seems most modern — using WebSockets for a purely one-directional, infrequent update feed adds unjustified complexity compared to simpler alternatives.',
+      'Infrastructure compatibility matters practically — WebSockets require infrastructure (load balancers, proxies, corporate firewalls) that correctly supports the protocol upgrade and long-lived connections, while SSE and polling work reliably over plain HTTP through virtually any intermediary without special configuration.',
+      'Starting with the simplest approach that meets actual requirements (often polling, sometimes SSE) and only moving to WebSockets when a genuine, demonstrated need for bidirectional low-latency communication emerges avoids premature complexity that then must be operated and debugged for the lifetime of the feature.',
+      'Real-time feature reliability requires planning for connection drops and reconnection from the start — regardless of which technology is chosen, the client-side reconnection and state-resynchronization logic is often more implementation effort than the initial "happy path" real-time connection itself.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

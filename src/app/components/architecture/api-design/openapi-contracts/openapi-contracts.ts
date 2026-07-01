@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Spectral: linter for OpenAPI specs — define rules like "all responses must include a requestId field" or "operationId must be camelCase" and run in CI.',
     ],
   },
+  {
+    heading: 'OpenAPI as Organizational Infrastructure, Not Just Documentation',
+    points: [
+      'Treating the OpenAPI spec as the authoritative source of truth (rather than a documentation artifact generated after the fact from code) enables an entire tooling ecosystem — mock servers, generated SDKs, automated contract tests, breaking-change detection — that all depend on the spec being accurate and maintained.',
+      'A schema registry or centralized catalog of OpenAPI specs across an organization lets teams discover what APIs already exist before building redundant new ones, and lets consuming teams subscribe to changes in specs they depend on — valuable infrastructure that a single team\'s isolated spec file does not provide.',
+      'Investing in OpenAPI tooling (linting in CI, automated SDK generation, mock server deployment for frontend development) pays compounding returns as an organization\'s API surface grows — the tooling investment that seems like overhead for a single small API becomes essential infrastructure at the scale of dozens of APIs across many teams.',
+      'OpenAPI spec quality directly determines the quality of everything generated from it — a poorly annotated spec (missing descriptions, generic examples, incomplete schemas) produces poor generated documentation, unhelpful mock servers, and weak generated client SDKs, since none of that tooling can infer intent the spec does not explicitly capture.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

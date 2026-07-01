@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Hybrid: REST for public APIs, GraphQL for internal flexible client needs. Run both from the same server — they\'re not mutually exclusive.',
     ],
   },
+  {
+    heading: 'Making the Choice Based on Actual Client Diversity',
+    points: [
+      'The strongest signal favoring GraphQL is genuine client diversity — when web, mobile, and third-party integrations have meaningfully different data needs from the same underlying resources, GraphQL\'s per-client field selection eliminates the need for multiple REST endpoint variants or client-specific BFF layers.',
+      'A single-client API (one web app, no mobile app, no public API) gains much less from GraphQL\'s flexibility, since REST endpoints can simply be shaped exactly around that one client\'s needs without the overfetching/underfetching problem GraphQL specifically solves.',
+      'Team GraphQL experience is a genuinely significant practical factor — a team with no GraphQL experience building their first API under a deadline will likely deliver a more reliable REST API faster, even if GraphQL would theoretically be the better architectural fit for the problem.',
+      'Some organizations successfully run both — a public REST API for external/partner integrations (broad familiarity, simple caching) alongside an internal GraphQL API serving their own web/mobile clients (flexible, avoids BFF proliferation) — rather than treating the choice as strictly all-or-nothing.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

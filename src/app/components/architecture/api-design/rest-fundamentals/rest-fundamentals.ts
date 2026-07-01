@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'PUT (replace the full resource) is idempotent. PATCH (partial update) may or may not be idempotent depending on the operation — "set name to X" is idempotent; "increment counter" is not.',
     ],
   },
+  {
+    heading: 'REST Constraints as Design Guidance, Not Bureaucratic Rules',
+    points: [
+      'Roy Fielding\'s original REST constraints were derived from analyzing what made the web itself scale successfully — understanding this origin helps teams apply the constraints as practical engineering guidance rather than treating "RESTful" as an arbitrary checklist to satisfy for its own sake.',
+      'Most production APIs pragmatically apply Level 2 of the Richardson Maturity Model (correct HTTP verbs and status codes) without full HATEOAS — this is a deliberate, reasonable engineering tradeoff for the vast majority of use cases, not a failure to be "truly RESTful."',
+      'The statelessness constraint has architectural implications beyond simplicity — it is what enables horizontal scaling without session affinity, since any server instance can handle any request without needing access to previous request context stored on a specific server.',
+      'Understanding WHY each REST constraint exists (not just memorizing the list) equips a team to make good judgment calls when a specific situation genuinely warrants deviating from strict REST principles, rather than either blindly following or blindly ignoring the constraints.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

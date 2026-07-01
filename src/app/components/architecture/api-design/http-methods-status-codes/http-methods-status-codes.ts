@@ -68,6 +68,15 @@ const theory: TheoryPoint[] = [
       '504 Gateway Timeout: upstream service did not respond within the timeout. The gateway timed out waiting for a response.',
     ],
   },
+  {
+    heading: 'Building Institutional Consistency Around HTTP Semantics',
+    points: [
+      'Correct, consistent HTTP method and status code usage across an entire API surface is what lets generic HTTP tooling (caches, proxies, monitoring dashboards, client libraries) behave correctly without special-casing individual endpoints — deviating from standard semantics on even a few endpoints undermines this system-wide benefit.',
+      'A style guide (enforced via an automated linter like Spectral, not just documentation) is the practical mechanism that keeps a growing API, built by multiple teams over time, consistent in its HTTP method and status code usage — without enforcement, inconsistency creeps in gradually as new engineers join and interpret conventions differently.',
+      'Status code usage should be reviewed as part of API design review, not left to individual developer discretion at implementation time — the choice between 400 and 422, or between 403 and 404, has real semantic and security implications that benefit from deliberate, considered decision-making rather than whatever the framework happened to return by default.',
+      'Documenting the exact meaning of each status code AS USED BY THIS SPECIFIC API (since real-world usage sometimes deviates slightly from the strict HTTP specification) helps consumers correctly interpret responses without needing to guess or reverse-engineer the API\'s specific conventions through trial and error.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [
