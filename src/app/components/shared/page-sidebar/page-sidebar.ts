@@ -11618,6 +11618,286 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Ambient mesh\'s per-node proxy architecture specifically targets this overhead concern by eliminating the per-pod sidecar, a real architectural response to a genuine performance criticism of the sidecar model.',
     ],
   },
+
+  // ── System Design: per-page entries ─────────────────────────────────────────
+  'system-design/framework': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Capacity Estimation', route: '/system-design/capacity-estimation' },
+      { label: 'CAP Theorem',         route: '/system-design/cap-theorem' },
+    ],
+    tip: 'Start every system design answer with clarifying questions about SCALE (requests/sec, data size, read/write ratio) before proposing any architecture — the right design for 100 users looks nothing like the right design for 100 million, and jumping to a solution before scoping the problem is the most common interview mistake.',
+    gotchas: [
+      'A structured framework (requirements → estimation → high-level design → deep dive → tradeoffs) demonstrates methodical thinking even under time pressure, more valuable than arriving at a "correct" answer via lucky guessing.',
+      'Explicitly stating assumptions and tradeoffs out loud shows the interviewer your reasoning, not just your conclusion.',
+    ],
+  },
+  'system-design/capacity-estimation': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Framework', route: '/system-design/framework' },
+    ],
+    tip: 'Back-of-envelope estimation (requests/sec, storage growth per year, bandwidth) grounds an architecture decision in actual numbers rather than vague intuition — a design that "feels" scalable can still be wildly over- or under-provisioned without doing this math.',
+    gotchas: [
+      'Rough order-of-magnitude estimates are usually sufficient — obsessing over precise numbers in an interview setting wastes time better spent on the actual architecture discussion.',
+      'Peak traffic (not average) is usually the number that matters for capacity planning — average load can look comfortably low while peak load reveals a real bottleneck.',
+    ],
+  },
+  'system-design/cap-theorem': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Replication',    route: '/system-design/replication' },
+      { label: 'Sharding',       route: '/system-design/sharding' },
+    ],
+    tip: 'CAP theorem is specifically about behavior during a network PARTITION — a system is not simply "CP" or "AP" all the time; the consistency/availability tradeoff only manifests when a partition actually occurs, a frequently misunderstood nuance.',
+    gotchas: [
+      'Most real distributed systems are not purely CP or AP — they make different tradeoffs for different operations, or use tunable consistency (like Cosmos DB or Cassandra) rather than a single fixed choice.',
+      'PACELC extends CAP by also addressing the tradeoff when there is NO partition (latency vs. consistency), a distinction CAP alone doesn\'t cover.',
+    ],
+  },
+  'system-design/sql-vs-nosql': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'CAP Theorem',  route: '/system-design/cap-theorem' },
+      { label: 'Sharding',     route: '/system-design/sharding' },
+    ],
+    tip: 'The choice isn\'t "SQL is old, NoSQL is scalable" — it\'s about actual access patterns: SQL suits relational data with complex queries and strong consistency needs; NoSQL suits flexible schema, horizontal scale, and specific access-pattern-optimized data models (key-value, document, wide-column).',
+    gotchas: [
+      'Many production systems use BOTH — a relational database for transactional core data and a NoSQL store for a specific high-scale, access-pattern-optimized use case, rather than treating it as an all-or-nothing choice.',
+      'NoSQL\'s "schema flexibility" shifts data consistency responsibility to the APPLICATION layer — a real tradeoff, not a free lunch.',
+    ],
+  },
+  'system-design/scaling': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing',  route: '/system-design/load-balancing' },
+      { label: 'Caching',         route: '/system-design/caching' },
+    ],
+    tip: 'Vertical scaling (bigger machine) is simpler but hits a hard ceiling and creates a single point of failure; horizontal scaling (more machines) has no hard ceiling but requires the application to be designed for it (stateless, or with explicit state coordination) — most large-scale systems eventually need horizontal scaling.',
+    gotchas: [
+      'A stateful application (in-memory sessions, local file storage) cannot simply be horizontally scaled without first externalizing that state — a common architectural retrofit pain point.',
+      'Scaling reads and scaling writes are DIFFERENT problems requiring different solutions (read replicas vs. sharding) — conflating them leads to the wrong architecture.',
+    ],
+  },
+  'system-design/load-balancing': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Scaling',        route: '/system-design/scaling' },
+      { label: 'High Availability', route: '/system-design/high-availability' },
+    ],
+    tip: 'A load balancer is itself a potential single point of failure — production architectures typically run redundant load balancers (active-passive or active-active) rather than trusting a single instance, the same resilience principle applied one layer up from the backend servers it protects.',
+    gotchas: [
+      'Health checks determine which backends receive traffic — a health check that doesn\'t reflect genuine readiness (just "is the process running") can route traffic to a technically-alive-but-actually-broken instance.',
+      'Sticky sessions (routing a client to the same backend) reintroduce a form of statefulness that complicates horizontal scaling and failover — avoid them when possible by externalizing session state instead.',
+    ],
+  },
+  'system-design/caching': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Scaling',    route: '/system-design/scaling' },
+      { label: 'CDN',        route: '/system-design/cdn' },
+    ],
+    tip: 'Adding a cache doesn\'t just add speed — it adds a NEW failure mode (cache invalidation, stale data) and a new question for every write path: how does the cache stay consistent with the source of truth — a genuinely two-sided tradeoff, not a free performance win.',
+    gotchas: [
+      'Cache stampede (many concurrent misses for the same expired key hitting the database simultaneously) requires explicit mitigation like locking or early refresh.',
+      'Cache-aside is the most common pattern, but write-through and write-behind exist for different consistency/latency tradeoffs worth knowing for interview depth.',
+    ],
+  },
+  'system-design/cdn': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Caching',   route: '/system-design/caching' },
+    ],
+    tip: 'A CDN caches content at edge locations physically close to users, reducing both latency AND load on the origin server — but cache invalidation across a globally distributed CDN is genuinely harder than invalidating a single centralized cache, since propagation isn\'t instantaneous everywhere.',
+    gotchas: [
+      'Dynamic, personalized content is generally a poor fit for CDN caching — CDNs excel at static or infrequently-changing content shared across many users.',
+      'A CDN doesn\'t eliminate the need for origin capacity planning — a cache miss (or an uncacheable request) still hits the origin, which must handle that residual load.',
+    ],
+  },
+  'system-design/replication': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sharding',      route: '/system-design/sharding' },
+      { label: 'CAP Theorem',   route: '/system-design/cap-theorem' },
+    ],
+    tip: 'Replication solves AVAILABILITY (surviving a node failure) and read scaling — it does NOT solve write scaling or storage scaling, which is what sharding addresses; these are genuinely different problems often conflated in interview answers.',
+    gotchas: [
+      'Asynchronous replication (the common default) means a write acknowledged by the primary may not yet be on a replica — a failover to that replica can lose the most recent writes, a real consistency tradeoff.',
+      'Replication lag (the delay between a write on the primary and its appearance on a replica) means reading from a replica right after writing to the primary can return stale data — a common source of confusing "why don\'t I see my own write" bugs.',
+    ],
+  },
+  'system-design/sharding': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Replication',   route: '/system-design/replication' },
+    ],
+    tip: 'The SHARD KEY choice is largely IRREVERSIBLE once a system is in production — a poorly chosen key creates hot shards that bottleneck throughput regardless of how many shards exist, the single most consequential decision in a sharded architecture.',
+    gotchas: [
+      'Cross-shard queries (joining data that lives on different shards) are expensive or impossible without application-level orchestration — sharding trades this capability away for write/storage scalability.',
+      'Resharding (changing the shard key or count after the fact) is a genuinely difficult, high-risk operation on a live production system — getting the initial design right matters enormously.',
+    ],
+  },
+  'system-design/distributed-transactions': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Sharding',            route: '/system-design/sharding' },
+      { label: 'Fault Tolerance',     route: '/system-design/fault-tolerance' },
+    ],
+    tip: 'Two-phase commit provides strong consistency across services but blocks all participants if the coordinator fails mid-commit — the Saga pattern (a sequence of local transactions with compensating actions) trades strict atomicity for availability, the standard choice in most modern distributed systems.',
+    gotchas: [
+      'Not every operation has a clean compensating action for a Saga — sending an email cannot be truly "unsent," a real constraint on which pattern actually fits a given workflow.',
+      'Distributed transactions are expensive enough that good service boundary design (minimizing cross-service transactional needs in the first place) is often a better solution than solving the distributed transaction problem well.',
+    ],
+  },
+  'system-design/fault-tolerance': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'High Availability',   route: '/system-design/high-availability' },
+      { label: 'Disaster Recovery',   route: '/system-design/disaster-recovery' },
+    ],
+    tip: 'Assume EVERY component will eventually fail — fault tolerance is designing so that a single component\'s failure degrades the system gracefully (or not at all) rather than causing a total outage, a fundamentally different mindset than trying to prevent failure entirely.',
+    gotchas: [
+      'A circuit breaker prevents a struggling downstream service from being overwhelmed further by continued requests, fast-failing instead of piling up load against an already-failing dependency.',
+      'Redundancy (multiple instances of a critical component) only provides fault tolerance if those instances are genuinely independent — sharing a single point of failure (like one power supply or one AZ) defeats the purpose.',
+    ],
+  },
+  'system-design/high-availability': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fault Tolerance',      route: '/system-design/fault-tolerance' },
+      { label: 'Disaster Recovery',    route: '/system-design/disaster-recovery' },
+    ],
+    tip: '"Five nines" (99.999% uptime) allows only about 5 minutes of downtime PER YEAR — the cost and complexity of each additional nine grows non-linearly, which is why the right availability target should be driven by actual business impact of downtime, not an arbitrarily impressive-sounding number.',
+    gotchas: [
+      'High availability within one region/datacenter does not protect against a full regional outage — that requires genuine multi-region architecture, a much bigger undertaking.',
+      'Availability and durability are DIFFERENT guarantees — a highly available system can still lose data if it isn\'t also designed for durability (proper replication, backups).',
+    ],
+  },
+  'system-design/disaster-recovery': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'High Availability', route: '/system-design/high-availability' },
+    ],
+    tip: 'RTO (how quickly you must recover) and RPO (how much data loss is acceptable) are the two numbers that actually define a disaster recovery strategy — a DR plan that has never been ACTUALLY TESTED (a real failover drill, not just a document) is not a real DR plan, since untested recovery procedures frequently fail when actually needed.',
+    gotchas: [
+      'A backup that has never been restored from is not a verified backup — the only way to know a backup actually works is to test the restore process, not just confirm the backup job "succeeded."',
+      'Multi-region active-active provides the best RTO/RPO but is significantly more complex and costly than active-passive — the right choice depends on how costly actual downtime genuinely is for the business.',
+    ],
+  },
+  'system-design/networking': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing', route: '/system-design/load-balancing' },
+      { label: 'CDN',            route: '/system-design/cdn' },
+    ],
+    tip: 'Understanding the request path (DNS resolution → TCP/TLS handshake → load balancer → application server → database) and where latency accumulates at each hop is foundational for reasoning about where a system\'s actual bottleneck lives, rather than guessing.',
+    gotchas: [
+      'DNS TTL affects how quickly a DNS-level change (like a failover) actually propagates to clients — a low TTL enables faster failover at the cost of more DNS query volume.',
+      'TCP connection setup (and TLS handshake on top of it) has real latency cost — connection pooling and keep-alive avoid paying this cost on every single request.',
+    ],
+  },
+  'system-design/indexes': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'SQL vs NoSQL', route: '/system-design/sql-vs-nosql' },
+    ],
+    tip: 'An index speeds up READS but slows down WRITES (every write must update every index on the table) — indexing every column "just in case" has a real, often underestimated cost, and the right index strategy should follow actual query patterns, not blanket coverage.',
+    gotchas: [
+      'A compound index\'s column ORDER matters — an index on (A, B) generally cannot efficiently serve a query filtering only on B.',
+      'A covered query (the index alone contains every field the query needs) avoids touching the actual table data at all, a significant performance win worth designing for on hot query paths.',
+    ],
+  },
+  'system-design/distributed-tracing': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Fault Tolerance', route: '/system-design/fault-tolerance' },
+    ],
+    tip: 'In a microservices architecture, a single user request can touch dozens of services — without distributed tracing (propagating a trace/correlation ID through every hop), debugging "why was this request slow" becomes a matter of guesswork across scattered, disconnected logs.',
+    gotchas: [
+      'Async message boundaries (a queue between services) break automatic trace propagation unless the trace context is explicitly carried in message headers.',
+      'Sampling (recording only a percentage of traces) is often necessary at scale, but sampling out the rare slow/erroring requests defeats the entire purpose of tracing them.',
+    ],
+  },
+  'system-design/url-shortener': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Framework',        route: '/system-design/framework' },
+      { label: 'Caching',          route: '/system-design/caching' },
+    ],
+    tip: 'A classic system design interview question specifically because it touches SO many core concepts (encoding scheme, database choice, caching, rate limiting, analytics) in a deceptively simple-sounding problem — the depth comes from the follow-up questions, not the basic requirement.',
+    gotchas: [
+      'Base62 encoding of an auto-incrementing ID is simple but leaks information (sequential IDs reveal creation order/volume) — a randomized or hashed scheme avoids this at the cost of needing collision handling.',
+      'Read-heavy access pattern (far more redirects than URL creations) argues strongly for aggressive caching of the short-code-to-URL mapping.',
+    ],
+  },
+  'system-design/chat-application': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Framework',   route: '/system-design/framework' },
+    ],
+    tip: 'A chat application\'s core challenge is maintaining PERSISTENT, STATEFUL connections (WebSockets) at scale — this is architecturally very different from typical stateless REST APIs, requiring connection state to be tracked and potentially routed to the specific server holding a given user\'s connection.',
+    gotchas: [
+      'Message ordering and delivery guarantees (at-least-once vs. exactly-once) need explicit design decisions — a naive implementation can deliver duplicate or out-of-order messages under real network conditions.',
+      'Presence (online/offline status) at scale requires its own design consideration — a naive "ping every user" approach doesn\'t scale to millions of concurrent connections.',
+    ],
+  },
+  'system-design/social-feed': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Framework',   route: '/system-design/framework' },
+      { label: 'Caching',     route: '/system-design/caching' },
+    ],
+    tip: 'Fan-out-on-write (pre-computing each follower\'s feed when a post is created) versus fan-out-on-read (computing the feed at read time from followed accounts) is THE central design decision — fan-out-on-write is fast to read but expensive for accounts with millions of followers ("celebrity problem"), which most real systems handle with a hybrid approach.',
+    gotchas: [
+      'The celebrity problem (a single post from a hugely popular account triggering fan-out to millions of followers) is the classic follow-up that breaks a naive pure fan-out-on-write design.',
+      'Feed ranking (not just chronological order) adds significant complexity beyond the basic fan-out mechanism, often intentionally out of scope for a first-pass interview answer.',
+    ],
+  },
+  'system-design/search-engine': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Framework',   route: '/system-design/framework' },
+      { label: 'Indexes',     route: '/system-design/indexes' },
+    ],
+    tip: 'An inverted index (mapping each term to the documents containing it) is the foundational data structure behind virtually every text search system — understanding this structure explains why full-text search doesn\'t use a traditional B-tree index the way typical database queries do.',
+    gotchas: [
+      'Relevance ranking (not just matching) is a genuinely hard, often ML-driven problem distinct from the indexing/retrieval mechanics — most interview answers can reasonably scope this out as "a ranking service" without full design.',
+      'Index updates for frequently-changing content require a strategy (near-real-time indexing vs. batch reindexing) with real tradeoffs in freshness versus system load.',
+    ],
+  },
+  'system-design/payment-system': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Distributed Transactions', route: '/system-design/distributed-transactions' },
+    ],
+    tip: 'IDEMPOTENCY is the single most critical property in a payment system\'s design — a payment request retried due to a network timeout must NOT result in double-charging, which is why idempotency keys are essentially non-negotiable for any payment API design.',
+    gotchas: [
+      'Payment systems favor STRONG consistency over availability for the actual money-moving operation — this is one of the clearest real-world cases where CAP\'s consistency side is the correct choice, not eventual consistency.',
+      'A payment system needs a reliable audit trail (every state transition logged immutably) for both debugging and regulatory/compliance requirements — this is a hard requirement, not an optional nicety.',
+    ],
+  },
+  'system-design/video-streaming': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'CDN',   route: '/system-design/cdn' },
+    ],
+    tip: 'Adaptive bitrate streaming (encoding the same video at multiple quality levels, switching dynamically based on the client\'s current network conditions) is the core technique that makes video streaming resilient to varying network quality — a fixed single-quality stream would either buffer constantly on slow connections or waste bandwidth on fast ones.',
+    gotchas: [
+      'Video content is heavily CDN-dependent given its bandwidth demands — origin-only serving would be prohibitively expensive and slow at any real scale.',
+      'Video encoding/transcoding (converting an uploaded video into multiple quality/format variants) is a genuinely CPU-intensive asynchronous pipeline, distinct from the actual streaming/delivery path.',
+    ],
+  },
+  'system-design/ai-ml-system-design': {
+    apis: SYSDESIGN_DEFAULT.apis, docs: SYSDESIGN_DEFAULT.docs, resources: SYSDESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Framework',   route: '/system-design/framework' },
+    ],
+    tip: 'AI/ML system design adds a THIRD dimension beyond typical system design (scale, consistency) — model versioning, feature stores, training/serving pipeline separation, and A/B testing new models against production traffic, none of which apply to a typical CRUD-style system.',
+    gotchas: [
+      'Training and serving typically run on fundamentally different infrastructure with different scaling characteristics — batch training jobs versus low-latency real-time inference are genuinely separate design problems.',
+      'A model that performs well in offline evaluation can still fail in production due to training-serving skew (subtle differences between training data and live production data) — a design must account for monitoring this gap.',
+    ],
+  },
 };
 
 @Component({
