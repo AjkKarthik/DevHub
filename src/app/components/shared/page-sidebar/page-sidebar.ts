@@ -10658,6 +10658,252 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Toil (manual, repetitive, automatable operational work) directly competes with an SRE team\'s capacity to improve reliability — time spent on toil is time not spent reducing future toil.',
     ],
   },
+
+  // ── AWS: per-page entries ────────────────────────────────────────────────────
+  'aws/fundamentals': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IAM',   route: '/aws/iam' },
+      { label: 'VPC',   route: '/aws/vpc' },
+    ],
+    tip: 'AWS regions and Availability Zones give two different levels of fault isolation — spreading resources across AZs within a region protects against a datacenter failure cheaply, while true regional-outage protection requires an actual multi-region architecture.',
+    gotchas: [
+      'Not every AWS service is available in every region — check availability before architecting around a specific service in a specific region.',
+      'The Well-Architected Framework\'s five pillars (operational excellence, security, reliability, performance, cost) provide a structured way to review an architecture, not just a checklist to skim.',
+    ],
+  },
+  'aws/iam': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IAM Roles', route: '/aws/iam-roles' },
+      { label: 'Security',  route: '/aws/security' },
+    ],
+    tip: 'IAM policies follow LEAST PRIVILEGE by design intent — scoping a policy to exactly the actions and resources actually needed is far easier to audit than starting broad ("*") and trying to narrow it down after the fact.',
+    gotchas: [
+      'An explicit Deny in ANY applicable policy always wins over an Allow, regardless of how many other policies grant access — a common source of "why can\'t this identity do X" confusion.',
+      'S3 bucket policies and IAM policies are evaluated together for S3 access — both must allow the action, not just one.',
+    ],
+  },
+  'aws/iam-roles': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IAM',  route: '/aws/iam' },
+      { label: 'EC2',  route: '/aws/ec2' },
+    ],
+    tip: 'An IAM role attached to an EC2 instance or Lambda function provides TEMPORARY, automatically-rotated credentials — eliminating the need to embed a long-lived access key in code or configuration, a major security improvement over static credentials.',
+    gotchas: [
+      'A role\'s trust policy (who CAN assume it) is separate from its permissions policy (what it CAN do once assumed) — misconfiguring either half breaks the intended access model differently.',
+      'Cross-account role assumption requires both the trusting account\'s role trust policy AND the assuming principal\'s own permission to call sts:AssumeRole.',
+    ],
+  },
+  'aws/vpc': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing', route: '/aws/load-balancing' },
+      { label: 'Security',       route: '/aws/security' },
+    ],
+    tip: 'Security groups are STATEFUL (a return response to an allowed inbound request is automatically allowed back out) while NACLs are STATELESS (both directions must be explicitly allowed) — conflating the two models is a common source of "why is this connection being blocked" confusion.',
+    gotchas: [
+      'A public subnet is defined by having a route to an Internet Gateway — simply naming a subnet "public" does nothing without the actual route table entry.',
+      'VPC peering is non-transitive — VPC A peered with B and B peered with C does NOT let A reach C through B.',
+    ],
+  },
+  'aws/ec2': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing', route: '/aws/load-balancing' },
+      { label: 'ECS & EKS',      route: '/aws/ecs-eks' },
+    ],
+    tip: 'An Auto Scaling Group with a Launch Template lets EC2 capacity scale based on demand rather than a fixed, manually-provisioned fleet — over-provisioning wastes money, under-provisioning risks an outage under real load spikes.',
+    gotchas: [
+      'Instance metadata (IMDSv2) should be enforced over IMDSv1 — the older version is more vulnerable to SSRF-based credential theft from a compromised application.',
+      'Spot instances offer significant cost savings but can be reclaimed with only a short warning — appropriate for fault-tolerant, interruptible workloads, not stateful primary capacity.',
+    ],
+  },
+  'aws/ecs-eks': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EC2',    route: '/aws/ec2' },
+      { label: 'Lambda', route: '/aws/lambda' },
+    ],
+    tip: 'ECS is AWS\'s own simpler, proprietary container orchestrator; EKS is managed Kubernetes — ECS has a gentler learning curve and tighter native AWS integration, while EKS gives portability and access to the broader Kubernetes ecosystem at the cost of more operational complexity.',
+    gotchas: [
+      'Fargate (usable with both ECS and EKS) removes node management entirely — you pay per task/pod resource usage instead of managing underlying EC2 instances.',
+      'Choosing ECS over EKS is a real lock-in tradeoff — migrating away from ECS later requires re-platforming to Kubernetes manifests, unlike EKS which is already standard Kubernetes.',
+    ],
+  },
+  'aws/lambda': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'API Gateway',     route: '/aws/api-gateway' },
+      { label: 'Step Functions',  route: '/aws/step-functions' },
+    ],
+    tip: 'Lambda scales to zero when idle, meaning the first request after inactivity incurs a "cold start" — Provisioned Concurrency eliminates this at the cost of paying for warm capacity even when idle, a direct latency-vs-cost tradeoff.',
+    gotchas: [
+      'Cold start duration varies significantly by runtime and package size — a function with heavy dependencies has a meaningfully longer cold start than a lean one.',
+      'Lambda\'s default execution timeout and memory settings often need explicit tuning for anything beyond a trivial function — memory allocation also proportionally affects CPU allocation.',
+    ],
+  },
+  'aws/api-gateway': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Lambda',        route: '/aws/lambda' },
+      { label: 'Load Balancing', route: '/aws/load-balancing' },
+    ],
+    tip: 'API Gateway centralizes cross-cutting concerns (throttling, auth, request validation) in front of Lambda or other backends — avoiding the need to reimplement the same concerns in every individual function, at the cost of an added network hop and its own configuration surface.',
+    gotchas: [
+      'Request/response transformation (mapping templates) adds real complexity — keep transformations simple, or push complex logic into the Lambda function itself instead.',
+      'Throttling limits are configured per API and per usage plan — a default limit too low for legitimate traffic silently causes 429s under normal load spikes.',
+    ],
+  },
+  'aws/s3': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Security',   route: '/aws/security' },
+      { label: 'CloudFront', route: '/aws/route53-cloudfront' },
+    ],
+    tip: 'S3 offers 11 nines of durability through automatic replication across multiple facilities within a region — but durability is NOT the same as availability or protection against accidental deletion; versioning and MFA-delete address the latter, which durability alone doesn\'t cover.',
+    gotchas: [
+      'A publicly-writable or publicly-readable S3 bucket from a misconfigured bucket policy is one of the most common, high-profile cloud security misconfigurations found by researchers.',
+      'S3 event notifications (triggering Lambda on object creation) are eventually consistent and can occasionally deliver duplicate events — consumers should be idempotent.',
+    ],
+  },
+  'aws/dynamodb': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'RDS/Aurora', route: '/aws/rds-aurora' },
+    ],
+    tip: 'DynamoDB\'s partition key choice is a largely IRREVERSIBLE design decision — a poorly chosen key creates hot partitions that throttle throughput regardless of provisioned capacity, the same fundamental problem as a poor shard key in any distributed database.',
+    gotchas: [
+      'DynamoDB has no native JOIN — data modeling relies on denormalization and single-table design patterns unfamiliar to developers coming from relational databases.',
+      'On-demand capacity mode avoids manual capacity planning but costs more per request than well-tuned provisioned capacity at steady, predictable load.',
+    ],
+  },
+  'aws/rds-aurora': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'DynamoDB', route: '/aws/dynamodb' },
+    ],
+    tip: 'Aurora separates compute from a distributed, self-healing storage layer shared across replicas — this architecture is why Aurora Replicas can be added with near-zero replication lag compared to traditional RDS read replica setups using standard binlog-based replication.',
+    gotchas: [
+      'Aurora Serverless v2 scales capacity based on load automatically, but cold-scaling from zero (if configured) still incurs a real startup delay for the first connection.',
+      'Multi-AZ RDS provides failover for availability, not read scaling — a separate read replica is needed specifically to offload read traffic.',
+    ],
+  },
+  'aws/sqs-sns': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EventBridge', route: '/aws/eventbridge' },
+    ],
+    tip: 'SQS delivers to exactly ONE consumer per message (point-to-point queue); SNS fans out to EVERY subscriber (pub/sub) — combining SNS fanning out to multiple SQS queues is the classic pattern for reliable, durable multi-consumer delivery.',
+    gotchas: [
+      'SQS visibility timeout hides a message during processing — expiring before deletion causes redelivery, meaning consumers must be idempotent regardless of standard vs FIFO queue choice.',
+      'FIFO queues guarantee order and exactly-once (within a dedup window) at a real throughput cost compared to standard queues.',
+    ],
+  },
+  'aws/eventbridge': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'SQS & SNS', route: '/aws/sqs-sns' },
+    ],
+    tip: 'EventBridge routes based on content-matching rules BEFORE delivery, unlike SNS which fans out unconditionally — making EventBridge the better fit for complex, multi-source event routing, including native support for scheduling and third-party SaaS integrations.',
+    gotchas: [
+      'A poorly-scoped event pattern can silently miss events it was intended to match — testing rule patterns against real sample events catches this before production.',
+      'EventBridge adds rule-evaluation routing overhead compared to SNS\'s simpler unconditional fan-out, usually negligible but worth knowing.',
+    ],
+  },
+  'aws/step-functions': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Lambda', route: '/aws/lambda' },
+    ],
+    tip: 'Step Functions provide visual, stateful orchestration of multi-step workflows (including retries, error handling, and parallel branches) — replacing what would otherwise be custom orchestration logic hand-written and hidden inside a single Lambda function.',
+    gotchas: [
+      'Standard workflows bill per state transition and can run up to a year; Express workflows are cheaper for high-volume, short-duration workloads but have a 5-minute max duration.',
+      'Step Functions state machines are defined in Amazon States Language (JSON) — a real learning curve distinct from writing plain application code.',
+    ],
+  },
+  'aws/load-balancing': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EC2',  route: '/aws/ec2' },
+      { label: 'VPC',  route: '/aws/vpc' },
+    ],
+    tip: 'An Application Load Balancer operates at Layer 7 (HTTP-aware routing by path/host, SSL termination); a Network Load Balancer operates at Layer 4 (ultra-low latency, protocol-agnostic) — choosing the wrong one either loses needed HTTP routing capability or pays unnecessary Layer-7 overhead.',
+    gotchas: [
+      'Health check configuration (path, interval, thresholds) directly determines how quickly an unhealthy target is removed from rotation — too lenient delays failure detection, too strict causes false-positive removal.',
+      'Cross-zone load balancing (whether traffic is distributed evenly across ALL AZ targets or only within the receiving AZ) affects both cost and traffic distribution evenness.',
+    ],
+  },
+  'aws/route53-cloudfront': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'S3',              route: '/aws/s3' },
+      { label: 'Load Balancing',  route: '/aws/load-balancing' },
+    ],
+    tip: 'CloudFront (CDN) caches content at edge locations close to users, reducing both latency AND load on the origin — but cache invalidation must be deliberate; a stale cached response served past its intended freshness is a common, easy-to-overlook CDN gotcha.',
+    gotchas: [
+      'Route 53 health checks combined with failover routing enable automatic DNS-level failover, but DNS TTL means clients may still cache the old resolution briefly during a cutover.',
+      'CloudFront origin access control (restricting direct access to an S3 origin bucket, forcing traffic through CloudFront) prevents bypassing the CDN\'s caching and security layer entirely.',
+    ],
+  },
+  'aws/cloudwatch': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Cost Optimization', route: '/aws/cost-optimization' },
+    ],
+    tip: 'CloudWatch metrics are collected at a default 5-minute resolution unless "detailed monitoring" (1-minute) is explicitly enabled — a critical alert relying on default-resolution metrics can take several minutes longer to trigger than expected.',
+    gotchas: [
+      'CloudWatch Logs Insights lets you query log data without shipping it to a separate system, but at scale, cost and query performance still need to be considered.',
+      'Alarms based on a single data point are prone to false positives from transient spikes — evaluating over multiple consecutive periods reduces noisy, self-resolving alerts.',
+    ],
+  },
+  'aws/cloudformation-cdk': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/aws/fundamentals' },
+    ],
+    tip: 'CDK compiles down to CloudFormation templates — every CDK construct has an underlying CloudFormation equivalent, meaning CDK gains no new deployment capability beyond CloudFormation itself, only a more expressive, type-safe authoring experience in a real programming language.',
+    gotchas: [
+      'A CloudFormation stack update that requires REPLACING a resource (not just modifying it) can cause unexpected downtime or data loss if the resource holds state — always review the change set before applying.',
+      'CDK\'s higher-level constructs bundle sensible defaults, but understanding the underlying CloudFormation resources they generate matters for genuinely custom requirements.',
+    ],
+  },
+  'aws/cost-optimization': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'CloudWatch', route: '/aws/cloudwatch' },
+      { label: 'EC2',        route: '/aws/ec2' },
+    ],
+    tip: 'Consistent resource tagging (team, project, environment) is what makes Cost Explorer actually useful for chargeback reporting — without tags, costs can only be broken down by service type, not the organizational dimensions that actually matter for accountability.',
+    gotchas: [
+      'Reserved Instances and Savings Plans require upfront commitment for a discount — appropriate for steady-state baseline capacity, not for genuinely variable or short-lived workloads.',
+      'Orphaned resources (unattached EBS volumes, idle load balancers) are a common, easy-to-overlook source of ongoing unnecessary cost that periodic review catches.',
+    ],
+  },
+  'aws/security': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'IAM',   route: '/aws/iam' },
+      { label: 'VPC',   route: '/aws/vpc' },
+    ],
+    tip: 'The AWS Shared Responsibility Model splits security "OF the cloud" (AWS\'s job — physical security, hypervisor) from security "IN the cloud" (your job — IAM policies, data encryption, network configuration) — misunderstanding this boundary is a common root cause of AWS security incidents.',
+    gotchas: [
+      'GuardDuty and Security Hub provide continuous threat detection and compliance posture scoring, but only surface what they\'re configured to monitor — they don\'t replace deliberate security architecture.',
+      'AWS Config tracks resource configuration changes over time, essential for auditing "when did this security group rule actually change" after an incident.',
+    ],
+  },
+  'aws/ebs-efs': {
+    apis: AWS_DEFAULT.apis, docs: AWS_DEFAULT.docs, resources: AWS_DEFAULT.resources,
+    related: [
+      { label: 'EC2', route: '/aws/ec2' },
+    ],
+    tip: 'EBS volumes are tied to a SINGLE Availability Zone and can only attach to instances within that same AZ — EFS provides a network file system accessible concurrently from multiple instances across AZs, a fundamentally different sharing model for a fundamentally different use case.',
+    gotchas: [
+      'An EBS volume\'s performance (IOPS, throughput) depends on the volume TYPE chosen (gp3, io2, etc.) — the wrong type for a workload\'s actual I/O pattern silently bottlenecks application performance.',
+      'EFS is generally more expensive per GB than EBS — appropriate specifically when genuine multi-instance concurrent file access is needed, not as a default storage choice.',
+    ],
+  },
 };
 
 @Component({
