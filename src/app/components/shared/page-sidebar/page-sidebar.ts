@@ -8470,6 +8470,281 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Mongoose\'s automatic type casting can silently coerce unexpected input types — understand its casting behavior before trusting it for validation.',
     ],
   },
+
+  // ── Security: per-page entries ──────────────────────────────────────────────
+  'security/fundamentals': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'OWASP Top 10',    route: '/security/owasp-top-10' },
+      { label: 'Threat Modelling', route: '/security/threat-modelling' },
+    ],
+    tip: 'Security is a property of the WHOLE system, not a single control — defense in depth (multiple overlapping layers) means a single control failing does not immediately compromise the entire application.',
+    gotchas: [
+      'The CIA triad (Confidentiality, Integrity, Availability) is a useful framework, but real incidents often fail in ways that span all three simultaneously.',
+      'Security added as an afterthought is consistently more expensive and less effective than security designed in from the start.',
+    ],
+  },
+  'security/threat-modelling': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals',   route: '/security/fundamentals' },
+      { label: 'OWASP Top 10',   route: '/security/owasp-top-10' },
+    ],
+    tip: 'STRIDE (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege) gives a structured way to systematically ask "what could go wrong here" for each system component rather than relying on ad-hoc intuition.',
+    gotchas: [
+      'Threat modelling is most valuable done EARLY in design, when changing the architecture is still cheap — retrofitting it after implementation limits what can realistically be fixed.',
+      'A threat model is a living document — it should be revisited when the system\'s architecture or trust boundaries change.',
+    ],
+  },
+  'security/owasp-top-10': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Injection', route: '/security/injection' },
+      { label: 'XSS',       route: '/security/xss' },
+    ],
+    tip: 'The OWASP Top 10 is a list of the most IMPACTFUL and common web application risks, not an exhaustive checklist — passing every item on the list does not mean an application is secure, only that it avoids the most common categories of failure.',
+    gotchas: [
+      'The list is periodically revised (categories merge, split, or reorder) as the threat landscape changes — always check which version a resource references.',
+      'Broken Access Control has topped the list in recent revisions, reflecting how commonly authorization checks are missed or implemented incorrectly.',
+    ],
+  },
+  'security/injection': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'OWASP Top 10',  route: '/security/owasp-top-10' },
+      { label: 'XSS',           route: '/security/xss' },
+    ],
+    tip: 'Parameterized queries (prepared statements) prevent SQL injection by sending user input as DATA, never as part of the query structure — string-concatenating user input into a query is the root cause of virtually every injection vulnerability.',
+    gotchas: [
+      'ORM usage does not automatically prevent injection — raw query methods or string-built filters within an ORM can still be vulnerable.',
+      'Injection isn\'t limited to SQL — command injection, LDAP injection, and NoSQL injection follow the same root cause of untrusted input treated as executable structure.',
+    ],
+  },
+  'security/xss': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'CSRF & Clickjacking', route: '/security/csrf-clickjacking' },
+      { label: 'Security Headers',    route: '/security/security-headers' },
+    ],
+    tip: 'Modern frameworks (React, Angular) auto-escape interpolated content by default, closing most reflected/stored XSS vectors — but bypassing the escaping mechanism (innerHTML, dangerouslySetInnerHTML, bypassSecurityTrust) reopens the exact vulnerability the framework was protecting against.',
+    gotchas: [
+      'A Content-Security-Policy header is a critical defense-in-depth layer — even a missed escaping bug can be mitigated if the CSP blocks inline script execution.',
+      'DOM-based XSS (client-side JS reading and unsafely writing untrusted data) is not caught by server-side output encoding alone.',
+    ],
+  },
+  'security/csrf-clickjacking': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'XSS',              route: '/security/xss' },
+      { label: 'Security Headers', route: '/security/security-headers' },
+    ],
+    tip: 'SameSite=Strict/Lax on cookies prevents CSRF for cookie-based auth by not sending the cookie on cross-site requests — but has NO effect on Authorization header-based tokens, which need a separate CSRF-token mechanism if genuinely at risk.',
+    gotchas: [
+      'X-Frame-Options / frame-ancestors CSP directive prevents clickjacking by blocking the page from being embedded in a hostile iframe.',
+      'CSRF only matters for state-changing requests using ambient credentials (cookies) — a pure token-in-header API is inherently less exposed to classic CSRF.',
+    ],
+  },
+  'security/tls-https': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Security Headers', route: '/security/security-headers' },
+      { label: 'Asymmetric Cryptography', route: '/security/asymmetric-cryptography' },
+    ],
+    tip: 'HSTS (Strict-Transport-Security header) instructs browsers to NEVER connect over plain HTTP again for that domain, closing the window an attacker could exploit on a user\'s first visit before a redirect to HTTPS happens.',
+    gotchas: [
+      'TLS termination at a load balancer means traffic between the load balancer and backend may be unencrypted — verify whether internal traffic also needs TLS.',
+      'Certificate expiry is one of the most common self-inflicted outages — automated renewal (like Let\'s Encrypt with ACME) avoids manual tracking failures.',
+    ],
+  },
+  'security/security-headers': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'XSS',        route: '/security/xss' },
+      { label: 'TLS/HTTPS',  route: '/security/tls-https' },
+    ],
+    tip: 'Content-Security-Policy is the single most impactful security header for mitigating XSS impact — a well-scoped CSP can prevent injected scripts from executing even if an XSS vulnerability exists elsewhere in the application.',
+    gotchas: [
+      'X-Content-Type-Options: nosniff prevents browsers from MIME-sniffing a response into an executable type it wasn\'t served as.',
+      'securityheaders.com gives a quick external check of which headers are actually being sent in production.',
+    ],
+  },
+  'security/password-security': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Hashing',  route: '/security/hashing' },
+      { label: 'MFA',      route: '/security/mfa' },
+    ],
+    tip: 'Argon2id (memory ≥ 64MB, iterations ≥ 3) is the current recommended password hashing algorithm — SHA-256 and similar general-purpose hashes are too FAST for passwords, making brute-force attacks against leaked hashes far cheaper.',
+    gotchas: [
+      'Password complexity RULES (requiring special characters) matter less than length — NIST guidance now favors long passphrases over forced complexity.',
+      'Rate limiting and account lockout policies protect against online brute-force even with a strong hashing algorithm protecting the stored hash.',
+    ],
+  },
+  'security/hashing': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Password Security',  route: '/security/password-security' },
+      { label: 'Symmetric Encryption', route: '/security/symmetric-encryption' },
+    ],
+    tip: 'A cryptographic hash function is one-way and collision-resistant — but plain hashing (even SHA-256) is inappropriate for passwords specifically, since it is deliberately FAST, exactly the wrong property for something that must resist brute force.',
+    gotchas: [
+      'HMAC (keyed hashing) provides message authentication that plain hashing alone does not — verifying integrity AND authenticity, not just integrity.',
+      'Salting prevents precomputed rainbow-table attacks — a unique salt per password is required, not a single shared salt across all users.',
+    ],
+  },
+  'security/symmetric-encryption': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Asymmetric Cryptography', route: '/security/asymmetric-cryptography' },
+      { label: 'Hashing',                 route: '/security/hashing' },
+    ],
+    tip: 'AES-256-GCM provides both confidentiality AND integrity (authenticated encryption) in one operation — using an encryption mode without authentication (like plain CBC) leaves data vulnerable to tampering even though it remains confidential.',
+    gotchas: [
+      'Reusing a nonce/IV with the same key in GCM mode catastrophically breaks its security guarantees — nonces must be unique per encryption operation.',
+      'Symmetric encryption requires securely sharing the same key between parties — key distribution is the hard problem asymmetric cryptography solves differently.',
+    ],
+  },
+  'security/asymmetric-cryptography': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Symmetric Encryption', route: '/security/symmetric-encryption' },
+      { label: 'JWT',                  route: '/security/jwt' },
+    ],
+    tip: 'Public-key cryptography solves the key-distribution problem symmetric encryption has — a public key can be shared openly, while only the corresponding private key can decrypt or sign, enabling both encryption and digital signatures.',
+    gotchas: [
+      'Asymmetric operations are computationally much more expensive than symmetric ones — TLS uses asymmetric crypto only to establish a session, then switches to symmetric encryption for the bulk of data transfer.',
+      'RS256 (RSA) vs ES256 (elliptic curve) JWT signing algorithms trade key size and performance differently — ES256 keys are much smaller for equivalent security.',
+    ],
+  },
+  'security/jwt': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'OAuth & OIDC',   route: '/security/oauth-oidc' },
+      { label: 'Claims & Identity', route: '/security/claims-identity' },
+    ],
+    tip: 'A JWT\'s payload is Base64-encoded, NOT encrypted — anyone can decode and read it, meaning sensitive data should never be placed in a JWT payload unless the token itself is also encrypted (JWE), not just signed (JWS).',
+    gotchas: [
+      'The "alg: none" attack exploits servers that trust the algorithm specified in the token header — always allowlist acceptable algorithms server-side and never trust the header alone.',
+      'JWTs are typically stateless and cannot be revoked before expiry without an additional server-side revocation list, unlike traditional session tokens.',
+    ],
+  },
+  'security/oauth-oidc': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'JWT',    route: '/security/jwt' },
+      { label: 'SSO',    route: '/security/sso' },
+    ],
+    tip: 'OAuth 2.0 is an AUTHORIZATION framework (granting scoped access to resources); OIDC is an AUTHENTICATION layer built on top of OAuth 2.0 (verifying user identity) — conflating the two is a common source of design mistakes.',
+    gotchas: [
+      'PKCE (Proof Key for Code Exchange) is required for public clients (mobile/SPA apps) that cannot securely store a client secret, preventing authorization code interception attacks.',
+      'An access token proves what the bearer can DO; an ID token proves WHO the user is — using one where the other is needed is a common integration bug.',
+    ],
+  },
+  'security/sso': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'OAuth & OIDC',       route: '/security/oauth-oidc' },
+      { label: 'Claims & Identity',  route: '/security/claims-identity' },
+    ],
+    tip: 'SSO centralizes authentication at one identity provider — this concentrates risk (a compromised IdP compromises every connected application) but also concentrates SECURITY INVESTMENT (MFA, conditional access) at one well-defended point rather than spreading auth logic across every app.',
+    gotchas: [
+      'SAML and OIDC are the two dominant SSO protocols — they are not interchangeable and require different integration code.',
+      'Single logout (ensuring a logout at the IdP actually terminates sessions at every connected application) is notoriously difficult to implement reliably.',
+    ],
+  },
+  'security/claims-identity': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'RBAC & ABAC', route: '/security/rbac-abac' },
+      { label: 'JWT',         route: '/security/jwt' },
+    ],
+    tip: 'A claims-based identity model represents a user as a SET of claims (statements about the user — role, department, email) rather than a single fixed identity — authorization decisions can then be based on any combination of claims, not just a single role field.',
+    gotchas: [
+      'Claims should be validated against a trusted issuer — accepting claims from an unverified or self-issued token defeats the purpose of claims-based trust.',
+      'Overloading claims with excessive personal data increases the token\'s exposure surface, since claims are typically readable without decryption.',
+    ],
+  },
+  'security/rbac-abac': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Claims & Identity', route: '/security/claims-identity' },
+    ],
+    tip: 'RBAC (role-based) grants permissions based on a fixed role assignment — simple to reason about but coarse-grained; ABAC (attribute-based) evaluates permissions dynamically against attributes (user, resource, environment) — more flexible but harder to audit and reason about upfront.',
+    gotchas: [
+      'RBAC role explosion (creating a new role for every slightly different permission combination) is a common anti-pattern as systems grow.',
+      'ABAC policies can become difficult to test exhaustively, since the number of possible attribute combinations grows combinatorially.',
+    ],
+  },
+  'security/mfa': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Password Security', route: '/security/password-security' },
+    ],
+    tip: 'SMS-based MFA is vulnerable to SIM-swapping attacks — TOTP apps (Google Authenticator) or hardware keys (FIDO2/WebAuthn) provide meaningfully stronger protection than SMS, which should be considered a fallback, not a primary factor.',
+    gotchas: [
+      'MFA fatigue attacks (bombarding a user with push-approval requests until they accidentally approve one) are a real modern bypass technique against push-based MFA.',
+      'FIDO2/WebAuthn is phishing-resistant by design, since the authentication is cryptographically bound to the specific origin — a major advantage over OTP codes that can be phished.',
+    ],
+  },
+  'security/secrets-management': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Supply Chain',        route: '/security/supply-chain' },
+      { label: 'Secure Coding',       route: '/security/secure-coding' },
+    ],
+    tip: 'A secret committed to git is compromised FOREVER, even after being "removed" in a later commit — it remains in git history indefinitely unless the history itself is rewritten, which is why prevention (pre-commit hooks, secret scanning) matters more than cleanup.',
+    gotchas: [
+      'A dedicated secrets manager (Vault, Key Vault) with automatic rotation reduces the blast radius of a leaked secret versus a long-lived static credential in an env file.',
+      'Environment variables are safer than hardcoded values but still visible to anyone with process/container inspection access — a genuine secrets manager provides stronger access control.',
+    ],
+  },
+  'security/secure-coding': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Injection',            route: '/security/injection' },
+      { label: 'Secrets Management',   route: '/security/secrets-management' },
+    ],
+    tip: 'Input validation should happen at trust boundaries (where data enters the system), not scattered defensively throughout internal code — validating the same input repeatedly at every internal function adds noise without adding real protection.',
+    gotchas: [
+      'Allowlisting (accepting only known-good patterns) is generally safer than denylisting (blocking known-bad patterns), since denylists are inherently incomplete against novel attack variants.',
+      'Error messages shown to users should never leak internal implementation details (stack traces, database schema) that could aid an attacker.',
+    ],
+  },
+  'security/api-security': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'OAuth & OIDC',   route: '/security/oauth-oidc' },
+      { label: 'RBAC & ABAC',    route: '/security/rbac-abac' },
+    ],
+    tip: 'Broken Object Level Authorization (BOLA) — checking that a user is authenticated but not that they are authorized for the SPECIFIC object being requested (like /orders/{id}) — is consistently one of the most common and impactful API vulnerabilities found in practice.',
+    gotchas: [
+      'Rate limiting protects against abuse and brute force, but must be applied per-user/per-key, not just per-IP, since IPs are trivially rotated.',
+      'API versioning and deprecation need a security lens too — an old, unmaintained API version left reachable is a common overlooked attack surface.',
+    ],
+  },
+  'security/container-security': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Supply Chain', route: '/security/supply-chain' },
+    ],
+    tip: 'Running a container as root (the default in many base images) gives an attacker who escapes the application a much bigger blast radius — explicitly setting a non-root USER in the Dockerfile is a simple, high-value hardening step.',
+    gotchas: [
+      'A minimal base image (distroless, Alpine) reduces the attack surface by carrying far fewer installed tools an attacker could exploit after compromise.',
+      'Vulnerability scanning at build time catches known CVEs at that point, but new CVEs are disclosed continuously — already-deployed images need periodic re-scanning.',
+    ],
+  },
+  'security/supply-chain': {
+    apis: SEC_DEFAULT.apis, docs: SEC_DEFAULT.docs, resources: SEC_DEFAULT.resources,
+    related: [
+      { label: 'Container Security',    route: '/security/container-security' },
+      { label: 'Secrets Management',    route: '/security/secrets-management' },
+    ],
+    tip: 'A dependency lock file pins EXACT versions across the whole dependency graph — without it, a compromised transitive dependency\'s malicious update can be pulled in automatically on the next install with no code change on your end.',
+    gotchas: [
+      'Software Bill of Materials (SBOM) generation gives visibility into exactly what is running in production, essential for quickly assessing exposure when a new CVE is disclosed.',
+      'Signing and verifying artifacts (Cosign/Sigstore) addresses tampering risk that dependency scanning alone does not cover.',
+    ],
+  },
 };
 
 @Component({
