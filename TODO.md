@@ -966,7 +966,17 @@ All 928 pages passed or were fixed:
 - nav-home-link inside nav-group — zero ✅ | content-grid gap — correct ✅
 - Old .page wrapper on topic pages — all fixed ✅
 
-**Remaining:** Deep content-quality review (theory depth ≥5 sections×5 points, quiz difficulty spread, Q&A trap questions) — requires page-by-page review.
+**Deep content-quality review: COMPLETE (2026-07-02).** Theory depth (≥5 sections×5 points): 451/451 files done. Quiz/Q&A depth (6-8 entries): complete site-wide. Sidebar entries: complete site-wide (23 hubs). Nav-correctness (nextRoute/completion keys): complete, 26 bugs fixed. Hub-home accuracy: complete. Near-duplicate/reworded quiz-qna questions: complete across all 18 hubs (~120 pairs fixed via genuine page-by-page reading, not scripting) — see Done History for the full hub-by-hub breakdown.
+
+**Remaining (lower priority, optional components — not yet given a dedicated audit pass):**
+- `app-prerequisites` presence/correctness on intermediate/advanced pages (2–4 items, correct routes)
+- `app-before-after` presence where a genuine old-vs-new contrast exists for the topic
+- `app-video-embed` presence where a good official video exists
+- Reading time accuracy in `app-page-meta` (recalculate where content changed significantly)
+
+These are optional-per-page components (not required on every page like common-mistakes/revision-card),
+so a site-wide "audit" is lower-value than the required-component passes already done. No session has
+picked this up yet — it is the last unclaimed item on the Phase 9 checklist.
 
 **When to do this:** after all hubs are built (after Phase 8). This is the last pass before
 the site can be considered "done." Every single topic page across every hub — including pages
