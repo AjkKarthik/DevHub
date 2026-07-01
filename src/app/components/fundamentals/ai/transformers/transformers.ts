@@ -70,6 +70,15 @@ export class AiTransformers {
         'Modern LLMs (GPT-4, Claude, Llama) are decoder-only — simpler, scales better with more data and compute.',
       ],
     },
+    {
+      heading: 'Why Self-Attention Replaced Recurrent Architectures',
+      points: [
+        'Recurrent networks (RNNs, LSTMs) process sequences step by step, meaning computation for position N cannot start until position N-1 finishes — this sequential dependency prevents parallelization across the sequence length during training, a major performance bottleneck.',
+        'Self-attention computes relationships between all positions in a sequence simultaneously via matrix operations, allowing full parallelization across the sequence during training — a major reason transformers train dramatically faster than RNNs on modern parallel hardware (GPUs/TPUs).',
+        'RNNs struggle to retain information from far earlier in a long sequence (the vanishing gradient problem compounds over many sequential steps) — self-attention directly connects every position to every other position regardless of distance, avoiding this long-range dependency degradation.',
+        'The tradeoff for this parallelism and long-range modeling is quadratic computational cost in sequence length (every position attends to every other position) — this is why handling very long contexts efficiently remains an active area of transformer architecture research.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

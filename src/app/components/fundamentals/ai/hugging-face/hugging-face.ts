@@ -72,6 +72,15 @@ export class AiHuggingFace {
         'GGUF models: quantised for llama.cpp. Q4_K_M: good quality/size balance. Q5_K_M: higher quality. Q8_0: near-lossless. Run on CPU/Mac.',
       ],
     },
+    {
+      heading: 'Why the Hugging Face Hub Changed ML Model Distribution',
+      points: [
+        'Before Hugging Face standardized model sharing, using a pre-trained model typically meant hunting down a research paper\'s bespoke code and weights — the Hub\'s consistent model card, tokenizer, and loading conventions turned this into a few lines of standardized code.',
+        'The transformers library abstracts away architecture-specific implementation details behind a consistent API (AutoModel, AutoTokenizer), letting a developer swap between fundamentally different model architectures (BERT, GPT, T5) with minimal code changes.',
+        'Model cards on the Hub document training data, intended use, and known limitations — critical information for responsibly choosing a model, since blindly using a model without understanding its training data\'s biases or its intended task can produce poor or harmful results.',
+        'The Hub\'s hosting of datasets alongside models (via the datasets library) standardizes the full pipeline from data loading through model inference, reducing the boilerplate that previously made reproducing ML research results difficult.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

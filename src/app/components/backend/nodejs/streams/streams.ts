@@ -59,6 +59,24 @@ export class NodeStreams {
         'Custom Transform: extend Transform and implement _transform(chunk, encoding, callback). Call callback() when done processing, push() to emit output, or callback(err) to signal an error.',
       ]
     },
+    {
+      heading: 'Backpressure and Flow Control',
+      points: [
+        'Backpressure occurs when a writable destination cannot consume data as fast as a readable source produces it — ignoring writable.write()\'s return value (false means the internal buffer is full) causes unconsumed data to accumulate in memory, potentially unbounded.',
+        'The correct pattern for manual stream handling is to pause the readable stream when write() returns false, and resume it only on the writable stream\'s "drain" event — or, more simply, use .pipe() which handles this backpressure negotiation automatically.',
+        'Stream pipelines (multiple streams chained via .pipe() or the modern stream.pipeline() utility) propagate backpressure through the entire chain automatically — a slow final destination naturally throttles how fast the original source is read, preventing memory blowup anywhere in the chain.',
+        'stream.pipeline() (over manual .pipe() chaining) is the modern recommended approach because it properly handles errors and cleanup across the whole chain — a plain .pipe() chain does not automatically destroy all streams if one in the middle errors, risking resource leaks.',
+      ]
+    },
+    {
+      heading: 'Transform Streams for Data Processing Pipelines',
+      points: [
+        'A Transform stream is a Duplex stream where the writable side is internally connected to the readable side — data written in is transformed and becomes available to read out, making it the building block for processing pipelines like compression, encryption, or parsing.',
+        'Implement a custom Transform by extending the Transform class and implementing _transform(chunk, encoding, callback) — call callback(null, transformedChunk) to push transformed data downstream, or callback(err) to propagate an error through the pipeline.',
+        'Streaming transformation processes data in constant memory regardless of total input size — critical for processing large files or continuous data feeds where loading the entire dataset into memory first (e.g., via fs.readFile) would be infeasible.',
+        'Node.js core provides built-in Transform streams for common needs — zlib.createGzip() for compression, crypto.createCipheriv() for encryption — that can be piped directly into a processing chain without writing custom Transform logic.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -235,6 +253,9 @@ console.log(\`Lines: \${counter.lineCount}\`);`
     { q: 'When should I use streams instead of readFile/writeFile?', a: 'Use streams for: files larger than ~100MB (to avoid memory pressure), real-time processing of data as it arrives, piping between sources and destinations (HTTP response to file), and building processing pipelines. Use readFile/writeFile for: small config files, JSON data, any file that must be fully loaded before processing.' },
     { q: 'How do I add a timeout to a stream operation?', a: 'Use AbortController with stream.pipeline: const ac = new AbortController(); setTimeout(() => ac.abort(), 30000); await pipeline(src, dest, { signal: ac.signal }). When aborted, pipeline() destroys all streams and rejects with AbortError.' },
     { q: 'What is the difference between Duplex and Transform?', a: 'Duplex: both readable and writable, but the two sides are independent (like a TCP socket — you read from the network and write to it independently). Transform: a special Duplex where the writable input is connected to the readable output — data written in comes out transformed. You subclass Transform to build processing steps; Duplex for independent bidirectional channels.' },
+    { q: 'Why are Node.js streams more memory-efficient than reading an entire file into memory before processing it?', a: 'Reading an entire file with fs.readFile() loads the complete file content into memory as a single Buffer before your code can process any of it — for a multi-gigabyte file, this can exhaust available memory entirely. Streams process data in small chunks as they arrive (via the "data" event or async iteration), so memory usage stays roughly constant regardless of total file size, since only the current chunk needs to be held in memory at any given moment — essential for processing large files, video, or continuous data feeds.' },
+    { q: 'What is backpressure in Node.js streams, and why does ignoring it cause memory problems?', a: 'Backpressure occurs when a writable destination stream cannot consume data as fast as a readable source stream is producing it. If you ignore the return value of writable.write() (which returns false when the internal buffer is full) and keep writing anyway, unconsumed data accumulates in memory in the writable stream\'s internal buffer, potentially growing unbounded and causing memory exhaustion. The correct pattern is to use .pipe() (which handles backpressure automatically) or manually pause the readable stream when write() returns false and resume it on the writable\'s "drain" event.' },
+    { q: 'What is the difference between Node.js Readable, Writable, Duplex, and Transform streams?', a: 'Readable streams are a source of data you consume from (a file read stream, an HTTP request body). Writable streams are a destination you write data to (a file write stream, an HTTP response). Duplex streams are both readable and writable simultaneously but independently (like a TCP socket — you can read and write without one affecting the other). Transform streams are a special Duplex stream where the writable side is internally connected to the readable side, transforming input chunks into output chunks (used for compression, encryption, or data parsing pipelines via .pipe(transform).pipe(destination)).' },
   ];
 
   revision: RevisionSummary = {

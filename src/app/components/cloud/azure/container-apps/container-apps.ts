@@ -73,6 +73,15 @@ export class AzureContainerApps {
         'Secret management in Container Apps: define secrets at the app level (referenced from Key Vault or plaintext) and inject them as environment variables or mounted volumes. Secrets are versioned — updating a secret does not auto-restart the app; you must create a new revision.',
       ]
     },
+    {
+      heading: 'Container Apps vs. AKS — Choosing the Right Abstraction Level',
+      points: [
+        'Container Apps is built on Kubernetes under the hood (KEDA, Dapr, Envoy) but abstracts away cluster management entirely — you deploy containers directly without ever provisioning nodes, managing upgrades, or configuring a control plane, unlike AKS where you own the cluster.',
+        'This abstraction is ideal for teams that want Kubernetes-style scaling and microservices patterns (event-driven scaling via KEDA, service-to-service calls via Dapr) without taking on Kubernetes\'s operational complexity — a meaningful middle ground between App Service and full AKS.',
+        'The tradeoff for this simplicity is reduced control — you cannot directly access the underlying Kubernetes API or install arbitrary CRDs/Operators the way you could on a self-managed AKS cluster, since the Kubernetes layer is intentionally hidden.',
+        'Scale-to-zero support in Container Apps (unlike standard AKS deployments, which typically keep at least one replica running) makes it particularly cost-effective for intermittent or event-driven workloads that do not need to be always-on.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

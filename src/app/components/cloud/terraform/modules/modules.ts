@@ -73,6 +73,15 @@ export class TfModules {
         'Commit .terraform.lock.hcl to lock exact versions for the team.',
       ],
     },
+    {
+      heading: 'Module Sources and Registry Usage',
+      points: [
+        'Modules can be sourced from local paths (./modules/vpc), Git repositories (with optional ref for version pinning), or the Terraform Registry (a curated, versioned catalog of publicly published modules) — each source type has different tradeoffs for versioning, discoverability, and update workflow.',
+        'The public Terraform Registry hosts thousands of community and vendor-published modules (like the widely-used terraform-aws-modules organization\'s VPC and EKS modules) — leveraging a well-maintained community module for common infrastructure patterns is often more reliable than reinventing the same logic from scratch.',
+        'Private module registries (Terraform Cloud\'s private registry, or a self-hosted alternative) let organizations publish and version internal modules with the same discoverability and versioning benefits as the public registry, without exposing internal infrastructure patterns publicly.',
+        'Module composition depth should be kept reasonable — deeply nested modules calling other modules calling other modules make it significantly harder to trace where a specific resource or configuration value actually originates, complicating both debugging and onboarding new team members to the codebase.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

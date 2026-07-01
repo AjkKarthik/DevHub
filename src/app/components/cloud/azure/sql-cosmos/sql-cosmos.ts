@@ -73,6 +73,15 @@ export class AzureSqlCosmos {
         'Azure SQL Hyperscale: for very large databases (up to 100 TB). Distributed architecture with page servers and rapid backup/restore (minutes, not hours). vCore-based, General Purpose SLA.',
       ]
     },
+    {
+      heading: 'Choosing Between Azure SQL and Cosmos DB',
+      points: [
+        'Azure SQL Database is a relational database with strong consistency, ACID transactions, and a fixed schema — appropriate when data has clear relational structure and applications benefit from SQL\'s expressive querying and strong consistency guarantees.',
+        'Cosmos DB is a globally distributed, multi-model NoSQL database offering tunable consistency (from strong to eventual) and horizontal scale across regions — appropriate for applications needing massive scale, flexible schema, and low-latency global reads/writes.',
+        'Cosmos DB\'s partition key choice is a critical, largely irreversible design decision — a poorly chosen partition key can create hot partitions that bottleneck throughput regardless of provisioned RU/s, unlike a relational database where indexing strategy can be adjusted more easily after the fact.',
+        'Cost models differ significantly — Azure SQL is typically priced by compute tier (DTU or vCore), while Cosmos DB is priced by provisioned or consumed Request Units (RU/s) — this difference should factor into the choice for cost-sensitive, high-throughput workloads.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

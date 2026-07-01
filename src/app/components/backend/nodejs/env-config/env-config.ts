@@ -50,6 +50,33 @@ export class NodeEnvConfig {
         'For multi-environment setups (dev/staging/prod), consider a config library like node-config or convict which supports schema documentation, default values, and per-environment override files.',
       ]
     },
+    {
+      heading: 'Configuration Schema Validation',
+      points: [
+        'Validating environment variables at application startup (using zod, envalid, or joi) catches missing or malformed configuration immediately with a clear error, rather than letting the app start successfully and crash later deep in a request handler.',
+        'Type coercion matters: environment variables are always strings, so a schema should explicitly parse PORT as a number and FEATURE_FLAG as a boolean — comparing an unparsed string "false" to the boolean false always evaluates truthy, a classic Node.js configuration bug.',
+        'Fail-fast validation should include sensible constraints beyond just presence: a DATABASE_URL should match a valid connection string format, a PORT should be within the valid range — catching a typo in a deployment pipeline before it reaches a running container.',
+        'Document every required environment variable in a .env.example file (with placeholder values, never real secrets) so new developers and deployment pipelines know exactly what configuration is expected without reading through the codebase.',
+      ]
+    },
+    {
+      heading: 'Secrets Management Beyond .env Files',
+      points: [
+        'Local .env files are convenient for development but should never be the source of truth in production — they are typically unencrypted on disk and easy to accidentally commit or leave in a container image layer.',
+        'Cloud secrets managers (AWS Secrets Manager, Azure Key Vault, HashiCorp Vault) store secrets encrypted at rest, provide audit logs of every access, and support automatic rotation without requiring a code deployment to pick up a new secret value.',
+        'Kubernetes Secrets are base64-encoded (not encrypted) by default — treat them as obfuscated, not secure, unless combined with encryption at rest (etcd encryption) or an external secrets operator pulling from a real secrets manager.',
+        'Never log configuration objects wholesale in production — a debug log statement that dumps the entire config object can accidentally leak database passwords or API keys into log aggregation systems that many engineers have access to.',
+      ]
+    },
+    {
+      heading: 'Feature Flags as Configuration',
+      points: [
+        'Feature flags let you deploy code and enable it separately — decoupling deployment (getting code onto servers) from release (making a feature visible to users), reducing the risk of any single deployment.',
+        'Simple boolean env-var flags (FEATURE_NEW_CHECKOUT=true) work for binary on/off toggles but do not support gradual rollout (10% of users) or per-user targeting — for that, a dedicated feature flag service (LaunchDarkly, Unleash, or a simple database-backed flag table) is needed.',
+        'Flags accumulate technical debt if never removed — a flag that has been fully rolled out to 100% of users for months should be deleted from the codebase along with its now-dead old-code-path, or the codebase fills with permanent conditional branches nobody dares remove.',
+        'Kill switches (a specific category of feature flag) let you instantly disable a risky feature in production without a deployment — essential for features touching payment processing or third-party integrations that might need emergency disabling.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -214,6 +241,9 @@ export const config = createConfig(appSchema);`
     { q: 'How do I handle different configs for dev, staging, and production?', a: 'Three approaches: (1) Environment-specific .env files (.env.development, .env.production) loaded by tooling like dotenv-flow or node-config. (2) Platform-level env vars — Heroku/Railway/ECS/K8s let you set vars per environment; your code just reads process.env. (3) Infrastructure secrets manager (AWS SSM, HashiCorp Vault) — fetched at startup. Prefer platform-level for simplicity, secrets manager for sensitive values.' },
     { q: 'Should I use a .env file in production?', a: 'No. Production env vars should come from the platform (Heroku config vars, AWS ECS task definitions, K8s secrets, Docker --env-file). Avoid .env files in production containers — if the container image leaks, so do your secrets. dotenv is a development convenience tool.' },
     { q: 'What is the node: prefix for --env-file?', a: 'Node.js 20.6+ supports --env-file natively: node --env-file=.env server.js. Multiple files: node --env-file=.env --env-file=.env.local server.js (later files override earlier). This eliminates the dotenv package dependency for many use cases.' },
+    { q: 'Why should you validate environment variables at application startup rather than where they are used?', a: 'Validating lazily (at the point of use, deep in request-handling code) means a missing or malformed environment variable only surfaces as a runtime crash when that code path executes — potentially in production, hours after deploy, on a rarely-hit route. Validating eagerly at startup (using a schema library like zod or envalid) fails fast with a clear error before the server even starts accepting traffic, turning a silent production incident into an immediate, loud deploy-time failure that is far cheaper to diagnose.' },
+    { q: 'What is the risk of committing a .env file to version control, even for a "non-sensitive" development config?', a: 'Even seemingly harmless development .env files often get copied as templates for production, and developers frequently forget to change secrets before deploying — once committed, secrets remain in git history permanently even after deletion from the current file, recoverable by anyone with repo access (including past collaborators or a leaked clone). Use .env.example with placeholder values for documentation, add .env to .gitignore, and store real secrets in a secrets manager (Vault, AWS Secrets Manager) or CI/CD secret store instead.' },
+    { q: 'How do you manage different configuration values across development, staging, and production without duplicating logic?', a: 'Centralize configuration loading into a single module that reads process.env once, applies schema validation and type coercion, and exports a typed config object — rather than scattering process.env.X reads throughout the codebase. Use NODE_ENV (or a dedicated APP_ENV) to select environment-specific .env files (.env.production, .env.staging) loaded via dotenv-flow or similar, while keeping the validation schema identical across environments so a misconfigured staging deploy fails the same way a misconfigured production deploy would.' },
   ];
 
   revision: RevisionSummary = {

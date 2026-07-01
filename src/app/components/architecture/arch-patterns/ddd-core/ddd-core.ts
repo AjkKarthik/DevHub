@@ -61,6 +61,24 @@ export class ArchDddCore {
         'DDD is not a silver bullet: apply it to the Core Domain (highest business value, most complex rules). Use simpler patterns for Supporting and Generic subdomains.',
       ],
     },
+    {
+      heading: 'Ubiquitous Language as a Communication Discipline',
+      points: [
+        'Ubiquitous language means using the SAME precise terminology in code, conversations with domain experts, and documentation — a class named OrderFulfillment should correspond directly to a concept domain experts would actually recognize and use that exact term for, not an approximation invented by developers in isolation.',
+        'This shared vocabulary reduces the translation loss that typically happens when developers reinterpret business requirements into their own technical terms — a mismatch between business language and code language is a persistent source of subtle requirement misunderstandings.',
+        'Ubiquitous language is scoped to a single bounded context — the same word can and often does mean something different in another context, which is precisely why bounded contexts and ubiquitous language are complementary DDD concepts rather than independent ones.',
+        'Maintaining ubiquitous language requires ongoing collaboration with domain experts, not a one-time glossary exercise — as business understanding evolves, the language (and the code that embodies it) should evolve correspondingly, keeping the model aligned with actual current domain understanding.',
+      ],
+    },
+    {
+      heading: 'Entities vs. Value Objects — A Foundational DDD Distinction',
+      points: [
+        'An Entity has a distinct identity that persists across its lifetime even as its attributes change — a Customer entity remains the "same" customer even after their name or address changes, tracked by a stable identifier rather than by the equality of its current attribute values.',
+        'A Value Object has no independent identity — it is defined entirely by its attribute values, and two Value Objects with the same values are considered equal and interchangeable (a Money value of $50 USD is identical to any other $50 USD Money value, with no need to distinguish "which" $50 it is).',
+        'Value Objects should be immutable — since they are defined by their values rather than an identity, "changing" a Value Object means creating a new one rather than mutating the existing instance, which also makes them inherently safe to share and compare without defensive copying concerns.',
+        'Correctly distinguishing Entities from Value Objects in a domain model has real design consequences — modeling something that should be a Value Object (like an Address) as an Entity introduces unnecessary identity tracking and mutation complexity that the actual domain concept does not require.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

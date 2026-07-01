@@ -61,6 +61,24 @@ export class RedisHashes {
         'HMGET returns values in the same order as the fields requested, with nil for missing fields.',
       ],
     },
+    {
+      heading: 'When to Use Hashes vs Separate String Keys',
+      points: [
+        'Storing an object\'s fields as a single Redis hash (HSET user:1000 name "Alice" age "30") is significantly more memory-efficient than storing each field as a separate string key (user:1000:name, user:1000:age), since Redis hashes use a compact internal encoding for small hashes.',
+        'Hashes let you update or read individual fields (HSET, HGET) without needing to serialize/deserialize the entire object — more efficient than storing a JSON-serialized string blob when you frequently need to read or update just one or two fields of a larger object.',
+        'The hash-max-listpack-entries and hash-max-listpack-value configuration options control when Redis switches a hash\'s internal encoding from the compact listpack representation to a full hash table — relevant for memory optimization tuning when working with either very small or very large hashes.',
+        'HGETALL retrieves an entire hash in one round trip, avoiding N separate GET calls for N related fields — but for hashes with many fields, consider whether you actually need every field, since HMGET lets you fetch only the specific fields required for a given operation.',
+      ],
+    },
+    {
+      heading: 'Atomic Field-Level Operations on Hashes',
+      points: [
+        'HINCRBY and HINCRBYFLOAT provide atomic increment operations scoped to a single field within a hash — useful for maintaining per-field counters (like tracking view counts per post attribute) without needing a separate top-level key for each counter.',
+        'HSETNX sets a hash field only if it does not already exist, atomically — useful for implementing "initialize once" semantics for a specific field within a larger object, similar to how SETNX works for standalone string keys.',
+        'HDEL removes one or more specific fields from a hash without affecting other fields — and once the last field is removed, Redis automatically deletes the now-empty hash key entirely, so there is no need for separate cleanup logic to remove an empty hash.',
+        'HRANDFIELD (introduced in Redis 6.2) returns one or more random fields from a hash, optionally with their values — useful for sampling use cases similar to SRANDMEMBER for sets, without needing to fetch the entire hash and randomize client-side.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

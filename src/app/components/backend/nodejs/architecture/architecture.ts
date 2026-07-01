@@ -58,6 +58,24 @@ export class NodeArchitecture {
         'Node.js excels at I/O-bound work: REST APIs, proxies, real-time servers, microservices. It is not the right choice as the primary processor for CPU-intensive pipelines.',
       ]
     },
+    {
+      heading: 'Choosing an Architectural Style',
+      points: [
+        'Monolith-first is not a legacy anti-pattern — for small teams and unproven products, a well-modularized monolith ships faster and is far easier to debug than a distributed system, because there is only one process to trace a request through.',
+        'Modular monolith: enforce internal boundaries (no direct cross-module database access, explicit interfaces between domains) using folder structure and lint rules even without physical service separation — this keeps the option to split into real services open later without a rewrite.',
+        'Microservices trade development simplicity for operational flexibility: independent deployability and scaling per service come at the cost of distributed tracing, network reliability handling, and eventual-consistency data modeling that a monolith never has to think about.',
+        'The deciding factor is usually organizational, not technical — Conway\'s Law observes that system architecture tends to mirror team communication structure. Splitting services along team boundaries (not arbitrary technical lines) reduces the coordination overhead that makes microservices painful.',
+      ]
+    },
+    {
+      heading: 'Layered Architecture in Practice',
+      points: [
+        'A typical Node.js layered structure: routes (HTTP concerns only — parsing, status codes) → controllers (orchestrate a request, no business logic) → services (business logic, framework-agnostic) → repositories/data access (database queries only).',
+        'Each layer should only depend on the layer directly below it — a route handler should never import a database driver directly, and a service should never construct an Express Response object. This keeps business logic testable without spinning up an HTTP server.',
+        'Dependency injection (manual or via a framework like NestJS/Awilix) at each layer boundary lets tests substitute a fake repository for a real database, keeping unit tests for business logic fast and isolated from I/O.',
+        'A common anti-pattern: "fat controllers" where validation, business rules, and database calls all live inline in the route handler. This makes logic untestable without an HTTP server and duplicates rules across similar endpoints.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -226,6 +244,9 @@ runAll([
     { q: 'When would you use Worker Threads vs child_process?', a: 'Worker Threads share memory (via SharedArrayBuffer) and are cheaper to spin up — use for CPU-heavy computation within the same app (image processing, ML inference). child_process spawns a separate Node.js process with its own V8 heap — use for running untrusted code, isolating crashes, or running a completely different program (Python script, CLI tool).' },
     { q: 'Why can setImmediate win over setTimeout(fn, 0) inside an I/O callback?', a: 'Inside an I/O callback you are already in the poll phase. After poll, the next phase is check (setImmediate). Timers are the first phase of the NEXT iteration. So setImmediate is guaranteed to run before setTimeout when both are scheduled inside an I/O callback.' },
     { q: 'What is event loop lag and how do you measure it?', a: 'Event loop lag is the delay between when a callback is queued and when it actually runs. It indicates a blocked event loop. Measure it by scheduling a setInterval(100ms) and comparing actual elapsed time vs expected 100ms. Libraries like clinic.js doctor automate this. A lag above 50-100ms in production is a warning sign.' },
+    { q: 'What is the difference between a layered (MVC-style) architecture and a hexagonal (ports and adapters) architecture in a Node.js backend?', a: 'A layered architecture organizes code into horizontal layers (routes/controllers, services, data access) where each layer depends on the one below it, which is simple to understand but can let business logic leak into the framework-coupled controller layer. Hexagonal architecture inverts this — the core business logic sits at the center with no dependency on frameworks or databases, communicating only through defined "ports" (interfaces), while Express, the database driver, and external APIs are "adapters" plugged in at the edges — making the business logic independently testable and framework-agnostic.' },
+    { q: 'Why do larger Node.js applications often move from a single monolithic process to a modular monolith before considering microservices?', a: 'Microservices introduce significant operational complexity — distributed tracing, network reliability concerns, data consistency across service boundaries, and deployment orchestration — that is often premature for teams still iterating on product-market fit or with a small engineering team. A modular monolith keeps deployment simple (one process, one deploy) while still enforcing internal module boundaries (clear interfaces between domains, no direct cross-module database access) so the codebase remains organized and could be split into real services later if scaling genuinely requires it.' },
+    { q: 'What architectural pattern helps a Node.js service stay resilient when a downstream dependency (database, third-party API) becomes slow or unavailable?', a: 'The Circuit Breaker pattern (implemented via libraries like opossum) monitors calls to a dependency and "opens" after a threshold of failures, immediately failing fast on subsequent calls (without waiting for a timeout) for a cooldown period rather than letting every request hang waiting on a known-broken dependency. Combined with sensible request timeouts and a fallback/degraded response strategy, this prevents a single slow dependency from cascading into exhausting your own service\'s resources (connection pools, event loop capacity) under sustained load.' },
   ];
 
   revision: RevisionSummary = {

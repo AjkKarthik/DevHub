@@ -467,6 +467,10 @@ const routes = [
       q: 'How does V8\'s bytecode cache help with repeat visits?',
       a: 'On the first visit V8 parses and compiles JS to bytecode. On subsequent visits, if the script hasn\'t changed, V8 uses the cached bytecode — skipping the parse/compile step entirely. This is another reason long-cached versioned bundles improve performance on repeat visits: the bytecode cache remains valid as long as the file hash matches.',
     },
+    {
+      q: 'What is the difference between code-splitting by route and by component, and when should you use each?',
+      a: 'Route-based code-splitting loads only the JavaScript needed for the current page/route, deferring everything else — the most impactful technique for reducing initial bundle size in multi-page SPAs, since users rarely visit every route in one session. Component-based (or feature-based) splitting goes further, lazy-loading individual heavy components within a route only when they become visible or interacted with — for example, a rich text editor, a charting library, or a modal that is rarely opened. Use route-splitting as the default baseline for any SPA; add component-level splitting selectively for known-heavy, conditionally-rendered widgets where the bundle cost is disproportionate to how often users actually see them.',
+    },
   ];
 
   revision: RevisionSummary = {

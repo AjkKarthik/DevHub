@@ -59,6 +59,24 @@ export class NodeDeployment {
         'Secrets in production: use a secrets manager (AWS Secrets Manager, HashiCorp Vault, Doppler) to inject secrets at runtime. Never bake secrets into Docker images — they appear in docker history and image layers. Kubernetes Secrets are base64-encoded but not encrypted — use sealed-secrets or external-secrets-operator for encryption.',
       ]
     },
+    {
+      heading: 'Environment Parity and the Twelve-Factor App',
+      points: [
+        'The Twelve-Factor App methodology recommends keeping development, staging, and production as similar as possible — same backing services (same database engine and version, not SQLite locally and Postgres in prod), minimizing "works on my machine" surprises.',
+        'Configuration (database URLs, API keys, feature flags) should come entirely from environment variables, never hardcoded or baked into the build — this lets the identical build artifact be promoted unchanged from staging to production.',
+        'Build, release, and run should be strictly separated stages: build compiles code and installs dependencies once; release combines that build with environment-specific config; run executes the release. Rebuilding per environment risks environment-specific bugs slipping through untested.',
+        'Disposability matters for reliable deployment: processes should start fast and shut down gracefully on SIGTERM, so orchestrators (Kubernetes, ECS) can freely start, stop, and reschedule instances without dropping in-flight requests.',
+      ]
+    },
+    {
+      heading: 'Zero-Downtime Deployment Patterns',
+      points: [
+        'Rolling deployment: new instances are started and added to the load balancer pool gradually while old instances are drained and removed — at any point during the rollout, a mix of old and new code versions serves traffic, so both versions must be compatible with the current database schema.',
+        'Blue-green deployment: a complete second environment ("green") is deployed and tested in isolation, then traffic is switched over atomically from the old environment ("blue") — enables instant rollback by switching traffic back, at the cost of running two full environments simultaneously during the transition.',
+        'Health checks are what make zero-downtime deployment safe — the orchestrator must not route traffic to a new instance until it reports healthy (via a /health endpoint), and must stop routing to an old instance before terminating it (connection draining).',
+        'Database migrations must be backward-compatible during a rolling deployment — since old and new application code run simultaneously against the same database for a period, a migration that drops a column the old code still reads will break the deployment mid-rollout.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -288,6 +306,9 @@ start().catch(err => { console.error(err); process.exit(1); });`
     { q: 'Should I use PM2 or Kubernetes for Node.js process management?', a: 'PM2 for: VMs or bare metal, simple deployments, single-server setups, teams without K8s expertise. PM2 handles clustering, crash recovery, zero-downtime reloads, and log management in one tool. Kubernetes for: containerised microservices, multi-server scaling, teams already using K8s, need for advanced deployment strategies (canary, blue-green). In K8s, run Node.js with cluster mode (or N pod replicas) and let K8s restart pods — you don\'t need PM2 inside a container if K8s handles restarts.' },
     { q: 'How do I manage secrets securely in Docker deployments?', a: 'Never bake secrets into Docker images (docker history reveals them). Options: (1) Environment variables injected at runtime: docker run -e DB_URL=... or K8s Secret → env: valueFrom. (2) Docker secrets (Swarm): /run/secrets/<name> file mounted in container. (3) External secrets manager: inject at startup via AWS Secrets Manager SDK, HashiCorp Vault, or Doppler. Verify no secrets in: Dockerfile, docker-compose.yml committed to git, ENV layers in the image, application logs.' },
     { q: 'How do I achieve zero-downtime deploys without Kubernetes?', a: 'PM2: pm2 reload app performs a rolling restart — workers are replaced one at a time. Nginx + upstream: add a new server instance, gradually shift traffic, remove old one. Blue-green deployment: run two identical environments (blue and green), deploy to inactive one, switch load balancer when ready. Rolling update with Node.js cluster: use built-in cluster module, replace workers one at a time with cluster.fork() + worker.kill(). The key for all approaches: implement SIGTERM handler so workers drain in-flight requests before exiting.' },
+    { q: 'What is the difference between PM2 cluster mode and Node.js cluster module directly?', a: 'The built-in cluster module requires you to manually write the primary/worker fork logic, handle worker restarts on crash, and manage IPC yourself. PM2 wraps this into a production-ready process manager — pm2 start app.js -i max automatically forks one worker per CPU core, restarts crashed workers, handles zero-downtime reloads (pm2 reload), and provides built-in log aggregation and monitoring — eliminating the boilerplate of hand-rolling cluster management.' },
+    { q: 'Why is graceful shutdown important for a containerized Node.js app, and how do you implement it?', a: 'Without graceful shutdown, a container orchestrator (Kubernetes, ECS) sending SIGTERM during a rolling deploy can kill a process mid-request, dropping in-flight connections and corrupting partial database writes. Implement it by listening for SIGTERM, calling server.close() to stop accepting new connections while letting existing ones finish, closing database pools, and then exiting — typically within the orchestrator\'s grace period (commonly 30 seconds) before it sends a hard SIGKILL.' },
+    { q: 'What is the purpose of a multi-stage Dockerfile for a Node.js production image?', a: 'A multi-stage build uses one stage with full devDependencies and build tools to compile TypeScript/bundle assets, then copies only the compiled output and production node_modules into a slim final stage (often node:alpine). This dramatically reduces the final image size (no build tools, no devDependencies, no source maps unless needed) and shrinks the attack surface, since fewer installed packages means fewer potential vulnerabilities shipped to production.' },
   ];
 
   revision: RevisionSummary = {

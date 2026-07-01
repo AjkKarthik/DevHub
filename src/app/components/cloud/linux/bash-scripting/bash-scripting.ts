@@ -70,6 +70,15 @@ export class LinuxBashScripting {
         'Error handling pattern: cmd || { echo "cmd failed" >&2; exit 1; }. The >&2 redirects error to stderr.',
       ],
     },
+    {
+      heading: 'Error Handling and Defensive Scripting',
+      points: [
+        'set -euo pipefail at the top of a script is the standard defensive baseline — set -e exits immediately on any command failure, set -u treats unset variables as an error, and set -o pipefail makes a pipeline fail if ANY command in it fails, not just the last one.',
+        'Without set -e, a script silently continues executing subsequent commands even after an earlier command failed — this can cause a script to proceed with invalid state (like a failed cd followed by destructive operations in the wrong directory) rather than stopping immediately.',
+        'Trapping signals (trap "cleanup_function" EXIT) ensures cleanup code (removing temporary files, releasing locks) runs even if the script exits unexpectedly due to an error or interruption (Ctrl+C), preventing resource leaks from incomplete script runs.',
+        'Explicit error messages with context (echo "Error: config file $CONFIG not found" >&2; exit 1) are far more useful for debugging than a script that simply fails silently or with a generic, unhelpful error — always write meaningful error output to stderr, not stdout.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

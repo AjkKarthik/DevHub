@@ -60,6 +60,24 @@ export class Backpressure {
         'Without prefetch, a slow consumer can accumulate thousands of messages, exhaust memory, and degrade the entire broker.',
       ]
     },
+    {
+      heading: 'Reactive Pull vs. Push-Based Backpressure Strategies',
+      points: [
+        'Pull-based (consumer-driven) systems naturally implement backpressure — a consumer only requests more work when ready, meaning a slow consumer simply processes at its own pace without ever being overwhelmed by an unstoppable push of new messages.',
+        'Push-based systems (a producer sending data regardless of consumer readiness) require an explicit backpressure signal (like TCP flow control, or a reactive streams protocol) to prevent overwhelming a slow consumer — without it, the consumer must buffer unboundedly or drop messages.',
+        'Reactive Streams (and similar specifications) formalize backpressure as a first-class concern in the API contract itself, requiring producers to respect a consumer\'s requested demand rather than assuming the consumer can always keep up.',
+        'Choosing pull over push where possible sidesteps an entire category of backpressure-related bugs, which is part of why message queue and stream consumption models (Kafka consumers polling for records) are inherently pull-based rather than push-based.',
+      ],
+    },
+    {
+      heading: 'Load Shedding as a Backpressure Strategy',
+      points: [
+        'When buffering and slowing producers is insufficient to handle sustained overload, load shedding (deliberately dropping lower-priority messages) preserves system stability for the messages that matter most, rather than letting the entire system degrade or crash under unbounded load.',
+        'Priority-based shedding (dropping low-priority messages first while preserving high-priority ones) requires messages to carry priority metadata and consumers/brokers to respect it — a deliberate design decision, not an automatic behavior.',
+        'Shedding decisions should be observable and alerting-triggered, since silently dropping messages under load without visibility makes it impossible to distinguish "the system is healthy and shedding as designed" from "the system is broken and losing data unexpectedly."',
+        'Load shedding is a last-resort strategy that trades data completeness for system availability — it should be a deliberate, documented tradeoff for a specific workload, not the default response to every capacity problem before exhausting scaling and buffering options.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

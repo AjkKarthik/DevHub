@@ -60,6 +60,24 @@ export class ArchBackendForFrontend {
         'Both can be combined: GraphQL as the BFF layer, with the schema maintained by the frontend team.',
       ],
     },
+    {
+      heading: 'Why One Gateway Doesn\'t Fit All Client Types',
+      points: [
+        'Different client types (a rich desktop web app, a bandwidth-constrained mobile app, a third-party partner integration) have fundamentally different data and interaction needs — a single generic API gateway serving all of them tends to either over-fetch for lightweight clients or under-serve richer ones.',
+        'A BFF (Backend for Frontend) is a dedicated backend tailored to one specific client\'s needs, aggregating and shaping backend service responses exactly as that client requires — avoiding the "lowest common denominator" API design that a single shared gateway is prone to.',
+        'This pattern trades some duplication (similar aggregation logic potentially repeated across multiple BFFs) for the benefit of each frontend team owning and evolving their own BFF independently, without needing to coordinate changes through a single shared gateway team.',
+        'BFFs are most valuable when client needs genuinely diverge significantly (mobile vs. desktop vs. partner API) — for applications with a single, relatively uniform client type, a single well-designed API gateway may be entirely sufficient without the added operational overhead of multiple BFFs.',
+      ],
+    },
+    {
+      heading: 'BFF Ownership and Team Topology Alignment',
+      points: [
+        'BFFs are typically owned by the SAME team that owns the corresponding frontend, not a separate backend team — this alignment lets frontend developers iterate on their BFF\'s API shape without waiting on a separate team\'s backlog, directly supporting fast frontend iteration.',
+        'Each BFF calling into shared backend microservices means those backend services must maintain stable, well-documented contracts, since multiple BFFs depend on them — the backend services themselves remain generic and reusable, while client-specific shaping happens only in the BFF layer.',
+        'Duplicated logic across multiple BFFs (similar data transformation repeated in each) is an accepted cost of this pattern — extracting truly shared logic into a common library (rather than a shared service) keeps each BFF independently deployable while still avoiding pure copy-paste duplication.',
+        'Overusing the BFF pattern for client types that do not actually have significantly different needs creates unnecessary operational overhead (more services to deploy, monitor, and maintain) without a corresponding benefit in development velocity or API fit.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

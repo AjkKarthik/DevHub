@@ -62,6 +62,24 @@ export class TfOutputs {
         'terraform output -json | jq ".vpc_id.value" extracts specific outputs in CI scripts.',
       ],
     },
+    {
+      heading: 'Structuring Outputs for Module Composition',
+      points: [
+        'Outputs are how a module exposes values to whatever configuration calls it — a child module\'s outputs become accessible to the root module (or parent module) as module.name.output_name, forming the interface through which composed modules pass data to each other.',
+        'Marking an output as sensitive = true prevents its value from being displayed in plan/apply output or logged in CI, essential for outputs containing secrets (a generated database password) — though this does not encrypt the value in state itself, which remains a separate concern requiring proper state security.',
+        'Outputs at the root module level are what terraform output displays after an apply and what remote state data sources can read from other configurations — thoughtfully designing root-level outputs (rather than exposing everything) creates a clean, intentional interface for cross-configuration state sharing.',
+        'Descriptions on output blocks (description = "...") serve the same documentation purpose as variable descriptions — auto-generated documentation tools and terraform-docs rely on these descriptions to produce readable module documentation without requiring separate manually-maintained docs.',
+      ],
+    },
+    {
+      heading: 'Output Dependencies and the depends_on Meta-Argument',
+      points: [
+        'Terraform automatically infers most dependencies from expression references within an output value (outputs referencing a resource attribute implicitly depend on that resource) — explicit depends_on on an output is only needed for dependencies that cannot be expressed through a direct attribute reference.',
+        'Using outputs to explicitly surface important computed values (a load balancer\'s DNS name, a generated resource ID) at the root module level makes them easy to consume by external tooling, other Terraform configurations via remote state, or simply for a human operator to quickly find after an apply.',
+        'Output values are recalculated and can change on every apply, even without any resource change, if the underlying expression depends on data that changes independently (like a timestamp function) — understanding this helps explain why an output sometimes shows as "changed" in a plan when no resource actually changed.',
+        'Grouping related outputs logically (with consistent naming conventions like vpc_id, vpc_cidr, vpc_subnet_ids) rather than a flat, inconsistently-named list of outputs makes a module\'s interface more predictable and easier for consumers to discover and use correctly.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

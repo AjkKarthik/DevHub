@@ -55,6 +55,12 @@ export class PropertyBasedTesting {
       'Commutativity: a + b === b + a for all a, b.',
       'Not ideal for: UI behaviour, side effects, business rules that are hard to express as invariants.',
     ]},
+    { heading: 'Why Property-Based Testing Finds Bugs Example-Based Tests Miss', points: [
+      'Example-based tests only verify the specific inputs a developer thought to write — property-based testing generates hundreds of random inputs automatically, exploring edge cases a human would never think to hand-write.',
+      'A property (like "sorting is idempotent — sorting twice equals sorting once" or "encode then decode returns the original value") describes an invariant that must hold for ALL valid inputs, not just a handful of examples.',
+      'When a property-based test finds a failing case, most frameworks automatically "shrink" it to the smallest input that still reproduces the failure, turning an obscure random failure into a minimal, debuggable reproduction case.',
+      'Property-based testing complements rather than replaces example-based tests — specific known edge cases (empty input, a documented bug\'s exact reproduction) are still best captured as explicit examples for clarity.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

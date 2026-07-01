@@ -59,6 +59,24 @@ export class NodeModules {
         'Dual CJS/ESM packages: publish both with the "exports" field mapping "require" to the .cjs build and "import" to the .mjs build. This lets the same package work in CJS and ESM projects.',
       ]
     },
+    {
+      heading: 'CommonJS vs ES Modules — Practical Differences',
+      points: [
+        'CommonJS require() is synchronous and resolves at the call site, allowing conditional or dynamic requires (require(condition ? "a" : "b")) anywhere in code. ES Modules import is statically analyzed at parse time, always hoisted to the top regardless of where written in source.',
+        'Static analysis of ES Modules enables tree-shaking (bundlers can determine exactly which exports are actually used and eliminate the rest from the final bundle) — something CommonJS\'s dynamic require() cannot reliably support.',
+        'Node.js determines module format from package.json\'s "type" field (module for ESM, commonjs or absent for CJS) or file extension (.mjs always ESM, .cjs always CommonJS) — mixing conventions inconsistently within a project is a common source of confusing import errors.',
+        'Top-level await is only available in ES Modules — a CommonJS module cannot await at the top level of the file, only inside an async function, which is one practical reason some newer libraries require ESM.',
+      ]
+    },
+    {
+      heading: 'Interoperability Between CJS and ESM',
+      points: [
+        'An ES Module can import a CommonJS package (most npm packages still ship CJS) via default import interop — Node.js wraps the CJS module.exports as the default export automatically in most cases.',
+        'A CommonJS file cannot directly require() an ESM-only package — dynamic import() (which returns a Promise) is required instead, since ESM modules cannot be loaded synchronously.',
+        'Dual-package hazard: a package published in both CJS and ESM formats can accidentally load two separate copies of itself if a project imports it via both require() and import() paths in different parts of the dependency graph — leading to subtle bugs like failed instanceof checks across the two copies.',
+        'The "exports" field in package.json with conditional exports lets a single published package declare separate entry points for "require" and "import" consumers, letting Node.js automatically pick the correct format for each consumer.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -210,6 +228,9 @@ console.log(\`Cleared \${clearProjectModules()} modules\`);`
     { q: 'Should I use CJS or ESM for a new Node.js project?', a: 'ESM for new projects. It is the JavaScript standard, supports top-level await, and enables tree-shaking. Add "type":"module" to package.json. The main friction is interop with older CJS packages (use dynamic import()) and tooling that expects CJS (jest — use vitest instead, or configure jest for ESM).' },
     { q: 'What is a "pure ESM" package and why does it cause issues?', a: 'A pure ESM package has "type":"module" and no CJS fallback. CJS projects cannot require() it — they get "Error: require() of ES Module". Options: (1) migrate your project to ESM, (2) use dynamic import() at the call site, (3) find a CJS-compatible version of the package.' },
     { q: 'How does module caching affect singleton patterns?', a: 'Module caching makes singletons work naturally — the first require() runs the module code and caches the exports object. All subsequent require() calls return the same cached object. This is why a shared db connection or config object works: every file that requires it gets the same instance.' },
+    { q: 'What is the practical difference between CommonJS require() and ES Modules import in Node.js?', a: 'CommonJS require() is synchronous and resolves modules at the point of the call, allowing conditional or dynamic requires (require(condition ? "a" : "b")) anywhere in the code. ES Modules import is statically analyzed at parse time (enabling tree-shaking by bundlers) and is asynchronous under the hood, with imports always hoisted to the top of the module regardless of where they are written in the source. Node.js supports both, distinguished by the "type" field in package.json (module for ESM, commonjs or absent for CJS) or file extension (.mjs vs .cjs).' },
+    { q: 'Why can you not directly use require() inside a Node.js ES Module file?', a: 'require, along with __dirname and __filename, are CommonJS-specific globals that are not defined in the ES Module scope — ESM uses import.meta.url instead for module-relative path resolution. To use a CommonJS-only package from an ESM file, you typically import it as a default export (since most CJS packages are interop-compatible) or use createRequire(import.meta.url) from the "module" built-in to construct a require function when truly necessary.' },
+    { q: 'What problem do dual-format (CJS + ESM) npm packages solve, and how do they declare both formats?', a: 'A library author wants their package usable by both legacy CommonJS consumers and modern ESM consumers without forcing either group to migrate. This is solved via the "exports" field in package.json with conditional exports, specifying separate entry points for "require" (CJS build) and "import" (ESM build) — Node.js automatically picks the correct one based on how the consuming code is importing the package, allowing a single published package to serve both module systems correctly.' },
   ];
 
   revision: RevisionSummary = {

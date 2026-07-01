@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'kubectl port-forward svc/<name> 8080:80 lets you test a Service locally without Ingress.',
     ],
   },
+  {
+    heading: 'Systematic Debugging: Events, Logs, and Describe',
+    points: [
+      'kubectl describe pod surfaces the EVENTS associated with a pod (scheduling failures, image pull errors, failed health checks) — this is often the fastest first step in diagnosing why a pod is not running as expected, before diving into logs.',
+      'kubectl logs shows what the APPLICATION itself printed, which is useless if the container never actually started — distinguishing between a scheduling/startup failure (check describe/events) and an application-level failure (check logs) is the key branching decision in Kubernetes troubleshooting.',
+      'kubectl logs --previous retrieves logs from a container\'s PREVIOUS instance after a crash and restart — without --previous, logs from the crash that actually caused a restart are lost, replaced by the new (possibly still-starting) container\'s fresh, empty log stream.',
+      'CrashLoopBackOff specifically means the container keeps starting and immediately exiting — the exponentially increasing backoff between restart attempts is normal expected behavior, and the actual root cause is virtually always found in the previous container\'s logs or its exit code, not in the CrashLoopBackOff status itself.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -55,6 +55,24 @@ export class MessagingSecurity {
         'Audit logging: log every produce, consume, and admin API call with principal, IP, and timestamp for compliance.',
       ]
     },
+    {
+      heading: 'Encryption in Transit and at Rest for Message Brokers',
+      points: [
+        'TLS encryption in transit protects messages from interception as they travel between producers, brokers, and consumers — many managed messaging services enable TLS by default, but self-hosted brokers often require explicit configuration to enforce it.',
+        'Encryption at rest protects stored message data (broker disk, retained logs) from unauthorized access if the underlying storage is compromised — particularly important for brokers retaining messages for extended periods, like Kafka\'s default retention.',
+        'Field-level (payload) encryption, where sensitive fields within a message are encrypted by the producer before sending, protects against exposure even to the broker operator itself — a stronger guarantee than transport/storage encryption alone for highly sensitive data.',
+        'Key management for message encryption must account for key rotation — messages encrypted with an old key must remain decryptable by consumers even after keys rotate, requiring either key versioning or a transition period supporting both old and new keys.',
+      ],
+    },
+    {
+      heading: 'Authentication and Authorization for Message Brokers',
+      points: [
+        'SASL and mTLS (mutual TLS) are the common authentication mechanisms for verifying a producer or consumer\'s identity before allowing it to connect to a broker — an unauthenticated broker connection is a significant security gap in any production messaging system.',
+        'ACLs (access control lists) restrict WHICH topics/queues a given authenticated identity can produce to or consume from — without them, any authenticated client could read or write to any topic, violating the principle of least privilege.',
+        'Service-to-service messaging in a microservices architecture still needs per-service authorization, not just perimeter network security — a compromised service should not automatically gain access to every topic simply because it is inside the network perimeter.',
+        'Audit logging of who accessed which topics and when is essential for detecting unauthorized access after the fact, particularly in regulated industries where message content may include sensitive personal or financial data.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [
@@ -197,11 +215,16 @@ console.log('Secure message published to RabbitMQ');`,
     { q: 'What is the advantage of message-level encryption over TLS?', options: ['Faster throughput', 'Broker never sees plaintext; protects against broker compromise', 'Simpler key management', 'Lower CPU usage'], answer: 1, explanation: 'TLS encrypts data in transit but the broker decrypts it. Message-level encryption means the broker stores and forwards ciphertext — broker admins cannot read the payload.' },
     { q: 'What does the principle of least privilege mean for Kafka producers?', options: ['Producers have admin access', 'Producers have Write ACL on their specific topic only', 'Producers can read all topics', 'Producers share credentials with consumers'], answer: 1, explanation: 'Least privilege: grant only what is needed. A producer needs Write on its own topic. Giving it Read or admin access is unnecessary exposure.' },
     { q: 'What does RabbitMQ vhost isolation provide?', options: ['TLS encryption', 'Logical separation of resources; users in one vhost cannot access another', 'Message deduplication', 'Automatic failover'], answer: 1, explanation: 'Virtual hosts are isolated namespaces — queues, exchanges, and bindings in one vhost are invisible to users in another, enabling multi-tenancy.' },
+    { q: 'Why should mutual TLS (mTLS) be preferred over one-way TLS for broker-to-client authentication?', options: ['mTLS is faster than one-way TLS', 'mTLS requires the client to present a certificate too, so the broker authenticates the client identity, not just encrypting transport', 'mTLS removes the need for ACLs entirely', 'mTLS only works with Kafka, not RabbitMQ or Service Bus'], answer: 1, explanation: 'One-way TLS only lets the client verify the broker. mTLS additionally has the client present its own certificate so the broker can cryptographically verify which client is connecting — replacing or strengthening username/password auth.' },
+    { q: 'What risk does granting a consumer wildcard topic ACLs (e.g., orders.*) introduce?', options: ['No risk — wildcards are always scoped safely', 'The consumer gains read access to any current or future topic matching the pattern, including ones added later without review', 'Wildcard ACLs are rejected by all brokers', 'Wildcard ACLs only apply to producers, not consumers'], answer: 1, explanation: 'A wildcard ACL silently grants access to future topics matching the pattern. A new sensitive topic named orders.payroll would be readable by that consumer without anyone explicitly granting it — violating least privilege.' },
   ];
 
   readonly qna: QnaItem[] = [
     { q: 'Should I rotate Kafka SSL certificates, and how often?', a: 'Yes. Rotate CA and client certificates before expiry (typically annually or per your security policy). Use short-lived certificates (e.g., 90 days) with automated rotation via cert-manager or Vault PKI. Kafka supports online certificate rotation without downtime using the ssl.client.auth=requested setting.' },
     { q: 'How do I manage Kafka credentials securely in Kubernetes?', a: 'Use Kubernetes Secrets (base64-encoded, not plain text) mounted as environment variables or files. Better: use an external secrets manager (HashiCorp Vault, AWS Secrets Manager, Azure Key Vault) with a Kubernetes Secrets Store CSI driver — credentials never land in etcd.' },
     { q: 'What is the difference between ACLs and RBAC in Kafka?', a: 'ACLs are low-level (per principal, per topic, per operation) and require Zookeeper/KRaft storage. RBAC (Confluent Platform, MSK IAM) assigns roles to groups and is easier to manage at scale. MSK IAM uses AWS IAM policies directly, eliminating separate credential management for AWS-based deployments.' },
+    { q: 'Should message payloads be encrypted even when the transport is already TLS-encrypted?', a: 'Yes, for sensitive data. TLS only protects data in transit between client and broker — the broker itself, its disk, and its operators can see plaintext. Message-level (end-to-end) encryption, where the producer encrypts the payload and only authorized consumers hold the decryption key, protects against a compromised or curious broker and satisfies stricter compliance requirements (PCI-DSS, HIPAA).' },
+    { q: 'How do you prevent a compromised producer credential from causing widespread damage?', a: 'Apply least privilege ACLs scoped to exactly the topics/queues that producer needs to write to — never grant cluster-wide or wildcard access. Use short-lived credentials or certificates with automated rotation so a leaked credential has a small window of exposure. Monitor for anomalous publish patterns (volume spikes, new topics) and have a fast credential-revocation runbook ready.' },
+    { q: 'What is the security risk of disabling broker authentication for "internal-only" messaging traffic?', a: 'Internal network boundaries are not a substitute for authentication — lateral movement from any compromised internal host (a misconfigured service, a compromised container) gives an attacker unrestricted broker access. Defense-in-depth requires authenticating and authorizing every connection, internal or external, since perimeter security alone is an increasingly weak assumption in containerized and cloud environments.' },
   ];
 }

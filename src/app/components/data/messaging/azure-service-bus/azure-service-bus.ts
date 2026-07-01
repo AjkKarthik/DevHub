@@ -61,6 +61,24 @@ export class AzureServiceBus {
         'Sessions require EnabledForSessions=true on the queue/subscription.',
       ]
     },
+    {
+      heading: 'Sessions and Ordered Delivery in Service Bus',
+      points: [
+        'Service Bus sessions group related messages (all messages for a given order ID, for example) and guarantee they are delivered in order to a single consumer at a time — without sessions, Service Bus makes no ordering guarantee across concurrent consumers.',
+        'A session-enabled queue requires the consumer to explicitly accept a session before receiving its messages, and only one consumer can hold a given session at a time — this serializes processing per session while still allowing different sessions to be processed in parallel.',
+        'Sessions add meaningful latency and complexity compared to non-session queues, so they should be used specifically when true per-entity ordering matters, not applied as a default to every queue regardless of whether ordering is actually a requirement.',
+        'Duplicate detection (enabled via a duplicate-detection window) works alongside sessions to catch redelivered messages within a configurable time window, complementing rather than replacing consumer-side idempotency for messages arriving outside that window.',
+      ],
+    },
+    {
+      heading: 'Topics and Subscriptions for Pub/Sub Patterns',
+      points: [
+        'Service Bus topics let multiple independent subscriptions each receive a copy of every published message — each subscription behaves like its own queue with its own filter rules, enabling true publish-subscribe patterns beyond simple point-to-point queues.',
+        'SQL-like filter expressions on a subscription let it receive only messages matching specific criteria (a property value, a custom header), avoiding the need for every subscriber to receive and then discard irrelevant messages.',
+        'Auto-forwarding lets a subscription automatically forward matching messages to another queue or topic, enabling multi-stage routing topologies without requiring an intermediate consumer to manually relay messages.',
+        'Choosing between a single topic with multiple filtered subscriptions versus multiple separate topics depends on whether the different consumer groups genuinely need independent lifecycle management (dead-lettering, scaling) or simply different message subsets.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [
@@ -284,10 +302,11 @@ async function scheduleAndCancel(orderId: string) {
     { q: 'What happens when a message exceeds maxDeliveryCount?', options: ['It is silently deleted', 'It is moved to the dead-letter queue automatically', 'The consumer is disconnected', 'It is sent back to the producer'], answer: 1, explanation: 'Service Bus automatically moves a message to the DLQ when it has been delivered and abandoned maxDeliveryCount times.' },
     { q: 'Which receive mode should you use for tasks that must not be lost on failure?', options: ['receiveAndDelete', 'peekLock', 'sessionReceiver', 'prefetchCount'], answer: 1, explanation: 'peekLock keeps the message in the queue (locked) until the consumer explicitly completes, abandons, or dead-letters it.' },
     { q: 'What does enableSessions on a queue provide?', options: ['Message deduplication', 'FIFO ordering within a session group', 'Dead-letter routing', 'Automatic retry delays'], answer: 1, explanation: 'Sessions guarantee that all messages with the same sessionId are processed by one receiver in order, enabling FIFO per-entity processing.' },
+    { q: 'What is the maximum message size on the Service Bus Standard tier?', options: ['1MB', '256KB', '100MB', 'Unlimited'], answer: 1, explanation: 'Standard tier caps message size at 256KB. Premium tier raises this to 100MB, useful for larger payloads without external blob references.' },
+    { q: 'What does AutoForwarding allow you to do between Service Bus entities?', options: ['Automatically retry failed deliveries', 'Chain a queue or subscription to forward messages to another queue/topic', 'Compress messages in transit', 'Convert AMQP messages to HTTP'], answer: 1, explanation: 'AutoForwarding lets a queue or subscription forward all its messages directly to another queue or topic, useful for building processing pipelines without custom relay code.' },
   ];
 
   readonly qna: QnaItem[] = [
-    { q: 'How does Service Bus message deduplication work?', options: ['Not needed — peeked messages are never duplicated'] },
     { q: 'How does Service Bus message deduplication work?', a: 'Set duplicateDetectionHistoryTimeWindow on the queue. Within that window, messages with the same messageId are deduplicated at the broker level. Useful for idempotent publish when producers might retry on transient failures.' },
     { q: 'What is the difference between Standard and Premium tiers?', a: 'Standard tier uses shared infrastructure with variable throughput. Premium tier provides dedicated processing units (messaging units), predictable performance, VNet integration, and supports larger message sizes (up to 100MB vs 256KB).' },
     { q: 'Can I use Service Bus with .NET and Node.js consumers simultaneously?', a: 'Yes. Service Bus is protocol-agnostic (AMQP 1.0). @azure/service-bus SDK for Node.js and Azure.Messaging.ServiceBus for .NET both use AMQP and can share the same queues and topics.' },

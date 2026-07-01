@@ -72,6 +72,15 @@ export class RedisSecurity {
         'Lua scripts: disable if not needed with `lua-time-limit 0`. Scripts can execute arbitrary Redis commands, so limit who has access to EVAL.',
       ],
     },
+    {
+      heading: 'Access Control Lists (ACLs) for Fine-Grained Permissions',
+      points: [
+        'Redis ACLs (introduced in Redis 6) let you define users with specific permitted commands and key patterns, moving beyond the older single shared password model to genuine per-application, per-user access control — a service that only needs to read cache values should not have permission to run FLUSHALL.',
+        'Restricting dangerous commands (FLUSHALL, CONFIG, KEYS, SHUTDOWN) via ACLs for application-facing users significantly limits the blast radius if application credentials are ever compromised — an attacker with a compromised application-level Redis credential should not be able to wipe the entire dataset or reconfigure the server.',
+        'TLS encryption for Redis connections (supported since Redis 6) protects data in transit, essential when Redis traffic crosses an untrusted network boundary — historically Redis was often deployed without TLS on the assumption of a fully trusted internal network, an assumption that does not hold in many modern cloud/multi-tenant environments.',
+        'Renaming or disabling genuinely dangerous commands (via rename-command in configuration) provides an additional layer of protection against accidental or malicious invocation, though ACLs are generally the more flexible, maintainable modern approach for controlling command access per user.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

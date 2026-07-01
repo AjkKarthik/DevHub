@@ -49,6 +49,15 @@ export class BlazorCheatsheet {
       points: ['Singleton — one instance for app lifetime (shared across all users on Server). Scoped — one per circuit on Blazor Server, one per app on WASM. Transient — new instance every request.',
       'Scoped on Server ≠ per-request — it\'s per circuit.', 'Singleton on Server must be thread-safe.', 'Never inject Scoped into Singleton (captive dependency).', 'Use OwningComponentBase<T> for component-scoped services.']
     },
+    {
+      heading: 'Common gotchas quick reference',
+      points: [
+        'StateHasChanged() is required after modifying component state from outside the normal Blazor event/lifecycle pipeline (a background task, a timer callback) — Blazor does not automatically detect changes made this way and re-render.',
+        'InvokeAsync(StateHasChanged) (not a direct call) is required when updating UI from a non-Blazor-managed thread or callback, ensuring the update is correctly marshaled onto the renderer\'s synchronization context.',
+        '@key is required on repeated elements in a loop whenever items can be reordered, inserted, or removed from the middle of the collection — omitting it causes Blazor\'s diffing to misattribute state (like input focus) to the wrong visual item.',
+        'IDisposable/IAsyncDisposable implementation is required for components holding subscriptions, timers, or JS interop references — forgetting it is one of the most common sources of memory leaks in non-trivial Blazor applications.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

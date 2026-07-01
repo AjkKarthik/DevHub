@@ -62,6 +62,15 @@ const theory: TheoryPoint[] = [
       'aspect-ratio: 16/9 on a container prevents Cumulative Layout Shift while images load.',
     ],
   },
+  {
+    heading: 'Mobile-First vs Desktop-First Media Query Strategy',
+    points: [
+      'Mobile-first (writing base styles for small screens, then using min-width media queries to add complexity for larger screens) is the generally recommended approach — it forces prioritizing essential content and functionality for constrained mobile viewports first, rather than trying to simplify a desktop-first design down.',
+      'Desktop-first (base styles for large screens, using max-width media queries to simplify for smaller ones) often results in more CSS overrides being needed for mobile, since desktop layouts typically have more complexity that must be actively undone for small screens.',
+      'Choosing consistent breakpoint values across an entire project (rather than ad-hoc pixel values scattered through different components) keeps responsive behavior predictable — using CSS custom properties or Sass variables for breakpoints is a common way to enforce this consistency.',
+      'Testing responsive designs on real devices (not just browser DevTools device emulation) remains important — DevTools emulation approximates viewport size accurately but does not perfectly replicate real touch interaction, actual device performance, or platform-specific rendering quirks.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

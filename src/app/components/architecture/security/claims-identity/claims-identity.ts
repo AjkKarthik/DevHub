@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Sensitive operations: re-verify freshness — check `iat` or require a fresh token (`max_age` in OIDC) rather than accepting a 12-hour-old token for account deletion.',
     ],
   },
+  {
+    heading: 'Claims-Based Identity in Practice',
+    points: [
+      'Claims-based identity separates WHO a user is (authenticated identity) from WHAT they are allowed to do (authorization), packaging identity facts as discrete claims (email, role, department, tenant ID) rather than requiring every service to query a central user database directly.',
+      'This decouples services from a single identity provider\'s internal data model — a downstream API only needs to trust and parse the claims in a signed token, not maintain its own connection to the identity system that issued it.',
+      'Standard claim types (from OpenID Connect: sub, email, name, iat, exp) provide interoperability across identity providers — a client written against these standard claims works with Auth0, Okta, Azure AD, or any other OIDC-compliant provider without custom integration code.',
+      'Custom claims extend the standard set for application-specific authorization needs (a tenant_id claim for multi-tenant apps, a permissions array for fine-grained access control) — but should be kept minimal, since every claim added increases token size and the surface area that must be validated.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

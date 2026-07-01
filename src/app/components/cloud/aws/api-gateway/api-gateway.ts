@@ -471,6 +471,12 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
       answer: 1,
       explanation: 'Usage plans are a REST API feature. A usage plan associates one or more API keys with throttle limits (requests per second) and quotas (requests per day/month) for specific API stages. HTTP API does not support usage plans.',
     },
+    {
+      q: 'What is the difference between REST API and HTTP API in API Gateway?',
+      options: ['They are identical, just different names', 'HTTP API is a newer, lighter-weight option with lower latency and cost, but fewer features (no request/response transformation, no usage plans)', 'REST API is deprecated and being removed', 'HTTP API only supports GET requests'],
+      answer: 1,
+      explanation: 'HTTP APIs were introduced to provide a faster, cheaper alternative for simple proxy integrations (often Lambda), trading away some REST API features (request validation, API keys/usage plans, AWS WAF integration) for up to 60% lower cost and lower latency.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -489,6 +495,14 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
     {
       q: 'How do stage variables work and why are they useful?',
       a: 'Stage variables are key-value pairs defined per stage and injected into the integration URI, Lambda ARN, or authoriser. A common pattern: point the integration to arn:aws:lambda:us-east-1:123:function:my-api:${stageVariables.lambdaAlias}, then set lambdaAlias=dev on the dev stage and lambdaAlias=prod on the prod stage. This lets one API definition point to different Lambda versions/aliases per environment without duplicating routes.',
+    },
+    {
+      q: 'How do you secure an API Gateway endpoint so only authenticated users can call it?',
+      a: 'Common options: (1) IAM authorization — caller signs requests with AWS SigV4, good for internal service-to-service calls. (2) Cognito User Pool authorizer — validates a JWT issued after user login, ideal for web/mobile apps. (3) Lambda authorizer (custom) — your own Lambda function validates a token (JWT, API key, etc.) and returns an IAM policy. Choose Cognito for standard user auth, Lambda authorizer for custom/legacy token schemes.',
+    },
+    {
+      q: 'What is request throttling in API Gateway and how do you configure it?',
+      a: 'API Gateway enforces a default account-level steady-state rate limit (e.g., 10,000 req/sec) and burst limit (token bucket). You can configure stricter per-method or per-stage throttling via Usage Plans (tied to API keys) to give different limits to different consumers — useful for tiered API products (free vs paid tiers) or to protect backend Lambda/database resources from being overwhelmed by a single noisy client.',
     },
   ];
 

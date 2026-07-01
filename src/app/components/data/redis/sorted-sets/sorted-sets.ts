@@ -72,6 +72,15 @@ export class RedisSortedSets {
         'ZADD with NX flag: only add if not already present. GT/LT flags: only update if new score is greater/less than existing.',
       ],
     },
+    {
+      heading: 'Leaderboards and Range Queries with Sorted Sets',
+      points: [
+        'Sorted sets associate each member with a floating-point score and maintain the set in score order automatically — the canonical Redis data structure for leaderboards, where ZADD updates a player\'s score and the set remains continuously sorted with no separate sorting step required.',
+        'ZRANGE and ZREVRANGE retrieve members by rank (position in the sorted order), while ZRANGEBYSCORE retrieves members within a specific score range — supporting both "give me the top 10 players" and "give me all players scoring between 1000 and 2000" query patterns efficiently.',
+        'ZRANK and ZREVRANK return a specific member\'s rank (position) in the sorted set in O(log N) time — enabling "what is my current rank on the leaderboard" queries without needing to scan and count through the entire sorted set.',
+        'Sorted sets also serve well beyond leaderboards — using a Unix timestamp as the score enables efficient time-range queries (recent activity feeds, scheduled task queues where the score represents execution time), leveraging the same underlying range-query capability for time-based rather than ranking-based use cases.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

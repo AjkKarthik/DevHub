@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Do not use security questions as a second factor — they are effectively a second password ("something you know").',
     ],
   },
+  {
+    heading: 'MFA Factor Types and Their Tradeoffs',
+    points: [
+      'Something you know (password, PIN) is the weakest factor alone — vulnerable to phishing, credential stuffing, and brute force — but remains useful as one factor in a multi-factor scheme since it requires no additional hardware.',
+      'Something you have (a phone receiving SMS codes, a hardware security key, an authenticator app generating TOTP codes) significantly raises the bar for an attacker, who must also physically possess or compromise that second factor.',
+      'SMS-based MFA is widely deployed but is the weakest "something you have" option — vulnerable to SIM-swapping attacks where an attacker social-engineers a mobile carrier into porting the victim\'s phone number to a new SIM card under their control.',
+      'Hardware security keys (FIDO2/WebAuthn, like YubiKey) provide the strongest practical MFA — phishing-resistant because the cryptographic challenge-response is bound to the specific origin/domain, meaning even a perfect phishing site cannot successfully replay the authentication.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

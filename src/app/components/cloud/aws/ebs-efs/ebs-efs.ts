@@ -443,6 +443,12 @@ console.log(createEfs, accessPointA, accessPointB, sgRule);`,
       answer: 1,
       explanation: 'NFS uses TCP port 2049. The EFS mount target security group must allow inbound TCP 2049 from the security group of the mounting resource (EC2 instance, ECS task, Lambda). Missing this rule is the most frequent cause of EFS mount timeouts.'
     },
+    {
+      q: 'What is the key architectural difference between EBS and EFS?',
+      options: ['EBS is object storage; EFS is block storage', 'EBS is block storage attached to a single EC2 instance at a time (mostly); EFS is a network file system that multiple instances can mount concurrently', 'EFS is always cheaper than EBS', 'EBS automatically scales capacity; EFS requires manual resizing'],
+      answer: 1,
+      explanation: 'EBS volumes are block storage devices typically attached to one EC2 instance at a time (io2 Block Express supports limited multi-attach), ideal for a database\'s primary storage. EFS is a fully managed NFS file system that many EC2 instances, Lambda functions, or containers can mount and read/write concurrently — ideal for shared content like web assets or shared application state.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -461,6 +467,14 @@ console.log(createEfs, accessPointA, accessPointB, sgRule);`,
     {
       q: 'What are the benefits of using AWS Backup instead of manual snapshot scripts?',
       a: 'AWS Backup provides: (1) centralised management across EBS, EFS, RDS, DynamoDB, FSx in one place vs separate scripts per service; (2) policy-driven schedules with lifecycle management (move to cold storage, delete after N days); (3) cross-region and cross-account backup copies; (4) Vault Lock for immutable WORM compliance; (5) compliance reporting and audit trail via CloudTrail; (6) restore points tested via restore testing plans. Custom Lambda scripts can achieve similar results but require maintenance, monitoring, and error handling that AWS Backup handles natively.'
+    },
+    {
+      q: 'Why does EBS volume performance depend on the EC2 instance type it is attached to?',
+      a: 'EBS-optimized instances provide dedicated network bandwidth between the EC2 instance and the EBS volume, separate from the instance\'s general network traffic. Attaching a high-IOPS io2 volume to a small, non-EBS-optimized instance type bottlenecks performance at the instance\'s available EBS bandwidth, not the volume\'s provisioned IOPS — meaning achieving advertised EBS performance requires choosing an instance type with sufficient EBS bandwidth to match.',
+    },
+    {
+      q: 'How does EFS pricing and performance scale compared to EBS, and when does that matter?',
+      a: 'EFS pricing is pay-per-GB-stored with no upfront provisioning (in Bursting throughput mode, performance scales with stored data size; Provisioned throughput mode decouples this for an extra cost). EBS requires you to explicitly provision size and IOPS/throughput upfront. EFS is generally more expensive per GB than EBS but eliminates the need for capacity planning and supports concurrent multi-instance access — the right choice depends on whether shared access (EFS) or raw block performance for a single instance (EBS) is the priority.',
     },
   ];
 

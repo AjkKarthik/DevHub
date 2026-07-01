@@ -60,6 +60,24 @@ export class Idempotency {
         'Transactional producers extend this to atomic multi-topic writes (read-process-write without duplicates).',
       ]
     },
+    {
+      heading: 'Idempotency Keys: Design and Storage Considerations',
+      points: [
+        'An idempotency key uniquely identifies a logical operation (not just a message) — using the message ID alone is insufficient if the same logical operation could be legitimately retried with a different message ID, while a client-generated request ID captures the intended operation\'s identity correctly.',
+        'The idempotency key store (tracking which keys have already been processed) needs a retention window matched to the maximum plausible redelivery delay — too short a window risks accepting a very late duplicate as new, too long wastes storage on keys that will never be seen again.',
+        'Storing the RESULT of a processed operation alongside its idempotency key (not just a "processed" flag) allows a duplicate request to receive the original correct response, rather than either reprocessing or returning an unhelpful generic acknowledgment.',
+        'Idempotency checks should happen atomically with the operation itself (within the same database transaction, for instance) — checking "has this been processed" and performing the operation as two separate non-atomic steps reintroduces a race condition under concurrent duplicate delivery.',
+      ],
+    },
+    {
+      heading: 'Idempotent Operations vs. Idempotency-Enforced Operations',
+      points: [
+        'A naturally idempotent operation (setting a value, like "set user status to active") can be safely retried without any special tracking, since executing it multiple times produces the same end state as executing it once.',
+        'A naturally non-idempotent operation (like "increment balance by $10" or "send an email") requires explicit idempotency enforcement (a tracked key) precisely because repeating it changes the outcome each time, unlike a naturally idempotent set-value operation.',
+        'Designing operations to be naturally idempotent where possible (using absolute rather than relative updates) reduces the surface area needing explicit idempotency-key infrastructure, simplifying the overall system.',
+        'Distinguishing which category an operation falls into is a necessary first step before choosing a strategy — applying idempotency-key tracking to an already-naturally-idempotent operation adds unnecessary complexity and storage overhead.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

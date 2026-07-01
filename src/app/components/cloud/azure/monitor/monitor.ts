@@ -73,6 +73,15 @@ export class AzureMonitor {
         'Alert processing rules: suppress alerts during maintenance windows, or add action groups to alert patterns without modifying individual alert rules. Useful for scheduled maintenance (on-call holiday suppression) and alert routing (route prod alerts to different teams than staging alerts).',
       ]
     },
+    {
+      heading: 'Metrics vs. Logs — Different Storage and Query Models',
+      points: [
+        'Azure Monitor Metrics are lightweight, numerical time-series data stored in a specialized time-series database, optimized for near-real-time alerting and dashboarding with very low query latency — ideal for high-frequency data like CPU percentage or request count.',
+        'Azure Monitor Logs (backed by Log Analytics) store rich, structured event data queryable via Kusto Query Language (KQL), enabling complex correlation and analysis (like joining application logs with infrastructure events) that simple metric time-series cannot express.',
+        'Metrics-based alerts fire faster (often within a minute) than log-based alerts, which depend on log ingestion latency and the query execution schedule — this latency difference matters when choosing which system to alert on for time-critical issues.',
+        'Sending the same signal to both systems unnecessarily doubles cost and storage — the choice should be driven by whether the data is genuinely a simple numeric metric best suited for fast alerting, or rich structured data that benefits from KQL\'s query flexibility.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -59,6 +59,24 @@ export class NodeSecurity {
         'Dependency security: run npm audit regularly, pin dependency versions (package-lock.json), use Dependabot or Snyk for automated vulnerability alerts. A supply chain attack in a popular npm package (event-stream 2018, colors 2022) can compromise your app without any change to your code.',
       ]
     },
+    {
+      heading: 'Input Validation and Injection Prevention',
+      points: [
+        'Never trust client input — validate type, format, and range for every field on every request, using a schema library (Zod, Joi) as dedicated middleware rather than scattered manual checks that are easy to forget on new endpoints.',
+        'SQL/NoSQL injection is prevented primarily by parameterized queries (never string-concatenating user input into a query) — for MongoDB specifically, also sanitize input to strip keys starting with $ or containing . that could inject query operators.',
+        'Cross-Site Scripting (XSS) prevention requires context-aware output encoding — data rendered into HTML needs HTML-entity encoding, data rendered into a URL needs URL encoding; a single generic "sanitize everything" approach often misses context-specific escaping needs.',
+        'Rate limiting (per-IP for anonymous traffic, per-account for authenticated) mitigates brute-force credential attacks and API abuse — apply stricter limits to sensitive endpoints (login, password reset) than to general read endpoints.',
+      ]
+    },
+    {
+      heading: 'Secure Headers and Transport Security',
+      points: [
+        'The helmet middleware sets a battery of security-related HTTP response headers with secure defaults in one line — Content-Security-Policy, X-Frame-Options, Strict-Transport-Security — encoding well-researched defaults so teams do not need to rediscover this knowledge manually.',
+        'HTTPS should be enforced everywhere in production, including redirecting any HTTP request to HTTPS — sensitive data (auth tokens, passwords) sent over plain HTTP is trivially interceptable on any network path between client and server.',
+        'CORS configuration should specify an explicit allowlist of trusted origins, never a wildcard combined with credentials — Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true is an invalid, browser-rejected combination for good reason.',
+        'Dependency vulnerabilities are a real attack surface — run npm audit (or a dedicated tool like Snyk/Dependabot) regularly and keep dependencies patched, since a known CVE in a transitive dependency is a common real-world compromise vector.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -256,6 +274,9 @@ app.listen(3000);`
     { q: 'What are the most critical security headers to set?', a: 'Content-Security-Policy (prevents XSS from loading external scripts), Strict-Transport-Security (forces HTTPS, prevents downgrade attacks), X-Content-Type-Options: nosniff (prevents MIME sniffing attacks), X-Frame-Options: DENY or SAMEORIGIN (prevents clickjacking), Referrer-Policy: no-referrer (prevents leaking URLs in referrer headers). Helmet sets all of these with sensible defaults — add it on day one.' },
     { q: 'How do I prevent CSRF in a Node.js API?', a: 'For APIs using JWT in Authorization headers: CSRF is not a concern — browsers do not auto-send Authorization headers cross-origin. For cookie-based auth: use SameSite=Strict or Lax on cookies (prevents most CSRF), combine with a CSRF token (double-submit cookie pattern or synchronizer token). The csurf package implements synchronizer tokens for Express. If you use httpOnly + SameSite=Strict cookies for refresh tokens and send access tokens in headers, you have full protection.' },
     { q: 'How do I audit npm packages for vulnerabilities?', a: 'Run npm audit regularly — it compares installed packages against the Node Security Advisory database. Fix with npm audit fix (auto-updates safe). Review npm audit fix --force changes manually (may introduce breaking changes). Use Dependabot (GitHub) or Snyk for automated PRs on vulnerable dependencies. Subscribe to security mailing lists for your major dependencies. Lock package versions with package-lock.json and verify integrity with npm ci in CI.' },
+    { q: 'Why is the helmet middleware recommended as a baseline for every production Express application?', a: 'helmet sets a collection of security-related HTTP response headers (Content-Security-Policy, X-Frame-Options, Strict-Transport-Security, X-Content-Type-Options, and others) with secure defaults in a single line of middleware (app.use(helmet())), protecting against common attack classes like clickjacking, MIME-type sniffing attacks, and enforcing HTTPS — manually setting each header correctly is error-prone, and helmet encodes well-researched, battle-tested defaults so teams do not have to rediscover this knowledge themselves.' },
+    { q: 'How do you protect a Node.js API against NoSQL injection attacks in a MongoDB-backed application?', a: 'NoSQL injection occurs when unsanitized user input is passed directly into a MongoDB query object, allowing an attacker to inject operators like $gt or $ne (e.g., sending { "username": { "$ne": null } } as a login parameter to bypass authentication logic). Mitigate by validating that incoming request fields are the expected primitive types (string, number) rather than objects before using them in queries, and use a sanitization middleware (express-mongo-sanitize) that strips any keys starting with $ or containing . from request bodies, params, and query strings.' },
+    { q: 'What is the principle behind rate limiting as a security control, beyond just preventing API abuse?', a: 'Rate limiting (via express-rate-limit, Redis-backed counters, or an API gateway) prevents not just resource exhaustion from legitimate traffic spikes but also mitigates brute-force credential-stuffing attacks against login endpoints, automated scraping, and amplification of denial-of-service attempts — by capping how many requests a single IP or account can make in a time window, an attacker attempting thousands of password guesses per second is throttled to a rate that makes the attack impractically slow.' },
   ];
 
   revision: RevisionSummary = {

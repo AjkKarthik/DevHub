@@ -76,6 +76,24 @@ export class HtmlMedia {
         '<code>&lt;img src="icon.svg"&gt;</code> is simpler for pure display, but prevents CSS colour overrides and JS manipulation. Choose inline SVG when you need those features.',
       ]
     },
+    {
+      heading: 'Audio and Video Accessibility',
+      points: [
+        'Video content requires captions (via a <code>&lt;track kind="captions"&gt;</code> element referencing a WebVTT file) for deaf and hard-of-hearing users — captions are a legal requirement under accessibility regulations (WCAG, ADA) in many jurisdictions for publicly accessible video content.',
+        'Autoplaying audio or video with sound is broadly considered a serious accessibility and usability violation — it can be disorienting for screen reader users (competing audio streams) and is disruptive for anyone in a shared or quiet environment; use <code>muted</code> if autoplay is genuinely needed.',
+        'The <code>controls</code> attribute on <code>&lt;video&gt;</code> and <code>&lt;audio&gt;</code> exposes native, keyboard-accessible play/pause/volume/seek controls — removing it to build fully custom controls means you must reimplement all of that keyboard accessibility yourself, which is frequently done incompletely.',
+        'Provide a text transcript alongside video/audio content where practical — beyond captions (which are timed to the video), a standalone transcript is scannable, searchable by search engines, and usable by people who cannot play media at all (extremely low bandwidth, certain assistive technology setups).',
+      ]
+    },
+    {
+      heading: 'Media Loading Performance',
+      points: [
+        'The <code>loading="lazy"</code> attribute on <code>&lt;img&gt;</code> and <code>&lt;iframe&gt;</code> defers loading offscreen media until the user scrolls near it — reducing initial page weight and improving Largest Contentful Paint for content above the fold that does not compete with below-fold media for bandwidth.',
+        'Never lazy-load the image that IS your LCP (Largest Contentful Paint) element — lazy-loading it delays its load start until layout calculation determines it is near-viewport, which can actually worsen LCP; use <code>fetchpriority="high"</code> instead for above-the-fold hero images.',
+        'Always specify explicit <code>width</code> and <code>height</code> attributes (or CSS aspect-ratio) on images and video — this lets the browser reserve the correct space before the media loads, preventing Cumulative Layout Shift as surrounding content jumps when the media finally loads and renders.',
+        'Serve appropriately sized and compressed media — a 4000px-wide image displayed at 400px CSS width wastes bandwidth proportionally; use <code>srcset</code> with multiple resolutions (covered above) combined with modern compressed formats (WebP, AVIF) for the best size-to-quality ratio.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

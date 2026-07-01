@@ -71,6 +71,15 @@ export class AiLinearLogisticRegression {
         'The regularisation strength λ is a hyperparameter tuned on the validation set. Higher λ → more regularisation → simpler model.',
       ],
     },
+    {
+      heading: 'Regularization: L1 vs. L2 and Why They Matter',
+      points: [
+        'L2 regularization (ridge) adds a penalty proportional to the squared magnitude of weights, shrinking all weights toward zero without forcing any to exactly zero — useful when most features are believed to contribute at least a little to the prediction.',
+        'L1 regularization (lasso) adds a penalty proportional to the absolute value of weights, which can shrink some weights to EXACTLY zero — effectively performing automatic feature selection by eliminating features the model finds unnecessary.',
+        'Without regularization, a linear model with many features (especially correlated ones) can develop wildly large coefficients that fit training noise rather than genuine signal — regularization directly constrains this overfitting behavior.',
+        'The regularization strength hyperparameter controls the tradeoff between fitting the training data closely and keeping weights small — too much regularization underfits, too little fails to prevent overfitting, requiring tuning via cross-validation.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -56,6 +56,12 @@ export class ReactTestingLibrary {
       'Always prefer userEvent — it catches bugs fireEvent misses (e.g. validation triggered by blur).',
       'Setup with userEvent.setup() in beforeEach for accuracy with pointers and timers.',
     ]},
+    { heading: 'Testing Behavior, Not Implementation Details', points: [
+      'React Testing Library deliberately makes it awkward to query by component internals (state, instance methods) and easy to query by what a user actually sees (text, role, label) — a design choice that discourages implementation-coupled tests.',
+      'Tests written against implementation details (internal state shape, prop names) break whenever a component is refactored, even if user-facing behavior is unchanged — a major source of brittle, high-maintenance test suites.',
+      'Query priority (getByRole over getByTestId) is deliberately ordered to favor accessible, user-facing queries — a test that only passes with getByRole is also implicitly verifying the component is accessible to screen readers.',
+      'userEvent (which simulates real user interaction sequences — focus, keydown, keyup) more accurately reflects real browser behavior than fireEvent, which dispatches a single synthetic event without the full interaction sequence.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

@@ -60,6 +60,15 @@ const theory: TheoryPoint[] = [
       'Kafka transactions: producer writes to topic + marks offset as committed in a single atomic operation.',
     ],
   },
+  {
+    heading: 'Two-Phase Commit vs Saga Pattern',
+    points: [
+      'Two-Phase Commit (2PC) coordinates a transaction across multiple databases with strong consistency guarantees — a coordinator asks all participants to "prepare" (lock resources, verify the operation can succeed), then commits only if every participant confirms readiness; if any participant fails, all roll back.',
+      '2PC provides strong ACID guarantees but at a real cost: it is blocking (participants hold locks until the coordinator decides), and a coordinator failure mid-protocol can leave participants indefinitely stuck holding locks — making it a poor fit for high-throughput, loosely-coupled microservices.',
+      'The Saga pattern instead breaks a distributed transaction into a sequence of local transactions, each with a corresponding compensating action to undo it if a later step fails — trading strong consistency for eventual consistency and availability, better suited to microservices that should not share locks across service boundaries.',
+      'Choreography-based sagas (each service listens for events and reacts independently) avoid a central coordinator but make the overall transaction flow harder to trace; orchestration-based sagas (a central saga coordinator explicitly calls each step) are easier to reason about but reintroduce a degree of central coordination.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

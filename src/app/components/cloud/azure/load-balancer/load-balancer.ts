@@ -73,6 +73,15 @@ export class AzureLoadBalancer {
         'Common pattern: Front Door (global WAF + CDN) → Application Gateway (regional routing) → AKS/App Service. One WAF layer at Front Door is sufficient for most apps; two layers adds cost without significant benefit unless compliance requires regional WAF.',
       ]
     },
+    {
+      heading: 'Layer 4 vs. Layer 7 Load Balancing in Azure',
+      points: [
+        'Azure Load Balancer operates at Layer 4 (TCP/UDP), distributing traffic based on connection-level information without inspecting HTTP content — this makes it fast and protocol-agnostic, but unable to route based on URL path, hostname, or HTTP headers.',
+        'Application Gateway operates at Layer 7 (HTTP/HTTPS), enabling content-based routing (different backend pools for different URL paths), SSL termination, and integrated Web Application Firewall (WAF) capabilities that a Layer 4 load balancer structurally cannot provide.',
+        'Choosing between them is not purely a feature comparison — Layer 4 load balancing has lower latency overhead since it does not need to parse HTTP content, making it more appropriate for non-HTTP protocols or latency-critical TCP workloads where Layer 7 features are not needed.',
+        'Many production architectures layer BOTH — an Application Gateway for HTTP-aware routing and WAF protection at the edge, with internal Azure Load Balancers distributing traffic to backend pools within the private network — rather than treating them as mutually exclusive choices.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

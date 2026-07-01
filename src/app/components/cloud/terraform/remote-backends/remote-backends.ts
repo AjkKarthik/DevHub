@@ -73,6 +73,15 @@ export class TfRemoteBackends {
         'terraform init -migrate-state forces state migration without prompting.',
       ],
     },
+    {
+      heading: 'Backend Choice and State Locking',
+      points: [
+        'A remote backend (S3, Azure Storage, Terraform Cloud) stores state outside the local filesystem, enabling team collaboration — without it, state lives only on whichever individual\'s machine last ran Terraform, making concurrent team usage impossible and risking permanent state loss if that machine is lost.',
+        'State locking (via DynamoDB for S3 backends, or built into Terraform Cloud) prevents two people or CI processes from running terraform apply simultaneously against the same state — without locking, concurrent applies can corrupt state through simultaneous writes, a serious and hard-to-recover-from failure mode.',
+        'Backend configuration cannot use variables (it must be static, resolved before any variable evaluation happens) — this is a common point of confusion for new Terraform users trying to parameterize the backend configuration itself, which requires partial configuration and the -backend-config CLI flag instead.',
+        'Migrating between backends (terraform init -migrate-state) requires careful execution — always back up existing state before a backend migration, since a failed or interrupted migration can leave state in an inconsistent or partially-migrated condition that is difficult to recover from.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

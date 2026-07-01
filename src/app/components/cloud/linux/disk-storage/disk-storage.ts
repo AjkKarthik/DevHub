@@ -71,6 +71,15 @@ export class LinuxDiskStorage {
         'vgdisplay shows VG size/free. lvdisplay shows LV details. pvs, vgs, lvs for compact summaries.',
       ],
     },
+    {
+      heading: 'Filesystem Types and Their Tradeoffs',
+      points: [
+        'ext4 remains the most common default Linux filesystem — mature, stable, and well-understood, with journaling for crash recovery, but lacking some advanced features (built-in snapshots, checksumming) found in newer filesystems.',
+        'XFS excels at handling very large files and high-throughput parallel I/O, making it a common choice for database servers and large-scale storage systems, though it historically had less flexible shrink support than ext4.',
+        'Btrfs and ZFS provide copy-on-write semantics enabling instant, space-efficient snapshots, built-in checksumming for data integrity verification, and native RAID-like features — at the cost of additional complexity and, for ZFS specifically, licensing considerations that keep it out of the mainline Linux kernel.',
+        'Choosing a filesystem should be driven by actual workload characteristics (many small files vs few large files, snapshot needs, data integrity requirements) rather than defaulting to whatever the distribution installer suggests without consideration.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

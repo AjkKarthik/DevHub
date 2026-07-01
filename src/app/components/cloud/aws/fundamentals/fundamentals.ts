@@ -379,6 +379,12 @@ function createS3Client(env: 'dev' | 'staging' | 'prod'): S3Client {
       answer: 2,
       explanation: 'aws sts get-caller-identity returns the UserId, Account (12-digit account number), and ARN of the calling entity. Essential for debugging "wrong account" or "wrong role" issues.',
     },
+    {
+      q: 'What does the AWS Well-Architected Framework\'s "Operational Excellence" pillar focus on?',
+      options: ['Minimizing infrastructure cost', 'Running and monitoring systems to deliver business value, and continuously improving processes', 'Maximizing compute performance', 'Encrypting all data at rest'],
+      answer: 1,
+      explanation: 'Operational Excellence focuses on running workloads effectively, gaining insight into operations, and continuously improving supporting processes and procedures — including infrastructure as code, frequent small changes, and learning from failures.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -401,6 +407,10 @@ function createS3Client(env: 'dev' | 'staging' | 'prod'): S3Client {
     {
       q: 'What is the ARN format and why does it matter?',
       a: 'ARN (Amazon Resource Name) uniquely identifies every AWS resource: arn:partition:service:region:account-id:resource. Example: arn:aws:s3:::my-bucket or arn:aws:iam::123456789012:role/MyRole. ARNs are used in IAM policies to specify exact resources. Understanding ARN format helps write precise least-privilege policies and debug "access denied" errors.',
+    },
+    {
+      q: 'What is the difference between an AWS account and an AWS Organization?',
+      a: 'An AWS account is a single billing and resource isolation boundary. An AWS Organization lets you centrally manage multiple AWS accounts — consolidated billing, Service Control Policies (SCPs) to restrict what member accounts can do, and centralized logging/security tooling. Most real-world setups use multiple accounts (one per environment or team) under one Organization rather than one giant shared account.',
     },
   ];
 

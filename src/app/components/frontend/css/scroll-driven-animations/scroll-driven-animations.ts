@@ -63,6 +63,15 @@ const theory: TheoryPoint[] = [
       'Use case: a sticky nav that changes style when a specific section enters the view — the nav references a named view timeline on the section, with timeline-scope on a shared ancestor.',
     ],
   },
+  {
+    heading: 'Scroll-Driven Animations vs JavaScript Scroll Listeners',
+    points: [
+      'CSS scroll-driven animations (animation-timeline: scroll()) let the browser drive an animation\'s progress directly from scroll position, running entirely on the compositor thread without any JavaScript execution on every scroll event — dramatically more performant than a JS scroll listener recalculating styles per frame.',
+      'A traditional JavaScript scroll listener approach requires manually throttling or debouncing the handler (since scroll events fire extremely frequently) and manually calculating and applying style changes — all of which the native CSS scroll-driven animation API handles automatically and more efficiently.',
+      'View timelines (animation-timeline: view()) trigger an animation based on an element\'s visibility within a scrolling ancestor\'s viewport, rather than the overall document scroll position — useful for reveal-on-scroll effects tied to when a specific element enters the visible viewport.',
+      'Browser support for scroll-driven animations is still maturing across all major browsers — a progressive enhancement approach (base functionality without the animation, then enhanced with animation-timeline where supported) avoids relying entirely on a feature not yet universally available.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

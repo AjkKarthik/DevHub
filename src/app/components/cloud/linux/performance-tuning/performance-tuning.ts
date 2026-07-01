@@ -70,6 +70,15 @@ export class LinuxPerformanceTuning {
         'RAID / TRIM: discard option in fstab enables TRIM for SSDs (ext4, xfs). fstrim -v / manually runs TRIM.',
       ],
     },
+    {
+      heading: 'Identifying the Actual Bottleneck Before Tuning',
+      points: [
+        'Performance tuning without first identifying the actual bottleneck (CPU, memory, disk I/O, or network) risks optimizing a component that was never the constraint — top, vmstat, iostat, and iotop each reveal a different dimension of system resource usage, and checking all of them is necessary before assuming which one is the problem.',
+        'High CPU load average does not always mean CPU is the bottleneck — load average on Linux includes processes waiting on uninterruptible I/O, so a high load average with low actual CPU utilization often points to disk I/O contention rather than CPU saturation.',
+        'Memory pressure manifesting as swap usage (visible in vmstat or free) is a strong signal that available RAM is insufficient for the current workload — sustained swapping severely degrades performance since disk access is orders of magnitude slower than RAM access.',
+        'strace and perf provide deeper, syscall-level and CPU-profiling-level visibility respectively when higher-level tools (top, vmstat) do not reveal the root cause — reserved for genuinely difficult performance investigations where the bottleneck is not obvious from standard system monitoring.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

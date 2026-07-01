@@ -464,6 +464,12 @@ console.log(JSON.stringify(taskDef, null, 2));
       answer: 1,
       explanation: 'ECS Blue/Green deployments (with CodeDeploy) maintain two sets of tasks and two ALB target groups. Traffic shifts gradually (canary, linear) or all at once, and rollback is instant — just shift traffic back to the original target group.'
     },
+    {
+      q: 'What is the difference between EC2 launch type and Fargate launch type for ECS?',
+      options: ['They are identical; Fargate is just a newer name', 'EC2 launch type requires you to provision and manage the underlying EC2 instances; Fargate is serverless — AWS manages the compute infrastructure', 'Fargate only works with EKS, not ECS', 'EC2 launch type is always more expensive than Fargate'],
+      answer: 1,
+      explanation: 'With the EC2 launch type, you manage a cluster of EC2 instances (patching, scaling, capacity planning) that ECS schedules containers onto. Fargate removes this entirely — you specify CPU/memory per task and AWS provisions and manages the underlying compute, charging per task resource usage. Fargate trades some cost efficiency at scale for significantly reduced operational overhead.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -482,6 +488,14 @@ console.log(JSON.stringify(taskDef, null, 2));
     {
       q: 'How does the AWS VPC CNI differ from typical Kubernetes CNI plugins?',
       a: 'Most K8s CNI plugins use an overlay network (VXLAN, Geneve) that assigns pods IP addresses from a separate pod CIDR, requiring encapsulation for inter-node traffic. The AWS VPC CNI allocates real VPC IP addresses directly to pods using secondary IPs on node ENIs. This means pods are directly routable within the VPC without encapsulation overhead, can be reached by ALBs, RDS, and other VPC resources without NAT, and their traffic appears in VPC Flow Logs.'
+    },
+    {
+      q: 'When should you choose ECS over EKS for running containers on AWS?',
+      a: 'ECS is AWS\'s own simpler, proprietary container orchestrator — easier to learn, tightly integrated with AWS services, and sufficient for most teams not requiring Kubernetes-specific features or portability. EKS runs actual upstream Kubernetes, which is the right choice if you need Kubernetes-specific tooling/ecosystem (Helm charts, operators), multi-cloud portability, or your team already has deep Kubernetes expertise. For AWS-only teams without existing Kubernetes investment, ECS is often the lower-overhead choice.',
+    },
+    {
+      q: 'What is an ECS Task Definition, and how does it relate to a running Task?',
+      a: 'A Task Definition is a JSON blueprint describing one or more containers to run together (image, CPU/memory, port mappings, environment variables, IAM role) — analogous to a Kubernetes Pod spec. A Task is a running instance of that Task Definition, scheduled onto either EC2 or Fargate compute. Task Definitions are versioned (each update creates a new revision), letting you roll back to a previous definition revision if a new deployment causes issues.',
     },
   ];
 

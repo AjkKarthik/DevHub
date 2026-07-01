@@ -59,6 +59,24 @@ export class NodePromisesAsync {
         'AsyncLocalStorage (node:async_hooks): pass context (request ID, user) through async call chains without explicit parameter passing. Ideal for logging correlation IDs.',
       ]
     },
+    {
+      heading: 'Promise Combinators Beyond .then()',
+      points: [
+        'Promise.all() runs promises concurrently and rejects immediately if ANY rejects, discarding results of already-succeeded promises — use when every operation must succeed for the result to be meaningful.',
+        'Promise.allSettled() always waits for every promise to finish (fulfilled or rejected), returning per-promise outcome objects — use when partial results are acceptable and you want visibility into which specific operations failed.',
+        'Promise.race() resolves or rejects as soon as the FIRST promise settles (whether success or failure) — commonly used to implement a timeout by racing the real operation against a promise that rejects after a delay.',
+        'Promise.any() resolves as soon as the first promise FULFILLS (ignoring rejections unless all reject) — useful for redundant requests to multiple equivalent sources where any single success is sufficient.',
+      ]
+    },
+    {
+      heading: 'Common Async/Await Pitfalls',
+      points: [
+        'Calling an async function inside a loop without awaiting each call launches all operations concurrently rather than sequentially — this can overwhelm a rate-limited API or exhaust a connection pool; use a for...of loop with await for guaranteed sequential execution.',
+        'An unhandled promise rejection (no .catch() or surrounding try/catch) crashes the Node.js process by default since Node 15 — silently swallowing rejected promises was determined to be a common hidden bug source, so the new default fails loudly instead.',
+        'Mixing .then() chains with async/await syntax in the same function is a readability anti-pattern — pick one style consistently; mixing them makes error propagation and execution order genuinely harder to reason about.',
+        'Forgetting to return a promise from a function that is supposed to be awaited by its caller silently breaks the async chain — the caller\'s await resolves immediately with undefined instead of waiting for the actual operation to complete.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -255,6 +273,9 @@ console.log(results); // [{status:'fulfilled',value:2}, ...]`,
     { q: 'When should I use Promise.all vs Promise.allSettled?', a: 'Promise.all: when all operations must succeed and a single failure should abort the batch (loading all user dependencies for a page). Promise.allSettled: when you want all results and can handle individual failures gracefully (sending batch emails — collect failures, report later; processing a list where some items may fail independently).' },
     { q: 'What is AsyncLocalStorage and when should I use it?', a: 'AsyncLocalStorage (node:async_hooks) provides context propagation through async call chains — without passing parameters down every function. Use it for: request ID/correlation ID in logging, per-request caching, database transaction context, user identity. Every async operation spawned in requestStore.run(ctx, fn) can access the context with requestStore.getStore().' },
     { q: 'How do I implement a timeout for an async operation?', a: 'Use Promise.race with a timeout promise: race([operation, new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), ms))]). Or use AbortController: const ac = new AbortController(); setTimeout(() => ac.abort(), ms); await fetch(url, { signal: ac.signal }). AbortController is cleaner as it cancels the operation, not just ignores its result.' },
+    { q: 'What is the difference between Promise.all() and Promise.allSettled() and when should you use each?', a: 'Promise.all() rejects immediately as soon as ANY of the input promises rejects, discarding the results of any promises that had already succeeded — useful when every operation must succeed for the overall result to be meaningful. Promise.allSettled() always waits for every promise to complete (whether fulfilled or rejected) and returns an array of result objects describing each outcome individually — useful when you want partial results even if some operations failed, such as sending notifications to multiple users where one failure should not prevent the others from being processed.' },
+    { q: 'Why does forgetting to await an async function inside a loop sometimes cause unexpected behavior?', a: 'If you call an async function inside a for loop without await (or without collecting and awaiting the returned promises), each call fires immediately without waiting for the previous one to finish, launching all operations concurrently rather than sequentially — this can overwhelm a rate-limited API, exhaust database connection pools, or produce race conditions if operations depend on shared state. Use a for...of loop with await for guaranteed sequential execution, or Promise.all() with .map() when concurrent execution is actually desired and safe.' },
+    { q: 'What is an unhandled promise rejection in Node.js, and why does it now crash the process by default?', a: 'An unhandled promise rejection occurs when a Promise rejects and no .catch() or try/catch around an await ever handles that rejection. Since Node.js 15, unhandled rejections crash the process by default (previously they only logged a warning) because Node.js maintainers determined that silently swallowing rejected promises was a common source of hidden bugs — the new behavior surfaces these as loud, fail-fast errors rather than allowing applications to silently continue in a potentially inconsistent state.' },
   ];
 
   revision: RevisionSummary = {

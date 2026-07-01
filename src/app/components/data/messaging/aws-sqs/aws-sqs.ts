@@ -60,6 +60,24 @@ export class AwsSqs {
         'Always configure a DLQ redrive policy in production to avoid silent message loss.',
       ]
     },
+    {
+      heading: 'Visibility Timeout and Message Redelivery',
+      points: [
+        'SQS visibility timeout hides a message from other consumers once it has been received, giving the receiving consumer exclusive time to process and delete it — if the timeout expires before deletion, the message becomes visible again and may be redelivered.',
+        'Setting the visibility timeout too short causes premature redelivery of messages still being legitimately processed, leading to duplicate processing — setting it too long delays retry of genuinely failed messages, both requiring the timeout to be tuned to realistic processing time.',
+        'Extending visibility timeout mid-processing (via ChangeMessageVisibility) is the correct approach for tasks with variable or unpredictable processing time, rather than guessing a single fixed timeout that must cover the worst case.',
+        'SQS guarantees at-least-once delivery, not exactly-once (for standard queues) — consumers must be idempotent to correctly handle the redelivery that visibility timeout expiration or retries can cause.',
+      ],
+    },
+    {
+      heading: 'Standard vs. FIFO Queues',
+      points: [
+        'Standard SQS queues offer best-effort ordering and at-least-once delivery with effectively unlimited throughput — appropriate when message order does not matter and occasional duplicates can be tolerated or deduplicated by the consumer.',
+        'FIFO queues guarantee strict ordering within a message group and exactly-once processing (within a deduplication window), at the cost of significantly lower throughput limits compared to standard queues.',
+        'Message group ID in FIFO queues determines ordering scope — messages with the same group ID are strictly ordered, while different group IDs can be processed in parallel, letting FIFO queues scale horizontally without sacrificing per-entity ordering.',
+        'Choosing FIFO by default "to be safe" when ordering does not actually matter unnecessarily constrains throughput — the ordering and exactly-once guarantees should be a deliberate requirement, not a default assumption.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

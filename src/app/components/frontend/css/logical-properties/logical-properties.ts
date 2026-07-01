@@ -53,6 +53,24 @@ const theory: TheoryPoint[] = [
       'Start with layout-critical properties (padding, margin, positioning) and work inward to borders and border-radius.',
     ],
   },
+  {
+    heading: 'Why Logical Properties Matter for Internationalization',
+    points: [
+      'Physical properties (margin-left, margin-right) assume a fixed left-to-right reading direction — in a right-to-left language (Arabic, Hebrew), "left" and "right" no longer correspond to "start" and "end" of a line, requiring separate RTL-specific override stylesheets under the physical property model.',
+      'Logical properties (margin-inline-start, margin-inline-end, padding-block) automatically adapt to the actual writing direction and mode set on the document or a specific element — the same CSS declaration correctly produces mirrored spacing in an RTL context without any additional RTL-specific override rules.',
+      'Inline and block are the two logical axes: inline follows the direction text flows within a line (left-to-right in English, right-to-left in Arabic), while block follows the direction lines stack (top-to-bottom in most writing modes, but right-to-left in vertical Japanese text).',
+      'Adopting logical properties throughout a codebase from the start (rather than physical properties with RTL overrides bolted on later) makes genuine internationalization support significantly cheaper — supporting a new writing direction becomes largely automatic rather than requiring a systematic audit and override of every physical property in the codebase.',
+    ],
+  },
+  {
+    heading: 'Logical Property Equivalents and Migration',
+    points: [
+      'Common physical-to-logical mappings: width → inline-size, height → block-size, top/bottom → inset-block-start/inset-block-end, left/right → inset-inline-start/inset-inline-end — most standard box-model and positioning properties have a direct logical equivalent.',
+      'Border and border-radius also have logical variants (border-inline-start, border-start-start-radius) though these are less commonly needed than margin/padding/inset logical properties, since border styling is often symmetric and direction-independent in practice.',
+      'Migrating an existing large codebase from physical to logical properties is generally safe to do incrementally, property by property or component by component, since logical and physical properties can coexist in the same stylesheet without conflict as long as they are not both set on the exact same box edge.',
+      'Browser DevTools now generally display computed logical property values directly, making it straightforward to verify actual resolved spacing/sizing when debugging a layout that uses logical properties, without needing to manually translate inline-start back to left/right mentally.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

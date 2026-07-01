@@ -70,6 +70,15 @@ export class LinuxPackageManagement {
         'GPG key verification: repositories sign packages; apt verifies them automatically. curl -fsSL URL | apt-key add - adds a key.',
       ],
     },
+    {
+      heading: 'Package Manager Differences Across Distributions',
+      points: [
+        'Debian/Ubuntu-family distributions use apt (built on dpkg), while RHEL/Fedora-family distributions use dnf (built on rpm) — the underlying package formats (.deb vs .rpm) and dependency resolution behavior differ, meaning packages and installation commands are not directly portable between distribution families.',
+        'Dependency resolution is the core value package managers provide over manually downloading and installing software — automatically identifying, downloading, and installing every library and tool a package requires, rather than the user manually chasing down each dependency and its own sub-dependencies.',
+        'Package repositories (the remote servers a package manager fetches software from) can be added beyond the distribution\'s default set — third-party or vendor-specific repositories let you install software not available in the default repos, though this reduces the security/trust guarantees the distribution\'s own vetted repositories provide.',
+        'Keeping systems updated (apt update && apt upgrade, or dnf upgrade) is a fundamental security practice — many real-world compromises exploit known, already-patched vulnerabilities in outdated software that a routine update cycle would have already fixed.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

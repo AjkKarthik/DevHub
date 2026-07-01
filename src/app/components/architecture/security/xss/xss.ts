@@ -56,6 +56,15 @@ const theory: TheoryPoint[] = [
       'Server-side rendering: escape output in templates. Handlebars `{{userInput}}` escapes; `{{{userInput}}}` does not. Same pattern in Jinja2, EJS, Razor.',
     ],
   },
+  {
+    heading: 'DOM-Based XSS',
+    points: [
+      'DOM-based XSS differs from reflected/stored XSS in that the malicious payload never touches the server at all — it exists entirely in client-side JavaScript that unsafely writes attacker-controlled data (from the URL, localStorage, or a postMessage) directly into the DOM via a dangerous sink like innerHTML.',
+      'Common dangerous sinks include innerHTML, outerHTML, document.write(), and eval() — any code path that takes untrusted data and interprets it as HTML or executable JavaScript rather than plain text is a potential DOM XSS vector.',
+      'Because DOM-based XSS never appears in server logs or server-rendered responses, it can be harder to detect with traditional server-side security scanning — client-side static analysis tools and careful code review of DOM-manipulation code paths are necessary to catch it.',
+      'The same core defense applies as with other XSS types: avoid dangerous sinks entirely where possible, and when genuinely necessary, sanitize untrusted content with a well-tested library (DOMPurify) rather than attempting custom escaping logic, which frequently misses edge cases.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -59,6 +59,24 @@ export class NodeRestApi {
         'Error propagation: repositories throw database-specific errors. Services catch them and rethrow as domain errors (UserNotFoundError, DuplicateEmailError). Controllers map domain errors to HTTP responses.',
       ]
     },
+    {
+      heading: 'Resource-Oriented URL Design',
+      points: [
+        'REST URLs should represent resources (nouns), not actions (verbs) — /orders/123/cancel violates this; DELETE /orders/123 or a state-changing PATCH more correctly expresses the intent through the HTTP method, not the URL path.',
+        'Use plural nouns for collections consistently (/users not /user) and nest resources to express ownership relationships (/users/123/orders) while keeping nesting to 2-3 levels max — deeper nesting becomes unwieldy and tightly couples clients to the resource hierarchy.',
+        'Query parameters modify HOW a resource collection is retrieved (filtering, sorting, pagination — /orders?status=pending&sort=-createdAt), while path segments identify WHICH resource is being accessed — conflating the two creates an inconsistent, harder-to-document API.',
+        'Version the API from the first release (even v1) using a URL prefix (/v1/orders) — this establishes the pattern before you need it, avoiding a painful retrofit when the first genuinely breaking change eventually arrives.',
+      ]
+    },
+    {
+      heading: 'Response Shape Consistency',
+      points: [
+        'Establish one consistent envelope shape for all responses (or deliberately none) — mixing raw arrays, wrapped objects, and inconsistent field naming (camelCase here, snake_case there) across different endpoints creates a confusing, error-prone client experience.',
+        'Error responses should follow a single, predictable structure across every endpoint — ideally aligned with RFC 7807 Problem Details (type, title, status, detail) — so client error-handling code can be written once and reused everywhere rather than per-endpoint.',
+        'Always use ISO 8601 for date/time fields (2024-01-15T10:30:00Z) — never locale-specific or ambiguous formats — since this is universally parseable across every client language and timezone-unambiguous by including the Z (UTC) or explicit offset.',
+        'Pagination metadata (total count, next/prev cursor, page size) should appear in the same location and shape across every paginated endpoint — a client building generic pagination UI components should not need endpoint-specific parsing logic.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -276,6 +294,9 @@ router.delete('/:id', (req, res, next) => { try { svc.deletePost(req.params.id);
     { q: 'Should REST APIs use HTTP verbs or path actions?', a: 'HTTP verbs. GET /orders (list), POST /orders (create), PUT /orders/123 (replace), PATCH /orders/123 (partial update), DELETE /orders/123 (remove). Never GET /getOrders or POST /cancelOrder — the verb is in the HTTP method. The exception: complex actions that map poorly to CRUD can use POST /orders/123/cancel with a command body.' },
     { q: 'What is RFC 9457 Problem Details?', a: 'A standard JSON error format for HTTP APIs: { "type": "https://api.example.com/errors/not-found", "title": "Resource Not Found", "status": 404, "detail": "User 123 does not exist", "instance": "/users/123" }. Standardised error shapes let clients parse errors programmatically. Content-Type: application/problem+json.' },
     { q: 'How do you handle validation errors consistently across all routes?', a: 'Build a validate(schema) middleware factory that wraps Zod safeParse and returns a structured error on failure. Apply it as route-level middleware: router.post("/", validate(createSchema), controller). The controller only runs if validation passes. Central error middleware handles all other error types.' },
+    { q: 'How do you implement consistent API versioning in an Express or Fastify REST API?', a: 'The most common approach for Node.js APIs is URL path versioning — mounting separate routers at /api/v1 and /api/v2 (app.use("/api/v1", v1Router)) so each version can evolve independently while sharing common middleware (auth, logging). For smaller, more gradual changes, header-based versioning (Accept: application/vnd.myapi.v2+json) is also used, though it requires more careful content-negotiation middleware and is less discoverable than explicit URL paths.' },
+    { q: 'What is the correct way to handle async errors in Express route handlers without unhandled promise rejection warnings?', a: 'Express (pre-v5) does not automatically catch rejected promises thrown inside async route handlers — an unhandled rejection in an async handler bypasses Express\'s error-handling middleware entirely unless explicitly caught. Wrap async handlers with a helper (a manual try/catch calling next(err), or a utility like express-async-handler) that catches rejections and forwards them to next(), ensuring they reach your centralized error-handling middleware instead of crashing silently or hanging the request.' },
+    { q: 'How should a Node.js REST API validate and sanitize incoming request bodies before processing them?', a: 'Use a schema validation library (Zod, Joi, or class-validator with NestJS) as dedicated middleware that runs before the route handler, rejecting malformed requests with a 400 status and clear validation error details before any business logic executes. This centralizes validation logic (rather than scattering manual if-checks throughout handlers), produces consistent error response shapes across all endpoints, and prevents invalid or malicious data from ever reaching database queries or business logic.' },
   ];
 
   revision: RevisionSummary = {

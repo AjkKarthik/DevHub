@@ -69,6 +69,15 @@ export class RedisFundamentals {
         'The maximum number of keys is 2^32 - 1 per instance (4 billion keys).',
       ],
     },
+    {
+      heading: 'Single-Threaded Execution and Its Implications',
+      points: [
+        'Redis processes commands on a single thread, meaning every command executes atomically without needing explicit locking — this simplicity is a major reason Redis operations are so predictable, but it also means a single slow command (like KEYS * on a huge keyspace) blocks every other client until it completes.',
+        'This single-threaded model is why Redis explicitly warns against using KEYS in production (use SCAN instead, which iterates incrementally without blocking) and why genuinely expensive operations should be avoided or run on a read replica rather than the primary serving live traffic.',
+        'Redis 6+ introduced I/O threading for network read/write operations specifically, but command EXECUTION itself remains single-threaded — this is a targeted performance optimization for network-bound workloads, not a fundamental change to Redis\'s core atomic execution model.',
+        'Understanding single-threaded execution explains why Redis achieves such high throughput despite the single thread — in-memory operations are extremely fast, and the lack of locking overhead for concurrent access often outweighs the theoretical benefit of multi-threaded execution for typical Redis workloads.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

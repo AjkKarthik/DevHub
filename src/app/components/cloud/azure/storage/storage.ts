@@ -73,6 +73,15 @@ export class AzureStorage {
         'Customer-Managed Keys (CMK): by default Azure encrypts storage data with Microsoft-managed keys. CMK lets you bring your own key from Azure Key Vault — required for compliance scenarios where you control the encryption key lifecycle.',
       ]
     },
+    {
+      heading: 'Storage Redundancy Options and Their Tradeoffs',
+      points: [
+        'Locally Redundant Storage (LRS) replicates data three times within a single datacenter — the cheapest option, but offers no protection against a datacenter-level outage, unlike Zone-Redundant Storage (ZRS) or Geo-Redundant Storage (GRS).',
+        'Zone-Redundant Storage (ZRS) replicates across multiple Availability Zones within a region, protecting against a datacenter failure while keeping data within the same region — a middle ground between LRS\'s low cost and GRS\'s full geographic protection.',
+        'Geo-Redundant Storage (GRS) replicates data to a secondary, paired region hundreds of miles away, protecting against a full regional outage — but the secondary copy is not readable by default (unless RA-GRS is used) and failover to it is a manual (or, for GZRS, automatic) process, not instant.',
+        'Higher redundancy tiers cost more and, for geo-replication, introduce eventual consistency between primary and secondary copies — the appropriate tier should be chosen based on the actual business impact of data loss or unavailability for that specific storage account\'s data.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

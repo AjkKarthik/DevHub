@@ -207,6 +207,10 @@ app.Run();` },
       a: 'Blazor lets .NET teams build UIs without JavaScript. The component model is similar to React (one-file components, props, state). Unlike React/Angular, Blazor can run on the server (no client bundle) or in WASM. The ecosystem is smaller, and some browser APIs require JS interop. It\'s ideal for .NET-heavy teams but not for teams who need a large JS ecosystem or prefer TypeScript.' },
     { q: 'What is the _Imports.razor file for?',
       a: '_Imports.razor is processed before every .razor file in its folder tree. It typically holds @using statements for namespaces (so components don\'t repeat them), @inject for shared services, and @layout to set a default layout. Think of it as a shared "header" automatically prepended to every component in that folder.' },
+    { q: 'What is the difference between a Razor component and a Razor Page?',
+      a: 'Razor components (.razor) are reusable UI building blocks with their own state and lifecycle, composed together to build a Blazor app — analogous to React/Angular components. Razor Pages (.cshtml) are a server-rendered MVC-style page-per-route model used in traditional ASP.NET Core web apps. Blazor apps are built entirely from components; Razor Pages can host a root Blazor component as their entry point but are otherwise a different rendering model.' },
+    { q: 'Why does a Blazor component re-render when a parameter changes, and how can you control this?',
+      a: 'Blazor automatically calls StateHasChanged internally after parameter updates, event handlers, and certain lifecycle methods, triggering a re-render and diff against the previous render tree. You can override ShouldRender() to return false and skip unnecessary re-renders for performance-sensitive components, or call StateHasChanged() manually when state changes outside Blazor\'s normal change-detection triggers (e.g., inside a background timer callback).' },
   ];
 
   revision: RevisionSummary = {

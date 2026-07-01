@@ -71,6 +71,15 @@ export class PythonFundamentals {
         'Errors should never pass silently — catch specific exceptions, not bare except:. Use logging, not print, in production code. Raise meaningful exceptions with context: raise ValueError(f"Expected positive int, got {value}") from None.',
       ]
     },
+    {
+      heading: 'Mutable vs. Immutable Types and Their Implications',
+      points: [
+        'Python distinguishes mutable types (list, dict, set) from immutable types (int, str, tuple, frozenset) — this distinction determines whether an object can be modified in place or must be replaced with a new object, and affects both correctness and performance in subtle ways.',
+        'Using a mutable default argument (def fn(items=[])) is one of the most common Python bugs — the default list is created once at function definition time and shared across all calls that do not explicitly pass their own list, causing state to unexpectedly leak between unrelated calls.',
+        'Only immutable types can be used as dictionary keys or set members, since hashability requires an object\'s hash value to never change during its lifetime — a mutable list cannot be a dict key, but the equivalent immutable tuple can.',
+        'Understanding mutability is essential for reasoning correctly about function arguments — Python passes references by value, so a mutable argument passed into a function can be modified in place and that change is visible to the caller, while reassigning the parameter name inside the function is not.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -240,6 +249,9 @@ def fizzbuzz_compact(n: int) -> list[str]:
     { q: 'What is the difference between is and == in Python?', a: '== calls the __eq__ method and tests value equality. is tests identity — whether two names refer to the exact same object in memory. Use is for None checks (is None, is not None) and for comparing singletons. Never use is to compare strings or integers (Python may or may not intern them, making results unpredictable).' },
     { q: 'What happens when you iterate over a dictionary?', a: 'Iterating over a dict (for k in d) iterates over keys. Use d.items() for key-value pairs, d.values() for values only, d.keys() for keys (same as iterating the dict itself). Since Python 3.7, dict insertion order is guaranteed — iteration always follows insertion order.' },
     { q: 'What is the difference between a list and a tuple?', a: 'Lists are mutable (you can add/remove/change items); tuples are immutable (fixed after creation). Tuples are slightly faster to create and iterate, use less memory, and can be used as dict keys (because they are hashable, assuming all elements are hashable). Use tuples for fixed collections (coordinates, RGB values, function return values); lists for collections that may change.' },
+    { q: 'Why is Python described as both dynamically typed and strongly typed?', a: 'Dynamically typed means variable types are determined at runtime, not declared upfront — the same variable name can be reassigned to hold an int, then a string, with no compile-time type checking. Strongly typed means Python does not silently coerce between incompatible types — "5" + 5 raises a TypeError rather than implicitly converting one side, unlike weakly typed languages such as JavaScript where "5" + 5 produces "55". This combination gives flexibility in variable usage while still catching type-mismatch bugs early.' },
+    { q: 'What is the Global Interpreter Lock (GIL) and why does it matter for Python performance?', a: 'The GIL is a mutex in CPython (the standard Python implementation) that allows only one thread to execute Python bytecode at a time, even on multi-core machines — meaning pure-Python multi-threaded code does not achieve true CPU parallelism. I/O-bound threads still benefit from threading (the GIL is released during I/O waits), but CPU-bound parallel work requires multiprocessing (separate processes, each with its own GIL and memory space) or GIL-releasing C extensions (NumPy) to actually use multiple cores.' },
+    { q: 'What does "Pythonic" mean, and why does the Zen of Python (import this) matter for writing idiomatic code?', a: 'Pythonic code follows established community idioms and leverages the language\'s built-in features rather than porting patterns from other languages verbatim — using list comprehensions instead of manual append loops, context managers (with) for resource cleanup, and unpacking instead of manual indexing. The Zen of Python ("Readability counts", "There should be one obvious way to do it") is a design philosophy that explains why Python favors explicit, readable code over clever-but-obscure one-liners, guiding decisions when multiple valid approaches exist.' },
   ];
 
   revision: RevisionSummary = {

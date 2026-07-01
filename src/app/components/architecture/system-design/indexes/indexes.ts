@@ -60,6 +60,15 @@ const theory: TheoryPoint[] = [
       'Step 4: check for index bloat (DELETE-heavy tables) — REINDEX or use partial indexes.',
     ],
   },
+  {
+    heading: 'Index Selection Tradeoffs at Scale',
+    points: [
+      'Every index accelerates specific read query patterns but adds write overhead — each INSERT/UPDATE/DELETE must also update every index on the affected columns, so indexing every column "just in case" measurably degrades write throughput on high-volume tables.',
+      'Composite (multi-column) indexes support queries filtering or sorting on the leading columns of the index — an index on (user_id, created_at) efficiently serves queries filtering by user_id alone or by user_id + created_at, but not queries filtering by created_at alone, due to how the underlying B-tree structure orders entries.',
+      'Covering indexes (an index that includes all columns a query needs, not just the filter columns) let the database satisfy a query entirely from the index without a separate lookup into the main table (an "index-only scan") — significantly faster for read-heavy hot paths at the cost of a larger index.',
+      'At extreme scale, index maintenance itself becomes an operational concern — rebuilding or adding an index on a massive table can lock or seriously degrade a production table for an extended period, requiring online schema change tools or careful maintenance-window planning.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

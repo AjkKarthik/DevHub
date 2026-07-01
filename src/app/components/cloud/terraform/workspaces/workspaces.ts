@@ -63,6 +63,24 @@ export class TfWorkspaces {
         'For complex multi-account setups, Terragrunt or separate directories provide better isolation.',
       ],
     },
+    {
+      heading: 'Terraform CLI Workspaces vs Directory-Based Environment Separation',
+      points: [
+        'Terraform CLI workspaces (terraform workspace new/select) let a single configuration directory manage multiple independent state files (commonly one per environment) using the terraform.workspace value to parameterize resource names or configuration — the same .tf files, different state per workspace.',
+        'CLI workspaces share the exact same configuration code across all workspaces — appropriate when environments are genuinely near-identical (same resources, only differing in size/count), but a poor fit when environments need meaningfully different resource sets or configurations.',
+        'Directory-based separation (a separate directory per environment, each with its own backend configuration, potentially calling shared modules) provides more flexibility for environments that genuinely diverge in structure, at the cost of some configuration duplication across directories that must be kept in sync manually or via shared modules.',
+        'Most production Terraform setups favor directory-based separation over CLI workspaces for environment isolation — CLI workspaces are more commonly used for genuinely ephemeral, short-lived variations (a developer\'s personal testing workspace) rather than as the primary mechanism for managing dev/staging/production environment separation.',
+      ],
+    },
+    {
+      heading: 'Terraform Cloud Workspaces: A Different Concept Entirely',
+      points: [
+        'Terraform Cloud "workspaces" are a distinct, unrelated concept from CLI workspaces despite sharing a name — a Terraform Cloud workspace is essentially a complete, independent Terraform configuration with its own variables, state, run history, and permissions, roughly equivalent to a directory-based configuration rather than a lightweight state variant.',
+        'This naming collision is a common source of confusion for teams adopting Terraform Cloud — CLI workspace commands (terraform workspace select) are largely irrelevant when using Terraform Cloud, since Terraform Cloud workspaces already provide the environment separation that CLI workspaces or directory structure would otherwise need to provide.',
+        'Terraform Cloud workspaces support features CLI workspaces do not — variable sets shared across multiple workspaces, run triggers connecting workspaces together, policy enforcement (Sentinel) applied per workspace, and a web UI for reviewing and approving runs — making them a substantially more capable environment/configuration isolation mechanism.',
+        'When migrating from CLI-workspace-based or directory-based local configurations to Terraform Cloud, teams typically map each existing environment (or each directory) to its own Terraform Cloud workspace, rather than attempting to replicate CLI workspace semantics within Terraform Cloud\'s different workspace model.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

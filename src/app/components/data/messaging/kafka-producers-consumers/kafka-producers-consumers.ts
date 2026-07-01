@@ -60,6 +60,24 @@ export class KafkaProducersConsumers {
         'Committed offset is the next message to process (last processed + 1), not the last processed.',
       ]
     },
+    {
+      heading: 'Producer Acknowledgment Levels (acks) and Durability Tradeoffs',
+      points: [
+        'acks=0 sends messages without waiting for any broker acknowledgment — highest throughput, but messages can be silently lost if the broker fails before actually persisting them, making this appropriate only for genuinely loss-tolerant data like metrics.',
+        'acks=1 waits for the partition leader to acknowledge the write, but not for follower replicas — a leader failure immediately after acknowledgment but before replication can still lose the message, a middle-ground tradeoff between throughput and durability.',
+        'acks=all (or acks=-1) waits for all in-sync replicas to acknowledge, providing the strongest durability guarantee at the cost of higher latency — the correct choice when message loss is unacceptable, such as financial transaction events.',
+        'Choosing an acks level should be driven by the actual cost of losing a message for that specific topic\'s use case — defaulting to acks=all everywhere sacrifices throughput unnecessarily for data where loss tolerance is genuinely acceptable.',
+      ],
+    },
+    {
+      heading: 'Consumer Offset Management Strategies',
+      points: [
+        'Auto-commit (enable.auto.commit=true) periodically commits the latest consumed offset automatically — simple to use, but risks committing an offset for a message that was received but not yet fully processed, causing silent data loss if the consumer crashes mid-processing.',
+        'Manual commit after successful processing (enable.auto.commit=false, explicit commitSync/commitAsync) guarantees an offset is only committed once its corresponding message has actually been fully processed, trading some code complexity for a stronger processing guarantee.',
+        'commitSync blocks until the broker confirms the commit, providing certainty at the cost of latency, while commitAsync does not block but requires a callback to handle commit failures — the choice depends on whether throughput or commit-failure visibility matters more for a given consumer.',
+        'Committing too frequently adds broker load and latency overhead, while committing too infrequently increases the amount of reprocessing work required after a consumer restart — batch commit frequency should be tuned to the actual reprocessing cost tolerance of the specific application.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

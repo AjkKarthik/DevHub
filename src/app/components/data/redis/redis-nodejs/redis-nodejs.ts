@@ -62,6 +62,24 @@ export class RedisNodejs {
         'Avoid very large pipelines (>1000 commands) — they hold all replies in memory and can cause temporary latency spikes.',
       ],
     },
+    {
+      heading: 'Connection Pooling and Client Configuration Best Practices',
+      points: [
+        'Modern Node.js Redis clients (node-redis, ioredis) manage a connection internally and should be instantiated once and reused throughout the application lifetime — creating a new client per request adds unnecessary connection overhead and can quickly exhaust Redis\'s max client connection limit.',
+        'ioredis and node-redis both support automatic reconnection with configurable retry strategies — properly configuring reconnection behavior (rather than accepting silent connection loss) is essential for application resilience against transient network issues or Redis restarts.',
+        'Pipelining (batching multiple commands into a single network round trip) significantly improves throughput for bulk operations — both major Node.js Redis clients provide a pipeline API that queues commands and sends them together, rather than awaiting each command individually in a loop.',
+        'TypeScript type safety for Redis operations requires care, since Redis itself is largely untyped (everything is effectively a string at the protocol level) — wrapping Redis access in a typed repository layer that handles serialization/deserialization at the application boundary avoids scattering unsafe type assertions throughout the codebase.',
+      ],
+    },
+    {
+      heading: 'Handling Redis Failures Gracefully in Node.js Applications',
+      points: [
+        'Applications should treat Redis as a potentially unavailable dependency, not an always-on guarantee — wrapping Redis calls with appropriate error handling and fallback logic (falling back to the origin database on a cache miss OR a Redis error) prevents a Redis outage from becoming a full application outage when Redis is used purely as a cache.',
+        'For use cases where Redis holds critical, non-cacheable state (session storage, rate limiting), a Redis outage genuinely should surface as a degraded or failed request, since there is no safe fallback — distinguishing these two categories of Redis usage during application design clarifies the correct failure-handling strategy for each.',
+        'Client-side timeouts should be configured explicitly rather than relying on defaults — a Redis client without a reasonable command timeout can hang a request indefinitely if Redis becomes unresponsive, rather than failing fast and letting the application handle the failure gracefully.',
+        'Health check endpoints for a Node.js application should verify actual Redis connectivity (a simple PING command) rather than assuming Redis is healthy just because the application process itself is running — this distinction matters for orchestrators (Kubernetes) deciding whether to route traffic to a given instance.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

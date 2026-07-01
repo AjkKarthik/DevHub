@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Monitoring: alert on cross-region replication lag > RPO threshold before disaster strikes.',
     ],
   },
+  {
+    heading: 'RTO and RPO as Design Constraints',
+    points: [
+      'Recovery Time Objective (RTO) defines the maximum acceptable downtime after a disaster — a 5-minute RTO requires automated failover, while a 24-hour RTO may tolerate a manual recovery process, and this single number drives enormous architectural cost differences.',
+      'Recovery Point Objective (RPO) defines the maximum acceptable data loss, measured in time — an RPO of zero requires synchronous replication (every write confirmed in two locations before acknowledging the client), while an RPO of 1 hour tolerates asynchronous replication with periodic snapshots.',
+      'RTO and RPO should be set deliberately per system based on actual business impact, not defaulted to "as low as possible" — the cost of near-zero RTO/RPO (multi-region synchronous replication, active-active infrastructure) is substantial and only justified for genuinely critical systems.',
+      'Regular disaster recovery drills (actually failing over to the backup region, not just reviewing the runbook on paper) are what separates a DR plan that works from one that looks good in documentation but fails when genuinely needed — untested recovery procedures routinely fail in real incidents.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

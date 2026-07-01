@@ -500,6 +500,12 @@ console.log(analyseSavingsPlansOpportunity(usage));
       answer: 1,
       explanation: 'Compute Optimizer uses 14 days of CloudWatch metrics by default — CPU utilisation, memory (requires CloudWatch agent), network throughput, and EBS I/O. Enhanced Infrastructure Metrics (paid add-on) extends the lookback to 3 months for more accurate recommendations.',
     },
+    {
+      q: 'What is the difference between a Savings Plan and a Reserved Instance for cost optimization?',
+      options: ['They are identical products with different names', 'Savings Plans offer flexible compute discounts across instance families/regions in exchange for a $/hour spend commitment; Reserved Instances lock in a discount for a specific instance type/region', 'Reserved Instances are only for Lambda', 'Savings Plans cannot be combined with On-Demand instances'],
+      answer: 1,
+      explanation: 'Savings Plans commit to a dollar amount of compute usage per hour (flexible across EC2 instance family, size, OS, region, and even Fargate/Lambda for Compute Savings Plans), while Reserved Instances commit to a specific instance configuration in a specific region — Savings Plans generally offer more flexibility for evolving workloads.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -522,6 +528,10 @@ console.log(analyseSavingsPlansOpportunity(usage));
     {
       q: 'How do I identify what is driving unexpected AWS costs?',
       a: 'Start with Cost Explorer: filter by service, region, and linked account to isolate the spike. Enable Cost Anomaly Detection (a free ML-based service) to receive alerts when spend deviates from historical patterns. Check the specific service console (e.g. EC2 for data transfer, S3 for request counts) for usage metrics. Enable Cost Allocation Tags to break costs down by project or team. For NAT Gateway spikes, use VPC Flow Logs to identify the top talkers by source IP and destination service.',
+    },
+    {
+      q: 'What is AWS Cost Anomaly Detection and how does it differ from a fixed budget alert?',
+      a: 'A fixed budget alert (AWS Budgets) notifies you when spend crosses a manually-set threshold — useful for hard caps but blind to gradual or unusual spending patterns within that threshold. Cost Anomaly Detection uses machine learning to learn your normal spending patterns per service/account and automatically alerts on STATISTICALLY UNUSUAL spend (a sudden spike in an otherwise-stable service), catching cost issues (a runaway Lambda loop, an accidentally public S3 bucket generating huge egress) that a static threshold might miss entirely or catch too late.',
     },
   ];
 

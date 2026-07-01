@@ -65,6 +65,15 @@ export class PythonInterviewPrep {
         'Context managers for resource management: with open() ensures file is closed even on exception. with lock: ensures lock is released. Custom context managers via @contextmanager or __enter__/__exit__ — use for any resource that needs guaranteed cleanup. ExitStack composes multiple context managers dynamically.',
       ]
     },
+    {
+      heading: 'What Interviewers Actually Probe For in Python Interviews',
+      points: [
+        'Beyond syntax knowledge, Python interviews commonly probe understanding of the GIL\'s implications for concurrency, mutable default argument pitfalls, and the difference between shallow and deep copying — these represent genuine "gotchas" that separate surface-level familiarity from deeper Python fluency.',
+        'Being able to explain WHY a piece of Python code behaves unexpectedly (like late-binding closures or mutable defaults) demonstrates a stronger grasp of the language\'s actual execution model than simply being able to write correct code without fully understanding its underlying mechanics.',
+        'Complexity analysis of Python\'s built-in operations (list.append is O(1) amortized, "in" on a list is O(n) but O(1) on a set/dict, list.insert(0, x) is O(n)) is frequently tested, since choosing the wrong built-in data structure for a given access pattern is a common source of accidental performance bugs.',
+        'Practical, applied knowledge (how would you structure a Flask/FastAPI service, how do you avoid N+1 queries, how do you profile a slow function) is increasingly weighted alongside pure algorithmic questions, reflecting that real-world Python engineering is as much about idiomatic, maintainable code as clever algorithms.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

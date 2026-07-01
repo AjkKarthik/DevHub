@@ -67,6 +67,15 @@ export class DsaStrings {
         'In interviews, use String.indexOf() (O(nm)) unless asked for better — optimise only if asked.',
       ],
     },
+    {
+      heading: 'String Immutability and Its Performance Implications',
+      points: [
+        'Strings are immutable in most languages (JavaScript, Java, Python, C#) — any operation that appears to "modify" a string (concatenation, replacement) actually creates an entirely new string object, leaving the original unchanged in memory.',
+        'Repeated string concatenation inside a loop (building up a large string one small piece at a time) is a classic performance anti-pattern, since each concatenation allocates and copies an entirely new string — using a mutable buffer (StringBuilder in Java/C#, array-join in JavaScript) avoids this O(n^2) total cost.',
+        'The sliding window technique is the dominant pattern for substring problems (longest substring without repeating characters, minimum window substring) — maintaining a window with two pointers and expanding/contracting it based on a condition achieves O(n) time instead of the naive O(n^2) or O(n^3) brute force.',
+        'Comparing strings for equality is O(n) in the length of the string (not O(1)), a detail easy to overlook when reasoning about the complexity of algorithms that repeatedly compare or hash strings, such as detecting duplicate strings in a large collection.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -52,6 +52,15 @@ export class BlazorRazorComponents {
       points: ['Blazor automatically calls StateHasChanged() after event handlers complete. You only need to call it manually when state changes outside an event handler — for example, in a timer callback or when a service raises an event. On Blazor Server, use InvokeAsync(StateHasChanged) to marshal back to the render thread.',
       'Event handlers trigger a re-render automatically.', 'Timer and async continuations need explicit StateHasChanged().', 'InvokeAsync ensures thread-safety on Blazor Server.', 'Calling StateHasChanged in a tight loop wastes render cycles.']
     },
+    {
+      heading: 'Component Lifecycle Method Execution Order',
+      points: [
+        'Blazor component lifecycle methods execute in a defined order: SetParametersAsync, OnInitialized/OnInitializedAsync (only on first render), OnParametersSet/OnParametersSetAsync (on every parameter update including the first), then rendering occurs, followed by OnAfterRender/OnAfterRenderAsync.',
+        'OnInitializedAsync is the correct place for one-time setup logic (initial data fetching) since it runs only once per component instance, while OnParametersSetAsync runs every time parent-supplied parameters change, making it appropriate for logic that must react to parameter updates after the initial render.',
+        'OnAfterRenderAsync(firstRender) is the only lifecycle method with guaranteed access to a fully rendered DOM — JavaScript interop calls that need to interact with rendered elements should happen here, guarded by the firstRender parameter when the interop should only run once rather than after every re-render.',
+        'IDisposable/IAsyncDisposable implementation on a component (releasing event subscriptions, timers, or JS interop references) is essential for components with a non-trivial lifecycle — Blazor calls Dispose automatically when a component is removed from the render tree, but only if the component actually implements the interface.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -239,6 +248,10 @@ public partial class Counter
     { q: 'Can I use constructor injection instead of @inject?', a: 'Yes. In a code-behind partial class you can use constructor injection normally. In a .razor file you can also define a constructor, but @inject is the idiomatic approach and is shorter.' },
     { q: 'What is the difference between OnInitialized and OnParametersSet?', a: 'OnInitialized runs once after the first render. OnParametersSet runs on every parameter update, including the first. Use OnInitialized for one-time setup and OnParametersSet to react to parameter changes.' },
     { q: 'How do I prevent a component from re-rendering unnecessarily?', a: 'Override ShouldRender() and return false when your data has not changed. For value-type parameters this is simple; for reference types you may need deep equality checks or immutable records.' },
+    { q: 'What is the difference between a Razor component\'s code in a single .razor file versus a code-behind .razor.cs partial class file?',
+      a: 'A single .razor file mixes markup and C# logic together using @code {} blocks — convenient for small, simple components where markup and logic are tightly intertwined and brief. A .razor.cs code-behind file (a partial class matching the component\'s name) separates the C# logic entirely from the markup file, which scales better for components with substantial logic, makes the markup file easier to read at a glance, and allows better tooling support (some IDEs handle C# IntelliSense more reliably in pure .cs files than inside @code blocks).' },
+    { q: 'How does component parameter inheritance work when a component uses [CascadingParameter] versus a regular [Parameter]?',
+      a: 'A regular [Parameter] must be explicitly set by the immediate parent in markup (<MyComponent SomeValue="@value" />) — it is invisible to that component\'s own descendants unless manually re-passed down each level. A [CascadingParameter] is implicitly supplied by the nearest ancestor CascadingValue in the render tree, regardless of how many intermediate components exist between them, and does not require each intermediate level to know about or explicitly forward the value — making it suited for cross-cutting concerns like theme, culture, or authentication state.' },
   ];
 
   revision: RevisionSummary = {

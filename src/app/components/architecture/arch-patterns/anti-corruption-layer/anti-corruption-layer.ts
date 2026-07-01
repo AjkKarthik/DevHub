@@ -60,6 +60,24 @@ export class ArchAntiCorruptionLayer {
         'Open Host Service: upstream publishes a stable versioned API designed for many consumers. Often combined with ACL on the downstream side.',
       ],
     },
+    {
+      heading: 'Why the Anti-Corruption Layer Protects Domain Integrity',
+      points: [
+        'An anti-corruption layer (ACL) translates between an external system\'s model and your own domain model at the boundary, preventing the external system\'s concepts, naming, and quirks from leaking into and polluting your carefully designed domain model.',
+        'Without an ACL, integrating directly with a legacy system or third-party API tends to pull that external system\'s vocabulary and structure into your own codebase over time, gradually eroding the clarity and correctness of your domain model.',
+        'The ACL is a deliberate translation investment — it adds code and a layer of indirection, which is why it is reserved for boundaries with genuinely different, non-negotiable external models (legacy systems, third-party APIs) rather than applied to every internal integration.',
+        'A well-designed ACL isolates the impact of external system changes — when the legacy system\'s API changes, only the ACL\'s translation logic needs updating, while the rest of the domain model remains untouched and unaware of the external change.',
+      ],
+    },
+    {
+      heading: 'Implementing an Anti-Corruption Layer in Practice',
+      points: [
+        'A common ACL implementation pattern uses an adapter (translating request/response shapes) combined with a facade (presenting a clean, domain-appropriate interface) — the facade is what the rest of the application interacts with, never the raw external API directly.',
+        'ACLs are particularly valuable during a strangler-fig migration, where the new system needs to interact with the still-live legacy system — the ACL isolates the new codebase from legacy quirks while the migration is incrementally completed.',
+        'Testing an ACL in isolation (with contract tests against the external system\'s actual API shape) catches breaking external changes at the translation boundary, rather than letting them surface as confusing failures deep within domain logic.',
+        'Overengineering an ACL for a well-behaved, stable internal API adds unnecessary translation overhead — the pattern earns its complexity specifically when the external system\'s model is genuinely misaligned with or unstable relative to your own domain model.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

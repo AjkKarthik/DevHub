@@ -67,6 +67,15 @@ export class DsaRecursionBacktracking {
         'Effective pruning can reduce exponential time to near-polynomial for typical inputs.',
       ],
     },
+    {
+      heading: 'Pruning: The Difference Between Brute Force and Efficient Backtracking',
+      points: [
+        'Pure brute-force recursion explores every possible combination regardless of whether a partial solution can still succeed, while backtracking adds pruning — abandoning a branch as soon as it is known to be invalid or suboptimal, avoiding wasted exploration of doomed subtrees.',
+        'Effective pruning conditions (like checking a partial sum has not already exceeded a target, or a partial board state does not already violate constraints) can reduce backtracking\'s practical running time by orders of magnitude versus unpruned brute force, even though both share the same worst-case complexity bound.',
+        'The order in which choices are tried can meaningfully affect performance even with correct pruning — trying the most constrained or most likely-to-fail choice first (as in Sudoku solvers using "most constrained variable" heuristics) prunes the search tree faster than an arbitrary ordering.',
+        'Backtracking\'s "choose, explore, unchoose" pattern requires correctly undoing state changes on the way back up the recursion — a common bug is forgetting to remove an element from a "current path" array or reset a visited flag after the recursive call returns, corrupting subsequent branches.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -59,6 +59,24 @@ export class NodeWebsockets {
         'Memory management: each socket keeps state. At 10,000 concurrent connections, even 1KB per socket = 10MB. Monitor active connections and implement per-user connection limits. Close idle connections after a timeout.',
       ]
     },
+    {
+      heading: 'WebSocket Protocol Fundamentals',
+      points: [
+        'A WebSocket connection begins as a standard HTTP request with an Upgrade: websocket header — the server responds with 101 Switching Protocols, after which the connection becomes a persistent, full-duplex TCP connection outside the normal HTTP request/response model.',
+        'Once established, either side can send messages at any time without waiting for a request — this is the fundamental difference from HTTP polling, enabling genuine real-time, server-initiated push without the client needing to ask first.',
+        'WebSocket messages can be text (typically JSON) or binary frames — for structured application data, most implementations serialize to JSON text frames for simplicity, though binary framing offers lower overhead for high-frequency or large-payload use cases.',
+        'Unlike HTTP requests, a WebSocket connection is stateful and long-lived — the server must track connection state (which user, what subscriptions) for the lifetime of the connection, a fundamentally different operational model than stateless REST request handling.',
+      ]
+    },
+    {
+      heading: 'Scaling WebSocket Servers Horizontally',
+      points: [
+        'A client connected to one server instance cannot directly receive a message published from a different instance — since each WebSocket connection is pinned to the specific process that accepted it, unlike a stateless HTTP request that any instance can serve.',
+        'A shared pub/sub layer (Redis Pub/Sub, or the official adapter for Socket.IO) lets any server instance publish a message and have it relayed to clients connected on any other instance, solving the cross-instance broadcast problem.',
+        'Sticky sessions at the load balancer (routing a client\'s reconnection attempts back to the same server instance where reasonable) reduce unnecessary connection churn, though a properly pub/sub-backed architecture should function correctly even without them.',
+        'Connection count is a real capacity constraint per instance — unlike stateless HTTP where a server handles a request and immediately frees resources, each open WebSocket connection consumes a file descriptor and some memory for the entire session duration, directly limiting how many concurrent users one instance can serve.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -290,6 +308,9 @@ io.on('connection', (socket) => {
     { q: 'How do I handle WebSocket reconnection on the client?', a: 'Socket.io handles reconnection automatically with exponential backoff — no extra code needed. For the raw ws API or custom solutions: catch the close event, implement exponential backoff (setTimeout(() => reconnect(), delay * 2^attempt)), cap the max delay (30s), and stop after N attempts. After reconnecting, re-authenticate (send auth token again), re-join rooms, and request any missed events since last connection timestamp.' },
     { q: 'How do I send messages to a specific user (not a room) in Socket.io?', a: 'Maintain a Map of userId → socketId. When a user connects, store their socketId: userSockets.set(userId, socket.id). To send: io.to(userSockets.get(targetUserId)).emit("event", data). For multi-server deployments with the Redis adapter, use socket IDs directly — the adapter routes to the correct server. Alternatively, have each user automatically join a personal room named by userId and emit to that room.' },
     { q: 'What are WebSocket subprotocols and when would you use them?', a: 'Subprotocols are application-level agreements about message format negotiated during the WebSocket handshake (Sec-WebSocket-Protocol header). Examples: graphql-ws for GraphQL subscriptions, mqtt for IoT messaging. You would define a custom subprotocol when building a framework-level protocol on top of raw WebSockets — typically when building tooling, not applications. Most application developers use Socket.io\'s event system instead of defining subprotocols.' },
+    { q: 'What is the difference between the native ws library and Socket.IO for Node.js WebSocket servers?', a: 'The ws library implements the raw WebSocket protocol (RFC 6455) with minimal overhead and no additional abstractions — you handle reconnection, rooms/broadcasting, and fallback transport yourself. Socket.IO builds on top of WebSocket (with an automatic fallback to HTTP long-polling for environments where WebSocket is blocked) and adds higher-level features out of the box: automatic reconnection with exponential backoff, room/namespace-based broadcasting, and acknowledgment callbacks for request-response-style messaging over the socket — at the cost of a custom framing protocol that is not plain WebSocket-compatible with non-Socket.IO clients.' },
+    { q: 'How do you scale a Node.js WebSocket server horizontally across multiple instances?', a: 'Since a WebSocket connection is stateful and pinned to the specific server process that accepted it, a client connected to instance A cannot directly receive a message published from instance B. Use a shared pub/sub layer (Redis Pub/Sub, with the @socket.io/redis-adapter for Socket.IO) so any instance can publish a message and have it relayed to clients connected on any other instance — combined with sticky sessions at the load balancer level so a client\'s reconnect attempts land back on a server that still has reasonable session affinity where needed.' },
+    { q: 'Why is authenticating a WebSocket connection different from authenticating a typical REST API request?', a: 'A WebSocket connection is established once (via an HTTP upgrade handshake) and then stays open for the lifetime of the session — unlike REST where every request can carry its own auth header. Authentication typically happens during the initial handshake (validating a token passed as a query parameter or in the upgrade request headers before accepting the connection) and the authenticated identity is then attached to the long-lived connection object for the duration of the session — requiring separate handling for token expiry mid-connection, since there is no natural per-message re-authentication unless explicitly implemented.' },
   ];
 
   revision: RevisionSummary = {

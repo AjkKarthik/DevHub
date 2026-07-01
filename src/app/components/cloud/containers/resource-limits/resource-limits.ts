@@ -65,6 +65,15 @@ const theory: TheoryPoint[] = [
       'Use metrics-server (kubectl top pods) for current usage; Prometheus + Grafana for historical trends.',
     ],
   },
+  {
+    heading: 'Requests vs. Limits — Different Purposes, Different Failure Modes',
+    points: [
+      'Requests are used by the SCHEDULER to decide which node has enough capacity to place a pod — a pod\'s request is a guaranteed reservation of that resource on its assigned node, ensuring the scheduler never over-commits a node beyond what it can actually provide.',
+      'Limits cap how much of a resource a container can actually USE at runtime — exceeding a CPU limit causes throttling (the container is slowed down but keeps running), while exceeding a MEMORY limit causes the container to be OOMKilled (terminated), a fundamentally different and more severe failure mode.',
+      'Setting limits without setting requests (or vice versa) leads to unpredictable scheduling or resource contention — a pod with no request but a limit gets a request implicitly defaulted to the limit in some configurations, while a pod with neither set can be scheduled anywhere and compete unpredictably for resources.',
+      'QoS class (Guaranteed, Burstable, BestEffort) is derived automatically from how requests and limits are set, and directly determines eviction priority under node resource pressure — BestEffort pods (no requests/limits set) are evicted first, making unset resource specs a real production risk, not just a missing best practice.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

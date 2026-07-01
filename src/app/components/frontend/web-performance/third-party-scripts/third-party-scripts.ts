@@ -486,6 +486,10 @@ Implement a facade pattern:
       q: 'Can I load Google Fonts without any JavaScript performance cost?',
       a: 'Yes. Google Fonts are CSS + font files, not JavaScript. The performance cost comes from: (1) extra DNS lookup + TCP/TLS for fonts.googleapis.com — mitigate with preconnect; (2) render-blocking stylesheet — mitigate by loading asynchronously with media="print" then switching to all; (3) FOUT — mitigate with font-display: swap. Alternatively, self-host with @font-face and woff2 files for maximum control.',
     },
+    {
+      q: 'Why can a single third-party analytics or chat widget script disproportionately hurt INP compared to your own first-party code?',
+      a: 'Third-party scripts are black boxes — you cannot control how they structure their event handlers, and many run expensive synchronous work (DOM queries, heavy computation, additional network calls triggering re-renders) directly inside click or scroll listeners without yielding to the main thread. Because INP measures the worst interactions across the whole session, a third-party script that attaches a slow global click listener (common in chat widgets, A/B testing tools, and ad scripts) can degrade INP for interactions anywhere on the page, even ones with no visible relationship to that script. Mitigation: load non-critical third-party scripts with the Partytown library or a Web Worker proxy, defer their initialization until after the page is interactive, and audit them periodically since updates from the third party can silently regress performance.',
+    },
   ];
 
   revision: RevisionSummary = {

@@ -72,6 +72,15 @@ export class AiNeuralNetworks {
         'Gradient clipping: cap gradient norm to a threshold (e.g. 1.0) — prevents exploding gradients in RNNs and Transformers.',
       ],
     },
+    {
+      heading: 'Vanishing and Exploding Gradients in Deep Networks',
+      points: [
+        'As gradients propagate backward through many layers during backpropagation, repeated multiplication by small weight values can shrink gradients toward zero (vanishing gradients), effectively preventing early layers of a deep network from learning at all.',
+        'The opposite failure mode (exploding gradients) occurs when repeated multiplication by large weight values causes gradients to grow uncontrollably, leading to unstable training and numerical overflow — both failure modes stem from the same underlying repeated-multiplication mechanism.',
+        'ReLU activation functions largely replaced sigmoid/tanh in hidden layers specifically because they do not saturate for positive inputs, meaningfully mitigating (though not eliminating) the vanishing gradient problem compared to activations that flatten out at extreme input values.',
+        'Techniques like batch normalization, residual connections (skip connections), and careful weight initialization (Xavier/He initialization) were each developed specifically to combat these gradient pathologies, enabling the training of much deeper networks than were previously practical.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

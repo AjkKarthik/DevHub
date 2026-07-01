@@ -71,6 +71,15 @@ export class TfExpressions {
         'templatefile() renders a file template with HCL variable substitution for user_data scripts.',
       ],
     },
+    {
+      heading: 'Conditional Expressions and Dynamic Blocks',
+      points: [
+        'The ternary conditional expression (condition ? true_value : false_value) enables configuration that adapts based on a variable — commonly used to conditionally set a resource attribute differently between environments, like a smaller instance size in dev versus production.',
+        'The count and for_each meta-arguments combined with conditional expressions enable conditionally CREATING a resource entirely — count = var.enable_feature ? 1 : 0 creates the resource only when the condition is true, a common pattern for optional infrastructure components.',
+        'dynamic blocks generate repeated nested configuration blocks (like multiple ingress rules within a security group) from a list or map variable — avoiding the need to write out each nested block manually when the number of repetitions varies or is data-driven.',
+        'Overusing complex conditional logic and dynamic blocks can make Terraform configuration significantly harder to read and reason about — a configuration that is easy to follow with a few straightforward conditionals is often preferable to one with deeply nested dynamic logic optimized purely for DRY-ness.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

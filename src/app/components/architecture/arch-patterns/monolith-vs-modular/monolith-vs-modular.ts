@@ -62,6 +62,24 @@ export class ArchMonolithVsModular {
         'Rule of thumb: you need at least a team of 10–15 engineers and a stable domain before microservices pay off.',
       ],
     },
+    {
+      heading: 'The Modular Monolith as a Middle Ground',
+      points: [
+        'A modular monolith enforces clear module boundaries (via language-level access controls, package structure, or architectural fitness functions) within a SINGLE deployable unit — capturing much of microservices\' organizational clarity without the operational complexity of a distributed system.',
+        'Because a modular monolith deploys as one unit, it avoids the distributed systems challenges microservices introduce — network calls between components, eventual consistency, distributed tracing — while still benefiting from clear internal boundaries that ease future extraction into separate services if genuinely needed later.',
+        'Enforcing module boundaries within a monolith requires discipline and often tooling (dependency-direction linters, architectural tests) since nothing about a single codebase inherently prevents modules from accidentally becoming tightly coupled the way a strict process boundary would.',
+        'A well-structured modular monolith is often a better STARTING point than microservices for a new system with unclear domain boundaries — module boundaries within a monolith are far cheaper to refactor than service boundaries once real deployment dependencies and network contracts exist between separate services.',
+      ],
+    },
+    {
+      heading: 'When Splitting Into Microservices Is (and Isn\'t) Justified',
+      points: [
+        'Microservices are justified when independent SCALING needs genuinely diverge (one component needs 100x the compute of another), when independent DEPLOYMENT cadence matters (different teams need to release on different schedules), or when technology diversity is genuinely needed (a component is better suited to a different language/runtime).',
+        'Splitting into microservices purely because "that\'s what modern systems do" without one of these genuine driving needs typically adds operational complexity (deployment, monitoring, network reliability, distributed debugging) without a corresponding benefit, since a modular monolith would have satisfied the same requirements more simply.',
+        'The "premature microservices" anti-pattern — splitting a system into many small services before domain boundaries are well understood — makes those same boundaries far more expensive to correct later, since fixing a wrong service boundary requires coordinated changes across separately deployed, separately owned services.',
+        'A pragmatic path many successful systems follow is starting with a well-modularized monolith and extracting specific modules into standalone services only once a genuine, evidence-based need (proven scaling divergence, proven team autonomy friction) actually emerges.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

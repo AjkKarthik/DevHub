@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Connection pooling: hundreds of app servers × dozens of DB connections = connection exhaustion without PgBouncer or RDS Proxy.',
     ],
   },
+  {
+    heading: 'Vertical vs Horizontal Scaling Tradeoffs',
+    points: [
+      'Vertical scaling (adding more CPU/RAM to a single instance) is simpler to implement — no application changes required — but has a hard ceiling determined by the largest available machine, and creates a single point of failure with no redundancy.',
+      'Horizontal scaling (adding more instances) has effectively no ceiling and provides redundancy for free, but requires the application to be designed statelessly (or with externalized state) so any instance can handle any request, which is a real architectural constraint not every system starts with.',
+      'Stateful components (databases, in-memory caches with local state) are harder to scale horizontally than stateless application servers — horizontal database scaling typically requires sharding or read replicas, each with its own significant complexity compared to simply adding more application server instances behind a load balancer.',
+      'A common pragmatic path: scale vertically first (cheap, fast, no architecture changes) until hitting diminishing returns or a hard capacity ceiling, then invest in horizontal scaling once the vertical ceiling genuinely becomes the bottleneck — premature horizontal scaling adds complexity before it is actually needed.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

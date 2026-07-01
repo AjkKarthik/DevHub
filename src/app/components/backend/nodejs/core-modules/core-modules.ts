@@ -59,6 +59,24 @@ export class NodeCoreModules {
         'Always handle the "error" event and check exit codes on child processes. Use { shell: false } and pass arguments as an array to prevent shell injection.',
       ]
     },
+    {
+      heading: 'Buffer and Binary Data',
+      points: [
+        'Buffer is Node.js\'s representation of raw binary data, predating the standard Uint8Array — used for file I/O, network protocols, and any data that is not text. Buffer.from(string, encoding) converts text to bytes; buffer.toString(encoding) converts back.',
+        'Buffers are fixed-size and mutable — unlike JS strings, you can write directly into specific byte offsets with buffer.write() or buffer[i] = value, which matters for performance-sensitive binary protocol parsing.',
+        'Never concatenate large binary data with string operations — use Buffer.concat([buf1, buf2]) which allocates the combined buffer once, rather than the repeated allocation/copy overhead of string-based concatenation.',
+        'Security: Buffer.allocUnsafe() is faster than Buffer.alloc() because it skips zero-filling the memory, but the returned buffer may contain old, potentially sensitive data from previous allocations — only use it when you will immediately overwrite the entire buffer.',
+      ]
+    },
+    {
+      heading: 'The os and process Modules',
+      points: [
+        'os provides system-level information: os.cpus() (core count, useful for sizing a cluster worker pool), os.totalmem()/os.freemem() (memory monitoring), os.platform() (cross-platform conditional logic).',
+        'process is the global object representing the current Node.js process: process.env for environment variables, process.argv for CLI arguments, process.exit(code) for controlled shutdown, process.on("SIGTERM", handler) for graceful shutdown hooks.',
+        'process.memoryUsage() and process.cpuUsage() are essential for diagnosing memory leaks and CPU bottlenecks in production — sample them periodically and export as metrics rather than only checking during an incident.',
+        'process.nextTick() and setImmediate() (also part of core timing behavior) let you defer work to specific points in the event loop — nextTick runs before I/O callbacks, setImmediate runs after, which matters for controlling execution order in library code.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -286,6 +304,9 @@ class FileWatcher extends EventEmitter {
     { q: 'Which core modules should every Node.js developer know well?', a: 'Tier 1 (daily use): fs/promises, path, events, crypto (randomBytes, randomUUID, createHash). Tier 2 (frequently): stream, child_process, url, os, util, net, http. Tier 3 (specialized): worker_threads, cluster, dns, tls. Start with Tier 1 and learn others as needed.' },
     { q: 'How do you handle ENOENT (file not found) without crashing?', a: 'Wrap fs operations in try/catch and check error.code: try { const data = await readFile(path); } catch (e) { if (e.code === "ENOENT") return null; throw e; }. The code property is set by the OS and reliable across platforms.' },
     { q: 'What is the node: prefix (e.g., import { readFile } from "node:fs/promises")?', a: 'The node: prefix (since Node 14.18) explicitly marks built-in modules. It prevents naming conflicts if an npm package has the same name as a built-in, makes imports self-documenting, and enables faster resolution. Prefer it in new code: import from "node:fs", "node:path", etc.' },
+    { q: 'What is the difference between requiring "fs" and "fs/promises"?', a: 'The plain "fs" module exposes callback-based and synchronous APIs (readFile with a callback, readFileSync). "fs/promises" exposes the same operations returning native Promises, so they work naturally with async/await without manual promisify() wrapping. Prefer fs/promises in all new async code — the callback API remains mainly for legacy compatibility and a few APIs (like watch) that are inherently event-based.' },
+    { q: 'When should you use the events module EventEmitter directly versus a pub/sub library?', a: 'EventEmitter is ideal for in-process, synchronous-dispatch communication within a single Node.js process — e.g., a custom stream-like object notifying listeners. It does not work across processes or machines. For cross-process or distributed messaging (multiple server instances, microservices), use a real message broker (Redis Pub/Sub, RabbitMQ, Kafka) since EventEmitter listeners only exist in the emitting process\'s memory.' },
+    { q: 'What does util.promisify do and when is it still necessary in modern Node.js?', a: 'util.promisify converts a Node-style callback function (err, result) => {} into one that returns a Promise, letting you use it with async/await. It is still necessary for older third-party libraries or core APIs that have not been given a native promise-based version (most fs, dns, and child_process functions already have promise versions via their *\'/promises\' submodule, but custom or legacy callback-based libraries often still need promisify).' },
   ];
 
   revision: RevisionSummary = {

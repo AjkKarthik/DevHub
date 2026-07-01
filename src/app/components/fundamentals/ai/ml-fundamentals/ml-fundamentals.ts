@@ -72,6 +72,15 @@ export class AiMlFundamentals {
         'Mini-batch SGD: process small random batches. Good noise helps escape local minima; full batch is stable but slow.',
       ],
     },
+    {
+      heading: 'Feature Engineering Still Matters for Classical ML',
+      points: [
+        'Unlike deep learning, which can learn useful representations directly from raw data, classical ML algorithms (linear regression, decision trees, SVMs) rely heavily on well-engineered input features — the quality of feature engineering often matters more than the choice of algorithm itself.',
+        'Domain knowledge translated into features (a "days since last purchase" feature for churn prediction, rather than raw timestamps) frequently improves model performance more than switching between comparable algorithms or tuning hyperparameters.',
+        'Feature scaling (normalization or standardization) is required for distance-based algorithms (k-NN, SVM) and gradient-based optimization (logistic regression, neural networks) — skipping it can cause features with larger numeric ranges to dominate the model unfairly, independent of their actual predictive importance.',
+        'Automated feature engineering and neural networks\' ability to learn representations directly from raw data have reduced but not eliminated the value of manual feature engineering, particularly for structured/tabular data where classical ML with well-crafted features often still outperforms deep learning.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

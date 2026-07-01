@@ -425,6 +425,12 @@ console.log(rule1, rule2, defaultRule);`,
       answer: 1,
       explanation: 'MQTT is a TCP-based protocol. NLB handles TCP/UDP/TLS at Layer 4 — perfect for non-HTTP protocols like MQTT, AMQP, gRPC, gaming, and IoT. ALB only understands HTTP/HTTPS/WebSocket (Layer 7).'
     },
+    {
+      q: 'What is the key difference between an Application Load Balancer (ALB) and a Network Load Balancer (NLB)?',
+      options: ['ALB and NLB are functionally identical', 'ALB operates at Layer 7 (HTTP/HTTPS, supports path-based routing); NLB operates at Layer 4 (TCP/UDP, ultra-low latency, static IP support)', 'NLB only supports HTTPS traffic', 'ALB cannot perform health checks'],
+      answer: 1,
+      explanation: 'ALB understands HTTP/HTTPS content, enabling path/host-based routing, WebSocket support, and integration with services like ECS/Lambda targets. NLB operates at the transport layer, handling millions of requests per second with ultra-low latency and supporting static IP addresses — used for extreme performance needs or non-HTTP protocols (raw TCP, gaming, IoT).',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -443,6 +449,14 @@ console.log(rule1, rule2, defaultRule);`,
     {
       q: 'How does ALB authenticate users with Cognito or OIDC?',
       a: 'ALB has built-in authenticate-cognito and authenticate-oidc listener rule actions. When a request hits a protected rule, ALB redirects the user to the IdP login page, receives the OAuth2/OIDC callback, validates the token, and then forwards the request to the target with identity claims in X-Amzn-Oidc-* headers. Your application gets the user\'s email, groups, and claims without writing authentication code. Sessions are managed by ALB using an encrypted cookie (AWSALB_AUTH).'
+    },
+    {
+      q: 'What is connection draining (deregistration delay) and why does it matter during deployments?',
+      a: 'When a target is deregistered from a load balancer (e.g., during a rolling deployment or instance termination), connection draining keeps the load balancer routing IN-FLIGHT requests to that target for a configurable period (default 300 seconds) before stopping new requests entirely — preventing abrupt connection drops for users mid-request. Without sufficient drain time, a deployment can cause visible errors for users whose requests were in progress on a target being removed.',
+    },
+    {
+      q: 'How do ALB target group health checks determine whether traffic is routed to an instance?',
+      a: 'A target group periodically sends a configured health check request (typically an HTTP GET to a specific path like /health) to each registered target. After a configurable number of consecutive failures (unhealthy threshold), the target is marked unhealthy and removed from active rotation — traffic stops routing to it until it passes enough consecutive successful checks (healthy threshold) to be re-added. This automatic detection prevents routing user traffic to instances that are running but not actually able to serve requests correctly.',
     },
   ];
 

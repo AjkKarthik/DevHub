@@ -59,6 +59,24 @@ export class NodeErrorHandling {
         'Error monitoring services (Sentry, Datadog) should be called in global handlers before exiting. They flush their buffer synchronously so errors are captured even on crash.',
       ]
     },
+    {
+      heading: 'Custom Error Classes and Error Hierarchies',
+      points: [
+        'Extending the built-in Error class (class NotFoundError extends Error) lets you attach structured metadata (a status code, an error code) to errors while preserving stack traces and instanceof checks — far more useful than throwing plain strings or objects.',
+        'A base ApplicationError class with subclasses (ValidationError, NotFoundError, UnauthorizedError) lets centralized error-handling middleware map each error type to the correct HTTP status code automatically, rather than repeating status-code logic at every throw site.',
+        'Always call Error.captureStackTrace(this, this.constructor) in a custom error constructor (or rely on the default Error constructor behavior) to ensure the stack trace starts at the throw site, not inside your custom error class\'s own constructor internals.',
+        'Attach an isOperational flag (or similar) to distinguish expected, handleable errors (a validation failure) from unexpected programmer errors (a null reference) — this distinction drives the decision of whether to gracefully respond to the client or crash and restart the process.',
+      ]
+    },
+    {
+      heading: 'Centralized Error-Handling Middleware',
+      points: [
+        'A single, final error-handling middleware (in Express, a four-parameter (err, req, res, next) function) centralizes the translation from thrown errors to HTTP responses — avoiding duplicated try/catch-and-format logic scattered across every route handler.',
+        'Log the full error (including stack trace) server-side in this centralized handler, but return only a safe, minimal subset to the client — never leak stack traces, internal file paths, or database error messages in production responses.',
+        'Async route handlers need explicit error forwarding since Express does not automatically catch promise rejections from async functions (pre-Express 5) — wrap handlers with a try/catch calling next(err), or a utility like express-async-handler, so errors reach the centralized handler.',
+        'Include a correlation/request ID in both the logged error and the client-facing error response — this lets a user report "error ref abc123" and lets support/engineering find the exact corresponding detailed log entry immediately.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -281,6 +299,9 @@ if (!result.ok) {
     { q: 'Should I use try/catch everywhere or let errors propagate?', a: 'Let errors propagate up to a single boundary: your error middleware (Express) or route-level handler (Fastify). Only catch when you can meaningfully handle the error — convert a DB "not found" to a 404 AppError, for example. Catching everywhere creates noise, hides bugs, and makes error context vague. The single error boundary pattern keeps handling consistent and logging centralised.' },
     { q: 'How do I handle errors in parallel async operations?', a: 'Promise.all rejects immediately on first failure — wrap it in try/catch at the call site. Promise.allSettled collects all results including failures — filter by { status: "rejected" } to find failures. For partial success (some succeed, some fail), use allSettled and handle each failure individually. Never use Promise.all when partial success is acceptable.' },
     { q: 'What error information is safe to return to clients?', a: "Operational errors: message, status code, and an error code (e.g. VALIDATION_ERROR) are safe and useful. Programmer errors: return only a generic '500 Internal Server Error' — never the stack trace, file paths, or error class name. A good rule: if the client can take action based on the error, include it; if it's internal system detail, hide it." },
+    { q: 'What is the difference between operational errors and programmer errors in Node.js, and why does the distinction matter?', a: 'Operational errors are expected runtime conditions — a failed database connection, invalid user input, a timed-out external API call — that the application should catch, log, and recover from gracefully without crashing. Programmer errors are bugs — calling a function with the wrong argument types, a null reference, a logic error — that indicate the program is in an unknown, potentially corrupted state. The common guidance is: catch and handle operational errors normally, but let programmer errors crash the process (and restart cleanly via a process manager) rather than trying to "recover" from undefined behavior, which risks silent data corruption.' },
+    { q: 'Why is it dangerous to continue running a Node.js process after an uncaughtException?', a: 'When an uncaughtException fires, the error already unwound the stack outside of any try/catch, meaning the process state is in an unknown condition — open file handles, half-completed writes, or corrupted in-memory caches may exist. The Node.js documentation explicitly recommends treating uncaughtException as a last-resort logging opportunity, then exiting the process (process.exit(1)) and relying on a process manager (PM2, Kubernetes) to restart it cleanly, rather than attempting to resume normal operation in a possibly-corrupted state.' },
+    { q: 'How do you properly propagate errors through a chain of async/await calls without losing the original stack trace?', a: 'Use try/catch at the boundary where you can meaningfully handle the error (e.g., an Express error-handling middleware), and when re-throwing or wrapping an error, use the Error cause option (new Error("context message", { cause: originalError })) introduced in Node 16.9+ — this preserves the original error and its stack trace as a linked cause rather than discarding it, letting you add context without losing the root failure information needed for debugging.' },
   ];
 
   revision: RevisionSummary = {

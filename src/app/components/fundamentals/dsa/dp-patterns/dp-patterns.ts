@@ -67,6 +67,15 @@ export class DsaDpPatterns {
         'Longest palindromic substring: expand around each center, or dp[i][j] boolean table.',
       ],
     },
+    {
+      heading: 'Recognizing Which DP Pattern a Problem Belongs To',
+      points: [
+        'Many DP problems reduce to a small set of recurring patterns (0/1 knapsack, unbounded knapsack, longest common subsequence, interval DP) — recognizing which pattern a new problem matches is often more valuable in an interview than deriving the recurrence from scratch each time.',
+        'The 0/1 knapsack pattern applies whenever each item can be used at most once and a capacity constraint must be respected, appearing in disguised forms like "partition array into two equal-sum subsets" or "target sum with plus/minus signs."',
+        'Interval DP (where the state represents a range [i, j] rather than a single index) applies to problems like matrix chain multiplication or "burst balloons," where the optimal solution requires deciding how to split or combine a contiguous range.',
+        'Practicing pattern recognition across many problems (rather than memorizing individual solutions) builds the transferable skill of identifying "this looks like knapsack" or "this looks like LCS" quickly when facing an unfamiliar problem under interview time pressure.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

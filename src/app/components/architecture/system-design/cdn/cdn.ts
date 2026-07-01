@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Short TTL + stale-while-revalidate: avoid purging altogether by keeping TTL short and background-revalidating.',
     ],
   },
+  {
+    heading: 'Cache Invalidation Strategies at the Edge',
+    points: [
+      'Purge-based invalidation explicitly tells the CDN to evict specific cached objects immediately (via an API call after a content update) — necessary for content that must reflect changes instantly, but purge requests take time to propagate across all global edge locations.',
+      'TTL-based expiry (a simple time-to-live on each cached object) is far cheaper operationally than active purging — appropriate for content where brief staleness (seconds to minutes) after an update is acceptable, which covers the vast majority of cacheable web content.',
+      'Cache-Control and surrogate-key headers let origin servers express fine-grained invalidation rules — a surrogate key groups related cached objects (all pages referencing a specific product) so a single purge-by-key call invalidates every related cached object at once, rather than purging each URL individually.',
+      'Stale-while-revalidate at the edge serves a cached response immediately while asynchronously fetching a fresh copy in the background — giving instant response times even during cache refresh, at the cost of occasionally serving very slightly stale content.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

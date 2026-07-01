@@ -71,6 +71,15 @@ export class RedisStack {
         'Bloom filters are ideal for "have I seen this ID before?" checks (deduplication, cache warming) where false positives are acceptable but memory is constrained.',
       ],
     },
+    {
+      heading: 'Redis Stack Modules Beyond Core Data Structures',
+      points: [
+        'RedisJSON adds native JSON document storage and manipulation (JSON.SET, JSON.GET with path expressions) — letting you update a single nested field within a JSON document atomically, without needing to fetch, modify, and rewrite the entire document as a plain string.',
+        'RediSearch adds full-text search and secondary indexing capabilities on top of Redis data — enabling complex queries (filtering, faceting, ranking) against Redis-stored data that would otherwise require a separate dedicated search engine like Elasticsearch.',
+        'RedisTimeSeries provides purpose-built time-series data structures with automatic downsampling and retention policies — more efficient than manually implementing time-series storage using sorted sets, particularly for high-frequency metric ingestion.',
+        'Redis Stack bundles these modules together specifically to reduce the operational overhead of running multiple separate specialized databases (a document store, a search engine, a time-series database) — consolidating into one Redis deployment where the additional capabilities genuinely fit the application\'s needs.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

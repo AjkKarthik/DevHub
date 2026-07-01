@@ -501,6 +501,10 @@ document.addEventListener('visibilitychange', () => {
       q: 'How do I measure web vitals in a Single Page Application (SPA)?',
       a: 'web-vitals handles SPA navigation via the "soft navigation" heuristic in newer versions. Install web-vitals@^4 — it includes reportAllChanges option. Pass { reportAllChanges: true } to onLCP/onCLS to get updated values after each route change. For accurate SPA measurement, also send metrics on each route change (listen to popstate/pushState) rather than only on page hide. Note that CrUX currently only measures hard navigations.',
     },
+    {
+      q: 'How do you avoid Real User Monitoring data being skewed by bot traffic and outlier devices?',
+      a: 'Filter out known bot user agents and headless browser signatures before aggregating metrics — most RUM libraries and analytics platforms provide built-in bot detection, but it is worth verifying coverage for your specific traffic sources. Use percentiles (p75 is the Core Web Vitals standard) rather than averages, since a small number of extremely slow outlier sessions (very old devices, throttled connections, or background tabs that paused mid-measurement) can distort a mean far more than a percentile. Segment RUM data by device type, connection type (via the Network Information API where available), and geography — a single blended number hides whether problems are universal or concentrated in a specific user segment that may warrant targeted optimization.',
+    },
   ];
 
   revision: RevisionSummary = {

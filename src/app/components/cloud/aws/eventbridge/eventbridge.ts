@@ -498,6 +498,12 @@ export const securityHandler = async (
       answer: 1,
       explanation: 'Event Replay re-sends events from an archive back through the event bus, triggering all current matching rules. This is used to bootstrap a new consumer with historical data, reprocess events after a bug fix, or test new rules against real past events.',
     },
+    {
+      q: 'What is an EventBridge rule\'s "event pattern" used for?',
+      options: ['Scheduling cron-based recurring events only', 'Filtering which events on a bus should trigger the rule\'s targets, based on matching fields in the event JSON', 'Encrypting event payloads', 'Defining the IAM permissions for the bus'],
+      answer: 1,
+      explanation: 'An event pattern is a JSON structure that EventBridge matches against incoming events — only events whose fields match the pattern trigger the rule\'s configured targets (Lambda, SQS, Step Functions, etc.), allowing precise routing of specific event types without writing custom filtering code.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -516,6 +522,14 @@ export const securityHandler = async (
     {
       q: 'Can EventBridge guarantee ordered delivery of events?',
       a: 'No. EventBridge delivers events at-least-once with no ordering guarantee. Events with the same source and detail-type can arrive out of order at targets. For ordered processing, route events from EventBridge to an SQS FIFO queue (using the entity ID as MessageGroupId), then process from the FIFO queue with Lambda. This combines EventBridge content-based routing with FIFO queue ordering guarantees.',
+    },
+    {
+      q: 'What is the difference between the default EventBridge bus and a custom event bus?',
+      a: 'The default bus automatically receives events from AWS services (EC2 state changes, S3 events) and can also receive custom application events. A custom event bus is a dedicated bus you create for your own application or organizational domain events, providing isolation (rules on one bus don\'t see events on another) and clearer ownership boundaries — commonly used in event-driven microservice architectures where each service or domain publishes to its own bus.',
+    },
+    {
+      q: 'How does EventBridge differ from SNS for routing events to multiple consumers?',
+      a: 'SNS routes a message to ALL subscribers of a topic (simple pub/sub fan-out) with limited filtering based on message attributes. EventBridge provides much richer content-based routing — rules match on the actual structure/values within the event JSON itself, and EventBridge integrates with 200+ AWS services as both sources and targets plus supports schema discovery/registry. Choose SNS for simple fan-out notifications; choose EventBridge for complex, content-aware event routing across many event sources.',
     },
   ];
 

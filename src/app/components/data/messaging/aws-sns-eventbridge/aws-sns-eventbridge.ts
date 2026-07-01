@@ -60,6 +60,24 @@ export class AwsSnsEventbridge {
         'Common pattern: SNS → multiple SQS queues (fan-out) for parallel, reliable processing by independent services.',
       ]
     },
+    {
+      heading: 'SNS Fan-Out vs. EventBridge Rule-Based Routing',
+      points: [
+        'SNS fan-out delivers every message to ALL subscribed endpoints (SQS queues, Lambda, HTTP) unconditionally — routing logic, if needed, must be built into each subscriber via filter policies rather than at the broker level.',
+        'EventBridge routes events based on content-matching rules (event pattern matching against the payload) BEFORE delivery, letting a single event bus route different event shapes to entirely different targets without each target needing to filter irrelevant events itself.',
+        'SNS filter policies can reduce unnecessary fan-out delivery to subscribers that do not care about a given message, but this filtering happens at the subscription level, requiring each subscriber to be configured individually rather than centrally in one rule set.',
+        'EventBridge is the better fit for complex, multi-source event routing across many services and third-party SaaS integrations, while SNS remains simpler and sufficient for straightforward one-to-many fan-out to a known, fixed set of subscribers.',
+      ],
+    },
+    {
+      heading: 'Choosing Between SNS+SQS and EventBridge for Decoupling',
+      points: [
+        'SNS+SQS (SNS fanning out to multiple SQS queues) is a well-established pattern for reliable, durable fan-out — each SQS queue independently buffers messages for its consumer, surviving consumer downtime without losing events.',
+        'EventBridge natively supports scheduling (cron-like rules), API destinations (calling external HTTP APIs directly), and a schema registry — capabilities that would require additional custom infrastructure if built purely on SNS+SQS.',
+        'Cost and latency characteristics differ — EventBridge\'s rule evaluation adds a small amount of routing overhead compared to SNS\'s simpler unconditional fan-out, a real but usually negligible consideration at typical application scale.',
+        'Many production architectures use both together — EventBridge for cross-service event routing and business-event orchestration, SNS+SQS for simpler internal fan-out — rather than treating them as strictly competing alternatives.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

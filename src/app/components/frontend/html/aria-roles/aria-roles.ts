@@ -52,6 +52,24 @@ export class HtmlAriaRoles {
         '<code>aria-live</code>: Announces changes to the user immediately.',
         '<code>aria-atomic</code>: Indicates whether assistive technologies should present all, or only parts of, the changed region when a change occurs.'
       ]
+    },
+    {
+      heading: 'When ARIA Is Necessary vs When Native HTML Is Better',
+      points: [
+        'The first rule of ARIA: do not use ARIA if a native HTML element or attribute already provides the semantics you need. A native <code>&lt;button&gt;</code> gets keyboard focus, Enter/Space activation, and the "button" role automatically — a <code>&lt;div role="button"&gt;</code> requires you to manually implement all of that yourself with JavaScript.',
+        'ARIA only changes what assistive technology announces — it does not add any behavior. Setting <code>role="button"</code> on a div does not make it focusable or clickable via keyboard; you must also add <code>tabindex="0"</code> and manually handle Enter/Space key events.',
+        'Overusing ARIA is a real accessibility anti-pattern: incorrect or redundant roles (like <code>role="button"</code> on an actual <code>&lt;button&gt;</code> element) can confuse screen readers rather than help them, since the implicit native role is overridden by the explicit one.',
+        'ARIA is appropriate for genuinely custom widgets with no native HTML equivalent — a tab panel, a combobox with custom filtering, a tree view — where you must manually construct the accessibility tree that native elements would otherwise provide for free.',
+      ]
+    },
+    {
+      heading: 'Testing ARIA Implementation',
+      points: [
+        'Automated tools (axe DevTools, Lighthouse accessibility audit) catch a meaningful subset of ARIA misuse — missing labels, invalid role/attribute combinations, contrast failures — but cannot verify that the actual user EXPERIENCE with a screen reader makes sense.',
+        'Manual screen reader testing (VoiceOver on macOS/iOS, NVDA or JAWS on Windows, TalkBack on Android) is essential for genuinely verifying ARIA correctness — automated tools check the accessibility tree\'s structure, not whether navigating it actually communicates the right information in the right order.',
+        'Keyboard-only navigation testing (unplug the mouse, navigate with Tab/Shift+Tab/Enter/Arrow keys alone) reveals whether custom ARIA widgets actually implement the expected keyboard interaction patterns — a combobox with correct ARIA roles but no arrow-key navigation is still broken for keyboard users.',
+        'The browser\'s built-in Accessibility Tree inspector (Chrome DevTools Elements panel, "Accessibility" tab) shows exactly how each element is exposed to assistive technology — invaluable for debugging why a screen reader announces something unexpected.',
+      ]
     }
   ];
 

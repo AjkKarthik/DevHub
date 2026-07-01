@@ -67,6 +67,15 @@ export class DsaArrays {
         'Extend to 2D for submatrix sum queries.',
       ],
     },
+    {
+      heading: 'Amortized Cost of Dynamic Array Resizing',
+      points: [
+        'Dynamic arrays (like JavaScript arrays, Python lists, or Java ArrayList) grow by allocating a new, larger backing array and copying all existing elements when capacity is exceeded — a single resize operation costs O(n), but this cost is amortized over many appends.',
+        'Doubling the capacity on each resize (rather than growing by a fixed amount) is what makes amortized append cost O(1) — geometric growth ensures the total copying work across n appends stays proportional to n, not n squared.',
+        'Understanding amortized analysis matters for interview questions asking "what is the time complexity of push/append" — the correct answer is O(1) amortized, not O(n), even though any individual call could trigger an O(n) resize.',
+        'Pre-allocating an array to its expected final size (when that size is known in advance) avoids the overhead of repeated resizing entirely, a common optimization in performance-sensitive code paths that build up large collections.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

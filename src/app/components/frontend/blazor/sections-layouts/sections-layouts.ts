@@ -47,6 +47,24 @@ export class BlazorSectionsLayouts {
       points: ['Use `<HeadContent>` to inject per-page CSS links, script tags, or preload hints into the document `<head>`. Combine it with `<PageTitle>` for the browser tab title. Both components render into the HeadOutlet defined in App.razor. This avoids per-page JavaScript and keeps head management declarative in Razor.',
       '<PageTitle> sets the browser tab title from any component.', '<HeadContent> injects into the document <head>.', 'HeadOutlet in App.razor is where they render.', 'Works in both Static SSR and interactive modes.']
     },
+    {
+      heading: 'Nested Layouts for Shared Structure Across Route Groups',
+      points: [
+        'A layout can itself specify a parent layout via @layout, creating a nesting chain — an AdminLayout might wrap all admin pages with admin-specific navigation, while itself being wrapped by the application\'s base MainLayout providing the overall site chrome, letting each layer add exactly the structure relevant to its scope.',
+        'Layouts are applied per-route via the @layout directive on individual pages, or via a default layout specified in routing configuration — this lets different sections of an application (a public marketing area vs an authenticated dashboard area) use entirely different overall page structures without one giant layout trying to handle every case with conditionals.',
+        'SectionOutlet and SectionContent (introduced in .NET 8) let a page inject content into named locations defined anywhere within its layout hierarchy, not just the single @Body slot — useful for a page needing to populate a layout-defined sidebar or breadcrumb area independently of its main body content.',
+        'Overly deep layout nesting (more than 2-3 levels) makes it progressively harder to trace where a specific piece of shared UI chrome actually originates from — keeping layout hierarchies relatively shallow and using clear, descriptive layout names helps maintain a codebase\'s overall comprehensibility as it grows.',
+      ],
+    },
+    {
+      heading: 'Layout-Level Authorization and Conditional Chrome',
+      points: [
+        'A layout component can itself check authentication/authorization state (via AuthorizeView or a cascaded authentication state) to conditionally render different navigation or chrome — showing an admin-specific navigation section only to users with the appropriate role, all within the shared layout rather than duplicated across every admin page.',
+        'MainLayout (the typical root layout) commonly injects cross-cutting UI elements — a persistent navigation sidebar, a header with user account info, a global notification area — that should appear consistently across nearly every page, keeping page components focused purely on their specific content.',
+        'CascadingValue declared within a layout automatically becomes available to every page rendered within that layout\'s @Body — a useful pattern for providing layout-scoped context (like the current section\'s theme or a breadcrumb trail) without needing every individual page to explicitly request it.',
+        'Testing layouts with bUnit requires rendering the layout component with a specific child content to verify it correctly wraps and positions that content — layouts are tested similarly to any other component, just with particular attention to the @Body placement and surrounding chrome rendering correctly.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -218,6 +236,10 @@ export class BlazorSectionsLayouts {
     { q: 'Can I have multiple SectionContent for the same SectionName?', a: 'Yes, but only the last one rendered wins. If multiple components provide content for the same name, the most recently rendered one takes effect. This can be used intentionally (a child overrides a parent\'s default section content).' },
     { q: 'Is there a difference between @layout and DefaultLayout?', a: '@layout in a .razor file applies that specific layout to just that page. DefaultLayout in RouteView applies to all pages that don\'t have an explicit @layout. An explicit @layout always overrides the DefaultLayout.' },
     { q: 'Can I use sections with Static SSR?', a: 'Yes. SectionContent and SectionOutlet work in Static SSR, Interactive Server, WASM, and Hybrid modes. They are pure Blazor rendering features with no mode-specific restrictions.' },
+    { q: 'What is the difference between a Blazor Layout component and a SectionContent/SectionOutlet pair?',
+      a: 'A Layout component (inheriting LayoutComponentBase) wraps a page\'s content via @Body, providing the consistent outer shell (nav, header, footer) for every page using that layout — but it can only render content the page passes as its single Body. SectionContent and SectionOutlet (introduced in .NET 8) let a page inject content into a NAMED location defined anywhere in the layout (not just the single @Body slot) — useful for a page needing to populate a layout\'s sidebar or page-title area independently from its main body content.' },
+    { q: 'Why might a deeply nested layout hierarchy (layout within a layout) cause confusion, and how do you manage it cleanly?',
+      a: 'Each layout can itself specify its own @layout directive pointing to a parent layout, creating a chain — while powerful for sharing structure (a base "AppLayout" wrapping an "AdminLayout" wrapping a specific admin page), excessive nesting makes it hard to trace where a given piece of chrome (a header, a particular CSS class) actually originates from. Keep layout hierarchies shallow (2-3 levels at most) and use clear, descriptive layout names, documenting which layout each route group uses, to avoid the "which layout is actually rendering this" confusion in larger apps.' },
   ];
 
   revision: RevisionSummary = {

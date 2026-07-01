@@ -61,6 +61,24 @@ export class ArchServiceOriented {
         'ESB concepts (routing, transformation, protocol bridging) appear under new names in API gateways and service meshes.',
       ],
     },
+    {
+      heading: 'SOA\'s Enterprise Service Bus and Why Microservices Diverged From It',
+      points: [
+        'Classic SOA commonly centralized integration logic (routing, transformation, orchestration) in an Enterprise Service Bus (ESB) — a powerful but heavyweight central component that, over time, tended to accumulate business logic and become a bottleneck for change, similar to how a monolith accumulates coupling.',
+        'Microservices architecture deliberately reacted against this centralization — favoring "smart endpoints, dumb pipes," where business logic lives IN the services themselves and the communication infrastructure (message brokers, simple HTTP) stays deliberately minimal and free of embedded business logic.',
+        'This philosophical difference explains why an ESB-heavy SOA implementation and a microservices implementation can look superficially similar (both decompose a monolith into services) while having very different maintainability characteristics — the location of orchestration and business logic is the key distinguishing factor.',
+        'Modern lightweight infrastructure (a simple message broker, a thin API gateway used only for cross-cutting concerns) attempts to capture SOA\'s original integration benefits while avoiding the ESB\'s tendency to become an overloaded, hard-to-change central bottleneck.',
+      ],
+    },
+    {
+      heading: 'Contract-First Design as a Shared SOA and Microservices Practice',
+      points: [
+        'Both SOA and microservices benefit from contract-first design — defining a service\'s interface (WSDL in classic SOA, OpenAPI/protobuf in microservices) before implementation, letting consumer teams build against a stable, agreed-upon contract while the provider team implements independently.',
+        'A well-defined, versioned contract is what actually enables independent service evolution — without it, consumers end up depending on a provider\'s specific implementation details, creating exactly the tight coupling that service-oriented approaches (of either era) are meant to avoid.',
+        'Contract testing (verifying a provider\'s actual behavior matches its published contract, and that consumers\' usage matches what the contract promises) catches breaking changes before they reach production, a discipline equally important whether the underlying architecture is classic SOA or modern microservices.',
+        'The specific technology (SOAP/WSDL vs. REST/OpenAPI vs. gRPC/protobuf) matters far less than the underlying discipline of explicit, versioned, tested contracts between service boundaries — this principle has remained constant even as the specific tooling has evolved significantly over time.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

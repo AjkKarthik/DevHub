@@ -53,6 +53,24 @@ export class BlazorAuthentication {
       points: ['In .NET 8, `dotnet new blazorweb --auth Individual` scaffolds Identity with cookie authentication ready to use. For OIDC (Microsoft, Google, Entra ID), add `builder.Services.AddAuthentication().AddOpenIdConnect(...)` and configure the tenant ID and client secrets. OIDC works identically to standard ASP.NET Core — Blazor components just read the resulting ClaimsPrincipal.',
       'Individual accounts auth uses ASP.NET Core Identity with cookies.', 'OIDC is configured identically to ASP.NET Core MVC.', 'Roles from OIDC tokens appear as ClaimTypes.Role claims.', 'Logout requires a round-trip to the OIDC provider\'s end_session endpoint.']
     },
+    {
+      heading: 'Securing Both the API and the UI Layer',
+      points: [
+        'AuthorizeView and [Authorize] on components only control what the UI SHOWS or renders — they are a user-experience convenience, not a genuine security boundary; any API endpoints the Blazor app calls must independently enforce their own authorization checks server-side.',
+        'A common mistake is hiding a UI button with AuthorizeView and assuming the underlying action is therefore secure — a user could still call the corresponding API endpoint directly (via browser dev tools or a crafted request), so every sensitive server-side operation must validate authorization independently of what the client UI happened to show.',
+        'In Blazor Server, the authentication state is validated once when the SignalR circuit is established, then cached for the circuit\'s lifetime — a token that expires mid-session may not immediately disconnect the user, which is a design consideration for applications with strict session timeout requirements.',
+        'For Blazor WebAssembly specifically, all authorization checks in the client are inherently client-side and can be bypassed by a sufficiently motivated user — WASM authorization exists purely to shape the UI experience, reinforcing that the actual security boundary must always live on the server.',
+      ],
+    },
+    {
+      heading: 'Refresh Token Handling in Blazor WebAssembly',
+      points: [
+        'Blazor WASM apps typically hold access tokens in memory (via an AuthenticationStateProvider implementation) rather than persistent storage, meaning a full page reload requires re-authentication or a silent token refresh — a deliberate tradeoff favoring XSS resistance over persistence convenience.',
+        'Silent token renewal (using a hidden iframe or refresh token flow with the identity provider) lets a WASM app maintain an active session across page reloads without forcing a visible login redirect every time, though implementation details vary significantly by identity provider and OIDC library used.',
+        'Token expiration should be checked proactively before making an API call (rather than only reactively handling a 401 response) — a well-designed AuthenticationStateProvider refreshes an about-to-expire token transparently, giving the user a seamless experience without visible authentication interruptions.',
+        'Testing authentication flows thoroughly (expired tokens, revoked sessions, network failures during token refresh) is often under-invested compared to testing the "happy path" login flow, despite these edge cases being where real-world authentication bugs most commonly surface in production.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -253,6 +271,10 @@ export class BlazorAuthentication {
     { q: 'How do I get the current user in @code?', a: 'Inject AuthenticationStateProvider and call GetAuthenticationStateAsync(). The resulting AuthenticationState.User is the ClaimsPrincipal. Alternatively, declare a [CascadingParameter] Task<AuthenticationState> which is provided by CascadingAuthenticationState.' },
     { q: 'Does [Authorize] work on Blazor WASM?', a: 'Yes, but it is only client-side enforcement. WASM runs in the browser — a user can modify the code or call your API directly. Always validate on the API/server side. Use [Authorize] on WASM for UX only, never as a security boundary.' },
     { q: 'How do I implement logout in Blazor with cookie authentication?', a: 'Navigate to the Identity logout endpoint: Nav.NavigateTo("/Account/Logout", forceLoad: true). The forceLoad causes a full HTTP request which lets ASP.NET Core clear the authentication cookie server-side. Client-side Blazor navigation does not trigger cookie deletion middleware.' },
+    { q: 'What is the difference between AuthenticationStateProvider and the AuthorizeView component?',
+      a: 'AuthenticationStateProvider is the underlying service that supplies the current user\'s authentication state (claims, identity) to the rest of the app — you typically implement a custom one for non-standard auth flows. AuthorizeView is a declarative UI component that consumes that state to conditionally render content based on authorization (showing different markup for authenticated vs anonymous users, or based on roles/policies) without writing imperative C# checks in every component.' },
+    { q: 'Why does Blazor WebAssembly authentication require different handling than Blazor Server authentication?',
+      a: 'Blazor Server runs on the server with a persistent SignalR circuit, so it can directly access ASP.NET Core\'s cookie-based authentication and HttpContext like a traditional server app. Blazor WASM runs entirely in the browser with no server-side session — it must use token-based authentication (typically OIDC/OAuth2 via the Microsoft.AspNetCore.Components.WebAssembly.Authentication package) storing tokens client-side and attaching them to outgoing API calls, since there is no server-side session to rely on between requests.' },
   ];
 
   revision: RevisionSummary = {

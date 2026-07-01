@@ -55,6 +55,12 @@ export class VitestTesting {
       'globals: true makes describe/it/expect global — no explicit imports needed.',
       'coverage.provider: "v8" (fast, no transform) or "istanbul" (detailed branch coverage).',
     ]},
+    { heading: 'Why Vitest Runs Faster Than Jest in Vite Projects', points: [
+      'Vitest reuses the same Vite transform pipeline (esbuild-based) that already powers the project\'s dev server, avoiding the separate Babel/ts-jest transformation step Jest requires — a major source of Vitest\'s faster cold-start and watch-mode performance.',
+      'Native ESM support without a CommonJS interop layer means Vitest avoids an entire class of module-resolution edge cases and transform overhead that Jest\'s CJS-first architecture has historically struggled with in ESM-heavy codebases.',
+      'Vitest\'s Jest-compatible API (describe, test, expect, vi.fn()) means most Jest test suites port over with minimal changes, lowering the switching cost for projects already using Vite for their build tooling.',
+      'Watch mode in Vitest leverages Vite\'s existing module graph and HMR infrastructure to re-run only tests affected by a changed file, rather than Jest\'s separate dependency-tracking implementation.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

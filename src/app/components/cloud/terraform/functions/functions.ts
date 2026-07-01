@@ -80,6 +80,15 @@ export class TfFunctions {
         'base64encode() / base64decode() for encoding data.',
       ],
     },
+    {
+      heading: 'Commonly Used Built-in Functions for Data Transformation',
+      points: [
+        'String functions (format, join, split, replace) handle common text manipulation needs — constructing a resource name from multiple variable parts, or parsing a delimited string input into a list for iteration.',
+        'Collection functions (merge, concat, flatten, distinct) transform lists and maps — merge is particularly useful for combining a set of default tags with resource-specific tags, letting you define common tags once and layer overrides per resource.',
+        'lookup and try provide safe access to map values and expressions that might fail — lookup(map, key, default) avoids an error when a key might not exist, while try() attempts a sequence of expressions and returns the first one that succeeds without erroring, useful for handling optional or variably-structured input.',
+        'Terraform functions are NOT user-definable — unlike a general-purpose programming language, you cannot write custom functions, only compose the built-in ones; complex data transformation logic that genuinely needs custom functions is a signal that the logic may belong in an external tool or a Terraform provider rather than raw HCL expressions.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

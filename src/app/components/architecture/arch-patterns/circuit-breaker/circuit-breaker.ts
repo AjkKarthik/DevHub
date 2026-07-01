@@ -60,6 +60,24 @@ export class ArchCircuitBreaker {
         'Combine circuit breaker with retry: retry on transient errors (429, 503), but do not retry when the circuit is Open.',
       ],
     },
+    {
+      heading: 'The Three Circuit Breaker States and Their Transitions',
+      points: [
+        'In the CLOSED state, requests pass through normally to the downstream service while the circuit breaker monitors the failure rate — this is the default, healthy operating state where the breaker is essentially transparent.',
+        'When failures exceed a configured threshold, the breaker transitions to OPEN, immediately failing all requests without even attempting to call the downstream service — this fast-fail behavior prevents piling up requests against an already-struggling service, which would make its recovery harder.',
+        'After a configured timeout, the breaker transitions to HALF-OPEN, allowing a small number of test requests through — if they succeed, the breaker closes again (resuming normal traffic); if they fail, it reopens, extending the timeout before trying again.',
+        'Tuning the failure threshold and timeout duration requires understanding the downstream service\'s actual failure and recovery characteristics — too sensitive a threshold trips the breaker on normal transient blips, while too lenient a threshold delays protection during a genuine outage.',
+      ],
+    },
+    {
+      heading: 'Circuit Breakers vs. Retries — Complementary, Not Competing',
+      points: [
+        'Retries and circuit breakers solve related but distinct problems — retries handle transient, isolated failures by trying again, while circuit breakers protect against SUSTAINED failure by stopping requests entirely once a failure pattern is detected, preventing retries from making an ongoing outage worse.',
+        'Combining them without care creates a dangerous interaction — aggressive retries against a struggling service can themselves overwhelm it further, delaying the circuit breaker\'s ability to detect the sustained failure pattern and open, worsening the very problem retries were meant to mitigate.',
+        'A well-designed resilience strategy applies the circuit breaker at the OUTER boundary of a call (wrapping the entire retry logic), so retries operate normally during transient issues, but once the circuit breaker detects sustained failure, retries are also short-circuited along with everything else.',
+        'Fallback behavior (returning cached or default data when the circuit is open) is what makes a circuit breaker\'s fast-fail behavior actually useful to end users — an open circuit that simply returns an error to the user provides resilience for the SYSTEM but not necessarily a good experience for the user, unless paired with a graceful fallback.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

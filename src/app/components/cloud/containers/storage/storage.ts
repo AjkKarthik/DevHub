@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Headless Service + StatefulSet enables stable DNS (postgres-0.postgres.ns.svc.cluster.local) for peer discovery.',
     ],
   },
+  {
+    heading: 'The PV/PVC Abstraction and Dynamic Provisioning',
+    points: [
+      'A PersistentVolume (PV) represents actual provisioned storage (a cloud disk, an NFS share), while a PersistentVolumeClaim (PVC) is a user\'s REQUEST for storage matching certain criteria (size, access mode) — this separation lets application manifests request storage generically without needing to know the underlying infrastructure details.',
+      'Dynamic provisioning (via a StorageClass) automatically creates a new PV on-demand when a PVC is created, eliminating the need for a cluster administrator to manually pre-provision storage — most modern clusters rely on dynamic provisioning rather than static PV pre-creation.',
+      'Access modes (ReadWriteOnce, ReadWriteMany, ReadOnlyMany) constrain how many nodes can mount a volume simultaneously — many cloud block storage types only support ReadWriteOnce, meaning a volume can only be attached to Pods on a single node at a time, a common surprise when trying to scale a stateful workload across nodes.',
+      'The reclaim policy (Retain, Delete, Recycle) determines what happens to the underlying storage after its PVC is deleted — Delete policy destroys the actual data, while Retain preserves it for manual recovery, a critical distinction to get right for data that must survive accidental PVC deletion.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

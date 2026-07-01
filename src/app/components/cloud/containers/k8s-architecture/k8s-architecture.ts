@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       '5. kubelet reports pod status back to kube-apiserver → controllers update their state accordingly.',
     ],
   },
+  {
+    heading: 'Control Plane vs. Data Plane Responsibilities',
+    points: [
+      'The control plane (API server, etcd, scheduler, controller manager) makes decisions about desired cluster state and stores that state — it does NOT run application workloads itself, keeping cluster management logically separate from the workloads it manages.',
+      'The data plane (worker nodes running kubelet, kube-proxy, and the container runtime) is where actual application pods run — a control plane outage does not immediately stop already-running pods, since kubelet continues managing existing pods independently for a period.',
+      'etcd is the single source of truth for all cluster state — losing etcd data (without backups) means losing the cluster\'s entire configuration and object state, which is why etcd backup and restore procedures are a critical, non-optional operational concern.',
+      'This separation of concerns (declarative desired state in the control plane, reconciliation loops continuously working to match actual state to desired state) is the core architectural pattern underlying essentially every Kubernetes controller, not just the built-in ones.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

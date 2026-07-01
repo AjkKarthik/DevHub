@@ -74,6 +74,15 @@ export class AzureVirtualMachines {
         'JIT VM Access (via Microsoft Defender for Cloud) opens NSG port 22/3389 for a specific source IP and time window (e.g. 3 hours) upon request, then automatically closes it. Better than keeping ports open permanently.',
       ]
     },
+    {
+      heading: 'VM Scale Sets for Elastic, Uniform Compute',
+      points: [
+        'A VM Scale Set manages a group of identical, load-balanced VMs as a single logical unit, automatically scaling the instance count up or down based on defined rules (CPU utilization, custom metrics, or a schedule) — eliminating the need to manually provision and de-provision individual VMs.',
+        'Scale sets integrate with Azure Load Balancer or Application Gateway to automatically distribute traffic across all healthy instances, and automatically replace unhealthy instances (via health probes), providing self-healing behavior that standalone VMs do not have on their own.',
+        'Rolling upgrades let a scale set update its VM image or configuration gradually across instances (a batch at a time) rather than all at once, reducing the risk that a bad update takes down the entire fleet simultaneously.',
+        'Scale sets are best suited for STATELESS workloads that can be freely created and destroyed — stateful applications requiring stable per-instance identity or storage are generally a poor fit for scale sets and are better served by other Azure compute options.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

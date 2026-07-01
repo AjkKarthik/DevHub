@@ -55,6 +55,12 @@ export class ApiTesting {
       'Test the 401 path: omit the token and expect 401.',
       'Test the 403 path: use a low-privilege token and try to access an admin endpoint.',
     ]},
+    { heading: 'Contract-First vs. Implementation-First API Testing', points: [
+      'Contract-first testing validates that an API conforms to a pre-agreed schema (OpenAPI/Swagger) before implementation details are tested, catching breaking changes to the public interface independent of internal logic correctness.',
+      'Implementation-first testing (writing tests against whatever the API currently returns) risks tests that pass despite the API violating its documented contract, since nothing checks the response shape against a schema.',
+      'Schema validation libraries (like ajv for JSON Schema) can be layered onto existing API tests to add contract verification without rewriting the entire test suite from scratch.',
+      'Testing error responses (4xx/5xx status codes, error body shape) is as important as testing the happy path, since consumers build error-handling logic that depends on a stable, predictable error contract.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

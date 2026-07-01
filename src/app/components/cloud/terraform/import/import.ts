@@ -74,6 +74,15 @@ export class TfImport {
         'Iterative: import → generate → review → plan → fix drift → plan shows no changes → done.',
       ],
     },
+    {
+      heading: 'Importing Existing Infrastructure Safely',
+      points: [
+        'terraform import (or the declarative import block introduced in Terraform 1.5+) brings an existing, manually-created resource under Terraform management by associating it with a resource address in state — without this step, Terraform has no knowledge of resources that already exist outside its management.',
+        'Importing only adds the resource to state — it does NOT generate the corresponding HCL configuration automatically (for the older CLI-based import); you must write matching configuration yourself, and a mismatch between the imported state and your configuration will show as a diff on the next plan.',
+        'The newer declarative import block (paired with terraform plan -generate-config-out) can generate a starting HCL configuration automatically from the imported resource\'s actual attributes — significantly reducing the manual effort of writing configuration to match an already-existing resource precisely.',
+        'Importing resources in bulk (many existing resources at once) benefits from careful planning — importing incrementally and verifying each terraform plan shows no unexpected changes after each import avoids accidentally importing a resource with configuration that would immediately trigger a destructive change on the next apply.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

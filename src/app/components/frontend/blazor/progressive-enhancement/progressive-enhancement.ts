@@ -47,6 +47,24 @@ export class BlazorProgressiveEnhancement {
       points: ['Use `data-enhance` on forms that benefit from partial page updates — search boxes, filter forms, pagination. Avoid it for forms that need the full page lifecycle (login redirects, payment flows). For full page navigation after submit, use a plain form without `data-enhance` so the redirect response loads cleanly. Always test the no-JS fallback for any form used in critical user flows.',
       'data-enhance enables enhanced form submission on a per-form basis.', 'Forms with redirect-on-success should stay as plain forms.', 'Test the no-JS path for all critical forms.', 'Enhanced navigation is on by default; opt out with data-enhance-nav="false".']
     },
+    {
+      heading: 'Balancing Enhanced Navigation with Full Interactivity',
+      points: [
+        'Static Server-Side Rendering with enhanced navigation provides fast, SEO-friendly initial page loads with SPA-like navigation, but the page has no persistent interactive state — form validation feedback and dynamic UI updates require either full page reloads or upgrading specific components to an interactive render mode.',
+        'A common progressive enhancement strategy renders most of a page as Static SSR for speed and SEO, while opting individual interactive widgets (a shopping cart icon, a live search box) into InteractiveServer or InteractiveWebAssembly render mode — getting the performance benefits of static rendering everywhere it is not needed.',
+        'Testing that a page genuinely degrades gracefully without JavaScript (disabling JS in browser dev tools and verifying core functionality like navigation and form submission still work) validates that the progressive enhancement is actually functioning as intended, not just theoretically present.',
+        'Progressive enhancement particularly benefits users on slow connections or older devices, and improves resilience against a JavaScript error anywhere on the page breaking the entire application — a philosophy of "core functionality works without JS, enhanced functionality layers on top" produces more robust applications overall.',
+      ],
+    },
+    {
+      heading: 'Enhanced Forms and Progressive Form Submission',
+      points: [
+        'A standard HTML form (with correct method and action attributes) submits and works correctly even with JavaScript entirely disabled — a genuine progressive enhancement baseline, since it functions as a normal browser form submission without any dependency on client-side script.',
+        'When the Blazor enhancement script is active, form submissions are intercepted and handled via a background fetch with DOM patching instead of a full page reload — improving perceived responsiveness for users with JavaScript enabled, without requiring a separate implementation for the no-JS fallback case.',
+        'Enhanced form submission preserves scroll position and avoids the visual flash of a full page reload, closely approximating an SPA-like experience while the underlying implementation remains a standard, accessible HTML form that degrades gracefully.',
+        'Testing both the enhanced (JS-enabled) and baseline (JS-disabled) submission paths ensures the progressive enhancement genuinely works as intended — a form that silently breaks with JS disabled (perhaps due to a client-side-only validation check with no server-side equivalent) fails the core promise of progressive enhancement.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -258,6 +276,10 @@ else
     { q: 'Can I mix Static SSR and interactive components on the same page?', a: 'Yes. A Static SSR page can embed interactive islands: `<Counter @rendermode="InteractiveServer" />`. The page HTML loads without JS; the interactive island bootstraps once JS loads. This gives the best of both worlds — fast initial load and rich interactivity.' },
     { q: 'How is enhanced navigation different from a traditional SPA?', a: 'Enhanced navigation preserves the server-rendering model — each navigation still hits the server and gets a full HTML response. The client just swaps the content without re-parsing scripts and styles. A traditional SPA routes entirely client-side and never returns to the server for navigation.' },
     { q: 'Do I need to configure anything for enhanced navigation?', a: 'No — it is enabled by default when blazor.web.js is included. Opt individual links out with data-enhance-nav="false".' },
+    { q: 'What does "enhanced navigation" mean in Blazor with Static Server-Side Rendering (SSR), and what problem does it solve?',
+      a: 'In .NET 8\'s Static SSR mode, Blazor pages render as plain HTML with no persistent circuit — by default, every link click triggers a full page reload, similar to a traditional MVC app. Enhanced navigation (enabled by default with the Blazor script) intercepts link clicks and form submissions, fetching just the updated page content via a background fetch and patching the existing DOM rather than a full page reload, giving an SPA-like fast navigation experience while keeping the simplicity and SEO benefits of server-rendered static HTML.' },
+    { q: 'What is progressive enhancement\'s relationship to Blazor\'s "enhanced forms" feature?',
+      a: 'Enhanced forms in Blazor build on the same idea as enhanced navigation — a form with proper HTML method/action attributes works correctly even with JavaScript disabled (a true progressive enhancement baseline, since it is just a standard HTML form submission), but when the Blazor enhancement script is active, form submissions are intercepted and handled via a background fetch with DOM patching instead of a full page reload, improving the experience for users with JS enabled without requiring a different implementation for the no-JS case.' },
   ];
 
   revision: RevisionSummary = {

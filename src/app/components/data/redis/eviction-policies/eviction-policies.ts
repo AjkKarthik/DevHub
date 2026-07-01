@@ -62,6 +62,24 @@ export class RedisEvictionPolicies {
         'volatile-ttl evicts keys with the shortest remaining TTL first — a pragmatic choice when keys already have TTLs and you want the "most expired" keys gone first.',
       ],
     },
+    {
+      heading: 'Choosing the Right Eviction Policy for Your Workload',
+      points: [
+        'allkeys-lru evicts the least recently used key across the entire keyspace when memory limit is reached — appropriate for a pure cache use case where any key could reasonably be evicted and recency of access is the best predictor of future access.',
+        'volatile-lru only evicts among keys that have an explicit TTL set, leaving keys without expiration untouched — useful when Redis holds a mix of genuinely persistent data (no TTL) and cacheable, evictable data (with TTL) in the same instance.',
+        'noeviction (the default) rejects write commands once memory limit is reached rather than evicting anything — appropriate when Redis is being used as a primary data store where silently losing data via eviction would be unacceptable, accepting write failures instead.',
+        'Monitoring evicted_keys in Redis INFO output over time reveals whether the configured maxmemory is genuinely sufficient for the workload — a steadily growing eviction count indicates the cache is under memory pressure and either needs more memory or a review of what is being cached.',
+      ],
+    },
+    {
+      heading: 'Sampling-Based LRU Approximation',
+      points: [
+        'Redis does not implement true LRU (which would require tracking exact access order for every key, an expensive operation) — instead it uses an approximated LRU algorithm that samples a small random set of keys and evicts the least recently used among that sample.',
+        'The maxmemory-samples configuration controls how many keys are sampled when an eviction decision is needed — a higher sample size produces a closer approximation to true LRU at the cost of slightly more CPU work per eviction, while a lower value is faster but less precise.',
+        'This sampling-based approach is a deliberate engineering tradeoff — true LRU tracking would add memory and CPU overhead to every single key access, while the sampling approximation adds overhead only at eviction time and in practice produces eviction decisions close enough to true LRU for most caching workloads.',
+        'Redis also offers LFU (Least Frequently Used) eviction policies (allkeys-lfu, volatile-lfu) as an alternative to LRU — LFU tracks access frequency rather than recency, which can produce better eviction decisions for workloads where some keys are accessed very frequently but not necessarily most recently.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

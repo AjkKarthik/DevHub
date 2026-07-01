@@ -71,6 +71,15 @@ export class AiComputerVision {
         'torchvision.models: resnet50(pretrained=True), efficientnet_b0(pretrained=True), vit_b_16(pretrained=True). One line to load a state-of-the-art model.',
       ],
     },
+    {
+      heading: 'Transfer Learning: Why CV Models Rarely Train From Scratch',
+      points: [
+        'Training a convolutional or vision transformer model from scratch requires enormous labeled datasets and compute — transfer learning (fine-tuning a model pre-trained on a large dataset like ImageNet) achieves strong results with a fraction of the data and compute.',
+        'Early layers of a pre-trained CV model learn general-purpose features (edges, textures, shapes) that transfer well across tasks, while later layers learn task-specific features — freezing early layers and only fine-tuning later layers is a common and effective strategy.',
+        'Data augmentation (random crops, flips, color jitter) artificially expands a limited training dataset by generating varied versions of existing images, reducing overfitting risk when labeled data is scarce, which is the common case for most real-world CV applications.',
+        'Choosing an appropriate pre-trained backbone (ResNet, EfficientNet, a vision transformer) involves balancing accuracy against inference latency and model size — the largest, most accurate model is not always the right choice for a resource-constrained deployment target.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

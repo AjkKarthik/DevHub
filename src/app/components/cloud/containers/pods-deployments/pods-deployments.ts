@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Set initialDelaySeconds to give the container time to start before the first probe fires.',
     ],
   },
+  {
+    heading: 'Why Pods, Not Containers, Are the Atomic Scheduling Unit',
+    points: [
+      'A Pod can contain multiple tightly-coupled containers (an application container plus a logging sidecar) that share the same network namespace and can communicate via localhost — Kubernetes schedules and scales the Pod as a single unit, not individual containers within it.',
+      'All containers in a Pod are scheduled to the SAME node together and share the Pod\'s IP address — this co-location guarantee is what makes sidecar patterns (a service mesh proxy, a log shipper) practical, since they can rely on being on the same node and network as the main application container.',
+      'A Deployment does not manage Pods directly — it manages a ReplicaSet, which in turn manages the actual Pods, adding a layer that enables Deployment features like rollout history and rollback that a bare ReplicaSet does not provide on its own.',
+      'Pods are inherently ephemeral and disposable — Kubernetes may terminate and recreate a Pod for many reasons (node failure, scaling, rolling update), which is why applications running in Pods must be designed to tolerate restarts rather than assuming long-lived process identity.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

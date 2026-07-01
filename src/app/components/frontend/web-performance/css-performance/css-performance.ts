@@ -506,6 +506,10 @@ article > section {
       q: 'How do I generate critical CSS automatically?',
       a: 'Tools: critters (webpack/Vite plugin, used by Angular CLI) inlines critical CSS automatically. Critical (npm package) uses Puppeteer to compute above-the-fold styles. Penthouse does the same server-side. In Angular projects, critters is built into the Angular build pipeline — enable it in angular.json → "optimization": { "styles": { "inlineCritical": true } }.',
     },
+    {
+      q: 'Can complex CSS selectors actually cause measurable performance problems in modern browsers?',
+      a: 'Modern browser engines (Blink, WebKit, Gecko) evaluate selectors right-to-left and have heavily optimized selector matching, so the old advice to avoid descendant selectors for performance is largely outdated for typical page sizes. The more common real-world CSS performance issue is forced synchronous layout from JavaScript reading layout properties (offsetHeight, getComputedStyle) interleaved with style changes — "layout thrashing" — not selector complexity itself. Selector complexity becomes measurable only at extreme scale (tens of thousands of DOM nodes with deeply nested, highly specific selectors), which is rare outside generated documentation or data-grid-heavy apps.',
+    },
   ];
 
   revision: RevisionSummary = {

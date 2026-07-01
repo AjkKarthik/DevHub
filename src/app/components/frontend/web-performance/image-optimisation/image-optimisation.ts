@@ -429,6 +429,10 @@ export default defineConfig({
       q: 'Are there any downsides to AVIF?',
       a: 'AVIF\'s main downsides: (1) encoding is significantly slower than WebP/JPEG — generating AVIF variants at build time adds minutes to large image pipelines; (2) older browsers (pre-2021) don\'t support it — always provide a WebP or JPEG fallback in <picture>; (3) Safari only added full AVIF support in iOS 16 / macOS Ventura (2022).',
     },
+    {
+      q: 'When should you use AVIF over WebP, and what are the tradeoffs?',
+      a: 'AVIF typically produces 20-30% smaller files than WebP at equivalent visual quality, especially for photographic content, and supports higher dynamic range and better gradients with less banding. The tradeoffs: AVIF encoding is significantly slower (impacts build/CI time for static generation), and browser support, while now broad in modern Chrome/Firefox/Safari, still lags WebP in some embedded/older contexts. Practical approach: use a <picture> element with AVIF as the first source, WebP as fallback, and JPEG/PNG as the final fallback — letting the browser pick the best format it supports rather than forcing a single format choice.',
+    },
   ];
 
   revision: RevisionSummary = {

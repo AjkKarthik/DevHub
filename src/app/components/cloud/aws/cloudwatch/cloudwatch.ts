@@ -569,6 +569,12 @@ async function processOrder(event: any) { return { success: true }; }`,
       answer: 1,
       explanation: 'Metric Filters parse log events using a pattern (e.g. "[ERROR]") and extract numeric values as CloudWatch Metrics automatically, without any additional code. Log Insights is for interactive queries. Subscription Filters stream logs to external destinations.',
     },
+    {
+      q: 'What is the difference between a CloudWatch Metric and a CloudWatch Log?',
+      options: ['They are the same thing with different names', 'Metrics are numeric time-series data points (CPU%, request count); Logs are text-based event records emitted by applications and services', 'Metrics are for Lambda only; Logs are for EC2 only', 'Logs are always more expensive than Metrics'],
+      answer: 1,
+      explanation: 'Metrics are lightweight numeric data points used for dashboards and alarms (e.g., CPUUtilization). Logs are detailed text records (application output, access logs) stored in Log Groups, searchable via CloudWatch Logs Insights — useful for debugging specific events that a metric alone cannot explain.',
+    },
   ];
 
   qna: QnaItem[] = [
@@ -587,6 +593,14 @@ async function processOrder(event: any) { return { success: true }; }`,
     {
       q: 'How do I query logs across multiple Lambda functions simultaneously in Log Insights?',
       a: 'Log Insights supports querying multiple log groups in a single query. In the console, select multiple log groups from the dropdown. Via CLI, pass multiple --log-group-names arguments or use a log group prefix with --log-group-name-prefix. You can also use a CloudWatch Logs query with log group wildcards. A common pattern: query /aws/lambda/* to search all Lambda functions, then filter by @logStream or parse the function name from @logStream to find cross-function errors or correlate a request ID across service boundaries.',
+    },
+    {
+      q: 'What is a CloudWatch composite alarm and why would you use one?',
+      a: 'A composite alarm combines the state of multiple existing alarms using AND/OR logic (e.g., alert only if BOTH high CPU AND high error rate alarms are in ALARM state simultaneously). This reduces alert noise from individual metric blips by requiring a more meaningful, correlated combination of conditions before paging on-call engineers — useful for reducing false-positive incidents.',
+    },
+    {
+      q: 'How does CloudWatch Logs Insights differ from simply searching raw log streams?',
+      a: 'CloudWatch Logs Insights provides a purpose-built query language (similar to SQL) to filter, parse, aggregate, and visualize log data across one or many log groups — for example, computing p99 latency from structured JSON logs or counting errors by type over a time window. This is far more powerful than manually scrolling through or grep-style searching raw log streams, especially for high-volume production logs.',
     },
   ];
 

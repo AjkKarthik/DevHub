@@ -54,6 +54,12 @@ export class MswTesting {
       'MSW tests work even if you swap fetch for axios or a GraphQL client.',
       'MSW is the recommended approach for testing components that fetch data.',
     ]},
+    { heading: 'Why MSW Intercepts at the Network Layer', points: [
+      'Mock Service Worker intercepts requests at the actual network layer (via Service Worker in browsers, or request interception in Node), meaning application code makes real fetch/axios calls with no awareness it is being mocked.',
+      'This network-layer approach means the same mock handlers work identically whether tests run in a browser, Node test runner, or Storybook — a single source of truth for mocked API behavior across environments.',
+      'Because application code is unaware of the mocking, MSW-based tests exercise the real request-building and response-parsing logic, catching bugs that a higher-level "mock the fetch function" approach would miss entirely.',
+      'MSW handlers can simulate error responses, slow responses, and edge-case payloads just as easily as happy-path responses, making it straightforward to test error-handling code paths that are hard to trigger against a real backend.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

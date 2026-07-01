@@ -74,6 +74,15 @@ export class RedisStrings {
         'Use case: daily active users — store one bit per user ID per day. 10M users = 1.25 MB per day.',
       ],
     },
+    {
+      heading: 'Atomic Counters and String Manipulation Commands',
+      points: [
+        'INCR and DECR atomically increment or decrement a string value interpreted as an integer — this atomicity is what makes Redis counters safe under concurrent access, since a read-modify-write cycle done in application code would be vulnerable to race conditions that INCR entirely avoids.',
+        'INCRBYFLOAT provides atomic floating-point increment for use cases like accumulating a running total with decimal precision (an account balance, a rating average) where INCR\'s integer-only semantics are insufficient.',
+        'SETNX (or the modern SET key value NX) sets a value only if the key does not already exist, atomically — this is the fundamental building block for implementing distributed locks in Redis, since only one client\'s SETNX call can succeed for a given lock key at any moment.',
+        'GETSET (or SET with the GET option) atomically sets a new value while returning the previous value in a single round trip — useful for implementing simple atomic swap patterns, like retrieving and resetting an accumulated counter value in one operation without a race condition between the read and the reset.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

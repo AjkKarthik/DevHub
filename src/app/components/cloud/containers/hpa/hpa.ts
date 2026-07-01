@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'VPA + HPA conflict on the same resource metric — use VPA on memory, HPA on CPU/custom metrics, or use KEDA for both.',
     ],
   },
+  {
+    heading: 'HPA Stabilization and Scaling Behavior Tuning',
+    points: [
+      'Without stabilization, an HPA can "flap" — rapidly scaling up and down in response to short-lived metric spikes, causing repeated pod churn that adds overhead and instability without genuinely matching sustained demand.',
+      'behavior.scaleDown.stabilizationWindowSeconds delays scale-down decisions until a metric has stayed low for a sustained window, preventing premature scale-down in response to a brief dip that does not represent genuinely reduced load.',
+      'Scale-up is typically configured to react faster than scale-down (a shorter or no stabilization window), reflecting that under-provisioning during a real traffic spike is usually more costly than briefly over-provisioning during a lull.',
+      'HPA decisions are based on METRIC values, not raw resource usage alone — a poorly chosen metric (like average CPU when the real bottleneck is memory or queue depth) can cause the HPA to scale confidently in the wrong direction relative to actual application health.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -49,6 +49,24 @@ export class JsPatterns {
         '<strong>Middleware/Pipeline</strong>: chain functions where each receives a value and a <code>next</code> function. Express.js middleware, Redux middleware, and Angular interceptors all use this pattern.',
       ]
     },
+    {
+      heading: 'The Factory Pattern',
+      points: [
+        'A factory function encapsulates object creation logic behind a function call (<code>createUser(data)</code>) rather than exposing a constructor directly — useful when creation involves conditional logic, validation, or choosing between multiple concrete implementations.',
+        'Factories decouple calling code from the specific class being instantiated — a factory can return different concrete types based on input (a <code>createShape(type)</code> factory returning a Circle, Square, or Triangle instance) without the caller needing to know which class is used.',
+        'In JavaScript, factories are often simpler than in class-based languages since functions are first-class and object literals do not require an explicit class definition — a factory can just be a function returning a plain object with the desired shape.',
+        'Factories are particularly useful for testing — a factory function that creates test fixtures with sensible defaults (<code>createTestUser({ name: "Custom" })</code> overriding just what a specific test needs) reduces repetitive test setup boilerplate significantly.',
+      ]
+    },
+    {
+      heading: 'The Module Pattern and Encapsulation',
+      points: [
+        'The module pattern uses a closure (historically an IIFE, now typically an ES module) to create private state that is inaccessible from outside, exposing only a deliberately chosen public API — the original mechanism for encapsulation before ES2022 class private fields existed.',
+        'ES modules themselves are a native implementation of this pattern — every module has its own private scope by default, and only explicitly exported bindings are accessible to importers, with no need for a manual IIFE wrapper.',
+        'The Revealing Module Pattern variant defines all functions and variables privately first, then returns an object literal explicitly mapping which of those private members should be public — making the public API clearly visible in one place at the end of the module.',
+        'Modern JavaScript increasingly favors class private fields (<code>#field</code>) or plain module-scoped state over manual closure-based encapsulation tricks, since they are more readable and have first-class language and tooling support.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [
@@ -407,6 +425,14 @@ flaky().then(console.log).catch(console.error);`,
     {
       q: 'What is the Proxy pattern (structural) and how is it different from JavaScript\'s Proxy object?',
       a: 'The Proxy <strong>design pattern</strong> is about providing a substitute object that controls access to another — adding logging, lazy initialisation, or access control. JavaScript\'s <code>Proxy</code> object is a built-in runtime mechanism that intercepts fundamental operations (get, set, call) at the VM level. The design pattern and the language feature solve the same concept but at different layers — the design pattern can be implemented without <code>Proxy</code> objects.',
+    },
+    {
+      q: 'What is the difference between the Strategy pattern and simply passing a function as a parameter?',
+      a: 'They are closely related — passing a function IS a lightweight implementation of Strategy in a language with first-class functions like JavaScript. The formal Strategy pattern (with a class per strategy implementing a shared interface) matters more in languages without first-class functions, or when a "strategy" needs to carry meaningful internal state and multiple methods beyond a single callable. In idiomatic JavaScript, a higher-order function parameter (array.sort(compareFn)) is usually the simpler, equally valid expression of the same pattern.',
+    },
+    {
+      q: 'When does the Singleton pattern become an anti-pattern in JavaScript applications?',
+      a: 'Singletons introduce global mutable state and hidden dependencies — code anywhere in the app can read or mutate the singleton without it appearing in any function signature, making the codebase harder to reason about and test in isolation (tests can leak state between each other via the shared singleton instance). In module-based JavaScript, a module\'s top-level exported state already behaves like a singleton implicitly — explicitly wrapping it in a "Singleton class" pattern rarely adds value and often signals an opportunity to instead pass dependencies explicitly (dependency injection) for better testability.',
     },
   ];
 

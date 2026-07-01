@@ -59,6 +59,24 @@ export class NodeExpress {
         'Structure error responses consistently: { error: { message, code, status } }. Use HTTP status codes correctly: 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (validation), 500 (server error).',
       ]
     },
+    {
+      heading: 'Middleware Composition and Order',
+      points: [
+        'Express executes middleware strictly in registration order for a matching request path — a body-parsing middleware registered after a route that reads req.body will never see the parsed body, a surprisingly common source of "req.body is undefined" bugs.',
+        'app.use() without a path applies to every request; app.use("/api", middleware) scopes it to a path prefix — using scoped middleware avoids unnecessary work (like auth checks) running on routes that do not need it (like a public health-check endpoint).',
+        'Router-level middleware (via express.Router()) lets you compose middleware chains per feature module — a userRouter can have its own auth middleware applied only to user routes, keeping cross-cutting concerns modular rather than one giant global middleware stack.',
+        'Error-handling middleware (four parameters) must be registered last, after all routes and other middleware — Express identifies it purely by parameter count, and its position in the registration order determines which errors it can catch.',
+      ]
+    },
+    {
+      heading: 'Express Request Validation Patterns',
+      points: [
+        'Validate request input (body, query, params) with a schema library (Zod, Joi, express-validator) as dedicated middleware before the route handler runs, rejecting malformed requests with a 400 early rather than letting invalid data reach business logic.',
+        'Centralizing validation as middleware avoids duplicating manual if-checks across route handlers and produces consistent error response shapes across all endpoints, since one validation middleware pattern is reused everywhere.',
+        'Sanitize as well as validate: trimming whitespace, normalizing casing on emails, and stripping unexpected fields (to prevent mass-assignment vulnerabilities where a client sends an unexpected isAdmin: true field) are separate concerns from type/format validation.',
+        'Validate at the API boundary, not deep inside services — by the time a request reaches your business logic, its shape should already be guaranteed correct, letting internal code trust its inputs rather than re-validating defensively everywhere.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -288,6 +306,9 @@ app.listen(3000);`
     { q: 'When should I use Express vs other Node.js frameworks?', a: 'Express: when you want maximum flexibility, a huge ecosystem, and don\'t mind assembling your own stack. Fastify: when performance matters (~2x Express throughput) and you want schema-based validation built in. NestJS: when you need a structured, Angular-like architecture for large teams. Hono: for edge runtimes (Cloudflare Workers). Express is still the most widely deployed — its simplicity and ecosystem make it a safe choice.' },
     { q: 'How do I structure a large Express application?', a: 'Feature-based folder structure: src/users/ contains users.router.js, users.controller.js, users.service.js, users.repository.js. Controller: HTTP in/out (req/res). Service: business logic (no HTTP). Repository: database access. Mount routers in app.js. This separation makes testing each layer easy and prevents "fat route handlers".' },
     { q: 'What is the difference between app.use() and app.get()?', a: 'app.use() matches any HTTP method and optionally a path prefix. app.get() matches only GET requests on an exact path. app.use("/api") handles GET /api, POST /api/users, etc. app.get("/api") only handles GET /api exactly. Use app.use() for middleware (body parsers, auth) and feature routers; app.get/post/put/delete for route handlers.' },
+    { q: 'What is the execution order of Express middleware, and how does next() control it?', a: 'Express executes middleware in the exact order they are registered via app.use() or app.METHOD(), for matching routes. Calling next() inside a middleware function hands control to the next matching middleware in the chain; omitting next() (without sending a response) leaves the request hanging forever. Calling next(error) skips all remaining normal middleware and jumps directly to the nearest error-handling middleware (one with four parameters: (err, req, res, next)).' },
+    { q: 'Why does Express error-handling middleware require exactly four parameters?', a: 'Express distinguishes error-handling middleware from regular middleware purely by function arity — a function with the signature (err, req, res, next) (four parameters) is registered as an error handler, while functions with three parameters (req, res, next) are treated as regular middleware even if you intend them to handle errors. This is a common bug source: accidentally writing a three-parameter "error handler" silently makes it a normal middleware that never receives the err argument.' },
+    { q: 'How do you structure Express routes for a large application to avoid one giant routes file?', a: 'Use express.Router() to create modular, mountable route handlers per resource or feature (userRouter, orderRouter), each in its own file, then mount them in the main app with app.use("/users", userRouter). Combine this with a layered architecture (routes → controllers → services → data access) so route files stay thin (just routing and middleware wiring) while business logic lives in dedicated, independently testable service modules.' },
   ];
 
   revision: RevisionSummary = {

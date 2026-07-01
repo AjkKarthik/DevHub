@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Use conditions (Ready, Degraded, Progressing) in status following the K8s API conventions.',
     ],
   },
+  {
+    heading: 'Why the Operator Pattern Extends Beyond Simple CRDs',
+    points: [
+      'A CRD alone just defines a new object schema Kubernetes can store — without a controller actively watching and reconciling that object, creating a custom resource does nothing beyond storing data, since nothing acts on it.',
+      'An Operator pairs a CRD with a controller that encodes OPERATIONAL knowledge (how to back up a database, how to handle a failed replica, how to perform a version upgrade) — this is what distinguishes an Operator from a plain CRD, which only defines structure without behavior.',
+      'The reconciliation loop pattern (observe actual state, compare to desired state, take action to close the gap, repeat) is the same core mechanism underlying both built-in Kubernetes controllers and custom Operators, making Operators feel like natural extensions of Kubernetes rather than bolted-on tooling.',
+      'Operators are most valuable for STATEFUL, operationally-complex applications (databases, message brokers) where manual operational runbooks would otherwise be needed — for simple stateless applications, a plain Deployment is usually sufficient without needing custom Operator logic.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

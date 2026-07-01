@@ -54,6 +54,24 @@ export class BlazorPerformance {
       points: ['Blazor WASM apps download the .NET runtime and app assemblies on first load. AOT compilation (configured in .csproj) eliminates runtime JIT — reducing startup time at the cost of a larger download. Enable trimming and compression in production. Lazy-load assemblies with `@attribute [Route]` on separate assemblies. For Blazor Server, reduce memory per circuit by disposing resources promptly and setting a short DisconnectedCircuitRetentionPeriod.',
       'AOT: faster startup, larger download — enable for performance-critical WASM apps.', 'Trimming removes unused code from published output.', 'Lazy assembly loading reduces the initial WASM download.', 'Server circuits hold memory — dispose promptly, tune retention period.']
     },
+    {
+      heading: 'Reducing Unnecessary Re-renders',
+      points: [
+        'ShouldRender() can be overridden to skip a re-render entirely when a component\'s relevant state has not meaningfully changed — useful for components receiving frequent parameter updates where most updates do not actually affect the rendered output.',
+        'Splitting a large component into smaller child components isolates re-render scope — when state changes, only the specific child component depending on that state re-renders, rather than the entire parent tree re-rendering on every state change regardless of what actually changed.',
+        '@key on repeated elements in a list gives Blazor\'s diffing algorithm a stable identity per item, preventing unnecessary re-renders and state loss (like input focus) for items that did not actually change when the list is reordered or has items added/removed from the middle.',
+        'In Blazor Server specifically, minimizing the frequency and payload size of state updates sent over the SignalR circuit directly impacts perceived responsiveness — batching multiple related state changes into a single StateHasChanged() call rather than triggering several separate re-renders in quick succession reduces circuit traffic.',
+      ],
+    },
+    {
+      heading: 'Profiling Blazor Applications to Find Real Bottlenecks',
+      points: [
+        'Browser DevTools Performance panel captures a timeline of rendering, scripting, and layout work — for Blazor WASM, this reveals actual client-side execution time; for Blazor Server, remember that much of the "real work" happens server-side and will not appear in a client-side browser profile at all.',
+        'dotnet-trace and dotnet-counters (standard .NET diagnostic tools) can profile the server-side portion of a Blazor Server application, revealing CPU and memory usage patterns across all active circuits — essential for diagnosing server-side performance issues that a browser-only profiling approach would completely miss.',
+        'Guessing at performance bottlenecks without profiling first frequently leads to optimizing the wrong thing — a component suspected of causing slow rendering might actually be fine, while the real bottleneck is an unrelated expensive API call or an inefficient LINQ query buried in a data-fetching method.',
+        'Performance optimization should be driven by actual measured user-facing metrics (Time to Interactive, perceived responsiveness during interaction) rather than purely internal metrics (render count, component instantiation time) that may not correlate directly with what users actually experience as slow.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -266,6 +284,10 @@ app.UseOutputCache();
     { q: 'Should I override ShouldRender on every component?', a: 'No — only where performance profiling shows unnecessary re-renders. Most components are fast enough without it. Prioritise ShouldRender on components that: are rendered many times (list items), receive frequent external updates, or have expensive computed output.' },
     { q: 'How does [StreamRendering] help performance?', a: '[StreamRendering] reduces Time to First Byte by sending the page shell (header, nav, static content) immediately. The user sees content faster even though the data fetch takes the same time. It does not speed up the data fetch — it optimises perceived performance.' },
     { q: 'What is the biggest single performance win for a large Blazor Server app?', a: 'Usually: reducing unnecessary StateHasChanged calls and render cycles. Profile first — most apps spend 80% of render time on 20% of components. After that, consider caching hot API paths with IMemoryCache and using Virtualize for large lists.' },
+    { q: 'Why does excessive use of @bind on every keystroke (oninput) hurt performance in Blazor Server specifically?',
+      a: 'In Blazor Server, every bound update is sent over the SignalR connection to the server, processed, and a re-render diff is sent back — unlike Blazor WASM where everything happens locally in the browser. Binding with @bind:event="oninput" on a text field triggers this round-trip on every single keystroke, which for a fast typist or a slow/high-latency network connection can introduce visible lag or flood the server with rapid updates; debouncing the input (updating local state immediately but only triggering the bound C# update after a pause) mitigates this.' },
+    { q: 'How does @key help Blazor\'s diffing algorithm avoid unnecessary DOM updates when rendering a list?',
+      a: 'Without @key, Blazor\'s diffing algorithm compares list items positionally — if an item is removed from the middle of a list, every subsequent item appears to have "changed" at its position, causing Blazor to needlessly re-render and potentially lose UI state (like input focus or scroll position) for items that did not actually change. Adding @key="item.Id" on the repeated element gives Blazor a stable identity to track each item by, letting it correctly recognize that only the removed item changed, preserving the state and avoiding unnecessary re-renders of unrelated items.' },
   ];
 
   revision: RevisionSummary = {

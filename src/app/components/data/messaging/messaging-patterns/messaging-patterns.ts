@@ -60,6 +60,24 @@ export class MessagingPatterns {
         'Dead Letter Channel: redirect unprocessable messages for inspection and manual replay.',
       ]
     },
+    {
+      heading: 'Competing Consumers Pattern for Work Distribution',
+      points: [
+        'The competing consumers pattern runs multiple identical consumer instances against the same queue, each processing a subset of messages — this horizontally scales throughput simply by adding more consumer instances, without changing the producer or message format.',
+        'This pattern naturally load-balances work — a faster consumer instance processes proportionally more messages than a slower one, since each pulls the next available message only when ready, unlike a fixed round-robin assignment that could overload a slow instance.',
+        'Ensuring exactly one consumer processes each message (rather than duplicate processing) relies on the broker\'s delivery semantics — competing consumers on a standard queue naturally divide work, but care is needed with pub/sub-style topics where every subscriber may receive every message by default.',
+        'This pattern is a common way to parallelize processing of an inherently serial-arriving workload (a stream of image resize jobs, order processing tasks) without needing to manually partition work upfront.',
+      ],
+    },
+    {
+      heading: 'Claim Check Pattern for Large Payloads',
+      points: [
+        'The claim check pattern stores a large payload (a big file, a large document) in external storage (blob storage, S3) and sends only a reference/pointer through the message broker, avoiding the broker\'s typical message size limits.',
+        'Message brokers are generally optimized for high-throughput delivery of small-to-moderate messages — sending multi-megabyte payloads directly through the broker can degrade throughput and hit hard size limits (SQS: 256KB, Kafka: default 1MB) that the claim check pattern sidesteps entirely.',
+        'Consumers retrieve the actual payload from external storage using the reference in the message, decoupling the message broker\'s concerns (routing, delivery guarantees) from the storage system\'s concerns (durability, large-object handling).',
+        'This pattern requires managing the lifecycle of the externally stored payload (cleanup after processing, or a retention policy) separately from the message\'s own lifecycle, an additional operational concern not present when payloads are small enough to travel directly in the message.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

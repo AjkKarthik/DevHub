@@ -73,6 +73,15 @@ export class AzureDevopsPipelines {
         'Test Plans: manual test cases, test suites, and exploratory testing sessions. Link automated tests to test plans. Track pass/fail history across pipeline runs. Required for formal UAT in regulated industries.',
       ]
     },
+    {
+      heading: 'YAML Pipelines vs. Classic Editor — Why YAML Won',
+      points: [
+        'YAML pipelines are defined as code, checked into the same repository as the application — this means pipeline changes go through the same code review and version history as application code, unlike the Classic (GUI-based) editor where pipeline configuration lives outside source control.',
+        'Pipeline-as-code enables branching pipeline behavior naturally — a feature branch can modify its own build/test steps via its own azure-pipelines.yml, something the Classic editor\'s single shared UI configuration cannot easily replicate per-branch.',
+        'Templates in YAML pipelines let common stages (a standard build-test-deploy sequence) be defined once and reused across many pipelines, reducing duplication that would otherwise require manually replicating configuration across each pipeline\'s Classic editor setup.',
+        'The tradeoff for YAML\'s power and reviewability is a steeper initial learning curve compared to the Classic editor\'s visual drag-and-drop interface — most teams find this tradeoff worthwhile given the long-term maintainability benefits of pipeline-as-code.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

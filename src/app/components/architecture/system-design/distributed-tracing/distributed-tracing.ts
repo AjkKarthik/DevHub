@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'The three pillars of observability: Logs (what happened), Metrics (how much), Traces (where and how long).',
     ],
   },
+  {
+    heading: 'Trace Context Propagation Across Services',
+    points: [
+      'A trace ID is generated at the entry point of a request (the first service that receives it) and propagated through every downstream service call via HTTP headers (the W3C Trace Context standard defines traceparent) — every span generated anywhere in the call chain is tagged with this shared trace ID.',
+      'Each individual operation (a database query, an internal service call) generates its own span with a parent-child relationship to the span that triggered it — reconstructing this parent-child tree is what lets a tracing UI (Jaeger, Zipkin) render the full waterfall view of a request across every service it touched.',
+      'Context propagation must survive asynchronous boundaries (a message queue, a background job) not just synchronous HTTP calls — losing trace context across an async boundary breaks the trace into disconnected fragments, defeating the purpose of end-to-end visibility.',
+      'Sampling (tracing only a percentage of requests, not every single one) is necessary at scale to control the storage and performance overhead of tracing infrastructure — head-based sampling decides at the start of a trace, while tail-based sampling can make smarter decisions (always keep traces containing errors) at the cost of buffering complete traces before deciding.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

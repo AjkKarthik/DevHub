@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Frame-busting JavaScript (legacy): `if (top !== self) top.location = self.location`. Unreliable — can be defeated with `sandbox` attribute on the iframe.',
     ],
   },
+  {
+    heading: 'SameSite Cookies as a CSRF Defense',
+    points: [
+      'The SameSite cookie attribute (Strict, Lax, or None) controls whether a cookie is sent along with cross-site requests — SameSite=Strict never sends the cookie on cross-site requests, effectively neutralizing most CSRF attacks that rely on the browser automatically attaching session cookies.',
+      'SameSite=Lax (the modern browser default when unspecified) allows the cookie on top-level navigation (clicking a link) but not on cross-site form submissions or fetch/XHR requests — a reasonable balance between CSRF protection and not breaking legitimate cross-site navigation flows.',
+      'SameSite alone is not a complete CSRF defense — it should be combined with anti-CSRF tokens for defense in depth, since older browsers may not support SameSite, and some legitimate cross-site flows (payment redirects, OAuth callbacks) may require SameSite=None with additional protections.',
+      'Clickjacking (tricking a user into clicking a hidden, overlaid UI element) is mitigated separately via the X-Frame-Options header or the frame-ancestors Content-Security-Policy directive, preventing the page from being embedded in an iframe on an attacker-controlled site at all.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -59,6 +59,24 @@ export class NodePerformance {
         'setImmediate for breaking up long sync tasks: process large arrays in chunks, yielding control after each chunk via setImmediate. This allows I/O callbacks to run between chunks, preventing complete event loop starvation.',
       ]
     },
+    {
+      heading: 'The Event Loop and Blocking the Main Thread',
+      points: [
+        'Node.js runs JavaScript on a single main thread — I/O operations are delegated to libuv\'s thread pool and the OS kernel, making Node.js highly efficient for I/O-bound workloads without needing manual thread management.',
+        'A CPU-intensive synchronous operation (heavy computation, JSON parsing of huge payloads, synchronous regex on large strings) blocks the single thread entirely, freezing every other concurrent request until it completes — this is the single most common Node.js performance pitfall.',
+        'Break up long synchronous work with setImmediate() to yield back to the event loop between chunks, or move genuinely CPU-bound work to worker_threads for true parallelism — never assume "it is JavaScript, it will just handle concurrency automatically."',
+        'Profiling tools (--prof flag, Chrome DevTools via --inspect, or lighter production profilers like Clinic.js) reveal actual bottlenecks empirically — guessing at performance problems without profiling frequently leads to optimizing the wrong code path.',
+      ]
+    },
+    {
+      heading: 'Memory Management and Leak Detection',
+      points: [
+        'Node.js uses the V8 garbage collector — memory leaks in JS typically come from unintentionally retained references (a growing array never cleared, a forgotten event listener holding a closure) rather than manual memory mismanagement as in lower-level languages.',
+        'Common leak sources: event listeners registered but never removed (especially on long-lived EventEmitters), closures capturing large objects unnecessarily, module-level caches with no eviction policy, and timers/intervals never cleared.',
+        'Monitor process.memoryUsage() in production and alert on sustained upward trends (not just absolute values) — a slow, steady memory increase over hours/days is the signature of a leak, distinct from normal memory fluctuation under varying load.',
+        'Heap snapshots (via Chrome DevTools or the heapdump package) taken at two points in time and diffed reveal exactly which object types are accumulating — essential for pinpointing the actual leaking code path rather than guessing from memory graphs alone.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -263,6 +281,9 @@ class EventLoopMonitor extends EventEmitter {
     { q: 'What tools do I use to profile Node.js performance?', a: 'node --prof + node --prof-process: built-in V8 CPU profiler, zero overhead option. clinic.js Doctor: identifies event loop blocking, heavy GC, and CPU usage patterns automatically. clinic.js Flame: generates flame graphs to visualize where CPU time is spent. Chrome DevTools (node --inspect): interactive profiler, heap snapshots, memory timeline. 0x: single-command flame graph generation — simplest for quick profiling. Start with Doctor for diagnosis, then Flame or DevTools for detailed investigation.' },
     { q: 'How does PM2 cluster mode differ from the built-in cluster module?', a: 'PM2 cluster mode uses the built-in cluster module internally but adds: zero-downtime reloads (rolling restart — workers replaced one at a time so the app stays up), automatic crash recovery with restart limits, startup script management (pm2 save + pm2 startup for system boot), built-in metrics dashboard (pm2 monit), and log aggregation across workers. Use PM2 in production instead of rolling your own cluster code — it handles edge cases (worker death, graceful shutdown) that are easy to get wrong.' },
     { q: 'When does Node.js need horizontal scaling vs vertical scaling?', a: 'Vertical scaling (more CPU/RAM on one server): if your bottleneck is single-process memory limits or you have a monolith not worth splitting. Node.js cluster mode helps use multiple cores. Horizontal scaling (more servers): when one server\'s CPU + memory is saturated, or you need redundancy. Node.js stateless APIs scale horizontally well (no shared memory between processes — use Redis for shared state). If the bottleneck is the database, scale the database (read replicas, sharding) before adding app servers.' },
+    { q: 'Why is the Node.js event loop a single thread, and how does that affect CPU-bound performance?', a: 'Node.js runs JavaScript on a single main thread to keep the programming model simple (no shared-memory race conditions for typical code) while delegating I/O operations to libuv\'s thread pool and the OS kernel, making it highly efficient for I/O-bound workloads. The downside: a CPU-intensive synchronous operation (heavy computation, JSON parsing of huge payloads, synchronous crypto) blocks the single thread entirely, freezing all other requests until it completes — this is why CPU-bound work should be offloaded to worker_threads or a separate service.' },
+    { q: 'What is the difference between process.nextTick(), setImmediate(), and setTimeout(fn, 0) in terms of execution timing?', a: 'process.nextTick() callbacks run before the event loop continues to the next phase, even before Promise microtasks in some Node versions — it has the highest priority and excessive use can starve I/O. setImmediate() runs in the "check" phase of the event loop, after I/O callbacks in the current iteration. setTimeout(fn, 0) schedules for the "timers" phase, with browser/Node specifics meaning it may run before or after setImmediate depending on context (inside vs outside an I/O callback) — for deferring work after I/O, setImmediate is generally the more predictable choice.' },
+    { q: 'How do you profile a Node.js application to find the actual source of a performance bottleneck rather than guessing?', a: 'Use the built-in --prof flag (node --prof app.js) to generate a V8 profiler log, then process it with node --prof-process to get a function-level breakdown of CPU time, or use the Chrome DevTools inspector (node --inspect) for a visual flame graph showing exactly which functions consume the most time. For production, lighter-weight continuous profilers (Clinic.js, 0x, or APM tools like Datadog/New Relic) capture flame graphs under real production load without the overhead of manual profiling sessions.' },
   ];
 
   revision: RevisionSummary = {

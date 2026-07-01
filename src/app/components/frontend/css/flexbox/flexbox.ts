@@ -60,6 +60,15 @@ const theory: TheoryPoint[] = [
       'place-content is a shorthand for align-content + justify-content.',
     ],
   },
+  {
+    heading: 'flex-grow, flex-shrink, and flex-basis in Combination',
+    points: [
+      'flex-basis sets the initial main-axis size of a flex item before growing or shrinking is applied — it behaves like width (for row direction) but takes priority over an explicitly set width property when both are present.',
+      'flex-grow determines how much a flex item expands to fill available extra space relative to its siblings — a value of 2 on one item and 1 on another means the first item claims twice as much of the available extra space, not twice its final total size.',
+      'flex-shrink determines how much an item shrinks when there is insufficient space — a value of 0 prevents an item from shrinking below its flex-basis at all, useful for elements (like icons or fixed-width sidebars) that should never be compressed regardless of container size.',
+      'The flex shorthand (flex: 1 1 0) is generally preferable to setting the three longhand properties individually — it also resets any properties not explicitly specified to sensible defaults, avoiding subtle bugs from inherited or browser-default values on properties you forgot to set explicitly.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

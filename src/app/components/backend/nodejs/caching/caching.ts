@@ -59,6 +59,24 @@ export class NodeCaching {
         'HTTP caching headers (Cache-Control, ETag, Last-Modified) work at the HTTP layer and are supported by CDNs. For public API responses that rarely change, add Cache-Control: public, max-age=60 to cache at the CDN edge — zero DB load.',
       ]
     },
+    {
+      heading: 'Cache Invalidation Strategies',
+      points: [
+        'TTL-based expiry (set-and-forget with a time limit) is the simplest strategy but always risks serving stale data for up to the TTL duration — acceptable for data where staleness has low cost (a product catalog) but dangerous for data where it does not (account balances).',
+        'Explicit invalidation (delete the cache key when the underlying data changes) gives immediate consistency but requires every code path that mutates data to remember to invalidate the correct keys — a forgotten invalidation path is a common source of stale-cache bugs.',
+        'Cache-aside is the most common pattern in Node.js APIs: check cache first, on miss query the database and populate the cache, on writes invalidate (rather than update) the cache key so the next read repopulates it fresh.',
+        '"Cache stampede" protection matters at scale: if a popular key expires under high traffic, many concurrent requests can all miss simultaneously and hammer the database at once — mitigate with a short-lived lock or stale-while-revalidate serving the old value while one request refreshes it.',
+      ]
+    },
+    {
+      heading: 'In-Memory vs Distributed Caching',
+      points: [
+        'In-memory caching (a plain JS Map, or a library like lru-cache) is the fastest option — no network round trip — but is scoped to a single process, meaning each horizontally-scaled instance has its own independent, inconsistent cache.',
+        'Distributed caching (Redis, Memcached) is shared across all application instances, giving consistent cache state cluster-wide, at the cost of network latency per cache access (still far faster than a database round trip for most workloads).',
+        'A common hybrid: a small, short-TTL in-memory cache in front of Redis for extremely hot keys (reduces Redis round trips for the most-requested data), falling back to Redis for everything else — trading a small consistency window for meaningfully lower latency.',
+        'Cache key design matters: include every dimension that affects the cached value (user ID, locale, API version, pagination params) in the key, or different requests will incorrectly collide on the same cached entry.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -287,6 +305,9 @@ export const cache = new CacheService(redis);`
     { q: 'When should I use in-memory caching (node-cache) vs Redis?', a: 'node-cache: single-process apps, per-request memoization, development. Fast (no network), zero setup, no persistence. Cleared on restart, not shared across processes — if you run 4 Node.js instances, each has its own cache and 4x the DB load. Redis: multi-process or multi-server apps where cache must be shared. Persistent across restarts (with AOF). Supports cache invalidation from any server. Added network latency (~0.5ms) but enables true shared caching at scale.' },
     { q: 'How do I handle cache invalidation for lists and searches?', a: 'Lists are hardest to invalidate because a single item change can affect many list queries. Strategies: (1) Short TTL and accept brief staleness (simple). (2) Cache tags — associate each cache entry with tags (product:123, product-list) and invalidate by tag on update. (3) Event-driven: publish a "product.updated" event and have a cache subscriber invalidate affected keys. (4) Versioned cache keys — append a "version" counter to all list keys; increment the version on updates; old keys expire naturally.' },
     { q: 'How do I cache responses at the HTTP level in Node.js?', a: 'Set Cache-Control headers on responses: Cache-Control: public, max-age=60 allows CDNs and browsers to cache for 60 seconds. For conditional requests, implement ETags: hash the response body, set ETag: "<hash>", check If-None-Match in subsequent requests and return 304 Not Modified if unchanged. Cache-Control: private restricts to browser only (not CDN). Cache-Control: no-store disables all caching. HTTP-level caching is free — the CDN serves requests without hitting your server at all.' },
+    { q: 'What is the difference between cache-aside and write-through caching strategies in a Node.js API?', a: 'Cache-aside (lazy loading): the application checks the cache first; on a miss, it queries the database, then populates the cache for next time — simple and only caches data that is actually requested, but the first request after an expiry is always slower (a cache miss). Write-through: every write to the database also immediately updates the cache, so the cache is never stale after a write — at the cost of extra latency on every write operation and caching data that may never be read again.' },
+    { q: 'Why is choosing the right cache key strategy critical for a Redis-backed Node.js API cache?', a: 'A cache key must uniquely encode everything that affects the response — including query parameters, pagination, user-specific filters, and API version — otherwise different requests will incorrectly collide on the same cache entry, serving stale or wrong data to users. A common pattern is a structured key like api:v1:users:list:page=2:limit=20:sort=name, making keys both unique and human-readable for debugging, and enabling targeted cache invalidation via key pattern matching when underlying data changes.' },
+    { q: 'How do you prevent a cache stampede (thundering herd) when a popular cache key expires under high traffic?', a: 'A stampede happens when many concurrent requests all miss the cache simultaneously after expiry and all hit the database at once, potentially overwhelming it. Mitigations: use a short-lived "lock" in Redis so only the first request that detects a miss regenerates the cache while others wait briefly and retry; or use stale-while-revalidate logic, serving the slightly-stale cached value immediately while one request refreshes it in the background, so no user-facing request ever waits on a cold cache regeneration.' },
   ];
 
   revision: RevisionSummary = {

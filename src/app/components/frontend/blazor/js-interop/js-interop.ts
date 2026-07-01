@@ -47,6 +47,24 @@ export class BlazorJsInterop {
       points: ['Mark a static C# method with `[JSInvokable]` and call it from JS with `DotNet.invokeMethodAsync("AssemblyName", "MethodName")`. For instance methods, wrap the object with `DotNetObjectReference.Create(this)`, pass it to JS, and let JS call `dotnetRef.invokeMethodAsync("MethodName")`. Dispose the reference to prevent memory leaks.',
       '[JSInvokable] on a static method enables cross-assembly calls.', 'DotNetObjectReference wraps an instance for JS to call methods on.', 'Pass the DotNetObjectReference as a JS argument.', 'Dispose the reference when the component unmounts.']
     },
+    {
+      heading: 'IJSObjectReference for Module-Scoped JavaScript',
+      points: [
+        'Importing a JS module via IJSRuntime.InvokeAsync<IJSObjectReference>("import", "./myModule.js") returns a reference specifically scoped to that module\'s exports, letting you call its functions without those functions ever being attached to the global window object.',
+        'This module-scoped approach avoids global namespace pollution and naming collisions between different components each bringing their own JS interop code — a significant improvement over the older pattern of attaching everything to window for InvokeAsync to find by string name.',
+        'IJSObjectReference instances should be disposed (they implement IAsyncDisposable) when a component is disposed, releasing the corresponding JS module reference on the client side — forgetting this in a component with a long-lived lifecycle contributes to a gradual, hard-to-diagnose client-side memory leak.',
+        'JS interop calls from a Blazor Server app travel over the SignalR circuit, adding real network latency for every single call — batching related JS operations into a single interop call (rather than several separate small calls) meaningfully reduces the perceived latency of JS-interop-heavy UI interactions.',
+      ],
+    },
+    {
+      heading: 'Calling .NET Methods from JavaScript (JS-to-.NET Interop)',
+      points: [
+        'DotNetObjectReference.Create(this) wraps a .NET object instance so JavaScript can call back into specific methods marked with [JSInvokable] — enabling genuinely bidirectional interop where JavaScript event handlers (a drag-and-drop library, a charting library\'s click callback) can invoke .NET code in response to browser events.',
+        'Passed DotNetObjectReference instances must be explicitly disposed (calling .Dispose() on the .NET side) when no longer needed, since JavaScript holding a reference to a .NET object prevents that object from being garbage collected — a common, easy-to-overlook source of memory leaks in interop-heavy components.',
+        'Static [JSInvokable] methods can be called from JavaScript without needing a DotNetObjectReference at all, appropriate for interop scenarios that do not need to target a specific component instance\'s state — useful for simpler, stateless callback scenarios.',
+        'Testing JS-to-.NET interop with bUnit requires simulating the JavaScript-initiated call explicitly (invoking the [JSInvokable] method directly in the test, since there is no real JavaScript runtime present) — a different testing approach than mocking outbound .NET-to-JS calls via ctx.JSInterop.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -251,6 +269,10 @@ export async function copyText(text) {
     { q: 'How do I pass an HTML element reference to a JS function?', a: 'Declare an ElementReference field and attach it with @ref="myInput". Pass the field directly to InvokeVoidAsync — Blazor serializes it to a stable DOM identifier that JS can use to find the element with document.getElementById or the Blazor element resolution API.' },
     { q: 'Is JS interop available in Static SSR?', a: 'No. Static SSR has no JS runtime context during rendering. You can still include client-side scripts (in <HeadContent> or just as script tags), but you cannot call IJSRuntime from @code — it will throw.' },
     { q: 'What is the performance cost of JS interop?', a: 'Each interop call crosses the C#/JS boundary. On WASM this is cheap (in-process call). On Server it crosses the SignalR WebSocket — add one network round-trip per call. Batch calls into a single JS function that does multiple operations to minimize round-trips on Server.' },
+    { q: 'What is the difference between IJSRuntime.InvokeAsync and IJSObjectReference for JS interop?',
+      a: 'IJSRuntime.InvokeAsync directly invokes a globally accessible JavaScript function by name on every call, requiring the function to already exist in global scope (window). IJSObjectReference (returned from importing a JS module via InvokeAsync<IJSObjectReference>("import", "./module.js")) gives you a reference to a specific module\'s exports, letting you call its functions without polluting global scope and enabling proper module-scoped, tree-shakeable JavaScript alongside your Blazor components.' },
+    { q: 'Why does calling JS interop from a component constructor or OnInitialized (not OnAfterRender) often fail?',
+      a: 'JS interop requires the browser\'s DOM and JavaScript runtime to be ready, and for Blazor Server specifically, requires an active SignalR circuit connection — neither is guaranteed during the component\'s initial construction or OnInitialized/OnInitializedAsync lifecycle methods, which can run before the first render completes. JS interop calls (especially ones manipulating the DOM) should be made in OnAfterRenderAsync(firstRender) guarded by the firstRender flag, ensuring the component\'s markup actually exists in the DOM before JavaScript tries to interact with it.' },
   ];
 
   revision: RevisionSummary = {

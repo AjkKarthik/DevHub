@@ -73,6 +73,15 @@ export class TfRefactoring {
         'for_each is always preferred over count for collections of distinct resources.',
       ],
     },
+    {
+      heading: 'Safe Refactoring with moved Blocks',
+      points: [
+        'The moved block (introduced in Terraform 1.1) declares that a resource has been renamed or moved to a different address (like extracting it into a module) — Terraform uses this to update state accordingly WITHOUT destroying and recreating the actual infrastructure, which a naive rename would otherwise trigger.',
+        'Without a moved block, renaming a resource in configuration causes Terraform to see it as: the old-named resource being destroyed, and a new resource being created — for stateful resources (a database), this destroy-and-recreate behavior would be catastrophic data loss, not merely a cosmetic rename.',
+        'moved blocks can be safely left in configuration permanently (they are a no-op once state has been updated to reflect the move) — though many teams remove them after a reasonable period once confident every environment\'s state has been updated through the moved migration.',
+        'Refactoring a large monolithic configuration into modules is a common use case for moved blocks — extracting a set of resources into a new module requires updating their addresses from aws_instance.web to module.web.aws_instance.web, and moved blocks let this restructuring happen without any actual infrastructure disruption.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

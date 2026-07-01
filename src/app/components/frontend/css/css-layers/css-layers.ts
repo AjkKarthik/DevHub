@@ -51,6 +51,24 @@ const theory: TheoryPoint[] = [
       '!important inside layers reverses order: !important in "base" beats !important in "utilities". This is the opposite of the normal rule — useful for base resets.',
     ],
   },
+  {
+    heading: 'Cascade Layers (@layer) for Predictable Specificity',
+    points: [
+      '@layer creates named cascade layers that are ordered independently of source order and specificity — a rule in an earlier-declared layer always loses to a rule in a later-declared layer, regardless of selector specificity, giving explicit control over which styles should win.',
+      'This solves a longstanding CSS pain point: safely overriding third-party library styles (a component library, a CSS reset) without needing to resort to !important or artificially inflating selector specificity, since your own application layer can simply be declared after the library\'s layer.',
+      'Layers are declared once (typically at the top of a stylesheet: @layer reset, base, components, utilities) establishing their relative order, and rules can be added to any declared layer from anywhere in the codebase, in any file, without needing to worry about source order between files.',
+      'Unlayered styles (any CSS not explicitly assigned to a layer) always have the HIGHEST priority, overriding every layered style regardless of layer order — an important nuance, since accidentally leaving override styles unlayered gives them more power than intended relative to the layer system.',
+    ],
+  },
+  {
+    heading: 'Practical Layer Organization Strategies',
+    points: [
+      'A common layer ordering convention: reset (browser default overrides), base (element defaults, typography), tokens (custom properties), components (reusable component styles), utilities (single-purpose override classes) — utilities last ensures they can always override component styles when needed.',
+      'Third-party CSS (a component library, a CSS framework) can be imported into its own dedicated layer, explicitly ordered before your application\'s own layers — guaranteeing your application styles always win in conflicts without needing to inspect or match the library\'s specific selector specificity.',
+      'Layers nest — a layer can contain sub-layers (@layer components.buttons), allowing fine-grained organization within a broader layer while still maintaining the overall layer ordering relative to other top-level layers.',
+      'Browser support for @layer is now broad across modern browsers, but projects needing to support significantly older browsers should verify actual target browser support before relying on cascade layers as the primary specificity management strategy, since there is no straightforward polyfill for the cascade-order semantics.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

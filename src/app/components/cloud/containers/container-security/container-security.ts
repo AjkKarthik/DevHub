@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'PSA replaces the deprecated PodSecurityPolicy (PSP) removed in K8s 1.25.',
     ],
   },
+  {
+    heading: 'Image Scanning and Supply Chain Security',
+    points: [
+      'Vulnerability scanning tools (Trivy, Grype, Docker Scout) analyze image layers against known CVE databases, catching known-vulnerable base images or dependencies before they reach production — integrating scanning into CI blocks vulnerable images from ever being deployed.',
+      'Base image choice significantly affects attack surface — a minimal distroless or Alpine-based image has far fewer installed packages (and therefore fewer potential CVEs) than a full Ubuntu-based image carrying unnecessary tooling.',
+      'Image signing (via Cosign/Sigstore) and provenance attestation let a deployment pipeline verify an image was built by a trusted process and has not been tampered with since, addressing supply-chain risks that vulnerability scanning alone does not cover.',
+      'Scanning at build time catches known vulnerabilities at that point in time, but new CVEs are discovered continuously — periodic re-scanning of already-deployed images is necessary to catch vulnerabilities disclosed after an image was originally built and deployed.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

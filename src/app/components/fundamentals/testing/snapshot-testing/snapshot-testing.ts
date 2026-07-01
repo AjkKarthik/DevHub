@@ -54,6 +54,12 @@ export class SnapshotTesting {
       'Large HTML snapshots become noise — minor class renames cause irrelevant failures.',
       'Snapshot tests are fragile specifications — they break on any change, intended or not.',
     ]},
+    { heading: 'When Snapshot Testing Is (and Isn\'t) the Right Tool', points: [
+      'Snapshot testing is well suited to output that is structurally complex but should rarely change — a generated API response shape, a serialized error object — where hand-writing an equality assertion would be tedious and less thorough.',
+      'Snapshot testing is poorly suited to frequently-evolving UI components, where snapshots become large diffs that get rubber-stamp-approved without genuine review, defeating the purpose of the safety net.',
+      'Inline snapshots (embedded directly in the test file rather than a separate .snap file) improve review visibility, since a reviewer sees the expected output change directly in the code review diff instead of a separate file.',
+      'A snapshot test failing does not by itself indicate a bug — it indicates output changed, and a human must judge whether that change was intentional, which is fundamentally different from a traditional pass/fail assertion.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

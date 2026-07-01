@@ -59,6 +59,24 @@ export class NodeGraphql {
         'Persisted Queries: clients register queries by SHA-256 hash in advance. At runtime, clients send the hash instead of the query string. This eliminates parsing overhead, enables GET requests (CDN-cacheable), and prevents arbitrary query injection. Supported natively in Apollo Client + Server.',
       ]
     },
+    {
+      heading: 'Schema-First vs Code-First GraphQL Design',
+      points: [
+        'Schema-first: write the SDL (Schema Definition Language) file defining types, queries, and mutations first, then implement resolvers matching that schema — the schema is the explicit source of truth, ideal for API design discussions and contract-first teams.',
+        'Code-first: define resolvers and types directly in TypeScript/JavaScript using a library (Pothos, TypeGraphQL, Nexus), which then generates the SDL schema automatically — better for type safety and colocating resolver logic with type definitions.',
+        'Schema-first tends to produce cleaner, more deliberately-designed schemas since the shape is decided before implementation; code-first tends to keep the schema in sync with code changes automatically, reducing schema drift.',
+        'Most teams pick one approach per project rather than mixing — schema-first with codegen (generating TypeScript types FROM the SDL) is a common middle ground giving both an explicit schema and full type safety.',
+      ]
+    },
+    {
+      heading: 'Resolver Design and the N+1 Problem',
+      points: [
+        'Each field in a GraphQL schema is resolved independently by its own resolver function — this flexibility is powerful but means naive resolver code can trigger a separate database query per item when resolving a list\'s nested relations, the classic N+1 problem.',
+        'DataLoader batches and deduplicates data-fetching requests made within the same event loop tick — instead of fetching each item\'s related data individually, all pending requests are collected and resolved in a single batched query.',
+        'Resolvers should be thin — delegate actual data fetching and business logic to service functions, keeping the resolver itself focused on translating between the GraphQL schema shape and the underlying data layer.',
+        'Field-level resolvers only run when a client actually requests that field — this is why GraphQL avoids REST\'s over-fetching problem, but it also means expensive computed fields should be designed to only trigger their expensive work when genuinely requested.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -289,6 +307,9 @@ await startStandaloneServer(server, {
     { q: 'When should I use GraphQL instead of REST?', a: 'GraphQL excels when: clients need to control exactly which fields they receive (avoids over-fetching), multiple clients (mobile, web, third parties) need different data shapes from the same endpoint, or the data is highly relational with complex join requirements. REST is better when: the API is public and cacheability matters (GET responses are CDN-cacheable by URL), the data model is simple, or you need HTTP-level caching without persisted queries. Both can coexist — REST for public/cacheable resources, GraphQL for complex internal client needs.' },
     { q: 'How do you handle authorization in GraphQL resolvers?', a: 'Two approaches: (1) Resolver-level: check ctx.user in each resolver: if (!ctx.user) throw new GraphQLError("Unauthorized", { extensions: { code: "UNAUTHENTICATED" } }). Repetitive but explicit. (2) Schema directive: define @auth directive, apply to protected fields in SDL, intercept in the directive implementation. Libraries like graphql-shield provide rule-based authorization as a middleware layer. Always check authorization at the data layer too — a client could still call unrestricted resolvers that fetch restricted data.' },
     { q: 'What are subscriptions in GraphQL and how are they implemented?', a: 'GraphQL subscriptions enable real-time updates via WebSocket. The client sends a subscription operation; the server streams events as they occur. Implementation: resolvers return an AsyncIterator (a PubSub topic). On mutation, publish to the topic: pubsub.publish("POST_CREATED", { postCreated: newPost }). Apollo Server v4 uses the graphql-ws library. For multi-server deployments, use Redis-based PubSub (graphql-redis-subscriptions) so events published on Server A reach subscribers on Server B.' },
+    { q: 'How do you implement a Node.js GraphQL server with both Apollo Server and Express in the same app?', a: 'Use the apollo-server-express integration package — create an ApolloServer instance with your typeDefs and resolvers, call await server.start(), then apply it as Express middleware with server.applyMiddleware({ app, path: "/graphql" }). This lets you run GraphQL alongside existing REST routes in the same Express app, sharing middleware like authentication and CORS configuration.' },
+    { q: 'What is the N+1 query problem in a Node.js GraphQL resolver and how does DataLoader fix it?', a: 'Without batching, resolving a list of N items where each item resolver independently queries its related data (e.g., each post resolving its own author) issues N+1 separate database queries. DataLoader batches all requests made within the same event loop tick into a single query (e.g., SELECT * FROM users WHERE id IN (...)) and caches results per request, collapsing what would be N+1 queries into 2.' },
+    { q: 'How should you structure error handling in a Node.js GraphQL API so clients get useful, safe error information?', a: 'Throw typed errors (ApolloError subclasses like UserInputError, AuthenticationError, or custom errors with an extensions.code) from resolvers rather than generic Error objects — this gives clients a machine-readable error code to switch on. Use a formatError function on the server to strip internal stack traces and sensitive details from production responses while still logging the full error server-side for debugging.' },
   ];
 
   revision: RevisionSummary = {

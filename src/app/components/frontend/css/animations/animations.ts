@@ -66,6 +66,15 @@ const theory: TheoryPoint[] = [
       'Negative animation-delay: -0.5s starts the animation 0.5s into its cycle — useful for staggered starts.',
     ],
   },
+  {
+    heading: 'Animating Performantly: Compositor-Only Properties',
+    points: [
+      'Animating transform and opacity can run entirely on the GPU compositor thread, without triggering layout recalculation or repaint on the main thread — this is why these two properties are the standard recommendation for smooth, jank-free CSS animations.',
+      'Animating layout-affecting properties (width, height, top, left, margin) forces the browser to recalculate layout for the animated element and everything affected by it on every single frame — noticeably more expensive and prone to dropped frames, especially on lower-powered devices.',
+      'Use will-change sparingly and only immediately before an animation starts — it hints to the browser to prepare a separate compositor layer in advance, but overusing it on many elements simultaneously consumes excessive GPU memory and can paradoxically hurt performance.',
+      'The Chrome DevTools Performance panel and the "Paint flashing" / "Layout Shift Regions" overlays are the definitive way to verify whether an animation is actually running on the compositor or triggering expensive main-thread layout/paint work.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

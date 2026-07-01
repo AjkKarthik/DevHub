@@ -55,6 +55,24 @@ const theory: TheoryPoint[] = [
       'will-change: filter can pre-promote an element to its own GPU layer before a filter animation starts, reducing the late-promotion jank.',
     ],
   },
+  {
+    heading: 'Filter Effects and Their Performance Characteristics',
+    points: [
+      'CSS filters (blur, brightness, contrast, grayscale, etc.) are GPU-accelerated in modern browsers, making them significantly cheaper to apply and animate than equivalent effects implemented via canvas manipulation or repeated image processing — a major advantage for interactive, animated visual effects.',
+      'backdrop-filter applies a filter effect to whatever is BEHIND an element (through its background) rather than to the element\'s own content — the technique behind the popular "frosted glass" UI effect, blurring content visible through a semi-transparent overlay panel.',
+      'Multiple filter functions can be chained in a single filter property (filter: blur(4px) brightness(0.8) saturate(1.2)) — each function processes the output of the previous one in sequence, letting complex combined visual effects be achieved without needing separate elements or layers.',
+      'Filters, like transforms, create a new stacking context and can affect layout in subtle ways (a blurred element\'s bounding box may visually extend beyond its normal box) — worth verifying visually rather than assuming filters have zero impact on surrounding layout.',
+    ],
+  },
+  {
+    heading: 'SVG Filters for Advanced Effects Beyond CSS filter()',
+    points: [
+      'While the CSS filter property covers common effects (blur, grayscale, etc.), SVG filters (referenced via filter: url(#filter-id)) provide access to a much richer filter primitive set — displacement maps, custom convolution matrices, and combining multiple filter primitives in a filter graph.',
+      'SVG filters are defined once in an <svg> element\'s <defs> section and can be reused across multiple HTML elements by reference — useful for applying a consistent, potentially complex custom visual effect across many elements without duplicating filter definitions.',
+      'Complex SVG filters can be noticeably more expensive to render than simple CSS filter functions, especially when applied to large elements or animated — profiling actual rendering performance is important before relying on elaborate SVG filter effects broadly across a page.',
+      'Browser support and rendering consistency for advanced SVG filter primitives varies more than for standard CSS filter functions — testing across target browsers is more important for SVG filters than for the well-standardized basic CSS filter function set.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

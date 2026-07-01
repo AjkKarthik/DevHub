@@ -47,6 +47,24 @@ export class BlazorRouting {
       points: ['NavLink renders an anchor that adds the active CSS class when the current URL matches its href. Use Match="NavLinkMatch.All" to require an exact match. To protect routes, replace RouteView with AuthorizeRouteView and add the Microsoft.AspNetCore.Components.Authorization package. The [Authorize] attribute (or AuthorizeAttribute with roles/policies) on a page redirects unauthenticated users.',
       'NavLink.Match="NavLinkMatch.All" prevents "/" being active on every page.', 'AuthorizeRouteView enforces [Authorize] at the routing level.', 'CascadingAuthenticationState provides auth state to the component tree.', 'Use [Authorize(Roles="Admin")] for role-based page guards.']
     },
+    {
+      heading: 'Route Parameters, Constraints, and Catch-All Routes',
+      points: [
+        'Route parameters declared with @page "/products/{id}" are automatically bound to a matching [Parameter] property in the component, with Blazor performing basic type conversion — adding a constraint like {id:int} both validates the format and ensures the bound property receives a properly typed int rather than a raw string.',
+        'Catch-all route parameters (@page "/docs/{*path}") capture the remainder of the URL path as a single string parameter, useful for building components that need to handle deeply nested or dynamically structured paths (like a documentation site with an arbitrary folder hierarchy) without defining every possible route explicitly.',
+        'Multiple @page directives can be applied to the same component, letting one component handle several distinct URL patterns (a product page accessible via both /products/{id} and /p/{id}, for example) without duplicating the component logic across separate component files.',
+        'NavigationManager.LocationChanged event lets a component react to navigation events anywhere in the application (not just its own route), useful for cross-cutting concerns like tracking page views for analytics or triggering a cleanup action whenever the user navigates away from a specific route pattern.',
+      ],
+    },
+    {
+      heading: 'Handling Not-Found Routes and Authorization Redirects',
+      points: [
+        'The <Router> component\'s NotFound render fragment defines what displays when no route matches the current URL — a well-designed 404 experience within a Blazor app should offer navigation back to known-good areas rather than a bare "not found" message with no path forward.',
+        'AuthorizeRouteView (used alongside AuthorizeView for page-level route protection) automatically handles both the "not authenticated" and "not authorized" cases for a route, redirecting to a login page or displaying an access-denied message as configured, without needing to manually implement this check on every protected page.',
+        'Deep-linking directly to a protected route (a user pasting a URL requiring authentication) requires the authentication flow to preserve the originally requested URL and redirect back to it after successful login — a detail easy to overlook that significantly affects user experience if handled incorrectly.',
+        'Route-based code splitting (lazy-loading assemblies only when their routes are actually navigated to) can reduce the initial download size for a large Blazor WebAssembly application, deferring the cost of rarely-visited sections of the app until a user actually navigates there.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -224,6 +242,10 @@ builder.Services.AddCascadingAuthenticationState();
     { q: 'How do I navigate and pass state that is too large for a query string?', a: 'Use a singleton or scoped service as a state bag — store the data there before navigating, then read it in OnInitialized on the destination page. An alternative is PersistentComponentState for SSR pre-rendering scenarios.' },
     { q: 'How do I handle 404s in Blazor?', a: 'Place a <NotFound> template inside the <Router> component. For SSR apps you also need app.UseStatusCodePagesWithRedirects("/404") in Program.cs so server-returned 404s land on your custom page.' },
     { q: 'What is the difference between NavigateTo with and without forceLoad?', a: 'forceLoad: false (default) uses Blazor\'s enhanced navigation — only the page content is swapped. forceLoad: true causes a full browser page load, re-running the entire .NET runtime (WASM) or creating a new circuit (Server). Only use forceLoad when you need server middleware (like cookie clearing) to run.' },
+    { q: 'How do route constraints (e.g., {id:int}) improve routing reliability in Blazor?',
+      a: 'Without a constraint, a route parameter like {id} matches any string segment, requiring manual parsing and validation inside the component (and potentially matching a route that was not intended, like /products/abc when only numeric IDs are valid). Adding a constraint, {id:int}, tells the router to only match this route if the segment can be parsed as an integer — non-matching requests fall through to other routes or a NotFound page, and the parameter arrives in the component already correctly typed as an int rather than a raw string needing manual conversion.' },
+    { q: 'What is the difference between NavigationManager.NavigateTo with forceLoad: true versus the default behavior?',
+      a: 'By default, NavigateTo performs client-side navigation within the Blazor app — for Blazor WASM this means routing entirely in the browser without a server round-trip; for Blazor Server it updates the rendered UI via the existing SignalR circuit without a full page reload. Setting forceLoad: true forces a full browser page reload/navigation instead, which is necessary when navigating to a non-Blazor URL, when you need to reset all component state completely, or when navigating away in a way that requires a fresh page load (such as after changing authentication state in some scenarios).' },
   ];
 
   revision: RevisionSummary = {

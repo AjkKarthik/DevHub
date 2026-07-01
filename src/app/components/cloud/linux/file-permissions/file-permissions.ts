@@ -71,6 +71,15 @@ export class LinuxFilePermissions {
         'Filesystem must be mounted with acl option; most modern distros enable this by default for ext4/xfs.',
       ],
     },
+    {
+      heading: 'Special Permission Bits: setuid, setgid, and Sticky Bit',
+      points: [
+        'setuid on an executable makes it run with the permissions of the FILE OWNER rather than the user executing it — passwd uses this to let regular users change their own password despite the password database file being writable only by root.',
+        'setgid on a directory causes new files created within it to inherit the directory\'s group ownership automatically, rather than the creating user\'s primary group — useful for shared team directories where all files should consistently belong to a shared group regardless of who created them.',
+        'The sticky bit on a directory (commonly set on /tmp) restricts file deletion within that directory to the file\'s owner, the directory owner, or root — even if other users have write permission to the directory itself, preventing users from deleting each other\'s files in shared temporary directories.',
+        'setuid executables are a well-known security risk if misconfigured — a setuid root binary with a vulnerability effectively grants an attacker root-level code execution, which is why setuid usage should be minimized and any setuid binaries carefully audited.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

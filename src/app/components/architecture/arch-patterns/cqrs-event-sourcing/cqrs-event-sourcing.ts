@@ -62,6 +62,24 @@ export class ArchCqrsEventSourcing {
         'Complexity budget: CQRS+ES is a significant investment. Start with simple CQRS (same DB, two models) before going full event sourcing.',
       ],
     },
+    {
+      heading: 'Why Separate Read and Write Models',
+      points: [
+        'CQRS (Command Query Responsibility Segregation) separates the model used for WRITES (commands, enforcing business rules and invariants) from the model used for READS (queries, optimized for the specific shapes UI or reporting actually needs) — a single shared model often compromises both concerns.',
+        'The write model enforces business invariants and typically resembles the aggregate structure from domain-driven design, while the read model can be denormalized and shaped exactly for query performance, even duplicating data across multiple read-optimized projections.',
+        'This separation allows the read and write sides to scale independently — a read-heavy application can scale read replicas or read-optimized stores without touching the write model\'s consistency guarantees, addressing a scaling bottleneck a single shared model would create.',
+        'CQRS without event sourcing is still a valid and simpler pattern — the two are often discussed together but are independently adoptable; CQRS addresses model separation, while event sourcing addresses how state changes are stored and replayed.',
+      ],
+    },
+    {
+      heading: 'Event Sourcing: Storing Changes, Not Just Current State',
+      points: [
+        'Event sourcing stores every state-changing event (OrderPlaced, OrderShipped) as the system of record, rather than storing only the current state — the current state is derived by replaying all events for a given aggregate, providing a complete audit trail as a natural byproduct.',
+        'This append-only event log makes certain capabilities trivial that are difficult with traditional state-based storage — reconstructing state as of any past point in time, debugging exactly how a bug-triggering state was reached, and adding new projections retroactively by replaying historical events.',
+        'Snapshotting (periodically saving computed current state alongside the event log) avoids the performance cost of replaying an aggregate\'s entire event history from the beginning every time its current state is needed, especially for long-lived aggregates with many events.',
+        'Event sourcing adds genuine complexity — event schema evolution (handling old event versions as the system changes over time), eventual consistency between the event log and any derived read models, and unfamiliar debugging patterns — making it appropriate for domains where the audit trail and temporal query capabilities are genuinely valuable, not a default choice.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

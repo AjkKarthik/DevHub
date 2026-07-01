@@ -72,6 +72,15 @@ export class AiRag {
         'Self-RAG: model generates special tokens to decide when to retrieve and to evaluate relevance of retrieved chunks.',
       ],
     },
+    {
+      heading: 'Chunking Strategy Determines Retrieval Quality',
+      points: [
+        'Chunk size directly trades off precision against context — very small chunks retrieve precisely relevant snippets but may lack surrounding context the model needs, while very large chunks provide context but dilute relevance and waste context window space on irrelevant content.',
+        'Naive fixed-length chunking (splitting every N characters regardless of content boundaries) can split a sentence or logical unit mid-thought, degrading both embedding quality and the coherence of retrieved context — semantic or structure-aware chunking (splitting at paragraph/section boundaries) typically retrieves more coherent results.',
+        'Overlapping chunks (each chunk sharing some content with its neighbor) reduces the risk that a relevant piece of information falls exactly at a chunk boundary and gets split across two chunks, neither of which alone contains the full relevant context.',
+        'Chunking strategy should be tuned to the actual document type and query patterns — a strategy that works well for short FAQ entries may perform poorly on long technical documents with deeply nested structure, making this a genuinely dataset-specific design decision rather than a one-size-fits-all default.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

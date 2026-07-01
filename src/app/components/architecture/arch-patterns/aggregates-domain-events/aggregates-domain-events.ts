@@ -62,6 +62,24 @@ export class ArchAggregatesDomainEvents {
         'Rule: one aggregate root per transaction. If you need to modify two aggregates, use domain events to trigger the second modification asynchronously.',
       ],
     },
+    {
+      heading: 'Aggregate Boundaries and Transactional Consistency',
+      points: [
+        'An aggregate defines a transactional consistency boundary — invariants that must hold true (an order total matching the sum of its line items) are enforced WITHIN a single aggregate\'s transaction, never spanning multiple aggregates in one atomic operation.',
+        'Referencing another aggregate by ID (not by direct object reference) is the standard DDD practice — this keeps aggregates small and independently persistable, avoiding the temptation to load and modify multiple aggregates within a single transaction.',
+        'Designing aggregates too large (encompassing more entities than necessary) creates unnecessary contention — concurrent updates to unrelated parts of an overly large aggregate compete for the same lock, hurting throughput without any corresponding consistency benefit.',
+        'Designing aggregates too small (splitting genuinely related invariants across multiple aggregates) forces eventual consistency (via domain events) where true transactional consistency was actually needed, risking a temporary invalid state that the application must explicitly tolerate.',
+      ],
+    },
+    {
+      heading: 'Domain Events for Cross-Aggregate Consistency',
+      points: [
+        'When a business rule spans multiple aggregates (updating inventory after an order is placed), a domain event raised by the originating aggregate — handled asynchronously by a separate process — achieves eventual consistency without violating the single-aggregate transactional boundary.',
+        'Domain events should be published only AFTER the originating transaction commits successfully — publishing before commit risks other services reacting to a change that is later rolled back, a subtle but serious correctness bug.',
+        'The outbox pattern is the standard mechanism for reliably publishing domain events alongside a database transaction, avoiding the dual-write problem where the aggregate\'s state change and its corresponding event publish could otherwise fall out of sync.',
+        'Consumers of domain events must be designed for eventual consistency and idempotent processing, since the event-driven nature of cross-aggregate consistency means there is always a window, however brief, where the overall system is not yet fully consistent.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

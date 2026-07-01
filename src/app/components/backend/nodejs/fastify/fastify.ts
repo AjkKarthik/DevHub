@@ -59,6 +59,24 @@ export class NodeFastify {
         'Hook scope matches registration scope — hooks registered in a plugin only apply to routes in that plugin. Global hooks (auth, logging) go on the root instance.',
       ]
     },
+    {
+      heading: 'Fastify Plugin Architecture and Encapsulation',
+      points: [
+        'Fastify plugins registered via fastify.register() are encapsulated by default — decorations, hooks, and routes added inside a plugin are scoped to that plugin and its children, not automatically visible to sibling plugins, unlike Express\'s flat global middleware model.',
+        'This encapsulation prevents accidental coupling between unrelated feature modules — a database connection decorator added inside an "orders" plugin cannot leak into an unrelated "auth" plugin unless explicitly shared.',
+        'The fastify-plugin wrapper explicitly breaks encapsulation for genuinely global utilities (a shared database connection, a logger) that every route needs — used sparingly, since overusing it defeats the purpose of Fastify\'s plugin isolation.',
+        'Plugins can be nested arbitrarily deep, forming a tree — a child plugin inherits decorations and hooks from its parent chain, giving a natural way to scope shared setup (like a database connection) to only the routes that actually need it.',
+      ]
+    },
+    {
+      heading: 'Fastify Lifecycle Hooks',
+      points: [
+        'Fastify exposes granular lifecycle hooks (onRequest, preParsing, preValidation, preHandler, onSend, onResponse) that run at specific points in the request lifecycle — more fine-grained than Express\'s single linear middleware chain.',
+        'preValidation runs before schema validation, useful for transforming input before it is checked (like trimming whitespace); preHandler runs after validation but before the route handler, commonly used for authentication checks that should only run on validated requests.',
+        'onSend hooks let you transform the response payload just before it is sent (adding response headers, compressing, or masking sensitive fields) without modifying the route handler itself.',
+        'Hooks can be registered globally (app-wide) or scoped to a specific plugin/route, giving precise control over which requests a given piece of cross-cutting logic actually applies to.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -233,6 +251,9 @@ await fastify.listen({ port: 3001 });`
     { q: 'When should I choose Fastify over Express?', a: 'Fastify: when you need performance (APIs serving 50k+ req/s), want built-in schema validation without extra middleware, use TypeScript (better integration via TypeBox/Zod), or are building microservices. Express: when ecosystem maturity matters most (older libs only have Express adapters), team familiarity, or simple apps where Express\'s simplicity wins.' },
     { q: 'How does Fastify handle TypeScript?', a: 'Use @fastify/type-provider-typebox (recommended) or @fastify/type-provider-zod. Define a schema with TypeBox/Zod, pass it to the route, and request.body/params/query become fully typed — no manual interface definitions. The schema both validates at runtime AND provides TypeScript types.' },
     { q: 'Can Fastify plugins be async?', a: 'Yes — this is one of Fastify\'s major advantages. Plugins are async functions that are awaited during startup. You can do async operations in plugin setup: connecting to a database, fetching config from a secrets manager, or warming a cache. The server does not start until all plugins resolve.' },
+    { q: 'Why is Fastify generally faster than Express for the same route handling logic?', a: 'Fastify uses a highly optimized radix-tree router (find-my-way) and a JSON schema-based serializer that pre-compiles response serialization into optimized functions ahead of time, rather than using generic JSON.stringify at request time. It also minimizes middleware overhead by using a more structured plugin/hook system instead of Express\'s linear middleware chain, reducing per-request function call overhead. In benchmarks this typically yields meaningfully higher requests-per-second for comparable workloads, though real-world gains depend heavily on what the route handlers themselves do.' },
+    { q: 'What is the purpose of JSON Schema validation in Fastify route definitions?', a: 'Defining a schema (for body, querystring, params, and response) on a Fastify route gives you automatic, fast request validation (rejecting malformed input before your handler even runs) and automatic response serialization optimization (Fastify pre-compiles a serializer matching the schema, which is faster than generic serialization and also strips any unexpected fields from the response, preventing accidental data leakage of fields not declared in the schema).' },
+    { q: 'How does the Fastify plugin system (fastify-plugin) differ from simply requiring a module?', a: 'A plain require just imports code with no awareness of Fastify\'s encapsulation context. Fastify plugins registered via fastify.register() are encapsulated by default — decorations, hooks, and routes added inside a plugin are scoped to that plugin and its children, not leaked to siblings or the parent. Wrapping a plugin with fastify-plugin explicitly breaks this encapsulation so its decorations (e.g., a database connection decorator) become available application-wide, which is the correct pattern for genuinely global, shared utilities.' },
   ];
 
   revision: RevisionSummary = {

@@ -67,6 +67,15 @@ export class DsaHashTables {
         'In interviews, Map is almost always the right choice — it\'s clearest and handles all key types.',
       ],
     },
+    {
+      heading: 'Collision Resolution Strategies and Their Tradeoffs',
+      points: [
+        'Separate chaining (storing a linked list or small array at each bucket) handles collisions gracefully and degrades predictably, but incurs extra memory overhead per bucket and worse cache locality compared to open addressing schemes.',
+        'Open addressing (linear probing, quadratic probing, double hashing) stores all entries directly within the underlying array, improving cache locality and memory efficiency, but requires careful handling of deletions (typically via tombstone markers) to avoid breaking probe sequences.',
+        'A poor hash function that clusters many keys into the same bucket destroys the O(1) average-case guarantee entirely, degrading operations toward O(n) — this is why cryptographically-inspired hash functions with strong avalanche properties are preferred even for non-cryptographic hash tables.',
+        'Load factor (ratio of stored elements to bucket count) directly determines expected performance — most production hash table implementations automatically resize (rehash) once load factor crosses a threshold (commonly 0.75) to maintain amortized O(1) operations.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

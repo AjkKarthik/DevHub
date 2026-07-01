@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Disable the default SA token mount and create named SAs with tight permissions for every workload.',
     ],
   },
+  {
+    heading: 'Role vs. ClusterRole and the Scope They Grant',
+    points: [
+      'A Role grants permissions scoped to a single namespace — a RoleBinding referencing that Role only grants access within that one namespace, regardless of what resources might exist elsewhere in the cluster.',
+      'A ClusterRole can either be bound cluster-wide (via a ClusterRoleBinding, granting access across ALL namespaces) or bound to a single namespace (via a RoleBinding referencing a ClusterRole) — this dual-use flexibility is why many teams define reusable ClusterRoles even for namespace-scoped access.',
+      'Following least-privilege means granting the narrowest role that satisfies an actual need — a service account with cluster-admin when it only ever needs read access to one namespace\'s pods represents unnecessary risk if that service account\'s credentials are ever compromised.',
+      'RBAC is purely additive — there is no explicit "deny" rule type in Kubernetes RBAC, meaning permissions are the union of everything granted by all applicable RoleBindings/ClusterRoleBindings, which makes auditing effective permissions for an identity require checking every binding that could apply to it.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

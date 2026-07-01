@@ -71,6 +71,15 @@ export class LinuxSsh {
         'ControlMaster auto + ControlPath /tmp/ssh-%r@%h:%p multiplexes connections — subsequent ssh to the same host reuses the socket (very fast).',
       ],
     },
+    {
+      heading: 'SSH Key-Based Authentication vs Password Authentication',
+      points: [
+        'SSH key-based authentication uses a public/private key pair — the private key stays secret on the client, the public key is placed on the server\'s authorized_keys file, and authentication succeeds when the client proves possession of the matching private key without ever transmitting it.',
+        'Key-based authentication is significantly more resistant to brute-force attacks than password authentication, since a private key is effectively impossible to guess (unlike even a reasonably complex password), which is why disabling password authentication entirely (PasswordAuthentication no in sshd_config) is a standard hardening practice.',
+        'Protecting a private key with a passphrase adds a second factor — even if the private key file itself is stolen, the attacker also needs the passphrase to actually use it; ssh-agent lets you unlock the key once per session rather than re-entering the passphrase on every connection.',
+        'SSH config files (~/.ssh/config) let you define per-host connection shortcuts (custom port, identity file, username) so you can simply type ssh myserver instead of remembering and typing the full connection details every time — a significant quality-of-life improvement for anyone regularly connecting to multiple servers.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

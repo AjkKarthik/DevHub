@@ -65,6 +65,15 @@ export class AiResponsibleAi {
         'Model cards: standardised documentation of model purpose, training data, performance, limitations, and bias evaluation. Required for responsible deployment.',
       ],
     },
+    {
+      heading: 'Auditing for Bias Before and After Deployment',
+      points: [
+        'Pre-deployment bias audits evaluate model performance across demographic subgroups on held-out test data, surfacing disparate error rates before they affect real users — waiting until production to discover bias is both ethically and legally riskier.',
+        'Bias can be introduced at multiple stages (skewed training data, proxy features correlated with protected attributes, evaluation metrics that mask subgroup disparities) — auditing only the final model output misses root causes upstream in the pipeline.',
+        'Post-deployment monitoring should track outcome disparities across user segments over time, since bias can emerge or worsen after launch as the production population and usage patterns diverge from the original training and evaluation data.',
+        'Fairness metrics (demographic parity, equalized odds) can conflict with each other mathematically — satisfying one can make another worse, meaning teams must make an explicit, documented choice about which fairness definition matters most for their specific application.',
+      ],
+    },
   ];
 
   quiz: QuizQuestion[] = [

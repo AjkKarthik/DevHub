@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'docker compose config prints the resolved compose.yml with all substitutions expanded — great for debugging.',
     ],
   },
+  {
+    heading: 'Compose Networking Defaults and Service Discovery',
+    points: [
+      'Docker Compose automatically creates a dedicated bridge network for each project, and every service can reach every other service by its service NAME as a DNS hostname — no manual network configuration is needed for basic inter-service communication.',
+      'This automatic DNS-based service discovery is why compose services reference each other by name (like connecting to "db:5432") rather than by IP address, which would be unstable across container restarts.',
+      'Explicitly defined custom networks let you segment services (isolating a database network from a public-facing web network) for defense-in-depth, rather than relying solely on the single default network every service shares.',
+      'depends_on controls startup ORDER but does not by itself wait for a dependent service to be actually READY (like a database accepting connections) — healthchecks combined with depends_on\'s condition: service_healthy close this gap.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -70,6 +70,15 @@ export class LinuxSystemMonitoring {
         '/proc/<PID>/fd/ lists all file descriptors open for a process. /proc/<PID>/net/tcp shows TCP connections.',
       ],
     },
+    {
+      heading: 'Interpreting Load Average and Resource Metrics Correctly',
+      points: [
+        'The three load average numbers (1, 5, and 15-minute averages) represent the average number of processes either running or waiting for CPU/uninterruptible I/O — a load average of 4 on a 4-core system means the system is fully utilized but not necessarily overloaded, while the same value on a 2-core system indicates genuine saturation.',
+        'top and htop show real-time snapshots, while tools like sar (part of sysstat) collect and retain historical performance data — essential for answering "what was resource usage like at 3am when the incident happened" rather than only being able to observe current state.',
+        'Memory metrics require careful interpretation — "used" memory in Linux includes disk cache, which the kernel will readily reclaim under memory pressure; the "available" memory figure (not "free") is the more accurate indicator of genuinely usable memory for new processes.',
+        'Setting up proactive alerting (rather than only checking metrics reactively during an incident) on key thresholds — sustained high load, low available memory, high disk usage — catches developing problems before they cause a user-facing outage.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

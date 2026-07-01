@@ -59,6 +59,24 @@ export class NodeJwtAuth {
         'Rate limit authentication endpoints — /login, /register, /refresh — more aggressively than other routes. Use a sliding window with a lower limit (5 attempts per minute vs 100 for API routes). Lock accounts after N failed attempts.',
       ]
     },
+    {
+      heading: 'JWT Structure and Claims',
+      points: [
+        'A JWT has three Base64URL-encoded parts separated by dots: header (algorithm and token type), payload (claims — the actual data), and signature (verifies the header and payload have not been tampered with).',
+        'Standard claims include iss (issuer), sub (subject — typically the user ID), aud (audience — the intended recipient service), exp (expiration timestamp), and iat (issued-at timestamp) — using these standard names lets libraries and tooling interoperate correctly.',
+        'The payload is Base64-encoded, NOT encrypted — anyone can decode and read a JWT\'s contents without the signing secret. Never put sensitive data (passwords, full credit card numbers) in a JWT payload, only in server-side session data referenced by a token.',
+        'Signature verification (not just successful decoding) is what actually proves a token is authentic — a common security bug is decoding a JWT to read its claims without also verifying its signature, which lets an attacker forge arbitrary claims.',
+      ]
+    },
+    {
+      heading: 'Access Tokens vs Refresh Tokens',
+      points: [
+        'Access tokens are short-lived (minutes) and sent with every API request — their short lifespan limits the damage window if one is ever stolen, since it expires quickly regardless of whether the theft is detected.',
+        'Refresh tokens are longer-lived (days/weeks) and used only to obtain new access tokens when the current one expires — they should be stored more securely (httpOnly cookie, not localStorage) since their compromise has much larger impact.',
+        'Refresh token rotation — issuing a new refresh token every time one is used, and invalidating the old one — limits a stolen refresh token to a single use before detection, since reuse of an already-rotated token signals likely compromise.',
+        'Storing access tokens in memory (not localStorage or cookies) for single-page apps avoids XSS-based token theft entirely, at the cost of losing the token on a page refresh — usually mitigated by silently re-authenticating via the refresh token on load.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -272,6 +290,9 @@ app.get('/moderator', requireAuth, requireRole('admin', 'moderator'), (req, res)
     { q: 'How do you implement logout with JWTs?', a: 'Delete the refresh token from the database and clear the httpOnly cookie. The access token remains valid until it expires (15m–1h) — this is the core trade-off of stateless auth. For immediate revocation, add the access token\'s JTI to a Redis blacklist with TTL matching the token expiry. The auth middleware checks the blacklist on every request. Most applications accept the short expiry window without blacklisting.' },
     { q: 'Should I use JWTs or server-side sessions?', a: 'JWTs: stateless, no DB lookup per request, natural fit for microservices and mobile apps, horizontal scaling without sticky sessions. Sessions: easy to revoke instantly (delete from DB/Redis), no payload size concerns, simpler token theft response. For microservices with shared auth: JWTs. For single-server web apps where instant revocation and smaller complexity matter: sessions. Both are valid — the choice depends on your architecture.' },
     { q: 'What is a token family and why does it matter?', a: 'A token family is a group of refresh tokens issued to one device/login. Each device gets a unique family ID. When a refresh token is used, it is invalidated and a new one with the same family is issued. If an already-used token from a family is presented (reuse detected), ALL tokens in that family are invalidated — logging out that device entirely. This limits the blast radius of a stolen token to one device rather than all sessions.' },
+    { q: 'Why should you store the JWT signing secret as an environment variable rather than hardcoding it in source?', a: 'A hardcoded secret committed to version control is permanently exposed in git history, readable by anyone with repository access including former collaborators or leaked clones — and rotating it requires a code change and redeploy rather than a simple config update. Storing it as an environment variable (or better, in a secrets manager) keeps it out of source control, allows different secrets per environment, and supports rotation without code changes.' },
+    { q: 'What is the security risk of storing a JWT in localStorage versus an httpOnly cookie?', a: 'Tokens in localStorage are accessible to any JavaScript running on the page, making them vulnerable to theft via XSS attacks — a single injected script can read and exfiltrate the token. An httpOnly cookie is inaccessible to JavaScript entirely, eliminating that attack vector, though it introduces its own consideration: CSRF protection (via SameSite cookie attributes and/or CSRF tokens) becomes necessary since the browser will automatically attach the cookie to same-origin requests.' },
+    { q: 'How do you implement JWT refresh token rotation securely in a Node.js API?', a: 'Issue a short-lived access token (minutes) and a longer-lived refresh token (days/weeks), storing the refresh token hashed in the database alongside a unique ID. On each refresh, validate the incoming refresh token against the stored hash, issue a new access token AND a new refresh token, and invalidate (delete or mark used) the old refresh token — this "rotation" means a stolen refresh token can only be used once before detection, since reuse of an already-rotated token signals a likely compromise and should trigger revoking the entire token family.' },
   ];
 
   revision: RevisionSummary = {

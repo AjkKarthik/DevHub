@@ -574,6 +574,10 @@ Add Speculation Rules to make navigations between checkout steps feel instant:
       q: 'Should I use Speculation Rules on mobile?',
       a: 'With more caution than desktop. Mobile devices have less RAM (prerender costs 50–100 MB per page), and mobile users on cellular connections pay for bandwidth. Use prefetch rather than prerender on mobile, prefer conservative or moderate eagerness, and limit the number of URLs speculated. Consider only adding prerender rules for desktop viewports: if (window.innerWidth > 768) addSpeculationRules(prerenderRules).',
     },
+    {
+      q: 'What is the practical difference between prerender and prefetch in the Speculation Rules API?',
+      a: 'prefetch downloads the HTML document (and triggers its subresource requests) ahead of navigation but does not execute JavaScript or render the page — it primarily saves network round-trip time on the eventual navigation. prerender goes further: it actually renders the page in a hidden background tab, including running JavaScript and building the full DOM/layout, so that navigating to it feels instantaneous (often a 0ms or near-0ms LCP on the actual navigation). prerender is more resource-intensive (CPU, memory, and potential duplicate side effects from scripts running early) and should be reserved for high-confidence next-navigation predictions (e.g., the obvious next step in a checkout flow), while prefetch is safer for more speculative, lower-confidence link hover predictions.',
+    },
   ];
 
   revision: RevisionSummary = {

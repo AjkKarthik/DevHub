@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Automated reconciliation catches ~99% of issues; manual review queue for exceptions.',
     ],
   },
+  {
+    heading: 'Idempotency and Exactly-Once Payment Processing',
+    points: [
+      'Network failures and client retries are inevitable — a payment API must accept an idempotency key from the client so that retrying an identical payment request (due to a timeout, not knowing if the first attempt succeeded) never results in a duplicate charge.',
+      'The idempotency key, combined with the exact request payload, is stored server-side; a repeated request with the same key returns the original response rather than reprocessing the payment — this is the standard pattern used by Stripe and virtually every production payment API.',
+      'Payment state should be modeled as an explicit state machine (pending → authorized → captured → settled, or → failed → refunded) rather than a simple boolean, since real payment flows have many valid transitions and invalid transitions (capturing an already-refunded payment) must be explicitly rejected.',
+      'Financial correctness requires double-entry bookkeeping principles even in a software ledger — every movement of money is recorded as a balanced pair of debit and credit entries, making the system auditable and allowing reconciliation to catch any discrepancy between the ledger and actual processor settlement.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

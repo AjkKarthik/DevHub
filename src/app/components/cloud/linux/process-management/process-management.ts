@@ -71,6 +71,15 @@ export class LinuxProcessManagement {
         'screen and tmux are better solutions for persistent sessions — they provide virtual terminals that survive disconnection.',
       ],
     },
+    {
+      heading: 'Signals and Graceful Process Termination',
+      points: [
+        'SIGTERM (the default signal sent by kill) requests a process to terminate gracefully, giving it the opportunity to clean up (close file handles, finish in-flight work, flush buffers) before exiting — well-behaved applications catch this signal and shut down cleanly rather than being abruptly killed.',
+        'SIGKILL (kill -9) cannot be caught, blocked, or ignored by the target process — it terminates the process immediately and unconditionally at the kernel level, appropriate only as a last resort for a genuinely unresponsive process that is not honoring SIGTERM, since it gives the process no chance to clean up.',
+        'SIGHUP historically signaled a terminal hangup, but is commonly repurposed by daemons to mean "reload your configuration without fully restarting" — many services (nginx, systemd itself) interpret SIGHUP this way, letting configuration changes take effect without dropping active connections.',
+        'Always attempt SIGTERM first and only escalate to SIGKILL if the process does not respond within a reasonable timeout — jumping straight to kill -9 as a habit risks corrupted data or resource leaks from a process that was killed mid-operation without a chance to clean up.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

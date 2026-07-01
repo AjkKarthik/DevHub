@@ -65,6 +65,24 @@ export class RedisStreams {
         'For backpressure, combine MAXLEN on XADD with producers that check XLEN before appending — slow down producers when the stream is too large.',
       ],
     },
+    {
+      heading: 'Consumer Groups for Reliable, Distributed Message Processing',
+      points: [
+        'A Redis Stream consumer group lets multiple consumers collectively process a stream of messages, with each message delivered to exactly one consumer within the group — enabling horizontal scaling of message processing across multiple worker processes without duplicate processing.',
+        'XACK acknowledges that a specific message has been successfully processed, removing it from the consumer\'s pending entries list — messages that are read but never acknowledged remain in the Pending Entries List (PEL), letting you detect and recover from a consumer that crashed mid-processing.',
+        'XCLAIM (or the newer XAUTOCLAIM) lets a different consumer take over messages that have been pending for too long without acknowledgment — essential for handling consumer failures gracefully, reassigning stuck work to a healthy consumer rather than losing it entirely.',
+        'Unlike basic Pub/Sub, Streams persist messages durably and support replay — a new consumer joining a consumer group can be configured to start reading from the beginning of the stream, the current position, or any specific point, giving flexibility that ephemeral Pub/Sub fundamentally cannot provide.',
+      ],
+    },
+    {
+      heading: 'Stream Trimming and Memory Management',
+      points: [
+        'Redis Streams grow unboundedly by default as new entries are added via XADD — without explicit trimming, a high-throughput stream can consume unbounded memory over time, making trimming strategy an essential part of any production Streams deployment.',
+        'XADD supports an inline MAXLEN option (approximate or exact) that automatically trims the stream to a maximum length as new entries are added, avoiding the need for a separate manual trimming process running on a schedule.',
+        'XTRIM can be called independently to trim an existing stream to a maximum length or to remove entries older than a specific ID — useful for retroactively cleaning up a stream that was not configured with automatic trimming from the start.',
+        'Approximate trimming (the default MAXLEN behavior, using the ~ modifier) is significantly more efficient than exact trimming, since it lets Redis trim in whole internal macro-nodes rather than precisely enforcing the exact count on every single add — acceptable for the vast majority of use cases where an approximate retention window is sufficient.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

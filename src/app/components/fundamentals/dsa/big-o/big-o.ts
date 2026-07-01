@@ -67,6 +67,15 @@ export class DsaBigO {
         'Hash maps, queues, and auxiliary arrays add to space complexity.',
       ],
     },
+    {
+      heading: 'Common Pitfalls When Estimating Big-O in Interviews',
+      points: [
+        'Nested loops do not always mean O(n^2) — if the inner loop\'s range depends on shrinking work (like checking only unprocessed elements), the actual complexity may be lower, such as O(n log n), and must be derived carefully rather than assumed from loop structure alone.',
+        'Built-in method calls inside a loop can silently add hidden complexity — calling .includes() or .indexOf() on an array inside a loop turns an apparent O(n) algorithm into O(n^2), since each call itself is O(n).',
+        'Recursive functions require analyzing both the number of calls and the work done per call — a recursive function that looks like it does O(1) work per call but branches into two recursive calls per invocation, like naive Fibonacci, is actually O(2^n), not O(n).',
+        'Interviewers specifically watch for candidates who state a complexity without justifying it — being able to explain WHY an algorithm is O(n log n) (not just stating it) demonstrates the deeper understanding that separates a memorized answer from genuine comprehension.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

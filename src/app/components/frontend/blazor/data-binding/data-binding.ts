@@ -47,6 +47,24 @@ export class BlazorDataBinding {
       points: ['Event directives like `@onclick`, `@oninput`, and `@onkeydown` accept a method reference or a lambda. Event args are available as `MouseEventArgs`, `ChangeEventArgs`, `KeyboardEventArgs`, etc. When iterating a list and capturing the loop variable in a lambda, always copy it to a local variable first to avoid the captured-variable closure bug.',
       'Event directives accept method references or lambdas.', 'Event arg types: MouseEventArgs, ChangeEventArgs, KeyboardEventArgs, etc.', 'Capture loop variables with var local = item; before using in lambda.', 'async lambdas are fine: @onclick="async () => await Load()"']
     },
+    {
+      heading: 'Custom Component Two-Way Binding with @bind-Value',
+      points: [
+        'Creating a custom component that supports @bind-Value (the same syntax used with built-in input elements) requires exposing a Value parameter and a matching ValueChanged EventCallback<T> parameter, following Blazor\'s naming convention that pairs a parameter with a ParameterChanged callback.',
+        'The consuming component then binds with <MyCustomInput @bind-Value="myField" /> — Blazor automatically wires this to pass myField as Value and update myField whenever ValueChanged fires, without the consumer needing to manually write out the equivalent Value and ValueChanged wiring explicitly.',
+        'For components binding a complex object rather than a simple primitive, consider whether two-way binding is even the right pattern — sometimes explicit, one-directional parameter passing plus an explicit "save" callback better expresses the actual intended interaction than implicit continuous two-way synchronization.',
+        'Binding expressions can include format strings for certain types (@bind:format="yyyy-MM-dd" for dates) — controlling how a bound value is displayed and parsed without needing separate manual formatting logic in the component.',
+      ],
+    },
+    {
+      heading: 'Debouncing Bound Input for Performance',
+      points: [
+        'Binding a text input with @bind:event="oninput" for live filtering or search-as-you-type triggers an update (and potential re-render or server round-trip) on every single keystroke — for expensive downstream operations (an API call, a large list filter), this can create noticeable performance issues or excessive server load.',
+        'Debouncing (waiting for a brief pause in typing before actually triggering the expensive operation) is not built into Blazor\'s binding system directly and typically requires a small amount of custom logic — a Timer or Task.Delay-based debounce wrapper around the bound value\'s change handler.',
+        'In Blazor Server specifically, un-debounced binding on a fast typist sends a SignalR message to the server for every keystroke — debouncing here has a doubly important benefit, reducing both unnecessary re-render work AND unnecessary network round-trips over the circuit.',
+        'Libraries and community components exist specifically to provide debounced input components as a drop-in replacement for standard bound inputs, avoiding the need to hand-roll debounce logic repeatedly across different parts of an application that need this same behavior.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -200,6 +218,10 @@ export class BlazorDataBinding {
     { q: 'Can I use @bind on a custom component I wrote?', a: 'Yes. @bind-PropName synthesizes a PropNameChanged EventCallback. Declare both `[Parameter] public T PropName` and `[Parameter] public EventCallback<T> PropNameChanged` on your component, and parents can use `@bind-PropName="field"`.' },
     { q: 'When does Blazor re-render after an event?', a: 'Blazor calls StateHasChanged automatically after every event handler completes. If the handler is async, a re-render happens after each awaited continuation too. You rarely need to call StateHasChanged manually from event handlers.' },
     { q: 'How do I bind a nullable property?', a: 'Blazor input components support nullable generics: `InputNumber<int?>` binds to `int?`. For string properties, string is already nullable by reference. Ensure validation accounts for null with [Required] or nullability annotations.' },
+    { q: 'What is the difference between one-way binding (@value) and two-way binding (@bind) in Blazor?',
+      a: 'One-way binding (value="@field") only flows data FROM the component\'s C# state TO the rendered HTML element — user input into that element does not automatically update the underlying field. Two-way binding (@bind="field") additionally wires up an event handler (oninput or onchange depending on the bind modifier) so that user changes to the element flow back and update the C# field automatically, keeping both in sync without manually writing the event handler yourself.' },
+    { q: 'How does @bind:event let you customize when a two-way bound value updates?',
+      a: 'By default, @bind="field" on a text input uses the onchange event, which only fires when the input loses focus, not on every keystroke. Adding @bind:event="oninput" changes the bound event to oninput, updating the underlying field on every keystroke instead — useful for live character counters, search-as-you-type filtering, or any UI that needs to react immediately rather than waiting for the field to lose focus.' },
   ];
 
   revision: RevisionSummary = {

@@ -54,6 +54,24 @@ const theory: TheoryPoint[] = [
       'group and peer utilities: group-hover:text-white applies to children when the group parent is hovered. peer-checked:block applies to siblings.',
     ],
   },
+  {
+    heading: 'Utility-First CSS Philosophy',
+    points: [
+      'Tailwind\'s utility-first approach applies single-purpose classes (p-4, flex, text-center) directly in markup rather than writing custom semantic CSS classes — trading traditional CSS/HTML separation for colocation of styling decisions directly alongside the markup they affect.',
+      'This colocation eliminates a common maintenance problem in traditional CSS: unused, orphaned CSS rules that accumulate over time as components are modified or removed, since Tailwind\'s build process can tree-shake to only the utility classes actually referenced in the codebase.',
+      'Design system consistency is enforced through Tailwind\'s configuration (a constrained set of spacing, color, and typography scale values) rather than through developer discipline alone — developers select from predefined design tokens rather than writing arbitrary pixel or color values freely.',
+      'The tradeoff for utility-first is markup verbosity — a component with many utility classes can become visually noisy in the HTML/JSX, which Tailwind addresses partly through component extraction (wrapping repeated utility combinations in a reusable component) rather than CSS-level abstraction.',
+    ],
+  },
+  {
+    heading: 'When Tailwind Fits and When It Does Not',
+    points: [
+      'Tailwind excels for rapid UI development within a component-based framework (React, Vue, Angular) where component extraction naturally handles reducing utility class repetition — the component becomes the reusable unit, not a custom CSS class.',
+      'Teams transitioning from traditional semantic CSS (BEM, CSS Modules) to Tailwind should expect a genuine mental model shift — styling decisions move from "define a reusable class with meaning" to "compose a specific look from atomic utilities," which some developers find faster and others find less intuitive.',
+      'Tailwind\'s generated CSS bundle, when properly configured with content-based purging, is typically smaller than an equivalent hand-written CSS codebase for the same UI, since unused utility combinations are never generated at all — a genuine, measurable production performance advantage.',
+      'For highly custom, design-heavy interfaces with unique, non-repeating visual treatments, the utility-first approach can feel less natural than component-scoped custom CSS — Tailwind\'s value is strongest for interfaces built from a consistent, repeatable design system with well-defined constraints.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

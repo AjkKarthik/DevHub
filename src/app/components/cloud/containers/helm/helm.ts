@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Hooks are ordered by helm.sh/hook-weight annotation — lower weight runs first.',
     ],
   },
+  {
+    heading: 'Helm Templating and Values Layering',
+    points: [
+      'Helm charts use Go templating to parametrize Kubernetes manifests — values.yaml provides defaults, which can be overridden per-environment via -f custom-values.yaml or --set flags, letting one chart serve dev, staging, and production with different configuration.',
+      'Values files layer in order of specificity, with later-specified files/flags overriding earlier ones — this ordering matters when combining a base values file with an environment-specific override file, since the override must come after the base to actually take effect.',
+      'helm template renders manifests locally without touching the cluster, useful for reviewing exactly what YAML a chart install would produce and for GitOps workflows that want to commit rendered manifests rather than apply Helm directly against a cluster.',
+      'Helm tracks release history and supports helm rollback to a previous revision, but this only reverts the Kubernetes objects Helm manages — it does not undo external side effects (data migrations, external API calls) that may have happened as part of that release.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

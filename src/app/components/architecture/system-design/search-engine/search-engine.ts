@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Hot terms (common words): posting lists can be millions long — store compressed (delta + varint encoding).',
     ],
   },
+  {
+    heading: 'Inverted Indexes and Relevance Ranking',
+    points: [
+      'An inverted index maps each unique term to the list of documents containing it (the inverse of a forward index mapping documents to their terms) — this is the fundamental data structure that makes full-text search fast, letting a query for a term jump directly to matching documents instead of scanning every document.',
+      'Relevance ranking (not just matching) is what separates a search engine from simple filtering — TF-IDF and its successor BM25 score documents based on how often a term appears in a document relative to how common that term is across the entire corpus, surfacing more specific and relevant matches higher.',
+      'Index updates in a live search system must balance freshness against performance — near-real-time indexing (documents searchable within seconds of being written) requires more complex incremental index update mechanisms than a simpler batch reindexing approach that only refreshes periodically.',
+      'At scale, the index itself is sharded across multiple nodes (each holding a subset of the document corpus), with a query coordinator fanning a search request out to all relevant shards and merging the ranked results — this parallelism is what allows search systems to scale to enormous document collections.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'kubectl set image deployment/<name> <container>=<new-image> triggers a rolling update by changing the image.',
     ],
   },
+  {
+    heading: 'Imperative Commands vs. Declarative kubectl apply',
+    points: [
+      'Imperative commands (kubectl run, kubectl create) directly create or modify a specific object right now — fast for quick debugging or one-off tasks, but the resulting change is not captured in any version-controlled manifest.',
+      'kubectl apply reconciles a YAML manifest against the cluster\'s current state declaratively, computing and applying only the diff — this is the standard approach for GitOps-style workflows where manifests are the source of truth, not ad-hoc commands.',
+      'Mixing imperative changes with declarative manifests causes drift — a manually kubectl edit-ed object no longer matches its source-controlled manifest, and the next kubectl apply may silently overwrite the manual change (or vice versa) depending on which fields changed.',
+      'kubectl diff (comparing a local manifest against live cluster state before applying) is a useful safety check to catch unexpected drift before it causes a surprising change during a routine apply.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

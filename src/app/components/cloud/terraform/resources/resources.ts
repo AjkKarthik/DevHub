@@ -72,6 +72,15 @@ export class TfResources {
         'Module blocks also support depends_on to force the entire module to run after another resource.',
       ],
     },
+    {
+      heading: 'Resource Lifecycle Meta-Argument Controls',
+      points: [
+        'create_before_destroy = true (within a lifecycle block) changes the default replace behavior — instead of destroying the old resource before creating its replacement, Terraform creates the new resource first, then destroys the old one, avoiding downtime for resources where a brief overlap is acceptable but a gap is not.',
+        'prevent_destroy = true causes Terraform to error out and refuse to destroy a specific resource, even if a configuration change or terraform destroy would otherwise remove it — a safety guardrail for genuinely critical, hard-to-recreate resources like a production database.',
+        'ignore_changes lets specific resource attributes be excluded from drift detection — useful when an attribute is legitimately managed outside Terraform (like an autoscaling group\'s desired_capacity being adjusted by the autoscaler itself) and should not trigger a plan diff every time it naturally changes.',
+        'These lifecycle controls should be used deliberately and sparingly — overusing ignore_changes in particular can hide genuine configuration drift that you actually want visibility into, defeating one of Terraform\'s core value propositions of accurate drift detection.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

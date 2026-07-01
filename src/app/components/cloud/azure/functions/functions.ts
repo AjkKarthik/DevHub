@@ -73,6 +73,15 @@ export class AzureFunctions {
         'Concurrency: HTTP functions can handle multiple concurrent requests on one instance (configurable with FUNCTIONS_WORKER_PROCESS_COUNT and maxConcurrentRequests). Queue/Service Bus functions default to one message at a time per instance.',
       ]
     },
+    {
+      heading: 'Cold Start and Consumption Plan Tradeoffs',
+      points: [
+        'On the Consumption plan, Azure Functions scale to zero when idle, meaning the first request after a period of inactivity incurs a "cold start" — the time to provision and initialize a new instance before it can handle the request, which can be a noticeable latency spike for latency-sensitive scenarios.',
+        'Premium and Dedicated (App Service) plans keep a minimum number of instances warm, eliminating cold start at the cost of paying for that baseline compute even when idle — a direct tradeoff between cost efficiency (Consumption) and consistent latency (Premium/Dedicated).',
+        'Cold start duration varies significantly by language runtime and dependency footprint — a function with heavy dependencies or a slow-to-initialize runtime experiences a longer cold start than a lean function with minimal cold-path initialization work.',
+        'Consumption plan billing (per-execution, per-GB-second) makes it extremely cost-effective for genuinely infrequent or bursty workloads, while a consistently high-traffic function may actually cost less on a Premium plan once cold-start-avoidance and per-execution costs are compared at scale.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

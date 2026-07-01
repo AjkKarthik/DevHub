@@ -73,6 +73,15 @@ export class AzureArm {
         'Use az provider list-operations --namespace Microsoft.Compute to discover what operations a provider exposes — useful for writing Azure Policy deny rules or RBAC custom roles.',
       ]
     },
+    {
+      heading: 'ARM Template Idempotency and Incremental Deployment',
+      points: [
+        'ARM deployments are idempotent by default — deploying the same template multiple times produces the same end state, since ARM computes the delta between the template\'s desired state and the resource group\'s current state, rather than blindly re-creating resources.',
+        'Incremental mode (the default) only adds or modifies resources described in the template, leaving other existing resources in the resource group untouched — Complete mode instead deletes any resource in the group NOT described in the template, a significantly more destructive behavior that must be used deliberately.',
+        'Dependencies between resources (a subnet needing its virtual network to exist first) can be inferred automatically from resource references, or declared explicitly via dependsOn — ARM uses this dependency graph to determine safe deployment ordering, including parallelizing independent resources.',
+        'ARM template validation (what-if deployments) lets you preview exactly what a deployment would change before actually applying it — a critical safety check before running Complete-mode deployments or any deployment against a production resource group.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -59,6 +59,24 @@ export class NodeWorkerThreads {
         'Appropriate tasks for worker threads: image/video processing, PDF generation, encryption of large data, heavy JSON parsing, ML inference in ONNX runtime, complex mathematical computations, regex on large strings. Avoid I/O in workers — I/O is non-blocking on the main thread.',
       ]
     },
+    {
+      heading: 'When Worker Threads Are the Right Tool',
+      points: [
+        'worker_threads run within the same process, each with its own isolated V8 instance and event loop, but can share memory directly via SharedArrayBuffer — ideal for offloading a specific CPU-intensive computation without duplicating the entire application\'s memory footprint per worker.',
+        'The GIL-free equivalent concern in Node.js: since JavaScript itself runs single-threaded per isolate, a genuinely CPU-bound task (heavy computation, image processing, cryptographic hashing of large data) run on the main thread blocks all other request handling — worker_threads is the correct tool for this, not more async/await (which does nothing for CPU-bound work).',
+        'Do NOT use worker_threads for I/O-bound work (database queries, HTTP calls) — async/await on the main thread already handles I/O concurrency efficiently via the event loop; spawning a worker thread for I/O adds serialization overhead with no benefit.',
+        'Spawning a worker has real overhead (new V8 isolate initialization) — for many small, frequent tasks, a persistent worker pool (reusing long-lived workers via a queue, as the piscina library provides) amortizes this cost far better than spawning a fresh worker per task.',
+      ]
+    },
+    {
+      heading: 'Communication Between Main Thread and Workers',
+      points: [
+        'Communication happens via postMessage(), with data serialized using the structured clone algorithm — most JavaScript values (objects, arrays, Maps, dates) are deep-copied across the thread boundary, not shared by reference, since each worker has its own isolated memory heap.',
+        'For genuinely shared, mutable memory without copying overhead, SharedArrayBuffer combined with Atomics enables safe concurrent access from multiple threads — used for high-throughput numeric data (like large typed arrays) where copying via postMessage would be too slow.',
+        'workerData passes initial data to a worker at creation time (a one-time setup value), while ongoing communication after the worker starts uses the postMessage/on("message") event-based channel for bidirectional exchange during the worker\'s lifetime.',
+        'Always handle the worker\'s "error" and "exit" events on the main thread — an unhandled error in a worker does not automatically propagate to or crash the main thread, so silently ignoring these events can mask worker failures indefinitely.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -256,6 +274,9 @@ if (isMainThread) {
     { q: 'What types of tasks are good candidates for worker threads?', a: 'CPU-intensive JavaScript: image/video processing (resizing, transcoding), PDF generation, encryption/decryption of large data, ML inference (ONNX Runtime Node.js), heavy JSON parsing or schema validation, complex regex on large strings, hash computation, file compression. NOT suitable: database queries, HTTP calls, file reads — these are I/O-bound and already non-blocking via Node.js async I/O. Worker threads benefit only tasks that genuinely occupy CPU cycles.' },
     { q: 'How do you share state between worker threads?', a: 'Three options: (1) Message passing: deep-copy data between threads via postMessage/on("message"). Safe, no race conditions, but copies data. (2) SharedArrayBuffer + Atomics: true shared memory, no copying. Requires careful atomic operations to avoid race conditions. Low-level, error-prone. (3) Transferable objects: ArrayBuffer ownership moved to recipient. Zero copy, but original is unusable. For most use cases, message passing is safest. Only use SharedArrayBuffer when performance requirements demand it.' },
     { q: 'How does piscina improve on manual worker pool implementations?', a: 'Piscina handles: worker lifecycle (spawn, maintain pool size, restart crashed workers), task queue with configurable max queue size and backpressure, load balancing (assign tasks to least-loaded workers), idle timeout (reclaim threads after inactivity to save RAM), AbortController support for task cancellation, and TypeScript types. Writing a correct worker pool from scratch covers the same ground but is easy to get wrong. Use piscina unless you have unusual requirements.' },
+    { q: 'When should you use worker_threads instead of the cluster module for parallelizing Node.js work?', a: 'The cluster module forks entirely separate OS processes, each with its own memory space and event loop, primarily used to scale HTTP request handling across CPU cores (each worker independently accepts connections). worker_threads run within the same process and can share memory directly via SharedArrayBuffer, making them better suited for offloading a specific CPU-intensive computation (image processing, complex calculations) from the main thread without the overhead of inter-process communication or duplicating the entire application\'s memory footprint per worker.' },
+    { q: 'How do worker_threads communicate with the main thread, and why can you not just share regular JavaScript objects directly?', a: 'Communication happens via postMessage(), where data is serialized using the structured clone algorithm — most JavaScript values (objects, arrays, Maps, dates) are deep-copied across the thread boundary, not shared by reference, because each worker thread has its own isolated V8 instance and memory heap. For genuinely shared, mutable memory without copying overhead, you must explicitly use a SharedArrayBuffer combined with Atomics for safe concurrent access — handling everyday objects with regular postMessage copying is sufficient for most use cases and avoids the complexity of manual memory synchronization.' },
+    { q: 'What is a worker thread pool, and why is creating a new worker thread per task usually inefficient?', a: 'Spawning a new worker_thread has real overhead — initializing a new V8 isolate, loading and parsing the worker script, and tearing it down afterward — making it wasteful to create and destroy a worker for every individual small task. A worker pool (implemented manually or via the piscina library) pre-spawns a fixed number of long-lived worker threads and distributes incoming tasks across them via a queue, reusing each worker for many tasks over its lifetime — amortizing the thread creation cost and giving predictable, bounded resource usage under load.' },
   ];
 
   revision: RevisionSummary = {

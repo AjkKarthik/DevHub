@@ -58,6 +58,15 @@ export class JsFunctional {
         'These patterns enable chaining operations on values that may be absent/errored, without <code>if (x !== null)</code> guards at every step.',
       ]
     },
+    {
+      heading: 'Function Composition and Point-Free Style',
+      points: [
+        'Function composition combines simple, single-purpose functions into a pipeline (<code>compose(f, g, h)(x)</code> equivalent to <code>f(g(h(x)))</code>) — building complex transformations from small, independently testable, reusable pieces.',
+        'Point-free style (also called tacit programming) defines functions without explicitly naming their arguments (<code>const double = x => x * 2</code> vs the point-free <code>const double = multiply(2)</code> using a curried multiply) — can improve readability for simple pipelines but harm it if overused for complex logic.',
+        'Composition works best with unary (single-argument) functions — utilities like lodash\'s <code>flow()</code> or a custom <code>pipe()</code> helper pass a single value through a chain of transformations, which is why currying is often paired with composition.',
+        'Pure functions (no side effects, same input always produces same output) are what make composition safe and predictable — composing functions with hidden side effects or external dependencies produces pipelines that are hard to reason about and test.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

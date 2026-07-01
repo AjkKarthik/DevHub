@@ -59,6 +59,24 @@ export class RedisTransactions {
         'Redis pipelines (not transactions) send multiple commands in bulk but do NOT guarantee atomicity — they only reduce round-trip latency.',
       ],
     },
+    {
+      heading: 'MULTI/EXEC Transactions and Optimistic Locking with WATCH',
+      points: [
+        'MULTI begins queuing subsequent commands rather than executing them immediately; EXEC then executes the entire queued batch atomically as a single unit — no other client\'s commands can interleave between the queued commands during execution, though Redis transactions do not support rolling back individual commands within the batch.',
+        'Redis transactions differ from traditional ACID database transactions in an important way — if a queued command has a runtime error (like calling a list operation on a string key), the transaction still executes and other commands in the batch still run; only commands with syntax errors detected at queue time abort the entire transaction before EXEC.',
+        'WATCH implements optimistic locking — watching a key before MULTI causes the subsequent EXEC to fail (returning nil) if the watched key was modified by another client between the WATCH and the EXEC, letting the application detect the conflict and retry rather than silently proceeding with stale assumptions.',
+        'The WATCH/MULTI/EXEC pattern is commonly used to implement compare-and-swap style logic — read a value, decide on an update based on that value, WATCH the key, then MULTI/EXEC the update, retrying the entire sequence if EXEC indicates the value changed concurrently.',
+      ],
+    },
+    {
+      heading: 'When to Use Transactions vs Lua Scripts for Atomicity',
+      points: [
+        'MULTI/EXEC transactions are appropriate for straightforward batches of commands that do not depend on intermediate results — queuing several independent SET operations to execute together atomically, for example.',
+        'Lua scripts are necessary when the atomic operation requires CONDITIONAL logic based on intermediate results — a transaction cannot read a value and then decide what to do based on that value within the same atomic unit, since all transaction commands are queued blindly before any of them execute; Lua scripts can freely read, branch, and write within one atomic script execution.',
+        'DISCARD aborts a transaction that has been started with MULTI but not yet executed, clearing the queued commands without running any of them — useful for handling client-side logic errors detected after MULTI but before EXEC, without leaving a half-formed transaction pending.',
+        'For genuinely complex atomic multi-step logic, Lua scripting is generally the more powerful and flexible tool — MULTI/EXEC transactions remain valuable for their simplicity when the use case is a straightforward "run these N commands together as one unit" without conditional branching.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

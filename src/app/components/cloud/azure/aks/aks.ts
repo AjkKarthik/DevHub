@@ -73,6 +73,15 @@ export class AzureAks {
         'Azure Monitor for Containers (Container Insights) collects node and pod metrics, container logs, and sends them to a Log Analytics workspace. Enable with az aks enable-addons --addons monitoring.',
       ]
     },
+    {
+      heading: 'AKS-Managed Control Plane vs. Self-Managed Node Pools',
+      points: [
+        'Azure manages and pays for AKS\'s control plane (API server, etcd, scheduler) at no additional cost for the base tier — you only pay for the worker node VMs, unlike self-managed Kubernetes where control plane infrastructure is also your responsibility to provision and operate.',
+        'Node pools let you run different VM types within the same cluster (a general-purpose pool for standard workloads, a GPU pool for ML workloads) — a capability that requires manual node group configuration in a self-managed cluster.',
+        'Cluster upgrades in AKS are a managed, orchestrated operation (upgrading the control plane, then node pools) — Azure handles the complexity of a safe, sequential Kubernetes version upgrade that would otherwise require careful manual coordination.',
+        'Despite the managed control plane, node pool VMs still count toward your subscription\'s compute quota and cost the same as standalone VMs of the same size — AKS reduces operational burden, not underlying compute cost.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

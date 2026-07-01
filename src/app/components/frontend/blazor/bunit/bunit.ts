@@ -44,6 +44,24 @@ export class BlazorBunit {
       points: ['Register services on `ctx.Services` before rendering: `ctx.Services.AddScoped<IProductService, FakeProductService>()`. For IJSRuntime, bUnit provides a built-in `JSInterop` object: `ctx.JSInterop.SetupVoid("window.init")` mocks JS calls without a real browser. You can verify JS calls were made, return fake values, and throw exceptions to test error paths.',
       'ctx.Services mirrors the real DI container — register stubs/mocks there.', 'ctx.JSInterop.Setup() mocks specific JS interop calls.', 'Use Moq or NSubstitute for service mocks.', 'ctx.JSInterop.VerifyInvoke() asserts a JS function was called.']
     },
+    {
+      heading: 'What bUnit Tests and What It Deliberately Does Not',
+      points: [
+        'bUnit renders components headlessly using a test double of the Blazor rendering pipeline — it verifies component logic, markup output, and event handling without needing a real browser or a running server, making tests fast enough to run in the hundreds during a typical CI run.',
+        'bUnit does NOT test actual browser rendering, CSS layout, or JavaScript interop behavior beyond what you explicitly mock — visual regressions, CSS issues, and real browser-specific quirks require a genuine browser-based E2E tool (Playwright) rather than bUnit.',
+        'Testing a component in isolation with bUnit means mocking its dependencies (injected services, cascading parameters) explicitly via the TestContext — this isolation is a feature, letting you verify one component\'s logic without the overhead and flakiness of spinning up its entire dependency graph.',
+        'A healthy testing strategy for a Blazor application uses bUnit extensively for fast, numerous unit/component tests, reserving a smaller number of Playwright E2E tests for critical user journeys that genuinely need to verify the full rendered application working end-to-end in a real browser.',
+      ],
+    },
+    {
+      heading: 'Snapshot and Semantic Markup Comparison in bUnit',
+      points: [
+        'cut.MarkupMatches() performs semantic HTML comparison rather than exact string matching — attribute order, insignificant whitespace, and self-closing tag variations are normalized before comparison, making tests resilient to cosmetic rendering differences that do not represent genuine behavioral changes.',
+        'Snapshot-style testing (asserting a component\'s full rendered markup matches an expected string) is convenient for catching unintended markup changes, but can become brittle if used for every component — reserving full markup assertions for components where the exact rendered structure genuinely matters, and using targeted Find()-based assertions elsewhere, balances thoroughness against maintenance burden.',
+        'bUnit\'s WaitForState() and WaitForAssertion() methods poll until a condition becomes true (or a timeout elapses) — essential for testing components with asynchronous behavior (data loading, debounced input) where a synchronous assertion immediately after rendering would run before the async operation has completed.',
+        'Testing accessibility-relevant markup (ARIA attributes, semantic HTML elements) with bUnit\'s Find() and markup assertions helps catch accessibility regressions early in the development cycle, before they reach a manual or automated accessibility audit later in the process.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -248,6 +266,7 @@ public class LoginFormTests : TestContext
     { q: 'What is MarkupMatches used for?', options: ['Exact byte comparison', 'Semantic HTML assertion ignoring attribute order and whitespace', 'Asserting CSS class names', 'Comparing DOM trees across browsers'], answer: 1, explanation: 'MarkupMatches performs a semantic comparison — element structure and text content must match, but attribute order and insignificant whitespace differences are ignored.' },
     { q: 'When must you register services in TestContext?', options: ['After RenderComponent', 'Anytime during the test', 'Before RenderComponent', 'In the component constructor'], answer: 2, explanation: 'Services must be registered before calling RenderComponent. The DI container is built on first render — services added afterward are not available to the component.' },
     { q: 'Which bUnit API mocks IJSRuntime calls?', options: ['ctx.JsRuntime', 'ctx.JSInterop', 'ctx.JS.Setup()', 'ctx.Services.AddJSRuntime()'], answer: 1, explanation: 'ctx.JSInterop provides Setup(), SetupVoid(), and VerifyInvoke() to mock, configure return values, and assert on JS interop calls without a browser.' },
+    { q: 'How does bUnit simulate a user click on a button inside a rendered component?', options: ['By raising a native browser event', 'By calling cut.Find("button").Click()', 'By invoking the component method directly', 'bUnit cannot simulate clicks'], answer: 1, explanation: 'cut.Find() locates the element, and the IElement extension methods (Click(), Change(), etc.) simulate the corresponding DOM event, triggering Blazor\'s event dispatch pipeline exactly as a real click would, including any associated event handler and re-render.' },
   ];
 
   qna: QnaItem[] = [
@@ -255,5 +274,7 @@ public class LoginFormTests : TestContext
     { q: 'How do I test a component that uses NavigationManager?', a: 'bUnit\'s TestContext registers a FakeNavigationManager automatically. After triggering navigation in the component, check FakeNavigationManager.Uri to assert the correct URL was navigated to.' },
     { q: 'How do I test components with cascading parameters?', a: 'Wrap the component under test in a CascadingValue inside the test: `RenderComponent<MyComp>(p => p.AddCascadingValue(new Theme { IsDark = true }))` or register the value on the test context.' },
     { q: 'Should I use bUnit or Playwright for Blazor testing?', a: 'Both serve different purposes. bUnit tests component logic in isolation — fast, no browser, ideal for unit and integration tests. Playwright tests the full app end-to-end in a real browser — slower, but catches integration issues between components and the server. Use bUnit for the majority of tests and Playwright for critical end-to-end paths.' },
+    { q: 'How do I assert that a component raised an EventCallback with the expected argument?', a: 'Pass a delegate when rendering: `var received = default(int); var cut = RenderComponent<Counter>(p => p.Add(c => c.OnCountChanged, v => received = v));` then trigger the action and assert on the captured variable. This verifies the component correctly invokes its EventCallback parameter with the right value, without needing a real parent component.' },
+    { q: 'How do I test a component that depends on an injected typed HttpClient?', a: 'Register a fake or mocked HttpMessageHandler with the test context\'s service collection before rendering: `ctx.Services.AddHttpClient("api").ConfigurePrimaryHttpMessageHandler(() => fakeHandler);` This lets you control HTTP responses deterministically in the test without making real network calls, keeping bUnit tests fast and isolated.' },
   ];
 }

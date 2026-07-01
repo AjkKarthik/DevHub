@@ -47,6 +47,24 @@ export class BlazorStreamingRendering {
       points: ['Enhanced navigation is a companion feature that intercepts internal link clicks and fetches only the new page\'s content fragment, swapping it into the current DOM without a full reload. This preserves scroll position, avoids re-downloading scripts and styles, and keeps transient UI (like open dropdowns) intact. Disable per-link with `data-enhance-nav="false"` or globally via the router configuration.',
       'Intercepts link clicks and fetches only the page fragment.', 'Preserves browser history and scroll position.', 'Much faster than full-page reload — scripts not re-parsed.', 'Opt out per-link with data-enhance-nav="false".']
     },
+    {
+      heading: 'Combining Streaming Rendering with Suspense-Like Patterns',
+      points: [
+        'Streaming rendering works by sending the initial HTML shell immediately (often with a loading placeholder for slow-loading sections), then streaming additional HTML updates into the same response as async data resolves — the browser progressively renders content as it arrives rather than waiting for the entire page to be ready.',
+        'The [StreamRendering] attribute is applied per-component, meaning you deliberately choose which specific components benefit from progressive streaming (typically ones with genuinely slow data dependencies) rather than it being an all-or-nothing page-level setting.',
+        'A common pattern pairs streaming rendering with a simple loading state check in the component (showing a skeleton or spinner while a data-fetching task is in progress, then the real content once resolved) — similar in spirit to Suspense boundaries in other frameworks, though implemented explicitly rather than through an automatic wrapper mechanism.',
+        'Streaming rendering specifically benefits Time to First Byte and perceived load performance for pages with a mix of fast and slow data dependencies — a page where every dependency is uniformly fast gains little from streaming, since there is no slow section to stream around in the first place.',
+      ],
+    },
+    {
+      heading: 'Streaming Rendering Compatibility with Other Blazor Features',
+      points: [
+        'Streaming rendering works alongside enhanced navigation — a page using [StreamRendering] still benefits from enhanced navigation\'s SPA-like transitions, with the streamed content properly patched into the DOM as it arrives during a client-side-perceived navigation, not just on a traditional full page load.',
+        'Components using streaming rendering can still contain nested interactive components (InteractiveServer or InteractiveWebAssembly islands) — the streaming behavior applies to the static/server-rendered portions, while nested interactive components activate normally once their portion of the streamed content has arrived and rendered.',
+        'Streaming rendering is specifically a Static SSR feature — it has no meaning or effect for components already running in a fully interactive render mode, since those components are not going through the initial streamed-HTML-generation phase that [StreamRendering] modifies.',
+        'Testing streaming rendering behavior in bUnit is limited, since bUnit does not simulate the actual HTTP streaming response mechanics — verifying streaming behavior in practice typically requires manual testing or browser-based E2E testing observing the actual progressive rendering in a real network request.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -270,6 +288,10 @@ else
     { q: 'Can I combine [StreamRendering] with enhanced navigation?', a: 'Yes — they complement each other. [StreamRendering] improves TTFB for the initial page load, while enhanced navigation makes subsequent navigations feel instant by swapping only content fragments.' },
     { q: 'How does streaming compare to InteractiveServer for data loading?', a: 'Streaming sends actual HTML and requires no JavaScript framework on the client — it is pure SSR with progressive enhancement. InteractiveServer sets up a persistent SignalR connection and re-renders components on the server. Streaming is cheaper (no circuit, no long connection) but less dynamic — you cannot respond to user events without a round-trip.' },
     { q: 'Is [StreamRendering] available in .NET 7?', a: 'No. [StreamRendering] was introduced in .NET 8 along with the unified Blazor Web App hosting model. It requires the new per-component render mode system.' },
+    { q: 'How does Blazor\'s streaming rendering (.NET 8) improve perceived performance for pages with slow data dependencies?',
+      a: 'Without streaming, a server-rendered Blazor page waits for ALL async data dependencies (database queries, API calls in OnInitializedAsync) to complete before sending any HTML to the browser — a single slow dependency delays the entire page\'s Time to First Byte. With [StreamRendering] enabled on a component, Blazor sends an initial HTML response immediately (often showing a loading state), then streams additional HTML updates to the same response as async operations complete, letting the browser progressively render content as it becomes available rather than waiting for the slowest dependency to finish.' },
+    { q: 'What is the relationship between streaming rendering and the @attribute [StreamRendering] directive?',
+      a: 'Streaming rendering is opt-in per component — adding @attribute [StreamRendering(true)] (or [StreamRendering] in newer syntax) at the top of a .razor file tells Blazor that this specific component supports being rendered in multiple streamed updates rather than requiring a single complete render. Without this attribute, the component renders normally (waiting for all its async work before producing output), meaning you selectively enable streaming only for components with genuinely slow data dependencies where progressive display provides real user-facing benefit.' },
   ];
 
   revision: RevisionSummary = {

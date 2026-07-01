@@ -52,6 +52,24 @@ export class JsWeakrefs {
         'The key difference from Map: WeakMap keys are weakly held — they do not count as a reference for GC. Map keys are strongly held — objects referenced as Map keys cannot be collected.',
       ]
     },
+    {
+      heading: 'Garbage Collection Fundamentals Relevant to Weak References',
+      points: [
+        'JavaScript uses automatic garbage collection based on reachability — an object is eligible for collection once nothing reachable from the global scope (or any active call stack) holds a strong reference to it, directly or transitively.',
+        'A normal (strong) reference — a variable, an array element, an object property — prevents garbage collection for as long as that reference exists and remains reachable, regardless of whether the referenced object is actually still needed by the application.',
+        'WeakRef and WeakMap/WeakSet keys are the exception: they hold a reference that does NOT by itself keep the referenced object alive — if all OTHER (strong) references to that object are gone, it can be garbage collected even while a WeakRef still technically points to it.',
+        'This distinction matters specifically for caching and metadata-association use cases, where you want to associate data with an object for as long as that object is still in use elsewhere, but do not want the cache/metadata itself to be the reason the object is kept alive forever.',
+      ]
+    },
+    {
+      heading: 'Practical Use Cases Beyond Caching',
+      points: [
+        'DOM node metadata association: a WeakMap keyed by DOM elements can store extra data (event handler state, computed measurements) associated with a specific element — when the element is removed from the DOM and no longer referenced, the WeakMap entry is automatically eligible for collection too.',
+        'Private data storage (the pre-ES2022 pattern): a module-level WeakMap keyed by instance, storing private state, avoided leaking that state through enumeration while still allowing the instance itself to be garbage collected normally when no longer used.',
+        'Observer/listener cleanup: WeakRef can hold a reference to a callback target without preventing it from being collected if the target is no longer needed elsewhere — avoiding the class of memory leak where a long-lived event emitter keeps every ever-registered listener\'s target alive forever.',
+        'These patterns should be used deliberately and sparingly — for the vast majority of application code, ordinary strong references and explicit cleanup (removing event listeners, clearing intervals) are simpler, more predictable, and sufficient without needing weak reference semantics at all.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [
@@ -418,6 +436,14 @@ handler = null;  // handler can now be GC'd
     {
       q: 'When would you choose WeakRef over WeakMap for caching?',
       a: 'Use <code>WeakRef</code> when you want to optionally hold onto a value and the cache key is the value itself (self-referential or keyed by something else). Use <code>WeakMap</code> when you want to associate extra data with an object key. Example: a DOM node → computed style cache → use WeakMap (key is the node, value is derived data). An optional memoised result cache → use WeakRef on the result. If unsure, WeakMap is almost always the cleaner choice.',
+    },
+    {
+      q: 'How does FinalizationRegistry differ from WeakRef, and why is it considered unreliable for critical cleanup logic?',
+      a: 'FinalizationRegistry lets you register a callback to run after an object has been garbage collected, useful for releasing associated external resources (closing a file handle tied to a JS wrapper object). The spec explicitly does NOT guarantee the callback will ever run — the engine may delay it indefinitely, batch it, or skip it entirely if the process exits first. This makes it unsuitable for anything requiring deterministic cleanup (closing database connections, releasing locks) — use explicit dispose patterns or try/finally for guaranteed cleanup, reserving FinalizationRegistry purely as a best-effort backstop or for development-time leak detection.',
+    },
+    {
+      q: 'Why can holding a WeakRef to an object still prevent garbage collection if you are not careful?',
+      a: 'A WeakRef itself does not prevent collection — but if your code also holds any STRONG reference to the same object elsewhere (a variable, a closure, an array), that strong reference keeps the object alive regardless of any WeakRefs pointing to it. A common mistake is creating a WeakRef expecting it to enable collection, while a forgotten strong reference (e.g., still captured in an event listener closure that was never removed) silently keeps the object alive — WeakRef only matters once ALL strong references to the object are gone.',
     },
   ];
 

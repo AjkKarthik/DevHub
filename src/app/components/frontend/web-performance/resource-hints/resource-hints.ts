@@ -445,6 +445,10 @@ slow LCP and first-paint times. Add the correct hints:
       q: 'Is prefetch affected by the user\'s data-saver (Lite Mode) setting?',
       a: 'Yes. Browsers may ignore prefetch hints when the user has enabled data-saver mode, has a metered connection, or when Chrome\'s "Lite Mode" is active. preload is respected regardless — it\'s for resources needed now, not speculatively. This is one reason Speculation Rules API is preferred for next-page prerendering.',
     },
+    {
+      q: 'What happens if you overuse preconnect for many third-party origins?',
+      a: 'Each preconnect opens a full connection (DNS + TCP + TLS handshake) and holds it warm, consuming a limited browser connection pool and CPU/network resources upfront — typically only a handful of connections can be efficiently warmed in the critical early page-load window. Preconnecting to 10+ origins "just in case" dilutes the priority and bandwidth available to the connections that actually matter for the current page (the LCP image origin, the main API), and idle preconnected sockets that go unused for too long are simply wasted work. Best practice: reserve preconnect for the 2-4 origins you are certain will be used immediately (font CDN, primary API, LCP image host) and use the cheaper dns-prefetch as a fallback hint for everything else.',
+    },
   ];
 
   revision: RevisionSummary = {

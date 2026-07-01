@@ -60,6 +60,24 @@ export class SchemaRegistry {
         'Prefer adding new optional fields over breaking changes; version the subject name if a breaking change is unavoidable.',
       ]
     },
+    {
+      heading: 'Schema Evolution Compatibility Modes',
+      points: [
+        'Backward compatibility means a new schema can read data written with an older schema — safe for adding optional fields with defaults, but new required fields would break older data being read by a consumer expecting them.',
+        'Forward compatibility means data written with a new schema can be read by consumers still using an older schema — safe for removing fields consumers do not currently rely on, but adding a new required field could break older readers unaware of it.',
+        'Full compatibility requires both backward AND forward compatibility simultaneously — the strictest and safest mode for a topic with many independent consumers deploying schema updates on their own uncoordinated timelines.',
+        'Choosing too permissive a compatibility mode (or none at all) allows a schema change to silently break consumers that have not yet been updated — the schema registry\'s compatibility check acts as a build-time or publish-time safety gate against exactly this kind of breaking change.',
+      ],
+    },
+    {
+      heading: 'Why Centralized Schema Management Matters at Scale',
+      points: [
+        'Without a schema registry, producers and consumers must independently agree on message format out-of-band (documentation, tribal knowledge) — a fragile coordination mechanism that breaks down as the number of services and topics grows.',
+        'A schema registry provides a single source of truth for what a given topic\'s message format actually is, letting new consumers discover and validate against the correct schema rather than reverse-engineering it from sample messages.',
+        'Serialization formats like Avro and Protobuf, combined with a schema registry, encode a compact schema ID in each message rather than the full schema — reducing message size compared to embedding a full schema (like JSON Schema) in every single message.',
+        'Centralized schema governance also enables organization-wide policies (requiring specific compatibility modes, mandating field documentation) that would be impossible to enforce consistently if each team managed its own message formats independently.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

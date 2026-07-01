@@ -52,6 +52,15 @@ export class BlazorComponentCommunication {
       points: ['@ref captures a reference to a child component instance, letting you call its public methods or read its public properties directly. This is useful for imperative actions like focusing an input or calling `Refresh()` on a grid. Overuse leads to tight coupling — prefer parameters and callbacks for data flow.',
       '@ref gives direct access to public component methods.', 'The ref is null until after the first OnAfterRender.', 'Use only for imperative operations (focus, scroll, reload).', 'Prefer [Parameter]/EventCallback for data flow; reserve @ref for behaviour.']
     },
+    {
+      heading: 'Choosing the Right Communication Pattern for Component Relationships',
+      points: [
+        'Parent-to-child communication via [Parameter] is the simplest and most predictable pattern — use it whenever a direct parent-child relationship exists, since it keeps data flow explicit and traceable directly in the markup.',
+        'Child-to-parent communication via EventCallback keeps the relationship explicit in the opposite direction — the parent passes a callback down, and the child invokes it, avoiding the need for the child to know anything about its parent\'s implementation.',
+        'For communication between components with NO direct parent-child relationship (siblings, or components in entirely different parts of the component tree), a shared injected service (often combined with an event/notification pattern) is the appropriate tool — cascading parameters and direct references are not designed for this cross-cutting scenario.',
+        'Overusing a shared service for communication that could be expressed simply via parameters and callbacks creates implicit, harder-to-trace coupling — reserve shared-service communication for genuinely cross-cutting concerns, keeping direct parent-child relationships expressed through the simpler, more traceable parameter/callback pattern.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -229,6 +238,10 @@ export class BlazorComponentCommunication {
     { q: 'Can [CascadingParameter] work with IsFixed?', a: 'Yes. Setting IsFixed="true" on CascadingValue tells Blazor the value will not change. This is a performance optimisation — Blazor skips re-traversal when the cascaded object is updated. Only use it when the value truly never changes after initial render.' },
     { q: 'Is @ref compatible with interfaces?', a: 'No, @ref requires a concrete component type. If you need to abstract the component, use a wrapper component or communicate via a service rather than direct method calls through @ref.' },
     { q: 'When should I not use CascadingValue?', a: 'Avoid cascading values for frequently-changing data (like a live counter). Every descendant that has a [CascadingParameter] re-renders when the cascaded value changes, which can cascade a performance hit through a large subtree.' },
+    { q: 'When should you use a cascading parameter instead of passing a regular [Parameter] down through multiple levels?',
+      a: 'Regular [Parameter] passing works fine for direct parent-to-child communication, but becomes tedious "prop drilling" when a value (theme, current user, a shared service) needs to reach deeply nested descendant components through many intermediate levels that do not otherwise need it. CascadingValue/CascadingParameter lets an ancestor component implicitly provide a value that any descendant can opt into receiving directly, regardless of nesting depth, without every intermediate component needing to explicitly forward it.' },
+    { q: 'What is the risk of using a singleton service for component-to-component communication, and how do you mitigate it?',
+      a: 'A singleton service used as a shared communication channel (raising events that multiple unrelated components subscribe to) can create implicit, hard-to-trace coupling between components that have no direct parent-child relationship, and forgotten event unsubscription in a component\'s Dispose method causes memory leaks as disposed components remain referenced by the singleton\'s event invocation list. Always unsubscribe from singleton service events in IDisposable.Dispose(), and prefer scoped services or direct parameter passing when the relationship between components is otherwise simple and direct.' },
   ];
 
   revision: RevisionSummary = {

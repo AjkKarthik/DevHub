@@ -55,6 +55,12 @@ export class TddTesting {
       'TDD is most valuable when the problem is not yet fully understood — tests become the specification.',
       'Even without strict TDD, writing a test before debugging a bug (regression test) is always worthwhile.',
     ]},
+    { heading: 'Why Red-Green-Refactor Order Matters', points: [
+      'Writing the test first (red) forces thinking about the desired behavior and API shape before implementation exists, often producing cleaner, more usable interfaces than designing the implementation first and retrofitting tests.',
+      'Watching a new test actually fail (red) before making it pass confirms the test is genuinely exercising the intended code path — a test that passes immediately without any implementation change may be silently testing nothing.',
+      'The refactor step (cleaning up code while tests stay green) is not optional — skipping it accumulates technical debt just as surely as skipping tests entirely, since TDD\'s safety net only pays off if refactoring actually happens.',
+      'TDD\'s tight feedback loop (seconds between writing code and knowing if it works) catches mistakes immediately, while writing tests after the fact loses this immediacy and often results in tests that merely confirm existing behavior rather than driving design.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

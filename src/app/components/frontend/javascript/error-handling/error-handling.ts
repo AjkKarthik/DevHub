@@ -60,6 +60,15 @@ export class JsErrorHandling {
         'Trade-off: more verbose, especially for deeply nested calls. Good fit for known failure modes (network errors, validation); throws are still appropriate for programmer errors (bugs).',
       ]
     },
+    {
+      heading: 'Custom Error Classes',
+      points: [
+        'Extending the built-in <code>Error</code> class (<code>class ValidationError extends Error {}</code>) lets you create semantically distinct error types that carry additional structured data while preserving stack traces and <code>instanceof</code> checks.',
+        'A custom error\'s constructor should call <code>super(message)</code> first to properly initialize the inherited Error behavior, then set any additional custom properties (like an error code or field name) afterward.',
+        'Custom error classes enable precise error handling in catch blocks — <code>catch (e) { if (e instanceof ValidationError) {...} }</code> — rather than fragile string-matching on <code>e.message</code> to determine what kind of failure occurred.',
+        'Setting <code>error.name</code> explicitly to match the class name (some transpilation targets do not do this automatically) ensures logging and debugging tools display the correct error type rather than a generic "Error".',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

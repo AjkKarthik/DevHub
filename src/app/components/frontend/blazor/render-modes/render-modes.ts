@@ -47,6 +47,24 @@ export class BlazorRenderModes {
       points: ['Static SSR components can opt in to `[StreamRendering]` to flush HTML before async data resolves, dramatically improving perceived speed. Enhanced navigation (enabled by default) intercepts link clicks and fetches only the updated DOM fragment rather than doing a full-page reload, preserving scroll position and client state.',
       '`[StreamRendering]` attribute on a page component enables progressive HTML flushing.', 'Enhanced navigation is opt-out via `data-enhance-nav="false"`.', 'Enhanced form actions work similarly for POST round-trips.', 'Both features require the `<script src="_framework/blazor.web.js">` script tag.']
     },
+    {
+      heading: 'Choosing a Render Mode Per Component, Not Per Application',
+      points: [
+        '.NET 8\'s render mode model lets DIFFERENT components within the same application use different render modes — a marketing landing page can use Static SSR for speed and SEO, while a dashboard page elsewhere in the same app uses InteractiveServer for real-time updates, all within one unified project.',
+        'The @rendermode directive applied to a component (or its usage site) specifies its render mode explicitly — omitting it defaults to static rendering, meaning components must explicitly opt into interactivity rather than being interactive by default, a deliberate design choice favoring performance by default.',
+        'Mixing render modes within a single page requires understanding boundary behavior — an interactive component can be nested within a static page, but a static component generally cannot be nested within an interactive component\'s render tree in the same simple way, requiring careful component architecture planning.',
+        'Choosing the wrong render mode for a given component\'s actual needs has real consequences — using InteractiveServer for a component that does not need real-time server interaction wastes a persistent SignalR circuit resource, while using Static SSR for a component that genuinely needs client-side interactivity simply will not work as intended.',
+      ],
+    },
+    {
+      heading: 'Prerendering Behavior with Interactive Render Modes',
+      points: [
+        'By default, interactive render modes (InteractiveServer, InteractiveWebAssembly) still prerender on the server first, sending initial static HTML before the interactive runtime takes over — this gives fast initial paint even for interactive components, at the cost of components potentially running their initialization logic twice (once during prerender, once during actual interactive startup).',
+        'Prerendering can be explicitly disabled per component (@rendermode="new InteractiveServerRenderMode(prerender: false)") for components where double-execution of initialization logic would cause problems (like a component that increments a counter or calls a non-idempotent API on initialization).',
+        'Components relying on browser-only APIs (accessing window or localStorage via JS interop) must guard against running during the server-side prerender phase, where no real browser exists — checking OperatingSystem.IsBrowser() or deferring such calls to OnAfterRenderAsync avoids errors during prerendering.',
+        'Understanding the prerender-then-hydrate lifecycle is essential for correctly reasoning about "why did my OnInitializedAsync run twice" — a common early confusion for developers new to .NET 8\'s render mode model, where this double execution is expected default behavior, not a bug.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -226,6 +244,10 @@ else
     { q: 'Can I mix render modes within one page?', a: 'Yes. A Static SSR page can embed individual interactive components with `<Counter @rendermode="InteractiveServer" />`. Each island has its own mode — the parent does not need to be interactive.' },
     { q: 'Does enhanced navigation work with all browsers?', a: 'Yes. It is a progressive enhancement — it uses the Fetch API to intercept clicks. If the script is not loaded, the page falls back to standard full-page navigation.' },
     { q: 'What happens to component state when Auto switches from Server to WASM?', a: 'State is lost during the transition unless you persist it explicitly via PersistentComponentState or a shared backend API. Plan for the switch when designing stateful components with Auto mode.' },
+    { q: 'What is the practical difference between InteractiveServer and InteractiveWebAssembly render modes introduced in .NET 8?',
+      a: 'InteractiveServer runs the component\'s C# logic on the server with UI updates streamed over a SignalR circuit, similar to "classic" Blazor Server — fast initial load, but requires a constant low-latency connection and consumes server resources per active user. InteractiveWebAssembly downloads and runs the component entirely in the browser via WASM — works offline after load, scales without server-side per-user resource cost, but has a larger initial download and WASM startup time. .NET 8 lets you choose the render mode per component, mixing both within the same app.' },
+    { q: 'What does "Auto" render mode do, and why might you choose it over a fixed Server or WebAssembly mode?',
+      a: 'InteractiveAuto initially uses Server rendering for fast first interaction (no WASM download wait), while simultaneously downloading and caching the WASM runtime and app assemblies in the background; on subsequent visits (once WASM assets are cached), it automatically switches to WebAssembly rendering for that component, giving the best of both — fast first load and offline-capable, server-independent operation on return visits — without the developer needing to manually choose one mode and accept its specific tradeoff permanently.' },
   ];
 
   revision: RevisionSummary = {

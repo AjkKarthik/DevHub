@@ -68,6 +68,15 @@ export class RedisRateLimiting {
         'Best for: APIs that want to allow occasional bursts (bucket capacity) while enforcing a sustained rate.',
       ],
     },
+    {
+      heading: 'Implementing Sliding Window Rate Limiting with Redis',
+      points: [
+        'A simple fixed-window counter (INCR on a key with an EXPIRE) is easy to implement but suffers from the boundary-burst problem — a client can send up to double the intended rate by timing requests around a window reset boundary.',
+        'A sliding window log implemented with a Redis sorted set (ZADD storing request timestamps as scores, ZREMRANGEBYSCORE pruning entries outside the current window, ZCARD counting remaining entries) provides accurate sliding-window rate limiting without the fixed-window boundary problem.',
+        'Redis\'s atomic operations and Lua scripting make it possible to implement the entire check-and-increment rate limit logic as a single atomic operation, preventing race conditions where two near-simultaneous requests could both read a stale "under limit" count and both be incorrectly allowed through.',
+        'Redis\'s in-memory speed makes it well-suited for rate limiting\'s latency-sensitive check-on-every-request pattern — a rate limit check must add minimal overhead to the request path, which a fast, dedicated in-memory store like Redis provides far better than querying a traditional disk-backed database on every request.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -47,6 +47,24 @@ export class BlazorDependencyInjection {
       points: ['If a component needs an isolated scope (e.g., to use a DbContext that should not be shared with other components in the same circuit), inherit from `OwningComponentBase<TService>`. This creates a child DI scope that is disposed when the component is disposed. For manual scope management in a Singleton service, inject `IServiceScopeFactory`.',
       'OwningComponentBase<T> creates a component-scoped DI container.', 'The owned scope is disposed automatically when the component unmounts.', 'Use this pattern for EF Core DbContext in Blazor Server.', 'IServiceScopeFactory creates manual scopes in Singleton services or background tasks.']
     },
+    {
+      heading: 'Constructor Injection vs @inject in Different Contexts',
+      points: [
+        '@inject is the idiomatic way to receive dependencies in .razor component files — it generates an [Inject] property behind the scenes, resolved automatically when the component is instantiated by the DI container.',
+        'For plain C# classes that are NOT components (a service class, a helper class), standard constructor injection is used instead — .razor files use @inject specifically because they do not have an accessible constructor in the typical single-file component authoring model.',
+        'Circular dependencies between injected services (Service A depends on Service B which depends back on Service A) produce a runtime error when the DI container attempts to resolve the dependency graph — a sign that the two services\' responsibilities likely need to be restructured to break the cycle.',
+        'Testing components that use @inject requires registering appropriate services (real or mocked) in the bUnit TestContext\'s service collection before rendering — a component expecting an injected service that was never registered in the test context throws an exception during the test, a common early stumbling block when first writing Blazor component tests.',
+      ],
+    },
+    {
+      heading: 'Scoped Service Lifetime Nuances Between Blazor Server and WASM',
+      points: [
+        'In Blazor Server, a Scoped service lives for the duration of a user\'s SignalR circuit (effectively their entire browser session) — this is a meaningfully different scope than the per-HTTP-request scoping typical ASP.NET Core developers are used to, and can surprise developers new to Blazor Server\'s hosting model.',
+        'In Blazor WebAssembly, there is only ever one user per browser tab, so the practical difference between Scoped and Singleton lifetime largely disappears — both effectively live for the duration of the WASM application\'s lifetime in that tab, unlike the meaningful distinction that exists in Blazor Server.',
+        'A DbContext registered as Scoped in Blazor Server persists for the entire circuit lifetime rather than a single request — this requires careful handling to avoid a long-lived DbContext accumulating tracked entities over a long session, a common source of subtle bugs when migrating patterns directly from traditional ASP.NET Core MVC.',
+        'Understanding these lifetime nuances is essential before assuming DI patterns familiar from other ASP.NET Core hosting models transfer directly to Blazor — the underlying DI container is the same, but the scope boundaries it operates within differ significantly based on the specific Blazor hosting model in use.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -211,6 +229,10 @@ builder.Services.AddScoped<ThemeService>();
     { q: 'Is there a difference between Scoped and Singleton on Blazor WebAssembly?', a: 'In practice, no. WASM runs in the browser with a single-user, single-app context. There is no concept of a per-request or per-circuit scope, so Scoped and Singleton behave identically — one instance for the app lifetime.' },
     { q: 'When should I use IServiceScopeFactory?', a: 'Use it in Singleton services or background tasks (IHostedService, BackgroundService) that need to resolve Scoped services. Create a scope, resolve what you need, and dispose the scope immediately afterward.' },
     { q: 'How do I share state between all components on the same page?', a: 'Register a Scoped service as your state bag and inject it into all components. For reactive updates, add an event (Action or EventHandler) that components subscribe to, and call StateHasChanged in the handler.' },
+    { q: 'Why does service lifetime (Singleton, Scoped, Transient) matter differently in Blazor Server versus Blazor WASM?',
+      a: 'In Blazor Server, a Scoped service lives for the duration of a single user\'s SignalR circuit (effectively their entire session), and a Singleton is shared across ALL connected users on the server — meaning Singleton state is genuinely global and shared, which is a critical, easy-to-miss distinction from typical ASP.NET Core request-scoped behavior. In Blazor WASM, there is only one user per browser tab (no server-side multi-user concern), so Scoped and Singleton behave nearly identically — both live for the duration of the WASM app\'s lifetime in that tab.' },
+    { q: 'How do you inject a service into a Blazor component, and what is the difference between @inject and constructor injection?',
+      a: '@inject ServiceType ServiceName at the top of a .razor file is the idiomatic Blazor way — it generates a property with the [Inject] attribute behind the scenes, resolved automatically by the DI container when the component is created. Constructor injection (common in plain C# classes) is not directly usable in .razor files since components do not have an accessible constructor for this purpose in the typical authoring model — for code-behind (.razor.cs) partial classes, you still use the [Inject] property attribute rather than a constructor parameter.' },
   ];
 
   revision: RevisionSummary = {

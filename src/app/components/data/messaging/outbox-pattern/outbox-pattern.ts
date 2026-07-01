@@ -60,6 +60,24 @@ export class OutboxPattern {
         'Both approaches deliver at-least-once semantics — consumers must handle duplicate events idempotently.',
       ]
     },
+    {
+      heading: 'The Dual-Write Problem the Outbox Pattern Solves',
+      points: [
+        'Writing to a database AND publishing a message as two separate operations creates a dual-write problem — if the service crashes between the database commit and the message publish, the database change happens but the message is never sent, leaving the two systems inconsistent.',
+        'The outbox pattern writes both the business data change AND the outgoing message (into an "outbox" table) within the SAME database transaction, guaranteeing atomicity — either both happen or neither does, eliminating the window where they could diverge.',
+        'A separate relay process (polling the outbox table, or using change data capture) then reads unpublished outbox rows and actually publishes them to the message broker, decoupling the atomic local write from the actual broker publish.',
+        'This pattern trades some latency (the message is published slightly after the transaction commits, not atomically with it) for a strong consistency guarantee that avoids the dual-write problem entirely — a worthwhile tradeoff whenever the consistency between the database and the published event genuinely matters.',
+      ],
+    },
+    {
+      heading: 'Outbox Relay Implementation Approaches',
+      points: [
+        'Polling-based relays periodically query the outbox table for unpublished rows and publish them — simple to implement, but introduces latency proportional to the polling interval and adds continuous read load on the database.',
+        'CDC-based relays (using a tool like Debezium to tail the database\'s transaction log) publish outbox rows near-instantly as they are written, with lower latency and database load than polling, at the cost of additional CDC infrastructure to operate.',
+        'Marking outbox rows as "published" (rather than deleting them immediately) after successful publish allows for auditing and recovery if the relay itself fails partway through a batch, at the cost of requiring a separate cleanup process to eventually purge old published rows.',
+        'The relay itself must handle publish failures with retry logic, since a message published from the outbox can still fail to reach the broker — the outbox pattern solves the dual-write problem at the database layer, but publish reliability from outbox to broker still needs its own handling.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

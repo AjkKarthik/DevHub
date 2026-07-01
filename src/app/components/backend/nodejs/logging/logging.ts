@@ -59,6 +59,24 @@ export class NodeLogging {
         'Log sampling under high load: logging every request at info level with 10,000 req/s creates 864M log lines per day. Sample debug logs (log 1% of requests for debug). Log all errors. Use adaptive sampling — log more detail when error rate spikes.',
       ]
     },
+    {
+      heading: 'Log Levels and When to Use Each',
+      points: [
+        'error: something failed and needs attention — a failed database write, an unhandled exception. warn: something unexpected happened but the request still completed — a retry succeeded on the second attempt, a deprecated API was called.',
+        'info: normal but noteworthy events — a server started, a scheduled job completed. debug: detailed diagnostic information useful during development or active incident investigation, typically disabled in production due to volume.',
+        'Configure log level per environment: debug/info in development for maximum visibility while coding, warn/error only in production to keep log volume (and cost) manageable while ensuring genuine problems are still surfaced.',
+        'Consistent log level discipline across a team matters — if everything is logged as "error" regardless of actual severity, alerting on error-level logs becomes useless noise, and genuine critical failures get lost in the flood.',
+      ]
+    },
+    {
+      heading: 'Structured Logging for Production Observability',
+      points: [
+        'Structured (JSON) logs emit each entry as a parseable object with consistent fields (timestamp, level, message, requestId, custom context) rather than a free-text string — this lets log platforms (Datadog, ELK, CloudWatch Insights) filter and alert on specific fields directly.',
+        'A correlation ID (generated at the request entry point and propagated through every downstream log statement and service call) is essential in distributed systems — without it, reconstructing all logs for a single user-facing request across multiple services requires manual, error-prone timestamp correlation.',
+        'Avoid logging sensitive data (passwords, full tokens, PII) even at debug level — log aggregation systems are often accessible to a wide swath of engineering, and sensitive data in logs is a common compliance and security gap.',
+        'High-performance loggers (pino) avoid blocking the event loop during log writes by offloading serialization/transport to a worker thread — important for services logging thousands of requests per second where synchronous logging would become a real bottleneck.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -283,6 +301,9 @@ app.get('/test', (req, res) => {
     { q: 'How do I propagate request ID to downstream service calls?', a: 'When making HTTP requests to other services, include the requestId in the outgoing headers: axios.get(url, { headers: { "x-request-id": requestId } }). If using AsyncLocalStorage, read the requestId from the store and inject it automatically in an Axios interceptor or fetch wrapper. Downstream services read the header and use it as their own requestId. This creates a trace chain across services without a full distributed tracing setup.' },
     { q: 'Should I log to files or stdout in containerised apps?', a: 'Always stdout (and stderr for errors) in containers. Docker and Kubernetes capture stdout/stderr and route them to the cluster\'s logging infrastructure (Fluentd, Logstash, CloudWatch Agent). If you write to files inside a container, the logs are lost when the container is replaced. File logging makes sense only in traditional VM deployments with log rotation configured. Platform rule: let the infrastructure handle log collection — your app just needs to write to stdout.' },
     { q: 'How do I handle log sampling at high traffic?', a: 'Full logging at 10K req/s generates ~1TB of logs per day at 100 bytes per log line. Strategies: (1) Deterministic sampling — log only requests where requestId hash % N === 0 (e.g. 1% sample). (2) Priority sampling — always log errors, 5xx responses, and slow requests regardless of sample rate. (3) Adaptive sampling — normal rate at low traffic, increased sampling when error rate spikes. Pino supports custom redact functions to implement sampling at the transport level.' },
+    { q: 'Why is structured (JSON) logging preferred over plain text console.log statements in production Node.js services?', a: 'Plain text logs require fragile regex parsing to extract fields for searching, filtering, or alerting, and lose all type information (a numeric duration becomes an unstructured string fragment). Structured JSON logs (via pino, winston with JSON format) emit each log entry as a parseable object with consistent fields (timestamp, level, message, requestId, custom context), letting log aggregation platforms (Datadog, ELK, CloudWatch Logs Insights) index, filter, and alert on specific fields directly without brittle text parsing.' },
+    { q: 'What is a correlation ID and why is it essential for debugging distributed Node.js systems?', a: 'A correlation ID (or request ID/trace ID) is a unique identifier generated at the entry point of a request and propagated through every downstream log statement, service call, and queue message related to that request. Without it, finding all log lines for a single user-facing request across multiple microservices, async jobs, or retries is nearly impossible — with it, a single grep or log-platform filter on the correlation ID reconstructs the complete request journey across the entire distributed system.' },
+    { q: 'Why is pino generally preferred over console.log or even winston for high-throughput Node.js APIs?', a: 'pino is designed for minimal serialization overhead — it uses fast JSON stringification and avoids synchronous, blocking I/O for log writes in the hot path (it can offload formatting/transport to a separate worker thread via pino-transport), making it significantly faster than synchronous console.log or winston\'s default configuration under high request volume. For services logging thousands of requests per second, this overhead difference becomes a measurable factor in overall throughput and latency.' },
   ];
 
   revision: RevisionSummary = {

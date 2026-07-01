@@ -69,6 +69,15 @@ export class RedisCachingPatterns {
         'Use HSET for structured cache entries rather than JSON strings when you need to access individual fields without deserialising the whole object.',
       ],
     },
+    {
+      heading: 'Cache Stampede Prevention',
+      points: [
+        'A cache stampede occurs when a popular cache key expires and many concurrent requests simultaneously miss the cache and hammer the origin database at once — under high traffic this can overwhelm the database with a sudden burst of duplicate, redundant queries all computing the same result.',
+        'A distributed lock (SET key value NX EX ttl) lets only the first request that detects a cache miss actually recompute and repopulate the cache, while other concurrent requests either wait briefly and retry, or serve slightly stale data instead of all independently hitting the database simultaneously.',
+        'Probabilistic early expiration (recomputing the cache slightly before its actual TTL expires, with a randomized probability that increases as expiry approaches) spreads out cache regeneration over time rather than having many keys expire in a synchronized burst.',
+        'For extremely hot keys, combining a short server-side in-memory cache in front of Redis with the above stampede-prevention techniques provides an additional layer of protection, reducing Redis load itself in addition to protecting the origin database.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

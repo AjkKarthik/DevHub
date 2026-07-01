@@ -59,6 +59,24 @@ export class NodePrisma {
         'Prisma Extensions (v4.7+): prisma.$extends({ model: { user: { async findActiveUsers() { ... } } } }) — add custom methods to models. Type-safe, composable, replaces middleware for most use cases.',
       ]
     },
+    {
+      heading: 'Schema-Driven Type Generation',
+      points: [
+        'Prisma\'s schema.prisma file is the single source of truth for your data model — running prisma generate produces a fully typed TypeScript client tailored to that exact schema, so referencing a non-existent field is a compile-time error, not a runtime surprise.',
+        'Any schema change requires regenerating the client to pick up new types — most teams automate this as a postinstall script or a pre-build CI step, since forgetting to regenerate leads to confusing type mismatches between the schema and the stale generated client.',
+        'The generated client includes relation-aware query methods (include, select) that are fully typed based on the schema\'s defined relations — autocomplete correctly narrows available fields based on which relations you choose to include.',
+        'Prisma Studio (a bundled GUI) lets you browse and edit data directly against the schema during development — useful for quickly inspecting data state without writing ad-hoc query scripts or connecting a separate database client.',
+      ]
+    },
+    {
+      heading: 'Migrations and Schema Evolution',
+      points: [
+        'prisma migrate dev generates versioned, ordered SQL migration files from schema changes and tracks applied migrations in a dedicated table, letting the same sequence reliably reapply across development, staging, and production environments.',
+        'Directly editing the database schema outside Prisma Migrate (manual ALTER TABLE) creates drift between the Prisma schema and actual database structure that migrate cannot detect or reconcile automatically — always make schema changes through migrations.',
+        'Migrations should be reviewed like code changes before merging — a migration that drops a column or changes a type can be destructive and irreversible against production data if applied carelessly.',
+        'For zero-downtime schema changes in a rolling deployment, use the expand-contract pattern: add new columns as optional first (expand), deploy code that writes to both old and new columns, backfill data, then remove the old column in a later migration (contract) once all code has moved on.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -253,6 +271,9 @@ class PostRepository {
     { q: 'Should I check in Prisma migrations to source control?', a: 'Yes — always. The prisma/migrations directory contains versioned SQL migration files that represent your database schema history. Checking them in ensures every developer and environment applies the same migrations in the same order. In production, run prisma migrate deploy (not dev) — it applies pending migrations without generating new ones. Never delete or modify migration files after applying them.' },
     { q: 'How do I handle optimistic locking (concurrent updates) with Prisma?', a: 'Add a version field to your model (version Int @default(1)). When updating, include version in the where clause and increment it: prisma.entity.update({ where: { id, version }, data: { ...changes, version: { increment: 1 } } }). If another request updated the record first, the version won\'t match and Prisma throws P2025 (record not found). Catch this and return a 409 Conflict response.' },
     { q: 'How do I implement soft delete with Prisma?', a: 'Add deletedAt DateTime? to your model. Use a Prisma Extension to add softDelete() to all models that sets deletedAt = new Date(). Then add a global query middleware (also via Extension) that automatically appends { deletedAt: null } to all findMany/findFirst queries. This way, soft-deleted records are filtered from all queries without changing every call site.' },
+    { q: 'How does Prisma generate type-safe database queries, and what triggers regeneration of the client?', a: 'Prisma reads your schema.prisma file (defining models, fields, and relations) and runs prisma generate to produce a fully typed TypeScript client tailored to your exact schema — every field, relation, and query method is statically typed, so referencing a non-existent field is a compile-time TypeScript error, not a runtime surprise. Any change to schema.prisma (new field, new model, changed relation) requires re-running prisma generate to regenerate the client types, which most teams automate as a postinstall script or pre-build step.' },
+    { q: 'What is the difference between Prisma Migrate and directly editing the database schema?', a: 'Prisma Migrate generates versioned, ordered SQL migration files from changes to schema.prisma (via prisma migrate dev), tracking applied migrations in a dedicated table so the same sequence of changes can be reliably reapplied across development, staging, and production environments. Directly editing the database schema (manual ALTER TABLE statements) bypasses this versioning entirely, creating drift between your Prisma schema and the actual database structure that prisma migrate cannot detect or reconcile automatically, risking confusing errors later.' },
+    { q: 'Why might you choose Prisma over a lower-level query builder like Knex, and what is the tradeoff?', a: 'Prisma trades some query flexibility for strong end-to-end type safety, an intuitive declarative schema, and built-in migration tooling — ideal for teams that want compile-time guarantees and faster CRUD development. The tradeoff: highly complex, dynamic, or deeply optimized raw SQL queries can be more awkward to express through Prisma\'s query API compared to a query builder like Knex, which gives more direct, flexible SQL construction at the cost of less automatic type safety — Prisma does support $queryRaw for escaping to raw SQL when genuinely needed.' },
   ];
 
   revision: RevisionSummary = {

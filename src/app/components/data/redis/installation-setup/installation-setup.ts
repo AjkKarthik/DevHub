@@ -75,6 +75,15 @@ export class RedisInstallationSetup {
         'Memory analysis: identify memory hogs, top key patterns, and serialisation overhead per data type.',
       ],
     },
+    {
+      heading: 'Persistence Configuration During Initial Setup',
+      points: [
+        'Redis persistence is disabled by default in some installation methods, meaning data is lost entirely on restart unless RDB snapshotting or AOF logging is explicitly configured — a critical setting to verify immediately after installation if any data durability is required.',
+        'For a pure caching use case with no durability requirement, disabling persistence entirely can improve write performance by eliminating disk I/O overhead — but this decision should be deliberate and documented, not simply the accidental result of an unconfigured default.',
+        'The redis.conf file (or equivalent configuration mechanism in containerized deployments) controls memory limits, persistence behavior, and network binding — reviewing and explicitly setting these values during initial setup avoids relying on defaults that may not match the actual production requirements.',
+        'Binding Redis to 0.0.0.0 without authentication configured is a serious, historically well-documented security misconfiguration — Redis instances exposed to the public internet without a password have been repeatedly discovered and compromised by automated scanning tools, making secure initial configuration essential from day one.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

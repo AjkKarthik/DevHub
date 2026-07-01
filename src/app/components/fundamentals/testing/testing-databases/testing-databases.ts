@@ -54,6 +54,12 @@ export class TestingDatabases {
       'Integration tests use the real repository against a test database.',
       'This split gives both speed (unit) and confidence (integration).',
     ]},
+    { heading: 'Isolating Database Tests From Each Other', points: [
+      'Wrapping each test in a database transaction and rolling it back at the end guarantees the next test starts from a clean, known state, without the overhead of recreating the entire database schema per test.',
+      'A shared test database accessed by parallel test runs risks tests interfering with each other\'s data — using a unique schema or database per test worker avoids this class of flaky, order-dependent failure.',
+      'Testcontainers-style ephemeral databases (spun up fresh for a test run and destroyed after) trade some startup time for complete isolation from any leftover state, config drift, or manual changes on a shared persistent test database.',
+      'Seeding minimal, purpose-built test data (rather than relying on a large shared fixture dataset) makes each test\'s assumptions explicit and reduces the chance that an unrelated data change elsewhere breaks a seemingly unrelated test.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

@@ -67,6 +67,15 @@ export class DsaGreedy {
         'When a problem says "minimum number of..." or "maximum of..." — try greedy first; if it doesn\'t work, use DP.',
       ],
     },
+    {
+      heading: 'Proving (or Disproving) That a Greedy Approach Works',
+      points: [
+        'A greedy algorithm is only correct if the problem exhibits the "greedy choice property" (a locally optimal choice leads to a globally optimal solution) — verifying this property, typically via an exchange argument or induction, is essential before trusting a greedy solution.',
+        'The classic activity selection problem (choosing the maximum number of non-overlapping intervals) is provably solved optimally by always picking the interval with the earliest finish time — a specific greedy strategy that would NOT work if applied to earliest start time instead.',
+        'Many candidates incorrectly assume any locally-sensible-looking strategy is greedy-optimal — 0/1 knapsack is the canonical counterexample, where greedily picking items by best value-to-weight ratio does NOT guarantee an optimal solution, unlike the fractional knapsack variant where it does.',
+        'When a greedy approach fails to produce a provably optimal solution, dynamic programming is the typical fallback, since DP explores the full solution space (with memoization to avoid redundant work) rather than committing irrevocably to locally optimal choices.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

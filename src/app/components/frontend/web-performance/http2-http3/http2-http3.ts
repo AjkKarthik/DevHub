@@ -427,6 +427,10 @@ Write the corrected HTML head and a brief explanation for each fix.`,
       q: 'How much does HTTP/3 actually improve performance in practice?',
       a: 'On fast, stable connections (broadband): 0–5% improvement — TCP HoL blocking rarely manifests. On mobile/lossy connections: 10–20% reduction in median LCP. The 0-RTT feature consistently saves ~150 ms per return visit. Google\'s research showed HTTP/3 reduced tail latency (P95) by 30% for users on poor networks.',
     },
+    {
+      q: 'Does HTTP/2 multiplexing eliminate the need for asset bundling and concatenation?',
+      a: 'Not entirely. HTTP/2 multiplexing removes the per-connection request limit that made bundling necessary under HTTP/1.1, but it does not eliminate per-request overhead (HTTP headers, even compressed via HPACK, plus the cost of the browser scheduling and prioritizing many small requests). For very small files (a handful of bytes each), bundling still wins due to compression efficiency — many small files compress worse individually than one larger concatenated file. Modern guidance is "bundle into a moderate number of cacheable chunks" rather than either one giant bundle (HTTP/1.1 era) or hundreds of individual unbundled files — code-splitting by route remains valuable for caching granularity even on HTTP/2 and HTTP/3.',
+    },
   ];
 
   revision: RevisionSummary = {

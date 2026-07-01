@@ -59,6 +59,24 @@ export class NodeTesting {
         'Error path testing is as important as happy path. Test what happens when DB throws, when external API fails, when validation fails. Use mockRejectedValue() for async errors, or deliberately pass invalid data. These paths are easiest to miss and most critical in production.',
       ]
     },
+    {
+      heading: 'The Testing Pyramid for Node.js Services',
+      points: [
+        'Unit tests (the base of the pyramid) verify a single function or class in isolation with all dependencies mocked — fast, numerous, and pinpoint exactly which piece of logic broke when they fail.',
+        'Integration tests verify that multiple components work correctly together, often against a real or in-memory test database — catching wiring bugs (an incorrect SQL query, a schema mismatch) that mocked unit tests would never surface.',
+        'End-to-end tests exercise the full running application through its real interface (HTTP requests via supertest against a running server) — fewer in number since they are slower and more brittle, reserved for critical user journeys.',
+        'The pyramid shape reflects a deliberate tradeoff: maximize fast, precise unit test coverage; use fewer, more expensive integration and E2E tests only where they catch issues unit tests structurally cannot.',
+      ]
+    },
+    {
+      heading: 'Mocking Strategy and Test Isolation',
+      points: [
+        'Mock external I/O (HTTP calls, databases, third-party APIs) in unit tests to keep them fast, deterministic, and independent of network/infrastructure availability — a unit test should never fail because a real external service happened to be down.',
+        'Over-mocking is a real risk: a test that mocks the database can pass even if the actual SQL query has a bug, since the mock returns whatever you told it to regardless of query correctness — reserve integration tests for validating actual query behavior.',
+        'Dependency injection (passing dependencies as constructor/function parameters rather than importing them directly) makes substituting a mock for a real dependency trivial in tests, without needing module-mocking hacks or fragile monkey-patching.',
+        'Reset mock state between tests (via beforeEach, not beforeAll) to avoid one test\'s mock configuration or call history leaking into and affecting a subsequent, supposedly-independent test.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -318,6 +336,9 @@ describe('Tasks API', () => {
     { q: 'Should I mock the database in integration tests?', a: 'No — mocking the database in what you call integration tests gives false confidence. A mocked DB test verifies that your code calls the mock correctly, not that your SQL/ORM queries actually work. Real integration tests hit a real database (in-memory SQLite for simple apps, a Docker container via testcontainers for PostgreSQL/MySQL). The extra setup is worth it: you catch schema mismatches, constraint violations, and query bugs that mocks can\'t.' },
     { q: 'How do I test error handling paths in async Node.js code?', a: 'For mocked dependencies: mockRejectedValue(new Error("DB down")) makes the mock throw. For integration tests: deliberately send invalid input (missing required fields, wrong types) and verify status codes. For middleware: test with malformed JWTs, missing auth headers, oversized bodies. A common mistake is testing only happy paths — error paths are where bugs live in production because they\'re rarely executed and hard to reproduce manually.' },
     { q: 'What is the difference between jest.mock() and jest.spyOn()?', a: 'jest.mock("module") replaces the entire module before it loads — all exports become jest.fn() stubs with no implementation. Used when you want full control over a dependency. jest.spyOn(obj, "method") wraps an existing method while preserving the original implementation — useful when you want the original to run but also track calls or temporarily change behavior. spyOn requires mockRestore() in afterEach to avoid test pollution; jest.mock() is automatically restored between test files.' },
+    { q: 'What is the difference between a unit test, an integration test, and an end-to-end test in a Node.js API context?', a: 'A unit test verifies a single function or class in isolation, mocking all its dependencies (database calls, external APIs) — fast to run and pinpoints exactly which piece of logic broke. An integration test verifies that multiple components work correctly together (e.g., a service layer actually querying a real or in-memory test database), catching issues that mocked unit tests would miss, like incorrect SQL or schema mismatches. An end-to-end test exercises the full running application through its real interface (HTTP requests against a running server, often via supertest), verifying the complete request-response cycle including middleware, routing, and serialization.' },
+    { q: 'Why is mocking the database in unit tests sometimes risky, and when should you use a real test database instead?', a: 'A mocked database returns exactly what you tell it to return, which means a unit test can pass even if your actual SQL query or Mongoose query has a bug — the mock never validates that the query is syntactically or semantically correct against a real schema. For logic that is tightly coupled to actual query correctness (complex joins, aggregation pipelines, migrations), use an integration test against a real (often containerized, ephemeral) test database instance to catch issues mocks would hide, reserving mocks for testing business logic that genuinely does not depend on query specifics.' },
+    { q: 'How do you test code that depends on the current time or random values in a deterministic way?', a: 'Inject time and randomness as dependencies rather than calling Date.now() or Math.random() directly inside business logic — pass a clock function or use a testing library\'s fake timers (Jest\'s jest.useFakeTimers(), Sinon\'s sinon.useFakeTimers()) to control and advance time deterministically within a test. This lets you write reliable assertions about time-dependent behavior (token expiry, scheduled jobs, debounce/throttle logic) without flaky tests that depend on real wall-clock timing or unpredictable random values.' },
   ];
 
   revision: RevisionSummary = {

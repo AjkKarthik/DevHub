@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Large groups (> 10k members, e.g. broadcast channels): fan-out on read — members poll, no push.',
     ],
   },
+  {
+    heading: 'Message Delivery Guarantees and Ordering',
+    points: [
+      'At-least-once delivery (the common default for chat systems) guarantees a message is never silently lost, but requires the client to deduplicate messages by a unique message ID, since the same message may occasionally be delivered more than once during retries.',
+      'Message ordering within a single conversation is typically enforced by a monotonically increasing sequence number per conversation — the client reorders out-of-order arrivals locally based on this sequence rather than relying on network delivery order, which is not guaranteed.',
+      'Read receipts and typing indicators are separate, lower-priority event streams from actual message content — they tolerate occasional loss (a missed typing indicator is inconsequential) and should never share the same reliability guarantees or storage path as message persistence, to avoid unnecessary overhead on the critical path.',
+      'Offline message delivery requires a durable queue per user — messages sent while a recipient is offline are stored server-side and delivered (with correct ordering) when the recipient reconnects, rather than being lost if no active WebSocket connection exists at send time.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

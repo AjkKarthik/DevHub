@@ -65,6 +65,16 @@ export class AiInterviewPrep {
         'Describe your model deployment strategy: canary, shadow testing, rollback.',
       ],
     },
+    {
+      heading: 'Tier 5: System Design for AI Applications',
+      points: [
+        'Be ready to design a full AI system end-to-end: ingestion, chunking/embedding, retrieval, generation, caching, and observability — interviewers assess whether you can reason about the full pipeline, not just isolated components.',
+        'Explain how you would handle cost control at scale: caching repeated queries, choosing smaller models for simpler sub-tasks, and batching requests where latency permits.',
+        'Discuss failure modes specific to AI systems: hallucination, prompt injection, stale retrieved context, and how your design detects and mitigates each.',
+        'Be prepared to justify build-vs-buy tradeoffs — when a managed vector database or hosted LLM API is the right choice versus self-hosting, based on team size, cost, and control requirements.',
+        'Explain how you would roll out a new model version safely: shadow testing against the current model, gradual traffic shifting, and rollback criteria based on evaluation metrics.',
+      ],
+    },
   ];
 
   quiz: QuizQuestion[] = [

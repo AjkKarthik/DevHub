@@ -70,6 +70,15 @@ export class LinuxLogAnalysis {
         'logrotate -f /etc/logrotate.d/nginx forces immediate rotation for testing.',
       ],
     },
+    {
+      heading: 'journalctl for systemd-Based Log Analysis',
+      points: [
+        'journalctl provides structured, indexed access to systemd\'s binary journal logs, supporting powerful filtering (journalctl -u servicename for a specific service, journalctl --since "1 hour ago" for a time range) without needing to grep through plain-text log files.',
+        'journalctl -f follows logs in real-time (similar to tail -f on a traditional log file), essential for watching a service\'s behavior live while reproducing or investigating an issue as it happens.',
+        'The systemd journal is stored in binary format by default (for performance and structured querying), which means traditional text tools like grep do not work directly on the raw journal files — journalctl itself, or its --output=json mode piped to jq, is the correct way to query and filter journal data.',
+        'Combining journalctl filters (journalctl -u nginx -p err --since today) narrows results to exactly the relevant log entries for a specific investigation, avoiding the noise of scrolling through an entire day\'s combined system log.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

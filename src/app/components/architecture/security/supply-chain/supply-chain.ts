@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Verify before install: for containers, `cosign verify` confirms the image was signed by the expected identity. For npm, `npm audit signatures` (npm 9+) verifies package registry signatures.',
     ],
   },
+  {
+    heading: 'Software Bill of Materials (SBOM)',
+    points: [
+      'A Software Bill of Materials is a formal, machine-readable inventory of every component (direct and transitive dependencies, their exact versions) that makes up a software artifact — analogous to an ingredients list, enabling rapid impact assessment when a new vulnerability is disclosed.',
+      'Without an SBOM, answering "are we affected by this newly disclosed CVE" requires manually auditing every project\'s dependency tree — with one, the same question is answered by a simple automated query against the recorded component inventory.',
+      'SBOM generation is increasingly a compliance requirement (U.S. Executive Order 14028 mandates SBOMs for software sold to federal agencies) and is generated automatically by tools like Syft, CycloneDX, or npm/pip native tooling as part of the build pipeline.',
+      'SBOMs are most valuable when combined with continuous vulnerability scanning — a static SBOM generated once at release time becomes stale as new CVEs are discovered for already-shipped dependencies, so ongoing monitoring against the SBOM is what provides lasting value.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

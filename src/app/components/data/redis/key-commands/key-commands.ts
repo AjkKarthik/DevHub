@@ -74,6 +74,15 @@ export class RedisKeyCommands {
         'UNLINK is an asynchronous DELETE — it removes the key from the keyspace immediately (making it invisible) but frees memory lazily in a background thread. Prefer UNLINK over DEL for large values.',
       ],
     },
+    {
+      heading: 'TTL Management and Key Expiration Semantics',
+      points: [
+        'EXPIRE sets a time-to-live on an existing key, after which Redis automatically deletes it — essential for implementing caching (data becomes stale after N seconds) and session management (a session automatically expires after inactivity) without needing a separate cleanup process.',
+        'TTL returns the remaining time-to-live for a key, or special values -1 (key exists but has no expiration set) and -2 (key does not exist at all) — a common bug is not distinguishing between these two negative return values, which represent very different situations.',
+        'PERSIST removes an existing expiration from a key, making it permanent again — useful when a key\'s lifecycle needs to change dynamically (a temporary session key that should be made permanent once a user completes registration, for example).',
+        'Redis uses a combination of lazy expiration (checking TTL when a key is accessed) and active expiration (a background process periodically sampling and removing expired keys) — this hybrid approach balances memory reclamation speed against the CPU cost of constantly scanning the entire keyspace for expired keys.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

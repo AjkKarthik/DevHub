@@ -62,6 +62,15 @@ const theory: TheoryPoint[] = [
       'Use minimal base images (Alpine, distroless) to reduce the attack surface — fewer installed packages means fewer potential CVEs. Distroless images have no shell, package manager, or OS utilities.',
     ],
   },
+  {
+    heading: 'Image Tagging Strategy and Immutability',
+    points: [
+      'The "latest" tag is just a convention, not a guarantee of freshness — it is mutable and can point to a different actual image content over time, which is why production deployments should pin to a specific version tag or, more robustly, an image digest.',
+      'Tagging by content digest (sha256:...) rather than a mutable tag guarantees you are always pulling the exact same image bytes, eliminating the risk that a tag was silently reassigned to different content between when you tested and when you deployed.',
+      'Semantic versioning tags (v1.2.3) combined with a digest-pinned deployment reference gives both human-readable version tracking AND the immutability guarantee needed for reproducible deployments.',
+      'Retagging an image (docker tag) does not create a new image — it creates an additional pointer to the same underlying content, which is why pushing a retagged image is fast (only the new tag metadata needs to be uploaded, not the image layers themselves).',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

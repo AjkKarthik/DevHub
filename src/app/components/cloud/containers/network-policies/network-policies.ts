@@ -64,6 +64,15 @@ const theory: TheoryPoint[] = [
       'Always verify enforcement: apply a deny-all and test that traffic is actually blocked before trusting policies.',
     ],
   },
+  {
+    heading: 'Default-Deny as the Foundation of Network Policy Design',
+    points: [
+      'Without any NetworkPolicy applied, Kubernetes allows unrestricted pod-to-pod communication across the entire cluster by default — a flat, fully-open network that is a significant security liability in any multi-tenant or security-conscious cluster.',
+      'A default-deny-all NetworkPolicy (selecting all pods, allowing no ingress or egress) establishes a secure baseline, after which specific allow rules are added incrementally — this "deny by default, allow explicitly" approach is significantly more secure than starting open and trying to add restrictions later.',
+      'NetworkPolicies are enforced by the CNI plugin, not by Kubernetes core itself — some CNI plugins (like the basic kubenet) do not enforce NetworkPolicy at all, meaning a policy can be defined and appear to exist while providing zero actual enforcement if the underlying CNI does not support it.',
+      'Egress policies are just as important as ingress policies but are more commonly overlooked — restricting what a compromised pod can reach OUTBOUND (preventing data exfiltration to an external endpoint) is a critical defense-in-depth measure that ingress-only policies do not provide.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

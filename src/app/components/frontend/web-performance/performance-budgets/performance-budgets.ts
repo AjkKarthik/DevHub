@@ -506,6 +506,10 @@ module.exports = {
       q: 'How do I set performance budgets for third-party scripts specifically?',
       a: 'In Lighthouse CI: "third-party-summary" assertion — maxLength limits the number of distinct third-party domains; "third-party-facades" audit checks that heavy third-party widgets use facades. In your angular.json budget there\'s no per-origin split, but bundlesize can pattern-match vendor chunks. Custom: use the Resource Timing API in RUM to measure each third-party origin\'s transfer size and block-time, then assert < your defined budget.',
     },
+    {
+      q: 'Should performance budgets be enforced as hard CI failures or as warnings?',
+      a: 'Hard CI failures (blocking the build/merge) work well for budgets on metrics within direct developer control and with low natural variance — bundle size, number of requests, total JS weight. They work poorly for field-data-based metrics like LCP or INP measured via lab tools, since lab runs have run-to-run variance from machine noise, network jitter, and CI runner contention, leading to flaky, frustrating failures unrelated to the actual code change. A common pattern is hard-fail on deterministic budgets (bundle size, asset count) and soft-warn-with-trend-tracking on noisier lab-measured timing metrics, reserving hard gates for field-data regressions detected over a rolling window rather than a single noisy CI run.',
+    },
   ];
 
   revision: RevisionSummary = {

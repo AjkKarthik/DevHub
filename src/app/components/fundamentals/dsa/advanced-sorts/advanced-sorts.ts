@@ -67,6 +67,15 @@ export class DsaAdvancedSorts {
         'Rarely used in practice (worse cache performance than quicksort) but provably O(n log n) in-place.',
       ],
     },
+    {
+      heading: 'Choosing Between Advanced Sorting Algorithms in Practice',
+      points: [
+        'Merge sort guarantees O(n log n) worst-case time and is stable, making it a strong choice when predictable performance and preserving the relative order of equal elements both matter, such as sorting records by a secondary key after already sorting by a primary one.',
+        'Quicksort is typically faster in practice than merge sort due to better cache locality and lower constant factors, but its worst-case O(n^2) behavior on already-sorted or adversarially-constructed input means production implementations use randomized pivots or introsort fallbacks to avoid pathological slowdowns.',
+        'Heapsort guarantees O(n log n) worst-case time with O(1) extra space (in-place), making it attractive when memory is constrained, though its poor cache locality compared to quicksort usually makes it slower in real-world benchmarks despite the same asymptotic complexity.',
+        'Most production language standard libraries (Java, Python, Rust) use hybrid algorithms like Timsort or introsort that switch strategies based on input size and characteristics, reflecting that no single sorting algorithm is optimal across all real-world data distributions.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

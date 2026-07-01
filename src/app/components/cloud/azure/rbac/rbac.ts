@@ -73,6 +73,15 @@ export class AzureRbac {
         'Azure Policy can enforce RBAC compliance: deny assignments outside approved scopes, require tags, or audit resources without specific RBAC configurations. Policy and RBAC together form the governance backbone.',
       ]
     },
+    {
+      heading: 'Azure RBAC Scope Hierarchy and Inheritance',
+      points: [
+        'Azure RBAC role assignments can be made at four scope levels — management group, subscription, resource group, and individual resource — with permissions inheriting DOWNWARD, meaning a role assigned at the subscription level applies to every resource group and resource within it.',
+        'Assigning roles at the narrowest scope that satisfies the actual need (a resource group rather than the entire subscription) limits blast radius if that identity is ever compromised, following the same least-privilege principle that applies to Kubernetes RBAC or any other access control system.',
+        'Built-in roles (Reader, Contributor, Owner, and many service-specific roles) cover most common needs — custom roles should be reserved for genuinely unique permission combinations, since maintaining custom roles adds ongoing governance overhead compared to using well-tested built-in roles.',
+        'Azure RBAC is purely additive across scopes (a deny assignment is a separate, more advanced feature) — auditing what access a given identity actually has requires checking role assignments at every scope level above the resource in question, not just the resource\'s own scope.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -71,6 +71,15 @@ export class RedisLists {
         'In Redis 7.0+, LMPOP pops from the first non-empty list in a set without blocking.',
       ],
     },
+    {
+      heading: 'Lists as Queues: LPUSH/RPOP and Blocking Operations',
+      points: [
+        'Combining LPUSH (add to the left/head) with RPOP (remove from the right/tail) implements a simple FIFO queue — producers push new work items to one end while consumers pop from the other end, processing items in the order they were added.',
+        'BLPOP and BRPOP block the calling client until an item becomes available (up to a configurable timeout), eliminating the need for a consumer to poll an empty list repeatedly — significantly more efficient than a loop that calls LPOP and sleeps when the list is empty.',
+        'For work queues requiring reliability (ensuring a popped item is not lost if the consumer crashes mid-processing), RPOPLPUSH (or the newer LMOVE) atomically moves an item to a separate "processing" list, letting you detect and recover items whose consumer crashed before acknowledging completion.',
+        'Redis Lists are implemented as a doubly-linked list of quicklist nodes internally, giving O(1) push/pop operations at either end — but random access by index (LINDEX on a large list) is O(N), making lists a poor choice for use cases requiring frequent access to arbitrary middle elements.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

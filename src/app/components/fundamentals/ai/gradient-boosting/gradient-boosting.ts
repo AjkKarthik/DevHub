@@ -72,6 +72,15 @@ export class AiGradientBoosting {
         'Visualisations: SHAP summary plot (global), waterfall plot (per prediction), dependence plot (interaction effects).',
       ],
     },
+    {
+      heading: 'Why Gradient Boosting Often Outperforms Random Forests on Tabular Data',
+      points: [
+        'Random forests build trees independently and average their predictions, reducing variance — gradient boosting builds trees sequentially, each one correcting the residual errors of the previous ensemble, directly reducing bias in a way independent averaging cannot.',
+        'This sequential error-correction gives gradient boosting (XGBoost, LightGBM, CatBoost) a track record of winning tabular data competitions, since it can fit more complex patterns than a random forest\'s simpler averaging approach.',
+        'The sequential nature that makes gradient boosting powerful also makes it more prone to overfitting than random forests if not carefully regularized (learning rate, tree depth, number of estimators, early stopping) — random forests are comparatively more forgiving of default hyperparameters.',
+        'Gradient boosting trees train sequentially and cannot be easily parallelized across trees the way random forest trees can, meaning training time is generally longer for a comparable number of trees, a real practical tradeoff against its typically higher accuracy.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

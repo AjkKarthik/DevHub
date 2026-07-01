@@ -73,6 +73,15 @@ export class TfState {
         'terraform refresh (deprecated in 1.5+) — sync state with real infrastructure. Use terraform plan -refresh-only instead.',
       ],
     },
+    {
+      heading: 'Understanding What Terraform State Actually Contains',
+      points: [
+        'State is Terraform\'s record of what infrastructure it currently manages, mapping each resource address in configuration to the actual real-world resource it corresponds to (along with all of that resource\'s current attribute values) — this mapping is what makes plan/apply fast, since Terraform does not need to re-discover every resource from scratch on every run.',
+        'Without accurate state, Terraform has no way to know that a resource address in configuration corresponds to an already-existing piece of infrastructure — this is why state must never be manually edited casually, and why losing a state file effectively means Terraform "forgets" everything it was managing.',
+        'terraform state list, terraform state show, and terraform state mv are the safe, supported CLI commands for inspecting and carefully modifying state — directly hand-editing the state JSON file is strongly discouraged and error-prone compared to using these purpose-built commands.',
+        'State files can contain sensitive data in plain text (any attribute value of any managed resource, including generated passwords) — this is the primary reason remote backends with proper access control and encryption at rest are essential for any production Terraform usage, not merely a convenience for team collaboration.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

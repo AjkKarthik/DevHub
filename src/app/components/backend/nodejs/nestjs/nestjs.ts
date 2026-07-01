@@ -59,6 +59,24 @@ export class NodeNestjs {
         'Exception Filters catch thrown exceptions and format the response. Built-in: HttpException, NotFoundException, BadRequestException. Custom: @Catch(HttpException) class HttpExceptionFilter implements ExceptionFilter. Apply globally for consistent error format across all routes.',
       ]
     },
+    {
+      heading: 'Modules, Providers, and Dependency Injection',
+      points: [
+        'A NestJS Module bundles related controllers and providers together, explicitly declaring which providers it exports for other modules to use — a provider not exported remains private, enforcing deliberate boundaries between feature areas rather than implicit flat coupling.',
+        'Providers (services, repositories, factories) are resolved by NestJS\'s DI container based on constructor type hints — @Injectable() classes are automatically instantiated and injected wherever declared as a constructor dependency, without manual wiring code.',
+        'Provider scope matters: DEFAULT (singleton, shared across the whole app) is most common and efficient; REQUEST scope creates a new instance per incoming request (needed for request-specific state) at a real performance cost since DI resolution happens per request.',
+        'Circular dependencies between modules (ModuleA needs ModuleB which needs ModuleA) require forwardRef() to resolve — a recurring sign that module boundaries may need rethinking, since a clean dependency graph should ideally be acyclic.',
+      ]
+    },
+    {
+      heading: 'Guards, Interceptors, and Pipes',
+      points: [
+        'Guards run before the route handler, determining whether the request may proceed (typically authentication/authorization) — they return true/false or throw, and unlike middleware they have access to the full ExecutionContext including the handler and class being invoked.',
+        'Interceptors wrap the handler execution using RxJS operators, able to transform the response, add cross-cutting logic before and after the handler, or even short-circuit and return a cached value without calling the handler at all.',
+        'Pipes transform or validate input data before it reaches the handler — a ValidationPipe combined with class-validator decorators on a DTO automatically validates incoming request bodies and throws a BadRequestException on failure, without manual validation code.',
+        'Execution order matters: middleware runs first, then guards, then interceptors (before handler), then pipes, then the handler itself, then interceptors again (after handler) — understanding this order is essential for placing cross-cutting logic correctly.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -338,6 +356,9 @@ export class ProductsModule {}`
     { q: 'How does NestJS dependency injection compare to Angular DI?', a: 'Both use the same IoC container concept: providers registered in a module, resolved via constructor injection. Key differences: NestJS DI is module-scoped (providers in one module are not visible to another unless exported/imported), while Angular has a hierarchical injector tree. NestJS also supports async providers (useFactory with async functions for DB connections), which Angular does not support natively. The token-based registration system and @Inject() decorator work the same way.' },
     { q: 'How do I implement a custom authentication Guard with JWT?', a: 'Use @nestjs/passport with passport-jwt: (1) Install @nestjs/passport, passport, passport-jwt. (2) Create a JwtStrategy extending PassportStrategy(Strategy) — validate() receives the JWT payload and returns the user or throws UnauthorizedException. (3) Register in AuthModule providers. (4) Create JwtAuthGuard extending AuthGuard("jwt"). (5) Apply with @UseGuards(JwtAuthGuard) on controller or method. The guard automatically calls the strategy\'s validate() and attaches the result to req.user.' },
     { q: 'What is the difference between Interceptors and Middleware in NestJS?', a: 'Middleware runs at the HTTP level before routing — it has no NestJS context (cannot inject services, cannot access route metadata). Interceptors are NestJS-aware: they run after guards but before/after the handler, can inject services, can access ExecutionContext (route metadata, class, method). Use middleware for HTTP-level operations (CORS, request logging, body parsing). Use interceptors for NestJS-level concerns (response transformation, caching with injected cache service, timeout with RxJS).' },
+    { q: 'What problem does NestJS dependency injection solve compared to manually instantiating services in Express?', a: 'In a plain Express app, manually wiring dependencies (a controller creating its own service instance, which creates its own repository instance) leads to tight coupling and makes unit testing hard, since you cannot easily substitute a mock without changing the constructor logic itself. NestJS\'s DI container automatically resolves and injects dependencies based on constructor type hints, and lets you swap implementations (real vs mock) via the testing module without touching the class under test — making both production wiring and test isolation significantly simpler.' },
+    { q: 'What is the purpose of NestJS Guards, Interceptors, and Pipes, and how do they differ?', a: 'Guards run before the route handler and determine whether the request is allowed to proceed (typically used for authentication/authorization — returning true/false or throwing). Interceptors wrap the handler execution, able to transform the response, measure execution time, or add cross-cutting logic both before and after the handler runs (similar to Express middleware but with access to both request and response lifecycle via RxJS operators). Pipes transform or validate input data (like DTOs validated against class-validator decorators) before it reaches the handler, throwing a BadRequestException automatically on validation failure.' },
+    { q: 'How does the NestJS module system enforce architectural boundaries that plain Express does not?', a: 'Each NestJS Module explicitly declares its providers, controllers, and which providers it exports for use by other modules (via the exports array) — a provider not exported remains private to its module, preventing accidental tight coupling between unrelated feature areas. This forces a deliberate, explicit dependency graph between application areas (UserModule importing AuthModule\'s exported AuthService, for example) which plain Express\'s flat, implicit require()-based wiring does nothing to enforce, often leading to accidental spaghetti dependencies as an Express codebase grows.' },
   ];
 
   revision: RevisionSummary = {

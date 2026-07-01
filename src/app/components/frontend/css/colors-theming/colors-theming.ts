@@ -52,6 +52,24 @@ const theory: TheoryPoint[] = [
       'Use a tool like Colour Contrast Analyser or browser DevTools to check contrast before shipping.',
     ],
   },
+  {
+    heading: 'Modern CSS Color Functions Beyond Hex and RGB',
+    points: [
+      'oklch() and lch() define colors in a perceptually uniform color space, meaning equal numeric changes in lightness or chroma produce visually equal-feeling changes — unlike HSL, where adjusting lightness by the same amount can look very different depending on the base hue.',
+      'color-mix() lets you blend two colors directly in CSS (color-mix(in oklch, blue 50%, white)) without needing a preprocessor function or manually calculating the resulting hex value — enabling dynamic color derivations (lighter/darker variants) directly from a base theme color.',
+      'Wide-gamut color spaces (display-p3) allow specifying colors outside the traditional sRGB gamut, taking advantage of modern displays capable of showing a wider, more vivid range of colors — falling back gracefully to the closest representable sRGB color on displays that do not support the wider gamut.',
+      'Relative color syntax (color-mix combined with functions like oklch(from var(--base) l c h / 0.5)) enables deriving new colors from an existing custom property at specific opacity or lightness levels without maintaining separate manually-calculated color variables for every variant.',
+    ],
+  },
+  {
+    heading: 'Dark Mode Theming Architecture',
+    points: [
+      'Theming via CSS custom properties (defining --bg-color, --text-color, etc. at the :root level and overriding them inside a .dark class or [data-theme="dark"] attribute selector) is the standard modern approach — component styles reference the variables once and automatically adapt when the theme changes.',
+      'Class-based theme toggling (adding/removing a class on the body or html element, as opposed to relying solely on the prefers-color-scheme media query) gives explicit user control over the theme — essential for supporting a manual light/dark toggle rather than only following system preference.',
+      'color-scheme: dark (or light) as a CSS property/meta tag hints to the browser to render native form controls, scrollbars, and other browser UI elements in the matching theme automatically, avoiding a jarring mismatch where custom content is dark-themed but native browser widgets remain light.',
+      'Testing dark mode requires verifying sufficient contrast ratios in BOTH themes independently — a color combination that passes WCAG contrast requirements in light mode does not automatically pass in dark mode, since the actual rendered colors and their relationship change entirely.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

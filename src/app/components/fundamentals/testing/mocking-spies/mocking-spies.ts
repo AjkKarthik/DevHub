@@ -55,6 +55,12 @@ export class MockingSpies {
       'restoreAllMocks(): restores all spyOn mocks to their original implementations.',
       'Configure clearMocks: true in jest.config.ts to auto-clear after each test.',
     ]},
+    { heading: 'Overmocking as an Anti-Pattern', points: [
+      'Mocking every single dependency of the unit under test can produce tests that pass even when the real integration between components is broken, since mocks never verify the real contract between collaborators actually holds.',
+      'A test suite with excessive mocking often needs to be rewritten whenever internal implementation details change, even if the externally observable behavior stayed the same — a sign the tests are too tightly coupled to implementation.',
+      'Spies (which wrap a real implementation while still recording calls) preserve real behavior while adding observability, making them preferable to full mocks when the real logic is cheap and deterministic enough to safely execute in a test.',
+      'A useful rule of thumb: mock at architectural boundaries (network calls, database access, time) but let real internal logic run, since that internal logic is exactly what the test should be verifying.',
+    ]},
   ];
 
   codeTabs: CodeTab[] = [

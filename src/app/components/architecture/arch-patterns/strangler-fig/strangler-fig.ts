@@ -62,6 +62,24 @@ export class ArchStranglerFig {
         'Data migration: the hardest part. Strategies: dual-write to both systems during migration, backfill from legacy, eventual data sync.',
       ],
     },
+    {
+      heading: 'Why Incremental Migration Beats a Big-Bang Rewrite',
+      points: [
+        'A big-bang rewrite requires the new system to reach full feature parity with the legacy system before it can be safely deployed, during which time the legacy system continues accumulating changes — often resulting in the rewrite chasing a moving target that it never quite catches up to.',
+        'The strangler fig pattern instead routes traffic incrementally — a facade/proxy directs specific routes or features to the new system as they become ready, while everything else continues flowing to the legacy system, allowing continuous, incremental validation instead of one high-risk cutover.',
+        'This incremental approach means each migrated piece can be validated in production with real traffic before the next piece is migrated, catching integration issues early and in isolation rather than discovering many issues simultaneously during a single large cutover event.',
+        'The pattern derives its name from the strangler fig plant, which grows around a host tree, gradually taking over its structure until the original tree is no longer needed — an apt metaphor for the new system gradually "strangling" the legacy system\'s remaining responsibilities down to nothing.',
+      ],
+    },
+    {
+      heading: 'The Facade/Proxy Layer\'s Critical Role',
+      points: [
+        'The routing facade (often an API gateway or reverse proxy) is what makes the incremental migration possible at all — without a single entry point capable of routing different requests to either the legacy or new system, consumers would need to know which system to call for which feature, defeating the migration\'s transparency.',
+        'This facade layer itself becomes a critical piece of infrastructure during the migration — its routing rules need careful testing, since a routing mistake could send traffic to the wrong system or, worse, to neither, causing an outage for the affected feature.',
+        'The facade should be designed for easy incremental rule changes (a configuration update, not a code deployment) to route another feature to the new system — friction in updating routing rules directly slows the pace at which the migration can safely progress.',
+        'Once every route has been migrated to the new system and the facade\'s legacy-routing rules are all unused, the facade itself (and the now fully-strangled legacy system) can finally be decommissioned — the pattern has a natural, well-defined completion state, unlike an open-ended incremental refactor.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -61,6 +61,15 @@ export class JsDestructuring {
         '<strong>Swap with array destructuring:</strong> <code>[arr[i], arr[j]] = [arr[j], arr[i]]</code> — in-place swap of array elements.',
       ]
     },
+    {
+      heading: 'Destructuring in Function Parameters',
+      points: [
+        'Destructuring directly in a function signature (<code>function greet({ name, age = 18 }) {}</code>) makes the expected shape of an options object self-documenting at the call site, and lets you provide per-property defaults without extra assignment lines in the function body.',
+        'Combined with default parameter values, destructuring an empty object default (<code>function f({ x = 1 } = {})</code>) safely handles the case where the caller passes no argument at all — without the outer <code>= {}</code>, calling <code>f()</code> with no arguments throws since you cannot destructure undefined.',
+        'Renaming during destructuring (<code>const { data: userData } = response</code>) avoids naming collisions when destructuring from multiple sources into the same scope, without needing a separate reassignment statement afterward.',
+        'Nested destructuring pulls values out of deeply nested structures in one expression (<code>const { user: { address: { city } } } = response</code>) — powerful, but past 2-3 levels of nesting it often becomes harder to read than accessing properties explicitly.',
+      ]
+    },
   ];
 
   quickRef: QuickRefItem[] = [

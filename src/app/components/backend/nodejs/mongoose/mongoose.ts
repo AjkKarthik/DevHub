@@ -59,6 +59,24 @@ export class NodeMongoose {
         'Transactions require a MongoDB replica set (or Atlas, which always uses replica sets). Use mongoose.startSession() + session.withTransaction(() => { ... }) for atomic multi-document operations. Pass { session } to every Mongoose operation inside the transaction.',
       ]
     },
+    {
+      heading: 'Schema Design and Validation',
+      points: [
+        'Mongoose schemas define shape, types, and validation rules entirely in application code — required fields, min/max constraints, custom validator functions — running before any write reaches MongoDB, catching bad data early with clear error messages.',
+        'Schema-level defaults (default: Date.now) and computed fields (via virtuals) reduce duplication — a virtual field like fullName derived from firstName and lastName does not need to be stored or kept in sync manually.',
+        'Mongoose schema validation is application-level only — it does not protect against writes that bypass Mongoose (a raw MongoDB shell command, another service writing directly). Pair with MongoDB-level JSON Schema validation for true defense in depth on critical collections.',
+        'Nested schemas (subdocuments) let you model embedded one-to-few relationships (an order with embedded line items) with their own validation, while references (ObjectId with ref) model one-to-many or many-to-many relationships resolved via population.',
+      ]
+    },
+    {
+      heading: 'Population and Query Performance',
+      points: [
+        'populate() resolves referenced documents in a separate query (or queries), similar conceptually to a SQL join but executed as additional round-trips rather than a single combined query — convenient but with real performance cost on hot paths.',
+        'Deeply nested or chained populate() calls compound this cost — profile any endpoint using multi-level population under realistic load, and consider denormalizing frequently-accessed reference data directly into the parent document for read-heavy endpoints.',
+        'Indexes are essential for query performance at scale — a query filtering or sorting on a field with no index forces MongoDB to scan every document in the collection; use .explain() to verify a query is actually using an index rather than assuming it is.',
+        'Lean queries (.lean()) skip Mongoose document hydration (change tracking, virtuals, methods), returning plain JavaScript objects — meaningfully faster for read-only queries that do not need to call .save() or access Mongoose-specific document methods.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
@@ -241,6 +259,9 @@ export const Post = model('Post', postSchema);`
     { q: 'Should I use Mongoose or the native MongoDB driver?', a: 'Mongoose for applications where you want schema validation, middleware hooks, virtuals, and a developer-friendly query API. Native driver for maximum performance and control — no schema layer overhead, direct access to MongoDB features like bulk operations and change streams. Large teams often use Mongoose for application code and the native driver for complex aggregations or batch jobs where every millisecond counts.' },
     { q: 'How do I implement soft delete in Mongoose?', a: 'Add deletedAt: { type: Date, default: null } to your schema. Add a pre find middleware: schema.pre(/^find/, function() { this.where({ deletedAt: null }); }). For delete operations, update deletedAt instead of calling .deleteOne(): Document.updateOne({ deletedAt: new Date() }). To query deleted records explicitly, bypass the middleware with .findOne({ deletedAt: { $ne: null } }).' },
     { q: 'What is the difference between embedded documents and references in Mongoose?', a: 'Embedded (subdocuments): data lives inside the parent document — one MongoDB read gets everything. Best when the data is always accessed together, not too large, and uniquely owned (post.comments). References (ObjectId + populate): data in a separate collection — requires a second query (populate). Best when the data is shared across parents (user referenced by many posts), frequently updated independently, or the embedded array would grow unboundedly.' },
+    { q: 'What is the difference between Mongoose Schema validation and MongoDB-level schema validation (JSON Schema)?', a: 'Mongoose schema validation runs entirely in your Node.js application before a write is sent to MongoDB — it is convenient for application-level business rules (custom validators, type coercion, defaults) but provides no protection if another application or a direct MongoDB shell command bypasses Mongoose entirely. MongoDB-level JSON Schema validation is enforced by the database itself for every write regardless of source, providing a true last line of defense — using both together (Mongoose for developer ergonomics, MongoDB validation as a safety net) is a common defense-in-depth pattern.' },
+    { q: 'Why does Mongoose population (populate()) need to be used carefully in high-traffic API endpoints?', a: 'populate() issues an additional query (or queries) to resolve referenced documents, similar to a SQL join but executed as separate round-trips to MongoDB rather than a single combined query. Overusing deep or nested populate() chains on a hot endpoint can significantly increase response latency and database load — for read-heavy, performance-critical paths, consider denormalizing frequently-accessed reference data directly into the parent document instead, trading some data duplication for read performance.' },
+    { q: 'How do you handle Mongoose schema migrations when you need to change a field type or structure in production?', a: 'Mongoose itself has no built-in migration system — use a dedicated migration tool (migrate-mongo, umzug) to write versioned, ordered migration scripts that transform existing documents (e.g., bulk-updating all documents to convert a string field to a number, or restructuring a nested object). Always make migrations idempotent (safe to run twice) and test them against a copy of production data before running them live, since MongoDB has no schema enforcement to catch a migration script that produces malformed documents.' },
   ];
 
   revision: RevisionSummary = {

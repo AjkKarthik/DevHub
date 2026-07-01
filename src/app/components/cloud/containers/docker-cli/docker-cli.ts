@@ -67,6 +67,15 @@ const theory: TheoryPoint[] = [
       'Use docker system df for a storage overview and docker system prune to reclaim space (removes stopped containers, dangling images, unused networks and build cache).',
     ],
   },
+  {
+    heading: 'Why docker exec Differs From docker run',
+    points: [
+      'docker run creates a brand-new container from an image — docker exec starts a new process INSIDE an already-running container, sharing that container\'s existing filesystem, network namespace, and running processes.',
+      'Using docker exec -it <container> sh to inspect a running container is a core debugging technique, letting you poke around a live container\'s state without stopping it or creating a fresh one that lacks the current runtime state.',
+      'Commands run via docker exec do not appear in the image\'s history and are not persisted anywhere once the container stops — any change made this way is purely transient debugging, not a way to modify what the image itself produces.',
+      'docker exec fails if the target container is not currently running — unlike docker run, which will happily start a new container, exec requires an existing running container to attach its new process to.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [
