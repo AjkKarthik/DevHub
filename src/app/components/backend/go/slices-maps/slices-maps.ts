@@ -552,8 +552,8 @@ func main() {
       a: 'A nil slice (`var s []int`) has a nil pointer, length 0, and capacity 0. An empty slice (`s := []int{}` or `make([]int, 0)`) has a non-nil pointer, length 0, and capacity 0. Both have len 0 and can be ranged over. `append` works on both. The difference matters when marshalling to JSON: nil slice becomes `null`, empty slice becomes `[]`. Use `len(s) == 0` to check for empty rather than `s == nil`.'
     },
     {
-      q: 'Why is map iteration order randomised in Go?',
-      a: 'Go randomises iteration order to prevent programs from accidentally depending on hash-insertion order, which differs across Go versions, architectures, and even runs (a security measure against hash-flooding attacks). If you need a stable order, sort the keys: `slices.Sort(maps.Keys(m))` (Go 1.21) or collect, sort, and iterate manually.'
+      q: 'A test compares two maps for equality by ranging over one and checking each key against the other. It passes locally but flakes intermittently in CI. Could map iteration randomization be the cause, and how should the comparison actually be written?',
+      a: 'Iteration randomization itself shouldn\'t cause a correctly-written membership check to flake — ranging over map A and looking up each key in map B works regardless of order, since map lookups are order-independent. The likely real bug is a comparison that ALSO checks length equality incorrectly, or one that assumes the k,v pairs come out in a specific order and compares against a slice/array built with an assumed order (e.g. converting one map to a slice via range and comparing positionally against another). The safe pattern for map equality in tests is reflect.DeepEqual(mapA, mapB) or the testify assert.Equal helper (both are ordering-agnostic) — never build an ordered slice from a map range and compare it positionally.'
     },
     {
       q: 'Are maps safe to use concurrently?',

@@ -600,10 +600,10 @@ func main() {
       explanation: 'CompareAndSwap (CAS) atomically checks if the current value equals old, and if so, sets it to new and returns true. If the current value differs from old, it does nothing and returns false. CAS is the foundation of lock-free algorithms.'
     },
     {
-      q: 'What is the difference between sync.Mutex and sync.RWMutex and when do you choose each?',
-      options: ['They are identical', 'Mutex: exclusive lock for all access; RWMutex: allows concurrent readers (RLock) but exclusive writer (Lock) — use RWMutex when reads dominate writes', 'RWMutex is deprecated', 'Mutex is only for goroutines; RWMutex is for OS threads'],
+      q: 'A goroutine already holding a RWMutex\'s RLock() calls RLock() again recursively (re-entrant read lock) while a separate goroutine is blocked waiting for Lock() (a pending writer). What happens?',
+      options: ['The recursive RLock() succeeds immediately since RWMutex allows unlimited concurrent readers', 'Go\'s RWMutex is not re-entrant, and this can deadlock — a pending Lock() call blocks new RLock() calls from succeeding until the writer proceeds, but the writer cannot proceed until the original RLock() is released, and the goroutine trying to re-acquire RLock() is the same one holding it and blocked waiting on itself', 'The runtime detects the recursion and panics immediately with a clear error', 'RWMutex automatically upgrades the recursive call to a write lock'],
       answer: 1,
-      explanation: 'sync.Mutex: every operation (read or write) requires an exclusive lock — only one goroutine at a time. sync.RWMutex: multiple goroutines can hold RLock() simultaneously; Lock() is exclusive. Use RWMutex for read-heavy workloads like in-memory caches or config maps where reads far outnumber writes. For write-heavy workloads, RWMutex overhead (maintaining reader count) can be worse than a plain Mutex.'
+      explanation: 'Go\'s sync.RWMutex is explicitly documented as non-reentrant, and it also queues new readers behind a pending writer to prevent writer starvation — so once a Lock() call is waiting, any subsequent RLock() call (even from a goroutine that already holds a read lock) blocks until that writer completes. If the goroutine trying to re-acquire RLock() is the same one already holding it, it deadlocks against itself: the writer waits for it to unlock, and it waits for the writer\'s queued Lock() to be satisfied first. Recursive locking of any kind (Mutex or RWMutex) is a documented anti-pattern in Go specifically because of this.'
     },
   ];
 

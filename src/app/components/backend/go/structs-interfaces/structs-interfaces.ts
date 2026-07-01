@@ -528,10 +528,9 @@ func main() {
       explanation: 'An interface value is nil only when both its type and value components are nil. Assigning a nil *Person to an interface gives it a non-nil type (*Person), making it non-nil even though the pointer is nil.'
     },
     {
-      q: 'When should you use a value receiver vs a pointer receiver on a method?',
-      options: ['Always use pointer receivers', 'Use pointer receivers when the method modifies the receiver, or when the type is large; use value receivers for small, read-only types where copying is cheap', 'Always use value receivers for interfaces', 'It makes no functional difference'],
-      answer: 1,
-      explanation: 'Pointer receiver (*T): needed when the method mutates the receiver, or when T is large (avoids copying). Value receiver (T): for read-only methods on small types. Critical rule: if any method uses a pointer receiver, all methods should use pointer receivers for consistency — otherwise the interface satisfaction rules become confusing (only *T satisfies the interface, not T). sync.Mutex must always use pointer receivers to avoid copying the lock state.'
+      q: 'A struct has ONE method with a pointer receiver and another method with a value receiver. You store an addressable variable of that type (not a pointer) in a slice and range over it, calling the pointer-receiver method on each element. Does it compile and behave as expected?',
+      options: ['No, mixing receiver types on the same struct is a compile error', 'It compiles — Go automatically takes the address of an addressable value to call a pointer-receiver method — but ranging by value copies each element, so mutations via the pointer-receiver method are silently lost after the loop iteration', 'The pointer-receiver method silently becomes a no-op', 'Value receivers are converted to pointer receivers automatically with no side effects'], answer: 1,
+      explanation: 'Go allows calling a pointer-receiver method on an addressable value (it implicitly does (&v).Method()), so this compiles fine. The real trap is `for _, item := range slice` — `item` is a fresh copy of each element on every iteration, so item.MutatingMethod() mutates the LOOP VARIABLE\'s copy, not the original slice element; the mutation is invisible outside the loop body. To actually mutate slice elements in place, range by index (`for i := range slice { slice[i].MutatingMethod() }`) or over a slice of pointers.'
     },
   ];
 
