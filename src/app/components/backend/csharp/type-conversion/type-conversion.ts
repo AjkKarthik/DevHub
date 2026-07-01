@@ -491,8 +491,8 @@ Console.WriteLine(total == 0.3m); // True`,
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between <code>Convert.ToInt32</code> and <code>(int)</code>?',
-      a: '<ul><li><code>Convert.ToInt32</code> handles <code>null</code> (returns 0), handles <code>bool</code> (true → 1), <strong>rounds</strong> floating-point values (3.9 → 4), and throws <code>OverflowException</code> for out-of-range values.</li><li>The <code>(int)</code> cast <strong>truncates</strong> floats (3.9 → 3), throws <code>InvalidCastException</code> for incompatible types, and does not handle <code>null</code>.</li></ul>Use <code>Convert</code> when the source can be null or when you want rounding; use <code>(int)</code> for direct numeric narrowing where you control the input.',
+      q: 'A method parameter is typed `object? value` and could genuinely be null at the call site (e.g. a value pulled from a loosely-typed config dictionary). Using `(int)value` to convert it throws a NullReferenceException, while `Convert.ToInt32(value)` returns 0 instead of throwing. Is silently returning 0 for a null input actually the SAFER behavior here, or does it just relocate the bug?',
+      a: 'It usually just relocates the bug into a harder-to-find place: a missing config value silently becoming 0 rather than throwing means the program keeps running with a plausible-looking but wrong value (e.g. a retry count of 0, a timeout of 0ms) instead of failing loudly at the point where the bad data was actually encountered — the failure, if any, now happens somewhere downstream where the connection between cause (missing config) and effect (weird runtime behavior) is much harder to trace. Convert.ToInt32\'s null-to-zero behavior is convenient for genuinely optional numeric fields where 0 is a meaningful default, but for required values it is safer to explicitly check for null and throw a clear, specific exception (or use a Result/validation pattern) rather than relying on Convert\'s silent substitution to "handle" what is actually a data-integrity bug.',
     },
     {
       q: 'Why does <code>as</code> not work with non-nullable value types like <code>int</code>?',

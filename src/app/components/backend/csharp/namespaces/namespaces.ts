@@ -429,8 +429,8 @@ public class PaymentProcessor { }`,
       a: 'Implicit usings are a .NET 6+ SDK feature enabled by <code>&lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;</code> in the .csproj. The SDK auto-generates a file adding global usings for the most common namespaces (System, System.Linq, System.Collections.Generic, System.IO, etc.). You can add extras or override them in your own <code>GlobalUsings.cs</code> file. Disable the feature by setting it to <code>disable</code> if you prefer full control.',
     },
     {
-      q: 'Is there a performance difference between deep and shallow namespaces?',
-      a: 'No — namespaces are purely a compile-time concept for name resolution. The compiled IL contains only fully-qualified type names. The runtime never "navigates" namespaces. You can have <code>A.B.C.D.E.Foo</code> with absolutely no runtime overhead compared to <code>Foo</code> at the global level.',
+      q: 'If namespaces add zero runtime overhead, why do teams still avoid overly deep namespace hierarchies (e.g. Company.Product.Module.SubModule.Feature.Handlers.Foo) in practice?',
+      a: 'The cost of deep namespaces is entirely a HUMAN one, not a runtime one: longer fully-qualified names make error messages, stack traces, and IntelliSense suggestions harder to scan quickly; deep folder-mirrored hierarchies (a common convention) create more directory navigation friction in an IDE; and namespace depth can end up encoding organizational structure that changes more often than the code itself, forcing renames across many files when a team reorganizes. None of this is a JIT or IL-level cost — it is entirely about the namespace acting as a naming/organization aid for humans reading and navigating the codebase, which is exactly why the depth question is a design/readability tradeoff, not a performance one.',
     },
     {
       q: 'What is the difference between a using alias and extern alias?',
