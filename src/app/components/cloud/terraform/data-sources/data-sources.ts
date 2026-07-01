@@ -63,6 +63,24 @@ export class TfDataSources {
         'Alternative: use SSM Parameter Store or similar to pass values without tight state coupling.',
       ],
     },
+    {
+      heading: 'Data Sources vs Resources: A Critical Distinction',
+      points: [
+        'A resource block tells Terraform to CREATE and manage infrastructure — Terraform owns the lifecycle of that resource and will modify or destroy it based on configuration changes. A data source block only READS existing information — Terraform never creates, modifies, or destroys anything referenced via a data source.',
+        'Data sources are essential for referencing infrastructure NOT managed by the current Terraform configuration — looking up an existing VPC created manually or by a different Terraform state, referencing the latest AMI ID published by a cloud provider, or pulling values from a separate team\'s state file.',
+        'Data source values are refreshed on every terraform plan (unless explicitly configured otherwise) — meaning a data source referencing "the latest AMI" can silently produce a different result on a later run if a new AMI was published, an important consideration for reproducibility.',
+        'A common design mistake is using a data source to look up a resource that IS actually managed by the same Terraform configuration — this creates unnecessary implicit ordering complexity; if you manage a resource, reference it directly via its resource attributes, not through a data source lookup.',
+      ],
+    },
+    {
+      heading: 'Filtering and Querying with Data Sources',
+      points: [
+        'Many cloud provider data sources support filter blocks (like aws_ami with owners and filter for finding the latest matching AMI) — letting you query for infrastructure matching specific criteria rather than needing to know an exact resource ID in advance.',
+        'A data source that returns no matching results (or multiple matches when exactly one was expected) produces an error during plan — this fail-fast behavior is generally preferable to silently proceeding with an unexpected or ambiguous result, catching configuration mistakes early.',
+        'Combining data sources with for_each lets you iterate over dynamically discovered infrastructure — querying for all subnets matching a tag pattern via a data source, then using for_each on that result to create a resource in each discovered subnet.',
+        'Data source reads count toward provider API rate limits just like resource operations — a configuration with many data source lookups (especially inside a for_each or count loop) can meaningfully slow down plan/apply due to the volume of API calls, worth considering when designing heavily data-source-driven configurations.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

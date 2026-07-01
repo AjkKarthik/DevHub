@@ -73,6 +73,15 @@ export class TfOpenTofu {
         'HashiCorp backported provider functions to Terraform 1.8 — one of several features that flowed upstream.',
       ],
     },
+    {
+      heading: 'OpenTofu as a Community-Governed Terraform Fork',
+      points: [
+        'OpenTofu emerged as a fork of Terraform after HashiCorp changed Terraform\'s license from the open-source MPL to the more restrictive BSL (Business Source License) in 2023 — OpenTofu is maintained under the Linux Foundation specifically to preserve a genuinely open-source, community-governed alternative.',
+        'OpenTofu maintains near-complete compatibility with existing Terraform configuration syntax and provider ecosystem — most existing .tf files and provider plugins work with OpenTofu with little to no modification, easing migration for teams choosing to switch.',
+        'The governance difference is the primary distinction — OpenTofu decisions are made through an open, community-driven process under the Linux Foundation, while Terraform remains controlled by HashiCorp (now part of IBM), which matters for organizations with licensing or vendor-lock-in concerns.',
+        'Choosing between Terraform and OpenTofu is largely a licensing and governance decision rather than a technical one at this point — teams should evaluate their specific licensing requirements and risk tolerance for potential future divergence between the two projects as they continue to evolve independently.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

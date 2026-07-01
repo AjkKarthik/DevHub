@@ -73,6 +73,15 @@ export class TfDrift {
         'Root cause: prevent drift by restricting console access (IAM deny on resource modification).',
       ],
     },
+    {
+      heading: 'Preventing and Detecting Configuration Drift',
+      points: [
+        'Configuration drift occurs when actual infrastructure state diverges from what Terraform believes it manages — typically caused by manual changes made directly in a cloud console, bypassing Terraform entirely, which Terraform has no visibility into until the next plan or refresh.',
+        'terraform plan (which implicitly refreshes state before comparing against configuration) is the primary drift detection mechanism — running plan regularly, even without intending to apply changes, surfaces drift early before it accumulates into a larger, harder-to-reconcile discrepancy.',
+        'Scheduled drift detection (running terraform plan on a schedule via CI and alerting if it reports unexpected changes) catches drift proactively rather than discovering it only when someone happens to run Terraform manually — valuable for infrastructure that multiple people or systems might touch outside Terraform.',
+        'The most effective long-term drift prevention is organizational, not technical — restricting direct console/API access to production infrastructure (enforcing that ALL changes go through Terraform) eliminates the root cause of drift rather than only detecting it after the fact.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

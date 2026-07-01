@@ -73,6 +73,15 @@ export class TfVariables {
         'Reference with local.name (note: local not locals).',
       ],
     },
+    {
+      heading: 'Variable Validation and Type Constraints',
+      points: [
+        'Type constraints on variables (type = string, type = number, or complex types like type = list(object({...}))) catch type mismatches at plan time with a clear error, rather than letting an incorrectly-typed value propagate deep into resource configuration and produce a confusing provider-level error.',
+        'Custom validation blocks (validation { condition = ... error_message = "..." }) enforce business rules beyond basic type checking — validating that an instance size variable is one of an allowed set of values, or that a CIDR block variable is actually a valid CIDR notation string.',
+        'Default values should be used thoughtfully — a variable with a sensible default (like a common instance size) reduces required input for most callers, while a variable with genuinely no safe default (like an environment name) should have no default, forcing every caller to explicitly provide it.',
+        'Variable descriptions serve as inline documentation, displayed by terraform plan and used by documentation-generation tools (terraform-docs) — writing clear descriptions for every variable significantly improves a module\'s usability for anyone other than the original author.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

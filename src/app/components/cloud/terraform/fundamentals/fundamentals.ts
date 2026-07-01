@@ -72,6 +72,15 @@ export class TfFundamentals {
         'Use depends_on for explicit dependencies when Terraform cannot detect them automatically.',
       ],
     },
+    {
+      heading: 'Declarative vs Imperative Infrastructure Management',
+      points: [
+        'Terraform\'s declarative model means you describe the DESIRED end state of infrastructure, and Terraform computes the specific steps needed to reach that state — contrasted with imperative tools (a shell script running AWS CLI commands) where you explicitly specify each individual action to take.',
+        'This declarative approach lets Terraform detect and reconcile drift automatically — if actual infrastructure differs from the desired state described in configuration, terraform plan shows exactly what would change to bring it back into alignment, something an imperative script cannot inherently do.',
+        'Idempotency is a natural consequence of the declarative model — running terraform apply repeatedly against unchanged configuration produces no changes on subsequent runs, since the actual state already matches the desired state, unlike an imperative script that might recreate resources or error on a second run.',
+        'The declarative model does require a different mental model than traditional scripting — instead of thinking "run these commands in this order," Terraform users think "describe what should exist" and trust the provider\'s dependency graph resolution to determine the correct order of operations.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -73,6 +73,15 @@ export class TfProvisioners {
         'Provisioners are not idempotent — re-running terraform apply after a change does not re-run them.',
       ],
     },
+    {
+      heading: 'Why Provisioners Are a Last Resort, Not a Default Tool',
+      points: [
+        'HashiCorp explicitly documents provisioners (remote-exec, local-exec) as a last resort — they represent an imperative escape hatch within Terraform\'s otherwise declarative model, and Terraform has no visibility into or ability to properly manage the side effects a provisioner script performs.',
+        'Provisioners run only during resource creation (or destruction, if configured) by default — they do not re-run if configuration changes later, meaning drift between what a provisioner did and the current desired state is completely invisible to Terraform\'s plan/apply cycle.',
+        'Preferred alternatives to provisioners for server configuration include: baking configuration into a machine image ahead of time (Packer), using cloud-init/user-data for initial boot configuration, or using a dedicated configuration management tool (Ansible, Chef) as a separate step after Terraform provisions the infrastructure.',
+        'When a provisioner is genuinely unavoidable, local-exec (running on the machine executing Terraform) is generally safer and more debuggable than remote-exec (running on the newly created resource itself, requiring SSH/WinRM connectivity that may fail for reasons unrelated to the actual provisioning logic).',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -73,6 +73,15 @@ export class TfModulePatterns {
         'Unit test pattern: mock providers or use localstack for isolated module testing.',
       ],
     },
+    {
+      heading: 'Composable Module Design Patterns',
+      points: [
+        'A well-designed module has a clear, minimal, purposeful interface (a small set of well-documented input variables and output values) — a module that exposes every internal detail as a variable becomes brittle and hard to evolve, since any internal implementation change risks breaking every consumer.',
+        'The "root module composing child modules" pattern (a root configuration that calls several focused, single-purpose child modules — networking, compute, database — and wires their outputs to each other\'s inputs) scales better than one monolithic module trying to manage an entire application\'s infrastructure.',
+        'Versioning modules (via Git tags referenced in the module source, or a proper module registry) lets consumers pin to a specific known-good module version and upgrade deliberately, rather than always consuming the latest (potentially breaking) changes to a shared module automatically.',
+        'Avoid modules that are simply thin wrappers around a single resource with no added value — a module should encapsulate genuine reusable logic (sensible defaults, multiple related resources wired together, validation) rather than just adding an indirection layer around one resource block.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

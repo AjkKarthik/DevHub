@@ -71,6 +71,15 @@ export class TfProviders {
         'The lock file prevents "works on my machine" issues caused by different provider patch versions.',
       ],
     },
+    {
+      heading: 'Provider Version Constraints and Configuration Aliases',
+      points: [
+        'Provider version constraints (required_providers block with a version constraint like "~> 5.0") pin which provider plugin versions are acceptable — omitting version constraints risks a provider update introducing breaking changes that silently alter plan behavior on a future run.',
+        'Provider configuration aliases (provider "aws" { alias = "us-east-1" }) let a single Terraform configuration manage resources across multiple regions or accounts using the same provider — each resource explicitly references which provider configuration (via the provider meta-argument) it should use.',
+        'The provider lock file (.terraform.lock.hcl) records the exact provider versions and cryptographic checksums used, ensuring the same provider version is used consistently across different machines and CI runs — this file should be committed to version control, not gitignored.',
+        'Provider authentication should generally be handled outside the Terraform configuration itself (environment variables, instance IAM roles, or a credentials file) rather than hardcoding credentials directly in provider blocks, which would risk committing sensitive credentials to version control.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

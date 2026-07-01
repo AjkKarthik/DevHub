@@ -73,6 +73,15 @@ export class TfSecurity {
         'Never use default = "password" on sensitive variables — use no default to force explicit supply.',
       ],
     },
+    {
+      heading: 'Managing Secrets Safely in Terraform Configuration',
+      points: [
+        'Sensitive values (database passwords, API keys) should never be hardcoded directly in .tf files, since these files are typically committed to version control — use variables marked sensitive = true, sourced from a secrets manager or environment variables at runtime instead.',
+        'Marking a variable or output as sensitive prevents its value from appearing in CLI output during plan/apply, but does NOT encrypt it within the state file itself — state files can contain sensitive values in plain text, making state file access control and encryption at rest equally important security measures.',
+        'Integrating with a dedicated secrets manager (AWS Secrets Manager, HashiCorp Vault) via a data source to fetch secrets at apply time (rather than passing them as Terraform variables from CI environment variables) keeps secrets out of both the Terraform configuration and CI system entirely, reducing the number of places a secret could potentially leak.',
+        'Static analysis security tools (tfsec, Checkov) can scan Terraform configuration for common security misconfigurations (an S3 bucket without encryption, a security group open to 0.0.0.0/0) before apply — integrating these into CI catches security issues at review time rather than after infrastructure has already been provisioned insecurely.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -73,6 +73,15 @@ export class TfTesting {
         'Run checkov and tflint in CI on every PR for free security coverage without real cloud calls.',
       ],
     },
+    {
+      heading: 'Terraform\'s Native Testing Framework',
+      points: [
+        'Terraform\'s built-in test framework (terraform test, using .tftest.hcl files, introduced in Terraform 1.6) lets you write assertions against plan and apply output directly in HCL — validating that a module produces expected resource configurations without needing an external testing tool.',
+        'Tests can run against a real plan (validating expected values without actually creating infrastructure) or a real apply (creating actual infrastructure temporarily, verifying it, then destroying it) — plan-based tests are faster and safer for CI, while apply-based tests catch issues that only manifest with real provider behavior.',
+        'Before native testing existed, Terratest (a Go-based testing library) was the community standard for testing Terraform modules — writing Go tests that apply a module, verify its actual infrastructure behavior, then destroy it, still valuable for more complex testing scenarios beyond what native tests currently support.',
+        'Testing modules (not just root configurations) is particularly valuable for shared, reusable modules consumed by multiple teams — automated tests catch a breaking change to a widely-used module before it is published and breaks every consumer, rather than discovering the break only after downstream teams run terraform plan themselves.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

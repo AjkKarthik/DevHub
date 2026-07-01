@@ -73,6 +73,15 @@ export class TfCicd {
         'OIDC tokens are short-lived and scoped — far more secure than rotating long-lived access keys.',
       ],
     },
+    {
+      heading: 'Terraform in CI/CD Pipelines: Plan and Apply Separation',
+      points: [
+        'A well-designed Terraform CI/CD pipeline separates the plan and apply steps into distinct stages — plan runs automatically on every pull request (showing what would change without applying it), while apply requires explicit approval, typically after human review of the plan output.',
+        'Storing the plan output as an artifact between the plan and apply CI jobs (rather than re-running plan immediately before apply) ensures the exact reviewed and approved changes are what actually gets applied — re-running plan separately risks a different plan being generated if the underlying infrastructure changed between review and apply.',
+        'Locking state during CI runs (via the backend\'s native locking mechanism, like DynamoDB for S3 backends) prevents concurrent pipeline runs from corrupting state through simultaneous writes — essential once more than one person or automated process can trigger Terraform runs.',
+        'Pipeline credentials should use short-lived, scoped access (OIDC federation to cloud providers rather than long-lived static credentials stored as CI secrets) — reducing the blast radius if CI infrastructure itself is ever compromised, since there is no long-lived credential to steal.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
