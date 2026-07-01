@@ -289,8 +289,8 @@ function paramReduction(dIn: number, dOut: number, rank: number): string {
 
   qna: QnaItem[] = [
     {
-      q: 'When should I use fine-tuning vs RAG?',
-      a: 'RAG (Retrieval-Augmented Generation) is better when: you need up-to-date information, you have a large and changing knowledge base, or you need to cite sources. Fine-tuning is better when: you need to change the model\'s style/format/tone, you need new skills not achievable by prompting, or latency is critical (no retrieval step). The most common mistake is fine-tuning to "memorise" facts — LLMs are poor at reliable fact recall from weights. Use RAG for knowledge, fine-tuning for behaviour.',
+      q: 'Can you combine fine-tuning and RAG in the same application, and why would you?',
+      a: 'Yes — the two techniques address different problems and are commonly combined: fine-tune the model to reliably follow a specific output format, tone, or domain-specific reasoning style (e.g., always respond as structured JSON matching a schema, or reason like a specific company\'s support agent), while RAG supplies the up-to-date or proprietary factual knowledge the fine-tuned model reasons over. A model fine-tuned only on behavior with no RAG still hallucinates facts; RAG alone with a generic base model may retrieve correctly but format or reason about the answer poorly — combining both fixes each technique\'s blind spot.',
     },
     {
       q: 'How much data do I need for LoRA fine-tuning?',
