@@ -70,6 +70,15 @@ export class LinuxEnvironmentVariables {
         'Secrets in environment variables are visible to all subprocesses of the application and appear in /proc/<PID>/environ (readable by root and the process owner).',
       ],
     },
+    {
+      heading: 'Environment Variable Scope and Precedence',
+      points: [
+        'Environment variables set with export are inherited by child processes spawned from that shell, while regular shell variables (without export) remain local to the current shell and are NOT visible to any commands or scripts it runs.',
+        'Variable precedence generally follows: command-line assignment (VAR=value command) overrides variables exported in the current shell session, which override variables set in shell configuration files (.bashrc, .profile) sourced at shell startup.',
+        'Different shell configuration files load in different contexts — .bash_profile loads only for login shells, .bashrc loads for interactive non-login shells — a common source of confusion when an environment variable works in one context (a fresh terminal) but not another (a script run via cron or SSH non-interactively).',
+        'Using printenv or env to inspect the actual current environment (rather than assuming based on what is written in a config file) is the reliable way to debug environment variable issues, since the effective environment depends on the specific execution context, not just what configuration files declare.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

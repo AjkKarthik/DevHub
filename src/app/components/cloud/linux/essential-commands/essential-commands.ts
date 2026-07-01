@@ -72,6 +72,15 @@ export class LinuxEssentialCommands {
         'rsync -avz src/ dest/ synchronises directories, transferring only changed files. --delete removes files not in source.',
       ],
     },
+    {
+      heading: 'Combining Commands with Pipes and Text Processing Tools',
+      points: [
+        'The Unix philosophy of small, composable tools connected by pipes (|) is central to effective command-line usage — combining grep, sort, uniq, and wc in a pipeline can answer complex questions (like counting unique IP addresses in a log file) without writing a dedicated script.',
+        'grep, sed, and awk each serve distinct purposes: grep filters lines matching a pattern, sed performs stream-based text transformation (substitution, deletion), and awk processes structured/columnar text with more programmatic control (variables, conditionals, field access).',
+        'xargs bridges commands that output a list of items with commands that expect arguments (rather than piped input) — find . -name "*.log" | xargs rm passes each found filename as an argument to rm, which does not read from stdin directly.',
+        'Understanding exit codes ($? after a command) and how they chain with && (run next only on success) and || (run next only on failure) enables building simple but robust conditional command sequences directly on the command line without needing a full script.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

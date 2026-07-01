@@ -73,6 +73,15 @@ export class LinuxFirewall {
         'echo 1 > /proc/sys/net/ipv4/ip_forward required to enable packet forwarding (router mode).',
       ],
     },
+    {
+      heading: 'iptables vs nftables vs firewalld',
+      points: [
+        'iptables is the traditional, widely-documented Linux firewall tool, directly manipulating netfilter rules with a rule-based, chain-oriented syntax — still common in production, extensively documented, but being gradually superseded by newer tooling.',
+        'nftables is the modern replacement for iptables, offering a cleaner syntax, better performance for large rule sets, and unified handling of IPv4/IPv6 rules in one framework rather than requiring separate ip6tables commands for IPv6.',
+        'firewalld provides a higher-level, zone-based abstraction on top of the underlying netfilter/nftables machinery, common on RHEL/Fedora-family distributions — designed for easier dynamic rule management without requiring a full reload of the entire ruleset for each change.',
+        'Regardless of which tool is used, the underlying security principle remains the same: default-deny (block everything not explicitly allowed) is significantly safer than default-allow (block only known-bad traffic), since default-deny fails safe when a new, unanticipated port or service appears.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

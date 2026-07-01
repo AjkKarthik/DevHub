@@ -71,6 +71,15 @@ export class LinuxUsersGroups {
         'sudo -i = root login shell; sudo -u alice cmd = run cmd as alice; sudo !! = re-run last command with sudo.',
       ],
     },
+    {
+      heading: 'The Principle of Least Privilege in User/Group Design',
+      points: [
+        'Running application services under a dedicated, unprivileged service account (rather than root) limits the damage a compromised service can do — a web server running as root that gets exploited gives an attacker full system control, while the same exploit against a service running as a restricted user is far more contained.',
+        'Group membership is the standard mechanism for sharing access among multiple users without granting each individual user separate, redundant permissions — adding a user to a "developers" group that has write access to a shared project directory is more maintainable than setting individual permissions per user per file.',
+        'sudo (rather than logging in directly as root, or using su to become root) provides an audit trail (logged in /var/log/auth.log or via journalctl) of exactly which command was run by which user with elevated privileges — essential for security accountability in any multi-administrator environment.',
+        'The /etc/passwd and /etc/shadow file separation exists specifically for security — /etc/passwd (world-readable) contains user account metadata, while /etc/shadow (readable only by root) contains the actual password hashes, preventing unprivileged users from even attempting to crack password hashes offline.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

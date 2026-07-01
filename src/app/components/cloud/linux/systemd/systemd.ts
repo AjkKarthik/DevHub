@@ -72,6 +72,15 @@ export class LinuxSystemd {
         'StandardOutput=journal StandardError=journal sends all output to journald.',
       ],
     },
+    {
+      heading: 'Writing and Managing Custom systemd Service Units',
+      points: [
+        'A systemd unit file (placed in /etc/systemd/system/myapp.service) defines how a service should be started, its dependencies (After=, Requires=), and its restart behavior (Restart=on-failure) — this declarative configuration replaces hand-written init scripts with a consistent, structured format.',
+        'The Type= directive (simple, forking, oneshot, notify) tells systemd how to determine when a service has actually finished starting — getting this wrong (like using Type=simple for a process that forks and daemonizes) causes systemd to misjudge the service as started before it actually is, or vice versa.',
+        'Restart=on-failure combined with RestartSec= provides automatic recovery from crashes without manual intervention — a critical resilience feature for production services, though it should be paired with reasonable limits (StartLimitBurst) to avoid an infinite crash-restart loop consuming resources.',
+        'After modifying a unit file, systemctl daemon-reload is required to make systemd re-read the updated configuration before systemctl restart myapp actually picks up the changes — a commonly forgotten step that leads to confusion when a unit file edit appears to have no effect.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

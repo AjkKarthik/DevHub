@@ -67,6 +67,15 @@ export class LinuxCron {
         'systemctl list-timers shows all timers, next fire time, and last fire time.',
       ],
     },
+    {
+      heading: 'Cron Environment Differences from Interactive Shells',
+      points: [
+        'Cron jobs run with a minimal environment (a much smaller PATH, no interactive shell configuration sourced) compared to your interactive terminal session — a script that works perfectly when run manually can fail under cron due to missing environment variables or an incomplete PATH.',
+        'Always use absolute paths for commands and files within cron jobs (/usr/bin/python3 rather than just python3) rather than relying on PATH resolution, since cron\'s PATH is often much more limited than an interactive shell\'s PATH.',
+        'Redirecting cron job output explicitly (command >> /var/log/myjob.log 2>&1) is essential — by default, cron emails job output to the crontab owner, which is easy to miss and does not scale as a monitoring strategy for anything beyond occasional manual jobs.',
+        'Testing a cron job by running the exact command line from the crontab entry directly in a minimal shell (env -i /bin/sh -c "the command") more accurately simulates the cron execution environment than simply running the command in your normal interactive shell.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

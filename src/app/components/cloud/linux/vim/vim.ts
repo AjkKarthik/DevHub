@@ -72,6 +72,15 @@ export class LinuxVim {
         '~/.vimrc is your personal config. Minimal useful vimrc: set number, syntax on, set tabstop=4 expandtab.',
       ],
     },
+    {
+      heading: 'Vim\'s Modal Editing Philosophy',
+      points: [
+        'Vim\'s core design principle is modal editing — Normal mode for navigation and commands, Insert mode for typing text, Visual mode for selecting text — a fundamentally different interaction model from typical text editors where you are always "typing" and use modifier keys for everything else.',
+        'This modal design lets nearly every key in Normal mode serve as a command (movement, deletion, search) without needing modifier key combinations for most operations — once internalized, this enables much faster text manipulation through composable command sequences (like dw to delete a word) than reaching for arrow keys and mouse selection.',
+        'Vim commands compose as verb + noun (d for delete + w for word = dw, or c for change + i" for "inside quotes" = ci" to change text inside quotes) — learning this grammar, rather than memorizing individual key combinations, is what makes Vim genuinely efficient once the pattern clicks.',
+        'The learning curve is real and often cited as Vim\'s biggest barrier to adoption — but the investment pays off specifically for developers who spend significant time editing text in a terminal environment (remote servers via SSH, containers without a GUI editor available), where Vim\'s ubiquity as a pre-installed tool is also a practical advantage.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

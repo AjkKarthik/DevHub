@@ -70,6 +70,15 @@ export class LinuxFundamentals {
         'Readline shortcuts: Ctrl+A start-of-line, Ctrl+E end-of-line, Ctrl+R reverse history search, Ctrl+C interrupt, Ctrl+D send EOF/exit.',
       ],
     },
+    {
+      heading: 'The Linux Boot Process',
+      points: [
+        'The boot sequence proceeds: BIOS/UEFI firmware initializes hardware and locates a bootloader → the bootloader (GRUB) loads the Linux kernel into memory → the kernel initializes hardware drivers and mounts the root filesystem → the kernel starts the init system (systemd) as PID 1.',
+        'systemd, as PID 1, is responsible for starting all other system services and processes according to defined units and their dependencies — understanding it as the root of the process tree clarifies why systemctl commands are the primary interface for managing what runs on a modern Linux system.',
+        'Runlevels (in older SysV init systems) or systemd targets (multi-user.target, graphical.target) define which set of services should be running for a given system state — useful for understanding why a headless server boots differently than a desktop Linux installation.',
+        'Kernel panics and boot failures typically require accessing boot logs (via journalctl -b for the current or previous boot, or a rescue/single-user mode) — understanding the boot sequence helps narrow down whether a failure occurred at the firmware, bootloader, kernel, or init stage.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

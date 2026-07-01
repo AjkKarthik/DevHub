@@ -75,6 +75,15 @@ export class LinuxFileSystem {
         'ls -li shows inode numbers; files with the same inode number are hard links to each other.',
       ],
     },
+    {
+      heading: 'The Filesystem Hierarchy Standard (FHS)',
+      points: [
+        'The FHS defines a standard directory structure across Linux distributions — /etc for configuration, /var for variable data (logs, caches), /usr for user-installed software, /home for user directories — enabling predictable, portable knowledge across different distributions.',
+        '/etc contains system-wide configuration files, typically plain text and human-editable — understanding this convention lets you locate a service\'s configuration without needing to consult documentation, since virtually all services follow this same location convention.',
+        '/var/log is the standard location for application and system logs — checking here first when diagnosing an issue is often faster than searching documentation for a specific log location, since the vast majority of Linux services log to a predictable subdirectory here.',
+        'Symbolic links (like /bin often being a symlink to /usr/bin on modern distributions, part of the "usrmerge" consolidation) mean the traditional strict FHS boundaries have blurred somewhat in practice — understanding the historical convention still helps navigate both older and newer systems.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

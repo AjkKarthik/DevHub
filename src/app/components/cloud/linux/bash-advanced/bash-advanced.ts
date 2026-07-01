@@ -70,6 +70,15 @@ export class LinuxBashAdvanced {
         'GNU parallel (parallel cmd ::: args) handles parallel execution with better control and output ordering.',
       ],
     },
+    {
+      heading: 'Process Substitution and Advanced Redirection',
+      points: [
+        'Process substitution (<(command) and >(command)) lets you use the output of a command as if it were a file, without creating an actual temporary file — useful for diffing the output of two commands directly: diff <(command1) <(command2).',
+        'File descriptor manipulation (exec 3< file, cmd <&3) lets a script hold a file open across multiple commands within the same script, avoiding repeated file opens/closes — an advanced technique used in scripts that need to read a file incrementally across several operations.',
+        'Combining stdout and stderr redirection correctly requires understanding the order of operations — command > file 2>&1 redirects stdout to file, then redirects stderr to wherever stdout now points (the file); reversing the order (2>&1 > file) produces a different, usually unintended result.',
+        'Named pipes (mkfifo) create a persistent FIFO file that two independent processes can use to communicate — useful for connecting a producer and consumer process without an intermediate temporary file, though process substitution has largely superseded manual named pipe usage for simple cases.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

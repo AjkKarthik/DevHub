@@ -70,6 +70,15 @@ export class LinuxNetworking {
         'wget --spider URL checks if a URL is reachable without downloading the body.',
       ],
     },
+    {
+      heading: 'Network Troubleshooting Command Toolkit',
+      points: [
+        'ping verifies basic IP-level reachability to a host, while traceroute reveals the network path (and which specific hop, if any, is failing) — combining both quickly distinguishes between "the destination is unreachable" and "some intermediate network hop is dropping traffic."',
+        'ss (the modern replacement for netstat) shows active network connections and listening ports — ss -tulpn specifically lists TCP/UDP listening sockets with the process name, essential for diagnosing "why is this port already in use" or "is this service actually listening."',
+        'dig and nslookup query DNS directly, letting you verify whether a hostname resolution problem is actually a DNS issue (wrong or missing DNS record) versus a network connectivity issue further down the stack — a critical first troubleshooting step for "cannot reach this hostname" reports.',
+        'curl -v (verbose mode) reveals the full HTTP request/response cycle including headers and TLS handshake details, useful for diagnosing HTTP-level issues (redirect loops, certificate problems, unexpected response headers) beyond what basic connectivity tools like ping can reveal.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
