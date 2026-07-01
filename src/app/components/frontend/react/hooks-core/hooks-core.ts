@@ -467,8 +467,8 @@ export default SearchBox;`,
       a: 'Whenever the new state depends on the previous state — especially inside event handlers, setInterval callbacks, or any async code. The functional form receives the guaranteed latest state, not the captured closure value.',
     },
     {
-      q: 'Why does React run my useEffect twice in development?',
-      a: 'React 18 Strict Mode intentionally mounts → unmounts → remounts to verify your cleanup function properly reverses the effect. The double-invocation only happens in development. If your app breaks, add a cleanup function.',
+      q: 'An effect increments a module-level counter (outside React state) with no cleanup function. Under Strict Mode\'s mount→unmount→remount cycle, does the counter end up incremented once or twice, and what does this reveal about testing for "does my effect need cleanup"?',
+      a: 'The counter ends up incremented twice, because Strict Mode\'s double-invocation runs the effect body itself twice (once per mount) — the mount→unmount→remount cycle only calls your CLEANUP function once, between the first mount and the remount, so any effect that lacks a cleanup step to undo its side effect has no way to prevent that side effect from accumulating across the two mounts. This is precisely the diagnostic value of Strict Mode: if a side effect (subscribing to something, incrementing an external counter, opening a connection) is duplicated by the double-mount and nothing in your app breaks or looks wrong, that is a signal the effect either does not need cleanup or already has correct cleanup — but a module-level mutation like this counter is a case where the "problem" is invisible within React\'s own state but very real in the surrounding system, which is why relying solely on "does my UI look broken" to judge Strict Mode compliance can miss real bugs.',
     },
     {
       q: 'What is the difference between useEffect and useLayoutEffect?',
