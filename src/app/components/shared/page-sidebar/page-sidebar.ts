@@ -6949,6 +6949,264 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'YAML has a steeper initial learning curve than the Classic editor, but the long-term maintainability benefit of pipeline-as-code is usually worth it.',
     ],
   },
+
+  // ── Messaging: per-page entries ─────────────────────────────────────────────
+  'messaging/messaging-fundamentals': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Message Queues vs Streams', route: '/messaging/message-queues-vs-streams' },
+      { label: 'Messaging Patterns',        route: '/messaging/messaging-patterns' },
+    ],
+    tip: 'Asynchronous messaging inserts a durable broker between producer and consumer — the producer continues even if the consumer is temporarily slow or unavailable, at the cost of eventual (not immediate) consistency.',
+    gotchas: [
+      'Not every interaction benefits from async messaging — synchronous calls remain appropriate when an immediate response is genuinely required.',
+      'Deployment and scaling independence is a real benefit — producer and consumer can be redeployed or rewritten independently as long as the message contract stays stable.',
+    ],
+  },
+  'messaging/message-queues-vs-streams': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture',        route: '/messaging/kafka-architecture' },
+      { label: 'RabbitMQ Core',             route: '/messaging/rabbitmq-core' },
+    ],
+    tip: 'Traditional queues typically delete a message once consumed; streaming platforms (Kafka) retain messages for a configured retention period regardless of consumption — this is why streams support replaying historical data and queues generally cannot.',
+    gotchas: [
+      'Streaming platforms support BOTH competing-consumers AND broadcast consumption simultaneously, via consumer groups — a more flexible model than a queue\'s single consumption pattern.',
+      'Choose based on whether the use case needs a transient work-distribution buffer or a durable, replayable event log.',
+    ],
+  },
+  'messaging/kafka-architecture': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Producers & Consumers', route: '/messaging/kafka-producers-consumers' },
+      { label: 'Kafka Streams',               route: '/messaging/kafka-streams' },
+    ],
+    tip: 'Kafka writes sequentially (append-only log) rather than performing random-access writes — combined with page cache and zero-copy transfer, this is why it achieves throughput closer to sequential disk I/O than typical random-access databases.',
+    gotchas: [
+      'Log compaction (retain only the latest value per key) is different from standard time/size-based retention — pick the strategy matching the topic\'s actual use case, or silently lose needed data.',
+      'Partitioning distributes load across brokers — throughput scales roughly linearly with partition count up to cluster limits.',
+    ],
+  },
+  'messaging/kafka-producers-consumers': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture', route: '/messaging/kafka-architecture' },
+      { label: 'Idempotency',        route: '/messaging/idempotency' },
+    ],
+    tip: 'acks=0 (fire-and-forget), acks=1 (leader only), and acks=all (all in-sync replicas) trade throughput against durability — choose per-topic based on the actual cost of losing a message for that use case.',
+    gotchas: [
+      'Auto-commit can commit an offset before a message is fully processed — a crash mid-processing causes silent data loss unless manual commit-after-processing is used.',
+      'Committing too frequently adds broker load; committing too infrequently increases reprocessing after a restart.',
+    ],
+  },
+  'messaging/kafka-streams': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture', route: '/messaging/kafka-architecture' },
+    ],
+    tip: 'A KTable is essentially a compacted, continuously-updated view built from a KStream\'s changes — this stream-table duality is why aggregating a stream naturally produces a table, while joining two streams naturally produces another stream.',
+    gotchas: [
+      'State stores are backed by compacted changelog topics — if an instance fails, state can be fully rebuilt by replaying the changelog, providing fault tolerance without manual backup.',
+      'Standby replicas reduce failover time by having a warm state-store copy ready on another instance.',
+    ],
+  },
+  'messaging/kafka-connect': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Architecture', route: '/messaging/kafka-architecture' },
+      { label: 'Schema Registry',    route: '/messaging/schema-registry' },
+    ],
+    tip: 'Source connectors pull data FROM an external system INTO Kafka; sink connectors push data FROM Kafka INTO an external system — using pre-built connectors (Debezium for CDC, JDBC sink) avoids reinventing already-hardened integration logic.',
+    gotchas: [
+      'Exactly-once through a connector requires BOTH Kafka\'s offset tracking AND the target system\'s idempotent/transactional writes to cooperate.',
+      'Distributed mode runs connectors across a worker cluster with automatic task rebalancing for fault tolerance.',
+    ],
+  },
+  'messaging/schema-registry': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Kafka Connect', route: '/messaging/kafka-connect' },
+    ],
+    tip: 'Backward compatibility means new schemas can read old data; forward compatibility means old readers can read new data; full compatibility requires both — choosing too permissive a mode silently breaks consumers that haven\'t yet updated.',
+    gotchas: [
+      'Without a registry, producers and consumers must agree on message format out-of-band (docs, tribal knowledge) — a fragile mechanism that breaks down as service count grows.',
+      'Avro/Protobuf with a registry encode a compact schema ID per message rather than the full schema, reducing message size vs. embedding a full JSON Schema.',
+    ],
+  },
+  'messaging/rabbitmq-core': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Exchanges', route: '/messaging/rabbitmq-exchanges' },
+      { label: 'RabbitMQ Patterns',  route: '/messaging/rabbitmq-patterns' },
+    ],
+    tip: 'A queue must be declared durable AND messages marked persistent (delivery_mode=2) for messages to actually survive a broker restart — missing either half of this pairing still loses messages despite appearing "durable."',
+    gotchas: [
+      'Manual consumer acknowledgment (not auto-ack) is required to avoid losing a message if the consumer crashes mid-processing.',
+      'Prefetch count (QoS) limits outstanding unacknowledged messages per consumer, preventing one slow consumer from being overwhelmed.',
+    ],
+  },
+  'messaging/rabbitmq-exchanges': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Core', route: '/messaging/rabbitmq-core' },
+    ],
+    tip: 'Direct exchanges match an exact routing key; topic exchanges match wildcard patterns; fanout ignores the routing key entirely and broadcasts to all bound queues — choose the type matching the actual routing need, not by default.',
+    gotchas: [
+      'Exchange-to-exchange bindings enable multi-stage routing but can make the topology hard to reason about if overused.',
+      'Headers exchanges route on message attributes rather than the routing key — less common but useful for multi-attribute routing decisions.',
+    ],
+  },
+  'messaging/rabbitmq-patterns': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'RabbitMQ Core',      route: '/messaging/rabbitmq-core' },
+      { label: 'Messaging Patterns', route: '/messaging/messaging-patterns' },
+    ],
+    tip: 'RPC-over-messaging (correlation ID + reply-to queue) trades HTTP\'s simplicity for the resilience benefits of going through a broker — reserve it for cases where that resilience genuinely outweighs the added complexity.',
+    gotchas: [
+      'An RPC caller needs an explicit timeout — the responder might never reply if it crashed or the message was lost.',
+      'The TTL-plus-dead-letter-exchange trick for delayed delivery works by expiring a message on a holding queue with no consumer.',
+    ],
+  },
+  'messaging/messaging-patterns': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Messaging Fundamentals', route: '/messaging/messaging-fundamentals' },
+      { label: 'Message Ordering',       route: '/messaging/message-ordering' },
+    ],
+    tip: 'The claim check pattern stores a large payload in external storage (blob/S3) and sends only a reference through the broker — avoiding message-size limits (SQS 256KB, Kafka default 1MB) that would otherwise reject large payloads.',
+    gotchas: [
+      'Competing consumers naturally load-balance work — a faster consumer processes proportionally more messages than a slower one.',
+      'The claim-check pattern requires managing the externally stored payload\'s lifecycle separately from the message\'s own lifecycle.',
+    ],
+  },
+  'messaging/message-ordering': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Messaging Patterns', route: '/messaging/messaging-patterns' },
+      { label: 'Idempotency',        route: '/messaging/idempotency' },
+    ],
+    tip: 'Total ordering (a single global sequence) is expensive at scale since it eliminates parallelism — partial ordering (within a partition/shard/key) is the practical compromise most systems adopt.',
+    gotchas: [
+      'Producer retries can reorder messages relative to a subsequent send unless max.in.flight.requests.per.connection=1 is set (at a throughput cost).',
+      'A system claiming global ordering but actually only partition-ordered can produce subtle bugs if consumers assume stronger guarantees than actually provided.',
+    ],
+  },
+  'messaging/idempotency': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern',    route: '/messaging/outbox-pattern' },
+      { label: 'Message Ordering',  route: '/messaging/message-ordering' },
+    ],
+    tip: 'An idempotency key should identify the logical OPERATION, not just the message — storing the result of a processed operation alongside its key lets a duplicate request get the original correct response, not just a generic ack.',
+    gotchas: [
+      'Naturally idempotent operations (setting a value) need no tracking; naturally non-idempotent operations (increment, send email) require explicit key-based enforcement.',
+      'The idempotency check and the operation must happen atomically in the same transaction — checking and acting as two separate steps reintroduces a race condition.',
+    ],
+  },
+  'messaging/outbox-pattern': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Idempotency',       route: '/messaging/idempotency' },
+      { label: 'Saga Pattern',      route: '/messaging/saga-pattern' },
+    ],
+    tip: 'The outbox pattern writes the outgoing message within the SAME database transaction as the business data change — solving the dual-write problem where a separate publish call could otherwise succeed or fail independently of the DB commit.',
+    gotchas: [
+      'A separate relay process (polling or CDC-based) is still needed to actually publish outbox rows to the broker.',
+      'CDC-based relays (Debezium) have lower latency and database load than polling-based relays.',
+    ],
+  },
+  'messaging/saga-pattern': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Outbox Pattern',   route: '/messaging/outbox-pattern' },
+      { label: 'Backpressure',     route: '/messaging/backpressure' },
+    ],
+    tip: 'Orchestration (central coordinator) vs choreography (services reacting to events, no coordinator) trades debuggability against decoupling — orchestration scales better for complex, many-step sagas.',
+    gotchas: [
+      'Not every operation has a clean compensating action — a sent email cannot be truly "unsent."',
+      'Compensating transactions must themselves be idempotent and retry-safe, since the coordinator might crash and need to retry a compensation.',
+    ],
+  },
+  'messaging/backpressure': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Saga Pattern',  route: '/messaging/saga-pattern' },
+      { label: 'Monitoring',    route: '/messaging/monitoring' },
+    ],
+    tip: 'Pull-based (consumer-driven) systems naturally implement backpressure — a consumer only requests more work when ready, unlike push-based systems that need an explicit backpressure signal to avoid overwhelming a slow consumer.',
+    gotchas: [
+      'Load shedding (dropping lower-priority messages under sustained overload) is a last resort, not a first response to every capacity problem.',
+      'Silently dropping messages under load without observability makes it impossible to distinguish "healthy shedding" from "broken and losing data."',
+    ],
+  },
+  'messaging/messaging-security': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Monitoring', route: '/messaging/monitoring' },
+    ],
+    tip: 'SASL/mTLS authenticate a producer or consumer\'s identity before allowing a broker connection — ACLs then restrict WHICH topics/queues that authenticated identity can actually produce to or consume from.',
+    gotchas: [
+      'Field-level payload encryption protects sensitive data even from the broker operator itself, a stronger guarantee than transport/storage encryption alone.',
+      'Being inside the network perimeter should not automatically grant a service access to every topic — per-service authorization still matters.',
+    ],
+  },
+  'messaging/monitoring': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Messaging Security', route: '/messaging/messaging-security' },
+      { label: 'Backpressure',       route: '/messaging/backpressure' },
+    ],
+    tip: 'Consumer lag (gap between latest produced offset and consumer\'s committed offset) is the single most important health signal — a continuously growing lag indicates insufficient capacity or a stalled consumer.',
+    gotchas: [
+      'Alerting on absolute lag thresholds without considering normal traffic patterns produces noisy false alarms during expected spikes — alert on the RATE of lag growth instead.',
+      'Trace context must be explicitly propagated through message headers — async boundaries break the direct call chain distributed tracing relies on.',
+    ],
+  },
+  'messaging/aws-sqs': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SNS/EventBridge', route: '/messaging/aws-sns-eventbridge' },
+    ],
+    tip: 'SQS visibility timeout hides a message from other consumers during processing — expiring before deletion causes redelivery, which is why consumers must be idempotent regardless of standard vs FIFO queue choice.',
+    gotchas: [
+      'FIFO queues guarantee strict order and exactly-once (within a dedup window) at the cost of significantly lower throughput than standard queues.',
+      'Extending visibility timeout mid-processing is the correct approach for variable/unpredictable processing time rather than guessing a fixed value.',
+    ],
+  },
+  'messaging/aws-sns-eventbridge': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'AWS SQS',   route: '/messaging/aws-sqs' },
+    ],
+    tip: 'SNS fans out unconditionally to every subscriber; EventBridge routes based on content-matching rules BEFORE delivery — EventBridge is the better fit for complex, multi-source routing, SNS remains simpler for straightforward fixed fan-out.',
+    gotchas: [
+      'EventBridge natively supports scheduling and API destinations that would require additional custom infrastructure on SNS+SQS.',
+      'SNS filter policies reduce unnecessary delivery but are configured per-subscription, not centrally like EventBridge rules.',
+    ],
+  },
+  'messaging/azure-service-bus': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Event Grid', route: '/messaging/azure-event-grid' },
+    ],
+    tip: 'Service Bus sessions guarantee ordered delivery to a single consumer per session — required specifically when true per-entity ordering matters, since it adds meaningful latency and complexity versus non-session queues.',
+    gotchas: [
+      'Topics with SQL-like filtered subscriptions enable pub/sub without every subscriber needing to filter irrelevant messages itself.',
+      'Duplicate detection windows complement but do not replace consumer-side idempotency for messages arriving outside that window.',
+    ],
+  },
+  'messaging/azure-event-grid': {
+    apis: KAFKA_DEFAULT.apis, docs: KAFKA_DEFAULT.docs, resources: KAFKA_DEFAULT.resources,
+    related: [
+      { label: 'Azure Service Bus', route: '/messaging/azure-service-bus' },
+    ],
+    tip: 'Event Grid pushes events immediately to subscribers rather than requiring polling — achieving near-real-time latency, but requiring subscriber endpoints to be reachable and handle a validation handshake on subscription creation.',
+    gotchas: [
+      'Event Grid is optimized for discrete, reactive notifications, not high-throughput streaming — Event Hubs is the right choice for continuous data streams.',
+      'Dead-lettering to a storage account is essential for auditability — without it, undeliverable events are silently dropped after retries.',
+    ],
+  },
 };
 
 @Component({
