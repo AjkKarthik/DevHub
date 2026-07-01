@@ -11397,6 +11397,227 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Most existing modules and providers work with both tools due to their shared HCL-based configuration language and provider protocol compatibility, but this compatibility isn\'t an absolute guarantee going forward.',
     ],
   },
+
+  // ── Service Mesh: per-page entries ──────────────────────────────────────────
+  'service-mesh/fundamentals': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Envoy',              route: '/service-mesh/envoy' },
+      { label: 'Istio Architecture', route: '/service-mesh/istio-architecture' },
+    ],
+    tip: 'A service mesh moves cross-cutting communication concerns (retries, mTLS, observability) out of application code and into infrastructure via sidecar proxies — this is genuinely valuable at microservices scale, but adds real per-pod resource overhead that should be measured before assuming the mesh is "free."',
+    gotchas: [
+      'The mesh\'s data plane (proxies handling actual traffic) and control plane (configuring those proxies) are distinct — a control plane outage doesn\'t immediately break already-configured traffic routing.',
+      'Adopting a service mesh for a small number of services often adds more operational complexity than the cross-cutting benefits justify.',
+    ],
+  },
+  'service-mesh/envoy': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals',      route: '/service-mesh/fundamentals' },
+      { label: 'Istio Architecture', route: '/service-mesh/istio-architecture' },
+    ],
+    tip: 'Envoy is the underlying proxy that most modern service meshes (Istio, Consul) build on top of — understanding Envoy\'s own configuration model (listeners, clusters, routes) makes it much easier to reason about what a higher-level mesh abstraction like Istio\'s VirtualService is actually generating underneath.',
+    gotchas: [
+      'Envoy\'s xDS APIs (how the control plane pushes configuration to proxies dynamically) are what enable configuration changes without restarting proxies — a key operational advantage over static config reloads.',
+      'A misconfigured Envoy filter chain can silently drop or mis-route traffic — Envoy\'s admin interface (/config_dump) is essential for debugging what configuration is actually active.',
+    ],
+  },
+  'service-mesh/istio-architecture': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Istio Install',   route: '/service-mesh/istio-install' },
+      { label: 'Envoy',           route: '/service-mesh/envoy' },
+    ],
+    tip: 'Istio\'s control plane (istiod) handles service discovery, configuration, and certificate issuance — it configures the Envoy sidecars injected into each pod\'s data plane, letting cross-cutting policy changes propagate without touching application code or redeploying workloads.',
+    gotchas: [
+      'Sidecar injection can be automatic (namespace-labeled) or manual — forgetting to label a namespace means pods deploy WITHOUT the mesh\'s benefits entirely, silently.',
+      'Istio adds meaningful operational complexity — running and correctly configuring it is itself a significant undertaking, appropriate at genuine microservices scale.',
+    ],
+  },
+  'service-mesh/istio-install': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Istio Architecture', route: '/service-mesh/istio-architecture' },
+    ],
+    tip: 'Istio\'s installation profiles (default, demo, minimal) trade off feature completeness against resource footprint — starting with a minimal profile and adding components incrementally is generally safer than the "demo" profile, which enables many features not appropriate for production by default.',
+    gotchas: [
+      'Upgrading Istio requires careful version compatibility checking between istiod and already-injected sidecars — a mismatch can cause subtle traffic routing issues.',
+      'Canary upgrades of the control plane itself (running two istiod revisions side by side) reduce the risk of a mesh-wide outage during an Istio version upgrade.',
+    ],
+  },
+  'service-mesh/traffic-management': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancing',   route: '/service-mesh/load-balancing' },
+      { label: 'Resilience',       route: '/service-mesh/resilience' },
+    ],
+    tip: 'VirtualService and DestinationRule together define HOW traffic is routed (which subset, what weighting for canary/blue-green) — a misconfigured VirtualService route can silently blackhole traffic to a service, which is why verifying with a canary/shadow request before rolling out to 100% matters.',
+    gotchas: [
+      'Traffic splitting (90/10 canary weighting) requires DestinationRule subsets to already be correctly defined — a VirtualService referencing an undefined subset fails routing entirely.',
+      'Mirroring (shadow traffic) sends a COPY of production traffic to a new version without affecting the real response — useful for validating a new version\'s behavior under real load before it serves any actual users.',
+    ],
+  },
+  'service-mesh/load-balancing': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Traffic Management', route: '/service-mesh/traffic-management' },
+    ],
+    tip: 'A service mesh\'s client-side load balancing (least-connection, round-robin, or locality-aware) operates at the APPLICATION layer, distinct from a Kubernetes Service\'s own basic load balancing — the mesh\'s richer algorithms (like outlier detection, ejecting unhealthy endpoints) go beyond what kube-proxy alone provides.',
+    gotchas: [
+      'Locality-aware load balancing (preferring same-zone endpoints) reduces cross-zone data transfer cost and latency, but requires zone labels to be correctly propagated.',
+      'Outlier detection (automatically ejecting a consistently failing endpoint from the load balancing pool) needs tuned thresholds — too aggressive ejects healthy-but-momentarily-slow endpoints unnecessarily.',
+    ],
+  },
+  'service-mesh/resilience': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Traffic Management', route: '/service-mesh/traffic-management' },
+    ],
+    tip: 'A mesh-level circuit breaker and retry policy applies UNIFORMLY across services without each service needing to implement its own resilience library — but aggressive retries applied mesh-wide, without care, can amplify load on an already-struggling downstream service, worsening the very problem retries are meant to mitigate.',
+    gotchas: [
+      'Retry budgets (capping total retry volume as a percentage of original request volume) prevent retry storms from overwhelming a struggling service further.',
+      'Circuit breaker thresholds configured mesh-wide as a blanket default may not fit every individual service\'s actual failure/recovery characteristics.',
+    ],
+  },
+  'service-mesh/mtls': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Authorization', route: '/service-mesh/authorization' },
+    ],
+    tip: 'A service mesh automatically enforces mutual TLS between every service-to-service call — encrypting traffic AND verifying both parties\' identity, achieving this consistently without every service needing to implement it individually in application code.',
+    gotchas: [
+      'Enabling mTLS mesh-wide without a migration period (PERMISSIVE mode first, then STRICT) can break traffic from services not yet part of the mesh.',
+      'Certificate issuance and rotation is handled automatically by the mesh\'s control plane, removing a significant manual operational burden — but also meaning certificate-related outages trace back to the control plane, not individual services.',
+    ],
+  },
+  'service-mesh/authorization': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'mTLS', route: '/service-mesh/mtls' },
+    ],
+    tip: 'AuthorizationPolicy resources let you define fine-grained, mesh-enforced access rules (which service can call which other service, on which paths) — a zero-trust model where being inside the mesh network perimeter does NOT automatically grant access, unlike a traditional flat internal network.',
+    gotchas: [
+      'A default-deny AuthorizationPolicy establishes a secure baseline before adding specific allow rules — starting permissive and trying to restrict later is a common, riskier pattern.',
+      'Authorization policies are evaluated per-namespace by default — a policy intended mesh-wide needs to be applied at the correct scope, or it silently only applies to one namespace.',
+    ],
+  },
+  'service-mesh/gateway-api': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ingress Gateway', route: '/service-mesh/ingress-gateway' },
+    ],
+    tip: 'The Kubernetes Gateway API is a newer, more expressive, role-oriented standard superseding the older Ingress resource — separating cluster-operator-owned Gateway configuration from developer-owned HTTPRoute configuration, addressing Ingress\'s lack of a standard way to express advanced routing.',
+    gotchas: [
+      'Gateway API adoption varies by mesh/ingress implementation — not every feature in the spec is necessarily supported by every implementation yet.',
+      'Migrating from Ingress to Gateway API is a real migration effort, not a drop-in replacement, despite solving overlapping problems.',
+    ],
+  },
+  'service-mesh/ingress-gateway': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Gateway API',        route: '/service-mesh/gateway-api' },
+      { label: 'Traffic Management', route: '/service-mesh/traffic-management' },
+    ],
+    tip: 'An Istio Gateway resource configures the mesh\'s EDGE (what traffic enters the mesh at all, on which ports/protocols) — this is distinct from a VirtualService, which configures routing for traffic ALREADY inside the mesh; conflating the two is a common source of "why isn\'t external traffic reaching my service" confusion.',
+    gotchas: [
+      'A Gateway resource alone does nothing without an associated VirtualService actually routing the incoming traffic to a backend service.',
+      'TLS termination at the ingress gateway versus passthrough to the backend service are meaningfully different configurations with different certificate-management implications.',
+    ],
+  },
+  'service-mesh/multi-cluster': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Istio Architecture', route: '/service-mesh/istio-architecture' },
+    ],
+    tip: 'Multi-cluster mesh topologies (primary-remote, multi-primary) let services in DIFFERENT Kubernetes clusters discover and call each other as if they were in one logical mesh — enabling both multi-region resilience and gradual migration between clusters, at the cost of significantly more complex network and certificate configuration.',
+    gotchas: [
+      'Cross-cluster service discovery requires network connectivity between clusters (often via a dedicated gateway) — clusters that cannot route to each other cannot form a multi-cluster mesh regardless of configuration.',
+      'Certificate trust must be shared across clusters (a common root CA) for cross-cluster mTLS to work — mismatched trust domains break cross-cluster communication silently.',
+    ],
+  },
+  'service-mesh/ambient-mesh': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Istio Architecture', route: '/service-mesh/istio-architecture' },
+    ],
+    tip: 'Ambient mesh removes the per-pod sidecar entirely, moving Layer 4 mesh functionality to a shared per-node proxy (ztunnel) — significantly reducing the resource overhead of the traditional sidecar-per-pod model, at the cost of some Layer 7 features requiring an additional optional waypoint proxy.',
+    gotchas: [
+      'Ambient mesh is a genuinely different architecture, not just a configuration toggle — migrating from sidecar mode requires understanding what functionality moves where.',
+      'Not every mesh feature available in sidecar mode has full parity in ambient mode yet, given how recently ambient mesh was introduced relative to the sidecar model.',
+    ],
+  },
+  'service-mesh/consul': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Linkerd',           route: '/service-mesh/linkerd' },
+      { label: 'Istio Architecture', route: '/service-mesh/istio-architecture' },
+    ],
+    tip: 'Consul Connect works across BOTH Kubernetes and non-Kubernetes (VM-based) workloads — a meaningful differentiator from meshes designed Kubernetes-first, useful for organizations with a genuine mix of containerized and traditional VM-based services needing to be part of the same mesh.',
+    gotchas: [
+      'Consul\'s service mesh capability is one part of a broader service networking platform (also service discovery, KV store) — adopting it for mesh alone may bring more surface area than a Kubernetes-native-only mesh.',
+      'Multi-datacenter Consul federation has its own operational model distinct from Istio\'s multi-cluster approach.',
+    ],
+  },
+  'service-mesh/linkerd': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Consul', route: '/service-mesh/consul' },
+      { label: 'Envoy',  route: '/service-mesh/envoy' },
+    ],
+    tip: 'Linkerd deliberately favors SIMPLICITY over Istio\'s feature breadth — using a purpose-built lightweight proxy (rather than Envoy) and a narrower feature set, trading some flexibility for a meaningfully lower operational and resource footprint, appropriate for teams wanting core mesh benefits without Istio\'s full complexity.',
+    gotchas: [
+      'Linkerd\'s narrower feature set means certain advanced Istio capabilities (like some traffic-splitting patterns) may not have a direct equivalent.',
+      'The lower resource footprint versus Istio is a real, measurable difference at scale, not just a marketing claim — worth benchmarking for genuinely resource-constrained clusters.',
+    ],
+  },
+  'service-mesh/kiali': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Metrics',   route: '/service-mesh/metrics' },
+      { label: 'Tracing',   route: '/service-mesh/tracing' },
+    ],
+    tip: 'Kiali visualizes the mesh\'s actual service topology and traffic flow in real time — invaluable for understanding "what actually talks to what" in a system that has grown organically, since a mesh\'s true dependency graph is often surprising compared to what documentation claims.',
+    gotchas: [
+      'Kiali\'s visualization depends on metrics/tracing data actually being collected — a mesh without proper telemetry configured shows an incomplete or empty graph.',
+      'The visual graph is a useful diagnostic tool, not a substitute for actual metrics-based alerting — nobody watches a topology graph 24/7 the way an alert fires.',
+    ],
+  },
+  'service-mesh/metrics': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Kiali',   route: '/service-mesh/kiali' },
+      { label: 'Tracing', route: '/service-mesh/tracing' },
+    ],
+    tip: 'A service mesh automatically emits golden-signal metrics (request rate, error rate, latency) for EVERY service-to-service call, without any application code changes — a significant observability benefit that application-level instrumentation alone would require adding to every service individually.',
+    gotchas: [
+      'Mesh-level metrics show NETWORK-layer success/failure (did the HTTP call succeed) — they cannot see application-level logical errors returned with a 200 status code, a genuine blind spot to be aware of.',
+      'High-cardinality labels on mesh metrics (like per-request unique IDs) can overwhelm a metrics backend not designed for that cardinality.',
+    ],
+  },
+  'service-mesh/tracing': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Metrics', route: '/service-mesh/metrics' },
+      { label: 'Kiali',   route: '/service-mesh/kiali' },
+    ],
+    tip: 'A mesh can automatically generate SPANS for each service-to-service hop, but trace CONTEXT propagation across those hops still requires application code to forward the relevant trace headers — the mesh alone cannot stitch a full end-to-end trace without this cooperation from the application.',
+    gotchas: [
+      'Sampling (recording only a percentage of traces) is often necessary at scale — sampling out the rare, slow, or erroring requests defeats the purpose of tracing them at all.',
+      'A trace missing a hop usually means that specific service forgot to propagate the trace context headers, not that the mesh itself failed to instrument it.',
+    ],
+  },
+  'service-mesh/performance': {
+    apis: MESH_DEFAULT.apis, docs: MESH_DEFAULT.docs, resources: MESH_DEFAULT.resources,
+    related: [
+      { label: 'Ambient Mesh', route: '/service-mesh/ambient-mesh' },
+    ],
+    tip: 'The sidecar proxy adds real latency and resource overhead to EVERY service call — measuring this overhead against actual production traffic (not just synthetic benchmarks) is essential before assuming mesh adoption is "free" from a performance perspective.',
+    gotchas: [
+      'Proxy resource requests/limits need explicit tuning per workload — a default sidecar resource allocation that\'s too small throttles the proxy itself under high traffic.',
+      'Ambient mesh\'s per-node proxy architecture specifically targets this overhead concern by eliminating the per-pod sidecar, a real architectural response to a genuine performance criticism of the sidecar model.',
+    ],
+  },
 };
 
 @Component({
