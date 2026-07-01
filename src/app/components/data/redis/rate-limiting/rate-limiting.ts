@@ -310,10 +310,9 @@ async function slidingCounterLimit(redis: Redis, identifier: string, limit: numb
       explanation: 'Token bucket allows burst traffic up to bucket capacity, then enforces steady-state rate. Implement in Redis with a Lua script: calculate tokens refilled since last request, add to stored count (capped at max), subtract for current request, store with timestamp.',
     },
     {
-      q: 'Why should rate limiting logic use Lua scripts in Redis?',
-      options: ['Lua is faster than native Redis commands', 'Lua scripts execute atomically — combining the check-and-decrement into a single atomic operation without race conditions', 'Lua bypasses the maxmemory limit', 'Lua supports floating point counters'],
-      answer: 1,
-      explanation: 'Without atomicity, two concurrent requests can both pass the check before either decrements the counter — allowing double the rate limit. A Lua script makes the read-check-write atomic, eliminating this race condition.',
+      q: 'Could you achieve the same atomicity a Lua script provides for rate limiting by wrapping the check-and-decrement in a Redis MULTI/EXEC transaction instead?',
+      options: ['Yes, MULTI/EXEC and Lua scripts are functionally identical for this use case with no meaningful difference', 'Not cleanly — MULTI/EXEC queues commands blindly without letting you branch on a value read earlier in the same transaction (you cannot read the counter, decide whether to decrement, all within one MULTI block), whereas a Lua script can read the current count, evaluate a conditional, and only then decide whether to write, all atomically', 'MULTI/EXEC is strictly faster than Lua scripts for this exact use case', 'Redis rate limiting requires neither Lua nor MULTI/EXEC, since single commands are always atomic enough'], answer: 1,
+      explanation: 'MULTI/EXEC guarantees the QUEUED commands execute as an atomic batch, but it cannot make a decision mid-transaction based on a value read earlier in that same transaction — commands are queued blindly before any of them run, so you cannot say "read the count, and only decrement it if under the limit" within a single MULTI block. A Lua script runs as ordinary sequential code with full conditional logic (if current_count < limit then ... end) while still executing atomically relative to other Redis clients, which is exactly the capability rate limiting needs and MULTI/EXEC structurally cannot provide.',
     },
   ];
 

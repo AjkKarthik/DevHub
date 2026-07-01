@@ -306,8 +306,8 @@ async function getStreamStats(streamKey: string, groupName: string) {
       a: 'XREAD COUNT 10 STREAMS mystream 0: reads up to 10 entries from the beginning. XREAD COUNT 10 STREAMS mystream $: reads only new messages after this command. XREAD BLOCK 5000 STREAMS mystream $: blocks 5s for new messages. For consumer groups use XREADGROUP.',
     },
     {
-      q: 'What is the Pending Entries List (PEL) in Redis Streams?',
-      a: 'The PEL tracks delivered-but-unacknowledged messages per consumer in a consumer group. XPENDING shows the PEL. XCLAIM transfers a pending entry to another consumer (for redelivery after timeout). XAUTOCLAIM (Redis 7+) automatically reclaims stale entries. PEL entries are removed by XACK. Monitor PEL size — growing PEL indicates processing failures.',
+      q: 'If a consumer in a group crashes without ever calling XACK on messages it read, what happens to those messages long-term, and how do you recover them?',
+      a: 'Those messages remain permanently in the consumer group\'s PEL, attributed to the crashed consumer\'s name, until something explicitly acts on them — Redis does not automatically time out or redeliver them on its own. The recovery pattern is to periodically run XAUTOCLAIM (or the older XCLAIM), which scans the PEL for entries idle longer than a specified threshold and reassigns them to a different, currently-active consumer for reprocessing. Without a process doing this periodically, a crashed consumer\'s unacknowledged messages simply sit in the PEL indefinitely, silently growing the pending count and never getting reprocessed — which is why production consumer-group setups need an explicit "claim stale entries" job, not just XREADGROUP + XACK on the happy path.',
     },
     {
       q: 'How do you create and use a consumer group?',

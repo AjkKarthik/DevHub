@@ -286,8 +286,8 @@ async function auditKeys(pattern: string) {
       a: 'Use <code>SET key value EX seconds</code> or <code>SET key value PX milliseconds</code> — atomically sets value and expiry. Old pattern (SETNX + EXPIRE) was non-atomic: a crash between the two commands left immortal keys. The modern SET options are the correct approach. Also: SETEX (deprecated but still works), GETSET (replaced by SET ... GET).',
     },
     {
-      q: 'What is the OBJECT ENCODING command used for?',
-      a: 'OBJECT ENCODING key shows the internal memory encoding: <code>embstr</code>/<code>raw</code> (strings), <code>listpack</code>/<code>quicklist</code> (lists), <code>intset</code>/<code>hashtable</code> (sets), <code>listpack</code>/<code>skiplist</code> (sorted sets), <code>listpack</code>/<code>hashtable</code> (hashes). Small structures use compact encodings — understand thresholds to optimise memory.',
+      q: 'If OBJECT ENCODING reports a key has already converted from a compact encoding (e.g. listpack) to a less efficient one (e.g. hashtable), can it ever convert back down automatically?',
+      a: 'No — encoding conversion is one-directional. Once a structure crosses a configured threshold (like hash-max-listpack-entries) and converts to the less compact encoding, Redis does not automatically convert it back even if you later delete enough elements to fit within the original threshold again. The only way to get back to the compact encoding is to delete the key and recreate it from scratch with data that stays under the threshold — this is worth knowing when investigating unexpectedly high memory usage on a key that "should" be small now but shows a heavier encoding from a past state.',
     },
   ];
 

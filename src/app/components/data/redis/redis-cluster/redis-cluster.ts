@@ -219,10 +219,9 @@ async function validateCoLocation(cluster: Redis.Cluster, keys: string[]) {
       explanation: 'CROSSSLOT error occurs when a multi-key command (MGET, MSET, Lua script, etc.) accesses keys that belong to different hash slots — and thus different nodes. Use hash tags to force co-location.',
     },
     {
-      q: 'How many hash slots does Redis Cluster have?',
-      options: ['1024', '4096', '16384', '65536'],
-      answer: 2,
-      explanation: 'Redis Cluster uses 16384 hash slots. Keys are mapped to slots using CRC16(key) % 16384. Slots are distributed across master nodes. The number 16384 was chosen to fit the cluster config in a small gossip message.',
+      q: 'Why did Redis Cluster designers cap the slot count at 16384 instead of using a much larger number (e.g. 65536) for finer-grained key distribution?',
+      options: ['16384 is the maximum value a 16-bit unsigned integer can represent, a hardware limitation', 'The cluster gossip protocol propagates each node\'s slot ownership as a bitmap in every heartbeat message — a larger slot count would make that bitmap (and thus every gossip message) proportionally bigger, adding meaningful network overhead to the constant background gossip traffic between nodes', 'Redis limits hash slots to keep CRC16 collision rates low', 'A higher slot count would exceed Redis\'s maximum key limit per instance'], answer: 1,
+      explanation: 'Every Redis Cluster node continuously gossips its view of slot ownership to other nodes as part of cluster health/config propagation, and that slot-ownership information is encoded as a bitmap in each message — with 16384 slots, that bitmap is 2KB (16384 bits / 8), which was deemed an acceptable per-message overhead for gossip traffic. A slot count in the tens of thousands or higher (like 65536) would make every single gossip message larger, adding continuous bandwidth overhead across the whole cluster for a benefit (finer per-slot granularity) that isn\'t actually needed in practice, since 16384 slots already provides plenty of resolution for balancing across even large clusters of hundreds of nodes.',
     },
     {
       q: 'What happens when a Redis Cluster command accesses keys on different slots?',

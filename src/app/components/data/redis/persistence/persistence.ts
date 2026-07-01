@@ -248,12 +248,12 @@ async function checkPersistenceHealth(redis: Redis) {
       a: 'Redis restores from persistence files on startup. If AOF enabled: <code>redis-check-aof --fix appendonly.aof</code> repairs a truncated AOF. If RDB: <code>redis-check-rdb dump.rdb</code> validates it. AOF takes precedence over RDB when both are enabled. Point the data dir to the backup files and restart. Test recovery procedures regularly.',
     },
     {
-      q: 'What is AOF rewrite and why is it needed?',
-      a: 'The AOF log grows indefinitely (every write is appended). <strong>BGREWRITEAOF</strong> compacts it by writing the minimal commands to recreate the current dataset. Auto-triggered by <code>auto-aof-rewrite-percentage</code> (100% growth) and <code>auto-aof-rewrite-min-size</code>. The rewrite runs in a child process; Redis continues appending to the current AOF meanwhile.',
+      q: 'What happens to write commands received WHILE BGREWRITEAOF\'s child process is busy compacting the AOF file in the background?',
+      a: 'The parent Redis process keeps appending incoming writes to the OLD AOF file exactly as before, while the child process independently builds the new, compacted AOF from a point-in-time snapshot of the dataset — Redis additionally buffers writes that occur during the rewrite so that once the child finishes, those buffered writes are appended to the new compacted file before it atomically replaces the old one. This is why BGREWRITEAOF does not block or pause write traffic: the parent process continues serving normal read/write commands throughout, and the swap to the new file only happens once it is fully caught up.',
     },
     {
-      q: 'What is the aof-use-rdb-preamble option?',
-      a: 'When enabled (default), AOF rewrite starts with an RDB snapshot preamble followed by AOF commands for changes since the snapshot. This dramatically reduces restart time — loading an RDB is much faster than replaying a long AOF. The resulting file is a hybrid: starts with binary RDB, followed by text AOF commands.',
+      q: 'If aof-use-rdb-preamble is disabled, what happens to AOF rewrite and restart behavior compared to leaving it enabled?',
+      a: 'With the preamble disabled, an AOF rewrite produces a file containing only plain-text Redis commands (no binary RDB snapshot at the start) — every single command needed to reconstruct the dataset must be written out and, on restart, replayed one at a time, which is both a larger file and a substantially slower restart for large datasets compared to the hybrid format. This option exists mainly for compatibility with older tooling that expects a pure-AOF text format (some external log-parsing tools couldn\'t handle the binary RDB preamble) — for virtually all modern deployments, leaving the default (enabled) is preferred for faster restarts.',
     },
   ];
 

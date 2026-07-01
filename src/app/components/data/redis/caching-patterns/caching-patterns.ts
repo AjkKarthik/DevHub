@@ -269,10 +269,9 @@ async function cachedFetch<T>(redis: Redis, key: string, ttlSec: number, fetcher
       explanation: 'Cache-aside: app checks cache first. On hit, return value. On miss, load from DB, store in cache, return to caller. Simple and resilient — if cache fails, app still works from DB.',
     },
     {
-      q: 'What causes a cache stampede (thundering herd)?',
-      options: ['Too many simultaneous cache writes', 'Many concurrent requests hit the DB simultaneously when a popular cached key expires', 'Cache eviction of unimportant keys', 'Writing to cache faster than the DB can handle'],
-      answer: 1,
-      explanation: 'When a hot key expires, many concurrent requests find a cache miss and all hit the DB at once — causing a spike. Solutions: probabilistic early expiration, mutex/lock, background refresh before expiry.',
+      q: 'How does a "probabilistic early expiration" strategy prevent cache stampedes without requiring an explicit lock?',
+      options: ['It disables expiration entirely for hot keys so they never trigger a stampede', 'Each read checks remaining TTL and randomly decides to refresh the cache slightly BEFORE actual expiry, with the probability increasing as expiry approaches — so refreshes get naturally spread across many earlier requests instead of all requests hitting a hard expiry wall at once', 'It requires every client to acquire a distributed lock before any cache read', 'It increases the TTL of all keys uniformly to reduce expiration frequency'], answer: 1,
+      explanation: 'Instead of a hard cliff where a key is valid until exactly time T and then every subsequent request misses simultaneously, probabilistic early expiration has each read compute a small random chance of treating the key as "expired early" — that chance rises the closer the real TTL gets to zero. This spreads refreshes probabilistically across many earlier requests rather than concentrating them all at the exact expiry instant, achieving a similar de-stampeding effect to an explicit mutex/lock but without any actual locking coordination between clients.',
     },
     {
       q: 'What is the write-through caching pattern?',
