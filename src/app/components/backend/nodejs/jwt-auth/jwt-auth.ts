@@ -59,6 +59,24 @@ export class NodeJwtAuth {
         'Rate limit authentication endpoints — /login, /register, /refresh — more aggressively than other routes. Use a sliding window with a lower limit (5 attempts per minute vs 100 for API routes). Lock accounts after N failed attempts.',
       ]
     },
+    {
+      heading: 'JWT Structure and Claims',
+      points: [
+        'A JWT has three Base64URL-encoded parts separated by dots: header (algorithm and token type), payload (claims — the actual data), and signature (verifies the header and payload have not been tampered with).',
+        'Standard claims include iss (issuer), sub (subject — typically the user ID), aud (audience — the intended recipient service), exp (expiration timestamp), and iat (issued-at timestamp) — using these standard names lets libraries and tooling interoperate correctly.',
+        'The payload is Base64-encoded, NOT encrypted — anyone can decode and read a JWT\'s contents without the signing secret. Never put sensitive data (passwords, full credit card numbers) in a JWT payload, only in server-side session data referenced by a token.',
+        'Signature verification (not just successful decoding) is what actually proves a token is authentic — a common security bug is decoding a JWT to read its claims without also verifying its signature, which lets an attacker forge arbitrary claims.',
+      ]
+    },
+    {
+      heading: 'Access Tokens vs Refresh Tokens',
+      points: [
+        'Access tokens are short-lived (minutes) and sent with every API request — their short lifespan limits the damage window if one is ever stolen, since it expires quickly regardless of whether the theft is detected.',
+        'Refresh tokens are longer-lived (days/weeks) and used only to obtain new access tokens when the current one expires — they should be stored more securely (httpOnly cookie, not localStorage) since their compromise has much larger impact.',
+        'Refresh token rotation — issuing a new refresh token every time one is used, and invalidating the old one — limits a stolen refresh token to a single use before detection, since reuse of an already-rotated token signals likely compromise.',
+        'Storing access tokens in memory (not localStorage or cookies) for single-page apps avoids XSS-based token theft entirely, at the cost of losing the token on a page refresh — usually mitigated by silently re-authenticating via the refresh token on load.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

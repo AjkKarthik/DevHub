@@ -59,6 +59,24 @@ export class NodeStreams {
         'Custom Transform: extend Transform and implement _transform(chunk, encoding, callback). Call callback() when done processing, push() to emit output, or callback(err) to signal an error.',
       ]
     },
+    {
+      heading: 'Backpressure and Flow Control',
+      points: [
+        'Backpressure occurs when a writable destination cannot consume data as fast as a readable source produces it — ignoring writable.write()\'s return value (false means the internal buffer is full) causes unconsumed data to accumulate in memory, potentially unbounded.',
+        'The correct pattern for manual stream handling is to pause the readable stream when write() returns false, and resume it only on the writable stream\'s "drain" event — or, more simply, use .pipe() which handles this backpressure negotiation automatically.',
+        'Stream pipelines (multiple streams chained via .pipe() or the modern stream.pipeline() utility) propagate backpressure through the entire chain automatically — a slow final destination naturally throttles how fast the original source is read, preventing memory blowup anywhere in the chain.',
+        'stream.pipeline() (over manual .pipe() chaining) is the modern recommended approach because it properly handles errors and cleanup across the whole chain — a plain .pipe() chain does not automatically destroy all streams if one in the middle errors, risking resource leaks.',
+      ]
+    },
+    {
+      heading: 'Transform Streams for Data Processing Pipelines',
+      points: [
+        'A Transform stream is a Duplex stream where the writable side is internally connected to the readable side — data written in is transformed and becomes available to read out, making it the building block for processing pipelines like compression, encryption, or parsing.',
+        'Implement a custom Transform by extending the Transform class and implementing _transform(chunk, encoding, callback) — call callback(null, transformedChunk) to push transformed data downstream, or callback(err) to propagate an error through the pipeline.',
+        'Streaming transformation processes data in constant memory regardless of total input size — critical for processing large files or continuous data feeds where loading the entire dataset into memory first (e.g., via fs.readFile) would be infeasible.',
+        'Node.js core provides built-in Transform streams for common needs — zlib.createGzip() for compression, crypto.createCipheriv() for encryption — that can be piped directly into a processing chain without writing custom Transform logic.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

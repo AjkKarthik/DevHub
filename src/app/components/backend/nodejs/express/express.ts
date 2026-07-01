@@ -59,6 +59,24 @@ export class NodeExpress {
         'Structure error responses consistently: { error: { message, code, status } }. Use HTTP status codes correctly: 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (validation), 500 (server error).',
       ]
     },
+    {
+      heading: 'Middleware Composition and Order',
+      points: [
+        'Express executes middleware strictly in registration order for a matching request path — a body-parsing middleware registered after a route that reads req.body will never see the parsed body, a surprisingly common source of "req.body is undefined" bugs.',
+        'app.use() without a path applies to every request; app.use("/api", middleware) scopes it to a path prefix — using scoped middleware avoids unnecessary work (like auth checks) running on routes that do not need it (like a public health-check endpoint).',
+        'Router-level middleware (via express.Router()) lets you compose middleware chains per feature module — a userRouter can have its own auth middleware applied only to user routes, keeping cross-cutting concerns modular rather than one giant global middleware stack.',
+        'Error-handling middleware (four parameters) must be registered last, after all routes and other middleware — Express identifies it purely by parameter count, and its position in the registration order determines which errors it can catch.',
+      ]
+    },
+    {
+      heading: 'Express Request Validation Patterns',
+      points: [
+        'Validate request input (body, query, params) with a schema library (Zod, Joi, express-validator) as dedicated middleware before the route handler runs, rejecting malformed requests with a 400 early rather than letting invalid data reach business logic.',
+        'Centralizing validation as middleware avoids duplicating manual if-checks across route handlers and produces consistent error response shapes across all endpoints, since one validation middleware pattern is reused everywhere.',
+        'Sanitize as well as validate: trimming whitespace, normalizing casing on emails, and stripping unexpected fields (to prevent mass-assignment vulnerabilities where a client sends an unexpected isAdmin: true field) are separate concerns from type/format validation.',
+        'Validate at the API boundary, not deep inside services — by the time a request reaches your business logic, its shape should already be guaranteed correct, letting internal code trust its inputs rather than re-validating defensively everywhere.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

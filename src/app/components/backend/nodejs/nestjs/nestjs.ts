@@ -59,6 +59,24 @@ export class NodeNestjs {
         'Exception Filters catch thrown exceptions and format the response. Built-in: HttpException, NotFoundException, BadRequestException. Custom: @Catch(HttpException) class HttpExceptionFilter implements ExceptionFilter. Apply globally for consistent error format across all routes.',
       ]
     },
+    {
+      heading: 'Modules, Providers, and Dependency Injection',
+      points: [
+        'A NestJS Module bundles related controllers and providers together, explicitly declaring which providers it exports for other modules to use — a provider not exported remains private, enforcing deliberate boundaries between feature areas rather than implicit flat coupling.',
+        'Providers (services, repositories, factories) are resolved by NestJS\'s DI container based on constructor type hints — @Injectable() classes are automatically instantiated and injected wherever declared as a constructor dependency, without manual wiring code.',
+        'Provider scope matters: DEFAULT (singleton, shared across the whole app) is most common and efficient; REQUEST scope creates a new instance per incoming request (needed for request-specific state) at a real performance cost since DI resolution happens per request.',
+        'Circular dependencies between modules (ModuleA needs ModuleB which needs ModuleA) require forwardRef() to resolve — a recurring sign that module boundaries may need rethinking, since a clean dependency graph should ideally be acyclic.',
+      ]
+    },
+    {
+      heading: 'Guards, Interceptors, and Pipes',
+      points: [
+        'Guards run before the route handler, determining whether the request may proceed (typically authentication/authorization) — they return true/false or throw, and unlike middleware they have access to the full ExecutionContext including the handler and class being invoked.',
+        'Interceptors wrap the handler execution using RxJS operators, able to transform the response, add cross-cutting logic before and after the handler, or even short-circuit and return a cached value without calling the handler at all.',
+        'Pipes transform or validate input data before it reaches the handler — a ValidationPipe combined with class-validator decorators on a DTO automatically validates incoming request bodies and throws a BadRequestException on failure, without manual validation code.',
+        'Execution order matters: middleware runs first, then guards, then interceptors (before handler), then pipes, then the handler itself, then interceptors again (after handler) — understanding this order is essential for placing cross-cutting logic correctly.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

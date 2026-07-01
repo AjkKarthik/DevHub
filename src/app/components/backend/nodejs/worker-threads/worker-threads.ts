@@ -59,6 +59,24 @@ export class NodeWorkerThreads {
         'Appropriate tasks for worker threads: image/video processing, PDF generation, encryption of large data, heavy JSON parsing, ML inference in ONNX runtime, complex mathematical computations, regex on large strings. Avoid I/O in workers — I/O is non-blocking on the main thread.',
       ]
     },
+    {
+      heading: 'When Worker Threads Are the Right Tool',
+      points: [
+        'worker_threads run within the same process, each with its own isolated V8 instance and event loop, but can share memory directly via SharedArrayBuffer — ideal for offloading a specific CPU-intensive computation without duplicating the entire application\'s memory footprint per worker.',
+        'The GIL-free equivalent concern in Node.js: since JavaScript itself runs single-threaded per isolate, a genuinely CPU-bound task (heavy computation, image processing, cryptographic hashing of large data) run on the main thread blocks all other request handling — worker_threads is the correct tool for this, not more async/await (which does nothing for CPU-bound work).',
+        'Do NOT use worker_threads for I/O-bound work (database queries, HTTP calls) — async/await on the main thread already handles I/O concurrency efficiently via the event loop; spawning a worker thread for I/O adds serialization overhead with no benefit.',
+        'Spawning a worker has real overhead (new V8 isolate initialization) — for many small, frequent tasks, a persistent worker pool (reusing long-lived workers via a queue, as the piscina library provides) amortizes this cost far better than spawning a fresh worker per task.',
+      ]
+    },
+    {
+      heading: 'Communication Between Main Thread and Workers',
+      points: [
+        'Communication happens via postMessage(), with data serialized using the structured clone algorithm — most JavaScript values (objects, arrays, Maps, dates) are deep-copied across the thread boundary, not shared by reference, since each worker has its own isolated memory heap.',
+        'For genuinely shared, mutable memory without copying overhead, SharedArrayBuffer combined with Atomics enables safe concurrent access from multiple threads — used for high-throughput numeric data (like large typed arrays) where copying via postMessage would be too slow.',
+        'workerData passes initial data to a worker at creation time (a one-time setup value), while ongoing communication after the worker starts uses the postMessage/on("message") event-based channel for bidirectional exchange during the worker\'s lifetime.',
+        'Always handle the worker\'s "error" and "exit" events on the main thread — an unhandled error in a worker does not automatically propagate to or crash the main thread, so silently ignoring these events can mask worker failures indefinitely.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

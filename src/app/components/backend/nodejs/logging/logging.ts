@@ -59,6 +59,24 @@ export class NodeLogging {
         'Log sampling under high load: logging every request at info level with 10,000 req/s creates 864M log lines per day. Sample debug logs (log 1% of requests for debug). Log all errors. Use adaptive sampling — log more detail when error rate spikes.',
       ]
     },
+    {
+      heading: 'Log Levels and When to Use Each',
+      points: [
+        'error: something failed and needs attention — a failed database write, an unhandled exception. warn: something unexpected happened but the request still completed — a retry succeeded on the second attempt, a deprecated API was called.',
+        'info: normal but noteworthy events — a server started, a scheduled job completed. debug: detailed diagnostic information useful during development or active incident investigation, typically disabled in production due to volume.',
+        'Configure log level per environment: debug/info in development for maximum visibility while coding, warn/error only in production to keep log volume (and cost) manageable while ensuring genuine problems are still surfaced.',
+        'Consistent log level discipline across a team matters — if everything is logged as "error" regardless of actual severity, alerting on error-level logs becomes useless noise, and genuine critical failures get lost in the flood.',
+      ]
+    },
+    {
+      heading: 'Structured Logging for Production Observability',
+      points: [
+        'Structured (JSON) logs emit each entry as a parseable object with consistent fields (timestamp, level, message, requestId, custom context) rather than a free-text string — this lets log platforms (Datadog, ELK, CloudWatch Insights) filter and alert on specific fields directly.',
+        'A correlation ID (generated at the request entry point and propagated through every downstream log statement and service call) is essential in distributed systems — without it, reconstructing all logs for a single user-facing request across multiple services requires manual, error-prone timestamp correlation.',
+        'Avoid logging sensitive data (passwords, full tokens, PII) even at debug level — log aggregation systems are often accessible to a wide swath of engineering, and sensitive data in logs is a common compliance and security gap.',
+        'High-performance loggers (pino) avoid blocking the event loop during log writes by offloading serialization/transport to a worker thread — important for services logging thousands of requests per second where synchronous logging would become a real bottleneck.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

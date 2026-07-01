@@ -59,6 +59,24 @@ export class NodeCoreModules {
         'Always handle the "error" event and check exit codes on child processes. Use { shell: false } and pass arguments as an array to prevent shell injection.',
       ]
     },
+    {
+      heading: 'Buffer and Binary Data',
+      points: [
+        'Buffer is Node.js\'s representation of raw binary data, predating the standard Uint8Array — used for file I/O, network protocols, and any data that is not text. Buffer.from(string, encoding) converts text to bytes; buffer.toString(encoding) converts back.',
+        'Buffers are fixed-size and mutable — unlike JS strings, you can write directly into specific byte offsets with buffer.write() or buffer[i] = value, which matters for performance-sensitive binary protocol parsing.',
+        'Never concatenate large binary data with string operations — use Buffer.concat([buf1, buf2]) which allocates the combined buffer once, rather than the repeated allocation/copy overhead of string-based concatenation.',
+        'Security: Buffer.allocUnsafe() is faster than Buffer.alloc() because it skips zero-filling the memory, but the returned buffer may contain old, potentially sensitive data from previous allocations — only use it when you will immediately overwrite the entire buffer.',
+      ]
+    },
+    {
+      heading: 'The os and process Modules',
+      points: [
+        'os provides system-level information: os.cpus() (core count, useful for sizing a cluster worker pool), os.totalmem()/os.freemem() (memory monitoring), os.platform() (cross-platform conditional logic).',
+        'process is the global object representing the current Node.js process: process.env for environment variables, process.argv for CLI arguments, process.exit(code) for controlled shutdown, process.on("SIGTERM", handler) for graceful shutdown hooks.',
+        'process.memoryUsage() and process.cpuUsage() are essential for diagnosing memory leaks and CPU bottlenecks in production — sample them periodically and export as metrics rather than only checking during an incident.',
+        'process.nextTick() and setImmediate() (also part of core timing behavior) let you defer work to specific points in the event loop — nextTick runs before I/O callbacks, setImmediate runs after, which matters for controlling execution order in library code.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

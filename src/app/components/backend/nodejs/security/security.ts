@@ -59,6 +59,24 @@ export class NodeSecurity {
         'Dependency security: run npm audit regularly, pin dependency versions (package-lock.json), use Dependabot or Snyk for automated vulnerability alerts. A supply chain attack in a popular npm package (event-stream 2018, colors 2022) can compromise your app without any change to your code.',
       ]
     },
+    {
+      heading: 'Input Validation and Injection Prevention',
+      points: [
+        'Never trust client input — validate type, format, and range for every field on every request, using a schema library (Zod, Joi) as dedicated middleware rather than scattered manual checks that are easy to forget on new endpoints.',
+        'SQL/NoSQL injection is prevented primarily by parameterized queries (never string-concatenating user input into a query) — for MongoDB specifically, also sanitize input to strip keys starting with $ or containing . that could inject query operators.',
+        'Cross-Site Scripting (XSS) prevention requires context-aware output encoding — data rendered into HTML needs HTML-entity encoding, data rendered into a URL needs URL encoding; a single generic "sanitize everything" approach often misses context-specific escaping needs.',
+        'Rate limiting (per-IP for anonymous traffic, per-account for authenticated) mitigates brute-force credential attacks and API abuse — apply stricter limits to sensitive endpoints (login, password reset) than to general read endpoints.',
+      ]
+    },
+    {
+      heading: 'Secure Headers and Transport Security',
+      points: [
+        'The helmet middleware sets a battery of security-related HTTP response headers with secure defaults in one line — Content-Security-Policy, X-Frame-Options, Strict-Transport-Security — encoding well-researched defaults so teams do not need to rediscover this knowledge manually.',
+        'HTTPS should be enforced everywhere in production, including redirecting any HTTP request to HTTPS — sensitive data (auth tokens, passwords) sent over plain HTTP is trivially interceptable on any network path between client and server.',
+        'CORS configuration should specify an explicit allowlist of trusted origins, never a wildcard combined with credentials — Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true is an invalid, browser-rejected combination for good reason.',
+        'Dependency vulnerabilities are a real attack surface — run npm audit (or a dedicated tool like Snyk/Dependabot) regularly and keep dependencies patched, since a known CVE in a transitive dependency is a common real-world compromise vector.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

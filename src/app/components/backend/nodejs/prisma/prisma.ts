@@ -59,6 +59,24 @@ export class NodePrisma {
         'Prisma Extensions (v4.7+): prisma.$extends({ model: { user: { async findActiveUsers() { ... } } } }) — add custom methods to models. Type-safe, composable, replaces middleware for most use cases.',
       ]
     },
+    {
+      heading: 'Schema-Driven Type Generation',
+      points: [
+        'Prisma\'s schema.prisma file is the single source of truth for your data model — running prisma generate produces a fully typed TypeScript client tailored to that exact schema, so referencing a non-existent field is a compile-time error, not a runtime surprise.',
+        'Any schema change requires regenerating the client to pick up new types — most teams automate this as a postinstall script or a pre-build CI step, since forgetting to regenerate leads to confusing type mismatches between the schema and the stale generated client.',
+        'The generated client includes relation-aware query methods (include, select) that are fully typed based on the schema\'s defined relations — autocomplete correctly narrows available fields based on which relations you choose to include.',
+        'Prisma Studio (a bundled GUI) lets you browse and edit data directly against the schema during development — useful for quickly inspecting data state without writing ad-hoc query scripts or connecting a separate database client.',
+      ]
+    },
+    {
+      heading: 'Migrations and Schema Evolution',
+      points: [
+        'prisma migrate dev generates versioned, ordered SQL migration files from schema changes and tracks applied migrations in a dedicated table, letting the same sequence reliably reapply across development, staging, and production environments.',
+        'Directly editing the database schema outside Prisma Migrate (manual ALTER TABLE) creates drift between the Prisma schema and actual database structure that migrate cannot detect or reconcile automatically — always make schema changes through migrations.',
+        'Migrations should be reviewed like code changes before merging — a migration that drops a column or changes a type can be destructive and irreversible against production data if applied carelessly.',
+        'For zero-downtime schema changes in a rolling deployment, use the expand-contract pattern: add new columns as optional first (expand), deploy code that writes to both old and new columns, backfill data, then remove the old column in a later migration (contract) once all code has moved on.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

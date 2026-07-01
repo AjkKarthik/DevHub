@@ -59,6 +59,24 @@ export class NodeRestApi {
         'Error propagation: repositories throw database-specific errors. Services catch them and rethrow as domain errors (UserNotFoundError, DuplicateEmailError). Controllers map domain errors to HTTP responses.',
       ]
     },
+    {
+      heading: 'Resource-Oriented URL Design',
+      points: [
+        'REST URLs should represent resources (nouns), not actions (verbs) — /orders/123/cancel violates this; DELETE /orders/123 or a state-changing PATCH more correctly expresses the intent through the HTTP method, not the URL path.',
+        'Use plural nouns for collections consistently (/users not /user) and nest resources to express ownership relationships (/users/123/orders) while keeping nesting to 2-3 levels max — deeper nesting becomes unwieldy and tightly couples clients to the resource hierarchy.',
+        'Query parameters modify HOW a resource collection is retrieved (filtering, sorting, pagination — /orders?status=pending&sort=-createdAt), while path segments identify WHICH resource is being accessed — conflating the two creates an inconsistent, harder-to-document API.',
+        'Version the API from the first release (even v1) using a URL prefix (/v1/orders) — this establishes the pattern before you need it, avoiding a painful retrofit when the first genuinely breaking change eventually arrives.',
+      ]
+    },
+    {
+      heading: 'Response Shape Consistency',
+      points: [
+        'Establish one consistent envelope shape for all responses (or deliberately none) — mixing raw arrays, wrapped objects, and inconsistent field naming (camelCase here, snake_case there) across different endpoints creates a confusing, error-prone client experience.',
+        'Error responses should follow a single, predictable structure across every endpoint — ideally aligned with RFC 7807 Problem Details (type, title, status, detail) — so client error-handling code can be written once and reused everywhere rather than per-endpoint.',
+        'Always use ISO 8601 for date/time fields (2024-01-15T10:30:00Z) — never locale-specific or ambiguous formats — since this is universally parseable across every client language and timezone-unambiguous by including the Z (UTC) or explicit offset.',
+        'Pagination metadata (total count, next/prev cursor, page size) should appear in the same location and shape across every paginated endpoint — a client building generic pagination UI components should not need endpoint-specific parsing logic.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

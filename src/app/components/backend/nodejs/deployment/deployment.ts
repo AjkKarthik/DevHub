@@ -59,6 +59,24 @@ export class NodeDeployment {
         'Secrets in production: use a secrets manager (AWS Secrets Manager, HashiCorp Vault, Doppler) to inject secrets at runtime. Never bake secrets into Docker images — they appear in docker history and image layers. Kubernetes Secrets are base64-encoded but not encrypted — use sealed-secrets or external-secrets-operator for encryption.',
       ]
     },
+    {
+      heading: 'Environment Parity and the Twelve-Factor App',
+      points: [
+        'The Twelve-Factor App methodology recommends keeping development, staging, and production as similar as possible — same backing services (same database engine and version, not SQLite locally and Postgres in prod), minimizing "works on my machine" surprises.',
+        'Configuration (database URLs, API keys, feature flags) should come entirely from environment variables, never hardcoded or baked into the build — this lets the identical build artifact be promoted unchanged from staging to production.',
+        'Build, release, and run should be strictly separated stages: build compiles code and installs dependencies once; release combines that build with environment-specific config; run executes the release. Rebuilding per environment risks environment-specific bugs slipping through untested.',
+        'Disposability matters for reliable deployment: processes should start fast and shut down gracefully on SIGTERM, so orchestrators (Kubernetes, ECS) can freely start, stop, and reschedule instances without dropping in-flight requests.',
+      ]
+    },
+    {
+      heading: 'Zero-Downtime Deployment Patterns',
+      points: [
+        'Rolling deployment: new instances are started and added to the load balancer pool gradually while old instances are drained and removed — at any point during the rollout, a mix of old and new code versions serves traffic, so both versions must be compatible with the current database schema.',
+        'Blue-green deployment: a complete second environment ("green") is deployed and tested in isolation, then traffic is switched over atomically from the old environment ("blue") — enables instant rollback by switching traffic back, at the cost of running two full environments simultaneously during the transition.',
+        'Health checks are what make zero-downtime deployment safe — the orchestrator must not route traffic to a new instance until it reports healthy (via a /health endpoint), and must stop routing to an old instance before terminating it (connection draining).',
+        'Database migrations must be backward-compatible during a rolling deployment — since old and new application code run simultaneously against the same database for a period, a migration that drops a column the old code still reads will break the deployment mid-rollout.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

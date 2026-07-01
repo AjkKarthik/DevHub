@@ -59,6 +59,24 @@ export class NodeModules {
         'Dual CJS/ESM packages: publish both with the "exports" field mapping "require" to the .cjs build and "import" to the .mjs build. This lets the same package work in CJS and ESM projects.',
       ]
     },
+    {
+      heading: 'CommonJS vs ES Modules — Practical Differences',
+      points: [
+        'CommonJS require() is synchronous and resolves at the call site, allowing conditional or dynamic requires (require(condition ? "a" : "b")) anywhere in code. ES Modules import is statically analyzed at parse time, always hoisted to the top regardless of where written in source.',
+        'Static analysis of ES Modules enables tree-shaking (bundlers can determine exactly which exports are actually used and eliminate the rest from the final bundle) — something CommonJS\'s dynamic require() cannot reliably support.',
+        'Node.js determines module format from package.json\'s "type" field (module for ESM, commonjs or absent for CJS) or file extension (.mjs always ESM, .cjs always CommonJS) — mixing conventions inconsistently within a project is a common source of confusing import errors.',
+        'Top-level await is only available in ES Modules — a CommonJS module cannot await at the top level of the file, only inside an async function, which is one practical reason some newer libraries require ESM.',
+      ]
+    },
+    {
+      heading: 'Interoperability Between CJS and ESM',
+      points: [
+        'An ES Module can import a CommonJS package (most npm packages still ship CJS) via default import interop — Node.js wraps the CJS module.exports as the default export automatically in most cases.',
+        'A CommonJS file cannot directly require() an ESM-only package — dynamic import() (which returns a Promise) is required instead, since ESM modules cannot be loaded synchronously.',
+        'Dual-package hazard: a package published in both CJS and ESM formats can accidentally load two separate copies of itself if a project imports it via both require() and import() paths in different parts of the dependency graph — leading to subtle bugs like failed instanceof checks across the two copies.',
+        'The "exports" field in package.json with conditional exports lets a single published package declare separate entry points for "require" and "import" consumers, letting Node.js automatically pick the correct format for each consumer.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

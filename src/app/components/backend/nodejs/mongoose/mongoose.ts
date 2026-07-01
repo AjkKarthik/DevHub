@@ -59,6 +59,24 @@ export class NodeMongoose {
         'Transactions require a MongoDB replica set (or Atlas, which always uses replica sets). Use mongoose.startSession() + session.withTransaction(() => { ... }) for atomic multi-document operations. Pass { session } to every Mongoose operation inside the transaction.',
       ]
     },
+    {
+      heading: 'Schema Design and Validation',
+      points: [
+        'Mongoose schemas define shape, types, and validation rules entirely in application code — required fields, min/max constraints, custom validator functions — running before any write reaches MongoDB, catching bad data early with clear error messages.',
+        'Schema-level defaults (default: Date.now) and computed fields (via virtuals) reduce duplication — a virtual field like fullName derived from firstName and lastName does not need to be stored or kept in sync manually.',
+        'Mongoose schema validation is application-level only — it does not protect against writes that bypass Mongoose (a raw MongoDB shell command, another service writing directly). Pair with MongoDB-level JSON Schema validation for true defense in depth on critical collections.',
+        'Nested schemas (subdocuments) let you model embedded one-to-few relationships (an order with embedded line items) with their own validation, while references (ObjectId with ref) model one-to-many or many-to-many relationships resolved via population.',
+      ]
+    },
+    {
+      heading: 'Population and Query Performance',
+      points: [
+        'populate() resolves referenced documents in a separate query (or queries), similar conceptually to a SQL join but executed as additional round-trips rather than a single combined query — convenient but with real performance cost on hot paths.',
+        'Deeply nested or chained populate() calls compound this cost — profile any endpoint using multi-level population under realistic load, and consider denormalizing frequently-accessed reference data directly into the parent document for read-heavy endpoints.',
+        'Indexes are essential for query performance at scale — a query filtering or sorting on a field with no index forces MongoDB to scan every document in the collection; use .explain() to verify a query is actually using an index rather than assuming it is.',
+        'Lean queries (.lean()) skip Mongoose document hydration (change tracking, virtuals, methods), returning plain JavaScript objects — meaningfully faster for read-only queries that do not need to call .save() or access Mongoose-specific document methods.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -58,6 +58,24 @@ export class NodeArchitecture {
         'Node.js excels at I/O-bound work: REST APIs, proxies, real-time servers, microservices. It is not the right choice as the primary processor for CPU-intensive pipelines.',
       ]
     },
+    {
+      heading: 'Choosing an Architectural Style',
+      points: [
+        'Monolith-first is not a legacy anti-pattern — for small teams and unproven products, a well-modularized monolith ships faster and is far easier to debug than a distributed system, because there is only one process to trace a request through.',
+        'Modular monolith: enforce internal boundaries (no direct cross-module database access, explicit interfaces between domains) using folder structure and lint rules even without physical service separation — this keeps the option to split into real services open later without a rewrite.',
+        'Microservices trade development simplicity for operational flexibility: independent deployability and scaling per service come at the cost of distributed tracing, network reliability handling, and eventual-consistency data modeling that a monolith never has to think about.',
+        'The deciding factor is usually organizational, not technical — Conway\'s Law observes that system architecture tends to mirror team communication structure. Splitting services along team boundaries (not arbitrary technical lines) reduces the coordination overhead that makes microservices painful.',
+      ]
+    },
+    {
+      heading: 'Layered Architecture in Practice',
+      points: [
+        'A typical Node.js layered structure: routes (HTTP concerns only — parsing, status codes) → controllers (orchestrate a request, no business logic) → services (business logic, framework-agnostic) → repositories/data access (database queries only).',
+        'Each layer should only depend on the layer directly below it — a route handler should never import a database driver directly, and a service should never construct an Express Response object. This keeps business logic testable without spinning up an HTTP server.',
+        'Dependency injection (manual or via a framework like NestJS/Awilix) at each layer boundary lets tests substitute a fake repository for a real database, keeping unit tests for business logic fast and isolated from I/O.',
+        'A common anti-pattern: "fat controllers" where validation, business rules, and database calls all live inline in the route handler. This makes logic untestable without an HTTP server and duplicates rules across similar endpoints.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

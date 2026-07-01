@@ -59,6 +59,24 @@ export class NodeFastify {
         'Hook scope matches registration scope — hooks registered in a plugin only apply to routes in that plugin. Global hooks (auth, logging) go on the root instance.',
       ]
     },
+    {
+      heading: 'Fastify Plugin Architecture and Encapsulation',
+      points: [
+        'Fastify plugins registered via fastify.register() are encapsulated by default — decorations, hooks, and routes added inside a plugin are scoped to that plugin and its children, not automatically visible to sibling plugins, unlike Express\'s flat global middleware model.',
+        'This encapsulation prevents accidental coupling between unrelated feature modules — a database connection decorator added inside an "orders" plugin cannot leak into an unrelated "auth" plugin unless explicitly shared.',
+        'The fastify-plugin wrapper explicitly breaks encapsulation for genuinely global utilities (a shared database connection, a logger) that every route needs — used sparingly, since overusing it defeats the purpose of Fastify\'s plugin isolation.',
+        'Plugins can be nested arbitrarily deep, forming a tree — a child plugin inherits decorations and hooks from its parent chain, giving a natural way to scope shared setup (like a database connection) to only the routes that actually need it.',
+      ]
+    },
+    {
+      heading: 'Fastify Lifecycle Hooks',
+      points: [
+        'Fastify exposes granular lifecycle hooks (onRequest, preParsing, preValidation, preHandler, onSend, onResponse) that run at specific points in the request lifecycle — more fine-grained than Express\'s single linear middleware chain.',
+        'preValidation runs before schema validation, useful for transforming input before it is checked (like trimming whitespace); preHandler runs after validation but before the route handler, commonly used for authentication checks that should only run on validated requests.',
+        'onSend hooks let you transform the response payload just before it is sent (adding response headers, compressing, or masking sensitive fields) without modifying the route handler itself.',
+        'Hooks can be registered globally (app-wide) or scoped to a specific plugin/route, giving precise control over which requests a given piece of cross-cutting logic actually applies to.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

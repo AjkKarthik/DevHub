@@ -59,6 +59,24 @@ export class NodeTesting {
         'Error path testing is as important as happy path. Test what happens when DB throws, when external API fails, when validation fails. Use mockRejectedValue() for async errors, or deliberately pass invalid data. These paths are easiest to miss and most critical in production.',
       ]
     },
+    {
+      heading: 'The Testing Pyramid for Node.js Services',
+      points: [
+        'Unit tests (the base of the pyramid) verify a single function or class in isolation with all dependencies mocked — fast, numerous, and pinpoint exactly which piece of logic broke when they fail.',
+        'Integration tests verify that multiple components work correctly together, often against a real or in-memory test database — catching wiring bugs (an incorrect SQL query, a schema mismatch) that mocked unit tests would never surface.',
+        'End-to-end tests exercise the full running application through its real interface (HTTP requests via supertest against a running server) — fewer in number since they are slower and more brittle, reserved for critical user journeys.',
+        'The pyramid shape reflects a deliberate tradeoff: maximize fast, precise unit test coverage; use fewer, more expensive integration and E2E tests only where they catch issues unit tests structurally cannot.',
+      ]
+    },
+    {
+      heading: 'Mocking Strategy and Test Isolation',
+      points: [
+        'Mock external I/O (HTTP calls, databases, third-party APIs) in unit tests to keep them fast, deterministic, and independent of network/infrastructure availability — a unit test should never fail because a real external service happened to be down.',
+        'Over-mocking is a real risk: a test that mocks the database can pass even if the actual SQL query has a bug, since the mock returns whatever you told it to regardless of query correctness — reserve integration tests for validating actual query behavior.',
+        'Dependency injection (passing dependencies as constructor/function parameters rather than importing them directly) makes substituting a mock for a real dependency trivial in tests, without needing module-mocking hacks or fragile monkey-patching.',
+        'Reset mock state between tests (via beforeEach, not beforeAll) to avoid one test\'s mock configuration or call history leaking into and affecting a subsequent, supposedly-independent test.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

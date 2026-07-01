@@ -59,6 +59,24 @@ export class NodeWebsockets {
         'Memory management: each socket keeps state. At 10,000 concurrent connections, even 1KB per socket = 10MB. Monitor active connections and implement per-user connection limits. Close idle connections after a timeout.',
       ]
     },
+    {
+      heading: 'WebSocket Protocol Fundamentals',
+      points: [
+        'A WebSocket connection begins as a standard HTTP request with an Upgrade: websocket header — the server responds with 101 Switching Protocols, after which the connection becomes a persistent, full-duplex TCP connection outside the normal HTTP request/response model.',
+        'Once established, either side can send messages at any time without waiting for a request — this is the fundamental difference from HTTP polling, enabling genuine real-time, server-initiated push without the client needing to ask first.',
+        'WebSocket messages can be text (typically JSON) or binary frames — for structured application data, most implementations serialize to JSON text frames for simplicity, though binary framing offers lower overhead for high-frequency or large-payload use cases.',
+        'Unlike HTTP requests, a WebSocket connection is stateful and long-lived — the server must track connection state (which user, what subscriptions) for the lifetime of the connection, a fundamentally different operational model than stateless REST request handling.',
+      ]
+    },
+    {
+      heading: 'Scaling WebSocket Servers Horizontally',
+      points: [
+        'A client connected to one server instance cannot directly receive a message published from a different instance — since each WebSocket connection is pinned to the specific process that accepted it, unlike a stateless HTTP request that any instance can serve.',
+        'A shared pub/sub layer (Redis Pub/Sub, or the official adapter for Socket.IO) lets any server instance publish a message and have it relayed to clients connected on any other instance, solving the cross-instance broadcast problem.',
+        'Sticky sessions at the load balancer (routing a client\'s reconnection attempts back to the same server instance where reasonable) reduce unnecessary connection churn, though a properly pub/sub-backed architecture should function correctly even without them.',
+        'Connection count is a real capacity constraint per instance — unlike stateless HTTP where a server handles a request and immediately frees resources, each open WebSocket connection consumes a file descriptor and some memory for the entire session duration, directly limiting how many concurrent users one instance can serve.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

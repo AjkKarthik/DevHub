@@ -59,6 +59,24 @@ export class NodeGraphql {
         'Persisted Queries: clients register queries by SHA-256 hash in advance. At runtime, clients send the hash instead of the query string. This eliminates parsing overhead, enables GET requests (CDN-cacheable), and prevents arbitrary query injection. Supported natively in Apollo Client + Server.',
       ]
     },
+    {
+      heading: 'Schema-First vs Code-First GraphQL Design',
+      points: [
+        'Schema-first: write the SDL (Schema Definition Language) file defining types, queries, and mutations first, then implement resolvers matching that schema — the schema is the explicit source of truth, ideal for API design discussions and contract-first teams.',
+        'Code-first: define resolvers and types directly in TypeScript/JavaScript using a library (Pothos, TypeGraphQL, Nexus), which then generates the SDL schema automatically — better for type safety and colocating resolver logic with type definitions.',
+        'Schema-first tends to produce cleaner, more deliberately-designed schemas since the shape is decided before implementation; code-first tends to keep the schema in sync with code changes automatically, reducing schema drift.',
+        'Most teams pick one approach per project rather than mixing — schema-first with codegen (generating TypeScript types FROM the SDL) is a common middle ground giving both an explicit schema and full type safety.',
+      ]
+    },
+    {
+      heading: 'Resolver Design and the N+1 Problem',
+      points: [
+        'Each field in a GraphQL schema is resolved independently by its own resolver function — this flexibility is powerful but means naive resolver code can trigger a separate database query per item when resolving a list\'s nested relations, the classic N+1 problem.',
+        'DataLoader batches and deduplicates data-fetching requests made within the same event loop tick — instead of fetching each item\'s related data individually, all pending requests are collected and resolved in a single batched query.',
+        'Resolvers should be thin — delegate actual data fetching and business logic to service functions, keeping the resolver itself focused on translating between the GraphQL schema shape and the underlying data layer.',
+        'Field-level resolvers only run when a client actually requests that field — this is why GraphQL avoids REST\'s over-fetching problem, but it also means expensive computed fields should be designed to only trigger their expensive work when genuinely requested.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

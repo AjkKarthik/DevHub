@@ -59,6 +59,24 @@ export class NodeErrorHandling {
         'Error monitoring services (Sentry, Datadog) should be called in global handlers before exiting. They flush their buffer synchronously so errors are captured even on crash.',
       ]
     },
+    {
+      heading: 'Custom Error Classes and Error Hierarchies',
+      points: [
+        'Extending the built-in Error class (class NotFoundError extends Error) lets you attach structured metadata (a status code, an error code) to errors while preserving stack traces and instanceof checks — far more useful than throwing plain strings or objects.',
+        'A base ApplicationError class with subclasses (ValidationError, NotFoundError, UnauthorizedError) lets centralized error-handling middleware map each error type to the correct HTTP status code automatically, rather than repeating status-code logic at every throw site.',
+        'Always call Error.captureStackTrace(this, this.constructor) in a custom error constructor (or rely on the default Error constructor behavior) to ensure the stack trace starts at the throw site, not inside your custom error class\'s own constructor internals.',
+        'Attach an isOperational flag (or similar) to distinguish expected, handleable errors (a validation failure) from unexpected programmer errors (a null reference) — this distinction drives the decision of whether to gracefully respond to the client or crash and restart the process.',
+      ]
+    },
+    {
+      heading: 'Centralized Error-Handling Middleware',
+      points: [
+        'A single, final error-handling middleware (in Express, a four-parameter (err, req, res, next) function) centralizes the translation from thrown errors to HTTP responses — avoiding duplicated try/catch-and-format logic scattered across every route handler.',
+        'Log the full error (including stack trace) server-side in this centralized handler, but return only a safe, minimal subset to the client — never leak stack traces, internal file paths, or database error messages in production responses.',
+        'Async route handlers need explicit error forwarding since Express does not automatically catch promise rejections from async functions (pre-Express 5) — wrap handlers with a try/catch calling next(err), or a utility like express-async-handler, so errors reach the centralized handler.',
+        'Include a correlation/request ID in both the logged error and the client-facing error response — this lets a user report "error ref abc123" and lets support/engineering find the exact corresponding detailed log entry immediately.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

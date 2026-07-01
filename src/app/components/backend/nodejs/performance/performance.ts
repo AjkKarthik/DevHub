@@ -59,6 +59,24 @@ export class NodePerformance {
         'setImmediate for breaking up long sync tasks: process large arrays in chunks, yielding control after each chunk via setImmediate. This allows I/O callbacks to run between chunks, preventing complete event loop starvation.',
       ]
     },
+    {
+      heading: 'The Event Loop and Blocking the Main Thread',
+      points: [
+        'Node.js runs JavaScript on a single main thread — I/O operations are delegated to libuv\'s thread pool and the OS kernel, making Node.js highly efficient for I/O-bound workloads without needing manual thread management.',
+        'A CPU-intensive synchronous operation (heavy computation, JSON parsing of huge payloads, synchronous regex on large strings) blocks the single thread entirely, freezing every other concurrent request until it completes — this is the single most common Node.js performance pitfall.',
+        'Break up long synchronous work with setImmediate() to yield back to the event loop between chunks, or move genuinely CPU-bound work to worker_threads for true parallelism — never assume "it is JavaScript, it will just handle concurrency automatically."',
+        'Profiling tools (--prof flag, Chrome DevTools via --inspect, or lighter production profilers like Clinic.js) reveal actual bottlenecks empirically — guessing at performance problems without profiling frequently leads to optimizing the wrong code path.',
+      ]
+    },
+    {
+      heading: 'Memory Management and Leak Detection',
+      points: [
+        'Node.js uses the V8 garbage collector — memory leaks in JS typically come from unintentionally retained references (a growing array never cleared, a forgotten event listener holding a closure) rather than manual memory mismanagement as in lower-level languages.',
+        'Common leak sources: event listeners registered but never removed (especially on long-lived EventEmitters), closures capturing large objects unnecessarily, module-level caches with no eviction policy, and timers/intervals never cleared.',
+        'Monitor process.memoryUsage() in production and alert on sustained upward trends (not just absolute values) — a slow, steady memory increase over hours/days is the signature of a leak, distinct from normal memory fluctuation under varying load.',
+        'Heap snapshots (via Chrome DevTools or the heapdump package) taken at two points in time and diffed reveal exactly which object types are accumulating — essential for pinpointing the actual leaking code path rather than guessing from memory graphs alone.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -59,6 +59,24 @@ export class NodeCaching {
         'HTTP caching headers (Cache-Control, ETag, Last-Modified) work at the HTTP layer and are supported by CDNs. For public API responses that rarely change, add Cache-Control: public, max-age=60 to cache at the CDN edge — zero DB load.',
       ]
     },
+    {
+      heading: 'Cache Invalidation Strategies',
+      points: [
+        'TTL-based expiry (set-and-forget with a time limit) is the simplest strategy but always risks serving stale data for up to the TTL duration — acceptable for data where staleness has low cost (a product catalog) but dangerous for data where it does not (account balances).',
+        'Explicit invalidation (delete the cache key when the underlying data changes) gives immediate consistency but requires every code path that mutates data to remember to invalidate the correct keys — a forgotten invalidation path is a common source of stale-cache bugs.',
+        'Cache-aside is the most common pattern in Node.js APIs: check cache first, on miss query the database and populate the cache, on writes invalidate (rather than update) the cache key so the next read repopulates it fresh.',
+        '"Cache stampede" protection matters at scale: if a popular key expires under high traffic, many concurrent requests can all miss simultaneously and hammer the database at once — mitigate with a short-lived lock or stale-while-revalidate serving the old value while one request refreshes it.',
+      ]
+    },
+    {
+      heading: 'In-Memory vs Distributed Caching',
+      points: [
+        'In-memory caching (a plain JS Map, or a library like lru-cache) is the fastest option — no network round trip — but is scoped to a single process, meaning each horizontally-scaled instance has its own independent, inconsistent cache.',
+        'Distributed caching (Redis, Memcached) is shared across all application instances, giving consistent cache state cluster-wide, at the cost of network latency per cache access (still far faster than a database round trip for most workloads).',
+        'A common hybrid: a small, short-TTL in-memory cache in front of Redis for extremely hot keys (reduces Redis round trips for the most-requested data), falling back to Redis for everything else — trading a small consistency window for meaningfully lower latency.',
+        'Cache key design matters: include every dimension that affects the cached value (user ID, locale, API version, pagination params) in the key, or different requests will incorrectly collide on the same cached entry.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
