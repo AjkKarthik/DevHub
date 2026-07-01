@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Pino child loggers: create a child logger per request with `logger.child({ traceId, requestId, userId })`. The child inherits all parent fields and adds its own. Pass the child logger in the request context object.',
     ],
   },
+  {
+    heading: 'Structured Logging Field Design',
+    points: [
+      'Every structured log entry should include a consistent set of baseline fields (timestamp, log level, service name, a correlation/request ID) regardless of what specific event is being logged — this baseline is what makes cross-cutting queries ("show me all errors for this request ID across every service") possible at all.',
+      'Field naming should be consistent across an entire organization\'s services, not just within a single codebase — a shared logging library or schema convention prevents the same conceptual field (a user identifier) from being called user_id in one service and userId or uid in another, which breaks cross-service log correlation.',
+      'Structured fields should use consistent, well-defined types (a duration always in milliseconds as a number, never sometimes as a formatted string like "1.2s") — inconsistent typing forces every downstream consumer of the logs to handle multiple possible formats for what should be one predictable field.',
+      'Avoid embedding structured data as a JSON string WITHIN a single log message field — nested/stringified JSON defeats the purpose of structured logging, since the aggregation platform cannot index or query fields buried inside a string blob the same way it can query top-level structured fields directly.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

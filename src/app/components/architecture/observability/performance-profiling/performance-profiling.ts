@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Integration with tracing: some profilers (Pyroscope + OTel) can attach profile data to specific traces. Clicking a slow span in Jaeger shows the CPU profile from that exact operation.',
     ],
   },
+  {
+    heading: 'Continuous Profiling in Production',
+    points: [
+      'Continuous profiling collects lightweight, low-overhead performance samples (CPU, memory allocation) from production services on an ongoing basis, rather than requiring a manual, one-off profiling session — this makes it possible to investigate a performance regression that happened yesterday, not just one you can reproduce live right now.',
+      'Sampling-based profilers (unlike deterministic, instrumentation-based profilers) periodically capture stack traces at a fixed interval rather than tracking every single function call — this dramatically reduces overhead, making it safe to run continuously in production without measurably affecting application performance.',
+      'Flame graphs are the standard visualization for profiling data — each bar represents a function, width represents time spent (including time in called functions), and stacking represents the call hierarchy, making it immediately visually obvious which functions dominate total execution time.',
+      'Correlating profiling data with other observability signals (a flame graph captured during a period of high latency shown alongside the corresponding trace) provides a powerful combined view — moving from "this endpoint is slow" (traces) to "this specific function call is why" (profiling) in one investigation.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

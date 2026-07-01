@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Anti-toil principle: when designing a new service or feature, ask "what operational work will this create?" Design to minimise operational toil up front — good design is cheaper than post-hoc automation.',
     ],
   },
+  {
+    heading: 'Using Error Budgets to Balance Reliability and Velocity',
+    points: [
+      'An error budget is the inverse of an SLO — a 99.9% availability target implies a 0.1% error budget, representing the amount of unreliability the team is explicitly allowed to spend on releases, experiments, and planned maintenance without violating the reliability commitment.',
+      'When the error budget is not exhausted, teams have license to ship features and take calculated risks; when it is exhausted (too much downtime or errors already occurred in the period), the team shifts focus to reliability work and slows the pace of risky changes until the budget recovers.',
+      'This mechanism removes the perpetual, unproductive tension between "ship fast" and "be reliable" by making reliability a quantified, negotiated budget rather than an open-ended, undefined expectation — both product and engineering can agree on the same objective number.',
+      'Toil (manual, repetitive, automatable operational work) directly competes with the time available for both feature work and genuine reliability improvements — tracking toil explicitly and setting a cap on how much of the team\'s time it should consume creates pressure to invest in automation that reduces it over time.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

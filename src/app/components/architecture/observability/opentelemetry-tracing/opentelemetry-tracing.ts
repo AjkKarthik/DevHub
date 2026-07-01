@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Access baggage: `propagation.getBaggage(context.active())?.getEntry(\'tenantId\')?.value`.',
     ],
   },
+  {
+    heading: 'OpenTelemetry Tracing Architecture',
+    points: [
+      'OpenTelemetry provides a vendor-neutral standard for generating and exporting traces — instrumenting an application once with the OpenTelemetry SDK lets you export traces to any compatible backend (Jaeger, Zipkin, Datadog, Honeycomb) without re-instrumenting the application if you later switch backends.',
+      'Automatic instrumentation (via language-specific agents or libraries that patch common frameworks — HTTP clients, database drivers) generates spans for common operations without any manual code changes, while manual instrumentation (explicitly creating spans in application code) captures business-specific operations the automatic instrumentation cannot know about.',
+      'The OpenTelemetry Collector is a separate, standalone service that receives telemetry data from applications, can process/transform/filter it, and exports it to one or more backends — decoupling applications from directly depending on a specific backend\'s SDK and enabling centralized telemetry pipeline configuration.',
+      'Context propagation across service boundaries (via the W3C Trace Context standard) is handled automatically by OpenTelemetry\'s instrumentation libraries for common protocols (HTTP, gRPC) — critical for stitching together a complete distributed trace across every service a request touches, without manual header-passing code in every service.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

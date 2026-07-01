@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Trade-offs: managed solutions eliminate operational burden (no Prometheus to patch, no Thanos to operate) but cost more per metric at scale and may have lower data retention or cardinality limits.',
     ],
   },
+  {
+    heading: 'Monitoring Ephemeral, Dynamically-Scheduled Workloads',
+    points: [
+      'Traditional monitoring assumed long-lived, individually-named servers — cloud-native environments (Kubernetes pods, serverless functions) are ephemeral, with instances created and destroyed constantly, making static, host-based monitoring configuration fundamentally incompatible with this model.',
+      'Service discovery-based monitoring (Prometheus automatically discovering and scraping targets via the Kubernetes API, rather than a manually maintained list of hosts) is essential — new pods must be discovered and monitored automatically as they are scheduled, without any manual configuration step.',
+      'Labels and metadata (namespace, pod name, deployment, node) attached to every metric are what make cloud-native monitoring queryable and meaningful despite the underlying instances constantly changing — aggregating and filtering by these labels, not by individual ephemeral instance identity, is the correct mental model.',
+      'Cardinality control matters even more in dynamic environments — including a constantly-changing pod name as a metric label can cause unbounded cardinality growth as pods are recreated, requiring careful label design that captures meaningful dimensions without exploding the number of unique time series.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

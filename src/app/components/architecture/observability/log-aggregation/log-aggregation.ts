@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Log aggregation at source: instead of logging every cache hit, log only a counter per minute. Transform verbose logs into metrics at the OTel Collector or Fluent Bit level.',
     ],
   },
+  {
+    heading: 'Centralized Log Aggregation Architecture',
+    points: [
+      'Centralized log aggregation collects logs from every instance and service into one searchable system (ELK/Elasticsearch, Loki, CloudWatch Logs, Datadog) rather than requiring an engineer to SSH into individual servers and grep local log files — essential once a system has more than a handful of instances.',
+      'A typical pipeline: applications write structured logs to stdout (following twelve-factor app principles); a log shipper/agent (Fluentd, Vector, Filebeat) on each host collects and forwards them; a central aggregation system indexes and stores them for search and correlation.',
+      'Log retention policy should balance cost against operational and compliance needs — high-volume debug-level logs might only need days of retention, while audit logs required for compliance may need to be retained for years, and applying a single blanket retention policy to all log types wastes either storage cost or investigative capability.',
+      'Log volume at scale can itself become a significant cost and performance concern — sampling verbose logs (keeping 100% of errors but only a sample of successful request logs) is a common technique to control aggregation costs without losing visibility into the failures that matter most.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

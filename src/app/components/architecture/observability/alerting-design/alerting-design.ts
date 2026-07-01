@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Test your alerts: write tests that generate metric data and verify the expected alert fires. An untested alert rule may have a typo in the PromQL that prevents it from ever firing.',
     ],
   },
+  {
+    heading: 'Reducing Alert Fatigue',
+    points: [
+      'Alert fatigue occurs when on-call engineers receive so many low-value or non-actionable alerts that they become desensitized, eventually starting to ignore or delay response even to genuinely critical alerts — the single biggest threat to an alerting system\'s long-term effectiveness.',
+      'Every alert should be actionable — if an alert fires and the correct response is "acknowledge and go back to sleep," it should not be an alert at all, but instead a dashboard metric or a lower-urgency notification reviewed during business hours.',
+      'Alert on symptoms (user-facing impact — elevated error rate, high latency) rather than causes (a specific server\'s CPU usage) where possible — symptom-based alerting reduces the total number of alerts and ties each one directly to actual user impact, rather than paging on every underlying infrastructure fluctuation.',
+      'Regularly reviewing and pruning alert rules (removing ones that consistently fire without leading to action, or that are frequently silenced) keeps the alerting system trustworthy — a stale alert configuration accumulates noise over time as systems and their normal operating ranges evolve.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

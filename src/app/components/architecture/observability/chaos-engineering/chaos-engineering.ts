@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'The experiment is a form of active testing of your observability: if you cannot detect the failure you injected, your monitoring has gaps. Chaos often reveals both resilience weaknesses and observability gaps simultaneously.',
     ],
   },
+  {
+    heading: 'Chaos Engineering Principles and Blast Radius Control',
+    points: [
+      'Chaos engineering deliberately injects controlled failures (killing a service instance, introducing network latency, exhausting a resource) into a system to verify it behaves as expected under real-world failure conditions, rather than assuming resilience based on architecture diagrams alone.',
+      'Every chaos experiment should start with a hypothesis ("the system will maintain 99% availability if this specific service instance is killed") and a defined steady-state metric to measure against — chaos engineering is a scientific, hypothesis-driven practice, not random destruction.',
+      'Blast radius control (limiting the scope of an experiment to a small percentage of traffic or a single non-critical environment first) is essential for running chaos experiments safely in production — start small and expand scope only after confidence is established, never begin with a full-scale production-wide experiment.',
+      'An automatic abort mechanism (a "kill switch" that immediately halts the experiment if a critical metric crosses a safety threshold) is a required safeguard for any chaos experiment run against production — the goal is learning about resilience, not causing an actual outage.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

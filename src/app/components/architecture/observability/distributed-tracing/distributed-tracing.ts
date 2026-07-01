@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Gaps between spans: time between parent and child span start can represent network latency (serialisation, TCP, etc.) or time in a queue before processing begins.',
     ],
   },
+  {
+    heading: 'Trace Sampling Strategies',
+    points: [
+      'Head-based sampling decides whether to trace a request at the very start (before knowing the outcome) — simple to implement and low overhead, but risks missing traces for the requests that would actually be most interesting to investigate, like ones that end in an error.',
+      'Tail-based sampling buffers complete traces and decides whether to keep them AFTER seeing the full outcome — enabling smarter sampling decisions (always keep traces containing errors or unusually high latency) at the cost of additional buffering infrastructure and complexity.',
+      'A common practical compromise: sample a low percentage of all traces for baseline visibility (head-based), while separately always capturing 100% of traces that contain an error or exceed a latency threshold, regardless of the baseline sampling rate.',
+      'Sampling rate should be tuned based on actual traffic volume and storage/cost constraints — a system with billions of daily requests cannot economically trace every single one at full detail, while a lower-traffic system may be able to trace nearly everything without meaningful cost concern.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

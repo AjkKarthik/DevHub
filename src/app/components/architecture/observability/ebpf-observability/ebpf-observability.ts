@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Debugging eBPF programs is complex: errors appear in `/sys/kernel/debug/tracing/trace_pipe` and are often cryptic. Use high-level tools (Pixie, Cilium) rather than writing raw eBPF for production observability.',
     ],
   },
+  {
+    heading: 'How eBPF Enables Zero-Instrumentation Observability',
+    points: [
+      'eBPF (extended Berkeley Packet Filter) lets sandboxed programs run directly in the Linux kernel, safely observing system calls, network packets, and function calls without modifying application code or requiring the application to link any observability library at all.',
+      'This "zero-instrumentation" property is eBPF\'s core advantage over traditional application-level instrumentation (like OpenTelemetry SDKs) — observability can be added or changed for an already-running production system without any code deployment, redeployment, or even application restart.',
+      'eBPF programs are verified by the kernel before being allowed to run, guaranteeing they cannot crash the kernel or run indefinitely — this safety verification is what makes it acceptable to run eBPF-based observability tooling in production kernel space, unlike arbitrary unverified kernel modules.',
+      'Tools like Cilium, Pixie, and Parca use eBPF to provide network-level observability, automatic service maps, and continuous profiling respectively — representing a growing category of observability tooling that requires no changes to the applications being observed.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

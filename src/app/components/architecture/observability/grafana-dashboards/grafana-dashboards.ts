@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Silences and mute timings: suppress alerts during maintenance windows without disabling the underlying alert rule.',
     ],
   },
+  {
+    heading: 'Dashboard Design Principles for Operational Use',
+    points: [
+      'An effective operational dashboard is designed around a specific question ("is this service healthy right now") rather than displaying every available metric — a dashboard trying to show everything becomes noisy and slow to interpret during the exact high-pressure moments (an incident) when clarity matters most.',
+      'Consistent layout conventions across dashboards (the golden signals always in the top row, time range always in the top right) reduce cognitive load for engineers who need to quickly orient themselves on an unfamiliar dashboard during an incident, without hunting for where a specific metric lives.',
+      'Annotations (marking deployments, configuration changes, or known incidents directly on the dashboard timeline) provide essential context that raw metric lines alone cannot — correlating a metric spike with a deployment marker at the same timestamp often immediately reveals the root cause.',
+      'Dashboards should be treated as code (version-controlled, reviewed, provisioned via configuration rather than manual UI edits) in any team with more than a handful of dashboards — manually maintained dashboards drift out of sync, break silently when underlying metrics change, and are hard to reproduce across environments.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

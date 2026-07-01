@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'The goal is to answer "what happened for request X?" in production without touching the code — using only the signals already being emitted.',
     ],
   },
+  {
+    heading: 'From Monitoring to Observability: A Practical Distinction',
+    points: [
+      'Monitoring answers known questions defined in advance — "is CPU usage above 80%" is a predefined check with a predefined answer. Observability answers previously unknown questions — the ability to ask "why is this specific user experiencing slow requests right now" without having predefined a dashboard for that exact scenario.',
+      'This distinction matters practically because modern distributed systems fail in combinatorially many ways that cannot all be anticipated and dashboarded in advance — observability tooling (high-cardinality metrics, structured logs, distributed traces) is designed to support ad-hoc investigation of failure modes nobody predicted.',
+      'High cardinality (the ability to break down data by many dimensions simultaneously — user ID, region, feature flag, app version) is what enables true observability-style investigation, letting an engineer slice and filter data along whatever dimension turns out to be relevant to a specific incident.',
+      'Observability is not a replacement for monitoring — dashboards and alerts (monitoring) remain essential for known failure modes and SLO tracking; observability tooling complements this by supporting deep investigation once monitoring has indicated something is wrong but has not explained why.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

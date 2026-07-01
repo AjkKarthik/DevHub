@@ -48,6 +48,24 @@ const theory: TheoryPoint[] = [
       'Gauge functions for external state: use callback-based gauges to snapshot values polled from external systems (Redis queue depth, database connection pool usage) at scrape time. Avoids polling on a fixed interval that misaligns with the scrape interval.',
     ],
   },
+  {
+    heading: 'The Four Golden Signals',
+    points: [
+      'Google\'s SRE book defines four golden signals as the minimum essential metrics for any user-facing system: latency (how long requests take), traffic (how much demand the system is receiving), errors (the rate of failed requests), and saturation (how full/constrained the system\'s resources are).',
+      'These four signals together give a comprehensive view of service health without requiring exhaustive instrumentation of every internal detail — a service exposing accurate golden signal metrics can be reasonably monitored even before deeper, more granular instrumentation is added.',
+      'Latency should always be measured as a distribution (percentiles: p50, p95, p99), never just an average — an average hides the tail latency that a meaningful fraction of real users actually experience, which is usually what matters most for user-perceived performance.',
+      'Saturation is often the hardest golden signal to measure well, since it requires knowing a resource\'s actual capacity limit, not just its current usage — a queue depth metric alone means little without also knowing what queue depth indicates the system is genuinely struggling to keep up.',
+    ],
+  },
+  {
+    heading: 'Instrumentation Best Practices',
+    points: [
+      'Instrument at the boundary of your service (incoming requests, outgoing calls to dependencies) first, before instrumenting internal implementation details — boundary metrics answer the most common operational questions (is this service healthy, is a dependency causing problems) with the least instrumentation effort.',
+      'Custom application metrics should use consistent naming conventions (a namespace prefix, consistent units suffixed in the name) across a codebase — inconsistent naming makes metrics hard to discover and query correctly, especially as the number of instrumented services grows.',
+      'Avoid over-instrumenting — adding a metric for every internal function call or variable creates noise, cardinality problems, and maintenance burden without proportional operational value; instrument what you would actually need to look at during an incident, not everything that is technically measurable.',
+      'Metrics libraries (Prometheus client libraries, OpenTelemetry SDKs) handle the underlying aggregation and export machinery — application code should focus on correctly categorizing what to measure (counter, gauge, histogram) rather than reimplementing metric collection primitives from scratch.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

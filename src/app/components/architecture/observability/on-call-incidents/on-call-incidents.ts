@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Preserve evidence: before rolling back or restarting, take a heap snapshot, cpu profile, or log excerpt. Evidence disappears after restart — and it\'s needed for the postmortem.',
     ],
   },
+  {
+    heading: 'Blameless Postmortems and Continuous Improvement',
+    points: [
+      'A blameless postmortem focuses on identifying systemic and process failures that allowed an incident to happen, rather than assigning individual blame — this psychological safety is what actually gets engineers to report near-misses and honestly describe what happened, rather than hiding mistakes out of fear of punishment.',
+      'A good postmortem includes a precise timeline (when the issue started, when it was detected, when it was mitigated, when it was fully resolved), root cause analysis, and concrete, assigned action items with owners and deadlines — a postmortem without actionable follow-up items is just a retrospective narrative with no lasting value.',
+      'Detection time (time between an incident starting and it being noticed) and time-to-mitigation are both worth tracking as distinct metrics — an incident that took 2 minutes to detect but 2 hours to mitigate reveals a very different improvement opportunity than one that took 2 hours to even notice.',
+      'On-call rotations should be sustainable — reasonable shift lengths, adequate rest between rotations, and a genuine effort to reduce the volume of pages over time (via the alerting and toil-reduction practices covered elsewhere) prevent on-call burnout, which is a leading cause of attrition on operationally-heavy teams.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Correlation ID hygiene: always extract from inbound request headers first; generate only if missing. Log the extraction source (header vs generated) to help debug propagation failures.',
     ],
   },
+  {
+    heading: 'What to Log and What Never to Log',
+    points: [
+      'Log enough context to reconstruct what happened without needing to reproduce the issue — a log line should include the relevant identifiers (user ID, request ID, order ID) and the specific values that led to a decision, not just a generic "operation failed" message with no surrounding detail.',
+      'Never log sensitive data — passwords, full credit card numbers, authentication tokens, and other PII should never appear in logs, since log aggregation systems are often accessible to a wide swath of engineering and third-party log processors, making them a real data exposure risk if sensitive data leaks in.',
+      'Log at the right level consistently across a codebase — a shared understanding of what constitutes error vs warn vs info prevents both alert fatigue (everything logged as error) and missed problems (real errors logged as info and never surfaced to anyone watching error-level dashboards).',
+      'Avoid logging inside tight loops or extremely hot code paths without rate limiting — a bug that causes a code path to execute millions of times can also cause millions of log lines, potentially overwhelming the logging pipeline and drowning out genuinely important log entries from other parts of the system.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

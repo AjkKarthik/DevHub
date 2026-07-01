@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Remote Write: Prometheus can push metrics to remote storage (Thanos, Cortex, Victoria Metrics) for long-term retention and horizontal scaling — Prometheus itself only stores ~15 days by default.',
     ],
   },
+  {
+    heading: 'The Four Prometheus Metric Types',
+    points: [
+      'Counter: a value that only increases (or resets to zero on restart) — used for cumulative totals like total requests served or total errors; the actual rate of change (requests per second) is computed at query time using the rate() function, not stored directly.',
+      'Gauge: a value that can go up or down — used for current state like memory usage, active connections, or queue depth, representing a snapshot value at the time of the scrape rather than an accumulating total.',
+      'Histogram: samples observations (like request duration) into configurable buckets, enabling percentile calculations (p50, p95, p99) at query time — the buckets themselves are pre-aggregated server-side, making histograms efficient to store even at high request volume.',
+      'Summary: similar to histogram but calculates configurable quantiles client-side before export — summaries cannot be aggregated across multiple instances meaningfully (you cannot average pre-computed p99 values from different servers), which is why histograms are generally preferred for anything that needs cross-instance aggregation.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Set alerts on connection pool saturation (> 80% used) and queue depth (> N messages) before they cause latency spikes. These are leading indicators — they precede user-visible impact by minutes.',
     ],
   },
+  {
+    heading: 'Beyond CPU and Memory: Metrics That Actually Predict Problems',
+    points: [
+      'CPU and memory utilization alone rarely predict user-facing problems directly — a server at 90% CPU utilization that is still meeting its latency SLOs is not actually a problem, while a server at 40% CPU with saturated disk I/O or network bandwidth might be failing users badly.',
+      'Disk I/O wait time and queue depth are frequently overlooked but critical infrastructure metrics — a database server experiencing high I/O wait is effectively CPU-idle while waiting on slow storage, a pattern that plain CPU utilization graphs completely hide.',
+      'Network-level metrics (connection counts, retransmission rates, bandwidth saturation) become increasingly important in distributed, microservice-heavy architectures, where a growing share of total request latency is spent in network round trips between services rather than in any single service\'s own computation.',
+      'Container and orchestrator-level metrics (pod restarts, OOMKilled events, resource request/limit ratios in Kubernetes) reveal a distinct category of infrastructure problems specific to containerized environments that traditional host-level metrics were never designed to surface.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

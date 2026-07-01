@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Example: 99.9% SLO over 30 days. Burn rate 14 = consuming 14× the expected rate. At that pace, the 30-day budget is exhausted in ~2 days.',
     ],
   },
+  {
+    heading: 'Choosing Meaningful SLIs',
+    points: [
+      'A Service Level Indicator (SLI) should measure something the user actually experiences and cares about — request success rate and latency are common SLIs, while an internal metric like CPU utilization is generally a poor SLI choice since users do not directly experience CPU usage, only its downstream effects.',
+      'SLIs are typically expressed as a ratio of good events to total valid events over a time window (99.9% of requests completed successfully) — this ratio-based framing is what makes an SLI directly comparable to an SLO target and usable for error budget calculations.',
+      'Choosing too many SLIs dilutes focus and makes tradeoffs unclear — most services are well served by 2-4 carefully chosen SLIs (typically availability and latency) rather than an exhaustive list of every measurable dimension, which becomes unmanageable to reason about and prioritize.',
+      'An SLA (Service Level Agreement) differs from an SLO (Service Level Objective) in that an SLA typically has contractual/financial consequences for missing it — SLOs are usually set stricter than any corresponding SLA specifically to catch and address problems internally before they risk breaching the external contractual commitment.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [
