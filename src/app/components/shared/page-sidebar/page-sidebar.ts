@@ -10904,6 +10904,254 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'EFS is generally more expensive per GB than EBS — appropriate specifically when genuine multi-instance concurrent file access is needed, not as a default storage choice.',
     ],
   },
+
+  // ── Linux: per-page entries ──────────────────────────────────────────────────
+  'linux/fundamentals': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Essential Commands', route: '/linux/essential-commands' },
+      { label: 'File System',        route: '/linux/file-system' },
+    ],
+    tip: '"Everything is a file" in Linux — devices, processes, sockets, and directories are all represented through the same filesystem interface, which is why so many Linux tools operate uniformly on paths regardless of what they actually represent underneath.',
+    gotchas: [
+      'The Filesystem Hierarchy Standard (/etc, /var, /usr) has specific conventions per directory — placing files outside these conventions confuses tooling and other administrators.',
+      'Case sensitivity in Linux paths (unlike Windows) means File.txt and file.txt are different files — a common cross-platform gotcha.',
+    ],
+  },
+  'linux/essential-commands': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals',      route: '/linux/fundamentals' },
+      { label: 'Bash Scripting',    route: '/linux/bash-scripting' },
+    ],
+    tip: 'Piping commands together (ls | grep | sort) composes small, single-purpose tools into a larger pipeline — this Unix philosophy of composable tools is why learning individual commands well pays off far beyond any single use case.',
+    gotchas: [
+      'rm has no trash/recycle bin by default — rm -rf on the wrong path is irreversible, especially dangerous in a script with a variable that could unexpectedly be empty.',
+      'Command exit codes (0 = success, non-zero = failure) are what && and || chain on — a command that "looks like" it worked but returns non-zero breaks conditional chaining.',
+    ],
+  },
+  'linux/file-system': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals',       route: '/linux/fundamentals' },
+      { label: 'Disk & Storage',     route: '/linux/disk-storage' },
+    ],
+    tip: 'A hard link and a symbolic link behave very differently — deleting the ORIGINAL file a hard link points to leaves the hard link fully functional (it points to the same inode), while a symlink pointing to a deleted file becomes a dangling, broken reference.',
+    gotchas: [
+      'Hard links cannot span filesystems/partitions and cannot point to directories — symlinks have neither restriction.',
+      'Inodes (not filenames) are the actual filesystem-level identity of a file — a file can have multiple names (hard links) pointing to one inode.',
+    ],
+  },
+  'linux/file-permissions': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Users & Groups', route: '/linux/users-groups' },
+      { label: 'Security Hardening', route: '/linux/security-hardening' },
+    ],
+    tip: 'chmod 777 is almost never the right answer — it grants read/write/execute to owner, group, AND everyone else, including any other user or process on the system; grant the narrowest permission that actually works for the use case.',
+    gotchas: [
+      'The setuid bit lets a program run with the FILE OWNER\'s privileges rather than the invoking user\'s — a powerful and dangerous mechanism if misapplied to an untrusted binary.',
+      'Directory execute permission (not just read) is required to actually access files WITHIN that directory, a common confusion for people new to the permission model.',
+    ],
+  },
+  'linux/users-groups': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'File Permissions',    route: '/linux/file-permissions' },
+      { label: 'Security Hardening',  route: '/linux/security-hardening' },
+    ],
+    tip: 'sudo grants TEMPORARY elevated privilege for a specific command, logged and auditable — running as root permanently (or disabling sudo password prompts broadly) removes both the audit trail and the friction that catches accidental destructive commands.',
+    gotchas: [
+      'A user\'s PRIMARY group (in /etc/passwd) differs from any SECONDARY groups they belong to (in /etc/group) — permission checks consider both.',
+      'UID 0 is always root, regardless of the username assigned to it — renaming the root account doesn\'t change its actual privilege level.',
+    ],
+  },
+  'linux/process-management': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'System Monitoring', route: '/linux/system-monitoring' },
+      { label: 'Systemd',           route: '/linux/systemd' },
+    ],
+    tip: 'SIGTERM (kill -15, the default) asks a process to terminate gracefully, giving it a chance to clean up; SIGKILL (kill -9) terminates it immediately with NO chance to clean up — reaching for -9 first, without trying SIGTERM, risks corrupted state or leaked resources.',
+    gotchas: [
+      'A background process started in an interactive shell dies when that shell session ends unless launched with nohup, disown, or run as a proper service.',
+      'Zombie processes (a terminated child whose exit status hasn\'t been reaped by its parent) accumulate PIDs but consume no real resources beyond a process table entry.',
+    ],
+  },
+  'linux/system-monitoring': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Process Management',   route: '/linux/process-management' },
+      { label: 'Performance Tuning',   route: '/linux/performance-tuning' },
+    ],
+    tip: 'top/htop show a live snapshot, but load average (a 1/5/15-minute rolling number) tells a different story — a high load average with low CPU usage often means processes are blocked on I/O, not CPU-bound at all.',
+    gotchas: [
+      'A load average of 4 means something different on a 2-core machine (heavily overloaded) versus a 16-core machine (barely utilized) — always interpret it relative to CPU core count.',
+      'Memory reported as "used" by free often includes disk cache, which the kernel will happily reclaim under pressure — it is not the same as memory unavailable to applications.',
+    ],
+  },
+  'linux/performance-tuning': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'System Monitoring', route: '/linux/system-monitoring' },
+    ],
+    tip: 'Profiling BEFORE tuning avoids wasted effort — intuition about "what\'s slow" on a Linux system is frequently wrong; tools like strace, perf, and iostat reveal actual bottlenecks rather than guessed ones.',
+    gotchas: [
+      'ulimit settings (max open files, max processes) that are too low for a workload cause mysterious "too many open files" errors under load that never appear in light testing.',
+      'Swap being used doesn\'t automatically mean a problem — a small amount of swapped-out, rarely-accessed memory can be entirely healthy; heavy, ongoing swap activity (thrashing) is the actual red flag.',
+    ],
+  },
+  'linux/disk-storage': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'File System', route: '/linux/file-system' },
+    ],
+    tip: 'df shows disk space at the FILESYSTEM level; du shows it at the FILE/DIRECTORY level — a full filesystem despite du showing little used space usually means deleted-but-still-open files (a process still holding a file descriptor to a "deleted" file).',
+    gotchas: [
+      'LVM (Logical Volume Manager) adds a flexible abstraction layer over physical disks, enabling resizing volumes without the rigid constraints of raw partitions — but adds a layer of indirection to reason about during recovery.',
+      'inode exhaustion (running out of inodes despite having free disk SPACE) is a distinct failure mode from running out of actual bytes — df -i checks this separately from df.',
+    ],
+  },
+  'linux/networking': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Firewall', route: '/linux/firewall' },
+      { label: 'SSH',      route: '/linux/ssh' },
+    ],
+    tip: 'ss (the modern replacement for netstat) shows exactly which process is listening on which port — essential for diagnosing "why can\'t I connect" or "what is actually using this port" without guessing.',
+    gotchas: [
+      'A service binding to 127.0.0.1 is only reachable locally, while binding to 0.0.0.0 exposes it on every network interface — a common source of "why can\'t I reach this from another machine" or, worse, unintended public exposure.',
+      'DNS resolution order (files, then DNS, or vice versa) is controlled by /etc/nsswitch.conf — a misconfigured order causes confusing, inconsistent name resolution behavior.',
+    ],
+  },
+  'linux/firewall': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Networking',           route: '/linux/networking' },
+      { label: 'Security Hardening',   route: '/linux/security-hardening' },
+    ],
+    tip: 'iptables/nftables rules are evaluated in ORDER, and the first matching rule typically wins — placing a broad ALLOW rule before a more specific intended DENY silently defeats the deny, a very common firewall misconfiguration.',
+    gotchas: [
+      'A default-deny policy (block everything, then explicitly allow needed traffic) is significantly more secure than default-allow with denial rules bolted on afterward.',
+      'ufw (Uncomplicated Firewall) is a friendlier frontend over iptables/nftables — rules configured through one tool may not be visible or obvious when inspecting through the other.',
+    ],
+  },
+  'linux/ssh': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Networking',          route: '/linux/networking' },
+      { label: 'Security Hardening',  route: '/linux/security-hardening' },
+    ],
+    tip: 'Public-key authentication is meaningfully more secure than password authentication for SSH — disabling password auth entirely (PasswordAuthentication no) closes off the entire category of brute-force password-guessing attacks against the SSH port.',
+    gotchas: [
+      'A private key with overly permissive file permissions (world-readable) is REJECTED by ssh itself as a security precaution — chmod 600 is required.',
+      'SSH agent forwarding, while convenient, exposes your local key to whatever you SSH into next — a real risk if that intermediate host is compromised.',
+    ],
+  },
+  'linux/systemd': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Process Management', route: '/linux/process-management' },
+      { label: 'Log Analysis',       route: '/linux/log-analysis' },
+    ],
+    tip: 'A systemd unit file\'s Restart= directive controls automatic restart behavior on failure — without it, a crashed service simply stays down until manually restarted, which is rarely the desired production behavior for a long-running daemon.',
+    gotchas: [
+      'systemctl daemon-reload is required after editing a unit file — forgetting it means systemd keeps using the OLD in-memory configuration despite the file on disk being updated.',
+      'Unit dependency ordering (After=, Requires=) does not automatically mean a dependency is fully READY, only that it has started — a service depending on a database should still handle a not-yet-accepting-connections database gracefully.',
+    ],
+  },
+  'linux/log-analysis': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Systemd', route: '/linux/systemd' },
+    ],
+    tip: 'journalctl -u <service> -f follows a specific service\'s logs live — far more targeted than tailing a shared syslog file where a busy system\'s log volume from unrelated services buries the signal you actually need.',
+    gotchas: [
+      'journald logs are binary and rotated based on configurable size/time limits — logs can be lost if retention is shorter than the window needed to investigate a delayed-discovery incident.',
+      'grep/awk/sed pipelines remain powerful for ad-hoc log analysis, but a centralized log aggregator becomes necessary once logs span more than a handful of hosts.',
+    ],
+  },
+  'linux/security-hardening': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'SSH',                route: '/linux/ssh' },
+      { label: 'Firewall',           route: '/linux/firewall' },
+      { label: 'File Permissions',   route: '/linux/file-permissions' },
+    ],
+    tip: 'Reducing attack surface (disabling unused services, closing unneeded ports, removing unnecessary packages) is a foundational hardening step that pays off regardless of what specific vulnerabilities are later discovered — fewer running things means fewer things that can be exploited.',
+    gotchas: [
+      'SELinux/AppArmor provide mandatory access control beyond standard Unix permissions — disabling them entirely (rather than fixing a specific policy denial) removes a real defense-in-depth layer.',
+      'Automatic security updates reduce the window of exposure to known CVEs, but should be tested in non-production first for anything beyond a small, low-risk system.',
+    ],
+  },
+  'linux/package-management': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Systemd', route: '/linux/systemd' },
+    ],
+    tip: 'apt/yum/dnf resolve DEPENDENCY graphs automatically — manually installing a .deb/.rpm without its dependencies satisfied leaves a broken, half-installed package that the package manager itself can\'t easily repair without the proper commands.',
+    gotchas: [
+      'Mixing package managers (installing the same software via apt AND manually via a downloaded binary) creates version confusion about which one is actually active.',
+      'A pinned/held package version prevents accidental upgrades but also prevents automatic security patches for that specific package — a deliberate tradeoff, not a default.',
+    ],
+  },
+  'linux/environment-variables': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Bash Scripting', route: '/linux/bash-scripting' },
+    ],
+    tip: 'export makes a variable available to CHILD PROCESSES, not just the current shell — a variable set without export is only visible in the current shell session, a very common source of "why doesn\'t my script see this variable" confusion.',
+    gotchas: [
+      'PATH order matters — a malicious or unexpected binary earlier in PATH than the intended one silently gets executed instead when a bare command name is run.',
+      'Environment variables set in one shell session do not persist to a new session unless added to a shell startup file (.bashrc, .profile).',
+    ],
+  },
+  'linux/bash-scripting': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Environment Variables', route: '/linux/environment-variables' },
+      { label: 'Bash Advanced',          route: '/linux/bash-advanced' },
+    ],
+    tip: 'set -euo pipefail at the top of a script is a common, high-value defensive default — it stops execution on the first error (-e), treats unset variables as errors (-u), and catches failures anywhere in a pipeline (-o pipefail), instead of silently continuing after a failure.',
+    gotchas: [
+      'Unquoted variable expansion ($VAR instead of "$VAR") breaks on filenames containing spaces — a classic, very common scripting bug.',
+      'A shebang line (#!/bin/bash) determines which interpreter runs the script — a missing or wrong shebang causes confusing "command not found" or unexpected syntax errors.',
+    ],
+  },
+  'linux/bash-advanced': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Bash Scripting', route: '/linux/bash-scripting' },
+    ],
+    tip: 'Process substitution (<(command)) lets a command\'s output be treated as a file for another command that expects a file path — a powerful technique for avoiding temporary files in more complex pipelines.',
+    gotchas: [
+      'Arrays in bash have subtly different syntax for expansion ("${arr[@]}" vs "${arr[*]}") that changes word-splitting behavior — a common source of "why did this only process one element" bugs.',
+      'trap lets a script run cleanup code on exit (or specific signals) — essential for scripts that create temporary resources needing guaranteed cleanup even on failure.',
+    ],
+  },
+  'linux/cron': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Systemd',        route: '/linux/systemd' },
+      { label: 'Bash Scripting', route: '/linux/bash-scripting' },
+    ],
+    tip: 'A cron job runs with a MINIMAL environment (no interactive shell PATH, no user-specific env vars) — a script that works fine run manually can fail mysteriously under cron specifically because of this environment difference, a very common gotcha.',
+    gotchas: [
+      'Cron job output isn\'t displayed anywhere by default — redirecting output to a log file (or mailing it) is necessary to actually see failures, or they go unnoticed indefinitely.',
+      'systemd timers are a modern alternative to cron with better logging integration (via journald) and more expressive scheduling — worth considering for new scheduled tasks.',
+    ],
+  },
+  'linux/vim': {
+    apis: LINUX_DEFAULT.apis, docs: LINUX_DEFAULT.docs, resources: LINUX_DEFAULT.resources,
+    related: [
+      { label: 'Essential Commands', route: '/linux/essential-commands' },
+    ],
+    tip: 'Vim\'s modal editing (separate Normal, Insert, Visual modes) is what enables its efficient keyboard-only editing — the same key means different things in different modes, which is the initial learning-curve hurdle but also the source of its long-term efficiency once internalized.',
+    gotchas: [
+      'Editing a file with sudo requires either sudo vim directly or the :w !sudo tee % trick — opening as a normal user then trying to save a root-owned file fails otherwise.',
+      ':wq vs :q! — accidentally discarding intended changes (or the reverse, saving unintended ones) is a very common beginner mistake before muscle memory develops.',
+    ],
+  },
 };
 
 @Component({
