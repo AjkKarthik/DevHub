@@ -11152,6 +11152,251 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       ':wq vs :q! — accidentally discarding intended changes (or the reverse, saving unintended ones) is a very common beginner mistake before muscle memory develops.',
     ],
   },
+
+  // ── Terraform: per-page entries ─────────────────────────────────────────────
+  'terraform/fundamentals': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Resources',   route: '/terraform/resources' },
+      { label: 'Providers',   route: '/terraform/providers' },
+    ],
+    tip: 'Terraform\'s DECLARATIVE model means you describe the desired end state, not the steps to get there — Terraform itself computes the diff between current and desired state and figures out the necessary create/update/destroy operations.',
+    gotchas: [
+      'terraform plan should ALWAYS be reviewed before apply, especially in shared environments — an unexpected "destroy" in the plan output is the most common way teams lose infrastructure.',
+      'Terraform is idempotent by design — running apply repeatedly with no config changes should produce no changes, not repeated resource recreation.',
+    ],
+  },
+  'terraform/resources': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/terraform/fundamentals' },
+      { label: 'Data Sources', route: '/terraform/data-sources' },
+    ],
+    tip: 'A resource block is Terraform\'s core building unit describing something it MANAGES and can create/modify/destroy — a data source (a related but distinct concept) instead READS existing information without managing its lifecycle.',
+    gotchas: [
+      'Changing certain resource arguments forces REPLACEMENT (destroy then recreate) rather than an in-place update — always check whether an argument change will trigger this before applying in production.',
+      'Resource dependencies can be inferred automatically from references, or declared explicitly via depends_on when the relationship isn\'t visible through a direct attribute reference.',
+    ],
+  },
+  'terraform/data-sources': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Resources', route: '/terraform/resources' },
+    ],
+    tip: 'A data source reads information about infrastructure NOT managed by the current Terraform configuration (an existing VPC, an AMI lookup) — Terraform re-reads it on every plan/apply, meaning its value can change between runs if the underlying external resource changes.',
+    gotchas: [
+      'A data source failing to find a match (like an AMI filter matching zero results) causes an error at plan time, not a silently empty result.',
+      'Overusing data sources to reference resources that COULD be managed directly by Terraform (instead of importing them) creates unnecessary cross-configuration coupling.',
+    ],
+  },
+  'terraform/variables': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Outputs',       route: '/terraform/outputs' },
+      { label: 'Expressions',   route: '/terraform/expressions' },
+    ],
+    tip: 'Variable validation blocks catch invalid input at PLAN time with a clear error message — without them, an invalid value silently propagates into resource configuration and only surfaces as a confusing provider-level error much later during apply.',
+    gotchas: [
+      'Sensitive variables (marked sensitive = true) are redacted from plan/apply CLI output, but still exist in plaintext in the state file unless additional encryption is configured.',
+      'A variable with no default and no value supplied prompts interactively during apply — fine for local development, a blocking problem for unattended CI/CD pipelines.',
+    ],
+  },
+  'terraform/outputs': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Variables', route: '/terraform/variables' },
+      { label: 'Modules',   route: '/terraform/modules' },
+    ],
+    tip: 'Outputs are how a Terraform configuration exposes values to the OPERATOR (via terraform output) and to OTHER configurations (via remote state data sources or module outputs) — without them, values computed inside a module are entirely invisible from outside it.',
+    gotchas: [
+      'Marking an output sensitive = true hides it from standard CLI output, but the value is still retrievable via terraform output -json or by reading the state file directly.',
+      'Module outputs must be explicitly re-exposed by the calling configuration if the ROOT module itself needs to surface them further.',
+    ],
+  },
+  'terraform/expressions': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Functions',  route: '/terraform/functions' },
+      { label: 'Variables',  route: '/terraform/variables' },
+    ],
+    tip: 'for_each creates one resource instance PER KEY in a map/set, tracked by that key — count creates instances tracked by NUMERIC INDEX; removing an item from the middle of a count-based list shifts every subsequent index, causing Terraform to destroy and recreate resources unnecessarily, which for_each avoids.',
+    gotchas: [
+      'Dynamic blocks generate repeated nested configuration blocks from a collection — genuinely useful for optional or variable-count nested blocks, but can hurt readability if overused for simple cases.',
+      'Conditional expressions (cond ? true_val : false_val) are common for toggling resource configuration based on a variable, but deeply nested conditionals hurt readability fast.',
+    ],
+  },
+  'terraform/functions': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Expressions', route: '/terraform/expressions' },
+    ],
+    tip: 'Terraform\'s built-in functions (unlike most languages) cannot be user-defined — the built-in library (string manipulation, collection operations, type conversion) is fixed, and any logic beyond it must be composed from existing functions or handled outside Terraform entirely.',
+    gotchas: [
+      'The console command (terraform console) lets you test expressions and function calls interactively without needing a full plan/apply cycle — a fast way to verify function behavior.',
+      'Some functions (like timestamp()) return a different value on every evaluation, which can cause unexpected "changes" reported on every plan if used in a resource argument.',
+    ],
+  },
+  'terraform/state': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Remote Backends', route: '/terraform/remote-backends' },
+      { label: 'Drift',           route: '/terraform/drift' },
+    ],
+    tip: 'Terraform state is the SOURCE OF TRUTH mapping configuration to real infrastructure — losing it means Terraform no longer knows what it manages, and manually editing state directly (rather than through terraform state commands) risks corrupting that mapping.',
+    gotchas: [
+      'State can contain sensitive values in PLAINTEXT (like a generated database password) — state files need the same access control rigor as secrets themselves.',
+      'terraform state mv is the correct way to rename/move a resource in configuration without Terraform destroying and recreating the underlying real infrastructure.',
+    ],
+  },
+  'terraform/remote-backends': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'State',       route: '/terraform/state' },
+      { label: 'Workspaces',  route: '/terraform/workspaces' },
+    ],
+    tip: 'A remote backend (S3+DynamoDB, Terraform Cloud) stores state centrally and enables LOCKING — without locking, two team members running apply simultaneously can corrupt the state file, since local state files have no built-in concurrency protection.',
+    gotchas: [
+      'Remote state without locking (missing the DynamoDB table or equivalent) risks concurrent applies corrupting state — always enable locking for any shared/team state.',
+      'Backend configuration itself cannot use variables — it must be static or use partial configuration with a separate backend config file.',
+    ],
+  },
+  'terraform/workspaces': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Remote Backends', route: '/terraform/remote-backends' },
+    ],
+    tip: 'Terraform workspaces provide separate STATE FILES for the same configuration (useful for dev/staging/prod with identical resource definitions) — but they share the SAME backend and configuration code, unlike fully separate directories/configurations per environment.',
+    gotchas: [
+      'Workspaces are not a substitute for genuinely different configurations — if dev and prod need meaningfully different resource definitions (not just different variable values), separate configurations are more appropriate than workspaces.',
+      'terraform.workspace can be referenced in configuration to vary behavior per workspace, but overusing it for complex per-environment logic makes configuration harder to follow.',
+    ],
+  },
+  'terraform/modules': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Module Patterns', route: '/terraform/module-patterns' },
+    ],
+    tip: 'A module is a reusable, parametrized collection of resources — the SAME module can be instantiated multiple times with different inputs, avoiding copy-pasted resource blocks across environments or similar infrastructure components.',
+    gotchas: [
+      'A module\'s internal resource addresses become PREFIXED by the module call name in state — renaming a module call in configuration causes Terraform to see it as an entirely different set of resources unless state is explicitly moved.',
+      'Deeply nested module hierarchies (modules calling modules calling modules) can make understanding the actual resulting infrastructure harder to trace.',
+    ],
+  },
+  'terraform/module-patterns': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Modules',   route: '/terraform/modules' },
+      { label: 'Providers', route: '/terraform/providers' },
+    ],
+    tip: 'A well-designed module exposes a MINIMAL, intentional interface (specific variables and outputs) rather than passing through every possible underlying resource argument — an overly permissive module interface makes the module harder to reason about and easier to misuse.',
+    gotchas: [
+      'Versioning modules (via a git tag or registry version) lets consumers pin to a known-good version, avoiding a breaking module change silently affecting every configuration using it at once.',
+      'Composing several small, focused modules is generally more maintainable than one large, all-purpose module trying to handle every possible use case.',
+    ],
+  },
+  'terraform/providers': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Resources',  route: '/terraform/resources' },
+    ],
+    tip: 'A provider is a plugin that translates Terraform\'s resource blocks into actual API calls against a specific platform (AWS, Azure, Kubernetes) — Terraform\'s core engine knows nothing about any specific cloud; all platform-specific logic lives in providers.',
+    gotchas: [
+      'Provider version constraints should be pinned (not left unbounded) — an unpinned provider can silently introduce breaking changes on the next apply after a new provider version is released.',
+      'Multiple provider configurations (aliases) let a single configuration manage resources across multiple regions or accounts within one apply.',
+    ],
+  },
+  'terraform/provisioners': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Resources', route: '/terraform/resources' },
+    ],
+    tip: 'Provisioners (remote-exec, local-exec) are explicitly a LAST RESORT per Terraform\'s own documentation — they run imperative scripts outside Terraform\'s declarative model, breaking the guarantee that terraform plan accurately predicts what will happen.',
+    gotchas: [
+      'A failed provisioner during resource creation, by default, marks the ENTIRE resource as tainted, forcing recreation on the next apply — a real operational cost for a flaky provisioner script.',
+      'Configuration management tools (Ansible, cloud-init) or baked-in machine images are generally preferred over provisioners for actual instance configuration.',
+    ],
+  },
+  'terraform/import': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'State',   route: '/terraform/state' },
+      { label: 'Drift',   route: '/terraform/drift' },
+    ],
+    tip: 'terraform import brings EXISTING, manually-created infrastructure under Terraform management — but it only imports the resource into STATE; the corresponding resource BLOCK in configuration must be written manually to match, or the next plan shows a confusing diff.',
+    gotchas: [
+      'Import is a one-time bridging operation for adopting Terraform on pre-existing infrastructure — it does not generate the configuration code automatically (in older Terraform versions), only the state entry.',
+      'Terraform 1.5+\'s import blocks (declarative, in-configuration import) improve on the imperative import CLI command by making the import itself reviewable in a plan.',
+    ],
+  },
+  'terraform/drift': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'State',   route: '/terraform/state' },
+      { label: 'Import',  route: '/terraform/import' },
+    ],
+    tip: 'Configuration drift happens when real infrastructure is changed OUTSIDE Terraform (a manual console click, an emergency fix) — the next plan detects the difference between actual and expected state, but resolving it requires a deliberate decision: update config to match reality, or let Terraform revert the manual change.',
+    gotchas: [
+      'terraform plan -refresh-only surfaces drift without proposing any changes, useful for detecting drift before deciding how to reconcile it.',
+      'Manual "emergency fixes" that bypass Terraform are a common, recurring source of ongoing drift — the emergency fix should be backported into configuration promptly, not left as a permanent exception.',
+    ],
+  },
+  'terraform/testing': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'CI/CD', route: '/terraform/cicd' },
+    ],
+    tip: 'Terraform\'s native test framework (.tftest.hcl files) can assert on plan output WITHOUT actually applying real infrastructure — catching logic errors in a module before it ever provisions anything, at the cost of not verifying actual provider-level behavior.',
+    gotchas: [
+      'Testing modules that manage genuinely stateful resources often still needs an actual apply-and-destroy cycle against a real (throwaway) environment for full confidence.',
+      'Static analysis tools (tflint, checkov) catch style and security-policy issues before a plan even runs, complementing (not replacing) plan-based testing.',
+    ],
+  },
+  'terraform/security': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'State', route: '/terraform/state' },
+    ],
+    tip: 'A secret hardcoded directly in a .tf file is committed to git history forever, even after being "removed" in a later commit — secrets should come from a secrets manager or environment variables, never a literal value in configuration.',
+    gotchas: [
+      'State files can contain plaintext sensitive values even when the corresponding variable is marked sensitive — state access itself needs the same rigor as protecting secrets directly.',
+      'checkov/tfsec-style static analysis catches common misconfigurations (an S3 bucket without encryption, an overly permissive security group) before they are ever applied.',
+    ],
+  },
+  'terraform/cicd': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Testing',  route: '/terraform/testing' },
+      { label: 'Security', route: '/terraform/security' },
+    ],
+    tip: 'A CI/CD pipeline running terraform plan on every pull request (posting the plan as a PR comment) lets reviewers see EXACTLY what infrastructure change is proposed before it merges — a critical review step that catching an unexpected destroy only in local terminal output would miss.',
+    gotchas: [
+      'apply should typically require a separate, explicit approval step (not auto-apply on merge) for anything touching production infrastructure, given how consequential an unreviewed apply can be.',
+      'CI runners need the same remote state locking guarantees as local runs — concurrent pipeline runs against the same state without locking risk the same corruption as concurrent local applies.',
+    ],
+  },
+  'terraform/refactoring': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'State',   route: '/terraform/state' },
+      { label: 'Modules', route: '/terraform/modules' },
+    ],
+    tip: 'moved blocks (Terraform 1.1+) let you declaratively record that a resource was renamed or moved between modules — WITHOUT Terraform destroying and recreating the underlying real infrastructure, replacing the older, more error-prone manual terraform state mv workflow.',
+    gotchas: [
+      'Refactoring configuration WITHOUT a corresponding moved block (or manual state mv) causes Terraform to see the old resource address as deleted and the new one as newly created — a destroy-and-recreate that may be entirely unintended.',
+      'Refactoring a widely-used shared module requires coordinating with every consumer, since a breaking interface change affects all of them simultaneously.',
+    ],
+  },
+  'terraform/opentofu': {
+    apis: TERRAFORM_DEFAULT.apis, docs: TERRAFORM_DEFAULT.docs, resources: TERRAFORM_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/terraform/fundamentals' },
+    ],
+    tip: 'OpenTofu is a community-driven, open-source fork of Terraform created after HashiCorp changed Terraform\'s license away from MPL — it maintains compatibility with existing Terraform configurations and providers while remaining under a truly open-source license.',
+    gotchas: [
+      'OpenTofu and Terraform have begun to diverge in newer features over time — a configuration relying on a Terraform-only feature added after the fork may not work identically in OpenTofu.',
+      'Most existing modules and providers work with both tools due to their shared HCL-based configuration language and provider protocol compatibility, but this compatibility isn\'t an absolute guarantee going forward.',
+    ],
+  },
 };
 
 @Component({
