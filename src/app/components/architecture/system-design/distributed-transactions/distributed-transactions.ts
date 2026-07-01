@@ -361,8 +361,8 @@ const quiz: QuizQuestion[] = [
 
 const qna: QnaItem[] = [
   {
-    q: 'Choreography vs orchestration Saga — which should I choose?',
-    a: 'Choreography: services react to events, no central coordinator. Simple for small flows (2-3 services). Harder to debug as complexity grows — distributed logic is invisible. Orchestration: a Saga Orchestrator drives the workflow. Easier to reason about, monitor, and test. Prefer orchestration for flows with many steps or complex error handling (e.g. Temporal, AWS Step Functions).',
+    q: 'A team starts a Saga with choreography for a simple 2-service flow, and it works well. Over 18 months, they keep adding services that react to the same events, growing to 8 participating services. What specific failure mode emerges as choreography scales up that orchestration would not have?',
+    a: 'The workflow\'s overall logic becomes fully implicit and scattered — with 8 services each independently subscribing to and reacting to events, there is no single place in the codebase that shows "this is the full sequence of steps for this business process," so understanding, modifying, or debugging the end-to-end flow requires mentally reconstructing it by reading through 8 separate services\' event handlers. A common concrete failure this produces: a NEW event type gets added by one service, and it is easy to overlook that a downstream service now needs to also react to it (since there\'s no central definition enforcing completeness), leading to a step silently being skipped in some percentage of workflow executions — a bug class orchestration structurally prevents, since the orchestrator explicitly enumerates and drives every step, making an omitted step a visible gap in the orchestrator\'s own code rather than an invisible gap distributed across independently-evolving services.',
   },
   {
     q: 'What is TCC (Try-Confirm-Cancel)?',
