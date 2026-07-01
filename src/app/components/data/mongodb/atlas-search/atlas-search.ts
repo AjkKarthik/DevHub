@@ -66,6 +66,24 @@ export class MongoAtlasSearch {
         'Use <code>count: { type: "total" }</code> or <code>{ type: "lowerBound" }</code> in the $search stage to get the total result count alongside documents (avoids a second round-trip).',
       ],
     },
+    {
+      heading: 'Atlas Search Index Configuration',
+      points: [
+        'Atlas Search indexes are defined separately from regular MongoDB indexes, using a dedicated JSON mapping that specifies how each field should be analyzed for full-text search — this mapping determines tokenization, language-specific stemming, and which fields are searchable at all.',
+        'Dynamic mapping automatically indexes all fields with default analyzers, which is convenient for getting started but less precise than static mapping, where each field\'s analyzer and indexing behavior is explicitly configured for the specific search requirements of that field.',
+        'Atlas Search runs on a separate Lucene-based search index maintained alongside the primary MongoDB data — this architecture means search index updates are near-real-time but asynchronous, so there is a brief propagation delay between a document write and that change being reflected in search results.',
+        'Compound queries in Atlas Search combine multiple search clauses (must, should, mustNot, filter) similar to Elasticsearch\'s bool query — letting you build sophisticated relevance-scored search experiences directly within MongoDB rather than maintaining a separate search infrastructure like Elasticsearch alongside it.',
+      ],
+    },
+    {
+      heading: 'Relevance Scoring and Faceted Search',
+      points: [
+        'Atlas Search assigns a relevance score to each result based on term frequency, field weighting, and query type — results are automatically sorted by this score by default, though you can combine it with additional sort criteria or boost specific fields to tune ranking for your use case.',
+        'Autocomplete search type provides prefix and fuzzy matching optimized for search-as-you-type interfaces, using a specialized index structure distinct from standard text search — appropriate specifically for search box suggestions rather than general full-text queries.',
+        'Faceted search ($searchMeta with facet operators) computes aggregated counts across categories (price ranges, brands, ratings) alongside the main search results in a single query — powering the filter sidebars common in e-commerce search UIs without a separate aggregation query.',
+        'Fuzzy matching tolerates minor typos and spelling variations in search queries by allowing a configurable edit distance — valuable for user-facing search where exact-match-only queries would frustrate users making common typing mistakes.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

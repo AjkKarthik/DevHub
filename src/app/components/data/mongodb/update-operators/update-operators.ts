@@ -72,6 +72,24 @@ export class MongoUpdateOperators {
         'Nested array updates (arrays within arrays) are not supported by the positional <code>$</code> operator — use <code>$[id]</code> with nested <code>arrayFilters</code> instead.',
       ],
     },
+    {
+      heading: 'Atomic Update Operators for Counters and Sets',
+      points: [
+        '$inc atomically increments (or decrements, with a negative value) a numeric field — critical for correctly maintaining counters (a view count, an inventory quantity) under concurrent updates, since reading a value, incrementing it in application code, and writing it back is vulnerable to lost updates when multiple requests run concurrently.',
+        '$mul atomically multiplies a field by a given value, useful for proportional adjustments (applying a discount percentage, scaling a value) without needing to read the current value first — like $inc, this avoids the read-modify-write race condition inherent in doing the calculation in application code.',
+        '$addToSet adds a value to an array only if it does not already exist, providing set-like uniqueness semantics for array fields — distinct from $push, which always appends regardless of whether the value is already present, potentially creating duplicate entries.',
+        '$currentDate atomically sets a field to the current server date/time at the moment the update executes — more reliable than setting a timestamp from application code, since it avoids clock skew issues between the application server and the database server, and executes exactly at write time.',
+      ],
+    },
+    {
+      heading: 'Upserts and Conditional Update Patterns',
+      points: [
+        'The upsert option (upsert: true) on an update operation inserts a new document if no document matches the filter, or updates the existing one if a match is found — a common atomic pattern for "create or update" logic (like recording a user\'s latest login) that avoids a separate existence check before deciding whether to insert or update.',
+        '$setOnInsert specifies fields that should only be set when an upsert actually creates a NEW document, not when it updates an existing one — useful for initializing fields like createdAt that should be set once at creation and never overwritten by subsequent updates to the same document.',
+        'findOneAndUpdate() atomically finds a document, applies an update, and returns either the pre-update or post-update version of the document (controlled by the returnDocument option) — essential for patterns like atomically claiming a task from a queue, where you need both the update to happen and the resulting document returned in one atomic operation.',
+        'Conditional updates using $expr within the filter allow comparing a document\'s current field values before deciding whether to apply an update (only increment a counter if it is below a maximum threshold) — implementing optimistic concurrency control patterns directly within a single atomic update operation.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

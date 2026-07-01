@@ -74,6 +74,15 @@ export class MongoDataModelling {
         'Document versioning: store multiple versions of a document as an array (version history) or in a separate <code>versions</code> collection referenced by the current document. Useful for content management, contract management, and compliance audit trails.',
       ],
     },
+    {
+      heading: 'Schema Versioning and Migration Strategy',
+      points: [
+        'Unlike a relational database, MongoDB does not enforce a schema by default — this flexibility means schema changes do not require a blocking migration, but it also means old and new document shapes can coexist in the same collection simultaneously after a model change.',
+        'A common pattern is to add a schemaVersion field to documents, letting application code detect and handle multiple document shapes gracefully during a transition period, rather than requiring every existing document to be migrated synchronously before the application can deploy.',
+        'Lazy migration (updating a document to the new shape only when it is next read or written, rather than migrating the entire collection upfront) avoids a large blocking migration job, spreading the migration cost across normal application traffic over time.',
+        'For genuinely large migrations affecting many documents, a background migration script processing documents in small batches (with appropriate rate limiting) avoids the sustained write load and potential replication lag that migrating an entire large collection at once could cause.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

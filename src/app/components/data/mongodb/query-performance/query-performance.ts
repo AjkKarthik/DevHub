@@ -75,6 +75,15 @@ export class MongoQueryPerformance {
         '<strong>maxTimeMS</strong>: set a time limit on queries to prevent runaway operations from degrading the cluster. <code>find({}).maxTimeMS(5000)</code> — throws MongoExecutionTimeoutError if the query takes > 5 seconds.',
       ],
     },
+    {
+      heading: 'Diagnosing Slow Queries with the Profiler',
+      points: [
+        'The MongoDB database profiler records detailed information about operations exceeding a configurable slow-operation threshold (default 100ms), capturing the exact query shape, execution time, and number of documents examined — essential for identifying real production performance problems rather than guessing.',
+        'Profiler level 0 disables profiling (default), level 1 only profiles slow operations above the threshold (recommended for production, minimizing overhead), and level 2 profiles every single operation (useful for short-term deep debugging, but far too much overhead for sustained production use).',
+        'A high ratio of totalDocsExamined to nReturned in a query\'s explain output is the clearest signal of an inefficient query — it means the database scanned far more documents than it actually needed to return, almost always indicating a missing or poorly designed index for that query pattern.',
+        'Atlas Performance Advisor (for MongoDB Atlas deployments) automatically analyzes slow query logs and suggests specific indexes that would improve performance — a useful starting point, though it should be validated against actual query patterns rather than applied blindly, since automatically suggested indexes are not always the optimal choice for the full workload.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

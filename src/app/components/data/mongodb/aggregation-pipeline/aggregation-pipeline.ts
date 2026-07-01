@@ -80,6 +80,15 @@ export class MongoAggregationPipeline {
         'Performance: $unwind before $match is usually wrong — let $match filter documents first, then unwind. $unwind on a large array multiplies document count significantly.',
       ],
     },
+    {
+      heading: 'Pipeline Performance and Stage Ordering',
+      points: [
+        'Stage order matters significantly for performance — placing <code>$match</code> and <code>$limit</code> as early as possible in the pipeline reduces the number of documents flowing through every subsequent stage, since MongoDB does not always reorder stages automatically for you.',
+        'A <code>$match</code> stage placed immediately after the pipeline start can use an existing index the same way a regular query would — a <code>$match</code> placed after several transformation stages (like <code>$project</code> or <code>$unwind</code>) usually cannot use an index, since the documents no longer match their original indexed shape.',
+        'Use <code>.explain("executionStats")</code> on an aggregation to see whether early stages are using an index (IXSCAN) or falling back to a full collection scan (COLLSCAN) — this is the definitive way to verify pipeline performance rather than guessing from the pipeline structure alone.',
+        '<code>$facet</code> lets you run multiple independent sub-pipelines against the same input documents in a single aggregation call (useful for computing several different aggregates like a count and a paginated result set together), but each sub-pipeline receives the full input, so it does not reduce overall document processing.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -66,6 +66,24 @@ export class MongoMongodbNodejs {
         'In production, both work well. Mongoose\'s middleware and validation are conveniences, but they add a layer of complexity. The native driver is lower-level and requires more explicit code but is more predictable.',
       ],
     },
+    {
+      heading: 'TypeScript Type Safety with the Node.js Driver',
+      points: [
+        'The official MongoDB Node.js driver supports generic collection typing (db.collection<UserDocument>("users")) that gives compile-time type checking on query filters, update operations, and returned document shapes — catching field name typos and type mismatches before runtime rather than discovering them from a production error.',
+        'The MongoDB _id field is typed as ObjectId by the driver, not a plain string — a common TypeScript integration bug is comparing an _id field to a raw string without first converting it to an ObjectId, which silently fails to match since the types are structurally different, not just differently formatted.',
+        'Mongoose (a popular ODM layered on top of the native driver) adds schema validation and a more object-oriented API at the cost of some flexibility and an additional abstraction layer — many production Node.js applications use the native driver directly for full control, while others prefer Mongoose for its schema enforcement and middleware hooks.',
+        'Connection management in a serverless environment (AWS Lambda, Vercel functions) requires special care — creating a new MongoClient per invocation exhausts connection limits quickly; the recommended pattern caches and reuses a MongoClient instance across warm invocations of the same function.',
+      ],
+    },
+    {
+      heading: 'Error Handling for Common Driver Exceptions',
+      points: [
+        'Duplicate key errors (code 11000) occur when inserting a document that violates a unique index — catching this specific error code lets the application respond gracefully (a friendly "email already registered" message) rather than surfacing a generic, confusing database error to the end user.',
+        'Connection timeout errors distinguish between a genuinely unreachable database and a slow query exceeding a configured timeout — configuring appropriate serverSelectionTimeoutMS and socketTimeoutMS values, and handling each timeout type distinctly, prevents an application from hanging indefinitely on a database issue.',
+        'Write concern errors (when a write cannot be acknowledged by the configured number of replica set members) indicate a durability guarantee could not be met — these should generally be surfaced as failures to the caller rather than silently ignored, since the write may not have been durably persisted as required.',
+        'Retryable writes (enabled by default in modern driver versions) automatically retry certain transient network errors for write operations — understanding which error types are automatically retried versus which require explicit application-level handling avoids both unnecessary manual retry logic and silently swallowed genuine failures.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -76,6 +76,15 @@ export class MongoCrudOperations {
         'Deleted documents are not gone from disk immediately — WiredTiger marks the space as free and reclaims it during compaction. For sensitive data, consider field-level encryption before deletion.',
       ],
     },
+    {
+      heading: 'Bulk Operations for Write Efficiency',
+      points: [
+        '<code>bulkWrite()</code> batches multiple insert, update, and delete operations into a single round trip to the server — significantly reducing network overhead compared to issuing each operation individually, especially important for high-volume data import or synchronization jobs.',
+        'Ordered bulk operations (the default) execute sequentially and stop at the first error, while unordered bulk operations execute in any order and continue past individual failures, reporting all errors at the end — unordered is generally faster since MongoDB can parallelize execution across shards.',
+        '<code>insertMany()</code> with <code>ordered: false</code> is a common pattern for bulk-loading data where a few duplicate-key errors are expected and acceptable — the operation continues inserting all non-conflicting documents rather than aborting entirely on the first duplicate.',
+        'Batching too many operations into a single bulkWrite() call risks exceeding MongoDB\'s 48MB BSON document size limit for the batch itself — chunking very large bulk operations into reasonably sized batches (a few thousand operations each) is standard practice for large data loads.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

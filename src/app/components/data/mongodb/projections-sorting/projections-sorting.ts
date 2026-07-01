@@ -74,6 +74,15 @@ export class MongoProjectionsSorting {
         'For "total count" in paginated APIs, avoid running <code>countDocuments()</code> on every request — it\'s a separate full-index scan. Instead, omit the total count (return <code>hasMore: true/false</code>) or cache the count with a TTL.',
       ],
     },
+    {
+      heading: 'Covered Queries for Maximum Performance',
+      points: [
+        'A covered query is one where MongoDB can satisfy the entire query — both the filter and the returned fields — using only the index itself, without needing to fetch the full document from the collection storage at all, making it significantly faster than a typical index-then-fetch query.',
+        'For a query to be covered, every field referenced in the query filter, sort, and projection must be part of the index, and the _id field must be explicitly excluded from the projection unless it is also part of the index (since _id is included by default otherwise, breaking the covered-query optimization).',
+        'Use <code>.explain("executionStats")</code> and check the <code>totalDocsExamined</code> field — a value of 0 alongside a nonzero <code>totalKeysExamined</code> confirms the query was fully covered by the index, serving entirely from the index structure without touching the underlying documents.',
+        'Covered queries are most valuable for high-frequency, performance-critical read paths where the returned fields are a small, well-known subset — designing a dedicated covering index for such a hot query path is a targeted optimization worth the extra index maintenance cost.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

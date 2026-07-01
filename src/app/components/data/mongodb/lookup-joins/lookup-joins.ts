@@ -65,6 +65,24 @@ export class MongoLookupJoins {
         'Cannot use pipeline $lookup across different databases. For cross-database reporting, export data to a common database, use Atlas Data Federation, or perform the join in application code.',
       ],
     },
+    {
+      heading: 'When to Embed vs When to Reference',
+      points: [
+        'Embedding related data directly within a parent document (rather than referencing it and joining with $lookup) avoids the performance cost of a join entirely — appropriate for one-to-few relationships where the embedded data is always accessed together with the parent and does not grow unboundedly.',
+        'Referencing (storing an ID and using $lookup to join at query time) is preferred for one-to-many or many-to-many relationships, data that is accessed independently of its parent, or data that would make the parent document grow too large or too frequently updated if embedded.',
+        'MongoDB documents have a 16MB size limit — embedding a genuinely unbounded collection (all comments ever made on a popular post) risks eventually hitting this limit, which is a strong signal that a referenced, separately-queryable collection is the correct design instead.',
+        'A hybrid approach — embedding a small, frequently-accessed summary (the 5 most recent comments) while referencing the full collection for complete data — balances read performance for the common case against the flexibility and unbounded growth safety of full referencing.',
+      ],
+    },
+    {
+      heading: '$lookup Performance and Alternatives',
+      points: [
+        '$lookup performance depends heavily on having an index on the foreign field being matched — without one, MongoDB must scan the entire foreign collection for every document in the local collection, which becomes prohibitively slow as collection sizes grow.',
+        'Multiple or deeply chained $lookup stages in a single pipeline compound cost significantly — each additional lookup effectively performs another collection scan or index lookup per input document, so pipelines with several joins should be profiled carefully under realistic data volumes.',
+        'For extremely performance-sensitive read paths where join cost is unacceptable, denormalizing (duplicating a small amount of frequently-needed data from the referenced collection into the local document) trades storage and write-time consistency effort for read-time performance, avoiding the join entirely.',
+        'The uncorrelated $lookup syntax (using a let/pipeline form rather than the simple localField/foreignField form) allows more complex join conditions and additional filtering within the joined pipeline, at the cost of being somewhat harder to optimize and reason about than a simple equality join.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

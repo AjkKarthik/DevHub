@@ -65,6 +65,24 @@ export class MongoTransactions {
         'Always call <code>session.endSession()</code> in a <code>finally</code> block to release session resources back to the connection pool, even if the transaction failed.',
       ],
     },
+    {
+      heading: 'When Multi-Document Transactions Are Actually Necessary',
+      points: [
+        'A large portion of use cases that seem to need multi-document transactions can actually be modeled with a single atomic document update instead — MongoDB single-document operations are always atomic by default, and restructuring data to keep related fields in one document often eliminates the need for transactions entirely.',
+        'Genuine transaction use cases involve operations across multiple documents (or collections) that must succeed or fail together as a unit — a classic example is transferring funds between two separate account documents, where debiting one and crediting the other must be atomic to prevent an inconsistent intermediate state.',
+        'Transactions carry real performance overhead compared to single-document atomic operations — they require additional coordination (especially in a sharded cluster, where a transaction spanning multiple shards is meaningfully more expensive than one confined to a single shard) and should be reserved for cases that genuinely require cross-document atomicity.',
+        'Transaction retry logic is necessary in production code — transient errors (like a transient transaction error or a write conflict from concurrent access) are expected and should trigger an automatic retry of the entire transaction, not be treated as a permanent failure requiring manual intervention.',
+      ],
+    },
+    {
+      heading: 'Transaction Isolation and Read/Write Concerns',
+      points: [
+        'MongoDB transactions provide snapshot isolation — all reads within a transaction see a consistent snapshot of data as of the transaction start, and writes are only visible to other operations after the transaction commits, preventing the transaction from seeing partial updates from concurrent operations.',
+        'Read concern "snapshot" combined with write concern "majority" inside a transaction provides the strongest consistency guarantee MongoDB offers — ensuring both that reads see a consistent point-in-time view and that committed writes are durably replicated to a majority of the replica set before the transaction is considered complete.',
+        'Long-running transactions hold locks and resources for their entire duration, increasing the likelihood of conflicts with concurrent operations and potentially impacting overall cluster performance — transactions should be kept as short as possible, ideally completing within the default 60-second transaction timeout with significant margin.',
+        'Transactions should never wrap operations with external side effects (sending an email, calling a third-party API) inside the transaction body — if the transaction later aborts and retries, that external side effect would incorrectly execute multiple times, since only the database operations themselves are rolled back on abort.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

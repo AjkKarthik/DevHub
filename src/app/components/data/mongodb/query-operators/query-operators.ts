@@ -72,6 +72,24 @@ export class MongoQueryOperators {
         '<code>$where</code>: NEVER use in production. It executes arbitrary JavaScript on the server, bypasses all indexes, and is a security risk (MongoDB injection). Use $expr with aggregation operators instead.',
       ],
     },
+    {
+      heading: 'Combining Operators with Logical Query Operators',
+      points: [
+        '$and, $or, and $nor combine multiple query conditions — implicit AND (listing multiple fields in a single query object) is more concise for simple field-level conjunctions, while explicit $and is required when combining multiple conditions on the SAME field (two separate $gt and $lt range conditions, for example).',
+        '$or queries can prevent efficient index usage in some cases — MongoDB evaluates each clause of an $or independently, potentially using a different index per clause, which can be less efficient than a single compound index covering an equivalent $and-based query when the schema allows restructuring.',
+        '$expr allows using aggregation expressions within a normal query filter, enabling comparisons between two fields of the same document (finding documents where fieldA is greater than fieldB) — something the standard query operators alone cannot express, since they only compare a field against a literal value.',
+        'Regular expression queries ($regex) are powerful for pattern matching but can be slow without a supporting index — a regex anchored at the start of the string (^prefix) can use a standard index efficiently, while an unanchored or complex regex generally cannot and falls back to scanning every document.',
+      ],
+    },
+    {
+      heading: 'Type-Sensitive and Existence Query Operators',
+      points: [
+        '$type queries for documents where a field matches a specific BSON type — valuable in schemas with historical inconsistency (a field that was once stored as a string and is now a number after a migration), letting you specifically target documents still in the old format.',
+        '$exists distinguishes between a field being absent entirely and a field being present with a null value — these are meaningfully different states in MongoDB\'s flexible schema model, and conflating them ({ field: null } does NOT match the same set as { field: { $exists: false } }) is a common source of subtle query bugs.',
+        'Comparison operators ($gt, $lt, etc.) on fields with mixed types across documents follow MongoDB\'s defined BSON type comparison order (fields are compared within their own type by default in most contexts) — querying a field with inconsistent types across a collection can produce confusing results if this ordering is not understood.',
+        '$in and $nin efficiently match against a list of possible values using a single query, translating to an efficient index scan across multiple key values when a supporting index exists — generally far more efficient than issuing multiple separate queries or constructing an equivalent $or chain manually.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

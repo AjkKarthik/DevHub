@@ -65,6 +65,24 @@ export class MongoReplicationSharding {
         '<strong>Scatter-gather queries</strong> — queries that don\'t include the shard key must be broadcast to ALL shards and results merged by mongos. Very expensive at scale. Always include the shard key in your most common query patterns.',
       ],
     },
+    {
+      heading: 'Read Preference and Write Concern Tuning',
+      points: [
+        'Read preference controls which replica set members a read operation is routed to — primary (default, strongest consistency), primaryPreferred, secondary, secondaryPreferred, or nearest (lowest latency) — letting applications trade consistency for read scalability or latency based on specific query requirements.',
+        'Write concern controls how many replica set members must acknowledge a write before it is considered successful — { w: 1 } (default) only requires the primary to acknowledge, while { w: "majority" } waits for acknowledgment from a majority of voting members, providing stronger durability at the cost of additional write latency.',
+        'Reading from secondaries reduces load on the primary and can lower read latency for geographically distributed deployments, but introduces potential staleness due to replication lag — a tradeoff that must be evaluated per use case, not applied uniformly across an entire application.',
+        'Write concern { w: "majority" } combined with appropriate read concern settings provides "read your own writes" consistency across the replica set even when reading from secondaries — understanding this interaction is essential for building correct distributed read/write patterns rather than accidentally introducing subtle consistency bugs.',
+      ],
+    },
+    {
+      heading: 'Shard Key Selection',
+      points: [
+        'The shard key determines how data is distributed across shards, and choosing it well is one of the most consequential decisions in a sharded MongoDB deployment — an inappropriate shard key cannot be easily changed after significant data has accumulated, unlike most other configuration choices.',
+        'A shard key with low cardinality (few possible distinct values, like a boolean or a small enum) creates "jumbo chunks" that cannot be split or migrated effectively, concentrating data and load onto a small number of shards regardless of how many shards exist in the cluster.',
+        'A monotonically increasing shard key (like a timestamp or auto-incrementing ID) causes all new writes to target the same shard (whichever holds the highest current range), creating a write hotspot — a hashed shard key or a compound key including a more randomly-distributed field avoids this specific problem.',
+        'Query patterns should heavily influence shard key choice — queries that include the shard key in their filter can be routed directly to the relevant shard(s) (targeted queries), while queries lacking the shard key must fan out to every shard (scatter-gather), which is significantly less efficient at scale.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

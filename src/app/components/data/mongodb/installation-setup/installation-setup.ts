@@ -74,6 +74,15 @@ export class MongoInstallationSetup {
         'For CI pipelines (GitHub Actions, GitLab CI): use the <code>mongo:7</code> Docker service/container in your CI YAML. It starts a fresh MongoDB instance for each pipeline run, eliminating shared state between test runs.',
       ],
     },
+    {
+      heading: 'Connection String Configuration and Connection Pooling',
+      points: [
+        'The MongoDB connection string (mongodb:// or mongodb+srv:// URI) encodes not just the server address but also authentication, replica set membership, and connection behavior options — understanding the URI format is essential for correctly configuring both local development and production connections.',
+        'The driver maintains a connection pool per client instance rather than opening a new connection per operation — reusing pooled connections avoids the overhead of a full TCP handshake and authentication for every single database call, which would be prohibitively slow at any real request volume.',
+        'maxPoolSize configures the maximum number of connections the pool will maintain — setting this too low causes operations to queue and wait for an available connection under load, while setting it far too high can exhaust server-side connection limits, especially with multiple application instances connecting simultaneously.',
+        'A single MongoClient instance (and its connection pool) should be created once and reused throughout the application lifetime — creating a new MongoClient per request is a common performance mistake, since each one establishes and maintains its own separate connection pool rather than sharing one efficiently.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

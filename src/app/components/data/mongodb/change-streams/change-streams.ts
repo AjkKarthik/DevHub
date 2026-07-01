@@ -66,6 +66,24 @@ export class MongoChangeStreams {
         'Change streams consume server resources (cursor, oplog reading). Close streams when no longer needed: <code>changeStream.close()</code>. Handle process shutdown signals (SIGTERM/SIGINT) to close streams gracefully.',
       ],
     },
+    {
+      heading: 'Resume Tokens and Fault-Tolerant Streaming',
+      points: [
+        'Every change event includes a resume token — an opaque value that uniquely identifies the change\'s position in the underlying oplog — allowing a change stream consumer to resume exactly where it left off after a disconnect, rather than missing events or reprocessing from the beginning.',
+        'Persisting the resume token durably (to a database or durable storage, not just in-memory) is essential for production change stream consumers — an in-memory-only resume token is lost on a consumer restart, forcing either data loss (skipping missed events) or a full resync.',
+        'Change streams are backed by the oplog, which has a finite retention window — if a consumer is disconnected for longer than the oplog retention period, the resume token becomes invalid and the consumer must either accept data loss or perform a full resync from a fresh snapshot.',
+        'Change streams can be opened on a single collection, an entire database, or an entire deployment — broader scopes are convenient for building generic downstream sync/audit systems, but require the consumer to filter and route change events by namespace itself.',
+      ],
+    },
+    {
+      heading: 'Change Stream Use Cases Beyond Simple Sync',
+      points: [
+        'Cache invalidation is a common change stream use case — a change stream watching a collection can automatically invalidate or update a Redis cache entry the moment the underlying document changes, keeping the cache consistent without relying on the application to remember to invalidate manually on every write path.',
+        'Materialized view maintenance uses change streams to keep a denormalized read-optimized collection in sync with changes to the normalized source collection — the change stream consumer applies the corresponding transformation to the materialized view whenever a relevant source document changes.',
+        'Full document lookup (via fullDocument: "updateLookup" or "whenAvailable") retrieves the complete current document state alongside an update change event, since the default change event for updates only includes the specific fields that changed, not the full resulting document.',
+        'Change streams require a replica set or sharded cluster (not a standalone MongoDB instance) since they depend on the oplog, which only exists in replicated deployments — a design constraint worth knowing before architecting a system around change streams for local development.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -64,6 +64,24 @@ export class MongoTimeSeries {
         'Use <code>$densify</code> before plotting time series data to avoid gaps in charts that would otherwise show jumps. Use $fill to make sensor readings look continuous during brief outages.',
       ],
     },
+    {
+      heading: 'Time Series Collection Design',
+      points: [
+        'MongoDB time series collections use a specialized internal storage format that automatically buckets related measurements together by time and metadata — dramatically improving both storage efficiency (via compression across similar values) and query performance for time-range queries compared to a regular collection.',
+        'The metaField (identifying which entity a measurement belongs to, like a specific sensor or device) should be chosen carefully — grouping measurements by this field is what enables MongoDB\'s internal bucketing optimization to work effectively, so a good metaField choice groups genuinely related, similarly-timed measurements together.',
+        'Granularity (seconds, minutes, or hours) tells MongoDB the expected time interval between consecutive measurements for the same metaField value, letting it optimize the internal bucket size accordingly — mismatched granularity (declaring "hours" for data actually arriving every second) reduces the effectiveness of the optimization.',
+        'Time series collections integrate with standard aggregation pipeline operators for downsampling and analysis ($group by time bucket, moving averages via window functions) — making them suitable for both raw high-frequency data ingestion and the analytical queries typically run against that data afterward.',
+      ],
+    },
+    {
+      heading: 'Time Series Data Lifecycle Management',
+      points: [
+        'Time series data often needs automatic expiration — configuring a TTL (time-to-live) index or the built-in expireAfterSeconds option on a time series collection automatically removes data older than a retention window, essential for high-volume sensor/metrics data that would otherwise grow unboundedly.',
+        'Downsampling (aggregating high-resolution recent data into lower-resolution historical summaries, like reducing per-second readings to per-hour averages after 30 days) balances storage cost against query needs — recent data typically needs full resolution, while older data is more often queried in aggregate.',
+        'Time series collections have some operational restrictions compared to regular collections (limited update/delete flexibility for individual measurements, no support for certain index types) — worth understanding upfront since they are optimized specifically for high-volume append-only time-stamped data, not general-purpose flexible document storage.',
+        'For genuinely massive time series workloads exceeding what a single MongoDB deployment can handle efficiently, sharding a time series collection by the metaField (distributing different entities\' data across shards) is the standard scaling approach, keeping each entity\'s time-ordered data together on one shard.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -65,6 +65,24 @@ export class MongoSecurity {
         '<strong>Audit logging</strong> (MongoDB Enterprise): logs all authentication attempts, CRUD operations, and administrative actions. Essential for compliance (HIPAA, PCI-DSS, SOC 2). Atlas provides audit logs with configurable filters.',
       ],
     },
+    {
+      heading: 'Role-Based Access Control in MongoDB',
+      points: [
+        'MongoDB\'s built-in roles (read, readWrite, dbAdmin, etc.) provide common permission bundles scoped to a specific database, while custom roles let you define precisely which actions (find, insert, update, specific commands) are permitted on which resources for genuinely fine-grained access control.',
+        'Applying the principle of least privilege means application service accounts should use a role granting only what that specific service actually needs (readWrite on its own database) rather than a broad administrative role — limiting the damage if that service\'s credentials are ever compromised.',
+        'Field-level redaction (via $redact in aggregation pipelines, or Client-Side Field Level Encryption for genuinely sensitive fields) provides an additional layer of protection beyond collection-level access control, ensuring specific sensitive fields remain protected even for principals with broader read access to the collection.',
+        'Auditing (available in MongoDB Enterprise/Atlas) logs authentication attempts, authorization checks, and CRUD operations for compliance and security investigation — essential for regulated industries needing to demonstrate who accessed what data and when.',
+      ],
+    },
+    {
+      heading: 'Network-Level Security Hardening',
+      points: [
+        'Never bind a production MongoDB instance to 0.0.0.0 without a properly configured firewall — the historical wave of publicly-exposed, unauthenticated MongoDB instances being discovered and ransomed by attackers scanning the internet is a well-documented cautionary example of this exact misconfiguration.',
+        'IP allowlisting (restricting which source IP addresses or ranges can even attempt to connect) provides a network-level defense layer before authentication is ever evaluated — MongoDB Atlas requires explicit IP allowlist configuration by default, a deliberately secure-by-default design choice.',
+        'TLS/SSL should be enabled for all MongoDB connections, encrypting data in transit between the application and the database — without it, credentials and query data traverse the network in plaintext, vulnerable to interception on any untrusted network path.',
+        'VPC peering or private network connectivity (rather than exposing the database over the public internet at all, even with IP allowlisting and TLS) is the strongest network security posture for production deployments, eliminating public internet exposure of the database entirely.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

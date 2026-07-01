@@ -78,6 +78,15 @@ export class MongoIndexes {
         '<strong>Index size monitoring</strong>: large indexes that don\'t fit in RAM cause disk I/O on every index lookup — killing performance. Monitor with <code>db.collection.stats().indexSizes</code>. The WiredTiger cache should hold your hot index + working set data.',
       ],
     },
+    {
+      heading: 'Index Selectivity and the ESR Rule',
+      points: [
+        'Index selectivity measures how effectively an index narrows down the result set — a field like a boolean (isActive) has low selectivity (only two possible values), while a field like userId has high selectivity (each value typically matches very few documents), making high-selectivity fields more valuable as leading index keys.',
+        'The ESR rule (Equality, Sort, Range) provides a practical guideline for ordering compound index fields: place equality-filtered fields first, then fields used for sorting, then range-filtered fields last — this ordering lets MongoDB use the index most efficiently for the common combination of filter + sort + range queries.',
+        'An index that is never used by any query still incurs write overhead on every insert/update — regularly reviewing index usage statistics (via $indexStats) and removing genuinely unused indexes is a meaningful, low-risk performance optimization that is often overlooked.',
+        'Index intersection (MongoDB combining two separate single-field indexes to satisfy a query) exists but is generally less efficient than a well-designed compound index covering the same query pattern directly — do not rely on index intersection as a substitute for proper compound index design.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -62,6 +62,24 @@ export class MongoArrayQueries {
         'You can create a multikey index on an array of embedded documents and query specific sub-fields: <code>createIndex({ "items.productId": 1 })</code> indexes the productId field of each element in the items array.',
       ],
     },
+    {
+      heading: 'Positional Operators for Array Updates',
+      points: [
+        'The positional operator $ updates the first array element matching the query filter — useful for updating a specific matched element without knowing its index in advance, such as updating a specific item in a shopping cart array matched by product ID.',
+        'The all-positional operator $[] updates every element in an array uniformly, while the filtered positional operator $[identifier] (combined with arrayFilters) updates only elements matching a specified sub-condition — letting you target a precise subset of array elements in a single update.',
+        'Querying array fields with $elemMatch ensures multiple conditions are satisfied by the SAME array element, rather than potentially matching across different elements — a common and easy-to-miss bug is using separate conditions that unintentionally match different elements of the same array.',
+        '$size queries for arrays of an exact length, but cannot be combined with range operators — for range-based array length queries, a workaround using $expr with $size in an aggregation-style expression, or maintaining a separate denormalized count field, is typically required.',
+      ],
+    },
+    {
+      heading: 'Array Performance Considerations',
+      points: [
+        'Multikey indexes (automatically created when indexing an array field) index each array element individually — this enables efficient querying for documents containing a specific array value, but a compound index cannot have more than one array field, since that would create a combinatorial explosion of index entries.',
+        'Very large arrays (thousands of elements) degrade write performance, since MongoDB must update the multikey index for every affected element on each write — the "unbounded array" anti-pattern is a common MongoDB schema design mistake worth actively watching for during data modeling.',
+        'For arrays that grow unboundedly over time (a log of events, a history of changes), consider the "bucket pattern" — grouping a fixed number of sub-documents per parent document instead of one ever-growing array, keeping individual document sizes bounded and predictable.',
+        'The $push operator with a $slice modifier can automatically cap an array at a maximum length as new elements are added — a practical technique for maintaining a bounded "recent N items" array without a separate cleanup process.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
