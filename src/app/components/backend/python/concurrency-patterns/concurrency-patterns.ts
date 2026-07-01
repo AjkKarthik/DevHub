@@ -71,6 +71,15 @@ export class PythonConcurrencyPatterns {
         'Without ContextVar, you would need to pass the request context as an argument through every function in the call chain. ContextVar threads state implicitly without tight coupling. FastAPI\'s dependency injection and middleware use ContextVar for request-scoped state.',
       ]
     },
+    {
+      heading: 'Choosing Between asyncio, Threading, and Multiprocessing',
+      points: [
+        'asyncio suits I/O-bound workloads with many concurrent waiting operations (network requests, database queries) since a single thread can efficiently juggle thousands of pending awaits without the overhead of OS-level context switching between threads.',
+        'Threading is useful for I/O-bound code interacting with libraries that do not support async (a blocking database driver, a synchronous HTTP client) — the GIL still limits CPU-bound parallelism, but threads waiting on I/O release the GIL, allowing genuine concurrency for that specific workload.',
+        'Multiprocessing is required for genuine CPU-bound parallelism in Python, since the Global Interpreter Lock prevents multiple threads from executing Python bytecode simultaneously — separate processes each get their own interpreter and GIL, achieving true parallel CPU usage at the cost of higher memory overhead and slower inter-process communication.',
+        'Mixing these models incorrectly (using threading for CPU-bound work, expecting it to parallelize) is one of the most common Python performance misconceptions — profiling to confirm whether a workload is I/O-bound or CPU-bound should always precede choosing a concurrency strategy.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

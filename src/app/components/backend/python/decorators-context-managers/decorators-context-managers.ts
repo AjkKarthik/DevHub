@@ -71,6 +71,15 @@ export class PythonDecoratorsContextManagers {
         'Async decorators must return an async function: if the original is async, the wrapper must be defined with async def and use await fn(*args, **kwargs). A sync wrapper wrapping an async function breaks the coroutine protocol.',
       ]
     },
+    {
+      heading: 'Preserving Function Metadata with functools.wraps',
+      points: [
+        'A decorator that wraps a function without using functools.wraps replaces the original function\'s __name__, __doc__, and other metadata with the wrapper\'s own metadata — this silently breaks introspection tools, debuggers, and documentation generators that rely on accurate function metadata.',
+        'functools.wraps(func) applied to the inner wrapper function copies the original function\'s metadata onto the wrapper, ensuring that a decorated function still reports its correct name and docstring when inspected — a small addition that is easy to forget but important for maintainable decorator code.',
+        'Context managers (via the with statement) and decorators solve a related problem — both wrap some behavior around a block of code — and contextlib.contextmanager lets a single generator function implement a context manager without writing a full class with __enter__/__exit__.',
+        'A context manager\'s __exit__ method is guaranteed to run even if an exception occurs inside the with block, making it the correct mechanism for guaranteed cleanup (closing files, releasing locks, rolling back transactions) — code needing this guarantee should not rely on decorators or manual try/finally scattered across call sites.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

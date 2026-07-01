@@ -71,6 +71,15 @@ export class PythonAsyncio {
         'async for and async with work with objects implementing __aiter__/__anext__ and __aenter__/__aexit__. These are the async equivalents of iterator and context manager protocols. Many async libraries (aiohttp, asyncpg, motor) use these protocols: async with aiohttp.ClientSession() as session: async for record in cursor: ...',
       ]
     },
+    {
+      heading: 'Structured Concurrency and Task Groups',
+      points: [
+        'asyncio.TaskGroup (Python 3.11+) provides structured concurrency — all tasks created inside the group block are guaranteed to complete (or be cancelled) before the block exits, and if any task raises, the others are automatically cancelled and the exceptions are collected into an ExceptionGroup.',
+        'Before TaskGroup, asyncio.gather() was the common way to run tasks concurrently, but it does not automatically cancel sibling tasks when one fails unless return_exceptions is handled carefully — a subtle source of resource leaks (unclosed connections, orphaned tasks) in production async code.',
+        'Structured concurrency\'s core guarantee — a task never outlives the scope that created it — makes reasoning about cleanup and cancellation dramatically simpler than manually tracking a flat list of background tasks and forgetting to await or cancel one of them.',
+        'Cancellation in asyncio is cooperative, not preemptive — a task must actually hit an await point to notice it has been cancelled, meaning CPU-bound code inside a coroutine without any awaits cannot be cancelled promptly, a common source of confusion for developers new to asyncio.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

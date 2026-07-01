@@ -71,6 +71,15 @@ export class PythonCelery {
         'Soft time limit: CELERYD_TASK_SOFT_TIME_LIMIT = 300 raises SoftTimeLimitExceeded inside the task at 300 seconds (catchable for cleanup). CELERYD_TASK_TIME_LIMIT = 360 terminates the worker process if the task exceeds 360 seconds (hard kill). Always set time limits in production to prevent stuck tasks from blocking workers.',
       ]
     },
+    {
+      heading: 'Idempotency and At-Least-Once Delivery in Celery',
+      points: [
+        'Celery\'s default delivery guarantee is at-least-once, not exactly-once — a worker crash after executing a task but before acknowledging it can cause the broker to redeliver that task, meaning task logic must be written to be safely re-runnable (idempotent) to avoid duplicate side effects.',
+        'Idempotent task design typically means using a unique identifier (an order ID, a request ID) to check "has this already been processed" before performing a side effect like charging a payment or sending an email, rather than assuming a task body will only ever execute once.',
+        'acks_late=True changes acknowledgment to happen after task completion rather than before execution begins, reducing the window where a crashed worker silently loses a task, but increases the chance of duplicate execution if the worker crashes mid-task — a deliberate tradeoff to configure based on the task\'s actual idempotency guarantees.',
+        'Retries with exponential backoff (rather than immediate, fixed-interval retries) reduce the risk of a struggling downstream service being overwhelmed by a flood of near-simultaneous retry attempts from many failed tasks at once, a pattern especially important at scale.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

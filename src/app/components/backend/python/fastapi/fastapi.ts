@@ -71,6 +71,15 @@ export class PythonFastapi {
         'Performance tips: use async route functions only if you call async libraries (await db.fetch, await redis.get). Using async def with sync blocking calls (requests.get inside async def) BLOCKS the event loop — use run_in_executor. For pure sync code, sync route functions are fine — FastAPI runs them in a thread pool automatically.',
       ]
     },
+    {
+      heading: 'Dependency Injection in FastAPI',
+      points: [
+        'FastAPI\'s Depends() system lets a path operation declare dependencies (a database session, an authenticated user, a shared configuration object) as function parameters — FastAPI resolves and injects these automatically, and dependencies can themselves depend on other dependencies, forming a resolution graph.',
+        'Dependencies are re-evaluated per request by default, but declaring them with a shared cache scope (or using yield-based dependencies for setup/teardown) allows expensive resources like database connections to be created once and properly cleaned up after the request completes, even if an exception occurs.',
+        'This dependency injection design makes testing dramatically easier — FastAPI\'s dependency_overrides mechanism lets tests substitute a real database dependency with an in-memory or mock version without modifying the actual endpoint code at all.',
+        'Overusing dependencies for things that do not need request-scoped resolution (like a pure utility function with no state) adds unnecessary indirection — dependencies are best reserved for genuinely request-scoped concerns like authentication, database sessions, and shared validated query parameters.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

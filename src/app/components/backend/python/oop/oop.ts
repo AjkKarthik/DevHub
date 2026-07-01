@@ -71,6 +71,15 @@ export class PythonOop {
         'Object identity vs equality: is checks identity (same object in memory); == calls __eq__ (logical equality). None is always checked with is None (not == None) because None is a singleton and __eq__ can be overridden to return unexpected values.',
       ]
     },
+    {
+      heading: 'Composition Over Inheritance in Python',
+      points: [
+        'Deep inheritance hierarchies tightly couple subclasses to their parent\'s implementation details, making changes to a base class risk breaking distant subclasses in unexpected ways — a well-known object-oriented design pitfall often summarized as "favor composition over inheritance."',
+        'Composition (a class holding a reference to another class as a field and delegating to it) achieves code reuse without the tight coupling of inheritance, and is generally more flexible since composed components can be swapped at runtime, unlike a fixed inheritance relationship determined at class definition.',
+        'Python\'s support for multiple inheritance (and the Method Resolution Order that governs it) makes deep or wide inheritance hierarchies especially prone to the "diamond problem" and unexpected method resolution — a reason many Python style guides recommend preferring composition or mixins with a single clear purpose.',
+        'Duck typing ("if it walks like a duck and quacks like a duck") means Python code often does not need formal inheritance at all to achieve polymorphism — two unrelated classes implementing the same method signature can often be used interchangeably without sharing any common base class.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

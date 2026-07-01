@@ -71,6 +71,15 @@ export class PythonSqlalchemy {
         'asyncpg is the recommended async driver for PostgreSQL. aiosqlite for SQLite. aiomysql for MySQL. The connection URL changes: postgresql+asyncpg://user:pass@host/db. The sync driver equivalent (psycopg2, sqlite3) cannot be used with async SQLAlchemy.',
       ]
     },
+    {
+      heading: 'Session Lifecycle and the Unit of Work Pattern',
+      points: [
+        'SQLAlchemy\'s Session implements the unit-of-work pattern — changes to tracked objects (attribute updates, new objects added via session.add()) accumulate in memory and are only sent to the database as SQL when session.commit() (or an explicit flush) is called, not immediately on each change.',
+        'A Session should typically be scoped to a single logical unit of work (one web request, one background task) rather than kept alive indefinitely — a long-lived session accumulates an ever-growing identity map of tracked objects, risking stale data and increasing memory usage over time.',
+        'Lazy loading (the default for relationships) triggers a separate query the first time a related object is accessed, which can cause the same N+1 query problem as Django\'s ORM — SQLAlchemy\'s joinedload() and selectinload() options provide the equivalent of select_related/prefetch_related to eliminate it.',
+        'Detached instance errors (accessing a relationship attribute on an object after its session has closed) are a common SQLAlchemy pitfall — either eagerly load needed relationships before the session closes, or keep the session open for as long as the object\'s relationships might be accessed.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

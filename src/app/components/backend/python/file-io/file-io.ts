@@ -71,6 +71,15 @@ export class PythonFileIo {
         'io.StringIO and io.BytesIO create in-memory file-like objects. Use them when an API requires a file but you have a string or bytes: buf = io.StringIO(); csv.writer(buf).writerows(data); content = buf.getvalue(). Useful in tests to avoid touching the filesystem.',
       ]
     },
+    {
+      heading: 'Context Managers Guarantee File Handles Are Closed',
+      points: [
+        'Using with open(path) as f: guarantees the file handle is closed when the block exits, even if an exception occurs inside it — manually calling open() and close() risks leaking the file handle if an exception is raised between the two calls and no try/finally wraps them.',
+        'File handle leaks accumulate silently until the operating system\'s per-process file descriptor limit is hit, at which point subsequent open() calls start failing — a bug that is often invisible in development (few files opened) but surfaces only under sustained production load.',
+        'Reading a very large file entirely into memory with .read() can exhaust available memory — iterating a file object line by line (for line in f) or reading in fixed-size chunks processes the file lazily, keeping memory usage bounded regardless of file size.',
+        'Explicitly specifying encoding="utf-8" when opening text files avoids platform-dependent default encoding behavior — code that omits this can behave correctly on one OS (where the default matches) and silently corrupt non-ASCII text on another OS with a different default encoding.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

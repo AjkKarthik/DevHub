@@ -71,6 +71,15 @@ export class PythonTypeHints {
         'Use # type: ignore[error-code] to suppress specific mypy errors on a line. Plain # type: ignore suppresses all errors on the line — avoid it. cast(T, value) tells mypy to treat value as type T at a specific point — use when you know more than mypy can infer, not to silence errors you should fix.',
       ]
     },
+    {
+      heading: 'Type Hints Are Not Enforced at Runtime',
+      points: [
+        'Python type hints are purely informational by default — the interpreter does not check them at runtime, meaning a function annotated def add(a: int, b: int) -> int will happily accept and "add" two strings without raising any error, unlike statically typed languages where this would be a compile error.',
+        'Static type checkers (mypy, pyright) analyze type hints ahead of time to catch type errors before code runs, but they are a separate tool that must be explicitly run (typically in CI) — a project with type hints but no type checker configured gets essentially none of the safety benefit, only the documentation value.',
+        'Runtime validation libraries like Pydantic bridge this gap by actually enforcing type hints at runtime, raising errors when data does not match declared types — a fundamentally different guarantee than static type hints alone, which is why Pydantic is preferred specifically for validating untrusted external input.',
+        'Gradual typing (mixing typed and untyped code, using Any as an escape hatch) lets a codebase adopt type hints incrementally rather than requiring a disruptive all-at-once rewrite — a practical design choice that has driven type hints\' widespread adoption across the Python ecosystem.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

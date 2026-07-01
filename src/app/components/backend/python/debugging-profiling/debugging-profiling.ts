@@ -71,6 +71,15 @@ export class PythonDebuggingProfiling {
         'Exception context: except Exception as e: raise RuntimeError("context about what was happening") from e — the from e chain preserves the original traceback. rich.traceback.install() makes tracebacks readable in development. Sentry (sentry-sdk) captures exceptions with full context in production. logging.captureWarnings(True) routes Python warnings through logging.',
       ]
     },
+    {
+      heading: 'Profiling Before Optimizing — Avoiding Wasted Effort',
+      points: [
+        'cProfile reveals where a program actually spends its time (function call counts and cumulative time per function) — optimizing code based on intuition alone frequently targets the wrong bottleneck, since the actual slow path is often surprising and only findable through measurement.',
+        'py-spy (a sampling profiler that attaches to a running process without requiring code changes) is particularly valuable for profiling production services, since it can inspect a live process\'s call stack with minimal overhead, unlike cProfile\'s more invasive instrumentation-based approach.',
+        'Memory profiling (tracemalloc, memory_profiler) answers a fundamentally different question than time profiling — a function can be fast but leak memory over many calls, a distinct class of bug that CPU time profiling alone will never reveal.',
+        'The debugger (pdb, or an IDE debugger) is best suited for understanding WHY a specific piece of logic produces an unexpected value, while a profiler is best suited for understanding WHERE time or memory is being spent — conflating these two different debugging goals often leads to using the wrong tool for the problem at hand.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

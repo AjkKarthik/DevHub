@@ -71,6 +71,15 @@ export class PythonComprehensionsGenerators {
         'itertools.combinations(it, r) and permutations(it, r) yield combinatoric tuples lazily. itertools.product(*its) is the Cartesian product. These avoid building large intermediate lists when you only need to process each combination once.',
       ]
     },
+    {
+      heading: 'Comprehensions vs. Generator Expressions — Memory Tradeoffs',
+      points: [
+        'A list comprehension [x for x in range(n)] eagerly builds the entire list in memory immediately, while the equivalent generator expression (x for x in range(n)) produces values lazily, one at a time — for large or unbounded sequences, this difference determines whether code runs at all or crashes with a memory error.',
+        'Generator expressions can only be iterated once — once exhausted, they cannot be reset or reused, unlike a list which can be iterated repeatedly; passing a generator to a function expecting multiple passes over the data is a common source of "why is my second loop empty" bugs.',
+        'Nested comprehensions ([x for row in matrix for x in row]) can become difficult to read past two levels of nesting — at that point, an explicit for loop (or breaking the comprehension into named intermediate steps) usually produces more maintainable code than a further nested comprehension.',
+        'Dict and set comprehensions ({k: v for k, v in pairs}, {x for x in items}) apply the same lazy-vs-eager tradeoffs as list comprehensions, and are generally preferred over building a dict/set imperatively with a loop and repeated .add()/assignment calls when a direct transformation is being expressed.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

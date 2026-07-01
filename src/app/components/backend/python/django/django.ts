@@ -71,6 +71,15 @@ export class PythonDjango {
         'Database optimisation: only fetch needed columns with .values() or .values_list(); add DB indexes on frequently-filtered fields (db_index=True on the model field or Meta.indexes); use .iterator() for large querysets to avoid loading all rows into memory. Use django-debug-toolbar to profile queries in development.',
       ]
     },
+    {
+      heading: 'The N+1 Query Problem and Django ORM Optimization',
+      points: [
+        'The N+1 query problem occurs when a view iterates over a queryset and accesses a related object for each item — Django lazily fetches each related object with a separate query, turning what looks like one query into N+1 total database round-trips for N items.',
+        'select_related() performs a SQL JOIN to fetch related objects (for ForeignKey and OneToOne relationships) in the same query as the main queryset, eliminating the extra per-item queries — the correct fix when the N+1 pattern involves single-valued related objects.',
+        'prefetch_related() handles the equivalent problem for many-to-many and reverse foreign key relationships (where a JOIN would produce duplicate rows), instead running a separate optimized query for the related objects and joining them in Python — a different mechanism for a structurally different relationship type.',
+        'Django Debug Toolbar (or similar query-logging middleware) makes N+1 problems visible during development by showing the actual count and content of SQL queries executed per request — without this visibility, N+1 problems often go unnoticed until they cause real performance issues under production load.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

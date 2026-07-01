@@ -71,6 +71,15 @@ export class PythonDataclassesPydantic {
         'Pydantic models support model_validate_json(json_string) — parse directly from a JSON string, which is faster than json.loads(s) followed by Model.model_validate(d) because Pydantic\'s Rust core handles JSON parsing internally.',
       ]
     },
+    {
+      heading: 'Dataclasses vs. Pydantic — When to Use Which',
+      points: [
+        'The standard library\'s @dataclass generates boilerplate (__init__, __repr__, __eq__) automatically but performs no runtime validation — passing a string where an int is annotated silently succeeds at runtime, since type hints in a dataclass are documentation only, not enforced.',
+        'Pydantic models validate and coerce data at construction time, raising a clear ValidationError immediately if input data does not match the declared types — this makes Pydantic the standard choice for validating external input (API request bodies, config files, environment variables) where data cannot be trusted.',
+        'Pydantic\'s validation overhead makes it a poor fit for extremely hot internal code paths where data is already known to be correct (like passing already-validated data between internal functions) — plain dataclasses (or even plain classes) are more appropriate there, avoiding unnecessary validation cost.',
+        'FastAPI\'s deep integration with Pydantic (automatically generating OpenAPI schema and validating request/response bodies from Pydantic model type hints) is a major reason Pydantic has become the dominant choice for API development in modern Python web frameworks.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

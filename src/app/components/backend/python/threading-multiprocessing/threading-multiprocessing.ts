@@ -71,6 +71,15 @@ export class PythonThreadingMultiprocessing {
         'For shared state across processes, use multiprocessing.Value (shared scalar) and Array (shared array) — they use OS-level shared memory. Or use a Manager() for managed dicts/lists (slower but more flexible). For heavy numerical work, prefer numpy shared memory or process-local computation with result aggregation.',
       ]
     },
+    {
+      heading: 'Race Conditions and Synchronization Primitives',
+      points: [
+        'A race condition occurs when multiple threads access and modify shared state without coordination, and the final result depends on unpredictable timing of thread execution — even Python\'s GIL does not prevent race conditions, since bytecode-level operations can still interleave between threads in ways that corrupt compound operations like "read, modify, write."',
+        'threading.Lock ensures only one thread can execute a critical section at a time — acquiring a lock before modifying shared state and releasing it afterward (typically via a with statement) prevents the interleaving that causes race conditions, at the cost of serializing access to that critical section.',
+        'Deadlock occurs when two or more threads each hold a lock the other needs, causing both to wait forever — a common cause is acquiring multiple locks in inconsistent order across different code paths; always acquiring locks in a consistent, globally-agreed order avoids this class of bug.',
+        'multiprocessing avoids shared-state race conditions entirely for most data, since each process has its own separate memory space — but this means sharing data between processes requires explicit mechanisms (Queue, Pipe, shared memory) rather than simply referencing the same Python objects as threads can.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

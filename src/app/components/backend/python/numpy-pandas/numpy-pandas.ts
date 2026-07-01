@@ -71,6 +71,15 @@ export class PythonNumpyPandas {
         'Use numpy operations on Series/DataFrame when available: df["col"].values gives the underlying NumPy array — use np.log(df["col"].values) instead of df["col"].apply(math.log). .to_numpy() is the explicit 2.0 API. Prefer built-in Pandas string methods (.str.lower()) over apply(lambda x: x.lower()).',
       ]
     },
+    {
+      heading: 'Vectorization — Why NumPy Is Orders of Magnitude Faster',
+      points: [
+        'NumPy operations on arrays are implemented in compiled C code operating on contiguous memory blocks, avoiding the per-element overhead of Python\'s interpreter loop — a vectorized operation on a million-element array can run 10-100x faster than the equivalent pure-Python for loop.',
+        'A Python for loop iterating over a NumPy array element-by-element defeats the entire purpose of using NumPy — each element access re-enters the Python interpreter with its full overhead, making a manually-written loop over a NumPy array often slower than the equivalent operation on a plain Python list.',
+        'Broadcasting lets NumPy perform operations between arrays of different but compatible shapes (like adding a 1D array to each row of a 2D array) without explicitly writing loops or manually replicating data, both simplifying code and avoiding the memory cost of actually duplicating the smaller array.',
+        'Pandas is built on top of NumPy arrays for its underlying storage, meaning the same vectorization principle applies — using pandas\' built-in vectorized operations (.sum(), .apply() with caution, boolean masking) instead of iterating rows with .iterrows() is essential for acceptable performance on non-trivial datasets.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

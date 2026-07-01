@@ -71,6 +71,15 @@ export class PythonFundamentals {
         'Errors should never pass silently — catch specific exceptions, not bare except:. Use logging, not print, in production code. Raise meaningful exceptions with context: raise ValueError(f"Expected positive int, got {value}") from None.',
       ]
     },
+    {
+      heading: 'Mutable vs. Immutable Types and Their Implications',
+      points: [
+        'Python distinguishes mutable types (list, dict, set) from immutable types (int, str, tuple, frozenset) — this distinction determines whether an object can be modified in place or must be replaced with a new object, and affects both correctness and performance in subtle ways.',
+        'Using a mutable default argument (def fn(items=[])) is one of the most common Python bugs — the default list is created once at function definition time and shared across all calls that do not explicitly pass their own list, causing state to unexpectedly leak between unrelated calls.',
+        'Only immutable types can be used as dictionary keys or set members, since hashability requires an object\'s hash value to never change during its lifetime — a mutable list cannot be a dict key, but the equivalent immutable tuple can.',
+        'Understanding mutability is essential for reasoning correctly about function arguments — Python passes references by value, so a mutable argument passed into a function can be modified in place and that change is visible to the caller, while reassigning the parameter name inside the function is not.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

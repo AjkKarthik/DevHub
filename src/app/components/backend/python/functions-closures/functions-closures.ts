@@ -71,6 +71,15 @@ export class PythonFunctionsClosures {
         'global keyword makes a variable reference the module-level name. Avoid using global in production code — it creates invisible dependencies and makes functions hard to test. Prefer passing values explicitly or using class attributes for shared mutable state.',
       ]
     },
+    {
+      heading: 'Closures and the Late-Binding Variable Trap',
+      points: [
+        'A closure captures a reference to a variable, not its value at the time the closure was created — this means a loop creating multiple closures over the same loop variable all end up referencing the final value of that variable once the loop completes, not the value at each iteration.',
+        'The standard fix for this late-binding trap is to capture the current value explicitly via a default argument (lambda x=i: x * 2) — default argument values ARE evaluated at function definition time, providing a way to snapshot the current value into each closure.',
+        'This late-binding behavior is a frequent source of confusing bugs when creating a list of callbacks or handlers in a loop, particularly for developers coming from languages with different closure-capture semantics (capture-by-value rather than capture-by-reference).',
+        'Nonlocal (for enclosing-scope variables in nested functions) and global (for module-level variables) are both required to explicitly permit a nested function to reassign a variable from an outer scope — without them, an assignment inside the nested function creates a new local variable instead of modifying the outer one.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

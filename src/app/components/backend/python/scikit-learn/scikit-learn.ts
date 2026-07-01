@@ -71,6 +71,15 @@ export class PythonScikitLearn {
         'Learning curves: plot_learning_curve shows how training and validation scores change with training set size. If train score >> val score: overfitting — get more data or reduce complexity. If both are low: underfitting — get more features or increase complexity.',
       ]
     },
+    {
+      heading: 'The Train/Test Split and Preventing Data Leakage',
+      points: [
+        'Splitting data into training and test sets before any preprocessing (fitting a scaler, imputing missing values) is essential — fitting a preprocessing step on the full dataset (including test data) leaks information from the test set into training, producing an artificially optimistic and misleading evaluation of model performance.',
+        'scikit-learn\'s Pipeline class combines preprocessing steps and a model into a single object, ensuring that fit() is only ever called on training data and transform() is applied consistently to both training and test data — a structural safeguard against accidentally leaking test data into preprocessing.',
+        'Cross-validation (splitting data into multiple folds and rotating which fold serves as the validation set) gives a more robust estimate of model performance than a single train/test split, since it reduces the risk that an unusually easy or hard random split produces a misleading accuracy figure.',
+        'A model that performs dramatically better on training data than test data (overfitting) has essentially memorized the training data\'s noise rather than learned generalizable patterns — regularization, more training data, or a simpler model are the standard responses to this diagnostic signal.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

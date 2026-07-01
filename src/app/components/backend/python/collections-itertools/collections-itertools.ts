@@ -71,6 +71,15 @@ export class PythonCollectionsItertools {
         'functools.total_ordering fills in missing comparison methods. Define __eq__ and one of __lt__, __le__, __gt__, __ge__ — total_ordering derives the rest. Simpler than defining all six comparison methods, at a small performance cost (each missing method goes through the derived implementation).',
       ]
     },
+    {
+      heading: 'Why the collections and itertools Modules Exist',
+      points: [
+        'collections.Counter, defaultdict, and deque solve extremely common patterns (frequency counting, grouping with a default value, efficient double-ended operations) that would otherwise require repetitive boilerplate using plain dicts and lists — using them signals idiomatic, readable Python.',
+        'deque provides O(1) append and pop from both ends, unlike a plain list where inserting or removing from the front is O(n) — making deque the correct choice for queue-like or sliding-window algorithms where a list would silently degrade performance at scale.',
+        'itertools functions (chain, groupby, product, combinations) are implemented in C and operate lazily, meaning they avoid materializing large intermediate lists in memory — critical for processing large or even infinite iterables efficiently compared to hand-written loops.',
+        'groupby only groups consecutive matching elements — a common bug is expecting it to group all matching elements across an unsorted iterable; the data must be sorted by the grouping key first for groupby to produce the intended grouping.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

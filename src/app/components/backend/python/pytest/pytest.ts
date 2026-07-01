@@ -71,6 +71,15 @@ export class PythonPytest {
         'pytest-factory-boy and faker: factory_boy generates test fixture objects (User factories, Post factories) from model definitions. It integrates with Django ORM and SQLAlchemy. faker generates realistic fake data (names, emails, addresses) for property-based tests and fixtures.',
       ]
     },
+    {
+      heading: 'Fixtures and Test Isolation in pytest',
+      points: [
+        'pytest fixtures provide reusable setup (and automatic teardown, via yield) that can be shared across many tests without copy-pasting setup code — declaring a fixture as a function parameter injects it automatically, and pytest resolves fixture dependencies transitively.',
+        'Fixture scope (function, class, module, session) controls how often a fixture is re-created — a function-scoped fixture guarantees complete test isolation (each test gets a fresh instance) at the cost of re-running potentially expensive setup, while a session-scoped fixture trades some isolation for significant speed on expensive resources like a database connection.',
+        'Tests that share mutable state (through a module or session-scoped fixture without careful reset logic) can produce order-dependent failures — a test passing in isolation but failing when run after another test is a strong signal of an isolation bug, usually traced to state leaking through an improperly-scoped fixture.',
+        'Parametrized tests (@pytest.mark.parametrize) run the same test logic against multiple input/expected-output pairs without duplicating the test function, both reducing boilerplate and making it trivial to add a new edge case to an existing test\'s coverage.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
