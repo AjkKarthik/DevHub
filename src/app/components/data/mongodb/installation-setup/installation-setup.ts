@@ -459,8 +459,8 @@ start();`,
       a: 'The driver waits for <code>serverSelectionTimeoutMS</code> (default 30 seconds) trying to find a suitable server, then throws a <code>MongoServerSelectionError</code>. In production, set <code>serverSelectionTimeoutMS: 5000</code> to fail fast. Wrap queries in try/catch and return 503 to callers. The driver will automatically reconnect and resume queries when MongoDB becomes available again — you don\'t need to re-call connect().',
     },
     {
-      q: 'How do I secure a local MongoDB instance?',
-      a: 'By default, MongoDB Community Edition runs without authentication enabled (bind_ip: localhost only). For any non-localhost access: 1. Enable authentication in mongod.conf: <code>security.authorization: enabled</code>. 2. Create an admin user in mongosh: <code>db.createUser({ user:"admin", pwd:"...", roles:["root"] })</code>. 3. Use TLS: <code>net.tls.mode: requireTLS</code> with a certificate. 4. Restrict bind_ip to specific interfaces. MongoDB Atlas handles all of this automatically.',
+      q: 'If you enable security.authorization: enabled in mongod.conf but have not yet created any user, what happens on the next restart?',
+      a: 'MongoDB starts normally and accepts connections, but every operation requiring authentication will be rejected until a user exists — critically, before enabling authorization for the first time, you must create at least one admin user WHILE still connected without authentication (a brief bootstrap window), because once authorization is enabled with zero users in the system, there is no way to create the first user through normal client authentication — you would need to restart mongod without --auth temporarily to create a user, then re-enable auth. This bootstrap-ordering pitfall (create the admin user BEFORE flipping authorization on, not after) is a common mistake when securing a previously-open local instance.',
     },
     {
       q: 'What is the difference between mongodump and mongoexport?',

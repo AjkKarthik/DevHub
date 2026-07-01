@@ -337,8 +337,8 @@ col.createIndex({ 'items.tags': 1 })`,
       a: 'Yes, but with limitations. Dot notation traverses one level: <code>{ "matrix.0.0": 5 }</code> accesses the first element of the first sub-array. For deeper nesting or multi-condition matching on nested arrays, use aggregation with <code>$unwind</code> (multiple times for multiple levels) followed by a <code>$match</code> stage. The <code>$[]</code> (all positional) and <code>$[id]</code> (filtered positional) update operators handle nested arrays better than queries do.',
     },
     {
-      q: 'When should I use $elemMatch in a projection vs a query?',
-      a: '<strong>In a query</strong>: use $elemMatch in the filter to narrow which documents are returned. The document is only included if at least one array element satisfies all conditions. <strong>In a projection</strong>: use $elemMatch in the second argument to limit which array elements are included in the returned document. The document is always returned (based on the filter), but only the first matching array element is included in the specified field.',
+      q: 'Can you use $elemMatch in BOTH the query filter and the projection of the same find() call, and what does combining them achieve?',
+      a: 'Yes, and combining them is a common pattern: use $elemMatch in the filter to select only documents where at least one array element matches your conditions, and use $elemMatch in the second (projection) argument to return only the FIRST matching element of that array, instead of the entire array. For example, finding orders with a "shipped" item and returning only that shipped item (not every item in the order) requires both: db.orders.find({ items: { $elemMatch: { status: "shipped" } } }, { items: { $elemMatch: { status: "shipped" } } }) — without the projection form, the query would still return the FULL items array, including non-shipped items.',
     },
     {
       q: 'How do I sort by an array field in MongoDB?',

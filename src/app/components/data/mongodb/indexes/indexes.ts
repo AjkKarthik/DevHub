@@ -333,15 +333,15 @@ console.log('Q4 stage:', q4.queryPlanner.winningPlan.inputStage?.stage); // IXSC
       explanation: 'Compound indexes support queries that match any left-most prefix: {a}, {a,b}, {a,b,c}. A query starting with b or c (skipping a) cannot use this index because it doesn\'t match any prefix. You\'d need a separate index starting with b.',
     },
     {
-      q: 'What is a covered query?',
+      q: 'If a covered query\'s projection accidentally includes a field NOT present in the index, what happens?',
       options: [
-        'A query protected by transactions',
-        'A query where all fields are satisfied from the index with no document fetch',
-        'A query covered by a partial filter',
-        'A query that uses all available indexes',
+        'MongoDB throws an error rejecting the query',
+        'MongoDB silently falls back to fetching the full document, losing the covered-query performance benefit entirely — the query still returns correct results, just slower',
+        'The query returns null for the missing field but stays covered',
+        'MongoDB automatically adds the missing field to the index on the fly',
       ],
       answer: 1,
-      explanation: 'A covered query is served entirely from the index — MongoDB doesn\'t need to read the actual documents. All fields in the filter and projection must exist in the index. This is the fastest possible query pattern (totalDocsExamined: 0 in explain output).',
+      explanation: 'Coverage is all-or-nothing: if even one requested field (in the filter OR the projection) is not present in the index being used, MongoDB must fetch the full document from the collection to retrieve that field — this silently downgrades the query from an index-only scan to a full FETCH stage, with no error or warning. This is why explain() should always be checked after writing what you believe is a covered query: a seemingly small projection change (adding one extra field) can quietly undo the performance benefit without any visible symptom besides a slower query.',
     },
     {
       q: 'What does a COLLSCAN in explain output indicate?',
@@ -385,8 +385,8 @@ console.log('Q4 stage:', q4.queryPlanner.winningPlan.inputStage?.stage); // IXSC
       a: 'Every write (insert, update, delete) must update all indexes on the collection. Adding 10 indexes means 10 B-tree updates per write instead of 1 (for the _id index only). On a write-heavy collection (millions of inserts/second), each additional index measurably reduces write throughput. This is the core trade-off: more indexes = faster reads but slower writes. Profile both read and write performance when adding indexes to write-heavy collections.',
     },
     {
-      q: 'What is index intersection?',
-      a: 'Index intersection is MongoDB\'s ability to combine two separate single-field indexes to satisfy a query that touches both fields — without a compound index. Example: with indexes on <code>{ status: 1 }</code> and <code>{ createdAt: -1 }</code>, a query on <code>{ status: "active", createdAt: { $gte: d } }</code> might use both. However, index intersection is generally less efficient than a compound index because it requires an AND_SORTED or AND_HASH operation. Prefer compound indexes for multi-field queries.',
+      q: 'How can you tell from explain() output whether MongoDB actually chose index intersection for a query, versus just using one index and filtering the rest in memory?',
+      a: 'Look for an AND_SORTED or AND_HASH stage in the winningPlan of explain() output — these stage names specifically indicate two index scans being intersected. If instead you see a single IXSCAN stage followed by a FETCH with a filter, MongoDB picked ONE index to narrow the candidate set and then filtered the remaining condition against the fetched documents in memory, which is a different (and usually more common) execution path than true index intersection. Since MongoDB rarely favors intersection over a good compound index or single-index-plus-filter, seeing AND_SORTED/AND_HASH in production explain output is often itself a signal that a compound index covering the query is missing and should be added.',
     },
     {
       q: 'When should I use a wildcard index?',
