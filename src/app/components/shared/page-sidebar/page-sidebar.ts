@@ -461,6 +461,320 @@ const SEC_DEFAULT: SidebarData = {
   ],
 };
 
+const PYTHON_DEFAULT: SidebarData = {
+  apis: ['def / lambda', 'async def / await', 'list/dict/set comprehension', '@dataclass', 'with open() as f', 'try/except/finally'],
+  related: [
+    { label: 'Python Home',     route: '/python' },
+    { label: 'Fundamentals',    route: '/python/fundamentals' },
+    { label: 'Asyncio',         route: '/python/asyncio' },
+    { label: 'Type Hints',      route: '/python/type-hints' },
+  ],
+  tip: 'Never use a mutable default argument (def fn(items=[])) — it is created once at function definition time and shared across every call. Use None and initialize inside the function instead.',
+  docs: [
+    { label: 'Python Docs Home',      url: 'https://docs.python.org/3/' },
+    { label: 'Python Standard Library', url: 'https://docs.python.org/3/library/' },
+    { label: 'PEP 8 Style Guide',      url: 'https://peps.python.org/pep-0008/' },
+  ],
+  resources: [
+    { label: 'Real Python',           url: 'https://realpython.com/', badge: 'blog' },
+    { label: 'python/cpython',        url: 'https://github.com/python/cpython', badge: 'code' },
+  ],
+  gotchas: [
+    'Late-binding closures in a loop all capture the SAME final loop variable, not the value at each iteration — use a default argument to snapshot it.',
+    'Type hints are not enforced at runtime — use Pydantic or a static checker (mypy) to actually validate types.',
+  ],
+};
+
+const NODE_DEFAULT: SidebarData = {
+  apis: ['require()/import', 'async/await', 'EventEmitter', 'fs.promises', 'process.env', 'Buffer'],
+  related: [
+    { label: 'Node.js Home',    route: '/node' },
+    { label: 'Core Modules',    route: '/node/core-modules' },
+    { label: 'Streams',         route: '/node/streams' },
+    { label: 'Security',        route: '/node/security' },
+  ],
+  tip: 'The event loop is single-threaded — a synchronous CPU-bound operation blocks every concurrent request. Offload heavy computation to a worker thread or a separate process.',
+  docs: [
+    { label: 'Node.js Docs Home',     url: 'https://nodejs.org/en/docs' },
+    { label: 'Node.js API Reference', url: 'https://nodejs.org/api/' },
+    { label: 'npm Docs',              url: 'https://docs.npmjs.com/' },
+  ],
+  resources: [
+    { label: 'Node.js Best Practices', url: 'https://github.com/goldbergyoni/nodebestpractices', badge: 'code' },
+    { label: 'Node.js YouTube',        url: 'https://www.youtube.com/@nodejs', badge: 'video' },
+  ],
+  gotchas: [
+    'Unhandled promise rejections crash the process in modern Node — always attach a .catch() or use try/catch with async/await.',
+    'require() caches modules by resolved file path — mutating a required module\'s exports affects every other file that requires it.',
+  ],
+};
+
+const GO_DEFAULT: SidebarData = {
+  apis: ['go func()', 'chan / select', 'defer', 'error interface', 'context.Context', 'sync.WaitGroup'],
+  related: [
+    { label: 'Go Home',         route: '/go' },
+    { label: 'Concurrency',     route: '/go/goroutines-channels' },
+    { label: 'Error Handling',  route: '/go/error-handling' },
+  ],
+  tip: 'A goroutine leak (one that blocks forever on a channel with no reader) is silent — it never panics, it just quietly consumes memory forever. Always give long-running goroutines a context for cancellation.',
+  docs: [
+    { label: 'Go Documentation',   url: 'https://go.dev/doc/' },
+    { label: 'Go Standard Library', url: 'https://pkg.go.dev/std' },
+    { label: 'Effective Go',       url: 'https://go.dev/doc/effective_go' },
+  ],
+  resources: [
+    { label: 'Go by Example',    url: 'https://gobyexample.com/', badge: 'docs' },
+    { label: 'golang/go',        url: 'https://github.com/golang/go', badge: 'code' },
+  ],
+  gotchas: [
+    'A nil interface holding a typed nil pointer is not itself nil — err != nil can be true even when the underlying pointer is nil.',
+    'Loop variable capture in a goroutine closure (pre-Go 1.22) reused the same variable across iterations — always pass it as a parameter or rely on Go 1.22+\'s per-iteration semantics.',
+  ],
+};
+
+const BLAZOR_DEFAULT: SidebarData = {
+  apis: ['@code {}', '[Parameter]', 'StateHasChanged()', 'IJSRuntime', 'EditForm', 'CascadingValue'],
+  related: [
+    { label: 'Blazor Home',       route: '/blazor' },
+    { label: 'Render Modes',      route: '/blazor/render-modes' },
+    { label: 'State Management',  route: '/blazor/state-management' },
+  ],
+  tip: 'In Blazor Server, a Scoped service lives for the entire SignalR circuit (the whole user session), not just one request — a long-lived DbContext registered as Scoped can silently accumulate tracked entities over a long session.',
+  docs: [
+    { label: 'Blazor Docs Home',       url: 'https://learn.microsoft.com/en-us/aspnet/core/blazor/' },
+    { label: 'ASP.NET Core Blazor API', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components' },
+  ],
+  resources: [
+    { label: 'dotnet/aspnetcore',   url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    { label: '.NET YouTube',        url: 'https://www.youtube.com/@dotnet', badge: 'video' },
+  ],
+  gotchas: [
+    'Forgetting StateHasChanged() after updating state from outside Blazor\'s normal event pipeline (a timer callback, a background task) leaves the UI silently stale.',
+    'Components with InteractiveServer/WebAssembly render modes still prerender on the server first by default — code can run twice unless prerendering is explicitly disabled.',
+  ],
+};
+
+const DEVOPS_DEFAULT: SidebarData = {
+  apis: ['docker build/run', 'kubectl apply', 'terraform plan/apply', 'git rebase/merge', 'CI/CD pipeline stages', 'helm install'],
+  related: [
+    { label: 'DevOps Home',    route: '/devops' },
+    { label: 'CI/CD',          route: '/devops/cicd-fundamentals' },
+    { label: 'Containers',     route: '/devops/docker-fundamentals' },
+  ],
+  tip: 'Treat pipeline configuration as code, checked into the same repository as the application — this gives pipeline changes the same review and version history as any other code change.',
+  docs: [
+    { label: 'GitHub Actions Docs',   url: 'https://docs.github.com/en/actions' },
+    { label: 'Docker Docs',           url: 'https://docs.docker.com/' },
+    { label: 'Terraform Docs',        url: 'https://developer.hashicorp.com/terraform/docs' },
+  ],
+  resources: [
+    { label: 'The DevOps Handbook (summary)', url: 'https://itrevolution.com/product/the-devops-handbook-second-edition/', badge: 'blog' },
+    { label: 'CNCF Landscape',                url: 'https://landscape.cncf.io/', badge: 'tool' },
+  ],
+  gotchas: [
+    'A pipeline that passes locally but fails in CI is usually an environment difference (a missing env var, a different tool version) — pin exact tool versions in the pipeline config.',
+    'Secrets committed to a pipeline YAML file are visible in git history forever, even after being "removed" in a later commit — use a secrets manager, never inline values.',
+  ],
+};
+
+const AWS_DEFAULT: SidebarData = {
+  apis: ['aws s3 cp', 'aws lambda invoke', 'IAM policy JSON', 'CloudFormation template', 'aws ec2 describe-instances', 'DynamoDB PutItem/Query'],
+  related: [
+    { label: 'AWS Home',        route: '/aws' },
+    { label: 'IAM',             route: '/aws/iam' },
+    { label: 'Lambda',          route: '/aws/lambda' },
+  ],
+  tip: 'Follow least-privilege from the start — an IAM policy scoped to exactly the actions and resources needed is far easier to audit than starting broad ("*") and trying to narrow it down later.',
+  docs: [
+    { label: 'AWS Documentation',    url: 'https://docs.aws.amazon.com/' },
+    { label: 'AWS Well-Architected',  url: 'https://aws.amazon.com/architecture/well-architected/' },
+  ],
+  resources: [
+    { label: 'AWS Skill Builder',   url: 'https://skillbuilder.aws/', badge: 'docs' },
+    { label: 'aws/aws-cli',         url: 'https://github.com/aws/aws-cli', badge: 'code' },
+  ],
+  gotchas: [
+    'S3 bucket policies and IAM policies are evaluated together — an explicit Deny in either one always wins, regardless of any Allow elsewhere.',
+    'Lambda cold starts on the Consumption-style pricing model can add noticeable latency to the first request after a period of inactivity — Provisioned Concurrency avoids this at a fixed cost.',
+  ],
+};
+
+const AZURE_DEFAULT: SidebarData = {
+  apis: ['az group create', 'ARM/Bicep template', 'az functionapp deploy', 'RBAC role assignment', 'az aks get-credentials', 'Key Vault secret reference'],
+  related: [
+    { label: 'Azure Home',       route: '/azure' },
+    { label: 'Fundamentals',     route: '/azure/fundamentals' },
+    { label: 'RBAC',             route: '/azure/rbac' },
+  ],
+  tip: 'Assign RBAC roles at the narrowest scope that satisfies the actual need (a resource group, not the whole subscription) — this limits the blast radius if that identity is ever compromised.',
+  docs: [
+    { label: 'Azure Documentation',   url: 'https://learn.microsoft.com/en-us/azure/' },
+    { label: 'Azure Architecture Center', url: 'https://learn.microsoft.com/en-us/azure/architecture/' },
+  ],
+  resources: [
+    { label: 'Microsoft Learn',      url: 'https://learn.microsoft.com/en-us/training/azure/', badge: 'docs' },
+    { label: 'Azure/azure-quickstart-templates', url: 'https://github.com/Azure/azure-quickstart-templates', badge: 'code' },
+  ],
+  gotchas: [
+    'Deploying an ARM/Bicep template in Complete mode deletes any resource in the resource group NOT described in the template — Incremental (the default) only adds/modifies.',
+    'A Standard SKU load balancer or public IP has different default behavior (traffic denied by default) than Basic SKU — check SKU-specific defaults before assuming behavior transfers.',
+  ],
+};
+
+const LINUX_DEFAULT: SidebarData = {
+  apis: ['grep/sed/awk', 'systemctl', 'chmod/chown', 'ps/top/htop', 'journalctl', 'ssh/scp'],
+  related: [
+    { label: 'Linux Home',       route: '/linux' },
+    { label: 'File System',      route: '/linux/filesystem-hierarchy' },
+    { label: 'Processes',        route: '/linux/process-management' },
+  ],
+  tip: 'chmod 777 is almost never the right answer — it grants read/write/execute to everyone, including any other user or process on the system. Grant the narrowest permission that actually works.',
+  docs: [
+    { label: 'Linux man pages',       url: 'https://man7.org/linux/man-pages/' },
+    { label: 'Arch Wiki (excellent general reference)', url: 'https://wiki.archlinux.org/' },
+  ],
+  resources: [
+    { label: 'explainshell.com',   url: 'https://explainshell.com/', badge: 'tool' },
+    { label: 'Linux Journey',      url: 'https://linuxjourney.com/', badge: 'blog' },
+  ],
+  gotchas: [
+    'rm -rf on the wrong path is irreversible with no trash/recycle bin by default — double-check the path, especially in a script with a variable that could be empty.',
+    'A background process started in an interactive shell is killed when that shell session ends unless launched with nohup, disown, or a proper service unit.',
+  ],
+};
+
+const TERRAFORM_DEFAULT: SidebarData = {
+  apis: ['terraform init/plan/apply', 'resource "..." "..." {}', 'variable/output blocks', 'terraform state', 'module source', 'terraform import'],
+  related: [
+    { label: 'Terraform Home',   route: '/terraform' },
+    { label: 'Remote State',     route: '/terraform/remote-state' },
+    { label: 'Modules',          route: '/terraform/modules' },
+  ],
+  tip: 'Always run terraform plan and read the diff before apply, especially in a shared environment — a plan showing an unexpected "destroy" for a resource you didn\'t intend to touch is the single most common way teams lose production infrastructure.',
+  docs: [
+    { label: 'Terraform Documentation', url: 'https://developer.hashicorp.com/terraform/docs' },
+    { label: 'Terraform Registry',      url: 'https://registry.terraform.io/' },
+  ],
+  resources: [
+    { label: 'hashicorp/terraform',   url: 'https://github.com/hashicorp/terraform', badge: 'code' },
+    { label: 'HashiCorp Learn',       url: 'https://developer.hashicorp.com/terraform/tutorials', badge: 'docs' },
+  ],
+  gotchas: [
+    'Remote state without locking (no DynamoDB table or equivalent) risks two concurrent applies corrupting the state file — always enable state locking for any shared/team state.',
+    'A resource removed from a .tf file is DESTROYED on the next apply, not just "forgotten" — use terraform state rm if you want Terraform to stop managing it without deleting the real resource.',
+  ],
+};
+
+const K8S_DEFAULT: SidebarData = {
+  apis: ['kubectl apply/get/describe', 'Deployment/Pod/Service', 'ConfigMap/Secret', 'HPA', 'docker build', 'Helm chart'],
+  related: [
+    { label: 'Containers/K8s Home', route: '/containers' },
+    { label: 'Pods & Deployments',  route: '/containers/pods-deployments' },
+    { label: 'Services & Ingress',  route: '/containers/services-ingress' },
+  ],
+  tip: 'kubectl describe pod surfaces the EVENTS for a pod (scheduling failures, image pull errors) — check this before diving into logs, since a pod that never started has no application logs to read.',
+  docs: [
+    { label: 'Kubernetes Documentation', url: 'https://kubernetes.io/docs/home/' },
+    { label: 'Docker Documentation',     url: 'https://docs.docker.com/' },
+  ],
+  resources: [
+    { label: 'kubernetes/kubernetes',   url: 'https://github.com/kubernetes/kubernetes', badge: 'code' },
+    { label: 'Kubernetes YouTube',      url: 'https://www.youtube.com/@kubernetesio', badge: 'video' },
+  ],
+  gotchas: [
+    'A ConfigMap mounted as an environment variable requires a pod restart to pick up changes — mounted as a volume, it updates in-place (with some propagation delay) without a restart.',
+    'Without any NetworkPolicy, Kubernetes allows unrestricted pod-to-pod traffic across the entire cluster by default — a flat, fully open network unless explicitly locked down.',
+  ],
+};
+
+const MESH_DEFAULT: SidebarData = {
+  apis: ['istioctl install', 'VirtualService/DestinationRule', 'Envoy sidecar', 'mTLS PeerAuthentication', 'Gateway resource'],
+  related: [
+    { label: 'Service Mesh Home',  route: '/service-mesh' },
+    { label: 'Istio',              route: '/service-mesh/istio-architecture' },
+    { label: 'Security',           route: '/service-mesh/mtls' },
+  ],
+  tip: 'A service mesh moves cross-cutting communication concerns (retries, mTLS, observability) out of application code and into infrastructure — but the sidecar proxies add real per-pod resource overhead that should be measured before assuming the mesh is "free."',
+  docs: [
+    { label: 'Istio Documentation',   url: 'https://istio.io/latest/docs/' },
+    { label: 'Envoy Proxy Docs',      url: 'https://www.envoyproxy.io/docs' },
+  ],
+  resources: [
+    { label: 'istio/istio',         url: 'https://github.com/istio/istio', badge: 'code' },
+    { label: 'Istio Blog',          url: 'https://istio.io/latest/blog/', badge: 'blog' },
+  ],
+  gotchas: [
+    'Enabling mTLS mesh-wide without a migration period can break traffic from services not yet part of the mesh — use PERMISSIVE mode during rollout, then switch to STRICT.',
+    'A misconfigured VirtualService route can silently blackhole traffic to a service — always verify with a canary/shadow request before rolling a routing change to 100% of traffic.',
+  ],
+};
+
+const SYSDESIGN_DEFAULT: SidebarData = {
+  apis: ['Load Balancer', 'Cache-aside pattern', 'Consistent Hashing', 'CAP theorem', 'Message Queue', 'Rate Limiter'],
+  related: [
+    { label: 'System Design Home',  route: '/system-design' },
+    { label: 'Scalability',         route: '/system-design/horizontal-vertical-scaling' },
+    { label: 'Caching',             route: '/system-design/caching-strategies' },
+  ],
+  tip: 'Start every system design answer with clarifying questions about scale (requests/sec, data size, read/write ratio) — the right architecture for 100 users looks nothing like the right architecture for 100 million.',
+  docs: [
+    { label: 'AWS Architecture Center',   url: 'https://aws.amazon.com/architecture/' },
+    { label: 'Google SRE Book (free)',    url: 'https://sre.google/books/' },
+  ],
+  resources: [
+    { label: 'donnemartin/system-design-primer', url: 'https://github.com/donnemartin/system-design-primer', badge: 'code' },
+    { label: 'High Scalability blog',            url: 'http://highscalability.com/', badge: 'blog' },
+  ],
+  gotchas: [
+    'CAP theorem is about behavior during a network PARTITION specifically — a system is not simply "CP" or "AP" all the time; the tradeoff only manifests when a partition actually occurs.',
+    'Adding a cache does not just add speed — it adds a new failure mode (cache invalidation, stale data) and a new question to answer for every write path: how does the cache stay consistent with the source of truth.',
+  ],
+};
+
+const ARCH_DEFAULT: SidebarData = {
+  apis: ['Bounded Context', 'Aggregate Root', 'Circuit Breaker', 'CQRS Command/Query', 'Outbox Pattern', 'Anti-Corruption Layer'],
+  related: [
+    { label: 'Architecture Patterns Home', route: '/arch-patterns' },
+    { label: 'DDD Core',                   route: '/arch-patterns/ddd-core' },
+    { label: 'Microservices Principles',   route: '/arch-patterns/microservices-principles' },
+  ],
+  tip: 'An aggregate defines a transactional consistency boundary — invariants are enforced WITHIN one aggregate\'s transaction, never spanning multiple aggregates in a single atomic operation. Cross-aggregate consistency needs eventual consistency via domain events instead.',
+  docs: [
+    { label: 'Martin Fowler — Architecture', url: 'https://martinfowler.com/architecture/' },
+    { label: 'Microsoft — Cloud Design Patterns', url: 'https://learn.microsoft.com/en-us/azure/architecture/patterns/' },
+  ],
+  resources: [
+    { label: 'microservices.io',   url: 'https://microservices.io/patterns/index.html', badge: 'docs' },
+    { label: 'Martin Fowler Blog', url: 'https://martinfowler.com/', badge: 'blog' },
+  ],
+  gotchas: [
+    'Splitting into microservices without a genuine driving need (independent scaling, independent deployment cadence) usually adds operational complexity without a corresponding benefit — a modular monolith is often the better starting point.',
+    'A choreographed saga (services reacting to each other\'s events with no central coordinator) becomes genuinely hard to debug as step count grows — orchestration trades some coupling for a single, traceable definition of the overall flow.',
+  ],
+};
+
+const DP_DEFAULT: SidebarData = {
+  apis: ['Factory Method', 'Strategy', 'Observer', 'Decorator', 'Repository', 'Dependency Inversion'],
+  related: [
+    { label: 'Design Patterns Home', route: '/design-patterns' },
+    { label: 'SOLID',                route: '/design-patterns/solid' },
+    { label: 'Singleton',            route: '/design-patterns/singleton' },
+  ],
+  tip: 'Learn the INTENT behind a pattern, not just its structure — Adapter and Facade look structurally similar (both wrap other code behind a simpler interface) but solve different problems: Adapter fixes incompatibility, Facade simplifies complexity.',
+  docs: [
+    { label: 'Refactoring.Guru — Design Patterns', url: 'https://refactoring.guru/design-patterns' },
+    { label: 'Source Making — Design Patterns',    url: 'https://sourcemaking.com/design_patterns' },
+  ],
+  resources: [
+    { label: 'Refactoring.Guru',   url: 'https://refactoring.guru/', badge: 'docs' },
+    { label: 'Martin Fowler Blog', url: 'https://martinfowler.com/', badge: 'blog' },
+  ],
+  gotchas: [
+    'Applying a pattern before the need for its flexibility actually exists (premature abstraction) usually adds indirection without benefit — the "rule of three" (wait for a pattern to repeat) is a useful guard against this.',
+    'Singleton\'s global static access point makes code depending on it hard to unit test — a DI container\'s singleton-scoped registration gives the same "one shared instance" behavior without the global accessor.',
+  ],
+};
+
 export const SIDEBAR_MAP: Record<string, SidebarData> = {
 
   // ── Signals & State ────────────────────────────────────────────────────────
@@ -5428,7 +5742,7 @@ export class PageSidebarComponent {
     this.currentUrl().replace(/^\//, '').split('?')[0]
   );
 
-  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'ai'>(() =>
+  section = computed<'angular' | 'csharp' | 'aspnet' | 'sql' | 'typescript' | 'react' | 'javascript' | 'html' | 'css' | 'security' | 'api-design' | 'observability' | 'mongodb' | 'redis' | 'graphql' | 'messaging' | 'testing-hub' | 'dsa' | 'ai' | 'python' | 'node' | 'go' | 'blazor' | 'devops' | 'aws' | 'azure' | 'linux' | 'terraform' | 'containers' | 'service-mesh' | 'system-design' | 'arch-patterns' | 'design-patterns'>(() =>
     this.currentUrl().startsWith('/csharp')         ? 'csharp'
     : this.currentUrl().startsWith('/aspnet')       ? 'aspnet'
     : this.currentUrl().startsWith('/sql')          ? 'sql'
@@ -5447,6 +5761,20 @@ export class PageSidebarComponent {
     : this.currentUrl().startsWith('/testing-hub')   ? 'testing-hub'
     : this.currentUrl().startsWith('/dsa')           ? 'dsa'
     : this.currentUrl().startsWith('/ai')            ? 'ai'
+    : this.currentUrl().startsWith('/python')        ? 'python'
+    : this.currentUrl().startsWith('/node')          ? 'node'
+    : this.currentUrl().startsWith('/go')            ? 'go'
+    : this.currentUrl().startsWith('/blazor')        ? 'blazor'
+    : this.currentUrl().startsWith('/devops')        ? 'devops'
+    : this.currentUrl().startsWith('/aws')           ? 'aws'
+    : this.currentUrl().startsWith('/azure')         ? 'azure'
+    : this.currentUrl().startsWith('/linux')         ? 'linux'
+    : this.currentUrl().startsWith('/terraform')     ? 'terraform'
+    : this.currentUrl().startsWith('/containers')    ? 'containers'
+    : this.currentUrl().startsWith('/service-mesh')  ? 'service-mesh'
+    : this.currentUrl().startsWith('/system-design') ? 'system-design'
+    : this.currentUrl().startsWith('/arch-patterns') ? 'arch-patterns'
+    : this.currentUrl().startsWith('/design-patterns') ? 'design-patterns'
     : 'angular'
   );
 
@@ -5471,20 +5799,58 @@ export class PageSidebarComponent {
            : this.section() === 'testing-hub'   ? TESTING_DEFAULT
            : this.section() === 'dsa'           ? DSA_DEFAULT
            : this.section() === 'ai'            ? AI_DEFAULT
+           : this.section() === 'python'        ? PYTHON_DEFAULT
+           : this.section() === 'node'          ? NODE_DEFAULT
+           : this.section() === 'go'            ? GO_DEFAULT
+           : this.section() === 'blazor'        ? BLAZOR_DEFAULT
+           : this.section() === 'devops'        ? DEVOPS_DEFAULT
+           : this.section() === 'aws'           ? AWS_DEFAULT
+           : this.section() === 'azure'         ? AZURE_DEFAULT
+           : this.section() === 'linux'         ? LINUX_DEFAULT
+           : this.section() === 'terraform'     ? TERRAFORM_DEFAULT
+           : this.section() === 'containers'    ? K8S_DEFAULT
+           : this.section() === 'service-mesh'  ? MESH_DEFAULT
+           : this.section() === 'system-design' ? SYSDESIGN_DEFAULT
+           : this.section() === 'arch-patterns' ? ARCH_DEFAULT
+           : this.section() === 'design-patterns' ? DP_DEFAULT
            : DEFAULT);
   });
 
   docsHeading = computed(() => {
     switch (this.section()) {
-      case 'csharp':      return '📖 C# Docs';
-      case 'aspnet':      return '📖 ASP.NET Core Docs';
-      case 'sql':         return '📖 SQL Docs';
-      case 'typescript':  return '📖 TypeScript Docs';
-      case 'react':       return '📖 React Docs';
-      case 'javascript':  return '📖 MDN JS Docs';
-      case 'html':        return '📖 MDN HTML Docs';
-      case 'css':         return '📖 MDN CSS Docs';
-      default:            return '📖 Angular Docs';
+      case 'csharp':          return '📖 C# Docs';
+      case 'aspnet':          return '📖 ASP.NET Core Docs';
+      case 'sql':             return '📖 SQL Docs';
+      case 'typescript':      return '📖 TypeScript Docs';
+      case 'react':           return '📖 React Docs';
+      case 'javascript':      return '📖 MDN JS Docs';
+      case 'html':            return '📖 MDN HTML Docs';
+      case 'css':             return '📖 MDN CSS Docs';
+      case 'security':        return '📖 Security Docs';
+      case 'api-design':      return '📖 API Design Docs';
+      case 'observability':   return '📖 Observability Docs';
+      case 'mongodb':         return '📖 MongoDB Docs';
+      case 'redis':           return '📖 Redis Docs';
+      case 'graphql':         return '📖 GraphQL Docs';
+      case 'messaging':       return '📖 Messaging Docs';
+      case 'testing-hub':     return '📖 Testing Docs';
+      case 'dsa':             return '📖 DSA Resources';
+      case 'ai':              return '📖 AI/ML Docs';
+      case 'python':          return '📖 Python Docs';
+      case 'node':            return '📖 Node.js Docs';
+      case 'go':              return '📖 Go Docs';
+      case 'blazor':          return '📖 Blazor Docs';
+      case 'devops':          return '📖 DevOps Docs';
+      case 'aws':             return '📖 AWS Docs';
+      case 'azure':           return '📖 Azure Docs';
+      case 'linux':           return '📖 Linux Docs';
+      case 'terraform':       return '📖 Terraform Docs';
+      case 'containers':      return '📖 Kubernetes/Docker Docs';
+      case 'service-mesh':    return '📖 Service Mesh Docs';
+      case 'system-design':   return '📖 System Design Resources';
+      case 'arch-patterns':   return '📖 Architecture Patterns Docs';
+      case 'design-patterns': return '📖 Design Patterns Docs';
+      default:                return '📖 Angular Docs';
     }
   });
 
