@@ -9432,6 +9432,236 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TLS support must be explicitly enabled and configured — Redis connections are unencrypted by default, a real risk for traffic crossing untrusted networks.',
     ],
   },
+
+  // ── GraphQL: per-page entries ────────────────────────────────────────────────
+  'graphql/fundamentals': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Type System',   route: '/graphql/type-system' },
+      { label: 'Queries',       route: '/graphql/queries' },
+    ],
+    tip: 'GraphQL exposes a SINGLE endpoint that accepts a query describing exactly which fields a client needs — this directly solves REST\'s over-fetching (too much data) and under-fetching (needing multiple round-trips for related data) problems.',
+    gotchas: [
+      'A single GraphQL endpoint makes traditional HTTP-level URL-based caching far harder than REST\'s distinct-URL-per-resource model.',
+      'GraphQL is a QUERY LANGUAGE and execution model, not a database or storage technology — it sits in front of whatever data sources already exist.',
+    ],
+  },
+  'graphql/type-system': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Schema Definition Language', route: '/graphql/schema-definition-language' },
+      { label: 'Fundamentals',               route: '/graphql/fundamentals' },
+    ],
+    tip: 'GraphQL\'s type system is STRICT and self-describing — every field\'s type is known ahead of time, which is what enables tooling like auto-generated documentation, client code generation, and compile-time query validation that a loosely-typed REST/JSON contract cannot provide.',
+    gotchas: [
+      'Non-null (!) fields are a real contract — a resolver that can legitimately return null for a field marked non-null causes a runtime error for the entire query, not just that field.',
+      'Interfaces and unions let a field return one of several possible types, requiring clients to use fragments to access type-specific fields.',
+    ],
+  },
+  'graphql/schema-definition-language': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Type System', route: '/graphql/type-system' },
+    ],
+    tip: 'SDL (Schema Definition Language) is the human-readable contract describing every type, query, and mutation an API supports — schema-first design (writing the SDL before implementation) forces API shape decisions upfront, similar to contract-first REST design with OpenAPI.',
+    gotchas: [
+      'A schema is a living contract — removing or changing a field\'s type is a breaking change for any client that queries it, same as a breaking change in a REST API.',
+      'Comments and descriptions in SDL become part of the auto-generated documentation exposed via introspection — worth keeping meaningful, not just placeholder text.',
+    ],
+  },
+  'graphql/queries': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Variables & Arguments', route: '/graphql/variables-arguments' },
+      { label: 'Mutations',             route: '/graphql/mutations' },
+    ],
+    tip: 'A GraphQL query\'s SHAPE mirrors the shape of its expected response exactly — this predictability is what lets client tooling (like Apollo\'s generated TypeScript types) statically verify a query against the schema before it ever runs.',
+    gotchas: [
+      'Deeply nested queries can accidentally request enormous amounts of data (or trigger expensive nested resolvers) — query depth/complexity limiting protects against this.',
+      'Aliases let the same field be queried multiple times with different arguments in one request — without them, field name collisions in the response would be unavoidable.',
+    ],
+  },
+  'graphql/mutations': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Queries',         route: '/graphql/queries' },
+      { label: 'Client Caching',  route: '/graphql/client-caching' },
+    ],
+    tip: 'Unlike queries, mutations execute SEQUENTIALLY (not in parallel) when multiple mutations appear in one request — this ordering guarantee matters when one mutation\'s effect depends on a previous one in the same request.',
+    gotchas: [
+      'A mutation should return enough data for the client to update its local cache without needing a separate follow-up query — an underspecified mutation response forces extra round-trips.',
+      'GraphQL has no built-in transactional guarantee across multiple mutations in one request — that must be handled at the resolver/business-logic layer if needed.',
+    ],
+  },
+  'graphql/subscriptions': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Mutations',   route: '/graphql/mutations' },
+    ],
+    tip: 'Subscriptions typically run over WebSockets (not plain HTTP like queries/mutations) — this transport difference means subscription support requires additional server and infrastructure configuration beyond a standard HTTP GraphQL endpoint.',
+    gotchas: [
+      'A subscription resolver runs once per PUBLISHED event, not once per client request — understanding this execution model is essential for correct subscription implementation.',
+      'Scaling subscriptions across multiple server instances requires a shared pub/sub backend (Redis, for example) so an event published on one instance reaches subscribers connected to another.',
+    ],
+  },
+  'graphql/variables-arguments': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Queries', route: '/graphql/queries' },
+    ],
+    tip: 'Variables let a query\'s STRUCTURE stay static while its values change per request — this is what allows query strings to be safely cached, parsed once, and reused across many calls, unlike string-interpolating values directly into the query.',
+    gotchas: [
+      'Interpolating raw values directly into a query string (instead of using variables) reintroduces injection-style risk and defeats query caching benefits.',
+      'Default values on variables let a query be called with fewer explicit arguments while still having sensible fallback behavior.',
+    ],
+  },
+  'graphql/directives': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Type System', route: '/graphql/type-system' },
+    ],
+    tip: '@include and @skip let a client conditionally include or exclude fields based on a variable, avoiding the need to maintain multiple near-duplicate query strings for slightly different data needs.',
+    gotchas: [
+      'Custom directives require server-side implementation to actually do anything — declaring one in SDL without implementing its logic is a no-op.',
+      '@deprecated on a schema field surfaces a warning in tooling/introspection without breaking existing clients still using that field.',
+    ],
+  },
+  'graphql/resolvers': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'DataLoader',  route: '/graphql/dataloader' },
+      { label: 'Federation',  route: '/graphql/federation' },
+    ],
+    tip: 'Each field in a GraphQL schema can have its own resolver function — a naive implementation resolving nested/related fields independently triggers the classic N+1 query problem, one database query per resolved field per parent object.',
+    gotchas: [
+      'Resolvers execute in a specific order (parent before children) but sibling field resolvers can run concurrently — don\'t assume sequential execution across unrelated fields.',
+      'A resolver throwing an error partially fails the response (that field becomes null with an error) rather than failing the entire query, unless the field is non-null.',
+    ],
+  },
+  'graphql/dataloader': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Resolvers', route: '/graphql/resolvers' },
+      { label: 'Performance', route: '/graphql/performance' },
+    ],
+    tip: 'DataLoader BATCHES individual load() calls made within the same event-loop tick into a single underlying query, and CACHES results per-request — this is the standard fix for the N+1 problem, transparent to the resolver code that calls it.',
+    gotchas: [
+      'DataLoader\'s cache is scoped to a SINGLE request by default — reusing one DataLoader instance across multiple requests risks serving stale cached data to a different request.',
+      'Batching only works if the underlying data-fetching function accepts an ARRAY of keys and returns results in the SAME order — mismatched ordering silently returns wrong data to the wrong resolver.',
+    ],
+  },
+  'graphql/error-handling': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Resolvers', route: '/graphql/resolvers' },
+    ],
+    tip: 'GraphQL responses can return BOTH data and errors simultaneously in the same response — unlike REST\'s all-or-nothing HTTP status code, a partial success (some fields resolved, others errored) is a normal, expected GraphQL response shape.',
+    gotchas: [
+      'A generic "Internal server error" for every failure hides genuinely useful information from legitimate clients — structured error codes/extensions let clients distinguish error types programmatically.',
+      'Leaking internal error details (stack traces, database errors) in the errors array is the same security risk as leaking them in a REST error response.',
+    ],
+  },
+  'graphql/auth': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Error Handling', route: '/graphql/error-handling' },
+    ],
+    tip: 'Authorization in GraphQL typically happens at the RESOLVER level (per-field), not just at the endpoint level — a single query can touch many resolvers, each of which may need its own authorization check for the specific data it exposes.',
+    gotchas: [
+      'Field-level authorization is easy to forget on newly added fields — a new sensitive field added to an existing type without its own auth check silently becomes accessible to anyone who could already query that type.',
+      'Returning null vs throwing an authorization error for an unauthorized field are different UX/security tradeoffs — decide deliberately, not by default.',
+    ],
+  },
+  'graphql/pagination': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Queries', route: '/graphql/queries' },
+    ],
+    tip: 'Relay-style cursor pagination (edges/node/pageInfo with cursor-based before/after) is the GraphQL community\'s de facto standard — it avoids the same concurrent-insert/delete instability that plain offset-based pagination suffers from in any API style.',
+    gotchas: [
+      'Implementing the full Relay connection spec (edges, cursor, pageInfo.hasNextPage) is more ceremony than a simple limit/offset — worth it specifically for the stability guarantee, not just convention.',
+      'A cursor should be OPAQUE to the client (an encoded token, not a raw offset) so the server can change its underlying pagination mechanism without breaking client cursors.',
+    ],
+  },
+  'graphql/testing': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Error Handling', route: '/graphql/error-handling' },
+    ],
+    tip: 'Testing a GraphQL API benefits from testing at THREE levels — schema validation (does the schema itself compile correctly), resolver unit tests (business logic in isolation), and full query integration tests (the actual request/response shape) — each catches different classes of bugs.',
+    gotchas: [
+      'Snapshot testing entire query responses can become brittle as the schema evolves — targeted assertions on specific fields are often more maintainable.',
+      'Mocking resolvers for testing requires understanding the resolver execution order, since mocked parent resolvers affect what arguments child resolvers receive.',
+    ],
+  },
+  'graphql/performance': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'DataLoader', route: '/graphql/dataloader' },
+    ],
+    tip: 'Query complexity/depth limiting is essential in production GraphQL — without it, a client (malicious or just naive) can construct a deeply nested query that fans out into an enormous number of resolver calls, effectively a self-inflicted denial of service.',
+    gotchas: [
+      'Persisted queries (pre-registering allowed query strings server-side) both improve performance (smaller request payloads) and reduce attack surface by rejecting arbitrary ad-hoc queries.',
+      'Resolver-level caching and DataLoader batching solve different performance problems — caching avoids redundant work, batching avoids the N+1 problem, and most production APIs need both.',
+    ],
+  },
+  'graphql/client-caching': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Apollo Client', route: '/graphql/apollo-client' },
+    ],
+    tip: 'Apollo Client\'s normalized cache stores objects by a computed cache ID (typically __typename + id) — this is what lets a mutation updating one object automatically refresh EVERY query on the page that references that same object, without manual cache-busting.',
+    gotchas: [
+      'Objects without a stable, unique identifier (or a custom cache-key configuration) cannot be normalized correctly, leading to duplicate cache entries for what should be the same object.',
+      'Cache updates after a mutation sometimes require explicit cache.modify() or refetchQueries when the automatic normalization doesn\'t cover a specific update pattern.',
+    ],
+  },
+  'graphql/apollo-client': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Client Caching', route: '/graphql/client-caching' },
+      { label: 'Apollo Server',  route: '/graphql/apollo-server' },
+    ],
+    tip: 'Apollo Client\'s useQuery hook automatically manages loading/error/data state AND deduplicates identical in-flight requests — calling the same query from multiple components simultaneously triggers only one actual network request.',
+    gotchas: [
+      'The fetchPolicy setting (cache-first, network-only, cache-and-network) meaningfully changes whether stale cached data is shown before a network request completes.',
+      'Optimistic responses let the UI update immediately before a mutation completes, but require careful rollback handling if the mutation ultimately fails.',
+    ],
+  },
+  'graphql/apollo-server': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Apollo Client', route: '/graphql/apollo-client' },
+      { label: 'Federation',    route: '/graphql/federation' },
+    ],
+    tip: 'Apollo Server\'s context function runs once PER REQUEST, making it the standard place to instantiate per-request resources (a DataLoader instance, an authenticated user object) that resolvers can then access without global state.',
+    gotchas: [
+      'Sharing a single DataLoader instance across requests (instead of creating one per request in context) reintroduces the cross-request cache-leak risk DataLoader is meant to avoid.',
+      'Apollo Server plugins hook into the request lifecycle for cross-cutting concerns (logging, tracing) similar to middleware in a REST framework.',
+    ],
+  },
+  'graphql/federation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Apollo Server', route: '/graphql/apollo-server' },
+    ],
+    tip: 'Federation lets multiple independently-deployed GraphQL services (subgraphs) compose into ONE unified graph exposed through a gateway — each team owns their subgraph\'s schema and resolvers independently, similar to microservices\' independent-deployability goal applied to GraphQL specifically.',
+    gotchas: [
+      'A type extended across multiple subgraphs (via @key directives) requires careful coordination — a mismatched key definition between subgraphs breaks entity resolution.',
+      'The gateway adds a query-planning step to fan out a client query across the right subgraphs — this adds latency compared to a single monolithic GraphQL server.',
+    ],
+  },
+  'graphql/code-generation': {
+    apis: GQL_DEFAULT.apis, docs: GQL_DEFAULT.docs, resources: GQL_DEFAULT.resources,
+    related: [
+      { label: 'Type System', route: '/graphql/type-system' },
+    ],
+    tip: 'GraphQL Code Generator produces strongly-typed client code (TypeScript types, React hooks) directly FROM the schema and query documents — catching a mismatch between a query\'s requested fields and the schema at BUILD time rather than at runtime.',
+    gotchas: [
+      'Generated types go stale if code generation isn\'t re-run after a schema change — wiring it into the build/CI pipeline avoids silently outdated generated types.',
+      'Overly generic generated types (falling back to any/unknown for complex union/interface cases) can reduce the actual type-safety benefit if not configured carefully.',
+    ],
+  },
 };
 
 @Component({
