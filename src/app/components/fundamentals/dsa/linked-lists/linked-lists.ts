@@ -67,6 +67,15 @@ export class DsaLinkedLists {
         'Palindrome check: find middle, reverse second half, compare both halves.',
       ],
     },
+    {
+      heading: 'Fast and Slow Pointers: The Floyd Cycle Detection Pattern',
+      points: [
+        'The fast-and-slow (tortoise and hare) pointer technique advances one pointer twice as fast as another, allowing cycle detection in O(n) time and O(1) space, without needing a hash set to track visited nodes.',
+        'If a cycle exists, the fast and slow pointers are mathematically guaranteed to meet inside the cycle — the proof relies on the fact that once both pointers enter the cycle, the fast pointer gains one step on the slow pointer per iteration, eventually catching up.',
+        'After detecting a cycle, resetting one pointer to the head and advancing both pointers at the same (slow) speed finds the exact starting node of the cycle — a clever extension of the basic technique frequently asked as a interview follow-up.',
+        'The same fast-and-slow technique finds the middle of a linked list in a single pass (when the fast pointer reaches the end, the slow pointer is at the middle), demonstrating how one core pattern solves multiple seemingly different linked-list problems.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

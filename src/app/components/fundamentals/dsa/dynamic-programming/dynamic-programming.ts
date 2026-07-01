@@ -67,6 +67,15 @@ export class DsaDynamicProgramming {
         'Space optimization: if dp[i] only depends on dp[i-1] and dp[i-2], you only need 2 variables.',
       ],
     },
+    {
+      heading: 'Top-Down Memoization vs. Bottom-Up Tabulation',
+      points: [
+        'Top-down memoization (recursion plus a cache) closely mirrors the natural recursive definition of the problem, making it easier to derive correctly from a brute-force recursive solution, but incurs call-stack overhead and risks stack overflow on deep recursion.',
+        'Bottom-up tabulation (building a table iteratively from base cases upward) avoids recursion entirely and gives explicit control over the order subproblems are solved, typically running faster in practice due to eliminated function-call overhead.',
+        'Bottom-up tabulation more easily enables space optimization — since many DP problems only need the previous row or previous few values, a full 2D table can often be reduced to a rolling array or even a few variables, cutting space from O(n^2) to O(n) or O(1).',
+        'Starting with a correct top-down memoized solution and then converting to bottom-up (once the recurrence and dependencies are well understood) is a common and effective interview strategy, since correctness is easier to establish top-down before optimizing.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

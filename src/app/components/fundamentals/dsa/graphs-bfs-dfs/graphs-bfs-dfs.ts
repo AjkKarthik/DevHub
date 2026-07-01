@@ -67,6 +67,15 @@ export class DsaGraphsBfsDfs {
         'Number of islands, max area of island, rotting oranges, walls and gates all use this pattern.',
       ],
     },
+    {
+      heading: 'When to Choose BFS Over DFS (and Vice Versa)',
+      points: [
+        'BFS explores level by level using a queue, guaranteeing it finds the shortest path in terms of number of edges in an unweighted graph — DFS provides no such guarantee, since it dives deep along one path before backtracking, potentially finding a longer path first.',
+        'DFS uses less memory in the worst case for wide graphs (its stack only needs to hold one root-to-current-node path, versus BFS potentially holding an entire graph "level" in its queue), making DFS preferable for very wide, shallow graphs.',
+        'BFS is the natural choice for shortest-path and "minimum number of steps" problems, while DFS is the natural choice for problems requiring exhaustive exploration of all paths, cycle detection, or topological ordering, where the "shortest" property is irrelevant.',
+        'Both BFS and DFS run in O(V + E) time, so the choice between them in practice is driven by which traversal order the specific problem requires (level-by-level vs. deep-then-backtrack), not by any performance difference between the two.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

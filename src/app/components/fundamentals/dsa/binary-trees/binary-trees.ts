@@ -67,6 +67,15 @@ export class DsaBinaryTrees {
         'Trust the recursion: assume left/right subtrees are correct, combine for root.',
       ],
     },
+    {
+      heading: 'Choosing Between Recursive and Iterative Tree Traversals',
+      points: [
+        'Recursive traversals (inorder, preorder, postorder) map directly to the tree\'s natural recursive structure and are easier to write and reason about, but each recursive call consumes stack frame space, risking a stack overflow on very deep or unbalanced trees.',
+        'Iterative traversals using an explicit stack avoid the call-stack depth limit entirely, trading code simplicity for control over memory usage — a meaningful consideration when processing trees with unknown or potentially unbounded depth in production systems.',
+        'Level-order traversal (breadth-first) fundamentally requires a queue rather than a stack, since it must process all nodes at one depth before moving to the next, unlike depth-first traversals that dive to a leaf before backtracking.',
+        'Morris traversal achieves inorder traversal in O(1) extra space by temporarily modifying the tree\'s structure (creating and removing threaded links) rather than using a stack or recursion, an advanced technique worth knowing for space-constrained interview follow-up questions.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

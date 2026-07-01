@@ -67,6 +67,15 @@ export class DsaTrie {
         'Space: O(alphabet_size × total_nodes) for array; O(total_characters_inserted) for map.',
       ],
     },
+    {
+      heading: 'When a Trie Outperforms a Hash Set for String Problems',
+      points: [
+        'A trie supports prefix-based queries (find all words starting with a given prefix, or check if any word has a given prefix) in time proportional to the prefix length — a hash set cannot answer these prefix queries efficiently at all, requiring a full scan of all stored strings.',
+        'Autocomplete and typeahead search features are natural applications of tries, since they fundamentally require "find all entries matching this prefix" — the exact query pattern a trie is structurally optimized for, unlike hash-based or sorted-array alternatives.',
+        'A trie\'s memory usage can exceed that of a hash set when stored strings share few common prefixes, since each unique character path requires its own node — the space efficiency of a trie depends heavily on how much prefix-sharing exists in the actual dataset.',
+        'Compressed tries (radix trees / Patricia tries), which merge chains of single-child nodes into a single edge labeled with a substring, address the memory overhead of a naive trie while preserving the same prefix-query performance characteristics.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

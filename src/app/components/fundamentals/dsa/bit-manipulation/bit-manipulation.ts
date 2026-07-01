@@ -67,6 +67,15 @@ export class DsaBitManipulation {
         'Subset enumeration using bitmask: O(2^n) states, each examined in O(1) — used in DP on subsets.',
       ],
     },
+    {
+      heading: 'Why Bit Manipulation Tricks Matter Beyond Micro-Optimization',
+      points: [
+        'Bitwise operations run in constant time directly on hardware registers, making bit-manipulation solutions to problems like "find the single non-duplicate element" genuinely faster in practice than hash-set-based alternatives, not just theoretically equivalent.',
+        'Bitmasks provide a compact way to represent sets of boolean flags or small finite sets (like "which of 20 items are selected") using a single integer, enabling O(1) set operations (union, intersection) via bitwise AND/OR instead of iterating collections.',
+        'Bitmask dynamic programming (representing visited-state as a bitmask, as in the traveling salesman problem) is a standard advanced technique for problems with a small number of discrete elements (typically under 20-25) where tracking subsets efficiently is required.',
+        'Understanding two\'s complement representation is essential for correctly reasoning about right-shift behavior on negative numbers and bitwise NOT — a frequent source of subtle bugs for developers unfamiliar with how negative integers are actually stored in binary.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

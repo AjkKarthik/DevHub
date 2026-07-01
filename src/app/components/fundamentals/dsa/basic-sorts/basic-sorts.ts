@@ -67,6 +67,15 @@ export class DsaBasicSorts {
         'In interviews, you\'re expected to know these, but always mention you\'d use a built-in O(n log n) sort in production.',
       ],
     },
+    {
+      heading: 'Why Basic Sorts Still Matter Despite Being Asymptotically Worse',
+      points: [
+        'Insertion sort outperforms O(n log n) algorithms like merge sort or quicksort on small arrays (typically under 10-20 elements) due to lower constant-factor overhead, which is why many production sort implementations switch to insertion sort as a base case for small subarrays.',
+        'Insertion sort is adaptive — its running time approaches O(n) on nearly-sorted input, since few or no swaps are needed, making it a good choice for data that is already mostly ordered, such as incrementally appending new elements to a maintained sorted list.',
+        'Bubble sort and selection sort are rarely used in production code due to their consistent O(n^2) behavior even on nearly-sorted data, but they remain useful teaching tools because their mechanics are the simplest to trace by hand and reason about.',
+        'Understanding basic sorts builds the intuition (comparisons, swaps, invariants maintained across passes) needed to analyze and debug more advanced algorithms, which is why interviewers often start with these before moving to merge sort or quicksort questions.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

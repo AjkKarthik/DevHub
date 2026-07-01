@@ -67,6 +67,15 @@ export class DsaHeaps {
         'Get median: O(1) peek; Insert: O(log n).',
       ],
     },
+    {
+      heading: 'Heaps for Top-K and Streaming Problems',
+      points: [
+        'A min-heap of size K is the standard technique for finding the K largest elements in a stream — maintaining a heap of only K elements (popping the smallest whenever the heap exceeds size K) achieves O(n log K) time, meaningfully better than sorting the entire stream at O(n log n).',
+        'Two heaps (a max-heap for the lower half and a min-heap for the upper half of seen values) is the classic pattern for finding the running median of a data stream, allowing O(log n) insertion and O(1) median retrieval at any point.',
+        'A heap only guarantees the root is the min (or max) — it does NOT provide a fully sorted order for the remaining elements, meaning heap-based priority queues cannot be used to look up arbitrary ranks efficiently, unlike a balanced BST.',
+        'Building a heap from an unsorted array via heapify runs in O(n) (not O(n log n) as a naive analysis might suggest), because most nodes in a heap are near the bottom and require very little sift-down work — a classic and frequently misunderstood complexity result.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

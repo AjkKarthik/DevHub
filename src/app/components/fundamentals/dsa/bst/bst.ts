@@ -67,6 +67,15 @@ export class DsaBst {
         'This catches cases where a node in the left subtree is greater than an ancestor.',
       ],
     },
+    {
+      heading: 'Self-Balancing BSTs and Why Plain BSTs Are Not Enough',
+      points: [
+        'A plain BST built from sorted or nearly-sorted input degenerates into a linked list, giving O(n) worst-case search/insert/delete instead of the expected O(log n) — this is precisely why interviewers ask "what happens if you insert 1,2,3,4,5 in order" as a follow-up.',
+        'Self-balancing BSTs (AVL trees, red-black trees) maintain a height invariant through rotations performed during insertion and deletion, guaranteeing O(log n) height regardless of insertion order — the mechanism underlying most production ordered-map implementations.',
+        'Red-black trees favor faster insertion/deletion (fewer rotations) at the cost of a slightly less strictly balanced tree compared to AVL trees, which is why most standard library ordered containers (like C++ std::map or Java TreeMap) use red-black trees rather than AVL trees.',
+        'Recognizing when a plain (non-self-balancing) BST is acceptable — when insertion order is guaranteed random or when the dataset is small and static — versus when a self-balancing variant is necessary is a key practical judgment call beyond simply implementing the basic operations.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

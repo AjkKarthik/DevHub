@@ -66,6 +66,15 @@ export class DsaGraphAlgorithms {
         'Union-Find: adding an edge where both endpoints have the same root creates a cycle.',
       ],
     },
+    {
+      heading: 'Choosing the Right Shortest-Path Algorithm',
+      points: [
+        'Dijkstra\'s algorithm finds shortest paths from a single source in graphs with non-negative edge weights in O((V+E) log V) using a priority queue, but produces incorrect results if any edge has a negative weight, since it greedily finalizes distances without revisiting them.',
+        'Bellman-Ford handles negative edge weights correctly (and can detect negative-weight cycles) at the cost of higher O(V*E) time complexity, making it the necessary choice specifically when negative weights are present, despite being asymptotically slower than Dijkstra.',
+        'Floyd-Warshall computes all-pairs shortest paths in O(V^3), which is more efficient than running Dijkstra from every vertex individually when the graph is dense or when all-pairs distances (not just single-source) are actually needed.',
+        'A* extends Dijkstra with a heuristic function estimating remaining distance to the target, allowing it to explore far fewer nodes in practice for single-target pathfinding (like game AI or map navigation) while still guaranteeing optimality when the heuristic is admissible.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

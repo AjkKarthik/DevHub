@@ -57,6 +57,24 @@ export class DsaDoublyLinkedLists {
         'This pattern appears in LRU cache, browser history, and undo/redo implementations.',
       ],
     },
+    {
+      heading: 'When Doubly Linked Lists Outperform Singly Linked Lists',
+      points: [
+        'The extra "previous" pointer in a doubly linked list enables O(1) removal of a node given only a reference to that node (no traversal from the head required), whereas a singly linked list needs O(n) traversal to find the preceding node before it can be unlinked.',
+        'Doubly linked lists support O(1) traversal in both directions, making them the natural backing structure for an LRU cache (moving a recently-accessed node to the front requires both forward and backward pointer updates) and for browser back/forward history navigation.',
+        'The memory overhead of the extra pointer per node (typically doubling the pointer storage compared to a singly linked list) is the tradeoff for this bidirectional and O(1)-removal capability — a real cost that matters in memory-constrained environments.',
+        'Deque (double-ended queue) implementations in most standard libraries use a doubly linked list (or a related structure) specifically because it provides O(1) insertion and removal from both ends, a guarantee a singly linked list cannot offer for the tail end.',
+      ],
+    },
+    {
+      heading: 'Sentinel Nodes Simplify Doubly Linked List Edge Cases',
+      points: [
+        'Using dummy/sentinel head and tail nodes (permanent nodes that are never removed, holding no real data) eliminates the need for special-case null checks when inserting or removing at the boundaries of the list, since every real node always has a valid previous and next neighbor.',
+        'Without sentinels, insertion and removal code must branch on "is this the head" or "is this the tail" as special cases — sentinel nodes unify these into the same code path as any interior node, meaningfully reducing bugs from forgotten edge cases.',
+        'The LRU cache pattern almost universally uses sentinel head/tail nodes in its doubly linked list implementation specifically because it simplifies the "move to front" and "evict from back" operations into uniform, edge-case-free logic.',
+        'The tradeoff for sentinel nodes is a small constant amount of extra memory (two always-allocated dummy nodes) in exchange for meaningfully simpler and less error-prone insertion/removal code — a favorable tradeoff in almost all practical implementations.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

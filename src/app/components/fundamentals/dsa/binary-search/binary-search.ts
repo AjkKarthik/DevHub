@@ -67,6 +67,15 @@ export class DsaBinarySearch {
         'With duplicates: arr[lo] === arr[mid] is ambiguous — increment lo to break the tie.',
       ],
     },
+    {
+      heading: 'Binary Search Beyond Simple Sorted Arrays',
+      points: [
+        'Binary search generalizes beyond finding an exact value in a sorted array — it applies to any monotonic predicate (a function whose answer flips from false to true exactly once across the search space), enabling "binary search on the answer" patterns for optimization problems.',
+        'Binary search on the answer works by searching over a range of possible answers (not array indices) and using a feasibility check at each midpoint to decide which half to discard — commonly used for problems like "minimum capacity to ship packages within D days."',
+        'Off-by-one errors are the most common bug in binary search implementations — deciding whether the search range should be [low, high] or [low, high) and correctly updating low/high on each iteration requires careful, deliberate reasoning rather than pattern-matching from memory.',
+        'Binary search requires random access to elements in O(1) time to achieve its O(log n) complexity — applying it to a linked list (which lacks O(1) random access) degrades to O(n log n) overall, since each "jump to the middle" step itself costs O(n).',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
