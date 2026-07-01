@@ -45,6 +45,24 @@ export class HtmlInputTypes {
     {
       heading: 'Min/Max',
       points: ['min="1"', 'max="10"', 'Limits the value to a range for numeric and date inputs.']
+    },
+    {
+      heading: 'Choosing the Right Input Type for Mobile Keyboards',
+      points: [
+        'Setting the correct <code>type</code> attribute automatically triggers the appropriate on-screen keyboard on mobile — <code>type="email"</code> shows an @ key, <code>type="tel"</code> shows a numeric phone keypad, <code>type="url"</code> shows a keyboard optimized for URL entry with easy access to "/" and ".com".',
+        'Using <code>type="text"</code> everywhere and relying only on <code>inputmode</code> (a separate attribute controlling just the keyboard layout without semantic type validation) is a common but incomplete pattern — semantic types provide both the right keyboard AND built-in browser validation, which <code>inputmode</code> alone does not.',
+        'For inputs that are numeric-looking but not actually numbers for calculation purposes (a credit card number, a ZIP/postal code, a phone number), prefer <code>type="text" inputmode="numeric"</code> over <code>type="number"</code> — this gives the numeric keyboard without number-specific browser behaviors like spinner arrows or scientific notation that make no sense for these fields.',
+        'Testing input types on real mobile devices (not just browser dev tools device emulation) is important — actual on-screen keyboard behavior can differ between what desktop emulation shows and what a real iOS/Android keyboard actually renders for a given input type.',
+      ]
+    },
+    {
+      heading: 'Input Type Browser Support and Graceful Fallback',
+      points: [
+        'Not all input types are supported identically across browsers — older browsers that do not recognize a newer type (like <code>type="color"</code> or <code>type="week"</code>) automatically fall back to rendering it as <code>type="text"</code>, a built-in graceful degradation with zero extra code needed.',
+        'This fallback behavior means it is always safe to use newer, more specific input types even without checking browser support tables first — worst case, an unsupported browser shows a plain text field, which is exactly the same as not using the specific type at all.',
+        'Client-side validation attributes (<code>required</code>, <code>pattern</code>, <code>min</code>/<code>max</code>) degrade the same way — an unsupported browser simply does not enforce that particular constraint client-side, which is why server-side validation must never be skipped regardless of what client-side HTML attributes claim to enforce.',
+        'Testing across at least one older/less common browser (or using a tool like BrowserStack) during development catches cases where a form relies too heavily on a specific input type\'s validation behavior without a server-side safety net.',
+      ]
     }
   ];
 

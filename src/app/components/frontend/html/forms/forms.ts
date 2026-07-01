@@ -80,6 +80,24 @@ export class HtmlForms {
         'Style invalid inputs with <code>:invalid</code> and <code>:valid</code> CSS pseudo-classes — but only show errors after user interaction using <code>:user-invalid</code> (modern browsers).',
       ]
     },
+    {
+      heading: 'Form Submission and Data Encoding',
+      points: [
+        'The <code>method</code> attribute determines how data is sent: GET appends form data as a URL query string (visible in the URL, bookmarkable, but limited in length and unsuitable for sensitive data); POST sends data in the request body (not visible in the URL, no practical length limit).',
+        'The <code>enctype</code> attribute controls encoding: the default <code>application/x-www-form-urlencoded</code> works for simple text fields; <code>multipart/form-data</code> is required whenever the form includes a file input, since binary file data cannot be URL-encoded.',
+        'The <code>name</code> attribute (not <code>id</code>) is what determines the key used when form data is submitted — a common beginner mistake is setting only an <code>id</code> and wondering why the field never appears in the submitted data.',
+        'FormData API (<code>new FormData(formElement)</code>) lets JavaScript read all form fields (including files) without manually querying each input — the standard approach for submitting forms via fetch() without a full page reload.',
+      ]
+    },
+    {
+      heading: 'Client-Side vs Server-Side Validation',
+      points: [
+        'Client-side validation (HTML5 constraint validation, JavaScript) improves user experience by giving immediate feedback before a network round trip — but it can always be bypassed by a user disabling JavaScript, using browser dev tools, or sending a raw HTTP request directly.',
+        'Server-side validation is mandatory for security and data integrity — client-side validation is a UX convenience, never a security boundary. Any data received by the server must be re-validated regardless of what the client claims to have already checked.',
+        'A well-designed form validates on both sides: client-side for instant feedback and a smooth experience, server-side as the actual authoritative check that protects the database and business logic from malformed or malicious input.',
+        'Accessible validation error messages should be programmatically associated with their field (via <code>aria-describedby</code>) and announced to screen reader users — a red border alone communicates nothing to someone who cannot see color.',
+      ]
+    },
   ];
 
   codeTabs: CodeTab[] = [
