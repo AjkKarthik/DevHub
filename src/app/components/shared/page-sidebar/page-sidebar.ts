@@ -7207,6 +7207,267 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Dead-lettering to a storage account is essential for auditability — without it, undeliverable events are silently dropped after retries.',
     ],
   },
+
+  // ── AI/ML: per-page entries ─────────────────────────────────────────────────
+  'ai/ml-fundamentals': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Math for ML',        route: '/ai/math-for-ml' },
+      { label: 'Linear/Logistic Regression', route: '/ai/linear-logistic-regression' },
+    ],
+    tip: 'Feature engineering often matters more than algorithm choice for classical ML — domain knowledge translated into features frequently improves performance more than switching between comparable algorithms.',
+    gotchas: [
+      'Feature scaling is required for distance-based algorithms (k-NN, SVM) and gradient-based optimization — skipping it lets larger-range features dominate unfairly.',
+      'A mutable default argument bug is a classic Python trap that also silently corrupts ML pipeline code reusing config objects across calls.',
+    ],
+  },
+  'ai/math-for-ml': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'ML Fundamentals',   route: '/ai/ml-fundamentals' },
+      { label: 'Neural Networks',   route: '/ai/neural-networks' },
+    ],
+    tip: 'Matrix multiplication\'s parallelizability across many data points at once is precisely why GPUs — built for parallel matrix operations — dramatically accelerate ML training and inference.',
+    gotchas: [
+      'Gradients (partial derivatives) are the mathematical foundation of how neural networks learn via backpropagation and the chain rule.',
+      'Eigenvalues/eigenvectors underlie PCA, revealing directions of greatest variance for dimensionality reduction.',
+    ],
+  },
+  'ai/linear-logistic-regression': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'ML Fundamentals',    route: '/ai/ml-fundamentals' },
+      { label: 'Decision Trees',     route: '/ai/decision-trees' },
+    ],
+    tip: 'L1 (lasso) regularization can shrink some weights to EXACTLY zero, performing automatic feature selection; L2 (ridge) shrinks all weights toward zero without eliminating any — pick based on whether feature selection is actually desired.',
+    gotchas: [
+      'Without regularization, a model with many correlated features can develop wildly large coefficients that fit training noise rather than genuine signal.',
+      'Regularization strength requires tuning via cross-validation — too much underfits, too little fails to prevent overfitting.',
+    ],
+  },
+  'ai/decision-trees': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Gradient Boosting', route: '/ai/gradient-boosting' },
+      { label: 'Clustering',        route: '/ai/clustering' },
+    ],
+    tip: 'An unconstrained tree can split until every leaf has one training example — perfect training accuracy while memorizing noise. Pruning (pre or post) trades some training accuracy for better generalization.',
+    gotchas: [
+      'Ensembles (random forests, gradient boosting) largely superseded single trees precisely because they address overfitting more robustly.',
+      'Post-pruning can find a better bias-variance tradeoff than pre-pruning since it evaluates actual branch usefulness rather than guessing limits upfront.',
+    ],
+  },
+  'ai/gradient-boosting': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Decision Trees', route: '/ai/decision-trees' },
+    ],
+    tip: 'Random forests build trees independently and average (reducing variance); gradient boosting builds trees SEQUENTIALLY, each correcting the previous ensemble\'s residual errors (reducing bias) — this is why it often wins tabular-data competitions.',
+    gotchas: [
+      'Gradient boosting is more prone to overfitting than random forests without careful regularization (learning rate, depth, early stopping).',
+      'Sequential training cannot be parallelized across trees the way random forest trees can, meaning generally longer training time.',
+    ],
+  },
+  'ai/clustering': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Decision Trees',  route: '/ai/decision-trees' },
+    ],
+    tip: 'K-means requires specifying K in advance — the elbow method and silhouette score are two common heuristics for estimating a reasonable value when the "correct" number of clusters is not known ahead of time.',
+    gotchas: [
+      'DBSCAN and hierarchical clustering don\'t require specifying K, but introduce their own hyperparameters (epsilon, linkage) requiring similar tuning judgment.',
+      'The real test of a clustering result is whether the discovered groups are meaningful for the actual business question, not just the metric score.',
+    ],
+  },
+  'ai/neural-networks': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Math for ML',        route: '/ai/math-for-ml' },
+      { label: 'Transformers',       route: '/ai/transformers' },
+    ],
+    tip: 'Vanishing gradients (shrinking toward zero across many layers) and exploding gradients (growing uncontrollably) are both failure modes from repeated multiplication during backpropagation — ReLU, batch norm, and residual connections were each developed to combat this.',
+    gotchas: [
+      'ReLU largely replaced sigmoid/tanh in hidden layers specifically because it doesn\'t saturate for positive inputs, mitigating vanishing gradients.',
+      'Residual (skip) connections enable training much deeper networks than were previously practical.',
+    ],
+  },
+  'ai/transformers': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Neural Networks', route: '/ai/neural-networks' },
+      { label: 'LLM Fundamentals', route: '/ai/llm-fundamentals' },
+    ],
+    tip: 'Self-attention computes relationships between all sequence positions simultaneously via matrix operations, allowing full parallelization during training — RNNs process step-by-step, preventing this parallelism, which is why transformers train dramatically faster.',
+    gotchas: [
+      'The tradeoff for parallelism and long-range modeling is quadratic computational cost in sequence length — a driver of ongoing research into efficient long-context transformers.',
+      'RNNs struggle to retain far-earlier information in long sequences; self-attention directly connects every position to every other regardless of distance.',
+    ],
+  },
+  'ai/llm-fundamentals': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Transformers',        route: '/ai/transformers' },
+      { label: 'Prompt Engineering',  route: '/ai/prompt-engineering' },
+    ],
+    tip: 'LLMs process text as TOKENS (subword units), not characters or whole words — this is why they historically struggled at tasks like counting letters, since a word may split into tokens that don\'t align with its individual characters.',
+    gotchas: [
+      'Different tokenizers produce different token counts for the same text, directly affecting API cost (billed per token) and context-window usage.',
+      'Rare words or non-English text often tokenize into MORE tokens than common English, a real cost consideration for non-English applications.',
+    ],
+  },
+  'ai/prompt-engineering': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'LLM Fundamentals', route: '/ai/llm-fundamentals' },
+      { label: 'RAG',              route: '/ai/rag' },
+    ],
+    tip: 'Chain-of-thought prompting (asking the model to reason step-by-step before answering) measurably improves accuracy on multi-step reasoning tasks by giving the model computational "space" to work through intermediate steps.',
+    gotchas: [
+      'Prompt engineering is empirical, not purely theoretical — the same prompt can behave differently across model versions and providers.',
+      'Few-shot examples often improve consistency far more than lengthy prose instructions alone.',
+    ],
+  },
+  'ai/rag': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Vector Databases',   route: '/ai/vector-databases' },
+      { label: 'Prompt Engineering', route: '/ai/prompt-engineering' },
+    ],
+    tip: 'Chunk size trades precision against context — very small chunks retrieve precisely but may lack surrounding context; overlapping chunks reduce the risk that relevant information falls exactly at a chunk boundary.',
+    gotchas: [
+      'Naive fixed-length chunking can split a sentence mid-thought — semantic/structure-aware chunking retrieves more coherent context.',
+      'Chunking strategy is genuinely dataset-specific — what works for short FAQ entries may perform poorly on long technical documents.',
+    ],
+  },
+  'ai/vector-databases': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'RAG', route: '/ai/rag' },
+    ],
+    tip: 'Approximate nearest-neighbor algorithms (HNSW, IVF) trade a small amount of retrieval accuracy for dramatically faster query times at scale — exact search scales linearly and becomes impractical for millions of vectors.',
+    gotchas: [
+      'HNSW\'s ef_construction and M parameters directly control the speed-accuracy-memory tradeoff — tune to the application\'s actual recall requirements.',
+      'HNSW has become a popular default across many vector database implementations due to its favorable speed-accuracy balance.',
+    ],
+  },
+  'ai/fine-tuning': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Evaluating LLMs',  route: '/ai/evaluating-llms' },
+      { label: 'Prompt Engineering', route: '/ai/prompt-engineering' },
+    ],
+    tip: 'Fine-tuning is appropriate for teaching a model a specific STYLE or FORMAT — it is a poor tool for injecting new factual knowledge, which RAG handles far more reliably.',
+    gotchas: [
+      'Prompt engineering and RAG should typically be exhausted before reaching for fine-tuning, given its curation, compute, and maintenance cost.',
+      'A fine-tuned model must be re-evaluated whenever the underlying base model is upgraded — a maintenance cost easy to underestimate.',
+    ],
+  },
+  'ai/evaluating-llms': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Fine-Tuning', route: '/ai/fine-tuning' },
+      { label: 'MLOps',       route: '/ai/mlops' },
+    ],
+    tip: 'LLM-as-judge scales better than human evaluation, but introduces its own biases — pair it with periodic human calibration rather than trusting scores blindly, since open-ended outputs rarely have a single correct answer.',
+    gotchas: [
+      'No single automated metric (BLEU/ROUGE, exact-match, RAGAS) captures overall usefulness — production pipelines typically combine several.',
+      'Evaluation must be re-run whenever the model, prompt, or retrieval pipeline changes, not treated as a one-time check.',
+    ],
+  },
+  'ai/mlops': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Evaluating LLMs', route: '/ai/evaluating-llms' },
+      { label: 'Responsible AI',  route: '/ai/responsible-ai' },
+    ],
+    tip: 'Data drift (input distribution changes) and concept drift (the relationship between input and outcome itself changes) are distinct problems — both cause a deployed model to silently degrade without any code changes.',
+    gotchas: [
+      'A model serving predictions doesn\'t fail loudly like a crashing service — without monitoring prediction distributions, degradation can go unnoticed for weeks.',
+      'Automated retraining triggered by detected drift addresses the reality that models require ongoing maintenance, unlike "finished" traditional software.',
+    ],
+  },
+  'ai/responsible-ai': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'MLOps',           route: '/ai/mlops' },
+      { label: 'Evaluating LLMs', route: '/ai/evaluating-llms' },
+    ],
+    tip: 'Bias audits should evaluate performance across demographic subgroups on held-out data BEFORE deployment — bias introduced at multiple stages (training data, proxy features, evaluation metrics) means auditing only final output misses root causes upstream.',
+    gotchas: [
+      'Fairness metrics (demographic parity, equalized odds) can mathematically conflict — satisfying one can worsen another, requiring an explicit, documented choice.',
+      'Post-deployment monitoring should track outcome disparities over time, since bias can emerge or worsen as the production population diverges from training data.',
+    ],
+  },
+  'ai/computer-vision': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Neural Networks', route: '/ai/neural-networks' },
+    ],
+    tip: 'Transfer learning (fine-tuning a model pre-trained on a large dataset) achieves strong results with a fraction of the data and compute a from-scratch model would need — a standard default rather than an optimization.',
+    gotchas: [
+      'Data augmentation (crops, flips, color jitter) reduces overfitting risk when labeled image data is scarce, the common case in most real applications.',
+      'Choosing an appropriate pre-trained backbone balances accuracy against inference latency and model size — the largest model isn\'t always right for constrained deployment.',
+    ],
+  },
+  'ai/hugging-face': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Transformers',      route: '/ai/transformers' },
+      { label: 'Fine-Tuning',       route: '/ai/fine-tuning' },
+    ],
+    tip: 'The transformers library abstracts architecture-specific details behind a consistent API (AutoModel, AutoTokenizer), letting you swap between fundamentally different architectures (BERT, GPT, T5) with minimal code changes.',
+    gotchas: [
+      'Model cards document training data and known limitations — critical for responsibly choosing a model, not optional metadata.',
+      'The Hub\'s standardized conventions turned "find and load a pre-trained model" from research-paper-code-hunting into a few lines of standard code.',
+    ],
+  },
+  'ai/ai-engineering': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'AI Agents',           route: '/ai/ai-agents' },
+      { label: 'Prompt Engineering',  route: '/ai/prompt-engineering' },
+    ],
+    tip: 'AI engineering focuses on integrating existing foundation models (prompt design, retrieval, evaluation, deployment) rather than training new models from scratch — a meaningfully different skill set from traditional ML research.',
+    gotchas: [
+      'Evaluation is a first-class engineering concern, not an afterthought, since LLM outputs are non-deterministic and quality is often subjective.',
+      'Design for model-swappability — hardcoding assumptions about a specific model\'s quirks creates technical debt as newer models become available.',
+    ],
+  },
+  'ai/ai-agents': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'AI Engineering',    route: '/ai/ai-engineering' },
+      { label: 'Prompt Engineering', route: '/ai/prompt-engineering' },
+    ],
+    tip: 'An agent with tool access can take real, irreversible actions — a hallucinated plan can cause actual damage, not just a wrong text response, which is why human-in-the-loop checkpoints matter for high-stakes actions.',
+    gotchas: [
+      'Scoped, least-privilege tool access limits the blast radius of a bad agent decision, following the same principle as least-privilege in traditional security.',
+      'Agent loops without a clear termination condition (max steps, max cost) can run indefinitely on a stuck plan, silently consuming cost.',
+    ],
+  },
+  'ai/ai-dotnet': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'AI Engineering', route: '/ai/ai-engineering' },
+    ],
+    tip: 'Semantic Kernel provides a provider-agnostic abstraction over multiple LLM providers plus plugin/function-calling orchestration — useful when an app needs to remain provider-agnostic; calling the SDK directly is simpler for single-provider needs.',
+    gotchas: [
+      'Adopting Semantic Kernel for a simple single-call use case adds unnecessary abstraction overhead without proportional benefit.',
+      'The planner/plugin system enables complex agentic workflows that would need significantly more hand-rolled orchestration otherwise.',
+    ],
+  },
+  'ai/interview-prep': {
+    apis: AI_DEFAULT.apis, docs: AI_DEFAULT.docs, resources: AI_DEFAULT.resources,
+    related: [
+      { label: 'Evaluating LLMs',  route: '/ai/evaluating-llms' },
+      { label: 'Responsible AI',   route: '/ai/responsible-ai' },
+    ],
+    tip: 'Interviewers commonly probe GIL implications for concurrency, mutable defaults, and shallow-vs-deep copying — being able to explain WHY unexpected behavior happens demonstrates deeper fluency than just writing correct code.',
+    gotchas: [
+      'System design questions increasingly weight practical judgment (how to structure a RAG pipeline, how to avoid N+1 queries) alongside pure algorithmic questions.',
+      'Complexity analysis of common data structure operations is frequently tested since choosing the wrong one is a common source of accidental performance bugs.',
+    ],
+  },
 };
 
 @Component({
