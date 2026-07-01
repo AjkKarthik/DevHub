@@ -72,9 +72,18 @@ export class MessagingFundamentals {
         'DLQ (Dead Letter Queue): destination for unprocessable messages — always configure one',
       ],
     },
+    {
+      heading: 'Why Asynchronous Messaging Decouples Services',
+      points: [
+        'Synchronous request-response coupling means the caller blocks until the callee responds, and the caller directly experiences the callee\'s latency and availability problems — a slow or down downstream service directly degrades the calling service.',
+        'Asynchronous messaging inserts a durable broker between producer and consumer, meaning the producer can continue even if the consumer is temporarily slow or unavailable — the broker buffers messages until the consumer catches up.',
+        'This decoupling extends to deployment and scaling independence — a producer and consumer connected via a message broker can be deployed, scaled, and even rewritten independently, as long as the message contract between them stays stable.',
+        'The tradeoff for this decoupling is added complexity (eventual consistency instead of immediate confirmation, and the need for monitoring/observability across an asynchronous boundary) — not every interaction benefits from asynchronous messaging, and synchronous calls remain appropriate when an immediate response is genuinely required.',
+      ],
+    },
   ];
 
-  codeTabs: CodeTab[] = [
+   codeTabs: CodeTab[] = [
     {
       label: 'Node.js — amqplib (RabbitMQ)',
       language: 'typescript',

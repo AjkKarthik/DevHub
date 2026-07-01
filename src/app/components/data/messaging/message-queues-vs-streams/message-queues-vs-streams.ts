@@ -60,6 +60,24 @@ export class MessageQueuesVsStreams {
         'Hybrid: use Kafka for the event backbone, project into per-service queues for task workers.',
       ]
     },
+    {
+      heading: 'Message Lifetime: Consumed-and-Gone vs. Retained Log',
+      points: [
+        'Traditional message queues typically delete a message once it has been successfully consumed and acknowledged — the queue is a transient buffer, not a durable historical record of what happened.',
+        'Streaming platforms like Kafka retain messages for a configured retention period (or indefinitely with compaction) regardless of consumption — multiple independent consumers can each read the same message at different times without one consumer\'s reading affecting another\'s ability to read it later.',
+        'This retention difference is why streams support replaying historical data (reprocessing the last 24 hours of events after a bug fix) while traditional queues generally cannot — once a queue message is consumed and deleted, it is gone.',
+        'Choosing between them should be driven by whether the actual use case needs a transient work-distribution buffer (queue) or a durable, replayable event log that multiple independent consumers can process at their own pace (stream).',
+      ],
+    },
+    {
+      heading: 'Consumption Models: Competing Consumers vs. Consumer Groups',
+      points: [
+        'Traditional queues typically use a competing-consumers model — each message is delivered to exactly ONE consumer among a pool, distributing work across multiple worker instances processing the same logical queue.',
+        'Streaming platforms support BOTH patterns simultaneously — different consumer groups each independently receive a full copy of every message (broadcast), while consumers WITHIN a single group compete for partitions (work distribution) — a more flexible model than a queue\'s single consumption pattern.',
+        'This dual capability lets a single Kafka topic serve multiple independent downstream systems (an analytics pipeline, a notification service, an audit log) simultaneously, something that typically requires fan-out infrastructure on top of a traditional single-consumption queue.',
+        'Understanding which consumption model a given technology actually provides prevents architectural mistakes — assuming a queue supports multiple independent full-copy consumers (when it does not) leads to designs where different consumers unintentionally compete for and consume each other\'s messages.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

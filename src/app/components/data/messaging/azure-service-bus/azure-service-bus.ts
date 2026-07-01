@@ -61,6 +61,24 @@ export class AzureServiceBus {
         'Sessions require EnabledForSessions=true on the queue/subscription.',
       ]
     },
+    {
+      heading: 'Sessions and Ordered Delivery in Service Bus',
+      points: [
+        'Service Bus sessions group related messages (all messages for a given order ID, for example) and guarantee they are delivered in order to a single consumer at a time — without sessions, Service Bus makes no ordering guarantee across concurrent consumers.',
+        'A session-enabled queue requires the consumer to explicitly accept a session before receiving its messages, and only one consumer can hold a given session at a time — this serializes processing per session while still allowing different sessions to be processed in parallel.',
+        'Sessions add meaningful latency and complexity compared to non-session queues, so they should be used specifically when true per-entity ordering matters, not applied as a default to every queue regardless of whether ordering is actually a requirement.',
+        'Duplicate detection (enabled via a duplicate-detection window) works alongside sessions to catch redelivered messages within a configurable time window, complementing rather than replacing consumer-side idempotency for messages arriving outside that window.',
+      ],
+    },
+    {
+      heading: 'Topics and Subscriptions for Pub/Sub Patterns',
+      points: [
+        'Service Bus topics let multiple independent subscriptions each receive a copy of every published message — each subscription behaves like its own queue with its own filter rules, enabling true publish-subscribe patterns beyond simple point-to-point queues.',
+        'SQL-like filter expressions on a subscription let it receive only messages matching specific criteria (a property value, a custom header), avoiding the need for every subscriber to receive and then discard irrelevant messages.',
+        'Auto-forwarding lets a subscription automatically forward matching messages to another queue or topic, enabling multi-stage routing topologies without requiring an intermediate consumer to manually relay messages.',
+        'Choosing between a single topic with multiple filtered subscriptions versus multiple separate topics depends on whether the different consumer groups genuinely need independent lifecycle management (dead-lettering, scaling) or simply different message subsets.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

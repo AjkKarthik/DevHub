@@ -60,6 +60,24 @@ export class RabbitMqCore {
         'Without prefetch, one slow consumer can receive the entire queue backlog and stall.',
       ]
     },
+    {
+      heading: 'Publisher Confirms and Consumer Acknowledgments',
+      points: [
+        'Publisher confirms let a producer know the broker has actually accepted and persisted a message, providing a delivery guarantee beyond simply calling publish() and assuming success — without confirms, a network issue could silently drop a published message.',
+        'Manual consumer acknowledgment (ack) tells RabbitMQ a message was successfully processed and can be removed from the queue — auto-ack (acknowledging immediately on delivery, before processing) risks losing messages if the consumer crashes mid-processing.',
+        'Negative acknowledgment (nack) with requeue=false routes a message to a dead-letter exchange instead of endlessly redelivering a message the consumer cannot successfully process — without this, a permanently failing message can loop indefinitely between redelivery and failure.',
+        'Prefetch count (QoS) limits how many unacknowledged messages a consumer can have outstanding at once, preventing a single slow consumer from being overwhelmed with more in-flight messages than it can reasonably track and process.',
+      ],
+    },
+    {
+      heading: 'Durability: Persistent Messages and Durable Queues',
+      points: [
+        'A queue must be declared durable (surviving a broker restart) AND messages must be marked persistent (delivery_mode=2) for messages to survive a RabbitMQ broker restart — missing either half of this pairing means messages can still be lost on restart despite appearing "durable."',
+        'Persistent messages are written to disk before being acknowledged to the publisher, trading some throughput for durability — this is a deliberate tradeoff that should be made per-queue based on whether that queue\'s messages can tolerate loss on broker restart.',
+        'Mirrored/quorum queues replicate queue contents across multiple broker nodes, protecting against a single node failure in addition to protecting against a full-cluster restart — durability alone does not protect against a node crash if that queue is not also replicated.',
+        'Transient (non-durable) queues and non-persistent messages are appropriate for genuinely disposable data (like real-time metrics where losing a few recent updates on a broker restart is acceptable) where the throughput gain outweighs the durability cost.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

@@ -55,6 +55,24 @@ export class MessagingSecurity {
         'Audit logging: log every produce, consume, and admin API call with principal, IP, and timestamp for compliance.',
       ]
     },
+    {
+      heading: 'Encryption in Transit and at Rest for Message Brokers',
+      points: [
+        'TLS encryption in transit protects messages from interception as they travel between producers, brokers, and consumers — many managed messaging services enable TLS by default, but self-hosted brokers often require explicit configuration to enforce it.',
+        'Encryption at rest protects stored message data (broker disk, retained logs) from unauthorized access if the underlying storage is compromised — particularly important for brokers retaining messages for extended periods, like Kafka\'s default retention.',
+        'Field-level (payload) encryption, where sensitive fields within a message are encrypted by the producer before sending, protects against exposure even to the broker operator itself — a stronger guarantee than transport/storage encryption alone for highly sensitive data.',
+        'Key management for message encryption must account for key rotation — messages encrypted with an old key must remain decryptable by consumers even after keys rotate, requiring either key versioning or a transition period supporting both old and new keys.',
+      ],
+    },
+    {
+      heading: 'Authentication and Authorization for Message Brokers',
+      points: [
+        'SASL and mTLS (mutual TLS) are the common authentication mechanisms for verifying a producer or consumer\'s identity before allowing it to connect to a broker — an unauthenticated broker connection is a significant security gap in any production messaging system.',
+        'ACLs (access control lists) restrict WHICH topics/queues a given authenticated identity can produce to or consume from — without them, any authenticated client could read or write to any topic, violating the principle of least privilege.',
+        'Service-to-service messaging in a microservices architecture still needs per-service authorization, not just perimeter network security — a compromised service should not automatically gain access to every topic simply because it is inside the network perimeter.',
+        'Audit logging of who accessed which topics and when is essential for detecting unauthorized access after the fact, particularly in regulated industries where message content may include sensitive personal or financial data.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

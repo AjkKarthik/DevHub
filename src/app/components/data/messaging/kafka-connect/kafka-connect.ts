@@ -60,6 +60,24 @@ export class KafkaConnect {
         'Chain multiple SMTs in order; they are applied sequentially to each record.',
       ]
     },
+    {
+      heading: 'Source Connectors vs. Sink Connectors',
+      points: [
+        'Source connectors pull data FROM an external system (a database, a file, a SaaS API) INTO Kafka topics, converting the external system\'s data model into Kafka records — commonly used for CDC (change data capture) from a relational database.',
+        'Sink connectors push data FROM Kafka topics INTO an external system (a data warehouse, a search index, a file store), letting downstream systems consume Kafka data without each needing custom Kafka consumer code.',
+        'Kafka Connect\'s distributed mode runs connectors across a cluster of worker nodes with automatic task rebalancing, providing fault tolerance and horizontal scalability that a hand-rolled point-to-point integration script would not have.',
+        'Using pre-built, well-tested connectors (from Confluent Hub or similar) for common integrations (Debezium for CDC, JDBC sink for databases) avoids reinventing integration logic that has already been solved and hardened by the broader ecosystem.',
+      ],
+    },
+    {
+      heading: 'Exactly-Once Semantics in Kafka Connect',
+      points: [
+        'Achieving exactly-once delivery through a connector requires both the connector\'s offset-tracking mechanism and the target system\'s write semantics to cooperate — a sink connector writing to a system without idempotent or transactional writes cannot guarantee exactly-once end-to-end regardless of Kafka\'s own guarantees.',
+        'Source connectors achieving exactly-once typically rely on the source system providing a reliable position/offset mechanism (a database\'s transaction log position) that can be atomically committed alongside the produced Kafka records.',
+        'Kafka Connect\'s framework-level exactly-once support (available for source connectors since Kafka 3.3) still depends on individual connector implementations correctly participating in the transactional protocol — not every connector automatically gains this guarantee.',
+        'For sink connectors, idempotent writes at the target system (upserts keyed by a unique field, rather than blind appends) are often a more practical path to effectively-once processing than relying purely on Kafka-side delivery guarantees.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

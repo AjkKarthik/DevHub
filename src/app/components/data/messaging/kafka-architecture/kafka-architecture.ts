@@ -60,6 +60,24 @@ export class KafkaArchitecture {
         'Rebalancing occurs when consumers join or leave the group; partitions are reassigned automatically.',
       ]
     },
+    {
+      heading: 'Log Compaction vs. Retention-Based Deletion',
+      points: [
+        'Standard Kafka retention deletes messages after a configured time or size limit regardless of content — appropriate for event streams where only recent history matters, like application logs or metrics.',
+        'Log compaction instead retains only the LATEST value for each message key, deleting older values for the same key — appropriate for topics representing current state (like a changelog of "current value of account X") rather than a pure event history.',
+        'Compacted topics are commonly used to back Kafka Streams\' internal state stores and KTables, since they naturally represent "current state per key" rather than an ever-growing unbounded event log.',
+        'Choosing the wrong retention strategy for a topic\'s actual use case — compacting an event-history topic, or time-deleting a current-state topic — silently loses data the consuming application actually needed.',
+      ],
+    },
+    {
+      heading: 'Why Kafka Achieves High Throughput',
+      points: [
+        'Kafka writes sequentially to disk (append-only log) rather than performing random-access writes, which — combined with OS page cache and zero-copy transfer — allows it to achieve throughput closer to sequential disk I/O speeds than typical random-access database throughput.',
+        'Batching (producers accumulating multiple messages before sending, consumers fetching multiple records per request) amortizes network round-trip overhead across many messages, significantly improving effective throughput compared to sending one message per request.',
+        'Partitioning distributes a topic\'s load across multiple brokers and disks, meaning throughput scales roughly linearly with partition count (up to the limits of the cluster) rather than being bottlenecked by a single machine\'s disk or network capacity.',
+        'Kafka\'s zero-copy optimization (transferring data directly from page cache to network socket without copying through application memory) reduces CPU overhead per message, a significant factor at the high message volumes Kafka is designed to handle.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

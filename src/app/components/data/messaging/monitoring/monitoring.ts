@@ -58,6 +58,24 @@ export class MonitoringMessaging {
         'Set CloudWatch/Azure Monitor alarms on DLQ depth > 0 and queue depth > threshold for all production queues.',
       ]
     },
+    {
+      heading: 'Consumer Lag as the Primary Health Signal',
+      points: [
+        'Consumer lag (the gap between the latest produced offset and the consumer\'s current committed offset) is the single most important health metric for a message-driven system — growing lag means consumers are falling behind producers, a leading indicator of downstream problems.',
+        'A small, stable, or oscillating lag is generally healthy — a continuously growing lag indicates either insufficient consumer capacity for current throughput, or a consumer that has effectively stalled and needs investigation.',
+        'Lag alone does not distinguish between "processing slowly" and "completely stuck" — combining lag monitoring with per-message processing time and error rate metrics gives a fuller picture of whether the system needs more consumers or has an actual bug.',
+        'Alerting on absolute lag thresholds without considering normal traffic patterns produces noisy false alarms during expected traffic spikes — alerting on the RATE of lag growth (or lag relative to typical throughput) is usually a more reliable signal.',
+      ],
+    },
+    {
+      heading: 'Distributed Tracing Across Asynchronous Message Boundaries',
+      points: [
+        'Unlike synchronous HTTP calls where a trace context propagates naturally through a single request-response chain, an asynchronous message boundary breaks the direct call chain — trace context must be explicitly propagated through message headers for end-to-end tracing to work.',
+        'Without explicit trace propagation, a request that fans out through several message queues appears as disconnected, unrelated traces in an observability tool, making it far harder to diagnose which stage of an asynchronous pipeline a slow or failed request actually got stuck in.',
+        'Correlation IDs (a simpler alternative to full distributed tracing) let logs across producer and consumer services be grouped together for a given logical request, even without a full tracing infrastructure in place.',
+        'Instrumenting message processing time and success/failure per consumer, tagged with the originating trace or correlation ID, is what actually enables root-causing a slow or failed end-to-end flow that spans multiple asynchronous hops.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

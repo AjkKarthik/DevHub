@@ -60,6 +60,24 @@ export class MessageOrdering {
         'For delayed or missing events, apply a grace period (e.g., 5 seconds) before processing with incomplete ordering.',
       ]
     },
+    {
+      heading: 'Total Order vs. Partial Order Guarantees',
+      points: [
+        'Total ordering (a single global sequence across all messages) is expensive to guarantee at scale, since it requires funneling all messages through a single ordered channel, eliminating the parallelism that makes distributed messaging systems scale.',
+        'Partial ordering (messages ordered only within a partition, shard, or key) is the practical compromise most systems (Kafka partitions, SQS FIFO message groups) adopt — strict order is preserved only for messages that are causally or logically related.',
+        'Choosing the right partition/ordering key is the critical design decision — partitioning by entity ID (like customer ID or order ID) preserves ordering for events that matter to be ordered relative to each other, while allowing full parallelism across different entities.',
+        'A system that claims global ordering but is actually only partition-ordered can produce subtle bugs if consumers assume stronger guarantees than the system actually provides — the ordering scope must be clearly understood and documented, not assumed.',
+      ],
+    },
+    {
+      heading: 'Reordering Risks During Retries and Rebalancing',
+      points: [
+        'Producer-side retries (a failed send being automatically retried) can reorder messages relative to a subsequent successful send if retries are not carefully sequenced — max.in.flight.requests.per.connection=1 (at some throughput cost) prevents this specific reordering in Kafka.',
+        'Consumer group rebalancing (partitions reassigned to different consumer instances) does not itself reorder messages within a partition, but can cause a brief processing pause and requires careful offset-commit handling to avoid reprocessing or skipping messages around the rebalance boundary.',
+        'Out-of-order delivery from a queue with multiple concurrent consumers (even within a single logical stream) is expected behavior for most queue systems unless a specific ordering mechanism (FIFO queues, single-partition consumption) is explicitly used.',
+        'Applications requiring strict ordering must design specifically for it (single consumer per ordering key, idempotent and order-tolerant processing where full ordering cannot be guaranteed) rather than assuming a messaging system provides ordering it does not actually guarantee.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

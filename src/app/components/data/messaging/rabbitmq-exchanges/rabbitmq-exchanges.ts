@@ -60,6 +60,24 @@ export class RabbitMqExchanges {
         'Most flexible exchange type — subsumes direct (exact match) and fanout (# binding).',
       ]
     },
+    {
+      heading: 'Choosing the Right Exchange Type for the Routing Need',
+      points: [
+        'Direct exchanges route a message to queues bound with an EXACT matching routing key — appropriate for simple point-to-point or categorized routing where the routing decision is a single exact string match.',
+        'Topic exchanges route based on WILDCARD pattern matching against the routing key (using * and # wildcards), enabling flexible hierarchical routing (like "orders.usa.*" matching any US order type) that a direct exchange\'s exact matching cannot express.',
+        'Fanout exchanges ignore the routing key entirely and broadcast every message to ALL bound queues — the simplest option when every consumer needs every message, without any content-based routing logic required.',
+        'Headers exchanges route based on message header attributes rather than the routing key at all — useful when routing decisions depend on multiple independent attributes rather than a single hierarchical string, though less commonly used than the other three types.',
+      ],
+    },
+    {
+      heading: 'Exchange-to-Exchange Bindings for Complex Topologies',
+      points: [
+        'RabbitMQ allows binding one exchange to another exchange (not just to queues), enabling multi-stage routing topologies where a message can be evaluated by multiple routing rules in sequence before finally landing in a queue.',
+        'This pattern is useful for separating routing CONCERNS — an outer exchange might route by tenant/region, while an inner exchange per tenant further routes by message type, keeping each exchange\'s routing rules focused and manageable.',
+        'Overly deep exchange-to-exchange chains can make the overall routing topology hard to reason about and debug — each additional hop adds latency and complexity, so this pattern should be reserved for genuinely complex routing needs, not applied by default.',
+        'Visualizing and documenting the exchange topology (which exchanges bind to which, and under what routing keys) becomes increasingly important as exchange-to-exchange bindings grow, since RabbitMQ itself provides limited built-in topology visualization for complex setups.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

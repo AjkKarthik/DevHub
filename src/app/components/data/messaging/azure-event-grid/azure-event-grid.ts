@@ -60,6 +60,24 @@ export class AzureEventGrid {
         'Rule of thumb: "something happened" → Event Grid; "continuous data stream" → Event Hubs; "workflow/saga" → Service Bus.',
       ]
     },
+    {
+      heading: 'Event Grid\'s Push Model vs. Polling-Based Alternatives',
+      points: [
+        'Event Grid pushes events to subscribers immediately upon occurrence (via HTTP webhook, or native integration with Azure Functions/Logic Apps), achieving near-real-time delivery latency that polling-based consumption cannot match.',
+        'This push model means subscriber endpoints must be publicly reachable (or use private endpoints) and able to handle a validation handshake on subscription creation — a meaningfully different integration requirement than a pull-based queue a consumer polls at its own pace.',
+        'Event Grid\'s built-in retry policy with exponential backoff, combined with dead-lettering to a storage account, provides durability guarantees for a system that is fundamentally push-based and would otherwise risk losing events if a subscriber endpoint is temporarily unavailable.',
+        'Event Grid is optimized for discrete, reactive event notifications (a blob was created, a resource changed) rather than high-throughput data streaming — Event Hubs is the more appropriate Azure service when the workload resembles a continuous stream rather than discrete events.',
+      ],
+    },
+    {
+      heading: 'Event Grid Schema and Filtering',
+      points: [
+        'Event Grid\'s standard event schema (CloudEvents-compatible) provides consistent metadata (event type, source, time) across different Azure services, letting a single subscriber logic handle events from multiple sources without custom per-source parsing.',
+        'Advanced filters let a subscription match on specific fields within the event data (not just the event type), enabling fine-grained routing where only events matching specific business-relevant criteria trigger a given subscriber.',
+        'Dead-lettering configuration (routing undeliverable events to a storage account after exhausting retries) is essential for auditability — without it, events that fail delivery after retries are simply and silently dropped.',
+        'Choosing overly broad event subscriptions (subscribing to all events from a topic rather than filtering) increases unnecessary processing load on subscribers and can obscure which events a given subscriber actually cares about.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

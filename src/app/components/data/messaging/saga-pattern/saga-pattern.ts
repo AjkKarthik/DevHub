@@ -60,6 +60,24 @@ export class SagaPattern {
         'Not all steps can be compensated — the pivot transaction is the point of no return.',
       ]
     },
+    {
+      heading: 'Orchestration vs. Choreography Saga Styles',
+      points: [
+        'Orchestration-style sagas use a central coordinator that explicitly tells each service what step to perform next and handles compensation logic centrally — easier to understand and debug the overall flow, since the entire saga\'s logic lives in one place.',
+        'Choreography-style sagas have each service react to events from other services and publish its own events in response, with no central coordinator — more decoupled, but the overall business process becomes implicit, spread across many services\' event handlers, making the full flow harder to trace.',
+        'Orchestration introduces a coupling risk of its own — the orchestrator becomes a central point that must know about every participating service, somewhat working against the decoupling that motivated using a saga in the first place.',
+        'Choosing between them is a genuine architectural tradeoff — orchestration for complex, many-step sagas where central visibility matters; choreography for simpler flows or when avoiding a central coordinator\'s coupling is the higher priority.',
+      ],
+    },
+    {
+      heading: 'Compensating Transactions and Their Limits',
+      points: [
+        'A compensating transaction attempts to semantically undo a previously completed step (refunding a payment rather than truly "un-charging" a card) since distributed transactions across services cannot use a true database ROLLBACK the way a local ACID transaction can.',
+        'Not every operation has a clean compensating action — sending an email cannot be "unsent," meaning saga design must account for steps that are genuinely irreversible and plan around them (delaying such steps until other steps have already succeeded) rather than assuming universal compensability.',
+        'Compensating transactions must themselves be idempotent and retry-safe, since the saga coordinator itself might crash and need to retry a compensation — a compensation that is not safe to retry can leave the system in an inconsistent state during recovery.',
+        'Sagas provide eventual consistency, not the immediate atomicity of a local transaction — application design (and user experience) must account for the window where a saga is mid-flight and different services temporarily disagree about the overall business transaction\'s state.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

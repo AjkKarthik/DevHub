@@ -60,6 +60,24 @@ export class RabbitMqPatterns {
         'Use delays for retry backoff, scheduled jobs, and timed notifications.',
       ]
     },
+    {
+      heading: 'RPC Pattern Over RabbitMQ',
+      points: [
+        'RabbitMQ supports request-reply (RPC-style) messaging using a correlation ID and a reply-to queue — the requester publishes with a unique correlation ID and listens on a temporary reply queue, matching responses back to requests by that ID.',
+        'This pattern trades the simplicity of a direct synchronous HTTP call for the resilience benefits of going through a broker (buffering, retry, decoupled availability) at the cost of added latency and implementation complexity compared to a plain HTTP request.',
+        'RPC-over-messaging is best reserved for cases where the resilience benefits (surviving temporary unavailability of the responder, load leveling) genuinely outweigh the added complexity — for most simple synchronous needs, direct HTTP remains simpler and sufficient.',
+        'A timeout on the requester side is essential for this pattern, since the responder might never reply (crashed, message lost) — without an explicit timeout, a waiting RPC caller could block indefinitely for a response that will never arrive.',
+      ],
+    },
+    {
+      heading: 'Priority Queues and Delayed Message Patterns',
+      points: [
+        'RabbitMQ priority queues let higher-priority messages be delivered before lower-priority ones already in the queue, useful when some work (a paying customer\'s request) should jump ahead of lower-priority background work under load.',
+        'Priority queues have a performance cost proportional to the configured priority levels, and should be reserved for genuine priority differentiation needs rather than applied as a default to every queue.',
+        'Delayed message delivery (via a plugin or a dead-letter-exchange-with-TTL trick) lets a message be scheduled for future delivery — useful for patterns like "retry this failed task in 30 seconds" without needing an external scheduler.',
+        'The TTL-plus-dead-letter-exchange trick for delays works by setting a message TTL on a holding queue with no active consumer, so the message expires and is dead-lettered into the actual target queue only after the delay elapses — a clever but somewhat indirect mechanism worth understanding before relying on it.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [

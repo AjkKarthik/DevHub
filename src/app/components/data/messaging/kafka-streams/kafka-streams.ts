@@ -60,6 +60,24 @@ export class KafkaStreams {
         'Pull queries let you query the current state of a materialized table synchronously.',
       ]
     },
+    {
+      heading: 'Stream-Table Duality in Kafka Streams',
+      points: [
+        'A stream can be interpreted as a sequence of changes to a table (each record is an insert/update/delete), while a table can be interpreted as the latest snapshot of a stream — this duality underlies how KStream and KTable interoperate within the same Kafka Streams application.',
+        'A KTable is essentially a compacted, continuously-updated view built from a stream of changes — aggregating a KStream into a KTable produces a queryable "current state" representation from what was originally an unbounded sequence of events.',
+        'Joining a KStream with a KTable (stream-table join) is a common pattern for enriching each incoming event with the latest known state of a related entity, such as enriching an order event with the customer\'s current profile data.',
+        'Understanding this duality clarifies why certain operations are only available on one type — aggregation naturally produces a KTable (a stateful current view), while windowed joins between two streams naturally produce another stream (a sequence of join results over time).',
+      ],
+    },
+    {
+      heading: 'State Stores and Fault Tolerance in Kafka Streams',
+      points: [
+        'Kafka Streams maintains local state (for aggregations, joins) in embedded RocksDB instances co-located with each stream processing task, giving low-latency local access to state without a round-trip to an external database.',
+        'Each state store is backed by a compacted Kafka changelog topic — if a stream processing instance fails, its state can be fully rebuilt on another instance by replaying the changelog topic, providing fault tolerance without manual backup/restore.',
+        'Standby replicas (pre-warmed copies of state stores on other instances) reduce failover time by having a warm replica ready to take over immediately, rather than needing to replay the entire changelog from scratch after a failure.',
+        'Interactive queries let external applications query a running Kafka Streams application\'s local state directly, avoiding the need to export state to a separate database purely for read access from other services.',
+      ],
+    },
   ];
 
   readonly codeTabs: CodeTab[] = [
