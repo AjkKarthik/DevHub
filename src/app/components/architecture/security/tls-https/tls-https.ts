@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Wildcard certs: `*.example.com` covers one level of subdomain — not `a.b.example.com`. Use sparingly; compromise exposes all subdomains.',
     ],
   },
+  {
+    heading: 'The TLS Handshake Process',
+    points: [
+      'The TLS handshake establishes a secure connection before any application data is exchanged: the client and server agree on a cipher suite, the server presents its certificate for authentication, and both sides derive a shared symmetric session key via asymmetric key exchange.',
+      'TLS 1.3 significantly streamlined this process compared to TLS 1.2 — reducing the handshake to one round trip (down from two), directly improving connection latency, while also removing support for several older, cryptographically weak cipher suites and features that had accumulated vulnerabilities over time.',
+      'Certificate validation is what prevents man-in-the-middle attacks — the client verifies the server\'s certificate is signed by a trusted Certificate Authority and matches the requested domain name, rejecting the connection if either check fails (which is why browser certificate warnings should never be casually dismissed).',
+      'After the handshake, TLS switches to fast symmetric encryption (typically AES-GCM) for the actual data transfer — asymmetric cryptography is only used briefly during the handshake for authentication and key exchange, since it is far more computationally expensive than symmetric encryption for bulk data.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

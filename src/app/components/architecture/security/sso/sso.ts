@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'IdP metadata: fetch and cache IdP metadata (signing certificates) from the well-known endpoint. Rotate on IdP certificate rotation.',
     ],
   },
+  {
+    heading: 'SAML vs OpenID Connect for SSO',
+    points: [
+      'SAML (Security Assertion Markup Language) is an older, XML-based protocol widely used in enterprise environments, exchanging signed XML assertions between an Identity Provider and Service Provider — verbose but well-established in corporate identity infrastructure.',
+      'OpenID Connect (OIDC), built on top of OAuth 2.0, uses JSON-based tokens (JWTs) and is generally lighter-weight and better suited to modern web and mobile applications, with broader native library support across languages and frameworks compared to SAML.',
+      'Both achieve the same fundamental goal — a user authenticates once with a trusted Identity Provider and gains access to multiple Service Providers without re-entering credentials — but OIDC has become the default choice for new implementations due to its simpler JSON-based format and REST-friendly design.',
+      'Single Logout (SLO) is a genuinely hard problem in both protocols — properly terminating a session across every Service Provider the user was signed into requires each SP to implement and correctly handle logout notifications, and a failure in any one SP can leave a session partially active.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

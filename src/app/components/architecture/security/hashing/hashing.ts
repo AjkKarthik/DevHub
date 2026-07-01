@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Password hashing: DO NOT use SHA-256 directly — it is too fast. Use Argon2id or bcrypt. See the Password Security page.',
     ],
   },
+  {
+    heading: 'Password Hashing vs General-Purpose Hashing',
+    points: [
+      'General-purpose hash functions (SHA-256, SHA-3) are designed to be FAST — ideal for verifying file integrity or generating checksums, but this exact speed makes them a poor choice for password storage, since an attacker with a stolen hash database can attempt billions of guesses per second.',
+      'Password hashing algorithms (bcrypt, scrypt, Argon2) are deliberately SLOW and configurable (via a cost/work factor), making brute-force guessing computationally expensive even with specialized hardware — this is the core design goal distinguishing them from general-purpose hashes.',
+      'Argon2 (winner of the Password Hashing Competition) is the current best-practice recommendation — it is memory-hard, meaning it also resists GPU and ASIC-based cracking attempts that can parallelize computation-only algorithms far more easily than memory-bound ones.',
+      'Salting (a unique random value per password, stored alongside the hash) prevents precomputed rainbow-table attacks and ensures two users with the identical password produce different stored hashes — all modern password hashing libraries (bcrypt, Argon2) handle salting automatically and should never be implemented manually.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Verify the signature before trusting any data derived from the message — a valid signature proves the message was not tampered with.',
     ],
   },
+  {
+    heading: 'Key Exchange and Perfect Forward Secrecy',
+    points: [
+      'Asymmetric cryptography enables secure key exchange over an insecure channel — Diffie-Hellman key exchange lets two parties agree on a shared secret without ever transmitting that secret itself, even if an eavesdropper observes the entire exchange.',
+      'Perfect Forward Secrecy (PFS) means that even if a server private key is compromised in the future, previously recorded encrypted traffic remains unreadable — achieved by using ephemeral (temporary, per-session) key exchange rather than reusing a long-term key to derive session keys directly.',
+      'Modern TLS configurations mandate ephemeral Diffie-Hellman (DHE) or elliptic-curve Diffie-Hellman (ECDHE) key exchange specifically for this reason — a compromised server certificate alone should not retroactively expose years of previously captured traffic.',
+      'Elliptic Curve Cryptography (ECC) achieves equivalent security to RSA with much smaller key sizes (a 256-bit ECC key is roughly as strong as a 3072-bit RSA key), reducing computational cost and making it the preferred choice for modern TLS and mobile/IoT constrained environments.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

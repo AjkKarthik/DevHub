@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'LDAP injection: similar pattern — user input in LDAP filter strings. Use an LDAP library with parameterized filter support or escape special characters (`(`, `)`, `*`, `\\`, `NUL`).',
     ],
   },
+  {
+    heading: 'Beyond SQL Injection: NoSQL, Command, and LDAP Injection',
+    points: [
+      'NoSQL injection targets document databases like MongoDB — unsanitized user input passed directly into a query object can inject operators (a login bypass sending { "password": { "$ne": null } } to match any non-null password) that a naive string-concatenation defense would never catch.',
+      'OS command injection occurs when user input is passed to a shell command (child_process.exec in Node.js, os.system in Python) without proper escaping — an attacker can append shell metacharacters (;, |, &&) to execute arbitrary commands on the host.',
+      'The universal defense across all injection types is the same principle: never build a command, query, or expression by concatenating untrusted input into a string — use parameterized queries, prepared statements, or an ORM/query builder that separates code from data structurally.',
+      'Allowlisting valid input patterns (rather than trying to blocklist known-bad characters) is more robust against injection — blocklists are perpetually incomplete, since attackers continuously discover new bypass encodings and edge cases.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

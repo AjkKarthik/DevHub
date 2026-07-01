@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Secrets in environment variables: acceptable for configuration, but use a secrets manager (AWS Secrets Manager, HashiCorp Vault) for production — enables rotation without redeployment.',
     ],
   },
+  {
+    heading: 'API Rate Limiting and Abuse Prevention',
+    points: [
+      'Rate limiting protects APIs from brute-force credential attacks and denial-of-service abuse by capping how many requests a client (per IP, per API key, or per authenticated account) can make in a time window, returning 429 Too Many Requests when exceeded.',
+      'Apply stricter limits to sensitive endpoints (login, password reset, token issuance) than to general read endpoints — these are the highest-value targets for automated attack tools and deserve tighter default thresholds.',
+      'Distributed rate limiting (using Redis or a similar shared store) is required in any horizontally-scaled deployment — per-instance in-memory counters allow an attacker to multiply their effective limit by the number of server instances.',
+      'Combine rate limiting with anomaly detection where possible — a sudden spike in failed authentication attempts from a single account, even under the rate limit, can indicate a credential-stuffing attempt worth flagging separately.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Long-lived tokens: JWTs cannot be invalidated before expiry (stateless). Keep access tokens short (15 min); use token blacklisting or short expiry for sensitive operations.',
     ],
   },
+  {
+    heading: 'JWT Algorithm Confusion Attacks',
+    points: [
+      'A classic JWT vulnerability: if a server accepts both RS256 (asymmetric, public/private key) and HS256 (symmetric, shared secret) without restricting which algorithm is acceptable, an attacker can take a token signed with RS256, re-sign it with HS256 using the server\'s PUBLIC key as the HMAC secret (which is often not actually secret), and the server incorrectly validates it as authentic.',
+      'The fix is to always explicitly specify and enforce the expected algorithm on the verification side (never trust the alg field in the token header to determine how to verify it) — most modern JWT libraries support an explicit algorithms allowlist parameter for exactly this reason.',
+      'The "none" algorithm attack is a related historical vulnerability — some early JWT library implementations would accept a token with alg: "none" and no signature at all as valid, allowing complete forgery; modern libraries reject this by default, but always verify your specific library and configuration.',
+      'Never decode a JWT payload and trust its claims without ALSO verifying the signature — reading claims from a decoded-but-unverified token is a common and dangerous shortcut, since anyone can construct a syntactically valid JWT with arbitrary claims and no valid signature.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

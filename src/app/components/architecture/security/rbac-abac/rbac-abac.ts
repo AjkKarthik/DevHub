@@ -59,6 +59,15 @@ const theory: TheoryPoint[] = [
       'Audit log every authorization decision — who accessed what, when, and why it was allowed or denied.',
     ],
   },
+  {
+    heading: 'Choosing Between RBAC and ABAC',
+    points: [
+      'Role-Based Access Control (RBAC) assigns permissions to roles (admin, editor, viewer), and users are assigned one or more roles — simple to reason about and audit, but can become unwieldy ("role explosion") when access needs vary by many independent dimensions.',
+      'Attribute-Based Access Control (ABAC) evaluates policies against attributes of the user, resource, and context (department = "finance" AND resource.classification = "confidential" AND time.hour BETWEEN 9 AND 17) — far more flexible for fine-grained, context-aware authorization but harder to audit and reason about at a glance.',
+      'Many real systems use a hybrid: RBAC for broad access tiers (which features a user can see at all) combined with ABAC-style fine-grained checks within those tiers (a "manager" role that can only approve expenses for their own department, not all departments).',
+      'Whichever model is chosen, authorization logic should be centralized (a policy engine or a consistent middleware layer) rather than scattered as ad-hoc if-checks throughout the codebase — centralization makes the actual access rules auditable and preventing accidental gaps.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

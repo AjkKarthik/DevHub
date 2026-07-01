@@ -56,6 +56,15 @@ const theory: TheoryPoint[] = [
       'Hybrid encryption: RSA or ECDH establishes a shared symmetric key; AES-GCM encrypts the actual data. TLS uses this pattern.',
     ],
   },
+  {
+    heading: 'AES Modes of Operation',
+    points: [
+      'AES is a block cipher operating on fixed-size blocks (128 bits) — a mode of operation defines how to apply it repeatedly to encrypt data longer than one block, and the choice of mode has major security implications beyond just the algorithm itself.',
+      'ECB (Electronic Codebook) mode encrypts each block independently and identically — this means identical plaintext blocks produce identical ciphertext blocks, leaking structural patterns in the data (famously visualized by encrypting an image in ECB mode and still being able to see the outline). Never use ECB mode.',
+      'GCM (Galois/Counter Mode) is the modern recommended mode — it provides both confidentiality (encryption) AND authenticity (a built-in authentication tag detecting any tampering with the ciphertext), combining what used to require two separate mechanisms into one efficient operation.',
+      'A unique, unpredictable Initialization Vector (IV) or nonce must be used for every encryption operation with the same key — reusing an IV with GCM mode is catastrophic, potentially allowing an attacker to recover the authentication key entirely, not just decrypt one message.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

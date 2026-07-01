@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Audit logs: every secret access should be logged with who, what, and when. Vault and cloud secret managers provide this natively.',
     ],
   },
+  {
+    heading: 'Secret Rotation and Lifecycle Management',
+    points: [
+      'Secrets should have a defined lifecycle, not exist indefinitely — regular rotation (changing a secret\'s value on a schedule, even without a known compromise) limits the window of exposure if a secret was leaked without anyone noticing.',
+      'Automated rotation (supported by AWS Secrets Manager, HashiCorp Vault, Azure Key Vault) updates the secret value and notifies or directly reconfigures dependent services, avoiding the operational burden and error-proneness of manual rotation procedures.',
+      'Short-lived, dynamically generated credentials (a database credential issued for a single hour, tied to a specific application instance) are a stronger pattern than long-lived static secrets — even if leaked, a short-lived credential is only useful to an attacker for a brief window.',
+      'A secrets manager provides an audit trail of every access — critical for incident response, since knowing exactly which service or person accessed a specific secret and when is essential for scoping the blast radius of a suspected compromise.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

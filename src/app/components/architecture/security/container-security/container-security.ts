@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Regular rebuild: rebuild images on a schedule (weekly) even without code changes — picks up OS package security updates.',
     ],
   },
+  {
+    heading: 'Minimizing the Container Attack Surface',
+    points: [
+      'Base image choice matters significantly — a minimal base image (distroless, Alpine) ships far fewer installed packages than a full OS image, directly reducing the number of potential CVEs and the exploitability of the running container if compromised.',
+      'Multi-stage Docker builds let you compile/build with a full toolchain in one stage, then copy only the compiled artifact into a minimal final-stage image — eliminating build tools, package managers, and source code from the production image entirely.',
+      'Never run a container process as root — set a non-root USER in the Dockerfile and configure the orchestrator (Kubernetes securityContext) to enforce it, limiting the damage a container escape or code execution vulnerability could cause on the host.',
+      'Scan container images for known vulnerabilities (Trivy, Snyk, Grype) as part of CI, before images are pushed to a registry — catching a vulnerable dependency at build time is far cheaper than discovering it after deployment to production.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [
