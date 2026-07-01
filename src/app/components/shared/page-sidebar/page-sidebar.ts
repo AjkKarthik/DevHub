@@ -8953,6 +8953,243 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'WebSockets don\'t work transparently through all corporate proxies/firewalls the way plain HTTP-based SSE does, a real deployment consideration.',
     ],
   },
+
+  // ── Observability: per-page entries ─────────────────────────────────────────
+  'observability/observability-fundamentals': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'SLI/SLO/SLA',        route: '/observability/sli-slo-sla' },
+      { label: 'Observability Maturity', route: '/observability/observability-maturity' },
+    ],
+    tip: 'The three pillars — metrics, logs, traces — answer DIFFERENT questions: metrics show WHAT is happening in aggregate, logs show WHAT HAPPENED for a specific event, traces show WHERE time was spent across a distributed request — no single pillar substitutes for the others.',
+    gotchas: [
+      'Observability is about being able to ask NEW questions of a system without shipping new code — monitoring alone (pre-defined dashboards) can\'t answer questions nobody thought to instrument in advance.',
+      'Collecting all three pillars without CORRELATION (shared trace/request IDs across them) leaves you with three separate haystacks instead of one connected picture.',
+    ],
+  },
+  'observability/observability-maturity': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Observability Fundamentals', route: '/observability/observability-fundamentals' },
+      { label: 'Error Budgets & Toil',       route: '/observability/error-budgets-toil' },
+    ],
+    tip: 'Maturity progresses from reactive (checking dashboards after a complaint) to proactive (alerting before users notice) to predictive (catching anomalies before they become incidents) — jumping straight to advanced tooling without the earlier stages\' discipline rarely sticks.',
+    gotchas: [
+      'Buying an expensive observability platform doesn\'t automatically raise maturity — the team\'s incident response habits and instrumentation discipline matter more than the tool.',
+      'A maturity model is a roadmap, not a checklist to rush through — each stage builds genuine organizational habits the next stage depends on.',
+    ],
+  },
+  'observability/infrastructure-metrics': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Prometheus Metrics', route: '/observability/prometheus-metrics' },
+      { label: 'Custom App Metrics', route: '/observability/custom-app-metrics' },
+    ],
+    tip: 'CPU, memory, disk, and network metrics tell you the HOST\'s health, not necessarily the APPLICATION\'s — a server can look perfectly healthy on infrastructure metrics while the application itself is serving errors or timing out.',
+    gotchas: [
+      'High CPU is not always bad (it can mean efficient utilization) and low CPU is not always good (it can mean the app is blocked on I/O) — context matters more than the raw number.',
+      'Container-level metrics can be misleading in a shared/oversubscribed environment — check what the underlying node is actually experiencing too.',
+    ],
+  },
+  'observability/custom-app-metrics': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Infrastructure Metrics', route: '/observability/infrastructure-metrics' },
+      { label: 'Prometheus Metrics',     route: '/observability/prometheus-metrics' },
+    ],
+    tip: 'Business/application metrics (checkout completion rate, queue depth, cache hit ratio) reveal problems infrastructure metrics never will — a server with perfect CPU/memory can still be silently failing to process orders correctly.',
+    gotchas: [
+      'Counters, gauges, and histograms are DIFFERENT metric types with different aggregation semantics — using a counter where a gauge is needed (or vice versa) produces misleading dashboards.',
+      'High-cardinality labels (like a raw user ID) on a metric can explode storage cost and query time in most time-series databases.',
+    ],
+  },
+  'observability/prometheus-metrics': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Custom App Metrics',     route: '/observability/custom-app-metrics' },
+      { label: 'Grafana Dashboards',     route: '/observability/grafana-dashboards' },
+    ],
+    tip: 'Prometheus PULLS (scrapes) metrics from targets on an interval, rather than applications pushing metrics to it — this pull model makes service discovery and target health visibility a first-class concern, unlike push-based systems.',
+    gotchas: [
+      'A short-lived batch job that finishes before the next scrape interval never gets scraped — the Pushgateway exists specifically to bridge this gap.',
+      'PromQL rate() requires a counter metric type — applying it to a gauge produces meaningless results.',
+    ],
+  },
+  'observability/grafana-dashboards': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Prometheus Metrics', route: '/observability/prometheus-metrics' },
+    ],
+    tip: 'A dashboard with dozens of panels is often LESS useful during an incident than a few well-chosen ones — the goal during an outage is fast triage, not exhaustive data, so design dashboards around "what question does this answer" not "what data do we have."',
+    gotchas: [
+      'Dashboards drift out of sync with what the system actually looks like over time — periodic review catches panels referencing metrics that no longer exist or mean something different.',
+      'A dashboard is not a substitute for alerting — nobody is watching a dashboard 24/7, which is why alerting design matters independently.',
+    ],
+  },
+  'observability/log-aggregation': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Structured Logging',    route: '/observability/structured-logging' },
+      { label: 'Log Best Practices',    route: '/observability/log-best-practices' },
+    ],
+    tip: 'Centralized log aggregation (shipping logs from every instance to one searchable store) is essential once an application runs across multiple instances — grepping individual server log files does not scale past a handful of instances.',
+    gotchas: [
+      'Log volume at scale has real storage and query-cost implications — sampling or tiered retention (hot/warm/cold) is often necessary, not optional.',
+      'A log shipper falling behind or crashing can silently drop logs — monitor the shipping pipeline\'s own health, not just the application.',
+    ],
+  },
+  'observability/structured-logging': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Log Aggregation',   route: '/observability/log-aggregation' },
+      { label: 'Log Best Practices', route: '/observability/log-best-practices' },
+    ],
+    tip: 'Structured logs (JSON with consistent fields) are QUERYABLE by field, unlike free-text log lines that require fragile regex parsing to extract the same information — this is what makes correlating logs across services at scale actually practical.',
+    gotchas: [
+      'Consistent field naming ACROSS services (userId, not user_id in one service and userID in another) is required for structured logs to be genuinely queryable together.',
+      'Including a correlation/trace ID in every log line is what connects structured logs back to distributed traces for full request reconstruction.',
+    ],
+  },
+  'observability/log-best-practices': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Structured Logging', route: '/observability/structured-logging' },
+    ],
+    tip: 'Logging every request at INFO level in a high-throughput service generates enormous, mostly-useless volume — log what is ACTIONABLE (errors, state transitions, key business events), and rely on tracing/metrics for the high-volume "everything happened" signal.',
+    gotchas: [
+      'Sensitive data (passwords, tokens, full credit card numbers) must never be logged — a common compliance and security failure mode.',
+      'Log levels (DEBUG/INFO/WARN/ERROR) should be used consistently — logging routine events at ERROR trains responders to ignore alerts.',
+    ],
+  },
+  'observability/distributed-tracing': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'OpenTelemetry Tracing', route: '/observability/opentelemetry-tracing' },
+      { label: 'OpenTelemetry',         route: '/observability/opentelemetry' },
+    ],
+    tip: 'A trace is a tree of SPANS representing the full path of one request across multiple services — without propagating a trace context (trace ID + parent span ID) through every service boundary, a request appears as disconnected, unrelated traces instead of one coherent picture.',
+    gotchas: [
+      'Async message boundaries (a queue between services) break automatic trace propagation unless the trace context is explicitly carried in message headers.',
+      'Sampling (recording only a percentage of traces) is often necessary at scale — but sampling out the rare, slow, or erroring requests defeats the purpose of tracing them at all.',
+    ],
+  },
+  'observability/opentelemetry': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'OpenTelemetry Tracing', route: '/observability/opentelemetry-tracing' },
+      { label: 'Distributed Tracing',   route: '/observability/distributed-tracing' },
+    ],
+    tip: 'OpenTelemetry provides a VENDOR-NEUTRAL standard for instrumentation (metrics, logs, traces) — instrumenting against OTel instead of a specific vendor\'s SDK means the observability BACKEND can be swapped later without re-instrumenting application code.',
+    gotchas: [
+      'Auto-instrumentation covers common frameworks/libraries out of the box, but genuinely meaningful custom spans for business logic still require manual instrumentation.',
+      'The OTel Collector (a separate process for receiving, processing, and exporting telemetry) decouples applications from any specific backend\'s ingestion format.',
+    ],
+  },
+  'observability/opentelemetry-tracing': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'OpenTelemetry',        route: '/observability/opentelemetry' },
+      { label: 'Distributed Tracing',  route: '/observability/distributed-tracing' },
+    ],
+    tip: 'A span represents one unit of work (an HTTP call, a DB query) with a start/end time and attributes — nesting spans within a trace reconstructs the exact timing waterfall of where a slow request actually spent its time across service boundaries.',
+    gotchas: [
+      'Adding too many low-value spans (wrapping every trivial function call) adds overhead and noise without proportional debugging value — instrument at meaningful boundaries.',
+      'Context propagation must be correctly wired through async/await boundaries and thread pools, or child spans silently detach from their parent trace.',
+    ],
+  },
+  'observability/sli-slo-sla': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Error Budgets & Toil',    route: '/observability/error-budgets-toil' },
+      { label: 'Alerting Design',          route: '/observability/alerting-design' },
+    ],
+    tip: 'An SLI is a MEASURED indicator (99.95% of requests succeeded); an SLO is the INTERNAL target for that indicator (99.9% success); an SLA is the EXTERNAL, often contractual commitment with consequences for breach — conflating these three is a common and costly mistake.',
+    gotchas: [
+      'An SLO should be set slightly stricter than the SLA, so an SLO breach gives warning time to react BEFORE an SLA (and its financial/contractual consequences) is actually breached.',
+      'Choosing the wrong SLI (measuring server-side success when users experience client-side failures) can show green dashboards during a real user-facing outage.',
+    ],
+  },
+  'observability/error-budgets-toil': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'SLI/SLO/SLA',    route: '/observability/sli-slo-sla' },
+      { label: 'On-Call & Incidents', route: '/observability/on-call-incidents' },
+    ],
+    tip: 'An error budget (100% minus the SLO target) is the amount of acceptable failure BEFORE it becomes a problem — a team with budget remaining can ship features and take risks; a team that has exhausted its budget should freeze releases and focus on reliability instead.',
+    gotchas: [
+      'Toil (manual, repetitive, automatable operational work) directly competes with a team\'s capacity to improve reliability — an SRE team spending all its time on toil has no time left to reduce future toil.',
+      'An error budget policy only works if it has real teeth — a budget that gets "overridden" every time it\'s exhausted provides no actual behavioral incentive.',
+    ],
+  },
+  'observability/alerting-design': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'SLI/SLO/SLA',        route: '/observability/sli-slo-sla' },
+      { label: 'On-Call & Incidents', route: '/observability/on-call-incidents' },
+    ],
+    tip: 'Alert on SYMPTOMS the user actually experiences (elevated error rate, slow responses), not on every possible CAUSE (CPU spike, one pod restarting) — cause-based alerting produces alert fatigue from noisy, often self-resolving conditions that don\'t actually affect users.',
+    gotchas: [
+      'An alert with no clear, actionable runbook trains on-call engineers to acknowledge and ignore it — every alert should have a defined response action.',
+      'Alert thresholds copied from another team\'s system without adjusting for actual traffic patterns often produce constant false positives or miss real issues entirely.',
+    ],
+  },
+  'observability/on-call-incidents': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Alerting Design',     route: '/observability/alerting-design' },
+      { label: 'Error Budgets & Toil', route: '/observability/error-budgets-toil' },
+    ],
+    tip: 'A blameless postmortem focuses on WHAT in the system and process allowed the incident to happen, not WHO made a mistake — blame-focused postmortems teach people to hide information in future incidents, making the organization less safe over time, not more.',
+    gotchas: [
+      'A postmortem without concrete, assigned, tracked follow-up action items is just a well-written story — it doesn\'t actually prevent recurrence.',
+      'Declaring an incident resolved as soon as symptoms disappear (without confirming the root cause) risks a recurrence from the same underlying issue shortly after.',
+    ],
+  },
+  'observability/cloud-native-monitoring': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Prometheus Metrics', route: '/observability/prometheus-metrics' },
+    ],
+    tip: 'In a Kubernetes environment, ephemeral pods make host-based monitoring assumptions break down — monitoring needs to be POD/label-aware (via service discovery) rather than assuming a fixed, long-lived set of hosts to watch.',
+    gotchas: [
+      'A pod restarting resets its in-memory metrics unless a persistent metrics backend (like Prometheus scraping, not just local counters) is used.',
+      'Cardinality explosion from per-pod labels (a new pod name on every restart/scale event) can overwhelm a metrics backend not designed for Kubernetes\'s churn.',
+    ],
+  },
+  'observability/ebpf-observability': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'Performance Profiling', route: '/observability/performance-profiling' },
+    ],
+    tip: 'eBPF lets you attach observability probes directly into the Linux kernel at runtime, WITHOUT modifying or restarting the application — capturing network, syscall, and performance data that traditional application-level instrumentation cannot see at all.',
+    gotchas: [
+      'eBPF-based tools (Cilium, Pixie) can observe traffic and performance without requiring any code changes to the monitored application — a major advantage for observing legacy or third-party services.',
+      'eBPF requires a sufficiently modern kernel version — not every production environment can adopt it immediately.',
+    ],
+  },
+  'observability/performance-profiling': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'eBPF Observability', route: '/observability/ebpf-observability' },
+      { label: 'Distributed Tracing', route: '/observability/distributed-tracing' },
+    ],
+    tip: 'Continuous profiling (always-on, low-overhead sampling of CPU/memory in production) catches performance regressions that only manifest under real production load and traffic patterns — a local profiler run in development often can\'t reproduce production-scale bottlenecks.',
+    gotchas: [
+      'Flame graphs visualize where time is actually spent across the call stack — reading them correctly (width = time, not depth) is a common source of misinterpretation.',
+      'Profiling overhead, even when described as "low," is not zero — validate it doesn\'t materially affect the exact latency numbers you\'re trying to measure.',
+    ],
+  },
+  'observability/chaos-engineering': {
+    apis: OBS_DEFAULT.apis, docs: OBS_DEFAULT.docs, resources: OBS_DEFAULT.resources,
+    related: [
+      { label: 'On-Call & Incidents', route: '/observability/on-call-incidents' },
+    ],
+    tip: 'Chaos engineering deliberately injects failure (killing instances, adding latency, dropping network packets) in a CONTROLLED way to verify a system actually behaves as resiliently as assumed — untested resilience assumptions are frequently wrong, and chaos experiments surface this before a real, uncontrolled outage does.',
+    gotchas: [
+      'Chaos experiments should start small and in non-production (or a carefully scoped production blast radius) before scaling up — an uncontrolled chaos experiment IS an incident.',
+      'The value of chaos engineering is in the LEARNING and subsequent fixes, not in the experiment itself — a chaos day that finds no issues and prompts no follow-up work has produced little value.',
+    ],
+  },
 };
 
 @Component({
