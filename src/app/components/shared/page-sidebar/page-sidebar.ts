@@ -7468,6 +7468,261 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Complexity analysis of common data structure operations is frequently tested since choosing the wrong one is a common source of accidental performance bugs.',
     ],
   },
+
+  // ── Testing: per-page entries ───────────────────────────────────────────────
+  'testing-hub/testing-fundamentals': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'TDD',            route: '/testing-hub/tdd' },
+      { label: 'Test Doubles',   route: '/testing-hub/test-doubles' },
+    ],
+    tip: 'A trustworthy test suite fails ONLY when there is a real bug — flaky tests that fail intermittently for unrelated reasons erode trust and lead developers to re-run rather than investigate, defeating automated testing\'s whole purpose.',
+    gotchas: [
+      'The Arrange-Act-Assert structure keeps each test focused on a single action, making it clear which action caused a subsequent failure.',
+      'Independent tests (no shared mutable state) can run in parallel and be safely reordered without hidden coupling.',
+    ],
+  },
+  'testing-hub/tdd': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Testing Fundamentals', route: '/testing-hub/testing-fundamentals' },
+      { label: 'Mocking & Spies',      route: '/testing-hub/mocking-spies' },
+    ],
+    tip: 'Writing the test first forces thinking about the desired API shape before implementation exists — watching a new test actually fail (red) before making it pass confirms the test genuinely exercises the intended code path.',
+    gotchas: [
+      'The refactor step is not optional — skipping it accumulates technical debt as surely as skipping tests entirely.',
+      'TDD\'s tight feedback loop catches mistakes immediately; writing tests after the fact often just confirms existing behavior rather than driving design.',
+    ],
+  },
+  'testing-hub/test-doubles': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Mocking & Spies',       route: '/testing-hub/mocking-spies' },
+      { label: 'Testing Fundamentals',  route: '/testing-hub/testing-fundamentals' },
+    ],
+    tip: 'Dummy, stub, spy, mock, and fake are precise, distinct terms — a mock is a stub PLUS built-in call verification, while a fake is a working but simplified implementation, not just canned responses.',
+    gotchas: [
+      'Overusing mocks (verifying HOW a collaborator was called) couples tests to implementation details — preferring stubs/fakes produces tests that survive refactoring better.',
+      'Matching the double\'s complexity to what the test actually needs to verify keeps suites maintainable.',
+    ],
+  },
+  'testing-hub/mocking-spies': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Test Doubles', route: '/testing-hub/test-doubles' },
+      { label: 'MSW',          route: '/testing-hub/msw' },
+    ],
+    tip: 'Overmocking every dependency can produce tests that pass even when the real integration between components is broken — a useful rule of thumb is mocking at architectural boundaries (network, DB, time) while letting real internal logic run.',
+    gotchas: [
+      'A test suite with excessive mocking often needs rewriting whenever internal implementation details change, even if externally observable behavior stayed the same.',
+      'Spies preserve real behavior while adding observability, preferable to full mocks when real logic is cheap and deterministic to run.',
+    ],
+  },
+  'testing-hub/jest-fundamentals': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Vitest',            route: '/testing-hub/vitest' },
+      { label: 'Snapshot Testing',  route: '/testing-hub/snapshot-testing' },
+    ],
+    tip: 'Snapshot tests capture serialized output for comparison — convenient for catching unintended changes, but risk becoming rubber-stamped if developers blindly run --updateSnapshot without reviewing the diff.',
+    gotchas: [
+      'Large, unfocused snapshots make it hard to tell WHAT changed and WHY — targeted assertions are often more maintainable than one giant snapshot.',
+      'Snapshots work best for stable, rarely-changing output, not frequently-evolving UI.',
+    ],
+  },
+  'testing-hub/vitest': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Jest Fundamentals', route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: 'Vitest reuses the same Vite transform pipeline already powering the dev server, avoiding the separate Babel/ts-jest transformation step Jest requires — a major source of Vitest\'s faster cold-start and watch-mode performance.',
+    gotchas: [
+      'Native ESM support avoids an entire class of module-resolution edge cases Jest\'s CJS-first architecture has historically struggled with.',
+      'Vitest\'s Jest-compatible API means most Jest suites port over with minimal changes.',
+    ],
+  },
+  'testing-hub/react-testing-library': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Jest Fundamentals', route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: 'RTL deliberately makes it awkward to query by internal state and easy to query by what a user sees (text, role, label) — a design choice that discourages implementation-coupled, brittle tests.',
+    gotchas: [
+      'Tests written against internal state or prop names break on refactors even when user-facing behavior is unchanged.',
+      'userEvent more accurately simulates real user interaction sequences than fireEvent, which dispatches a single synthetic event.',
+    ],
+  },
+  'testing-hub/angular-testing': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Jest Fundamentals', route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: 'TestBed compilation is relatively expensive per test — Zone.js-based change detection means fakeAsync/tick() are needed to flush microtasks and timers deterministically, or tests assert on stale DOM state.',
+    gotchas: [
+      'Shallow testing (stubbing child components) trades full-render fidelity for faster, more focused unit tests.',
+      'Standalone components simplify TestBed setup since there is no NgModule to declare.',
+    ],
+  },
+  'testing-hub/cypress': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Playwright', route: '/testing-hub/playwright' },
+    ],
+    tip: 'Cypress commands automatically retry against the DOM until an assertion passes or times out — eliminating most explicit waits that plague less integrated E2E tools.',
+    gotchas: [
+      'This retry-ability only applies to Cypress-native commands — wrapping arbitrary async logic bypasses it and can reintroduce flakiness.',
+      'cy.intercept() decouples frontend test reliability from real backend availability and response times.',
+    ],
+  },
+  'testing-hub/playwright': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Cypress',            route: '/testing-hub/cypress' },
+      { label: 'Visual Regression',  route: '/testing-hub/visual-regression' },
+    ],
+    tip: 'Playwright auto-waits for actionability (visible, stable, enabled) before every interaction, eliminating explicit sleep() calls — and drives Chromium, Firefox, and WebKit with the same code, catching browser-specific bugs a Chromium-only suite would miss.',
+    gotchas: [
+      'Trace viewer turns debugging a flaky CI test from guesswork into replaying an exact timeline of what happened.',
+      'The same actionability checks apply across all three engines, but rendering differences between them can still surface real bugs.',
+    ],
+  },
+  'testing-hub/api-testing': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Contract Testing', route: '/testing-hub/contract-testing' },
+      { label: 'MSW',              route: '/testing-hub/msw' },
+    ],
+    tip: 'Contract-first API testing validates conformance to a pre-agreed schema BEFORE testing implementation details, catching breaking changes to the public interface independent of internal logic correctness.',
+    gotchas: [
+      'Testing error responses (4xx/5xx shape) is as important as the happy path, since consumers build error handling that depends on a stable error contract.',
+      'Schema validation libraries can be layered onto existing API tests to add contract verification without a full rewrite.',
+    ],
+  },
+  'testing-hub/contract-testing': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'API Testing',       route: '/testing-hub/api-testing' },
+      { label: 'Integration Testing', route: '/testing-hub/integration-testing' },
+    ],
+    tip: 'Consumer-driven contracts let the consuming service define its expectations, and the provider verifies it satisfies them — catching breaking changes before deployment without requiring both services running together like full E2E tests do.',
+    gotchas: [
+      'Pact generates an executable, versioned agreement from consumer tests that the provider replays against its own implementation.',
+      'Contract testing scales better than full integration testing across many microservices, since each pairwise relationship is verified independently.',
+    ],
+  },
+  'testing-hub/integration-testing': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Contract Testing', route: '/testing-hub/contract-testing' },
+      { label: 'Testing Databases', route: '/testing-hub/testing-databases' },
+    ],
+    tip: 'Integration tests deliberately use REAL collaborators (real database, real internal service) instead of mocks, since the whole point is verifying components actually work together correctly, not in isolation.',
+    gotchas: [
+      'Testcontainers gives integration tests a real database engine without the shared-state risks of a persistent test database.',
+      'External third-party services are usually still stubbed even in integration tests, since real calls introduce flakiness, cost, and rate limits.',
+    ],
+  },
+  'testing-hub/testing-databases': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Integration Testing', route: '/testing-hub/integration-testing' },
+    ],
+    tip: 'Wrapping each test in a transaction and rolling it back at the end guarantees the next test starts from a clean state, without the overhead of recreating the entire schema per test.',
+    gotchas: [
+      'A shared test database accessed by parallel test runs risks tests interfering with each other\'s data — a unique schema/database per worker avoids this class of flaky failure.',
+      'Seeding minimal, purpose-built test data makes each test\'s assumptions explicit, reducing the chance an unrelated data change breaks a seemingly unrelated test.',
+    ],
+  },
+  'testing-hub/msw': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Mocking & Spies', route: '/testing-hub/mocking-spies' },
+      { label: 'API Testing',     route: '/testing-hub/api-testing' },
+    ],
+    tip: 'MSW intercepts requests at the actual NETWORK layer, meaning application code makes real fetch/axios calls with no awareness it is mocked — this is why the same handlers work identically across browser, Node, and Storybook.',
+    gotchas: [
+      'Because app code is unaware, MSW exercises real request-building and response-parsing logic that a higher-level "mock the fetch function" approach would miss.',
+      'MSW handlers simulate error responses and edge-case payloads just as easily as happy-path responses.',
+    ],
+  },
+  'testing-hub/property-based-testing': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Mutation Testing', route: '/testing-hub/mutation-testing' },
+    ],
+    tip: 'Property-based testing generates hundreds of random inputs automatically to check an invariant holds for ALL valid inputs — exploring edge cases a human would never think to hand-write as an example test.',
+    gotchas: [
+      'Most frameworks automatically "shrink" a failing case to the smallest input that still reproduces it, turning an obscure random failure into a minimal reproduction.',
+      'Property-based testing complements rather than replaces example-based tests for specific known edge cases.',
+    ],
+  },
+  'testing-hub/mutation-testing': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Property-Based Testing', route: '/testing-hub/property-based-testing' },
+    ],
+    tip: 'A mutation score reports what percentage of introduced bugs (mutants) the test suite actually caught — unlike line coverage, a high mutation score is direct evidence tests would catch real regressions, not just that the code ran.',
+    gotchas: [
+      'Mutation testing is computationally expensive since the whole suite reruns per mutant — typically run less frequently (nightly) rather than every commit.',
+      'A team chasing 100% line coverage while skipping mutation testing can have a false sense of security.',
+    ],
+  },
+  'testing-hub/performance-testing': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Visual Regression', route: '/testing-hub/visual-regression' },
+    ],
+    tip: 'Load testing verifies expected traffic is handled correctly; stress testing deliberately finds the breaking point; soak testing runs sustained load over time to surface memory leaks or connection exhaustion — choosing the wrong test type for the question produces misleading conclusions.',
+    gotchas: [
+      'A brief load test cannot find a breaking point, and a stress test cannot validate steady-state capacity — pick the type matching the actual question.',
+      'Soak tests surface issues (leaks, resource exhaustion) that only appear over hours or days of sustained load.',
+    ],
+  },
+  'testing-hub/visual-regression': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Playwright',          route: '/testing-hub/playwright' },
+      { label: 'Performance Testing', route: '/testing-hub/performance-testing' },
+    ],
+    tip: 'Font rendering and GPU differences between local machines and CI commonly produce pixel-level diffs that are not genuine regressions — running visual tests in a consistent, containerized environment minimizes this noise.',
+    gotchas: [
+      'Dynamic content (timestamps, ads) must be masked before capturing a screenshot, since unmasked content guarantees every run "differs."',
+      'A pixel-perfect match says nothing about whether a button actually works when clicked — visual regression complements, not replaces, functional testing.',
+    ],
+  },
+  'testing-hub/snapshot-testing': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Jest Fundamentals', route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: 'A snapshot test failing does not by itself indicate a bug — it indicates output changed, and a human must judge whether that change was intentional, which is fundamentally different from a traditional pass/fail assertion.',
+    gotchas: [
+      'Inline snapshots improve review visibility since a reviewer sees the expected output change directly in the code review diff.',
+      'Best suited to stable, structurally complex output — poorly suited to frequently-evolving UI where snapshots become rubber-stamped noise.',
+    ],
+  },
+  'testing-hub/xunit': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Jest Fundamentals', route: '/testing-hub/jest-fundamentals' },
+    ],
+    tip: 'xUnit creates a NEW instance of the test class for every test method — this structurally prevents shared-mutable-state-between-tests bugs that plague frameworks reusing one instance across a suite.',
+    gotchas: [
+      'IClassFixture/ICollectionFixture provide explicit, opt-in mechanisms for sharing expensive setup, making shared state a deliberate choice rather than an accident.',
+      'Theory-based tests with InlineData/MemberData reduce duplication versus writing a near-identical Fact test per input.',
+    ],
+  },
+  'testing-hub/cheatsheet': {
+    apis: TESTING_DEFAULT.apis, docs: TESTING_DEFAULT.docs, resources: TESTING_DEFAULT.resources,
+    related: [
+      { label: 'Testing Fundamentals', route: '/testing-hub/testing-fundamentals' },
+    ],
+    tip: 'Consistent test naming (Given-When-Then, or "should" style) makes a failing test\'s intent clear from its name alone, without reading the test body first.',
+    gotchas: [
+      'Avoid vague names like "test1" — a failing test with an uninformative name forces reading the full implementation just to understand what broke.',
+      'Picking one naming convention and applying it consistently across a suite speeds up scanning test output during debugging.',
+    ],
+  },
 };
 
 @Component({
