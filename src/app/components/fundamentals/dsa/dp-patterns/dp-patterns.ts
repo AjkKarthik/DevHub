@@ -247,7 +247,7 @@ dp[i][0] = i; dp[0][j] = j; // first row and column are 0,1,2,...,n/m`,
     },
     {
       q: 'What is the difference between palindromic substring and palindromic subsequence?',
-      a: 'Substring: characters must be contiguous. Subsequence: characters can be non-contiguous (just must maintain order). "abcba" has longest palindromic substring "abcba" (the whole string) and longest palindromic subsequence also "abcba". For "cbbd": longest substring is "bb", longest subsequence is "bbb" (wrong) actually "bb" — they can differ when the string is more complex.',
+      a: 'Substring: characters must be contiguous. Subsequence: characters can be non-contiguous (just must maintain order). "abcba" has both its longest palindromic substring and longest palindromic subsequence equal to "abcba" (the whole string). For "character": the longest palindromic substring is "c" or "a" (length 1, since no contiguous palindrome longer than 1 exists), but the longest palindromic subsequence is "carac" (length 5, picking non-contiguous characters) — this is where the two measures genuinely diverge, since the subsequence relaxation allows skipping characters that break contiguity.',
     },
     {
       q: 'When is interval DP the right approach?',
