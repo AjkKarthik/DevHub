@@ -7979,6 +7979,253 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Being able to explain WHY unexpected behavior happens demonstrates a stronger grasp than just writing correct code.',
     ],
   },
+
+  // ── DSA: per-page entries ───────────────────────────────────────────────────
+  'dsa/big-o': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Arrays',        route: '/dsa/arrays' },
+      { label: 'Binary Search', route: '/dsa/binary-search' },
+    ],
+    tip: 'Nested loops don\'t always mean O(n²) — if the inner loop\'s range shrinks with progress, actual complexity may be lower and must be derived carefully, not assumed from loop structure alone.',
+    gotchas: [
+      'A method call like .includes() inside a loop silently adds hidden O(n) work per iteration, turning an apparent O(n) algorithm into O(n²).',
+      'Recursive functions need analyzing both call count AND work per call — naive Fibonacci looks O(1)-per-call but is actually O(2ⁿ) due to branching.',
+    ],
+  },
+  'dsa/arrays': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Big-O Notation',  route: '/dsa/big-o' },
+      { label: 'Strings',         route: '/dsa/strings' },
+    ],
+    tip: 'Dynamic array resizing (doubling capacity, not fixed-amount growth) is what makes amortized append cost O(1) — a single resize costs O(n), but this cost is amortized across many appends.',
+    gotchas: [
+      'The correct answer to "what is push\'s time complexity" is O(1) AMORTIZED, not O(n), even though any individual call could trigger a resize.',
+      'Pre-allocating to the expected final size avoids repeated resize overhead when the size is known in advance.',
+    ],
+  },
+  'dsa/strings': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Arrays',  route: '/dsa/arrays' },
+      { label: 'Trie',    route: '/dsa/trie' },
+    ],
+    tip: 'Strings are immutable — repeated concatenation in a loop is a classic O(n²) anti-pattern, since each concatenation allocates a new string; the sliding window technique is the dominant O(n) pattern for substring problems.',
+    gotchas: [
+      'String equality comparison is O(n) in length, not O(1) — easy to overlook when reasoning about algorithms that repeatedly compare or hash strings.',
+      'Building up a large string one small piece at a time should use a mutable buffer (StringBuilder-equivalent), not repeated concatenation.',
+    ],
+  },
+  'dsa/linked-lists': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Doubly Linked Lists', route: '/dsa/doubly-linked-lists' },
+      { label: 'Stacks & Queues',     route: '/dsa/stacks-queues' },
+    ],
+    tip: 'The fast-and-slow (tortoise and hare) pointer technique detects cycles in O(n)/O(1) space — if a cycle exists, the pointers are mathematically guaranteed to meet, since the fast pointer gains one step per iteration once both are inside the cycle.',
+    gotchas: [
+      'Resetting one pointer to the head after detecting a cycle finds the exact cycle-start node — a common interview follow-up.',
+      'The same technique finds the middle of a list in one pass, showing how one pattern solves multiple seemingly-different problems.',
+    ],
+  },
+  'dsa/doubly-linked-lists': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Linked Lists', route: '/dsa/linked-lists' },
+    ],
+    tip: 'The extra "previous" pointer enables O(1) removal given only a node reference, and O(1) insertion/removal from BOTH ends — this is why deque implementations and LRU caches are built on doubly linked lists.',
+    gotchas: [
+      'Sentinel head/tail nodes eliminate special-case null checks for boundary insertion/removal, unifying every case into the same code path.',
+      'The extra pointer per node roughly doubles pointer storage overhead versus a singly linked list — a real cost in memory-constrained environments.',
+    ],
+  },
+  'dsa/stacks-queues': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Linked Lists', route: '/dsa/linked-lists' },
+      { label: 'Heaps',        route: '/dsa/heaps' },
+    ],
+    tip: 'A queue can be implemented with two stacks (amortized O(1) per operation) — each element moves between stacks at most twice total across its lifetime, keeping amortized cost constant despite an occasional O(n) transfer.',
+    gotchas: [
+      'The monotonic stack pattern (keeping elements in strictly increasing/decreasing order) solves an entire family of "next greater element" problems in O(n).',
+      'This two-stack simulation is a classic interview question specifically testing understanding of amortized analysis.',
+    ],
+  },
+  'dsa/hash-tables': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Arrays', route: '/dsa/arrays' },
+    ],
+    tip: 'A poor hash function that clusters keys into the same bucket destroys the O(1) average-case guarantee entirely — separate chaining and open addressing are the two dominant collision-resolution strategies, each with different cache-locality tradeoffs.',
+    gotchas: [
+      'Load factor crossing a threshold (commonly 0.75) triggers automatic rehashing to maintain amortized O(1) operations.',
+      'Open addressing requires careful tombstone handling on deletion to avoid breaking probe sequences.',
+    ],
+  },
+  'dsa/trie': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Strings',      route: '/dsa/strings' },
+      { label: 'Hash Tables',  route: '/dsa/hash-tables' },
+    ],
+    tip: 'A trie supports prefix queries (find all words starting with a prefix) in time proportional to the prefix length — a hash set cannot answer these at all without a full scan of every stored string.',
+    gotchas: [
+      'A trie\'s memory usage can exceed a hash set\'s when stored strings share few common prefixes — its space efficiency depends on prefix-sharing in the actual dataset.',
+      'Compressed tries (radix trees) merge single-child chains into one edge, addressing naive-trie memory overhead while preserving query performance.',
+    ],
+  },
+  'dsa/binary-search': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Big-O Notation', route: '/dsa/big-o' },
+      { label: 'BST',            route: '/dsa/bst' },
+    ],
+    tip: 'Binary search generalizes to any monotonic predicate, not just sorted-array lookup — "binary search on the answer" searches over a range of possible answers using a feasibility check, common for optimization problems.',
+    gotchas: [
+      'Binary search requires O(1) random access to achieve O(log n) — applying it to a linked list degrades to O(n log n) overall.',
+      'Off-by-one errors (inclusive vs exclusive range bounds) are the most common bug — reason deliberately, don\'t pattern-match from memory.',
+    ],
+  },
+  'dsa/bst': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Binary Trees',   route: '/dsa/binary-trees' },
+      { label: 'Binary Search',  route: '/dsa/binary-search' },
+    ],
+    tip: 'A plain BST built from sorted input degenerates into a linked list — O(n) worst-case instead of O(log n) — which is why self-balancing variants (AVL, red-black trees) maintain a height invariant via rotations regardless of insertion order.',
+    gotchas: [
+      'Red-black trees favor faster insertion/deletion (fewer rotations) over AVL\'s stricter balance — why most standard library ordered maps use red-black trees.',
+      '"What happens if you insert 1,2,3,4,5 in order" is the classic follow-up testing whether a candidate knows plain BSTs can degenerate.',
+    ],
+  },
+  'dsa/binary-trees': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'BST',              route: '/dsa/bst' },
+      { label: 'Graphs (BFS/DFS)', route: '/dsa/graphs-bfs-dfs' },
+    ],
+    tip: 'Recursive traversals map naturally to a tree\'s recursive structure but risk stack overflow on very deep/unbalanced trees — iterative traversals with an explicit stack avoid this at the cost of code complexity.',
+    gotchas: [
+      'Level-order traversal fundamentally requires a QUEUE, not a stack, since it must process each depth level before moving to the next.',
+      'Morris traversal achieves O(1)-space inorder traversal by temporarily modifying tree structure — an advanced space-optimization technique.',
+    ],
+  },
+  'dsa/heaps': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Stacks & Queues', route: '/dsa/stacks-queues' },
+    ],
+    tip: 'A min-heap of size K is the standard technique for finding the K largest elements in a stream, achieving O(n log K) — meaningfully better than sorting the entire stream at O(n log n).',
+    gotchas: [
+      'Building a heap from an unsorted array via heapify runs in O(n), not O(n log n) — most nodes sit near the bottom and require little sift-down work.',
+      'A heap only guarantees the root is min/max — it does NOT provide fully sorted order for the rest, unlike a balanced BST.',
+    ],
+  },
+  'dsa/graphs-bfs-dfs': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Graph Algorithms', route: '/dsa/graph-algorithms' },
+      { label: 'Binary Trees',     route: '/dsa/binary-trees' },
+    ],
+    tip: 'BFS guarantees the shortest path in edge count for unweighted graphs; DFS gives no such guarantee since it dives deep before backtracking — but both run in O(V+E), so the choice is driven by which traversal order the problem actually needs.',
+    gotchas: [
+      'DFS uses less memory in the worst case for wide graphs, since its stack only holds one root-to-current path.',
+      'BFS is the natural choice for "minimum number of steps" problems; DFS for exhaustive path exploration or cycle detection.',
+    ],
+  },
+  'dsa/graph-algorithms': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Graphs (BFS/DFS)', route: '/dsa/graphs-bfs-dfs' },
+      { label: 'Greedy',           route: '/dsa/greedy' },
+    ],
+    tip: 'Dijkstra finds single-source shortest paths in O((V+E)logV) but requires NON-NEGATIVE edge weights — Bellman-Ford handles negative weights (and detects negative cycles) at higher O(V·E) cost.',
+    gotchas: [
+      'Dijkstra produces incorrect results with any negative edge, since it greedily finalizes distances without revisiting them.',
+      'Floyd-Warshall computes all-pairs shortest paths in O(V³), more efficient than running Dijkstra from every vertex when all-pairs distances are actually needed.',
+    ],
+  },
+  'dsa/bit-manipulation': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Arrays', route: '/dsa/arrays' },
+    ],
+    tip: 'Bitmasks provide O(1) set operations (union, intersection via bitwise AND/OR) for compactly representing small sets of flags — genuinely faster in practice than hash-set alternatives, not just theoretically equivalent.',
+    gotchas: [
+      'Bitmask DP (representing visited state as a bitmask, as in TSP) is standard for problems with a small number of discrete elements (typically under ~20-25).',
+      'Understanding two\'s complement is essential for correctly reasoning about right-shift behavior on negative numbers.',
+    ],
+  },
+  'dsa/recursion-backtracking': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Dynamic Programming', route: '/dsa/dynamic-programming' },
+    ],
+    tip: 'Backtracking adds PRUNING over pure brute-force recursion — abandoning a branch as soon as it\'s known invalid, avoiding wasted exploration, even though both share the same worst-case complexity bound.',
+    gotchas: [
+      'A common bug is forgetting to undo a state change (remove from a "current path" array, reset a visited flag) on the way back up the recursion.',
+      'Trying the most constrained choice first prunes the search tree faster than an arbitrary ordering, even with otherwise-identical pruning logic.',
+    ],
+  },
+  'dsa/dynamic-programming': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'DP Patterns',              route: '/dsa/dp-patterns' },
+      { label: 'Recursion & Backtracking', route: '/dsa/recursion-backtracking' },
+    ],
+    tip: 'Top-down memoization mirrors the natural recursive definition (easier to derive correctly); bottom-up tabulation avoids recursion overhead and more easily enables space optimization (reducing O(n²) to O(n) or O(1)).',
+    gotchas: [
+      'Starting with a correct top-down solution then converting to bottom-up is a common, effective strategy once dependencies are well understood.',
+      'Bottom-up often runs faster in practice due to eliminated function-call overhead versus top-down recursion.',
+    ],
+  },
+  'dsa/dp-patterns': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Dynamic Programming', route: '/dsa/dynamic-programming' },
+      { label: 'Greedy',              route: '/dsa/greedy' },
+    ],
+    tip: 'Recognizing which recurring PATTERN a problem matches (0/1 knapsack, LCS, interval DP) is often more valuable in an interview than deriving the recurrence from scratch each time.',
+    gotchas: [
+      'The 0/1 knapsack pattern applies whenever each item is usable at most once under a capacity constraint — often disguised as "partition into equal-sum subsets."',
+      'Interval DP (state = a range [i,j]) applies when the optimal solution requires deciding how to split or combine a contiguous range.',
+    ],
+  },
+  'dsa/greedy': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'DP Patterns', route: '/dsa/dp-patterns' },
+    ],
+    tip: 'A greedy algorithm is only correct if the problem exhibits the greedy-choice property — verify this via an exchange argument or induction before trusting a greedy solution, since a locally-sensible strategy isn\'t automatically globally optimal.',
+    gotchas: [
+      '0/1 knapsack is the canonical counterexample — greedily picking by value-to-weight ratio does NOT guarantee optimality, unlike the fractional knapsack variant.',
+      'When greedy fails to provably work, dynamic programming is the typical fallback, exploring the full solution space instead of committing irrevocably.',
+    ],
+  },
+  'dsa/advanced-sorts': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Basic Sorts', route: '/dsa/basic-sorts' },
+    ],
+    tip: 'Merge sort guarantees O(n log n) worst-case and is stable; quicksort is typically faster in practice due to cache locality but has O(n²) worst-case on adversarial input unless randomized pivots or introsort fallbacks are used.',
+    gotchas: [
+      'Heapsort guarantees O(n log n) with O(1) extra space but has poor cache locality, usually making it slower than quicksort despite the same asymptotic complexity.',
+      'Most production standard libraries use hybrid algorithms (Timsort, introsort) that switch strategies based on input characteristics.',
+    ],
+  },
+  'dsa/basic-sorts': {
+    apis: DSA_DEFAULT.apis, docs: DSA_DEFAULT.docs, resources: DSA_DEFAULT.resources,
+    related: [
+      { label: 'Advanced Sorts', route: '/dsa/advanced-sorts' },
+      { label: 'Big-O Notation', route: '/dsa/big-o' },
+    ],
+    tip: 'Insertion sort outperforms O(n log n) algorithms on small arrays due to lower constant-factor overhead — many production sorts switch to it as a base case for small subarrays, and it\'s adaptive (near-O(n) on nearly-sorted data).',
+    gotchas: [
+      'Bubble sort and selection sort are rarely used in production due to consistent O(n²) even on nearly-sorted data, but remain useful for building intuition.',
+      'Understanding basic sorts builds the invariant-reasoning skill needed to analyze and debug more advanced algorithms.',
+    ],
+  },
 };
 
 @Component({
