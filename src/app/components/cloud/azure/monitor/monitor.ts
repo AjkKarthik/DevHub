@@ -376,8 +376,8 @@ export function summariseRequests(requests: RequestTelemetry[]): {
       a: 'Alert fatigue (too many noisy alerts) leads teams to ignore alerts — exactly when real incidents are missed. Mitigations: (1) <strong>Dynamic thresholds</strong> on metric alerts — learn normal patterns and alert on deviations, reducing false positives for metrics with natural variation. (2) <strong>Alert suppression</strong> via Alert Processing Rules during maintenance windows. (3) <strong>Severity routing</strong> — Sev 0/1 pages on-call immediately, Sev 2/3 sends email only. (4) <strong>Multi-condition alerts</strong> — fire only when multiple metrics breach simultaneously (CPU high AND error rate high). (5) <strong>Alert deduplication</strong> — aggregation period prevents the same condition from firing repeatedly within a window.'
     },
     {
-      q: 'What is the difference between Azure Monitor Metrics and Azure Monitor Logs?',
-      a: '<strong>Metrics</strong> are numerical time-series data (CPU %, request count) stored for 93 days, queried with Metrics Explorer, and great for real-time alerting. <strong>Logs</strong> are structured/unstructured records stored in Log Analytics workspaces, queried with KQL, and better for diagnostics, traces, and complex correlation across resources.',
+      q: 'Why do metric-based alerts typically fire faster than log-based alerts for the same underlying condition?',
+      a: 'Platform metrics are collected and made available near-instantly (often within 1-3 minutes) as pre-aggregated time-series data specifically optimized for fast querying and alerting, and metric alert rules can evaluate on a schedule as tight as every 1 minute. Log-based alerts instead run a KQL query against the Log Analytics workspace on a schedule (as infrequent as every 5-15 minutes for cost/performance reasons), and there is additional ingestion latency (often several minutes) between an event occurring and it becoming queryable in Logs at all — so even with identical detection logic, a metric alert on CPU% will typically fire noticeably sooner than a log alert querying the equivalent data from ingested logs.',
     },
   ];
 

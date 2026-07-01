@@ -341,8 +341,8 @@ console.log(parseMemoryMi('1Gi'));   // 1024`
       a: 'AKS upgrades one node at a time: it cordons the node (prevents new scheduling), drains it (evicts pods to other nodes), provisions a new node with the new k8s version, and deletes the old node. Set <code>--max-surge</code> to provision N extra nodes before draining — this speeds up the upgrade and keeps capacity available throughout. Use <code>PodDisruptionBudgets</code> to ensure at least N replicas of each deployment stay available during drain.'
     },
     {
-      q: 'How do you upgrade an AKS cluster with minimal downtime?',
-      a: 'Use <strong>az aks upgrade</strong> with node surge to add extra nodes before draining old ones, or use blue/green cluster swapping via Traffic Manager. Upgrade the control plane first, then node pools. Enable PodDisruptionBudgets and test in staging before production.',
+      q: 'Why does AKS require upgrading the control plane version before (or at the same version as) any node pool, never the other way around?',
+      a: 'The Kubernetes API server on the control plane must always be at a version equal to or newer than the kubelet version running on nodes — an older control plane may not understand API objects or features that newer node components expect, but a newer control plane can safely manage slightly older nodes (within Kubernetes\' supported version skew, typically 2 minor versions). AKS enforces this ordering at the platform level: you cannot upgrade a node pool to a Kubernetes version higher than the control plane\'s current version, which is why control plane upgrades are always the first step in any AKS version upgrade plan.',
     },
   ];
 

@@ -352,15 +352,15 @@ console.log(getExecutionOrder(stages));
       explanation: 'Cache@2 stores a directory (e.g., node_modules, NuGet packages, pip cache) keyed on a hash (e.g., package-lock.json content). On the next run, if the key matches, the cached directory is restored — skipping the download step. If the key doesn\'t match (lock file changed), the cache is rebuilt. Dramatically reduces build time for dependency-heavy projects on Microsoft-hosted agents that start fresh each run.'
     },
     {
-      q: 'What is the purpose of Azure DevOps Environments with approvals?',
+      q: 'Can you require DIFFERENT approvers for the same pipeline depending on which environment (staging vs production) a stage deploys to?',
       options: [
-        'To automatically roll back failed deployments',
-        'To gate deployments so a human must approve before a pipeline continues to a protected environment',
-        'To restrict which agents can run pipeline jobs',
-        'To set Azure RBAC on resource groups',
+        'No — approval requirements are set once per pipeline and apply to every stage identically',
+        'Yes — because approvals are configured on the Environment resource itself (not the pipeline YAML), each environment (staging, production) can have its own distinct set of required approvers',
+        'Only if the environments are in different Azure DevOps projects',
+        'Different approvers require writing separate YAML files per environment',
       ],
       answer: 1,
-      explanation: 'Azure DevOps Environments let you define deployment targets like production with approval gates a designated reviewer must approve before the pipeline deploys to that environment.',
+      explanation: 'Because approval gates live on the Environment object in the Azure DevOps portal rather than in the pipeline YAML, the SAME pipeline can deploy to a staging environment with no approval requirement and then to a production environment requiring sign-off from a specific security team — the pipeline definition itself does not need to change at all; only the target environment\'s own approval configuration differs.',
     },
   ];
 
@@ -386,8 +386,8 @@ console.log(getExecutionOrder(stages));
       a: 'Conditions control whether a stage, job, or step runs. Built-in conditions: <code>succeeded()</code> (default), <code>failed()</code>, <code>always()</code>, <code>succeededOrFailed()</code>. Custom conditions combine these with variable checks: <code>and(succeeded(), eq(variables[\'Build.SourceBranch\'], \'refs/heads/main\'))</code> — only run on main branch success. Use cases: (1) Deploy to production only on main branch. (2) Run cleanup step even if the build fails. (3) Skip tests if only documentation changed. (4) Conditional variable group: load prod secrets only for prod deployments. Conditions are evaluated at the start of each stage/job/step — they cannot reference variables set later in the same run.'
     },
     {
-      q: 'How do Azure DevOps service connections work?',
-      a: 'Service connections store credentials (service principal, workload identity, token) that pipelines use to authenticate to external services (Azure, Docker Hub, Kubernetes). They are scoped to a project and can be restricted to specific pipelines. Workload identity federation is the modern approach — no secrets stored, just federated trust.',
+      q: 'Why does restricting a service connection to specific pipelines matter, given that the connection\'s credentials already grant only limited Azure permissions?',
+      a: 'Even a narrowly-scoped service connection (e.g. Contributor on one resource group) can still be MISUSED if any pipeline in the project can invoke it — a compromised or malicious pipeline (via a compromised dependency in a build step, for instance) could use that connection to deploy unauthorized changes within its permission scope. Restricting which specific pipelines are authorized to use a given service connection adds a second layer of control beyond Azure RBAC: even a pipeline with a security vulnerability cannot leverage a service connection it was never granted the right to use in the first place, limiting blast radius beyond what the credential\'s own Azure permissions alone would provide.',
     },
   ];
 

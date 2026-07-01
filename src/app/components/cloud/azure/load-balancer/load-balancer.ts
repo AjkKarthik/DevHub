@@ -335,8 +335,8 @@ console.log(lb.getNext()); // 'vm1'`
 
   qna: QnaItem[] = [
     {
-      q: 'When should I use Traffic Manager vs Azure Front Door?',
-      a: 'Use <strong>Traffic Manager</strong> for DNS-based global routing of any protocol (TCP, UDP, not just HTTP), or to route to on-premises endpoints. It is cheaper but cannot do WAF, caching, or TLS termination. Use <strong>Azure Front Door</strong> for HTTP/HTTPS apps where you need global WAF, CDN caching, and lowest latency via Anycast. Front Door Standard/Premium is the default choice for modern web apps.'
+      q: 'Why can Traffic Manager fail over to a new endpoint slower than Azure Front Door during an outage, even with the same health-probe configuration?',
+      a: 'Traffic Manager works at the DNS layer — when it detects an unhealthy endpoint, it changes which IP address it RETURNS to future DNS queries, but any client (or intermediate DNS resolver) that has already cached the old IP under the record\'s TTL continues sending traffic to the failed endpoint until that cached entry expires, adding real-world failover delay beyond Traffic Manager\'s own detection time. Front Door operates at the HTTP/Anycast layer instead — it terminates the client connection itself and can immediately reroute a NEW request to a healthy backend without waiting on any DNS cache to expire anywhere in the world, which is why Front Door is generally the faster-failing-over option for HTTP workloads.'
     },
     {
       q: 'What is SNAT exhaustion and how do you prevent it?',

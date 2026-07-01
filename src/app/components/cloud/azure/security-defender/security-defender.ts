@@ -364,15 +364,15 @@ export function calculateSecureScore(controls: SecurityControl[]) {
       explanation: 'Defender for Cloud generates alerts per resource, but each alert is seen in isolation. Microsoft Sentinel is a SIEM/SOAR that correlates signals from multiple sources: Defender alerts, Entra ID sign-in logs, NSG flow logs, Azure Activity logs, and endpoint telemetry (Defender for Endpoint). This correlation exposes the full attack chain: e.g., a suspicious process on VM X → correlates with an Entra ID sign-in from an anomalous IP → plus NSG logs showing lateral movement — a full incident Sentinel can automatically raise and trigger a response playbook for.'
     },
     {
-      q: 'What does the Defender for Cloud secure score represent?',
+      q: 'Why can two subscriptions with the exact same number of unresolved recommendations end up with different Secure Scores?',
       options: [
-        'The number of active security alerts across all subscriptions',
-        'A percentage score measuring how closely your resources follow security best practice recommendations',
-        'The total cost of Defender plans enabled across your environment',
-        'A compliance score based on regulatory standards only',
+        'Secure Score is randomized to prevent gaming the metric',
+        'Each security control (and each recommendation within it) is weighted differently based on its security impact, so resolving a handful of high-weight recommendations raises the score more than resolving many low-weight ones — raw recommendation count alone does not determine the score',
+        'Secure Score only counts recommendations from paid Defender plans, so free-tier subscriptions always score lower',
+        'The score is purely a function of subscription age, not actual security posture',
       ],
       answer: 1,
-      explanation: 'The secure score aggregates security findings into a percentage the higher the score, the fewer recommendations remain unresolved. Remediating recommendations increases the score and improves your security posture.',
+      explanation: 'Secure Score is not "unresolved recommendations count / total recommendations" — each control (e.g. "Enable MFA," "Remediate vulnerabilities") carries its own weighting based on its actual security impact, and points within a control are further split across the individual resources affected. Two environments with the same NUMBER of open recommendations can have meaningfully different scores if one environment\'s open items are concentrated in high-weight controls (like exposed management ports) versus low-weight ones (like resource tagging hygiene) — this is intentional, so the score reflects genuine risk reduction priority, not just a raw completion percentage.',
     },
   ];
 

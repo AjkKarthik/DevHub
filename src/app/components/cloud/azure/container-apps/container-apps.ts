@@ -343,8 +343,8 @@ console.log(validateWeights([{ name: 'v1', weight: 50 }])); // false (50 ≠ 100
       a: 'A regular container app with KEDA scales replicas up/down but <em>stays running</em> — replicas process events continuously. A <strong>Job</strong> starts a new container instance per event (or on schedule), runs it to completion, and terminates. Jobs are better for: database migrations (must run exactly once), report generation (one container per report), and batch tasks where you need a completion guarantee and exit code. Regular apps with KEDA are better for persistent workers that poll continuously.'
     },
     {
-      q: 'What is a Container Apps environment and why does it matter?',
-      a: 'A Container Apps environment is the isolation boundary — all apps within it share the same virtual network, Log Analytics workspace, and Dapr configuration. Apps in the same environment can communicate via Dapr or direct service invocation. Different environments are fully isolated, useful for separating dev/prod.',
+      q: 'Can two Container Apps in the SAME environment be on completely different internal networks, isolated from each other?',
+      a: 'No — all apps deployed into the same Container Apps environment share that environment\'s single virtual network, meaning they can all potentially reach each other over the internal network by default (subject to any ingress restrictions each app sets). If you need network-level isolation between two groups of apps, you must deploy them into SEPARATE environments (each with its own VNet), not just rely on Container Apps-level configuration within one shared environment — this is the main reason dev and prod are typically placed in entirely separate environments rather than the same one with different app-level settings.',
     },
   ];
 
