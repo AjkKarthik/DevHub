@@ -7723,6 +7723,262 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Picking one naming convention and applying it consistently across a suite speeds up scanning test output during debugging.',
     ],
   },
+
+  // ── Python: per-page entries ────────────────────────────────────────────────
+  'python/fundamentals': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Functions & Closures', route: '/python/functions-closures' },
+      { label: 'Type Hints',           route: '/python/type-hints' },
+    ],
+    tip: 'A mutable default argument (def fn(items=[])) is created ONCE at function definition time and shared across every call that doesn\'t pass its own — one of Python\'s most common and surprising bugs.',
+    gotchas: [
+      'Only immutable types can be dict keys or set members, since hashability requires a value that never changes during its lifetime.',
+      'Python passes references by value — a mutable argument can be modified in place with the change visible to the caller, but reassigning the parameter name is not.',
+    ],
+  },
+  'python/functions-closures': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals',                    route: '/python/fundamentals' },
+      { label: 'Decorators & Context Managers',   route: '/python/decorators-context-managers' },
+    ],
+    tip: 'A closure captures a REFERENCE to a variable, not its value — a loop creating multiple closures over the loop variable all reference its FINAL value once the loop completes, unless captured via a default argument snapshot.',
+    gotchas: [
+      'nonlocal/global are required to explicitly permit a nested function to reassign an outer-scope variable — without them, assignment creates a new local variable instead.',
+      'This late-binding trap is a frequent source of bugs creating callback lists in a loop.',
+    ],
+  },
+  'python/decorators-context-managers': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Functions & Closures', route: '/python/functions-closures' },
+      { label: 'File I/O',             route: '/python/file-io' },
+    ],
+    tip: 'A decorator without functools.wraps replaces the wrapped function\'s __name__ and __doc__ with the wrapper\'s own — silently breaking introspection, debuggers, and documentation generators.',
+    gotchas: [
+      'A context manager\'s __exit__ is guaranteed to run even if an exception occurs — the correct mechanism for guaranteed cleanup, unlike scattered try/finally.',
+      'contextlib.contextmanager lets a single generator function implement a full context manager without a class.',
+    ],
+  },
+  'python/type-hints': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Dataclasses & Pydantic', route: '/python/dataclasses-pydantic' },
+      { label: 'Fundamentals',           route: '/python/fundamentals' },
+    ],
+    tip: 'Type hints are purely informational by default — the interpreter does NOT enforce them at runtime, meaning a function annotated with int params will happily accept strings unless a static checker (mypy) or Pydantic actually validates.',
+    gotchas: [
+      'Pydantic bridges this gap by enforcing types at runtime — a fundamentally different guarantee than static hints alone.',
+      'Gradual typing (mixing typed/untyped code) is what has driven type hints\' widespread incremental adoption across the ecosystem.',
+    ],
+  },
+  'python/oop': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Dataclasses & Pydantic', route: '/python/dataclasses-pydantic' },
+    ],
+    tip: 'Deep inheritance hierarchies tightly couple subclasses to a parent\'s implementation details — favoring composition achieves reuse without that coupling, and duck typing often means Python doesn\'t need formal inheritance for polymorphism at all.',
+    gotchas: [
+      'Python\'s multiple inheritance and Method Resolution Order make deep/wide hierarchies especially prone to the "diamond problem."',
+      'Two unrelated classes implementing the same method signature can be used interchangeably without sharing a common base class.',
+    ],
+  },
+  'python/dataclasses-pydantic': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Type Hints', route: '/python/type-hints' },
+      { label: 'FastAPI',    route: '/python/fastapi' },
+    ],
+    tip: '@dataclass generates boilerplate but performs NO runtime validation — Pydantic validates and coerces data at construction time, raising ValidationError immediately, which is why Pydantic is standard for validating untrusted external input.',
+    gotchas: [
+      'Pydantic\'s validation overhead makes it a poor fit for extremely hot internal paths where data is already known correct — plain dataclasses are more appropriate there.',
+      'FastAPI\'s deep Pydantic integration (auto OpenAPI schema, request/response validation) is a major reason for Pydantic\'s dominance in modern Python APIs.',
+    ],
+  },
+  'python/comprehensions-generators': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Collections & Itertools', route: '/python/collections-itertools' },
+    ],
+    tip: 'A list comprehension eagerly builds the entire list in memory; a generator expression produces values lazily one at a time — for large or unbounded sequences, this determines whether code runs at all or crashes with a memory error.',
+    gotchas: [
+      'A generator can only be iterated once — passing it to code expecting multiple passes is a common source of "why is my second loop empty" bugs.',
+      'Nested comprehensions past two levels usually hurt readability more than an explicit loop would.',
+    ],
+  },
+  'python/collections-itertools': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Comprehensions & Generators', route: '/python/comprehensions-generators' },
+    ],
+    tip: 'deque provides O(1) append/pop from BOTH ends, unlike a plain list where inserting/removing from the front is O(n) — making it the correct choice for queue-like or sliding-window algorithms.',
+    gotchas: [
+      'groupby only groups CONSECUTIVE matching elements — data must be sorted by the grouping key first, or it silently under-groups.',
+      'itertools functions operate lazily, avoiding materializing large intermediate lists for large or infinite iterables.',
+    ],
+  },
+  'python/file-io': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Decorators & Context Managers', route: '/python/decorators-context-managers' },
+    ],
+    tip: 'with open(path) as f guarantees the file handle closes even if an exception occurs — manual open()/close() risks leaking the handle if an exception happens between the two calls with no try/finally.',
+    gotchas: [
+      'Reading a very large file entirely with .read() can exhaust memory — iterate line-by-line or in fixed chunks to keep usage bounded.',
+      'File handle leaks accumulate silently until the OS descriptor limit is hit, often invisible in dev but a production surprise.',
+    ],
+  },
+  'python/asyncio': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Threading & Multiprocessing', route: '/python/threading-multiprocessing' },
+      { label: 'Concurrency Patterns',        route: '/python/concurrency-patterns' },
+    ],
+    tip: 'asyncio.TaskGroup (3.11+) provides structured concurrency — all tasks are guaranteed to complete or be cancelled before the block exits, and a failure automatically cancels siblings, unlike plain gather() which needs careful exception handling.',
+    gotchas: [
+      'Cancellation is cooperative, not preemptive — a task must hit an await point to notice it was cancelled; CPU-bound code with no awaits cannot be cancelled promptly.',
+      'A fire-and-forget async void-style event handler can silently crash a whole async application if its exception is never awaited.',
+    ],
+  },
+  'python/threading-multiprocessing': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Asyncio',              route: '/python/asyncio' },
+      { label: 'Concurrency Patterns', route: '/python/concurrency-patterns' },
+    ],
+    tip: 'The GIL prevents multiple threads from executing Python bytecode simultaneously, so threading does NOT achieve CPU-bound parallelism — multiprocessing (separate processes, separate GILs) is required for genuine CPU-bound parallel work.',
+    gotchas: [
+      'A race condition can still occur even with the GIL, since bytecode-level operations can interleave in ways that corrupt compound "read, modify, write" operations.',
+      'Deadlock from acquiring multiple locks in inconsistent order across code paths is a common bug — always acquire in a consistent, globally-agreed order.',
+    ],
+  },
+  'python/concurrency-patterns': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Asyncio',                     route: '/python/asyncio' },
+      { label: 'Threading & Multiprocessing', route: '/python/threading-multiprocessing' },
+    ],
+    tip: 'asyncio suits I/O-bound work with many concurrent waits; threading suits I/O-bound work with blocking libraries; multiprocessing is required for genuine CPU-bound parallelism — profile first to know which category a workload actually falls into.',
+    gotchas: [
+      'Using threading for CPU-bound work expecting it to parallelize is one of the most common Python performance misconceptions.',
+      'Mixing these models incorrectly is a frequent source of "why isn\'t this faster" surprises.',
+    ],
+  },
+  'python/django': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'FastAPI',      route: '/python/fastapi' },
+      { label: 'SQLAlchemy',   route: '/python/sqlalchemy' },
+    ],
+    tip: 'The N+1 query problem happens when iterating a queryset and accessing a related object per item — select_related (JOIN, single-valued relations) and prefetch_related (separate optimized query, many-valued relations) fix it via different mechanisms.',
+    gotchas: [
+      'Django Debug Toolbar makes N+1 problems visible during development — without it, they often go unnoticed until production load.',
+      'select_related and prefetch_related solve structurally different relationship types — using the wrong one still leaves N+1 queries.',
+    ],
+  },
+  'python/fastapi': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Dataclasses & Pydantic', route: '/python/dataclasses-pydantic' },
+      { label: 'Django',                 route: '/python/django' },
+    ],
+    tip: 'FastAPI\'s Depends() system resolves dependencies (DB sessions, auth, config) as parameters — this dependency graph is what makes testing dramatically easier via dependency_overrides, substituting a mock without touching endpoint code.',
+    gotchas: [
+      'Dependencies re-evaluate per request by default; yield-based dependencies handle setup/teardown even if an exception occurs.',
+      'Overusing dependencies for stateless utility functions adds unnecessary indirection — reserve them for genuinely request-scoped concerns.',
+    ],
+  },
+  'python/sqlalchemy': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Django',   route: '/python/django' },
+    ],
+    tip: 'SQLAlchemy\'s Session implements the unit-of-work pattern — changes accumulate in memory and only become SQL on commit/flush, not immediately on each change, which is why session scope should match one logical unit of work, not linger indefinitely.',
+    gotchas: [
+      'Lazy loading (the default for relationships) can cause the same N+1 problem as Django\'s ORM — joinedload()/selectinload() are the equivalent fix.',
+      'Detached instance errors (accessing a relationship after the session closes) are a common pitfall.',
+    ],
+  },
+  'python/numpy-pandas': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Scikit-Learn', route: '/python/scikit-learn' },
+    ],
+    tip: 'NumPy operations run in compiled C code on contiguous memory, avoiding per-element Python interpreter overhead — a Python for-loop over a NumPy array actually defeats the entire purpose, since each access re-enters the interpreter.',
+    gotchas: [
+      'Broadcasting lets operations between differently-shaped arrays happen without explicit loops or duplicated memory.',
+      'Pandas is built on NumPy arrays, so using vectorized operations over .iterrows() is essential for acceptable performance on non-trivial datasets.',
+    ],
+  },
+  'python/scikit-learn': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'NumPy & Pandas', route: '/python/numpy-pandas' },
+    ],
+    tip: 'Splitting into train/test BEFORE any preprocessing is essential — fitting a scaler on the full dataset (including test data) leaks information, producing an artificially optimistic evaluation.',
+    gotchas: [
+      'Pipeline ensures fit() only runs on training data and transform() applies consistently — a structural safeguard against accidental leakage.',
+      'A model performing far better on training than test data has memorized noise rather than learned generalizable patterns.',
+    ],
+  },
+  'python/pytest': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Debugging & Profiling', route: '/python/debugging-profiling' },
+    ],
+    tip: 'Fixture scope (function/class/module/session) controls how often setup re-runs — function-scoped guarantees complete isolation at the cost of re-running expensive setup; session-scoped trades some isolation for speed on costly resources.',
+    gotchas: [
+      'Tests sharing mutable state via an improperly-scoped fixture can produce order-dependent failures that only surface when run after another specific test.',
+      'Parametrized tests reduce boilerplate for testing the same logic against many input/output pairs.',
+    ],
+  },
+  'python/debugging-profiling': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Pytest', route: '/python/pytest' },
+    ],
+    tip: 'cProfile reveals where a program actually spends time — optimizing based on intuition alone frequently targets the wrong bottleneck, since the actual slow path is often surprising and only findable through measurement.',
+    gotchas: [
+      'Memory profiling (tracemalloc) answers a different question than time profiling — a function can be fast but leak memory across many calls.',
+      'A debugger is best for understanding WHY logic produces an unexpected value; a profiler is best for WHERE time/memory is spent — conflating the two wastes debugging effort.',
+    ],
+  },
+  'python/packaging': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/python/fundamentals' },
+    ],
+    tip: 'A lock file records the EXACT resolved version of every dependency (including transitive) — guaranteeing "works on my machine" translates to production, unlike a loose requirements.txt range that can silently pull a newer breaking version.',
+    gotchas: [
+      'Virtual environments isolate a project\'s dependencies from the system Python and from other projects needing different versions of the same library.',
+      'pyproject.toml has become the modern standard, replacing the older setup.py-based approach.',
+    ],
+  },
+  'python/celery': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'FastAPI',    route: '/python/fastapi' },
+      { label: 'Asyncio',    route: '/python/asyncio' },
+    ],
+    tip: 'Celery\'s default delivery guarantee is at-LEAST-once, not exactly-once — task logic must be idempotent (safely re-runnable) to avoid duplicate side effects when a redelivered task executes after a worker crash.',
+    gotchas: [
+      'acks_late=True reduces the window where a crashed worker silently loses a task, but increases the chance of duplicate execution — a deliberate tradeoff.',
+      'Retries with exponential backoff avoid overwhelming an already-struggling downstream service with near-simultaneous retry attempts.',
+    ],
+  },
+  'python/interview-prep': {
+    apis: PYTHON_DEFAULT.apis, docs: PYTHON_DEFAULT.docs, resources: PYTHON_DEFAULT.resources,
+    related: [
+      { label: 'Type Hints',           route: '/python/type-hints' },
+      { label: 'Functions & Closures', route: '/python/functions-closures' },
+    ],
+    tip: 'Beyond syntax, interviews commonly probe GIL implications, mutable default argument pitfalls, and shallow-vs-deep copying — these separate surface familiarity from genuine Python fluency.',
+    gotchas: [
+      'Complexity analysis of built-in operations (list.append O(1) amortized, "in" O(n) on a list but O(1) on a set/dict) is frequently tested.',
+      'Being able to explain WHY unexpected behavior happens demonstrates a stronger grasp than just writing correct code.',
+    ],
+  },
 };
 
 @Component({
