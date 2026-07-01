@@ -59,6 +59,24 @@ export class ArchVerticalSlice {
         'Direct cross-slice calls create the same coupling as cross-layer calls in traditional layered architecture.',
       ],
     },
+    {
+      heading: 'Organizing Code by Feature Instead of by Technical Layer',
+      points: [
+        'Vertical slice architecture groups all the code needed for a single feature or use case (the API endpoint, the business logic, the data access) together in one place, rather than scattering that same feature\'s code horizontally across separate Controllers, Services, and Repositories folders.',
+        'This feature-based organization means understanding or modifying a single feature typically requires touching files in ONE location, rather than navigating across multiple horizontal layers, each of which likely contains code for many unrelated features intermixed together.',
+        'Vertical slices reduce the risk of accidental coupling between unrelated features — since each feature\'s code is self-contained, there is less temptation to reach for and reuse a "shared" service class that inadvertently couples two otherwise-unrelated features together.',
+        'Some duplication across slices (similar-looking validation or mapping logic repeated in multiple features) is an accepted tradeoff of this approach — the pattern favors feature independence and clarity over eliminating every instance of code similarity through shared abstraction.',
+      ],
+    },
+    {
+      heading: 'Vertical Slices and the CQRS/Mediator Pattern Combination',
+      points: [
+        'Vertical slice architecture pairs naturally with CQRS and a mediator pattern (like MediatR in .NET) — each feature becomes a single Command or Query handler class, giving every feature slice a consistent, predictable shape regardless of what the feature actually does internally.',
+        'This combination makes it trivial to add cross-cutting behavior (logging, validation, caching) via mediator pipeline behaviors that wrap every handler uniformly, without needing to modify each individual feature\'s code to add that cross-cutting concern.',
+        'Testing a vertical slice in isolation is straightforward — since each feature is a self-contained handler with clear inputs and outputs, testing one feature does not require understanding or mocking a complex web of shared service dependencies the way a traditionally layered application often does.',
+        'This pattern is not mutually exclusive with Clean Architecture or DDD — many production systems combine vertical slices for feature organization with Clean Architecture\'s dependency-inversion principles applied within each individual slice, taking benefits from both approaches simultaneously.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

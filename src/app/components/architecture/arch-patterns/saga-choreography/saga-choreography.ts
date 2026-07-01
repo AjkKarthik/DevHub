@@ -60,6 +60,24 @@ export class ArchSagaChoreography {
         'Compensating transactions must be idempotent — the saga may call them more than once on retry.',
       ],
     },
+    {
+      heading: 'Choreographed Sagas: Emergent Behavior From Local Reactions',
+      points: [
+        'In a choreographed saga, each service reacts to events from other services and publishes its own events in turn, with no central coordinator directing the overall flow — the end-to-end business process emerges from the sum of these local, independent reactions rather than being explicitly defined anywhere.',
+        'This decentralization avoids a central orchestrator becoming a bottleneck or a single point of coupling to every participating service, but it comes at the cost of the overall business process being implicit — understanding the full saga requires tracing event flows across every participating service\'s code.',
+        'Choreography works best for relatively simple, linear sagas with few participants — as the number of steps and services grows, the implicit, distributed nature of the flow becomes genuinely harder to understand, test, and modify compared to an orchestrated saga\'s explicit central definition.',
+        'Adding a new step to a choreographed saga typically means modifying the service that should react to a new event and potentially the service whose event triggers it — a seemingly small addition can require touching multiple services\' code, unlike orchestration where new steps are added centrally.',
+      ],
+    },
+    {
+      heading: 'Debugging and Observability for Choreographed Sagas',
+      points: [
+        'Since there is no central coordinator tracking overall saga state, understanding "where is this particular business transaction right now" requires either distributed tracing with a consistent correlation ID across every event, or reconstructing the flow after the fact from scattered service logs.',
+        'A saga that fails partway through (some steps completed, later steps never triggered because an earlier service crashed before publishing its event) can be genuinely difficult to detect in a purely choreographed design, since no single component has visibility into the full expected sequence of steps.',
+        'Some teams pragmatically add a lightweight "saga state" projection — a read model built by consuming the same events every participating service consumes, purely for observability — without introducing an actual coordinating orchestrator, preserving choreography\'s decoupling while still gaining visibility.',
+        'This observability gap is one of the most cited reasons teams choose orchestration over choreography for sagas with more than a handful of steps — the debuggability benefit of a central, explicit saga definition often outweighs choreography\'s decoupling benefit once complexity grows.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

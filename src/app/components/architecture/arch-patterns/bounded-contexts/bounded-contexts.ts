@@ -61,6 +61,24 @@ export class ArchBoundedContexts {
         'Change frequency: parts of the model that change together, stay together.',
       ],
     },
+    {
+      heading: 'The Same Term, Different Meanings Across Contexts',
+      points: [
+        'A single business term (like "Customer") often means genuinely different things in different parts of a system — the Sales context cares about a customer\'s purchase history and preferences, while the Support context cares about their ticket history and SLA tier, and forcing one shared model serves neither well.',
+        'A bounded context defines the boundary within which a specific domain model and its ubiquitous language apply consistently — outside that boundary, the same term can legitimately mean something different, and that is a deliberate design choice, not an inconsistency to be "fixed."',
+        'Attempting to build one single unified model of "Customer" that satisfies every context\'s needs typically produces an overly generic, bloated model that serves no single context particularly well — bounded contexts embrace multiple, purpose-fit models instead.',
+        'Context maps document the relationships and translation points between bounded contexts (shared kernel, customer-supplier, anti-corruption layer) — without explicit context mapping, teams often default to an implicit and poorly understood set of dependencies between contexts.',
+      ],
+    },
+    {
+      heading: 'Choosing Bounded Context Boundaries',
+      points: [
+        'Bounded context boundaries should align with actual TEAM and business capability boundaries (following Conway\'s Law) rather than purely technical convenience — a context boundary that cuts across a single team\'s daily work creates unnecessary coordination overhead.',
+        'Linguistic boundaries are a strong signal for where a bounded context should split — when two groups of stakeholders use the same word to mean genuinely different things, or need different words for what seems like the same concept, that tension often marks a natural context boundary.',
+        'Bounded contexts frequently (though not always) align with microservice boundaries — but the DDD concept is about model boundaries, not deployment boundaries, meaning a monolith can still have well-defined bounded contexts internally even without separate service deployments.',
+        'Getting context boundaries wrong is expensive to fix later, since data and behavior become entangled across the incorrect boundary over time — investing time in explicit context mapping and domain expert collaboration upfront reduces this costly rework risk.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

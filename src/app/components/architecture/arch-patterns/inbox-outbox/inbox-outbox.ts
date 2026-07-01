@@ -63,6 +63,24 @@ export class ArchInboxOutbox {
         'Together: Outbox guarantees publishing; Inbox guarantees exactly-once processing on the consumer side.',
       ],
     },
+    {
+      heading: 'The Inbox Pattern: Deduplicating Incoming Messages',
+      points: [
+        'The inbox pattern is the consumer-side complement to the outbox pattern — it records the ID of every processed incoming message in a database table, checked before processing, guaranteeing exactly-once EFFECTIVE processing even when the underlying messaging system only guarantees at-least-once delivery.',
+        'Recording the processed message ID and performing the actual business logic within the SAME database transaction (just like the outbox pattern\'s atomic write) guarantees that a message is never partially processed — either both the inbox record and the business effect commit together, or neither does.',
+        'Without an inbox table, a redelivered message (common with at-least-once messaging systems after a consumer crash or network blip) could cause duplicate processing — charging a customer twice, sending a duplicate notification — unless the underlying operation happens to be naturally idempotent.',
+        'The inbox table needs a retention/cleanup policy just like idempotency keys generally do — retaining every processed message ID forever is unnecessary once the maximum plausible redelivery window has safely passed.',
+      ],
+    },
+    {
+      heading: 'Combining Inbox and Outbox for End-to-End Exactly-Once Effect',
+      points: [
+        'Using outbox on the producing side and inbox on the consuming side together achieves effectively-once processing across an entire asynchronous message flow, even though the underlying message broker itself only guarantees at-least-once delivery between them.',
+        'This combination is especially valuable in choreography-style saga implementations, where a chain of services each publish and consume events — without inbox/outbox at each hop, duplicate or lost messages could silently corrupt the overall saga\'s correctness.',
+        'Both patterns rely on the SAME core mechanism — atomically combining a database state change with a messaging operation (publish or dedup-check) within a single local transaction, sidestepping the fundamental dual-write problem that plagues naive cross-system consistency.',
+        'This reliability comes at the cost of additional database tables, relay processes, and cleanup logic at every service boundary using the pattern — appropriate specifically where message loss or duplication would cause genuine business harm, not applied reflexively to every asynchronous integration.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

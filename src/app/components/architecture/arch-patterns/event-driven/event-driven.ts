@@ -61,6 +61,24 @@ export class ArchEventDriven {
         'Schema evolution: events are consumed by multiple services — use additive-only changes and a schema registry (Confluent, Azure Schema Registry).',
       ],
     },
+    {
+      heading: 'Event Notification vs. Event-Carried State Transfer',
+      points: [
+        'A thin event notification (just "OrderPlaced" with an order ID) requires the consumer to call back to the source service for details — simple and small, but creates a runtime dependency on the source service being available when the consumer processes the event.',
+        'Event-carried state transfer includes the relevant data directly in the event payload (the full order details, not just an ID) — the consumer can process the event fully self-sufficiently, at the cost of a larger payload and needing to handle potentially stale data if the source has since changed.',
+        'Choosing between them is a real design tradeoff — event-carried state transfer better supports availability and decoupling (no runtime call-back needed) but risks data staleness and payload bloat, while notifications are lean but reintroduce a dependency the event-driven approach was partly meant to avoid.',
+        'Many production systems use a hybrid — carrying enough data for common consumer needs directly in the event, while still providing an ID for consumers that need the full, current record via callback, balancing self-sufficiency against payload size.',
+      ],
+    },
+    {
+      heading: 'Event-Driven Architecture\'s Debugging and Observability Challenges',
+      points: [
+        'Tracing a business process across multiple asynchronous event handlers is fundamentally harder than tracing a synchronous call chain — there is no single call stack to follow, requiring distributed tracing with correlation IDs propagated through event metadata to reconstruct the full flow.',
+        'Event ordering and timing become genuinely hard to reason about at scale — multiple consumers processing events at different rates, out of the order they were logically intended, is expected behavior that application logic must explicitly account for, not an edge case to special-case around.',
+        'Testing event-driven flows end-to-end typically requires either a full integration test environment with real message infrastructure, or careful contract testing between producers and consumers — unit testing a single event handler in isolation does not verify the full asynchronous flow actually works correctly together.',
+        'Observability tooling purpose-built for event-driven systems (event flow visualization, consumer lag dashboards) is often necessary beyond generic application logging, since the asynchronous, fan-out nature of event-driven architecture does not map cleanly onto traditional request-response observability tools.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

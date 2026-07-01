@@ -61,6 +61,24 @@ export class ArchApiGatewayPattern {
         'Use managed gateways (Kong, NGINX, AWS API Gateway, Azure API Management) before building your own.',
       ],
     },
+    {
+      heading: 'API Gateway as a Single Entry Point — Benefits and Risks',
+      points: [
+        'Centralizing cross-cutting concerns (authentication, rate limiting, request logging, TLS termination) at the gateway avoids duplicating that logic across every individual microservice, which would otherwise need to reimplement the same concerns repeatedly.',
+        'The gateway also simplifies the client\'s view of the system — a client calls one well-known endpoint rather than needing to know the internal topology and individual addresses of every backend microservice, which can change independently over time.',
+        'The tradeoff is that the gateway becomes a single point of failure and a potential bottleneck — if the gateway goes down or becomes overloaded, the entire system becomes unreachable regardless of individual backend service health, making gateway resilience and scaling a critical operational concern.',
+        'An overloaded or poorly designed gateway can also become a "distributed monolith" risk — if business logic creeps into the gateway itself (beyond routing and cross-cutting concerns), it recreates tight coupling between services that microservices architecture was meant to avoid.',
+      ],
+    },
+    {
+      heading: 'Gateway Aggregation and Composition Patterns',
+      points: [
+        'An API gateway can aggregate responses from multiple backend services into a single client-facing response, reducing the number of round-trips a client (especially a mobile client on a slow network) needs to make compared to calling each backend service directly.',
+        'This aggregation logic introduces a new failure mode — if one of several aggregated backend calls fails or times out, the gateway must decide whether to fail the entire request or degrade gracefully by returning partial data, a design decision that should be explicit rather than accidental.',
+        'GraphQL gateways take aggregation further by letting clients specify exactly which fields they need across multiple underlying services in a single query, reducing both over-fetching and the number of gateway-level aggregation endpoints that need to be hand-written.',
+        'Aggregation at the gateway should be reserved for genuinely client-driven composition needs — pushing too much orchestration logic into the gateway risks recreating the same tight coupling and complexity concentration that a well-decomposed set of backend services was meant to avoid.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -60,6 +60,24 @@ export class ArchCleanArchitecture {
         'This is the payoff: a large domain that is tested without spin-up cost.',
       ],
     },
+    {
+      heading: 'The Dependency Rule as Clean Architecture\'s Core Principle',
+      points: [
+        'Clean Architecture\'s central rule is that dependencies point INWARD only — outer layers (frameworks, UI, database) depend on inner layers (business rules, entities), and inner layers know nothing about outer layers, which is what keeps core business logic independent of infrastructure choices.',
+        'This inverted dependency direction is achieved through interfaces defined in the inner layers and implemented in the outer layers (dependency inversion) — the business logic defines what it needs (a Repository interface), and infrastructure provides a concrete implementation, not the other way around.',
+        'Because the core business logic has zero dependency on frameworks or databases, it can be tested in complete isolation with fast, simple unit tests — no database, no web server, no framework bootstrapping required, which is a major practical benefit beyond the architectural elegance.',
+        'This independence also means infrastructure decisions (which database, which web framework) can be deferred or changed later with minimal impact on business logic — a genuine, not just theoretical, benefit when infrastructure choices need to evolve over a system\'s lifetime.',
+      ],
+    },
+    {
+      heading: 'When Clean Architecture\'s Ceremony Is (and Isn\'t) Worth It',
+      points: [
+        'Clean Architecture\'s strict layering and interface-based dependency inversion adds real ceremony — more files, more indirection, more upfront design thinking — which pays off for applications with complex business logic expected to outlive any particular framework or database choice.',
+        'For a simple CRUD application with minimal business logic, the full ceremony of Clean Architecture\'s layers can add more overhead than value — a simpler layered or even framework-coupled approach may be entirely appropriate when there is little genuine business complexity to protect.',
+        'The core benefit — testable, framework-independent business logic — only actually materializes if the team disciplines itself to genuinely keep business logic out of the outer layers; Clean Architecture\'s structure alone does not prevent a determined team from leaking framework concerns inward anyway.',
+        'Choosing Clean Architecture (or any similarly rigorous architectural style) should be a deliberate decision based on expected system complexity and lifespan, not applied reflexively to every project regardless of its actual need for that level of architectural rigor.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

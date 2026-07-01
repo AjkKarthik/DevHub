@@ -60,6 +60,24 @@ export class ArchMicroservicesPrinciples {
         'Start with a Modular Monolith; adopt microservices when the team and domain are stable enough to absorb the operational cost.',
       ],
     },
+    {
+      heading: 'Independent Deployability as the Defining Property',
+      points: [
+        'The single most defining property of a genuine microservice is that it can be deployed independently, without requiring any other service to also be redeployed — a system split into many small services that must ALL be deployed together on every release is not actually achieving microservices\' core benefit, regardless of how small each individual service is.',
+        'Achieving true independent deployability requires each service to own its own data store (no shared database across services) and communicate only through well-versioned, backward-compatible APIs — shared databases are one of the most common practical violations that silently reintroduce deployment coupling.',
+        'Database-per-service is a strict consequence of independent deployability, not an arbitrary rule — if two services share a database schema, a schema change for one service risks breaking the other, forcing coordinated deployment and defeating the entire point of splitting them apart.',
+        'Consumer-driven contract testing (verifying a service\'s API changes do not break its actual consumers) is what makes independent deployability safe in practice — without it, teams either deploy cautiously and infrequently (losing the velocity benefit) or deploy confidently and occasionally break consumers.',
+      ],
+    },
+    {
+      heading: 'Conway\'s Law and Microservices Team Structure',
+      points: [
+        'Conway\'s Law observes that system architecture tends to mirror the communication structure of the organization that builds it — microservices architecture works best when service boundaries align with actual team boundaries, since a service split across multiple teams reintroduces the coordination overhead microservices are meant to reduce.',
+        'The "two-pizza team" model (a small team owning a small number of related services end-to-end) is the organizational counterpart to microservices\' technical decomposition — without this organizational alignment, technical service boundaries alone do not deliver the expected velocity benefits.',
+        'Adopting microservices without corresponding organizational change (still requiring cross-team approval for every service change, still having shared ownership of "common" services) tends to recreate monolith-like coordination bottlenecks, just distributed across a more complex technical topology.',
+        'Inverse Conway Maneuver — deliberately restructuring teams FIRST to match a desired service architecture — is sometimes used to intentionally shape the eventual system architecture, rather than passively letting existing team structure determine service boundaries by default.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -59,6 +59,24 @@ export class ArchHexagonalArchitecture {
         'In practice you can implement either using the same code structure.',
       ],
     },
+    {
+      heading: 'Ports and Adapters — The Core Metaphor',
+      points: [
+        'A "port" is an interface defined by the application core describing what it needs (a PaymentGateway interface) or offers (a UseCase interface) — ports belong to and are defined by the core, never by the outside infrastructure that will eventually implement them.',
+        'An "adapter" is a concrete implementation of a port that connects the core to a specific external technology (a StripePaymentAdapter implementing PaymentGateway) — swapping payment providers means writing a new adapter, with zero changes required to the application core.',
+        'This symmetry between "driving" adapters (things that call INTO the application, like a REST controller) and "driven" adapters (things the application calls OUT to, like a database) is what gives hexagonal architecture its name — the application core sits at the center, surrounded by adapters on all sides.',
+        'Hexagonal architecture and Clean Architecture share the same fundamental goal (isolate business logic from infrastructure via dependency inversion) — they are largely equivalent in practice, differing mainly in terminology and diagrammatic presentation rather than in substantively different underlying principles.',
+      ],
+    },
+    {
+      heading: 'Testing Benefits of the Hexagonal Approach',
+      points: [
+        'Because the application core only depends on ports (interfaces) rather than concrete infrastructure, tests can substitute lightweight test doubles for any port — testing core business logic without a real database, real HTTP server, or real third-party API involved at all.',
+        'This testability is not merely theoretical — it directly translates into faster test suites (no I/O, no network calls in core logic tests) and tests that are more focused on business behavior rather than incidentally testing infrastructure plumbing alongside it.',
+        'Adapters themselves still need their own integration tests (verifying the StripePaymentAdapter genuinely talks to Stripe correctly) — hexagonal architecture does not eliminate the need for integration testing, it isolates WHERE that integration testing needs to happen, keeping it out of core business logic tests.',
+        'Teams new to hexagonal architecture sometimes over-invest in interfaces for genuinely simple, unlikely-to-change infrastructure — the pattern\'s value is highest where infrastructure genuinely might change or where testability without infrastructure is a real, ongoing need, not a default applied everywhere regardless of actual benefit.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

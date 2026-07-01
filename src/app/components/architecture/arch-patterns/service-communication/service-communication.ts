@@ -62,6 +62,24 @@ export class ArchServiceCommunication {
         'Azure Service Bus / AWS SQS/SNS: managed, cloud-native, good for hybrid and serverless architectures.',
       ],
     },
+    {
+      heading: 'Synchronous vs. Asynchronous Communication Tradeoffs',
+      points: [
+        'Synchronous communication (REST, gRPC) gives an immediate response and is simpler to reason about (a direct call-and-response), but couples the caller\'s availability and latency directly to the callee\'s — a slow or down downstream service directly degrades the calling service\'s own responsiveness.',
+        'Asynchronous communication (message queues, event streams) decouples caller and callee in time — the caller can continue without waiting for the callee to actually process the request, at the cost of added complexity (eventual consistency, no immediate response, message infrastructure) that must be explicitly designed for.',
+        'Choosing between them per interaction should be driven by whether an immediate response is genuinely required by the business flow — a checkout confirmation likely needs a synchronous response, while sending a post-purchase marketing email does not, and forcing either interaction into the wrong communication style adds unnecessary friction.',
+        'Most real-world microservices systems use BOTH styles for different interactions within the same overall system — treating synchronous vs. asynchronous as a single system-wide architectural choice, rather than a per-interaction decision, typically produces a worse fit for at least some of the system\'s actual communication needs.',
+      ],
+    },
+    {
+      heading: 'Service Mesh as Infrastructure-Level Communication Management',
+      points: [
+        'A service mesh (via sidecar proxies deployed alongside each service instance) handles cross-cutting communication concerns — retries, timeouts, mutual TLS, load balancing, observability — at the INFRASTRUCTURE level, removing the need for every service to reimplement this logic in application code.',
+        'This separation means communication resilience policies (a retry budget, a circuit breaker threshold) can be configured and updated centrally through the mesh\'s control plane, without requiring a code change and redeployment of every individual service to adjust that policy.',
+        'The tradeoff is added operational complexity — running and correctly configuring a service mesh (Istio, Linkerd) is itself a significant undertaking, and the sidecar proxies add a small amount of latency and resource overhead to every service-to-service call.',
+        'A service mesh is most valuable at genuine microservices scale (many services, many teams, needing consistent cross-cutting communication policy) — for a small number of services, the mesh\'s operational overhead often exceeds the benefit compared to simpler in-application resilience libraries.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

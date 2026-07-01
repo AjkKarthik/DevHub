@@ -60,6 +60,24 @@ export class ArchLayeredArchitecture {
         'Layered architecture does not force anemia — it arises from habit. Push behaviour into the domain.',
       ],
     },
+    {
+      heading: 'The Strict Layering Rule and Its Common Violations',
+      points: [
+        'Classic layered architecture (presentation, business logic, data access) enforces that each layer only calls the layer directly below it — the presentation layer should never directly query the database, bypassing the business logic layer\'s validation and rules.',
+        'A common and costly violation is "layer skipping" — a presentation-layer component directly calling the data access layer for a "quick" read, bypassing business logic — this erodes the architecture\'s core guarantee that business rules are consistently applied to every data access.',
+        'Another common violation is the "anemic domain model" anti-pattern, where the business logic layer becomes just a thin pass-through of data with no actual behavior, and all real logic ends up scattered in the presentation or data access layers instead — defeating the purpose of having a distinct business logic layer at all.',
+        'Enforcing layering discipline (via architectural fitness tests, dependency-direction linting, or code review vigilance) is necessary because nothing about the pattern itself technically prevents a developer from taking a shortcut that violates the intended layer boundaries.',
+      ],
+    },
+    {
+      heading: 'Layered Architecture\'s Limitations at Scale',
+      points: [
+        'As an application grows, a single monolithic business logic layer tends to become a large, tangled mass of interdependent classes — layered architecture constrains the VERTICAL dependency direction (layer to layer) but does nothing to organize HORIZONTAL structure within a layer, which is where much real-world complexity accumulates.',
+        'Layered architecture does not prevent tight coupling between unrelated features that happen to live in the same layer — a change to one feature\'s business logic can inadvertently affect another feature\'s logic if they are not explicitly modularized, even though both technically respect the layer boundaries.',
+        'Vertical slice architecture and feature-based modularization address this specific gap by organizing code around features/use-cases rather than purely around technical layers, complementing (or in some designs replacing) traditional horizontal layering.',
+        'Layered architecture remains a reasonable default for smaller applications or teams new to more sophisticated architectural patterns — its limitations become significant specifically as an application\'s size and team count grow, not from day one.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

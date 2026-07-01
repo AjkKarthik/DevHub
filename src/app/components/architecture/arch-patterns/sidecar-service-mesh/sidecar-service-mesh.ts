@@ -61,6 +61,24 @@ export class ArchSidecarServiceMesh {
         'The trade-off: operational complexity of the mesh control plane and ~10ms latency overhead per hop.',
       ],
     },
+    {
+      heading: 'Why the Sidecar Pattern Separates Concerns Cleanly',
+      points: [
+        'A sidecar container runs alongside the main application container within the same Pod, sharing its network namespace — this co-location lets the sidecar intercept and manage all inbound/outbound traffic transparently, without the application code needing any awareness that a sidecar is even present.',
+        'This transparency is what makes the sidecar pattern so powerful for cross-cutting concerns — retries, mutual TLS, observability can be added or upgraded by changing the sidecar\'s configuration or image version, without touching or redeploying the application code at all.',
+        'The sidecar pattern trades some resource overhead (an additional container per Pod, consuming its own CPU/memory) for this separation of concerns — at large scale, this per-Pod overhead becomes a genuine and measurable operational cost that must be weighed against the architectural benefit.',
+        'Beyond service mesh proxies, the sidecar pattern generalizes to other cross-cutting needs (a logging agent, a configuration reloader) — the core idea of "attach a helper process that handles a concern the main application should not need to know about" extends well beyond networking specifically.',
+      ],
+    },
+    {
+      heading: 'mTLS and Zero-Trust Networking via Service Mesh',
+      points: [
+        'A service mesh commonly enforces mutual TLS (mTLS) between every service-to-service call automatically, encrypting traffic AND verifying both parties\' identity — achieving this manually in application code for every service would be significant duplicated effort and a common source of inconsistent implementation.',
+        'This automatic mTLS enforcement underlies a zero-trust networking model, where no service is implicitly trusted just because it is inside the network perimeter — every call is authenticated and encrypted regardless of whether it originates from inside or outside a traditional network boundary.',
+        'Certificate issuance and rotation for mTLS is handled automatically by the mesh\'s control plane, removing what would otherwise be a significant manual operational burden (and a common source of outages from expired certificates) if each service had to manage its own certificate lifecycle.',
+        'This zero-trust model provides genuine defense-in-depth — even if network-level perimeter security is somehow bypassed, an attacker still cannot easily impersonate a legitimate service or eavesdrop on service-to-service traffic, since every connection independently verifies identity and is encrypted.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [

@@ -61,6 +61,24 @@ export class ArchServiceDiscovery {
         'Without deregistration, callers receive addresses of dead instances and experience errors until TTL expiry.',
       ],
     },
+    {
+      heading: 'Client-Side vs. Server-Side Discovery',
+      points: [
+        'In client-side discovery, the calling service queries a service registry directly and then load-balances among the returned healthy instances itself — this gives the client full control over load-balancing strategy but requires discovery-client logic embedded in every service.',
+        'In server-side discovery, the client sends its request to a well-known intermediary (a load balancer or gateway) that itself queries the registry and routes the request — simpler for the calling client, at the cost of an additional network hop and infrastructure component to operate.',
+        'Kubernetes\'s built-in Service abstraction is a form of server-side discovery — kube-proxy handles routing to healthy pod IPs transparently, meaning application code simply calls a stable Service DNS name without needing any discovery-client logic at all.',
+        'Choosing between them often comes down to what infrastructure is already in place — a Kubernetes-native system typically leans on server-side discovery by default, while systems built on more general-purpose infrastructure sometimes adopt client-side discovery (via Consul or Eureka) for finer load-balancing control.',
+      ],
+    },
+    {
+      heading: 'Health Checks as the Foundation of Reliable Discovery',
+      points: [
+        'A service registry is only as useful as the accuracy of its health information — routing traffic to a registered-but-unhealthy instance defeats the purpose of discovery entirely, which is why active or passive health checking is a required companion to any discovery mechanism, not an optional add-on.',
+        'Liveness checks (is the process running at all) and readiness checks (is the process ready to accept traffic right now) answer different questions — a service can be alive but not yet ready (still warming a cache, still connecting to a database), and routing traffic to a live-but-not-ready instance causes avoidable request failures.',
+        'Health check failures should trigger de-registration or traffic exclusion promptly, but not so aggressively that a brief, transient hiccup causes unnecessary churn — tuning health check frequency and failure thresholds is a real balance between fast failure detection and avoiding false-positive instability.',
+        'Self-registration (a service registering itself on startup and de-registering on graceful shutdown) combined with registry-side health checks (catching ungraceful crashes the service could not self-report) together provide more reliable discovery than relying on either mechanism alone.',
+      ],
+    },
   ];
 
   codeTabs: CodeTab[] = [
