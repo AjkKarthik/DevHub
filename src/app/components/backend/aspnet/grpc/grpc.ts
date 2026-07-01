@@ -401,8 +401,8 @@ app.MapGrpcService<ProductsService>();`,
       a: 'Use ServerCallContext.CancellationToken inside your RPC method — it is cancelled when the client deadline expires or the client disconnects. Always pass it to async operations (ToListAsync(ct), Task.Delay(ms, ct)) so the server stops work immediately when the client is gone.',
     },
     {
-      q: 'What happens when I change a .proto message field number?',
-      a: 'Never reuse or change field numbers — they are the wire-format identity. Changing number 1 from string name to int32 id breaks any client that still sends the old field. To remove a field, mark it reserved: "reserved 1;". Adding new fields with new numbers is backwards-compatible — old clients ignore unknown fields.',
+      q: 'A team removes a field from a .proto message and marks its old number as `reserved 5;`, but forgets to also reserve the field NAME with `reserved "old_field_name";`. Six months later, a different engineer adds a brand-new field and accidentally reuses that old name (but with a new number). Does the reserved number alone protect against this?',
+      a: 'No — `reserved 5;` only prevents the NUMBER 5 from being reused, it says nothing about the field name; a new field can freely reuse the old name with a different number without triggering any compiler warning, since Protobuf field names carry no wire-format meaning (only numbers do) and are just a compile-time/generated-code convenience. The real risk this creates is for humans and generated client code, not the wire protocol itself: a developer reading the .proto file or looking at generated code sees the familiar field name and may incorrectly assume it behaves like the old field (same semantics, same expected values) when it is actually a completely unrelated field that happens to share a name. Best practice is reserving BOTH the number and the name (`reserved 5; reserved "old_field_name";`) specifically to prevent this human-confusion class of bug, even though only the number reservation is required for wire-format safety.',
     },
     {
       q: 'How do I add authentication to a gRPC service?',

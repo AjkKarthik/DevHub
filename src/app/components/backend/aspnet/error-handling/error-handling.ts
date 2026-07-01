@@ -441,8 +441,8 @@ app.Run();`,
       a: 'Add them to ProblemDetails.Extensions dictionary — entries serialise as root-level JSON properties. Use the AddProblemDetails(opts => opts.CustomizeProblemDetails = ...) callback to add them globally to every error response.',
     },
     {
-      q: 'What happens if no IExceptionHandler handles an exception?',
-      a: 'The exception propagates to the UseExceptionHandler middleware. With AddProblemDetails(), a generic 500 ProblemDetails response is returned. Without it, Kestrel closes the connection with an empty response body.',
+      q: 'A team registers two IExceptionHandler implementations: one specifically for ValidationException and a general-purpose fallback for everything else. The fallback is registered FIRST in DI. What actually happens when a ValidationException is thrown?',
+      a: 'The fallback handler runs first regardless of exception type, since IExceptionHandler.TryHandleAsync implementations are invoked in the order they were registered — if the general-purpose fallback does not itself check the exception type and simply returns true unconditionally (a common pattern for a catch-all), it "handles" the ValidationException before the more specific handler ever gets a chance to run, silently preventing the specialized validation-error formatting from ever executing. This is a real ordering gotcha: registration order determines evaluation order, so more specific handlers must be registered BEFORE general fallback handlers, and every handler (including the fallback) must correctly return false for exception types it does not want to claim, rather than assuming it will only ever be asked about exceptions it should handle.',
     },
     {
       q: 'How do I hide stack traces from API clients in production?',

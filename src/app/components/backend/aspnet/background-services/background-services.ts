@@ -416,8 +416,8 @@ const quiz: QuizQuestion[] = [
 
 const qna: QnaItem[] = [
   {
-    q: 'How do I stop a BackgroundService on a fatal error?',
-    a: 'Inject IHostApplicationLifetime and call hostLifetime.StopApplication() inside the catch block. This triggers a graceful shutdown of the entire host, giving other services a chance to complete.',
+    q: 'Calling StopApplication() from inside a BackgroundService triggers a graceful shutdown — but does StopApplication() itself wait for that shutdown to complete before returning control to the code that called it?',
+    a: 'No — StopApplication() is fire-and-forget from the caller\'s perspective: it signals the host\'s CancellationTokenSource for shutdown and returns immediately, it does not block until every hosted service has actually finished stopping. This matters because code immediately after the StopApplication() call in your BackgroundService keeps executing during the shutdown window — if that code assumes the app has already stopped or tries to do more work assuming a clean slate, it can race against other services\' own shutdown logic (including its own StopAsync being invoked concurrently). The safe pattern is treating StopApplication() as "request shutdown" and structuring the calling code so nothing depends on the shutdown having completed by the time the call returns — let the host\'s own orchestration (respecting each service\'s StopAsync and the configured shutdown timeout) handle the actual teardown sequencing.',
   },
   {
     q: 'Can I run multiple instances of the same BackgroundService?',

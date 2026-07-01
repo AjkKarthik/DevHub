@@ -445,8 +445,8 @@ record CreateProductDto(string Name, decimal Price);`,
       a: 'No. With TypedResults and Results<T1,T2> return types, the OpenAPI source generator infers response schemas at compile time. .Produces<T>() and .ProducesProblem() are still useful when the generator cannot infer the type — for example, IResult-returning lambdas with runtime branching or controller actions.',
     },
     {
-      q: 'How do I add bearer token authentication to Swagger UI?',
-      a: 'With Swashbuckle, call c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme { Type = SecuritySchemeType.Http, Scheme = "bearer", BearerFormat = "JWT" }) and c.AddSecurityRequirement(...) in AddSwaggerGen(). The UI then shows an Authorise button. With Scalar, use .WithPreferredScheme("Bearer") in MapScalarApiReference options.',
+      q: 'A team registers a global AddSecurityRequirement() for Bearer auth so every endpoint shows the lock icon in Swagger UI, but a handful of endpoints (health checks, a public webhook receiver) are intentionally anonymous. Does the global security requirement cause Swagger UI to send an Authorization header on requests to those anonymous endpoints even though they do not need one?',
+      a: 'Yes, by default a global AddSecurityRequirement() applies the security scheme to every operation in the generated spec, so Swagger UI\'s "Try it out" feature will include whatever bearer token was entered via Authorise on every request, including ones to endpoints that never check it — this is usually harmless (the anonymous endpoint just ignores an unnecessary header) but is misleading documentation, since the OpenAPI spec now falsely implies those endpoints require authentication when they do not. The fix is either applying the security requirement per-operation instead of globally (attaching it only to operations that actually need it, via operation filters or explicit metadata), or explicitly clearing the security requirement for specific anonymous endpoints so the generated spec and Swagger UI accurately reflect which endpoints are actually open.',
     },
     {
       q: 'How do I version the OpenAPI document alongside API versioning?',

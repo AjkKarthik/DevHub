@@ -465,8 +465,8 @@ record Note(string Title, string Body);`,
       a: 'Yes. Register multiple schemes and specify the default: AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer().AddCookie(). Apply non-default schemes per endpoint: [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]. You can also combine them with policy schemes that select dynamically based on the request.',
     },
     {
-      q: 'What is AddIdentityCore vs AddIdentity?',
-      a: 'AddIdentity adds the full Identity stack including cookie-based sign-in/sign-out UI flows. AddIdentityCore adds only the user store, password hashing, and UserManager — no cookie plumbing, no SignInManager. Use AddIdentityCore for APIs where you manage tokens yourself and just need password validation and user lookup.',
+      q: 'A team starts an API-only project with AddIdentityCore() (no SignInManager) but later needs to add a server-rendered admin panel to the same app that requires cookie-based login. Can they add cookie sign-in on top of AddIdentityCore without switching to AddIdentity, and what would that involve?',
+      a: 'Yes — AddIdentityCore() is deliberately composable rather than all-or-nothing: you can chain `.AddSignInManager()` onto the IdentityBuilder it returns to add cookie sign-in capability without pulling in everything AddIdentity() bundles by default, then separately call AddAuthentication().AddCookie() to configure the cookie scheme itself. This lets a team incrementally add exactly the pieces they need (SignInManager here, but not necessarily the default UI or other components AddIdentity assumes) rather than being forced to choose between "bare-bones API identity" and "the full batteries-included web-app identity stack" as two fixed, non-overlapping options — AddIdentityCore is the extensible foundation both paths are actually built from.',
     },
     {
       q: 'How do I handle 401 vs 403 in ASP.NET Core auth?',

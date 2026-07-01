@@ -391,8 +391,8 @@ app.Run();`,
       a: 'No. CORS is a browser sandbox to protect users from malicious websites making cross-origin requests on their behalf. It does not prevent direct API access via curl, Postman, or server-to-server calls. Secure your API with authentication (JWT, cookies) and authorization (policies). Use CORS to control which browser origins can call your API, but always assume direct access is possible.',
     },
     {
-      q: 'What is the correct middleware order for CORS in ASP.NET Core?',
-      a: 'UseRouting() → UseCors() → UseAuthentication() → UseAuthorization() → endpoints. CORS must be registered before auth because preflight OPTIONS requests do not carry auth tokens — if UseAuthentication() runs first and returns 401 on OPTIONS, the browser never receives the CORS headers and blocks the actual request.',
+      q: 'A single endpoint needs a DIFFERENT CORS policy than the rest of the app (e.g. a public webhook endpoint that must allow any origin, while everything else uses a strict allowlist). Does placing UseCors() once in the middleware pipeline support this, or does it force one global policy for the whole app?',
+      a: 'The middleware-level UseCors() call does apply one default policy globally, but ASP.NET Core supports per-endpoint overrides via the `.RequireCors("policyName")` extension method chained onto a specific endpoint/controller/minimal-API route, after registering multiple named policies with AddCors(options => { options.AddPolicy("strict", ...); options.AddPolicy("public", ...); }). This lets most of the app use the strict default policy applied by the pipeline-level UseCors() while specific endpoints opt into a different named policy — the pipeline placement (before auth) still matters identically for every policy, since the preflight-before-auth ordering constraint applies regardless of which named policy ultimately gets selected for a given request.',
     },
     {
       q: 'Can I apply different CORS policies to different endpoint groups?',
