@@ -609,14 +609,9 @@ report.risks.forEach(r => console.log(\`[\${r.severity.toUpperCase()}] \${r.mess
       explanation: 'Least-privilege: the pipeline only needs to update Deployment images and check rollout status in one namespace. A namespaced Role with verbs: [get, patch, update] on apps/deployments and [get, list] on pods gives exactly what is needed without exposing the rest of the cluster.',
     },
     {
-      q: 'What does maxUnavailable: 0 in a rolling update strategy ensure?',
-      options: [
-        'That all old pods are replaced simultaneously',
-        'That zero old pods are terminated until at least one new pod is ready — no capacity is lost during the rollout',
-        'That the deployment never updates automatically',
-        'That rollbacks are disabled'],
-      answer: 1,
-      explanation: 'maxUnavailable: 0 means Kubernetes cannot terminate any old pod until a new pod passes its readiness probe. Combined with maxSurge: 1 (one extra pod during rollout), the deployment always maintains full desired capacity. This is the safest rolling update: capacity never drops below 100%. Downside: rollout takes longer. For zero-downtime deployments where losing even one pod\'s capacity is unacceptable (e.g., running at capacity), use maxUnavailable: 0.',
+      q: 'A Deployment sets maxUnavailable: 0 and maxSurge: 1, but the cluster\'s node capacity is exactly maxed out (no room to schedule even one extra pod). What happens to the rollout?',
+      options: ['Kubernetes automatically falls back to maxUnavailable: 1 to make the rollout possible', 'The rollout stalls indefinitely — the new surge pod stays Pending because no node has room to schedule it, and since maxUnavailable: 0 forbids removing any old pod first, the deployment cannot make progress in either direction', 'The old pods are terminated anyway to free up capacity', 'Kubernetes automatically provisions a new node via cluster autoscaling'], answer: 1,
+      explanation: 'maxUnavailable: 0 combined with maxSurge: 1 requires genuinely spare capacity to work — Kubernetes needs to schedule the extra surge pod BEFORE it can safely remove an old one, and if there is no room to schedule that surge pod (no node has enough free CPU/memory, or a resource quota is already at its limit), the new pod sits Pending forever and the rollout makes zero progress, silently stuck rather than failing loudly. This is why zero-downtime strategies require either headroom built into the cluster/quota sizing, or an autoscaler configured to react to Pending pods by provisioning new capacity — without one of those, the "safest" rollout strategy can paradoxically be the one most likely to hang.',
     },
   ];
 
@@ -642,8 +637,8 @@ report.risks.forEach(r => console.log(\`[\${r.severity.toUpperCase()}] \${r.mess
       a: 'imagePullPolicy controls when Kubernetes pulls the container image: Always (pull on every Pod start), IfNotPresent (pull only if not cached on the node), Never (never pull — must be pre-pulled). Production should use IfNotPresent with immutable SHA-tagged images. Always causes unnecessary registry roundtrips and introduces registry availability as a dependency for Pod scheduling. Never risks stale or absent images. IfNotPresent + SHA tags = cached after first pull, always the correct version.',
     },
     {
-      q: 'What is a PodDisruptionBudget (PDB) and why is it important for deployments?',
-      a: 'A PodDisruptionBudget limits the number of pods of a deployment that can be unavailable simultaneously during voluntary disruptions (node upgrades, rolling deployments, cluster scaling). spec.minAvailable: 2 means at least 2 replicas must always be running; Kubernetes will not evict more pods than this allows. Without a PDB: a node upgrade might evict all pods of a stateful application simultaneously, causing downtime. With PDB: Kubernetes evicts pods one at a time, waiting for replacements. Set PDB for any stateful service or service with strict availability requirements. PDBs do not prevent involuntary disruptions (hardware failures, OOM kills) — only voluntary ones like kubectl drain.',
+      q: 'A cluster admin runs `kubectl drain node-1` on a node hosting pods from a Deployment with a strict PDB (minAvailable equal to the current replica count, leaving zero disruption budget). What happens to the drain command?',
+      a: 'The drain command blocks (or reports eviction failures and retries, depending on flags) on that node\'s pods belonging to the constrained Deployment — the Eviction API respects the PDB and refuses to evict a pod if doing so would violate minAvailable, so `kubectl drain` cannot make progress on those specific pods no matter how long it waits, since nothing is scaling up the Deployment to create room. This is a real operational trap: a PDB configured with zero slack (minAvailable == desired replica count) looks maximally safe on paper but can completely block legitimate node maintenance and cluster upgrades — the fix is either accepting a small amount of intentional slack in the PDB (minAvailable: desired - 1, or a maxUnavailable-based PDB) or ensuring the Deployment can scale up temporarily to absorb the drain.',
     },
   ];
 

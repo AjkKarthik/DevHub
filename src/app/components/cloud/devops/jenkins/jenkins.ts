@@ -542,14 +542,9 @@ console.log(JSON.stringify(parseJenkinsfile(jf), null, 2));`,
       explanation: '`buildDiscarder(logRotator(numToKeepStr: "30"))` tells Jenkins to keep only the last N build records and their associated logs/artifacts. Without it, Jenkins accumulates builds indefinitely — causing disk space exhaustion and UI slowness over months of active use. Set it on every pipeline.',
     },
     {
-      q: 'What is the difference between Declarative and Scripted Pipeline in Jenkins?',
-      options: [
-        'Declarative is older; Scripted is the modern standard',
-        'Declarative uses structured pipeline {} syntax with built-in validation; Scripted uses Groovy code in node {} blocks with full programming flexibility',
-        'Scripted runs faster than Declarative',
-        'They are interchangeable — both produce identical Jenkinsfiles'],
-      answer: 1,
-      explanation: 'Declarative Pipeline: structured YAML-like syntax within pipeline { agent, stages, steps, post }. Validates syntax before running. Easier to read and write. Recommended for most use cases. Scripted Pipeline: Groovy code in node { } blocks — full programming power (loops, conditionals, exceptions) but no syntax validation and harder to maintain. Use Declarative by default; drop into `script { }` blocks for Groovy when Declarative is insufficient.',
+      q: 'A team writes most of a Jenkinsfile in Declarative syntax but drops into a `script { }` block for a piece of complex conditional logic. From a validation standpoint, what changes inside that script block compared to the surrounding Declarative code?',
+      options: ['Nothing changes — script blocks are validated with the same upfront schema checking as the rest of the file', 'Code inside script { } is arbitrary Groovy, evaluated the same way a full Scripted pipeline would be — it loses Declarative\'s upfront syntax validation and errors inside it only surface at runtime, exactly like a Scripted pipeline would behave', 'script blocks run on a different Jenkins agent automatically', 'script blocks are restricted to read-only operations for safety'], answer: 1,
+      explanation: 'A script { } block is an escape hatch that switches Jenkins into Scripted-pipeline evaluation mode for exactly that block\'s contents — Jenkins does NOT pre-validate the Groovy inside it before the pipeline starts running, unlike the structured stages/steps outside it. This means a syntax or logic error hidden inside a script block can slip past whatever validation gave the team confidence in the rest of the "mostly Declarative" file, and will only be discovered when that specific code path actually executes — which could be deep into a long-running pipeline, well after earlier stages already completed and possibly took real-world actions (deployments, notifications) that are awkward to undo.',
     },
   ];
 

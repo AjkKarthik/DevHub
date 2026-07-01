@@ -447,15 +447,15 @@ console.log(resolveDeployTarget(versions, 'production')); // "1.2.1" (latest wit
       explanation: 'Artifact promotion retagging or copying the exact artifact (same Docker image digest, same binary file) from a dev registry to a staging registry, then to a prod registry as it passes tests at each stage. This guarantees that what was tested in staging is exactly what runs in production. Rebuilding risks subtle differences from changed dependencies, updated build tools, or non-deterministic build steps.',
     },
     {
-      q: 'A deployment manifest references myapp:latest. Six months later, the same manifest is re-applied. Is it guaranteed to deploy the same image bytes as it did originally?',
+      q: 'Even after switching production manifests to reference an immutable version tag like myapp:v2.3.1 instead of :latest, is the deployment now fully reproducible byte-for-byte on every future pull?',
       options: [
-        'Yes — "latest" is a reserved tag that Docker prevents from ever being reassigned',
-        'No — "latest" is just a regular mutable tag like any other; whatever was most recently pushed to that tag name is what gets pulled, which may be completely different content than six months ago',
-        'Yes, as long as the registry has not been restarted',
-        'No, but only if the image was built with a different Dockerfile',
+        'Yes, always — a version-number tag can never be reassigned by anyone once pushed',
+        'Not necessarily — a version tag is just as mutable as :latest at the registry level unless the registry enforces tag immutability; a compromised or careless push could still overwrite v2.3.1 with different bytes',
+        'Yes, but only for images pushed to Docker Hub specifically',
+        'No, version tags are always resolved to a random image on each pull',
       ],
       answer: 1,
-      explanation: '"latest" has no special immutability guarantee in Docker — it is a convention, not a reserved or protected tag. Whoever last pushed to myapp:latest determines what that tag currently points to, which is exactly why deployments that need reproducibility should reference a specific version tag or, more robustly, a content digest rather than "latest" or any other frequently-reassigned tag.',
+      explanation: 'A version-number-looking tag like v2.3.1 carries no more built-in immutability guarantee than :latest — Docker registries treat every tag as a mutable pointer by default, and `docker push` to an existing tag simply reassigns it, regardless of whether the tag "looks like" a fixed version. The only way to get a true reproducibility guarantee is either enabling registry-level tag immutability (a feature many registries like ECR and ACR support explicitly) or referencing the image by its content digest (sha256:...), which cryptographically identifies the exact bytes and cannot be reassigned to different content.',
     },
   ];
 
