@@ -10172,6 +10172,247 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Stripping debug symbols (-ldflags="-s -w") reduces binary size for distribution but also removes information useful for later debugging a shipped binary.',
     ],
   },
+
+  // ── Blazor: per-page entries ─────────────────────────────────────────────────
+  'blazor/fundamentals': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Razor Components', route: '/blazor/razor-components' },
+      { label: 'Render Modes',     route: '/blazor/render-modes' },
+    ],
+    tip: 'Blazor lets you write interactive web UI in C# instead of JavaScript — Blazor Server runs component logic on the server with UI updates streamed over SignalR, while Blazor WebAssembly runs a full .NET runtime in the browser, a fundamentally different execution model with different tradeoffs.',
+    gotchas: [
+      'Blazor Server requires a persistent SignalR connection — a network interruption can disconnect the circuit and require reconnection, unlike a stateless request-response web app.',
+      'Blazor WebAssembly\'s initial download (the .NET runtime plus your app) is larger than a typical JS bundle, affecting first-load time.',
+    ],
+  },
+  'blazor/razor-components': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals',              route: '/blazor/fundamentals' },
+      { label: 'Component Communication',   route: '/blazor/component-communication' },
+    ],
+    tip: '@code {} blocks and [Parameter] properties define a component\'s interface — Razor syntax compiles down to plain C# classes, meaning the mental model for reasoning about a Blazor component is much closer to a C# class than to a templating language.',
+    gotchas: [
+      'A component re-renders on ANY parameter change or StateHasChanged() call by default — ShouldRender() can be overridden to skip unnecessary re-renders for performance-sensitive components.',
+      '@key on list items prevents Blazor from misattributing state (like input focus) to the wrong element when a list is reordered.',
+    ],
+  },
+  'blazor/component-communication': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Razor Components',    route: '/blazor/razor-components' },
+      { label: 'State Management',    route: '/blazor/state-management' },
+    ],
+    tip: 'Parent-to-child communication uses [Parameter] properties; child-to-parent uses EventCallback — for communication between UNRELATED components, a shared injected service with an OnChange event is the standard pattern, since Blazor has no built-in global event bus.',
+    gotchas: [
+      'Forgetting to call StateHasChanged() after a shared service raises its change event means subscribing components won\'t actually re-render.',
+      'CascadingValue provides implicit parent-to-descendant data flow without threading parameters through every intermediate component — useful for deeply nested trees.',
+    ],
+  },
+  'blazor/data-binding': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Forms',                  route: '/blazor/forms' },
+      { label: 'Component Communication', route: '/blazor/component-communication' },
+    ],
+    tip: '@bind:event="oninput" for live filtering fires on EVERY keystroke — for expensive downstream operations, debouncing is not built into Blazor\'s binding system and requires a small amount of custom Timer/Task.Delay-based logic.',
+    gotchas: [
+      'In Blazor Server specifically, un-debounced binding on a fast typist sends a SignalR message per keystroke — debouncing has a doubly important benefit there, cutting both re-render work AND network round-trips.',
+      '@bind without an explicit event defaults to onchange (fires on blur), not oninput — a common source of "why doesn\'t this update live" confusion.',
+    ],
+  },
+  'blazor/forms': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Data Binding', route: '/blazor/data-binding' },
+    ],
+    tip: 'EditForm binds to a Model representing the entire form\'s backing object — DataAnnotationsValidator only catches validation errors on properties that themselves carry validation attributes, including nested complex properties requiring their own attributes.',
+    gotchas: [
+      'EditForm has no built-in "reset" method — resetting a form requires either a fresh model instance with a new @key, or manually resetting each field.',
+      'InputSelect requires the bound property type to correctly implement equality comparison for a pre-selected value to display correctly.',
+    ],
+  },
+  'blazor/dependency-injection': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Component Communication', route: '/blazor/component-communication' },
+    ],
+    tip: 'A Scoped service in Blazor Server lives for the ENTIRE SignalR circuit (the whole user session), not just one request — a meaningfully different scope than the per-HTTP-request scoping developers coming from traditional ASP.NET Core MVC are used to.',
+    gotchas: [
+      'A DbContext registered as Scoped in Blazor Server persists for the entire circuit — this can accumulate tracked entities over a long session if not handled carefully.',
+      'In Blazor WebAssembly, there is only one user per tab, so Scoped and Singleton effectively behave the same, unlike the meaningful distinction in Blazor Server.',
+    ],
+  },
+  'blazor/state-management': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Dependency Injection',      route: '/blazor/dependency-injection' },
+      { label: 'Component Communication',   route: '/blazor/component-communication' },
+    ],
+    tip: 'For smaller apps, a simple injected service with an OnChange event is usually sufficient — a formal Flux/Redux-style state management library (like Fluxor) is worth the added structure specifically once cross-cutting shared state grows genuinely complex.',
+    gotchas: [
+      'Introducing a heavy state management framework prematurely adds complexity without proportional benefit for a small app with limited shared state.',
+      'Untraceable state mutations scattered across a codebase are one of the hardest bug categories to track down in any stateful UI, Blazor included.',
+    ],
+  },
+  'blazor/routing': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Sections & Layouts', route: '/blazor/sections-layouts' },
+    ],
+    tip: 'AuthorizeRouteView handles both "not authenticated" and "not authorized" cases for a route automatically — without it, every protected page would need to manually implement the same authentication/authorization check.',
+    gotchas: [
+      'Deep-linking to a protected route requires preserving the originally requested URL and redirecting back to it after login — easy to overlook, significant UX impact if missed.',
+      'The NotFound render fragment on <Router> defines the 404 experience — a bare "not found" message with no path forward is a common, avoidable UX gap.',
+    ],
+  },
+  'blazor/sections-layouts': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Routing', route: '/blazor/routing' },
+    ],
+    tip: 'MainLayout commonly injects cross-cutting UI elements (nav, header, notifications) that should appear on nearly every page — a CascadingValue declared in a layout automatically becomes available to every page rendered within its @Body.',
+    gotchas: [
+      'A layout can itself check authorization (via AuthorizeView) to conditionally render admin-specific chrome, without duplicating that check across every admin page.',
+      'Testing a layout with bUnit requires particular attention to @Body placement and surrounding chrome rendering correctly.',
+    ],
+  },
+  'blazor/render-modes': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals',           route: '/blazor/fundamentals' },
+      { label: 'Streaming Rendering',    route: '/blazor/streaming-rendering' },
+    ],
+    tip: 'Interactive render modes still PRERENDER on the server by default before the interactive runtime takes over — components can run initialization logic TWICE (once during prerender, once at actual interactive startup), a common source of "why did OnInitializedAsync run twice" confusion.',
+    gotchas: [
+      'Prerendering can be explicitly disabled per component when double-execution would cause problems, like a non-idempotent API call in initialization.',
+      'Components using browser-only APIs must guard against running during server-side prerender, where no real browser exists.',
+    ],
+  },
+  'blazor/error-handling': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/blazor/fundamentals' },
+    ],
+    tip: 'Unhandled exceptions in fire-and-forget async void event handlers do NOT propagate to an ErrorBoundary — they surface as unhandled task exceptions that can crash a Blazor Server circuit entirely, making async Task (not async void) the required pattern for event handlers that might throw.',
+    gotchas: [
+      'ErrorBoundary catches exceptions from its child content\'s rendering — it does not catch every kind of async error unless the error surfaces during rendering.',
+      'Distinguishing operational errors (an expected API timeout, handled gracefully) from programmer errors (a null reference bug, should crash visibly) shapes where to add try/catch versus letting an ErrorBoundary catch it.',
+    ],
+  },
+  'blazor/js-interop': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Error Handling', route: '/blazor/error-handling' },
+    ],
+    tip: 'DotNetObjectReference.Create(this) lets JavaScript call back into specific [JSInvokable]-marked .NET methods — but the reference must be explicitly Dispose()d, since JavaScript holding it prevents the .NET object from being garbage collected.',
+    gotchas: [
+      'Forgetting to dispose a DotNetObjectReference is a common, easy-to-overlook memory leak source in interop-heavy components.',
+      'Testing JS-to-.NET interop with bUnit requires directly invoking the [JSInvokable] method, since no real JavaScript runtime exists in the test environment.',
+    ],
+  },
+  'blazor/authentication': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Routing', route: '/blazor/routing' },
+    ],
+    tip: 'Blazor WASM apps typically hold access tokens in memory (via AuthenticationStateProvider) rather than persistent storage — a full page reload requires re-authentication or silent token refresh, a deliberate tradeoff favoring XSS resistance over persistence convenience.',
+    gotchas: [
+      'Token expiration should be checked proactively before an API call, not only reactively on a 401 response — a well-designed provider refreshes an about-to-expire token transparently.',
+      'Testing authentication edge cases (expired tokens, revoked sessions) is often under-invested compared to testing the happy-path login flow.',
+    ],
+  },
+  'blazor/server-signalr': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/blazor/fundamentals' },
+    ],
+    tip: 'Horizontally scaling Blazor Server requires sticky sessions, since a circuit lives entirely on the instance that created it — Azure SignalR Service (or similar) offloads the actual persistent connections from application servers, decoupling connection count from server capacity.',
+    gotchas: [
+      'Capacity planning for Blazor Server is about CONCURRENT USER count, not request rate — a fundamentally different scaling model than typical stateless APIs.',
+      'For very large concurrent user counts where per-user server memory becomes prohibitive, Blazor WebAssembly (shifting state to the client) may scale more cost-effectively.',
+    ],
+  },
+  'blazor/streaming-rendering': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Render Modes',     route: '/blazor/render-modes' },
+      { label: 'Performance',      route: '/blazor/performance' },
+    ],
+    tip: '[StreamRendering] lets a component with slow initial data loading show placeholder content immediately, then patches the real content into the page as it becomes available — it works alongside enhanced navigation for SPA-like transitions even during a streamed page load.',
+    gotchas: [
+      'Streaming rendering is specifically a Static SSR feature — it has no meaning for components already running in a fully interactive render mode.',
+      'Testing streaming behavior in bUnit is limited, since bUnit doesn\'t simulate actual HTTP streaming mechanics — real browser-based E2E testing is usually needed.',
+    ],
+  },
+  'blazor/performance': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Virtualization',        route: '/blazor/virtualization' },
+      { label: 'Streaming Rendering',   route: '/blazor/streaming-rendering' },
+    ],
+    tip: 'For Blazor Server, remember much of the "real work" happens SERVER-SIDE — a client-side browser profile misses it entirely; dotnet-trace and dotnet-counters profile the server-side portion where Blazor Server\'s actual bottlenecks often live.',
+    gotchas: [
+      'Guessing at bottlenecks without profiling frequently targets the wrong thing — an unrelated expensive API call or inefficient LINQ query is a common actual culprit.',
+      'Performance should be measured against actual user-facing metrics (perceived responsiveness), not just internal metrics like render count.',
+    ],
+  },
+  'blazor/virtualization': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Performance', route: '/blazor/performance' },
+    ],
+    tip: 'The Virtualize component only renders DOM elements for currently visible items in a long list — but it has no built-in filtering/sorting logic; the consuming component must supply an already-filtered/sorted collection or ItemsProvider.',
+    gotchas: [
+      'Forcing a fresh render via a changed @key is often needed when the underlying item source changes significantly, since Virtualize doesn\'t automatically detect "same list, different dataset."',
+      'Combining virtualization with animated list transitions is genuinely difficult, since Virtualize aggressively creates/destroys DOM elements outside the visible range.',
+    ],
+  },
+  'blazor/progressive-enhancement': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Render Modes', route: '/blazor/render-modes' },
+    ],
+    tip: 'A standard HTML form (correct method/action) submits and works even with JavaScript disabled — the Blazor enhancement script upgrades this to an SPA-like background fetch with DOM patching when JS is available, without needing a separate implementation for the no-JS fallback.',
+    gotchas: [
+      'A client-side-only validation check with no server-side equivalent breaks the progressive-enhancement promise if JS is disabled — the form should still function correctly.',
+      'Testing both the enhanced and baseline (no-JS) submission paths ensures the progressive enhancement genuinely works, not just the happy path.',
+    ],
+  },
+  'blazor/seo-metadata': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Routing', route: '/blazor/routing' },
+    ],
+    tip: 'A generated sitemap.xml helps search engines discover routes that might not be reachable through normal internal link crawling — particularly valuable for a large Blazor app with dynamically-generated or deeply-nested content routes.',
+    gotchas: [
+      'Core Web Vitals matter for Blazor apps just as for any web app and are factored into search ranking — a slow InteractiveWebAssembly page can hurt SEO independently of otherwise correct metadata.',
+      'Canonical URLs (via HeadContent) prevent duplicate-content penalties for content reachable through multiple URL variations.',
+    ],
+  },
+  'blazor/maui-hybrid': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'JS Interop', route: '/blazor/js-interop' },
+    ],
+    tip: 'A MAUI Blazor Hybrid app spans two distinct debugging layers — native .NET/MAUI code (standard .NET debugging) and Blazor component code inside an embedded WebView, which may need browser-style DevTools access for full visibility.',
+    gotchas: [
+      'Platform-specific WebView quirks (older Android WebView versions, WKWebView\'s stricter security policies) can cause behavior differences even with identical Blazor code.',
+      'Performance profiling a Hybrid app requires considering both native startup overhead AND web-layer rendering performance separately.',
+    ],
+  },
+  'blazor/bunit': {
+    apis: BLAZOR_DEFAULT.apis, docs: BLAZOR_DEFAULT.docs, resources: BLAZOR_DEFAULT.resources,
+    related: [
+      { label: 'Error Handling', route: '/blazor/error-handling' },
+    ],
+    tip: 'cut.MarkupMatches() performs SEMANTIC HTML comparison, not exact string matching — attribute order and insignificant whitespace differences are normalized, making tests resilient to cosmetic rendering changes that aren\'t real behavioral regressions.',
+    gotchas: [
+      'WaitForState()/WaitForAssertion() poll until a condition becomes true — essential for testing components with async behavior, where an immediate synchronous assertion would run before the async operation completes.',
+      'Overusing full-markup snapshot assertions for every component becomes brittle — reserve them for components where exact rendered structure genuinely matters.',
+    ],
+  },
 };
 
 @Component({
