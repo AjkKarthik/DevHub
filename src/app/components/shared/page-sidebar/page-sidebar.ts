@@ -6691,6 +6691,264 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'CrashLoopBackOff\'s exponential backoff is normal, expected behavior — the actual root cause is virtually always in the previous container\'s logs or exit code.',
     ],
   },
+
+  // ── Azure: per-page entries ─────────────────────────────────────────────────
+  'azure/fundamentals': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'ARM Templates',   route: '/azure/arm' },
+      { label: 'RBAC',            route: '/azure/rbac' },
+    ],
+    tip: 'Availability Zones are physically separate datacenters WITHIN one region — spreading resources across zones protects against a datacenter failure without the latency/data-residency complexity of a full multi-region deployment.',
+    gotchas: [
+      'Not every Azure service or region supports Availability Zones — check support before architecting for zone-redundancy.',
+      'Zone redundancy handles datacenter failures cheaply; true regional-outage protection requires an actual multi-region deployment.',
+    ],
+  },
+  'azure/arm': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Bicep',       route: '/azure/bicep' },
+      { label: 'Fundamentals', route: '/azure/fundamentals' },
+    ],
+    tip: 'ARM deployments are idempotent by default — Incremental mode (the default) only adds/modifies resources described in the template; Complete mode DELETES any resource in the group not in the template, a much more destructive behavior.',
+    gotchas: [
+      'A what-if deployment lets you preview exactly what a deployment would change before applying it — critical before running Complete-mode deployments.',
+      'Resource dependencies can be inferred automatically from references, or declared explicitly via dependsOn.',
+    ],
+  },
+  'azure/bicep': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'ARM Templates', route: '/azure/arm' },
+    ],
+    tip: 'Bicep transpiles directly to ARM JSON — every Bicep file has an exact ARM equivalent, meaning it gains no new deployment capabilities beyond ARM itself, only a cleaner authoring syntax with type-safety and IntelliSense.',
+    gotchas: [
+      'Modules in Bicep compile down to nested ARM deployments — the same modularity ARM has always supported, with far less boilerplate.',
+      'Bicep benefits automatically from any new ARM feature without needing a separate tooling update.',
+    ],
+  },
+  'azure/aks': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Container Apps', route: '/azure/container-apps' },
+      { label: 'RBAC',           route: '/azure/rbac' },
+    ],
+    tip: 'Azure manages and pays for AKS\'s control plane at no extra cost on the base tier — you only pay for worker node VMs, unlike self-managed Kubernetes where control plane infrastructure is also your responsibility.',
+    gotchas: [
+      'Node pool VMs still count toward your subscription\'s compute quota and cost the same as standalone VMs of the same size.',
+      'Different node pools let you run different VM types (general-purpose, GPU) within the same cluster.',
+    ],
+  },
+  'azure/container-apps': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'AKS',       route: '/azure/aks' },
+      { label: 'Functions', route: '/azure/functions' },
+    ],
+    tip: 'Container Apps is built on Kubernetes under the hood but abstracts cluster management entirely away — a meaningful middle ground between App Service and full AKS for teams wanting Kubernetes-style scaling without the operational complexity.',
+    gotchas: [
+      'Unlike standard AKS deployments, Container Apps supports scale-to-zero, making it cost-effective for intermittent or event-driven workloads.',
+      'The tradeoff for the abstraction is reduced control — no direct Kubernetes API access or arbitrary CRD/Operator installation.',
+    ],
+  },
+  'azure/functions': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Container Apps', route: '/azure/container-apps' },
+      { label: 'App Service',    route: '/azure/app-service' },
+    ],
+    tip: 'On the Consumption plan, Functions scale to zero when idle — the first request after inactivity incurs a "cold start." Premium/Dedicated plans keep instances warm at a fixed baseline cost, trading cost efficiency for consistent latency.',
+    gotchas: [
+      'Cold start duration varies significantly by language runtime and dependency footprint.',
+      'A consistently high-traffic function may actually cost LESS on Premium once cold-start-avoidance is factored against per-execution Consumption costs.',
+    ],
+  },
+  'azure/app-service': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Functions',        route: '/azure/functions' },
+      { label: 'Load Balancer',    route: '/azure/load-balancer' },
+    ],
+    tip: 'Deployment slots (staging, production) enable zero-downtime deployments via slot swapping — the new version warms up in staging before traffic switches, avoiding the cold-start delay a direct production deployment would cause.',
+    gotchas: [
+      'Multiple apps sharing a single App Service Plan share its compute — one app\'s heavy load can affect others on the same plan.',
+      'Free/Shared tiers run on shared infrastructure with no SLA — production workloads need Standard tier or above.',
+    ],
+  },
+  'azure/virtual-machines': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Virtual Network', route: '/azure/virtual-network' },
+      { label: 'Load Balancer',   route: '/azure/load-balancer' },
+    ],
+    tip: 'A VM Scale Set manages a group of identical, load-balanced VMs as a single logical unit, auto-scaling based on rules and integrating with a load balancer to distribute traffic and replace unhealthy instances automatically.',
+    gotchas: [
+      'Scale sets are best suited for STATELESS workloads that can be freely created and destroyed.',
+      'Rolling upgrades update a batch of instances at a time, reducing the risk that a bad image update takes down the whole fleet simultaneously.',
+    ],
+  },
+  'azure/virtual-network': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancer',      route: '/azure/load-balancer' },
+      { label: 'Virtual Machines',   route: '/azure/virtual-machines' },
+    ],
+    tip: 'NSG rules are evaluated by PRIORITY (lower numbers first) and the first matching rule wins — a common misconfiguration is placing a broad allow rule at a lower priority number than a more specific intended deny.',
+    gotchas: [
+      'VNet peering does NOT automatically transit through a peered network\'s own peering connections — this non-transitive property causes "why can\'t A reach C through B" confusion.',
+      'Both subnet-level AND NIC-level NSGs must allow traffic if both are configured — the effective rule set is the intersection, not the union.',
+    ],
+  },
+  'azure/load-balancer': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Virtual Network', route: '/azure/virtual-network' },
+      { label: 'API Management',  route: '/azure/api-management' },
+    ],
+    tip: 'Azure Load Balancer operates at Layer 4 (fast, protocol-agnostic, no HTTP inspection); Application Gateway operates at Layer 7 (content-based routing, SSL termination, integrated WAF) — many architectures layer both together.',
+    gotchas: [
+      'Layer 4 load balancing has lower latency overhead since it never parses HTTP content.',
+      'Application Gateway is required specifically when routing decisions need to be based on URL path or hostname.',
+    ],
+  },
+  'azure/api-management': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Load Balancer',   route: '/azure/load-balancer' },
+      { label: 'Functions',       route: '/azure/functions' },
+    ],
+    tip: 'APIM applies cross-cutting policies (rate limiting, auth, transformation) centrally in front of backend APIs — without modifying the backend services themselves, valuable when backends are owned by different teams or written in different languages.',
+    gotchas: [
+      'The developer portal automatically generates interactive documentation and lets consumers self-service API key provisioning.',
+      'Policies execute at request/response time and add a small amount of latency per request compared to calling a backend directly.',
+    ],
+  },
+  'azure/service-bus': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Functions',      route: '/azure/functions' },
+    ],
+    tip: 'A Service Bus QUEUE delivers each message to exactly ONE receiver (work distribution); a TOPIC delivers to EVERY subscription (pub/sub) — choosing a topic when a queue would suffice adds unnecessary subscription/filter overhead.',
+    gotchas: [
+      'Sessions guarantee ordered delivery to a single consumer per session, at the cost of meaningful added latency and complexity — use only when true per-entity ordering matters.',
+      'Subscriptions can apply SQL-like filters to receive only a matching subset of messages from a topic.',
+    ],
+  },
+  'azure/sql-cosmos': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Storage',    route: '/azure/storage' },
+    ],
+    tip: 'Azure SQL suits relational data with strong consistency and ACID transactions; Cosmos DB suits massive scale, flexible schema, and low-latency global reads/writes with tunable consistency — the partition key choice in Cosmos is largely irreversible, so get it right upfront.',
+    gotchas: [
+      'A poorly chosen Cosmos partition key creates hot partitions that bottleneck throughput regardless of provisioned RU/s.',
+      'Cost models differ significantly — Azure SQL is priced by compute tier, Cosmos DB by provisioned/consumed Request Units.',
+    ],
+  },
+  'azure/storage': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'SQL & Cosmos DB',  route: '/azure/sql-cosmos' },
+    ],
+    tip: 'LRS replicates within one datacenter (cheapest, no datacenter-outage protection); ZRS spreads across zones in one region; GRS replicates to a paired region hundreds of miles away — higher tiers cost more and, for GRS, introduce eventual consistency between copies.',
+    gotchas: [
+      'GRS\'s secondary copy is not readable by default (unless RA-GRS is used) and failover is a manual process for standard GRS.',
+      'The appropriate redundancy tier should reflect the actual business impact of data loss or unavailability, not a blanket default.',
+    ],
+  },
+  'azure/redis': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'SQL & Cosmos DB', route: '/azure/sql-cosmos' },
+    ],
+    tip: 'Basic tier is a single node with no SLA (dev/test only); Standard adds a replicated secondary with automatic failover; Premium adds clustering, persistence, and VNet isolation for large-scale or security-sensitive production use.',
+    gotchas: [
+      'Even with Premium persistence enabled, cached data should still be treated as ephemeral and reconstructible from the source of truth.',
+      'Basic tier node failure or maintenance causes a complete cache outage with data loss.',
+    ],
+  },
+  'azure/entra-id': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'RBAC',        route: '/azure/rbac' },
+      { label: 'Key Vault',   route: '/azure/key-vault' },
+    ],
+    tip: 'Conditional Access evaluates signals (location, device compliance, sign-in risk) at authentication time and applies controls accordingly — a fundamentally more adaptive model than a static "always require MFA" rule.',
+    gotchas: [
+      'A misconfigured Conditional Access policy (an overly broad exclusion, one that locks out all admins) can cause serious availability incidents.',
+      'Test new policies in report-only mode before enforcing them broadly.',
+    ],
+  },
+  'azure/rbac': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Entra ID',    route: '/azure/entra-id' },
+      { label: 'Key Vault',   route: '/azure/key-vault' },
+    ],
+    tip: 'Role assignments inherit DOWNWARD across four scope levels (management group, subscription, resource group, resource) — assign at the NARROWEST scope that satisfies the actual need to limit blast radius if that identity is ever compromised.',
+    gotchas: [
+      'Azure RBAC is purely additive — auditing effective access requires checking role assignments at every applicable scope level.',
+      'Built-in roles cover most needs — custom roles add ongoing governance overhead and should be reserved for genuinely unique combinations.',
+    ],
+  },
+  'azure/key-vault': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'RBAC',     route: '/azure/rbac' },
+      { label: 'Entra ID', route: '/azure/entra-id' },
+    ],
+    tip: 'A Managed Identity authenticating to Key Vault eliminates the "secret needed to access secrets" bootstrapping problem — the identity is tied to the Azure resource itself, requiring no stored credential.',
+    gotchas: [
+      'Soft-delete and purge protection prevent accidental or malicious permanent deletion — without them, a deleted secret is immediately and irrecoverably gone.',
+      'System-assigned identities are tied to one resource\'s lifecycle; user-assigned identities can be shared across resources and managed independently.',
+    ],
+  },
+  'azure/security-defender': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Key Vault', route: '/azure/key-vault' },
+      { label: 'RBAC',      route: '/azure/rbac' },
+    ],
+    tip: 'Secure Score aggregates many security recommendations into one trackable percentage — but it is a POINT-IN-TIME snapshot that changes as resources are deployed or configurations drift, so treat it as continuously monitored, not a one-time check.',
+    gotchas: [
+      'A high Secure Score reduces but does not eliminate risk — it measures adherence to known best-practice configurations, not protection against zero-days or logic flaws.',
+      'Each recommendation carries relative risk weighting, not equal importance — prioritize accordingly.',
+    ],
+  },
+  'azure/monitor': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Cost Management', route: '/azure/cost-management' },
+    ],
+    tip: 'Metrics are lightweight numerical time-series optimized for near-real-time alerting; Logs (Log Analytics/KQL) store rich structured event data for complex correlation — sending the same signal to both unnecessarily doubles cost.',
+    gotchas: [
+      'Metrics-based alerts fire faster (often within a minute) than log-based alerts, which depend on ingestion latency and query schedule.',
+      'Choose based on whether the data is a simple numeric metric for fast alerting, or rich structured data benefiting from KQL flexibility.',
+    ],
+  },
+  'azure/cost-management': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'Monitor', route: '/azure/monitor' },
+    ],
+    tip: 'Consistent resource tagging (team, project, environment, cost center) is what makes Cost Analysis actually useful for chargeback reporting — without tags, costs can only be broken down by resource type or group.',
+    gotchas: [
+      'Budgets with action-group-triggered alerts turn cost monitoring from reactive reporting into proactive control.',
+      'Azure Advisor surfaces savings opportunities (underutilized VMs, orphaned disks) manual review would likely miss.',
+    ],
+  },
+  'azure/devops-pipelines': {
+    apis: AZURE_DEFAULT.apis, docs: AZURE_DEFAULT.docs, resources: AZURE_DEFAULT.resources,
+    related: [
+      { label: 'ARM Templates', route: '/azure/arm' },
+    ],
+    tip: 'YAML pipelines are defined as code, checked into the same repo as the application — pipeline changes go through the same review and version history as any other code change, unlike the Classic GUI editor.',
+    gotchas: [
+      'Templates in YAML pipelines let common stages be defined once and reused across many pipelines, reducing duplication.',
+      'YAML has a steeper initial learning curve than the Classic editor, but the long-term maintainability benefit of pipeline-as-code is usually worth it.',
+    ],
+  },
 };
 
 @Component({
