@@ -154,15 +154,15 @@ const quiz: QuizQuestion[] = [
     explanation: 'A CRD registers a new resource type (e.g. Database) with the Kubernetes API server. Once installed, you can kubectl apply, get, list, watch, and delete instances of that type. The CRD defines the schema (OpenAPI v3) that Kubernetes uses to validate resources of that kind.',
   },
   {
-    q: 'What is the Operator pattern?',
+    q: 'Why can an Operator perform automated actions (like failover) that a plain Deployment controller cannot?',
     options: [
-      'A Kubernetes RBAC role for cluster administrators',
-      'A controller that watches CRDs and encodes operational knowledge (backup, failover, upgrade) as code',
-      'A Helm chart that installs multiple services at once',
-      'A way to run shell scripts inside Kubernetes Pods',
+      'Operators run with root access on every node',
+      'A generic Deployment controller only knows how to keep N identical, interchangeable pod replicas running; an Operator encodes APPLICATION-SPECIFIC knowledge (e.g. "this node is the primary, promote a replica before removing it") that generic controllers have no way to express',
+      'Operators bypass the Kubernetes API server entirely for speed',
+      'Operators are not actually automated — they still require a human to approve each action',
     ],
     answer: 1,
-    explanation: 'An Operator is a controller that watches custom resources and acts on them to manage a complex stateful application. It encodes human operational knowledge — provisioning, scaling, backups, upgrades — into software. Examples: Prometheus Operator, CloudNativePG, Strimzi (Kafka).',
+    explanation: 'Built-in controllers (Deployment, StatefulSet) are deliberately generic — they know how to keep N pods running or maintain stable identities, but have zero knowledge of what a specific application like PostgreSQL or Kafka actually needs during failover, backup, or upgrade. An Operator\'s custom controller code encodes exactly that domain-specific operational knowledge, letting it make application-aware decisions (like promoting a specific replica) that a generic controller has no basis to make.',
   },
   {
     q: 'What is the purpose of a finalizer in a Kubernetes Operator?',

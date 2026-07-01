@@ -258,8 +258,8 @@ const quiz: QuizQuestion[] = [
 
 const qna: QnaItem[] = [
   {
-    q: 'What is etcd and why is it critical to back up?',
-    a: 'etcd is a distributed, strongly consistent key-value store that holds the entire cluster state — all Deployments, Services, Secrets, ConfigMaps, and RBAC rules. If etcd is lost without a backup, the entire cluster configuration is gone. Back up etcd with etcdctl snapshot save regularly, especially before cluster upgrades.',
+    q: 'Why does etcd typically run as a cluster of 3 or 5 nodes (an odd number), rather than 2 or 4?',
+    a: 'etcd uses the Raft consensus algorithm, which requires a strict MAJORITY of nodes to agree before any write is committed — with an odd-sized cluster, the majority threshold is unambiguous and the cluster can tolerate the maximum number of failures for its size without ever getting stuck unable to form a majority. A 4-node cluster tolerates the same 1 failure as a 3-node cluster (needs 3 of 4 vs 2 of 3) while using an extra node for no additional fault tolerance, which is why odd sizes (3, 5, 7) are the standard recommendation — they maximize fault tolerance per node deployed.',
   },
   {
     q: 'What is the Container Runtime Interface (CRI)?',

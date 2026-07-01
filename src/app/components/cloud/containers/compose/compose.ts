@@ -228,15 +228,15 @@ const challenge: Challenge = {
 
 const quiz: QuizQuestion[] = [
   {
-    q: 'What does depends_on: [db] guarantee?',
+    q: 'If service A has depends_on: [db] and service B also depends on db, in what order does Compose start db relative to A and B when you run "docker compose up"?',
     options: [
-      'The db service is fully initialised and accepting connections before api starts',
-      'The db container has started — but the database process inside may not be ready yet',
-      'Docker retries the api start until db is healthy',
-      'It creates a network link between db and api',
+      'db starts alphabetically before A and B, with no other guarantee',
+      'Compose starts db first (or in parallel with any service that has no dependency on it), then starts A and B — both of which can start concurrently with each other once db has started',
+      'A and B start first, then db is started last to save resources',
+      'Compose refuses to start if two services share the same dependency',
     ],
     answer: 1,
-    explanation: 'depends_on with a simple list only waits for the container to start, not for the service inside to be ready. Use depends_on: db: condition: service_healthy combined with a healthcheck: on the db service to wait for readiness.',
+    explanation: 'Compose builds a dependency graph from all depends_on declarations and starts services in topological order — db (having no dependencies of its own) starts first, then any services depending on it (A and B here) can start once db has started, and since A and B do not depend on each other, Compose is free to start them in parallel rather than sequentially, speeding up startup for services with independent dependency chains.',
   },
   {
     q: 'How do services in the same Compose project communicate?',
@@ -306,7 +306,7 @@ const qna: QnaItem[] = [
     q: 'Can I use Docker Compose in production?',
     a: 'For small single-host deployments, yes. Compose lacks built-in clustering, self-healing across multiple nodes, or advanced scheduling. For multi-host or highly available deployments, Kubernetes or Docker Swarm is a better choice. Some teams use Compose on a single cloud VM as a low-ops alternative to Kubernetes for small services.',
   },
-  { q: 'How do you scale a service in Docker Compose?', a: 'Use docker compose up --scale web=3 to run 3 replicas of the web service. In compose.yaml you can also set deploy.replicas: 3 (Compose V2 supports Docker Swarm-style deploy config). Each replica gets its own container name with an index suffix. Note: services with fixed host port bindings like ports: 80:80 will fail on replicas > 1 since multiple containers cannot bind the same host port simultaneously.' },
+  { q: 'How do you load-balance requests across scaled Compose replicas if each has a different host port?', a: 'Without a fixed host port binding (letting Compose auto-assign a random host port per replica, e.g. ports: "80"), you need something in front to route traffic across the replicas — commonly a lightweight reverse proxy container (Nginx, Traefik) added to the same Compose file, configured to discover the scaled service\'s containers via Docker\'s internal DNS (which resolves a service name to multiple container IPs when scaled) and round-robin between them. This is also why Compose-level scaling is treated as a local dev/testing convenience — production traffic distribution across replicas is normally handled by an orchestrator like Kubernetes or Swarm, not plain Compose.' },
 ];
 
 const revision: RevisionSummary = {
