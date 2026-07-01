@@ -6155,6 +6155,275 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Best for a stable set of element types needing many operations added over time — not for element hierarchies expected to grow frequently.',
     ],
   },
+
+  // ── Architecture Patterns: per-page entries ────────────────────────────────
+  'arch-patterns/ddd-core': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Bounded Contexts',            route: '/arch-patterns/bounded-contexts' },
+      { label: 'Aggregates & Domain Events',  route: '/arch-patterns/aggregates-domain-events' },
+      { label: 'Anti-Corruption Layer',       route: '/arch-patterns/anti-corruption-layer' },
+    ],
+    tip: 'Ubiquitous language means using the SAME precise terminology in code and in conversations with domain experts — scoped to a single bounded context, since the same word can mean something different in another context.',
+    gotchas: [
+      'Entities have identity that persists across changes; Value Objects are defined entirely by their values and should be immutable.',
+      'Modeling something that should be a Value Object (like an Address) as an Entity adds unnecessary identity-tracking complexity.',
+    ],
+  },
+  'arch-patterns/bounded-contexts': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'DDD Core',              route: '/arch-patterns/ddd-core' },
+      { label: 'Anti-Corruption Layer', route: '/arch-patterns/anti-corruption-layer' },
+      { label: 'Microservices Principles', route: '/arch-patterns/microservices-principles' },
+    ],
+    tip: 'A single term like "Customer" often means genuinely different things in different parts of a system — a bounded context boundary is where a model and its ubiquitous language apply consistently, not beyond.',
+    gotchas: [
+      'Context boundaries should align with actual team boundaries (Conway\'s Law) — a boundary cutting across one team\'s work creates unnecessary coordination overhead.',
+      'Getting context boundaries wrong is expensive to fix later, since data and behavior entangle across the incorrect boundary over time.',
+    ],
+  },
+  'arch-patterns/anti-corruption-layer': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Bounded Contexts',   route: '/arch-patterns/bounded-contexts' },
+      { label: 'Strangler Fig',      route: '/arch-patterns/strangler-fig' },
+    ],
+    tip: 'An ACL translates between an external system\'s model and your own at the boundary, preventing the external system\'s naming and quirks from polluting a carefully designed domain model.',
+    gotchas: [
+      'Reserve an ACL for boundaries with genuinely different, non-negotiable external models — not every internal integration needs one.',
+      'ACLs are especially valuable during a strangler-fig migration, isolating the new codebase from legacy quirks.',
+    ],
+  },
+  'arch-patterns/api-gateway-pattern': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Backend for Frontend', route: '/arch-patterns/backend-for-frontend' },
+      { label: 'Service Communication', route: '/arch-patterns/service-communication' },
+    ],
+    tip: 'Centralizing cross-cutting concerns (auth, rate limiting, TLS termination) at the gateway avoids duplicating that logic across every microservice — but the gateway becomes a single point of failure that must be designed for resilience.',
+    gotchas: [
+      'Business logic creeping into the gateway beyond routing/cross-cutting concerns recreates the tight coupling microservices were meant to avoid.',
+      'Gateway aggregation introduces a new failure mode — decide explicitly whether a failed partial call fails the whole request or degrades gracefully.',
+    ],
+  },
+  'arch-patterns/backend-for-frontend': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'API Gateway',    route: '/arch-patterns/api-gateway-pattern' },
+      { label: 'Service Communication', route: '/arch-patterns/service-communication' },
+    ],
+    tip: 'A BFF is a dedicated backend tailored to ONE client type\'s needs — avoiding the "lowest common denominator" API design a single shared gateway tends toward when serving very different client types.',
+    gotchas: [
+      'BFFs are typically owned by the SAME team as the corresponding frontend, not a separate backend team.',
+      'Overusing BFFs for client types that don\'t actually diverge significantly adds operational overhead without benefit.',
+    ],
+  },
+  'arch-patterns/circuit-breaker': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Sidecar & Service Mesh', route: '/arch-patterns/sidecar-service-mesh' },
+      { label: 'Service Communication',  route: '/arch-patterns/service-communication' },
+    ],
+    tip: 'The three states — Closed, Open, Half-Open — let a circuit breaker fast-fail once a failure threshold is hit, preventing requests from piling up against an already-struggling service.',
+    gotchas: [
+      'Aggressive retries combined with a circuit breaker can overwhelm a struggling service further if applied without care — wrap retries INSIDE the circuit breaker, not the other way around.',
+      'An open circuit needs a graceful fallback (cached/default data) to actually improve user experience, not just protect the system.',
+    ],
+  },
+  'arch-patterns/clean-architecture': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Hexagonal Architecture', route: '/arch-patterns/hexagonal-architecture' },
+      { label: 'DDD Core',               route: '/arch-patterns/ddd-core' },
+    ],
+    tip: 'The Dependency Rule — dependencies point INWARD only — is what keeps core business logic independent of framework and database choices, tested without any infrastructure at all.',
+    gotchas: [
+      'The ceremony (more files, more interfaces) only pays off for applications with genuinely complex business logic expected to outlive framework choices.',
+      'A simple CRUD app with minimal business logic often does not need the full layering.',
+    ],
+  },
+  'arch-patterns/cqrs-event-sourcing': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Inbox/Outbox',    route: '/arch-patterns/inbox-outbox' },
+      { label: 'Saga Choreography', route: '/arch-patterns/saga-choreography' },
+    ],
+    tip: 'CQRS and event sourcing are often discussed together but are independently adoptable — CQRS addresses model separation, event sourcing addresses how state changes are stored and replayed.',
+    gotchas: [
+      'Event sourcing adds genuine complexity (schema evolution, eventual consistency between log and read models) — appropriate where the audit trail and temporal queries are genuinely valuable.',
+      'Snapshotting avoids replaying an aggregate\'s entire history every time current state is needed.',
+    ],
+  },
+  'arch-patterns/event-driven': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Saga Choreography', route: '/arch-patterns/saga-choreography' },
+      { label: 'Inbox/Outbox',      route: '/arch-patterns/inbox-outbox' },
+    ],
+    tip: 'Event notification (thin, requires callback) vs event-carried state transfer (fat, self-sufficient) is a real design tradeoff — many production systems use a hybrid of the two.',
+    gotchas: [
+      'Tracing a business process across async event handlers requires distributed tracing with correlation IDs — there is no single call stack to follow.',
+      'Event ordering and timing at scale is expected to be inconsistent — application logic must explicitly account for this, not treat it as an edge case.',
+    ],
+  },
+  'arch-patterns/hexagonal-architecture': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Clean Architecture',    route: '/arch-patterns/clean-architecture' },
+      { label: 'Dependency Inversion',  route: '/arch-patterns/dependency-inversion' },
+    ],
+    tip: 'Ports (interfaces the core defines) and adapters (implementations connecting to specific tech) let you swap infrastructure — like a payment provider — with zero changes to the application core.',
+    gotchas: [
+      'Hexagonal Architecture and Clean Architecture share the same fundamental goal — largely equivalent in practice, differing mainly in terminology.',
+      'Adapters still need their own integration tests — hexagonal architecture isolates WHERE integration testing happens, it does not eliminate the need for it.',
+    ],
+  },
+  'arch-patterns/inbox-outbox': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Event-Driven',      route: '/arch-patterns/event-driven' },
+      { label: 'Saga Choreography', route: '/arch-patterns/saga-choreography' },
+    ],
+    tip: 'Outbox (producer side) and inbox (consumer side) together achieve effectively-once processing across an async flow, even though the underlying broker only guarantees at-least-once delivery.',
+    gotchas: [
+      'The inbox table needs a retention/cleanup policy just like idempotency keys — retaining every processed message ID forever is unnecessary.',
+      'Both patterns rely on the same core mechanism: atomically combining a DB state change with a messaging operation within one local transaction.',
+    ],
+  },
+  'arch-patterns/layered-architecture': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Clean Architecture', route: '/arch-patterns/clean-architecture' },
+      { label: 'Vertical Slice',     route: '/arch-patterns/vertical-slice' },
+    ],
+    tip: 'Classic layered architecture enforces that each layer only calls the layer directly below it — presentation should never directly query the database, bypassing business logic\'s validation.',
+    gotchas: [
+      '"Layer skipping" (a presentation component directly hitting data access for a "quick" read) erodes the guarantee that business rules are consistently applied.',
+      'Layering constrains the VERTICAL dependency direction but does nothing to organize horizontal structure within a layer, which is where real complexity accumulates at scale.',
+    ],
+  },
+  'arch-patterns/microservices-principles': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Monolith vs Modular', route: '/arch-patterns/monolith-vs-modular' },
+      { label: 'Service Discovery',   route: '/arch-patterns/service-discovery' },
+    ],
+    tip: 'The single defining property of a genuine microservice is INDEPENDENT DEPLOYABILITY — a system split into many small services that must all deploy together isn\'t actually achieving microservices\' core benefit.',
+    gotchas: [
+      'Database-per-service is a strict consequence of independent deployability — a shared database silently reintroduces deployment coupling.',
+      'Conway\'s Law means microservices work best when service boundaries align with actual team boundaries.',
+    ],
+  },
+  'arch-patterns/monolith-vs-modular': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Microservices Principles', route: '/arch-patterns/microservices-principles' },
+      { label: 'Vertical Slice',           route: '/arch-patterns/vertical-slice' },
+    ],
+    tip: 'A modular monolith enforces clear module boundaries within ONE deployable unit — capturing much of microservices\' organizational clarity without distributed-systems operational complexity.',
+    gotchas: [
+      'Splitting into microservices without one of the genuine driving needs (scaling divergence, deployment cadence, tech diversity) usually adds complexity without benefit.',
+      'Module boundaries in a monolith are far cheaper to refactor than service boundaries once real network contracts exist between separate services.',
+    ],
+  },
+  'arch-patterns/saga-choreography': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Inbox/Outbox',   route: '/arch-patterns/inbox-outbox' },
+      { label: 'Event-Driven',   route: '/arch-patterns/event-driven' },
+    ],
+    tip: 'In choreography, each service reacts to events with no central coordinator — the overall business process emerges from the sum of local reactions rather than being explicitly defined anywhere.',
+    gotchas: [
+      'Choreography works best for simple, linear sagas — as step count grows, the implicit distributed flow becomes genuinely harder to trace and debug than orchestration.',
+      'A saga failing partway through can be hard to detect without a lightweight observability projection, since no single component tracks the full expected sequence.',
+    ],
+  },
+  'arch-patterns/service-communication': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Sidecar & Service Mesh', route: '/arch-patterns/sidecar-service-mesh' },
+      { label: 'Circuit Breaker',        route: '/arch-patterns/circuit-breaker' },
+    ],
+    tip: 'Choosing sync vs async communication per interaction should be driven by whether an immediate response is genuinely required — most real systems use BOTH styles for different interactions.',
+    gotchas: [
+      'Synchronous calls couple the caller\'s availability directly to the callee\'s — a slow downstream service degrades the caller too.',
+      'A service mesh moves resilience/observability into infrastructure but adds real per-call latency and operational overhead.',
+    ],
+  },
+  'arch-patterns/service-discovery': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Microservices Principles', route: '/arch-patterns/microservices-principles' },
+      { label: 'Sidecar & Service Mesh',   route: '/arch-patterns/sidecar-service-mesh' },
+    ],
+    tip: 'Client-side discovery gives the caller full load-balancing control; server-side discovery (like Kubernetes Services) is simpler for the client at the cost of an extra network hop.',
+    gotchas: [
+      'A registry is only as useful as the accuracy of its health information — routing to a registered-but-unhealthy instance defeats the purpose.',
+      'Liveness and readiness checks answer different questions — a service can be alive but not yet ready to accept traffic.',
+    ],
+  },
+  'arch-patterns/service-oriented': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Microservices Principles', route: '/arch-patterns/microservices-principles' },
+      { label: 'API Gateway',              route: '/arch-patterns/api-gateway-pattern' },
+    ],
+    tip: 'Classic SOA\'s Enterprise Service Bus tended to accumulate business logic over time, becoming a bottleneck — microservices deliberately reacted against this with "smart endpoints, dumb pipes."',
+    gotchas: [
+      'Contract-first design (WSDL then, OpenAPI/protobuf now) is a shared practice across both eras — the discipline matters more than the specific technology.',
+      'An ESB-heavy SOA and a microservices system can look superficially similar while having very different maintainability characteristics.',
+    ],
+  },
+  'arch-patterns/sidecar-service-mesh': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Circuit Breaker',       route: '/arch-patterns/circuit-breaker' },
+      { label: 'Service Communication', route: '/arch-patterns/service-communication' },
+    ],
+    tip: 'A sidecar shares its Pod\'s network namespace, letting it transparently intercept all traffic — cross-cutting concerns (mTLS, retries, observability) can be upgraded via the sidecar without touching application code.',
+    gotchas: [
+      'The sidecar pattern trades resource overhead (an extra container per Pod) for this separation of concerns — measurable at scale.',
+      'Automatic mTLS enforcement underlies a zero-trust model where no service is implicitly trusted just for being inside the perimeter.',
+    ],
+  },
+  'arch-patterns/strangler-fig': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Anti-Corruption Layer', route: '/arch-patterns/anti-corruption-layer' },
+      { label: 'Monolith vs Modular',   route: '/arch-patterns/monolith-vs-modular' },
+    ],
+    tip: 'A routing facade lets traffic migrate incrementally — feature by feature — to a new system instead of requiring the new system to reach full parity before a risky one-shot cutover.',
+    gotchas: [
+      'The facade itself becomes critical infrastructure during migration — a routing mistake can send traffic to the wrong system or neither.',
+      'The pattern has a natural completion state — once every route is migrated, the legacy system and facade can be decommissioned.',
+    ],
+  },
+  'arch-patterns/vertical-slice': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'Layered Architecture', route: '/arch-patterns/layered-architecture' },
+      { label: 'CQRS/Event Sourcing',  route: '/arch-patterns/cqrs-event-sourcing' },
+    ],
+    tip: 'Vertical slices group all the code for one feature together — understanding or modifying a feature touches ONE location instead of navigating across horizontal layers full of unrelated features.',
+    gotchas: [
+      'Some duplication across slices is an accepted tradeoff — the pattern favors feature independence over eliminating every instance of code similarity.',
+      'Pairs naturally with CQRS/mediator — each feature becomes a single Command or Query handler with a consistent, predictable shape.',
+    ],
+  },
+  'arch-patterns/aggregates-domain-events': {
+    apis: ARCH_DEFAULT.apis, docs: ARCH_DEFAULT.docs, resources: ARCH_DEFAULT.resources,
+    related: [
+      { label: 'DDD Core',        route: '/arch-patterns/ddd-core' },
+      { label: 'CQRS/Event Sourcing', route: '/arch-patterns/cqrs-event-sourcing' },
+      { label: 'Inbox/Outbox',    route: '/arch-patterns/inbox-outbox' },
+    ],
+    tip: 'An aggregate defines a transactional consistency boundary — invariants are enforced WITHIN one aggregate\'s transaction, never spanning multiple aggregates in a single atomic operation.',
+    gotchas: [
+      'Reference other aggregates by ID, not direct object reference — this keeps aggregates small and independently persistable.',
+      'When a rule spans multiple aggregates, a domain event published AFTER the originating transaction commits achieves eventual consistency without violating the boundary.',
+    ],
+  },
 };
 
 @Component({
