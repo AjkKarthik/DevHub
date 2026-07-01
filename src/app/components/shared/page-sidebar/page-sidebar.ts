@@ -5706,6 +5706,455 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'TransferState keys must match exactly on server and client — a mismatch causes a second HTTP request on the client.',
     ],
   },
+
+  // ── Design Patterns: per-page entries ──────────────────────────────────────
+  'design-patterns/abstract-factory': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Factory Method',  route: '/design-patterns/factory-method' },
+      { label: 'Builder',         route: '/design-patterns/builder' },
+      { label: 'Bridge',          route: '/design-patterns/bridge' },
+    ],
+    tip: 'Abstract Factory guarantees the PRODUCTS created together are compatible with each other — that cross-product compatibility guarantee is the whole point, not just "creating multiple things."',
+    gotchas: [
+      'Adding a new product TYPE requires touching the factory interface and every concrete factory — adding a new FAMILY only requires one new concrete factory class.',
+      'Reach for Abstract Factory only when there are genuinely multiple interchangeable families — for one family, plain Factory Method or direct construction is simpler.',
+    ],
+  },
+  'design-patterns/adapter': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Facade',   route: '/design-patterns/facade' },
+      { label: 'Bridge',   route: '/design-patterns/bridge' },
+      { label: 'Decorator', route: '/design-patterns/decorator' },
+    ],
+    tip: 'Object adapter (composition) is almost always the right choice over class adapter (inheritance) — it can wrap ANY implementation of the target interface, not just one known at compile time.',
+    gotchas: [
+      'An adapter should stay a thin translation layer — business logic creeping into an adapter blurs its purpose.',
+      'Adapter vs Facade confusion: Adapter fixes an incompatible interface; Facade simplifies a complex one. They can look similar but solve different problems.',
+    ],
+  },
+  'design-patterns/bridge': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Adapter',   route: '/design-patterns/adapter' },
+      { label: 'Abstract Factory', route: '/design-patterns/abstract-factory' },
+      { label: 'Strategy',  route: '/design-patterns/strategy' },
+    ],
+    tip: 'Bridge avoids an N×M class explosion by decoupling abstraction from implementation up front — Adapter is applied AFTER the fact to two already-existing incompatible interfaces.',
+    gotchas: [
+      'Bridge is only worth its indirection when BOTH abstraction and implementation are genuinely expected to vary independently.',
+      'Applying Bridge to a stable, unlikely-to-change hierarchy adds complexity with no payoff.',
+    ],
+  },
+  'design-patterns/builder': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Abstract Factory', route: '/design-patterns/abstract-factory' },
+      { label: 'Prototype',        route: '/design-patterns/prototype' },
+    ],
+    tip: 'Builder exists to replace telescoping constructors — once a class has more than a few optional parameters, especially several of the same type, a fluent builder API is far less error-prone than positional arguments.',
+    gotchas: [
+      'Builder is the standard way to construct genuinely IMMUTABLE objects with many optional fields.',
+      'Named/default parameters in modern languages reduce the need for Builder on simpler cases — reserve it for genuinely complex, validated construction.',
+    ],
+  },
+  'design-patterns/chain-of-responsibility': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Command',   route: '/design-patterns/command' },
+      { label: 'Mediator',  route: '/design-patterns/mediator' },
+      { label: 'Decorator', route: '/design-patterns/decorator' },
+    ],
+    tip: 'HTTP middleware pipelines are the canonical real-world Chain of Responsibility — each handler decides independently whether to process, pass along, or short-circuit the chain.',
+    gotchas: [
+      'A chain with no handler willing to process a request needs an explicit strategy (default terminal handler or an unhandled signal) — silently dropping requests is a common bug.',
+      'Reordering handlers only requires changing the chain\'s wiring, not the handler classes themselves.',
+    ],
+  },
+  'design-patterns/clean-architecture': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Dependency Inversion', route: '/design-patterns/dependency-inversion' },
+      { label: 'Repository',           route: '/design-patterns/repository' },
+      { label: 'CQRS',                 route: '/design-patterns/cqrs' },
+    ],
+    tip: 'Treat each use case (PlaceOrder, CancelSubscription) as an explicit, named class — this makes the application\'s actual capabilities discoverable by scanning a folder, without reading implementation details.',
+    gotchas: [
+      'Clean Architecture\'s ceremony (more files, more interfaces) only pays off for applications with genuinely complex business logic expected to outlive any framework choice.',
+      'The testability benefit only materializes if the team actually keeps business logic out of the outer layers — the structure alone does not enforce it.',
+    ],
+  },
+  'design-patterns/command': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Chain of Responsibility', route: '/design-patterns/chain-of-responsibility' },
+      { label: 'Memento',                 route: '/design-patterns/memento' },
+      { label: 'Composite',               route: '/design-patterns/composite' },
+    ],
+    tip: 'Encapsulating a request as an object is what enables undo/redo and task queues — the request becomes a first-class value that can be stored, logged, and executed later, not just an immediate method call.',
+    gotchas: [
+      'Undo requires each Command to know its own inverse — not every operation (like sending an email) has a clean, safe undo.',
+      'Macro commands combine Command with Composite so a multi-step operation can be undone as one atomic unit.',
+    ],
+  },
+  'design-patterns/composite': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Iterator',  route: '/design-patterns/iterator' },
+      { label: 'Decorator', route: '/design-patterns/decorator' },
+      { label: 'Visitor',   route: '/design-patterns/visitor' },
+    ],
+    tip: 'Composite\'s value is treating a single leaf and a whole group through the SAME interface — client code calling render() never needs to check "is this a leaf or a group."',
+    gotchas: [
+      'Whether add/remove methods live on the shared Component interface (uniform, less safe) or only on Composite (safer, breaks uniformity) is a recurring design tension.',
+      'Composite fits genuinely tree-shaped data — applying it to flat data adds structure with no benefit.',
+    ],
+  },
+  'design-patterns/cqrs': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Event Sourcing', route: '/design-patterns/event-sourcing' },
+      { label: 'Repository',     route: '/design-patterns/repository' },
+      { label: 'Saga',           route: '/design-patterns/saga' },
+    ],
+    tip: 'CQRS can be applied at different granularities — a lightweight version (separate command/query classes, same database) captures most of the organizational benefit without the operational cost of fully separate read/write stores.',
+    gotchas: [
+      'Full CQRS with separate stores introduces eventual consistency — a write may not be immediately visible in the read model.',
+      'Applying full CQRS to simple CRUD screens with no real read/write divergence adds overhead without benefit.',
+    ],
+  },
+  'design-patterns/decorator': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Proxy',    route: '/design-patterns/proxy' },
+      { label: 'Composite', route: '/design-patterns/composite' },
+      { label: 'Strategy', route: '/design-patterns/strategy' },
+    ],
+    tip: 'Decorator avoids the subclass explosion of adding every optional-behavior combination as its own class — behaviors compose dynamically at runtime instead of being fixed at compile time.',
+    gotchas: [
+      'A decorator must implement the SAME interface as what it wraps — callers should not be able to tell how many layers of decoration are present.',
+      'Decorating behaviors that are actually always needed together adds unneeded indirection — the pattern earns its keep when behaviors are genuinely independently optional.',
+    ],
+  },
+  'design-patterns/dependency-inversion': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'SOLID',            route: '/design-patterns/solid' },
+      { label: 'Clean Architecture', route: '/design-patterns/clean-architecture' },
+      { label: 'Repository',       route: '/design-patterns/repository' },
+    ],
+    tip: 'DIP inverts the DEFAULT dependency direction — instead of high-level business logic depending on low-level infrastructure, both depend on a shared abstraction that infrastructure implements.',
+    gotchas: [
+      'DIP is a design principle about dependency DIRECTION — dependency injection is just one common technique for wiring dependencies that follow it.',
+      'Depending directly on a concrete class (SqlDatabase) instead of an interface locks business logic to that specific infrastructure choice.',
+    ],
+  },
+  'design-patterns/dry-kiss-yagni': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'SOLID', route: '/design-patterns/solid' },
+      { label: 'GRASP', route: '/design-patterns/grasp' },
+    ],
+    tip: 'The "rule of three" — wait until a pattern repeats three times before extracting a shared abstraction — guards against premature DRY on code that looks similar today but represents genuinely different concepts that will diverge.',
+    gotchas: [
+      'DRY applies to KNOWLEDGE and business rules, not merely to code that happens to look textually similar.',
+      'A shared abstraction created too early tends to accumulate special-case branches as new requirements reveal it wasn\'t as universal as assumed.',
+    ],
+  },
+  'design-patterns/event-sourcing': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'CQRS',    route: '/design-patterns/cqrs' },
+      { label: 'Outbox',  route: '/design-patterns/outbox' },
+      { label: 'Saga',    route: '/design-patterns/saga' },
+    ],
+    tip: 'Event sourcing stores every state-changing event as the system of record — current state is derived by replaying events, giving a complete audit trail as a natural byproduct.',
+    gotchas: [
+      'Because events are permanent, their schema effectively becomes immutable once written — plan for upcasting or versioned event types upfront.',
+      'GDPR right-to-erasure conflicts with immutable events — techniques like crypto-shredding address this tension.',
+    ],
+  },
+  'design-patterns/facade': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Adapter', route: '/design-patterns/adapter' },
+      { label: 'Mediator', route: '/design-patterns/mediator' },
+    ],
+    tip: 'A Facade does not need to expose every capability of the underlying subsystem — it deliberately exposes a simplified subset covering common use cases while still allowing direct access for callers that need more.',
+    gotchas: [
+      'Facade vs Adapter: Facade simplifies a complex subsystem; Adapter fixes an incompatible interface. Similar shape, different intent.',
+      'A Facade accumulating real business logic of its own has effectively become a service, not just a coordination layer.',
+    ],
+  },
+  'design-patterns/factory-method': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Abstract Factory', route: '/design-patterns/abstract-factory' },
+      { label: 'Prototype',        route: '/design-patterns/prototype' },
+    ],
+    tip: 'Factory Method lets new product types be added via a new subclass, with zero changes to existing creation code — a direct application of the Open/Closed Principle.',
+    gotchas: [
+      'Without it, adding a new type usually means modifying a shared if/else or switch statement, risking regression in existing types.',
+      'For a fixed, unlikely-to-grow set of types, a simple factory function is often sufficient without subclass-based extension.',
+    ],
+  },
+  'design-patterns/flyweight': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Composite',  route: '/design-patterns/composite' },
+      { label: 'Object Pool', route: '/design-patterns/object-pool' },
+    ],
+    tip: 'Flyweight splits state into intrinsic (shared, stored once) and extrinsic (context-specific, supplied by the caller) — only intrinsic state is actually shared between instances.',
+    gotchas: [
+      'A Flyweight factory must deduplicate identical intrinsic state via caching — without it there is no actual memory benefit.',
+      'Only worth the added API complexity when a system creates a genuinely large number of similar objects.',
+    ],
+  },
+  'design-patterns/grasp': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'SOLID',  route: '/design-patterns/solid' },
+      { label: 'DRY/KISS/YAGNI', route: '/design-patterns/dry-kiss-yagni' },
+    ],
+    tip: 'Information Expert answers "which class should own this method?" by favoring the class that already holds the relevant data — many GoF patterns implicitly follow this even though GRASP predates and generalizes beyond them.',
+    gotchas: [
+      'Low Coupling and High Cohesion are the underlying justification for WHY patterns like Facade and Observer are considered good design.',
+      'GRASP principles help evaluate whether a named pattern genuinely fits a situation, or would actually increase coupling.',
+    ],
+  },
+  'design-patterns/iterator': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Composite', route: '/design-patterns/composite' },
+      { label: 'Visitor',   route: '/design-patterns/visitor' },
+    ],
+    tip: 'Iterator decouples traversal from the collection\'s implementation — client code depends only on the Iterator interface, so the underlying data structure can change without breaking any traversal code.',
+    gotchas: [
+      'Most modern languages bake iterator protocols directly into the language (for...of, IEnumerable) — the pattern has largely become invisible infrastructure.',
+      'External iterators give the caller pacing control; internal iterators (forEach) are simpler but offer less control.',
+    ],
+  },
+  'design-patterns/mediator': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Observer', route: '/design-patterns/observer' },
+      { label: 'Facade',   route: '/design-patterns/facade' },
+    ],
+    tip: 'Mediator centralizes many-to-many communication into one coordinator — colleague objects only know about the Mediator, reducing N-squared direct relationships down to N.',
+    gotchas: [
+      'A Mediator can become a large, complex class itself if it accumulates too much coordination logic — this is the concentrated-complexity tradeoff.',
+      'Mediator vs Observer: Mediator coordinates a fixed, known set of colleagues with specific rules; Observer supports an open-ended number of generic subscribers.',
+    ],
+  },
+  'design-patterns/memento': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Command', route: '/design-patterns/command' },
+      { label: 'Prototype', route: '/design-patterns/prototype' },
+    ],
+    tip: 'Memento preserves encapsulation while enabling undo — the Originator creates an opaque snapshot that the Caretaker stores without ever inspecting or modifying its contents.',
+    gotchas: [
+      'Deep-copying large object graphs for every undo step can have real memory implications — production undo often stores diffs instead of full snapshots.',
+      'The Caretaker never interprets the Memento\'s contents — that boundary is what preserves the Originator\'s encapsulation.',
+    ],
+  },
+  'design-patterns/null-object': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Strategy',  route: '/design-patterns/strategy' },
+      { label: 'Decorator', route: '/design-patterns/decorator' },
+    ],
+    tip: 'Null Object replaces "might return null" with a real no-op object implementing the same interface — this shifts defensive null-checking to ONE place instead of scattering it across every call site.',
+    gotchas: [
+      'When the ABSENCE of a value is itself meaningful information a caller must react to, an explicit Optional/null check communicates that more honestly than a silent no-op.',
+      'Overusing Null Object can hide genuine errors that a caller should have been alerted to.',
+    ],
+  },
+  'design-patterns/object-pool': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Flyweight', route: '/design-patterns/flyweight' },
+      { label: 'Singleton', route: '/design-patterns/singleton' },
+    ],
+    tip: 'Object Pool is only worth its bookkeeping when object creation is GENUINELY expensive relative to how often objects are needed — database connections, not simple value objects.',
+    gotchas: [
+      'Pooled objects must be properly reset before reuse — leftover state from a previous user is a common and serious bug source.',
+      'Modern generational garbage collectors have reduced how broadly necessary this pattern is for ordinary allocation.',
+    ],
+  },
+  'design-patterns/observer': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Mediator', route: '/design-patterns/mediator' },
+      { label: 'State',    route: '/design-patterns/state' },
+    ],
+    tip: 'Choosing push (subject sends full data) vs pull (subject just signals "something changed," observer queries for details) is a real tradeoff between simplicity and flexibility for varied observer needs.',
+    gotchas: [
+      'Subscribers that forget to unsubscribe are a classic memory leak source — the subject holds a reference preventing garbage collection.',
+      'Many subscribers with frequent notifications can create real performance concerns at scale.',
+    ],
+  },
+  'design-patterns/outbox': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Event Sourcing', route: '/design-patterns/event-sourcing' },
+      { label: 'Saga',           route: '/design-patterns/saga' },
+      { label: 'CQRS',           route: '/design-patterns/cqrs' },
+    ],
+    tip: 'Outbox solves the dual-write problem by writing the intended external notification within the SAME local transaction as the business data change — both commit together or neither does.',
+    gotchas: [
+      'A separate relay process is still needed to actually publish outbox rows — the pattern guarantees atomicity locally, not end-to-end delivery by itself.',
+      'This "record intent atomically, execute asynchronously" structure generalizes beyond messaging to any local-plus-external-side-effect scenario.',
+    ],
+  },
+  'design-patterns/prototype': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Builder',        route: '/design-patterns/builder' },
+      { label: 'Abstract Factory', route: '/design-patterns/abstract-factory' },
+    ],
+    tip: 'Prototype creates objects by CLONING an existing configured instance rather than constructing from scratch — valuable when construction is expensive and a similar instance already exists.',
+    gotchas: [
+      'Shallow vs deep clone is the critical detail — a shallow clone shares references to nested mutable objects, causing surprising cross-clone mutation.',
+      'Less needed in languages/frameworks with efficient construction and DI — remains valuable when construction is genuinely expensive.',
+    ],
+  },
+  'design-patterns/proxy': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Decorator', route: '/design-patterns/decorator' },
+      { label: 'Facade',    route: '/design-patterns/facade' },
+    ],
+    tip: 'Virtual, protection, and remote proxies all share the same structural idea (implement the same interface, control access) but differ in WHY that control is needed — lazy init, authorization, or network transparency.',
+    gotchas: [
+      'A virtual proxy defers expensive object creation until first actual use — do not confuse this with caching, which is a different concern.',
+      'Choose the specific proxy variant based on the actual reason access needs controlling, not as a generic wrapper habit.',
+    ],
+  },
+  'design-patterns/repository': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Unit of Work',     route: '/design-patterns/unit-of-work' },
+      { label: 'Specification',    route: '/design-patterns/specification' },
+      { label: 'Dependency Inversion', route: '/design-patterns/dependency-inversion' },
+    ],
+    tip: 'Repository presents a collection-like interface over persistence, hiding the actual storage technology — this is what makes business logic testable with an in-memory fake instead of a real database.',
+    gotchas: [
+      'A "leaky" Repository exposing IQueryable directly defeats the abstraction, coupling callers to the specific query engine.',
+      'Repository should generally operate at the AGGREGATE level, not per individual entity or table.',
+    ],
+  },
+  'design-patterns/saga': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Outbox',        route: '/design-patterns/outbox' },
+      { label: 'Event Sourcing', route: '/design-patterns/event-sourcing' },
+      { label: 'CQRS',          route: '/design-patterns/cqrs' },
+    ],
+    tip: 'A Saga coordinates a sequence of local transactions with COMPENSATING transactions for rollback — replacing atomicity a single distributed transaction would provide with an explicit, application-level recovery mechanism.',
+    gotchas: [
+      'Not every operation has a clean compensating action — sending an email cannot be truly "unsent."',
+      'Orchestration (central coordinator) vs choreography (event reactions, no coordinator) trades debuggability against decoupling.',
+    ],
+  },
+  'design-patterns/singleton': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Object Pool', route: '/design-patterns/object-pool' },
+      { label: 'Dependency Inversion', route: '/design-patterns/dependency-inversion' },
+    ],
+    tip: 'A DI container\'s singleton-scoped registration achieves the same "one shared instance" behavior WITHOUT the global static access point — this is why Singleton is often considered an anti-pattern today.',
+    gotchas: [
+      'Global static access makes code depending on it hard to unit test — you cannot easily substitute a test double for getInstance().',
+      'Global mutable state on a Singleton creates hidden coupling between otherwise unrelated parts of a codebase.',
+    ],
+  },
+  'design-patterns/solid': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Dependency Inversion', route: '/design-patterns/dependency-inversion' },
+      { label: 'GRASP',                route: '/design-patterns/grasp' },
+      { label: 'Clean Architecture',   route: '/design-patterns/clean-architecture' },
+    ],
+    tip: 'The five SOLID principles reinforce each other — a class violating Single Responsibility typically also becomes harder to extend without modification, since its entangled responsibilities resist clean extension.',
+    gotchas: [
+      'Dependency Inversion is often what makes the other four practically achievable at scale.',
+      'SOLID principles are heuristics for managing growing complexity, not rules to dogmatically apply to every small, stable class.',
+    ],
+  },
+  'design-patterns/specification': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Repository', route: '/design-patterns/repository' },
+      { label: 'Strategy',   route: '/design-patterns/strategy' },
+    ],
+    tip: 'Specification encapsulates a business rule as a reusable, composable object — And/Or/Not combinators let complex rules be built from simpler, individually-testable pieces.',
+    gotchas: [
+      'The same Specification can filter an in-memory collection and (with more effort) translate into a database query — a powerful reuse benefit with real implementation cost on the query side.',
+      'New rule combinations should ideally be expressed by combining EXISTING specifications rather than writing new bespoke conditionals.',
+    ],
+  },
+  'design-patterns/state': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Strategy',  route: '/design-patterns/strategy' },
+      { label: 'Observer',  route: '/design-patterns/observer' },
+    ],
+    tip: 'State pattern extracts each behavioral mode into its own class — eliminating the sprawling switch-statement-per-method pattern that otherwise scatters one state\'s logic across many methods.',
+    gotchas: [
+      'State transitions become explicit and traceable when centralized in state classes, rather than implicit in scattered conditional checks.',
+      'State vs Strategy: State represents an object\'s self-managed behavioral mode over its lifecycle; Strategy represents an externally-selected algorithm variant.',
+    ],
+  },
+  'design-patterns/strategy': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'State',          route: '/design-patterns/state' },
+      { label: 'Template Method', route: '/design-patterns/template-method' },
+    ],
+    tip: 'Strategy lets an algorithm be swapped at RUNTIME rather than hardcoded — adding a new variant only requires a new class, with zero changes to code that already uses strategies (Open/Closed in action).',
+    gotchas: [
+      'In languages with first-class functions, simple strategies can be plain functions/lambdas — no full class hierarchy required.',
+      'Strategy avoids large conditional blocks that select behavior based on a type flag.',
+    ],
+  },
+  'design-patterns/template-method': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Strategy', route: '/design-patterns/strategy' },
+      { label: 'Factory Method', route: '/design-patterns/factory-method' },
+    ],
+    tip: 'Template Method fixes the algorithm\'s SKELETON in a base class while subclasses override specific steps — the inverse of Strategy, which swaps the whole algorithm via composition instead.',
+    gotchas: [
+      'The "Hollywood Principle" — the base class calls INTO subclass hooks, not the other way around — is Template Method\'s inversion of control.',
+      'Every subclass overriding hooks is implicitly coupled to the base class\'s exact algorithm sequence, a real cost if that skeleton needs to evolve.',
+    ],
+  },
+  'design-patterns/unit-of-work': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Repository', route: '/design-patterns/repository' },
+      { label: 'CQRS',       route: '/design-patterns/cqrs' },
+    ],
+    tip: 'Unit of Work tracks all changes across potentially multiple Repositories and commits them together as one atomic transaction — many ORMs (like Entity Framework\'s DbContext) implement this pattern implicitly.',
+    gotchas: [
+      'Without Unit of Work, independent repository commits risk a partially-applied change set if one operation fails partway.',
+      'Repository abstracts HOW objects persist; Unit of Work coordinates WHEN a batch of changes commits together.',
+    ],
+  },
+  'design-patterns/visitor': {
+    apis: DP_DEFAULT.apis, docs: DP_DEFAULT.docs, resources: DP_DEFAULT.resources,
+    related: [
+      { label: 'Iterator',  route: '/design-patterns/iterator' },
+      { label: 'Composite', route: '/design-patterns/composite' },
+    ],
+    tip: 'Visitor lets you add a new OPERATION over a class hierarchy without modifying those classes — the tradeoff is the inverse of Strategy: new operations are easy, new element types are hard (every visitor needs a new visit method).',
+    gotchas: [
+      'Double dispatch (element.accept(visitor) calling visitor.visit(this)) is what selects the right type-specific method based on BOTH types at once.',
+      'Best for a stable set of element types needing many operations added over time — not for element hierarchies expected to grow frequently.',
+    ],
+  },
 };
 
 @Component({
