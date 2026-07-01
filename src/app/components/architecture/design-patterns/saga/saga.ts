@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'State machine sagas (MassTransit) track which steps are complete and prevent re-execution.',
     ],
   },
+  {
+    heading: 'Saga as Distributed Transaction Management',
+    points: [
+      'A Saga coordinates a sequence of local transactions across multiple services, where each step has a corresponding COMPENSATING transaction that can undo its effect if a later step fails — this replaces the atomicity a single distributed transaction would provide with an explicit, application-level recovery mechanism.',
+      'Because there is no true atomic rollback across services, a Saga provides eventual consistency rather than the immediate atomicity of a local ACID transaction — the system may be temporarily in a partially-completed state while a saga is mid-flight or while compensations are being applied.',
+      'Sagas can be implemented via orchestration (a central coordinator explicitly directing each step) or choreography (each service reacting to events from others with no central coordinator) — the choice affects debuggability, coupling, and how easy it is to add new steps to the saga later.',
+      'Designing genuinely reliable compensating transactions is often the hardest part of implementing a Saga — not every operation has a clean, safe undo (sending an email cannot be truly "unsent"), which requires careful saga step ordering and sometimes accepting that certain steps simply cannot be compensated after the fact.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

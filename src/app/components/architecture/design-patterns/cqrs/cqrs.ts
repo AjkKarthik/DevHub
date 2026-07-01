@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Pipeline behaviours (IPipelineBehavior<T>) add cross-cutting concerns: validation, logging, auth.',
     ],
   },
+  {
+    heading: 'CQRS as a Pattern, Not an All-or-Nothing Architecture',
+    points: [
+      'CQRS (splitting command/write operations from query/read operations into separate models) can be applied at different granularities — from a lightweight convention of separate Command and Query classes within a single shared database, up to fully separate read and write data stores.',
+      'Lightweight CQRS (separate command/query handler classes, same underlying database) captures much of the pattern\'s organizational clarity benefit with far less operational complexity than a fully separated architecture — a pragmatic middle ground many teams find sufficient.',
+      'Full CQRS with separate read/write stores introduces eventual consistency between them — a write may not be immediately visible in the read model, which the application and UI must explicitly account for (e.g., optimistic UI updates) rather than assuming synchronous read-after-write consistency.',
+      'Applying full CQRS uniformly across an entire application, including simple CRUD screens with no genuine read/write complexity divergence, adds unnecessary architectural overhead — the pattern earns its complexity specifically for use cases where read and write models genuinely need to differ.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

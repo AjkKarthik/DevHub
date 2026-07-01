@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Console class: Facade over Win32/Unix terminal APIs.',
     ],
   },
+  {
+    heading: 'Facade vs. Adapter — Different Intents, Similar Shape',
+    points: [
+      'Both Facade and Adapter wrap other code behind a simpler interface, which is why they are sometimes confused — but their INTENT differs: Adapter makes an incompatible interface compatible with what a client expects, while Facade simplifies a complex subsystem\'s interface without necessarily any incompatibility to resolve.',
+      'A Facade does not need to expose every capability of the underlying subsystem — it deliberately exposes only a simplified subset covering the common use cases, while still allowing direct access to the subsystem\'s full interface for callers that genuinely need more granular control.',
+      'Facade reduces coupling between client code and a subsystem\'s internal structure — client code depends only on the Facade\'s stable, simple interface, insulating it from internal subsystem changes as long as the Facade\'s own interface remains stable.',
+      'A Facade should remain a thin coordination layer — if a Facade accumulates significant business logic of its own rather than simply coordinating calls to the underlying subsystem, it has effectively become a service in its own right, which may or may not be the intended design.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

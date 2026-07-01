@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'In tests: prefer DAMP (Descriptive And Meaningful Phrases) — test independence and clarity are worth some repetition.',
     ],
   },
+  {
+    heading: 'Balancing DRY Against Premature Abstraction',
+    points: [
+      'DRY (Don\'t Repeat Yourself) is often over-applied to superficially similar code that is not actually conceptually the same — two pieces of code that look alike today but represent genuinely different business concepts will likely diverge over time, and prematurely unifying them creates a shared abstraction that must awkwardly branch as they diverge.',
+      'The "rule of three" (wait until a pattern repeats three times before extracting a shared abstraction) is a pragmatic heuristic against premature DRY — two occurrences might be coincidental similarity, while three genuinely suggests an underlying reusable pattern worth abstracting.',
+      'A shared abstraction created too early, before its actual variation points are understood, tends to accumulate special-case branches and flags over time as new requirements reveal that the "shared" logic was not actually as universal as originally assumed — sometimes worse than the duplication it was meant to eliminate.',
+      'DRY should apply to KNOWLEDGE and business rules, not merely to code that happens to look textually similar — two pieces of code that coincidentally have identical logic today but represent different business rules should remain separate, since they are conceptually independent even if currently identical.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

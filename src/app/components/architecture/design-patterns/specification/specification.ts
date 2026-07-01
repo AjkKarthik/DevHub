@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Ardalis.Specification is a popular .NET library with EF Core integration and pagination support.',
     ],
   },
+  {
+    heading: 'Combining Specifications for Composable Business Rules',
+    points: [
+      'The Specification pattern encapsulates a business rule as a reusable, testable object with a single satisfiedBy() (or similar) method — rather than scattering the same conditional logic as inline if-statements across multiple places in the codebase that need to check the same rule.',
+      'Specifications can be combined using logical operators (And, Or, Not) to build complex business rules from simpler, individually-testable pieces — an "IsEligibleForDiscount" specification might combine an "IsLoyalCustomer" specification AND a "HasMinimumOrderValue" specification.',
+      'This composability means new business rule combinations can often be expressed by combining EXISTING specifications, rather than writing new bespoke conditional logic for every new combination of rules a business analyst comes up with.',
+      'The same Specification object can be used both to filter an in-memory collection (checking satisfiedBy() against each item) and to build a database query (translating the specification into a WHERE clause) — a powerful reuse benefit, though implementing the query-translation side adds real complexity beyond the simpler in-memory case.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

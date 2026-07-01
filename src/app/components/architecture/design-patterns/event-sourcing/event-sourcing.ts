@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Snapshots are an optimisation — correctness does not depend on them.',
     ],
   },
+  {
+    heading: 'Event Sourcing and Schema Evolution Over Time',
+    points: [
+      'Because events are stored permanently and replayed to reconstruct state, an event\'s schema effectively becomes immutable once written — changing an event\'s shape retroactively is far harder than changing a traditional database column, since old events in the log were written with the old shape and must still be readable.',
+      'Common strategies for handling event schema evolution include upcasting (transforming old-shaped events into the new shape when read), versioned event types (OrderPlacedV1, OrderPlacedV2 handled explicitly), and weak schemas (using flexible formats like JSON with defensive parsing) — each with different tradeoffs in complexity versus flexibility.',
+      'Event sourcing systems commonly need to support removing sensitive data from historical events (GDPR right-to-erasure) despite events nominally being immutable — techniques like crypto-shredding (encrypting sensitive fields with a per-subject key that can later be deleted) address this tension.',
+      'Teams new to event sourcing often underestimate the long-term cost of schema evolution — a thoughtful initial event design (avoiding overly specific or brittle event shapes) reduces how often painful schema evolution situations arise later in a system\'s lifetime.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

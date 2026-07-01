@@ -56,6 +56,15 @@ const theory: TheoryPoint[] = [
       'Rarely used in modern code; DI containers solve the same problem more cleanly.',
     ],
   },
+  {
+    heading: 'Why Singleton Is Often Considered an Anti-Pattern Today',
+    points: [
+      'Singleton\'s global, static access point makes code depending on it hard to test in isolation — unit tests cannot easily substitute a test double for a hardcoded Singleton.getInstance() call the way they can for a dependency explicitly passed in through a constructor.',
+      'Modern dependency injection containers achieve the same "single shared instance" behavior (via singleton-scoped registration) WITHOUT the global static access point — the object is still created once and shared, but consuming code receives it through injection rather than reaching out to a global accessor, preserving testability.',
+      'Singleton\'s global mutable state (if the singleton has any mutable state) creates hidden coupling between otherwise unrelated parts of a codebase that all interact with the same shared instance — changes made by one part of the system silently affect every other part that reads from the same Singleton.',
+      'The pattern still has legitimate, narrow uses (a genuinely single hardware resource, a truly global immutable configuration) — the modern criticism is specifically about defaulting to Singleton as a convenient global-access shortcut rather than reaching for proper dependency injection, not that shared single instances are inherently wrong.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

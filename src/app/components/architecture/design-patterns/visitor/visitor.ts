@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'JSON.NET / System.Text.Json: serialisation visitors that traverse object graphs.',
     ],
   },
+  {
+    heading: 'Visitor Enabling New Operations Without Modifying Existing Classes',
+    points: [
+      'Visitor lets you define a new operation over a set of related classes (a shape hierarchy) WITHOUT modifying those classes themselves — the operation lives in a separate Visitor class, and each element class only needs a single accept(visitor) method to support any number of future visitor operations.',
+      'This is the inverse tradeoff of Strategy or Template Method — Visitor makes adding new OPERATIONS easy (just write a new Visitor) but makes adding new ELEMENT TYPES hard (every existing Visitor implementation needs a new visit method for the new type) — a direct consequence of double dispatch\'s structure.',
+      'Double dispatch (element.accept(visitor) calling visitor.visit(this)) is the mechanism that lets the correct type-specific visit method be selected at runtime based on BOTH the element\'s actual type and the visitor\'s type — something single dispatch (a normal virtual method call) cannot achieve on its own.',
+      'Visitor is most valuable for a stable, rarely-changing set of element types that need many different operations added over time (a fixed AST node hierarchy needing a type-checker, a code formatter, an interpreter) — for element hierarchies expected to grow frequently with new types, Visitor\'s maintenance cost of updating every visitor implementation can outweigh its benefit.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'The specification pattern (Find(ISpecification<T>)) is the main reason to wrap DbSet in complex domains.',
     ],
   },
+  {
+    heading: 'Repository as a Collection-Like Abstraction Over Persistence',
+    points: [
+      'Repository presents domain/business logic with a collection-like interface (Add, Remove, GetById, Find) for accessing persisted objects, hiding the actual underlying persistence technology (SQL, a document store, an in-memory cache) entirely behind that abstraction.',
+      'This abstraction is what makes business logic testable without a real database — tests can substitute an in-memory Repository implementation, letting business logic tests run fast and in isolation, while a production Repository implementation talks to the real database.',
+      'A common anti-pattern is a "leaky" Repository that exposes query-building details (like exposing an IQueryable directly) to calling code — this defeats the purpose of the abstraction, since callers become coupled to the specific query capabilities of the underlying persistence technology rather than a clean domain-focused interface.',
+      'Repository should generally operate at the AGGREGATE level in DDD terms (one repository per aggregate root, not per individual entity or table) — this keeps the repository\'s interface aligned with genuine transactional/consistency boundaries rather than merely mirroring low-level database table structure.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

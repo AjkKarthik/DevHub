@@ -60,6 +60,15 @@ const theory: TheoryPoint[] = [
       'Protected Variations: identify variation points and wrap them in a stable interface — isolate what changes.',
     ],
   },
+  {
+    heading: 'GRASP as Principles Underlying Many Named Patterns',
+    points: [
+      'GRASP (General Responsibility Assignment Software Patterns) principles like Information Expert (assign a responsibility to the class that has the information needed to fulfill it) are lower-level design guidelines that many of the classic Gang of Four patterns implicitly follow, even though GRASP itself predates and is more general than those specific patterns.',
+      'Information Expert answers a foundational OOP question — "which class should have this method?" — by favoring the class that already holds the relevant data, reducing the need for other classes to expose their internal state just so external logic can operate on it.',
+      'Low Coupling and High Cohesion (two other core GRASP principles) are the underlying justifications for WHY patterns like Facade, Mediator, and Observer are considered good design — those patterns are essentially named, reusable applications of reducing coupling or increasing cohesion in specific recurring situations.',
+      'Understanding GRASP principles helps evaluate whether a specific named pattern is genuinely the right fit for a given situation, or whether applying it would actually increase coupling or reduce cohesion — the principles provide the underlying "why," while named patterns provide the specific "how."',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

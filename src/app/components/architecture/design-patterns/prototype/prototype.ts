@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Array.Copy(), List<T> copy constructor, and JSON serialization round-trip are common deep-copy techniques.',
     ],
   },
+  {
+    heading: 'Prototype for Cloning Instead of Reconstructing',
+    points: [
+      'Prototype creates new objects by CLONING an existing, fully-configured instance rather than constructing a new one from scratch — valuable when object construction is expensive (involves complex setup, database calls) but a similar already-configured instance exists that can simply be copied and slightly modified.',
+      'The critical implementation detail is choosing between shallow and deep cloning — a shallow clone copies top-level fields but shares references to nested mutable objects, meaning a change to a nested object in the clone would unexpectedly also affect the original, unless a deep clone is used instead.',
+      'Prototype avoids coupling client code to a specific concrete class needed for direct instantiation (via new SomeSpecificClass()) — client code can clone whatever prototype instance it currently has, without needing to know that instance\'s exact concrete type, useful when working through an abstraction/interface.',
+      'This pattern is less commonly needed in languages and frameworks with efficient built-in object construction and dependency injection — it remains genuinely valuable specifically when object creation is expensive AND a suitably pre-configured prototype instance is readily available to clone from.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

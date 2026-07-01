@@ -56,6 +56,15 @@ const theory: TheoryPoint[] = [
       'System.Text.Json / Newtonsoft: snapshot-to-JSON and restore-from-JSON is Memento via serialisation.',
     ],
   },
+  {
+    heading: 'Memento Preserving Encapsulation While Enabling Undo',
+    points: [
+      'A naive undo implementation might expose an object\'s internal state publicly so external code can save and restore it — this breaks encapsulation, since internal state that should be private becomes part of the object\'s public contract just to support undo functionality.',
+      'Memento solves this by having the Originator (the object whose state needs saving) create an opaque Memento object containing a snapshot of its own state — external code (the Caretaker) stores this Memento without ever being able to inspect or modify its contents, preserving the Originator\'s encapsulation.',
+      'The Caretaker\'s responsibility is limited to storing and later returning Mementos to the Originator for restoration — it never interprets or manipulates the Memento\'s internal contents, which is what distinguishes this pattern from simply exposing and externally manipulating an object\'s raw state.',
+      'Memento can have real memory implications if snapshots are large or numerous (deep copying complex object graphs for every undo step) — production undo implementations often use more memory-efficient techniques (storing diffs/deltas rather than full snapshots) once naive Memento becomes a genuine memory concern.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

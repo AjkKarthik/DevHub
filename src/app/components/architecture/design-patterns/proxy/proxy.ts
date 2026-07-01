@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Castle DynamicProxy / DispatchProxy: runtime-generated proxies for AOP (logging, auth).',
     ],
   },
+  {
+    heading: 'Proxy Variants and Their Distinct Purposes',
+    points: [
+      'A virtual proxy defers expensive object creation until it is actually needed (lazy loading a large image only when it is about to be displayed) — the proxy implements the same interface as the real object, but internally delays creating the real, expensive object until the first actual use.',
+      'A protection proxy adds access control checks before delegating to the real object — verifying the caller has permission to perform an operation before forwarding the call, centralizing authorization logic at the proxy layer rather than scattering permission checks throughout the real object\'s implementation.',
+      'A remote proxy represents an object that actually lives in a different process or machine, handling the network communication transparently — calling code interacts with the proxy as if the object were local, while the proxy handles serialization and network calls behind the scenes.',
+      'All Proxy variants share the same core structural idea — implementing the same interface as the real subject and controlling access to it — but differ in WHY that control is needed (lazy initialization, access control, remote communication, caching), which is what distinguishes the specific proxy variant appropriate for a given situation.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

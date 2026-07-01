@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'SignalR: server-side hub pushes to all subscribed clients — Observer over network.',
     ],
   },
+  {
+    heading: 'Push vs. Pull Observer Notification Models',
+    points: [
+      'In the push model, the subject sends the full changed data directly to observers in the notification call — simple and immediate, but couples the subject to knowing exactly what data every observer might need, even if different observers only care about different subsets of that data.',
+      'In the pull model, the subject notifies observers that SOMETHING changed without specifying what, and each observer independently queries the subject for whatever specific data it actually needs — more flexible and decoupled, at the cost of an extra round-trip call back to the subject for each observer.',
+      'Choosing between them is a real design tradeoff — push is simpler and lower-latency for small, uniform notification payloads, while pull scales better when different observers need genuinely different subsets of data, avoiding wastefully sending data no particular observer actually needs.',
+      'Observer with many subscribers and frequent notifications can create real performance concerns — poorly managed observer lists (subscribers that forget to unsubscribe) are also a classic source of memory leaks, since the subject holds a reference to every subscribed observer, preventing them from being garbage collected.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

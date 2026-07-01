@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'ASP.NET Core Controller: OnActionExecuting/OnActionExecuted hooks are Template Method pattern.',
     ],
   },
+  {
+    heading: 'Template Method Fixing the Algorithm Skeleton, Varying the Steps',
+    points: [
+      'Template Method defines the overall STRUCTURE of an algorithm in a base class method (a fixed sequence of steps), while individual steps are implemented by subclasses overriding specific "hook" methods — the overall sequence and control flow stays fixed and unchangeable by subclasses.',
+      'This is the inverse of Strategy — Template Method uses INHERITANCE to vary specific steps within a fixed algorithm structure, while Strategy uses COMPOSITION to swap an entire algorithm implementation wholesale — the two patterns solve related but structurally different problems.',
+      'The "Hollywood Principle" ("don\'t call us, we\'ll call you") describes Template Method\'s inversion of control — the base class\'s template method calls INTO subclass-overridden hook methods at the appropriate points, rather than subclasses calling into and orchestrating base class logic themselves.',
+      'Template Method can lead to fragile subclass coupling if the base class\'s algorithm skeleton needs to change — every subclass overriding hooks is implicitly coupled to the exact sequence and contract of the base class\'s template method, which is a real maintenance cost if that skeleton needs to evolve over time.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

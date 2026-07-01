@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'IHostedService scheduling: different retry/backoff strategies in Polly.',
     ],
   },
+  {
+    heading: 'Strategy Enabling Runtime Algorithm Selection',
+    points: [
+      'Strategy encapsulates an interchangeable family of algorithms (different sorting algorithms, different pricing calculation rules) behind a common interface, letting the algorithm used by a context object be selected and swapped at RUNTIME, rather than being hardcoded at compile time.',
+      'This pattern directly avoids large conditional blocks that select behavior based on a type flag — instead of an if-else chain choosing which pricing calculation to run, a PricingStrategy object is simply swapped for a different implementation, with the calling code unaware of which specific strategy is active.',
+      'Strategy makes adding a new algorithm variant require only adding a new class implementing the strategy interface, with zero changes to existing code that uses strategies — directly satisfying the Open/Closed Principle, since existing strategy-consuming code never needs modification for a new algorithm to be introduced.',
+      'In languages with first-class functions, simple strategies can often be implemented as plain functions or lambdas passed as parameters, rather than requiring a full class hierarchy — the Strategy pattern\'s core idea (swappable behavior) predates and is broader than any specific object-oriented implementation of it.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

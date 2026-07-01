@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Configure with AddEntityFrameworkOutbox() and UseMessageRetry() for reliable delivery.',
     ],
   },
+  {
+    heading: 'Outbox as a General Solution to the Dual-Write Problem',
+    points: [
+      'The dual-write problem arises whenever a system needs to atomically update a local database AND notify an external system (publish a message, call an external API) — since these are two genuinely separate operations against two separate systems, there is no native distributed transaction spanning both by default.',
+      'The Outbox pattern resolves this by writing the intended external notification (as a row in an "outbox" table) within the SAME local database transaction as the actual business data change — guaranteeing the notification record and the business change either both commit or neither does.',
+      'A separate relay process (polling the outbox table or using change-data-capture) then reads unpublished outbox rows and performs the actual external side effect, decoupling the atomic local write from the reliability of the external system it eventually needs to talk to.',
+      'This pattern generalizes beyond messaging — the same "record the intent atomically, then reliably execute it asynchronously" structure applies to any scenario needing atomicity between a local database change and any external side effect, not exclusively message publishing.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

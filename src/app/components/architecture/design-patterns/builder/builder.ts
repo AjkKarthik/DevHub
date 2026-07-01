@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'EF Core ModelBuilder and EntityTypeBuilder in OnModelCreating() are Director-driven builders.',
     ],
   },
+  {
+    heading: 'Builder vs. Telescoping Constructors',
+    points: [
+      'A "telescoping constructor" anti-pattern offers multiple overloaded constructors with increasing numbers of parameters to handle optional configuration — this becomes unreadable and error-prone once more than a few optional parameters exist, especially when several parameters share the same type.',
+      'The Builder pattern replaces this with a fluent, step-by-step construction API where each optional parameter is set via a clearly-named method call — dramatically improving readability at the call site compared to guessing which positional argument in a long constructor call means what.',
+      'Builder also enables constructing genuinely IMMUTABLE objects with many optional fields — the builder accumulates configuration across multiple calls, then produces a single, fully-formed immutable object via a final build() call, rather than requiring a mutable object with many public setters.',
+      'Modern language features (named parameters, default parameter values in languages that support them) can reduce or eliminate the need for a full Builder pattern for simpler cases — Builder remains most valuable for genuinely complex construction logic involving validation or multi-step assembly, not just optional parameters alone.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

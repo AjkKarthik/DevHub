@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'WPF/MAUI: UIElement is the Component; controls are leaves; panels/grids are composites.',
     ],
   },
+  {
+    heading: 'Uniform Treatment of Leaves and Composites',
+    points: [
+      'Composite\'s core value is letting client code treat individual objects (leaves) and groups of objects (composites) through the SAME interface — a client calling render() on a single Shape or an entire group of Shapes uses identical code, without needing to check which case it is dealing with.',
+      'This uniformity eliminates a whole category of type-checking code ("is this a leaf or a group") that would otherwise be needed at every point client code interacts with the tree structure, significantly simplifying recursive operations over tree-shaped data.',
+      'A common design tension is whether child-management methods (add/remove) should live on the shared Component interface (uniform but meaningless for leaves) or only on the Composite subclass (safer but breaks full uniformity) — this tradeoff between safety and uniformity is a recurring decision when implementing Composite.',
+      'Composite is the natural fit for genuinely tree-shaped domain data (file systems, UI component hierarchies, organizational structures) — applying it to fundamentally flat or non-hierarchical data adds structural complexity without any corresponding benefit.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Game character states: Idle → Running → Jumping → Attacking — each with different physics/animations.',
     ],
   },
+  {
+    heading: 'State Pattern Eliminating Sprawling Conditional Logic',
+    points: [
+      'Without the State pattern, an object with distinct behavioral states (a document that is Draft, InReview, or Published) typically ends up with large conditional blocks (switch statements) scattered across every method, checking the current state before deciding what to do — logic for a single state ends up spread across many methods.',
+      'State pattern instead extracts each state into its own class implementing a common interface, with state-specific behavior living entirely within that state\'s class — all the behavior for the "InReview" state lives in one InReviewState class, rather than being scattered across many if-branches in many methods.',
+      'Transitioning between states becomes explicit — a state class can trigger a transition to a different state object, making state transition logic centralized and traceable, rather than implicit in scattered conditional checks that must all agree on what a valid transition even looks like.',
+      'State pattern is closely related to Strategy structurally (both delegate behavior to a swappable object implementing a common interface) but differs in intent — State represents an object\'s intrinsic, self-managed behavioral mode that changes over its lifecycle, while Strategy represents an externally-selected algorithm variant.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

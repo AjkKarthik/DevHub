@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Notifications: NotificationService bridged to channel implementation (email, SMS, push).',
     ],
   },
+  {
+    heading: 'Bridge vs. Adapter — A Frequently Confused Distinction',
+    points: [
+      'Adapter is applied AFTER the fact, to make two already-existing, independently-designed interfaces work together — Bridge is applied UP FRONT, deliberately designing an abstraction and implementation to vary independently from the very start.',
+      'Bridge\'s core motivation is avoiding a combinatorial class explosion — without it, supporting N abstractions across M implementations naively requires N×M concrete classes, while Bridge decouples them so only N+M classes are needed, each abstraction working with any implementation via the bridge interface.',
+      'This decoupling means new abstractions and new implementations can each be added independently without modifying or duplicating the other side — a Bridge-based shape-rendering system can add a new shape type without touching any existing renderer implementation, and vice versa.',
+      'Bridge is most valuable when BOTH the abstraction and the implementation are genuinely expected to vary and grow independently — applying it preemptively to a stable, unlikely-to-change hierarchy adds unnecessary indirection without a corresponding benefit.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -58,6 +58,15 @@ const theory: TheoryPoint[] = [
       'Cross-platform: one factory per platform producing platform-native UI controls.',
     ],
   },
+  {
+    heading: 'Abstract Factory vs. Simple Factory Method',
+    points: [
+      'Factory Method creates ONE product via a single overridable method — Abstract Factory creates a whole FAMILY of related products through multiple methods on one factory interface, ensuring the products created together are guaranteed to be compatible with each other.',
+      'The compatibility guarantee is the key value of Abstract Factory — a UI toolkit factory producing a Button and a Checkbox together guarantees both come from the same visual theme, preventing a mismatched combination that individually-created products could accidentally produce.',
+      'Adding a new PRODUCT TYPE (a new kind of product across all families) requires modifying the Abstract Factory interface and every concrete factory — a real maintenance cost that grows with the number of families supported, unlike adding a new family, which only requires one new concrete factory class.',
+      'Abstract Factory adds meaningful complexity (an extra interface layer, multiple concrete factory classes) that is only justified when there are genuinely multiple interchangeable families of related products — for a single product type or a single family, this pattern is unnecessary overhead.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'DataAdapter in ADO.NET adapts between DataSet and database-specific commands.',
     ],
   },
+  {
+    heading: 'Object Adapter vs. Class Adapter',
+    points: [
+      'The object adapter (composition-based) wraps an instance of the incompatible interface as a private field and delegates calls to it — this is the more common and flexible approach, since it can adapt any implementation of the target interface, not just a specific one known at compile time.',
+      'The class adapter (inheritance-based) extends the incompatible class directly — only possible in languages supporting multiple inheritance or when the adapter can extend the adaptee, and it locks the adapter to one specific concrete implementation rather than any interface-compatible one.',
+      'Object adapters favor composition over inheritance, aligning with a broader design principle that generally favors flexible, swappable composition relationships over rigid, compile-time-fixed inheritance hierarchies.',
+      'Adapters should be a deliberate, minimal translation layer at an integration boundary — accumulating business logic inside an adapter (beyond simple interface translation) blurs its purpose and makes it harder to reason about compared to keeping translation and business logic cleanly separated.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

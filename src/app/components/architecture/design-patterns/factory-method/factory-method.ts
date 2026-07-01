@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'HttpMessageHandlerFactory in HttpClient infrastructure follows the factory method shape.',
     ],
   },
+  {
+    heading: 'Factory Method as an Application of the Open/Closed Principle',
+    points: [
+      'Factory Method defines a method for creating objects that subclasses can override to change WHICH concrete type is created — this lets new product types be introduced by adding a new subclass, without modifying the existing base class\'s creation logic at all, directly embodying the Open/Closed Principle.',
+      'Without Factory Method, adding a new product type typically requires modifying existing conditional creation logic (an if-else or switch statement choosing which concrete class to instantiate) — every new type requires touching and risking regression in that shared creation code.',
+      'Factory Method is distinct from a simple static factory helper method — Factory Method specifically relies on subclassing/polymorphism to vary the created type, while a static factory method is just a regular method that happens to construct and return an object, without necessarily supporting extension via subclassing.',
+      'The pattern is most valuable when a class hierarchy is genuinely expected to grow with new subtypes over time — for a fixed, unlikely-to-change set of product types, a simpler direct instantiation or a basic factory function is often sufficient without the added indirection of Factory Method\'s subclass-based extension mechanism.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

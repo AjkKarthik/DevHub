@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'This is the only place where DIP is "violated" by design — concrete types must be named somewhere.',
     ],
   },
+  {
+    heading: 'The "Inversion" in Dependency Inversion Principle',
+    points: [
+      'Without DIP, high-level business logic depends directly on low-level implementation details (a business service directly instantiating and calling a concrete SqlDatabase class) — the dependency naturally flows from high-level to low-level, tightly coupling business logic to specific infrastructure choices.',
+      'DIP inverts this default flow — both high-level and low-level modules depend on a shared ABSTRACTION (an interface), with the low-level module implementing that abstraction — the dependency direction is inverted so infrastructure depends on an abstraction the business logic defines, not the other way around.',
+      'This inversion is what makes high-level business logic genuinely independent of specific infrastructure choices — swapping SqlDatabase for a different implementation requires no changes to business logic, since business logic was never coupled to the concrete class in the first place, only to the abstraction.',
+      'DIP is distinct from simple "dependency injection" (a mechanism for supplying dependencies) — DIP is the underlying DESIGN PRINCIPLE about which direction dependencies should point; dependency injection is one common TECHNIQUE for actually wiring up dependencies that follow DIP\'s inverted direction.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

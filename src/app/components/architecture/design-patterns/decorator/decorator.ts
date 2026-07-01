@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Polly: ResiliencePipeline wrapping HttpMessageHandler with retry, circuit breaker.',
     ],
   },
+  {
+    heading: 'Decorator vs. Inheritance for Adding Behavior',
+    points: [
+      'Subclassing to add behavior creates a new, fixed combination for every desired feature combination (LoggingCoffee, MilkCoffee, LoggingMilkCoffee) — an explosion of subclasses as more optional behaviors are needed, which Decorator avoids by composing behaviors dynamically at runtime instead.',
+      'Decorators wrap an object and implement the SAME interface as the object they wrap, meaning decorators can be stacked in any combination and order (within valid constraints) — a client interacting with a decorated object cannot tell, and generally should not need to care, how many layers of decoration are present.',
+      'Because decoration happens at runtime (not compile time via class hierarchy), which behaviors apply to a given object instance can be decided dynamically — one instance can be decorated with logging and caching, while another otherwise-identical instance has neither, something static inheritance cannot express per-instance.',
+      'Overusing Decorator for behaviors that are actually always needed together (rather than genuinely independently optional) adds unnecessary indirection — the pattern earns its complexity specifically when behaviors need to be mixed and matched flexibly, not applied as a default wrapping mechanism.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

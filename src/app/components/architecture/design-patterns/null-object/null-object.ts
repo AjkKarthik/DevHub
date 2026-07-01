@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Array.Empty<T>(): returns an empty array — a Null Object for collections.',
     ],
   },
+  {
+    heading: 'Null Object Eliminating Defensive Null Checks',
+    points: [
+      'Without Null Object, every caller of a method that might return "nothing" must remember to check for null before using the result — forgetting even one such check anywhere in a codebase risks a null reference exception at runtime, a notoriously common class of bug.',
+      'Null Object replaces the possibility of returning null with returning a real object that implements the expected interface but performs no meaningful action (a NullLogger that silently does nothing when log() is called) — callers can use it exactly like a real object, with no special-case null handling required anywhere.',
+      'This pattern shifts the responsibility for handling the "nothing" case to ONE place (wherever the Null Object is defined) instead of scattering defensive null checks across every call site that might encounter a null result — a meaningful reduction in repeated, error-prone boilerplate.',
+      'Null Object is not universally appropriate — when the ABSENCE of a value is itself meaningful information the caller genuinely needs to detect and react to (not just safely ignore), an explicit Optional/Maybe type or an actual null check communicates that absence more honestly than silently substituting a no-op object.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

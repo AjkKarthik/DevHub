@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'SqlConnection pooling is automatic in ADO.NET — the pool is managed by the provider, not you.',
     ],
   },
+  {
+    heading: 'Object Pool for Expensive-to-Create, Reusable Resources',
+    points: [
+      'Object Pool maintains a set of pre-created, reusable objects (database connections, thread pool workers) that are checked out for use and returned when finished, avoiding the repeated cost of creating and destroying genuinely expensive objects on every use.',
+      'This pattern is only worth its added complexity when object creation is GENUINELY expensive relative to how often objects are needed — pooling cheap-to-create objects (like simple value objects) adds unnecessary bookkeeping overhead without any meaningful performance benefit.',
+      'Pooled objects must be properly reset to a clean, safe state before being reused — failing to reset internal state between uses (leftover data from a previous user of a pooled connection or buffer) is a common and serious source of bugs, since the object appears "fresh" but silently carries residual state.',
+      'Modern managed-memory languages (with generational garbage collectors) have made Object Pool less broadly necessary than it once was for general object allocation — the pattern remains genuinely valuable for specifically expensive, external resources like database connections or network sockets, rather than as a default optimization for ordinary object creation.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [
