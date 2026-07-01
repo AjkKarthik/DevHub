@@ -287,7 +287,7 @@ export class HubHome implements AfterViewInit, OnDestroy {
       group: 'frontend', name: 'Angular', time: '~20 hrs',
       tagline: 'Modern component framework with signals, routing & reactive forms.',
       icon: '🅰️', gradient: 'linear-gradient(135deg, #c3002f 0%, #7a0019 100%)',
-      textDark: false, route: '/angular', available: true, topics: 63,
+      textDark: false, route: '/angular', available: true, topics: 68,
 
       highlights: [
         '58 hands-on pages with live demos',
