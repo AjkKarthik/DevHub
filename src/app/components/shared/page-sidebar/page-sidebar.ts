@@ -8745,6 +8745,214 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Signing and verifying artifacts (Cosign/Sigstore) addresses tampering risk that dependency scanning alone does not cover.',
     ],
   },
+
+  // ── API Design: per-page entries ────────────────────────────────────────────
+  'api-design/api-design-principles': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'REST Fundamentals',   route: '/api-design/rest-fundamentals' },
+      { label: 'Resource/URL Design', route: '/api-design/resource-url-design' },
+    ],
+    tip: 'A good API design principle is designing for the CONSUMER\'s mental model, not the server\'s internal data structure — an API that mirrors database tables directly tends to leak implementation details and churn as the schema evolves.',
+    gotchas: [
+      'Consistency across endpoints (naming, pagination, error shape) matters more than any single endpoint being individually clever.',
+      'API design decisions are far more expensive to change after external consumers depend on them — get the shape right before wide adoption, not after.',
+    ],
+  },
+  'api-design/rest-fundamentals': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'HTTP Methods & Status Codes', route: '/api-design/http-methods-status-codes' },
+      { label: 'Resource/URL Design',         route: '/api-design/resource-url-design' },
+    ],
+    tip: 'REST is a set of architectural CONSTRAINTS (statelessness, uniform interface, cacheability), not just "an API that uses JSON over HTTP" — many APIs calling themselves RESTful violate statelessness or the uniform interface constraint without realizing it.',
+    gotchas: [
+      'True REST HATEOAS (hypermedia-driven navigation) is rarely fully implemented in practice — most "RESTful" APIs are really pragmatic HTTP+JSON APIs.',
+      'Statelessness means each request must contain all information needed to process it — server-side session state stored between requests violates this constraint.',
+    ],
+  },
+  'api-design/http-methods-status-codes': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'REST Fundamentals',      route: '/api-design/rest-fundamentals' },
+      { label: 'Error Response Design',  route: '/api-design/error-response-design' },
+    ],
+    tip: 'PUT is defined as idempotent (repeating it produces the same result) while POST is not — using PUT for an operation that isn\'t genuinely idempotent (like "increment a counter") violates the HTTP spec\'s semantic contract, even if it happens to "work."',
+    gotchas: [
+      '409 Conflict is frequently misused for validation errors that should be 400 Bad Request — 409 specifically means the request conflicts with the current state of the resource.',
+      'GET requests should never have side effects — a GET that changes state breaks caching, prefetching, and retry-safety assumptions clients rely on.',
+    ],
+  },
+  'api-design/resource-url-design': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'REST Fundamentals',  route: '/api-design/rest-fundamentals' },
+      { label: 'Pagination Patterns', route: '/api-design/pagination-patterns' },
+    ],
+    tip: 'URLs should identify RESOURCES (nouns), not actions (verbs) — /orders/123/cancel breaks this convention; a more RESTful design uses a PATCH or POST to /orders/123 with a status change, keeping the URL resource-centric.',
+    gotchas: [
+      'Deeply nested URLs (/users/1/orders/2/items/3/reviews/4) become unwieldy — consider whether a flatter, filterable structure serves consumers better.',
+      'Consistent pluralization and casing conventions across every endpoint reduce cognitive load for API consumers integrating multiple endpoints.',
+    ],
+  },
+  'api-design/pagination-patterns': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Resource/URL Design', route: '/api-design/resource-url-design' },
+    ],
+    tip: 'Offset-based pagination (page=3&size=20) is simple but breaks under concurrent inserts/deletes — a record can shift pages between requests, causing skipped or duplicated items; cursor-based pagination avoids this by anchoring to a stable position.',
+    gotchas: [
+      'Cursor-based pagination requires a stable sort order (usually including a unique tiebreaker field) to avoid subtly inconsistent ordering across pages.',
+      'Returning the TOTAL count alongside paginated results can be expensive on large tables — consider whether consumers genuinely need it.',
+    ],
+  },
+  'api-design/error-response-design': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'HTTP Methods & Status Codes', route: '/api-design/http-methods-status-codes' },
+    ],
+    tip: 'A consistent error response SHAPE across every endpoint (a stable structure for code, message, and details) lets client-side error handling be written once generically — inconsistent error shapes force every integration to special-case each endpoint.',
+    gotchas: [
+      'Error messages returned to clients should never leak internal details (stack traces, SQL, file paths) that could aid an attacker.',
+      'A machine-readable error CODE (not just a human-readable message) lets clients branch programmatically without fragile string matching.',
+    ],
+  },
+  'api-design/api-versioning': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Breaking Changes', route: '/api-design/breaking-changes' },
+    ],
+    tip: 'URL-path versioning (/v1/, /v2/) is the most explicit and cache-friendly approach; header-based versioning is "cleaner" URL-wise but harder to test manually in a browser and less visible in logs — the tradeoff is discoverability versus URL purity.',
+    gotchas: [
+      'A version that never gets deprecated accumulates indefinitely — a clear deprecation policy and timeline should exist from the FIRST version, not be an afterthought.',
+      'Additive, backward-compatible changes (new optional fields) generally don\'t require a version bump — only breaking changes do.',
+    ],
+  },
+  'api-design/breaking-changes': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'API Versioning',   route: '/api-design/api-versioning' },
+      { label: 'OpenAPI & Contracts', route: '/api-design/openapi-contracts' },
+    ],
+    tip: 'Removing a field, changing a field\'s type, or making an optional field required are all breaking changes — even changes that "should be fine" (tightening validation on an existing field) can break a consumer who was relying on the previous looser behavior.',
+    gotchas: [
+      'A breaking change to a widely-consumed API can be effectively impossible to roll out without a proper deprecation window, regardless of how "small" it seems internally.',
+      'Contract testing against consumer expectations catches breaking changes before they reach production, rather than discovering them from support tickets.',
+    ],
+  },
+  'api-design/openapi-contracts': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Breaking Changes',   route: '/api-design/breaking-changes' },
+      { label: 'REST Fundamentals',  route: '/api-design/rest-fundamentals' },
+    ],
+    tip: 'OpenAPI (formerly Swagger) is a MACHINE-READABLE contract for a REST API — beyond documentation, it enables generating client SDKs, mock servers, and validation middleware automatically from a single source of truth.',
+    gotchas: [
+      'A hand-written OpenAPI spec can drift from the actual implementation over time — generating it FROM code annotations (or validating it against real traffic) keeps it accurate.',
+      'The spec describing an endpoint does not guarantee the implementation actually conforms — contract testing closes this verification gap.',
+    ],
+  },
+  'api-design/rate-limiting': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Webhook Design', route: '/api-design/webhook-design' },
+    ],
+    tip: 'Rate limiting should key on the AUTHENTICATED IDENTITY (API key/user), not just source IP — IPs are trivially rotated (via proxies, mobile networks with shared IPs) making IP-only limiting easy to bypass and prone to false-positive blocking of legitimate shared-IP users.',
+    gotchas: [
+      'Returning a 429 with a Retry-After header lets well-behaved clients back off correctly instead of hammering the API immediately after being limited.',
+      'Token bucket and sliding window are the two dominant rate-limiting algorithms, with different burst-tolerance characteristics worth choosing deliberately.',
+    ],
+  },
+  'api-design/webhook-design': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Rate Limiting', route: '/api-design/rate-limiting' },
+    ],
+    tip: 'Webhooks are inherently at-least-once delivery from the sender\'s side — the RECEIVING endpoint must be idempotent, since network issues or receiver downtime cause the sender to retry the same event, potentially multiple times.',
+    gotchas: [
+      'Signing webhook payloads (HMAC signature in a header) lets receivers verify the request genuinely came from the claimed sender, not a spoofed request.',
+      'A receiver that takes too long to respond can cause the sender to time out and retry, potentially causing duplicate processing if the original request eventually also succeeds.',
+    ],
+  },
+  'api-design/hateoas-hypermedia': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'REST Fundamentals', route: '/api-design/rest-fundamentals' },
+    ],
+    tip: 'HATEOAS (Hypermedia as the Engine of Application State) embeds NAVIGABLE LINKS in API responses, letting clients discover available actions dynamically rather than hardcoding URL construction — the strictest REST constraint, and the least commonly fully implemented in practice.',
+    gotchas: [
+      'Most "RESTful" APIs skip HATEOAS entirely, since it adds real client-side complexity for a benefit (dynamic discoverability) many API consumers don\'t actually need.',
+      'When implemented, hypermedia links can reduce coupling between client and server URL structure, since clients follow links rather than constructing URLs from templates.',
+    ],
+  },
+  'api-design/graphql-fundamentals': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'GraphQL vs REST', route: '/api-design/graphql-vs-rest' },
+    ],
+    tip: 'GraphQL lets a client specify EXACTLY which fields it needs in a single request — solving the over-fetching (too much data) and under-fetching (needing multiple round-trips) problems that plague fixed-shape REST endpoints.',
+    gotchas: [
+      'A naive GraphQL resolver implementation is prone to the N+1 query problem — DataLoader-style batching is required to avoid one database query per resolved field.',
+      'GraphQL\'s single endpoint makes traditional HTTP-level caching (which relies on distinct URLs per resource) much harder than with REST.',
+    ],
+  },
+  'api-design/graphql-vs-rest': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'GraphQL Fundamentals', route: '/api-design/graphql-fundamentals' },
+      { label: 'REST Fundamentals',    route: '/api-design/rest-fundamentals' },
+    ],
+    tip: 'REST\'s resource-oriented, cacheable design suits public APIs and CDN-friendly caching well; GraphQL\'s flexible querying suits complex, evolving client needs (especially mobile apps needing precise data shaping) — the choice should follow actual client diversity, not trend-following.',
+    gotchas: [
+      'GraphQL does not automatically make an API "better" — it trades REST\'s simplicity and cacheability for query flexibility, a real tradeoff, not a strict upgrade.',
+      'Many production systems use both — REST for simple CRUD and public APIs, GraphQL for complex, client-driven aggregation needs.',
+    ],
+  },
+  'api-design/grpc-service-patterns': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'Protocol Buffers',        route: '/api-design/protocol-buffers' },
+      { label: 'gRPC-Web & Transcoding',  route: '/api-design/grpc-web-transcoding' },
+    ],
+    tip: 'gRPC uses HTTP/2 and Protocol Buffers for binary, strongly-typed, high-performance service-to-service communication — a strong fit for internal microservice communication where both client and server are under your control, less suited to public-facing browser-consumed APIs.',
+    gotchas: [
+      'Streaming RPCs (client, server, and bidirectional streaming) are a first-class gRPC feature with no clean REST equivalent.',
+      'gRPC\'s strict typed contracts (via .proto files) catch integration mismatches at compile time that a loosely-typed REST/JSON contract would only surface at runtime.',
+    ],
+  },
+  'api-design/protocol-buffers': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'gRPC Service Patterns', route: '/api-design/grpc-service-patterns' },
+    ],
+    tip: 'Protocol Buffers serialize to a compact BINARY format (versus JSON\'s human-readable text), reducing payload size and parse time significantly — the tradeoff is losing JSON\'s human-readability for debugging without dedicated tooling.',
+    gotchas: [
+      'Field NUMBERS in a .proto file, not field names, determine wire compatibility — renaming a field is safe, but reusing or changing a field number breaks compatibility.',
+      'Adding a new optional field is backward-compatible; removing or renumbering an existing field is not.',
+    ],
+  },
+  'api-design/grpc-web-transcoding': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'gRPC Service Patterns', route: '/api-design/grpc-service-patterns' },
+    ],
+    tip: 'Browsers cannot speak native gRPC (which requires low-level HTTP/2 trailer support browsers don\'t expose) — gRPC-Web requires a proxy to translate between browser-compatible requests and native gRPC, or JSON transcoding to expose a gRPC service as a REST-like JSON API.',
+    gotchas: [
+      'gRPC-Web does not support full bidirectional streaming the way native gRPC does — only a subset of streaming patterns work through the browser proxy.',
+      'JSON transcoding (via a gateway like grpc-gateway) lets REST-only consumers use a gRPC-first backend without them needing any gRPC awareness at all.',
+    ],
+  },
+  'api-design/websockets-sse-polling': {
+    apis: API_DESIGN_DEFAULT.apis, docs: API_DESIGN_DEFAULT.docs, resources: API_DESIGN_DEFAULT.resources,
+    related: [
+      { label: 'REST Fundamentals', route: '/api-design/rest-fundamentals' },
+    ],
+    tip: 'Polling is simple but wastes requests on "nothing changed" responses; Server-Sent Events (SSE) provide efficient one-way server-to-client streaming over plain HTTP; WebSockets provide full bidirectional communication — choose based on whether the client genuinely needs to send data back over the same connection.',
+    gotchas: [
+      'SSE automatically reconnects on connection drop with built-in browser support — WebSockets require hand-rolled reconnection logic.',
+      'WebSockets don\'t work transparently through all corporate proxies/firewalls the way plain HTTP-based SSE does, a real deployment consideration.',
+    ],
+  },
 };
 
 @Component({
