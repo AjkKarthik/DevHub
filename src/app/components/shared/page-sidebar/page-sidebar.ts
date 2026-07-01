@@ -9190,6 +9190,248 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'The value of chaos engineering is in the LEARNING and subsequent fixes, not in the experiment itself — a chaos day that finds no issues and prompts no follow-up work has produced little value.',
     ],
   },
+
+  // ── Redis: per-page entries ─────────────────────────────────────────────────
+  'redis/fundamentals': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Key Commands',    route: '/redis/key-commands' },
+      { label: 'Strings',         route: '/redis/strings' },
+    ],
+    tip: 'Redis is fundamentally single-threaded for command execution — this is precisely WHY individual commands are so fast (no locking overhead), but also why a single slow command (a huge KEYS * or unbounded SORT) blocks every other client until it completes.',
+    gotchas: [
+      'Redis keeps the entire dataset in memory by default — data size is bounded by available RAM, not disk, unlike a traditional database.',
+      'TTL (time-to-live) on keys is Redis\'s built-in expiration mechanism — forgetting to set one on cache entries can silently turn Redis into an ever-growing memory leak.',
+    ],
+  },
+  'redis/installation-setup': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/redis/fundamentals' },
+      { label: 'Security',     route: '/redis/security' },
+    ],
+    tip: 'A default Redis install has NO authentication and binds to all interfaces in some configurations — this combination has led to countless publicly exposed, unsecured Redis instances found by security scanners; requirepass and bind should be set explicitly before any real deployment.',
+    gotchas: [
+      'Redis persistence (RDB/AOF) must be explicitly configured — a default install may lose all data on a restart if persistence isn\'t enabled.',
+      'maxmemory and an eviction policy should be set explicitly — an unbounded Redis instance can consume all available host memory and crash.',
+    ],
+  },
+  'redis/key-commands': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/redis/fundamentals' },
+      { label: 'Strings',      route: '/redis/strings' },
+    ],
+    tip: 'KEYS * blocks the single-threaded server while scanning the ENTIRE keyspace — SCAN provides the same enumeration capability with a cursor-based, non-blocking iteration, making it the production-safe alternative.',
+    gotchas: [
+      'EXPIRE resets a key\'s TTL — calling it repeatedly on the same key with different values can create subtle bugs if the intended behavior was "set once."',
+      'DEL on a very large collection value (a huge list/set) can also block briefly — UNLINK performs the deallocation asynchronously instead.',
+    ],
+  },
+  'redis/strings': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Key Commands', route: '/redis/key-commands' },
+      { label: 'Hashes',       route: '/redis/hashes' },
+    ],
+    tip: 'INCR/DECR are ATOMIC at the server level — safe for concurrent counter updates without a separate read-modify-write cycle in application code, which would otherwise race under concurrent access.',
+    gotchas: [
+      'A Redis string can hold up to 512MB — using it to store a large serialized blob works but loses the ability to operate on individual fields the way a Hash would allow.',
+      'SETNX (or SET with NX) is the building block for a simple distributed lock — but a naive implementation without an expiry risks a permanently stuck lock if the lock holder crashes.',
+    ],
+  },
+  'redis/lists': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sets',   route: '/redis/sets' },
+      { label: 'Streams', route: '/redis/streams' },
+    ],
+    tip: 'LPUSH/RPUSH plus BLPOP/BRPOP turn a Redis List into a simple, effective work queue — BLPOP blocks until an item is available, avoiding the wasted polling overhead of repeatedly calling LPOP on an empty list.',
+    gotchas: [
+      'Lists are ordered but operations at arbitrary positions (LINDEX, LINSERT) are O(n) — Lists are efficient at the ends, not for random access in the middle.',
+      'For genuinely reliable queue semantics (avoiding message loss on consumer crash), Streams with consumer groups are usually a better fit than a plain List.',
+    ],
+  },
+  'redis/hashes': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Strings', route: '/redis/strings' },
+    ],
+    tip: 'A Hash lets you store and update individual FIELDS of an object (HSET user:1 name "Alice") without re-serializing and rewriting the entire object — meaningfully more efficient than storing a JSON blob as a String when only one field changes.',
+    gotchas: [
+      'HGETALL on a very large hash transfers the entire hash in one response — HSCAN provides cursor-based iteration for large hashes.',
+      'There is no native TTL per individual hash field — expiration applies to the whole key (the entire hash), not individual fields within it (in most Redis versions).',
+    ],
+  },
+  'redis/sets': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sorted Sets', route: '/redis/sorted-sets' },
+      { label: 'Lists',       route: '/redis/lists' },
+    ],
+    tip: 'SINTER, SUNION, and SDIFF perform set operations (intersection, union, difference) SERVER-SIDE in one round trip — computing the same operations by pulling data client-side and comparing in application code is both slower and more network-chatty.',
+    gotchas: [
+      'A Set has no ordering — if insertion or ranking order matters, a Sorted Set (not a plain Set) is the correct structure.',
+      'SPOP removes and returns a RANDOM member — useful for random sampling, but easy to misuse if deterministic ordering was actually needed.',
+    ],
+  },
+  'redis/sorted-sets': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Sets', route: '/redis/sets' },
+    ],
+    tip: 'A Sorted Set maintains members ordered by a SCORE with O(log n) insertion and range queries — the standard structure for leaderboards, priority queues, and time-windowed rate limiting where ranked or ranged access matters.',
+    gotchas: [
+      'ZRANGEBYSCORE with a very wide range on a large sorted set can still return a huge result — always paginate with LIMIT for user-facing leaderboard queries.',
+      'Updating a member\'s score with ZADD (without NX/XX flags) implicitly re-sorts it — repeated updates to the same key at high frequency have real overhead.',
+    ],
+  },
+  'redis/streams': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Pub/Sub', route: '/redis/pub-sub' },
+      { label: 'Lists',   route: '/redis/lists' },
+    ],
+    tip: 'Redis Streams provide PERSISTENT, replayable message logs with consumer groups — unlike Pub/Sub, a consumer that was offline when a message was published can still read it later, since Streams retain messages rather than firing-and-forgetting.',
+    gotchas: [
+      'XACK is required to acknowledge processed messages in a consumer group — unacknowledged messages remain in the Pending Entries List and can be reclaimed by another consumer.',
+      'Streams need explicit trimming (XTRIM or MAXLEN) or they grow unbounded, unlike Pub/Sub which has no persistence to manage at all.',
+    ],
+  },
+  'redis/pub-sub': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Streams', route: '/redis/streams' },
+    ],
+    tip: 'Redis Pub/Sub is fire-and-forget with NO persistence — a subscriber that is offline or slow simply misses messages published during that time, with no way to catch up, unlike Streams which retain a replayable log.',
+    gotchas: [
+      'Pub/Sub is appropriate for ephemeral, real-time-only signals (like invalidation notifications) where missing a message occasionally is acceptable — not for anything requiring delivery guarantees.',
+      'A slow subscriber can be disconnected by Redis (client-output-buffer-limit) if it can\'t keep up with the message rate.',
+    ],
+  },
+  'redis/transactions': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Lua Scripting', route: '/redis/lua-scripting' },
+    ],
+    tip: 'MULTI/EXEC queues commands and executes them as one atomic block — but Redis transactions do NOT support rollback on a runtime error within a queued command; a syntax error is caught at queue time, but a logic error only surfaces during EXEC.',
+    gotchas: [
+      'WATCH provides optimistic locking (abort the transaction if a watched key changed) — without it, MULTI/EXEC alone doesn\'t prevent race conditions on values read before the transaction started.',
+      'For genuinely complex conditional logic, a Lua script (atomic by nature, since Redis is single-threaded) is often a cleaner fit than MULTI/EXEC with WATCH.',
+    ],
+  },
+  'redis/lua-scripting': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Transactions', route: '/redis/transactions' },
+    ],
+    tip: 'A Lua script executed via EVAL runs ATOMICALLY — no other client\'s commands can interleave during its execution, making it the standard way to implement complex conditional logic (check-then-act patterns) that MULTI/EXEC alone cannot express as cleanly.',
+    gotchas: [
+      'A long-running Lua script blocks the entire single-threaded server for its duration — scripts should be kept fast and simple, not used for heavy computation.',
+      'Script caching (EVALSHA after the first EVAL) avoids re-transmitting the full script body on every subsequent invocation.',
+    ],
+  },
+  'redis/eviction-policies': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Caching Patterns', route: '/redis/caching-patterns' },
+    ],
+    tip: 'When maxmemory is reached, the eviction policy (allkeys-lru, volatile-lru, noeviction, etc.) determines what happens next — noeviction (the default) simply REJECTS new writes with an error once memory is full, which is rarely what a cache deployment actually wants.',
+    gotchas: [
+      'volatile-* policies only evict keys that HAVE a TTL set — keys without a TTL are never evicted under these policies, potentially leaving a cache full of permanent keys with no room for new entries.',
+      'LRU (least recently used) is approximated, not exact, in Redis for performance reasons — don\'t assume perfectly precise LRU ordering.',
+    ],
+  },
+  'redis/caching-patterns': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Eviction Policies', route: '/redis/eviction-policies' },
+      { label: 'Rate Limiting',     route: '/redis/rate-limiting' },
+    ],
+    tip: 'Cache-aside (application checks cache, falls back to DB and populates cache on miss) is the most common pattern — but a cache stampede (many concurrent misses for the same expired key hitting the DB simultaneously) requires an explicit mitigation like locking or early refresh.',
+    gotchas: [
+      'Cache invalidation on writes must be deliberate — a cache-aside pattern that forgets to invalidate on update serves stale data indefinitely until the TTL naturally expires.',
+      'Setting a random JITTER on TTLs prevents many keys expiring simultaneously (a "thundering herd" against the backing database).',
+    ],
+  },
+  'redis/rate-limiting': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Caching Patterns', route: '/redis/caching-patterns' },
+    ],
+    tip: 'A sliding-window rate limiter implemented with a Sorted Set (scored by timestamp) gives more accurate limiting than a simple fixed-window counter, which allows a burst of 2x the limit right at a window boundary.',
+    gotchas: [
+      'Redis\'s atomicity (via Lua scripting or MULTI/EXEC) is essential for a correct rate limiter — a naive read-then-write in application code races under concurrent requests.',
+      'A fixed-window counter is simpler to implement and reason about, and often "good enough" — reach for sliding-window only when the boundary-burst behavior genuinely matters.',
+    ],
+  },
+  'redis/replication-sentinel': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Redis Cluster',  route: '/redis/redis-cluster' },
+      { label: 'Persistence',    route: '/redis/persistence' },
+    ],
+    tip: 'Redis replication is ASYNCHRONOUS by default — a write acknowledged by the primary may not yet have reached the replica, meaning a failover to that replica can lose the most recent writes (a real consistency tradeoff, not a bug).',
+    gotchas: [
+      'Sentinel provides automatic failover detection and promotion, but requires a QUORUM of Sentinel instances (typically 3+) to reliably distinguish a real primary failure from a network partition.',
+      'Replicas are read-only by default — writing directly to a replica requires explicitly enabling it, which usually indicates a design that should instead write to the primary.',
+    ],
+  },
+  'redis/redis-cluster': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sentinel', route: '/redis/replication-sentinel' },
+    ],
+    tip: 'Redis Cluster shards data across multiple nodes using hash slots (16384 total) — multi-key operations (like MGET across keys on different slots) fail unless all involved keys hash to the SAME slot, typically enforced via hash tags ({user123}.profile).',
+    gotchas: [
+      'A poorly distributed hash-tag scheme can create hot shards, just like a poor partition key in any sharded system.',
+      'Cluster mode changes client behavior significantly (MOVED/ASK redirections) — most client libraries handle this, but it is a meaningfully different operational model than a single-node or replicated setup.',
+    ],
+  },
+  'redis/persistence': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Replication & Sentinel', route: '/redis/replication-sentinel' },
+    ],
+    tip: 'RDB (periodic point-in-time snapshots) is compact and fast to load but can lose data since the last snapshot; AOF (append-only log of every write) offers stronger durability at the cost of larger files and slower restarts — many production setups use both together.',
+    gotchas: [
+      'RDB snapshotting forks the process to write in the background — on a host with limited free memory, this fork can fail or cause memory pressure at exactly the wrong moment.',
+      'AOF rewrite (compacting the log) still requires enough disk space for both the old and new file during the rewrite process.',
+    ],
+  },
+  'redis/redis-nodejs': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Key Commands', route: '/redis/key-commands' },
+    ],
+    tip: 'Reusing a single Redis client connection (or a small connection pool) across the application lifetime is the correct pattern — creating a new connection per request adds significant per-request overhead and can exhaust the server\'s max client connections under load.',
+    gotchas: [
+      'Node.js Redis clients queue commands during a reconnect by default — understand this buffering behavior before assuming a command either succeeds immediately or fails immediately.',
+      'Pipelining multiple commands (sending them without waiting for each response) meaningfully reduces round-trip overhead for batch operations.',
+    ],
+  },
+  'redis/redis-stack': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Fundamentals', route: '/redis/fundamentals' },
+    ],
+    tip: 'Redis Stack bundles additional modules (RedisJSON, RediSearch, RedisGraph, RedisTimeSeries) on top of core Redis — enabling native JSON document storage and full-text search capabilities that plain Redis data structures cannot express directly.',
+    gotchas: [
+      'These modules are not automatically available in a plain open-source Redis install — Redis Stack (or specific module loading) is required to use JSON/Search commands.',
+      'RediSearch\'s vector similarity search capability has made Redis Stack a viable, lower-latency alternative to a dedicated vector database for some RAG use cases.',
+    ],
+  },
+  'redis/security': {
+    apis: REDIS_DEFAULT.apis, docs: REDIS_DEFAULT.docs, resources: REDIS_DEFAULT.resources,
+    related: [
+      { label: 'Installation & Setup', route: '/redis/installation-setup' },
+    ],
+    tip: 'ACLs (Redis 6+) let you restrict a user to specific commands and key patterns — before ACLs, requirepass provided only a single shared password with full access, meaning any authenticated client could run any command including FLUSHALL.',
+    gotchas: [
+      'Renaming or disabling genuinely dangerous commands (FLUSHALL, CONFIG, KEYS) in production reduces the blast radius of a compromised or misused client.',
+      'TLS support must be explicitly enabled and configured — Redis connections are unencrypted by default, a real risk for traffic crossing untrusted networks.',
+    ],
+  },
 };
 
 @Component({
