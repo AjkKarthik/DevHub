@@ -11,6 +11,7 @@ export interface SearchEntry {
 
 export const SEARCH_INDEX: SearchEntry[] = [
   { route: 'counter',            title: 'Signals & State',          section: 'Core',        difficulty: 'beginner',     keywords: 'signal computed effect toSignal writableSignal reactive state management counter cart model' },
+  { route: 'counter/what-is-a-signal', title: 'What Is a Signal?',  section: 'Core',        difficulty: 'beginner',     keywords: 'signal basics zero to hero what is a signal reading writing set update introduction beginner' },
   { route: 'templates',          title: 'Template Syntax',          section: 'Core',        difficulty: 'beginner',     keywords: 'interpolation binding ngModel event two-way property template syntax' },
   { route: 'directives',         title: 'Directives',               section: 'Core',        difficulty: 'beginner',     keywords: 'ngClass ngStyle attribute structural directive hostListener hostBinding custom' },
   { route: 'lifecycle',          title: 'Lifecycle Hooks',          section: 'Core',        difficulty: 'beginner',     keywords: 'ngOnInit ngOnDestroy ngOnChanges ngAfterViewInit afterNextRender effect destroyRef' },

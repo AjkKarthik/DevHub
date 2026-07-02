@@ -804,6 +804,28 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Signals & State › subtopics (Phase 10) ─────────────────────────────────
+  'counter/what-is-a-signal': {
+    apis: ['signal()', '.set()', '.update()'],
+    related: [
+      { label: 'Signals & State (overview)', route: '/angular/counter' },
+      { label: 'computed() — next subtopic',  route: '/angular/counter/computed' },
+    ],
+    tip: 'Forgot the parentheses? {{ count }} without () is the single most common first-week signals bug — the template just silently never updates.',
+    docs: [
+      { label: 'Signals Overview',      url: 'https://angular.dev/guide/signals'         },
+      { label: 'signal() API',          url: 'https://angular.dev/api/core/signal'       },
+    ],
+    resources: [
+      { label: 'Angular — YouTube',     url: 'https://www.youtube.com/@Angular',          badge: 'video' },
+    ],
+    gotchas: [
+      'count() called inside a template, computed(), or effect() registers a dependency — called anywhere else it is just a normal read.',
+      'set() replaces the value outright; update() derives it from the current value — reach for update() whenever the new value depends on the old one.',
+      'Mutating an object or array in place (e.g. .push()) without replacing the reference is a silent no-op — signals compare by reference/equality, not deep content.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

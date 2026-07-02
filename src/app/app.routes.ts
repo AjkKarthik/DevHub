@@ -9,7 +9,10 @@ export const routes: Routes = [
     path: 'angular',
     children: [
       { path: '', loadComponent: () => import('./components/angular/home/home').then(m => m.Home) },
-      { path: 'counter',            loadComponent: () => import('./components/angular/counter/counter').then(m => m.Counter) },
+      { path: 'counter', children: [
+        { path: '',                    loadComponent: () => import('./components/angular/counter/counter').then(m => m.Counter) },
+        { path: 'what-is-a-signal',    loadComponent: () => import('./components/angular/counter/subtopics/what-is-a-signal/what-is-a-signal').then(m => m.WhatIsASignal) },
+      ] },
       { path: 'todo',               canActivate: [authGuard], loadComponent: () => import('./components/angular/todo/todo').then(m => m.TodoComponent) },
       { path: 'forms',              loadComponent: () => import('./components/angular/forms-demo/forms-demo').then(m => m.FormsDemo) },
       { path: 'http',               loadComponent: () => import('./components/angular/http-demo/http-demo').then(m => m.HttpDemo) },

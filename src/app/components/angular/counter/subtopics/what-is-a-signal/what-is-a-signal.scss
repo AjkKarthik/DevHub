@@ -1,0 +1,21 @@
+.subtopic-eyebrow {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text3, #6b7280);
+  margin-bottom: 1rem;
+
+  a {
+    color: var(--text3, #6b7280);
+    text-decoration: none;
+    &:hover { color: #dd0031; }
+  }
+}
+
+.subtopic-eyebrow-sep {
+  margin: 0 .4rem;
+  opacity: .6;
+}
+
+:host-context(body.dark) {
+  .subtopic-eyebrow a:hover { color: #ff5a76; }
+}

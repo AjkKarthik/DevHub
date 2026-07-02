@@ -38,6 +38,16 @@ const DIFF: Record<string, string> = Object.fromEntries(
   SEARCH_INDEX.map(e => [e.route, e.difficulty])
 );
 
+// Phase 10 — subtopic pages, keyed by parent topic route slug (e.g. 'counter').
+// Populated incrementally as subtopic pages are built; topics without an
+// entry here simply render no nested list (no forced empty expand arrow).
+interface SubtopicNavEntry { label: string; route: string; }
+const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
+  counter: [
+    { label: 'What Is a Signal?', route: '/angular/counter/what-is-a-signal' },
+  ],
+};
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, BreadcrumbComponent,
@@ -129,13 +139,49 @@ export class App {
 
   diff(route: string) { return DIFF[route] ?? null; }
 
+  subtopicsOf(routeSlug: string): SubtopicNavEntry[] | null {
+    return SUBTOPICS[routeSlug] ?? null;
+  }
+
+  // Phase 10 — subtopics list per topic collapses by default; expand state
+  // does not persist across reloads (a fresh page load always starts collapsed).
+  private expandedTopics = signal<Set<string>>(new Set());
+
+  isSubtopicsExpanded(routeSlug: string): boolean {
+    return this.expandedTopics().has(routeSlug);
+  }
+
+  toggleSubtopics(routeSlug: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const next = new Set(this.expandedTopics());
+    next.has(routeSlug) ? next.delete(routeSlug) : next.add(routeSlug);
+    this.expandedTopics.set(next);
+  }
+
   constructor() {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(() => {
         if (isPlatformBrowser(this.platform) && window.innerWidth < 769) {
           this.navOpen.set(false);
         }
+        this.autoExpandForCurrentUrl();
       });
+    this.autoExpandForCurrentUrl();
+  }
+
+  // Auto-expand a topic's subtopics accordion when landing directly on one of
+  // its subtopic pages (bookmark, prev/next pager, refresh) — otherwise the
+  // active link would be hidden inside a collapsed accordion with no clue
+  // where in the nav tree the reader actually is.
+  private autoExpandForCurrentUrl(): void {
+    const url = this.router.url.split('?')[0];
+    for (const [topicSlug, subs] of Object.entries(SUBTOPICS)) {
+      if (subs.some(s => s.route === url)) {
+        this.expandedTopics.update(set => new Set(set).add(topicSlug));
+        break;
+      }
+    }
   }
 
   @HostListener('document:keydown.escape')

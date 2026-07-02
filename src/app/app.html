@@ -1086,7 +1086,22 @@
         <span class="nl-text">Signals &amp; State</span>
         @if (progress.isDone('counter')) {<span class="nl-done">✓</span>}
         @if (diff('counter'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('counter')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('counter')"
+                  (click)="toggleSubtopics('counter', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('counter'); as subs) {
+        @if (isSubtopicsExpanded('counter')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/templates" routerLinkActive="active">
         <span class="nl-text">Template Syntax</span>
         @if (progress.isDone('templates')) {<span class="nl-done">✓</span>}

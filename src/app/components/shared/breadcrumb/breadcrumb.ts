@@ -6,6 +6,7 @@ import { filter, map, startWith } from 'rxjs';
 const ROUTE_LABELS: Record<string, string> = {
   '':                   'Home',
   'counter':            'Signals & State',
+  'what-is-a-signal':   'What Is a Signal?',
   'templates':          'Template Syntax',
   'directives':         'Directives',
   'lifecycle':          'Lifecycle Hooks',
@@ -1095,6 +1096,10 @@ const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
             <span class="bc-current">{{ techSection()!.label }}</span>
           }
         }
+        @if (segments().length > 2) {
+          <span class="bc-sep">›</span>
+          <a [routerLink]="parentTopicRoute()" class="bc-section-link">{{ parentTopicLabel() }}</a>
+        }
         @if (segments().length > 1) {
           <span class="bc-sep">›</span>
           <span class="bc-current">{{ pageLabel() }}</span>
@@ -1155,44 +1160,60 @@ export class BreadcrumbComponent {
     return segs.length > 0 ? (TECH_SECTIONS[segs[0]] ?? null) : null;
   };
 
+  /** Middle crumb for subtopic-depth routes: /hub/topic/subtopic → links to /hub/topic. */
+  parentTopicRoute = () => {
+    const segs = this.segments();
+    return '/' + segs[0] + '/' + segs[1];
+  };
+
+  parentTopicLabel = () => {
+    const segs = this.segments();
+    if (segs.length < 3) return '';
+    return this.labelMapFor(segs[0])[segs[1]] ?? segs[1];
+  };
+
   pageLabel = () => {
     const segs = this.segments();
     if (segs.length < 2) return '';
     const key = segs[segs.length - 1];
-    const labels = segs[0] === 'csharp'       ? CSHARP_LABELS
-                 : segs[0] === 'aspnet'       ? ASPNET_LABELS
-                 : segs[0] === 'sql'          ? SQL_LABELS
-                 : segs[0] === 'typescript'   ? TYPESCRIPT_LABELS
-                 : segs[0] === 'react'        ? REACT_LABELS
-                 : segs[0] === 'javascript'   ? JAVASCRIPT_LABELS
-                 : segs[0] === 'html'         ? HTML_LABELS
-                 : segs[0] === 'css'          ? CSS_LABELS
-                 : segs[0] === 'performance'  ? PERFORMANCE_LABELS
-                 : segs[0] === 'blazor'       ? BLAZOR_LABELS
-                 : segs[0] === 'node'         ? NODE_LABELS
-                 : segs[0] === 'python'       ? PYTHON_LABELS
-                 : segs[0] === 'go'           ? GO_LABELS
-                 : segs[0] === 'devops'       ? DEVOPS_LABELS
-                 : segs[0] === 'containers'   ? CONTAINERS_LABELS
-                 : segs[0] === 'aws'          ? AWS_LABELS
-                 : segs[0] === 'azure'        ? AZURE_LABELS
-                 : segs[0] === 'linux'        ? LINUX_LABELS
-                 : segs[0] === 'terraform'    ? TERRAFORM_LABELS
-                 : segs[0] === 'service-mesh'  ? MESH_LABELS
-                 : segs[0] === 'system-design' ? SYSDESIGN_LABELS
-                 : segs[0] === 'arch-patterns'    ? ARCH_LABELS
-                 : segs[0] === 'design-patterns' ? DP_LABELS
-                 : segs[0] === 'security'        ? SECURITY_LABELS
-                 : segs[0] === 'api-design'      ? API_DESIGN_LABELS
-                 : segs[0] === 'observability'   ? OBS_LABELS
-                 : segs[0] === 'mongodb'         ? MONGO_LABELS
-                 : segs[0] === 'redis'           ? REDIS_LABELS
-                 : segs[0] === 'graphql'         ? GQL_LABELS
-                 : segs[0] === 'messaging'       ? MESSAGING_LABELS
-                 : segs[0] === 'testing-hub'    ? TESTING_LABELS
-                 : segs[0] === 'dsa'            ? DSA_LABELS
-                 : segs[0] === 'ai'             ? AI_LABELS
-                 : ROUTE_LABELS;
-    return labels[key] ?? key;
+    return this.labelMapFor(segs[0])[key] ?? key;
   };
+
+  private labelMapFor(hubSlug: string): Record<string, string> {
+    const labels = hubSlug === 'csharp'       ? CSHARP_LABELS
+                 : hubSlug === 'aspnet'       ? ASPNET_LABELS
+                 : hubSlug === 'sql'          ? SQL_LABELS
+                 : hubSlug === 'typescript'   ? TYPESCRIPT_LABELS
+                 : hubSlug === 'react'        ? REACT_LABELS
+                 : hubSlug === 'javascript'   ? JAVASCRIPT_LABELS
+                 : hubSlug === 'html'         ? HTML_LABELS
+                 : hubSlug === 'css'          ? CSS_LABELS
+                 : hubSlug === 'performance'  ? PERFORMANCE_LABELS
+                 : hubSlug === 'blazor'       ? BLAZOR_LABELS
+                 : hubSlug === 'node'         ? NODE_LABELS
+                 : hubSlug === 'python'       ? PYTHON_LABELS
+                 : hubSlug === 'go'           ? GO_LABELS
+                 : hubSlug === 'devops'       ? DEVOPS_LABELS
+                 : hubSlug === 'containers'   ? CONTAINERS_LABELS
+                 : hubSlug === 'aws'          ? AWS_LABELS
+                 : hubSlug === 'azure'        ? AZURE_LABELS
+                 : hubSlug === 'linux'        ? LINUX_LABELS
+                 : hubSlug === 'terraform'    ? TERRAFORM_LABELS
+                 : hubSlug === 'service-mesh'  ? MESH_LABELS
+                 : hubSlug === 'system-design' ? SYSDESIGN_LABELS
+                 : hubSlug === 'arch-patterns'    ? ARCH_LABELS
+                 : hubSlug === 'design-patterns' ? DP_LABELS
+                 : hubSlug === 'security'        ? SECURITY_LABELS
+                 : hubSlug === 'api-design'      ? API_DESIGN_LABELS
+                 : hubSlug === 'observability'   ? OBS_LABELS
+                 : hubSlug === 'mongodb'         ? MONGO_LABELS
+                 : hubSlug === 'redis'           ? REDIS_LABELS
+                 : hubSlug === 'graphql'         ? GQL_LABELS
+                 : hubSlug === 'messaging'       ? MESSAGING_LABELS
+                 : hubSlug === 'testing-hub'    ? TESTING_LABELS
+                 : hubSlug === 'dsa'            ? DSA_LABELS
+                 : hubSlug === 'ai'             ? AI_LABELS
+                 : ROUTE_LABELS;
+    return labels;
+  }
 }

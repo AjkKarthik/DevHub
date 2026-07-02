@@ -72,16 +72,24 @@ Claude does NOT generate content from scratch — Ollama generates, Claude revie
 
 ## Vision
 
-**Goal: zero "coming soon" across all 34 hubs. Every page at full quality standard.**
-Every card on every hub home must link to a real, fully-written topic page.
-Every existing page must meet the enhanced content standard defined in Phase 2.
-Every page — including newly written ones — passes the Phase 9 quality audit checklist.
+**Goal 1 (ACHIEVED 2026-07-02 for the original 34 hubs): zero "coming soon". Every page at full quality standard.**
+Every card on every hub home links to a real, fully-written topic page.
+Every existing page meets the enhanced content standard defined in Phase 2.
+Every page passes the Phase 9 quality audit checklist. See Current State table below.
+Two more hubs were added to scope on 2026-07-03 (Rust, QA Engineering — see Phase 11) and are
+not yet built; Goal 1 still holds as the standard they must eventually meet.
 
-**Total scope:**
-- 751 topic pages to build (across 30 hubs at 0% + 4 partially done hubs)
-- 136 existing topic pages to enhance (Angular 45 + C# 41 + ASP.NET 33 + SQL 17)
-- ~73 practice/reference pages (also need common-mistakes + revision-card where applicable)
-- Estimated sessions: ~140 build sessions + ~136 enhancement sessions (1 page each)
+**Goal 2 (NEW, 2026-07-03 — see Phase 10): DevHub should teach a topic from zero, not just refresh it.**
+The site today is excellent for revision — dense, quiz-heavy topic pages that work well if you
+already half-know the material. It is not yet a place to *learn* a concept for the first time.
+Phase 10 adds a second content tier — subtopic pages — that break each existing topic into its
+component concepts and teach each one in depth, interactively, assuming zero prior knowledge of
+that specific concept. See Phase 10 for the full plan.
+
+**Total scope (Goal 1, historical):**
+- 751 topic pages built (across 30 hubs at 0% + 4 partially done hubs)
+- 136 existing topic pages enhanced (Angular 45 + C# 41 + ASP.NET 33 + SQL 17)
+- ~73 practice/reference pages (common-mistakes + revision-card where applicable)
 
 ---
 
@@ -123,6 +131,8 @@ Every page — including newly written ones — passes the Phase 9 quality audit
 | DSA | 22 | 0 | Complete — 21 topics + home |
 | Testing | 22 | 0 | Complete — 19 topics + 3 reference |
 | AI/ML | 22 | 0 | Complete — 19 topics + 3 reference |
+| Rust | 0 | ~23 | **NOT STARTED — planned, see Phase 11** |
+| QA Engineering | 0 | ~24 | **NOT STARTED — planned, see Phase 11** |
 
 ---
 
@@ -1121,6 +1131,1329 @@ Work hub by hub, topic pages only (practice/reference pages are lower priority):
 
 Each hub's pages are not individually listed here — use the hub's nav order as the sequence.
 When a hub's audit is complete, note it in Done History.
+
+---
+
+## Phase 10 — Deep-Dive Subtopic Pages ("Learn Mode")
+
+**Status: PLANNING (added 2026-07-03). Not started. Read this whole section before touching
+any code — it defines a new content tier and a new routing/nav/progress layer, not just more pages.**
+
+### Why this phase exists
+
+Every existing topic page (e.g. `/angular/signals-state`) is built to the Phase 2 "Enhanced
+Content Standard": 5–6 theory sections, code tabs, common mistakes, a challenge, a 6–8 question
+quiz, 6–8 Q&A entries, a revision card. That standard is explicitly optimised for **revision and
+interview prep** — it assumes the reader already has a rough mental model and is filling gaps,
+sharpening recall, and drilling trick questions. It intentionally moves fast and stays dense.
+
+User feedback: *"this site is good for revision but doesn't include learning the topic
+completely — we should have sub topic pages to subtopics and explain everything detailed and
+interactively."*
+
+That is correct and is a real, structural gap — not something the Phase 2 standard can be
+patched to also solve, because "dense enough to revise in 5 minutes" and "slow enough to learn
+from zero" are in tension on the same page. The fix is a **second, deeper tier**, not a rewrite
+of the first.
+
+**This phase is "zero to hero" content.** Every subtopic page must assume the reader has never
+seen this specific concept before and needs to walk out able to actually use it — not a smaller
+Phase 2 page, a genuine teaching page. Scope is the full site: every existing trackable topic
+page gets a subtopic breakdown eventually (see the complete page list at the end of this phase),
+worked through one at a time, same as every other phase in this file.
+
+### What "Learn Mode" is
+
+For each existing topic page, identify the N sub-concepts it currently only summarises (most
+topic pages already enumerate these as their `theory` array's section `heading:`s — that list is
+the starting point, not something to invent from scratch). Each sub-concept becomes its own
+**subtopic page**, nested under the parent topic:
+
+```
+/angular/signals-state                    ← existing topic page (untouched, stays as the
+                                              overview + revision layer)
+/angular/signals-state/what-is-a-signal   ← NEW subtopic page
+/angular/signals-state/creating-a-signal  ← NEW subtopic page
+/angular/signals-state/computed-signals   ← NEW subtopic page
+/angular/signals-state/effects            ← NEW subtopic page
+...
+```
+
+**The existing topic page is not rewritten or replaced.** It keeps doing its current job
+(overview + revision) and gains a "Go deeper" entry point into its subtopics. Subtopic pages are
+additive — a second tier underneath, not a replacement for the first.
+
+### Subtopic page content standard (deliberately different from Phase 2's standard)
+
+A subtopic page covers **one concept only** and teaches it from zero. Required shape:
+
+1. **Plain-language framing** — what this concept is, what problem it exists to solve, why it
+   was designed this way. No jargon before it's defined.
+2. **Build-up, not a dump** — start from the simplest possible working example, then add one
+   layer of complexity at a time. Each step should compile/run on its own; the reader should be
+   able to follow along and never lose the thread.
+3. **At least one live, editable example** — not just a static `<app-code-block>`. The reader
+   must be able to change the code and see the result change, in the page, without leaving it.
+   See "New component: interactive playground" below — this is the single biggest technical gap
+   between Phase 2 pages and what this phase needs.
+4. **"Try it yourself" micro-exercise** — a small, specific task ("make the counter reset to 0
+   when it hits 10") with a hidden/reveal-on-click solution. Not a full Phase-2-style Challenge
+   (those stay on the parent topic page) — smaller, faster, single-concept.
+5. **Common beginner misconceptions** — distinct from the parent topic's `app-common-mistakes`
+   (which targets production/interview-level mistakes). This section targets first-time
+   confusion specifically: "people think X happens, actually Y happens, here's why."
+6. **Where this fits** — one short paragraph connecting the concept back to the bigger picture
+   (the parent topic, and where it's used in real code) so the reader doesn't learn it in a
+   vacuum.
+7. **Prev / next subtopic navigation** at the bottom, plus a persistent "back to [Topic] overview"
+   link — subtopics are meant to be read in sequence, like a mini-course.
+
+Explicitly **not required** on subtopic pages: a revision card, a 6–8 question quiz, a 6–8 entry
+Q&A block, a production-style Challenge. Those are the parent topic page's job. Pulling them onto
+every subtopic page would just recreate the density problem this phase exists to fix. A subtopic
+page can have a tiny (2–3 question) comprehension check if it earns its place, but it is not a
+required section the way it is on Phase 2 pages.
+
+### New component: interactive playground
+
+This is the one genuinely new piece of engineering this phase needs, and it should be built
+**once, generically, before the pilot** — not reinvented per subtopic page.
+
+Requirements:
+- Embedded directly in the page (no click-through to an external site to see it work)
+- Editable: the reader can change the code
+- Runnable: some in-page mechanism shows the result of the edit (for JS/TS-family languages this
+  can be a real in-browser evaluator; for compiled languages — C#, Go — an embedded StackBlitz/
+  CodeSandbox-style iframe pointed at a pre-built starter project is the pragmatic option;
+  research the right embed approach per language family before the pilot, don't assume one
+  mechanism covers every hub)
+- Must work in both light and dark mode (`:host-context(body.dark)` — same rule as everywhere
+  else on the site, see CLAUDE.md)
+- Must degrade gracefully — if the embed fails to load, the static code (already required by
+  point 2 above) is still there and still useful
+
+Do not build subtopic pages ahead of this component existing. A subtopic page without a working
+interactive example is just a smaller Phase 2 page with the density removed — it does not
+satisfy the actual ask.
+
+### Structural changes required — VALIDATED against the pilot (`/angular/counter/what-is-a-signal`,
+built 2026-07-03). This is no longer a plan — it is the confirmed, working pattern. Follow this
+exact checklist for **every single subtopic page**, no exceptions, no skipped steps:
+
+1. **Files**: `<hub-area>/<topic-folder>/subtopics/<subtopic-slug>/<subtopic-slug>.ts|.html|.scss`
+   — nested inside the parent topic's own folder under a `subtopics/` subfolder. Example:
+   `angular/counter/subtopics/what-is-a-signal/what-is-a-signal.ts`.
+2. **Routing** (`app.routes.ts`) — convert the flat topic route into one with children:
+   `{ path: 'counter', children: [{ path: '', loadComponent: <existing topic component> },
+   { path: 'what-is-a-signal', loadComponent: <subtopic component> }] }`. Once a topic has been
+   converted, adding further subtopics is just another entry in the same `children` array.
+3. **Left nav** (`app.html` + `app.ts`) — **collapsed by default**. Confirmed working pattern:
+   - `app.ts`: add the topic's subtopic list to the module-level `SUBTOPICS` map (keyed by the
+     topic's route slug, e.g. `counter`), and use the existing `subtopicsOf()` / `isSubtopicsExpanded()`
+     / `toggleSubtopics()` helpers — do not reinvent these, they already exist.
+   - `app.html`: add a `nav-subtopics-toggle` chevron button inside the topic's `<a>` (only
+     rendered `@if (subtopicsOf('slug'))` — topics with no subtopics get no arrow), and the nested
+     `.nav-subtopics` list gated behind `@if (isSubtopicsExpanded('slug'))`.
+   - Auto-expand on direct navigation is already handled generically by `autoExpandForCurrentUrl()`
+     in the `App` constructor — do not duplicate this per topic, it walks the whole `SUBTOPICS` map.
+4. **Breadcrumb** (`shared/breadcrumb/breadcrumb.ts`) — already generically 4-level-aware
+   (`parentTopicLabel()` / `parentTopicRoute()` added during the pilot — do not rebuild this).
+   Only action needed per subtopic: add the subtopic's slug → title mapping to the relevant hub's
+   `*_LABELS` map (e.g. `ROUTE_LABELS` for Angular).
+5. **Progress model**: subtopic pages do **not** get `app-page-complete` and are **not** counted
+   in any hub's progress total — confirmed decision, not revisited per page.
+6. **Search index** (`services/search.service.ts`) — add one entry keyed as
+   `'<topic-slug>/<subtopic-slug>'` (e.g. `'counter/what-is-a-signal'`). Confirmed: the existing
+   bare-route fallback in `search.ts`'s `url()` (`return '/angular/' + route`) already handles the
+   nested slash correctly for Angular — no new prefix convention needed. Other hubs already using a
+   prefix (`csharp-`, etc.) will need their `url()` branch checked when their first subtopic is built.
+7. **Sidebar** (`shared/page-sidebar/page-sidebar.ts`) — add a **genuinely tailored** entry keyed
+   as `'<topic-slug>/<subtopic-slug>'` (matches the fallback-stripped `routeKey`, e.g.
+   `'counter/what-is-a-signal'`). **Do not leave this on the generic hub DEFAULT** — that was a
+   real mistake caught during the pilot review. Scope `apis`/`docs`/`gotchas` to only what this
+   specific subtopic covers (not the whole parent topic), and use `related` to link to the parent
+   topic overview and the adjacent subtopic(s).
+8. **Build**: `npx ng build --configuration=production` must pass.
+9. **Verify in browser** (do not skip — this is not a "trust the build" phase): the interactive
+   playground actually loads and shows real code (not just that the button renders), dark mode on
+   every new component, breadcrumb shows all 4 levels, nav expands/collapses and highlights the
+   active subtopic, sidebar shows tailored (not default) content, search finds the page and
+   navigates correctly.
+
+**New shared components built during the pilot (reuse these, do not rebuild per subtopic):**
+- `shared/live-playground/live-playground.ts` (`app-live-playground`) — the embedded, editable
+  StackBlitz example. Click-to-load (dynamic `import('@stackblitz/sdk')`, never in the main
+  bundle). Inputs: `title`, `files: PlaygroundFile[]`, `template` (ProjectTemplate — `'angular-cli'`
+  for Angular; use `'typescript'`/`'javascript'`/`'node'` for other hubs as appropriate), `openFile`,
+  `dependencies?`, `height?`. Has a working "Open in new tab" fallback via `sdk.openProject()` for
+  when the embed itself fails to load.
+- `shared/try-it/try-it.ts` (`app-try-it`) — the required micro-exercise, hidden/reveal solution.
+- `shared/misconceptions/misconceptions.ts` (`app-misconceptions`) — the required beginner
+  misconceptions list. **Fields use `[innerHTML]`, not `{{ }}` interpolation** — a real bug was
+  caught and fixed during the pilot where `<code>`/`<em>` tags rendered as literal text instead of
+  being parsed. Any new component with HTML-bearing string fields must bind with `[innerHTML]`.
+- `shared/subtopic-nav/subtopic-nav.ts` (`app-subtopic-nav`) — prev/next + back-to-topic footer nav.
+
+**Content structure inside the subtopic `.ts` file** (confirmed pattern from the pilot): a single
+`theory: TheoryPoint[]` array (do NOT split into multiple `<app-theory-block>` calls — that
+renders as several redundant stacked "Theory & Key Points" accordions; one call, multiple
+sections, exactly like every Phase 2 topic page already does), a `liveDemoFiles: PlaygroundFile[]`
+for the playground, an `exercise: TryItExercise`, and a `misconceptions: Misconception[]`.
+
+### Rollout plan — pilot first, then work the full list one at a time
+
+**Do not start broad content production before the pilot.** The scope here is **836 existing
+trackable topic pages** (verified by cross-referencing every hub's routes against which pages
+actually carry `app-page-complete` — see the complete list at the end of this phase; this is the
+real count, not an estimate) × roughly 3–6 subtopics each — several thousand new pages, far larger
+than the ~928-page site built so far. Getting the format wrong and discovering it 200 pages in
+would be extremely expensive. Sequence:
+
+1. **Pilot: one topic, fully built.** Recommended pilot topic: **Angular → Signals & Reactive
+   State** (`/angular/counter`). Reasons: foundational (nearly every other Angular topic depends
+   on it), already has a natural sub-concept breakdown in its existing `theory` array (signal(),
+   computed(), effect(), signal.set/update, control-flow `@if`/`@for`, interop via toSignal/
+   toObservable), and it is exactly the kind of topic where "I read the reference page but still
+   don't really get it" is a common real complaint. Build every planned subtopic page for this
+   ONE topic, including the interactive playground component, the routing change, the nav
+   accordion, the breadcrumb 4th level, and the progress/search/sidebar wiring — the complete
+   vertical slice, not just content.
+2. **Review checkpoint.** Before writing a second topic's subtopics, stop and get the pilot
+   reviewed — this is the point to catch structural mistakes cheaply.
+3. **Lock the format.** Once the pilot is approved, write up the finalised pattern as a new
+   section in `CLAUDE.md` (component names, file layout, exact wiring checklist additions) — the
+   same way every other page-type convention in this project is documented — so future sessions
+   can replicate it without re-deriving the design.
+4. **Work the complete page list below, one topic at a time**, same "one page at a time, no
+   batching" discipline as every other phase in this file. The list is already in hub order
+   matching the Current State table (gateway/foundational hubs first: Angular, C#, ASP.NET Core,
+   SQL, TypeScript, React, JavaScript, HTML, CSS, then the rest). Check off `- [ ]` → `- [x]` with
+   a date as each topic's full subtopic set is built, same convention as every other checklist in
+   this file. Do not reorder the list to chase what feels interesting — foundational topics are
+   listed first because their subtopics are reused as prerequisite links elsewhere once Phase 10
+   is far enough along.
+5. **Track progress** in a new table here (add once the pilot format is locked):
+   `Hub | Topics with subtopics built | Total topics | Notes` — do not reuse the existing Current
+   State table (that one tracks Goal 1 / topic-level completion, which is done; mixing the two
+   would make both harder to read).
+
+### Complete page list — every existing trackable topic page (work through one at a time)
+
+Extracted 2026-07-03 by cross-referencing `app.routes.ts` (route → component folder) against
+every `.html` file that actually contains `app-page-complete` (the real "is this a trackable
+topic" signal — the `badge` field in each hub's `home.ts` turned out to be unreliable for this:
+some hubs use `badge: 'Reference'` as a genuine content-category tag on real topics, e.g. DSA's
+"Bit Manipulation" and "Greedy Algorithms"). Titles are the actual on-page `<h1>` text, not
+home.ts card titles, since at least one hub's home.ts (`architecture/security`) has stale
+placeholder routes (every entry pointed at `/security` — a real, separate bug worth fixing
+independently of Phase 10; not fixed here, out of scope for a planning pass). Counts below match
+the Current State table exactly for all 34 hubs — 836 pages total.
+
+**Every subtopic-page session**: pick the next unchecked topic in list order, do the pre-work
+research (same rigor as Working Method rule 2), build its full subtopic set per the content
+standard above, wire it (routing/nav/breadcrumb/progress/search/sidebar), build, then check it
+off here with a date.
+
+---
+
+#### Angular — 58 topic pages
+
+- [ ] `/angular/counter` — Signals & Reactive State
+- [ ] `/angular/todo` — Reactive Forms & Signal Services
+- [ ] `/angular/forms` — Template-Driven vs Reactive Forms
+- [ ] `/angular/http` — HTTP Client
+- [ ] `/angular/http-interceptors` — HTTP Interceptors
+- [ ] `/angular/parent-child` — Parent-Child Communication
+- [ ] `/angular/form-array` — FormArray — Dynamic Fields
+- [ ] `/angular/defer` — @defer — Deferred Loading
+- [ ] `/angular/material` — Angular Material
+- [ ] `/angular/store` — Signal Store Pattern
+- [ ] `/angular/templates` — Template Syntax
+- [ ] `/angular/directives` — Custom Directives
+- [ ] `/angular/lifecycle` — Lifecycle Hooks
+- [ ] `/angular/pipes` — Pipes
+- [ ] `/angular/di` — Dependency Injection
+- [ ] `/angular/routing` — Routing & Navigation
+- [ ] `/angular/charts` — Chart.js with Angular
+- [ ] `/angular/zod-forms` — Zod + Reactive Forms
+- [ ] `/angular/content-projection` — Content Projection
+- [ ] `/angular/change-detection` — Change Detection
+- [ ] `/angular/custom-validators` — Custom Validators
+- [ ] `/angular/rxjs` — RxJS Operators
+- [ ] `/angular/cdk` — Angular CDK
+- [ ] `/angular/ag-grid` — AG Grid with Angular
+- [ ] `/angular/tanstack-query` — TanStack Query
+- [ ] `/angular/date-fns` — date-fns in Angular
+- [ ] `/angular/animations` — Angular Animations
+- [ ] `/angular/cva` — Control Value Accessor
+- [ ] `/angular/testing` — Testing Angular
+- [ ] `/angular/tailwind` — Tailwind CSS in Angular
+- [ ] `/angular/resource-api` — resource() API
+- [ ] `/angular/ngrx-signals` — NgRx Signals Store
+- [ ] `/angular/dynamic-forms` — Dynamic / Schema-Driven Forms
+- [ ] `/angular/route-resolvers` — Route Resolvers & Named Outlets
+- [ ] `/angular/preloading` — Preloading Strategies
+- [ ] `/angular/route-guards` — Route Guards
+- [ ] `/angular/ng-image` — NgOptimizedImage
+- [ ] `/angular/destroy-ref` — DestroyRef & takeUntilDestroyed
+- [ ] `/angular/linked-signal` — linkedSignal()
+- [ ] `/angular/zoneless` — Zoneless Angular
+- [ ] `/angular/signal-effects` — Signal Effects
+- [ ] `/angular/typed-forms` — Typed Reactive Forms
+- [ ] `/angular/host-directives` — Host Directives
+- [ ] `/angular/let-template-vars` — @let Template Variables
+- [ ] `/angular/standalone-migration` — Standalone Migration
+- [ ] `/angular/error-handling-patterns` — Error Handling Patterns
+- [ ] `/angular/msw` — Mock Service Worker (MSW)
+- [ ] `/angular/accessibility` — Accessibility (a11y)
+- [ ] `/angular/micro-frontends` — Micro-Frontends
+- [ ] `/angular/angular-devtools` — Angular DevTools
+- [ ] `/angular/bundle-optimization` — Bundle Optimization
+- [ ] `/angular/wizard-form` — Multi-Step Wizard Form
+- [ ] `/angular/web-workers` — Web Workers
+- [ ] `/angular/pwa` — PWA & Service Workers
+- [ ] `/angular/i18n` — Internationalisation (i18n)
+- [ ] `/angular/e2e` — E2E Testing with Playwright
+- [ ] `/angular/harnesses` — Component Harnesses
+- [ ] `/angular/ssr` — SSR & Hydration
+
+#### C# — 50 topic pages
+
+- [ ] `/csharp/basics` — Variables & Types
+- [ ] `/csharp/oop` — OOP & Classes
+- [ ] `/csharp/records` — Records & Structs
+- [ ] `/csharp/generics` — Generics
+- [ ] `/csharp/collections` — Collections
+- [ ] `/csharp/linq` — LINQ
+- [ ] `/csharp/async` — async / await
+- [ ] `/csharp/null-safety` — Null Safety
+- [ ] `/csharp/pattern-matching` — Pattern Matching
+- [ ] `/csharp/exceptions` — Exceptions
+- [ ] `/csharp/delegates` — Delegates & Events
+- [ ] `/csharp/fields` — Fields & Constants
+- [ ] `/csharp/methods` — Methods
+- [ ] `/csharp/type-conversion` — Type Conversion
+- [ ] `/csharp/constructors` — Constructors
+- [ ] `/csharp/properties-indexers` — Properties & Indexers
+- [ ] `/csharp/namespaces` — Namespaces & Usings
+- [ ] `/csharp/inheritance` — Inheritance & Overriding
+- [ ] `/csharp/abstract-interfaces` — Abstract Classes & Interfaces
+- [ ] `/csharp/static-enums` — Static Classes, Partial Classes & Enums
+- [ ] `/csharp/structures` — Structures (struct)
+- [ ] `/csharp/system-object` — System.Object
+- [ ] `/csharp/extension-methods` — Extension Methods
+- [ ] `/csharp/tuples` — Tuples & Anonymous Types
+- [ ] `/csharp/arrays` — Arrays
+- [ ] `/csharp/strings-datetime` — Strings, DateTime & Math
+- [ ] `/csharp/io-serialization` — I/O & Serialization
+- [ ] `/csharp/gc-disposable` — GC & IDisposable
+- [ ] `/csharp/threading` — Threading
+- [ ] `/csharp/tasks` — Tasks & Parallel
+- [ ] `/csharp/reflection` — Reflection & Attributes
+- [ ] `/csharp/iterators` — Iterators & yield
+- [ ] `/csharp/functional-csharp` — Functional C# & Result Pattern
+- [ ] `/csharp/regex` — Regular Expressions
+- [ ] `/csharp/channels` — Channels & Producer/Consumer
+- [ ] `/csharp/unit-testing` — Unit Testing (xUnit & Moq)
+- [ ] `/csharp/expression-trees` — Expression Trees
+- [ ] `/csharp/dynamic` — dynamic & the DLR
+- [ ] `/csharp/source-generators` — Source Generators
+- [ ] `/csharp/span-memory` — Span<T> & Memory<T>
+- [ ] `/csharp/di-dotnet` — Dependency Injection in .NET
+- [ ] `/csharp/json-advanced` — System.Text.Json Advanced
+- [ ] `/csharp/unsafe-pointers` — Unsafe Code & Pointers
+- [ ] `/csharp/native-aot` — Native AOT
+- [ ] `/csharp/benchmarkdotnet` — BenchmarkDotNet
+- [ ] `/csharp/pinvoke` — P/Invoke & Native Interop
+- [ ] `/csharp/dotnet-cli` — .NET CLI & Tooling
+- [ ] `/csharp/whats-new-9-10` — What's New in C# 9 & 10
+- [ ] `/csharp/whats-new-11-12` — What's New in C# 11 & 12
+- [ ] `/csharp/whats-new-latest` — What's New in C# 13+ & .NET 10/11
+
+#### ASP.NET Core — 45 topic pages
+
+- [ ] `/aspnet/hosting-startup` — Hosting & Startup
+- [ ] `/aspnet/middleware` — Middleware Pipeline
+- [ ] `/aspnet/routing` — Routing
+- [ ] `/aspnet/configuration` — Configuration & Options
+- [ ] `/aspnet/dependency-injection` — Dependency Injection
+- [ ] `/aspnet/logging` — Logging & Diagnostics
+- [ ] `/aspnet/static-files` — Static Files & Uploads
+- [ ] `/aspnet/controllers` — Controllers & Actions
+- [ ] `/aspnet/minimal-apis` — Minimal APIs
+- [ ] `/aspnet/model-binding` — Model Binding & Validation
+- [ ] `/aspnet/filters` — Filters & Endpoint Filters
+- [ ] `/aspnet/error-handling` — Error Handling
+- [ ] `/aspnet/openapi-swagger` — OpenAPI & Swagger
+- [ ] `/aspnet/api-versioning` — API Versioning
+- [ ] `/aspnet/http-clients` — HttpClient & Resilience
+- [ ] `/aspnet/grpc` — gRPC Services
+- [ ] `/aspnet/ef-core-basics` — EF Core Basics
+- [ ] `/aspnet/ef-relationships` — EF Core Relationships
+- [ ] `/aspnet/ef-performance` — EF Core Performance
+- [ ] `/aspnet/caching` — Caching
+- [ ] `/aspnet/authentication` — Authentication
+- [ ] `/aspnet/authorization` — Authorization
+- [ ] `/aspnet/cors` — CORS & Security Headers
+- [ ] `/aspnet/rate-limiting` — Rate Limiting
+- [ ] `/aspnet/web-security` — Web Security Essentials
+- [ ] `/aspnet/secrets` — Secrets & Data Protection
+- [ ] `/aspnet/testing` — Testing ASP.NET Core
+- [ ] `/aspnet/background-services` — Background Services
+- [ ] `/aspnet/signalr` — SignalR
+- [ ] `/aspnet/health-checks` — Health Checks & Observability
+- [ ] `/aspnet/deployment` — Deployment & Hosting
+- [ ] `/aspnet/performance` — Performance & Diagnostics
+- [ ] `/aspnet/aspire` — .NET Aspire
+- [ ] `/aspnet/fluent-validation` — FluentValidation
+- [ ] `/aspnet/minimal-api-advanced` — Minimal API Advanced
+- [ ] `/aspnet/output-caching-advanced` — Output Caching Advanced
+- [ ] `/aspnet/dapper` — Dapper & Raw SQL
+- [ ] `/aspnet/csrf` — Anti-forgery & CSRF
+- [ ] `/aspnet/feature-flags` — Feature Flags
+- [ ] `/aspnet/localization` — Localization & Globalization
+- [ ] `/aspnet/masstransit` — MassTransit
+- [ ] `/aspnet/response-compression` — Response Compression
+- [ ] `/aspnet/websockets` — WebSockets
+- [ ] `/aspnet/yarp` — YARP Reverse Proxy
+- [ ] `/aspnet/opentelemetry` — OpenTelemetry
+
+#### SQL — 44 topic pages
+
+- [ ] `/sql/rdbms-concepts` — RDBMS Concepts
+- [ ] `/sql/data-modeling` — Data Modeling
+- [ ] `/sql/normalization` — Normalization
+- [ ] `/sql/db-architecture` — Database Architecture
+- [ ] `/sql/data-types` — Data Types
+- [ ] `/sql/basics` — SQL Basics
+- [ ] `/sql/joins` — Joins
+- [ ] `/sql/aggregations` — Aggregations
+- [ ] `/sql/subqueries` — Subqueries
+- [ ] `/sql/ctes` — CTEs
+- [ ] `/sql/window-functions` — Window Functions
+- [ ] `/sql/indexes` — Indexes
+- [ ] `/sql/transactions` — Transactions
+- [ ] `/sql/schema-design` — Schema Design
+- [ ] `/sql/stored-procedures` — Stored Procedures
+- [ ] `/sql/performance` — Query Performance
+- [ ] `/sql/json-features` — JSON Features
+- [ ] `/sql/set-operations` — Set Operations
+- [ ] `/sql/null-handling` — NULL Handling
+- [ ] `/sql/merge` — MERGE / Upsert
+- [ ] `/sql/string-functions` — String Functions
+- [ ] `/sql/date-functions` — Date & Time Functions
+- [ ] `/sql/conditional-expressions` — Conditional Expressions
+- [ ] `/sql/math-functions` — Math & Numeric Functions
+- [ ] `/sql/pivoting` — Pivoting & Cross-Tab Queries
+- [ ] `/sql/constraints` — Constraints
+- [ ] `/sql/views` — Views
+- [ ] `/sql/sequences` — Sequences & Identity
+- [ ] `/sql/temp-tables` — Temp Tables & Table Variables
+- [ ] `/sql/computed-columns` — Computed & Generated Columns
+- [ ] `/sql/stored-functions` — Stored Functions
+- [ ] `/sql/cursors` — Cursors & Row-by-Row Processing
+- [ ] `/sql/triggers` — Triggers
+- [ ] `/sql/dynamic-sql` — Dynamic SQL
+- [ ] `/sql/isolation-levels` — Isolation Levels
+- [ ] `/sql/locking` — Locking & Deadlocks
+- [ ] `/sql/execution-plans` — Execution Plans
+- [ ] `/sql/partitioning` — Partitioning
+- [ ] `/sql/bulk-operations` — Bulk Operations
+- [ ] `/sql/query-store` — Query Store & Performance Statistics
+- [ ] `/sql/statistics` — Statistics & Query Optimizer
+- [ ] `/sql/full-text-search` — Full-Text Search
+- [ ] `/sql/security` — SQL Security
+- [ ] `/sql/connection-pooling` — Connection Pooling
+
+#### TypeScript — 20 topic pages
+
+- [ ] `/typescript/basics` — TypeScript Fundamentals
+- [ ] `/typescript/primitive-types` — Primitive & Literal Types
+- [ ] `/typescript/interfaces-types` — Interfaces & Type Aliases
+- [ ] `/typescript/unions` — Union & Intersection Types
+- [ ] `/typescript/narrowing` — Type Guards & Narrowing
+- [ ] `/typescript/enums-tuples` — Enums & Tuples
+- [ ] `/typescript/generics` — Generics Fundamentals
+- [ ] `/typescript/generic-patterns` — Generic Patterns
+- [ ] `/typescript/utility-types` — Utility Types
+- [ ] `/typescript/mapped-types` — Mapped Types
+- [ ] `/typescript/conditional-types` — Conditional Types
+- [ ] `/typescript/template-literal-types` — Template Literal Types
+- [ ] `/typescript/classes` — Classes & Visibility
+- [ ] `/typescript/decorators` — Decorators
+- [ ] `/typescript/tsconfig` — tsconfig Deep Dive
+- [ ] `/typescript/modules` — Module System & Namespaces
+- [ ] `/typescript/declarations` — Declaration Files (d.ts)
+- [ ] `/typescript/frameworks` — TypeScript with Frameworks
+- [ ] `/typescript/strict-migration` — Strict Mode & Migration
+- [ ] `/typescript/ts-performance` — TypeScript Performance
+
+#### React — 17 topic pages
+
+- [ ] `/react/basics` — React Fundamentals
+- [ ] `/react/hooks-core` — Core Hooks
+- [ ] `/react/hooks-advanced` — Advanced Hooks
+- [ ] `/react/forms` — Forms & Validation
+- [ ] `/react/context` — Context API
+- [ ] `/react/state-management` — State Management
+- [ ] `/react/router` — React Router v6/v7
+- [ ] `/react/tanstack-query` — TanStack Query
+- [ ] `/react/performance` — React Performance
+- [ ] `/react/patterns` — React Patterns
+- [ ] `/react/typescript` — TypeScript & React
+- [ ] `/react/testing` — Testing React
+- [ ] `/react/nextjs` — Next.js App Router
+- [ ] `/react/native` — React Native
+- [ ] `/react/hook-form` — React Hook Form
+- [ ] `/react/animations` — Animations (Framer Motion)
+- [ ] `/react/security` — Security in React
+
+#### JavaScript — 22 topic pages
+
+- [ ] `/javascript/fundamentals` — JavaScript Fundamentals
+- [ ] `/javascript/closures` — Scope & Closures
+- [ ] `/javascript/hoisting` — Hoisting & TDZ
+- [ ] `/javascript/symbols` — Symbols & Iterators
+- [ ] `/javascript/functions` — Functions Deep Dive
+- [ ] `/javascript/prototypes` — Prototypes & Classes
+- [ ] `/javascript/objects` — Object Fundamentals
+- [ ] `/javascript/destructuring` — Destructuring & Spread
+- [ ] `/javascript/arrays` — Arrays & Iteration
+- [ ] `/javascript/promises` — Promises & Async/Await
+- [ ] `/javascript/event-loop` — Event Loop & Concurrency
+- [ ] `/javascript/error-handling` — Error Handling
+- [ ] `/javascript/generators` — Generators
+- [ ] `/javascript/dom` — DOM Manipulation
+- [ ] `/javascript/events` — Events & Custom Events
+- [ ] `/javascript/browser-apis` — Browser APIs
+- [ ] `/javascript/modules` — Modules & Imports
+- [ ] `/javascript/bundlers` — Bundlers & Build Tools
+- [ ] `/javascript/patterns` — Design Patterns
+- [ ] `/javascript/functional` — Functional Programming
+- [ ] `/javascript/proxy` — Proxy & Reflect
+- [ ] `/javascript/weakrefs` — WeakRef & FinalizationRegistry
+
+#### HTML — 23 topic pages
+
+- [ ] `/html/document-structure` — Document Structure
+- [ ] `/html/semantic-elements` — Semantic Elements
+- [ ] `/html/forms` — Forms & Input
+- [ ] `/html/media` — Media Elements
+- [ ] `/html/tables` — Tables
+- [ ] `/html/links-navigation` — Links & Navigation
+- [ ] `/html/accessibility` — Accessibility & ARIA
+- [ ] `/html/head-metadata` — Head & Metadata
+- [ ] `/html/custom-elements` — Web Components & Custom Elements
+- [ ] `/html/iframes-embeds` — iFrames & Embeds
+- [ ] `/html/canvas-svg` — Canvas & SVG
+- [ ] `/html/performance` — HTML Performance
+- [ ] `/html/pwa-service-workers` — PWA & Service Workers
+- [ ] `/html/seo` — HTML SEO
+- [ ] `/html/apis` — HTML5 Browser APIs
+- [ ] `/html/fundamentals` — HTML Fundamentals
+- [ ] `/html/headings-paragraphs` — Headings & Paragraphs
+- [ ] `/html/input-types` — Input Types & Attributes
+- [ ] `/html/landmark-elements` — Landmark Elements
+- [ ] `/html/aria-roles` — ARIA Roles & Attributes
+- [ ] `/html/focus-management` — Focus Management
+- [ ] `/html/storage-apis` — HTML5 Storage APIs
+- [ ] `/html/drag-drop` — Drag & Drop API
+
+#### CSS — 22 topic pages
+
+- [ ] `/css/box-model` — CSS Box Model
+- [ ] `/css/flexbox` — CSS Flexbox
+- [ ] `/css/grid` — CSS Grid
+- [ ] `/css/positioning` — Positioning & Stacking
+- [ ] `/css/custom-properties` — CSS Custom Properties
+- [ ] `/css/selectors` — Selectors Deep Dive
+- [ ] `/css/typography` — Typography
+- [ ] `/css/responsive` — Responsive Design
+- [ ] `/css/animations` — CSS Animations
+- [ ] `/css/transitions` — CSS Transitions
+- [ ] `/css/colors-theming` — Colors & Theming
+- [ ] `/css/backgrounds-borders` — Backgrounds & Borders
+- [ ] `/css/container-queries` — Container Queries
+- [ ] `/css/css-layers` — CSS Cascade Layers
+- [ ] `/css/css-nesting` — CSS Nesting
+- [ ] `/css/logical-properties` — Logical Properties
+- [ ] `/css/css-architecture` — CSS Architecture
+- [ ] `/css/tailwind` — Tailwind CSS
+- [ ] `/css/scroll-driven-animations` — Scroll-Driven Animations
+- [ ] `/css/css-transforms` — CSS Transforms
+- [ ] `/css/css-filters` — CSS Filters & Effects
+- [ ] `/css/fundamentals` — CSS Fundamentals
+
+#### Web Performance — 20 topic pages
+
+- [ ] `/performance/core-web-vitals` — Core Web Vitals Overview
+- [ ] `/performance/lcp` — Largest Contentful Paint
+- [ ] `/performance/inp` — Interaction to Next Paint
+- [ ] `/performance/cls` — Cumulative Layout Shift
+- [ ] `/performance/critical-rendering-path` — Critical Rendering Path
+- [ ] `/performance/browser-rendering` — Browser Rendering Pipeline
+- [ ] `/performance/resource-hints` — Resource Hints
+- [ ] `/performance/http2-http3` — HTTP/2 & HTTP/3
+- [ ] `/performance/caching` — Caching & Service Workers
+- [ ] `/performance/image-optimisation` — Image Optimisation
+- [ ] `/performance/font-performance` — Font Performance
+- [ ] `/performance/js-performance` — JavaScript Performance
+- [ ] `/performance/third-party-scripts` — Third-Party Scripts
+- [ ] `/performance/measurement` — Performance Measurement
+- [ ] `/performance/rum` — Real User Monitoring (RUM)
+- [ ] `/performance/ssr-streaming` — SSR & Streaming HTML
+- [ ] `/performance/css-performance` — CSS Performance
+- [ ] `/performance/web-workers` — Web Workers & Off-Main-Thread
+- [ ] `/performance/performance-budgets` — Performance Budgets & CI
+- [ ] `/performance/speculation-rules` — Speculation Rules API
+
+#### Blazor — 20 topic pages
+
+- [ ] `/blazor/fundamentals` — Blazor Fundamentals
+- [ ] `/blazor/render-modes` — Blazor Render Modes
+- [ ] `/blazor/razor-components` — Razor Components
+- [ ] `/blazor/component-communication` — Component Communication
+- [ ] `/blazor/forms` — Blazor Forms
+- [ ] `/blazor/data-binding` — Data Binding in Blazor
+- [ ] `/blazor/routing` — Blazor Routing
+- [ ] `/blazor/dependency-injection` — Dependency Injection in Blazor
+- [ ] `/blazor/state-management` — State Management in Blazor
+- [ ] `/blazor/js-interop` — JavaScript Interop
+- [ ] `/blazor/server-signalr` — Blazor Server & SignalR
+- [ ] `/blazor/maui-hybrid` — Blazor Hybrid & MAUI
+- [ ] `/blazor/authentication` — Authentication in Blazor
+- [ ] `/blazor/error-handling` — Error Handling in Blazor
+- [ ] `/blazor/streaming-rendering` — Streaming Rendering
+- [ ] `/blazor/sections-layouts` — Sections & Layouts
+- [ ] `/blazor/seo-metadata` — SEO & Metadata in Blazor
+- [ ] `/blazor/virtualization` — Virtualization in Blazor
+- [ ] `/blazor/progressive-enhancement` — Progressive Enhancement
+- [ ] `/blazor/performance` — Blazor Performance
+
+#### Node.js — 23 topic pages
+
+- [ ] `/node/architecture` — Node.js Architecture
+- [ ] `/node/modules` — Modules & CommonJS
+- [ ] `/node/core-modules` — Node.js Core Modules
+- [ ] `/node/env-config` — Env Config & dotenv
+- [ ] `/node/express` — Express.js
+- [ ] `/node/fastify` — Fastify
+- [ ] `/node/rest-api` — REST API Design in Node.js
+- [ ] `/node/websockets` — WebSockets & Socket.io
+- [ ] `/node/graphql` — GraphQL API with Node.js
+- [ ] `/node/nestjs` — NestJS
+- [ ] `/node/promises-async` — Promises & Async/Await
+- [ ] `/node/streams` — Streams & Buffers
+- [ ] `/node/error-handling` — Error Handling Patterns
+- [ ] `/node/prisma` — Database with Prisma
+- [ ] `/node/mongoose` — MongoDB with Mongoose
+- [ ] `/node/caching` — Caching with Redis
+- [ ] `/node/jwt-auth` — Auth with JWT & Passport
+- [ ] `/node/security` — Security Best Practices
+- [ ] `/node/performance` — Node.js Performance
+- [ ] `/node/logging` — Logging with Pino/Winston
+- [ ] `/node/worker-threads` — Worker Threads
+- [ ] `/node/testing` — Testing Node.js Apps
+- [ ] `/node/deployment` — Deploying Node.js Apps
+
+#### Python — 21 topic pages
+
+- [ ] `/python/fundamentals` — Python Fundamentals
+- [ ] `/python/functions-closures` — Functions & Closures
+- [ ] `/python/comprehensions-generators` — Comprehensions & Generators
+- [ ] `/python/file-io` — File I/O & Pathlib
+- [ ] `/python/oop` — OOP in Python
+- [ ] `/python/dataclasses-pydantic` — Dataclasses & Pydantic
+- [ ] `/python/decorators-context-managers` — Decorators & Context Managers
+- [ ] `/python/type-hints` — Type Hints & mypy
+- [ ] `/python/collections-itertools` — Collections & Itertools
+- [ ] `/python/asyncio` — Async Python (asyncio)
+- [ ] `/python/threading-multiprocessing` — Threading & Multiprocessing
+- [ ] `/python/concurrency-patterns` — Python Concurrency Patterns
+- [ ] `/python/fastapi` — FastAPI
+- [ ] `/python/django` — Django & DRF
+- [ ] `/python/sqlalchemy` — SQLAlchemy
+- [ ] `/python/celery` — Celery & Task Queues
+- [ ] `/python/numpy-pandas` — NumPy & Pandas
+- [ ] `/python/scikit-learn` — Machine Learning (scikit-learn)
+- [ ] `/python/pytest` — Testing with pytest
+- [ ] `/python/packaging` — Python Packaging & venv
+- [ ] `/python/debugging-profiling` — Debugging & Profiling
+
+#### Go — 21 topic pages
+
+- [ ] `/go/fundamentals` — Go Fundamentals
+- [ ] `/go/structs-interfaces` — Structs & Interfaces
+- [ ] `/go/error-handling` — Error Handling in Go
+- [ ] `/go/slices-maps` — Slices & Maps
+- [ ] `/go/goroutines` — Goroutines
+- [ ] `/go/channels` — Channels
+- [ ] `/go/sync` — sync & sync/atomic
+- [ ] `/go/context` — context Package
+- [ ] `/go/net-http` — net/http & REST
+- [ ] `/go/gin` — Gin Framework
+- [ ] `/go/json-encoding` — JSON Encoding
+- [ ] `/go/grpc` — gRPC
+- [ ] `/go/pgx` — pgx (PostgreSQL)
+- [ ] `/go/gorm` — GORM
+- [ ] `/go/generics` — Generics
+- [ ] `/go/patterns` — Design Patterns
+- [ ] `/go/modules` — Modules & Toolchain
+- [ ] `/go/testing` — Testing
+- [ ] `/go/cli` — Go CLI Tools
+- [ ] `/go/profiling` — Performance & Profiling
+- [ ] `/go/build` — Build & Deployment
+
+#### DevOps — 21 topic pages
+
+- [ ] `/devops/culture` — DevOps Culture & Principles
+- [ ] `/devops/sdlc-agile` — SDLC & Agile
+- [ ] `/devops/environment-strategy` — Environment Strategy
+- [ ] `/devops/platform-engineering` — Platform Engineering
+- [ ] `/devops/git-workflows` — Git Workflows
+- [ ] `/devops/github-actions` — GitHub Actions
+- [ ] `/devops/azure-pipelines` — Azure DevOps Pipelines
+- [ ] `/devops/jenkins` — Jenkins
+- [ ] `/devops/continuous-integration` — Continuous Integration
+- [ ] `/devops/continuous-delivery` — Continuous Delivery & Deployment
+- [ ] `/devops/gitops` — GitOps with ArgoCD & Flux
+- [ ] `/devops/artifact-management` — Artifact Management
+- [ ] `/devops/docker-cicd` — Docker in CI/CD
+- [ ] `/devops/kubernetes-deployments` — Kubernetes Deployments
+- [ ] `/devops/iac` — Infrastructure as Code
+- [ ] `/devops/monitoring` — Monitoring & Alerting
+- [ ] `/devops/logging` — Logging Pipelines
+- [ ] `/devops/incident-response` — On-call & Incident Response
+- [ ] `/devops/devsecops` — DevSecOps
+- [ ] `/devops/release-management` — Release Management
+- [ ] `/devops/sre` — SRE Practices
+
+#### Containers/K8s — 22 topic pages
+
+- [ ] `/containers/fundamentals` — Container Fundamentals
+- [ ] `/containers/docker-cli` — Docker CLI
+- [ ] `/containers/docker-images` — Docker Images & Registry
+- [ ] `/containers/dockerfile` — Writing Dockerfiles
+- [ ] `/containers/multi-stage` — Multi-Stage Builds
+- [ ] `/containers/compose` — Docker Compose
+- [ ] `/containers/compose-profiles` — Compose Profiles & Overrides
+- [ ] `/containers/k8s-architecture` — Kubernetes Architecture
+- [ ] `/containers/kubectl` — kubectl Fundamentals
+- [ ] `/containers/pods-deployments` — Pods, Deployments & ReplicaSets
+- [ ] `/containers/services-ingress` — Services & Ingress
+- [ ] `/containers/configmaps-secrets` — ConfigMaps & Secrets
+- [ ] `/containers/storage` — Persistent Volumes & Storage
+- [ ] `/containers/operators-crds` — Kubernetes Operators & CRDs
+- [ ] `/containers/helm` — Helm
+- [ ] `/containers/container-security` — Container Security
+- [ ] `/containers/rbac` — Kubernetes RBAC
+- [ ] `/containers/statefulsets` — StatefulSets & DaemonSets
+- [ ] `/containers/resource-limits` — Resource Requests & Limits
+- [ ] `/containers/hpa` — Horizontal Pod Autoscaler
+- [ ] `/containers/network-policies` — Network Policies
+- [ ] `/containers/troubleshooting` — Kubernetes Troubleshooting
+
+#### AWS — 21 topic pages
+
+- [ ] `/aws/fundamentals` — AWS Fundamentals
+- [ ] `/aws/ec2` — EC2 & Auto Scaling
+- [ ] `/aws/ecs-eks` — ECS & EKS
+- [ ] `/aws/vpc` — VPC & Networking
+- [ ] `/aws/route53-cloudfront` — Route 53 & CloudFront
+- [ ] `/aws/s3` — S3
+- [ ] `/aws/ebs-efs` — EBS, EFS & FSx
+- [ ] `/aws/iam` — IAM
+- [ ] `/aws/iam-roles` — IAM Roles & Federation
+- [ ] `/aws/rds-aurora` — RDS & Aurora
+- [ ] `/aws/dynamodb` — DynamoDB
+- [ ] `/aws/lambda` — Lambda
+- [ ] `/aws/api-gateway` — API Gateway
+- [ ] `/aws/cloudwatch` — CloudWatch & X-Ray
+- [ ] `/aws/cloudformation-cdk` — CloudFormation & CDK
+- [ ] `/aws/security` — AWS Security Services
+- [ ] `/aws/sqs-sns` — SQS & SNS
+- [ ] `/aws/eventbridge` — EventBridge
+- [ ] `/aws/step-functions` — AWS Step Functions
+- [ ] `/aws/load-balancing` — Elastic Load Balancing
+- [ ] `/aws/cost-optimization` — AWS Cost Optimization
+
+#### Azure — 22 topic pages
+
+- [ ] `/azure/fundamentals` — Azure Fundamentals
+- [ ] `/azure/arm` — Azure Resource Manager
+- [ ] `/azure/virtual-machines` — Azure Virtual Machines
+- [ ] `/azure/app-service` — Azure App Service
+- [ ] `/azure/functions` — Azure Functions
+- [ ] `/azure/aks` — Azure Kubernetes Service
+- [ ] `/azure/virtual-network` — Azure Virtual Network
+- [ ] `/azure/load-balancer` — Azure Load Balancer & Front Door
+- [ ] `/azure/storage` — Azure Blob & Storage
+- [ ] `/azure/entra-id` — Azure Active Directory & Entra ID
+- [ ] `/azure/rbac` — Azure RBAC
+- [ ] `/azure/sql-cosmos` — Azure SQL & Cosmos DB
+- [ ] `/azure/monitor` — Azure Monitor & App Insights
+- [ ] `/azure/devops-pipelines` — Azure DevOps & Pipelines
+- [ ] `/azure/cost-management` — Azure Cost Management
+- [ ] `/azure/security-defender` — Azure Security & Defender for Cloud
+- [ ] `/azure/key-vault` — Azure Key Vault
+- [ ] `/azure/service-bus` — Azure Service Bus
+- [ ] `/azure/container-apps` — Azure Container Apps
+- [ ] `/azure/redis` — Azure Cache for Redis
+- [ ] `/azure/api-management` — Azure API Management
+- [ ] `/azure/bicep` — Azure Bicep Deep-dive
+
+#### Linux — 19 topic pages
+
+- [ ] `/linux/fundamentals` — Linux Fundamentals
+- [ ] `/linux/file-system` — File System & Hierarchy
+- [ ] `/linux/essential-commands` — Essential Commands
+- [ ] `/linux/file-permissions` — File Permissions & Ownership
+- [ ] `/linux/users-groups` — Users & Groups
+- [ ] `/linux/process-management` — Process Management
+- [ ] `/linux/system-monitoring` — System Monitoring
+- [ ] `/linux/networking` — Networking Commands
+- [ ] `/linux/firewall` — Firewall & iptables
+- [ ] `/linux/ssh` — SSH & Remote Access
+- [ ] `/linux/bash-scripting` — Bash Scripting Basics
+- [ ] `/linux/bash-advanced` — Advanced Bash Scripting
+- [ ] `/linux/package-management` — Package Management
+- [ ] `/linux/systemd` — systemd & Services
+- [ ] `/linux/disk-storage` — Disk & Storage
+- [ ] `/linux/environment-variables` — Environment Variables & Shell Config
+- [ ] `/linux/log-analysis` — Log Analysis
+- [ ] `/linux/performance-tuning` — Performance Tuning
+- [ ] `/linux/vim` — Vim & Text Editors
+
+#### Terraform — 21 topic pages
+
+- [ ] `/terraform/fundamentals` — Terraform Fundamentals
+- [ ] `/terraform/providers` — Providers
+- [ ] `/terraform/variables` — Variables & Locals
+- [ ] `/terraform/outputs` — Outputs
+- [ ] `/terraform/resources` — Resources & Meta-Arguments
+- [ ] `/terraform/data-sources` — Data Sources
+- [ ] `/terraform/expressions` — Expressions & Dynamic Blocks
+- [ ] `/terraform/functions` — Built-in Functions
+- [ ] `/terraform/state` — Terraform State
+- [ ] `/terraform/remote-backends` — Remote Backends
+- [ ] `/terraform/workspaces` — Workspaces
+- [ ] `/terraform/modules` — Modules
+- [ ] `/terraform/module-patterns` — Module Patterns
+- [ ] `/terraform/provisioners` — Provisioners
+- [ ] `/terraform/import` — Import & Generated Config
+- [ ] `/terraform/cicd` — CI/CD Integration
+- [ ] `/terraform/testing` — Testing Terraform
+- [ ] `/terraform/security` — Security & Compliance
+- [ ] `/terraform/drift` — Drift Detection
+- [ ] `/terraform/refactoring` — Refactoring Terraform
+- [ ] `/terraform/opentofu` — OpenTofu
+
+#### Service Mesh — 19 topic pages
+
+- [ ] `/service-mesh/fundamentals` — Service Mesh Fundamentals
+- [ ] `/service-mesh/istio-architecture` — Istio Architecture
+- [ ] `/service-mesh/istio-install` — Istio Installation & Configuration
+- [ ] `/service-mesh/linkerd` — Linkerd
+- [ ] `/service-mesh/traffic-management` — Traffic Management
+- [ ] `/service-mesh/resilience` — Resilience Patterns
+- [ ] `/service-mesh/load-balancing` — Load Balancing
+- [ ] `/service-mesh/mtls` — mTLS & Certificate Management
+- [ ] `/service-mesh/authorization` — Authorization Policy
+- [ ] `/service-mesh/metrics` — Metrics & Observability
+- [ ] `/service-mesh/tracing` — Distributed Tracing
+- [ ] `/service-mesh/kiali` — Kiali Service Graph
+- [ ] `/service-mesh/gateway-api` — Kubernetes Gateway API
+- [ ] `/service-mesh/ingress-gateway` — Ingress Gateway
+- [ ] `/service-mesh/performance` — Service Mesh Performance
+- [ ] `/service-mesh/envoy` — Envoy Proxy Deep Dive
+- [ ] `/service-mesh/ambient-mesh` — Ambient Mesh
+- [ ] `/service-mesh/multi-cluster` — Multi-Cluster Mesh
+- [ ] `/service-mesh/consul` — Consul Service Mesh
+
+#### System Design — 24 topic pages
+
+- [ ] `/system-design/framework` — System Design Framework
+- [ ] `/system-design/capacity-estimation` — Capacity Estimation
+- [ ] `/system-design/cap-theorem` — CAP & PACELC Theorems
+- [ ] `/system-design/networking` — Networking Fundamentals
+- [ ] `/system-design/scaling` — Horizontal vs Vertical Scaling
+- [ ] `/system-design/load-balancing` — Load Balancing
+- [ ] `/system-design/caching` — Caching Strategies
+- [ ] `/system-design/cdn` — Content Delivery Networks
+- [ ] `/system-design/sharding` — Database Sharding
+- [ ] `/system-design/sql-vs-nosql` — SQL vs NoSQL
+- [ ] `/system-design/replication` — Replication Strategies
+- [ ] `/system-design/indexes` — Indexes & Query Optimisation
+- [ ] `/system-design/distributed-transactions` — Distributed Transactions
+- [ ] `/system-design/high-availability` — High Availability
+- [ ] `/system-design/fault-tolerance` — Fault Tolerance
+- [ ] `/system-design/distributed-tracing` — Distributed Tracing
+- [ ] `/system-design/disaster-recovery` — Disaster Recovery
+- [ ] `/system-design/url-shortener` — Design: URL Shortener
+- [ ] `/system-design/social-feed` — Design: Social Feed
+- [ ] `/system-design/chat-application` — Design: Chat Application
+- [ ] `/system-design/search-engine` — Design: Search Engine
+- [ ] `/system-design/payment-system` — Design: Payment System
+- [ ] `/system-design/video-streaming` — Design: Video Streaming
+- [ ] `/system-design/ai-ml-system-design` — Design: AI/ML Systems
+
+#### Architecture Patterns — 22 topic pages
+
+- [ ] `/arch-patterns/monolith-vs-modular` — Monolith vs Modular Monolith
+- [ ] `/arch-patterns/layered-architecture` — Layered Architecture
+- [ ] `/arch-patterns/clean-architecture` — Clean / Onion Architecture
+- [ ] `/arch-patterns/hexagonal-architecture` — Hexagonal Architecture
+- [ ] `/arch-patterns/vertical-slice` — Vertical Slice Architecture
+- [ ] `/arch-patterns/service-oriented` — Service-Oriented Architecture
+- [ ] `/arch-patterns/microservices-principles` — Microservices Principles
+- [ ] `/arch-patterns/service-communication` — Service Communication
+- [ ] `/arch-patterns/api-gateway-pattern` — API Gateway Pattern
+- [ ] `/arch-patterns/service-discovery` — Service Discovery
+- [ ] `/arch-patterns/circuit-breaker` — Circuit Breaker
+- [ ] `/arch-patterns/sidecar-service-mesh` — Sidecar & Service Mesh
+- [ ] `/arch-patterns/event-driven` — Event-Driven Architecture
+- [ ] `/arch-patterns/cqrs-event-sourcing` — CQRS & Event Sourcing
+- [ ] `/arch-patterns/saga-choreography` — Saga & Choreography
+- [ ] `/arch-patterns/inbox-outbox` — Inbox & Outbox Pattern
+- [ ] `/arch-patterns/ddd-core` — Domain-Driven Design Core
+- [ ] `/arch-patterns/bounded-contexts` — Bounded Contexts
+- [ ] `/arch-patterns/aggregates-domain-events` — Aggregates & Domain Events
+- [ ] `/arch-patterns/anti-corruption-layer` — Anti-Corruption Layer
+- [ ] `/arch-patterns/strangler-fig` — Strangler Fig Pattern
+- [ ] `/arch-patterns/backend-for-frontend` — Backend for Frontend (BFF)
+
+#### Design Patterns — 36 topic pages
+
+- [ ] `/design-patterns/singleton` — Singleton Pattern
+- [ ] `/design-patterns/factory-method` — Factory Method Pattern
+- [ ] `/design-patterns/abstract-factory` — Abstract Factory Pattern
+- [ ] `/design-patterns/builder` — Builder Pattern
+- [ ] `/design-patterns/prototype` — Prototype Pattern
+- [ ] `/design-patterns/object-pool` — Object Pool Pattern
+- [ ] `/design-patterns/adapter` — Adapter Pattern
+- [ ] `/design-patterns/bridge` — Bridge Pattern
+- [ ] `/design-patterns/composite` — Composite Pattern
+- [ ] `/design-patterns/decorator` — Decorator Pattern
+- [ ] `/design-patterns/facade` — Facade Pattern
+- [ ] `/design-patterns/flyweight` — Flyweight Pattern
+- [ ] `/design-patterns/proxy` — Proxy Pattern
+- [ ] `/design-patterns/chain-of-responsibility` — Chain of Responsibility
+- [ ] `/design-patterns/command` — Command Pattern
+- [ ] `/design-patterns/iterator` — Iterator Pattern
+- [ ] `/design-patterns/mediator` — Mediator Pattern
+- [ ] `/design-patterns/memento` — Memento Pattern
+- [ ] `/design-patterns/observer` — Observer Pattern
+- [ ] `/design-patterns/state` — State Pattern
+- [ ] `/design-patterns/strategy` — Strategy Pattern
+- [ ] `/design-patterns/template-method` — Template Method Pattern
+- [ ] `/design-patterns/visitor` — Visitor Pattern
+- [ ] `/design-patterns/null-object` — Null Object Pattern
+- [ ] `/design-patterns/repository` — Repository Pattern
+- [ ] `/design-patterns/unit-of-work` — Unit of Work Pattern
+- [ ] `/design-patterns/cqrs` — CQRS
+- [ ] `/design-patterns/event-sourcing` — Event Sourcing
+- [ ] `/design-patterns/saga` — Saga Pattern
+- [ ] `/design-patterns/outbox` — Outbox Pattern
+- [ ] `/design-patterns/specification` — Specification Pattern
+- [ ] `/design-patterns/clean-architecture` — Clean Architecture
+- [ ] `/design-patterns/solid` — SOLID Principles
+- [ ] `/design-patterns/grasp` — GRASP Principles
+- [ ] `/design-patterns/dry-kiss-yagni` — DRY, KISS & YAGNI
+- [ ] `/design-patterns/dependency-inversion` — Dependency Inversion
+
+#### Security — 23 topic pages
+
+- [ ] `/security/fundamentals` — Security Fundamentals
+- [ ] `/security/owasp-top-10` — OWASP Top 10
+- [ ] `/security/threat-modelling` — Threat Modelling
+- [ ] `/security/secure-coding` — Secure Coding Practices
+- [ ] `/security/password-security` — Password Security
+- [ ] `/security/oauth-oidc` — OAuth 2.0 & OIDC
+- [ ] `/security/jwt` — JWT (JSON Web Tokens)
+- [ ] `/security/mfa` — Multi-Factor Authentication
+- [ ] `/security/sso` — Single Sign-On (SSO)
+- [ ] `/security/rbac-abac` — RBAC & ABAC
+- [ ] `/security/claims-identity` — Claims & Identity
+- [ ] `/security/api-security` — API Security
+- [ ] `/security/xss` — Cross-Site Scripting (XSS)
+- [ ] `/security/csrf-clickjacking` — CSRF & Clickjacking
+- [ ] `/security/injection` — Injection Attacks
+- [ ] `/security/security-headers` — Security Headers
+- [ ] `/security/tls-https` — TLS & HTTPS
+- [ ] `/security/secrets-management` — Secrets Management
+- [ ] `/security/container-security` — Container Security
+- [ ] `/security/symmetric-encryption` — Symmetric Encryption
+- [ ] `/security/asymmetric-cryptography` — Asymmetric Cryptography
+- [ ] `/security/hashing` — Hashing
+- [ ] `/security/supply-chain` — Supply Chain Security
+
+#### API Design — 19 topic pages
+
+- [ ] `/api-design/rest-fundamentals` — REST Fundamentals
+- [ ] `/api-design/resource-url-design` — Resource & URL Design
+- [ ] `/api-design/http-methods-status-codes` — HTTP Methods & Status Codes
+- [ ] `/api-design/pagination-patterns` — Pagination Patterns
+- [ ] `/api-design/api-versioning` — API Versioning Strategies
+- [ ] `/api-design/error-response-design` — Error Response Design
+- [ ] `/api-design/hateoas-hypermedia` — HATEOAS & Hypermedia
+- [ ] `/api-design/protocol-buffers` — Protocol Buffers
+- [ ] `/api-design/grpc-service-patterns` — gRPC Service Patterns
+- [ ] `/api-design/grpc-web-transcoding` — gRPC-Web & Transcoding
+- [ ] `/api-design/graphql-fundamentals` — GraphQL Fundamentals
+- [ ] `/api-design/graphql-vs-rest` — GraphQL vs REST
+- [ ] `/api-design/websockets-sse-polling` — WebSockets vs SSE vs Polling
+- [ ] `/api-design/webhook-design` — Webhook Design
+- [ ] `/api-design/api-design-principles` — API Design Principles
+- [ ] `/api-design/openapi-contracts` — OpenAPI & Contracts
+- [ ] `/api-design/api-security` — API Security
+- [ ] `/api-design/breaking-changes` — Breaking Changes
+- [ ] `/api-design/rate-limiting` — Rate Limiting
+
+#### Observability — 20 topic pages
+
+- [ ] `/observability/observability-fundamentals` — Observability Fundamentals
+- [ ] `/observability/opentelemetry` — OpenTelemetry
+- [ ] `/observability/sli-slo-sla` — SLIs, SLOs & SLAs
+- [ ] `/observability/prometheus-metrics` — Prometheus & Metrics
+- [ ] `/observability/grafana-dashboards` — Grafana Dashboards
+- [ ] `/observability/custom-app-metrics` — Custom App Metrics
+- [ ] `/observability/infrastructure-metrics` — Infrastructure Metrics
+- [ ] `/observability/cloud-native-monitoring` — Cloud-Native Monitoring
+- [ ] `/observability/structured-logging` — Structured Logging
+- [ ] `/observability/log-aggregation` — Log Aggregation
+- [ ] `/observability/log-best-practices` — Log Best Practices
+- [ ] `/observability/distributed-tracing` — Distributed Tracing
+- [ ] `/observability/opentelemetry-tracing` — OTel Tracing Deep Dive
+- [ ] `/observability/performance-profiling` — Performance Profiling
+- [ ] `/observability/alerting-design` — Alerting Design
+- [ ] `/observability/on-call-incidents` — On-Call & Incidents
+- [ ] `/observability/error-budgets-toil` — Error Budgets & Toil
+- [ ] `/observability/chaos-engineering` — Chaos Engineering
+- [ ] `/observability/ebpf-observability` — eBPF Observability
+- [ ] `/observability/observability-maturity` — Observability Maturity
+
+#### MongoDB — 21 topic pages
+
+- [ ] `/mongodb/fundamentals` — MongoDB Fundamentals
+- [ ] `/mongodb/installation-setup` — Installation & Setup
+- [ ] `/mongodb/crud-operations` — CRUD Operations
+- [ ] `/mongodb/update-operators` — Update Operators
+- [ ] `/mongodb/query-operators` — Query Operators
+- [ ] `/mongodb/array-queries` — Array Queries
+- [ ] `/mongodb/projections-sorting` — Projections & Sorting
+- [ ] `/mongodb/aggregation-pipeline` — Aggregation Pipeline
+- [ ] `/mongodb/lookup-joins` — $lookup & Joins
+- [ ] `/mongodb/aggregation-expressions` — Aggregation Expressions
+- [ ] `/mongodb/schema-design-patterns` — Schema Design Patterns
+- [ ] `/mongodb/data-modelling` — Data Modelling
+- [ ] `/mongodb/time-series` — Time Series Collections
+- [ ] `/mongodb/indexes` — Indexes
+- [ ] `/mongodb/query-performance` — Query Performance & explain()
+- [ ] `/mongodb/transactions` — Transactions
+- [ ] `/mongodb/change-streams` — Change Streams
+- [ ] `/mongodb/replication-sharding` — Replication & Sharding
+- [ ] `/mongodb/security` — Security & Authentication
+- [ ] `/mongodb/mongodb-nodejs` — MongoDB with Node.js
+- [ ] `/mongodb/atlas-search` — Atlas Search & Vector Search
+
+#### Redis — 21 topic pages
+
+- [ ] `/redis/fundamentals` — Redis Fundamentals
+- [ ] `/redis/installation-setup` — Installation & CLI
+- [ ] `/redis/strings` — Strings
+- [ ] `/redis/hashes` — Hashes
+- [ ] `/redis/lists` — Lists
+- [ ] `/redis/sets` — Sets
+- [ ] `/redis/sorted-sets` — Sorted Sets
+- [ ] `/redis/key-commands` — Key Commands & Patterns
+- [ ] `/redis/transactions` — Transactions (MULTI/EXEC)
+- [ ] `/redis/lua-scripting` — Lua Scripting
+- [ ] `/redis/persistence` — Persistence (RDB & AOF)
+- [ ] `/redis/pub-sub` — Pub/Sub Messaging
+- [ ] `/redis/streams` — Streams
+- [ ] `/redis/caching-patterns` — Caching Patterns
+- [ ] `/redis/eviction-policies` — Eviction Policies
+- [ ] `/redis/rate-limiting` — Rate Limiting
+- [ ] `/redis/replication-sentinel` — Replication & Sentinel
+- [ ] `/redis/redis-cluster` — Redis Cluster
+- [ ] `/redis/redis-stack` — Redis Stack & Modules
+- [ ] `/redis/redis-nodejs` — Redis with Node.js
+- [ ] `/redis/security` — Redis Security
+
+#### GraphQL — 20 topic pages
+
+- [ ] `/graphql/fundamentals` — GraphQL Fundamentals
+- [ ] `/graphql/schema-definition-language` — Schema Definition Language
+- [ ] `/graphql/type-system` — Type System Deep Dive
+- [ ] `/graphql/queries` — GraphQL Queries
+- [ ] `/graphql/variables-arguments` — Variables & Arguments
+- [ ] `/graphql/directives` — Directives
+- [ ] `/graphql/mutations` — Mutations
+- [ ] `/graphql/error-handling` — Mutation Error Handling
+- [ ] `/graphql/subscriptions` — Subscriptions
+- [ ] `/graphql/resolvers` — Resolvers
+- [ ] `/graphql/dataloader` — DataLoader & N+1 Problem
+- [ ] `/graphql/auth` — Authentication & Authorization
+- [ ] `/graphql/apollo-server` — Apollo Server
+- [ ] `/graphql/pagination` — Pagination Patterns
+- [ ] `/graphql/apollo-client` — Apollo Client
+- [ ] `/graphql/client-caching` — Client-Side Caching
+- [ ] `/graphql/code-generation` — Code Generation
+- [ ] `/graphql/performance` — Performance & Security
+- [ ] `/graphql/federation` — Schema Federation
+- [ ] `/graphql/testing` — Testing GraphQL
+
+#### Messaging/Kafka — 20 topic pages
+
+- [ ] `/messaging/messaging-fundamentals` — Messaging Fundamentals
+- [ ] `/messaging/message-queues-vs-streams` — Message Queues vs Event Streams
+- [ ] `/messaging/rabbitmq-core` — RabbitMQ Core Concepts
+- [ ] `/messaging/rabbitmq-exchanges` — RabbitMQ Exchanges
+- [ ] `/messaging/rabbitmq-patterns` — RabbitMQ Patterns
+- [ ] `/messaging/kafka-architecture` — Kafka Architecture
+- [ ] `/messaging/kafka-producers-consumers` — Producers & Consumers
+- [ ] `/messaging/kafka-streams` — Kafka Streams & KSQL
+- [ ] `/messaging/kafka-connect` — Kafka Connect
+- [ ] `/messaging/schema-registry` — Schema Registry
+- [ ] `/messaging/messaging-patterns` — Enterprise Messaging Patterns
+- [ ] `/messaging/saga-pattern` — Saga Pattern
+- [ ] `/messaging/outbox-pattern` — Outbox Pattern
+- [ ] `/messaging/azure-service-bus` — Azure Service Bus
+- [ ] `/messaging/azure-event-grid` — Event Grid & Event Hubs
+- [ ] `/messaging/aws-sqs` — AWS SQS
+- [ ] `/messaging/aws-sns-eventbridge` — AWS SNS & EventBridge
+- [ ] `/messaging/idempotency` — Idempotency & Exactly-Once
+- [ ] `/messaging/message-ordering` — Message Ordering
+- [ ] `/messaging/backpressure` — Backpressure & Flow Control
+
+#### DSA — 21 topic pages
+
+- [ ] `/dsa/big-o` — Big-O Notation
+- [ ] `/dsa/arrays` — Arrays
+- [ ] `/dsa/strings` — Strings
+- [ ] `/dsa/hash-tables` — Hash Tables
+- [ ] `/dsa/stacks-queues` — Stacks & Queues
+- [ ] `/dsa/linked-lists` — Singly Linked Lists
+- [ ] `/dsa/doubly-linked-lists` — Doubly Linked Lists
+- [ ] `/dsa/binary-trees` — Binary Trees
+- [ ] `/dsa/bst` — Binary Search Trees
+- [ ] `/dsa/heaps` — Heaps & Priority Queues
+- [ ] `/dsa/graphs-bfs-dfs` — Graphs: BFS & DFS
+- [ ] `/dsa/graph-algorithms` — Graph Algorithms
+- [ ] `/dsa/basic-sorts` — Basic Sorting Algorithms
+- [ ] `/dsa/advanced-sorts` — Advanced Sorting Algorithms
+- [ ] `/dsa/binary-search` — Binary Search
+- [ ] `/dsa/recursion-backtracking` — Recursion & Backtracking
+- [ ] `/dsa/dynamic-programming` — Dynamic Programming
+- [ ] `/dsa/dp-patterns` — DP Patterns
+- [ ] `/dsa/trie` — Tries
+- [ ] `/dsa/bit-manipulation` — Bit Manipulation
+- [ ] `/dsa/greedy` — Greedy Algorithms
+
+#### Testing — 19 topic pages
+
+- [ ] `/testing-hub/testing-fundamentals` — Testing Fundamentals
+- [ ] `/testing-hub/jest-fundamentals` — Jest Fundamentals
+- [ ] `/testing-hub/mocking-spies` — Mocking & Spies
+- [ ] `/testing-hub/xunit` — xUnit (.NET Testing)
+- [ ] `/testing-hub/tdd` — Test-Driven Development
+- [ ] `/testing-hub/test-doubles` — Test Doubles
+- [ ] `/testing-hub/integration-testing` — Integration Testing
+- [ ] `/testing-hub/testing-databases` — Testing with Databases
+- [ ] `/testing-hub/angular-testing` — Angular Testing
+- [ ] `/testing-hub/react-testing-library` — React Testing Library
+- [ ] `/testing-hub/playwright` — Playwright
+- [ ] `/testing-hub/cypress` — Cypress
+- [ ] `/testing-hub/api-testing` — API Testing
+- [ ] `/testing-hub/contract-testing` — Contract Testing (Pact)
+- [ ] `/testing-hub/snapshot-testing` — Snapshot Testing
+- [ ] `/testing-hub/vitest` — Vitest
+- [ ] `/testing-hub/msw` — MSW — Mock Service Worker
+- [ ] `/testing-hub/visual-regression` — Visual Regression Testing
+- [ ] `/testing-hub/property-based-testing` — Property-Based Testing
+
+#### AI/ML — 19 topic pages
+
+- [ ] `/ai/ml-fundamentals` — AI & ML Fundamentals
+- [ ] `/ai/math-for-ml` — Mathematics for ML
+- [ ] `/ai/linear-logistic-regression` — Linear & Logistic Regression
+- [ ] `/ai/decision-trees` — Decision Trees & Random Forests
+- [ ] `/ai/gradient-boosting` — Gradient Boosting (XGBoost)
+- [ ] `/ai/clustering` — Clustering & Dimensionality Reduction
+- [ ] `/ai/neural-networks` — Neural Networks
+- [ ] `/ai/computer-vision` — CNNs & Computer Vision
+- [ ] `/ai/transformers` — Transformers & Attention
+- [ ] `/ai/llm-fundamentals` — LLM Fundamentals
+- [ ] `/ai/fine-tuning` — Fine-tuning & RLHF
+- [ ] `/ai/rag` — RAG
+- [ ] `/ai/prompt-engineering` — Prompt Engineering
+- [ ] `/ai/ai-agents` — AI Agents & Tool Use
+- [ ] `/ai/vector-databases` — Vector Databases
+- [ ] `/ai/mlops` — MLOps & Model Deployment
+- [ ] `/ai/hugging-face` — Hugging Face & Model Hub
+- [ ] `/ai/evaluating-llms` — Evaluating LLM Outputs
+- [ ] `/ai/ai-engineering` — AI Engineering Patterns
+
+---
+
+### Explicitly out of scope for this phase
+
+- Rewriting or thinning existing topic pages — they keep their current Phase 2 content untouched.
+- Building subtopic pages for reference/practice pages (cheatsheet, interview-prep, glossary,
+  decision-guides, etc.) — those aren't "topics" with sub-concepts, skip them.
+- Any hub not yet on real content at the topic-page tier (as of 2026-07-03 that's Rust and QA
+  Engineering — see Phase 11. Build their topic pages first; subtopic pages for them come later,
+  after Phase 10's pilot format is locked and after their own topic-page tier is complete).
+
+---
+
+## Phase 11 — New Hubs: Rust & QA Engineering
+
+**Status: PLANNING (added 2026-07-03). Not started.** These are two ordinary new hubs, built
+the same way every hub in Phase 1–8 was: full topic-page tier (Phase 2 Enhanced Content
+Standard — theory, code tabs, common mistakes, challenge, quiz, Q&A, revision card), following
+the "Adding a whole NEW technology hub" checklist in `CLAUDE.md`. They are not part of Phase 10
+(subtopic pages) — that tier comes later, after a hub already has its topic pages, same as every
+other hub.
+
+### 11A — Rust hub
+
+**Why:** Rust is now a mainstream, high-demand systems language (used in browsers, OS kernels,
+CLI tooling, and increasingly backend services) and is a clear gap next to the existing Go and
+C++-adjacent systems coverage. Fits the existing `backend/` hub group alongside Go, Python, Node.js.
+
+- Folder: `src/app/components/backend/rust/`
+- Route: `/rust`
+- Search prefix: `rust-`
+- Progress key: `rustTotal`
+- Accent: **proposed** `#ce422b` (Rust's own brand "rust" orange), tint `#fdf2ee` — **verify
+  against the existing theming table before scaffolding**; it sits close to DSA's amber
+  (`#92400e`) and Messaging's burnt-orange (`#9a3412`) and may need to shift hue or lean harder
+  into red to stay visually distinct in the left nav / hub cards.
+- Icon: text glyph, proposed `Rs` or the gear/crab motif rendered as a short text glyph (site
+  convention for solid-fill hubs is a 2–3 char text abbreviation, not emoji — see CLAUDE.md
+  icon pattern rules) — confirm final glyph during scaffolding.
+- Challenge.language: add `'rust'` if the shared `code-block`/`challenge-block` components need a
+  new language tag registered (check `CodeTab`/`Challenge` language unions before the first page).
+
+**Proposed topic list (~21 topics + 2 reference — refine during Working Method rule 4 pre-hub
+research before writing page 1; this is a starting shape, not a locked spec):**
+
+Foundations:
+1. Rust Fundamentals — cargo, rustc, variables, mutability, scalar/compound types, control flow
+2. Ownership & Borrowing — move semantics, the borrow checker, borrowing rules
+3. Lifetimes — lifetime annotations, elision rules, common lifetime compiler errors
+4. Structs & Enums — struct types, enum variants, `impl` blocks, methods vs associated functions
+5. Pattern Matching — `match`, `if let`, `while let`, destructuring
+6. Error Handling — `Result<T, E>`, `Option<T>`, the `?` operator, custom error types, panic vs recoverable errors
+7. Traits & Generics — trait definitions, trait bounds, generic functions/structs, default implementations
+8. Collections — `Vec`, `HashMap`, `HashSet`, `String` vs `&str`, iterators and iterator adapters
+9. Modules & Cargo — module system, visibility, workspaces, `Cargo.toml`, crates.io
+
+Memory & Concurrency:
+10. Smart Pointers — `Box`, `Rc`, `Arc`, `RefCell`, `Weak`, interior mutability
+11. Concurrency & Threads — `std::thread`, `Mutex`, `Arc<Mutex<T>>`, message passing with channels
+12. Async/Await — the Tokio runtime, futures, `async fn`, spawning and awaiting tasks
+13. Unsafe Rust & FFI — `unsafe` blocks, raw pointers, calling into C
+
+Building things:
+14. Web Frameworks — Actix-web / Axum, routing, extractors, middleware
+15. Building REST APIs — request/response handling, JSON with Serde
+16. Serialization — Serde derive macros, custom (de)serialization
+17. CLI Tools — `clap`, argument parsing, building a real command-line app
+18. WASM with Rust — compiling to WebAssembly, `wasm-bindgen`
+
+Craft & ops:
+19. Testing in Rust — `#[test]`, integration tests (`tests/`), mocking, property-based testing
+20. Macros — declarative macros (`macro_rules!`), an introduction to procedural macros
+21. Performance & Profiling — benchmarking, flamegraphs, avoiding unnecessary clones/allocations
+
+Reference:
+- `rust-cheatsheet` — ownership rules, syntax, common patterns, one page
+- `rust-interview-prep` — 30+ Q&A across ownership, lifetimes, traits, concurrency, error handling
+
+### 11B — QA Engineering hub
+
+**Why — and how this differs from the existing Testing hub:** DevHub already has a `fundamentals/
+testing` hub (`/testing-hub`, accent indigo `#6366f1`, `testTotal`). That hub is written from a
+**developer's** point of view — how to write and run automated tests as code (Jest, Vitest,
+xUnit, Playwright/Cypress as testing libraries, TDD, mutation testing, contract testing). It does
+not cover the QA discipline itself: manual testing process, test case design, defect lifecycle,
+test management, exploratory testing, non-functional testing, or the QA-specific tooling
+ecosystem (Selenium, Postman, JMeter, TestRail/Jira, ISTQB terminology). A dedicated **QA
+Engineering** hub fills that gap for a quality-assurance / SDET audience rather than a
+software-engineer-who-also-writes-tests audience.
+
+**Do not duplicate the existing Testing hub's content.** Where topics genuinely overlap (e.g.
+Playwright, Cypress, API testing), the QA hub's version must be written from a different angle —
+QA workflow, test case → automation mapping, reporting, tool selection — not "how do I write a
+`test()` block", which the Testing hub already covers well. If a page ends up being a near-copy
+of an existing Testing-hub page, that's a signal the topic doesn't belong in this hub, or needs a
+sharper QA-specific angle.
+
+- Folder: `src/app/components/fundamentals/qa/` (sits alongside `fundamentals/testing`, `fundamentals/dsa`, `fundamentals/ai`)
+- Route: `/qa` (confirm no collision with the existing `/testing-hub` route or any other route)
+- Search prefix: `qa-`
+- Progress key: `qaTotal`
+- Accent: **proposed** `#65a30d` (olive/lime green — distinct from WebPerf's `#16a34a` and Node's
+  `#339933`), tint `#f7fee7` — **verify against the existing theming table before scaffolding**.
+- Icon: text glyph, proposed `QA`.
+
+**Proposed topic list (~22 topics + 2 reference — refine during pre-hub research before writing
+page 1; this is a starting shape, not a locked spec):**
+
+Foundations:
+1. QA Fundamentals & SDLC/STLC — software development lifecycle vs software testing lifecycle, QA vs QC vs Testing
+2. Test Case Design Techniques — equivalence partitioning, boundary value analysis, decision tables, state transition testing
+3. Test Planning & Strategy — test plan documents, entry/exit criteria, risk-based testing
+4. Requirements Analysis & Traceability — requirement gathering, the requirements traceability matrix (RTM)
+5. Defect/Bug Lifecycle — bug reporting, severity vs priority, triage, defect tracking
+
+Test types:
+6. Functional Testing — black-box testing fundamentals, positive/negative test design
+7. Regression Testing — regression suites, test selection strategies, when to re-run what
+8. Smoke & Sanity Testing — build verification testing, when to run each
+9. Exploratory Testing — session-based test management, charters, testing heuristics
+10. Usability Testing — UX evaluation, heuristic evaluation
+11. Accessibility Testing for QA — WCAG from a tester's checklist, screen reader spot-checks, axe/Lighthouse audits
+12. Cross-Browser & Cross-Device Testing — browser/device matrices, responsive testing, BrowserStack/Sauce Labs
+13. Mobile App Testing — Android/iOS testing considerations, emulators vs real devices
+
+Automation (QA angle, not dev angle):
+14. Test Automation Fundamentals — when to automate, ROI, the automation pyramid from a QA lens
+15. Selenium WebDriver — locators, explicit/implicit waits, Page Object Model
+16. Playwright & Cypress for QA Workflows — mapping manual test cases to automated suites, reporting
+17. API Testing for QA — Postman, REST Assured, contract validation from a tester's perspective
+18. Automation Framework Design — Page Object Model, data-driven, keyword-driven, hybrid frameworks
+
+Non-functional & process:
+19. Performance & Load Testing for QA — JMeter, k6, reading results and flagging bottlenecks
+20. Security Testing Basics for QA — OWASP awareness, basic pen-testing concepts for testers (not a security-engineer deep-dive — that's the existing Security hub's job)
+21. Agile & Scrum Testing Practices — testing inside sprints, Definition of Done, BDD/Gherkin for QA
+22. Test Management & Metrics — Jira/TestRail/Zephyr, coverage metrics, reporting to stakeholders
+
+Reference:
+- `qa-cheatsheet` — ISTQB-style glossary, test design technique quick-reference
+- `qa-interview-prep` — 30+ Q&A across manual testing, automation, defect management, agile QA
+
+### Wiring (both hubs — do not skip any step)
+
+Follow the full "WIRING CHECKLIST" in `CLAUDE.md` for **each individual page**, and the "Adding a
+whole NEW technology hub" checklist for the **hub itself** (accent/tint, home page, routes block,
+`currentSection()`, left nav block + `.section-<tech>` colors, breadcrumb `TECH_SECTIONS` +
+labels map, sidebar host class + accent, search route-key prefix, progress service total,
+hub-home card flip + hero stat + What's New). Do the pre-hub research step (Working Method rule
+4) before writing either hub's first page — the topic lists above are a planning-time draft, not
+a substitute for that research.
+
+### Sequencing
+
+Build order: **Rust first, then QA Engineering** (Rust's topic list is more settled/conventional
+for a systems language hub; QA Engineering has more genuinely open content-design questions — the
+overlap-avoidance rule with the existing Testing hub — so doing Rust first banks a clean win and
+leaves more attention for getting the QA hub's angle right). Same "one page at a time, no
+batching" discipline as every other phase. Update the Current State table and this file's Done
+History after each page, same as always.
 
 ---
 
