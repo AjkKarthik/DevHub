@@ -1409,7 +1409,7 @@ off here with a date.
 - [x] `/angular/ag-grid` — AG Grid with Angular (2026-07-02 — 3 subtopics: custom-cell-renderers-angular-components, editable-cells-value-setters, master-detail-row-grouping)
 - [x] `/angular/tanstack-query` — TanStack Query (2026-07-02 — 3 subtopics: optimistic-updates-rollback, dependent-and-parallel-queries, infinite-queries-pagination)
 - [x] `/angular/date-fns` — date-fns in Angular (2026-07-02 — 3 subtopics: intervals-and-recurring-events, timezone-handling-date-fns-tz, reactive-date-range-picker)
-- [ ] `/angular/animations` — Angular Animations
+- [x] `/angular/animations` — Angular Animations (2026-07-02 — 3 subtopics: animation-callbacks-lifecycle-events, group-sequence-parallel-orchestration, css-only-and-view-transitions-alternatives)
 - [ ] `/angular/cva` — Control Value Accessor
 - [ ] `/angular/testing` — Testing Angular
 - [ ] `/angular/tailwind` — Tailwind CSS in Angular
