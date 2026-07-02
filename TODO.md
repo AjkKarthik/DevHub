@@ -1388,7 +1388,7 @@ off here with a date.
 - [x] `/angular/forms` — Template-Driven vs Reactive Forms (2026-07-02 — 4 subtopics: template-driven-vs-reactive, formgroup-formcontrol-formarray, cross-field-validators, typed-forms)
 - [x] `/angular/http` — HTTP Client (2026-07-02 — 4 subtopics: httpclient-setup, get-requests, mutation-requests, error-handling-retry)
 - [x] `/angular/http-interceptors` — HTTP Interceptors (2026-07-02 — 4 subtopics: what-are-interceptors, auth-interceptor-token-refresh, global-error-interceptor, loading-spinner-httpcontext)
-- [ ] `/angular/parent-child` — Parent-Child Communication
+- [x] `/angular/parent-child` — Parent-Child Communication (2026-07-02 — 5 subtopics: input-signals, output-signals, model-two-way-binding, viewchild-viewchildren, contentchild-migration)
 - [ ] `/angular/form-array` — FormArray — Dynamic Fields
 - [ ] `/angular/defer` — @defer — Deferred Loading
 - [ ] `/angular/material` — Angular Material
