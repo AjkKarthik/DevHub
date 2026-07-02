@@ -1425,7 +1425,7 @@ off here with a date.
 - [x] `/angular/zoneless` — Zoneless Angular (2026-07-03 — 3 subtopics: auditing-a-codebase-for-zoneless-readiness, zoneless-ssr-and-incremental-hydration, when-ngzone-run-is-actually-unnecessary)
 - [x] `/angular/signal-effects` — Signal Effects (2026-07-03 — 3 subtopics: testing-signal-effects-and-cleanup, afterrendereffect-for-dom-measurements, debouncing-effects-for-expensive-side-effects)
 - [x] `/angular/typed-forms` — Typed Reactive Forms (2026-07-03 — 3 subtopics: testing-typed-reactive-forms, writing-type-safe-custom-validators, populating-a-typed-form-from-resource)
-- [ ] `/angular/host-directives` — Host Directives
+- [x] `/angular/host-directives` — Host Directives (2026-07-03 — 3 subtopics: testing-components-that-use-hostdirectives, coordinating-multiple-stacked-host-directives, optional-host-directive-injection-for-shared-components)
 - [ ] `/angular/let-template-vars` — @let Template Variables
 - [ ] `/angular/standalone-migration` — Standalone Migration
 - [ ] `/angular/error-handling-patterns` — Error Handling Patterns
