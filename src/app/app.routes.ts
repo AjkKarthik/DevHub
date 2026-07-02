@@ -15,6 +15,7 @@ export const routes: Routes = [
         { path: 'computed',            loadComponent: () => import('./components/angular/counter/subtopics/computed/computed').then(m => m.ComputedSubtopic) },
         { path: 'effects',             loadComponent: () => import('./components/angular/counter/subtopics/effects/effects').then(m => m.EffectsSubtopic) },
         { path: 'control-flow',        loadComponent: () => import('./components/angular/counter/subtopics/control-flow/control-flow').then(m => m.ControlFlowSubtopic) },
+        { path: 'readonly-and-services', loadComponent: () => import('./components/angular/counter/subtopics/readonly-and-services/readonly-and-services').then(m => m.ReadonlyAndServicesSubtopic) },
       ] },
       { path: 'todo',               canActivate: [authGuard], loadComponent: () => import('./components/angular/todo/todo').then(m => m.TodoComponent) },
       { path: 'forms',              loadComponent: () => import('./components/angular/forms-demo/forms-demo').then(m => m.FormsDemo) },

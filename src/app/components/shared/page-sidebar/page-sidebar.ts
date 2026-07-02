@@ -892,6 +892,28 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'counter/readonly-and-services': {
+    apis: ['@Injectable', 'providedIn', '.asReadonly()', 'inject()'],
+    related: [
+      { label: '@if/@for — previous',       route: '/angular/counter/control-flow' },
+      { label: 'Signals & State (overview)', route: '/angular/counter' },
+      { label: 'RxJS Interop — next',        route: '/angular/counter/rxjs-interop' },
+    ],
+    tip: '.asReadonly() is a live linked view, not a copy — it always reflects the private signal\'s current value, with no risk of drifting out of sync.',
+    docs: [
+      { label: 'Signals Overview', url: 'https://angular.dev/guide/signals'    },
+      { label: 'Dependency Injection Guide', url: 'https://angular.dev/guide/di' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A service needs providedIn: \'root\' (or root-level registration) to be a true app-wide singleton — providing it in a component\'s own providers array creates a new instance per component instead.',
+      'Exposing a public writable signal instead of readonly + methods removes all validation/control over what values are ever set — any injecting component could set anything.',
+      'computed() defined on the service is shared and memoised across every consumer — it does not recompute separately per component.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

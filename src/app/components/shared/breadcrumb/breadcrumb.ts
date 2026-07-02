@@ -10,6 +10,7 @@ const ROUTE_LABELS: Record<string, string> = {
   'computed':           'computed() — Derived State',
   'effects':            'effect() — Reactive Side Effects',
   'control-flow':       '@if and @for — Control Flow',
+  'readonly-and-services': 'Signals in Services',
   'templates':          'Template Syntax',
   'directives':         'Directives',
   'lifecycle':          'Lifecycle Hooks',

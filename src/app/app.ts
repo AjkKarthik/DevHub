@@ -48,6 +48,7 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'computed() — Derived State', route: '/angular/counter/computed' },
     { label: 'effect() — Reactive Side Effects', route: '/angular/counter/effects' },
     { label: '@if and @for — Control Flow', route: '/angular/counter/control-flow' },
+    { label: 'Signals in Services', route: '/angular/counter/readonly-and-services' },
   ],
 };
 

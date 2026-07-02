@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signals &amp; Reactive State"
+    topicRoute="/angular/counter"
+    subtopicLabel="Signals in Services" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Signals in Services — Sharing State Across Components</h1>
+  <p class="page-subtitle">
+    A signal on a component only that component can see. Move it to an injectable
+    service and every component in the app can share the exact same state —
+    no @Input/@Output plumbing required.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>CartService</code> holds a private writable signal, exposes it as
+      <code>readonly</code>, and derives a <code>total</code> with <code>computed()</code> —
+      all shared through one injected singleton.
+    </p>
+    <app-live-playground
+      title="Signals in services"
+      template="angular-cli"
+      openFile="src/app/cart.service.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      You now have the full pattern for shared, encapsulated state: <code>signal()</code> and
+      <code>computed()</code> living on a service, exposed as <code>readonly</code>, mutated
+      only through methods you control. Last stop: how signals connect to the RxJS
+      <code>Observable</code>s you'll still meet in HTTP calls and route params, via
+      <code>toSignal()</code> and <code>toObservable()</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signals & Reactive State"
+    topicRoute="/angular/counter"
+    [prev]="{ label: '@if and @for — Control Flow', route: '/angular/counter/control-flow' }"
+    [next]="{ label: 'RxJS Interop', route: '/angular/counter/rxjs-interop' }" />
+</div>
