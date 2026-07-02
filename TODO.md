@@ -1422,7 +1422,7 @@ off here with a date.
 - [x] `/angular/ng-image` — NgOptimizedImage (2026-07-03 — 3 subtopics: custom-loader-with-blur-up-lqip-placeholder, testing-components-that-use-ngoptimizedimage, measuring-lcp-impact-with-performanceobserver)
 - [x] `/angular/destroy-ref` — DestroyRef & takeUntilDestroyed (2026-07-03 — 3 subtopics: testing-destroyref-cleanup-and-takeuntildestroyed, runininjectioncontext-for-composables-outside-construction, wrapping-a-non-observable-third-party-api)
 - [x] `/angular/linked-signal` — linkedSignal() (2026-07-03 — 3 subtopics: testing-linkedsignal-reset-behavior, linkedsignal-with-resource-for-editable-drafts, debugging-unexpected-linkedsignal-resets)
-- [ ] `/angular/zoneless` — Zoneless Angular
+- [x] `/angular/zoneless` — Zoneless Angular (2026-07-03 — 3 subtopics: auditing-a-codebase-for-zoneless-readiness, zoneless-ssr-and-incremental-hydration, when-ngzone-run-is-actually-unnecessary)
 - [ ] `/angular/signal-effects` — Signal Effects
 - [ ] `/angular/typed-forms` — Typed Reactive Forms
 - [ ] `/angular/host-directives` — Host Directives
