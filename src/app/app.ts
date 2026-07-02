@@ -187,6 +187,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Dependent & Parallel Queries', route: '/angular/tanstack-query/dependent-and-parallel-queries' },
     { label: 'Infinite Queries & Pagination', route: '/angular/tanstack-query/infinite-queries-pagination' },
   ],
+  'date-fns': [
+    { label: 'Intervals & Recurring Events', route: '/angular/date-fns/intervals-and-recurring-events' },
+    { label: 'Timezone Handling with date-fns-tz', route: '/angular/date-fns/timezone-handling-date-fns-tz' },
+    { label: 'Reactive Date Range Picker', route: '/angular/date-fns/reactive-date-range-picker' },
+  ],
 };
 
 @Component({

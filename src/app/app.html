@@ -1668,7 +1668,22 @@
         <span class="nl-text">date-fns</span>
         @if (progress.isDone('date-fns')) {<span class="nl-done">✓</span>}
         @if (diff('date-fns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('date-fns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('date-fns')"
+                  (click)="toggleSubtopics('date-fns', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('date-fns'); as subs) {
+        @if (isSubtopicsExpanded('date-fns')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/tailwind" routerLinkActive="active">
         <span class="nl-text">Tailwind CSS</span>
         @if (progress.isDone('tailwind')) {<span class="nl-done">✓</span>}

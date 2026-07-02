@@ -97,6 +97,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'optimistic-updates-rollback': 'Optimistic Updates & Rollback',
   'dependent-and-parallel-queries': 'Dependent & Parallel Queries',
   'infinite-queries-pagination': 'Infinite Queries & Pagination',
+  'intervals-and-recurring-events': 'Intervals & Recurring Events',
+  'timezone-handling-date-fns-tz': 'Timezone Handling with date-fns-tz',
+  'reactive-date-range-picker': 'Reactive Date Range Picker',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

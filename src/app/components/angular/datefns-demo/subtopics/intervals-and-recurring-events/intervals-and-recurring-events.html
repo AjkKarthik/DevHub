@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="date-fns in Angular"
+    topicRoute="/angular/date-fns"
+    subtopicLabel="Intervals &amp; Recurring Events" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Intervals &amp; Recurring Events</h1>
+  <p class="page-subtitle">
+    The shared Interval shape across each*OfInterval functions, point-vs-range containment
+    checks, and intervalToDuration for accurate calendar-aware time breakdowns.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="date-fns 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Months generated from a range, a booking-conflict check with
+      <code>areIntervalsOverlapping</code>, and an accurate duration breakdown with
+      <code>intervalToDuration</code> + <code>formatDuration</code>.
+    </p>
+    <app-live-playground
+      title="Intervals and recurring events"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="dateFnsDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="date-fns in Angular"
+    topicRoute="/angular/date-fns"
+    [next]="{ label: 'Timezone Handling with date-fns-tz', route: '/angular/date-fns/timezone-handling-date-fns-tz' }" />
+</div>

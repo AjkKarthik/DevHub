@@ -2820,6 +2820,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── date-fns in Angular › subtopics (Phase 10) ───────────────────────────────
+  'date-fns/intervals-and-recurring-events': {
+    apis: ['Interval', 'areIntervalsOverlapping()', 'intervalToDuration()'],
+    related: [
+      { label: 'date-fns in Angular (overview)',              route: '/angular/date-fns' },
+      { label: 'Timezone Handling with date-fns-tz — next',    route: '/angular/date-fns/timezone-handling-date-fns-tz' },
+    ],
+    tip: 'isWithinInterval checks a POINT against a range — areIntervalsOverlapping checks whether two RANGES overlap; using the wrong one breaks conflict detection.',
+    docs: [
+      { label: 'date-fns Interval Docs', url: 'https://date-fns.org/docs/Interval' },
+      { label: 'date-fns Getting Started', url: 'https://date-fns.org/docs/Getting-Started' },
+    ],
+    resources: [
+      { label: 'date-fns — GitHub', url: 'https://github.com/date-fns/date-fns', badge: 'code' },
+    ],
+    gotchas: [
+      'eachWeekOfInterval defaults to Sunday-start weeks — pass { weekStartsOn: 1 } for Monday-start calendars.',
+      'intervalToDuration gives the correct calendar-aware breakdown — dividing differenceInDays by 30 for "months" is inaccurate.',
+    ],
+  },
+
+  'date-fns/timezone-handling-date-fns-tz': {
+    apis: ['formatInTimeZone()', 'toZonedTime()', 'fromZonedTime()'],
+    related: [
+      { label: 'Intervals & Recurring Events — previous', route: '/angular/date-fns/intervals-and-recurring-events' },
+      { label: 'date-fns in Angular (overview)',            route: '/angular/date-fns' },
+      { label: 'Reactive Date Range Picker — next',          route: '/angular/date-fns/reactive-date-range-picker' },
+    ],
+    tip: 'A JS Date has no timezone of its own — it stores a UTC timestamp; every display uses the browser\'s local timezone unless explicitly converted.',
+    docs: [
+      { label: 'date-fns-tz Docs',   url: 'https://github.com/marnusw/date-fns-tz' },
+      { label: 'IANA Timezone List', url: 'https://en.wikipedia.org/wiki/List_of_tz_database_time_zones' },
+    ],
+    resources: [
+      { label: 'date-fns — GitHub', url: 'https://github.com/date-fns/date-fns', badge: 'code' },
+    ],
+    gotchas: [
+      'Use IANA identifiers (America/New_York) not abbreviations (EST) or fixed offsets — only IANA zones correctly encode DST transitions.',
+      'Always store/transmit UTC and convert to a specific timezone only at the final display step.',
+    ],
+  },
+
+  'date-fns/reactive-date-range-picker': {
+    apis: ['computed()', 'isBefore()', 'eachDayOfInterval()'],
+    related: [
+      { label: 'Timezone Handling with date-fns-tz — previous', route: '/angular/date-fns/timezone-handling-date-fns-tz' },
+      { label: 'date-fns in Angular (overview)',                  route: '/angular/date-fns' },
+    ],
+    tip: 'Model a range as two signals (start/end) — derive everything else (highlighted days, validity, formatted text) with computed(), never store it redundantly.',
+    docs: [
+      { label: 'date-fns Getting Started', url: 'https://date-fns.org/docs/Getting-Started' },
+      { label: 'Angular computed() API',    url: 'https://angular.dev/api/core/computed' },
+    ],
+    resources: [
+      { label: 'date-fns — GitHub', url: 'https://github.com/date-fns/date-fns', badge: 'code' },
+    ],
+    gotchas: [
+      'Normalize out-of-order clicks with isBefore rather than rejecting them — swapping endpoints is the smoother UX.',
+      'Keep display format and API format as separate computed signals — don\'t reformat one into the other ad hoc.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

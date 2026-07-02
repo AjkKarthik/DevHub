@@ -1,0 +1,52 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="date-fns in Angular"
+    topicRoute="/angular/date-fns"
+    subtopicLabel="Reactive Date Range Picker" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Reactive Date Range Picker</h1>
+  <p class="page-subtitle">
+    Modeling a range as two signals with everything else derived via computed(), normalizing
+    out-of-order clicks with isBefore, and keeping display vs. API formats as separate signals.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="date-fns 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A calendar grid for June 2024 — click two days to select a range; clicking an earlier
+      date second correctly normalizes the order.
+    </p>
+    <app-live-playground
+      title="Reactive date range picker"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="dateFnsDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed date-fns in Angular</h2>
+    <p>
+      You now know the shared <code>Interval</code> shape across
+      <code>each*OfInterval</code>/<code>isWithinInterval</code>/<code>areIntervalsOverlapping</code>,
+      how to correctly convert between UTC and specific IANA timezones with
+      <code>date-fns-tz</code>, and how to build a fully reactive date range picker with
+      signals and <code>computed()</code>. Combined with formatting, parsing, date math, and
+      relative time from the main topic, that's the complete date-fns toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="date-fns in Angular"
+    topicRoute="/angular/date-fns"
+    [prev]="{ label: 'Timezone Handling with date-fns-tz', route: '/angular/date-fns/timezone-handling-date-fns-tz' }" />
+</div>

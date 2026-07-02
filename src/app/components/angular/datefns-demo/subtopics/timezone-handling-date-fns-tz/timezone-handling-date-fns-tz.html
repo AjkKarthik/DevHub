@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="date-fns in Angular"
+    topicRoute="/angular/date-fns"
+    subtopicLabel="Timezone Handling with date-fns-tz" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Timezone Handling with date-fns-tz</h1>
+  <p class="page-subtitle">
+    Why a JS Date has no timezone of its own, formatInTimeZone for display, and
+    toZonedTime/fromZonedTime for converting a user's wall-clock input to and from UTC.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="date-fns-tz 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      The same UTC instant formatted in three different timezones, plus a round-trip: a
+      Tokyo user's wall-clock input converted to UTC for storage and back for display.
+    </p>
+    <app-live-playground
+      title="Timezone handling with date-fns-tz"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="dateFnsDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="date-fns in Angular"
+    topicRoute="/angular/date-fns"
+    [prev]="{ label: 'Intervals & Recurring Events', route: '/angular/date-fns/intervals-and-recurring-events' }"
+    [next]="{ label: 'Reactive Date Range Picker', route: '/angular/date-fns/reactive-date-range-picker' }" />
+</div>

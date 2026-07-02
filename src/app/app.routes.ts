@@ -178,7 +178,12 @@ export const routes: Routes = [
         { path: 'dependent-and-parallel-queries', loadComponent: () => import('./components/angular/tanstack-query/subtopics/dependent-and-parallel-queries/dependent-and-parallel-queries').then(m => m.DependentAndParallelQueriesSubtopic) },
         { path: 'infinite-queries-pagination',   loadComponent: () => import('./components/angular/tanstack-query/subtopics/infinite-queries-pagination/infinite-queries-pagination').then(m => m.InfiniteQueriesPaginationSubtopic) },
       ] },
-      { path: 'date-fns',           loadComponent: () => import('./components/angular/datefns-demo/datefns-demo').then(m => m.DateFnsDemo) },
+      { path: 'date-fns', children: [
+        { path: '',                                loadComponent: () => import('./components/angular/datefns-demo/datefns-demo').then(m => m.DateFnsDemo) },
+        { path: 'intervals-and-recurring-events',  loadComponent: () => import('./components/angular/datefns-demo/subtopics/intervals-and-recurring-events/intervals-and-recurring-events').then(m => m.IntervalsAndRecurringEventsSubtopic) },
+        { path: 'timezone-handling-date-fns-tz',   loadComponent: () => import('./components/angular/datefns-demo/subtopics/timezone-handling-date-fns-tz/timezone-handling-date-fns-tz').then(m => m.TimezoneHandlingDateFnsTzSubtopic) },
+        { path: 'reactive-date-range-picker',      loadComponent: () => import('./components/angular/datefns-demo/subtopics/reactive-date-range-picker/reactive-date-range-picker').then(m => m.ReactiveDateRangePickerSubtopic) },
+      ] },
       { path: 'animations',         loadComponent: () => import('./components/angular/animations-demo/animations-demo').then(m => m.AnimationsDemo) },
       { path: 'cva',                loadComponent: () => import('./components/angular/cva-demo/cva-demo').then(m => m.CvaDemo) },
       { path: 'testing',            loadComponent: () => import('./components/angular/testing-demo/testing-demo').then(m => m.TestingDemo) },
