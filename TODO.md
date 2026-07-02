@@ -1397,7 +1397,7 @@ off here with a date.
 - [x] `/angular/directives` — Custom Directives (2026-07-02 — 3 subtopics: attribute-directive-anatomy, custom-structural-directives, directive-composition-api)
 - [x] `/angular/lifecycle` — Lifecycle Hooks (2026-07-02 — 4 subtopics: lifecycle-hook-sequence, init-hooks-ngonchanges-ngoninit, view-content-hooks-afternextrender, cleanup-destroyref-takeuntildestroyed)
 - [x] `/angular/pipes` — Pipes (2026-07-02 — 3 subtopics: formatting-pipes-locale, collection-string-pipes, async-pipe-let-performance)
-- [ ] `/angular/di` — Dependency Injection
+- [x] `/angular/di` — Dependency Injection (2026-07-02 — 3 subtopics: injection-context-deep-dive, multi-providers-extension-points, environment-injectors-standalone-bootstrap)
 - [ ] `/angular/routing` — Routing & Navigation
 - [ ] `/angular/charts` — Chart.js with Angular
 - [ ] `/angular/zod-forms` — Zod + Reactive Forms
