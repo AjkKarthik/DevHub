@@ -1407,7 +1407,7 @@ off here with a date.
 - [x] `/angular/rxjs` — RxJS Operators (2026-07-02 — 3 subtopics: custom-operators-and-pipe, multicasting-share-operators, testing-rxjs-marble-diagrams)
 - [x] `/angular/cdk` — Angular CDK (2026-07-02 — 3 subtopics: cdk-menu-keyboard-navigation, cdk-table-headless-data-table, building-custom-overlay-component)
 - [x] `/angular/ag-grid` — AG Grid with Angular (2026-07-02 — 3 subtopics: custom-cell-renderers-angular-components, editable-cells-value-setters, master-detail-row-grouping)
-- [ ] `/angular/tanstack-query` — TanStack Query
+- [x] `/angular/tanstack-query` — TanStack Query (2026-07-02 — 3 subtopics: optimistic-updates-rollback, dependent-and-parallel-queries, infinite-queries-pagination)
 - [ ] `/angular/date-fns` — date-fns in Angular
 - [ ] `/angular/animations` — Angular Animations
 - [ ] `/angular/cva` — Control Value Accessor
