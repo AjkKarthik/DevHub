@@ -1387,7 +1387,7 @@ off here with a date.
 - [x] `/angular/todo` — Reactive Forms & Signal Services (2026-07-02 — 6 subtopics: inject-di, reactive-forms-basics, route-guards, signal-based-services, custom-validators, form-state)
 - [x] `/angular/forms` — Template-Driven vs Reactive Forms (2026-07-02 — 4 subtopics: template-driven-vs-reactive, formgroup-formcontrol-formarray, cross-field-validators, typed-forms)
 - [x] `/angular/http` — HTTP Client (2026-07-02 — 4 subtopics: httpclient-setup, get-requests, mutation-requests, error-handling-retry)
-- [ ] `/angular/http-interceptors` — HTTP Interceptors
+- [x] `/angular/http-interceptors` — HTTP Interceptors (2026-07-02 — 4 subtopics: what-are-interceptors, auth-interceptor-token-refresh, global-error-interceptor, loading-spinner-httpcontext)
 - [ ] `/angular/parent-child` — Parent-Child Communication
 - [ ] `/angular/form-array` — FormArray — Dynamic Fields
 - [ ] `/angular/defer` — @defer — Deferred Loading
