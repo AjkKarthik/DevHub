@@ -112,6 +112,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'theme-tokens-and-custom-variants': 'Theme Tokens & Custom Variants',
   'component-variant-patterns-with-cva': 'Component Variant Patterns with cva',
   'tailwind-transitions-and-animations': 'Tailwind Transitions & Animations',
+  'rxresource-and-observable-integration': 'rxResource & Observable Integration',
+  'resource-reload-and-polling-patterns': 'Resource Reload & Polling Patterns',
+  'testing-resource-based-components': 'Testing resource()-Based Components',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

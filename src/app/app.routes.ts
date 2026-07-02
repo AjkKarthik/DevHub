@@ -208,7 +208,12 @@ export const routes: Routes = [
         { path: 'component-variant-patterns-with-cva',   loadComponent: () => import('./components/angular/tailwind-demo/subtopics/component-variant-patterns-with-cva/component-variant-patterns-with-cva').then(m => m.ComponentVariantPatternsWithCvaSubtopic) },
         { path: 'tailwind-transitions-and-animations',   loadComponent: () => import('./components/angular/tailwind-demo/subtopics/tailwind-transitions-and-animations/tailwind-transitions-and-animations').then(m => m.TailwindTransitionsAndAnimationsSubtopic) },
       ] },
-      { path: 'resource-api',       loadComponent: () => import('./components/angular/resource-api/resource-api').then(m => m.ResourceApiDemo) },
+      { path: 'resource-api', children: [
+        { path: '',                                    loadComponent: () => import('./components/angular/resource-api/resource-api').then(m => m.ResourceApiDemo) },
+        { path: 'rxresource-and-observable-integration', loadComponent: () => import('./components/angular/resource-api/subtopics/rxresource-and-observable-integration/rxresource-and-observable-integration').then(m => m.RxresourceAndObservableIntegrationSubtopic) },
+        { path: 'resource-reload-and-polling-patterns',  loadComponent: () => import('./components/angular/resource-api/subtopics/resource-reload-and-polling-patterns/resource-reload-and-polling-patterns').then(m => m.ResourceReloadAndPollingPatternsSubtopic) },
+        { path: 'testing-resource-based-components',     loadComponent: () => import('./components/angular/resource-api/subtopics/testing-resource-based-components/testing-resource-based-components').then(m => m.TestingResourceBasedComponentsSubtopic) },
+      ] },
       { path: 'ngrx-signals',       loadComponent: () => import('./components/angular/ngrx-signals/ngrx-signals').then(m => m.NgrxSignalsDemo) },
       { path: 'dynamic-forms',      loadComponent: () => import('./components/angular/dynamic-forms/dynamic-forms').then(m => m.DynamicFormsDemo) },
       { path: 'route-resolvers',    loadComponent: () => import('./components/angular/route-resolvers/route-resolvers').then(m => m.RouteResolversDemo) },

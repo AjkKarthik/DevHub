@@ -1,0 +1,52 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="resource() API"
+    topicRoute="/angular/resource-api"
+    subtopicLabel="Testing resource()-Based Components" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing resource()-Based Components</h1>
+  <p class="page-subtitle">
+    Why fixture.detectChanges() alone doesn't wait for a resource()'s loader, mocking
+    fetch/HttpClient dependencies, and testing error states and reload() call counts.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 19+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A user card built on <code>resource()</code>, with tests covering the resolved,
+      error, and <code>reload()</code>-triggered states via a mocked <code>fetch</code>.
+    </p>
+    <app-live-playground
+      title="Testing resource()-based components"
+      template="angular-cli"
+      openFile="src/app/user-card.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed resource() API</h2>
+    <p>
+      You now know <code>rxResource()</code> for wrapping existing Observable-returning
+      services (including genuinely multi-emission streams), <code>reload()</code> and the
+      ticking-signal polling pattern (paused when the tab is hidden), and how to properly
+      test a <code>resource()</code>-based component with <code>fixture.whenStable()</code>
+      and mocked loader dependencies. Combined with <code>params</code>/<code>loader</code>
+      fundamentals, <code>httpResource()</code>, and local/optimistic updates from the main
+      topic, that's the complete <code>resource()</code> API toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="resource() API"
+    topicRoute="/angular/resource-api"
+    [prev]="{ label: 'Resource Reload & Polling Patterns', route: '/angular/resource-api/resource-reload-and-polling-patterns' }" />
+</div>

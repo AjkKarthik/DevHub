@@ -3130,6 +3130,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── resource() API › subtopics (Phase 10) ────────────────────────────────────
+  'resource-api/rxresource-and-observable-integration': {
+    apis: ['rxResource()', 'stream', 'unsubscribe on params change'],
+    related: [
+      { label: 'resource() API (overview)',                          route: '/angular/resource-api' },
+      { label: 'Resource Reload & Polling Patterns — next',           route: '/angular/resource-api/resource-reload-and-polling-patterns' },
+    ],
+    tip: 'rxResource() reflects EVERY emission from a multi-emission Observable — lastValueFrom() only ever captures one, silently dropping the rest.',
+    docs: [
+      { label: 'resource() Guide',   url: 'https://angular.dev/guide/signals/resource' },
+      { label: 'rxjs-interop API',   url: 'https://angular.dev/api/core/rxjs-interop' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'No lastValueFrom() wrapping needed — rxResource subscribes to the stream Observable directly.',
+      'Cancellation happens via automatic unsubscription from the previous stream when params changes.',
+    ],
+  },
+
+  'resource-api/resource-reload-and-polling-patterns': {
+    apis: ['reload()', "status() === 'reloading'", 'ticking signal in params'],
+    related: [
+      { label: 'rxResource & Observable Integration — previous', route: '/angular/resource-api/rxresource-and-observable-integration' },
+      { label: 'resource() API (overview)',                        route: '/angular/resource-api' },
+      { label: 'Testing resource()-Based Components — next',       route: '/angular/resource-api/testing-resource-based-components' },
+    ],
+    tip: 'reload() sets status to "reloading" (not "loading") — value() stays available throughout, letting the template show stale data with a subtle spinner.',
+    docs: [
+      { label: 'resource() Guide', url: 'https://angular.dev/guide/signals/resource' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Polling requires a ticking signal folded into params — resource() has no built-in polling option.',
+      'Pause the tick when document.visibilityState is not "visible" to avoid wasting bandwidth on a hidden tab.',
+    ],
+  },
+
+  'resource-api/testing-resource-based-components': {
+    apis: ['fixture.whenStable()', 'spyOn(window, "fetch")', 'HttpTestingController'],
+    related: [
+      { label: 'Resource Reload & Polling Patterns — previous', route: '/angular/resource-api/resource-reload-and-polling-patterns' },
+      { label: 'resource() API (overview)',                       route: '/angular/resource-api' },
+    ],
+    tip: 'fixture.detectChanges() does NOT wait for a resource\'s loader Promise — always await fixture.whenStable() before asserting on the resolved value.',
+    docs: [
+      { label: 'Testing Guide',    url: 'https://angular.dev/guide/testing' },
+      { label: 'resource() Guide', url: 'https://angular.dev/guide/signals/resource' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'httpResource() uses the standard HttpTestingController setup — no special resource-specific testing API needed.',
+      'A meaningful reload() test asserts the mock was called a SECOND time, not just that clicking the button doesn\'t throw.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

@@ -212,6 +212,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Component Variant Patterns with cva', route: '/angular/tailwind/component-variant-patterns-with-cva' },
     { label: 'Tailwind Transitions & Animations', route: '/angular/tailwind/tailwind-transitions-and-animations' },
   ],
+  'resource-api': [
+    { label: 'rxResource & Observable Integration', route: '/angular/resource-api/rxresource-and-observable-integration' },
+    { label: 'Resource Reload & Polling Patterns', route: '/angular/resource-api/resource-reload-and-polling-patterns' },
+    { label: 'Testing resource()-Based Components', route: '/angular/resource-api/testing-resource-based-components' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="resource() API"
+    topicRoute="/angular/resource-api"
+    subtopicLabel="rxResource &amp; Observable Integration" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">rxResource &amp; Observable Integration</h1>
+  <p class="page-subtitle">
+    Wrapping an existing Observable-returning service with rxResource() — no
+    lastValueFrom() workaround needed, and multi-emission streams that a plain Promise
+    can't represent.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 19+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A user lookup wrapping an existing RxJS-based service directly, plus a genuinely
+      multi-emission "live count" stream whose value updates on every tick.
+    </p>
+    <app-live-playground
+      title="rxResource and Observable integration"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="resource() API"
+    topicRoute="/angular/resource-api"
+    [next]="{ label: 'Resource Reload & Polling Patterns', route: '/angular/resource-api/resource-reload-and-polling-patterns' }" />
+</div>

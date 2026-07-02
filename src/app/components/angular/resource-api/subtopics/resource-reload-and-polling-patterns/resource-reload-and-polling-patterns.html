@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="resource() API"
+    topicRoute="/angular/resource-api"
+    subtopicLabel="Resource Reload &amp; Polling Patterns" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Resource Reload &amp; Polling Patterns</h1>
+  <p class="page-subtitle">
+    resource.reload() for a manual refresh button and its distinct "reloading" status, and
+    building a polling resource with a ticking signal — paused when the tab is hidden.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 19+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A manual refresh button using <code>reload()</code>, plus the same resource
+      auto-polling every 3 seconds via a ticking signal folded into <code>params</code>.
+    </p>
+    <app-live-playground
+      title="Resource reload and polling patterns"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="resource() API"
+    topicRoute="/angular/resource-api"
+    [prev]="{ label: 'rxResource & Observable Integration', route: '/angular/resource-api/rxresource-and-observable-integration' }"
+    [next]="{ label: 'Testing resource()-Based Components', route: '/angular/resource-api/testing-resource-based-components' }" />
+</div>
