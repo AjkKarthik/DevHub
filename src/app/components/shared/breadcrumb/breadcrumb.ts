@@ -118,6 +118,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'withentities-filtering-pagination-sorting': 'withEntities — Filtering, Pagination & Sorting',
   'testing-ngrx-signal-stores': 'Testing NgRx Signal Stores',
   'signal-store-devtools-and-hooks-cleanup': 'Signal Store DevTools & Hooks Cleanup',
+  'nested-and-array-schema-fields': 'Nested & Array Schema Fields',
+  'schema-driven-cross-field-and-async-validation': 'Schema-Driven Cross-Field & Async Validation',
+  'custom-field-renderer-registry-pattern': 'Custom Field Renderer Registry Pattern',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

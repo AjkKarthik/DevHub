@@ -1420,7 +1420,22 @@
         <span class="nl-text">Dynamic Forms</span>
         @if (progress.isDone('dynamic-forms')) {<span class="nl-done">✓</span>}
         @if (diff('dynamic-forms'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('dynamic-forms')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dynamic-forms')"
+                  (click)="toggleSubtopics('dynamic-forms', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('dynamic-forms'); as subs) {
+        @if (isSubtopicsExpanded('dynamic-forms')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/wizard-form" routerLinkActive="active">
         <span class="nl-text">Wizard Form</span>
         @if (progress.isDone('wizard-form')) {<span class="nl-done">✓</span>}

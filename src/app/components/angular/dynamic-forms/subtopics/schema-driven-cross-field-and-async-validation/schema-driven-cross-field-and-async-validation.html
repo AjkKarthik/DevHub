@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dynamic / Schema-Driven Forms"
+    topicRoute="/angular/dynamic-forms"
+    subtopicLabel="Schema-Driven Cross-Field &amp; Async Validation" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Schema-Driven Cross-Field &amp; Async Validation</h1>
+  <p class="page-subtitle">
+    Expressing cross-field rules declaratively at the group level, and a name-based
+    registry pattern for async validators that keeps the schema fully JSON-serializable.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A username field with a registry-based async uniqueness check, plus a declarative
+      password-match cross-field rule interpreted into a real group-level validator.
+    </p>
+    <app-live-playground
+      title="Schema-driven cross-field and async validation"
+      template="angular-cli"
+      openFile="src/app/form-builder.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Dynamic / Schema-Driven Forms"
+    topicRoute="/angular/dynamic-forms"
+    [prev]="{ label: 'Nested & Array Schema Fields', route: '/angular/dynamic-forms/nested-and-array-schema-fields' }"
+    [next]="{ label: 'Custom Field Renderer Registry Pattern', route: '/angular/dynamic-forms/custom-field-renderer-registry-pattern' }" />
+</div>

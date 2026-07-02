@@ -3253,6 +3253,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Dynamic / Schema-Driven Forms › subtopics (Phase 10) ─────────────────────
+  'dynamic-forms/nested-and-array-schema-fields': {
+    apis: ["type: 'group'", "type: 'array'", 'recursive buildForm()'],
+    related: [
+      { label: 'Dynamic / Schema-Driven Forms (overview)',                    route: '/angular/dynamic-forms' },
+      { label: 'Schema-Driven Cross-Field & Async Validation — next',          route: '/angular/dynamic-forms/schema-driven-cross-field-and-async-validation' },
+    ],
+    tip: 'A group/array field type requires buildForm() to call itself recursively — a flat @switch cannot express nested structure.',
+    docs: [
+      { label: 'Reactive Forms Guide', url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'FormArray API',        url: 'https://angular.dev/api/forms/FormArray' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Track array-rendered FormGroups by a stable identity, not $index — reordering/removal corrupts which control shows which state otherwise.',
+      'An itemSchema is the template for EVERY array item — rebuild a fresh group from it on each add, don\'t hand-declare fields per item.',
+    ],
+  },
+
+  'dynamic-forms/schema-driven-cross-field-and-async-validation': {
+    apis: ['group-level crossFieldRules', 'async validator registry', 'form.errors'],
+    related: [
+      { label: 'Nested & Array Schema Fields — previous',              route: '/angular/dynamic-forms/nested-and-array-schema-fields' },
+      { label: 'Dynamic / Schema-Driven Forms (overview)',              route: '/angular/dynamic-forms' },
+      { label: 'Custom Field Renderer Registry Pattern — next',          route: '/angular/dynamic-forms/custom-field-renderer-registry-pattern' },
+    ],
+    tip: 'A JSON schema cannot contain a real function — store an async validator NAME and look it up in a registry mapping names to actual AsyncValidatorFn implementations.',
+    docs: [
+      { label: 'Reactive Forms Guide', url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'AsyncValidatorFn API', url: 'https://angular.dev/api/forms/AsyncValidatorFn' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Cross-field errors live on the GROUP (form.errors), not on either individual field — needs a separate error-display section.',
+      'Cross-field rules need a genuinely different, group-level schema shape — not an extension of the per-field scalar validator hints.',
+    ],
+  },
+
+  'dynamic-forms/custom-field-renderer-registry-pattern': {
+    apis: ['Type<any> registry', 'NgComponentOutlet', 'shared input contract'],
+    related: [
+      { label: 'Schema-Driven Cross-Field & Async Validation — previous', route: '/angular/dynamic-forms/schema-driven-cross-field-and-async-validation' },
+      { label: 'Dynamic / Schema-Driven Forms (overview)',                  route: '/angular/dynamic-forms' },
+    ],
+    tip: 'A registry (Map<string, Type>) lets consumers register entirely new field types with zero changes to the core rendering component — a @switch requires editing the core template every time.',
+    docs: [
+      { label: 'NgComponentOutlet API', url: 'https://angular.dev/api/common/NgComponentOutlet' },
+      { label: 'Dynamic Components Guide', url: 'https://angular.dev/guide/components/programmatic-rendering' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'NgComponentOutlet given undefined renders NOTHING silently — always provide a visible fallback component for unregistered types.',
+      'Every registered component must share the SAME input contract (field, control) for the core renderer to treat them uniformly.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

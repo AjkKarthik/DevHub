@@ -220,7 +220,12 @@ export const routes: Routes = [
         { path: 'testing-ngrx-signal-stores',              loadComponent: () => import('./components/angular/ngrx-signals/subtopics/testing-ngrx-signal-stores/testing-ngrx-signal-stores').then(m => m.TestingNgrxSignalStoresSubtopic) },
         { path: 'signal-store-devtools-and-hooks-cleanup', loadComponent: () => import('./components/angular/ngrx-signals/subtopics/signal-store-devtools-and-hooks-cleanup/signal-store-devtools-and-hooks-cleanup').then(m => m.SignalStoreDevtoolsAndHooksCleanupSubtopic) },
       ] },
-      { path: 'dynamic-forms',      loadComponent: () => import('./components/angular/dynamic-forms/dynamic-forms').then(m => m.DynamicFormsDemo) },
+      { path: 'dynamic-forms', children: [
+        { path: '',                                          loadComponent: () => import('./components/angular/dynamic-forms/dynamic-forms').then(m => m.DynamicFormsDemo) },
+        { path: 'nested-and-array-schema-fields',             loadComponent: () => import('./components/angular/dynamic-forms/subtopics/nested-and-array-schema-fields/nested-and-array-schema-fields').then(m => m.NestedAndArraySchemaFieldsSubtopic) },
+        { path: 'schema-driven-cross-field-and-async-validation', loadComponent: () => import('./components/angular/dynamic-forms/subtopics/schema-driven-cross-field-and-async-validation/schema-driven-cross-field-and-async-validation').then(m => m.SchemaDrivenCrossFieldAndAsyncValidationSubtopic) },
+        { path: 'custom-field-renderer-registry-pattern',    loadComponent: () => import('./components/angular/dynamic-forms/subtopics/custom-field-renderer-registry-pattern/custom-field-renderer-registry-pattern').then(m => m.CustomFieldRendererRegistryPatternSubtopic) },
+      ] },
       { path: 'route-resolvers',    loadComponent: () => import('./components/angular/route-resolvers/route-resolvers').then(m => m.RouteResolversDemo) },
       { path: 'preloading',         loadComponent: () => import('./components/angular/preloading/preloading').then(m => m.PreloadingDemo) },
       { path: 'route-guards',       loadComponent: () => import('./components/angular/route-guards/route-guards').then(m => m.RouteGuardsDemo) },

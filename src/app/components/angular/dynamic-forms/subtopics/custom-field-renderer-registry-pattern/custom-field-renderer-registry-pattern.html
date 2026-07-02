@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dynamic / Schema-Driven Forms"
+    topicRoute="/angular/dynamic-forms"
+    subtopicLabel="Custom Field Renderer Registry Pattern" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Custom Field Renderer Registry Pattern</h1>
+  <p class="page-subtitle">
+    Replacing &#64;switch with a Type&lt;any&gt; registry so consumers can register entirely
+    new field types via NgComponentOutlet — with zero changes to the core renderer.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A text field and a toggle field both rendered via <code>NgComponentOutlet</code>
+      from a registry — plus a deliberately unregistered type showing a visible fallback
+      instead of a silent blank gap.
+    </p>
+    <app-live-playground
+      title="Custom field renderer registry pattern"
+      template="angular-cli"
+      openFile="src/app/field-registry.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Dynamic / Schema-Driven Forms</h2>
+    <p>
+      You now know how to build recursive nested groups and repeatable array fields from a
+      schema, how to express cross-field rules and async validators declaratively via a
+      name-based registry, and how to replace a hardcoded <code>&#64;switch</code> with a
+      pluggable component registry for genuinely extensible field types. Combined with
+      schema design, programmatic <code>FormGroup</code> construction, template rendering,
+      and conditional fields from the main topic, that's the complete schema-driven forms
+      toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dynamic / Schema-Driven Forms"
+    topicRoute="/angular/dynamic-forms"
+    [prev]="{ label: 'Schema-Driven Cross-Field & Async Validation', route: '/angular/dynamic-forms/schema-driven-cross-field-and-async-validation' }" />
+</div>

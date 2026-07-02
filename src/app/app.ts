@@ -222,6 +222,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Testing NgRx Signal Stores', route: '/angular/ngrx-signals/testing-ngrx-signal-stores' },
     { label: 'Signal Store DevTools & Hooks Cleanup', route: '/angular/ngrx-signals/signal-store-devtools-and-hooks-cleanup' },
   ],
+  'dynamic-forms': [
+    { label: 'Nested & Array Schema Fields', route: '/angular/dynamic-forms/nested-and-array-schema-fields' },
+    { label: 'Schema-Driven Cross-Field & Async Validation', route: '/angular/dynamic-forms/schema-driven-cross-field-and-async-validation' },
+    { label: 'Custom Field Renderer Registry Pattern', route: '/angular/dynamic-forms/custom-field-renderer-registry-pattern' },
+  ],
 };
 
 @Component({
