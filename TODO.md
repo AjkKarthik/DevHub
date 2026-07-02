@@ -1400,7 +1400,7 @@ off here with a date.
 - [x] `/angular/di` — Dependency Injection (2026-07-02 — 3 subtopics: injection-context-deep-dive, multi-providers-extension-points, environment-injectors-standalone-bootstrap)
 - [x] `/angular/routing` — Routing & Navigation (2026-07-02 — 4 subtopics: custom-url-matchers-route-config, router-events-navigation-lifecycle, route-reuse-strategy, view-transitions-relative-navigation)
 - [x] `/angular/charts` — Chart.js with Angular (2026-07-02 — 3 subtopics: custom-plugins-click-interactions, mixed-charts-annotations, time-scale-large-datasets)
-- [ ] `/angular/zod-forms` — Zod + Reactive Forms
+- [x] `/angular/zod-forms` — Zod + Reactive Forms (2026-07-02 — 3 subtopics: discriminated-unions-and-transforms, async-validation-with-zod, nested-schemas-error-formatting)
 - [ ] `/angular/content-projection` — Content Projection
 - [ ] `/angular/change-detection` — Change Detection
 - [ ] `/angular/custom-validators` — Custom Validators
