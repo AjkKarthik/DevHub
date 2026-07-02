@@ -1389,7 +1389,7 @@ off here with a date.
 - [x] `/angular/http` — HTTP Client (2026-07-02 — 4 subtopics: httpclient-setup, get-requests, mutation-requests, error-handling-retry)
 - [x] `/angular/http-interceptors` — HTTP Interceptors (2026-07-02 — 4 subtopics: what-are-interceptors, auth-interceptor-token-refresh, global-error-interceptor, loading-spinner-httpcontext)
 - [x] `/angular/parent-child` — Parent-Child Communication (2026-07-02 — 5 subtopics: input-signals, output-signals, model-two-way-binding, viewchild-viewchildren, contentchild-migration)
-- [ ] `/angular/form-array` — FormArray — Dynamic Fields
+- [x] `/angular/form-array` — FormArray — Dynamic Fields (2026-07-02 — 4 subtopics: dynamic-formarray-of-groups, typed-formarray, formarray-crud-patterns, formarray-level-validation)
 - [ ] `/angular/defer` — @defer — Deferred Loading
 - [ ] `/angular/material` — Angular Material
 - [ ] `/angular/store` — Signal Store Pattern
