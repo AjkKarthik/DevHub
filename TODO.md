@@ -1392,7 +1392,7 @@ off here with a date.
 - [x] `/angular/form-array` — FormArray — Dynamic Fields (2026-07-02 — 4 subtopics: dynamic-formarray-of-groups, typed-formarray, formarray-crud-patterns, formarray-level-validation)
 - [x] `/angular/defer` — @defer — Deferred Loading (2026-07-02 — 5 subtopics: defer-basics, defer-triggers, placeholder-loading-error, defer-requirements-nesting, defer-performance-prefetch)
 - [x] `/angular/material` — Angular Material (2026-07-02 — 5 subtopics: material-setup-theming, material-form-fields, material-common-components, mattable-sorting-pagination, material-testing-accessibility)
-- [ ] `/angular/store` — Signal Store Pattern
+- [x] `/angular/store` — Signal Store Pattern (2026-07-02 — 3 subtopics: async-store-operations, signal-store-vs-ngrx, testing-composing-stores)
 - [ ] `/angular/templates` — Template Syntax
 - [ ] `/angular/directives` — Custom Directives
 - [ ] `/angular/lifecycle` — Lifecycle Hooks
