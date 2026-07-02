@@ -130,6 +130,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'canactivatechild-for-nested-admin-sections': 'canActivateChild for Nested Admin Sections',
   'tracing-guard-execution-order': 'Tracing Guard Execution Order',
   'async-guards-with-navigation-loading-indicator': 'Async Guards with a Navigation Loading Indicator',
+  'custom-loader-with-blur-up-lqip-placeholder': 'Custom Loader with Blur-Up LQIP Placeholder',
+  'testing-components-that-use-ngoptimizedimage': 'Testing Components That Use NgOptimizedImage',
+  'measuring-lcp-impact-with-performanceobserver': 'Measuring LCP Impact with PerformanceObserver',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

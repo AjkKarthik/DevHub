@@ -3499,6 +3499,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'ng-image/custom-loader-with-blur-up-lqip-placeholder': {
+    apis: ['IMAGE_LOADER', 'ImageLoaderConfig', 'placeholder'],
+    related: [
+      { label: 'NgOptimizedImage (overview)',                             route: '/angular/ng-image' },
+      { label: 'Testing Components That Use NgOptimizedImage — next',      route: '/angular/ng-image/testing-components-that-use-ngoptimizedimage' },
+    ],
+    tip: 'The SAME loader function serves both the full image and the placeholder — NgOptimizedImage just calls it with a much smaller width value for the placeholder request.',
+    docs: [
+      { label: 'NgOptimizedImage API', url: 'https://angular.dev/api/common/NgOptimizedImage' },
+      { label: 'IMAGE_LOADER token',   url: 'https://angular.dev/api/common/IMAGE_LOADER' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'placeholder should never be combined with priority reasoning applied TO the placeholder itself — only the full-resolution image benefits from the preload hint.',
+      'without CDN resizing support, a static base64 fallback per image is needed since the loader cannot generate a tiny variant on the fly.',
+    ],
+  },
+
+  'ng-image/testing-components-that-use-ngoptimizedimage': {
+    apis: ['TestBed', 'By.css()', 'IMAGE_LOADER (test override)'],
+    related: [
+      { label: 'Custom Loader with Blur-Up LQIP Placeholder — previous', route: '/angular/ng-image/custom-loader-with-blur-up-lqip-placeholder' },
+      { label: 'NgOptimizedImage (overview)',                             route: '/angular/ng-image' },
+      { label: 'Measuring LCP Impact with PerformanceObserver — next',    route: '/angular/ng-image/measuring-lcp-impact-with-performanceobserver' },
+    ],
+    tip: 'ngSrc is consumed by the directive and is not a literal DOM attribute — assert on what the directive actually renders instead: src, srcset, fetchpriority, loading.',
+    docs: [
+      { label: 'Testing Guide',        url: 'https://angular.dev/guide/testing' },
+      { label: 'NgOptimizedImage API', url: 'https://angular.dev/api/common/NgOptimizedImage' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Testing NgOptimizedImage internals is redundant — the framework already tests them; test YOUR component logic around inputs like priority and loaderParams instead.',
+      'Without a deterministic test IMAGE_LOADER override, URL assertions depend on production CDN config being present, making tests fragile.',
+    ],
+  },
+
+  'ng-image/measuring-lcp-impact-with-performanceobserver': {
+    apis: ['PerformanceObserver', 'largest-contentful-paint', 'buffered: true'],
+    related: [
+      { label: 'Testing Components That Use NgOptimizedImage — previous', route: '/angular/ng-image/testing-components-that-use-ngoptimizedimage' },
+      { label: 'NgOptimizedImage (overview)',                              route: '/angular/ng-image' },
+    ],
+    tip: 'Only the LAST largest-contentful-paint entry (until user interaction freezes it) is the value that counts for Core Web Vitals — earlier entries get superseded as painting progresses.',
+    docs: [
+      { label: 'Largest Contentful Paint API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/LargestContentfulPaint' },
+      { label: 'web.dev — LCP',                url: 'https://web.dev/articles/lcp' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Without buffered: true on observe(), the PerformanceObserver misses LCP candidates painted before your Angular code started observing.',
+      'LCP is per-page-load and cannot be reset mid-session — comparing priority vs no-priority requires two separate navigations, not a single toggle.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

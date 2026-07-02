@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="NgOptimizedImage"
+    topicRoute="/angular/ng-image"
+    subtopicLabel="Measuring LCP Impact with PerformanceObserver" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Measuring LCP Impact with PerformanceObserver</h1>
+  <p class="page-subtitle">
+    Proving the priority attribute actually improves LCP with the browser's own
+    largest-contentful-paint reporting — not just trusting the theory.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 15+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>observeLcp()</code> logs the browser-reported LCP timestamp and the winning
+      element as soon as it is available — compare the value with and without
+      <code>priority</code> on the same hero image.
+    </p>
+    <app-live-playground
+      title="Measuring LCP impact with PerformanceObserver"
+      template="angular-cli"
+      openFile="src/app/lcp-observer.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With placeholders, testing, and measured LCP proof all covered, head back to the
+      topic overview to see how these techniques combine with CDN loaders and SSR.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NgOptimizedImage"
+    topicRoute="/angular/ng-image"
+    [prev]="{ label: 'Testing Components That Use NgOptimizedImage', route: '/angular/ng-image/testing-components-that-use-ngoptimizedimage' }" />
+</div>

@@ -244,7 +244,12 @@ export const routes: Routes = [
         { path: 'tracing-guard-execution-order',           loadComponent: () => import('./components/angular/route-guards/subtopics/tracing-guard-execution-order/tracing-guard-execution-order').then(m => m.TracingGuardExecutionOrderSubtopic) },
         { path: 'async-guards-with-navigation-loading-indicator', loadComponent: () => import('./components/angular/route-guards/subtopics/async-guards-with-navigation-loading-indicator/async-guards-with-navigation-loading-indicator').then(m => m.AsyncGuardsWithNavigationLoadingIndicatorSubtopic) },
       ] },
-      { path: 'ng-image',           loadComponent: () => import('./components/angular/ng-image/ng-image').then(m => m.NgImageDemo) },
+      { path: 'ng-image', children: [
+        { path: '',                                        loadComponent: () => import('./components/angular/ng-image/ng-image').then(m => m.NgImageDemo) },
+        { path: 'custom-loader-with-blur-up-lqip-placeholder', loadComponent: () => import('./components/angular/ng-image/subtopics/custom-loader-with-blur-up-lqip-placeholder/custom-loader-with-blur-up-lqip-placeholder').then(m => m.CustomLoaderWithBlurUpLqipPlaceholderSubtopic) },
+        { path: 'testing-components-that-use-ngoptimizedimage', loadComponent: () => import('./components/angular/ng-image/subtopics/testing-components-that-use-ngoptimizedimage/testing-components-that-use-ngoptimizedimage').then(m => m.TestingComponentsThatUseNgoptimizedimageSubtopic) },
+        { path: 'measuring-lcp-impact-with-performanceobserver', loadComponent: () => import('./components/angular/ng-image/subtopics/measuring-lcp-impact-with-performanceobserver/measuring-lcp-impact-with-performanceobserver').then(m => m.MeasuringLcpImpactWithPerformanceobserverSubtopic) },
+      ] },
       { path: 'destroy-ref',        loadComponent: () => import('./components/angular/destroy-ref/destroy-ref').then(m => m.DestroyRefDemo) },
       { path: 'linked-signal',      loadComponent: () => import('./components/angular/linked-signal/linked-signal').then(m => m.LinkedSignalDemo) },
       { path: 'zoneless',           loadComponent: () => import('./components/angular/zoneless/zoneless').then(m => m.ZonelessDemo) },

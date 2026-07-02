@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="NgOptimizedImage"
+    topicRoute="/angular/ng-image"
+    subtopicLabel="Testing Components That Use NgOptimizedImage" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Components That Use NgOptimizedImage</h1>
+  <p class="page-subtitle">
+    Asserting on rendered attributes like fetchpriority and src — not the directive's own
+    internals — with a deterministic test loader.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 15+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>ProductCardComponent</code> that conditionally applies <code>priority</code>
+      and forwards <code>loaderParams</code> — three tests confirm the rendered attributes,
+      using a test-only <code>IMAGE_LOADER</code> override.
+    </p>
+    <app-live-playground
+      title="Testing components that use NgOptimizedImage"
+      template="angular-cli"
+      openFile="src/app/product-card.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With correctness covered by tests, the final subtopic verifies the PERFORMANCE claim
+      itself — measuring whether priority actually improves LCP with real browser APIs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NgOptimizedImage"
+    topicRoute="/angular/ng-image"
+    [prev]="{ label: 'Custom Loader with Blur-Up LQIP Placeholder', route: '/angular/ng-image/custom-loader-with-blur-up-lqip-placeholder' }"
+    [next]="{ label: 'Measuring LCP Impact with PerformanceObserver', route: '/angular/ng-image/measuring-lcp-impact-with-performanceobserver' }" />
+</div>

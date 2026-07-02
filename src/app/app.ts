@@ -242,6 +242,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Tracing Guard Execution Order', route: '/angular/route-guards/tracing-guard-execution-order' },
     { label: 'Async Guards with a Navigation Loading Indicator', route: '/angular/route-guards/async-guards-with-navigation-loading-indicator' },
   ],
+  'ng-image': [
+    { label: 'Custom Loader with Blur-Up LQIP Placeholder', route: '/angular/ng-image/custom-loader-with-blur-up-lqip-placeholder' },
+    { label: 'Testing Components That Use NgOptimizedImage', route: '/angular/ng-image/testing-components-that-use-ngoptimizedimage' },
+    { label: 'Measuring LCP Impact with PerformanceObserver', route: '/angular/ng-image/measuring-lcp-impact-with-performanceobserver' },
+  ],
 };
 
 @Component({

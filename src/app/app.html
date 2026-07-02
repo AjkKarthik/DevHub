@@ -1895,7 +1895,22 @@
         <span class="nl-text">NgOptimizedImage</span>
         @if (progress.isDone('ng-image')) {<span class="nl-done">✓</span>}
         @if (diff('ng-image'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ng-image')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ng-image')"
+                  (click)="toggleSubtopics('ng-image', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('ng-image'); as subs) {
+        @if (isSubtopicsExpanded('ng-image')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/web-workers" routerLinkActive="active">
         <span class="nl-text">Web Workers</span>
         @if (progress.isDone('web-workers')) {<span class="nl-done">✓</span>}
