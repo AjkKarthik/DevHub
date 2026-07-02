@@ -1408,7 +1408,7 @@ off here with a date.
 - [x] `/angular/cdk` — Angular CDK (2026-07-02 — 3 subtopics: cdk-menu-keyboard-navigation, cdk-table-headless-data-table, building-custom-overlay-component)
 - [x] `/angular/ag-grid` — AG Grid with Angular (2026-07-02 — 3 subtopics: custom-cell-renderers-angular-components, editable-cells-value-setters, master-detail-row-grouping)
 - [x] `/angular/tanstack-query` — TanStack Query (2026-07-02 — 3 subtopics: optimistic-updates-rollback, dependent-and-parallel-queries, infinite-queries-pagination)
-- [ ] `/angular/date-fns` — date-fns in Angular
+- [x] `/angular/date-fns` — date-fns in Angular (2026-07-02 — 3 subtopics: intervals-and-recurring-events, timezone-handling-date-fns-tz, reactive-date-range-picker)
 - [ ] `/angular/animations` — Angular Animations
 - [ ] `/angular/cva` — Control Value Accessor
 - [ ] `/angular/testing` — Testing Angular
