@@ -111,7 +111,12 @@ export const routes: Routes = [
         { path: 'collection-string-pipes',   loadComponent: () => import('./components/angular/pipes-demo/subtopics/collection-string-pipes/collection-string-pipes').then(m => m.CollectionStringPipesSubtopic) },
         { path: 'async-pipe-let-performance', loadComponent: () => import('./components/angular/pipes-demo/subtopics/async-pipe-let-performance/async-pipe-let-performance').then(m => m.AsyncPipeLetPerformanceSubtopic) },
       ] },
-      { path: 'di',                 loadComponent: () => import('./components/angular/di-demo/di-demo').then(m => m.DiDemo) },
+      { path: 'di', children: [
+        { path: '',                                          loadComponent: () => import('./components/angular/di-demo/di-demo').then(m => m.DiDemo) },
+        { path: 'injection-context-deep-dive',                loadComponent: () => import('./components/angular/di-demo/subtopics/injection-context-deep-dive/injection-context-deep-dive').then(m => m.InjectionContextDeepDiveSubtopic) },
+        { path: 'multi-providers-extension-points',           loadComponent: () => import('./components/angular/di-demo/subtopics/multi-providers-extension-points/multi-providers-extension-points').then(m => m.MultiProvidersExtensionPointsSubtopic) },
+        { path: 'environment-injectors-standalone-bootstrap', loadComponent: () => import('./components/angular/di-demo/subtopics/environment-injectors-standalone-bootstrap/environment-injectors-standalone-bootstrap').then(m => m.EnvironmentInjectorsStandaloneBootstrapSubtopic) },
+      ] },
       { path: 'routing',            loadComponent: () => import('./components/angular/routing-demo/routing-demo').then(m => m.RoutingDemo) },
       { path: 'charts',             loadComponent: () => import('./components/angular/charts/charts').then(m => m.ChartsDemo) },
       { path: 'zod-forms',          loadComponent: () => import('./components/angular/zod-forms/zod-forms').then(m => m.ZodFormsDemo) },

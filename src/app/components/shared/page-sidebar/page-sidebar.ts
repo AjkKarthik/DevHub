@@ -2108,6 +2108,71 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Dependency Injection › subtopics (Phase 10) ──────────────────────────────
+  'di/injection-context-deep-dive': {
+    apis: ['inject()', 'runInInjectionContext()', 'assertInInjectionContext()'],
+    related: [
+      { label: 'Dependency Injection (overview)',            route: '/angular/di' },
+      { label: 'Multi-Providers & Extension Points — next',  route: '/angular/di/multi-providers-extension-points' },
+    ],
+    tip: 'inject() only works during class construction (field init / constructor body) — call it before the first await in a functional guard or resolver, not after.',
+    docs: [
+      { label: 'DI Guide',      url: 'https://angular.dev/guide/di' },
+      { label: 'inject() API',  url: 'https://angular.dev/api/core/inject' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Functional guards/resolvers get an injection context only for their synchronous portion — inject() after an await throws NG0203.',
+      'Composable "inject function" helpers are plain functions, not a registered Angular API — they just need to be called synchronously in a valid context.',
+      'runInInjectionContext() requires a live Injector captured BEFORE the deferred callback runs — it cannot create context out of nothing.',
+    ],
+  },
+
+  'di/multi-providers-extension-points': {
+    apis: ['multi: true', 'InjectionToken', 'provideAppInitializer()'],
+    related: [
+      { label: 'Injection Context Deep Dive — previous',                route: '/angular/di/injection-context-deep-dive' },
+      { label: 'Dependency Injection (overview)',                       route: '/angular/di' },
+      { label: 'Environment Injectors & Standalone Bootstrap — next',   route: '/angular/di/environment-injectors-standalone-bootstrap' },
+    ],
+    tip: 'Always give a multi: true token a default factory returning [] — without one, inject() throws NullInjectorError when nothing has registered, not an empty array.',
+    docs: [
+      { label: 'DI Guide',              url: 'https://angular.dev/guide/di' },
+      { label: 'HTTP_INTERCEPTORS API', url: 'https://angular.dev/api/common/http/HTTP_INTERCEPTORS' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'multi: true providers for the same token ACCUMULATE into an array — the second registration does not overwrite the first.',
+      'Order is generally registration order across the effective providers array — do not rely on a specific cross-feature order unless you control the whole list.',
+      'provideAppInitializer() runs before bootstrap completes and waits for a returned Promise/Observable — it is not a post-render lifecycle hook.',
+    ],
+  },
+
+  'di/environment-injectors-standalone-bootstrap': {
+    apis: ['EnvironmentInjector', 'createEnvironmentInjector()', 'bootstrapApplication()'],
+    related: [
+      { label: 'Multi-Providers & Extension Points — previous', route: '/angular/di/multi-providers-extension-points' },
+      { label: 'Dependency Injection (overview)',                route: '/angular/di' },
+    ],
+    tip: 'inject() searches the ElementInjector hierarchy (component/directive providers) FIRST, and only falls back to the EnvironmentInjector hierarchy if nothing is found there.',
+    docs: [
+      { label: 'DI Guide',                     url: 'https://angular.dev/guide/di' },
+      { label: 'createEnvironmentInjector API', url: 'https://angular.dev/api/core/createEnvironmentInjector' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Route-level providers:[] creates a child EnvironmentInjector, NOT an ElementInjector — a different mechanism from a component\'s own providers despite similar syntax.',
+      'A manually created environment injector (createEnvironmentInjector) is not destroyed automatically — call .destroy() explicitly or its providers leak for the app\'s lifetime.',
+      'bootstrapApplication({ providers }) sets up the root EnvironmentInjector — the standalone-app replacement for the old root NgModule.providers array.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

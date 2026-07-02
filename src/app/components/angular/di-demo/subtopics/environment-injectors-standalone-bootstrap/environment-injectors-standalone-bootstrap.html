@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dependency Injection"
+    topicRoute="/angular/di"
+    subtopicLabel="Environment Injectors &amp; Standalone Bootstrap" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Environment Injectors &amp; Standalone Bootstrap</h1>
+  <p class="page-subtitle">
+    The EnvironmentInjector vs ElementInjector split, how bootstrapApplication() and
+    route-level providers fit in, and manually scoping injectors with createEnvironmentInjector().
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A manually created child <code>EnvironmentInjector</code> whose lifecycle you control
+      directly — create it, inspect the fresh instance it produces, then destroy it and watch
+      the console log confirm cleanup.
+    </p>
+    <app-live-playground
+      title="Environment injectors and standalone bootstrap"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Dependency Injection</h2>
+    <p>
+      You now know the full injector picture: how to call <code>inject()</code> safely and
+      when to defer it with <code>runInInjectionContext()</code>, how to build self-registering
+      extension points with <code>multi: true</code>, and how the EnvironmentInjector and
+      ElementInjector hierarchies actually differ — from the singleton/scoped basics through
+      to manually-owned injector lifecycles.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dependency Injection"
+    topicRoute="/angular/di"
+    [prev]="{ label: 'Multi-Providers & Extension Points', route: '/angular/di/multi-providers-extension-points' }" />
+</div>

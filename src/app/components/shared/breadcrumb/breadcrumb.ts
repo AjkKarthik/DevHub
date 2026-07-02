@@ -63,6 +63,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'formatting-pipes-locale': 'Formatting Pipes & Locale',
   'collection-string-pipes': 'Collection & String Pipes',
   'async-pipe-let-performance': 'AsyncPipe, @let & Performance',
+  'injection-context-deep-dive': 'Injection Context Deep Dive',
+  'multi-providers-extension-points': 'Multi-Providers & Extension Points',
+  'environment-injectors-standalone-bootstrap': 'Environment Injectors & Standalone Bootstrap',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

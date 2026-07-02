@@ -131,6 +131,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Collection & String Pipes', route: '/angular/pipes/collection-string-pipes' },
     { label: 'AsyncPipe, @let & Performance', route: '/angular/pipes/async-pipe-let-performance' },
   ],
+  di: [
+    { label: 'Injection Context Deep Dive', route: '/angular/di/injection-context-deep-dive' },
+    { label: 'Multi-Providers & Extension Points', route: '/angular/di/multi-providers-extension-points' },
+    { label: 'Environment Injectors & Standalone Bootstrap', route: '/angular/di/environment-injectors-standalone-bootstrap' },
+  ],
 };
 
 @Component({
