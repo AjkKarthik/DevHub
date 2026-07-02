@@ -1,0 +1,39 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Change Detection"
+    topicRoute="/angular/change-detection"
+    subtopicLabel="Embedded Views &amp; Dynamic Component CD" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Embedded Views &amp; Dynamic Component CD</h1>
+  <p class="page-subtitle">
+    What &#64;for and &#64;if actually create under the hood, how track-based reconciliation
+    preserves embedded view state, and how dynamically created components attach to the CD tree.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Dynamically created counter widgets attach to the change detection tree automatically —
+      each keeps its own independent count, and destroying a ref removes it from CD entirely.
+    </p>
+    <app-live-playground
+      title="Embedded views and dynamic component CD"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Change Detection"
+    topicRoute="/angular/change-detection"
+    [next]="{ label: 'Bridging External Libraries to OnPush', route: '/angular/change-detection/bridging-external-libraries-onpush' }" />
+</div>

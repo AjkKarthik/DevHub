@@ -157,6 +157,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Compound Components with Content Queries', route: '/angular/content-projection/compound-components-content-queries' },
     { label: 'Recursive Templates with NgTemplateOutlet', route: '/angular/content-projection/recursive-templates-ngtemplateoutlet' },
   ],
+  'change-detection': [
+    { label: 'Embedded Views & Dynamic Component CD', route: '/angular/change-detection/embedded-views-dynamic-cd' },
+    { label: 'Bridging External Libraries to OnPush', route: '/angular/change-detection/bridging-external-libraries-onpush' },
+    { label: 'Testing OnPush Components', route: '/angular/change-detection/testing-onpush-components' },
+  ],
 };
 
 @Component({

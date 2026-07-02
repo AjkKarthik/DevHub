@@ -142,7 +142,12 @@ export const routes: Routes = [
         { path: 'compound-components-content-queries',     loadComponent: () => import('./components/angular/content-projection/subtopics/compound-components-content-queries/compound-components-content-queries').then(m => m.CompoundComponentsContentQueriesSubtopic) },
         { path: 'recursive-templates-ngtemplateoutlet',     loadComponent: () => import('./components/angular/content-projection/subtopics/recursive-templates-ngtemplateoutlet/recursive-templates-ngtemplateoutlet').then(m => m.RecursiveTemplatesNgtemplateoutletSubtopic) },
       ] },
-      { path: 'change-detection',   loadComponent: () => import('./components/angular/change-detection/change-detection').then(m => m.ChangeDetectionDemo) },
+      { path: 'change-detection', children: [
+        { path: '',                                   loadComponent: () => import('./components/angular/change-detection/change-detection').then(m => m.ChangeDetectionDemo) },
+        { path: 'embedded-views-dynamic-cd',           loadComponent: () => import('./components/angular/change-detection/subtopics/embedded-views-dynamic-cd/embedded-views-dynamic-cd').then(m => m.EmbeddedViewsDynamicCdSubtopic) },
+        { path: 'bridging-external-libraries-onpush',  loadComponent: () => import('./components/angular/change-detection/subtopics/bridging-external-libraries-onpush/bridging-external-libraries-onpush').then(m => m.BridgingExternalLibrariesOnpushSubtopic) },
+        { path: 'testing-onpush-components',           loadComponent: () => import('./components/angular/change-detection/subtopics/testing-onpush-components/testing-onpush-components').then(m => m.TestingOnpushComponentsSubtopic) },
+      ] },
       { path: 'custom-validators',  loadComponent: () => import('./components/angular/custom-validators/custom-validators').then(m => m.CustomValidatorsDemo) },
       { path: 'rxjs',               loadComponent: () => import('./components/angular/rxjs-demo/rxjs-demo').then(m => m.RxjsDemo) },
       { path: 'cdk',                loadComponent: () => import('./components/angular/cdk-demo/cdk-demo').then(m => m.CdkDemo) },

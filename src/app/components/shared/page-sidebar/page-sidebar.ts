@@ -2449,6 +2449,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Change Detection › subtopics (Phase 10) ──────────────────────────────────
+  'change-detection/embedded-views-dynamic-cd': {
+    apis: ['ViewContainerRef.createComponent()', 'ComponentRef', 'embedded views'],
+    related: [
+      { label: 'Change Detection (overview)',                          route: '/angular/change-detection' },
+      { label: 'Bridging External Libraries to OnPush — next',          route: '/angular/change-detection/bridging-external-libraries-onpush' },
+    ],
+    tip: 'A component created via createComponent() auto-attaches to the CD tree — no manual registration needed.',
+    docs: [
+      { label: 'Dynamic Component Creation', url: 'https://angular.dev/guide/components/programmatic-rendering' },
+      { label: 'Change Detection Guide',     url: 'https://angular.dev/best-practices/skipping-subtrees' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Forgetting .destroy() on a ComponentRef is a CD performance issue, not just a memory leak — it keeps being visited on every reachable cycle.',
+      'With a stable track key, @for reconciles embedded views by matching/moving rather than destroying and recreating everything.',
+    ],
+  },
+
+  'change-detection/bridging-external-libraries-onpush': {
+    apis: ['NgZone.run()', 'runOutsideAngular()', 'toSignal()'],
+    related: [
+      { label: 'Embedded Views & Dynamic Component CD — previous', route: '/angular/change-detection/embedded-views-dynamic-cd' },
+      { label: 'Change Detection (overview)',                       route: '/angular/change-detection' },
+      { label: 'Testing OnPush Components — next',                  route: '/angular/change-detection/testing-onpush-components' },
+    ],
+    tip: 'Signals are zone-agnostic by design — updating one from ANY callback, Angular-aware or not, correctly notifies the reactive graph.',
+    docs: [
+      { label: 'NgZone API',    url: 'https://angular.dev/api/core/NgZone' },
+      { label: 'toSignal API',  url: 'https://angular.dev/api/core/rxjs-interop/toSignal' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A plain field mutated in a callback outside signals/NgZone.run() may never trigger OnPush — not "eventually," genuinely invisible.',
+      'runOutsideAngular() is a real performance technique for high-frequency work (rAF loops, mousemove), not a micro-optimization.',
+    ],
+  },
+
+  'change-detection/testing-onpush-components': {
+    apis: ['fixture.detectChanges()', 'ComponentFixtureAutoDetect', 'setInput()'],
+    related: [
+      { label: 'Bridging External Libraries to OnPush — previous', route: '/angular/change-detection/bridging-external-libraries-onpush' },
+      { label: 'Change Detection (overview)',                       route: '/angular/change-detection' },
+    ],
+    tip: 'fixture.detectChanges() bypasses the OnPush gate entirely — a test can pass by forcing a check production would never trigger for the same mutation.',
+    docs: [
+      { label: 'Testing Components Guide', url: 'https://angular.dev/guide/testing/components-scenarios' },
+      { label: 'ComponentFixture API',     url: 'https://angular.dev/api/core/testing/ComponentFixture' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'fixture.componentRef.setInput() is the correct way to set a signal input() in a test — assigning to the signal directly does not simulate a real parent binding.',
+      'Assert on signal VALUES directly in addition to DOM text — it verifies reactive state independent of DOM timing.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

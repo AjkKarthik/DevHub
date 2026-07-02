@@ -79,6 +79,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'programmatic-projection-createcomponent': 'Programmatic Projection with createComponent',
   'compound-components-content-queries': 'Compound Components with Content Queries',
   'recursive-templates-ngtemplateoutlet': 'Recursive Templates with NgTemplateOutlet',
+  'embedded-views-dynamic-cd': 'Embedded Views & Dynamic Component CD',
+  'bridging-external-libraries-onpush': 'Bridging External Libraries to OnPush',
+  'testing-onpush-components': 'Testing OnPush Components',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
