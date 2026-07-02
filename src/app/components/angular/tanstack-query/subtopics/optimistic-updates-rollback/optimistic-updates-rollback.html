@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TanStack Query"
+    topicRoute="/angular/tanstack-query"
+    subtopicLabel="Optimistic Updates &amp; Rollback" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Optimistic Updates &amp; Rollback</h1>
+  <p class="page-subtitle">
+    The full onMutate/onError/onSettled pattern — snapshotting the cache, writing an
+    instant optimistic value, and rolling back correctly when the server rejects it.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="@tanstack/angular-query-experimental" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A todo checkbox toggles instantly (optimistic), with a ~40% simulated server
+      rejection rate — watch it snap back to the previous state when the mutation fails.
+    </p>
+    <app-live-playground
+      title="Optimistic updates and rollback"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="tsqDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="TanStack Query"
+    topicRoute="/angular/tanstack-query"
+    [next]="{ label: 'Dependent & Parallel Queries', route: '/angular/tanstack-query/dependent-and-parallel-queries' }" />
+</div>

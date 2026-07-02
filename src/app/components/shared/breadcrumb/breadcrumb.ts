@@ -94,6 +94,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'custom-cell-renderers-angular-components': 'Custom Cell Renderers as Angular Components',
   'editable-cells-value-setters': 'Editable Cells & Value Setters',
   'master-detail-row-grouping': 'Master/Detail & Row Grouping',
+  'optimistic-updates-rollback': 'Optimistic Updates & Rollback',
+  'dependent-and-parallel-queries': 'Dependent & Parallel Queries',
+  'infinite-queries-pagination': 'Infinite Queries & Pagination',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

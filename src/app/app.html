@@ -1648,7 +1648,22 @@
         <span class="nl-text">TanStack Query</span>
         @if (progress.isDone('tanstack-query')) {<span class="nl-done">✓</span>}
         @if (diff('tanstack-query'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('tanstack-query')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('tanstack-query')"
+                  (click)="toggleSubtopics('tanstack-query', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('tanstack-query'); as subs) {
+        @if (isSubtopicsExpanded('tanstack-query')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/date-fns" routerLinkActive="active">
         <span class="nl-text">date-fns</span>
         @if (progress.isDone('date-fns')) {<span class="nl-done">✓</span>}

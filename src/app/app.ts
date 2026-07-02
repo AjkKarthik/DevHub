@@ -182,6 +182,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Editable Cells & Value Setters', route: '/angular/ag-grid/editable-cells-value-setters' },
     { label: 'Master/Detail & Row Grouping', route: '/angular/ag-grid/master-detail-row-grouping' },
   ],
+  'tanstack-query': [
+    { label: 'Optimistic Updates & Rollback', route: '/angular/tanstack-query/optimistic-updates-rollback' },
+    { label: 'Dependent & Parallel Queries', route: '/angular/tanstack-query/dependent-and-parallel-queries' },
+    { label: 'Infinite Queries & Pagination', route: '/angular/tanstack-query/infinite-queries-pagination' },
+  ],
 };
 
 @Component({

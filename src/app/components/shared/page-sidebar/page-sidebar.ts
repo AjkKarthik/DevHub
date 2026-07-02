@@ -2759,6 +2759,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── TanStack Query › subtopics (Phase 10) ────────────────────────────────────
+  'tanstack-query/optimistic-updates-rollback': {
+    apis: ['onMutate', 'onError', 'onSettled'],
+    related: [
+      { label: 'TanStack Query (overview)',                    route: '/angular/tanstack-query' },
+      { label: 'Dependent & Parallel Queries — next',           route: '/angular/tanstack-query/dependent-and-parallel-queries' },
+    ],
+    tip: 'onMutate must RETURN the snapshot it captures — that return value becomes the context argument in onError/onSettled.',
+    docs: [
+      { label: 'TanStack Optimistic Updates', url: 'https://tanstack.com/query/latest/docs/framework/angular/guides/optimistic-updates' },
+      { label: 'TanStack Mutations',          url: 'https://tanstack.com/query/latest/docs/framework/angular/guides/mutations' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Without cancelQueries() first, an in-flight background refetch can overwrite your optimistic write with stale data.',
+      'onSettled runs on BOTH success and failure — even a correct optimistic guess should be reconciled with the real server response.',
+    ],
+  },
+
+  'tanstack-query/dependent-and-parallel-queries': {
+    apis: ['enabled', 'injectQueries()', 'reactive options callback'],
+    related: [
+      { label: 'Optimistic Updates & Rollback — previous',     route: '/angular/tanstack-query/optimistic-updates-rollback' },
+      { label: 'TanStack Query (overview)',                     route: '/angular/tanstack-query' },
+      { label: 'Infinite Queries & Pagination — next',          route: '/angular/tanstack-query/infinite-queries-pagination' },
+    ],
+    tip: 'The enabled option is reactive — TanStack Query automatically re-evaluates it and unlocks a dependent query with no manual effect() needed.',
+    docs: [
+      { label: 'TanStack Dependent Queries', url: 'https://tanstack.com/query/latest/docs/framework/angular/guides/dependent-queries' },
+      { label: 'TanStack Parallel Queries',  url: 'https://tanstack.com/query/latest/docs/framework/angular/guides/parallel-queries' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'injectQueries() is for a VARIABLE, runtime-determined array of queries — injectQuery() calls must be a fixed number known at compile time.',
+      'Every query inside injectQueries() shares the same global cache as any other query with a matching queryKey.',
+    ],
+  },
+
+  'tanstack-query/infinite-queries-pagination': {
+    apis: ['injectInfiniteQuery()', 'getNextPageParam', 'fetchNextPage()'],
+    related: [
+      { label: 'Dependent & Parallel Queries — previous', route: '/angular/tanstack-query/dependent-and-parallel-queries' },
+      { label: 'TanStack Query (overview)',                 route: '/angular/tanstack-query' },
+    ],
+    tip: 'Infinite query data is structurally different from a regular query — data().pages is an array of page results, requiring a flatten step to render as one list.',
+    docs: [
+      { label: 'TanStack Infinite Queries', url: 'https://tanstack.com/query/latest/docs/framework/angular/guides/infinite-queries' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'hasNextPage() is computed automatically from whether getNextPageParam returned undefined — not a manually maintained flag.',
+      'isFetchingNextPage() is distinct from isFetching() — the latter includes background refetches of already-loaded pages.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

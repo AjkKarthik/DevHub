@@ -172,7 +172,12 @@ export const routes: Routes = [
         { path: 'editable-cells-value-setters',             loadComponent: () => import('./components/angular/ag-grid-demo/subtopics/editable-cells-value-setters/editable-cells-value-setters').then(m => m.EditableCellsValueSettersSubtopic) },
         { path: 'master-detail-row-grouping',               loadComponent: () => import('./components/angular/ag-grid-demo/subtopics/master-detail-row-grouping/master-detail-row-grouping').then(m => m.MasterDetailRowGroupingSubtopic) },
       ] },
-      { path: 'tanstack-query',     loadComponent: () => import('./components/angular/tanstack-query/tanstack-query').then(m => m.TanstackQueryDemo) },
+      { path: 'tanstack-query', children: [
+        { path: '',                             loadComponent: () => import('./components/angular/tanstack-query/tanstack-query').then(m => m.TanstackQueryDemo) },
+        { path: 'optimistic-updates-rollback',   loadComponent: () => import('./components/angular/tanstack-query/subtopics/optimistic-updates-rollback/optimistic-updates-rollback').then(m => m.OptimisticUpdatesRollbackSubtopic) },
+        { path: 'dependent-and-parallel-queries', loadComponent: () => import('./components/angular/tanstack-query/subtopics/dependent-and-parallel-queries/dependent-and-parallel-queries').then(m => m.DependentAndParallelQueriesSubtopic) },
+        { path: 'infinite-queries-pagination',   loadComponent: () => import('./components/angular/tanstack-query/subtopics/infinite-queries-pagination/infinite-queries-pagination').then(m => m.InfiniteQueriesPaginationSubtopic) },
+      ] },
       { path: 'date-fns',           loadComponent: () => import('./components/angular/datefns-demo/datefns-demo').then(m => m.DateFnsDemo) },
       { path: 'animations',         loadComponent: () => import('./components/angular/animations-demo/animations-demo').then(m => m.AnimationsDemo) },
       { path: 'cva',                loadComponent: () => import('./components/angular/cva-demo/cva-demo').then(m => m.CvaDemo) },

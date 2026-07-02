@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TanStack Query"
+    topicRoute="/angular/tanstack-query"
+    subtopicLabel="Infinite Queries &amp; Pagination" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Infinite Queries &amp; Pagination</h1>
+  <p class="page-subtitle">
+    injectInfiniteQuery()'s page-array data shape, getNextPageParam for computing the next
+    cursor, and fetchNextPage()/hasNextPage()/isFetchingNextPage() for load-more UIs.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="@tanstack/angular-query-experimental" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A 5-page feed loaded 5 items at a time — click "Load more" to fetch the next page;
+      the button disappears once every page has been loaded.
+    </p>
+    <app-live-playground
+      title="Infinite queries and pagination"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="tsqDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed TanStack Query</h2>
+    <p>
+      You now know the full optimistic-update pattern with rollback via
+      <code>onMutate</code>/<code>onError</code>/<code>onSettled</code>, how to chain
+      dependent queries with <code>enabled</code> and run a dynamic array of parallel
+      queries with <code>injectQueries()</code>, and how <code>injectInfiniteQuery()</code>'s
+      page-array shape powers load-more and infinite-scroll UIs. Combined with query/mutation
+      fundamentals, cache invalidation, and setup from the main topic, that's the complete
+      TanStack Query toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TanStack Query"
+    topicRoute="/angular/tanstack-query"
+    [prev]="{ label: 'Dependent & Parallel Queries', route: '/angular/tanstack-query/dependent-and-parallel-queries' }" />
+</div>
