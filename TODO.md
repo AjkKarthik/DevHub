@@ -1403,7 +1403,7 @@ off here with a date.
 - [x] `/angular/zod-forms` — Zod + Reactive Forms (2026-07-02 — 3 subtopics: discriminated-unions-and-transforms, async-validation-with-zod, nested-schemas-error-formatting)
 - [x] `/angular/content-projection` — Content Projection (2026-07-02 — 3 subtopics: programmatic-projection-createcomponent, compound-components-content-queries, recursive-templates-ngtemplateoutlet)
 - [x] `/angular/change-detection` — Change Detection (2026-07-02 — 3 subtopics: embedded-views-dynamic-cd, bridging-external-libraries-onpush, testing-onpush-components)
-- [ ] `/angular/custom-validators` — Custom Validators
+- [x] `/angular/custom-validators` — Custom Validators (2026-07-02 — 3 subtopics: dynamic-validators-runtime, validator-directives-template-forms, generic-reusable-validators)
 - [ ] `/angular/rxjs` — RxJS Operators
 - [ ] `/angular/cdk` — Angular CDK
 - [ ] `/angular/ag-grid` — AG Grid with Angular
