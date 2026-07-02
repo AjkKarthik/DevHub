@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Route Guards"
+    topicRoute="/angular/route-guards"
+    subtopicLabel="Async Guards with a Navigation Loading Indicator" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Async Guards with a Navigation Loading Indicator</h1>
+  <p class="page-subtitle">
+    An Observable-returning guard blocks navigation silently — wiring a loading bar to
+    Router.events (not the guard itself) makes the wait feel intentional, not broken.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>NavLoadingService</code> listens to <code>Router.events</code> and shows a top
+      loading bar for the full duration of a navigation guarded by a ~1.5s async
+      <code>authInitGuard</code> — click Dashboard right after load to see it in action.
+    </p>
+    <app-live-playground
+      title="Async guards with a navigation loading indicator"
+      template="angular-cli"
+      openFile="src/app/nav-loading.service.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With nested-section guarding, execution order, and async-guard UX all covered, head
+      back to the topic overview to see how guards combine with resolvers and named outlets
+      from earlier subtopic sets.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Route Guards"
+    topicRoute="/angular/route-guards"
+    [prev]="{ label: 'Tracing Guard Execution Order', route: '/angular/route-guards/tracing-guard-execution-order' }" />
+</div>

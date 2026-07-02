@@ -1644,7 +1644,22 @@
         <span class="nl-text">Route Guards</span>
         @if (progress.isDone('route-guards')) {<span class="nl-done">✓</span>}
         @if (diff('route-guards'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('route-guards')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('route-guards')"
+                  (click)="toggleSubtopics('route-guards', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('route-guards'); as subs) {
+        @if (isSubtopicsExpanded('route-guards')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

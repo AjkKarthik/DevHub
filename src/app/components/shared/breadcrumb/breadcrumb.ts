@@ -127,6 +127,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'priority-tiered-preloading-with-delay': 'Priority-Tiered Preloading with Delay',
   'testing-preloading-strategies': 'Testing Preloading Strategies',
   'measuring-preload-effectiveness': 'Measuring Preload Effectiveness',
+  'canactivatechild-for-nested-admin-sections': 'canActivateChild for Nested Admin Sections',
+  'tracing-guard-execution-order': 'Tracing Guard Execution Order',
+  'async-guards-with-navigation-loading-indicator': 'Async Guards with a Navigation Loading Indicator',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

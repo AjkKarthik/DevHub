@@ -3438,6 +3438,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'route-guards/canactivatechild-for-nested-admin-sections': {
+    apis: ['CanActivateChildFn', 'CanActivateFn (reused)', 'inject()'],
+    related: [
+      { label: 'Route Guards (overview)',                     route: '/angular/route-guards' },
+      { label: 'Tracing Guard Execution Order — next',          route: '/angular/route-guards/tracing-guard-execution-order' },
+    ],
+    tip: 'canActivateChild on a parent route protects every current AND future child automatically — and re-runs on every in-section navigation, not just on first entry to the parent.',
+    docs: [
+      { label: 'CanActivateChildFn API', url: 'https://angular.dev/api/router/CanActivateChildFn' },
+      { label: 'Router Guards Guide',    url: 'https://angular.dev/guide/routing/common-router-tasks#preventing-unauthorized-access' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A CanActivateFn works directly as a canActivateChild guard — there is no separate incompatible type to adapt.',
+      'canActivateChild re-fires on every child-to-child navigation, catching mid-session role changes the parent\'s own canActivate would miss.',
+    ],
+  },
+
+  'route-guards/tracing-guard-execution-order': {
+    apis: ['Router.events', 'NavigationStart', 'NavigationCancel'],
+    related: [
+      { label: 'canActivateChild for Nested Admin Sections — previous', route: '/angular/route-guards/canactivatechild-for-nested-admin-sections' },
+      { label: 'Route Guards (overview)',                                 route: '/angular/route-guards' },
+      { label: 'Async Guards with a Navigation Loading Indicator — next', route: '/angular/route-guards/async-guards-with-navigation-loading-indicator' },
+    ],
+    tip: 'canDeactivate of the OUTGOING route resolves fully before canActivate of the incoming route even starts — leaving is decided before arriving is evaluated.',
+    docs: [
+      { label: 'Router Events API',      url: 'https://angular.dev/api/router/Event' },
+      { label: 'Router Guards Guide',    url: 'https://angular.dev/guide/routing/common-router-tasks#preventing-unauthorized-access' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'canMatch can fire multiple times in ONE navigation — once per candidate route definition sharing a path, not once per navigation.',
+      'A guard returning a UrlTree aborts the current navigation and starts a brand new one with its own full guard sequence — it is not a mid-navigation jump.',
+    ],
+  },
+
+  'route-guards/async-guards-with-navigation-loading-indicator': {
+    apis: ['Router.events', 'NavigationCancel', 'NavigationError'],
+    related: [
+      { label: 'Tracing Guard Execution Order — previous', route: '/angular/route-guards/tracing-guard-execution-order' },
+      { label: 'Route Guards (overview)',                    route: '/angular/route-guards' },
+    ],
+    tip: 'Wire loading indicators to Router.events, not to a specific guard\'s Observable — a route can have multiple guards/resolvers, and Router.events spans the whole navigation regardless of how many there are.',
+    docs: [
+      { label: 'NavigationCancel API', url: 'https://angular.dev/api/router/NavigationCancel' },
+      { label: 'Router Events Guide',  url: 'https://angular.dev/guide/routing/common-router-tasks#displaying-a-1st-level-of-navigation' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'NavigationCancel fires for a guard blocking navigation (a normal outcome) — it must hide the loading indicator just like NavigationEnd, not be treated as an error case.',
+      'An HTTP-interceptor-based loading indicator misses guard time that is not backed by an HTTP call (e.g. waiting on a BehaviorSubject) — Router.events is the only signal that spans the full navigation.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

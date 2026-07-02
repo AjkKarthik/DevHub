@@ -237,6 +237,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Testing Preloading Strategies', route: '/angular/preloading/testing-preloading-strategies' },
     { label: 'Measuring Preload Effectiveness', route: '/angular/preloading/measuring-preload-effectiveness' },
   ],
+  'route-guards': [
+    { label: 'canActivateChild for Nested Admin Sections', route: '/angular/route-guards/canactivatechild-for-nested-admin-sections' },
+    { label: 'Tracing Guard Execution Order', route: '/angular/route-guards/tracing-guard-execution-order' },
+    { label: 'Async Guards with a Navigation Loading Indicator', route: '/angular/route-guards/async-guards-with-navigation-loading-indicator' },
+  ],
 };
 
 @Component({

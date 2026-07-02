@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Route Guards"
+    topicRoute="/angular/route-guards"
+    subtopicLabel="canActivateChild for Nested Admin Sections" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">canActivateChild for Nested Admin Sections</h1>
+  <p class="page-subtitle">
+    One guard on a parent route protects an entire nested section — and re-runs on every
+    in-section navigation, not just on first entry.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A single <code>roleGuard('admin')</code> registered once via <code>canActivateChild</code>
+      protects three admin child routes — try downgrading the role and navigating between
+      children to see it re-fire without ever leaving <code>/admin</code>.
+    </p>
+    <app-live-playground
+      title="canActivateChild for nested admin sections"
+      template="angular-cli"
+      openFile="src/app/admin.routes.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Now that a single guard type is covered in depth, the next subtopic traces exactly
+      WHEN each guard type fires relative to the others on a real nested route tree.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Route Guards"
+    topicRoute="/angular/route-guards"
+    [next]="{ label: 'Tracing Guard Execution Order', route: '/angular/route-guards/tracing-guard-execution-order' }" />
+</div>

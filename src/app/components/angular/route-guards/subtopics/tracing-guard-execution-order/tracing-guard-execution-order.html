@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Route Guards"
+    topicRoute="/angular/route-guards"
+    subtopicLabel="Tracing Guard Execution Order" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Tracing Guard Execution Order</h1>
+  <p class="page-subtitle">
+    Console-tracing canMatch, canActivateChild, canActivate, and canDeactivate on a real
+    nested navigation to see the exact firing order — not just read it as prose.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Every guard type logs its own name and phase — navigate between Page A and Page B
+      with the console open to watch <code>canDeactivate</code> fire before the incoming
+      route's <code>canMatch</code>, <code>canActivateChild</code>, and <code>canActivate</code>.
+    </p>
+    <app-live-playground
+      title="Tracing guard execution order"
+      template="angular-cli"
+      openFile="src/app/app.routes.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the exact firing order confirmed, the final subtopic covers a common real-world
+      need built on top of it — showing a loading indicator while an async guard resolves.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Route Guards"
+    topicRoute="/angular/route-guards"
+    [prev]="{ label: 'canActivateChild for Nested Admin Sections', route: '/angular/route-guards/canactivatechild-for-nested-admin-sections' }"
+    [next]="{ label: 'Async Guards with a Navigation Loading Indicator', route: '/angular/route-guards/async-guards-with-navigation-loading-indicator' }" />
+</div>

@@ -238,7 +238,12 @@ export const routes: Routes = [
         { path: 'testing-preloading-strategies',        loadComponent: () => import('./components/angular/preloading/subtopics/testing-preloading-strategies/testing-preloading-strategies').then(m => m.TestingPreloadingStrategiesSubtopic) },
         { path: 'measuring-preload-effectiveness',      loadComponent: () => import('./components/angular/preloading/subtopics/measuring-preload-effectiveness/measuring-preload-effectiveness').then(m => m.MeasuringPreloadEffectivenessSubtopic) },
       ] },
-      { path: 'route-guards',       loadComponent: () => import('./components/angular/route-guards/route-guards').then(m => m.RouteGuardsDemo) },
+      { path: 'route-guards', children: [
+        { path: '',                                       loadComponent: () => import('./components/angular/route-guards/route-guards').then(m => m.RouteGuardsDemo) },
+        { path: 'canactivatechild-for-nested-admin-sections', loadComponent: () => import('./components/angular/route-guards/subtopics/canactivatechild-for-nested-admin-sections/canactivatechild-for-nested-admin-sections').then(m => m.CanactivatechildForNestedAdminSectionsSubtopic) },
+        { path: 'tracing-guard-execution-order',           loadComponent: () => import('./components/angular/route-guards/subtopics/tracing-guard-execution-order/tracing-guard-execution-order').then(m => m.TracingGuardExecutionOrderSubtopic) },
+        { path: 'async-guards-with-navigation-loading-indicator', loadComponent: () => import('./components/angular/route-guards/subtopics/async-guards-with-navigation-loading-indicator/async-guards-with-navigation-loading-indicator').then(m => m.AsyncGuardsWithNavigationLoadingIndicatorSubtopic) },
+      ] },
       { path: 'ng-image',           loadComponent: () => import('./components/angular/ng-image/ng-image').then(m => m.NgImageDemo) },
       { path: 'destroy-ref',        loadComponent: () => import('./components/angular/destroy-ref/destroy-ref').then(m => m.DestroyRefDemo) },
       { path: 'linked-signal',      loadComponent: () => import('./components/angular/linked-signal/linked-signal').then(m => m.LinkedSignalDemo) },
