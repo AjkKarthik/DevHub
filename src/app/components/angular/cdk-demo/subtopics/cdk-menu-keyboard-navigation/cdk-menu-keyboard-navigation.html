@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular CDK"
+    topicRoute="/angular/cdk"
+    subtopicLabel="CDK Menu &amp; Keyboard Navigation" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">CDK Menu &amp; Keyboard Navigation</h1>
+  <p class="page-subtitle">
+    Building a fully WAI-ARIA-compliant menu with &#64;angular/cdk/menu — arrow keys, Home/End,
+    Esc, and typeahead all come free, with zero built-in visual styling.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="@angular/cdk 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A file menu built with <code>CdkMenuTrigger</code>/<code>CdkMenu</code>/<code>CdkMenuItem</code>
+      — try arrow keys, Home/End, Esc, and typeahead (type a letter to jump to a matching item).
+    </p>
+    <app-live-playground
+      title="CDK Menu keyboard navigation"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="cdkDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Angular CDK"
+    topicRoute="/angular/cdk"
+    [next]="{ label: 'CDK Table — Headless Data Table', route: '/angular/cdk/cdk-table-headless-data-table' }" />
+</div>

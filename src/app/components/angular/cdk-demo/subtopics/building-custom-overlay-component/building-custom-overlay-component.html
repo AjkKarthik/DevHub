@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular CDK"
+    topicRoute="/angular/cdk"
+    subtopicLabel="Building a Custom Overlay Component" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Building a Custom Overlay Component</h1>
+  <p class="page-subtitle">
+    A hands-on walkthrough assembling OverlayRef, FlexibleConnectedPositionStrategy, and
+    TemplatePortal into a real popover — plus the explicit close-on-outside-click/Escape wiring.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="@angular/cdk 6+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A hand-built popover anchored to its trigger button, with fallback positioning and
+      explicit outside-click/Escape close handling — resize the preview to see it flip above
+      the button if there's no room below.
+    </p>
+    <app-live-playground
+      title="Building a custom overlay component"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="cdkDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Angular CDK</h2>
+    <p>
+      You now know <code>&#64;angular/cdk/menu</code> for fully accessible, unstyled menus with
+      keyboard navigation built in, <code>CdkTable</code> as the same headless engine
+      <code>MatTable</code> is built on, and how to hand-assemble
+      <code>Overlay</code>/<code>Portal</code>/<code>PositionStrategy</code> into a real
+      custom popover. Combined with drag &amp; drop, virtual scroll, and the accessibility
+      primitives from the main topic, that's the complete Angular CDK toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Angular CDK"
+    topicRoute="/angular/cdk"
+    [prev]="{ label: 'CDK Table — Headless Data Table', route: '/angular/cdk/cdk-table-headless-data-table' }" />
+</div>

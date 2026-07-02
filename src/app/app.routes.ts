@@ -160,7 +160,12 @@ export const routes: Routes = [
         { path: 'multicasting-share-operators',  loadComponent: () => import('./components/angular/rxjs-demo/subtopics/multicasting-share-operators/multicasting-share-operators').then(m => m.MulticastingShareOperatorsSubtopic) },
         { path: 'testing-rxjs-marble-diagrams',  loadComponent: () => import('./components/angular/rxjs-demo/subtopics/testing-rxjs-marble-diagrams/testing-rxjs-marble-diagrams').then(m => m.TestingRxjsMarbleDiagramsSubtopic) },
       ] },
-      { path: 'cdk',                loadComponent: () => import('./components/angular/cdk-demo/cdk-demo').then(m => m.CdkDemo) },
+      { path: 'cdk', children: [
+        { path: '',                                loadComponent: () => import('./components/angular/cdk-demo/cdk-demo').then(m => m.CdkDemo) },
+        { path: 'cdk-menu-keyboard-navigation',     loadComponent: () => import('./components/angular/cdk-demo/subtopics/cdk-menu-keyboard-navigation/cdk-menu-keyboard-navigation').then(m => m.CdkMenuKeyboardNavigationSubtopic) },
+        { path: 'cdk-table-headless-data-table',    loadComponent: () => import('./components/angular/cdk-demo/subtopics/cdk-table-headless-data-table/cdk-table-headless-data-table').then(m => m.CdkTableHeadlessDataTableSubtopic) },
+        { path: 'building-custom-overlay-component', loadComponent: () => import('./components/angular/cdk-demo/subtopics/building-custom-overlay-component/building-custom-overlay-component').then(m => m.BuildingCustomOverlayComponentSubtopic) },
+      ] },
       { path: 'ag-grid',            loadComponent: () => import('./components/angular/ag-grid-demo/ag-grid-demo').then(m => m.AgGridDemo) },
       { path: 'tanstack-query',     loadComponent: () => import('./components/angular/tanstack-query/tanstack-query').then(m => m.TanstackQueryDemo) },
       { path: 'date-fns',           loadComponent: () => import('./components/angular/datefns-demo/datefns-demo').then(m => m.DateFnsDemo) },

@@ -88,6 +88,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'custom-operators-and-pipe': 'Custom Operators & pipe()',
   'multicasting-share-operators': 'Multicasting & share() Operators',
   'testing-rxjs-marble-diagrams': 'Testing RxJS with Marble Diagrams',
+  'cdk-menu-keyboard-navigation': 'CDK Menu & Keyboard Navigation',
+  'cdk-table-headless-data-table': 'CDK Table — Headless Data Table',
+  'building-custom-overlay-component': 'Building a Custom Overlay Component',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

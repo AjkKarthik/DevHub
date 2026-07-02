@@ -172,6 +172,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Multicasting & share() Operators', route: '/angular/rxjs/multicasting-share-operators' },
     { label: 'Testing RxJS with Marble Diagrams', route: '/angular/rxjs/testing-rxjs-marble-diagrams' },
   ],
+  cdk: [
+    { label: 'CDK Menu & Keyboard Navigation', route: '/angular/cdk/cdk-menu-keyboard-navigation' },
+    { label: 'CDK Table — Headless Data Table', route: '/angular/cdk/cdk-table-headless-data-table' },
+    { label: 'Building a Custom Overlay Component', route: '/angular/cdk/building-custom-overlay-component' },
+  ],
 };
 
 @Component({

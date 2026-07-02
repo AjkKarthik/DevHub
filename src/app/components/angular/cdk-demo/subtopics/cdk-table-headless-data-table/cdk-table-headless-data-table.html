@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular CDK"
+    topicRoute="/angular/cdk"
+    subtopicLabel="CDK Table — Headless Data Table" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">CDK Table — Headless Data Table</h1>
+  <p class="page-subtitle">
+    The same rendering engine MatTable is built on — column composition, DataSource&lt;T&gt;,
+    and sticky rows/columns, with zero built-in visual styling.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="@angular/cdk 6+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A fully unstyled <code>cdk-table</code> with three composable column definitions —
+      reordering <code>displayedColumns</code> reorders the table with no column-def changes.
+    </p>
+    <app-live-playground
+      title="CdkTable headless data table"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="cdkDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Angular CDK"
+    topicRoute="/angular/cdk"
+    [prev]="{ label: 'CDK Menu & Keyboard Navigation', route: '/angular/cdk/cdk-menu-keyboard-navigation' }"
+    [next]="{ label: 'Building a Custom Overlay Component', route: '/angular/cdk/building-custom-overlay-component' }" />
+</div>

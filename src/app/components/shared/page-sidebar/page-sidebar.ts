@@ -2635,6 +2635,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Angular CDK › subtopics (Phase 10) ───────────────────────────────────────
+  'cdk/cdk-menu-keyboard-navigation': {
+    apis: ['CdkMenu', 'CdkMenuTrigger', 'CdkMenuItem'],
+    related: [
+      { label: 'Angular CDK (overview)',                       route: '/angular/cdk' },
+      { label: 'CDK Table — Headless Data Table — next',        route: '/angular/cdk/cdk-table-headless-data-table' },
+    ],
+    tip: 'Arrow-key navigation, Home/End, Esc, and typeahead all come free from CdkMenu — no keydown handling code required.',
+    docs: [
+      { label: 'CDK Menu API', url: 'https://material.angular.io/cdk/menu/api' },
+      { label: 'CDK Overview', url: 'https://material.angular.io/cdk/categories' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'CdkMenu provides only behavior/accessibility with zero visual styling — MatMenu is the fully-styled Material equivalent.',
+      'cdkMenuItemTriggered fires for both click and Enter/Space keyboard activation — one handler covers both.',
+    ],
+  },
+
+  'cdk/cdk-table-headless-data-table': {
+    apis: ['CdkTable', 'cdkColumnDef', 'DataSource<T>'],
+    related: [
+      { label: 'CDK Menu & Keyboard Navigation — previous',        route: '/angular/cdk/cdk-menu-keyboard-navigation' },
+      { label: 'Angular CDK (overview)',                            route: '/angular/cdk' },
+      { label: 'Building a Custom Overlay Component — next',        route: '/angular/cdk/building-custom-overlay-component' },
+    ],
+    tip: 'CdkTable is the same rendering/data engine MatTable is built on — same column composition, zero visual styling attached.',
+    docs: [
+      { label: 'CDK Table API',   url: 'https://material.angular.io/cdk/table/api' },
+      { label: 'DataSource Guide', url: 'https://material.angular.io/cdk/table/overview' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A plain array works with [dataSource] for simple cases — a DataSource subclass is for sorting/pagination/server-fetching hooks.',
+      'Sticky headers use pure CSS position: sticky — no scroll-listener JavaScript involved.',
+    ],
+  },
+
+  'cdk/building-custom-overlay-component': {
+    apis: ['OverlayRef', 'FlexibleConnectedPositionStrategy', 'TemplatePortal'],
+    related: [
+      { label: 'CDK Table — Headless Data Table — previous', route: '/angular/cdk/cdk-table-headless-data-table' },
+      { label: 'Angular CDK (overview)',                       route: '/angular/cdk' },
+    ],
+    tip: 'Click-outside-to-close and Escape-to-close are NOT automatic — wire them up via outsidePointerEvents()/keydownEvents() yourself.',
+    docs: [
+      { label: 'CDK Overlay API',   url: 'https://material.angular.io/cdk/overlay/api' },
+      { label: 'CDK Portal Guide',  url: 'https://material.angular.io/cdk/portal/overview' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'withPositions() is a priority-ordered fallback list — the CDK picks the first position that actually fits the viewport.',
+      'overlayRef.detach() only removes content and keeps the ref reusable — dispose() destroys it and releases the DOM node.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],
