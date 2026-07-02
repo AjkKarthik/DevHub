@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    subtopicLabel="viewChild() and viewChildren()" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">viewChild() and viewChildren()</h1>
+  <p class="page-subtitle">
+    Reach directly into a child element or component instance from the parent's own class
+    — as a signal, with no ngAfterViewInit lifecycle hook to write.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17.3" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A parent queries a child component BY TYPE (not just a template ref) and calls a
+      method on it directly — click the button to focus the child's input.
+    </p>
+    <app-live-playground
+      title="viewChild and viewChildren"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      viewChild() looks at the component's OWN template. The last subtopic covers the
+      mirror image — <code>contentChild()</code> — for reading content the PARENT projected
+      into this component from outside.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    [prev]="{ label: 'model() — Two-Way Binding', route: '/angular/parent-child/model-two-way-binding' }"
+    [next]="{ label: 'contentChild() & Migration', route: '/angular/parent-child/contentchild-migration' }" />
+</div>

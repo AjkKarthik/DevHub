@@ -27,6 +27,11 @@ const ROUTE_LABELS: Record<string, string> = {
   'auth-interceptor-token-refresh': 'Auth Interceptor & Token Refresh',
   'global-error-interceptor': 'Global Error Interceptor',
   'loading-spinner-httpcontext': 'Loading Spinner & HttpContext',
+  'input-signals':      'input() — Modern @Input',
+  'output-signals':     'output() — Modern @Output',
+  'model-two-way-binding': 'model() — Two-Way Binding',
+  'viewchild-viewchildren': 'viewChild() and viewChildren()',
+  'contentchild-migration': 'contentChild() & Migration',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

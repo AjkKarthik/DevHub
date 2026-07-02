@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    subtopicLabel="output() — Modern @Output" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">output() — Modern @Output Replacement</h1>
+  <p class="page-subtitle">
+    No EventEmitter, no Subject — a plain typed output, with the exact same emit() call
+    site and the exact same parent-side (event)="handler($event)" binding syntax.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Angular 17" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A counter widget emitting a <code>changed</code> event on every click — the parent
+      listens with the exact same syntax as the old <code>&#64;Output()</code> API.
+    </p>
+    <app-live-playground
+      title="output() signals"
+      template="angular-cli"
+      openFile="src/app/counter-widget.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      input() flows data down; output() flows events up. The next subtopic combines both
+      directions into one API — <code>model()</code> — for genuine two-way binding.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    [prev]="{ label: 'input() — Modern @Input', route: '/angular/parent-child/input-signals' }"
+    [next]="{ label: 'model() — Two-Way Binding', route: '/angular/parent-child/model-two-way-binding' }" />
+</div>

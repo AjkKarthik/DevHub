@@ -77,6 +77,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Global Error Interceptor', route: '/angular/http-interceptors/global-error-interceptor' },
     { label: 'Loading Spinner & HttpContext', route: '/angular/http-interceptors/loading-spinner-httpcontext' },
   ],
+  'parent-child': [
+    { label: 'input() — Modern @Input', route: '/angular/parent-child/input-signals' },
+    { label: 'output() — Modern @Output', route: '/angular/parent-child/output-signals' },
+    { label: 'model() — Two-Way Binding', route: '/angular/parent-child/model-two-way-binding' },
+    { label: 'viewChild() and viewChildren()', route: '/angular/parent-child/viewchild-viewchildren' },
+    { label: 'contentChild() & Migration', route: '/angular/parent-child/contentchild-migration' },
+  ],
 };
 
 @Component({

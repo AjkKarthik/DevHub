@@ -1141,7 +1141,22 @@
         <span class="nl-text">Input / Output</span>
         @if (progress.isDone('parent-child')) {<span class="nl-done">✓</span>}
         @if (diff('parent-child'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('parent-child')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('parent-child')"
+                  (click)="toggleSubtopics('parent-child', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('parent-child'); as subs) {
+        @if (isSubtopicsExpanded('parent-child')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/content-projection" routerLinkActive="active">
         <span class="nl-text">Content Projection</span>
         @if (progress.isDone('content-projection')) {<span class="nl-done">✓</span>}

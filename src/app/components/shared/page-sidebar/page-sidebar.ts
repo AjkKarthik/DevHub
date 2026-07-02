@@ -1327,6 +1327,115 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Parent-Child Communication › subtopics (Phase 10) ────────────────────────
+  'parent-child/input-signals': {
+    apis: ['input()', 'input.required()', 'numberAttribute'],
+    related: [
+      { label: 'Parent-Child Communication (overview)', route: '/angular/parent-child' },
+      { label: 'output() — next',                        route: '/angular/parent-child/output-signals' },
+    ],
+    tip: 'Read a signal input by CALLING it — this.title(), not this.title. Forgetting the parentheses is the most common first mistake.',
+    docs: [
+      { label: 'Signal Inputs Guide', url: 'https://angular.dev/guide/signals/inputs' },
+      { label: 'input() API',         url: 'https://angular.dev/api/core/input' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'InputSignal has no .set()/.update() — it is read-only from the child\'s side. Only the parent can change it.',
+      'input.required<T>() gives a compile error if the parent forgets to bind it — a real, useful safety net.',
+      'transform: numberAttribute/booleanAttribute converts incoming attribute strings automatically.',
+    ],
+  },
+
+  'parent-child/output-signals': {
+    apis: ['output()', 'outputFromObservable()'],
+    related: [
+      { label: 'input() — previous',                     route: '/angular/parent-child/input-signals' },
+      { label: 'Parent-Child Communication (overview)',  route: '/angular/parent-child' },
+      { label: 'model() — next',                          route: '/angular/parent-child/model-two-way-binding' },
+    ],
+    tip: 'The parent-side (eventName)="handler($event)" binding syntax is completely unchanged when migrating from @Output() to output().',
+    docs: [
+      { label: 'Component Outputs Guide', url: 'https://angular.dev/guide/components/outputs' },
+      { label: 'output() API',            url: 'https://angular.dev/api/core/output' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'output() has no EventEmitter/Subject underneath — it is a plain function call, less boilerplate not just hidden boilerplate.',
+      'emit() is called the exact same way as the old EventEmitter API — migration on the child side is nearly mechanical.',
+      'outputFromObservable() bridges an existing RxJS stream into an output() with no manual subscribe/emit loop.',
+    ],
+  },
+
+  'parent-child/model-two-way-binding': {
+    apis: ['model()', 'model.required()', 'ModelSignal'],
+    related: [
+      { label: 'output() — previous',                    route: '/angular/parent-child/output-signals' },
+      { label: 'Parent-Child Communication (overview)',  route: '/angular/parent-child' },
+      { label: 'viewChild() — next',                      route: '/angular/parent-child/viewchild-viewchildren' },
+    ],
+    tip: '[(count)]="qty" desugars to [count]="qty()" (countChange)="qty.set($event)" — model() generates both the input and the output automatically.',
+    docs: [
+      { label: 'Two-Way Binding Guide', url: 'https://angular.dev/guide/signals/model' },
+      { label: 'model() API',           url: 'https://angular.dev/api/core/model' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'model() is genuinely writable from the child, unlike input() — that is the entire distinction between the two.',
+      'Multiple sibling components can bind to the SAME parent signal via model() — changing one updates all of them automatically.',
+      'model.required<T>() mirrors input.required() — the parent must provide a [(prop)] binding or it is a compile error.',
+    ],
+  },
+
+  'parent-child/viewchild-viewchildren': {
+    apis: ['viewChild()', 'viewChild.required()', 'viewChildren()'],
+    related: [
+      { label: 'model() — previous',                     route: '/angular/parent-child/model-two-way-binding' },
+      { label: 'Parent-Child Communication (overview)',  route: '/angular/parent-child' },
+      { label: 'contentChild() — next',                   route: '/angular/parent-child/contentchild-migration' },
+    ],
+    tip: 'viewChild() is a signal — read it anywhere, no ngAfterViewInit lifecycle hook needed to know when it becomes available.',
+    docs: [
+      { label: 'Signal Queries Guide', url: 'https://angular.dev/guide/signals/queries' },
+      { label: 'viewChild() API',      url: 'https://angular.dev/api/core/viewChild' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Query by component/directive TYPE or injection token, not only by a string template reference variable.',
+      'The read option (e.g. { read: ElementRef }) returns the underlying element instead of the component instance.',
+      'viewChild.required() removes the undefined case from the type entirely — use it only for elements structurally guaranteed to exist.',
+    ],
+  },
+
+  'parent-child/contentchild-migration': {
+    apis: ['contentChild()', 'contentChildren()', 'effect()'],
+    related: [
+      { label: 'viewChild() — previous',                 route: '/angular/parent-child/viewchild-viewchildren' },
+      { label: 'Parent-Child Communication (overview)',  route: '/angular/parent-child' },
+    ],
+    tip: 'contentChild() reads content the PARENT projected in via ng-content — genuinely different from viewChild(), which reads the component\'s own template.',
+    docs: [
+      { label: 'Signal Queries Guide',  url: 'https://angular.dev/guide/signals/queries' },
+      { label: 'contentChild() API',    url: 'https://angular.dev/api/core/contentChild' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Never mix input()/@Input() (or output()/@Output()) on the same property — Angular applies both bindings, producing confusing behavior.',
+      'Signal inputs do not trigger ngOnChanges — use effect() to react to changes instead.',
+      'More than two levels of prop-drilling through inputs/outputs is a real signal to refactor toward a shared service instead.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

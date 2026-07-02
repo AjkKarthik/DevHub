@@ -1,0 +1,47 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    subtopicLabel="input() — Modern @Input" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">input() — Modern @Input Replacement</h1>
+  <p class="page-subtitle">
+    A signal, not a plain property — read it by calling it, make it required at compile
+    time, and let Angular convert attribute strings for you automatically.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Angular 17" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A badge component with a required <code>label</code> input and a
+      <code>transform</code>-powered numeric <code>count</code> input.
+    </p>
+    <app-live-playground
+      title="input() signals"
+      template="angular-cli"
+      openFile="src/app/badge.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Inputs flow data DOWN, into the child. The next subtopic covers the matching piece —
+      <code>output()</code> — for a child to send events back UP to its parent.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    [next]="{ label: 'output() — Modern @Output', route: '/angular/parent-child/output-signals' }" />
+</div>
