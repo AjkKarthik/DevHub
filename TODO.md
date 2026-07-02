@@ -1393,7 +1393,7 @@ off here with a date.
 - [x] `/angular/defer` — @defer — Deferred Loading (2026-07-02 — 5 subtopics: defer-basics, defer-triggers, placeholder-loading-error, defer-requirements-nesting, defer-performance-prefetch)
 - [x] `/angular/material` — Angular Material (2026-07-02 — 5 subtopics: material-setup-theming, material-form-fields, material-common-components, mattable-sorting-pagination, material-testing-accessibility)
 - [x] `/angular/store` — Signal Store Pattern (2026-07-02 — 3 subtopics: async-store-operations, signal-store-vs-ngrx, testing-composing-stores)
-- [ ] `/angular/templates` — Template Syntax
+- [x] `/angular/templates` — Template Syntax (2026-07-02 — 4 subtopics: interpolation-expressions, property-event-two-way-binding, template-refs-and-let, pipes-built-in-custom)
 - [ ] `/angular/directives` — Custom Directives
 - [ ] `/angular/lifecycle` — Lifecycle Hooks
 - [ ] `/angular/pipes` — Pipes
