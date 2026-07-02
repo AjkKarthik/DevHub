@@ -935,6 +935,137 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Reactive Forms & Signal Services › subtopics (Phase 10) ─────────────────
+  'todo/inject-di': {
+    apis: ['inject()', 'runInInjectionContext()'],
+    related: [
+      { label: 'Reactive Forms & Signal Services (overview)', route: '/angular/todo' },
+      { label: 'Reactive Forms Basics — next',                route: '/angular/todo/reactive-forms-basics' },
+    ],
+    tip: 'inject() only works in an injection context — field initialisers, constructors, and functional guards/interceptors. Calling it from a regular method throws NG0203.',
+    docs: [
+      { label: 'Dependency Injection Guide', url: 'https://angular.dev/guide/di' },
+      { label: 'inject() API',               url: 'https://angular.dev/api/core/inject' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'inject() is not a mandate — constructor injection still works and compiles to the same DI resolution. inject() is required for functional guards/interceptors, which have no constructor at all.',
+      'A large constructor parameter list and equivalent inject() field initialisers are functionally identical — pick whichever reads clearer for the class.',
+      'runInInjectionContext() is an escape hatch for genuine edge cases (a setTimeout callback, a manual RxJS operator) — it is not a general substitute for calling inject() in the right place to begin with.',
+    ],
+  },
+
+  'todo/reactive-forms-basics': {
+    apis: ['FormBuilder', 'Validators', '.getRawValue()', 'nonNullable'],
+    related: [
+      { label: 'inject() — previous',            route: '/angular/todo/inject-di' },
+      { label: 'Reactive Forms & Signal Services (overview)', route: '/angular/todo' },
+      { label: 'Route Guards — next',             route: '/angular/todo/route-guards' },
+    ],
+    tip: 'form.value silently omits disabled controls — always use form.getRawValue() for submit payloads when any control might be disabled.',
+    docs: [
+      { label: 'Reactive Forms Guide', url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'FormBuilder API',      url: 'https://angular.dev/api/forms/FormBuilder' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'control.errors is null when valid, not an empty object — do not assume it is always safe to call Object.keys() on it unconditionally.',
+      'fb.nonNullable.group() removes null from a control\'s value type after reset — plain fb.group() keeps `| null` in the type.',
+      'FormsModule (ngModel) and ReactiveFormsModule (formControlName) are not interchangeable — importing the wrong one throws NG8002 at runtime.',
+    ],
+  },
+
+  'todo/route-guards': {
+    apis: ['CanActivateFn', 'CanDeactivateFn', 'router.parseUrl()'],
+    related: [
+      { label: 'Reactive Forms Basics — previous', route: '/angular/todo/reactive-forms-basics' },
+      { label: 'Reactive Forms & Signal Services (overview)', route: '/angular/todo' },
+      { label: 'Signal-Based Services — next',      route: '/angular/todo/signal-based-services' },
+    ],
+    tip: 'Return a UrlTree (router.parseUrl(...)) to redirect from a guard — never call router.navigate() manually inside one, it can trigger a competing navigation.',
+    docs: [
+      { label: 'Route Guards Guide', url: 'https://angular.dev/guide/routing/common-router-tasks#preventing-unauthorized-access' },
+      { label: 'CanActivateFn API',  url: 'https://angular.dev/api/router/CanActivateFn' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'CanDeactivateFn runs on the route you are LEAVING, not the one you are navigating to — it receives that outgoing component instance as its first argument.',
+      'A guard returning an Observable that never emits/completes leaves navigation hanging indefinitely with no error — pipe with take(1) to guarantee resolution.',
+      'canActivate takes an array — every guard in it must return true (or none redirect) for navigation to proceed.',
+    ],
+  },
+
+  'todo/signal-based-services': {
+    apis: ['@Injectable', 'providedIn', 'effect()'],
+    related: [
+      { label: 'Route Guards — previous',          route: '/angular/todo/route-guards' },
+      { label: 'Reactive Forms & Signal Services (overview)', route: '/angular/todo' },
+      { label: 'Custom & Async Validators — next',  route: '/angular/todo/custom-validators' },
+    ],
+    tip: 'providedIn: \'root\' vs a component\'s own providers array is a real design decision, not two names for the same thing — root is one shared instance app-wide, component-scoped is a fresh instance per component.',
+    docs: [
+      { label: 'Dependency Injection Guide', url: 'https://angular.dev/guide/di' },
+      { label: 'Signals Overview',           url: 'https://angular.dev/guide/signals' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'An effect() in a providedIn: \'root\' service constructor lives for the whole app session — there is nothing to clean up, unlike a component-scoped effect.',
+      'Getting root-vs-component-scoped wrong causes real bugs: shared state that unexpectedly resets, or state that should reset but leaks stale data instead.',
+      'A plain signal()-based service covers most small/medium apps\' shared-state needs — a store library like NgRx is not a default starting point.',
+    ],
+  },
+
+  'todo/custom-validators': {
+    apis: ['ValidationErrors', 'AsyncValidatorFn', 'updateOn'],
+    related: [
+      { label: 'Signal-Based Services — previous', route: '/angular/todo/signal-based-services' },
+      { label: 'Reactive Forms & Signal Services (overview)', route: '/angular/todo' },
+      { label: 'Form State — next',                route: '/angular/todo/form-state' },
+    ],
+    tip: 'control.status is \'PENDING\' (not \'VALID\') while an async validator is running — form.valid is false during that window, which naturally blocks premature submit.',
+    docs: [
+      { label: 'Form Validation Guide', url: 'https://angular.dev/guide/forms/form-validation' },
+      { label: 'AsyncValidatorFn API',  url: 'https://angular.dev/api/forms/AsyncValidatorFn' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A sync validator returns ValidationErrors | null directly — only ASYNC validators return an Observable/Promise.',
+      'Always debounce + switchMap an async validator that hits an API — firing on every keystroke wastes requests and switchMap cancels a stale in-flight one when a newer request starts.',
+      'updateOn: \'blur\'/\'submit\' delays not just error display but also when an async validator\'s HTTP check fires.',
+    ],
+  },
+
+  'todo/form-state': {
+    apis: ['.touched', '.dirty', '.markAllAsTouched()', '.patchValue()', '.setValue()'],
+    related: [
+      { label: 'Custom & Async Validators — previous', route: '/angular/todo/custom-validators' },
+      { label: 'Reactive Forms & Signal Services (overview)', route: '/angular/todo' },
+    ],
+    tip: 'form.reset() clears value AND resets touched/dirty/errors on every control — it is a full reset, not just a value clear.',
+    docs: [
+      { label: 'Reactive Forms Guide', url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'FormGroup API',        url: 'https://angular.dev/api/forms/FormGroup' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'touched tracks focus+blur; dirty tracks whether the value changed — they are independent, not the same flag under two names.',
+      'patchValue() accepts a partial object and ignores missing keys; setValue() requires every key and THROWS if any is missing.',
+      'A disabled control is excluded from form.value (but included in getRawValue()) and skips its own validators — a disabled required field reads as VALID.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

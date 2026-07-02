@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Reactive Forms &amp; Signal Services"
+    topicRoute="/angular/todo"
+    subtopicLabel="Reactive Forms Basics" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Reactive Forms Basics — FormBuilder, FormGroup, Validators</h1>
+  <p class="page-subtitle">
+    The form model lives in the TypeScript class, not the template — FormBuilder
+    builds it, Validators check it, and formControlName syncs it to the DOM.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A single-field reactive form with a required + minLength validator, showing
+      errors only once the field has been touched.
+    </p>
+    <app-live-playground
+      title="Reactive forms basics"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the form model in place, the next natural question is how to protect a whole
+      ROUTE, not just a form field — that's what functional route guards do, and like
+      everything else here, they lean on <code>inject()</code> from the last subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Reactive Forms & Signal Services"
+    topicRoute="/angular/todo"
+    [prev]="{ label: 'inject() — Modern Dependency Injection', route: '/angular/todo/inject-di' }"
+    [next]="{ label: 'Route Guards', route: '/angular/todo/route-guards' }" />
+</div>

@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Reactive Forms &amp; Signal Services"
+    topicRoute="/angular/todo"
+    subtopicLabel="Signal-Based Services" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Signal-Based Services — The Modern State Pattern</h1>
+  <p class="page-subtitle">
+    Private writable signal, public readonly view, computed() for anything derived —
+    plus providedIn: 'root' vs component-scoped, a decision that actually changes behavior.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A shared <code>TodoService</code> with <code>pending</code>/<code>completed</code>/
+      <code>progress</code> all derived via <code>computed()</code>, plus an <code>effect()</code>
+      that logs a persistence step on every change.
+    </p>
+    <app-live-playground
+      title="Signal-based services"
+      template="angular-cli"
+      openFile="src/app/todo.service.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      This service pattern handles STATE. The remaining two subtopics go back to the form
+      itself — first the validators that decide what counts as valid input, then the
+      touched/dirty/status flags that control when to actually show errors to the user.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Reactive Forms & Signal Services"
+    topicRoute="/angular/todo"
+    [prev]="{ label: 'Route Guards', route: '/angular/todo/route-guards' }"
+    [next]="{ label: 'Custom & Async Validators', route: '/angular/todo/custom-validators' }" />
+</div>

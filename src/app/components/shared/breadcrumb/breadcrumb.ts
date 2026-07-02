@@ -12,6 +12,14 @@ const ROUTE_LABELS: Record<string, string> = {
   'control-flow':       '@if and @for — Control Flow',
   'readonly-and-services': 'Signals in Services',
   'rxjs-interop':       'RxJS Interop',
+  'inject-di':          'inject() — Modern Dependency Injection',
+  'reactive-forms-basics': 'Reactive Forms Basics',
+  'signal-based-services': 'Signal-Based Services',
+  'form-state':         'Form State — touched, dirty, status',
+  // Composite keys — these subtopic slugs collide with existing top-level Angular topics
+  // (/angular/route-guards, /angular/custom-validators); pageLabel() tries this key first.
+  'todo/route-guards':      'Route Guards',
+  'todo/custom-validators': 'Custom & Async Validators',
   'templates':          'Template Syntax',
   'directives':         'Directives',
   'lifecycle':          'Lifecycle Hooks',
@@ -1181,7 +1189,15 @@ export class BreadcrumbComponent {
     const segs = this.segments();
     if (segs.length < 2) return '';
     const key = segs[segs.length - 1];
-    return this.labelMapFor(segs[0])[key] ?? key;
+    const map = this.labelMapFor(segs[0]);
+    // Subtopic leaf slugs (3-segment /hub/topic/subtopic routes) can collide with an
+    // unrelated top-level topic's own slug — try the composite 'topic/subtopic' key
+    // first to disambiguate.
+    if (segs.length >= 3) {
+      const compositeKey = segs[segs.length - 2] + '/' + key;
+      if (map[compositeKey] !== undefined) return map[compositeKey];
+    }
+    return map[key] ?? key;
   };
 
   private labelMapFor(hubSlug: string): Record<string, string> {

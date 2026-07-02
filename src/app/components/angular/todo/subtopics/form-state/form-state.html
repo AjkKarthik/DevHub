@@ -1,0 +1,52 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Reactive Forms &amp; Signal Services"
+    topicRoute="/angular/todo"
+    subtopicLabel="Form State — touched, dirty, status" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Form State — touched, dirty, status, and lifecycles</h1>
+  <p class="page-subtitle">
+    Validators decide if a value is valid. These flags decide WHEN to actually show
+    that to the user — and reset()/patchValue()/setValue() are three genuinely
+    different operations, not three names for the same thing.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Watch <code>touched</code>/<code>dirty</code> flip independently as you focus, type,
+      blur, reset, and patch the same field — and check the console for
+      <code>valueChanges</code>/<code>statusChanges</code> emissions.
+    </p>
+    <app-live-playground
+      title="Form state"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Reactive Forms &amp; Signal Services</h2>
+    <p>
+      <code>inject()</code> resolves dependencies anywhere, <code>FormBuilder</code> builds a
+      typed form model, functional guards protect routes, a signal-based service shares state
+      app-wide, custom/async validators decide what's valid, and touched/dirty/status decide
+      when to show it. That's the complete picture for building a real reactive form feature
+      in modern Angular.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Reactive Forms & Signal Services"
+    topicRoute="/angular/todo"
+    [prev]="{ label: 'Custom & Async Validators', route: '/angular/todo/custom-validators' }" />
+</div>

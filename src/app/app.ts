@@ -51,6 +51,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Signals in Services', route: '/angular/counter/readonly-and-services' },
     { label: 'RxJS Interop', route: '/angular/counter/rxjs-interop' },
   ],
+  todo: [
+    { label: 'inject() — Modern Dependency Injection', route: '/angular/todo/inject-di' },
+    { label: 'Reactive Forms Basics', route: '/angular/todo/reactive-forms-basics' },
+    { label: 'Route Guards', route: '/angular/todo/route-guards' },
+    { label: 'Signal-Based Services', route: '/angular/todo/signal-based-services' },
+    { label: 'Custom & Async Validators', route: '/angular/todo/custom-validators' },
+    { label: 'Form State — touched, dirty, status', route: '/angular/todo/form-state' },
+  ],
 };
 
 @Component({

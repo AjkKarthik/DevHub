@@ -1175,7 +1175,22 @@
         <span class="nl-text">Todo (guarded)</span>
         @if (progress.isDone('todo')) {<span class="nl-done">✓</span>}
         @if (diff('todo'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('todo')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('todo')"
+                  (click)="toggleSubtopics('todo', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('todo'); as subs) {
+        @if (isSubtopicsExpanded('todo')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/zod-forms" routerLinkActive="active">
         <span class="nl-text">Zod Validation</span>
         @if (progress.isDone('zod-forms')) {<span class="nl-done">✓</span>}

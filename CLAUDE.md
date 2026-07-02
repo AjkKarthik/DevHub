@@ -394,15 +394,34 @@ to the topic page, not its subtopics.
 2. **Route**: convert the topic's flat route entry in `app.routes.ts` into a parent with a
    `children` array (first child `path: ''` = the existing topic component), then add one
    child entry per subtopic (`path: '<subtopic-slug>'`, lazy `loadComponent`).
-3. **Left nav accordion** in `app.ts` / `app.html` — generic, already built, do NOT reinvent:
-   add an entry to the `SUBTOPICS: Record<string, SubtopicNavEntry[]>` map in `app.ts`
-   (`{ label, route }`) keyed by the topic's route slug. The nav's chevron toggle
-   (`toggleSubtopics()`), collapsed-by-default state (`expandedTopics` signal), and
-   auto-expand-on-direct-navigation (`autoExpandForCurrentUrl()`) are all generic — adding
-   to the map is the only change needed per subtopic.
+3. **Left nav accordion** — two separate edits, both required (a real gap: the first pilot
+   subtopics on a SECOND topic silently had no toggle at all until this was caught):
+   a. **`app.ts`**: add an entry to the `SUBTOPICS: Record<string, SubtopicNavEntry[]>` map
+      (`{ label, route }[]`) keyed by the topic's route slug. The underlying logic —
+      `toggleSubtopics()`, the collapsed-by-default `expandedTopics` signal, and
+      auto-expand-on-direct-navigation (`autoExpandForCurrentUrl()`) — IS generic and needs
+      no changes.
+   b. **`app.html`**: the chevron toggle button + nested `<div class="nav-subtopics">` list
+      is NOT rendered generically for every nav link — it must be added to THAT SPECIFIC
+      topic's own `<a routerLink="/angular/<topic>">` entry, by hand, once per topic (copy
+      the exact block from an existing topic like `counter` or `todo` and swap the route
+      slug in the four `subtopicsOf('<slug>')` / `isSubtopicsExpanded('<slug>')` /
+      `toggleSubtopics('<slug>', ...)` / button spots). Forgetting step (b) leaves the
+      subtopic pages fully working and reachable by URL, but with **no visible way to find
+      them from the nav** — verify the chevron actually appears next to the topic's own nav
+      link, not just that the SUBTOPICS map has the entry.
 4. **Breadcrumb**: the 4th-level crumb is already generic (`parentTopicRoute()` /
    `parentTopicLabel()` in `breadcrumb.ts`) — just add the subtopic slug → title mapping to
-   the hub's labels map (`ROUTE_LABELS` for Angular, etc.).
+   the hub's labels map (`ROUTE_LABELS` for Angular, etc.). **Check for a slug collision
+   first**: each hub's labels map is flat, keyed by last URL segment only — if a subtopic
+   slug happens to match an unrelated EXISTING top-level topic's own slug elsewhere in the
+   hub (e.g. `/angular/todo/route-guards` vs the real standalone `/angular/route-guards`
+   page), a bare-key entry silently overwrites/collides with that page's label. `pageLabel()`
+   already checks a composite `'<topic-slug>/<subtopic-slug>'` key first for 3-segment
+   `/hub/topic/subtopic` routes before falling back to the bare key — use that composite
+   form for the colliding
+   entry instead of a bare one (real collision hit and fixed this way: `todo/route-guards`,
+   `todo/custom-validators`).
 5. **Sidebar**: add a **genuinely tailored** entry to `SIDEBAR_MAP` in `page-sidebar.ts`,
    keyed `'<topic-slug>/<subtopic-slug>'` — scoped `apis`/`related`/`tip`/`docs`/`gotchas` for
    THAT subtopic specifically (link `related` to the prev/next subtopics + the topic

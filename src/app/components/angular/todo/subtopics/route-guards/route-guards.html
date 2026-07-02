@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Reactive Forms &amp; Signal Services"
+    topicRoute="/angular/todo"
+    subtopicLabel="Route Guards" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Route Guards — CanActivateFn and CanDeactivateFn</h1>
+  <p class="page-subtitle">
+    Plain functions, not classes — protecting a whole route works the same
+    inject()-powered way as everything else you've seen so far.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 15" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Try navigating to "Admin" while logged out — <code>authGuard</code> redirects you
+      straight back to Home via a <code>UrlTree</code>, no manual navigation call.
+    </p>
+    <app-live-playground
+      title="Route guards"
+      template="angular-cli"
+      openFile="src/app/auth.guard.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Guards protect routes; the next subtopic covers the pattern that protects and shares
+      STATE across every component behind those routes — the signal-based service, the same
+      shape you've already seen in <code>AuthService</code> above, generalised.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Reactive Forms & Signal Services"
+    topicRoute="/angular/todo"
+    [prev]="{ label: 'Reactive Forms Basics', route: '/angular/todo/reactive-forms-basics' }"
+    [next]="{ label: 'Signal-Based Services', route: '/angular/todo/signal-based-services' }" />
+</div>
