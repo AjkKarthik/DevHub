@@ -65,6 +65,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Cross-Field Validators', route: '/angular/forms/cross-field-validators' },
     { label: 'Typed Forms', route: '/angular/forms/typed-forms' },
   ],
+  http: [
+    { label: 'HttpClient Setup', route: '/angular/http/httpclient-setup' },
+    { label: 'GET Requests — toSignal() and httpResource()', route: '/angular/http/get-requests' },
+    { label: 'Mutation Requests — POST, PUT, DELETE', route: '/angular/http/mutation-requests' },
+    { label: 'Error Handling & Retry', route: '/angular/http/error-handling-retry' },
+  ],
 };
 
 @Component({

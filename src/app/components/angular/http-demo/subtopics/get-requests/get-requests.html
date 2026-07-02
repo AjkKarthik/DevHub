@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HTTP Client"
+    topicRoute="/angular/http"
+    subtopicLabel="GET Requests — toSignal() and httpResource()" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">GET Requests — toSignal() and httpResource()</h1>
+  <p class="page-subtitle">
+    Two ways to turn an HTTP GET into something your template reads directly — one for a
+    fixed one-time fetch, one that auto-refetches when a reactive input changes.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A one-time <code>toSignal()</code> fetch with a safe <code>catchError</code> fallback,
+      plus a reactive id signal showing where <code>httpResource()</code> would auto-refetch.
+    </p>
+    <app-live-playground
+      title="GET requests"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      GET requests read data — the next subtopic covers CHANGING it: POST, PUT, and DELETE,
+      which follow a genuinely different pattern (subscribe-once, not signal-ify).
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTTP Client"
+    topicRoute="/angular/http"
+    [prev]="{ label: 'HttpClient Setup', route: '/angular/http/httpclient-setup' }"
+    [next]="{ label: 'Mutation Requests — POST, PUT, DELETE', route: '/angular/http/mutation-requests' }" />
+</div>

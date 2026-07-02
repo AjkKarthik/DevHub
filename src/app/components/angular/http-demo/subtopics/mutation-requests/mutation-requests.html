@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HTTP Client"
+    topicRoute="/angular/http"
+    subtopicLabel="Mutation Requests — POST, PUT, DELETE" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Mutation Requests — POST, PUT, DELETE</h1>
+  <p class="page-subtitle">
+    Reads become signals; writes stay one-shot subscribe() calls, paired with optimistic
+    local updates and a manual revert path when the network says no.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Add a post — it appears instantly (optimistic), then gets replaced by the server's
+      real response once the POST resolves.
+    </p>
+    <app-live-playground
+      title="Mutation requests"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      The error callback you just wrote is the seam into the last subtopic — a proper error
+      handling and retry strategy, including how to tell a network failure apart from a
+      genuine 4xx/5xx response.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTTP Client"
+    topicRoute="/angular/http"
+    [prev]="{ label: 'GET Requests — toSignal() and httpResource()', route: '/angular/http/get-requests' }"
+    [next]="{ label: 'Error Handling & Retry', route: '/angular/http/error-handling-retry' }" />
+</div>

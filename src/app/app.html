@@ -1244,7 +1244,22 @@
         <span class="nl-text">HTTP Client</span>
         @if (progress.isDone('http')) {<span class="nl-done">✓</span>}
         @if (diff('http'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('http')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('http')"
+                  (click)="toggleSubtopics('http', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('http'); as subs) {
+        @if (isSubtopicsExpanded('http')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/http-interceptors" routerLinkActive="active">
         <span class="nl-text">HTTP Interceptors</span>
         @if (progress.isDone('http-interceptors')) {<span class="nl-done">✓</span>}

@@ -1153,6 +1153,93 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── HTTP Client › subtopics (Phase 10) ───────────────────────────────────────
+  'http/httpclient-setup': {
+    apis: ['provideHttpClient()', 'HttpClient', 'HttpParams'],
+    related: [
+      { label: 'HTTP Client (overview)', route: '/angular/http' },
+      { label: 'GET Requests — next',    route: '/angular/http/get-requests' },
+    ],
+    tip: 'Every HttpClient method returns a cold Observable — nothing hits the network until something subscribes to it.',
+    docs: [
+      { label: 'HttpClient Guide', url: 'https://angular.dev/guide/http' },
+      { label: 'HttpClient API',   url: 'https://angular.dev/api/common/http/HttpClient' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Skipping provideHttpClient() in app.config.ts makes injecting HttpClient throw NullInjectorError.',
+      'Without a type parameter, http.get() returns Observable<Object> — always pass http.get<T>(url).',
+      'Use HttpParams for query strings — never manually concatenate, it is error-prone with encoding and user-supplied values.',
+    ],
+  },
+
+  'http/get-requests': {
+    apis: ['toSignal()', 'httpResource()', 'catchError()'],
+    related: [
+      { label: 'HttpClient Setup — previous', route: '/angular/http/httpclient-setup' },
+      { label: 'HTTP Client (overview)',      route: '/angular/http' },
+      { label: 'Mutation Requests — next',    route: '/angular/http/mutation-requests' },
+    ],
+    tip: 'Always pipe catchError() before toSignal() — an unhandled HTTP error terminates the Observable and leaves the signal stuck permanently.',
+    docs: [
+      { label: 'RxJS Interop Guide', url: 'https://angular.dev/guide/signals/rxjs-interop' },
+      { label: 'httpResource() API', url: 'https://angular.dev/api/common/http/httpResource' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'toSignal() fetches once — httpResource() auto-refetches and cancels in-flight requests when its URL factory\'s signal dependencies change.',
+      'httpResource() exposes value()/isLoading()/error()/status() signals out of the box — no manual loading-state boilerplate needed.',
+      'Prefer toSignal() for a genuine one-time fetch; prefer httpResource() when the request depends on a reactive input like a selected id or search query.',
+    ],
+  },
+
+  'http/mutation-requests': {
+    apis: ['.subscribe()', 'HttpHeaders', 'takeUntilDestroyed()'],
+    related: [
+      { label: 'GET Requests — previous',    route: '/angular/http/get-requests' },
+      { label: 'HTTP Client (overview)',     route: '/angular/http' },
+      { label: 'Error Handling & Retry — next', route: '/angular/http/error-handling-retry' },
+    ],
+    tip: 'Mutations are one-shot user actions — subscribe({ next, error }) is the idiomatic pattern, not toSignal()/httpResource().',
+    docs: [
+      { label: 'HttpClient Guide', url: 'https://angular.dev/guide/http' },
+      { label: 'HttpHeaders API',  url: 'https://angular.dev/api/common/http/HttpHeaders' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Always provide both next AND error in the observer object — an unhandled error in a subscribe call propagates to the global error handler.',
+      'Optimistic updates are just manual state management: update the signal immediately, revert it yourself in the error callback if the request fails.',
+      'Pipe takeUntilDestroyed() on a mutation that might still be in flight when the component is destroyed, to avoid calling .set() on a gone component.',
+    ],
+  },
+
+  'http/error-handling-retry': {
+    apis: ['catchError()', 'retry()', 'HttpErrorResponse'],
+    related: [
+      { label: 'Mutation Requests — previous', route: '/angular/http/mutation-requests' },
+      { label: 'HTTP Client (overview)',       route: '/angular/http' },
+    ],
+    tip: 'err.status === 0 means a network/CORS failure with no response at all — a fundamentally different case from a genuine 4xx/5xx server response.',
+    docs: [
+      { label: 'HttpClient Guide',        url: 'https://angular.dev/guide/http' },
+      { label: 'HttpErrorResponse API',   url: 'https://angular.dev/api/common/http/HttpErrorResponse' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'retry(3) attempts a FIXED number of retries, not infinite — the error still propagates after all attempts are exhausted.',
+      'Put catchError inside the inner Observable (before switchMap flattens it) to recover a single failed request without killing the whole outer stream.',
+      'catchError does not have to hide the failure from the UI — set an error signal inside the callback before returning the fallback value.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

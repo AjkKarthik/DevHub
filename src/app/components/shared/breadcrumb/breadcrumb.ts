@@ -19,6 +19,10 @@ const ROUTE_LABELS: Record<string, string> = {
   'template-driven-vs-reactive': 'Template-Driven vs Reactive',
   'formgroup-formcontrol-formarray': 'FormGroup, FormControl & FormArray',
   'cross-field-validators': 'Cross-Field Validators',
+  'httpclient-setup':   'HttpClient Setup',
+  'get-requests':       'GET Requests — toSignal() and httpResource()',
+  'mutation-requests':  'Mutation Requests — POST, PUT, DELETE',
+  'error-handling-retry': 'Error Handling & Retry',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
