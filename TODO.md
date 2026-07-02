@@ -1386,7 +1386,7 @@ off here with a date.
 - [x] `/angular/counter` — Signals & Reactive State (2026-07-02, pilot — 6 subtopics)
 - [x] `/angular/todo` — Reactive Forms & Signal Services (2026-07-02 — 6 subtopics: inject-di, reactive-forms-basics, route-guards, signal-based-services, custom-validators, form-state)
 - [x] `/angular/forms` — Template-Driven vs Reactive Forms (2026-07-02 — 4 subtopics: template-driven-vs-reactive, formgroup-formcontrol-formarray, cross-field-validators, typed-forms)
-- [ ] `/angular/http` — HTTP Client
+- [x] `/angular/http` — HTTP Client (2026-07-02 — 4 subtopics: httpclient-setup, get-requests, mutation-requests, error-handling-retry)
 - [ ] `/angular/http-interceptors` — HTTP Interceptors
 - [ ] `/angular/parent-child` — Parent-Child Communication
 - [ ] `/angular/form-array` — FormArray — Dynamic Fields
