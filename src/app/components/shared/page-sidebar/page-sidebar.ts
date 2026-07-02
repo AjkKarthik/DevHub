@@ -2173,6 +2173,93 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Routing & Navigation › subtopics (Phase 10) ──────────────────────────────
+  'routing/custom-url-matchers-route-config': {
+    apis: ['UrlMatcher', 'redirectTo', 'pathMatch', 'title'],
+    related: [
+      { label: 'Routing & Navigation (overview)',           route: '/angular/routing' },
+      { label: 'Router Events & Navigation Lifecycle — next', route: '/angular/routing/router-events-navigation-lifecycle' },
+    ],
+    tip: 'A route has EITHER path OR matcher, never both — matcher fully takes over the matching decision for that route entry.',
+    docs: [
+      { label: 'Routing Guide', url: 'https://angular.dev/guide/routing' },
+      { label: 'UrlMatcher API', url: 'https://angular.dev/api/router/UrlMatcher' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Omitting pathMatch: \'full\' on an empty-path redirect causes the default \'prefix\' matching to treat every URL as matching, redirecting the whole app.',
+      'A static string redirectTo does not forward params or query params — use a function-based redirectTo (Angular 18+) to preserve context.',
+      'The title route property auto-sets document.title on navigation — no manual Title service call needed.',
+    ],
+  },
+
+  'routing/router-events-navigation-lifecycle': {
+    apis: ['router.events', 'NavigationEnd', 'RouterState'],
+    related: [
+      { label: 'Custom UrlMatchers & Route Config — previous', route: '/angular/routing/custom-url-matchers-route-config' },
+      { label: 'Routing & Navigation (overview)',              route: '/angular/routing' },
+      { label: 'Route Reuse Strategy — next',                  route: '/angular/routing/route-reuse-strategy' },
+    ],
+    tip: 'A loading indicator must listen for NavigationCancel and NavigationError too, not just NavigationStart/NavigationEnd, or it gets stuck visible on a blocked navigation.',
+    docs: [
+      { label: 'Routing Guide',   url: 'https://angular.dev/guide/routing' },
+      { label: 'Router Events API', url: 'https://angular.dev/api/router/Event' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'The event pipeline order is fixed: NavigationStart → RoutesRecognized → GuardsCheckStart/End → ResolveStart/End → NavigationEnd.',
+      'router.routerState.root is the ENTIRE resolved route tree — a single ActivatedRoute only represents one level of it.',
+      'Every event for one navigation shares the same id — useful for correlating events when navigations can overlap.',
+    ],
+  },
+
+  'routing/route-reuse-strategy': {
+    apis: ['RouteReuseStrategy', 'shouldDetach()', 'DetachedRouteHandle'],
+    related: [
+      { label: 'Router Events & Navigation Lifecycle — previous',   route: '/angular/routing/router-events-navigation-lifecycle' },
+      { label: 'Routing & Navigation (overview)',                    route: '/angular/routing' },
+      { label: 'View Transitions & Relative Navigation — next',      route: '/angular/routing/view-transitions-relative-navigation' },
+    ],
+    tip: 'Angular only reuses a component instance across PARAM changes on the same route by default — navigating between different routes destroys and recreates unless a custom RouteReuseStrategy says otherwise.',
+    docs: [
+      { label: 'Routing Guide',           url: 'https://angular.dev/guide/routing' },
+      { label: 'RouteReuseStrategy API',  url: 'https://angular.dev/api/router/RouteReuseStrategy' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Cache selectively (e.g. via a data: { reuse: true } flag) — caching every route indefinitely grows memory usage and can surface stale data.',
+      'Detached/cached component trees are not evicted automatically — the reuse strategy implementation owns the cache\'s lifetime entirely.',
+      'shouldDetach + store work together to cache; shouldAttach + retrieve work together to reattach the same instance later.',
+    ],
+  },
+
+  'routing/view-transitions-relative-navigation': {
+    apis: ['withViewTransitions()', 'relativeTo', 'parseUrl()'],
+    related: [
+      { label: 'Route Reuse Strategy — previous',    route: '/angular/routing/route-reuse-strategy' },
+      { label: 'Routing & Navigation (overview)',    route: '/angular/routing' },
+    ],
+    tip: 'withViewTransitions() is a progressive enhancement — browsers without View Transitions API support just navigate normally, no fallback code needed.',
+    docs: [
+      { label: 'Routing Guide',            url: 'https://angular.dev/guide/routing' },
+      { label: 'withViewTransitions API',  url: 'https://angular.dev/api/router/withViewTransitions' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Relative navigation (relativeTo) resolves against the ActivatedRoute you pass in, not the browser URL.',
+      'Every view-transition-name on the page must be unique at any given time — reusing one on two simultaneously visible elements throws.',
+      'router.parseUrl() only builds a UrlTree for inspection — it does not trigger a navigation by itself.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

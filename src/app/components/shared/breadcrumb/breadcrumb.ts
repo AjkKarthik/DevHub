@@ -66,6 +66,10 @@ const ROUTE_LABELS: Record<string, string> = {
   'injection-context-deep-dive': 'Injection Context Deep Dive',
   'multi-providers-extension-points': 'Multi-Providers & Extension Points',
   'environment-injectors-standalone-bootstrap': 'Environment Injectors & Standalone Bootstrap',
+  'custom-url-matchers-route-config': 'Custom UrlMatchers & Route Config',
+  'router-events-navigation-lifecycle': 'Router Events & Navigation Lifecycle',
+  'route-reuse-strategy': 'Route Reuse Strategy',
+  'view-transitions-relative-navigation': 'View Transitions & Relative Navigation',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

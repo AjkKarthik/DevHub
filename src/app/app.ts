@@ -136,6 +136,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Multi-Providers & Extension Points', route: '/angular/di/multi-providers-extension-points' },
     { label: 'Environment Injectors & Standalone Bootstrap', route: '/angular/di/environment-injectors-standalone-bootstrap' },
   ],
+  routing: [
+    { label: 'Custom UrlMatchers & Route Config', route: '/angular/routing/custom-url-matchers-route-config' },
+    { label: 'Router Events & Navigation Lifecycle', route: '/angular/routing/router-events-navigation-lifecycle' },
+    { label: 'Route Reuse Strategy', route: '/angular/routing/route-reuse-strategy' },
+    { label: 'View Transitions & Relative Navigation', route: '/angular/routing/view-transitions-relative-navigation' },
+  ],
 };
 
 @Component({

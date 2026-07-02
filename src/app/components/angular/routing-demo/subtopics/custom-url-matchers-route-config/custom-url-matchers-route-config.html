@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Routing &amp; Navigation"
+    topicRoute="/angular/routing"
+    subtopicLabel="Custom UrlMatchers &amp; Route Config" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Custom UrlMatchers &amp; Route Config</h1>
+  <p class="page-subtitle">
+    Matching patterns a plain path string can't express, function-based redirects that
+    preserve context, and static route data + per-route document titles.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+ (function redirectTo: 18+)" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Two routes at the same URL depth — one claimed by a custom <code>UrlMatcher</code>
+      that only accepts all-digit IDs, the other by a plain <code>path</code> string that
+      catches everything else.
+    </p>
+    <app-live-playground
+      title="Custom UrlMatchers and route config"
+      template="angular-cli"
+      openFile="src/app/app.routes.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Routing & Navigation"
+    topicRoute="/angular/routing"
+    [next]="{ label: 'Router Events & Navigation Lifecycle', route: '/angular/routing/router-events-navigation-lifecycle' }" />
+</div>
