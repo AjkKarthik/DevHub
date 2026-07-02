@@ -1,0 +1,42 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="NgRx Signals"
+    topicRoute="/angular/ngrx-signals"
+    subtopicLabel="Testing NgRx Signal Stores" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing NgRx Signal Stores</h1>
+  <p class="page-subtitle">
+    A signalStore is just an injectable — TestBed.inject() and synchronous signal reads,
+    mocking an rxMethod()'s service dependency, and testing withHooks(onInit) side effects.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="@ngrx/signals 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A counter + product-loading store tested with plain <code>TestBed.inject()</code> —
+      synchronous method calls and an <code>onInit</code>-triggered
+      <code>rxMethod()</code> backed by a mocked service.
+    </p>
+    <app-live-playground
+      title="Testing NgRx signal stores"
+      template="angular-cli"
+      openFile="src/app/counter.store.spec.ts"
+      [dependencies]="ngrxDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="NgRx Signals"
+    topicRoute="/angular/ngrx-signals"
+    [prev]="{ label: 'withEntities — Filtering, Pagination & Sorting', route: '/angular/ngrx-signals/withentities-filtering-pagination-sorting' }"
+    [next]="{ label: 'Signal Store DevTools & Hooks Cleanup', route: '/angular/ngrx-signals/signal-store-devtools-and-hooks-cleanup' }" />
+</div>

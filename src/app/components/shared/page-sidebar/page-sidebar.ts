@@ -3191,6 +3191,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── NgRx Signals › subtopics (Phase 10) ──────────────────────────────────────
+  'ngrx-signals/withentities-filtering-pagination-sorting': {
+    apis: ['withEntities()', 'withComputed() layering', 'patchState() batching'],
+    related: [
+      { label: 'NgRx Signals (overview)',                              route: '/angular/ngrx-signals' },
+      { label: 'Testing NgRx Signal Stores — next',                     route: '/angular/ngrx-signals/testing-ngrx-signal-stores' },
+    ],
+    tip: 'Layer computeds (filtered, then pagedItems built from filtered) so paging alone doesn\'t re-run the filter/sort logic.',
+    docs: [
+      { label: '@ngrx/signals/entities', url: 'https://ngrx.io/guide/signals/signal-store/entity-management' },
+      { label: 'Angular computed() API', url: 'https://angular.dev/api/core/computed' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'withEntities() has no built-in filter/sort/page options — compose them yourself with withState + withComputed.',
+      'Batch filterText + page reset into ONE patchState() call to avoid a flash of an empty intermediate state.',
+    ],
+  },
+
+  'ngrx-signals/testing-ngrx-signal-stores': {
+    apis: ['TestBed.inject()', 'mocked rxMethod dependency', 'synchronous signal reads'],
+    related: [
+      { label: 'withEntities — Filtering, Pagination & Sorting — previous', route: '/angular/ngrx-signals/withentities-filtering-pagination-sorting' },
+      { label: 'NgRx Signals (overview)',                                    route: '/angular/ngrx-signals' },
+      { label: 'Signal Store DevTools & Hooks Cleanup — next',                route: '/angular/ngrx-signals/signal-store-devtools-and-hooks-cleanup' },
+    ],
+    tip: 'A signalStore is just an injectable — TestBed.inject() and synchronous signal reads work exactly like testing any other Angular service.',
+    docs: [
+      { label: 'NgRx Signals Testing', url: 'https://ngrx.io/guide/signals/signal-store/testing' },
+      { label: 'Testing Guide',        url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'onInit hooks run the MOMENT the store is injected — no separate trigger step needed in a test.',
+      'A synchronous mock Observable (of(...)) updates state synchronously too — fakeAsync/await is only needed for genuinely delayed mocks.',
+    ],
+  },
+
+  'ngrx-signals/signal-store-devtools-and-hooks-cleanup': {
+    apis: ['withHooks(onDestroy)', 'component-scoped store', 'Redux DevTools'],
+    related: [
+      { label: 'Testing NgRx Signal Stores — previous', route: '/angular/ngrx-signals/testing-ngrx-signal-stores' },
+      { label: 'NgRx Signals (overview)',                 route: '/angular/ngrx-signals' },
+    ],
+    tip: 'rxMethod() subscriptions are already auto-cleaned on store destroy — onDestroy is for resources the store opened OUTSIDE that mechanism, like a raw setInterval.',
+    docs: [
+      { label: 'NgRx Signals Hooks', url: 'https://ngrx.io/guide/signals/signal-store/lifecycle-hooks' },
+      { label: 'Redux DevTools',     url: 'https://github.com/reduxjs/redux-devtools' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A component-scoped store (no providedIn: root) gets a fresh instance per mount, destroyed with the component — different lifetime than a root singleton.',
+      'Forgetting onDestroy cleanup on a timer is a repeatable leak — every mount/unmount cycle starts a new interval without clearing the old one.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

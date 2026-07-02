@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="NgRx Signals"
+    topicRoute="/angular/ngrx-signals"
+    subtopicLabel="withEntities — Filtering, Pagination &amp; Sorting" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">withEntities — Filtering, Pagination &amp; Sorting</h1>
+  <p class="page-subtitle">
+    Layering filter/sort/page criteria on top of withEntities() with layered computed()
+    signals — and resetting pagination correctly when the filter changes.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="@ngrx/signals 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A product list with live filtering and pagination built entirely from
+      <code>withEntities()</code> plus two layered <code>withComputed</code> blocks.
+    </p>
+    <app-live-playground
+      title="withEntities filtering, pagination, sorting"
+      template="angular-cli"
+      openFile="src/app/product.store.ts"
+      [dependencies]="ngrxDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="NgRx Signals"
+    topicRoute="/angular/ngrx-signals"
+    [next]="{ label: 'Testing NgRx Signal Stores', route: '/angular/ngrx-signals/testing-ngrx-signal-stores' }" />
+</div>

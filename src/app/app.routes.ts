@@ -214,7 +214,12 @@ export const routes: Routes = [
         { path: 'resource-reload-and-polling-patterns',  loadComponent: () => import('./components/angular/resource-api/subtopics/resource-reload-and-polling-patterns/resource-reload-and-polling-patterns').then(m => m.ResourceReloadAndPollingPatternsSubtopic) },
         { path: 'testing-resource-based-components',     loadComponent: () => import('./components/angular/resource-api/subtopics/testing-resource-based-components/testing-resource-based-components').then(m => m.TestingResourceBasedComponentsSubtopic) },
       ] },
-      { path: 'ngrx-signals',       loadComponent: () => import('./components/angular/ngrx-signals/ngrx-signals').then(m => m.NgrxSignalsDemo) },
+      { path: 'ngrx-signals', children: [
+        { path: '',                                       loadComponent: () => import('./components/angular/ngrx-signals/ngrx-signals').then(m => m.NgrxSignalsDemo) },
+        { path: 'withentities-filtering-pagination-sorting', loadComponent: () => import('./components/angular/ngrx-signals/subtopics/withentities-filtering-pagination-sorting/withentities-filtering-pagination-sorting').then(m => m.WithentitiesFilteringPaginationSortingSubtopic) },
+        { path: 'testing-ngrx-signal-stores',              loadComponent: () => import('./components/angular/ngrx-signals/subtopics/testing-ngrx-signal-stores/testing-ngrx-signal-stores').then(m => m.TestingNgrxSignalStoresSubtopic) },
+        { path: 'signal-store-devtools-and-hooks-cleanup', loadComponent: () => import('./components/angular/ngrx-signals/subtopics/signal-store-devtools-and-hooks-cleanup/signal-store-devtools-and-hooks-cleanup').then(m => m.SignalStoreDevtoolsAndHooksCleanupSubtopic) },
+      ] },
       { path: 'dynamic-forms',      loadComponent: () => import('./components/angular/dynamic-forms/dynamic-forms').then(m => m.DynamicFormsDemo) },
       { path: 'route-resolvers',    loadComponent: () => import('./components/angular/route-resolvers/route-resolvers').then(m => m.RouteResolversDemo) },
       { path: 'preloading',         loadComponent: () => import('./components/angular/preloading/preloading').then(m => m.PreloadingDemo) },

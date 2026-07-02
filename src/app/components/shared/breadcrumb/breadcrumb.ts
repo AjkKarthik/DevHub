@@ -115,6 +115,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'rxresource-and-observable-integration': 'rxResource & Observable Integration',
   'resource-reload-and-polling-patterns': 'Resource Reload & Polling Patterns',
   'testing-resource-based-components': 'Testing resource()-Based Components',
+  'withentities-filtering-pagination-sorting': 'withEntities — Filtering, Pagination & Sorting',
+  'testing-ngrx-signal-stores': 'Testing NgRx Signal Stores',
+  'signal-store-devtools-and-hooks-cleanup': 'Signal Store DevTools & Hooks Cleanup',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

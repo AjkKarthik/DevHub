@@ -217,6 +217,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Resource Reload & Polling Patterns', route: '/angular/resource-api/resource-reload-and-polling-patterns' },
     { label: 'Testing resource()-Based Components', route: '/angular/resource-api/testing-resource-based-components' },
   ],
+  'ngrx-signals': [
+    { label: 'withEntities — Filtering, Pagination & Sorting', route: '/angular/ngrx-signals/withentities-filtering-pagination-sorting' },
+    { label: 'Testing NgRx Signal Stores', route: '/angular/ngrx-signals/testing-ngrx-signal-stores' },
+    { label: 'Signal Store DevTools & Hooks Cleanup', route: '/angular/ngrx-signals/signal-store-devtools-and-hooks-cleanup' },
+  ],
 };
 
 @Component({

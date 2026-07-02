@@ -1777,7 +1777,22 @@
         <span class="nl-text">NgRx Signals</span>
         @if (progress.isDone('ngrx-signals')) {<span class="nl-done">✓</span>}
         @if (diff('ngrx-signals'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ngrx-signals')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ngrx-signals')"
+                  (click)="toggleSubtopics('ngrx-signals', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('ngrx-signals'); as subs) {
+        @if (isSubtopicsExpanded('ngrx-signals')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/destroy-ref" routerLinkActive="active">
         <span class="nl-text">DestroyRef</span>
         @if (progress.isDone('destroy-ref')) {<span class="nl-done">✓</span>}
