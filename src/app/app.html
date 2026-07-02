@@ -1383,7 +1383,22 @@
         <span class="nl-text">Angular Material</span>
         @if (progress.isDone('material')) {<span class="nl-done">✓</span>}
         @if (diff('material'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('material')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('material')"
+                  (click)="toggleSubtopics('material', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('material'); as subs) {
+        @if (isSubtopicsExpanded('material')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/charts" routerLinkActive="active">
         <span class="nl-text">Charts (Chart.js)</span>
         @if (progress.isDone('charts')) {<span class="nl-done">✓</span>}

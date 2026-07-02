@@ -41,6 +41,11 @@ const ROUTE_LABELS: Record<string, string> = {
   'placeholder-loading-error': 'Placeholder, Loading & Error',
   'defer-requirements-nesting': 'Requirements & Nesting',
   'defer-performance-prefetch': 'Performance & Prefetching',
+  'material-setup-theming': 'Setup & Theming',
+  'material-form-fields':  'Form Fields, Inputs & Validation',
+  'material-common-components': 'Buttons, Dialogs & Snackbars',
+  'mattable-sorting-pagination': 'MatTable — Sorting & Pagination',
+  'material-testing-accessibility': 'Testing, Accessibility & Performance',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

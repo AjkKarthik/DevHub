@@ -1,0 +1,52 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular Material"
+    topicRoute="/angular/material"
+    subtopicLabel="Testing, Accessibility &amp; Performance" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing, Accessibility &amp; Performance</h1>
+  <p class="page-subtitle">
+    Most WCAG compliance is automatic — except icon-only buttons, which never are. Plus
+    deterministic tests via no-op animations, and keeping the bundle tree-shaken.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Two correctly-labeled icon buttons next to one broken one with no
+      <code>aria-label</code> at all — screen readers announce nothing useful for it.
+    </p>
+    <app-live-playground
+      title="Material testing and accessibility"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="materialDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Angular Material</h2>
+    <p>
+      You now have the complete picture: one-command setup with the CDK underneath, the
+      form-field family with automatic validation display, the everyday components
+      (buttons/dialogs/snackbars/cards), a sortable paginated table wired correctly in
+      <code>ngAfterViewInit</code>, and the testing/accessibility/performance practices that
+      keep a Material app fast, reliable, and genuinely accessible — not just visually
+      Material-styled.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Angular Material"
+    topicRoute="/angular/material"
+    [prev]="{ label: 'MatTable — Sorting & Pagination', route: '/angular/material/mattable-sorting-pagination' }" />
+</div>

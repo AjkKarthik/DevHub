@@ -463,6 +463,16 @@ to the topic page, not its subtopics.
   `` `Count: ${val}` `` inside the nested Angular component's own TS), that also needs
   `\${val}` — same single-backslash rule as the existing TypeScript gotcha above, just
   applied one level deeper because playground content is itself nested in a template literal.
+- **Any playground demo importing a package beyond Angular core** (`@angular/material`,
+  `@angular/cdk`, Chart.js, any third-party npm library) **must pass `[dependencies]`** to
+  `app-live-playground`, e.g. `[dependencies]="{ '@angular/material': 'latest', '@angular/cdk':
+  'latest' }"` (declared as a class field, same pattern as `liveDemoFiles`). The `angular-cli`
+  StackBlitz template only ships Angular core + RxJS by default — without `dependencies`, any
+  `import` from an uninstalled package fails to resolve in the embedded editor. This was missed
+  on the first pass building the Angular Material topic (5 subtopics all needed the fix
+  retroactively) — check whether a topic's demo code imports anything beyond `@angular/core`,
+  `@angular/common`, `@angular/forms`, `@angular/router`, or `rxjs` BEFORE writing the
+  `liveDemoFiles`, not after.
 
 ## Current state (update when it changes!)
 

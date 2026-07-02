@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular Material"
+    topicRoute="/angular/material"
+    subtopicLabel="MatTable — Sorting &amp; Pagination" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">MatTable — Sorting &amp; Pagination</h1>
+  <p class="page-subtitle">
+    Column definitions render the table; MatTableDataSource is the integration point that
+    connects it to MatSort and MatPaginator — assigned in ngAfterViewInit, never the constructor.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A sortable, paginated table over a small in-memory dataset — click a column header
+      to sort, use the paginator to page through rows.
+    </p>
+    <app-live-playground
+      title="MatTable sorting and pagination"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="materialDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the visual layer covered, the last subtopic is about what happens BEHIND it —
+      testing Material components deterministically, accessibility guarantees, and keeping
+      bundle size down.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Angular Material"
+    topicRoute="/angular/material"
+    [prev]="{ label: 'Buttons, Dialogs & Snackbars', route: '/angular/material/material-common-components' }"
+    [next]="{ label: 'Testing, Accessibility & Performance', route: '/angular/material/material-testing-accessibility' }" />
+</div>

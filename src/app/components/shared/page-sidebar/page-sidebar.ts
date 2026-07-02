@@ -1632,6 +1632,115 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Angular Material › subtopics (Phase 10) ──────────────────────────────────
+  'material/material-setup-theming': {
+    apis: ['ng add', 'provideAnimationsAsync()', 'MatButtonModule'],
+    related: [
+      { label: 'Angular Material (overview)', route: '/angular/material' },
+      { label: 'Form Fields — next',           route: '/angular/material/material-form-fields' },
+    ],
+    tip: 'provideAnimationsAsync() is required — skipping it can throw ExpressionChangedAfterChecked errors on dialogs/snackbars/panels, not just lose animations.',
+    docs: [
+      { label: 'Getting Started Guide', url: 'https://material.angular.dev/guide/getting-started' },
+      { label: 'Theming Guide',         url: 'https://material.angular.dev/guide/theming' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Every Material component is standalone-compatible — import individual modules directly, no NgModule wrapper needed.',
+      'Material is built on the CDK — CDK primitives are usable independently of Material\'s visual layer.',
+      'Pre-built themes are the fastest start; mat.define-theme() gives full custom control.',
+    ],
+  },
+
+  'material/material-form-fields': {
+    apis: ['MatFormField', 'mat-error', 'MatSelect', 'MatAutocomplete'],
+    related: [
+      { label: 'Setup & Theming — previous',   route: '/angular/material/material-setup-theming' },
+      { label: 'Angular Material (overview)',  route: '/angular/material' },
+      { label: 'Buttons & Dialogs — next',      route: '/angular/material/material-common-components' },
+    ],
+    tip: 'mat-error shows automatically once a control is both invalid and touched — no manual @if guard needed.',
+    docs: [
+      { label: 'Form Field Guide', url: 'https://material.angular.dev/components/form-field/overview' },
+      { label: 'Select Guide',     url: 'https://material.angular.dev/components/select/overview' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'MAT_FORM_FIELD_DEFAULT_OPTIONS sets appearance globally instead of repeating it per field.',
+      'MatSelect is a full overlay panel, not a styled <select> — it supports grouping and multi-select natively.',
+      'MatAutocomplete needs its results filtered yourself (computed() or switchMap) — it does not filter automatically.',
+    ],
+  },
+
+  'material/material-common-components': {
+    apis: ['MatSnackBar', 'MatDialog', 'MAT_DIALOG_DATA', 'MatDialogRef'],
+    related: [
+      { label: 'Form Fields — previous',        route: '/angular/material/material-form-fields' },
+      { label: 'Angular Material (overview)',   route: '/angular/material' },
+      { label: 'MatTable — next',                route: '/angular/material/mattable-sorting-pagination' },
+    ],
+    tip: 'MatDialog.open() returns immediately — the result only arrives asynchronously via .afterClosed().subscribe(), once MatDialogRef.close(result) is called inside the dialog.',
+    docs: [
+      { label: 'Dialog Guide',    url: 'https://material.angular.dev/components/dialog/overview' },
+      { label: 'Snack Bar Guide', url: 'https://material.angular.dev/components/snack-bar/overview' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'All six button variants share the same color="primary|accent|warn" attribute.',
+      'MatSnackBar.open() is asynchronous — it does not block execution while the toast is visible.',
+      'MAT_DIALOG_DATA reads data passed into open(); MatDialogRef closes and returns a result to the caller.',
+    ],
+  },
+
+  'material/mattable-sorting-pagination': {
+    apis: ['MatTableDataSource', 'MatSort', 'MatPaginator', 'DataSource<T>'],
+    related: [
+      { label: 'Buttons & Dialogs — previous',  route: '/angular/material/material-common-components' },
+      { label: 'Angular Material (overview)',   route: '/angular/material' },
+      { label: 'Testing & Accessibility — next', route: '/angular/material/material-testing-accessibility' },
+    ],
+    tip: 'Assign dataSource.sort/dataSource.paginator in ngAfterViewInit, never the constructor — @ViewChild is not populated yet when the constructor runs.',
+    docs: [
+      { label: 'Table Guide',    url: 'https://material.angular.dev/components/table/overview' },
+      { label: 'Sort Guide',     url: 'https://material.angular.dev/components/sort/overview' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'MatTableDataSource holds the full dataset in memory — use a custom DataSource<T> for genuinely large, server-paginated data.',
+      'mat-sort-header sorts by the column\'s matColumnDef name by default — override sortingDataAccessor when they differ.',
+      'displayedColumns controls row/header ORDER — matColumnDef only defines what a column renders, not its position.',
+    ],
+  },
+
+  'material/material-testing-accessibility': {
+    apis: ['provideNoopAnimations()', 'aria-label', 'MatIconRegistry'],
+    related: [
+      { label: 'MatTable — previous',           route: '/angular/material/mattable-sorting-pagination' },
+      { label: 'Angular Material (overview)',   route: '/angular/material' },
+    ],
+    tip: 'Icon-only buttons are the one case Material never auto-labels — always add aria-label yourself since there is no visible text to announce.',
+    docs: [
+      { label: 'Accessibility Guide', url: 'https://material.angular.dev/guide/accessibility' },
+      { label: 'Testing Guide',       url: 'https://material.angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Real animations make component tests flaky — provideNoopAnimations() in the test bed fixes this.',
+      'Never import a barrel MaterialModule — always import individual modules for tree-shaking to work.',
+      'Avoid combining Material with another global CSS reset (e.g. normalize.css) — they conflict on baseline styles.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

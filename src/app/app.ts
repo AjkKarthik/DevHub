@@ -97,6 +97,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Requirements & Nesting', route: '/angular/defer/defer-requirements-nesting' },
     { label: 'Performance & Prefetching', route: '/angular/defer/defer-performance-prefetch' },
   ],
+  material: [
+    { label: 'Setup & Theming', route: '/angular/material/material-setup-theming' },
+    { label: 'Form Fields, Inputs & Validation', route: '/angular/material/material-form-fields' },
+    { label: 'Buttons, Dialogs & Snackbars', route: '/angular/material/material-common-components' },
+    { label: 'MatTable — Sorting & Pagination', route: '/angular/material/mattable-sorting-pagination' },
+    { label: 'Testing, Accessibility & Performance', route: '/angular/material/material-testing-accessibility' },
+  ],
 };
 
 @Component({
