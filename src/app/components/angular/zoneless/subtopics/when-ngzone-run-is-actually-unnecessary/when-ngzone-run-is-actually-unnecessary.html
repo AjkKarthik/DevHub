@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Zoneless Angular"
+    topicRoute="/angular/zoneless"
+    subtopicLabel="When ngZone.run() Is Actually Unnecessary" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">When ngZone.run() Is Actually Unnecessary</h1>
+  <p class="page-subtitle">
+    A close read of the main topic's own claim reveals its NgZone interop example wraps a
+    signal write in a no-op — here's when the wrapper matters and when it doesn't.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 18+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Two third-party widget adapters — one wraps its signal write in
+      <code>ngZone.run()</code>, one calls <code>.set()</code> directly — both behave
+      identically in this fully zoneless app.
+    </p>
+    <app-live-playground
+      title="When ngZone.run() is actually unnecessary"
+      template="angular-cli"
+      openFile="src/app/chat-widget-adapter.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With auditing, SSR/hydration, and interop simplification all covered, head back to
+      the topic overview to see how zoneless ties into signals, effects, and change detection.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Zoneless Angular"
+    topicRoute="/angular/zoneless"
+    [prev]="{ label: 'Zoneless SSR and Incremental Hydration', route: '/angular/zoneless/zoneless-ssr-and-incremental-hydration' }" />
+</div>

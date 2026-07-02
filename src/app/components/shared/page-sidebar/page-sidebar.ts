@@ -3682,6 +3682,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'zoneless/auditing-a-codebase-for-zoneless-readiness': {
+    apis: ['grep / ripgrep', 'setTimeout / setInterval', 'provideZonelessChangeDetection()'],
+    related: [
+      { label: 'Zoneless Angular (overview)',                     route: '/angular/zoneless' },
+      { label: 'Zoneless SSR and Incremental Hydration — next',     route: '/angular/zoneless/zoneless-ssr-and-incremental-hydration' },
+    ],
+    tip: 'The risky pattern has a recognizable shape: a plain field read in a template AND mutated inside an async callback — a grep for setTimeout/setInterval/addEventListener narrows the manual review list dramatically.',
+    docs: [
+      { label: 'Zoneless Guide',  url: 'https://angular.dev/guide/experimental/zoneless' },
+      { label: 'provideZonelessChangeDetection', url: 'https://angular.dev/api/core/provideZonelessChangeDetection' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A plain field mutated only inside a synchronous click handler is safe — the risk is specifically async callbacks that Zone.js would have intercepted.',
+      'A grep sweep has false negatives — state mutated by a THIRD-PARTY library\'s own internal timer is invisible to a grep of your own code.',
+    ],
+  },
+
+  'zoneless/zoneless-ssr-and-incremental-hydration': {
+    apis: ['provideClientHydration()', '@defer (hydrate on viewport)', 'resource()'],
+    related: [
+      { label: 'Auditing a Codebase for Zoneless Readiness — previous', route: '/angular/zoneless/auditing-a-codebase-for-zoneless-readiness' },
+      { label: 'Zoneless Angular (overview)',                            route: '/angular/zoneless' },
+      { label: 'When ngZone.run() Is Actually Unnecessary — next',        route: '/angular/zoneless/when-ngzone-run-is-actually-unnecessary' },
+    ],
+    tip: 'A dehydrated @defer block in a zoneless app has genuinely zero reactive machinery running for it — no zone patches, no signal graph entries — until it actually hydrates.',
+    docs: [
+      { label: 'Hydration Guide',            url: 'https://angular.dev/guide/hydration' },
+      { label: 'Incremental Hydration Guide', url: 'https://angular.dev/guide/incremental-hydration' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'provideZonelessChangeDetection() and provideClientHydration() are independent providers — no special wiring is needed between them.',
+      'A raw unmanaged fetch() call during zoneless SSR is invisible to Angular\'s rendering lifecycle — use resource() or httpResource() so SSR knows to wait for it.',
+    ],
+  },
+
+  'zoneless/when-ngzone-run-is-actually-unnecessary': {
+    apis: ['NgZone.run()', 'signal.set()', 'runOutsideAngular()'],
+    related: [
+      { label: 'Zoneless SSR and Incremental Hydration — previous', route: '/angular/zoneless/zoneless-ssr-and-incremental-hydration' },
+      { label: 'Zoneless Angular (overview)',                        route: '/angular/zoneless' },
+    ],
+    tip: 'signal.set() notifies Angular\'s scheduler regardless of zone context — wrapping a signal-only callback in ngZone.run() is a no-op carried over from zone-based habits, once zone.js is fully removed.',
+    docs: [
+      { label: 'NgZone API',       url: 'https://angular.dev/api/core/NgZone' },
+      { label: 'Zoneless Guide',   url: 'https://angular.dev/guide/experimental/zoneless' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'ngZone.run() still matters during a HYBRID migration for callbacks that also touch plain (non-signal) fields while zone.js remains loaded.',
+      'It only becomes provably unnecessary once BOTH the callback is signal-only AND zone.js has been fully removed from polyfills.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

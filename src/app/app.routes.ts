@@ -262,7 +262,12 @@ export const routes: Routes = [
         { path: 'linkedsignal-with-resource-for-editable-drafts', loadComponent: () => import('./components/angular/linked-signal/subtopics/linkedsignal-with-resource-for-editable-drafts/linkedsignal-with-resource-for-editable-drafts').then(m => m.LinkedsignalWithResourceForEditableDraftsSubtopic) },
         { path: 'debugging-unexpected-linkedsignal-resets', loadComponent: () => import('./components/angular/linked-signal/subtopics/debugging-unexpected-linkedsignal-resets/debugging-unexpected-linkedsignal-resets').then(m => m.DebuggingUnexpectedLinkedsignalResetsSubtopic) },
       ] },
-      { path: 'zoneless',           loadComponent: () => import('./components/angular/zoneless/zoneless').then(m => m.ZonelessDemo) },
+      { path: 'zoneless', children: [
+        { path: '',                                            loadComponent: () => import('./components/angular/zoneless/zoneless').then(m => m.ZonelessDemo) },
+        { path: 'auditing-a-codebase-for-zoneless-readiness',   loadComponent: () => import('./components/angular/zoneless/subtopics/auditing-a-codebase-for-zoneless-readiness/auditing-a-codebase-for-zoneless-readiness').then(m => m.AuditingACodebaseForZonelessReadinessSubtopic) },
+        { path: 'zoneless-ssr-and-incremental-hydration',       loadComponent: () => import('./components/angular/zoneless/subtopics/zoneless-ssr-and-incremental-hydration/zoneless-ssr-and-incremental-hydration').then(m => m.ZonelessSsrAndIncrementalHydrationSubtopic) },
+        { path: 'when-ngzone-run-is-actually-unnecessary',      loadComponent: () => import('./components/angular/zoneless/subtopics/when-ngzone-run-is-actually-unnecessary/when-ngzone-run-is-actually-unnecessary').then(m => m.WhenNgzoneRunIsActuallyUnnecessarySubtopic) },
+      ] },
       { path: 'signal-effects',     loadComponent: () => import('./components/angular/signal-effects/signal-effects').then(m => m.SignalEffectsDemo) },
       { path: 'typed-forms',        loadComponent: () => import('./components/angular/typed-forms/typed-forms').then(m => m.TypedFormsDemo) },
       { path: 'host-directives',    loadComponent: () => import('./components/angular/host-directives/host-directives').then(m => m.HostDirectivesDemo) },

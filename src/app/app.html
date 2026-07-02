@@ -1897,7 +1897,22 @@
         <span class="nl-text">Zoneless Angular</span>
         @if (progress.isDone('zoneless')) {<span class="nl-done">✓</span>}
         @if (diff('zoneless'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('zoneless')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('zoneless')"
+                  (click)="toggleSubtopics('zoneless', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('zoneless'); as subs) {
+        @if (isSubtopicsExpanded('zoneless')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/signal-effects" routerLinkActive="active">
         <span class="nl-text">Signal Effects</span>
         @if (progress.isDone('signal-effects')) {<span class="nl-done">✓</span>}

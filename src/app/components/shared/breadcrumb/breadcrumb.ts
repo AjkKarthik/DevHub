@@ -139,6 +139,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-linkedsignal-reset-behavior': 'Testing linkedSignal Reset Behavior',
   'linkedsignal-with-resource-for-editable-drafts': 'linkedSignal with resource() for Editable Drafts',
   'debugging-unexpected-linkedsignal-resets': 'Debugging Unexpected linkedSignal Resets',
+  'auditing-a-codebase-for-zoneless-readiness': 'Auditing a Codebase for Zoneless Readiness',
+  'zoneless-ssr-and-incremental-hydration': 'Zoneless SSR and Incremental Hydration',
+  'when-ngzone-run-is-actually-unnecessary': 'When ngZone.run() Is Actually Unnecessary',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
