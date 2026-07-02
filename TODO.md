@@ -1420,7 +1420,7 @@ off here with a date.
 - [x] `/angular/preloading` — Preloading Strategies (2026-07-03 — 3 subtopics: priority-tiered-preloading-with-delay, testing-preloading-strategies, measuring-preload-effectiveness)
 - [x] `/angular/route-guards` — Route Guards (2026-07-03 — 3 subtopics: canactivatechild-for-nested-admin-sections, tracing-guard-execution-order, async-guards-with-navigation-loading-indicator)
 - [x] `/angular/ng-image` — NgOptimizedImage (2026-07-03 — 3 subtopics: custom-loader-with-blur-up-lqip-placeholder, testing-components-that-use-ngoptimizedimage, measuring-lcp-impact-with-performanceobserver)
-- [ ] `/angular/destroy-ref` — DestroyRef & takeUntilDestroyed
+- [x] `/angular/destroy-ref` — DestroyRef & takeUntilDestroyed (2026-07-03 — 3 subtopics: testing-destroyref-cleanup-and-takeuntildestroyed, runininjectioncontext-for-composables-outside-construction, wrapping-a-non-observable-third-party-api)
 - [ ] `/angular/linked-signal` — linkedSignal()
 - [ ] `/angular/zoneless` — Zoneless Angular
 - [ ] `/angular/signal-effects` — Signal Effects
