@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="DestroyRef & takeUntilDestroyed"
+    topicRoute="/angular/destroy-ref"
+    subtopicLabel="Testing DestroyRef Cleanup and takeUntilDestroyed" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing DestroyRef Cleanup and takeUntilDestroyed</h1>
+  <p class="page-subtitle">
+    Using fixture.destroy() to trigger real cleanup callbacks in tests, and proving
+    unsubscription actually happened — not just that no error was thrown.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 16+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Two tests: one proves a <code>takeUntilDestroyed()</code>-piped subscription truly
+      stops receiving values after <code>fixture.destroy()</code>, the other spies on
+      <code>clearInterval</code> to confirm an <code>onDestroy()</code> callback fired.
+    </p>
+    <app-live-playground
+      title="Testing DestroyRef cleanup and takeUntilDestroyed"
+      template="angular-cli"
+      openFile="src/app/polling.component.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With cleanup now testable, the next subtopic tackles the trickiest edge case in
+      DestroyRef usage — calling composables from OUTSIDE construction.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DestroyRef & takeUntilDestroyed"
+    topicRoute="/angular/destroy-ref"
+    [next]="{ label: 'runInInjectionContext for Composables Outside Construction', route: '/angular/destroy-ref/runininjectioncontext-for-composables-outside-construction' }" />
+</div>

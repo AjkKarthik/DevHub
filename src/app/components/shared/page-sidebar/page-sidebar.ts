@@ -3560,6 +3560,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'destroy-ref/testing-destroyref-cleanup-and-takeuntildestroyed': {
+    apis: ['fixture.destroy()', 'TestBed', 'jasmine.createSpy()'],
+    related: [
+      { label: 'DestroyRef & takeUntilDestroyed (overview)',                        route: '/angular/destroy-ref' },
+      { label: 'runInInjectionContext for Composables Outside Construction — next',   route: '/angular/destroy-ref/runininjectioncontext-for-composables-outside-construction' },
+    ],
+    tip: 'fixture.destroy() in a test triggers the exact same DestroyRef callback path Angular uses in production — no routing or template simulation needed.',
+    docs: [
+      { label: 'Testing Guide',   url: 'https://angular.dev/guide/testing' },
+      { label: 'DestroyRef API',  url: 'https://angular.dev/api/core/DestroyRef' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Asserting "no error was thrown" after destruction is weaker proof than asserting a NEW emission after fixture.destroy() never reaches the subscriber.',
+      'A cancelled onDestroy() callback and one that simply has not fired yet look identical unless explicitly tested for both cases.',
+    ],
+  },
+
+  'destroy-ref/runininjectioncontext-for-composables-outside-construction': {
+    apis: ['runInInjectionContext()', 'Injector', 'assertInInjectionContext()'],
+    related: [
+      { label: 'Testing DestroyRef Cleanup and takeUntilDestroyed — previous', route: '/angular/destroy-ref/testing-destroyref-cleanup-and-takeuntildestroyed' },
+      { label: 'DestroyRef & takeUntilDestroyed (overview)',                    route: '/angular/destroy-ref' },
+      { label: 'Wrapping a Non-Observable Third-Party API — next',              route: '/angular/destroy-ref/wrapping-a-non-observable-third-party-api' },
+    ],
+    tip: 'Capture inject(Injector) during construction, then wrap a later composable call in runInInjectionContext(injector, fn) — the DestroyRef obtained is still tied to the original host, not a new scope.',
+    docs: [
+      { label: 'runInInjectionContext API',   url: 'https://angular.dev/api/core/runInInjectionContext' },
+      { label: 'assertInInjectionContext API', url: 'https://angular.dev/api/core/assertInInjectionContext' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'inject() calls inside a composable throw NG0203 when called outside construction and outside a runInInjectionContext wrapper — there is no silent fallback.',
+      'assertInInjectionContext only improves the error message on misuse — it does not change whether the composable works when called correctly.',
+    ],
+  },
+
+  'destroy-ref/wrapping-a-non-observable-third-party-api': {
+    apis: ['DestroyRef.onDestroy()', 'Subject.complete()', 'afterNextRender()'],
+    related: [
+      { label: 'runInInjectionContext for Composables Outside Construction — previous', route: '/angular/destroy-ref/runininjectioncontext-for-composables-outside-construction' },
+      { label: 'DestroyRef & takeUntilDestroyed (overview)',                              route: '/angular/destroy-ref' },
+    ],
+    tip: 'takeUntilDestroyed() only works on Observables — a library with its own .on()/.destroy() API needs DestroyRef.onDestroy() calling that library\'s own teardown method directly.',
+    docs: [
+      { label: 'DestroyRef API',       url: 'https://angular.dev/api/core/DestroyRef' },
+      { label: 'afterNextRender API',  url: 'https://angular.dev/api/core/afterNextRender' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'If a third-party instance initializes asynchronously, it may still be undefined when onDestroy fires — always null-check before calling its teardown method.',
+      'Bridging a callback API into an Observable via a Subject means completing that Subject belongs in the SAME onDestroy callback as the library\'s own .destroy() call.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

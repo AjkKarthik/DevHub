@@ -133,6 +133,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'custom-loader-with-blur-up-lqip-placeholder': 'Custom Loader with Blur-Up LQIP Placeholder',
   'testing-components-that-use-ngoptimizedimage': 'Testing Components That Use NgOptimizedImage',
   'measuring-lcp-impact-with-performanceobserver': 'Measuring LCP Impact with PerformanceObserver',
+  'testing-destroyref-cleanup-and-takeuntildestroyed': 'Testing DestroyRef Cleanup and takeUntilDestroyed',
+  'runininjectioncontext-for-composables-outside-construction': 'runInInjectionContext for Composables Outside Construction',
+  'wrapping-a-non-observable-third-party-api': 'Wrapping a Non-Observable Third-Party API',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

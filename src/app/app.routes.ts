@@ -250,7 +250,12 @@ export const routes: Routes = [
         { path: 'testing-components-that-use-ngoptimizedimage', loadComponent: () => import('./components/angular/ng-image/subtopics/testing-components-that-use-ngoptimizedimage/testing-components-that-use-ngoptimizedimage').then(m => m.TestingComponentsThatUseNgoptimizedimageSubtopic) },
         { path: 'measuring-lcp-impact-with-performanceobserver', loadComponent: () => import('./components/angular/ng-image/subtopics/measuring-lcp-impact-with-performanceobserver/measuring-lcp-impact-with-performanceobserver').then(m => m.MeasuringLcpImpactWithPerformanceobserverSubtopic) },
       ] },
-      { path: 'destroy-ref',        loadComponent: () => import('./components/angular/destroy-ref/destroy-ref').then(m => m.DestroyRefDemo) },
+      { path: 'destroy-ref', children: [
+        { path: '',                                              loadComponent: () => import('./components/angular/destroy-ref/destroy-ref').then(m => m.DestroyRefDemo) },
+        { path: 'testing-destroyref-cleanup-and-takeuntildestroyed', loadComponent: () => import('./components/angular/destroy-ref/subtopics/testing-destroyref-cleanup-and-takeuntildestroyed/testing-destroyref-cleanup-and-takeuntildestroyed').then(m => m.TestingDestroyrefCleanupAndTakeuntildestroyedSubtopic) },
+        { path: 'runininjectioncontext-for-composables-outside-construction', loadComponent: () => import('./components/angular/destroy-ref/subtopics/runininjectioncontext-for-composables-outside-construction/runininjectioncontext-for-composables-outside-construction').then(m => m.RunininjectioncontextForComposablesOutsideConstructionSubtopic) },
+        { path: 'wrapping-a-non-observable-third-party-api',    loadComponent: () => import('./components/angular/destroy-ref/subtopics/wrapping-a-non-observable-third-party-api/wrapping-a-non-observable-third-party-api').then(m => m.WrappingANonObservableThirdPartyApiSubtopic) },
+      ] },
       { path: 'linked-signal',      loadComponent: () => import('./components/angular/linked-signal/linked-signal').then(m => m.LinkedSignalDemo) },
       { path: 'zoneless',           loadComponent: () => import('./components/angular/zoneless/zoneless').then(m => m.ZonelessDemo) },
       { path: 'signal-effects',     loadComponent: () => import('./components/angular/signal-effects/signal-effects').then(m => m.SignalEffectsDemo) },

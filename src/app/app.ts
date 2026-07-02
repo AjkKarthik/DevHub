@@ -247,6 +247,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Testing Components That Use NgOptimizedImage', route: '/angular/ng-image/testing-components-that-use-ngoptimizedimage' },
     { label: 'Measuring LCP Impact with PerformanceObserver', route: '/angular/ng-image/measuring-lcp-impact-with-performanceobserver' },
   ],
+  'destroy-ref': [
+    { label: 'Testing DestroyRef Cleanup and takeUntilDestroyed', route: '/angular/destroy-ref/testing-destroyref-cleanup-and-takeuntildestroyed' },
+    { label: 'runInInjectionContext for Composables Outside Construction', route: '/angular/destroy-ref/runininjectioncontext-for-composables-outside-construction' },
+    { label: 'Wrapping a Non-Observable Third-Party API', route: '/angular/destroy-ref/wrapping-a-non-observable-third-party-api' },
+  ],
 };
 
 @Component({

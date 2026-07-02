@@ -1857,7 +1857,22 @@
         <span class="nl-text">DestroyRef</span>
         @if (progress.isDone('destroy-ref')) {<span class="nl-done">✓</span>}
         @if (diff('destroy-ref'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('destroy-ref')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('destroy-ref')"
+                  (click)="toggleSubtopics('destroy-ref', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('destroy-ref'); as subs) {
+        @if (isSubtopicsExpanded('destroy-ref')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/linked-signal" routerLinkActive="active">
         <span class="nl-text">linkedSignal()</span>
         @if (progress.isDone('linked-signal')) {<span class="nl-done">✓</span>}

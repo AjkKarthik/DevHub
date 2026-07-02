@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="DestroyRef & takeUntilDestroyed"
+    topicRoute="/angular/destroy-ref"
+    subtopicLabel="runInInjectionContext for Composables Outside Construction" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">runInInjectionContext for Composables Outside Construction</h1>
+  <p class="page-subtitle">
+    Calling a DestroyRef-using composable from a click handler or async callback — well
+    outside construction — by capturing an Injector and re-establishing context manually.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>usePolling()</code> is called from a button click — well after construction —
+      but succeeds because <code>runInInjectionContext</code> re-establishes context using
+      an <code>Injector</code> captured earlier.
+    </p>
+    <app-live-playground
+      title="runInInjectionContext for composables outside construction"
+      template="angular-cli"
+      openFile="src/app/dashboard.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With deferred composable calls solved, the final subtopic applies DestroyRef to a
+      case the main topic only mentions in passing — a non-Observable third-party API.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DestroyRef & takeUntilDestroyed"
+    topicRoute="/angular/destroy-ref"
+    [prev]="{ label: 'Testing DestroyRef Cleanup and takeUntilDestroyed', route: '/angular/destroy-ref/testing-destroyref-cleanup-and-takeuntildestroyed' }"
+    [next]="{ label: 'Wrapping a Non-Observable Third-Party API', route: '/angular/destroy-ref/wrapping-a-non-observable-third-party-api' }" />
+</div>
