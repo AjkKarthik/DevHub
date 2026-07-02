@@ -71,6 +71,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Mutation Requests — POST, PUT, DELETE', route: '/angular/http/mutation-requests' },
     { label: 'Error Handling & Retry', route: '/angular/http/error-handling-retry' },
   ],
+  'http-interceptors': [
+    { label: 'What Are Interceptors?', route: '/angular/http-interceptors/what-are-interceptors' },
+    { label: 'Auth Interceptor & Token Refresh', route: '/angular/http-interceptors/auth-interceptor-token-refresh' },
+    { label: 'Global Error Interceptor', route: '/angular/http-interceptors/global-error-interceptor' },
+    { label: 'Loading Spinner & HttpContext', route: '/angular/http-interceptors/loading-spinner-httpcontext' },
+  ],
 };
 
 @Component({

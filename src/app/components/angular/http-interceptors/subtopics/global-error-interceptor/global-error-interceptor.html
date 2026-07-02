@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HTTP Interceptors"
+    topicRoute="/angular/http-interceptors"
+    subtopicLabel="Global Error Interceptor" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Global Error Interceptor — One Place for Cross-Cutting Failures</h1>
+  <p class="page-subtitle">
+    403, offline, and 5xx deserve one consistent reaction across the whole app — with an
+    explicit opt-out for the specific requests that want to handle their own error instead.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 15" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      One failing call goes through the global interceptor's logging; the second, marked
+      with <code>SKIP_ERROR_TOAST</code>, is handled entirely by the component instead.
+    </p>
+    <app-live-playground
+      title="Global error interceptor"
+      template="angular-cli"
+      openFile="src/app/error.interceptor.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      The same <code>HttpContext</code> opt-out mechanism used here for error handling is
+      also how a global loading spinner knows which requests to ignore — the last subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTTP Interceptors"
+    topicRoute="/angular/http-interceptors"
+    [prev]="{ label: 'Auth Interceptor & Token Refresh', route: '/angular/http-interceptors/auth-interceptor-token-refresh' }"
+    [next]="{ label: 'Loading Spinner & HttpContext', route: '/angular/http-interceptors/loading-spinner-httpcontext' }" />
+</div>

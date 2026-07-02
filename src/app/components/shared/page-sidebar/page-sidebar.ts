@@ -1240,6 +1240,93 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── HTTP Interceptors › subtopics (Phase 10) ─────────────────────────────────
+  'http-interceptors/what-are-interceptors': {
+    apis: ['HttpInterceptorFn', 'withInterceptors()', 'req.clone()'],
+    related: [
+      { label: 'HTTP Interceptors (overview)', route: '/angular/http-interceptors' },
+      { label: 'Auth Interceptor — next',      route: '/angular/http-interceptors/auth-interceptor-token-refresh' },
+    ],
+    tip: 'Requests run through interceptors in registration order; responses run in REVERSE order — like nested function calls.',
+    docs: [
+      { label: 'HTTP Interceptors Guide', url: 'https://angular.dev/guide/http/interceptors' },
+      { label: 'HttpInterceptorFn API',   url: 'https://angular.dev/api/common/http/HttpInterceptorFn' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'HttpRequest and HttpHeaders are immutable — always req.clone({...}) to produce a modified copy, never mutate req directly.',
+      'Since Angular 15, interceptors are plain functions registered via withInterceptors([...]) — no class, no @Injectable.',
+      'Calling next(req) unmodified is a valid pass-through, common in conditional interceptors.',
+    ],
+  },
+
+  'http-interceptors/auth-interceptor-token-refresh': {
+    apis: ['inject()', 'shareReplay(1)', 'switchMap()', 'HttpContext'],
+    related: [
+      { label: 'What Are Interceptors? — previous', route: '/angular/http-interceptors/what-are-interceptors' },
+      { label: 'HTTP Interceptors (overview)',      route: '/angular/http-interceptors' },
+      { label: 'Global Error Interceptor — next',   route: '/angular/http-interceptors/global-error-interceptor' },
+    ],
+    tip: 'If several requests 401 at once, share a single refresh Observable via shareReplay(1) — do not call the refresh endpoint once per failing request.',
+    docs: [
+      { label: 'HTTP Interceptors Guide', url: 'https://angular.dev/guide/http/interceptors' },
+      { label: 'HttpContext API',         url: 'https://angular.dev/api/common/http/HttpContext' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Never attach "Bearer null" when there is no token — call next(req) unmodified instead.',
+      'The interceptor retries the original request itself via switchMap after a successful refresh — the caller never sees the 401.',
+      'HttpContext (e.g. SKIP_AUTH) lets a specific public-endpoint request opt out of token attachment entirely.',
+    ],
+  },
+
+  'http-interceptors/global-error-interceptor': {
+    apis: ['catchError()', 'HttpContextToken', 'throwError()'],
+    related: [
+      { label: 'Auth Interceptor — previous',        route: '/angular/http-interceptors/auth-interceptor-token-refresh' },
+      { label: 'HTTP Interceptors (overview)',        route: '/angular/http-interceptors' },
+      { label: 'Loading Spinner & HttpContext — next', route: '/angular/http-interceptors/loading-spinner-httpcontext' },
+    ],
+    tip: 'Global and local error handling coexist — the interceptor covers cross-cutting cases (403, offline, 5xx); a component still handles its own contextual errors (a 404 on one specific resource).',
+    docs: [
+      { label: 'HTTP Interceptors Guide',  url: 'https://angular.dev/guide/http/interceptors' },
+      { label: 'HttpErrorResponse API',    url: 'https://angular.dev/api/common/http/HttpErrorResponse' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Re-throw the error (throwError(() => err)) after handling the global concern — the caller\'s own subscribe error callback can still fire afterward.',
+      'A per-request HttpContext token (e.g. SKIP_ERROR_TOAST) lets a specific call opt out of the global handling entirely.',
+      '403 (authenticated, not authorized) and 401 (not authenticated) deserve genuinely different handling — do not treat them the same.',
+    ],
+  },
+
+  'http-interceptors/loading-spinner-httpcontext': {
+    apis: ['finalize()', 'HttpContextToken', 'signal()'],
+    related: [
+      { label: 'Global Error Interceptor — previous', route: '/angular/http-interceptors/global-error-interceptor' },
+      { label: 'HTTP Interceptors (overview)',        route: '/angular/http-interceptors' },
+    ],
+    tip: 'finalize() runs on success, error, AND early unsubscription — using it (not separate next/error callbacks) is what keeps a pending-request counter from getting stuck.',
+    docs: [
+      { label: 'HTTP Interceptors Guide', url: 'https://angular.dev/guide/http/interceptors' },
+      { label: 'HttpContext API',         url: 'https://angular.dev/api/common/http/HttpContext' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Background polling, silent token refresh, and analytics pings should set SKIP_LOADING: true — not every request should trigger a visible spinner.',
+      'HttpContext data is scoped to exactly ONE request — it is not a shared global, each call site sets it explicitly.',
+      'A signal-based pending counter (not a per-component boolean) is what lets one interceptor drive a truly global spinner.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HTTP Interceptors"
+    topicRoute="/angular/http-interceptors"
+    subtopicLabel="What Are Interceptors?" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">What Are Interceptors? — Middleware for Every HTTP Call</h1>
+  <p class="page-subtitle">
+    One plain function, registered once, that touches every outgoing request and incoming
+    response in the app — request order forward, response order reverse.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 15" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A logging interceptor that times every request — check the browser console after
+      clicking Load.
+    </p>
+    <app-live-playground
+      title="What are interceptors"
+      template="angular-cli"
+      openFile="src/app/logging.interceptor.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      The most common real interceptor is the one that attaches an auth token to every
+      request — including the trickiest part: refreshing an expired token exactly once,
+      even when several requests 401 at the same moment.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTTP Interceptors"
+    topicRoute="/angular/http-interceptors"
+    [next]="{ label: 'Auth Interceptor & Token Refresh', route: '/angular/http-interceptors/auth-interceptor-token-refresh' }" />
+</div>
