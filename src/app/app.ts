@@ -59,6 +59,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Custom & Async Validators', route: '/angular/todo/custom-validators' },
     { label: 'Form State — touched, dirty, status', route: '/angular/todo/form-state' },
   ],
+  forms: [
+    { label: 'Template-Driven vs Reactive', route: '/angular/forms/template-driven-vs-reactive' },
+    { label: 'FormGroup, FormControl & FormArray', route: '/angular/forms/formgroup-formcontrol-formarray' },
+    { label: 'Cross-Field Validators', route: '/angular/forms/cross-field-validators' },
+    { label: 'Typed Forms', route: '/angular/forms/typed-forms' },
+  ],
 };
 
 @Component({

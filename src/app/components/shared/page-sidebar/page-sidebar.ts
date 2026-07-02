@@ -1066,6 +1066,93 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Template-Driven vs Reactive Forms › subtopics (Phase 10) ────────────────
+  'forms/template-driven-vs-reactive': {
+    apis: ['ngModel', 'formControlName', 'NgForm'],
+    related: [
+      { label: 'Template-Driven vs Reactive Forms (overview)', route: '/angular/forms' },
+      { label: 'FormGroup, FormControl & FormArray — next',    route: '/angular/forms/formgroup-formcontrol-formarray' },
+    ],
+    tip: 'Never mix ngModel and formControlName on the same form — both APIs try to own the control\'s value and Angular logs a real console error.',
+    docs: [
+      { label: 'Reactive Forms Guide',       url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'Template-Driven Forms Guide', url: 'https://angular.dev/guide/forms/template-driven-forms' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Reactive forms are not universally "better" — template-driven remains genuinely simpler for small, static forms like a login or search box.',
+      'Template-driven validation is declared as HTML attributes (required, minlength); reactive validation lives in a validators array in the class.',
+      'Different forms in the same app CAN use different approaches — the rule is only never mix both APIs on the SAME form.',
+    ],
+  },
+
+  'forms/formgroup-formcontrol-formarray': {
+    apis: ['FormControl', 'FormGroup', 'FormArray', 'AbstractControl'],
+    related: [
+      { label: 'Template-Driven vs Reactive — previous', route: '/angular/forms/template-driven-vs-reactive' },
+      { label: 'Template-Driven vs Reactive Forms (overview)', route: '/angular/forms' },
+      { label: 'Cross-Field Validators — next',            route: '/angular/forms/cross-field-validators' },
+    ],
+    tip: 'A FormArray is accessed by numeric index (.at(i)), not by name — it has no field names, only an ordered position.',
+    docs: [
+      { label: 'Reactive Forms Guide', url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'FormArray API',        url: 'https://angular.dev/api/forms/FormArray' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A FormArray item can be a whole nested FormGroup, not just a plain FormControl — a list of address objects is a normal FormArray of FormGroups.',
+      'Invalidity propagates up through the entire control tree — a top-level form.invalid reflects every descendant, no matter how deeply nested.',
+      'All three (FormControl/FormGroup/FormArray) extend AbstractControl — the same touched/invalid/errors patterns work identically on any of them.',
+    ],
+  },
+
+  'forms/cross-field-validators': {
+    apis: ['AbstractControl', 'ValidationErrors', 'form.errors'],
+    related: [
+      { label: 'FormGroup, FormControl & FormArray — previous', route: '/angular/forms/formgroup-formcontrol-formarray' },
+      { label: 'Template-Driven vs Reactive Forms (overview)',  route: '/angular/forms' },
+      { label: 'Typed Forms — next',                             route: '/angular/forms/typed-forms' },
+    ],
+    tip: 'A cross-field validator\'s error lives on form.errors (the GROUP), not on any individual control\'s own .errors — checking the wrong one is the most common mistake here.',
+    docs: [
+      { label: 'Form Validation Guide', url: 'https://angular.dev/guide/forms/form-validation' },
+      { label: 'AbstractControl API',   url: 'https://angular.dev/api/forms/AbstractControl' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A cross-field validator is attached to the FormGroup via its OPTIONS object (fb.group()\'s second argument), not to any single control\'s validators array.',
+      'Since no one control "owns" a group-level error, the convention is to gate its display on the LAST relevant field\'s touched state.',
+      'The validator function signature is identical to a normal validator — only what it is attached to and what it receives differs.',
+    ],
+  },
+
+  'forms/typed-forms': {
+    apis: ['FormControl<T>', 'FormGroup<T>', 'UntypedFormGroup'],
+    related: [
+      { label: 'Cross-Field Validators — previous', route: '/angular/forms/cross-field-validators' },
+      { label: 'Template-Driven vs Reactive Forms (overview)', route: '/angular/forms' },
+    ],
+    tip: 'form.controls.emal (a typo) is a compile-time TypeScript error since Angular 14 — not a silent runtime undefined.',
+    docs: [
+      { label: 'Typed Forms Guide', url: 'https://angular.dev/guide/forms/typed-forms' },
+      { label: 'FormBuilder API',   url: 'https://angular.dev/api/forms/FormBuilder' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'FormBuilder infers the full generic type automatically from initial values — you almost never write FormGroup<{...}> by hand.',
+      'Typed forms are the default since Angular 14, not an opt-in — UntypedFormGroup/UntypedFormBuilder are the explicit opt-OUT for migrating old code.',
+      'form.value is typed as Partial (every field optional); form.getRawValue() is typed as the complete, non-partial shape.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

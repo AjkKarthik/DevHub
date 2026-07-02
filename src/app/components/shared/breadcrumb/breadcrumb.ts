@@ -16,10 +16,15 @@ const ROUTE_LABELS: Record<string, string> = {
   'reactive-forms-basics': 'Reactive Forms Basics',
   'signal-based-services': 'Signal-Based Services',
   'form-state':         'Form State — touched, dirty, status',
+  'template-driven-vs-reactive': 'Template-Driven vs Reactive',
+  'formgroup-formcontrol-formarray': 'FormGroup, FormControl & FormArray',
+  'cross-field-validators': 'Cross-Field Validators',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
-  // (/angular/route-guards, /angular/custom-validators); pageLabel() tries this key first.
+  // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
+  // pageLabel() tries this key first.
   'todo/route-guards':      'Route Guards',
   'todo/custom-validators': 'Custom & Async Validators',
+  'forms/typed-forms':      'Typed Forms',
   'templates':          'Template Syntax',
   'directives':         'Directives',
   'lifecycle':          'Lifecycle Hooks',

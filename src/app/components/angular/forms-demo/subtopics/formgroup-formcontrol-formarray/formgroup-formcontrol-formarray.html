@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template-Driven vs Reactive Forms"
+    topicRoute="/angular/forms"
+    subtopicLabel="FormGroup, FormControl &amp; FormArray" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">FormGroup, FormControl &amp; FormArray — The Object Model</h1>
+  <p class="page-subtitle">
+    Every reactive form is a tree of these three types, all extending AbstractControl —
+    a single value, a named dictionary of fields, and a resizable ordered list.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A form combining all three: a plain field, a nested <code>address</code> FormGroup,
+      and a dynamically resizable <code>phones</code> FormArray with add/remove.
+    </p>
+    <app-live-playground
+      title="FormGroup, FormControl, FormArray"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the object model in place, the next subtopic covers validators that check
+      RELATIONSHIPS between fields inside one of these groups — like confirming a password
+      field matches its confirmation field — which single-control validators cannot express.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template-Driven vs Reactive Forms"
+    topicRoute="/angular/forms"
+    [prev]="{ label: 'Template-Driven vs Reactive', route: '/angular/forms/template-driven-vs-reactive' }"
+    [next]="{ label: 'Cross-Field Validators', route: '/angular/forms/cross-field-validators' }" />
+</div>
