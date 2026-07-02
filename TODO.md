@@ -1402,7 +1402,7 @@ off here with a date.
 - [x] `/angular/charts` — Chart.js with Angular (2026-07-02 — 3 subtopics: custom-plugins-click-interactions, mixed-charts-annotations, time-scale-large-datasets)
 - [x] `/angular/zod-forms` — Zod + Reactive Forms (2026-07-02 — 3 subtopics: discriminated-unions-and-transforms, async-validation-with-zod, nested-schemas-error-formatting)
 - [x] `/angular/content-projection` — Content Projection (2026-07-02 — 3 subtopics: programmatic-projection-createcomponent, compound-components-content-queries, recursive-templates-ngtemplateoutlet)
-- [ ] `/angular/change-detection` — Change Detection
+- [x] `/angular/change-detection` — Change Detection (2026-07-02 — 3 subtopics: embedded-views-dynamic-cd, bridging-external-libraries-onpush, testing-onpush-components)
 - [ ] `/angular/custom-validators` — Custom Validators
 - [ ] `/angular/rxjs` — RxJS Operators
 - [ ] `/angular/cdk` — Angular CDK
