@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Typed Reactive Forms"
+    topicRoute="/angular/typed-forms"
+    subtopicLabel="Writing Type-Safe Custom Validators" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Writing Type-Safe Custom Validators</h1>
+  <p class="page-subtitle">
+    Most custom validators quietly lose typing to ValidatorFn's base AbstractControl
+    signature — a generic factory recovers control.value's real type.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A typed sync validator (<code>minLengthTyped</code>), a group-level cross-field
+      validator (<code>passwordsMatch</code>), and a typed async validator
+      (<code>uniqueUsername</code>) working together on one form.
+    </p>
+    <app-live-playground
+      title="Writing type-safe custom validators"
+      template="angular-cli"
+      openFile="src/app/validators.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With validation typed correctly, the final subtopic tackles initializing a typed
+      form from async server data via resource().
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Typed Reactive Forms"
+    topicRoute="/angular/typed-forms"
+    [prev]="{ label: 'Testing Typed Reactive Forms', route: '/angular/typed-forms/testing-typed-reactive-forms' }"
+    [next]="{ label: 'Populating a Typed Form from resource()', route: '/angular/typed-forms/populating-a-typed-form-from-resource' }" />
+</div>

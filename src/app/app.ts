@@ -267,6 +267,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'afterRenderEffect for DOM Measurements', route: '/angular/signal-effects/afterrendereffect-for-dom-measurements' },
     { label: 'Debouncing Effects for Expensive Side Effects', route: '/angular/signal-effects/debouncing-effects-for-expensive-side-effects' },
   ],
+  'typed-forms': [
+    { label: 'Testing Typed Reactive Forms', route: '/angular/typed-forms/testing-typed-reactive-forms' },
+    { label: 'Writing Type-Safe Custom Validators', route: '/angular/typed-forms/writing-type-safe-custom-validators' },
+    { label: 'Populating a Typed Form from resource()', route: '/angular/typed-forms/populating-a-typed-form-from-resource' },
+  ],
 };
 
 @Component({

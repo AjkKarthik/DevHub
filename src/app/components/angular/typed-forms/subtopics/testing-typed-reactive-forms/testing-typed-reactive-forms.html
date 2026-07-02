@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Typed Reactive Forms"
+    topicRoute="/angular/typed-forms"
+    subtopicLabel="Testing Typed Reactive Forms" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Typed Reactive Forms</h1>
+  <p class="page-subtitle">
+    Compile-time safety is free — the .value vs getRawValue() disabled-control contract is
+    a runtime behavior that still needs its own explicit tests.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Tests verify a disabled <code>promoCode</code> control is excluded from
+      <code>.value</code> but present in <code>getRawValue()</code>, plus typed
+      <code>valueChanges</code> and a commented type-level <code>&#64;ts-expect-error</code> test.
+    </p>
+    <app-live-playground
+      title="Testing typed reactive forms"
+      template="angular-cli"
+      openFile="src/app/checkout-form.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With runtime and type-level testing covered, the next subtopic writes custom
+      validators that preserve strict typing instead of falling back to <code>any</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Typed Reactive Forms"
+    topicRoute="/angular/typed-forms"
+    [next]="{ label: 'Writing Type-Safe Custom Validators', route: '/angular/typed-forms/writing-type-safe-custom-validators' }" />
+</div>

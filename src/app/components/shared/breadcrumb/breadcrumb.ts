@@ -145,6 +145,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-signal-effects-and-cleanup': 'Testing Signal Effects and Cleanup',
   'afterrendereffect-for-dom-measurements': 'afterRenderEffect for DOM Measurements',
   'debouncing-effects-for-expensive-side-effects': 'Debouncing Effects for Expensive Side Effects',
+  'testing-typed-reactive-forms': 'Testing Typed Reactive Forms',
+  'writing-type-safe-custom-validators': 'Writing Type-Safe Custom Validators',
+  'populating-a-typed-form-from-resource': 'Populating a Typed Form from resource()',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

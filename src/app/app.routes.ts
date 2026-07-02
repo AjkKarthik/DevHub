@@ -274,7 +274,12 @@ export const routes: Routes = [
         { path: 'afterrendereffect-for-dom-measurements',         loadComponent: () => import('./components/angular/signal-effects/subtopics/afterrendereffect-for-dom-measurements/afterrendereffect-for-dom-measurements').then(m => m.AfterrendereffectForDomMeasurementsSubtopic) },
         { path: 'debouncing-effects-for-expensive-side-effects',  loadComponent: () => import('./components/angular/signal-effects/subtopics/debouncing-effects-for-expensive-side-effects/debouncing-effects-for-expensive-side-effects').then(m => m.DebouncingEffectsForExpensiveSideEffectsSubtopic) },
       ] },
-      { path: 'typed-forms',        loadComponent: () => import('./components/angular/typed-forms/typed-forms').then(m => m.TypedFormsDemo) },
+      { path: 'typed-forms', children: [
+        { path: '',                                        loadComponent: () => import('./components/angular/typed-forms/typed-forms').then(m => m.TypedFormsDemo) },
+        { path: 'testing-typed-reactive-forms',             loadComponent: () => import('./components/angular/typed-forms/subtopics/testing-typed-reactive-forms/testing-typed-reactive-forms').then(m => m.TestingTypedReactiveFormsSubtopic) },
+        { path: 'writing-type-safe-custom-validators',      loadComponent: () => import('./components/angular/typed-forms/subtopics/writing-type-safe-custom-validators/writing-type-safe-custom-validators').then(m => m.WritingTypeSafeCustomValidatorsSubtopic) },
+        { path: 'populating-a-typed-form-from-resource',    loadComponent: () => import('./components/angular/typed-forms/subtopics/populating-a-typed-form-from-resource/populating-a-typed-form-from-resource').then(m => m.PopulatingATypedFormFromResourceSubtopic) },
+      ] },
       { path: 'host-directives',    loadComponent: () => import('./components/angular/host-directives/host-directives').then(m => m.HostDirectivesDemo) },
       { path: 'let-template-vars',       loadComponent: () => import('./components/angular/let-template-vars/let-template-vars').then(m => m.LetTemplateVarsDemo) },
       { path: 'standalone-migration',    loadComponent: () => import('./components/angular/standalone-migration/standalone-migration').then(m => m.StandaloneMigrationDemo) },

@@ -3804,6 +3804,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typed-forms/testing-typed-reactive-forms': {
+    apis: ['.value', '.getRawValue()', '@ts-expect-error'],
+    related: [
+      { label: 'Typed Reactive Forms (overview)',                  route: '/angular/typed-forms' },
+      { label: 'Writing Type-Safe Custom Validators — next',        route: '/angular/typed-forms/writing-type-safe-custom-validators' },
+    ],
+    tip: 'A refactor swapping getRawValue() for .value still compiles fine (the field just becomes optional) — only a runtime test catches the silently dropped disabled-control data.',
+    docs: [
+      { label: 'Typed Forms Guide', url: 'https://angular.dev/guide/forms/typed-forms' },
+      { label: 'Testing Guide',     url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'patchValue() rejecting an unknown key is a COMPILE-TIME error — the correct test is a line that must fail to compile (@ts-expect-error), not a runtime expect() call.',
+      'Testing only the .value-excludes-it half of the disabled-control contract leaves the getRawValue()-includes-it half unverified.',
+    ],
+  },
+
+  'typed-forms/writing-type-safe-custom-validators': {
+    apis: ['ValidatorFn', 'AsyncValidatorFn', 'AbstractControl<T>'],
+    related: [
+      { label: 'Testing Typed Reactive Forms — previous',                    route: '/angular/typed-forms/testing-typed-reactive-forms' },
+      { label: 'Typed Reactive Forms (overview)',                              route: '/angular/typed-forms' },
+      { label: 'Populating a Typed Form from resource() — next',                route: '/angular/typed-forms/populating-a-typed-form-from-resource' },
+    ],
+    tip: 'ValidatorFn\'s base signature types control as plain AbstractControl — a generic factory with an explicit AbstractControl<T> parameter recovers control.value\'s real type.',
+    docs: [
+      { label: 'ValidatorFn API',      url: 'https://angular.dev/api/forms/ValidatorFn' },
+      { label: 'AsyncValidatorFn API', url: 'https://angular.dev/api/forms/AsyncValidatorFn' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Angular runs sync validators FIRST — async validators only run once all sync validators pass, avoiding wasted network calls on an already-invalid value.',
+      'A cross-field validator (like passwords must match) belongs on the GROUP level, not a single control, since it needs to read both sibling values.',
+    ],
+  },
+
+  'typed-forms/populating-a-typed-form-from-resource': {
+    apis: ['resource()', 'form.patchValue()', 'form.dirty'],
+    related: [
+      { label: 'Writing Type-Safe Custom Validators — previous', route: '/angular/typed-forms/writing-type-safe-custom-validators' },
+      { label: 'Typed Reactive Forms (overview)',                  route: '/angular/typed-forms' },
+    ],
+    tip: 'FormGroup is not itself a signal — an effect() is needed to read a resource\'s value signal and imperatively call patchValue() as a side effect.',
+    docs: [
+      { label: 'resource() API',      url: 'https://angular.dev/api/core/resource' },
+      { label: 'Typed Forms Guide',   url: 'https://angular.dev/guide/forms/typed-forms' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'setValue() requires the EXACT full shape and throws on missing fields — prefer patchValue() (accepts Partial<T>) when the API response might omit fields the form has defaults for.',
+      'Patching on every resource re-fetch without a form.dirty check silently overwrites in-progress unsaved edits.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],
