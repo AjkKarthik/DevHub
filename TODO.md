@@ -1405,7 +1405,7 @@ off here with a date.
 - [x] `/angular/change-detection` — Change Detection (2026-07-02 — 3 subtopics: embedded-views-dynamic-cd, bridging-external-libraries-onpush, testing-onpush-components)
 - [x] `/angular/custom-validators` — Custom Validators (2026-07-02 — 3 subtopics: dynamic-validators-runtime, validator-directives-template-forms, generic-reusable-validators)
 - [x] `/angular/rxjs` — RxJS Operators (2026-07-02 — 3 subtopics: custom-operators-and-pipe, multicasting-share-operators, testing-rxjs-marble-diagrams)
-- [ ] `/angular/cdk` — Angular CDK
+- [x] `/angular/cdk` — Angular CDK (2026-07-02 — 3 subtopics: cdk-menu-keyboard-navigation, cdk-table-headless-data-table, building-custom-overlay-component)
 - [ ] `/angular/ag-grid` — AG Grid with Angular
 - [ ] `/angular/tanstack-query` — TanStack Query
 - [ ] `/angular/date-fns` — date-fns in Angular
