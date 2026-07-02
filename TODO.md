@@ -1419,7 +1419,7 @@ off here with a date.
 - [x] `/angular/route-resolvers` — Route Resolvers & Named Outlets (2026-07-02 — 3 subtopics: testing-route-resolvers, run-guards-and-resolvers-caching, named-outlet-lifecycle-and-detail-drawer-pattern)
 - [x] `/angular/preloading` — Preloading Strategies (2026-07-03 — 3 subtopics: priority-tiered-preloading-with-delay, testing-preloading-strategies, measuring-preload-effectiveness)
 - [x] `/angular/route-guards` — Route Guards (2026-07-03 — 3 subtopics: canactivatechild-for-nested-admin-sections, tracing-guard-execution-order, async-guards-with-navigation-loading-indicator)
-- [ ] `/angular/ng-image` — NgOptimizedImage
+- [x] `/angular/ng-image` — NgOptimizedImage (2026-07-03 — 3 subtopics: custom-loader-with-blur-up-lqip-placeholder, testing-components-that-use-ngoptimizedimage, measuring-lcp-impact-with-performanceobserver)
 - [ ] `/angular/destroy-ref` — DestroyRef & takeUntilDestroyed
 - [ ] `/angular/linked-signal` — linkedSignal()
 - [ ] `/angular/zoneless` — Zoneless Angular
