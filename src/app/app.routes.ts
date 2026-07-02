@@ -286,7 +286,12 @@ export const routes: Routes = [
         { path: 'coordinating-multiple-stacked-host-directives', loadComponent: () => import('./components/angular/host-directives/subtopics/coordinating-multiple-stacked-host-directives/coordinating-multiple-stacked-host-directives').then(m => m.CoordinatingMultipleStackedHostDirectivesSubtopic) },
         { path: 'optional-host-directive-injection-for-shared-components', loadComponent: () => import('./components/angular/host-directives/subtopics/optional-host-directive-injection-for-shared-components/optional-host-directive-injection-for-shared-components').then(m => m.OptionalHostDirectiveInjectionForSharedComponentsSubtopic) },
       ] },
-      { path: 'let-template-vars',       loadComponent: () => import('./components/angular/let-template-vars/let-template-vars').then(m => m.LetTemplateVarsDemo) },
+      { path: 'let-template-vars', children: [
+        { path: '',                                       loadComponent: () => import('./components/angular/let-template-vars/let-template-vars').then(m => m.LetTemplateVarsDemo) },
+        { path: 'testing-let-driven-templates',            loadComponent: () => import('./components/angular/let-template-vars/subtopics/testing-let-driven-templates/testing-let-driven-templates').then(m => m.TestingLetDrivenTemplatesSubtopic) },
+        { path: 'profiling-let-recompute-cost',            loadComponent: () => import('./components/angular/let-template-vars/subtopics/profiling-let-recompute-cost/profiling-let-recompute-cost').then(m => m.ProfilingLetRecomputeCostSubtopic) },
+        { path: 'let-inside-ng-template-scope-closure',    loadComponent: () => import('./components/angular/let-template-vars/subtopics/let-inside-ng-template-scope-closure/let-inside-ng-template-scope-closure').then(m => m.LetInsideNgTemplateScopeClosureSubtopic) },
+      ] },
       { path: 'standalone-migration',    loadComponent: () => import('./components/angular/standalone-migration/standalone-migration').then(m => m.StandaloneMigrationDemo) },
       { path: 'error-handling-patterns', loadComponent: () => import('./components/angular/error-handling-patterns/error-handling-patterns').then(m => m.ErrorHandlingPatternsDemo) },
       { path: 'msw',                     loadComponent: () => import('./components/angular/msw/msw').then(m => m.MswDemo) },

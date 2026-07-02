@@ -277,6 +277,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Coordinating Multiple Stacked Host Directives', route: '/angular/host-directives/coordinating-multiple-stacked-host-directives' },
     { label: 'Optional Host Directive Injection for Shared Components', route: '/angular/host-directives/optional-host-directive-injection-for-shared-components' },
   ],
+  'let-template-vars': [
+    { label: 'Testing @let-Driven Templates', route: '/angular/let-template-vars/testing-let-driven-templates' },
+    { label: 'Profiling @let Recompute Cost', route: '/angular/let-template-vars/profiling-let-recompute-cost' },
+    { label: '@let Inside ng-template and Structural Directives', route: '/angular/let-template-vars/let-inside-ng-template-scope-closure' },
+  ],
 };
 
 @Component({

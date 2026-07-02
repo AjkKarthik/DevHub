@@ -151,6 +151,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-components-that-use-hostdirectives': 'Testing Components That Use hostDirectives',
   'coordinating-multiple-stacked-host-directives': 'Coordinating Multiple Stacked Host Directives',
   'optional-host-directive-injection-for-shared-components': 'Optional Host Directive Injection for Shared Components',
+  'testing-let-driven-templates': 'Testing @let-Driven Templates',
+  'profiling-let-recompute-cost': 'Profiling @let Recompute Cost',
+  'let-inside-ng-template-scope-closure': '@let Inside ng-template and Structural Directives',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

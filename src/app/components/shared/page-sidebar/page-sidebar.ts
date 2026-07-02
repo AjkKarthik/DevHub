@@ -3926,6 +3926,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'let-template-vars/testing-let-driven-templates': {
+    apis: ['fixture.debugElement.query()', 'By.css()', 'nativeElement'],
+    related: [
+      { label: '@let Template Variables (overview)',        route: '/angular/let-template-vars' },
+      { label: 'Profiling @let Recompute Cost — next',        route: '/angular/let-template-vars/profiling-let-recompute-cost' },
+    ],
+    tip: '@let is erased before runtime — there is no property to read in a test. Assert on the rendered DOM across every consumer of the same variable instead.',
+    docs: [
+      { label: '@let Guide',    url: 'https://angular.dev/guide/templates/let-template-variables' },
+      { label: 'Testing Guide', url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      '@let block-scoping is enforced at TEMPLATE COMPILE TIME — an out-of-scope reference is a compile error, not something a runtime test can catch or needs to.',
+      'Testing only one rendered consumer of a @let used in multiple places can miss a consistency bug between consumers.',
+    ],
+  },
+
+  'let-template-vars/profiling-let-recompute-cost': {
+    apis: ['console.log (counter)', 'computed()', 'change detection'],
+    related: [
+      { label: 'Testing @let-Driven Templates — previous',                          route: '/angular/let-template-vars/testing-let-driven-templates' },
+      { label: '@let Template Variables (overview)',                                  route: '/angular/let-template-vars' },
+      { label: '@let Inside ng-template and Structural Directives — next',              route: '/angular/let-template-vars/let-inside-ng-template-scope-closure' },
+    ],
+    tip: 'A counter incremented inside a method called from @let, triggered by an UNRELATED signal write, climbs every click — direct, observable proof @let recomputes every change detection cycle.',
+    docs: [
+      { label: '@let Guide',       url: 'https://angular.dev/guide/templates/let-template-variables' },
+      { label: 'computed() API',   url: 'https://angular.dev/api/core/computed' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Angular template expressions do not support inline statement blocks or ++ operators — instrumentation must live in a component method the @let expression calls.',
+      'The same counter pattern applied to computed() stays flat under the same triggers — proving memoization, not just claiming it.',
+    ],
+  },
+
+  'let-template-vars/let-inside-ng-template-scope-closure': {
+    apis: ['<ng-template>', 'NgTemplateOutlet', 'closure scope'],
+    related: [
+      { label: 'Profiling @let Recompute Cost — previous', route: '/angular/let-template-vars/profiling-let-recompute-cost' },
+      { label: '@let Template Variables (overview)',         route: '/angular/let-template-vars' },
+    ],
+    tip: 'An ng-template can read an outer @let if it is lexically NESTED inside that @let\'s scope in the source — where the template is later RENDERED via ngTemplateOutlet does not matter.',
+    docs: [
+      { label: '@let Guide',            url: 'https://angular.dev/guide/templates/let-template-variables' },
+      { label: 'NgTemplateOutlet API',  url: 'https://angular.dev/api/common/NgTemplateOutlet' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A custom structural directive needs no special code to support @let inside its content — it is a template-compilation-time feature, transparent to any directive that instantiates the embedded view.',
+      'The same block-scoping rule from @if/@for applies to ng-template boundaries — a @let declared outside is not visible inside unless lexically nested.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

@@ -1166,7 +1166,22 @@
         <span class="nl-text">&#64;let Template Vars</span>
         @if (progress.isDone('let-template-vars')) {<span class="nl-done">✓</span>}
         @if (diff('let-template-vars'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('let-template-vars')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('let-template-vars')"
+                  (click)="toggleSubtopics('let-template-vars', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('let-template-vars'); as subs) {
+        @if (isSubtopicsExpanded('let-template-vars')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/lifecycle" routerLinkActive="active">
         <span class="nl-text">Lifecycle Hooks</span>
         @if (progress.isDone('lifecycle')) {<span class="nl-done">✓</span>}
