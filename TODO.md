@@ -1424,7 +1424,7 @@ off here with a date.
 - [x] `/angular/linked-signal` — linkedSignal() (2026-07-03 — 3 subtopics: testing-linkedsignal-reset-behavior, linkedsignal-with-resource-for-editable-drafts, debugging-unexpected-linkedsignal-resets)
 - [x] `/angular/zoneless` — Zoneless Angular (2026-07-03 — 3 subtopics: auditing-a-codebase-for-zoneless-readiness, zoneless-ssr-and-incremental-hydration, when-ngzone-run-is-actually-unnecessary)
 - [x] `/angular/signal-effects` — Signal Effects (2026-07-03 — 3 subtopics: testing-signal-effects-and-cleanup, afterrendereffect-for-dom-measurements, debouncing-effects-for-expensive-side-effects)
-- [ ] `/angular/typed-forms` — Typed Reactive Forms
+- [x] `/angular/typed-forms` — Typed Reactive Forms (2026-07-03 — 3 subtopics: testing-typed-reactive-forms, writing-type-safe-custom-validators, populating-a-typed-form-from-resource)
 - [ ] `/angular/host-directives` — Host Directives
 - [ ] `/angular/let-template-vars` — @let Template Variables
 - [ ] `/angular/standalone-migration` — Standalone Migration
