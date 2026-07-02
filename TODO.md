@@ -1136,8 +1136,9 @@ When a hub's audit is complete, note it in Done History.
 
 ## Phase 10 — Deep-Dive Subtopic Pages ("Learn Mode")
 
-**Status: PLANNING (added 2026-07-03). Not started. Read this whole section before touching
-any code — it defines a new content tier and a new routing/nav/progress layer, not just more pages.**
+**Status: PILOT COMPLETE (2026-07-02), awaiting review checkpoint before broad rollout. Read
+this whole section before touching any code — it defines a new content tier and a new
+routing/nav/progress layer, not just more pages.**
 
 ### Why this phase exists
 
@@ -1309,17 +1310,23 @@ real count, not an estimate) × roughly 3–6 subtopics each — several thousan
 than the ~928-page site built so far. Getting the format wrong and discovering it 200 pages in
 would be extremely expensive. Sequence:
 
-1. **Pilot: one topic, fully built.** Recommended pilot topic: **Angular → Signals & Reactive
-   State** (`/angular/counter`). Reasons: foundational (nearly every other Angular topic depends
-   on it), already has a natural sub-concept breakdown in its existing `theory` array (signal(),
-   computed(), effect(), signal.set/update, control-flow `@if`/`@for`, interop via toSignal/
-   toObservable), and it is exactly the kind of topic where "I read the reference page but still
-   don't really get it" is a common real complaint. Build every planned subtopic page for this
-   ONE topic, including the interactive playground component, the routing change, the nav
-   accordion, the breadcrumb 4th level, and the progress/search/sidebar wiring — the complete
-   vertical slice, not just content.
-2. **Review checkpoint.** Before writing a second topic's subtopics, stop and get the pilot
-   reviewed — this is the point to catch structural mistakes cheaply.
+1. **Pilot: one topic, fully built.** ✅ **DONE (2026-07-02).** Pilot topic: **Angular → Signals
+   & Reactive State** (`/angular/counter`). All 6 subtopics built, wired, and browser-verified
+   (nav accordion, breadcrumb 4th level, tailored per-page sidebar, search index, dark mode,
+   StackBlitz playground load):
+   - `/angular/counter/what-is-a-signal` — What Is a Signal?
+   - `/angular/counter/computed` — computed() — Derived State
+   - `/angular/counter/effects` — effect() — Reactive Side Effects
+   - `/angular/counter/control-flow` — @if and @for — Control Flow
+   - `/angular/counter/readonly-and-services` — Signals in Services
+   - `/angular/counter/rxjs-interop` — RxJS Interop
+   Also built along the way: the `LivePlaygroundComponent` (StackBlitz embed), `TryItComponent`,
+   `MisconceptionsComponent`, `SubtopicNavComponent` (prev/next pager), and
+   `SubtopicEyebrowComponent` (shared "Topic › Subtopic" row, extracted after it was copy-pasted
+   into all 3 early pages). Everything is committed and pushed to `development`.
+2. **Review checkpoint — up next.** Before writing a second topic's subtopics, stop and get the
+   pilot reviewed — this is the point to catch structural mistakes cheaply. **Not yet done** —
+   do not start a second topic's subtopics until this happens.
 3. **Lock the format.** Once the pilot is approved, write up the finalised pattern as a new
    section in `CLAUDE.md` (component names, file layout, exact wiring checklist additions) — the
    same way every other page-type convention in this project is documented — so future sessions
