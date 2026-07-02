@@ -136,7 +136,12 @@ export const routes: Routes = [
         { path: 'async-validation-with-zod',           loadComponent: () => import('./components/angular/zod-forms/subtopics/async-validation-with-zod/async-validation-with-zod').then(m => m.AsyncValidationWithZodSubtopic) },
         { path: 'nested-schemas-error-formatting',     loadComponent: () => import('./components/angular/zod-forms/subtopics/nested-schemas-error-formatting/nested-schemas-error-formatting').then(m => m.NestedSchemasErrorFormattingSubtopic) },
       ] },
-      { path: 'content-projection', loadComponent: () => import('./components/angular/content-projection/content-projection').then(m => m.ContentProjectionDemo) },
+      { path: 'content-projection', children: [
+        { path: '',                                       loadComponent: () => import('./components/angular/content-projection/content-projection').then(m => m.ContentProjectionDemo) },
+        { path: 'programmatic-projection-createcomponent', loadComponent: () => import('./components/angular/content-projection/subtopics/programmatic-projection-createcomponent/programmatic-projection-createcomponent').then(m => m.ProgrammaticProjectionCreatecomponentSubtopic) },
+        { path: 'compound-components-content-queries',     loadComponent: () => import('./components/angular/content-projection/subtopics/compound-components-content-queries/compound-components-content-queries').then(m => m.CompoundComponentsContentQueriesSubtopic) },
+        { path: 'recursive-templates-ngtemplateoutlet',     loadComponent: () => import('./components/angular/content-projection/subtopics/recursive-templates-ngtemplateoutlet/recursive-templates-ngtemplateoutlet').then(m => m.RecursiveTemplatesNgtemplateoutletSubtopic) },
+      ] },
       { path: 'change-detection',   loadComponent: () => import('./components/angular/change-detection/change-detection').then(m => m.ChangeDetectionDemo) },
       { path: 'custom-validators',  loadComponent: () => import('./components/angular/custom-validators/custom-validators').then(m => m.CustomValidatorsDemo) },
       { path: 'rxjs',               loadComponent: () => import('./components/angular/rxjs-demo/rxjs-demo').then(m => m.RxjsDemo) },

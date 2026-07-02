@@ -76,6 +76,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'discriminated-unions-and-transforms': 'Discriminated Unions & Transforms',
   'async-validation-with-zod': 'Async Validation with Zod',
   'nested-schemas-error-formatting': 'Nested Schemas & Error Formatting',
+  'programmatic-projection-createcomponent': 'Programmatic Projection with createComponent',
+  'compound-components-content-queries': 'Compound Components with Content Queries',
+  'recursive-templates-ngtemplateoutlet': 'Recursive Templates with NgTemplateOutlet',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

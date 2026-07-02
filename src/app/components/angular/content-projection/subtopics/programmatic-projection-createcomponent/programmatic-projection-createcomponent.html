@@ -1,0 +1,39 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Content Projection"
+    topicRoute="/angular/content-projection"
+    subtopicLabel="Programmatic Projection with createComponent" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Programmatic Projection with createComponent</h1>
+  <p class="page-subtitle">
+    Projecting content into a component created imperatively (outside any parent template)
+    using ViewContainerRef.createComponent() and projectableNodes.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 13+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A toast component created entirely in code (no parent template providing it) — its
+      content comes from a raw DOM node passed via <code>projectableNodes</code>.
+    </p>
+    <app-live-playground
+      title="Programmatic content projection"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Content Projection"
+    topicRoute="/angular/content-projection"
+    [next]="{ label: 'Compound Components with Content Queries', route: '/angular/content-projection/compound-components-content-queries' }" />
+</div>

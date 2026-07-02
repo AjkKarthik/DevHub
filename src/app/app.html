@@ -1236,7 +1236,22 @@
         <span class="nl-text">Content Projection</span>
         @if (progress.isDone('content-projection')) {<span class="nl-done">✓</span>}
         @if (diff('content-projection'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('content-projection')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('content-projection')"
+                  (click)="toggleSubtopics('content-projection', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('content-projection'); as subs) {
+        @if (isSubtopicsExpanded('content-projection')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/change-detection" routerLinkActive="active">
         <span class="nl-text">Change Detection</span>
         @if (progress.isDone('change-detection')) {<span class="nl-done">✓</span>}

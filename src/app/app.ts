@@ -152,6 +152,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Async Validation with Zod', route: '/angular/zod-forms/async-validation-with-zod' },
     { label: 'Nested Schemas & Error Formatting', route: '/angular/zod-forms/nested-schemas-error-formatting' },
   ],
+  'content-projection': [
+    { label: 'Programmatic Projection with createComponent', route: '/angular/content-projection/programmatic-projection-createcomponent' },
+    { label: 'Compound Components with Content Queries', route: '/angular/content-projection/compound-components-content-queries' },
+    { label: 'Recursive Templates with NgTemplateOutlet', route: '/angular/content-projection/recursive-templates-ngtemplateoutlet' },
+  ],
 };
 
 @Component({

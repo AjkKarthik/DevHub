@@ -2387,6 +2387,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Content Projection › subtopics (Phase 10) ────────────────────────────────
+  'content-projection/programmatic-projection-createcomponent': {
+    apis: ['createComponent()', 'projectableNodes', 'ViewContainerRef'],
+    related: [
+      { label: 'Content Projection (overview)',                     route: '/angular/content-projection' },
+      { label: 'Compound Components with Content Queries — next',   route: '/angular/content-projection/compound-components-content-queries' },
+    ],
+    tip: 'projectableNodes accepts raw DOM Node[][] — one inner array per <ng-content> slot, not Angular template markup.',
+    docs: [
+      { label: 'Dynamic Component Creation', url: 'https://angular.dev/guide/components/programmatic-rendering' },
+      { label: 'ViewContainerRef API',       url: 'https://angular.dev/api/core/ViewContainerRef' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'projectableNodes is an array of arrays — one inner array per <ng-content> slot, in the same order those slots appear.',
+      'This is a narrow use case (imperative toasts, overlays, portals) — declarative <ng-content> covers the vast majority of projection needs.',
+    ],
+  },
+
+  'content-projection/compound-components-content-queries': {
+    apis: ['contentChildren()', 'compound component pattern'],
+    related: [
+      { label: 'Programmatic Projection with createComponent — previous', route: '/angular/content-projection/programmatic-projection-createcomponent' },
+      { label: 'Content Projection (overview)',                            route: '/angular/content-projection' },
+      { label: 'Recursive Templates with NgTemplateOutlet — next',          route: '/angular/content-projection/recursive-templates-ngtemplateoutlet' },
+    ],
+    tip: 'The parent only sets a signal on each child (e.g. active) — the child\'s own template reacts to it; the parent never touches the child\'s DOM directly.',
+    docs: [
+      { label: 'contentChildren API', url: 'https://angular.dev/api/core/contentChildren' },
+      { label: 'Content Projection Guide', url: 'https://angular.dev/guide/components/content-projection' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'contentChildren() only reflects fully-initialized content after ngAfterContentInit — acting on it too early can see a stale or empty result.',
+      'A compound component gives projected children genuinely arbitrary markup — a data-array input approach cannot hold that.',
+    ],
+  },
+
+  'content-projection/recursive-templates-ngtemplateoutlet': {
+    apis: ['NgTemplateOutlet', 'recursive ng-template'],
+    related: [
+      { label: 'Compound Components with Content Queries — previous', route: '/angular/content-projection/compound-components-content-queries' },
+      { label: 'Content Projection (overview)',                        route: '/angular/content-projection' },
+    ],
+    tip: 'Termination is implicit — a node with no children produces zero @for iterations at that branch, no explicit base case needed.',
+    docs: [
+      { label: 'NgTemplateOutlet API', url: 'https://angular.dev/api/common/NgTemplateOutlet' },
+      { label: 'ng-template Guide',    url: 'https://angular.dev/guide/templates/ng-template' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'No separate recursive component is needed — a single self-referencing <ng-template> handles arbitrary depth.',
+      'Wrap the recursive outlet call in <ng-container>, not <div> — a div wrapper compounds across every recursion level.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

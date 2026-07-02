@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Content Projection"
+    topicRoute="/angular/content-projection"
+    subtopicLabel="Compound Components with Content Queries" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Compound Components with Content Queries</h1>
+  <p class="page-subtitle">
+    Building a Tabs/Tab-style API where a parent orchestrates projected children via
+    contentChildren(), instead of passing tab data through an input array.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 17+ (contentChildren)" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>&lt;app-tabs&gt;</code> discovers every projected <code>&lt;app-tab&gt;</code> via
+      <code>contentChildren()</code> and coordinates which one is active — each tab's
+      content is genuinely arbitrary projected markup, not data from an input array.
+    </p>
+    <app-live-playground
+      title="Compound components with content queries"
+      template="angular-cli"
+      openFile="src/app/tabs.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Content Projection"
+    topicRoute="/angular/content-projection"
+    [prev]="{ label: 'Programmatic Projection with createComponent', route: '/angular/content-projection/programmatic-projection-createcomponent' }"
+    [next]="{ label: 'Recursive Templates with NgTemplateOutlet', route: '/angular/content-projection/recursive-templates-ngtemplateoutlet' }" />
+</div>
