@@ -2944,6 +2944,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Control Value Accessor › subtopics (Phase 10) ────────────────────────────
+  'cva/ngcontrol-self-injection-validation-display': {
+    apis: ['inject(NgControl)', 'valueAccessor', 'statusChanges'],
+    related: [
+      { label: 'Control Value Accessor (overview)',                  route: '/angular/cva' },
+      { label: 'Composite Value CVA with FormGroup — next',            route: '/angular/cva/composite-value-cva-with-formgroup' },
+    ],
+    tip: 'Manually assigning ngControl.valueAccessor = this is an ALTERNATIVE to the NG_VALUE_ACCESSOR provider array — use one or the other, not both.',
+    docs: [
+      { label: 'ControlValueAccessor Guide', url: 'https://angular.dev/api/forms/ControlValueAccessor' },
+      { label: 'NgControl API',              url: 'https://angular.dev/api/forms/NgControl' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Injecting NgControl with { self: true } (no optional: true) can throw a circular DI error — inject it optionally instead.',
+      'ngControl.invalid/touched are plain getters, not signals — bridge statusChanges through toSignal() for reactive updates under OnPush.',
+    ],
+  },
+
+  'cva/composite-value-cva-with-formgroup': {
+    apis: ['writeValue(object)', 'internalForm', 'emitEvent: false'],
+    related: [
+      { label: 'NgControl Self-Injection for Validation Display — previous', route: '/angular/cva/ngcontrol-self-injection-validation-display' },
+      { label: 'Control Value Accessor (overview)',                          route: '/angular/cva' },
+      { label: 'Testing CVA Components — next',                              route: '/angular/cva/testing-cva-components' },
+    ],
+    tip: 'Always patchValue the internal form with { emitEvent: false } inside writeValue() — otherwise a programmatic parent write loops back through onChange spuriously.',
+    docs: [
+      { label: 'ControlValueAccessor Guide', url: 'https://angular.dev/api/forms/ControlValueAccessor' },
+      { label: 'FormGroup API',              url: 'https://angular.dev/api/forms/FormGroup' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'writeValue/onChange work identically for a whole object, not just primitives — this is how composite widgets present multiple inputs as one atomic value.',
+      'setDisabledState should call disable()/enable() on the internal FormGroup directly, propagating to every sub-control at once.',
+    ],
+  },
+
+  'cva/testing-cva-components': {
+    apis: ['registerOnChange spy', 'TestHostComponent', 'setDisabledState test'],
+    related: [
+      { label: 'Composite Value CVA with FormGroup — previous', route: '/angular/cva/composite-value-cva-with-formgroup' },
+      { label: 'Control Value Accessor (overview)',              route: '/angular/cva' },
+    ],
+    tip: 'Isolated tests (calling CVA methods directly) cannot catch wiring bugs like a missing multi: true — write a real formControlName integration test for that.',
+    docs: [
+      { label: 'Testing Guide',              url: 'https://angular.dev/guide/testing' },
+      { label: 'ControlValueAccessor Guide', url: 'https://angular.dev/api/forms/ControlValueAccessor' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'setDisabledState is the most commonly forgotten CVA method — give it dedicated test coverage.',
+      'A test-only host component with a real FormGroup + formControlName is the standard way to prove the full wiring works end-to-end.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

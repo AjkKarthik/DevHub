@@ -1,0 +1,54 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Control Value Accessor"
+    topicRoute="/angular/cva"
+    subtopicLabel="Testing CVA Components" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing CVA Components</h1>
+  <p class="page-subtitle">
+    Isolated tests calling the CVA interface directly versus full form-integration tests
+    that catch wiring bugs like a missing multi: true — and why setDisabledState deserves
+    dedicated coverage.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A star-rating component with both isolated CVA-logic tests (spying on
+      <code>registerOnChange</code>) and a full integration test through a real
+      <code>formControlName</code> host component.
+    </p>
+    <app-live-playground
+      title="Testing CVA components"
+      template="angular-cli"
+      openFile="src/app/star-rating.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Control Value Accessor</h2>
+    <p>
+      You now know how to self-manage validation display with
+      <code>inject(NgControl, {{ '{' }} self: true {{ '}' }})</code>, how to build a composite
+      CVA component whose value is a whole object backed by a private internal
+      <code>FormGroup</code>, and how to test CVA components both in isolation and through
+      full form integration. Combined with the 4 required methods,
+      <code>NG_VALUE_ACCESSOR</code> registration, signals integration, and validation
+      basics from the main topic, that's the complete Control Value Accessor toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Control Value Accessor"
+    topicRoute="/angular/cva"
+    [prev]="{ label: 'Composite Value CVA with FormGroup', route: '/angular/cva/composite-value-cva-with-formgroup' }" />
+</div>

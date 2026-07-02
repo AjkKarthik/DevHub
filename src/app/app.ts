@@ -197,6 +197,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'group() vs sequence() Orchestration', route: '/angular/animations/group-sequence-parallel-orchestration' },
     { label: 'CSS-Only & View Transitions Alternatives', route: '/angular/animations/css-only-and-view-transitions-alternatives' },
   ],
+  cva: [
+    { label: 'NgControl Self-Injection for Validation Display', route: '/angular/cva/ngcontrol-self-injection-validation-display' },
+    { label: 'Composite Value CVA with FormGroup', route: '/angular/cva/composite-value-cva-with-formgroup' },
+    { label: 'Testing CVA Components', route: '/angular/cva/testing-cva-components' },
+  ],
 };
 
 @Component({

@@ -103,6 +103,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'animation-callbacks-lifecycle-events': 'Animation Callbacks & Lifecycle Events',
   'group-sequence-parallel-orchestration': 'group() vs sequence() Orchestration',
   'css-only-and-view-transitions-alternatives': 'CSS-Only & View Transitions Alternatives',
+  'ngcontrol-self-injection-validation-display': 'NgControl Self-Injection for Validation Display',
+  'composite-value-cva-with-formgroup': 'Composite Value CVA with FormGroup',
+  'testing-cva-components': 'Testing CVA Components',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

@@ -190,7 +190,12 @@ export const routes: Routes = [
         { path: 'group-sequence-parallel-orchestration',   loadComponent: () => import('./components/angular/animations-demo/subtopics/group-sequence-parallel-orchestration/group-sequence-parallel-orchestration').then(m => m.GroupSequenceParallelOrchestrationSubtopic) },
         { path: 'css-only-and-view-transitions-alternatives', loadComponent: () => import('./components/angular/animations-demo/subtopics/css-only-and-view-transitions-alternatives/css-only-and-view-transitions-alternatives').then(m => m.CssOnlyAndViewTransitionsAlternativesSubtopic) },
       ] },
-      { path: 'cva',                loadComponent: () => import('./components/angular/cva-demo/cva-demo').then(m => m.CvaDemo) },
+      { path: 'cva', children: [
+        { path: '',                                        loadComponent: () => import('./components/angular/cva-demo/cva-demo').then(m => m.CvaDemo) },
+        { path: 'ngcontrol-self-injection-validation-display', loadComponent: () => import('./components/angular/cva-demo/subtopics/ngcontrol-self-injection-validation-display/ngcontrol-self-injection-validation-display').then(m => m.NgcontrolSelfInjectionValidationDisplaySubtopic) },
+        { path: 'composite-value-cva-with-formgroup',       loadComponent: () => import('./components/angular/cva-demo/subtopics/composite-value-cva-with-formgroup/composite-value-cva-with-formgroup').then(m => m.CompositeValueCvaWithFormgroupSubtopic) },
+        { path: 'testing-cva-components',                  loadComponent: () => import('./components/angular/cva-demo/subtopics/testing-cva-components/testing-cva-components').then(m => m.TestingCvaComponentsSubtopic) },
+      ] },
       { path: 'testing',            loadComponent: () => import('./components/angular/testing-demo/testing-demo').then(m => m.TestingDemo) },
       { path: 'tailwind',           loadComponent: () => import('./components/angular/tailwind-demo/tailwind-demo').then(m => m.TailwindDemo) },
       { path: 'resource-api',       loadComponent: () => import('./components/angular/resource-api/resource-api').then(m => m.ResourceApiDemo) },

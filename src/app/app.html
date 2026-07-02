@@ -1400,7 +1400,22 @@
         <span class="nl-text">Control Value Accessor</span>
         @if (progress.isDone('cva')) {<span class="nl-done">✓</span>}
         @if (diff('cva'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('cva')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cva')"
+                  (click)="toggleSubtopics('cva', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('cva'); as subs) {
+        @if (isSubtopicsExpanded('cva')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/dynamic-forms" routerLinkActive="active">
         <span class="nl-text">Dynamic Forms</span>
         @if (progress.isDone('dynamic-forms')) {<span class="nl-done">✓</span>}

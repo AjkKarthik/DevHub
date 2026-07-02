@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Control Value Accessor"
+    topicRoute="/angular/cva"
+    subtopicLabel="NgControl Self-Injection for Validation Display" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">NgControl Self-Injection for Validation Display</h1>
+  <p class="page-subtitle">
+    Injecting NgControl inside a CVA component to manage its own error display, and the
+    alternative registration technique of assigning valueAccessor directly instead of
+    NG_VALUE_ACCESSOR.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A star-rating control that shows its own error message when invalid and touched —
+      the parent form template passes no extra bindings for this at all.
+    </p>
+    <app-live-playground
+      title="NgControl self-injection for validation display"
+      template="angular-cli"
+      openFile="src/app/star-rating.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Control Value Accessor"
+    topicRoute="/angular/cva"
+    [next]="{ label: 'Composite Value CVA with FormGroup', route: '/angular/cva/composite-value-cva-with-formgroup' }" />
+</div>
