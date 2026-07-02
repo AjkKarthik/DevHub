@@ -121,6 +121,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'nested-and-array-schema-fields': 'Nested & Array Schema Fields',
   'schema-driven-cross-field-and-async-validation': 'Schema-Driven Cross-Field & Async Validation',
   'custom-field-renderer-registry-pattern': 'Custom Field Renderer Registry Pattern',
+  'testing-route-resolvers': 'Testing Route Resolvers',
+  'run-guards-and-resolvers-caching': 'runGuardsAndResolvers & Resolver Caching',
+  'named-outlet-lifecycle-and-detail-drawer-pattern': 'Named Outlet Lifecycle & Detail Drawer Pattern',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

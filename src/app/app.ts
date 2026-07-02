@@ -227,6 +227,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Schema-Driven Cross-Field & Async Validation', route: '/angular/dynamic-forms/schema-driven-cross-field-and-async-validation' },
     { label: 'Custom Field Renderer Registry Pattern', route: '/angular/dynamic-forms/custom-field-renderer-registry-pattern' },
   ],
+  'route-resolvers': [
+    { label: 'Testing Route Resolvers', route: '/angular/route-resolvers/testing-route-resolvers' },
+    { label: 'runGuardsAndResolvers & Resolver Caching', route: '/angular/route-resolvers/run-guards-and-resolvers-caching' },
+    { label: 'Named Outlet Lifecycle & Detail Drawer Pattern', route: '/angular/route-resolvers/named-outlet-lifecycle-and-detail-drawer-pattern' },
+  ],
 };
 
 @Component({

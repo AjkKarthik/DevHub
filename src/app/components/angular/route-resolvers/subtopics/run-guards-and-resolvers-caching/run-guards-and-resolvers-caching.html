@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Route Resolvers &amp; Named Outlets"
+    topicRoute="/angular/route-resolvers"
+    subtopicLabel="runGuardsAndResolvers &amp; Resolver Caching" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">runGuardsAndResolvers &amp; Resolver Caching</h1>
+  <p class="page-subtitle">
+    Controlling when a resolver actually re-runs on param changes, and backing it with a
+    shareReplay-based cache to avoid redundant fetches on revisited routes.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A resolver-style fetch backed by a <code>shareReplay</code> cache — click the same
+      post repeatedly and watch the console show only one real fetch per unique id.
+    </p>
+    <app-live-playground
+      title="runGuardsAndResolvers and resolver caching"
+      template="angular-cli"
+      openFile="src/app/post.service.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Route Resolvers &amp; Named Outlets"
+    topicRoute="/angular/route-resolvers"
+    [prev]="{ label: 'Testing Route Resolvers', route: '/angular/route-resolvers/testing-route-resolvers' }"
+    [next]="{ label: 'Named Outlet Lifecycle & Detail Drawer Pattern', route: '/angular/route-resolvers/named-outlet-lifecycle-and-detail-drawer-pattern' }" />
+</div>

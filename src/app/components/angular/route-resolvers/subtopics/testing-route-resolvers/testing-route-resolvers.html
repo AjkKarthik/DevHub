@@ -1,0 +1,39 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Route Resolvers &amp; Named Outlets"
+    topicRoute="/angular/route-resolvers"
+    subtopicLabel="Testing Route Resolvers" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Route Resolvers</h1>
+  <p class="page-subtitle">
+    Calling a ResolveFn directly via TestBed.runInInjectionContext(), testing the redirect
+    path with a serialized UrlTree, and testing components that consume resolved data.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>postResolver</code> tested directly as a plain function — both the found and
+      not-found (redirect) branches, using the same technique as testing functional guards.
+    </p>
+    <app-live-playground
+      title="Testing route resolvers"
+      template="angular-cli"
+      openFile="src/app/post.resolver.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Route Resolvers &amp; Named Outlets"
+    topicRoute="/angular/route-resolvers"
+    [next]="{ label: 'runGuardsAndResolvers & Resolver Caching', route: '/angular/route-resolvers/run-guards-and-resolvers-caching' }" />
+</div>

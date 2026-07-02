@@ -3315,6 +3315,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Route Resolvers & Named Outlets › subtopics (Phase 10) ───────────────────
+  'route-resolvers/testing-route-resolvers': {
+    apis: ['TestBed.runInInjectionContext()', 'ResolveFn', 'router.serializeUrl()'],
+    related: [
+      { label: 'Route Resolvers & Named Outlets (overview)',                route: '/angular/route-resolvers' },
+      { label: 'runGuardsAndResolvers & Resolver Caching — next',            route: '/angular/route-resolvers/run-guards-and-resolvers-caching' },
+    ],
+    tip: 'A ResolveFn is just a function — call it directly via TestBed.runInInjectionContext(), the same technique used for testing functional guards.',
+    docs: [
+      { label: 'Testing Guide',      url: 'https://angular.dev/guide/testing' },
+      { label: 'Route Resolvers',    url: 'https://angular.dev/guide/routing/common-router-tasks#resolve-dynamic-route-data' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Assert a redirect result by serializing the UrlTree with router.serializeUrl() — comparing UrlTree objects directly is brittle.',
+      'A component consuming resolved data can be tested with a mock ActivatedRoute — the real resolver never needs to run in that test.',
+    ],
+  },
+
+  'route-resolvers/run-guards-and-resolvers-caching': {
+    apis: ['runGuardsAndResolvers', 'shareReplay()', 'httpResource() alternative'],
+    related: [
+      { label: 'Testing Route Resolvers — previous',                      route: '/angular/route-resolvers/testing-route-resolvers' },
+      { label: 'Route Resolvers & Named Outlets (overview)',                route: '/angular/route-resolvers' },
+      { label: 'Named Outlet Lifecycle & Detail Drawer Pattern — next',      route: '/angular/route-resolvers/named-outlet-lifecycle-and-detail-drawer-pattern' },
+    ],
+    tip: 'By default, a resolver does NOT re-run for param-only changes on the same route — set runGuardsAndResolvers: \'paramsChange\' (or similar) explicitly.',
+    docs: [
+      { label: 'Router Route API',   url: 'https://angular.dev/api/router/Route' },
+      { label: 'shareReplay API',    url: 'https://rxjs.dev/api/operators/shareReplay' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A resolver has NO built-in caching — deduplication requires an explicit shareReplay-backed cache in the underlying service.',
+      'Choose a resolver to block navigation until data arrives; choose in-component httpResource() when a brief loading state is acceptable.',
+    ],
+  },
+
+  'route-resolvers/named-outlet-lifecycle-and-detail-drawer-pattern': {
+    apis: ['(activate)', '(deactivate)', 'named outlet navigation'],
+    related: [
+      { label: 'runGuardsAndResolvers & Resolver Caching — previous', route: '/angular/route-resolvers/run-guards-and-resolvers-caching' },
+      { label: 'Route Resolvers & Named Outlets (overview)',            route: '/angular/route-resolvers' },
+    ],
+    tip: 'A named-outlet drawer keeps its state IN THE URL — surviving refresh, shareable via link, closeable via browser back — a component boolean flag gives none of that for free.',
+    docs: [
+      { label: 'RouterOutlet API', url: 'https://angular.dev/api/router/RouterOutlet' },
+      { label: 'Named Outlets Guide', url: 'https://angular.dev/guide/routing/common-router-tasks#displaying-multiple-routes-in-named-outlets' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      '(activate)/(deactivate) are OUTLET-level events, distinct from the component\'s own ngOnInit/ngOnDestroy.',
+      'Swapping between two active routes in the same outlet updates content in place — (deactivate) does not fire in between.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

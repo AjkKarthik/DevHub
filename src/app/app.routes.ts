@@ -226,7 +226,12 @@ export const routes: Routes = [
         { path: 'schema-driven-cross-field-and-async-validation', loadComponent: () => import('./components/angular/dynamic-forms/subtopics/schema-driven-cross-field-and-async-validation/schema-driven-cross-field-and-async-validation').then(m => m.SchemaDrivenCrossFieldAndAsyncValidationSubtopic) },
         { path: 'custom-field-renderer-registry-pattern',    loadComponent: () => import('./components/angular/dynamic-forms/subtopics/custom-field-renderer-registry-pattern/custom-field-renderer-registry-pattern').then(m => m.CustomFieldRendererRegistryPatternSubtopic) },
       ] },
-      { path: 'route-resolvers',    loadComponent: () => import('./components/angular/route-resolvers/route-resolvers').then(m => m.RouteResolversDemo) },
+      { path: 'route-resolvers', children: [
+        { path: '',                                    loadComponent: () => import('./components/angular/route-resolvers/route-resolvers').then(m => m.RouteResolversDemo) },
+        { path: 'testing-route-resolvers',              loadComponent: () => import('./components/angular/route-resolvers/subtopics/testing-route-resolvers/testing-route-resolvers').then(m => m.TestingRouteResolversSubtopic) },
+        { path: 'run-guards-and-resolvers-caching',     loadComponent: () => import('./components/angular/route-resolvers/subtopics/run-guards-and-resolvers-caching/run-guards-and-resolvers-caching').then(m => m.RunGuardsAndResolversCachingSubtopic) },
+        { path: 'named-outlet-lifecycle-and-detail-drawer-pattern', loadComponent: () => import('./components/angular/route-resolvers/subtopics/named-outlet-lifecycle-and-detail-drawer-pattern/named-outlet-lifecycle-and-detail-drawer-pattern').then(m => m.NamedOutletLifecycleAndDetailDrawerPatternSubtopic) },
+      ] },
       { path: 'preloading',         loadComponent: () => import('./components/angular/preloading/preloading').then(m => m.PreloadingDemo) },
       { path: 'route-guards',       loadComponent: () => import('./components/angular/route-guards/route-guards').then(m => m.RouteGuardsDemo) },
       { path: 'ng-image',           loadComponent: () => import('./components/angular/ng-image/ng-image').then(m => m.NgImageDemo) },
