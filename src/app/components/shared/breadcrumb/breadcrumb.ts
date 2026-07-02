@@ -73,6 +73,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'custom-plugins-click-interactions': 'Custom Plugins & Click Interactions',
   'mixed-charts-annotations': 'Mixed Charts & Annotations',
   'time-scale-large-datasets': 'Time Scale & Large Datasets',
+  'discriminated-unions-and-transforms': 'Discriminated Unions & Transforms',
+  'async-validation-with-zod': 'Async Validation with Zod',
+  'nested-schemas-error-formatting': 'Nested Schemas & Error Formatting',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

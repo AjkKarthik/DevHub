@@ -130,7 +130,12 @@ export const routes: Routes = [
         { path: 'mixed-charts-annotations',          loadComponent: () => import('./components/angular/charts/subtopics/mixed-charts-annotations/mixed-charts-annotations').then(m => m.MixedChartsAnnotationsSubtopic) },
         { path: 'time-scale-large-datasets',         loadComponent: () => import('./components/angular/charts/subtopics/time-scale-large-datasets/time-scale-large-datasets').then(m => m.TimeScaleLargeDatasetsSubtopic) },
       ] },
-      { path: 'zod-forms',          loadComponent: () => import('./components/angular/zod-forms/zod-forms').then(m => m.ZodFormsDemo) },
+      { path: 'zod-forms', children: [
+        { path: '',                                   loadComponent: () => import('./components/angular/zod-forms/zod-forms').then(m => m.ZodFormsDemo) },
+        { path: 'discriminated-unions-and-transforms', loadComponent: () => import('./components/angular/zod-forms/subtopics/discriminated-unions-and-transforms/discriminated-unions-and-transforms').then(m => m.DiscriminatedUnionsAndTransformsSubtopic) },
+        { path: 'async-validation-with-zod',           loadComponent: () => import('./components/angular/zod-forms/subtopics/async-validation-with-zod/async-validation-with-zod').then(m => m.AsyncValidationWithZodSubtopic) },
+        { path: 'nested-schemas-error-formatting',     loadComponent: () => import('./components/angular/zod-forms/subtopics/nested-schemas-error-formatting/nested-schemas-error-formatting').then(m => m.NestedSchemasErrorFormattingSubtopic) },
+      ] },
       { path: 'content-projection', loadComponent: () => import('./components/angular/content-projection/content-projection').then(m => m.ContentProjectionDemo) },
       { path: 'change-detection',   loadComponent: () => import('./components/angular/change-detection/change-detection').then(m => m.ChangeDetectionDemo) },
       { path: 'custom-validators',  loadComponent: () => import('./components/angular/custom-validators/custom-validators').then(m => m.CustomValidatorsDemo) },

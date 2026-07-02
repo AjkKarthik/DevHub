@@ -2324,6 +2324,69 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Zod + Reactive Forms › subtopics (Phase 10) ──────────────────────────────
+  'zod-forms/discriminated-unions-and-transforms': {
+    apis: ['z.discriminatedUnion()', 'z.literal()', '.transform()'],
+    related: [
+      { label: 'Zod + Reactive Forms (overview)',      route: '/angular/zod-forms' },
+      { label: 'Async Validation with Zod — next',      route: '/angular/zod-forms/async-validation-with-zod' },
+    ],
+    tip: 'z.discriminatedUnion() reads the discriminant field first to pick exactly one branch — far clearer errors than z.union(), which tries every branch.',
+    docs: [
+      { label: 'Zod Discriminated Unions', url: 'https://zod.dev/?id=discriminated-unions' },
+      { label: 'Zod Transform',            url: 'https://zod.dev/?id=transform' },
+    ],
+    resources: [
+      { label: 'Zod — GitHub', url: 'https://github.com/colinhacks/zod', badge: 'code' },
+    ],
+    gotchas: [
+      '.transform() changes the OUTPUT shape — z.infer reflects the post-transform type; use z.input for the pre-transform type.',
+      'Every discriminatedUnion branch must declare the same discriminant key with a distinct z.literal() value.',
+    ],
+  },
+
+  'zod-forms/async-validation-with-zod': {
+    apis: ['safeParseAsync()', 'AsyncValidatorFn', '.refine() (async)'],
+    related: [
+      { label: 'Discriminated Unions & Transforms — previous', route: '/angular/zod-forms/discriminated-unions-and-transforms' },
+      { label: 'Zod + Reactive Forms (overview)',               route: '/angular/zod-forms' },
+      { label: 'Nested Schemas & Error Formatting — next',       route: '/angular/zod-forms/nested-schemas-error-formatting' },
+    ],
+    tip: 'A schema with an async .refine() throws if you call regular safeParse() — you must use await schema.safeParseAsync(value) instead.',
+    docs: [
+      { label: 'Zod Async Refine',        url: 'https://zod.dev/?id=refine' },
+      { label: 'Angular AsyncValidatorFn', url: 'https://angular.dev/api/forms/AsyncValidatorFn' },
+    ],
+    resources: [
+      { label: 'Zod — GitHub', url: 'https://github.com/colinhacks/zod', badge: 'code' },
+    ],
+    gotchas: [
+      'Angular has separate ValidatorFn and AsyncValidatorFn interfaces — an async check must be registered in the third (async) argument slot, not mixed with sync validators.',
+      'Without debouncing, an async validator fires a fresh request on every keystroke — a real performance and backend-load problem.',
+      'Check control.pending (status === \'PENDING\') to show a spinner and block submit while an async validator is still resolving.',
+    ],
+  },
+
+  'zod-forms/nested-schemas-error-formatting': {
+    apis: ['error.flatten()', 'error.format()', 'z.array(z.object())'],
+    related: [
+      { label: 'Async Validation with Zod — previous', route: '/angular/zod-forms/async-validation-with-zod' },
+      { label: 'Zod + Reactive Forms (overview)',       route: '/angular/zod-forms' },
+    ],
+    tip: 'error.flatten() only keys by the top-level field name — use error.format() for a full nested tree matching the schema\'s own shape.',
+    docs: [
+      { label: 'Zod Error Formatting', url: 'https://zod.dev/ERROR_HANDLING' },
+      { label: 'Zod Arrays & Objects', url: 'https://zod.dev/?id=arrays' },
+    ],
+    resources: [
+      { label: 'Zod — GitHub', url: 'https://github.com/colinhacks/zod', badge: 'code' },
+    ],
+    gotchas: [
+      'Manually searching error.issues with .find() breaks down for nested paths and repeated array items — flatten()/format() are the built-in alternative.',
+      'Array item errors carry a numeric index in their path (e.g. [\'items\', 2, \'label\']) — format() output must be indexed by that same key.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

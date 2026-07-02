@@ -147,6 +147,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Mixed Charts & Annotations', route: '/angular/charts/mixed-charts-annotations' },
     { label: 'Time Scale & Large Datasets', route: '/angular/charts/time-scale-large-datasets' },
   ],
+  'zod-forms': [
+    { label: 'Discriminated Unions & Transforms', route: '/angular/zod-forms/discriminated-unions-and-transforms' },
+    { label: 'Async Validation with Zod', route: '/angular/zod-forms/async-validation-with-zod' },
+    { label: 'Nested Schemas & Error Formatting', route: '/angular/zod-forms/nested-schemas-error-formatting' },
+  ],
 };
 
 @Component({
