@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="linkedSignal()"
+    topicRoute="/angular/linked-signal"
+    subtopicLabel="linkedSignal with resource() for Editable Drafts" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">linkedSignal with resource() for Editable Drafts</h1>
+  <p class="page-subtitle">
+    An edit form whose draft derives from an async resource() but survives a background
+    refetch while the user is mid-edit — a long-form linkedSignal with conditional carry-over.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 19+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>draft</code> derives from <code>userResource.value()</code> but preserves a
+      dirty (in-progress) edit across a <code>.reload()</code> instead of silently
+      overwriting it.
+    </p>
+    <app-live-playground
+      title="linkedSignal with resource() for editable drafts"
+      template="angular-cli"
+      openFile="src/app/user-editor.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With async data integration covered, the final subtopic gives you the tools to
+      diagnose linkedSignals that reset (or don't reset) unexpectedly.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="linkedSignal()"
+    topicRoute="/angular/linked-signal"
+    [prev]="{ label: 'Testing linkedSignal Reset Behavior', route: '/angular/linked-signal/testing-linkedsignal-reset-behavior' }"
+    [next]="{ label: 'Debugging Unexpected linkedSignal Resets', route: '/angular/linked-signal/debugging-unexpected-linkedsignal-resets' }" />
+</div>

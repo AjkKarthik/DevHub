@@ -256,7 +256,12 @@ export const routes: Routes = [
         { path: 'runininjectioncontext-for-composables-outside-construction', loadComponent: () => import('./components/angular/destroy-ref/subtopics/runininjectioncontext-for-composables-outside-construction/runininjectioncontext-for-composables-outside-construction').then(m => m.RunininjectioncontextForComposablesOutsideConstructionSubtopic) },
         { path: 'wrapping-a-non-observable-third-party-api',    loadComponent: () => import('./components/angular/destroy-ref/subtopics/wrapping-a-non-observable-third-party-api/wrapping-a-non-observable-third-party-api').then(m => m.WrappingANonObservableThirdPartyApiSubtopic) },
       ] },
-      { path: 'linked-signal',      loadComponent: () => import('./components/angular/linked-signal/linked-signal').then(m => m.LinkedSignalDemo) },
+      { path: 'linked-signal', children: [
+        { path: '',                                        loadComponent: () => import('./components/angular/linked-signal/linked-signal').then(m => m.LinkedSignalDemo) },
+        { path: 'testing-linkedsignal-reset-behavior',      loadComponent: () => import('./components/angular/linked-signal/subtopics/testing-linkedsignal-reset-behavior/testing-linkedsignal-reset-behavior').then(m => m.TestingLinkedsignalResetBehaviorSubtopic) },
+        { path: 'linkedsignal-with-resource-for-editable-drafts', loadComponent: () => import('./components/angular/linked-signal/subtopics/linkedsignal-with-resource-for-editable-drafts/linkedsignal-with-resource-for-editable-drafts').then(m => m.LinkedsignalWithResourceForEditableDraftsSubtopic) },
+        { path: 'debugging-unexpected-linkedsignal-resets', loadComponent: () => import('./components/angular/linked-signal/subtopics/debugging-unexpected-linkedsignal-resets/debugging-unexpected-linkedsignal-resets').then(m => m.DebuggingUnexpectedLinkedsignalResetsSubtopic) },
+      ] },
       { path: 'zoneless',           loadComponent: () => import('./components/angular/zoneless/zoneless').then(m => m.ZonelessDemo) },
       { path: 'signal-effects',     loadComponent: () => import('./components/angular/signal-effects/signal-effects').then(m => m.SignalEffectsDemo) },
       { path: 'typed-forms',        loadComponent: () => import('./components/angular/typed-forms/typed-forms').then(m => m.TypedFormsDemo) },

@@ -3621,6 +3621,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'linked-signal/testing-linkedsignal-reset-behavior': {
+    apis: ['linkedSignal()', 'TestBed.createComponent()', 'fixture.componentInstance'],
+    related: [
+      { label: 'linkedSignal() (overview)',                                    route: '/angular/linked-signal' },
+      { label: 'linkedSignal with resource() for Editable Drafts — next',        route: '/angular/linked-signal/linkedsignal-with-resource-for-editable-drafts' },
+    ],
+    tip: 'linkedSignal recomputes synchronously when its source changes and is read — a plain synchronous test is enough, no fakeAsync or flushEffects needed.',
+    docs: [
+      { label: 'linkedSignal API', url: 'https://angular.dev/api/core/linkedSignal' },
+      { label: 'Testing Guide',    url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A test asserting only "reset happens" or only "override persists" covers half the contract — both halves need explicit, separate tests.',
+      'Testing a custom equal function means asserting the VALUE did not change on a semantically-equal source, not just that equal was called.',
+    ],
+  },
+
+  'linked-signal/linkedsignal-with-resource-for-editable-drafts': {
+    apis: ['resource()', 'linkedSignal() (long form)', 'previous.value'],
+    related: [
+      { label: 'Testing linkedSignal Reset Behavior — previous',        route: '/angular/linked-signal/testing-linkedsignal-reset-behavior' },
+      { label: 'linkedSignal() (overview)',                              route: '/angular/linked-signal' },
+      { label: 'Debugging Unexpected linkedSignal Resets — next',        route: '/angular/linked-signal/debugging-unexpected-linkedsignal-resets' },
+    ],
+    tip: 'Read resource.value() inside source (not computation) so the draft resets when fresh data arrives — then use prev?.value in computation to conditionally preserve an in-progress edit.',
+    docs: [
+      { label: 'resource() API',   url: 'https://angular.dev/api/core/resource' },
+      { label: 'linkedSignal API', url: 'https://angular.dev/api/core/linkedSignal' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'The computation must handle resource.value() being undefined while the resource is still loading — return a sensible empty draft, do not throw.',
+      'The draft must be a shallow copy of the resource value — editing it should never mutate the resource\'s own cached data.',
+    ],
+  },
+
+  'linked-signal/debugging-unexpected-linkedsignal-resets': {
+    apis: ['console.log (source/computation)', 'effect() (observation only)', 'equal'],
+    related: [
+      { label: 'linkedSignal with resource() for Editable Drafts — previous', route: '/angular/linked-signal/linkedsignal-with-resource-for-editable-drafts' },
+      { label: 'linkedSignal() (overview)',                                    route: '/angular/linked-signal' },
+    ],
+    tip: '"Resets too often" and "does not reset enough" are opposite bugs — the first is usually a reference-inequality issue in source (fix with equal), the second is usually a signal read inside computation instead of source.',
+    docs: [
+      { label: 'linkedSignal API', url: 'https://angular.dev/api/core/linkedSignal' },
+      { label: 'effect() API',     url: 'https://angular.dev/api/core/effect' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'An effect() trace confirms the final settled VALUE, not whether source/computation actually re-ran — a reset can still produce a coincidentally identical value.',
+      'A debugging effect() must stay purely observational (console.log only) — using it to .set() another signal recreates the exact anti-pattern linkedSignal replaces.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

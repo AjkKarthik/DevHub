@@ -1,0 +1,47 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="linkedSignal()"
+    topicRoute="/angular/linked-signal"
+    subtopicLabel="Testing linkedSignal Reset Behavior" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing linkedSignal Reset Behavior</h1>
+  <p class="page-subtitle">
+    Three tests every linkedSignal needs — initial computation, override persistence, and
+    reset-on-source-change — all synchronous, no fakeAsync required.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 19+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A dependent Category → Subcategory dropdown tested for all three behaviors: correct
+      initial value, override persistence across unrelated reads, and discard-on-reset.
+    </p>
+    <app-live-playground
+      title="Testing linkedSignal reset behavior"
+      template="angular-cli"
+      openFile="src/app/catalog.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With reset behavior now testable, the next subtopic combines linkedSignal with async
+      data fetching — an editable draft that survives fresh server data arriving mid-edit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="linkedSignal()"
+    topicRoute="/angular/linked-signal"
+    [next]="{ label: 'linkedSignal with resource() for Editable Drafts', route: '/angular/linked-signal/linkedsignal-with-resource-for-editable-drafts' }" />
+</div>

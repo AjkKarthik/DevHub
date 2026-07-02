@@ -252,6 +252,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'runInInjectionContext for Composables Outside Construction', route: '/angular/destroy-ref/runininjectioncontext-for-composables-outside-construction' },
     { label: 'Wrapping a Non-Observable Third-Party API', route: '/angular/destroy-ref/wrapping-a-non-observable-third-party-api' },
   ],
+  'linked-signal': [
+    { label: 'Testing linkedSignal Reset Behavior', route: '/angular/linked-signal/testing-linkedsignal-reset-behavior' },
+    { label: 'linkedSignal with resource() for Editable Drafts', route: '/angular/linked-signal/linkedsignal-with-resource-for-editable-drafts' },
+    { label: 'Debugging Unexpected linkedSignal Resets', route: '/angular/linked-signal/debugging-unexpected-linkedsignal-resets' },
+  ],
 };
 
 @Component({
