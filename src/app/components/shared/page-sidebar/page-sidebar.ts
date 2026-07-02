@@ -3743,6 +3743,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'signal-effects/testing-signal-effects-and-cleanup': {
+    apis: ['fixture.whenStable()', 'spyOn()', 'onCleanup()'],
+    related: [
+      { label: 'Signal Effects (overview)',                        route: '/angular/signal-effects' },
+      { label: 'afterRenderEffect for DOM Measurements — next',      route: '/angular/signal-effects/afterrendereffect-for-dom-measurements' },
+    ],
+    tip: 'Effects are scheduled asynchronously — always await fixture.whenStable() after changing a signal, before asserting a side effect fired.',
+    docs: [
+      { label: 'effect() API',   url: 'https://angular.dev/api/core/effect' },
+      { label: 'Testing Guide',  url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'onCleanup fires in TWO distinct circumstances — before a re-run AND on destroy — both need separate, explicit tests.',
+      'Call count matters as much as whether a spy was called at all — assert exactly 1 call on creation and exactly 2 after one dependency change.',
+    ],
+  },
+
+  'signal-effects/afterrendereffect-for-dom-measurements': {
+    apis: ['afterRenderEffect()', 'read phase', 'write phase'],
+    related: [
+      { label: 'Testing Signal Effects and Cleanup — previous',              route: '/angular/signal-effects/testing-signal-effects-and-cleanup' },
+      { label: 'Signal Effects (overview)',                                    route: '/angular/signal-effects' },
+      { label: 'Debouncing Effects for Expensive Side Effects — next',          route: '/angular/signal-effects/debouncing-effects-for-expensive-side-effects' },
+    ],
+    tip: 'A plain effect() is not guaranteed to run after the browser has painted a DOM update — afterRenderEffect() is scheduled specifically for safe layout reads.',
+    docs: [
+      { label: 'afterRenderEffect API', url: 'https://angular.dev/api/core/afterRenderEffect' },
+      { label: 'Render Phases Guide',   url: 'https://angular.dev/api/core/afterEveryRender' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Mixing reads and writes in one callback loses Angular\'s cross-app batching that prevents layout thrashing — keep them in separate read/write phases.',
+      'afterRenderEffect() only auto-reruns for layout changes driven by your own signal state — external changes (browser resize) still need a real ResizeObserver.',
+    ],
+  },
+
+  'signal-effects/debouncing-effects-for-expensive-side-effects': {
+    apis: ['onCleanup() (as a timer)', 'toObservable()', 'debounceTime()'],
+    related: [
+      { label: 'afterRenderEffect for DOM Measurements — previous', route: '/angular/signal-effects/afterrendereffect-for-dom-measurements' },
+      { label: 'Signal Effects (overview)',                          route: '/angular/signal-effects' },
+    ],
+    tip: 'Microtask batching only coalesces SYNCHRONOUS writes in the same script execution — separate keystrokes each trigger their own effect re-run and need a real time-based debounce.',
+    docs: [
+      { label: 'effect() API',        url: 'https://angular.dev/api/core/effect' },
+      { label: 'RxJS debounceTime()', url: 'https://rxjs.dev/api/operators/debounceTime' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A manual onCleanup + setTimeout debounce only debounces the SCHEDULING, not an in-flight async request — use toObservable().pipe(debounceTime(), switchMap()) when the debounced action needs mid-flight cancellation.',
+      'Reading a signal synchronously (for tracking) while performing the expensive work inside the async setTimeout callback (untracked) is intentional, not a bug.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

@@ -268,7 +268,12 @@ export const routes: Routes = [
         { path: 'zoneless-ssr-and-incremental-hydration',       loadComponent: () => import('./components/angular/zoneless/subtopics/zoneless-ssr-and-incremental-hydration/zoneless-ssr-and-incremental-hydration').then(m => m.ZonelessSsrAndIncrementalHydrationSubtopic) },
         { path: 'when-ngzone-run-is-actually-unnecessary',      loadComponent: () => import('./components/angular/zoneless/subtopics/when-ngzone-run-is-actually-unnecessary/when-ngzone-run-is-actually-unnecessary').then(m => m.WhenNgzoneRunIsActuallyUnnecessarySubtopic) },
       ] },
-      { path: 'signal-effects',     loadComponent: () => import('./components/angular/signal-effects/signal-effects').then(m => m.SignalEffectsDemo) },
+      { path: 'signal-effects', children: [
+        { path: '',                                              loadComponent: () => import('./components/angular/signal-effects/signal-effects').then(m => m.SignalEffectsDemo) },
+        { path: 'testing-signal-effects-and-cleanup',             loadComponent: () => import('./components/angular/signal-effects/subtopics/testing-signal-effects-and-cleanup/testing-signal-effects-and-cleanup').then(m => m.TestingSignalEffectsAndCleanupSubtopic) },
+        { path: 'afterrendereffect-for-dom-measurements',         loadComponent: () => import('./components/angular/signal-effects/subtopics/afterrendereffect-for-dom-measurements/afterrendereffect-for-dom-measurements').then(m => m.AfterrendereffectForDomMeasurementsSubtopic) },
+        { path: 'debouncing-effects-for-expensive-side-effects',  loadComponent: () => import('./components/angular/signal-effects/subtopics/debouncing-effects-for-expensive-side-effects/debouncing-effects-for-expensive-side-effects').then(m => m.DebouncingEffectsForExpensiveSideEffectsSubtopic) },
+      ] },
       { path: 'typed-forms',        loadComponent: () => import('./components/angular/typed-forms/typed-forms').then(m => m.TypedFormsDemo) },
       { path: 'host-directives',    loadComponent: () => import('./components/angular/host-directives/host-directives').then(m => m.HostDirectivesDemo) },
       { path: 'let-template-vars',       loadComponent: () => import('./components/angular/let-template-vars/let-template-vars').then(m => m.LetTemplateVarsDemo) },

@@ -1,0 +1,47 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signal Effects"
+    topicRoute="/angular/signal-effects"
+    subtopicLabel="Testing Signal Effects and Cleanup" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Signal Effects and Cleanup</h1>
+  <p class="page-subtitle">
+    Effects run asynchronously — await fixture.whenStable() before asserting, and test
+    onCleanup on both re-run and destroy separately.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 16+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Four tests: exactly-once on creation, reconnect after a signal change (with
+      <code>whenStable</code>), cleanup before re-run, and cleanup on destroy.
+    </p>
+    <app-live-playground
+      title="Testing signal effects and cleanup"
+      template="angular-cli"
+      openFile="src/app/room-connection.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With correctness now testable, the next subtopic covers effects specifically for DOM
+      measurements — a case plain effect() cannot handle safely.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signal Effects"
+    topicRoute="/angular/signal-effects"
+    [next]="{ label: 'afterRenderEffect for DOM Measurements', route: '/angular/signal-effects/afterrendereffect-for-dom-measurements' }" />
+</div>

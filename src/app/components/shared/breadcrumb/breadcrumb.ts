@@ -142,6 +142,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'auditing-a-codebase-for-zoneless-readiness': 'Auditing a Codebase for Zoneless Readiness',
   'zoneless-ssr-and-incremental-hydration': 'Zoneless SSR and Incremental Hydration',
   'when-ngzone-run-is-actually-unnecessary': 'When ngZone.run() Is Actually Unnecessary',
+  'testing-signal-effects-and-cleanup': 'Testing Signal Effects and Cleanup',
+  'afterrendereffect-for-dom-measurements': 'afterRenderEffect for DOM Measurements',
+  'debouncing-effects-for-expensive-side-effects': 'Debouncing Effects for Expensive Side Effects',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

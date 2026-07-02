@@ -262,6 +262,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Zoneless SSR and Incremental Hydration', route: '/angular/zoneless/zoneless-ssr-and-incremental-hydration' },
     { label: 'When ngZone.run() Is Actually Unnecessary', route: '/angular/zoneless/when-ngzone-run-is-actually-unnecessary' },
   ],
+  'signal-effects': [
+    { label: 'Testing Signal Effects and Cleanup', route: '/angular/signal-effects/testing-signal-effects-and-cleanup' },
+    { label: 'afterRenderEffect for DOM Measurements', route: '/angular/signal-effects/afterrendereffect-for-dom-measurements' },
+    { label: 'Debouncing Effects for Expensive Side Effects', route: '/angular/signal-effects/debouncing-effects-for-expensive-side-effects' },
+  ],
 };
 
 @Component({
