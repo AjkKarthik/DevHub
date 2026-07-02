@@ -870,6 +870,28 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'counter/control-flow': {
+    apis: ['@if', '@for', '@empty', '@else', 'track'],
+    related: [
+      { label: 'effect() — previous',           route: '/angular/counter/effects' },
+      { label: 'Signals & State (overview)',    route: '/angular/counter' },
+      { label: 'Signals in Services — next',    route: '/angular/counter/readonly-and-services' },
+    ],
+    tip: '@for will not compile without a track expression — there is no implicit default, unlike *ngFor\'s optional trackBy.',
+    docs: [
+      { label: 'Control Flow Guide', url: 'https://angular.dev/guide/templates/control-flow' },
+      { label: '@for API',           url: 'https://angular.dev/api/core/@for' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'track $index works but reuses the wrong DOM node when a list reorders/inserts/removes — prefer a stable id field whenever one exists.',
+      '@empty only fires for @for on an empty collection — it has no equivalent meaning inside @if (use @else there instead).',
+      'Signals read in @if/@for need no pipe — call them directly, e.g. @if (count() > 0). The | async pipe is for Observables, not signals.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

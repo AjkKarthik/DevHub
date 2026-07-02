@@ -47,6 +47,7 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What Is a Signal?', route: '/angular/counter/what-is-a-signal' },
     { label: 'computed() — Derived State', route: '/angular/counter/computed' },
     { label: 'effect() — Reactive Side Effects', route: '/angular/counter/effects' },
+    { label: '@if and @for — Control Flow', route: '/angular/counter/control-flow' },
   ],
 };
 

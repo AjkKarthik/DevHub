@@ -14,6 +14,7 @@ export const routes: Routes = [
         { path: 'what-is-a-signal',    loadComponent: () => import('./components/angular/counter/subtopics/what-is-a-signal/what-is-a-signal').then(m => m.WhatIsASignal) },
         { path: 'computed',            loadComponent: () => import('./components/angular/counter/subtopics/computed/computed').then(m => m.ComputedSubtopic) },
         { path: 'effects',             loadComponent: () => import('./components/angular/counter/subtopics/effects/effects').then(m => m.EffectsSubtopic) },
+        { path: 'control-flow',        loadComponent: () => import('./components/angular/counter/subtopics/control-flow/control-flow').then(m => m.ControlFlowSubtopic) },
       ] },
       { path: 'todo',               canActivate: [authGuard], loadComponent: () => import('./components/angular/todo/todo').then(m => m.TodoComponent) },
       { path: 'forms',              loadComponent: () => import('./components/angular/forms-demo/forms-demo').then(m => m.FormsDemo) },

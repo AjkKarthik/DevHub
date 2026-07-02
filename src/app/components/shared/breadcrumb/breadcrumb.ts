@@ -9,6 +9,7 @@ const ROUTE_LABELS: Record<string, string> = {
   'what-is-a-signal':   'What Is a Signal?',
   'computed':           'computed() — Derived State',
   'effects':            'effect() — Reactive Side Effects',
+  'control-flow':       '@if and @for — Control Flow',
   'templates':          'Template Syntax',
   'directives':         'Directives',
   'lifecycle':          'Lifecycle Hooks',
