@@ -1411,7 +1411,7 @@ off here with a date.
 - [x] `/angular/date-fns` — date-fns in Angular (2026-07-02 — 3 subtopics: intervals-and-recurring-events, timezone-handling-date-fns-tz, reactive-date-range-picker)
 - [x] `/angular/animations` — Angular Animations (2026-07-02 — 3 subtopics: animation-callbacks-lifecycle-events, group-sequence-parallel-orchestration, css-only-and-view-transitions-alternatives)
 - [x] `/angular/cva` — Control Value Accessor (2026-07-02 — 3 subtopics: ngcontrol-self-injection-validation-display, composite-value-cva-with-formgroup, testing-cva-components)
-- [ ] `/angular/testing` — Testing Angular
+- [x] `/angular/testing` — Testing Angular (2026-07-02 — 3 subtopics: testing-directives-with-host-components, testing-routed-components-and-guards, test-doubles-and-mocking-strategies)
 - [ ] `/angular/tailwind` — Tailwind CSS in Angular
 - [ ] `/angular/resource-api` — resource() API
 - [ ] `/angular/ngrx-signals` — NgRx Signals Store
