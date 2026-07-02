@@ -49,6 +49,7 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'effect() — Reactive Side Effects', route: '/angular/counter/effects' },
     { label: '@if and @for — Control Flow', route: '/angular/counter/control-flow' },
     { label: 'Signals in Services', route: '/angular/counter/readonly-and-services' },
+    { label: 'RxJS Interop', route: '/angular/counter/rxjs-interop' },
   ],
 };
 

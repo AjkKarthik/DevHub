@@ -11,6 +11,7 @@ const ROUTE_LABELS: Record<string, string> = {
   'effects':            'effect() — Reactive Side Effects',
   'control-flow':       '@if and @for — Control Flow',
   'readonly-and-services': 'Signals in Services',
+  'rxjs-interop':       'RxJS Interop',
   'templates':          'Template Syntax',
   'directives':         'Directives',
   'lifecycle':          'Lifecycle Hooks',

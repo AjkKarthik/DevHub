@@ -914,6 +914,27 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'counter/rxjs-interop': {
+    apis: ['toSignal()', 'toObservable()', 'initialValue'],
+    related: [
+      { label: 'Signals in Services — previous', route: '/angular/counter/readonly-and-services' },
+      { label: 'Signals & State (overview)',     route: '/angular/counter' },
+    ],
+    tip: 'toObservable(signal) emits the current value immediately on subscribe, then every future change — it behaves like a BehaviorSubject, not a one-time snapshot.',
+    docs: [
+      { label: 'RxJS Interop Guide', url: 'https://angular.dev/guide/signals/rxjs-interop' },
+      { label: 'toSignal() API',     url: 'https://angular.dev/api/core/rxjs-interop/toSignal' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'toSignal() must be called in an injection context — same rule as effect(). Its subscription auto-unsubscribes when that context is destroyed, no manual cleanup needed.',
+      'Without { initialValue: ... }, a toSignal() signal reads as undefined until the Observable\'s first emission — pass an initial value to avoid null-checking it everywhere.',
+      'Reach for interop only at the boundary where your code meets an Observable-based API (HTTP, forms, router) — plain signal()/computed() stays the default for ordinary state.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],
