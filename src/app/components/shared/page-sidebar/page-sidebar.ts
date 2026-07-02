@@ -3865,6 +3865,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'host-directives/testing-components-that-use-hostdirectives': {
+    apis: ['fixture.componentRef.setInput()', 'fixture.debugElement.injector.get()', 'fixture.nativeElement'],
+    related: [
+      { label: 'Host Directives (overview)',                            route: '/angular/host-directives' },
+      { label: 'Coordinating Multiple Stacked Host Directives — next',    route: '/angular/host-directives/coordinating-multiple-stacked-host-directives' },
+    ],
+    tip: 'Set exposed host directive inputs through the component\'s public alias via fixture.componentRef.setInput() — exactly as a real consumer would — to verify the exposure wiring itself.',
+    docs: [
+      { label: 'hostDirectives Guide', url: 'https://angular.dev/guide/directives/directive-composition-api' },
+      { label: 'Testing Guide',        url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A host directive\'s bindings render onto the SAME native element as the component\'s own — a plain fixture.nativeElement check works, no special API needed.',
+      'When stacking multiple host directives, test that toggling one\'s input does not accidentally affect an unrelated directive\'s state.',
+    ],
+  },
+
+  'host-directives/coordinating-multiple-stacked-host-directives': {
+    apis: ['signal() (public)', 'effect()', 'inject() (array order)'],
+    related: [
+      { label: 'Testing Components That Use hostDirectives — previous',            route: '/angular/host-directives/testing-components-that-use-hostdirectives' },
+      { label: 'Host Directives (overview)',                                         route: '/angular/host-directives' },
+      { label: 'Optional Host Directive Injection for Shared Components — next',       route: '/angular/host-directives/optional-host-directive-injection-for-shared-components' },
+    ],
+    tip: 'Constructor-time inject() only captures a snapshot — ongoing reactivity between stacked directives needs a publicly readable signal read inside the dependent directive\'s own effect().',
+    docs: [
+      { label: 'hostDirectives Guide', url: 'https://angular.dev/guide/directives/directive-composition-api' },
+      { label: 'effect() API',         url: 'https://angular.dev/api/core/effect' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Array order determines instantiation order — injecting a LATER directive in the array throws since it does not exist yet.',
+      'Two directives needing mutual awareness of each other should depend on a third coordinator directive, not inject each other directly (circular dependency).',
+    ],
+  },
+
+  'host-directives/optional-host-directive-injection-for-shared-components': {
+    apis: ['inject(Dir, { optional: true })', 'null narrowing'],
+    related: [
+      { label: 'Coordinating Multiple Stacked Host Directives — previous', route: '/angular/host-directives/coordinating-multiple-stacked-host-directives' },
+      { label: 'Host Directives (overview)',                                 route: '/angular/host-directives' },
+    ],
+    tip: 'A reusable directive cannot know in advance what else is composed on its host — inject(Dir, { optional: true }) returns null instead of throwing, letting the directive adapt its behavior.',
+    docs: [
+      { label: 'inject() API',         url: 'https://angular.dev/api/core/inject' },
+      { label: 'hostDirectives Guide', url: 'https://angular.dev/guide/directives/directive-composition-api' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Skipping the null check after an optional injection just defers the crash to whenever the code first touches a property on null.',
+      'Directive presence on a host element is fixed at construction — check once and conditionally register an effect(), no need to re-check presence on every run.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

@@ -280,7 +280,12 @@ export const routes: Routes = [
         { path: 'writing-type-safe-custom-validators',      loadComponent: () => import('./components/angular/typed-forms/subtopics/writing-type-safe-custom-validators/writing-type-safe-custom-validators').then(m => m.WritingTypeSafeCustomValidatorsSubtopic) },
         { path: 'populating-a-typed-form-from-resource',    loadComponent: () => import('./components/angular/typed-forms/subtopics/populating-a-typed-form-from-resource/populating-a-typed-form-from-resource').then(m => m.PopulatingATypedFormFromResourceSubtopic) },
       ] },
-      { path: 'host-directives',    loadComponent: () => import('./components/angular/host-directives/host-directives').then(m => m.HostDirectivesDemo) },
+      { path: 'host-directives', children: [
+        { path: '',                                             loadComponent: () => import('./components/angular/host-directives/host-directives').then(m => m.HostDirectivesDemo) },
+        { path: 'testing-components-that-use-hostdirectives',    loadComponent: () => import('./components/angular/host-directives/subtopics/testing-components-that-use-hostdirectives/testing-components-that-use-hostdirectives').then(m => m.TestingComponentsThatUseHostdirectivesSubtopic) },
+        { path: 'coordinating-multiple-stacked-host-directives', loadComponent: () => import('./components/angular/host-directives/subtopics/coordinating-multiple-stacked-host-directives/coordinating-multiple-stacked-host-directives').then(m => m.CoordinatingMultipleStackedHostDirectivesSubtopic) },
+        { path: 'optional-host-directive-injection-for-shared-components', loadComponent: () => import('./components/angular/host-directives/subtopics/optional-host-directive-injection-for-shared-components/optional-host-directive-injection-for-shared-components').then(m => m.OptionalHostDirectiveInjectionForSharedComponentsSubtopic) },
+      ] },
       { path: 'let-template-vars',       loadComponent: () => import('./components/angular/let-template-vars/let-template-vars').then(m => m.LetTemplateVarsDemo) },
       { path: 'standalone-migration',    loadComponent: () => import('./components/angular/standalone-migration/standalone-migration').then(m => m.StandaloneMigrationDemo) },
       { path: 'error-handling-patterns', loadComponent: () => import('./components/angular/error-handling-patterns/error-handling-patterns').then(m => m.ErrorHandlingPatternsDemo) },

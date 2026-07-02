@@ -272,6 +272,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Writing Type-Safe Custom Validators', route: '/angular/typed-forms/writing-type-safe-custom-validators' },
     { label: 'Populating a Typed Form from resource()', route: '/angular/typed-forms/populating-a-typed-form-from-resource' },
   ],
+  'host-directives': [
+    { label: 'Testing Components That Use hostDirectives', route: '/angular/host-directives/testing-components-that-use-hostdirectives' },
+    { label: 'Coordinating Multiple Stacked Host Directives', route: '/angular/host-directives/coordinating-multiple-stacked-host-directives' },
+    { label: 'Optional Host Directive Injection for Shared Components', route: '/angular/host-directives/optional-host-directive-injection-for-shared-components' },
+  ],
 };
 
 @Component({

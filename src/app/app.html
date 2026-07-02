@@ -1146,7 +1146,22 @@
         <span class="nl-text">Host Directives</span>
         @if (progress.isDone('host-directives')) {<span class="nl-done">✓</span>}
         @if (diff('host-directives'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('host-directives')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('host-directives')"
+                  (click)="toggleSubtopics('host-directives', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('host-directives'); as subs) {
+        @if (isSubtopicsExpanded('host-directives')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/let-template-vars" routerLinkActive="active">
         <span class="nl-text">&#64;let Template Vars</span>
         @if (progress.isDone('let-template-vars')) {<span class="nl-done">✓</span>}

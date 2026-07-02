@@ -148,6 +148,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-typed-reactive-forms': 'Testing Typed Reactive Forms',
   'writing-type-safe-custom-validators': 'Writing Type-Safe Custom Validators',
   'populating-a-typed-form-from-resource': 'Populating a Typed Form from resource()',
+  'testing-components-that-use-hostdirectives': 'Testing Components That Use hostDirectives',
+  'coordinating-multiple-stacked-host-directives': 'Coordinating Multiple Stacked Host Directives',
+  'optional-host-directive-injection-for-shared-components': 'Optional Host Directive Injection for Shared Components',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
