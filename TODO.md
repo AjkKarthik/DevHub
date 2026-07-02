@@ -1136,9 +1136,12 @@ When a hub's audit is complete, note it in Done History.
 
 ## Phase 10 — Deep-Dive Subtopic Pages ("Learn Mode")
 
-**Status: PILOT COMPLETE (2026-07-02), awaiting review checkpoint before broad rollout. Read
-this whole section before touching any code — it defines a new content tier and a new
-routing/nav/progress layer, not just more pages.**
+**Status: IN PROGRESS (rollout approved 2026-07-02 — user said "continue todo and implement
+for all topics", skipping a separate manual review pause). 2 of ~34 Angular topics done
+(counter, todo) — 836 topics total across all hubs, most with 3-6 subtopics each, so this is
+a multi-session effort worked one topic at a time per the Rollout plan below. Read this whole
+section before touching any code — it defines a new content tier and a new routing/nav/progress
+layer, not just more pages.**
 
 ### Why this phase exists
 
@@ -1324,18 +1327,33 @@ would be extremely expensive. Sequence:
    `MisconceptionsComponent`, `SubtopicNavComponent` (prev/next pager), and
    `SubtopicEyebrowComponent` (shared "Topic › Subtopic" row, extracted after it was copy-pasted
    into all 3 early pages). Everything is committed and pushed to `development`.
-2. **Review checkpoint — up next.** Before writing a second topic's subtopics, stop and get the
-   pilot reviewed — this is the point to catch structural mistakes cheaply. **Not yet done** —
-   do not start a second topic's subtopics until this happens.
-3. **Lock the format.** Once the pilot is approved, write up the finalised pattern as a new
-   section in `CLAUDE.md` (component names, file layout, exact wiring checklist additions) — the
-   same way every other page-type convention in this project is documented — so future sessions
-   can replicate it without re-deriving the design.
+   **Topic 2 — Angular → Reactive Forms & Signal Services** (`/angular/todo`) ✅ **DONE
+   (2026-07-02).** 6 subtopics (inject-di, reactive-forms-basics, route-guards,
+   signal-based-services, custom-validators, form-state), seeded from the topic's own
+   existing `theory` array headings — the same technique as the pilot. Found and fixed two
+   real structural gaps not caught by the single-topic pilot (both now in CLAUDE.md):
+   `route-guards`/`custom-validators` subtopic slugs collided with unrelated existing
+   top-level Angular topics of the same name (breadcrumb label map is flat, keyed by last
+   URL segment only — fixed with a composite `'topic/subtopic'` key lookup), and the nav
+   accordion chevron/list markup turned out to be per-topic hand-added HTML in `app.html`,
+   not generic — the pilot had only wired it for `counter`, so `todo`'s nav initially had no
+   visible way to reach its subtopics despite them working fine by direct URL.
+2. **Review checkpoint.** ✅ **Skipped by explicit user instruction (2026-07-02)** — user said
+   "yes continue todo and implement for all topics", approving rollout without a separate
+   manual pause. Structural issues are instead being caught and fixed per-topic as they surface
+   (see topic 2's entry below for two real ones found and fixed).
+3. **Lock the format.** ✅ **DONE (2026-07-02).** Full wiring recipe written into `CLAUDE.md`'s
+   "Phase 10 — Subtopic pages" section — file layout, required shared components, template
+   order, 9-step checklist, plus gotchas. **Updated again after topic 2** with two corrections:
+   the breadcrumb composite-key collision fix, and the nav-accordion-is-per-topic-not-generic
+   correction (see topic 2 below).
 4. **Work the complete page list below, one topic at a time**, same "one page at a time, no
-   batching" discipline as every other phase in this file. The list is already in hub order
-   matching the Current State table (gateway/foundational hubs first: Angular, C#, ASP.NET Core,
-   SQL, TypeScript, React, JavaScript, HTML, CSS, then the rest). Check off `- [ ]` → `- [x]` with
-   a date as each topic's full subtopic set is built, same convention as every other checklist in
+   batching-across-topics" discipline as every other phase in this file (within one topic,
+   batch all its subtopics' content before one build/verify/commit cycle — see Working
+   practices below). The list is already in hub order matching the Current State table
+   (gateway/foundational hubs first: Angular, C#, ASP.NET Core, SQL, TypeScript, React,
+   JavaScript, HTML, CSS, then the rest). Check off `- [ ]` → `- [x]` with a date as each
+   topic's full subtopic set is built, same convention as every other checklist in
    this file. Do not reorder the list to chase what feels interesting — foundational topics are
    listed first because their subtopics are reused as prerequisite links elsewhere once Phase 10
    is far enough along.
@@ -1365,8 +1383,8 @@ off here with a date.
 
 #### Angular — 58 topic pages
 
-- [ ] `/angular/counter` — Signals & Reactive State
-- [ ] `/angular/todo` — Reactive Forms & Signal Services
+- [x] `/angular/counter` — Signals & Reactive State (2026-07-02, pilot — 6 subtopics)
+- [x] `/angular/todo` — Reactive Forms & Signal Services (2026-07-02 — 6 subtopics: inject-di, reactive-forms-basics, route-guards, signal-based-services, custom-validators, form-state)
 - [ ] `/angular/forms` — Template-Driven vs Reactive Forms
 - [ ] `/angular/http` — HTTP Client
 - [ ] `/angular/http-interceptors` — HTTP Interceptors
