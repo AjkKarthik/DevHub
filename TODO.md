@@ -1404,7 +1404,7 @@ off here with a date.
 - [x] `/angular/content-projection` — Content Projection (2026-07-02 — 3 subtopics: programmatic-projection-createcomponent, compound-components-content-queries, recursive-templates-ngtemplateoutlet)
 - [x] `/angular/change-detection` — Change Detection (2026-07-02 — 3 subtopics: embedded-views-dynamic-cd, bridging-external-libraries-onpush, testing-onpush-components)
 - [x] `/angular/custom-validators` — Custom Validators (2026-07-02 — 3 subtopics: dynamic-validators-runtime, validator-directives-template-forms, generic-reusable-validators)
-- [ ] `/angular/rxjs` — RxJS Operators
+- [x] `/angular/rxjs` — RxJS Operators (2026-07-02 — 3 subtopics: custom-operators-and-pipe, multicasting-share-operators, testing-rxjs-marble-diagrams)
 - [ ] `/angular/cdk` — Angular CDK
 - [ ] `/angular/ag-grid` — AG Grid with Angular
 - [ ] `/angular/tanstack-query` — TanStack Query
