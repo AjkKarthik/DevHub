@@ -82,6 +82,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'embedded-views-dynamic-cd': 'Embedded Views & Dynamic Component CD',
   'bridging-external-libraries-onpush': 'Bridging External Libraries to OnPush',
   'testing-onpush-components': 'Testing OnPush Components',
+  'dynamic-validators-runtime': 'Dynamic Validators at Runtime',
+  'validator-directives-template-forms': 'Validator Directives for Template Forms',
+  'generic-reusable-validators': 'Generic Reusable Validators',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

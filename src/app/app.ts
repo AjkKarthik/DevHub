@@ -162,6 +162,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Bridging External Libraries to OnPush', route: '/angular/change-detection/bridging-external-libraries-onpush' },
     { label: 'Testing OnPush Components', route: '/angular/change-detection/testing-onpush-components' },
   ],
+  'custom-validators': [
+    { label: 'Dynamic Validators at Runtime', route: '/angular/custom-validators/dynamic-validators-runtime' },
+    { label: 'Validator Directives for Template Forms', route: '/angular/custom-validators/validator-directives-template-forms' },
+    { label: 'Generic Reusable Validators', route: '/angular/custom-validators/generic-reusable-validators' },
+  ],
 };
 
 @Component({

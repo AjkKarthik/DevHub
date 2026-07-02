@@ -1,0 +1,52 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Custom Validators"
+    topicRoute="/angular/custom-validators"
+    subtopicLabel="Generic Reusable Validators" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Generic Reusable Validators</h1>
+  <p class="page-subtitle">
+    Turning a one-off cross-field validator into a parameterized, app-wide factory, building
+    a conditionalValidator higher-order function, and testing validators as pure functions.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A generic <code>matchFields()</code> factory reused for email confirmation (not just
+      passwords), and a <code>conditionalValidator</code> that only requires a reason field
+      when a status is "rejected".
+    </p>
+    <app-live-playground
+      title="Generic reusable validators"
+      template="angular-cli"
+      openFile="src/app/validators.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Custom Validators</h2>
+    <p>
+      You now know how to add and remove validators dynamically at runtime with
+      <code>addValidators</code>/<code>removeValidators</code>, how to build a validator
+      DIRECTIVE for template-driven forms via <code>NG_VALIDATORS</code>, and how to turn
+      one-off validators into genuinely reusable, independently-testable factories and
+      higher-order functions. Combined with sync/async/cross-field validators and error
+      display patterns from the main topic, that's the complete custom validation toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Custom Validators"
+    topicRoute="/angular/custom-validators"
+    [prev]="{ label: 'Validator Directives for Template Forms', route: '/angular/custom-validators/validator-directives-template-forms' }" />
+</div>

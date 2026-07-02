@@ -148,7 +148,12 @@ export const routes: Routes = [
         { path: 'bridging-external-libraries-onpush',  loadComponent: () => import('./components/angular/change-detection/subtopics/bridging-external-libraries-onpush/bridging-external-libraries-onpush').then(m => m.BridgingExternalLibrariesOnpushSubtopic) },
         { path: 'testing-onpush-components',           loadComponent: () => import('./components/angular/change-detection/subtopics/testing-onpush-components/testing-onpush-components').then(m => m.TestingOnpushComponentsSubtopic) },
       ] },
-      { path: 'custom-validators',  loadComponent: () => import('./components/angular/custom-validators/custom-validators').then(m => m.CustomValidatorsDemo) },
+      { path: 'custom-validators', children: [
+        { path: '',                                    loadComponent: () => import('./components/angular/custom-validators/custom-validators').then(m => m.CustomValidatorsDemo) },
+        { path: 'dynamic-validators-runtime',           loadComponent: () => import('./components/angular/custom-validators/subtopics/dynamic-validators-runtime/dynamic-validators-runtime').then(m => m.DynamicValidatorsRuntimeSubtopic) },
+        { path: 'validator-directives-template-forms',  loadComponent: () => import('./components/angular/custom-validators/subtopics/validator-directives-template-forms/validator-directives-template-forms').then(m => m.ValidatorDirectivesTemplateFormsSubtopic) },
+        { path: 'generic-reusable-validators',          loadComponent: () => import('./components/angular/custom-validators/subtopics/generic-reusable-validators/generic-reusable-validators').then(m => m.GenericReusableValidatorsSubtopic) },
+      ] },
       { path: 'rxjs',               loadComponent: () => import('./components/angular/rxjs-demo/rxjs-demo').then(m => m.RxjsDemo) },
       { path: 'cdk',                loadComponent: () => import('./components/angular/cdk-demo/cdk-demo').then(m => m.CdkDemo) },
       { path: 'ag-grid',            loadComponent: () => import('./components/angular/ag-grid-demo/ag-grid-demo').then(m => m.AgGridDemo) },

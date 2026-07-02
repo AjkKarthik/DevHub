@@ -2511,6 +2511,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Custom Validators › subtopics (Phase 10) ─────────────────────────────────
+  'custom-validators/dynamic-validators-runtime': {
+    apis: ['addValidators()', 'removeValidators()', 'updateValueAndValidity()'],
+    related: [
+      { label: 'Custom Validators (overview)',                              route: '/angular/custom-validators' },
+      { label: 'Validator Directives for Template Forms — next',            route: '/angular/custom-validators/validator-directives-template-forms' },
+    ],
+    tip: 'None of setValidators/addValidators/removeValidators re-run validation by themselves — call updateValueAndValidity() afterward.',
+    docs: [
+      { label: 'Reactive Forms Guide', url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'AbstractControl API',  url: 'https://angular.dev/api/forms/AbstractControl' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'removeValidators() only removes a validator by the SAME function reference that was added — calling a factory twice produces two different instances.',
+      'setValidators() REPLACES all existing validators — use addValidators/removeValidators to toggle one rule without disturbing others.',
+    ],
+  },
+
+  'custom-validators/validator-directives-template-forms': {
+    apis: ['NG_VALIDATORS', 'Validator interface', 'forwardRef()'],
+    related: [
+      { label: 'Dynamic Validators at Runtime — previous',        route: '/angular/custom-validators/dynamic-validators-runtime' },
+      { label: 'Custom Validators (overview)',                    route: '/angular/custom-validators' },
+      { label: 'Generic Reusable Validators — next',               route: '/angular/custom-validators/generic-reusable-validators' },
+    ],
+    tip: 'Template-driven forms discover validators via directives registered on NG_VALIDATORS, not plain ValidatorFn array entries like reactive forms.',
+    docs: [
+      { label: 'Template-driven Forms Guide', url: 'https://angular.dev/guide/forms' },
+      { label: 'NG_VALIDATORS API',           url: 'https://angular.dev/api/forms/NG_VALIDATORS' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'multi: true on the NG_VALIDATORS provider is required — without it a second validator directive on the same element overwrites rather than combines.',
+      'forwardRef() is needed because the class is referenced inside its own decorator before the declaration finishes processing.',
+    ],
+  },
+
+  'custom-validators/generic-reusable-validators': {
+    apis: ['ValidatorFn factory', 'higher-order validator', 'pure function testing'],
+    related: [
+      { label: 'Validator Directives for Template Forms — previous', route: '/angular/custom-validators/validator-directives-template-forms' },
+      { label: 'Custom Validators (overview)',                        route: '/angular/custom-validators' },
+    ],
+    tip: 'A ValidatorFn is a pure function — test it with a minimal fake AbstractControl object, no TestBed or DOM required.',
+    docs: [
+      { label: 'Reactive Forms Guide', url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'Testing Guide',        url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Parameterizing field names turns a hardcoded one-off validator into a genuinely reusable, app-wide factory.',
+      'conditionalValidator wraps any validator with any predicate — reusable, unlike an inline if-check that only solves one case.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

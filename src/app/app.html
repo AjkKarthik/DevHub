@@ -1365,7 +1365,22 @@
         <span class="nl-text">Custom Validators</span>
         @if (progress.isDone('custom-validators')) {<span class="nl-done">✓</span>}
         @if (diff('custom-validators'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('custom-validators')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('custom-validators')"
+                  (click)="toggleSubtopics('custom-validators', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('custom-validators'); as subs) {
+        @if (isSubtopicsExpanded('custom-validators')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/cva" routerLinkActive="active">
         <span class="nl-text">Control Value Accessor</span>
         @if (progress.isDone('cva')) {<span class="nl-done">✓</span>}

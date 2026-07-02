@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Custom Validators"
+    topicRoute="/angular/custom-validators"
+    subtopicLabel="Dynamic Validators at Runtime" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Dynamic Validators at Runtime</h1>
+  <p class="page-subtitle">
+    Adding and removing validators on a live control with addValidators()/removeValidators(),
+    and the updateValueAndValidity() step that's easy to forget.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 12+ (addValidators/removeValidators)" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A shipping address field becomes conditionally required based on a checkbox — watch
+      how <code>addValidators</code>/<code>removeValidators</code> plus
+      <code>updateValueAndValidity()</code> toggle the rule live.
+    </p>
+    <app-live-playground
+      title="Dynamic validators at runtime"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Custom Validators"
+    topicRoute="/angular/custom-validators"
+    [next]="{ label: 'Validator Directives for Template Forms', route: '/angular/custom-validators/validator-directives-template-forms' }" />
+</div>

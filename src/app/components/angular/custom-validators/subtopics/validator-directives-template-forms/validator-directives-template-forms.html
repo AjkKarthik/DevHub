@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Custom Validators"
+    topicRoute="/angular/custom-validators"
+    subtopicLabel="Validator Directives for Template Forms" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Validator Directives for Template Forms</h1>
+  <p class="page-subtitle">
+    Why ngModel needs a genuinely different mechanism than reactive forms' ValidatorFn
+    arrays — building a validator DIRECTIVE registered via NG_VALIDATORS.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>[appMinAge]</code> directive validates an <code>ngModel</code>-bound input,
+      registered via the <code>NG_VALIDATORS</code> multi-provider token — no reactive
+      forms involved.
+    </p>
+    <app-live-playground
+      title="Validator directives for template forms"
+      template="angular-cli"
+      openFile="src/app/min-age.directive.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Custom Validators"
+    topicRoute="/angular/custom-validators"
+    [prev]="{ label: 'Dynamic Validators at Runtime', route: '/angular/custom-validators/dynamic-validators-runtime' }"
+    [next]="{ label: 'Generic Reusable Validators', route: '/angular/custom-validators/generic-reusable-validators' }" />
+</div>
