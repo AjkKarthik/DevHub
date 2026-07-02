@@ -1410,7 +1410,7 @@ off here with a date.
 - [x] `/angular/tanstack-query` — TanStack Query (2026-07-02 — 3 subtopics: optimistic-updates-rollback, dependent-and-parallel-queries, infinite-queries-pagination)
 - [x] `/angular/date-fns` — date-fns in Angular (2026-07-02 — 3 subtopics: intervals-and-recurring-events, timezone-handling-date-fns-tz, reactive-date-range-picker)
 - [x] `/angular/animations` — Angular Animations (2026-07-02 — 3 subtopics: animation-callbacks-lifecycle-events, group-sequence-parallel-orchestration, css-only-and-view-transitions-alternatives)
-- [ ] `/angular/cva` — Control Value Accessor
+- [x] `/angular/cva` — Control Value Accessor (2026-07-02 — 3 subtopics: ngcontrol-self-injection-validation-display, composite-value-cva-with-formgroup, testing-cva-components)
 - [ ] `/angular/testing` — Testing Angular
 - [ ] `/angular/tailwind` — Tailwind CSS in Angular
 - [ ] `/angular/resource-api` — resource() API
