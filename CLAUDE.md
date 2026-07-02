@@ -441,12 +441,18 @@ to the topic page, not its subtopics.
 
 ### Gotchas specific to subtopic pages
 
-- **Literal `@if`/`@for` text inside `<code>` tags in the `.html` template** must be escaped
-  as `&#64;if`/`&#64;for` (same root cause as the existing `&#64;` rule elsewhere in this
-  file) — writing a literal `@if` in a `.html` file is parsed by the Angular compiler as the
-  start of a control-flow block, not literal text, and fails with `NG5002: Incomplete block`.
-  This only applies to the component's own `.html` template — text inside a TS string field
-  (theory `points`, misconceptions, etc.) bound via `[innerHTML]` is safe as literal `@if`.
+- **Literal `@word` text (anywhere — `<h1>`, `<p>`, `<code>`, etc.) in the `.html` template**
+  must be escaped as `&#64;word` — writing a literal `@if`/`@defer`/`@placeholder`/etc. as TEXT
+  CONTENT between tags is parsed by the Angular compiler as the start of a control-flow/defer
+  block, not literal text, and fails with `NG5002: Incomplete block`. Confirmed via a real
+  build failure on a topic with heavy `@defer` prose (multiple `<h1>`/`<h2>`/`<p>` misses,
+  each caught by a separate build run) — **grep the whole `.html` file for `@[a-z]` before
+  building**, do not rely on spotting it by eye. Two exceptions, confirmed safe unescaped by
+  the same build: (1) **attribute/property-binding values** — `topicLabel="@defer — ..."`,
+  `title="@defer basics"`, `[prev]="{ label: '...@defer...' }"` — never trip this, only bare
+  text NODES do; (2) text inside a TS string field (theory `points`, misconceptions, etc.)
+  bound via `[innerHTML]` is also safe as literal `@if`, since it never passes through the
+  template parser at all.
 - **`${` inside a nested playground code string is a live double-escaping trap.** The
   `PlaygroundFile.content` fields are themselves TS template literals inside the subtopic's
   real `.ts` source file. If the nested playground code needs a literal `$` immediately

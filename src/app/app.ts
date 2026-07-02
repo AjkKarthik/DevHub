@@ -90,6 +90,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Add, Remove & Reorder', route: '/angular/form-array/formarray-crud-patterns' },
     { label: 'Validating the Array Itself', route: '/angular/form-array/formarray-level-validation' },
   ],
+  defer: [
+    { label: 'What Is @defer?', route: '/angular/defer/defer-basics' },
+    { label: 'Trigger Conditions', route: '/angular/defer/defer-triggers' },
+    { label: 'Placeholder, Loading & Error', route: '/angular/defer/placeholder-loading-error' },
+    { label: 'Requirements & Nesting', route: '/angular/defer/defer-requirements-nesting' },
+    { label: 'Performance & Prefetching', route: '/angular/defer/defer-performance-prefetch' },
+  ],
 };
 
 @Component({

@@ -1523,6 +1523,115 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── @defer — Deferred Loading › subtopics (Phase 10) ─────────────────────────
+  'defer/defer-basics': {
+    apis: ['@defer', '@placeholder', 'on idle'],
+    related: [
+      { label: '@defer — Deferred Loading (overview)', route: '/angular/defer' },
+      { label: 'Trigger Conditions — next',              route: '/angular/defer/defer-triggers' },
+    ],
+    tip: '@defer complements route-level loadComponent() lazy loading, it does not replace it — one splits pages, the other splits heavy widgets within a page.',
+    docs: [
+      { label: 'Deferred Loading Guide', url: 'https://angular.dev/guide/templates/defer' },
+      { label: '@defer API',             url: 'https://angular.dev/api/core/@defer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'No manual dynamic import() needed — the compiler code-splits automatically for standalone components inside @defer.',
+      'With no explicit trigger, @defer defaults to on idle, not "never load".',
+      '@defer only works with standalone components — NgModule-declared ones must be migrated first.',
+    ],
+  },
+
+  'defer/defer-triggers': {
+    apis: ['on viewport', 'on interaction', 'on hover', 'when'],
+    related: [
+      { label: 'What Is @defer? — previous',            route: '/angular/defer/defer-basics' },
+      { label: '@defer — Deferred Loading (overview)',  route: '/angular/defer' },
+      { label: 'Placeholder, Loading & Error — next',    route: '/angular/defer/placeholder-loading-error' },
+    ],
+    tip: 'on hover gives a head-start on the download before the click; on interaction only starts downloading once the user actually clicks/focuses.',
+    docs: [
+      { label: 'Deferred Loading Guide', url: 'https://angular.dev/guide/templates/defer' },
+      { label: '@defer API',             url: 'https://angular.dev/api/core/@defer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'when expr reads a signal directly — it fires the moment that signal becomes truthy.',
+      'Multiple triggers can combine with a semicolon — whichever fires first wins.',
+      'on timer(Xms) counts from page stability (or another combined trigger), not from component creation.',
+    ],
+  },
+
+  'defer/placeholder-loading-error': {
+    apis: ['@placeholder', '@loading', '@error', 'minimum', 'after'],
+    related: [
+      { label: 'Trigger Conditions — previous',          route: '/angular/defer/defer-triggers' },
+      { label: '@defer — Deferred Loading (overview)',   route: '/angular/defer' },
+      { label: 'Requirements & Nesting — next',           route: '/angular/defer/defer-requirements-nesting' },
+    ],
+    tip: '@loading (minimum Xms) prevents a jarring one-frame flash of the spinner on fast connections — always pair it with a sensible minimum.',
+    docs: [
+      { label: 'Deferred Loading Guide', url: 'https://angular.dev/guide/templates/defer' },
+      { label: '@defer API',             url: 'https://angular.dev/api/core/@defer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'All three companion blocks are optional — a bare @defer {} is valid syntax.',
+      '@placeholder (after Xms) avoids showing a skeleton for content that loads near-instantly.',
+      '@error is specifically for chunk DOWNLOAD failures, not runtime errors inside the loaded component.',
+    ],
+  },
+
+  'defer/defer-requirements-nesting': {
+    apis: ['imports[]', 'nested @defer', 'SSR hydration'],
+    related: [
+      { label: 'Placeholder, Loading & Error — previous', route: '/angular/defer/placeholder-loading-error' },
+      { label: '@defer — Deferred Loading (overview)',    route: '/angular/defer' },
+      { label: 'Performance & Prefetching — next',         route: '/angular/defer/defer-performance-prefetch' },
+    ],
+    tip: 'The deferred component must still be listed in imports[] — the compiler needs that declaration to identify which chunk to split, even though it is lazy-loaded.',
+    docs: [
+      { label: 'Deferred Loading Guide', url: 'https://angular.dev/guide/templates/defer' },
+      { label: '@defer API',             url: 'https://angular.dev/api/core/@defer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Nested @defer blocks are fully independent — a parent does not have to resolve before a child\'s trigger can fire.',
+      'Once loaded, a deferred component behaves completely normally — only WHEN the JS arrives changes, not HOW it runs.',
+      'SSR support (stable since Angular 19) renders @placeholder on the server; the real component hydrates client-side.',
+    ],
+  },
+
+  'defer/defer-performance-prefetch': {
+    apis: ['prefetch', 'networkIdle()'],
+    related: [
+      { label: 'Requirements & Nesting — previous',      route: '/angular/defer/defer-requirements-nesting' },
+      { label: '@defer — Deferred Loading (overview)',   route: '/angular/defer' },
+    ],
+    tip: 'prefetch controls only WHEN the chunk downloads — the component still only RENDERS once its own separate primary trigger fires.',
+    docs: [
+      { label: 'Deferred Loading Guide', url: 'https://angular.dev/guide/templates/defer' },
+      { label: '@defer API',             url: 'https://angular.dev/api/core/@defer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Do not defer small/simple components — the extra HTTP request overhead can exceed whatever was saved.',
+      'The primary metric improved is Time to Interactive, not necessarily perceived visual load speed.',
+      'Check the Network tab — a deferred component with heavy static imports can still produce an unexpectedly large chunk.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

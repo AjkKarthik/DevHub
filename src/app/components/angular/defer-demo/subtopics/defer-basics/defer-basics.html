@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="@defer — Deferred Loading"
+    topicRoute="/angular/defer"
+    subtopicLabel="What Is &#64;defer?" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">What Is &#64;defer? — Template-Level Code Splitting</h1>
+  <p class="page-subtitle">
+    A heavy standalone component's JavaScript, split into its own chunk and downloaded
+    only when a trigger fires — no manual dynamic import() required.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A "heavy" widget deferred with the default <code>on idle</code> trigger — watch the
+      placeholder swap out once the browser's main thread goes idle.
+    </p>
+    <app-live-playground
+      title="@defer basics"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      <code>on idle</code> is just the default — the next subtopic covers the full set of
+      trigger conditions (<code>viewport</code>, <code>interaction</code>, <code>hover</code>,
+      <code>when</code>, <code>timer</code>) for controlling exactly WHEN the download starts.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="@defer — Deferred Loading"
+    topicRoute="/angular/defer"
+    [next]="{ label: 'Trigger Conditions', route: '/angular/defer/defer-triggers' }" />
+</div>

@@ -1324,7 +1324,22 @@
         <span class="nl-text">&#64;defer Blocks</span>
         @if (progress.isDone('defer')) {<span class="nl-done">✓</span>}
         @if (diff('defer'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('defer')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('defer')"
+                  (click)="toggleSubtopics('defer', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('defer'); as subs) {
+        @if (isSubtopicsExpanded('defer')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/store" routerLinkActive="active">
         <span class="nl-text">Signal Store</span>
         @if (progress.isDone('store')) {<span class="nl-done">✓</span>}

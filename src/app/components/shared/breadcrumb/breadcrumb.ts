@@ -36,6 +36,11 @@ const ROUTE_LABELS: Record<string, string> = {
   'typed-formarray':    'Typed FormArray',
   'formarray-crud-patterns': 'Add, Remove & Reorder',
   'formarray-level-validation': 'Validating the Array Itself',
+  'defer-basics':        'What Is @defer?',
+  'defer-triggers':      'Trigger Conditions',
+  'placeholder-loading-error': 'Placeholder, Loading & Error',
+  'defer-requirements-nesting': 'Requirements & Nesting',
+  'defer-performance-prefetch': 'Performance & Prefetching',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
