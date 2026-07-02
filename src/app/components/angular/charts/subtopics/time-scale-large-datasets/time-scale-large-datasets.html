@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Chart.js with Angular"
+    topicRoute="/angular/charts"
+    subtopicLabel="Time Scale &amp; Large Datasets" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Time Scale &amp; Large Datasets</h1>
+  <p class="page-subtitle">
+    Positioning data points by real timestamp instead of index with the time scale, and
+    rendering thousands of points efficiently with the decimation plugin.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Chart.js 3+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Six readings with genuinely irregular gaps (20, 15, 14, 3, 2, 0 days ago) — the time
+      scale positions each point proportionally to its actual date, not evenly by index.
+    </p>
+    <app-live-playground
+      title="Time scale and large datasets"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="chartDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Chart.js with Angular</h2>
+    <p>
+      You now know how to write custom Chart.js plugins and handle click-driven drill-down,
+      combine chart types on one canvas with reference-line annotations, and work with real
+      timestamps and large datasets via the time scale and decimation plugin. Combined with
+      setup, lifecycle, reactive updates, and the accessibility/alternatives guidance from
+      the main Chart.js topic, that's the complete charting toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Chart.js with Angular"
+    topicRoute="/angular/charts"
+    [prev]="{ label: 'Mixed Charts & Annotations', route: '/angular/charts/mixed-charts-annotations' }" />
+</div>

@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Chart.js with Angular"
+    topicRoute="/angular/charts"
+    subtopicLabel="Mixed Charts &amp; Annotations" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Mixed Charts &amp; Annotations</h1>
+  <p class="page-subtitle">
+    Combining bar and line datasets on one canvas with per-dataset type overrides, and
+    drawing threshold reference lines and shaded regions on top of a chart.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Chart.js 3+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Monthly revenue as bars with a trend line overlaid, plus a red dashed target
+      threshold drawn on top — the same technique chartjs-plugin-annotation uses internally.
+    </p>
+    <app-live-playground
+      title="Mixed charts and annotations"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="chartDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Chart.js with Angular"
+    topicRoute="/angular/charts"
+    [prev]="{ label: 'Custom Plugins & Click Interactions', route: '/angular/charts/custom-plugins-click-interactions' }"
+    [next]="{ label: 'Time Scale & Large Datasets', route: '/angular/charts/time-scale-large-datasets' }" />
+</div>

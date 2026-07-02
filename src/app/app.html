@@ -1508,7 +1508,22 @@
         <span class="nl-text">Charts (Chart.js)</span>
         @if (progress.isDone('charts')) {<span class="nl-done">✓</span>}
         @if (diff('charts'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('charts')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('charts')"
+                  (click)="toggleSubtopics('charts', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('charts'); as subs) {
+        @if (isSubtopicsExpanded('charts')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/cdk" routerLinkActive="active">
         <span class="nl-text">Angular CDK</span>
         @if (progress.isDone('cdk')) {<span class="nl-done">✓</span>}

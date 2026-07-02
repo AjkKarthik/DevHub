@@ -124,7 +124,12 @@ export const routes: Routes = [
         { path: 'route-reuse-strategy',                 loadComponent: () => import('./components/angular/routing-demo/subtopics/route-reuse-strategy/route-reuse-strategy').then(m => m.RouteReuseStrategySubtopic) },
         { path: 'view-transitions-relative-navigation', loadComponent: () => import('./components/angular/routing-demo/subtopics/view-transitions-relative-navigation/view-transitions-relative-navigation').then(m => m.ViewTransitionsRelativeNavigationSubtopic) },
       ] },
-      { path: 'charts',             loadComponent: () => import('./components/angular/charts/charts').then(m => m.ChartsDemo) },
+      { path: 'charts', children: [
+        { path: '',                                loadComponent: () => import('./components/angular/charts/charts').then(m => m.ChartsDemo) },
+        { path: 'custom-plugins-click-interactions', loadComponent: () => import('./components/angular/charts/subtopics/custom-plugins-click-interactions/custom-plugins-click-interactions').then(m => m.CustomPluginsClickInteractionsSubtopic) },
+        { path: 'mixed-charts-annotations',          loadComponent: () => import('./components/angular/charts/subtopics/mixed-charts-annotations/mixed-charts-annotations').then(m => m.MixedChartsAnnotationsSubtopic) },
+        { path: 'time-scale-large-datasets',         loadComponent: () => import('./components/angular/charts/subtopics/time-scale-large-datasets/time-scale-large-datasets').then(m => m.TimeScaleLargeDatasetsSubtopic) },
+      ] },
       { path: 'zod-forms',          loadComponent: () => import('./components/angular/zod-forms/zod-forms').then(m => m.ZodFormsDemo) },
       { path: 'content-projection', loadComponent: () => import('./components/angular/content-projection/content-projection').then(m => m.ContentProjectionDemo) },
       { path: 'change-detection',   loadComponent: () => import('./components/angular/change-detection/change-detection').then(m => m.ChangeDetectionDemo) },

@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Chart.js with Angular"
+    topicRoute="/angular/charts"
+    subtopicLabel="Custom Plugins &amp; Click Interactions" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Custom Plugins &amp; Click Interactions</h1>
+  <p class="page-subtitle">
+    Writing a Chart.js plugin with lifecycle hooks for custom canvas drawing, and handling
+    click/hover events to build drill-down interactions.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Chart.js 4" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A custom plugin draws the running total in the doughnut's centre hole via
+      <code>afterDraw</code>, and clicking a slice reads the clicked index from
+      <code>onClick</code>'s <code>elements</code> array.
+    </p>
+    <app-live-playground
+      title="Custom plugins and click interactions"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="chartDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Chart.js with Angular"
+    topicRoute="/angular/charts"
+    [next]="{ label: 'Mixed Charts & Annotations', route: '/angular/charts/mixed-charts-annotations' }" />
+</div>

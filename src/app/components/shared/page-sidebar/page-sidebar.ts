@@ -2260,6 +2260,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Chart.js with Angular › subtopics (Phase 10) ─────────────────────────────
+  'charts/custom-plugins-click-interactions': {
+    apis: ['Chart.register()', 'afterDraw', 'onClick'],
+    related: [
+      { label: 'Chart.js with Angular (overview)',        route: '/angular/charts' },
+      { label: 'Mixed Charts & Annotations — next',        route: '/angular/charts/mixed-charts-annotations' },
+    ],
+    tip: 'A plugin is just a plain object with hook methods (beforeDraw, afterDraw, etc.) and a unique id — no class or decorator required.',
+    docs: [
+      { label: 'Chart.js Plugins Guide', url: 'https://www.chartjs.org/docs/latest/developers/plugins.html' },
+      { label: 'Chart.js Events API',    url: 'https://www.chartjs.org/docs/latest/configuration/interactions.html' },
+    ],
+    resources: [
+      { label: 'Chart.js — GitHub', url: 'https://github.com/chartjs/Chart.js', badge: 'code' },
+    ],
+    gotchas: [
+      'An empty elements array in onClick is normal — it means the click landed on empty chart area, not that the handler failed.',
+      'Custom drawing in afterDraw re-runs on every render, including every update() call — it stays in sync automatically.',
+      'chart.js is not part of the default StackBlitz angular-cli template — the playground needs [dependencies] to resolve the import.',
+    ],
+  },
+
+  'charts/mixed-charts-annotations': {
+    apis: ['dataset type override', 'yAxisID', 'chartjs-plugin-annotation'],
+    related: [
+      { label: 'Custom Plugins & Click Interactions — previous', route: '/angular/charts/custom-plugins-click-interactions' },
+      { label: 'Chart.js with Angular (overview)',                route: '/angular/charts' },
+      { label: 'Time Scale & Large Datasets — next',              route: '/angular/charts/time-scale-large-datasets' },
+    ],
+    tip: 'Each dataset can declare its own type, overriding the top-level chart type — this is how a bar+line combo chart renders on one canvas.',
+    docs: [
+      { label: 'Chart.js Mixed Charts',      url: 'https://www.chartjs.org/docs/latest/charts/mixed.html' },
+      { label: 'chartjs-plugin-annotation',  url: 'https://www.chartjs.org/chartjs-plugin-annotation/latest/' },
+    ],
+    resources: [
+      { label: 'Chart.js — GitHub', url: 'https://github.com/chartjs/Chart.js', badge: 'code' },
+    ],
+    gotchas: [
+      'chartjs-plugin-annotation is a separate package — it is not built into Chart.js core.',
+      'Datasets with very different value ranges need a secondary y-axis (yAxisID) or the smaller-range series gets visually flattened.',
+    ],
+  },
+
+  'charts/time-scale-large-datasets': {
+    apis: ["scales.x.type: 'time'", 'decimation', 'date adapter'],
+    related: [
+      { label: 'Mixed Charts & Annotations — previous', route: '/angular/charts/mixed-charts-annotations' },
+      { label: 'Chart.js with Angular (overview)',       route: '/angular/charts' },
+    ],
+    tip: 'The time scale requires a date adapter package (chartjs-adapter-date-fns, -luxon, or -moment) — Chart.js does not parse dates itself.',
+    docs: [
+      { label: 'Chart.js Time Scale',   url: 'https://www.chartjs.org/docs/latest/axes/cartesian/time.html' },
+      { label: 'Chart.js Performance',  url: 'https://www.chartjs.org/docs/latest/general/performance.html' },
+    ],
+    resources: [
+      { label: 'Chart.js — GitHub', url: 'https://github.com/chartjs/Chart.js', badge: 'code' },
+    ],
+    gotchas: [
+      'The decimation plugin only affects what is DRAWN — the underlying chart.data array is untouched.',
+      'Time-scale data points carry their own x value ({ x: Date, y: value }) — there is no separate labels array.',
+      'Decimation is only worthwhile above roughly 1,000-2,000 visible points — below that, default rendering is already fast.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

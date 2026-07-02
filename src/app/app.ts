@@ -142,6 +142,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Route Reuse Strategy', route: '/angular/routing/route-reuse-strategy' },
     { label: 'View Transitions & Relative Navigation', route: '/angular/routing/view-transitions-relative-navigation' },
   ],
+  charts: [
+    { label: 'Custom Plugins & Click Interactions', route: '/angular/charts/custom-plugins-click-interactions' },
+    { label: 'Mixed Charts & Annotations', route: '/angular/charts/mixed-charts-annotations' },
+    { label: 'Time Scale & Large Datasets', route: '/angular/charts/time-scale-large-datasets' },
+  ],
 };
 
 @Component({

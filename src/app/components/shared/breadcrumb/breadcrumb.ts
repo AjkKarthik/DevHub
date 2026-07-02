@@ -70,6 +70,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'router-events-navigation-lifecycle': 'Router Events & Navigation Lifecycle',
   'route-reuse-strategy': 'Route Reuse Strategy',
   'view-transitions-relative-navigation': 'View Transitions & Relative Navigation',
+  'custom-plugins-click-interactions': 'Custom Plugins & Click Interactions',
+  'mixed-charts-annotations': 'Mixed Charts & Annotations',
+  'time-scale-large-datasets': 'Time Scale & Large Datasets',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
