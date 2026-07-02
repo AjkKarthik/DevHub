@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular Animations"
+    topicRoute="/angular/animations"
+    subtopicLabel="group() vs sequence() Orchestration" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">group() vs sequence() Orchestration</h1>
+  <p class="page-subtitle">
+    Composing multiple animate() steps as a sequential timeline or as independently-timed
+    parallel branches — the primitives behind real page-transition choreography.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 4+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A three-step <code>sequence()</code> versus a two-branch <code>group()</code> with
+      genuinely different durations per branch — watch how each finishes at a different pace.
+    </p>
+    <app-live-playground
+      title="group vs sequence orchestration"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Angular Animations"
+    topicRoute="/angular/animations"
+    [prev]="{ label: 'Animation Callbacks & Lifecycle Events', route: '/angular/animations/animation-callbacks-lifecycle-events' }"
+    [next]="{ label: 'CSS-Only & View Transitions Alternatives', route: '/angular/animations/css-only-and-view-transitions-alternatives' }" />
+</div>

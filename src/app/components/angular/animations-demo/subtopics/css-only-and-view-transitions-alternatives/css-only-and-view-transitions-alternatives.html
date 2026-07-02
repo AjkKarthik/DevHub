@@ -1,0 +1,52 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular Animations"
+    topicRoute="/angular/animations"
+    subtopicLabel="CSS-Only &amp; View Transitions Alternatives" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">CSS-Only &amp; View Transitions Alternatives</h1>
+  <p class="page-subtitle">
+    When &#64;angular/animations is genuinely overkill — plain CSS transitions/keyframes for
+    simple cases, and withViewTransitions() as a lighter native alternative for route changes.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 4+ (withViewTransitions: 17+)" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A class-toggle transition and a &#64;keyframes spinner — both pure CSS, with no
+      <code>animations: []</code> array or <code>provideAnimationsAsync()</code> involved at all.
+    </p>
+    <app-live-playground
+      title="CSS-only and View Transitions alternatives"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Angular Animations</h2>
+    <p>
+      You now know how to observe animation lifecycle events with
+      <code>(&#64;trigger.start)</code>/<code>(&#64;trigger.done)</code> and disable a whole
+      subtree with <code>[&#64;.disabled]</code>, how <code>group()</code> and
+      <code>sequence()</code> compose into real choreography, and when plain CSS or
+      <code>withViewTransitions()</code> is a better fit than the full animation package.
+      Combined with state/transition basics, keyframes/stagger, AnimationBuilder, and route
+      animations from the main topic, that's the complete Angular Animations toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Angular Animations"
+    topicRoute="/angular/animations"
+    [prev]="{ label: 'group() vs sequence() Orchestration', route: '/angular/animations/group-sequence-parallel-orchestration' }" />
+</div>

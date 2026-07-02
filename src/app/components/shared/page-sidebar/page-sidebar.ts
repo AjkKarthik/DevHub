@@ -2882,6 +2882,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Angular Animations › subtopics (Phase 10) ────────────────────────────────
+  'animations/animation-callbacks-lifecycle-events': {
+    apis: ['(@trigger.start)', '(@trigger.done)', '[@.disabled]'],
+    related: [
+      { label: 'Angular Animations (overview)',                    route: '/angular/animations' },
+      { label: 'group() vs sequence() Orchestration — next',         route: '/angular/animations/group-sequence-parallel-orchestration' },
+    ],
+    tip: '[@.disabled] disables ALL triggers within an element\'s subtree, not just one — a broader effect than its placement might suggest.',
+    docs: [
+      { label: 'Angular Animations Guide', url: 'https://angular.dev/guide/animations' },
+      { label: 'Transition & Triggers API', url: 'https://angular.dev/api/animations/transition' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      '(@trigger.start)/(@trigger.done) are available directly on the same binding used to start the animation — no separate service needed.',
+      'When disabled, elements still transition between states instantly — the end state applies correctly, only the animation itself is skipped.',
+    ],
+  },
+
+  'animations/group-sequence-parallel-orchestration': {
+    apis: ['group()', 'sequence()', 'query()'],
+    related: [
+      { label: 'Animation Callbacks & Lifecycle Events — previous', route: '/angular/animations/animation-callbacks-lifecycle-events' },
+      { label: 'Angular Animations (overview)',                       route: '/angular/animations' },
+      { label: 'CSS-Only & View Transitions Alternatives — next',      route: '/angular/animations/css-only-and-view-transitions-alternatives' },
+    ],
+    tip: 'A group() finishes when its SLOWEST inner animation completes, not its fastest — all branches run to their own completion.',
+    docs: [
+      { label: 'Complex Sequences Guide', url: 'https://angular.dev/guide/animations/complex-sequences' },
+      { label: 'group() API',              url: 'https://angular.dev/api/animations/group' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Sequential execution is the DEFAULT for an animate() array — sequence() only needs to be explicit when nesting inside group().',
+      'group() lets each branch have its own independent duration/easing — a single animate() call applies one shared timing to all its style changes.',
+    ],
+  },
+
+  'animations/css-only-and-view-transitions-alternatives': {
+    apis: ['CSS transition', '@keyframes', 'withViewTransitions()'],
+    related: [
+      { label: 'group() vs sequence() Orchestration — previous', route: '/angular/animations/group-sequence-parallel-orchestration' },
+      { label: 'Angular Animations (overview)',                    route: '/angular/animations' },
+    ],
+    tip: 'Plain CSS transitions/keyframes need no @angular/animations setup at all — reach for the package specifically for :enter/:leave, staggered lists, or imperative control.',
+    docs: [
+      { label: 'Angular Animations Guide', url: 'https://angular.dev/guide/animations' },
+      { label: 'withViewTransitions API',   url: 'https://angular.dev/api/router/withViewTransitions' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'withViewTransitions() wraps the native browser View Transitions API — a genuinely different mechanism from @angular/animations\' route pattern, not just different syntax.',
+      'withViewTransitions() gives less granular control by design — choose it when a simple cross-fade is sufficient.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

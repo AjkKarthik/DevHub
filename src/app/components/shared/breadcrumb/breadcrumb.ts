@@ -100,6 +100,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'intervals-and-recurring-events': 'Intervals & Recurring Events',
   'timezone-handling-date-fns-tz': 'Timezone Handling with date-fns-tz',
   'reactive-date-range-picker': 'Reactive Date Range Picker',
+  'animation-callbacks-lifecycle-events': 'Animation Callbacks & Lifecycle Events',
+  'group-sequence-parallel-orchestration': 'group() vs sequence() Orchestration',
+  'css-only-and-view-transitions-alternatives': 'CSS-Only & View Transitions Alternatives',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

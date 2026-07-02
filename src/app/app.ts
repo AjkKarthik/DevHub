@@ -192,6 +192,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Timezone Handling with date-fns-tz', route: '/angular/date-fns/timezone-handling-date-fns-tz' },
     { label: 'Reactive Date Range Picker', route: '/angular/date-fns/reactive-date-range-picker' },
   ],
+  animations: [
+    { label: 'Animation Callbacks & Lifecycle Events', route: '/angular/animations/animation-callbacks-lifecycle-events' },
+    { label: 'group() vs sequence() Orchestration', route: '/angular/animations/group-sequence-parallel-orchestration' },
+    { label: 'CSS-Only & View Transitions Alternatives', route: '/angular/animations/css-only-and-view-transitions-alternatives' },
+  ],
 };
 
 @Component({

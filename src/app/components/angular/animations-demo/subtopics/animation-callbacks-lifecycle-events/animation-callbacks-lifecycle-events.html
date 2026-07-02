@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular Animations"
+    topicRoute="/angular/animations"
+    subtopicLabel="Animation Callbacks &amp; Lifecycle Events" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Animation Callbacks &amp; Lifecycle Events</h1>
+  <p class="page-subtitle">
+    Observing animation start/done with output events on the trigger binding, and turning
+    off animations for a whole subtree with the special &#64;.disabled binding.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 4+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A box toggle wired to <code>(&#64;boxState.start)</code>/<code>(&#64;boxState.done)</code>
+      to disable its own trigger button mid-animation, plus a second box wrapped in
+      <code>[&#64;.disabled]</code> that skips its transition entirely when toggled off.
+    </p>
+    <app-live-playground
+      title="Animation callbacks and lifecycle events"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Angular Animations"
+    topicRoute="/angular/animations"
+    [next]="{ label: 'group() vs sequence() Orchestration', route: '/angular/animations/group-sequence-parallel-orchestration' }" />
+</div>

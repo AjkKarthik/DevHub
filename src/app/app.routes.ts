@@ -184,7 +184,12 @@ export const routes: Routes = [
         { path: 'timezone-handling-date-fns-tz',   loadComponent: () => import('./components/angular/datefns-demo/subtopics/timezone-handling-date-fns-tz/timezone-handling-date-fns-tz').then(m => m.TimezoneHandlingDateFnsTzSubtopic) },
         { path: 'reactive-date-range-picker',      loadComponent: () => import('./components/angular/datefns-demo/subtopics/reactive-date-range-picker/reactive-date-range-picker').then(m => m.ReactiveDateRangePickerSubtopic) },
       ] },
-      { path: 'animations',         loadComponent: () => import('./components/angular/animations-demo/animations-demo').then(m => m.AnimationsDemo) },
+      { path: 'animations', children: [
+        { path: '',                                       loadComponent: () => import('./components/angular/animations-demo/animations-demo').then(m => m.AnimationsDemo) },
+        { path: 'animation-callbacks-lifecycle-events',    loadComponent: () => import('./components/angular/animations-demo/subtopics/animation-callbacks-lifecycle-events/animation-callbacks-lifecycle-events').then(m => m.AnimationCallbacksLifecycleEventsSubtopic) },
+        { path: 'group-sequence-parallel-orchestration',   loadComponent: () => import('./components/angular/animations-demo/subtopics/group-sequence-parallel-orchestration/group-sequence-parallel-orchestration').then(m => m.GroupSequenceParallelOrchestrationSubtopic) },
+        { path: 'css-only-and-view-transitions-alternatives', loadComponent: () => import('./components/angular/animations-demo/subtopics/css-only-and-view-transitions-alternatives/css-only-and-view-transitions-alternatives').then(m => m.CssOnlyAndViewTransitionsAlternativesSubtopic) },
+      ] },
       { path: 'cva',                loadComponent: () => import('./components/angular/cva-demo/cva-demo').then(m => m.CvaDemo) },
       { path: 'testing',            loadComponent: () => import('./components/angular/testing-demo/testing-demo').then(m => m.TestingDemo) },
       { path: 'tailwind',           loadComponent: () => import('./components/angular/tailwind-demo/tailwind-demo').then(m => m.TailwindDemo) },
