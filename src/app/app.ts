@@ -115,6 +115,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Template Refs & @let', route: '/angular/templates/template-refs-and-let' },
     { label: 'Pipes — Built-in & Custom', route: '/angular/templates/pipes-built-in-custom' },
   ],
+  directives: [
+    { label: 'Attribute Directive Anatomy', route: '/angular/directives/attribute-directive-anatomy' },
+    { label: 'Custom Structural Directives', route: '/angular/directives/custom-structural-directives' },
+    { label: 'Directive Composition API', route: '/angular/directives/directive-composition-api' },
+  ],
 };
 
 @Component({

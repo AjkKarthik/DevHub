@@ -92,7 +92,12 @@ export const routes: Routes = [
         { path: 'template-refs-and-let',     loadComponent: () => import('./components/angular/template-syntax/subtopics/template-refs-and-let/template-refs-and-let').then(m => m.TemplateRefsAndLetSubtopic) },
         { path: 'pipes-built-in-custom',     loadComponent: () => import('./components/angular/template-syntax/subtopics/pipes-built-in-custom/pipes-built-in-custom').then(m => m.PipesBuiltInCustomSubtopic) },
       ] },
-      { path: 'directives',         loadComponent: () => import('./components/angular/directives-demo/directives-demo').then(m => m.DirectivesDemo) },
+      { path: 'directives', children: [
+        { path: '',                            loadComponent: () => import('./components/angular/directives-demo/directives-demo').then(m => m.DirectivesDemo) },
+        { path: 'attribute-directive-anatomy', loadComponent: () => import('./components/angular/directives-demo/subtopics/attribute-directive-anatomy/attribute-directive-anatomy').then(m => m.AttributeDirectiveAnatomySubtopic) },
+        { path: 'custom-structural-directives', loadComponent: () => import('./components/angular/directives-demo/subtopics/custom-structural-directives/custom-structural-directives').then(m => m.CustomStructuralDirectivesSubtopic) },
+        { path: 'directive-composition-api',   loadComponent: () => import('./components/angular/directives-demo/subtopics/directive-composition-api/directive-composition-api').then(m => m.DirectiveCompositionApiSubtopic) },
+      ] },
       { path: 'lifecycle',          loadComponent: () => import('./components/angular/lifecycle/lifecycle').then(m => m.LifecycleDemo) },
       { path: 'pipes',              loadComponent: () => import('./components/angular/pipes-demo/pipes-demo').then(m => m.PipesDemo) },
       { path: 'di',                 loadComponent: () => import('./components/angular/di-demo/di-demo').then(m => m.DiDemo) },

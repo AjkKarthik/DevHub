@@ -1893,6 +1893,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Custom Directives › subtopics (Phase 10) ─────────────────────────────────
+  'directives/attribute-directive-anatomy': {
+    apis: ['ElementRef', 'Renderer2', '@HostListener', 'host: {}'],
+    related: [
+      { label: 'Custom Directives (overview)', route: '/angular/directives' },
+      { label: 'Custom Structural Directives — next', route: '/angular/directives/custom-structural-directives' },
+    ],
+    tip: 'Never mutate el.nativeElement.style directly — Renderer2 exists specifically because direct DOM mutation breaks SSR and web-worker rendering.',
+    docs: [
+      { label: 'Attribute Directives Guide', url: 'https://angular.dev/guide/directives/attribute-directives' },
+      { label: 'Renderer2 API',              url: 'https://angular.dev/api/core/Renderer2' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Directives are standalone by default since Angular 14 — import the class directly, no NgModule.',
+      'host: {...} in the decorator is the modern alternative to per-property @HostBinding decorators.',
+      'Prefer signal input() over @Input() for directive inputs — reactive, works with OnPush, composes with computed().',
+    ],
+  },
+
+  'directives/custom-structural-directives': {
+    apis: ['TemplateRef', 'ViewContainerRef', 'createEmbeddedView()'],
+    related: [
+      { label: 'Attribute Directive Anatomy — previous', route: '/angular/directives/attribute-directive-anatomy' },
+      { label: 'Custom Directives (overview)',            route: '/angular/directives' },
+      { label: 'Directive Composition API — next',         route: '/angular/directives/directive-composition-api' },
+    ],
+    tip: 'Signal inputs do not trigger ngOnChanges — use effect() inside the directive to react to the input and re-render the embedded views.',
+    docs: [
+      { label: 'Structural Directives Guide', url: 'https://angular.dev/guide/directives/structural-directives' },
+      { label: 'ViewContainerRef API',        url: 'https://angular.dev/api/core/ViewContainerRef' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      '*attr="value" is sugar for <ng-template [attr]="value"> — the same desugaring for built-in and custom structural directives alike.',
+      'Only $implicit binds without a name — every other context property needs an explicit let-x="propName" binding.',
+      'Prefer @if/@for for ordinary conditions/loops — build a custom structural directive only for reusable logic with richer inputs.',
+    ],
+  },
+
+  'directives/directive-composition-api': {
+    apis: ['hostDirectives', 'inputs: []', 'outputs: []'],
+    related: [
+      { label: 'Custom Structural Directives — previous', route: '/angular/directives/custom-structural-directives' },
+      { label: 'Custom Directives (overview)',             route: '/angular/directives' },
+    ],
+    tip: 'Nothing is exposed by default — only inputs/outputs explicitly listed in a hostDirectives entry become accessible on the composed component.',
+    docs: [
+      { label: 'Directive Composition Guide', url: 'https://angular.dev/guide/directives/directive-composition-api' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'hostDirectives eliminates manual input/output forwarding entirely — not just a syntax convenience over a wrapper component.',
+      'A composed component can itself be composed further — hostDirectives supports multi-level composition trees.',
+      '{ directive: X, inputs: [\'a: b\'] } re-exposes X\'s input "a" under the new name "b" on the host.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

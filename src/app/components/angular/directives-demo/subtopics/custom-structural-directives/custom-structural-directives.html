@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Custom Directives"
+    topicRoute="/angular/directives"
+    subtopicLabel="Custom Structural Directives" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Custom Structural Directives</h1>
+  <p class="page-subtitle">
+    TemplateRef and ViewContainerRef are the entire mechanism — the same two ingredients
+    that power *ngIf and *ngFor internally, available for your own reusable logic.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A custom <code>*appRepeat="5"</code> directive rendering a template N times, exposing
+      both an implicit value and a named <code>index</code> context property.
+    </p>
+    <app-live-playground
+      title="Custom structural directives"
+      template="angular-cli"
+      openFile="src/app/repeat.directive.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Structural and attribute directives are two separate concerns — the last subtopic
+      covers bundling multiple directives (of either kind) onto one host without the
+      consumer having to add each one individually, via the Directive Composition API.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Custom Directives"
+    topicRoute="/angular/directives"
+    [prev]="{ label: 'Attribute Directive Anatomy', route: '/angular/directives/attribute-directive-anatomy' }"
+    [next]="{ label: 'Directive Composition API', route: '/angular/directives/directive-composition-api' }" />
+</div>
