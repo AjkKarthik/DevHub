@@ -232,6 +232,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'runGuardsAndResolvers & Resolver Caching', route: '/angular/route-resolvers/run-guards-and-resolvers-caching' },
     { label: 'Named Outlet Lifecycle & Detail Drawer Pattern', route: '/angular/route-resolvers/named-outlet-lifecycle-and-detail-drawer-pattern' },
   ],
+  'preloading': [
+    { label: 'Priority-Tiered Preloading with Delay', route: '/angular/preloading/priority-tiered-preloading-with-delay' },
+    { label: 'Testing Preloading Strategies', route: '/angular/preloading/testing-preloading-strategies' },
+    { label: 'Measuring Preload Effectiveness', route: '/angular/preloading/measuring-preload-effectiveness' },
+  ],
 };
 
 @Component({

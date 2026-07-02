@@ -3377,6 +3377,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'preloading/priority-tiered-preloading-with-delay': {
+    apis: ['PreloadingStrategy', 'timer()', 'switchMap()'],
+    related: [
+      { label: 'Preloading Strategies (overview)',              route: '/angular/preloading' },
+      { label: 'Testing Preloading Strategies — next',           route: '/angular/preloading/testing-preloading-strategies' },
+    ],
+    tip: 'timer(delayMs).pipe(switchMap(() => load())) staggers preload() calls by tier — each route\'s delay runs independently, so same-tier routes preload around the same time, not sequentially.',
+    docs: [
+      { label: 'PreloadingStrategy API', url: 'https://angular.dev/api/router/PreloadingStrategy' },
+      { label: 'RxJS timer()',           url: 'https://rxjs.dev/api/index/function/timer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Always return of(null) — never raw null — to skip preloading a route inside a custom PreloadingStrategy.',
+      'Staggered per-tier delays are NOT cumulative — same-tier routes each start independent timers, not a chained sequence.',
+    ],
+  },
+
+  'preloading/testing-preloading-strategies': {
+    apis: ['fakeAsync', 'tick()', 'jasmine.createSpy()'],
+    related: [
+      { label: 'Priority-Tiered Preloading with Delay — previous', route: '/angular/preloading/priority-tiered-preloading-with-delay' },
+      { label: 'Preloading Strategies (overview)',                  route: '/angular/preloading' },
+      { label: 'Measuring Preload Effectiveness — next',             route: '/angular/preloading/measuring-preload-effectiveness' },
+    ],
+    tip: 'A PreloadingStrategy is a plain class with one method — instantiate it directly with new and call .preload() with a mock Route and a spy, no TestBed router setup needed.',
+    docs: [
+      { label: 'Testing Guide',   url: 'https://angular.dev/guide/testing' },
+      { label: 'fakeAsync API',   url: 'https://angular.dev/api/core/testing/fakeAsync' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Assert the spy was NOT called just before the delay boundary (e.g. tick(1999)), not just eventually called — otherwise a zeroed-out delay bug still passes.',
+      'Assert the emitted VALUE matches what load() produced, not just that load() was called — a strategy can call load() but still swallow its result.',
+    ],
+  },
+
+  'preloading/measuring-preload-effectiveness': {
+    apis: ['PerformanceObserver', 'performance.getEntriesByType()', 'Router.events'],
+    related: [
+      { label: 'Testing Preloading Strategies — previous', route: '/angular/preloading/testing-preloading-strategies' },
+      { label: 'Preloading Strategies (overview)',           route: '/angular/preloading' },
+    ],
+    tip: 'Compare NavigationStart-to-NavigationEnd duration for a preloaded route vs a non-preloaded route — that gap, not initial page load time, is what preloading actually targets.',
+    docs: [
+      { label: 'Resource Timing API',   url: 'https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API' },
+      { label: 'Navigation Events',     url: 'https://angular.dev/api/router/NavigationEnd' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Preloading only fetches the JS chunk — any HTTP data request the route makes still only fires on actual navigation unless a separate data prefetch is added.',
+      'A data prefetch must stay best-effort and non-blocking — the real resolver/service call must still work as a fallback if the prefetch fails or is still in flight.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

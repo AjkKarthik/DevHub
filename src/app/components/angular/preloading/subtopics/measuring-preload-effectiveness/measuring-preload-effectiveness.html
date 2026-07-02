@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Preloading Strategies"
+    topicRoute="/angular/preloading"
+    subtopicLabel="Measuring Preload Effectiveness" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Measuring Preload Effectiveness</h1>
+  <p class="page-subtitle">
+    Proving preloading actually helps with the Resource Timing and Navigation Timing APIs,
+    then combining chunk preloading with a best-effort HTTP data prefetch.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>MeasuredPreloadStrategy</code> logs each chunk's preload duration and fires a
+      best-effort data prefetch; <code>NavTimingService</code> logs total navigation
+      duration for every route change so you can compare preloaded vs non-preloaded routes.
+    </p>
+    <app-live-playground
+      title="Measuring preload effectiveness"
+      template="angular-cli"
+      openFile="src/app/measured-preload.strategy.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With tiering, testing, and measurement covered, you now have everything needed to
+      design, verify, and prove out a custom preloading strategy end to end — head back to
+      the topic overview to see how this connects to route resolvers and lazy loading.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Preloading Strategies"
+    topicRoute="/angular/preloading"
+    [prev]="{ label: 'Testing Preloading Strategies', route: '/angular/preloading/testing-preloading-strategies' }" />
+</div>

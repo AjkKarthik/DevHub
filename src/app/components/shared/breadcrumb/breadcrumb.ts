@@ -124,6 +124,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-route-resolvers': 'Testing Route Resolvers',
   'run-guards-and-resolvers-caching': 'runGuardsAndResolvers & Resolver Caching',
   'named-outlet-lifecycle-and-detail-drawer-pattern': 'Named Outlet Lifecycle & Detail Drawer Pattern',
+  'priority-tiered-preloading-with-delay': 'Priority-Tiered Preloading with Delay',
+  'testing-preloading-strategies': 'Testing Preloading Strategies',
+  'measuring-preload-effectiveness': 'Measuring Preload Effectiveness',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

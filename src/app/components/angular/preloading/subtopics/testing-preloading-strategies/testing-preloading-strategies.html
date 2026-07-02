@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Preloading Strategies"
+    topicRoute="/angular/preloading"
+    subtopicLabel="Testing Preloading Strategies" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Preloading Strategies</h1>
+  <p class="page-subtitle">
+    Calling <code>preload(route, load)</code> directly with a mock <code>Route</code> and a
+    spy — no <code>TestBed</code> router setup, no real navigation required.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Four unit tests for <code>TieredPreloadStrategy</code>: unflagged routes never preload,
+      high-tier routes preload immediately, medium-tier routes wait exactly 2000ms
+      (verified with <code>fakeAsync</code> + <code>tick()</code>), and the resolved value is
+      correctly forwarded.
+    </p>
+    <app-live-playground
+      title="Testing preloading strategies"
+      template="angular-cli"
+      openFile="src/app/tiered-preload.strategy.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Knowing a strategy behaves correctly in isolation is only half the picture — the next
+      subtopic measures whether preloading is actually reducing perceived navigation latency
+      in a real running app.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Preloading Strategies"
+    topicRoute="/angular/preloading"
+    [prev]="{ label: 'Priority-Tiered Preloading with Delay', route: '/angular/preloading/priority-tiered-preloading-with-delay' }"
+    [next]="{ label: 'Measuring Preload Effectiveness', route: '/angular/preloading/measuring-preload-effectiveness' }" />
+</div>

@@ -1624,7 +1624,22 @@
         <span class="nl-text">Preloading</span>
         @if (progress.isDone('preloading')) {<span class="nl-done">✓</span>}
         @if (diff('preloading'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('preloading')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('preloading')"
+                  (click)="toggleSubtopics('preloading', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('preloading'); as subs) {
+        @if (isSubtopicsExpanded('preloading')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/route-guards" routerLinkActive="active">
         <span class="nl-text">Route Guards</span>
         @if (progress.isDone('route-guards')) {<span class="nl-done">✓</span>}

@@ -232,7 +232,12 @@ export const routes: Routes = [
         { path: 'run-guards-and-resolvers-caching',     loadComponent: () => import('./components/angular/route-resolvers/subtopics/run-guards-and-resolvers-caching/run-guards-and-resolvers-caching').then(m => m.RunGuardsAndResolversCachingSubtopic) },
         { path: 'named-outlet-lifecycle-and-detail-drawer-pattern', loadComponent: () => import('./components/angular/route-resolvers/subtopics/named-outlet-lifecycle-and-detail-drawer-pattern/named-outlet-lifecycle-and-detail-drawer-pattern').then(m => m.NamedOutletLifecycleAndDetailDrawerPatternSubtopic) },
       ] },
-      { path: 'preloading',         loadComponent: () => import('./components/angular/preloading/preloading').then(m => m.PreloadingDemo) },
+      { path: 'preloading', children: [
+        { path: '',                                    loadComponent: () => import('./components/angular/preloading/preloading').then(m => m.PreloadingDemo) },
+        { path: 'priority-tiered-preloading-with-delay', loadComponent: () => import('./components/angular/preloading/subtopics/priority-tiered-preloading-with-delay/priority-tiered-preloading-with-delay').then(m => m.PriorityTieredPreloadingWithDelaySubtopic) },
+        { path: 'testing-preloading-strategies',        loadComponent: () => import('./components/angular/preloading/subtopics/testing-preloading-strategies/testing-preloading-strategies').then(m => m.TestingPreloadingStrategiesSubtopic) },
+        { path: 'measuring-preload-effectiveness',      loadComponent: () => import('./components/angular/preloading/subtopics/measuring-preload-effectiveness/measuring-preload-effectiveness').then(m => m.MeasuringPreloadEffectivenessSubtopic) },
+      ] },
       { path: 'route-guards',       loadComponent: () => import('./components/angular/route-guards/route-guards').then(m => m.RouteGuardsDemo) },
       { path: 'ng-image',           loadComponent: () => import('./components/angular/ng-image/ng-image').then(m => m.NgImageDemo) },
       { path: 'destroy-ref',        loadComponent: () => import('./components/angular/destroy-ref/destroy-ref').then(m => m.DestroyRefDemo) },
