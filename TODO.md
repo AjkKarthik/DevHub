@@ -1416,7 +1416,7 @@ off here with a date.
 - [x] `/angular/resource-api` — resource() API (2026-07-02 — 3 subtopics: rxresource-and-observable-integration, resource-reload-and-polling-patterns, testing-resource-based-components)
 - [x] `/angular/ngrx-signals` — NgRx Signals Store (2026-07-02 — 3 subtopics: withentities-filtering-pagination-sorting, testing-ngrx-signal-stores, signal-store-devtools-and-hooks-cleanup)
 - [x] `/angular/dynamic-forms` — Dynamic / Schema-Driven Forms (2026-07-02 — 3 subtopics: nested-and-array-schema-fields, schema-driven-cross-field-and-async-validation, custom-field-renderer-registry-pattern)
-- [ ] `/angular/route-resolvers` — Route Resolvers & Named Outlets
+- [x] `/angular/route-resolvers` — Route Resolvers & Named Outlets (2026-07-02 — 3 subtopics: testing-route-resolvers, run-guards-and-resolvers-caching, named-outlet-lifecycle-and-detail-drawer-pattern)
 - [ ] `/angular/preloading` — Preloading Strategies
 - [ ] `/angular/route-guards` — Route Guards
 - [ ] `/angular/ng-image` — NgOptimizedImage
