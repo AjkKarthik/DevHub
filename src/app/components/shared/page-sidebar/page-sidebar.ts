@@ -1436,6 +1436,93 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── FormArray — Dynamic Fields › subtopics (Phase 10) ────────────────────────
+  'form-array/dynamic-formarray-of-groups': {
+    apis: ['FormArray', 'formArrayName', 'formGroupName'],
+    related: [
+      { label: 'FormArray — Dynamic Fields (overview)', route: '/angular/form-array' },
+      { label: 'Typed FormArray — next',                 route: '/angular/form-array/typed-formarray' },
+    ],
+    tip: 'A FormArray of FormGroups needs one extra wrapping level per row — [formGroupName]="$index" — that a FormArray of plain controls does not need.',
+    docs: [
+      { label: 'Reactive Forms Guide', url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'FormArray API',        url: 'https://angular.dev/api/forms/FormArray' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A factory method for creating rows keeps every new row\'s shape and validators consistent — inlining the definition at every call site risks drift.',
+      'A FormArray only accepts AbstractControl instances — always wrap a new row with fb.group()/fb.control() before pushing.',
+      'track $index (or a stable id) is required on the @for loop over array controls.',
+    ],
+  },
+
+  'form-array/typed-formarray': {
+    apis: ['FormArray<T>', 'fb.array<T>()', 'UntypedFormArray'],
+    related: [
+      { label: 'FormArray of FormGroups — previous', route: '/angular/form-array/dynamic-formarray-of-groups' },
+      { label: 'FormArray — Dynamic Fields (overview)', route: '/angular/form-array' },
+      { label: 'Add, Remove & Reorder — next',        route: '/angular/form-array/formarray-crud-patterns' },
+    ],
+    tip: 'FormBuilder infers the FormArray<T> generic automatically when there is something to infer from — an explicit generic is only needed starting from a genuinely empty array.',
+    docs: [
+      { label: 'Typed Forms Guide', url: 'https://angular.dev/guide/forms/typed-forms' },
+      { label: 'FormArray API',     url: 'https://angular.dev/api/forms/FormArray' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'FormArray is typed by default since Angular 14, same as FormGroup — it is not a special untyped exception.',
+      'formArray.value reflects only enabled controls; formArray.getRawValue() always includes every control.',
+      'UntypedFormArray exists purely as a migration bridge for old, loosely-typed code — not a recommended choice for new code.',
+    ],
+  },
+
+  'form-array/formarray-crud-patterns': {
+    apis: ['push()', 'removeAt()', 'moveAt()', 'setControl()'],
+    related: [
+      { label: 'Typed FormArray — previous',            route: '/angular/form-array/typed-formarray' },
+      { label: 'FormArray — Dynamic Fields (overview)',  route: '/angular/form-array' },
+      { label: 'Validating the Array Itself — next',     route: '/angular/form-array/formarray-level-validation' },
+    ],
+    tip: 'form.reset() resets VALUES, not the number of controls — trim a grown FormArray manually with a while (arr.length > n) arr.removeAt(n) loop.',
+    docs: [
+      { label: 'Reactive Forms Guide', url: 'https://angular.dev/guide/forms/reactive-forms' },
+      { label: 'FormArray API',        url: 'https://angular.dev/api/forms/FormArray' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'removeAt() shifts remaining indices to close the gap — there is never a hole left in a FormArray.',
+      'moveAt(from, to) (Angular 18+) reorders without manually reading/rewriting each control\'s value.',
+      'setControl() atomically replaces the whole array — simpler than a manual removeAt/push loop when bulk-loading from an API.',
+    ],
+  },
+
+  'form-array/formarray-level-validation': {
+    apis: ['AbstractControl', 'ValidationErrors', 'myArray.errors'],
+    related: [
+      { label: 'Add, Remove & Reorder — previous',      route: '/angular/form-array/formarray-crud-patterns' },
+      { label: 'FormArray — Dynamic Fields (overview)',  route: '/angular/form-array' },
+    ],
+    tip: 'An array-level error lives on myArray.errors — not on any individual item\'s own .errors.',
+    docs: [
+      { label: 'Form Validation Guide', url: 'https://angular.dev/guide/forms/form-validation' },
+      { label: 'AbstractControl API',   url: 'https://angular.dev/api/forms/AbstractControl' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Item-level and array-level validators are two separate layers — neither substitutes for the other.',
+      'The array can be invalid due to ITS OWN validator (e.g. min length) even when every item is independently valid.',
+      'Array-level validators are passed as fb.array()\'s SECOND argument, alongside (not mixed into) the initial controls array.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

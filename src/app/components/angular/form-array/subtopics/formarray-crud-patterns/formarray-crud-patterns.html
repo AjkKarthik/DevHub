@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="FormArray — Dynamic Fields"
+    topicRoute="/angular/form-array"
+    subtopicLabel="Add, Remove &amp; Reorder" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Add, Remove &amp; Reorder — FormArray CRUD Patterns</h1>
+  <p class="page-subtitle">
+    push(), removeAt(), moveAt(), setControl() for a bulk replace — and the one real gotcha:
+    reset() resets values, not how many controls exist.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Add, remove, reorder with ↑/↓, bulk-replace from a simulated API call, and reset back
+      to a single item.
+    </p>
+    <app-live-playground
+      title="FormArray CRUD patterns"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      CRUD operations change what's IN the array — the last subtopic covers validating the
+      array itself, like requiring at least one item, which is a genuinely different kind of
+      rule than validating any single row's fields.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="FormArray — Dynamic Fields"
+    topicRoute="/angular/form-array"
+    [prev]="{ label: 'Typed FormArray', route: '/angular/form-array/typed-formarray' }"
+    [next]="{ label: 'Validating the Array Itself', route: '/angular/form-array/formarray-level-validation' }" />
+</div>

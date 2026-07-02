@@ -32,6 +32,10 @@ const ROUTE_LABELS: Record<string, string> = {
   'model-two-way-binding': 'model() — Two-Way Binding',
   'viewchild-viewchildren': 'viewChild() and viewChildren()',
   'contentchild-migration': 'contentChild() & Migration',
+  'dynamic-formarray-of-groups': 'FormArray of FormGroups',
+  'typed-formarray':    'Typed FormArray',
+  'formarray-crud-patterns': 'Add, Remove & Reorder',
+  'formarray-level-validation': 'Validating the Array Itself',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

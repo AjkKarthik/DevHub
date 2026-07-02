@@ -1200,7 +1200,22 @@
         <span class="nl-text">FormArray</span>
         @if (progress.isDone('form-array')) {<span class="nl-done">✓</span>}
         @if (diff('form-array'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('form-array')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('form-array')"
+                  (click)="toggleSubtopics('form-array', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('form-array'); as subs) {
+        @if (isSubtopicsExpanded('form-array')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/todo" routerLinkActive="active">
         <span class="nl-text">Todo (guarded)</span>
         @if (progress.isDone('todo')) {<span class="nl-done">✓</span>}

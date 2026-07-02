@@ -84,6 +84,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'viewChild() and viewChildren()', route: '/angular/parent-child/viewchild-viewchildren' },
     { label: 'contentChild() & Migration', route: '/angular/parent-child/contentchild-migration' },
   ],
+  'form-array': [
+    { label: 'FormArray of FormGroups', route: '/angular/form-array/dynamic-formarray-of-groups' },
+    { label: 'Typed FormArray', route: '/angular/form-array/typed-formarray' },
+    { label: 'Add, Remove & Reorder', route: '/angular/form-array/formarray-crud-patterns' },
+    { label: 'Validating the Array Itself', route: '/angular/form-array/formarray-level-validation' },
+  ],
 };
 
 @Component({
