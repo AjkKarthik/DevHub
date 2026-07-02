@@ -46,6 +46,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'material-common-components': 'Buttons, Dialogs & Snackbars',
   'mattable-sorting-pagination': 'MatTable — Sorting & Pagination',
   'material-testing-accessibility': 'Testing, Accessibility & Performance',
+  'async-store-operations': 'Async Store Operations',
+  'signal-store-vs-ngrx': 'Signal Store vs NgRx',
+  'testing-composing-stores': 'Testing & Composing Stores',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

@@ -104,6 +104,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'MatTable — Sorting & Pagination', route: '/angular/material/mattable-sorting-pagination' },
     { label: 'Testing, Accessibility & Performance', route: '/angular/material/material-testing-accessibility' },
   ],
+  store: [
+    { label: 'Async Store Operations', route: '/angular/store/async-store-operations' },
+    { label: 'Signal Store vs NgRx', route: '/angular/store/signal-store-vs-ngrx' },
+    { label: 'Testing & Composing Stores', route: '/angular/store/testing-composing-stores' },
+  ],
 };
 
 @Component({

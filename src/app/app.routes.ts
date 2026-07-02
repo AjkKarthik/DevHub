@@ -79,7 +79,12 @@ export const routes: Routes = [
         { path: 'mattable-sorting-pagination', loadComponent: () => import('./components/angular/material-demo/subtopics/mattable-sorting-pagination/mattable-sorting-pagination').then(m => m.MattableSortingPaginationSubtopic) },
         { path: 'material-testing-accessibility', loadComponent: () => import('./components/angular/material-demo/subtopics/material-testing-accessibility/material-testing-accessibility').then(m => m.MaterialTestingAccessibilitySubtopic) },
       ] },
-      { path: 'store',              loadComponent: () => import('./components/angular/signal-store/signal-store').then(m => m.SignalStoreDemo) },
+      { path: 'store', children: [
+        { path: '',                        loadComponent: () => import('./components/angular/signal-store/signal-store').then(m => m.SignalStoreDemo) },
+        { path: 'async-store-operations',  loadComponent: () => import('./components/angular/signal-store/subtopics/async-store-operations/async-store-operations').then(m => m.AsyncStoreOperationsSubtopic) },
+        { path: 'signal-store-vs-ngrx',    loadComponent: () => import('./components/angular/signal-store/subtopics/signal-store-vs-ngrx/signal-store-vs-ngrx').then(m => m.SignalStoreVsNgrxSubtopic) },
+        { path: 'testing-composing-stores', loadComponent: () => import('./components/angular/signal-store/subtopics/testing-composing-stores/testing-composing-stores').then(m => m.TestingComposingStoresSubtopic) },
+      ] },
       { path: 'templates',          loadComponent: () => import('./components/angular/template-syntax/template-syntax').then(m => m.TemplateSyntax) },
       { path: 'directives',         loadComponent: () => import('./components/angular/directives-demo/directives-demo').then(m => m.DirectivesDemo) },
       { path: 'lifecycle',          loadComponent: () => import('./components/angular/lifecycle/lifecycle').then(m => m.LifecycleDemo) },

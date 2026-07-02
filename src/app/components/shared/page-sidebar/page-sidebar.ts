@@ -1741,6 +1741,71 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Signal Store Pattern › subtopics (Phase 10) ──────────────────────────────
+  'store/async-store-operations': {
+    apis: ['async/await', 'finally', 'firstValueFrom()', 'rxMethod()'],
+    related: [
+      { label: 'Signal Store Pattern (overview)', route: '/angular/store' },
+      { label: 'Signal Store vs NgRx — next',      route: '/angular/store/signal-store-vs-ngrx' },
+    ],
+    tip: 'The finally block is not optional — without it, an error path can leave loading stuck at true forever.',
+    docs: [
+      { label: 'Signals Overview', url: 'https://angular.dev/guide/signals' },
+      { label: '@ngrx/signals Guide', url: 'https://ngrx.io/guide/signals' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'No actions or effects needed — a store\'s async method is just a plain async method.',
+      'firstValueFrom() bridges HttpClient\'s Observable to a single awaited value inside a store method.',
+      'rxMethod() earns its complexity for polling/retry/cancellation flows — not a default for every async method.',
+    ],
+  },
+
+  'store/signal-store-vs-ngrx': {
+    apis: ['signalStore()', 'withEntities()', 'patchState()'],
+    related: [
+      { label: 'Async Store Operations — previous', route: '/angular/store/async-store-operations' },
+      { label: 'Signal Store Pattern (overview)',    route: '/angular/store' },
+      { label: 'Testing & Composing — next',          route: '/angular/store/testing-composing-stores' },
+    ],
+    tip: 'Plain signal stores and NgRx are not mutually exclusive — a single app can use both for different slices of state.',
+    docs: [
+      { label: '@ngrx/signals Guide', url: 'https://ngrx.io/guide/signals' },
+      { label: '@ngrx/store Guide',   url: 'https://ngrx.io/guide/store' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Plain signal stores have NO built-in DevTools support — that missing tooling is the real tradeoff for less boilerplate.',
+      '@ngrx/signals\' withEntities() gives structured entity-collection CRUD with less hand-written code than a plain array/Map.',
+      'Classic @ngrx/store earns its cost specifically for DevTools time-travel debugging and enforced unidirectional flow at scale.',
+    ],
+  },
+
+  'store/testing-composing-stores': {
+    apis: ['TestBed.inject()', 'fakeAsync/tick', 'inject()'],
+    related: [
+      { label: 'Signal Store vs NgRx — previous', route: '/angular/store/signal-store-vs-ngrx' },
+      { label: 'Signal Store Pattern (overview)', route: '/angular/store' },
+    ],
+    tip: 'Signal state reads synchronously in tests — expect(store.total()).toBe(30) needs no async ceremony or detectChanges().',
+    docs: [
+      { label: 'Testing Guide', url: 'https://angular.dev/guide/testing' },
+      { label: 'Dependency Injection Guide', url: 'https://angular.dev/guide/di' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A store is just a plain class — TestBed.inject() or new MyStore() both work depending on its DI dependencies.',
+      'Stores compose by plain injection (constructor/inject()) — the opposite of prop-drilling through components.',
+      'A true circular dependency between two stores cannot be resolved by DI — extract shared state to a third store instead.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

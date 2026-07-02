@@ -1344,7 +1344,22 @@
         <span class="nl-text">Signal Store</span>
         @if (progress.isDone('store')) {<span class="nl-done">✓</span>}
         @if (diff('store'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('store')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('store')"
+                  (click)="toggleSubtopics('store', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('store'); as subs) {
+        @if (isSubtopicsExpanded('store')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/rxjs" routerLinkActive="active">
         <span class="nl-text">RxJS Operators</span>
         @if (progress.isDone('rxjs')) {<span class="nl-done">✓</span>}

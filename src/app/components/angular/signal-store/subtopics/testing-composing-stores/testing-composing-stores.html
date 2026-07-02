@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signal Store Pattern"
+    topicRoute="/angular/store"
+    subtopicLabel="Testing &amp; Composing Stores" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing &amp; Composing Stores</h1>
+  <p class="page-subtitle">
+    Signal state reads synchronously in tests, no detectChanges dance required — and
+    stores compose by plain injection, the direct opposite of prop-drilling.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>CartStore</code> that injects <code>AuthStore</code> directly and derives
+      <code>myItems</code> from both — composition without prop drilling.
+    </p>
+    <app-live-playground
+      title="Testing and composing stores"
+      template="angular-cli"
+      openFile="src/app/cart.store.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Signal Store Pattern</h2>
+    <p>
+      You now know how to handle async operations inside a store cleanly, when a plain
+      signal store is the right call versus <code>&#64;ngrx/signals</code> or classic NgRx,
+      and how to test and compose stores without prop-drilling or circular dependencies.
+      Combined with the private-signal + readonly + computed basics from earlier, that's the
+      complete signal-based state management toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signal Store Pattern"
+    topicRoute="/angular/store"
+    [prev]="{ label: 'Signal Store vs NgRx', route: '/angular/store/signal-store-vs-ngrx' }" />
+</div>
