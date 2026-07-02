@@ -1628,7 +1628,22 @@
         <span class="nl-text">AG Grid</span>
         @if (progress.isDone('ag-grid')) {<span class="nl-done">✓</span>}
         @if (diff('ag-grid'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ag-grid')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ag-grid')"
+                  (click)="toggleSubtopics('ag-grid', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('ag-grid'); as subs) {
+        @if (isSubtopicsExpanded('ag-grid')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/tanstack-query" routerLinkActive="active">
         <span class="nl-text">TanStack Query</span>
         @if (progress.isDone('tanstack-query')) {<span class="nl-done">✓</span>}

@@ -166,7 +166,12 @@ export const routes: Routes = [
         { path: 'cdk-table-headless-data-table',    loadComponent: () => import('./components/angular/cdk-demo/subtopics/cdk-table-headless-data-table/cdk-table-headless-data-table').then(m => m.CdkTableHeadlessDataTableSubtopic) },
         { path: 'building-custom-overlay-component', loadComponent: () => import('./components/angular/cdk-demo/subtopics/building-custom-overlay-component/building-custom-overlay-component').then(m => m.BuildingCustomOverlayComponentSubtopic) },
       ] },
-      { path: 'ag-grid',            loadComponent: () => import('./components/angular/ag-grid-demo/ag-grid-demo').then(m => m.AgGridDemo) },
+      { path: 'ag-grid', children: [
+        { path: '',                                        loadComponent: () => import('./components/angular/ag-grid-demo/ag-grid-demo').then(m => m.AgGridDemo) },
+        { path: 'custom-cell-renderers-angular-components', loadComponent: () => import('./components/angular/ag-grid-demo/subtopics/custom-cell-renderers-angular-components/custom-cell-renderers-angular-components').then(m => m.CustomCellRenderersAngularComponentsSubtopic) },
+        { path: 'editable-cells-value-setters',             loadComponent: () => import('./components/angular/ag-grid-demo/subtopics/editable-cells-value-setters/editable-cells-value-setters').then(m => m.EditableCellsValueSettersSubtopic) },
+        { path: 'master-detail-row-grouping',               loadComponent: () => import('./components/angular/ag-grid-demo/subtopics/master-detail-row-grouping/master-detail-row-grouping').then(m => m.MasterDetailRowGroupingSubtopic) },
+      ] },
       { path: 'tanstack-query',     loadComponent: () => import('./components/angular/tanstack-query/tanstack-query').then(m => m.TanstackQueryDemo) },
       { path: 'date-fns',           loadComponent: () => import('./components/angular/datefns-demo/datefns-demo').then(m => m.DateFnsDemo) },
       { path: 'animations',         loadComponent: () => import('./components/angular/animations-demo/animations-demo').then(m => m.AnimationsDemo) },

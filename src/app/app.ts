@@ -177,6 +177,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'CDK Table — Headless Data Table', route: '/angular/cdk/cdk-table-headless-data-table' },
     { label: 'Building a Custom Overlay Component', route: '/angular/cdk/building-custom-overlay-component' },
   ],
+  'ag-grid': [
+    { label: 'Custom Cell Renderers as Angular Components', route: '/angular/ag-grid/custom-cell-renderers-angular-components' },
+    { label: 'Editable Cells & Value Setters', route: '/angular/ag-grid/editable-cells-value-setters' },
+    { label: 'Master/Detail & Row Grouping', route: '/angular/ag-grid/master-detail-row-grouping' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="AG Grid with Angular"
+    topicRoute="/angular/ag-grid"
+    subtopicLabel="Custom Cell Renderers as Angular Components" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Custom Cell Renderers as Angular Components</h1>
+  <p class="page-subtitle">
+    Building a cellRenderer that's a real Angular component — ICellRendererAngularComp,
+    agInit/refresh, and passing callbacks back to the parent via cellRendererParams.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ag-grid-angular 22+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A status column rendered by a full Angular component with its own click handler,
+      passed a callback via <code>cellRendererParams</code> to update the row in the parent.
+    </p>
+    <app-live-playground
+      title="Custom cell renderers as Angular components"
+      template="angular-cli"
+      openFile="src/app/status-badge.ts"
+      [dependencies]="agGridDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="AG Grid with Angular"
+    topicRoute="/angular/ag-grid"
+    [next]="{ label: 'Editable Cells & Value Setters', route: '/angular/ag-grid/editable-cells-value-setters' }" />
+</div>

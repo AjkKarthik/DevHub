@@ -2697,6 +2697,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── AG Grid with Angular › subtopics (Phase 10) ──────────────────────────────
+  'ag-grid/custom-cell-renderers-angular-components': {
+    apis: ['ICellRendererAngularComp', 'agInit()', 'refresh()'],
+    related: [
+      { label: 'AG Grid with Angular (overview)',                route: '/angular/ag-grid' },
+      { label: 'Editable Cells & Value Setters — next',            route: '/angular/ag-grid/editable-cells-value-setters' },
+    ],
+    tip: 'refresh() must actually update the component\'s displayed state for the new params — returning true without updating leaves stale data on screen.',
+    docs: [
+      { label: 'AG Grid Cell Renderers', url: 'https://www.ag-grid.com/angular-data-grid/component-cell-renderer/' },
+      { label: 'AG Grid Angular API',    url: 'https://www.ag-grid.com/angular-data-grid/getting-started/' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A component renderer instance is created PER VISIBLE CELL — a plain callback remains better for simple text/single-icon transforms.',
+      'Pass the CLASS itself (not an instance) as cellRenderer — AG Grid instantiates it internally.',
+    ],
+  },
+
+  'ag-grid/editable-cells-value-setters': {
+    apis: ['editable', 'cellEditor', 'valueSetter'],
+    related: [
+      { label: 'Custom Cell Renderers as Angular Components — previous', route: '/angular/ag-grid/custom-cell-renderers-angular-components' },
+      { label: 'AG Grid with Angular (overview)',                         route: '/angular/ag-grid' },
+      { label: 'Master/Detail & Row Grouping — next',                     route: '/angular/ag-grid/master-detail-row-grouping' },
+    ],
+    tip: 'By default, editing mutates params.data directly — use valueSetter to route edits through your own signal update instead, keeping state in sync.',
+    docs: [
+      { label: 'AG Grid Cell Editing',  url: 'https://www.ag-grid.com/angular-data-grid/cell-editing/' },
+      { label: 'AG Grid Value Setters', url: 'https://www.ag-grid.com/angular-data-grid/value-setters/' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'valueSetter (return false) is the correct hook to REJECT an invalid edit — cellValueChanged fires after the edit is already committed.',
+      'Typed editors (agNumberCellEditor, agSelectCellEditor) constrain input — a plain text editor does not.',
+    ],
+  },
+
+  'ag-grid/master-detail-row-grouping': {
+    apis: ['rowGroup', 'aggFunc', 'masterDetail'],
+    related: [
+      { label: 'Editable Cells & Value Setters — previous', route: '/angular/ag-grid/editable-cells-value-setters' },
+      { label: 'AG Grid with Angular (overview)',             route: '/angular/ag-grid' },
+    ],
+    tip: 'Grouping reorganizes the SAME flat dataset — master/detail nests a genuinely SEPARATE related dataset per row; they solve different data-shape problems.',
+    docs: [
+      { label: 'AG Grid Row Grouping',   url: 'https://www.ag-grid.com/angular-data-grid/grouping/' },
+      { label: 'AG Grid Master Detail',  url: 'https://www.ag-grid.com/angular-data-grid/master-detail/' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'aggFunc computes automatically from rows within each group — no manual calculation needed.',
+      'A master/detail nested grid is a completely separate grid instance with its own independent columnDefs.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],
