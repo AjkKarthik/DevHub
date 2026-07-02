@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { PageMetaComponent } from '../../../../shared/page-meta/page-meta';
 import { TheoryBlockComponent, TheoryPoint } from '../../../../shared/theory-block/theory-block';
 import { LivePlaygroundComponent, PlaygroundFile } from '../../../../shared/live-playground/live-playground';
 import { TryItComponent, TryItExercise } from '../../../../shared/try-it/try-it';
 import { MisconceptionsComponent, Misconception } from '../../../../shared/misconceptions/misconceptions';
 import { SubtopicNavComponent } from '../../../../shared/subtopic-nav/subtopic-nav';
+import { SubtopicEyebrowComponent } from '../../../../shared/subtopic-eyebrow/subtopic-eyebrow';
 
 @Component({
   selector: 'app-what-is-a-signal',
   standalone: true,
   imports: [
-    RouterLink, PageMetaComponent, TheoryBlockComponent,
+    PageMetaComponent, TheoryBlockComponent,
     LivePlaygroundComponent, TryItComponent, MisconceptionsComponent, SubtopicNavComponent,
+    SubtopicEyebrowComponent,
   ],
   templateUrl: './what-is-a-signal.html',
   styleUrl: './what-is-a-signal.scss',

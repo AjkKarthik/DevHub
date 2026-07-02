@@ -5,7 +5,8 @@
       "name": "dev-server",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start"],
-      "port": 4200
+      "port": 4200,
+      "autoPort": true
     }
   ]
 }

@@ -7,6 +7,8 @@ const ROUTE_LABELS: Record<string, string> = {
   '':                   'Home',
   'counter':            'Signals & State',
   'what-is-a-signal':   'What Is a Signal?',
+  'computed':           'computed() — Derived State',
+  'effects':            'effect() — Reactive Side Effects',
   'templates':          'Template Syntax',
   'directives':         'Directives',
   'lifecycle':          'Lifecycle Hooks',

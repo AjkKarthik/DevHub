@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signals &amp; Reactive State"
+    topicRoute="/angular/counter"
+    subtopicLabel="effect() — Reactive Side Effects" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">effect() — Reactive Side Effects</h1>
+  <p class="page-subtitle">
+    signal() holds a value, computed() derives a value — effect() is for everything
+    else: logging, persistence, DOM updates, and anything that reacts to a change
+    without itself being a value.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Click the button, then check the log list (and your browser console) — the
+      effect runs automatically on every change, no subscription required.
+    </p>
+    <app-live-playground
+      title="effect() basics"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      You now have all three core primitives: <code>signal()</code> holds state,
+      <code>computed()</code> derives values from it, and <code>effect()</code> reacts to it
+      with side effects. Everything else in Angular's signal system — <code>linkedSignal()</code>,
+      the service patterns, the RxJS interop — is built by combining these three in
+      different ways. Next: how <code>&#64;if</code> and <code>&#64;for</code> read signals directly
+      in your templates.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signals & Reactive State"
+    topicRoute="/angular/counter"
+    [prev]="{ label: 'computed() — Derived State', route: '/angular/counter/computed' }"
+    [next]="{ label: '@if and @for — Control Flow', route: '/angular/counter/control-flow' }" />
+</div>

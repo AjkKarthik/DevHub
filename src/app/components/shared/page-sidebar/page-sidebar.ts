@@ -826,6 +826,50 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'counter/computed': {
+    apis: ['computed()'],
+    related: [
+      { label: 'What Is a Signal? — previous', route: '/angular/counter/what-is-a-signal' },
+      { label: 'Signals & State (overview)',   route: '/angular/counter' },
+      { label: 'effect() — next subtopic',     route: '/angular/counter/effects' },
+    ],
+    tip: 'computed() is lazy AND memoised — an unread one costs nothing, and a repeatedly-read one only recalculates when a dependency actually changes.',
+    docs: [
+      { label: 'Signals Overview', url: 'https://angular.dev/guide/signals'     },
+      { label: 'computed() API',   url: 'https://angular.dev/api/core/computed' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'computed() has no .set() or .update() — TypeScript blocks it at compile time. Need a writable-but-defaulted signal instead? That is what linkedSignal() is for.',
+      'Only signals actually read during the callback are tracked as dependencies — an unread branch of an if/else does not count, even if it contains a signal call.',
+      'A computed() that never gets read never runs its callback at all — defining one "just in case" costs nothing until something actually calls it.',
+    ],
+  },
+
+  'counter/effects': {
+    apis: ['effect()', 'allowSignalWrites'],
+    related: [
+      { label: 'computed() — previous',        route: '/angular/counter/computed' },
+      { label: 'Signals & State (overview)',   route: '/angular/counter' },
+      { label: '@if/@for — next subtopic',     route: '/angular/counter/control-flow' },
+    ],
+    tip: 'effect() must be created in an injection context — a field initialiser or constructor. Calling it later from a method throws at runtime.',
+    docs: [
+      { label: 'Signals Overview', url: 'https://angular.dev/guide/signals'    },
+      { label: 'effect() API',     url: 'https://angular.dev/api/core/effect' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Reading and writing the SAME signal inside one effect() causes an infinite loop — writing to a different signal is fine and common.',
+      'effect() re-runs are scheduled/batched, not synchronous — do not rely on it for a value other code needs immediately (use computed() for that).',
+      'Return a cleanup function from the callback to tear down timers/listeners — Angular calls it before every re-run and on destroy.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],
