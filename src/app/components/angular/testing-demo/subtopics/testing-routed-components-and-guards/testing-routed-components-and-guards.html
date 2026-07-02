@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Testing Angular"
+    topicRoute="/angular/testing"
+    subtopicLabel="Testing Routed Components &amp; Guards" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Routed Components &amp; Guards</h1>
+  <p class="page-subtitle">
+    Mocking ActivatedRoute for components reading route data, calling a functional guard
+    directly via TestBed.runInInjectionContext(), and asserting UrlTree redirects by
+    serializing them.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A functional <code>authGuard</code> tested directly as a plain function — both the
+      allowed and redirect branches, with the redirect asserted via a serialized URL string.
+    </p>
+    <app-live-playground
+      title="Testing routed components and guards"
+      template="angular-cli"
+      openFile="src/app/auth.guard.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Testing Angular"
+    topicRoute="/angular/testing"
+    [prev]="{ label: 'Testing Directives with Host Components', route: '/angular/testing/testing-directives-with-host-components' }"
+    [next]="{ label: 'Test Doubles & Mocking Strategies', route: '/angular/testing/test-doubles-and-mocking-strategies' }" />
+</div>

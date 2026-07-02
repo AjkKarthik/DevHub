@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Testing Angular"
+    topicRoute="/angular/testing"
+    subtopicLabel="Testing Directives with Host Components" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Directives with Host Components</h1>
+  <p class="page-subtitle">
+    Why a directive can't be created directly in a test — the test-only host component
+    pattern for attribute and structural directives, and querying the directive instance
+    itself vs. its DOM effect.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A highlight directive plus its spec file, using a test-only host component to apply
+      it to a real element and assert on the actual background-color effect.
+    </p>
+    <app-live-playground
+      title="Testing directives with host components"
+      template="angular-cli"
+      openFile="src/app/highlight.directive.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Testing Angular"
+    topicRoute="/angular/testing"
+    [next]="{ label: 'Testing Routed Components & Guards', route: '/angular/testing/testing-routed-components-and-guards' }" />
+</div>

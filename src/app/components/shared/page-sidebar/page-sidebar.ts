@@ -3006,6 +3006,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Testing Angular › subtopics (Phase 10) ───────────────────────────────────
+  'testing/testing-directives-with-host-components': {
+    apis: ['TestHostComponent', 'By.directive()', 'debugElement.injector'],
+    related: [
+      { label: 'Testing Angular (overview)',                          route: '/angular/testing' },
+      { label: 'Testing Routed Components & Guards — next',           route: '/angular/testing/testing-routed-components-and-guards' },
+    ],
+    tip: 'A directive cannot be created directly in a test — use a small test-only host component that applies it to a real element.',
+    docs: [
+      { label: 'Testing Guide',       url: 'https://angular.dev/guide/testing' },
+      { label: 'Directives Guide',    url: 'https://angular.dev/guide/directives' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Query the directive\'s actual DOM effect (style/classList), not just that it was found — that\'s the meaningful assertion.',
+      'For structural directives, toggle the condition through multiple states in one test to catch view cleanup/recreation bugs.',
+    ],
+  },
+
+  'testing/testing-routed-components-and-guards': {
+    apis: ['ActivatedRoute mock', 'runInInjectionContext()', 'RouterTestingHarness'],
+    related: [
+      { label: 'Testing Directives with Host Components — previous', route: '/angular/testing/testing-directives-with-host-components' },
+      { label: 'Testing Angular (overview)',                          route: '/angular/testing' },
+      { label: 'Test Doubles & Mocking Strategies — next',            route: '/angular/testing/test-doubles-and-mocking-strategies' },
+    ],
+    tip: 'A functional guard is just a function — call it directly via TestBed.runInInjectionContext() rather than spinning up a full router.',
+    docs: [
+      { label: 'Testing Guide',   url: 'https://angular.dev/guide/testing' },
+      { label: 'Router Guide',    url: 'https://angular.dev/guide/routing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Assert a guard\'s UrlTree redirect by serializing it to a string — comparing UrlTree objects directly is brittle.',
+      'Use RouterTestingHarness only when you need the FULL routing config (including guards) to actually run — a mock ActivatedRoute is lighter for isolated component tests.',
+    ],
+  },
+
+  'testing/test-doubles-and-mocking-strategies': {
+    apis: ['jasmine.createSpyObj()', 'NO_ERRORS_SCHEMA', 'TestBed.overrideComponent()'],
+    related: [
+      { label: 'Testing Routed Components & Guards — previous', route: '/angular/testing/testing-routed-components-and-guards' },
+      { label: 'Testing Angular (overview)',                      route: '/angular/testing' },
+    ],
+    tip: 'NO_ERRORS_SCHEMA silently swallows genuine bugs like a typo in a child selector — use it deliberately, not as a default fix for template errors.',
+    docs: [
+      { label: 'Testing Guide',        url: 'https://angular.dev/guide/testing' },
+      { label: 'Component Harness',    url: 'https://angular.dev/guide/testing/component-harnesses-overview' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'jasmine.createSpyObj creates spies for a whole list of methods in one call — far less boilerplate than individual jasmine.createSpy() calls.',
+      'TestBed.overrideComponent stubs a specific expensive child while keeping template checking active elsewhere — more surgical than blanket NO_ERRORS_SCHEMA.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

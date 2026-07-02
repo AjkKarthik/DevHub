@@ -202,6 +202,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Composite Value CVA with FormGroup', route: '/angular/cva/composite-value-cva-with-formgroup' },
     { label: 'Testing CVA Components', route: '/angular/cva/testing-cva-components' },
   ],
+  testing: [
+    { label: 'Testing Directives with Host Components', route: '/angular/testing/testing-directives-with-host-components' },
+    { label: 'Testing Routed Components & Guards', route: '/angular/testing/testing-routed-components-and-guards' },
+    { label: 'Test Doubles & Mocking Strategies', route: '/angular/testing/test-doubles-and-mocking-strategies' },
+  ],
 };
 
 @Component({

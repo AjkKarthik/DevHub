@@ -106,6 +106,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'ngcontrol-self-injection-validation-display': 'NgControl Self-Injection for Validation Display',
   'composite-value-cva-with-formgroup': 'Composite Value CVA with FormGroup',
   'testing-cva-components': 'Testing CVA Components',
+  'testing-directives-with-host-components': 'Testing Directives with Host Components',
+  'testing-routed-components-and-guards': 'Testing Routed Components & Guards',
+  'test-doubles-and-mocking-strategies': 'Test Doubles & Mocking Strategies',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

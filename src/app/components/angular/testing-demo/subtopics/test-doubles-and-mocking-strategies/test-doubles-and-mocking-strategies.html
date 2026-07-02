@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Testing Angular"
+    topicRoute="/angular/testing"
+    subtopicLabel="Test Doubles &amp; Mocking Strategies" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Test Doubles &amp; Mocking Strategies</h1>
+  <p class="page-subtitle">
+    jasmine.createSpyObj for mocking a whole service interface at once, shallow vs. deep
+    rendering with NO_ERRORS_SCHEMA and TestBed.overrideComponent, and choosing between a
+    real service, a spy, or a fake.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A component depending on a service mocked with <code>jasmine.createSpyObj</code> —
+      controlling what it returns and asserting how the component calls it.
+    </p>
+    <app-live-playground
+      title="Test doubles and mocking strategies"
+      template="angular-cli"
+      openFile="src/app/user-profile.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Testing Angular</h2>
+    <p>
+      You now know how to test directives via the test-only host component pattern, how to
+      mock <code>ActivatedRoute</code> and test functional guards directly as plain
+      functions, and how to choose between shallow rendering, a targeted
+      <code>overrideComponent</code> stub, and different flavors of test doubles. Combined
+      with TestBed fundamentals, DOM queries, signals testing, HTTP testing, and
+      <code>fakeAsync</code> from the main topic, that's the complete Angular testing
+      toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing Angular"
+    topicRoute="/angular/testing"
+    [prev]="{ label: 'Testing Routed Components & Guards', route: '/angular/testing/testing-routed-components-and-guards' }" />
+</div>

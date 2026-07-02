@@ -196,7 +196,12 @@ export const routes: Routes = [
         { path: 'composite-value-cva-with-formgroup',       loadComponent: () => import('./components/angular/cva-demo/subtopics/composite-value-cva-with-formgroup/composite-value-cva-with-formgroup').then(m => m.CompositeValueCvaWithFormgroupSubtopic) },
         { path: 'testing-cva-components',                  loadComponent: () => import('./components/angular/cva-demo/subtopics/testing-cva-components/testing-cva-components').then(m => m.TestingCvaComponentsSubtopic) },
       ] },
-      { path: 'testing',            loadComponent: () => import('./components/angular/testing-demo/testing-demo').then(m => m.TestingDemo) },
+      { path: 'testing', children: [
+        { path: '',                                         loadComponent: () => import('./components/angular/testing-demo/testing-demo').then(m => m.TestingDemo) },
+        { path: 'testing-directives-with-host-components',   loadComponent: () => import('./components/angular/testing-demo/subtopics/testing-directives-with-host-components/testing-directives-with-host-components').then(m => m.TestingDirectivesWithHostComponentsSubtopic) },
+        { path: 'testing-routed-components-and-guards',      loadComponent: () => import('./components/angular/testing-demo/subtopics/testing-routed-components-and-guards/testing-routed-components-and-guards').then(m => m.TestingRoutedComponentsAndGuardsSubtopic) },
+        { path: 'test-doubles-and-mocking-strategies',       loadComponent: () => import('./components/angular/testing-demo/subtopics/test-doubles-and-mocking-strategies/test-doubles-and-mocking-strategies').then(m => m.TestDoublesAndMockingStrategiesSubtopic) },
+      ] },
       { path: 'tailwind',           loadComponent: () => import('./components/angular/tailwind-demo/tailwind-demo').then(m => m.TailwindDemo) },
       { path: 'resource-api',       loadComponent: () => import('./components/angular/resource-api/resource-api').then(m => m.ResourceApiDemo) },
       { path: 'ngrx-signals',       loadComponent: () => import('./components/angular/ngrx-signals/ngrx-signals').then(m => m.NgrxSignalsDemo) },
