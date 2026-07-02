@@ -323,6 +323,122 @@ structure/UX, only content + accent differ.
 8. Hub-home: flip the tech card `available: true`, set route/topics; add to whatsNew + footer links.
 9. Build all parity Practice/Reference pages over time (track in Current state below).
 
+## Phase 10 — Subtopic ("Learn Mode") pages
+
+Deep-dive pages nested one level under a topic page, for "I read the topic page but still
+don't really get it" learners. Locked in after a full pilot (`/angular/counter` — Signals &
+Reactive State, all 6 subtopics) was built, wired, and browser-verified. See TODO.md's
+Phase 10 section for the full rollout plan and the complete 836-page checklist to work
+through — this section is just the exact wiring recipe, kept in sync as more get built.
+
+### File layout & component naming
+
+`components/<hub-area>/<topic-folder>/subtopics/<subtopic-slug>/<subtopic-slug>.ts|.html|.scss`
+— a `subtopics/` folder inside the existing topic folder, one sub-folder per subtopic.
+Class naming: `<PascalCaseSlug>Subtopic` (e.g. `EffectsSubtopic`, `ControlFlowSubtopic`).
+
+### Required shared components (all in `components/shared/`)
+
+- `page-meta/page-meta` (`app-page-meta`) — same as topic pages.
+- `theory-block/theory-block` (`app-theory-block`) — **one single `theory: TheoryPoint[]`
+  array, one `<app-theory-block [sections]="theory" />` call.** Do NOT split into multiple
+  arrays with multiple `<app-theory-block>` calls — that renders several redundant stacked
+  "Theory & Key Points" accordions. This was a real mistake caught in the pilot.
+- `live-playground/live-playground` (`app-live-playground`) — collapsed-by-default,
+  click-to-load StackBlitz embed (dynamic `import('@stackblitz/sdk')`, kept out of the main
+  bundle). Inputs: `title` (required), `files: PlaygroundFile[]` (required, `{ path, content }`),
+  `template` (default `'angular-cli'`), `openFile?`, `height` (default 480).
+- `try-it/try-it` (`app-try-it`) — one `exercise: TryItExercise = { prompt, hint, solution }`.
+  `prompt` and `hint` bind via `[innerHTML]` (they contain `<code>`/`<em>` tags); `solution`
+  stays plain interpolation (rendered as literal code in `<pre><code>`).
+- `misconceptions/misconceptions` (`app-misconceptions`) — `misconceptions:
+  Misconception[] = [{ thought, reality }]`, 3 entries typical. Both fields bind via
+  `[innerHTML]` — they contain `<code>`/`<strong>` tags.
+- `subtopic-nav/subtopic-nav` (`app-subtopic-nav`) — prev/next pager + "back to topic
+  overview" footer. Inputs: `topicLabel`, `topicRoute` (required), `prev?`, `next?`
+  (`SubtopicLink | null`, default `null` — omit the input entirely on the first/last
+  subtopic, the template handles a missing prev/next gracefully with a spacer).
+- `subtopic-eyebrow/subtopic-eyebrow` (`app-subtopic-eyebrow`) — the "Topic › Subtopic" row
+  at the top of the page. Inputs: `topicLabel`, `topicRoute`, `subtopicLabel` (all required).
+  **Always use this component — do not inline the eyebrow markup/CSS.** It was copy-pasted
+  into the first 3 pilot pages before being extracted; retrofitting is wasted work.
+
+### Page template order (fixed — matches topic-page anatomy)
+
+```html
+<div class="ng-page subtopic-page">                     <!-- swap hub wrapper class per hub -->
+  <app-subtopic-eyebrow topicLabel="…" topicRoute="/angular/<topic>" subtopicLabel="…" />
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">…</h1>
+  <p class="page-subtitle">…</p>
+  <app-page-meta [readingTime]="…" difficulty="…" since="…" tech="…" />
+  <app-theory-block [sections]="theory" />
+  <section class="ng-section"><h2>See it run</h2><p>…</p>
+    <app-live-playground title="…" template="angular-cli" openFile="…" [files]="liveDemoFiles" />
+  </section>
+  <app-try-it [exercise]="exercise" />
+  <app-misconceptions [items]="misconceptions" />
+  <section class="ng-section"><h2>Where this fits</h2><p>… links to what comes next …</p></section>
+  <app-subtopic-nav topicLabel="…" topicRoute="/angular/<topic>" [prev]="{…}" [next]="{…}" />
+</div>
+```
+
+No `app-page-complete` on subtopics — they are not counted in progress totals (the parent
+topic page remains the trackable unit). No `app-quick-ref`, `app-common-mistakes`,
+`app-challenge-block`, `app-quiz-block`, `app-qna-block`, `app-revision-card` — those belong
+to the topic page, not its subtopics.
+
+### Wiring checklist (do ALL of these per subtopic page)
+
+1. **Files** as above.
+2. **Route**: convert the topic's flat route entry in `app.routes.ts` into a parent with a
+   `children` array (first child `path: ''` = the existing topic component), then add one
+   child entry per subtopic (`path: '<subtopic-slug>'`, lazy `loadComponent`).
+3. **Left nav accordion** in `app.ts` / `app.html` — generic, already built, do NOT reinvent:
+   add an entry to the `SUBTOPICS: Record<string, SubtopicNavEntry[]>` map in `app.ts`
+   (`{ label, route }`) keyed by the topic's route slug. The nav's chevron toggle
+   (`toggleSubtopics()`), collapsed-by-default state (`expandedTopics` signal), and
+   auto-expand-on-direct-navigation (`autoExpandForCurrentUrl()`) are all generic — adding
+   to the map is the only change needed per subtopic.
+4. **Breadcrumb**: the 4th-level crumb is already generic (`parentTopicRoute()` /
+   `parentTopicLabel()` in `breadcrumb.ts`) — just add the subtopic slug → title mapping to
+   the hub's labels map (`ROUTE_LABELS` for Angular, etc.).
+5. **Sidebar**: add a **genuinely tailored** entry to `SIDEBAR_MAP` in `page-sidebar.ts`,
+   keyed `'<topic-slug>/<subtopic-slug>'` — scoped `apis`/`related`/`tip`/`docs`/`gotchas` for
+   THAT subtopic specifically (link `related` to the prev/next subtopics + the topic
+   overview). **Leaving it on the generic DEFAULT is a real mistake caught during the
+   pilot review — do not skip this.**
+6. **Search index**: add an entry to `SEARCH_INDEX` in `search.service.ts` keyed
+   `'<topic-slug>/<subtopic-slug>'` (Angular pages — no prefix needed; `search.ts`'s `url()`
+   already falls through to `/angular/<route>` for unprefixed keys, confirmed working with
+   nested slugs, no changes needed there).
+7. **No progress/hub-home wiring** — subtopics are not trackable topics and are not hub-home
+   cards. Skip WIRING CHECKLIST steps 6–9 above for subtopic pages.
+8. **Build**: `npx ng build --configuration=production` must pass.
+9. **Verify in browser** — do not just trust the build: nav accordion expands/collapses and
+   auto-expands on direct navigation, breadcrumb shows all 4 levels, sidebar shows the
+   tailored (not DEFAULT) content, playground loads (click-to-load StackBlitz iframe
+   actually appears), dark mode renders correctly, prev/next footer nav is correct.
+
+### Gotchas specific to subtopic pages
+
+- **Literal `@if`/`@for` text inside `<code>` tags in the `.html` template** must be escaped
+  as `&#64;if`/`&#64;for` (same root cause as the existing `&#64;` rule elsewhere in this
+  file) — writing a literal `@if` in a `.html` file is parsed by the Angular compiler as the
+  start of a control-flow block, not literal text, and fails with `NG5002: Incomplete block`.
+  This only applies to the component's own `.html` template — text inside a TS string field
+  (theory `points`, misconceptions, etc.) bound via `[innerHTML]` is safe as literal `@if`.
+- **`${` inside a nested playground code string is a live double-escaping trap.** The
+  `PlaygroundFile.content` fields are themselves TS template literals inside the subtopic's
+  real `.ts` source file. If the nested playground code needs a literal `$` immediately
+  followed by `{` — e.g. Angular interpolation for a price, `${{ item.price }}` — escape it
+  as a SINGLE `\$` (not `\\\$`). `\$` evaluates to a literal `$` at runtime; `\\\$` evaluates
+  to a literal `\$` (visible stray backslash — a real bug caught and fixed during the pilot).
+  If instead you want the nested code's OWN template literal interpolation to survive (e.g.
+  `` `Count: ${val}` `` inside the nested Angular component's own TS), that also needs
+  `\${val}` — same single-backslash rule as the existing TypeScript gotcha above, just
+  applied one level deeper because playground content is itself nested in a template literal.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
