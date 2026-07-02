@@ -452,7 +452,14 @@ to the topic page, not its subtopics.
   `title="@defer basics"`, `[prev]="{ label: '...@defer...' }"` — never trip this, only bare
   text NODES do; (2) text inside a TS string field (theory `points`, misconceptions, etc.)
   bound via `[innerHTML]` is also safe as literal `@if`, since it never passes through the
-  template parser at all.
+  template parser at all. **Literal `{{ }}` text is a RELATED but DIFFERENT problem — the
+  `&#123;`/`&#125;` HTML-entity trick does NOT work for it** (confirmed by a real build
+  failure: `NG5002: Parser Error: Blank expressions are not allowed in interpolated strings`
+  — entities decode too late to stop Angular's interpolation lexer, unlike the block-syntax
+  parser which respects them). The correct fix, taken from the pre-existing `/angular/templates`
+  page: use Angular's OWN interpolation with single-character string literals to render the
+  braces — `{{ '{' }}{{ '{' }} {{ '}' }}{{ '}' }}` produces the literal visual text `{{ }}` at
+  runtime. Needed on any subtopic that is itself ABOUT interpolation syntax.
 - **`${` inside a nested playground code string is a live double-escaping trap.** The
   `PlaygroundFile.content` fields are themselves TS template literals inside the subtopic's
   real `.ts` source file. If the nested playground code needs a literal `$` immediately

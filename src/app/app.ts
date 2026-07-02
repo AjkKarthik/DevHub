@@ -109,6 +109,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Signal Store vs NgRx', route: '/angular/store/signal-store-vs-ngrx' },
     { label: 'Testing & Composing Stores', route: '/angular/store/testing-composing-stores' },
   ],
+  templates: [
+    { label: 'Interpolation & Expressions', route: '/angular/templates/interpolation-expressions' },
+    { label: 'Property, Event & Two-Way Binding', route: '/angular/templates/property-event-two-way-binding' },
+    { label: 'Template Refs & @let', route: '/angular/templates/template-refs-and-let' },
+    { label: 'Pipes — Built-in & Custom', route: '/angular/templates/pipes-built-in-custom' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template Syntax"
+    topicRoute="/angular/templates"
+    subtopicLabel="Property, Event &amp; Two-Way Binding" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Property, Event &amp; Two-Way Binding</h1>
+  <p class="page-subtitle">
+    [property] sets a DOM property, [attr.x] sets an HTML attribute — mixing them up
+    fails silently, not loudly, which is exactly why it's worth getting right.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Property binding, attribute binding, a key-combo event shortcut, and class/style
+      binding all in one small form.
+    </p>
+    <app-live-playground
+      title="Property, event, two-way binding"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Bindings connect to expressions — the next subtopic covers naming a piece of the
+      template itself, with template reference variables and <code>&#64;let</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template Syntax"
+    topicRoute="/angular/templates"
+    [prev]="{ label: 'Interpolation & Expressions', route: '/angular/templates/interpolation-expressions' }"
+    [next]="{ label: 'Template Refs & @let', route: '/angular/templates/template-refs-and-let' }" />
+</div>

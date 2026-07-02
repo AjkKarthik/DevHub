@@ -1806,6 +1806,93 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Template Syntax › subtopics (Phase 10) ───────────────────────────────────
+  'templates/interpolation-expressions': {
+    apis: ['{{ }}', 'computed()'],
+    related: [
+      { label: 'Template Syntax (overview)', route: '/angular/templates' },
+      { label: 'Property & Event Binding — next', route: '/angular/templates/property-event-two-way-binding' },
+    ],
+    tip: 'A method returning a new array/object on every call, bound directly in a template, makes an OnPush child see a "changed" input every cycle — wrap it in computed() to memoize.',
+    docs: [
+      { label: 'Template Syntax Guide', url: 'https://angular.dev/guide/templates' },
+      { label: 'Interpolation Guide',   url: 'https://angular.dev/guide/templates/interpolation' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      '{{ count }} without () on a signal silently shows "[object Object]" — no compile error, just a wrong display value.',
+      'Template expressions can be evaluated multiple times per change-detection cycle — side effects inside them run unpredictably.',
+      'Expressions run in the component INSTANCE\'s context — no this. prefix needed.',
+    ],
+  },
+
+  'templates/property-event-two-way-binding': {
+    apis: ['[property]', '[attr.x]', '(event)', '[(model)]'],
+    related: [
+      { label: 'Interpolation — previous',      route: '/angular/templates/interpolation-expressions' },
+      { label: 'Template Syntax (overview)',    route: '/angular/templates' },
+      { label: 'Template Refs & @let — next',    route: '/angular/templates/template-refs-and-let' },
+    ],
+    tip: '[aria-label] silently fails at runtime (no matching DOM property) — use [attr.aria-label] for attributes with no DOM property equivalent.',
+    docs: [
+      { label: 'Property Binding Guide', url: 'https://angular.dev/guide/templates/property-binding' },
+      { label: 'Event Binding Guide',    url: 'https://angular.dev/guide/templates/event-binding' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Key-combo event shortcuts like (keyup.enter)/(keydown.escape) avoid manual event.key checks.',
+      '[(ngModel)] requires FormsModule — skip it and Angular throws a clear compile-time error, unlike the silent attr/property mismatch.',
+      'model() signals support [(prop)] on YOUR OWN components with zero ngModel/FormsModule involvement.',
+    ],
+  },
+
+  'templates/template-refs-and-let': {
+    apis: ['#ref', '@let', 'viewChild()'],
+    related: [
+      { label: 'Property & Event Binding — previous', route: '/angular/templates/property-event-two-way-binding' },
+      { label: 'Template Syntax (overview)',           route: '/angular/templates' },
+      { label: 'Pipes — next',                          route: '/angular/templates/pipes-built-in-custom' },
+    ],
+    tip: '@let follows the same block-scoping as #ref — a @let declared inside @if is not accessible outside that block.',
+    docs: [
+      { label: 'Template Reference Variables', url: 'https://angular.dev/guide/templates/reference-variables' },
+      { label: '@let Guide',                    url: 'https://angular.dev/guide/templates/let-template-variables' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A template reference\'s TYPE depends on what it is placed on — element, component instance, directive instance, or TemplateRef.',
+      '#f="ngForm" disambiguates to the NgForm directive instance instead of the raw HTMLFormElement.',
+      '@let avoids re-evaluating the same expression (a signal call, an async-piped value) multiple times in one block.',
+    ],
+  },
+
+  'templates/pipes-built-in-custom': {
+    apis: ['| pipeName', 'async', 'PipeTransform'],
+    related: [
+      { label: 'Template Refs & @let — previous', route: '/angular/templates/template-refs-and-let' },
+      { label: 'Template Syntax (overview)',       route: '/angular/templates' },
+    ],
+    tip: 'The async pipe auto-unsubscribes on component destroy — the single biggest reason to prefer it over a manual .subscribe() call.',
+    docs: [
+      { label: 'Pipes Guide',       url: 'https://angular.dev/guide/pipes' },
+      { label: 'Custom Pipes Guide', url: 'https://angular.dev/guide/pipes/custom-pipes' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Every pipe (built-in or custom) must be imported individually into each standalone component\'s imports array.',
+      'Pure pipes (the default) only re-run when the input REFERENCE changes — in-place mutation with the same reference is invisible to them.',
+      'Pipes chain left to right — {{ data$ | async | json }} is a genuinely useful debugging pattern.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

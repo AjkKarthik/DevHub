@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template Syntax"
+    topicRoute="/angular/templates"
+    subtopicLabel="Pipes — Built-in &amp; Custom" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Pipes — Built-in &amp; Custom</h1>
+  <p class="page-subtitle">
+    The async pipe subscribes and unsubscribes for you automatically — the single biggest
+    reason to reach for pipes instead of manual subscription management.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Built-in pipes, a custom <code>truncate</code> pipe, and the <code>async</code> pipe
+      chained with <code>json</code> for quick Observable debugging.
+    </p>
+    <app-live-playground
+      title="Pipes — built-in and custom"
+      template="angular-cli"
+      openFile="src/app/truncate.pipe.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Template Syntax</h2>
+    <p>
+      You now know how <code>{{ '{' }}{{ '{' }} {{ '}' }}{{ '}' }}</code> evaluates pure expressions, the real
+      difference between property and attribute binding, how to name things in a template
+      with reference variables and <code>&#64;let</code>, and how pipes transform values for
+      display without ever mutating the underlying data. Control flow (<code>&#64;if</code>,
+      <code>&#64;for</code>, <code>&#64;defer</code>) gets its own dedicated coverage in the
+      Signals &amp; Reactive State and <code>&#64;defer</code> topics.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template Syntax"
+    topicRoute="/angular/templates"
+    [prev]="{ label: 'Template Refs & @let', route: '/angular/templates/template-refs-and-let' }" />
+</div>

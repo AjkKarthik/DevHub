@@ -1106,7 +1106,22 @@
         <span class="nl-text">Template Syntax</span>
         @if (progress.isDone('templates')) {<span class="nl-done">✓</span>}
         @if (diff('templates'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('templates')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('templates')"
+                  (click)="toggleSubtopics('templates', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('templates'); as subs) {
+        @if (isSubtopicsExpanded('templates')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/directives" routerLinkActive="active">
         <span class="nl-text">Directives</span>
         @if (progress.isDone('directives')) {<span class="nl-done">✓</span>}

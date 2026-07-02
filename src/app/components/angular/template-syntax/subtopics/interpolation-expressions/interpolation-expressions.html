@@ -1,0 +1,47 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template Syntax"
+    topicRoute="/angular/templates"
+    subtopicLabel="Interpolation &amp; Expressions" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Interpolation &amp; Expressions</h1>
+  <p class="page-subtitle">
+    {{ '{' }}{{ '{' }} {{ '}' }}{{ '}' }} evaluates a pure expression against the component instance — no this., no side
+    effects, and signals must always be called with parentheses.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A correct signal read next to the broken no-parentheses version, plus a memoized
+      <code>computed()</code> value safe to bind repeatedly.
+    </p>
+    <app-live-playground
+      title="Interpolation and expressions"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Interpolation only reads values — the next subtopic covers writing them back:
+      property binding, event binding, and the two-way <code>[(banana-in-a-box)]</code> syntax.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template Syntax"
+    topicRoute="/angular/templates"
+    [next]="{ label: 'Property, Event & Two-Way Binding', route: '/angular/templates/property-event-two-way-binding' }" />
+</div>

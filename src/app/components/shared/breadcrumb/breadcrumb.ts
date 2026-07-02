@@ -49,6 +49,10 @@ const ROUTE_LABELS: Record<string, string> = {
   'async-store-operations': 'Async Store Operations',
   'signal-store-vs-ngrx': 'Signal Store vs NgRx',
   'testing-composing-stores': 'Testing & Composing Stores',
+  'interpolation-expressions': 'Interpolation & Expressions',
+  'property-event-two-way-binding': 'Property, Event & Two-Way Binding',
+  'template-refs-and-let': 'Template Refs & @let',
+  'pipes-built-in-custom': 'Pipes — Built-in & Custom',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
