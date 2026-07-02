@@ -1413,7 +1413,7 @@ off here with a date.
 - [x] `/angular/cva` — Control Value Accessor (2026-07-02 — 3 subtopics: ngcontrol-self-injection-validation-display, composite-value-cva-with-formgroup, testing-cva-components)
 - [x] `/angular/testing` — Testing Angular (2026-07-02 — 3 subtopics: testing-directives-with-host-components, testing-routed-components-and-guards, test-doubles-and-mocking-strategies)
 - [x] `/angular/tailwind` — Tailwind CSS in Angular (2026-07-02 — 3 subtopics: theme-tokens-and-custom-variants, component-variant-patterns-with-cva, tailwind-transitions-and-animations)
-- [ ] `/angular/resource-api` — resource() API
+- [x] `/angular/resource-api` — resource() API (2026-07-02 — 3 subtopics: rxresource-and-observable-integration, resource-reload-and-polling-patterns, testing-resource-based-components)
 - [ ] `/angular/ngrx-signals` — NgRx Signals Store
 - [ ] `/angular/dynamic-forms` — Dynamic / Schema-Driven Forms
 - [ ] `/angular/route-resolvers` — Route Resolvers & Named Outlets
