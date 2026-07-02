@@ -1395,7 +1395,7 @@ off here with a date.
 - [x] `/angular/store` — Signal Store Pattern (2026-07-02 — 3 subtopics: async-store-operations, signal-store-vs-ngrx, testing-composing-stores)
 - [x] `/angular/templates` — Template Syntax (2026-07-02 — 4 subtopics: interpolation-expressions, property-event-two-way-binding, template-refs-and-let, pipes-built-in-custom)
 - [x] `/angular/directives` — Custom Directives (2026-07-02 — 3 subtopics: attribute-directive-anatomy, custom-structural-directives, directive-composition-api)
-- [ ] `/angular/lifecycle` — Lifecycle Hooks
+- [x] `/angular/lifecycle` — Lifecycle Hooks (2026-07-02 — 4 subtopics: lifecycle-hook-sequence, init-hooks-ngonchanges-ngoninit, view-content-hooks-afternextrender, cleanup-destroyref-takeuntildestroyed)
 - [ ] `/angular/pipes` — Pipes
 - [ ] `/angular/di` — Dependency Injection
 - [ ] `/angular/routing` — Routing & Navigation
