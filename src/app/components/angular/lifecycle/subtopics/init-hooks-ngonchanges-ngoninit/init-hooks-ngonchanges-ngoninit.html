@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Lifecycle Hooks"
+    topicRoute="/angular/lifecycle"
+    subtopicLabel="ngOnChanges &amp; ngOnInit" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">ngOnChanges &amp; ngOnInit</h1>
+  <p class="page-subtitle">
+    Signal inputs do not trigger ngOnChanges at all — the single biggest surprise when
+    migrating from &#64;Input() to input(), and effect() is the reactive replacement.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A child with BOTH a decorator input and a signal input — watch the console to see
+      <code>ngOnChanges</code> fire for one and completely ignore the other.
+    </p>
+    <app-live-playground
+      title="ngOnChanges and ngOnInit"
+      template="angular-cli"
+      openFile="src/app/child.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Once inputs are settled, the next subtopic covers when it's actually safe to touch the
+      DOM or read a child component — <code>ngAfterViewInit</code>,
+      <code>ngAfterContentInit</code>, and their SSR-safe modern replacement.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Lifecycle Hooks"
+    topicRoute="/angular/lifecycle"
+    [prev]="{ label: 'The Hook Sequence', route: '/angular/lifecycle/lifecycle-hook-sequence' }"
+    [next]="{ label: 'View & Content Hooks', route: '/angular/lifecycle/view-content-hooks-afternextrender' }" />
+</div>

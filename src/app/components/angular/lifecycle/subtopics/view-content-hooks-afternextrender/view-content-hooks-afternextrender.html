@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Lifecycle Hooks"
+    topicRoute="/angular/lifecycle"
+    subtopicLabel="View &amp; Content Hooks" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">View &amp; Content Hooks</h1>
+  <p class="page-subtitle">
+    ngAfterViewInit is the earliest safe point to touch the DOM — and afterNextRender()
+    is its SSR-safe modern replacement, running exactly once after the first real paint.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A box that measures its own rendered width using <code>afterNextRender()</code> with
+      the <code>read</code> phase — SSR-safe, runs exactly once.
+    </p>
+    <app-live-playground
+      title="View and content hooks"
+      template="angular-cli"
+      openFile="src/app/measured-box.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Every hook so far has been about SETTING UP — the last subtopic covers tearing back
+      down: <code>ngOnDestroy</code>, <code>DestroyRef</code>, and
+      <code>takeUntilDestroyed()</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Lifecycle Hooks"
+    topicRoute="/angular/lifecycle"
+    [prev]="{ label: 'ngOnChanges & ngOnInit', route: '/angular/lifecycle/init-hooks-ngonchanges-ngoninit' }"
+    [next]="{ label: 'Cleanup — DestroyRef & takeUntilDestroyed', route: '/angular/lifecycle/cleanup-destroyref-takeuntildestroyed' }" />
+</div>

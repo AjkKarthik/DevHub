@@ -56,6 +56,10 @@ const ROUTE_LABELS: Record<string, string> = {
   'attribute-directive-anatomy': 'Attribute Directive Anatomy',
   'custom-structural-directives': 'Custom Structural Directives',
   'directive-composition-api': 'Directive Composition API',
+  'lifecycle-hook-sequence': 'The Hook Sequence',
+  'init-hooks-ngonchanges-ngoninit': 'ngOnChanges & ngOnInit',
+  'view-content-hooks-afternextrender': 'View & Content Hooks',
+  'cleanup-destroyref-takeuntildestroyed': 'Cleanup — DestroyRef & takeUntilDestroyed',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

@@ -120,6 +120,12 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Custom Structural Directives', route: '/angular/directives/custom-structural-directives' },
     { label: 'Directive Composition API', route: '/angular/directives/directive-composition-api' },
   ],
+  lifecycle: [
+    { label: 'The Hook Sequence', route: '/angular/lifecycle/lifecycle-hook-sequence' },
+    { label: 'ngOnChanges & ngOnInit', route: '/angular/lifecycle/init-hooks-ngonchanges-ngoninit' },
+    { label: 'View & Content Hooks', route: '/angular/lifecycle/view-content-hooks-afternextrender' },
+    { label: 'Cleanup — DestroyRef & takeUntilDestroyed', route: '/angular/lifecycle/cleanup-destroyref-takeuntildestroyed' },
+  ],
 };
 
 @Component({

@@ -1957,6 +1957,92 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Lifecycle Hooks › subtopics (Phase 10) ───────────────────────────────────
+  'lifecycle/lifecycle-hook-sequence': {
+    apis: ['ngOnInit', 'ngDoCheck', 'ngOnDestroy'],
+    related: [
+      { label: 'Lifecycle Hooks (overview)', route: '/angular/lifecycle' },
+      { label: 'ngOnChanges & ngOnInit — next', route: '/angular/lifecycle/init-hooks-ngonchanges-ngoninit' },
+    ],
+    tip: 'The constructor is not a lifecycle hook — it runs before Angular has set up inputs or the view. Only DI and effect()/afterNextRender() registration belong there.',
+    docs: [
+      { label: 'Lifecycle Hooks Guide', url: 'https://angular.dev/guide/components/lifecycle' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      '"Init" hooks fire exactly once; "Checked" hooks fire on every change detection cycle.',
+      'In zoneless Angular (18+), ngDoCheck runs far less often — only when a signal change triggers re-evaluation.',
+      'A component with no @Input() properties never calls ngOnChanges at all, not even once.',
+    ],
+  },
+
+  'lifecycle/init-hooks-ngonchanges-ngoninit': {
+    apis: ['SimpleChanges', 'ngOnInit', 'input.required()'],
+    related: [
+      { label: 'The Hook Sequence — previous',  route: '/angular/lifecycle/lifecycle-hook-sequence' },
+      { label: 'Lifecycle Hooks (overview)',    route: '/angular/lifecycle' },
+      { label: 'View & Content Hooks — next',    route: '/angular/lifecycle/view-content-hooks-afternextrender' },
+    ],
+    tip: 'Signal inputs do NOT trigger ngOnChanges at all — effect() is the reactive replacement, and this is the single biggest surprise during migration.',
+    docs: [
+      { label: 'Lifecycle Hooks Guide', url: 'https://angular.dev/guide/components/lifecycle' },
+      { label: 'Signal Inputs Guide',   url: 'https://angular.dev/guide/signals/inputs' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A component with BOTH @Input() and input() properties gets ngOnChanges only for the decorator-based ones.',
+      'ngOnInit fires once, after the first ngOnChanges — avoid DOM access here, the view is not rendered yet.',
+      'input.required<T>() (like @Input({ required: true })) is a compile-time error if the parent forgets to bind it.',
+    ],
+  },
+
+  'lifecycle/view-content-hooks-afternextrender': {
+    apis: ['ngAfterViewInit', 'ngAfterContentInit', 'afterNextRender()'],
+    related: [
+      { label: 'ngOnChanges & ngOnInit — previous', route: '/angular/lifecycle/init-hooks-ngonchanges-ngoninit' },
+      { label: 'Lifecycle Hooks (overview)',         route: '/angular/lifecycle' },
+      { label: 'Cleanup — next',                      route: '/angular/lifecycle/cleanup-destroyref-takeuntildestroyed' },
+    ],
+    tip: 'ngAfterContentInit fires BEFORE ngAfterViewInit — projected content initializes before the component\'s own view finishes, the opposite of what the names might suggest.',
+    docs: [
+      { label: 'Lifecycle Hooks Guide',  url: 'https://angular.dev/guide/components/lifecycle' },
+      { label: 'afterNextRender() API',  url: 'https://angular.dev/api/core/afterNextRender' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Writing to a signal inside a "Checked" hook risks ExpressionChangedAfterCheckedError — keep them side-effect free.',
+      'afterNextRender() runs exactly once; afterRender() runs after EVERY paint — do not confuse the two.',
+      'afterNextRender() is the SSR-safe replacement for DOM access that used to live in ngAfterViewInit.',
+    ],
+  },
+
+  'lifecycle/cleanup-destroyref-takeuntildestroyed': {
+    apis: ['DestroyRef', 'takeUntilDestroyed()', 'ngOnDestroy'],
+    related: [
+      { label: 'View & Content Hooks — previous', route: '/angular/lifecycle/view-content-hooks-afternextrender' },
+      { label: 'Lifecycle Hooks (overview)',       route: '/angular/lifecycle' },
+    ],
+    tip: 'DestroyRef is injectable anywhere with an injection context — a plain service, a composable function — not just component classes implementing OnDestroy.',
+    docs: [
+      { label: 'DestroyRef API',           url: 'https://angular.dev/api/core/DestroyRef' },
+      { label: 'RxJS Interop Guide',        url: 'https://angular.dev/guide/signals/rxjs-interop' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'takeUntilDestroyed() called outside the constructor needs an explicit destroyRef argument.',
+      'All three cleanup mechanisms (ngOnDestroy, DestroyRef, takeUntilDestroyed) can coexist for different kinds of cleanup in the same component.',
+      'takeUntilDestroyed() for RxJS subscriptions; DestroyRef.onDestroy() for native APIs (ResizeObserver, setInterval); ngOnDestroy only when a class interface is specifically required.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

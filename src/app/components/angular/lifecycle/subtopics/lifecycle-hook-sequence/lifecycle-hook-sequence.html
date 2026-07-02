@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Lifecycle Hooks"
+    topicRoute="/angular/lifecycle"
+    subtopicLabel="The Hook Sequence" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">The Lifecycle Hook Sequence</h1>
+  <p class="page-subtitle">
+    A guaranteed order, not an implementation detail — init hooks fire once, checked hooks
+    fire every cycle, and the constructor isn't a lifecycle hook at all.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A child component logging every hook it implements — toggle it and change its input
+      to watch the exact firing order in the console.
+    </p>
+    <app-live-playground
+      title="Lifecycle hook sequence"
+      template="angular-cli"
+      openFile="src/app/child.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Now that the order is clear, the next subtopic zooms into the first two hooks in
+      detail — <code>ngOnChanges</code> and <code>ngOnInit</code> — including the real
+      gotcha when migrating to signal inputs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Lifecycle Hooks"
+    topicRoute="/angular/lifecycle"
+    [next]="{ label: 'ngOnChanges & ngOnInit', route: '/angular/lifecycle/init-hooks-ngonchanges-ngoninit' }" />
+</div>
