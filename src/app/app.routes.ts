@@ -202,7 +202,12 @@ export const routes: Routes = [
         { path: 'testing-routed-components-and-guards',      loadComponent: () => import('./components/angular/testing-demo/subtopics/testing-routed-components-and-guards/testing-routed-components-and-guards').then(m => m.TestingRoutedComponentsAndGuardsSubtopic) },
         { path: 'test-doubles-and-mocking-strategies',       loadComponent: () => import('./components/angular/testing-demo/subtopics/test-doubles-and-mocking-strategies/test-doubles-and-mocking-strategies').then(m => m.TestDoublesAndMockingStrategiesSubtopic) },
       ] },
-      { path: 'tailwind',           loadComponent: () => import('./components/angular/tailwind-demo/tailwind-demo').then(m => m.TailwindDemo) },
+      { path: 'tailwind', children: [
+        { path: '',                                     loadComponent: () => import('./components/angular/tailwind-demo/tailwind-demo').then(m => m.TailwindDemo) },
+        { path: 'theme-tokens-and-custom-variants',      loadComponent: () => import('./components/angular/tailwind-demo/subtopics/theme-tokens-and-custom-variants/theme-tokens-and-custom-variants').then(m => m.ThemeTokensAndCustomVariantsSubtopic) },
+        { path: 'component-variant-patterns-with-cva',   loadComponent: () => import('./components/angular/tailwind-demo/subtopics/component-variant-patterns-with-cva/component-variant-patterns-with-cva').then(m => m.ComponentVariantPatternsWithCvaSubtopic) },
+        { path: 'tailwind-transitions-and-animations',   loadComponent: () => import('./components/angular/tailwind-demo/subtopics/tailwind-transitions-and-animations/tailwind-transitions-and-animations').then(m => m.TailwindTransitionsAndAnimationsSubtopic) },
+      ] },
       { path: 'resource-api',       loadComponent: () => import('./components/angular/resource-api/resource-api').then(m => m.ResourceApiDemo) },
       { path: 'ngrx-signals',       loadComponent: () => import('./components/angular/ngrx-signals/ngrx-signals').then(m => m.NgrxSignalsDemo) },
       { path: 'dynamic-forms',      loadComponent: () => import('./components/angular/dynamic-forms/dynamic-forms').then(m => m.DynamicFormsDemo) },

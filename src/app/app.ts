@@ -207,6 +207,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Testing Routed Components & Guards', route: '/angular/testing/testing-routed-components-and-guards' },
     { label: 'Test Doubles & Mocking Strategies', route: '/angular/testing/test-doubles-and-mocking-strategies' },
   ],
+  tailwind: [
+    { label: 'Theme Tokens & Custom Variants', route: '/angular/tailwind/theme-tokens-and-custom-variants' },
+    { label: 'Component Variant Patterns with cva', route: '/angular/tailwind/component-variant-patterns-with-cva' },
+    { label: 'Tailwind Transitions & Animations', route: '/angular/tailwind/tailwind-transitions-and-animations' },
+  ],
 };
 
 @Component({

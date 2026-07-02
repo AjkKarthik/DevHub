@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Tailwind CSS in Angular"
+    topicRoute="/angular/tailwind"
+    subtopicLabel="Tailwind Transitions &amp; Animations" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Tailwind Transitions &amp; Animations</h1>
+  <p class="page-subtitle">
+    State-driven transition utilities, the built-in looping animation utilities
+    (animate-spin/pulse/bounce), and registering custom keyframe animations via &#64;theme.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Tailwind v3+ (@theme animations: v4)" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A state-driven fade/scale transition, the three built-in looping animation
+      utilities side by side, and a custom entrance animation on an
+      <code>&#64;if</code>-inserted element.
+    </p>
+    <app-live-playground
+      title="Tailwind transitions and animations"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Tailwind CSS in Angular</h2>
+    <p>
+      You now know that <code>&#64;theme</code> tokens are real CSS custom properties
+      overridable per-component with <code>:host</code>, how to build a typed variant API
+      for components with <code>class-variance-authority</code>, and how Tailwind's
+      transition/animation utilities compare to state-driven CSS transitions versus
+      continuously-looping decorative animations. Combined with the utility-first
+      philosophy, v4 setup, class binding patterns, responsive design, and dark mode from
+      the main topic, that's the complete Tailwind + Angular toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tailwind CSS in Angular"
+    topicRoute="/angular/tailwind"
+    [prev]="{ label: 'Component Variant Patterns with cva', route: '/angular/tailwind/component-variant-patterns-with-cva' }" />
+</div>

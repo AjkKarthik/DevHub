@@ -109,6 +109,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-directives-with-host-components': 'Testing Directives with Host Components',
   'testing-routed-components-and-guards': 'Testing Routed Components & Guards',
   'test-doubles-and-mocking-strategies': 'Test Doubles & Mocking Strategies',
+  'theme-tokens-and-custom-variants': 'Theme Tokens & Custom Variants',
+  'component-variant-patterns-with-cva': 'Component Variant Patterns with cva',
+  'tailwind-transitions-and-animations': 'Tailwind Transitions & Animations',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

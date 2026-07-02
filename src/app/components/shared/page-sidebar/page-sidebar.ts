@@ -3068,6 +3068,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Tailwind CSS in Angular › subtopics (Phase 10) ───────────────────────────
+  'tailwind/theme-tokens-and-custom-variants': {
+    apis: ['@theme', '@custom-variant', 'CSS custom properties'],
+    related: [
+      { label: 'Tailwind CSS in Angular (overview)',                route: '/angular/tailwind' },
+      { label: 'Component Variant Patterns with cva — next',         route: '/angular/tailwind/component-variant-patterns-with-cva' },
+    ],
+    tip: '@theme tokens are real CSS custom properties — override one for a single component with a plain :host { --color-brand: ... } rule, no Input() needed.',
+    docs: [
+      { label: 'Tailwind v4 Theme',   url: 'https://tailwindcss.com/docs/theme' },
+      { label: 'Tailwind Variants',   url: 'https://tailwindcss.com/docs/hover-focus-and-other-states' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Token namespace prefixes (--color-*, --spacing-*) determine which utility family gets generated.',
+      '@custom-variant can target any selector pattern, not just pseudo-class combinations.',
+    ],
+  },
+
+  'tailwind/component-variant-patterns-with-cva': {
+    apis: ['cva()', 'VariantProps<T>', 'computed()'],
+    related: [
+      { label: 'Theme Tokens & Custom Variants — previous',       route: '/angular/tailwind/theme-tokens-and-custom-variants' },
+      { label: 'Tailwind CSS in Angular (overview)',               route: '/angular/tailwind' },
+      { label: 'Tailwind Transitions & Animations — next',         route: '/angular/tailwind/tailwind-transitions-and-animations' },
+    ],
+    tip: 'VariantProps<typeof buttonVariants> derives the allowed variant values directly from the cva config — a typo becomes a compile error, not a silent runtime bug.',
+    docs: [
+      { label: 'class-variance-authority', url: 'https://cva.style/docs' },
+      { label: 'Angular input() API',       url: 'https://angular.dev/api/core/input' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Nested ternaries for variant + size combinations become unreadable fast — cva expresses each axis independently.',
+      'Define the cva config at module scope, outside the component class — it is pure configuration, not component state.',
+    ],
+  },
+
+  'tailwind/tailwind-transitions-and-animations': {
+    apis: ['transition-*', 'animate-spin/pulse/bounce', '@theme animations'],
+    related: [
+      { label: 'Component Variant Patterns with cva — previous', route: '/angular/tailwind/component-variant-patterns-with-cva' },
+      { label: 'Tailwind CSS in Angular (overview)',               route: '/angular/tailwind' },
+    ],
+    tip: 'Built-in animate-* utilities loop indefinitely — a state-driven transition-* utility only animates in response to a state change.',
+    docs: [
+      { label: 'Tailwind Transitions', url: 'https://tailwindcss.com/docs/transition-property' },
+      { label: 'Tailwind Animation',   url: 'https://tailwindcss.com/docs/animation' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Prefer specific transition-colors/transition-transform over transition-all for performance — animating layout properties is expensive.',
+      'A CSS animation class on an @if-inserted element plays automatically on mount — no :enter trigger needed for simple cases.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],
