@@ -23,18 +23,17 @@
     </div>
   </section>
 
-  <!-- ── What's New banner ──────────────────────────────────────────────────── -->
-  @if (whatsNew.length > 0) {
-    <div class="whats-new-bar">
-      <span class="wn-label">🆕 What's New</span>
-      @for (item of whatsNew; track item.name) {
-        <a class="wn-item" [routerLink]="item.route">
-          <strong>{{ item.name }}</strong>
-          <span class="wn-meta">{{ item.label }}</span>
-        </a>
+  <!-- ── Jump to a domain ────────────────────────────────────────────────────── -->
+  <div class="jump-nav-bar">
+    <div class="jump-nav-inner">
+      <span class="jump-nav-label">Jump to</span>
+      @for (g of groupMeta; track g.key) {
+        <button type="button" class="jump-nav-chip" (click)="scrollToGroup(g.key)">
+          <span>{{ g.icon }}</span>{{ g.title }}
+        </button>
       }
     </div>
-  }
+  </div>
 
   <!-- ── Progress tracker ───────────────────────────────────────────────────── -->
   <div class="progress-bar-wrap">
@@ -157,71 +156,10 @@
     }
   </div>
 
-  <!-- ── Live Now carousel ─────────────────────────────────────────────────── -->
-  @if (liveCards().length > 0) {
-    <section class="live-section">
-      <div class="live-inner">
-        <div class="live-header">
-          <span class="live-dot"></span>
-          <span class="live-label">Live Now</span>
-          <span class="live-sub">Full content available — start exploring today</span>
-        </div>
-      </div>
-      <div class="carousel-track-wrap"
-           #carouselWrap
-           [class.no-drag]="liveCards().length < 3"
-           (mouseenter)="onCarouselMouseEnter()"
-           (mouseleave)="onCarouselMouseLeave()"
-           (mousedown)="onCarouselMouseDown($event)"
-           (window:mousemove)="onCarouselMouseMove($event)"
-           (window:mouseup)="onCarouselMouseUp()"
-           (touchstart)="onTouchStart($event)"
-           (touchend)="onTouchEnd()">
-        <div class="carousel-track" [class.no-scroll]="liveCards().length < 3">
-          @for (t of carouselCards(); track $index) {
-            <a class="live-card" [routerLink]="t.route">
-              <div class="live-card-top" [style.background]="t.gradient">
-                <span class="live-card-icon">{{ t.icon }}</span>
-                <div class="live-card-info">
-                  <h3 class="live-card-name" [title]="t.name">{{ t.name }}</h3>
-                  @if (t.sub) { <span class="live-card-sub" [title]="t.sub">{{ t.sub }}</span> }
-                </div>
-                <span class="live-card-badge">{{ t.topics }} pages · {{ t.time }}</span>
-              </div>
-              <div class="live-card-body">
-                <p class="live-card-tagline">{{ t.tagline }}</p>
-                <span class="live-card-cta">Start learning →</span>
-              </div>
-            </a>
-          }
-          <!-- identical duplicate half for the seamless -50% loop -->
-          @if (liveCards().length >= 3) {
-            @for (t of carouselCards(); track $index) {
-              <a class="live-card" [routerLink]="t.route" aria-hidden="true" tabindex="-1">
-                <div class="live-card-top" [style.background]="t.gradient">
-                  <span class="live-card-icon">{{ t.icon }}</span>
-                  <div class="live-card-info">
-                    <h3 class="live-card-name">{{ t.name }}</h3>
-                    @if (t.sub) { <span class="live-card-sub">{{ t.sub }}</span> }
-                  </div>
-                  <span class="live-card-badge">{{ t.topics }} pages · {{ t.time }}</span>
-                </div>
-                <div class="live-card-body">
-                  <p class="live-card-tagline">{{ t.tagline }}</p>
-                  <span class="live-card-cta">Start learning →</span>
-                </div>
-              </a>
-            }
-          }
-        </div>
-      </div>
-    </section>
-  }
-
   <!-- ── Tech groups ────────────────────────────────────────────────────────── -->
   @for (g of groupMeta; track g.key) {
     @if (filteredGroups()[g.key].length > 0) {
-      <section class="hub-group">
+      <section class="hub-group" [id]="'group-' + g.key">
         <div class="group-header">
           <span class="group-icon">{{ g.icon }}</span>
           <div class="group-header-text">
