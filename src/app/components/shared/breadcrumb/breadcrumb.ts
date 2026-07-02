@@ -85,6 +85,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'dynamic-validators-runtime': 'Dynamic Validators at Runtime',
   'validator-directives-template-forms': 'Validator Directives for Template Forms',
   'generic-reusable-validators': 'Generic Reusable Validators',
+  'custom-operators-and-pipe': 'Custom Operators & pipe()',
+  'multicasting-share-operators': 'Multicasting & share() Operators',
+  'testing-rxjs-marble-diagrams': 'Testing RxJS with Marble Diagrams',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

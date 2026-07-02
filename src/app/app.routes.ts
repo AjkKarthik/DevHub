@@ -154,7 +154,12 @@ export const routes: Routes = [
         { path: 'validator-directives-template-forms',  loadComponent: () => import('./components/angular/custom-validators/subtopics/validator-directives-template-forms/validator-directives-template-forms').then(m => m.ValidatorDirectivesTemplateFormsSubtopic) },
         { path: 'generic-reusable-validators',          loadComponent: () => import('./components/angular/custom-validators/subtopics/generic-reusable-validators/generic-reusable-validators').then(m => m.GenericReusableValidatorsSubtopic) },
       ] },
-      { path: 'rxjs',               loadComponent: () => import('./components/angular/rxjs-demo/rxjs-demo').then(m => m.RxjsDemo) },
+      { path: 'rxjs', children: [
+        { path: '',                              loadComponent: () => import('./components/angular/rxjs-demo/rxjs-demo').then(m => m.RxjsDemo) },
+        { path: 'custom-operators-and-pipe',     loadComponent: () => import('./components/angular/rxjs-demo/subtopics/custom-operators-and-pipe/custom-operators-and-pipe').then(m => m.CustomOperatorsAndPipeSubtopic) },
+        { path: 'multicasting-share-operators',  loadComponent: () => import('./components/angular/rxjs-demo/subtopics/multicasting-share-operators/multicasting-share-operators').then(m => m.MulticastingShareOperatorsSubtopic) },
+        { path: 'testing-rxjs-marble-diagrams',  loadComponent: () => import('./components/angular/rxjs-demo/subtopics/testing-rxjs-marble-diagrams/testing-rxjs-marble-diagrams').then(m => m.TestingRxjsMarbleDiagramsSubtopic) },
+      ] },
       { path: 'cdk',                loadComponent: () => import('./components/angular/cdk-demo/cdk-demo').then(m => m.CdkDemo) },
       { path: 'ag-grid',            loadComponent: () => import('./components/angular/ag-grid-demo/ag-grid-demo').then(m => m.AgGridDemo) },
       { path: 'tanstack-query',     loadComponent: () => import('./components/angular/tanstack-query/tanstack-query').then(m => m.TanstackQueryDemo) },

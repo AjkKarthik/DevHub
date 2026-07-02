@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="RxJS Operators"
+    topicRoute="/angular/rxjs"
+    subtopicLabel="Custom Operators &amp; pipe()" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Custom Operators &amp; pipe()</h1>
+  <p class="page-subtitle">
+    Writing your own reusable operators — composing existing ones, and dropping to the raw
+    Observable constructor with a proper teardown function when you need genuinely new logic.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="RxJS 6+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A composed operator built entirely from <code>tap</code>/<code>filter</code>, and a
+      genuinely new operator built from the raw <code>Observable</code> constructor with a
+      teardown function.
+    </p>
+    <app-live-playground
+      title="Custom operators and pipe"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="RxJS Operators"
+    topicRoute="/angular/rxjs"
+    [next]="{ label: 'Multicasting & share() Operators', route: '/angular/rxjs/multicasting-share-operators' }" />
+</div>

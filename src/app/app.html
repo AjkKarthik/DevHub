@@ -1514,7 +1514,22 @@
         <span class="nl-text">RxJS Operators</span>
         @if (progress.isDone('rxjs')) {<span class="nl-done">✓</span>}
         @if (diff('rxjs'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('rxjs')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rxjs')"
+                  (click)="toggleSubtopics('rxjs', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('rxjs'); as subs) {
+        @if (isSubtopicsExpanded('rxjs')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/testing" routerLinkActive="active">
         <span class="nl-text">Testing</span>
         @if (progress.isDone('testing')) {<span class="nl-done">✓</span>}

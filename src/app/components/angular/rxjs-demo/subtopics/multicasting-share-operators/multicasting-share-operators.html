@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="RxJS Operators"
+    topicRoute="/angular/rxjs"
+    subtopicLabel="Multicasting &amp; share() Operators" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Multicasting &amp; share() Operators</h1>
+  <p class="page-subtitle">
+    Why two subscribers to a cold Observable silently double your network calls, and how
+    share()/shareReplay() with refCount turn a cold producer into one shared execution.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="RxJS 6+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A simulated "HTTP call" side by side, cold vs. wrapped in
+      <code>shareReplay({{ '{' }} bufferSize: 1, refCount: true {{ '}' }})</code> — watch the
+      console and the producer-execution counters diverge.
+    </p>
+    <app-live-playground
+      title="Multicasting and share operators"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="RxJS Operators"
+    topicRoute="/angular/rxjs"
+    [prev]="{ label: 'Custom Operators & pipe()', route: '/angular/rxjs/custom-operators-and-pipe' }"
+    [next]="{ label: 'Testing RxJS with Marble Diagrams', route: '/angular/rxjs/testing-rxjs-marble-diagrams' }" />
+</div>

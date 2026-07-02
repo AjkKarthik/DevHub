@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="RxJS Operators"
+    topicRoute="/angular/rxjs"
+    subtopicLabel="Testing RxJS with Marble Diagrams" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing RxJS with Marble Diagrams</h1>
+  <p class="page-subtitle">
+    Testing operator pipelines deterministically in virtual time with TestScheduler,
+    cold()/hot() sources, and expectObservable() — catching timing bugs values-only tests miss.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="RxJS 6+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A debounce + dedupe + switchMap search pipeline, plus its marble-diagram tests
+      (<code>search.spec.ts</code>) proving debounce timing and stale-request cancellation.
+    </p>
+    <app-live-playground
+      title="Testing RxJS with marble diagrams"
+      template="angular-cli"
+      openFile="src/app/search.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed RxJS Operators</h2>
+    <p>
+      You now know how to write your own reusable operators (composed or from the raw
+      Observable constructor), how <code>share()</code>/<code>shareReplay()</code> turn a
+      cold, per-subscriber producer into one shared execution, and how to test operator
+      pipelines deterministically with marble diagrams instead of real timers. Combined with
+      flattening operators, filtering/timing, combining streams, and the RxJS-to-signals
+      bridge from the main topic, that's the complete RxJS toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="RxJS Operators"
+    topicRoute="/angular/rxjs"
+    [prev]="{ label: 'Multicasting & share() Operators', route: '/angular/rxjs/multicasting-share-operators' }" />
+</div>

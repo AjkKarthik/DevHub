@@ -167,6 +167,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Validator Directives for Template Forms', route: '/angular/custom-validators/validator-directives-template-forms' },
     { label: 'Generic Reusable Validators', route: '/angular/custom-validators/generic-reusable-validators' },
   ],
+  rxjs: [
+    { label: 'Custom Operators & pipe()', route: '/angular/rxjs/custom-operators-and-pipe' },
+    { label: 'Multicasting & share() Operators', route: '/angular/rxjs/multicasting-share-operators' },
+    { label: 'Testing RxJS with Marble Diagrams', route: '/angular/rxjs/testing-rxjs-marble-diagrams' },
+  ],
 };
 
 @Component({

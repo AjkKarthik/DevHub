@@ -2573,6 +2573,68 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── RxJS Operators › subtopics (Phase 10) ────────────────────────────────────
+  'rxjs/custom-operators-and-pipe': {
+    apis: ['pipe()', 'new Observable()', 'teardown function'],
+    related: [
+      { label: 'RxJS Operators (overview)',                    route: '/angular/rxjs' },
+      { label: 'Multicasting & share() Operators — next',      route: '/angular/rxjs/multicasting-share-operators' },
+    ],
+    tip: 'A custom operator is just a function returning (source: Observable<T>) => Observable<R> — most are composed entirely from existing operators.',
+    docs: [
+      { label: 'RxJS Operator Creation', url: 'https://rxjs.dev/guide/operators#creating-custom-operators' },
+      { label: 'Observable Constructor', url: 'https://rxjs.dev/guide/observable' },
+    ],
+    resources: [
+      { label: 'RxJS — GitHub', url: 'https://github.com/ReactiveX/rxjs', badge: 'code' },
+    ],
+    gotchas: [
+      'The teardown function returned from new Observable() is required for cleanup — omitting it leaks resources on unsubscribe.',
+      'Most custom operators need no raw Observable constructor at all — source.pipe(existingOperators) covers the majority of cases.',
+    ],
+  },
+
+  'rxjs/multicasting-share-operators': {
+    apis: ['share()', 'shareReplay()', 'refCount'],
+    related: [
+      { label: 'Custom Operators & pipe() — previous',          route: '/angular/rxjs/custom-operators-and-pipe' },
+      { label: 'RxJS Operators (overview)',                      route: '/angular/rxjs' },
+      { label: 'Testing RxJS with Marble Diagrams — next',       route: '/angular/rxjs/testing-rxjs-marble-diagrams' },
+    ],
+    tip: 'Two subscribers to a cold Observable (like a plain http.get()) trigger TWO separate executions unless share()/shareReplay() makes it hot.',
+    docs: [
+      { label: 'shareReplay API', url: 'https://rxjs.dev/api/operators/shareReplay' },
+      { label: 'Multicasting Guide', url: 'https://rxjs.dev/guide/subject' },
+    ],
+    resources: [
+      { label: 'RxJS — GitHub', url: 'https://github.com/ReactiveX/rxjs', badge: 'code' },
+    ],
+    gotchas: [
+      'shareReplay without refCount: true keeps the source running indefinitely even after every subscriber unsubscribes.',
+      'A plain cached class field only helps AFTER the first response arrives — shareReplay correctly shares even an in-flight request.',
+    ],
+  },
+
+  'rxjs/testing-rxjs-marble-diagrams': {
+    apis: ['TestScheduler', 'cold()', 'hot()', 'expectObservable()'],
+    related: [
+      { label: 'Multicasting & share() Operators — previous', route: '/angular/rxjs/multicasting-share-operators' },
+      { label: 'RxJS Operators (overview)',                    route: '/angular/rxjs' },
+    ],
+    tip: 'TestScheduler runs entirely in virtual time — a debounceTime(300) test completes instantly, not after 300 real milliseconds.',
+    docs: [
+      { label: 'RxJS Testing Guide', url: 'https://rxjs.dev/guide/testing/marble-testing' },
+      { label: 'TestScheduler API',  url: 'https://rxjs.dev/api/testing/TestScheduler' },
+    ],
+    resources: [
+      { label: 'RxJS — GitHub', url: 'https://github.com/ReactiveX/rxjs', badge: 'code' },
+    ],
+    gotchas: [
+      'Value-only assertions (toEqual on collected emissions) cannot catch timing bugs — marble tests assert exact timing via the marble string.',
+      'cold() sources start relative to subscription time; hot() sources have a timeline fixed from the start of the test.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],
