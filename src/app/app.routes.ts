@@ -105,7 +105,12 @@ export const routes: Routes = [
         { path: 'view-content-hooks-afternextrender', loadComponent: () => import('./components/angular/lifecycle/subtopics/view-content-hooks-afternextrender/view-content-hooks-afternextrender').then(m => m.ViewContentHooksAfternextrenderSubtopic) },
         { path: 'cleanup-destroyref-takeuntildestroyed', loadComponent: () => import('./components/angular/lifecycle/subtopics/cleanup-destroyref-takeuntildestroyed/cleanup-destroyref-takeuntildestroyed').then(m => m.CleanupDestroyrefTakeuntildestroyedSubtopic) },
       ] },
-      { path: 'pipes',              loadComponent: () => import('./components/angular/pipes-demo/pipes-demo').then(m => m.PipesDemo) },
+      { path: 'pipes', children: [
+        { path: '',                          loadComponent: () => import('./components/angular/pipes-demo/pipes-demo').then(m => m.PipesDemo) },
+        { path: 'formatting-pipes-locale',   loadComponent: () => import('./components/angular/pipes-demo/subtopics/formatting-pipes-locale/formatting-pipes-locale').then(m => m.FormattingPipesLocaleSubtopic) },
+        { path: 'collection-string-pipes',   loadComponent: () => import('./components/angular/pipes-demo/subtopics/collection-string-pipes/collection-string-pipes').then(m => m.CollectionStringPipesSubtopic) },
+        { path: 'async-pipe-let-performance', loadComponent: () => import('./components/angular/pipes-demo/subtopics/async-pipe-let-performance/async-pipe-let-performance').then(m => m.AsyncPipeLetPerformanceSubtopic) },
+      ] },
       { path: 'di',                 loadComponent: () => import('./components/angular/di-demo/di-demo').then(m => m.DiDemo) },
       { path: 'routing',            loadComponent: () => import('./components/angular/routing-demo/routing-demo').then(m => m.RoutingDemo) },
       { path: 'charts',             loadComponent: () => import('./components/angular/charts/charts').then(m => m.ChartsDemo) },

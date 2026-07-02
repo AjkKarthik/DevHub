@@ -2043,6 +2043,71 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  // ── Pipes › subtopics (Phase 10) ─────────────────────────────────────────────
+  'pipes/formatting-pipes-locale': {
+    apis: ['DatePipe', 'CurrencyPipe', 'DecimalPipe', 'PercentPipe'],
+    related: [
+      { label: 'Pipes (overview)', route: '/angular/pipes' },
+      { label: 'Collection & String Pipes — next', route: '/angular/pipes/collection-string-pipes' },
+    ],
+    tip: 'Date/Currency/Decimal/Percent all share the same digit-info string format ({minInt}.{minFrac}-{maxFrac}) — learn it once for any of them.',
+    docs: [
+      { label: 'Pipes Guide', url: 'https://angular.dev/guide/pipes' },
+      { label: 'i18n Guide',  url: 'https://angular.dev/guide/i18n' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'LOCALE_ID defaults to en-US regardless of the browser\'s language — set it explicitly for other locales.',
+      'registerLocaleData() alone has no visible effect — you must also set LOCALE_ID in providers.',
+      'DatePipe format strings follow Unicode Date Format patterns, not a custom Angular-only syntax.',
+    ],
+  },
+
+  'pipes/collection-string-pipes': {
+    apis: ['SlicePipe', 'JsonPipe', 'TitleCasePipe'],
+    related: [
+      { label: 'Formatting Pipes & Locale — previous', route: '/angular/pipes/formatting-pipes-locale' },
+      { label: 'Pipes (overview)',                      route: '/angular/pipes' },
+      { label: 'AsyncPipe & @let — next',                route: '/angular/pipes/async-pipe-let-performance' },
+    ],
+    tip: 'Remove JsonPipe before shipping to production — it exposes the FULL object structure in the DOM, which can leak data you never intended to display.',
+    docs: [
+      { label: 'Pipes Guide',   url: 'https://angular.dev/guide/pipes' },
+      { label: 'SlicePipe API', url: 'https://angular.dev/api/common/SlicePipe' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'SlicePipe works on both arrays and strings, with the same start/end/negative-index semantics as JS\'s native .slice().',
+      'TitleCasePipe capitalizes each word\'s first letter — genuinely different output from UpperCasePipe.',
+      'SlicePipe always returns a new array reference — safe to chain with a downstream pure pipe.',
+    ],
+  },
+
+  'pipes/async-pipe-let-performance': {
+    apis: ['async', '@let', 'computed()'],
+    related: [
+      { label: 'Collection & String Pipes — previous', route: '/angular/pipes/collection-string-pipes' },
+      { label: 'Pipes (overview)',                       route: '/angular/pipes' },
+    ],
+    tip: 'Each | async expression is its OWN separate subscription — placing it twice on the same Observable creates two subscriptions, not one shared value.',
+    docs: [
+      { label: 'Pipes Guide', url: 'https://angular.dev/guide/pipes' },
+      { label: '@let Guide',   url: 'https://angular.dev/guide/templates/let-template-variables' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      '@let resolves an | async expression once and lets you reuse the value, avoiding duplicate subscriptions.',
+      'An impure pipe (pure: false) re-runs on EVERY change detection cycle — computed() memoizes and only recalculates on genuine dependency changes.',
+      'The resolved value is null until the first emission — guard with @if before reading properties on it.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

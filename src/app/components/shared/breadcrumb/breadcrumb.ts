@@ -60,6 +60,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'init-hooks-ngonchanges-ngoninit': 'ngOnChanges & ngOnInit',
   'view-content-hooks-afternextrender': 'View & Content Hooks',
   'cleanup-destroyref-takeuntildestroyed': 'Cleanup — DestroyRef & takeUntilDestroyed',
+  'formatting-pipes-locale': 'Formatting Pipes & Locale',
+  'collection-string-pipes': 'Collection & String Pipes',
+  'async-pipe-let-performance': 'AsyncPipe, @let & Performance',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

@@ -126,6 +126,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'View & Content Hooks', route: '/angular/lifecycle/view-content-hooks-afternextrender' },
     { label: 'Cleanup — DestroyRef & takeUntilDestroyed', route: '/angular/lifecycle/cleanup-destroyref-takeuntildestroyed' },
   ],
+  pipes: [
+    { label: 'Formatting Pipes & Locale', route: '/angular/pipes/formatting-pipes-locale' },
+    { label: 'Collection & String Pipes', route: '/angular/pipes/collection-string-pipes' },
+    { label: 'AsyncPipe, @let & Performance', route: '/angular/pipes/async-pipe-let-performance' },
+  ],
 };
 
 @Component({
