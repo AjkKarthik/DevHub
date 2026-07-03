@@ -4292,6 +4292,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'angular-devtools/building-a-why-did-this-render-debug-helper': {
+    apis: ['effect()', 'console.log()', 'signal getters'],
+    related: [
+      { label: 'Angular DevTools (overview)',                        route: '/angular/angular-devtools' },
+      { label: 'Safely Enabling DevTools on Staging — next',           route: '/angular/angular-devtools/safely-enabling-devtools-on-staging' },
+    ],
+    tip: 'An effect() that compares previous vs current signal snapshots is a code-based complement to the Profiler\'s "why" tooltip — works without the extension installed and can be shared in a bug report.',
+    docs: [
+      { label: 'effect() API',    url: 'https://angular.dev/api/core/effect' },
+      { label: 'DevTools Guide',  url: 'https://angular.dev/tools/devtools' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'An effect()-based logger fires only when its tracked signal dependencies actually change — unlike a console.log in ngDoCheck, which fires on every CD cycle regardless.',
+      'Guard debug helpers like this behind an environment flag — they should never ship active to real production users.',
+    ],
+  },
+
+  'angular-devtools/safely-enabling-devtools-on-staging': {
+    apis: ['enableDebugTools()', 'dynamic import()', 'fileReplacements'],
+    related: [
+      { label: 'Building a "Why Did This Render?" Debug Helper — previous', route: '/angular/angular-devtools/building-a-why-did-this-render-debug-helper' },
+      { label: 'Angular DevTools (overview)',                                 route: '/angular/angular-devtools' },
+      { label: 'Turning a Profiler Finding into a Regression Test — next',      route: '/angular/angular-devtools/turning-a-profiler-finding-into-a-regression-test' },
+    ],
+    tip: 'A runtime "if" check controls whether debug-enabling code EXECUTES, not whether it is INCLUDED in the bundle — a dynamic import is needed to genuinely exclude it from production.',
+    docs: [
+      { label: 'enableDebugTools API', url: 'https://angular.dev/api/platform-browser/enableDebugTools' },
+      { label: 'File Replacements',    url: 'https://angular.dev/tools/cli/environments' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'The most robust pattern uses a SEPARATE environment.staging.ts file (via fileReplacements), so the production build never contains the debug-enabling branch at all.',
+      'A visible on-page banner is a stronger safety signal than a console warning, since testers may not have devtools open.',
+    ],
+  },
+
+  'angular-devtools/turning-a-profiler-finding-into-a-regression-test': {
+    apis: ['toBe() (reference equality)', 'computed()', 'jasmine expect()'],
+    related: [
+      { label: 'Safely Enabling DevTools on Staging — previous', route: '/angular/angular-devtools/safely-enabling-devtools-on-staging' },
+      { label: 'Angular DevTools (overview)',                      route: '/angular/angular-devtools' },
+    ],
+    tip: 'A DevTools trace is a one-time manual snapshot — converting the finding into an automated reference-equality assertion (toBe, not toEqual) is what makes the fix durable against future regressions.',
+    docs: [
+      { label: 'computed() API', url: 'https://angular.dev/api/core/computed' },
+      { label: 'Testing Guide',  url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A test asserting reference STABILITY needs a companion test proving a RELEVANT change still produces a NEW reference, or the assertion could trivially pass on a broken always-stable computed().',
+      'Performance regression tests assert the ABSENCE of unnecessary work — a genuinely different kind of claim from most functional tests.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

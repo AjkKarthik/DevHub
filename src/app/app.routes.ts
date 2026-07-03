@@ -322,7 +322,12 @@ export const routes: Routes = [
         { path: 'debugging-duplicate-angular-runtime-issues',       loadComponent: () => import('./components/angular/micro-frontends/subtopics/debugging-duplicate-angular-runtime-issues/debugging-duplicate-angular-runtime-issues').then(m => m.DebuggingDuplicateAngularRuntimeIssuesSubtopic) },
         { path: 'css-style-isolation-with-shadowdom-encapsulation',  loadComponent: () => import('./components/angular/micro-frontends/subtopics/css-style-isolation-with-shadowdom-encapsulation/css-style-isolation-with-shadowdom-encapsulation').then(m => m.CssStyleIsolationWithShadowdomEncapsulationSubtopic) },
       ] },
-      { path: 'angular-devtools',        loadComponent: () => import('./components/angular/angular-devtools/angular-devtools').then(m => m.AngularDevtoolsDemo) },
+      { path: 'angular-devtools', children: [
+        { path: '',                                                loadComponent: () => import('./components/angular/angular-devtools/angular-devtools').then(m => m.AngularDevtoolsDemo) },
+        { path: 'building-a-why-did-this-render-debug-helper',      loadComponent: () => import('./components/angular/angular-devtools/subtopics/building-a-why-did-this-render-debug-helper/building-a-why-did-this-render-debug-helper').then(m => m.BuildingAWhyDidThisRenderDebugHelperSubtopic) },
+        { path: 'safely-enabling-devtools-on-staging',               loadComponent: () => import('./components/angular/angular-devtools/subtopics/safely-enabling-devtools-on-staging/safely-enabling-devtools-on-staging').then(m => m.SafelyEnablingDevtoolsOnStagingSubtopic) },
+        { path: 'turning-a-profiler-finding-into-a-regression-test', loadComponent: () => import('./components/angular/angular-devtools/subtopics/turning-a-profiler-finding-into-a-regression-test/turning-a-profiler-finding-into-a-regression-test').then(m => m.TurningAProfilerFindingIntoARegressionTestSubtopic) },
+      ] },
       { path: 'bundle-optimization',     loadComponent: () => import('./components/angular/bundle-optimization/bundle-optimization').then(m => m.BundleOptimizationDemo) },
       { path: 'wizard-form',        loadComponent: () => import('./components/angular/wizard-form/wizard-form').then(m => m.WizardFormDemo) },
       { path: 'web-workers',        loadComponent: () => import('./components/angular/web-workers/web-workers').then(m => m.WebWorkersDemo) },

@@ -307,6 +307,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Debugging Duplicate Angular Runtime Issues', route: '/angular/micro-frontends/debugging-duplicate-angular-runtime-issues' },
     { label: 'CSS Style Isolation with ShadowDom Encapsulation', route: '/angular/micro-frontends/css-style-isolation-with-shadowdom-encapsulation' },
   ],
+  'angular-devtools': [
+    { label: 'Building a "Why Did This Render?" Debug Helper', route: '/angular/angular-devtools/building-a-why-did-this-render-debug-helper' },
+    { label: 'Safely Enabling DevTools on Staging', route: '/angular/angular-devtools/safely-enabling-devtools-on-staging' },
+    { label: 'Turning a Profiler Finding into a Regression Test', route: '/angular/angular-devtools/turning-a-profiler-finding-into-a-regression-test' },
+  ],
 };
 
 @Component({

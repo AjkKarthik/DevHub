@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular DevTools"
+    topicRoute="/angular/angular-devtools"
+    subtopicLabel="Turning a Profiler Finding into a Regression Test" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Turning a Profiler Finding into a Regression Test</h1>
+  <p class="page-subtitle">
+    A DevTools trace is a one-time manual snapshot — converting the finding into an
+    automated reference-equality assertion is what makes the fix durable.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 16+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Two tests: one is the permanent record of a real profiler finding (asserting
+      reference stability with <code>toBe</code>), the other proves the assertion isn't
+      trivially passing.
+    </p>
+    <app-live-playground
+      title="Turning a profiler finding into a regression test"
+      template="angular-cli"
+      openFile="src/app/product-list.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With a code-based diagnostic helper, safe staging enablement, and durable regression
+      testing all covered, head back to the topic overview to see the full DevTools
+      profiling workflow.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Angular DevTools"
+    topicRoute="/angular/angular-devtools"
+    [prev]="{ label: 'Safely Enabling DevTools on Staging', route: '/angular/angular-devtools/safely-enabling-devtools-on-staging' }" />
+</div>

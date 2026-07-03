@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular DevTools"
+    topicRoute="/angular/angular-devtools"
+    subtopicLabel="Building a &quot;Why Did This Render?&quot; Debug Helper" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Building a "Why Did This Render?" Debug Helper</h1>
+  <p class="page-subtitle">
+    A code-based complement to the Profiler's "why" tooltip — works without the extension
+    installed, and can be shared in a bug report or CI log.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 16+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>logWhyChanged()</code> wraps an <code>effect()</code> that compares
+      previous vs current signal snapshots — typing in the filter box or toggling sort
+      logs exactly which signal changed.
+    </p>
+    <app-live-playground
+      title="Building a why did this render debug helper"
+      template="angular-cli"
+      openFile="src/app/log-why-changed.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With a code-based diagnostic complement covered, the next subtopic tackles the
+      main topic's enableDebugTools() pattern in more production-realistic depth.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Angular DevTools"
+    topicRoute="/angular/angular-devtools"
+    [next]="{ label: 'Safely Enabling DevTools on Staging', route: '/angular/angular-devtools/safely-enabling-devtools-on-staging' }" />
+</div>

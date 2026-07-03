@@ -2105,7 +2105,22 @@
         <span class="nl-text">Angular DevTools</span>
         @if (progress.isDone('angular-devtools')) {<span class="nl-done">✓</span>}
         @if (diff('angular-devtools'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('angular-devtools')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('angular-devtools')"
+                  (click)="toggleSubtopics('angular-devtools', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('angular-devtools'); as subs) {
+        @if (isSubtopicsExpanded('angular-devtools')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/bundle-optimization" routerLinkActive="active">
         <span class="nl-text">Bundle Optimization</span>
         @if (progress.isDone('bundle-optimization')) {<span class="nl-done">✓</span>}

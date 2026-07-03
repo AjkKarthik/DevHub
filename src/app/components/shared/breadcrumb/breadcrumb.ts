@@ -169,6 +169,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-cross-mfe-communication-with-a-mocked-event-bus': 'Testing Cross-MFE Communication with a Mocked Event Bus',
   'debugging-duplicate-angular-runtime-issues': 'Debugging Duplicate Angular Runtime Issues',
   'css-style-isolation-with-shadowdom-encapsulation': 'CSS Style Isolation with ShadowDom Encapsulation',
+  'building-a-why-did-this-render-debug-helper': 'Building a "Why Did This Render?" Debug Helper',
+  'safely-enabling-devtools-on-staging': 'Safely Enabling DevTools on Staging',
+  'turning-a-profiler-finding-into-a-regression-test': 'Turning a Profiler Finding into a Regression Test',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
