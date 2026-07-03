@@ -387,6 +387,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'IAsyncDisposable and await using: Async Resource Cleanup', route: '/csharp/async/iasyncdisposable-and-await-using-async-resource-cleanup' },
     { label: 'Producer/Consumer Pipelines with System.Threading.Channels', route: '/csharp/async/producer-consumer-pipelines-with-system-threading-channels' },
   ],
+  'null-safety': [
+    { label: 'Enforcing Nullable Warnings as Build Errors', route: '/csharp/null-safety/enforcing-nullable-warnings-as-build-errors' },
+    { label: 'Nullable Reference Types with Generic Type Parameters', route: '/csharp/null-safety/nullable-reference-types-with-generic-type-parameters' },
+    { label: 'required Properties and System.Text.Json Deserialization', route: '/csharp/null-safety/required-properties-and-system-text-json-deserialization' },
+  ],
 };
 
 @Component({

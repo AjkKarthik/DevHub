@@ -1073,7 +1073,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/null-safety" routerLinkActive="active"><span class="nl-text">Null Safety</span>@if(progress.isDone('csharp-null-safety')){<span class="nl-done">✓</span>}@if(diff('csharp-null-safety');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/null-safety" routerLinkActive="active">
+        <span class="nl-text">Null Safety</span>
+        @if (progress.isDone('csharp-null-safety')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-null-safety'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('null-safety')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('null-safety')"
+                  (click)="toggleSubtopics('null-safety', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('null-safety'); as subs) {
+        @if (isSubtopicsExpanded('null-safety')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/pattern-matching" routerLinkActive="active"><span class="nl-text">Pattern Matching</span>@if(progress.isDone('csharp-pattern-matching')){<span class="nl-done">✓</span>}@if(diff('csharp-pattern-matching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/extension-methods" routerLinkActive="active"><span class="nl-text">Extension Methods</span>@if(progress.isDone('csharp-extension-methods')){<span class="nl-done">✓</span>}@if(diff('csharp-extension-methods');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/tuples" routerLinkActive="active"><span class="nl-text">Tuples &amp; Anonymous Types</span>@if(progress.isDone('csharp-tuples')){<span class="nl-done">✓</span>}@if(diff('csharp-tuples');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

@@ -436,7 +436,12 @@ export const routes: Routes = [
         { path: 'iasyncdisposable-and-await-using-async-resource-cleanup',    loadComponent: () => import('./components/backend/csharp/async/subtopics/iasyncdisposable-and-await-using-async-resource-cleanup/iasyncdisposable-and-await-using-async-resource-cleanup').then(m => m.IasyncdisposableAndAwaitUsingAsyncResourceCleanupSubtopic) },
         { path: 'producer-consumer-pipelines-with-system-threading-channels', loadComponent: () => import('./components/backend/csharp/async/subtopics/producer-consumer-pipelines-with-system-threading-channels/producer-consumer-pipelines-with-system-threading-channels').then(m => m.ProducerConsumerPipelinesWithSystemThreadingChannelsSubtopic) },
       ] },
-      { path: 'null-safety',     loadComponent: () => import('./components/backend/csharp/null-safety/null-safety').then(m => m.CsharpNullSafety) },
+      { path: 'null-safety', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/null-safety/null-safety').then(m => m.CsharpNullSafety) },
+        { path: 'enforcing-nullable-warnings-as-build-errors', loadComponent: () => import('./components/backend/csharp/null-safety/subtopics/enforcing-nullable-warnings-as-build-errors/enforcing-nullable-warnings-as-build-errors').then(m => m.EnforcingNullableWarningsAsBuildErrorsSubtopic) },
+        { path: 'nullable-reference-types-with-generic-type-parameters', loadComponent: () => import('./components/backend/csharp/null-safety/subtopics/nullable-reference-types-with-generic-type-parameters/nullable-reference-types-with-generic-type-parameters').then(m => m.NullableReferenceTypesWithGenericTypeParametersSubtopic) },
+        { path: 'required-properties-and-system-text-json-deserialization', loadComponent: () => import('./components/backend/csharp/null-safety/subtopics/required-properties-and-system-text-json-deserialization/required-properties-and-system-text-json-deserialization').then(m => m.RequiredPropertiesAndSystemTextJsonDeserializationSubtopic) },
+      ] },
       { path: 'pattern-matching',loadComponent: () => import('./components/backend/csharp/pattern-matching/pattern-matching').then(m => m.CsharpPatternMatching) },
       { path: 'exceptions',      loadComponent: () => import('./components/backend/csharp/exceptions/exceptions').then(m => m.CsharpExceptions) },
       { path: 'delegates',         loadComponent: () => import('./components/backend/csharp/delegates/delegates').then(m => m.CsharpDelegates) },

@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Null Safety"
+    topicRoute="/csharp/null-safety"
+    subtopicLabel="required Properties and System.Text.Json Deserialization" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">required Properties and System.Text.Json Deserialization</h1>
+  <p class="page-subtitle">
+    The main topic shows <code>required</code> blocking a bad object initializer at
+    compile time — this subtopic asks what happens when the object comes from JSON
+    instead, a construction path the main page never covers.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 7 / C# 11" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Enforcing warnings as build errors, understanding generic nullability, and knowing
+      exactly what <code>required</code> does and does not guarantee at runtime together
+      cover the compile-time-to-runtime gap that plain nullable reference types alone
+      leave open.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Null Safety"
+    topicRoute="/csharp/null-safety"
+    [prev]="{ label: 'Nullable Reference Types with Generic Type Parameters', route: '/csharp/null-safety/nullable-reference-types-with-generic-type-parameters' }" />
+</div>

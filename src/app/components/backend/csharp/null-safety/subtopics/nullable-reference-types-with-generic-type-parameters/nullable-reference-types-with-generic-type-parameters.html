@@ -1,0 +1,43 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Null Safety"
+    topicRoute="/csharp/null-safety"
+    subtopicLabel="Nullable Reference Types with Generic Type Parameters" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Nullable Reference Types with Generic Type Parameters</h1>
+  <p class="page-subtitle">
+    Every nullable example on the main page uses a concrete type like <code>string?</code>
+    or <code>int?</code> — this subtopic covers what <code>T?</code> means when
+    <code>T</code> is a generic type parameter, unconstrained or otherwise.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 8.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding how a generic constraint resolves <code>T?</code>'s meaning explains
+      real LINQ behavior like <code>FirstOrDefault</code> on value types — and sets up the
+      next subtopic, which asks a related question about a completely different C#
+      feature: does <code>required</code> survive JSON deserialization?
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Null Safety"
+    topicRoute="/csharp/null-safety"
+    [prev]="{ label: 'Enforcing Nullable Warnings as Build Errors', route: '/csharp/null-safety/enforcing-nullable-warnings-as-build-errors' }"
+    [next]="{ label: 'required Properties and System.Text.Json Deserialization', route: '/csharp/null-safety/required-properties-and-system-text-json-deserialization' }" />
+</div>

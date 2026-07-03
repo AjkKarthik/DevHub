@@ -6486,6 +6486,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'null-safety/enforcing-nullable-warnings-as-build-errors': {
+    apis: ['WarningsAsErrors', 'TreatWarningsAsErrors', 'CS8600-CS8629', '#nullable disable/restore'],
+    related: [
+      { label: 'Nullable Reference Types with Generics — next', route: '/csharp/null-safety/nullable-reference-types-with-generic-type-parameters' },
+      { label: 'Null Safety (overview)', route: '/csharp/null-safety' },
+    ],
+    tip: 'Start with WarningsAsErrors listing only the specific nullable codes (CS8600, CS8602, CS8603, CS8604) rather than TreatWarningsAsErrors=true, so unrelated warnings do not block adoption.',
+    docs: [
+      { label: 'Nullable Warnings Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings' },
+      { label: 'MSBuild WarningsAsErrors', url: 'https://learn.microsoft.com/en-us/visualstudio/msbuild/errors-and-warnings-msbuild' },
+    ],
+    resources: [
+      { label: 'Nullable Migration Strategies', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/nullable-migration-strategies', badge: 'docs' },
+    ],
+    gotchas: [
+      'By default, nullable warnings do not fail the build — a developer can see CS8602 in the build log and merge anyway unless WarningsAsErrors is set explicitly.',
+      'Retroactively enabling warnings-as-errors on a large legacy codebase can surface hundreds of pre-existing warnings at once — a per-file #nullable disable ratchet lets you enforce only new/audited files.',
+    ],
+  },
+
+  'null-safety/nullable-reference-types-with-generic-type-parameters': {
+    apis: ['where T : class', 'where T : struct', 'Nullable<T>', 'default(T)'],
+    related: [
+      { label: 'Enforcing Nullable Warnings — previous', route: '/csharp/null-safety/enforcing-nullable-warnings-as-build-errors' },
+      { label: 'required + System.Text.Json — next', route: '/csharp/null-safety/required-properties-and-system-text-json-deserialization' },
+      { label: 'Generics', route: '/csharp/generics' },
+    ],
+    tip: 'An unconstrained T? only behaves as a nullable annotation for reference-type instantiations — for value types it silently resolves to default(T), which is why LINQ\'s FirstOrDefault on List<int> returns 0 instead of a genuine "not found" signal.',
+    docs: [
+      { label: 'Generic Type Parameters and Nullability', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references#generics' },
+    ],
+    resources: [
+      { label: 'Nullable Reference Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references', badge: 'docs' },
+    ],
+    gotchas: [
+      'where T : class and where T : struct resolve T? to two entirely different mechanisms — an erased reference-type annotation versus the real Nullable<T> wrapper with HasValue/Value.',
+      'An unconstrained T? cannot mean Nullable<T> for value types — the compiler cannot know at compile time whether T will be a reference or value type, so it falls back to a permissive annotation that is only meaningful for reference-type instantiations.',
+    ],
+  },
+
+  'null-safety/required-properties-and-system-text-json-deserialization': {
+    apis: ['required', '[JsonRequired]', 'JsonSerializer.Deserialize', '[Required]', 'Validator.TryValidateObject'],
+    related: [
+      { label: 'Nullable Reference Types with Generics — previous', route: '/csharp/null-safety/nullable-reference-types-with-generic-type-parameters' },
+      { label: 'Null Safety (overview)', route: '/csharp/null-safety' },
+      { label: 'Records', route: '/csharp/records' },
+    ],
+    tip: 'required only enforces that a JSON key is present during deserialization since .NET 7 — it does not stop an explicit JSON null from being assigned to a non-nullable required property. Add DataAnnotations validation after deserialization to close that gap.',
+    docs: [
+      { label: 'required Modifier', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/required' },
+      { label: 'System.Text.Json Required Properties', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/required-properties' },
+    ],
+    resources: [
+      { label: 'System.Text.Json Overview', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/overview', badge: 'docs' },
+    ],
+    gotchas: [
+      'required string Bio (non-nullable, required) still allows an explicit JSON null through deserialization — the JSON key being present satisfies "required" even though the value violates the non-nullable intent.',
+      'required string? Bio (nullable AND required) is not a contradiction — it means the key must be present, but null is still an acceptable value for it.',
+    ],
+  },
+
   'pattern-matching': {
     apis: ['is', 'switch', 'when', 'and/or/not', 'property pattern', 'list pattern'],
     related: [
