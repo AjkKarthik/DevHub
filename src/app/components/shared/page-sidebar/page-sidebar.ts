@@ -6242,6 +6242,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'collections/writing-custom-iequalitycomparer-and-icomparer-implementations': {
+    apis: ['IEqualityComparer<T>', 'IComparer<T>', 'GetHashCode() contract'],
+    related: [
+      { label: 'Collections (overview)',                                    route: '/csharp/collections' },
+      { label: 'FrozenDictionary and FrozenSet — next',                      route: '/csharp/collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups' },
+    ],
+    tip: 'Equals and GetHashCode in a custom comparer must normalize identically — a mismatch (like a missing .Trim() in one but not the other) breaks lookups silently.',
+    docs: [
+      { label: 'IEqualityComparer<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.iequalitycomparer-1' },
+      { label: 'IComparer<T>',          url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.icomparer-1' },
+    ],
+    resources: [
+      { label: 'Collection Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/guidelines-for-collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'IEqualityComparer<T> and IComparer<T> are separate concerns — a type can have well-defined equality with no natural ordering, or vice versa.',
+      'No built-in StringComparer variant handles domain-specific ordering like numeric version-string sorting — that needs a hand-written IComparer<T>.',
+    ],
+  },
+
+  'collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups': {
+    apis: ['FrozenDictionary<K,V>', 'FrozenSet<T>', 'ToFrozenDictionary()'],
+    related: [
+      { label: 'Writing Custom IEqualityComparer and IComparer Implementations — previous', route: '/csharp/collections/writing-custom-iequalitycomparer-and-icomparer-implementations' },
+      { label: 'Collections (overview)',                                                     route: '/csharp/collections' },
+      { label: 'Testing Concurrent Collections — next',                                       route: '/csharp/collections/testing-concurrent-collections-catching-race-conditions-in-getoradd' },
+    ],
+    tip: 'FrozenDictionary trades a slower one-time build for the fastest possible reads afterward — the textbook use case is a static lookup table built once at startup and read constantly.',
+    docs: [
+      { label: 'FrozenDictionary Overview', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.frozen.frozendictionary-2' },
+    ],
+    resources: [
+      { label: 'Collection Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/guidelines-for-collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'A collection built and read only a few times will likely spend MORE total time on Frozen construction than it saves — measure the read/write ratio first.',
+      'FrozenDictionary has no mutation API at all, unlike ImmutableDictionary which at least supports copy-on-write.',
+    ],
+  },
+
+  'collections/testing-concurrent-collections-catching-race-conditions-in-getoradd': {
+    apis: ['ConcurrentDictionary.GetOrAdd', 'Lazy<T>', 'Interlocked.Increment', 'Task.WhenAll'],
+    related: [
+      { label: 'FrozenDictionary and FrozenSet — previous', route: '/csharp/collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups' },
+      { label: 'Collections (overview)',                     route: '/csharp/collections' },
+    ],
+    tip: 'GetOrAdd\'s atomicity guarantee is about the DICTIONARY\'S final state, not about how many times the factory delegate itself runs — a counting factory under real concurrency proves this directly.',
+    docs: [
+      { label: 'ConcurrentDictionary.GetOrAdd', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd' },
+    ],
+    resources: [
+      { label: 'Collection Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/guidelines-for-collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'A race-condition test is deliberately probabilistic — this is a rare, legitimate exception to the general rule that flaky tests should be avoided.',
+      'The Lazy<T> fix should be tested as a hard invariant (factory count exactly 1), unlike the raw race test which only needs to reproduce the symptom most of the time.',
+    ],
+  },
+
   linq: {
     apis: ['Where()', 'Select()', 'GroupBy()', 'OrderBy()', 'FirstOrDefault()', 'ToList()'],
     related: [

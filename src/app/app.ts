@@ -372,6 +372,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Generic Attributes (C# 11): Type-Safe Custom Attributes', route: '/csharp/generics/generic-attributes-c-11-type-safe-custom-attributes' },
     { label: 'Writing Your Own Static Abstract Interface Members', route: '/csharp/generics/writing-your-own-static-abstract-interface-members' },
   ],
+  'collections': [
+    { label: 'Writing Custom IEqualityComparer and IComparer Implementations', route: '/csharp/collections/writing-custom-iequalitycomparer-and-icomparer-implementations' },
+    { label: 'FrozenDictionary and FrozenSet: Optimizing for Read-Heavy Lookups', route: '/csharp/collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups' },
+    { label: 'Testing Concurrent Collections: Catching Race Conditions', route: '/csharp/collections/testing-concurrent-collections-catching-race-conditions-in-getoradd' },
+  ],
 };
 
 @Component({

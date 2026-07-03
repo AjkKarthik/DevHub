@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Collections"
+    topicRoute="/csharp/collections"
+    subtopicLabel="Writing Custom IEqualityComparer and IComparer Implementations" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Writing Custom IEqualityComparer and IComparer Implementations</h1>
+  <p class="page-subtitle">
+    The main topic uses StringComparer.OrdinalIgnoreCase — a ready-made comparer. Here's
+    how to write your own for a domain type, and the subtle bug the contract protects against.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 2" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Custom comparers control how existing collections behave. The next subtopic
+      covers a newer .NET 8+ collection TYPE entirely — optimized specifically for
+      read-heavy lookup tables.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Collections"
+    topicRoute="/csharp/collections"
+    [next]="{ label: 'FrozenDictionary and FrozenSet: Optimizing for Read-Heavy Lookups', route: '/csharp/collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups' }" />
+</div>

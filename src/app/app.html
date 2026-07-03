@@ -1084,7 +1084,26 @@
     <div class="nav-group">
       <p class="nav-group-label">Collections &amp; Data</p>
       <a routerLink="/csharp/arrays" routerLinkActive="active"><span class="nl-text">Arrays</span>@if(progress.isDone('csharp-arrays')){<span class="nl-done">✓</span>}@if(diff('csharp-arrays');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/csharp/collections" routerLinkActive="active"><span class="nl-text">Collections</span>@if(progress.isDone('csharp-collections')){<span class="nl-done">✓</span>}@if(diff('csharp-collections');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/collections" routerLinkActive="active">
+        <span class="nl-text">Collections</span>
+        @if (progress.isDone('csharp-collections')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-collections'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('collections')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('collections')"
+                  (click)="toggleSubtopics('collections', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('collections'); as subs) {
+        @if (isSubtopicsExpanded('collections')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/linq" routerLinkActive="active"><span class="nl-text">LINQ</span>@if(progress.isDone('csharp-linq')){<span class="nl-done">✓</span>}@if(diff('csharp-linq');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/strings-datetime" routerLinkActive="active"><span class="nl-text">Strings, DateTime &amp; Math</span>@if(progress.isDone('csharp-strings-datetime')){<span class="nl-done">✓</span>}@if(diff('csharp-strings-datetime');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/io-serialization" routerLinkActive="active"><span class="nl-text">I/O &amp; Serialization</span>@if(progress.isDone('csharp-io-serialization')){<span class="nl-done">✓</span>}@if(diff('csharp-io-serialization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

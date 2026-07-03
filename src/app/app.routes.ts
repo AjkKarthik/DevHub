@@ -418,7 +418,12 @@ export const routes: Routes = [
         { path: 'generic-attributes-c-11-type-safe-custom-attributes',           loadComponent: () => import('./components/backend/csharp/generics/subtopics/generic-attributes-c-11-type-safe-custom-attributes/generic-attributes-c-11-type-safe-custom-attributes').then(m => m.GenericAttributesC11TypeSafeCustomAttributesSubtopic) },
         { path: 'writing-your-own-static-abstract-interface-members',           loadComponent: () => import('./components/backend/csharp/generics/subtopics/writing-your-own-static-abstract-interface-members/writing-your-own-static-abstract-interface-members').then(m => m.WritingYourOwnStaticAbstractInterfaceMembersSubtopic) },
       ] },
-      { path: 'collections',     loadComponent: () => import('./components/backend/csharp/collections/collections').then(m => m.CsharpCollections) },
+      { path: 'collections', children: [
+        { path: '',                                                             loadComponent: () => import('./components/backend/csharp/collections/collections').then(m => m.CsharpCollections) },
+        { path: 'writing-custom-iequalitycomparer-and-icomparer-implementations', loadComponent: () => import('./components/backend/csharp/collections/subtopics/writing-custom-iequalitycomparer-and-icomparer-implementations/writing-custom-iequalitycomparer-and-icomparer-implementations').then(m => m.WritingCustomIequalitycomparerAndIcomparerImplementationsSubtopic) },
+        { path: 'frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups', loadComponent: () => import('./components/backend/csharp/collections/subtopics/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups').then(m => m.FrozendictionaryAndFrozensetOptimizingForReadHeavyLookupsSubtopic) },
+        { path: 'testing-concurrent-collections-catching-race-conditions-in-getoradd', loadComponent: () => import('./components/backend/csharp/collections/subtopics/testing-concurrent-collections-catching-race-conditions-in-getoradd/testing-concurrent-collections-catching-race-conditions-in-getoradd').then(m => m.TestingConcurrentCollectionsCatchingRaceConditionsInGetoraddSubtopic) },
+      ] },
       { path: 'linq',            loadComponent: () => import('./components/backend/csharp/linq/linq').then(m => m.CsharpLinq) },
       { path: 'async',           loadComponent: () => import('./components/backend/csharp/async/async').then(m => m.CsharpAsync) },
       { path: 'null-safety',     loadComponent: () => import('./components/backend/csharp/null-safety/null-safety').then(m => m.CsharpNullSafety) },

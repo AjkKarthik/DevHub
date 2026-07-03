@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Collections"
+    topicRoute="/csharp/collections"
+    subtopicLabel="Testing Concurrent Collections: Catching Race Conditions in GetOrAdd" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Concurrent Collections: Catching Race Conditions in GetOrAdd</h1>
+  <p class="page-subtitle">
+    The main topic's quiz asks whether you understand the GetOrAdd race. Here's the
+    test that actually reproduces it — and proves the Lazy&lt;T&gt; fix really works.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 4" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Custom comparers, Frozen collections, and race-condition testing together cover
+      correctness, performance, and concurrency concerns the main topic's introductory
+      scope only has room to mention in passing.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Collections"
+    topicRoute="/csharp/collections"
+    [prev]="{ label: 'FrozenDictionary and FrozenSet: Optimizing for Read-Heavy Lookups', route: '/csharp/collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups' }" />
+</div>

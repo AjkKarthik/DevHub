@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Collections"
+    topicRoute="/csharp/collections"
+    subtopicLabel="FrozenDictionary and FrozenSet: Optimizing for Read-Heavy Lookups" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">FrozenDictionary and FrozenSet: Optimizing for Read-Heavy Lookups</h1>
+  <p class="page-subtitle">
+    The main topic covers Dictionary and ImmutableDictionary. .NET 8 added a third
+    option — expensive to build, but the fastest possible reads afterward.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since=".NET 8" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Custom comparers and Frozen collections both affect how a collection is built
+      and read. The final subtopic verifies a completely different concern — that
+      concurrent collection code is actually thread-safe under real contention.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Collections"
+    topicRoute="/csharp/collections"
+    [prev]="{ label: 'Writing Custom IEqualityComparer and IComparer Implementations', route: '/csharp/collections/writing-custom-iequalitycomparer-and-icomparer-implementations' }"
+    [next]="{ label: 'Testing Concurrent Collections: Catching Race Conditions', route: '/csharp/collections/testing-concurrent-collections-catching-race-conditions-in-getoradd' }" />
+</div>
