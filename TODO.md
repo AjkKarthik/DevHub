@@ -1444,7 +1444,7 @@ off here with a date.
 
 #### C# — 50 topic pages
 
-- [ ] `/csharp/basics` — Variables & Types
+- [x] `/csharp/basics` — Variables & Types (2026-07-03 — 3 subtopics: nullable-value-types-hasvalue-and-null-coalescing-operators, checked-and-unchecked-arithmetic-detecting-integer-overflow, spant-and-stackalloc-parsing-without-heap-allocations — first C# hub subtopic set; locked the non-Angular "See it run" pattern in CLAUDE.md, code-block + page-meta's .NET Fiddle/SharpLab links replace the StackBlitz playground)
 - [ ] `/csharp/oop` — OOP & Classes
 - [ ] `/csharp/records` — Records & Structs
 - [ ] `/csharp/generics` — Generics

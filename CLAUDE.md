@@ -481,6 +481,54 @@ to the topic page, not its subtopics.
   `@angular/common`, `@angular/forms`, `@angular/router`, or `rxjs` BEFORE writing the
   `liveDemoFiles`, not after.
 
+### Non-Angular hubs (C#, SQL, Python, Go, etc.) — the "See it run" section has no live playground
+
+`app-live-playground` embeds a StackBlitz project and only supports JS/TS-runnable
+templates (`angular-cli` and similar) — there is no in-browser runtime for C#/.NET, SQL,
+Python, or Go. Piloted on the C# hub's first subtopic set (`/csharp/basics`, 2026-07-03):
+**drop `app-live-playground` and `PlaygroundFile` entirely** for these hubs. Replace the
+"See it run" section with a plain `<app-code-block [tabs]="codeTabs" />` (the same
+`CodeTab[]` shape and shared component every main topic page already uses) inside a
+`<section class="cs-section"><h2>Code Examples</h2>...</section>` (swap the hub's own
+section class). **No separate "run it" link needs to be added by hand** — `app-page-meta`
+with `tech="csharp"` (or the hub's equivalent) ALREADY auto-renders the right external
+run-it buttons (.NET Fiddle + SharpLab for C#) next to the reading-time/difficulty badges,
+exactly as it does on every main topic page — confirmed rendering correctly in the pilot's
+browser verification. This means a non-Angular subtopic page is one shared component
+lighter than an Angular one: no `LivePlaygroundComponent`/`PlaygroundFile` import, no
+`liveDemoFiles` class field, no dependency-injection concerns (no StackBlitz template to
+configure). `TryIt`, `Misconceptions`, `SubtopicEyebrow`, `SubtopicNav`, `PageMeta`, and
+`TheoryBlock` are all unchanged and still required.
+
+### C# hub subtopic wiring — differs from Angular in three specific places
+
+Confirmed by direct file inspection before the C# pilot (do this same check before any
+OTHER non-Angular hub's first subtopic set — do not assume these conventions transfer
+identically):
+1. **Progress/search keys are `csharp-` PREFIXED** (`csharp-basics`), unlike Angular's bare
+   `counter`. Nav `@if (progress.isDone('csharp-basics'))` / `diff('csharp-basics')` — but
+   the **subtopic-accordion helper calls (`subtopicsOf`, `isSubtopicsExpanded`,
+   `toggleSubtopics`) key off the BARE topic slug** (`'basics'`, not `'csharp-basics'`),
+   because they index into `app.ts`'s single flat `SUBTOPICS` map shared across ALL hubs —
+   don't prefix these three calls.
+2. **`SUBTOPICS` map in `app.ts` has NO hub namespacing** — it's one
+   `Record<string, SubtopicNavEntry[]>` keyed by bare route slug for every hub combined.
+   This is a latent collision risk: if two different hubs ever both have a topic at the
+   same slug (e.g. `basics`, which SQL/TypeScript/React hubs also use) AND both get
+   subtopics, the second one written will silently overwrite/collide with the first's
+   entry. Not yet hit in practice (only Angular `counter`/`todo`/etc. and C# `basics` exist
+   so far, no actual slug clash yet) — but check for an existing key before adding a new
+   hub's entry, and flag to fix the map's structure (e.g. hub-prefixed keys) if a real
+   collision is ever hit.
+3. **`SIDEBAR_MAP` keys for ordinary C# topic pages are BARE** (`basics`, `oop`, `fields`),
+   matching Angular — NOT hub-prefixed as an earlier reading of this file's own WIRING
+   CHECKLIST step 7 implied. That `'csharp/cheatsheet'`-style full-path prefix is used ONLY
+   by C#'s Practice/Reference pages (cheatsheet, errors, learning-paths, etc.), not regular
+   topic pages — confirmed via `page-sidebar.ts`'s lookup fallback, which tries the full key
+   first, then strips a leading `angular/`/`csharp/` and retries. **Subtopic sidebar keys
+   follow the Angular convention exactly**: bare composite `'basics/<subtopic-slug>'`, no
+   `csharp/` prefix.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
