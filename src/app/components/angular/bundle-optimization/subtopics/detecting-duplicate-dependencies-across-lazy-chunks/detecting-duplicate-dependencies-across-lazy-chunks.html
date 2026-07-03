@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Bundle Optimization"
+    topicRoute="/angular/bundle-optimization"
+    subtopicLabel="Detecting Duplicate Dependencies Across Lazy Chunks" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Detecting Duplicate Dependencies Across Lazy Chunks</h1>
+  <p class="page-subtitle">
+    Common-chunk extraction is a heuristic, not a guarantee — inconsistent import paths
+    across features can silently duplicate a large dependency into multiple chunks.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Both feature components import <code>createLineChart</code> through the SAME
+      shared wrapper path — the exact consistency that lets a bundler reliably
+      deduplicate the underlying library.
+    </p>
+    <app-live-playground
+      title="Detecting duplicate dependencies across lazy chunks"
+      template="angular-cli"
+      openFile="src/app/shared/chart-lib.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With duplicate-dependency detection covered, the final subtopic turns build budgets
+      into an automated, trend-aware CI check rather than a static one-time threshold.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Bundle Optimization"
+    topicRoute="/angular/bundle-optimization"
+    [prev]="{ label: 'Testing @defer Blocks with DeferBlockFixture', route: '/angular/bundle-optimization/testing-defer-blocks-with-deferblockfixture' }"
+    [next]="{ label: 'Automated Bundle Budget Enforcement in CI', route: '/angular/bundle-optimization/automated-bundle-budget-enforcement-in-ci' }" />
+</div>

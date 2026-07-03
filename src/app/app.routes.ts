@@ -328,7 +328,12 @@ export const routes: Routes = [
         { path: 'safely-enabling-devtools-on-staging',               loadComponent: () => import('./components/angular/angular-devtools/subtopics/safely-enabling-devtools-on-staging/safely-enabling-devtools-on-staging').then(m => m.SafelyEnablingDevtoolsOnStagingSubtopic) },
         { path: 'turning-a-profiler-finding-into-a-regression-test', loadComponent: () => import('./components/angular/angular-devtools/subtopics/turning-a-profiler-finding-into-a-regression-test/turning-a-profiler-finding-into-a-regression-test').then(m => m.TurningAProfilerFindingIntoARegressionTestSubtopic) },
       ] },
-      { path: 'bundle-optimization',     loadComponent: () => import('./components/angular/bundle-optimization/bundle-optimization').then(m => m.BundleOptimizationDemo) },
+      { path: 'bundle-optimization', children: [
+        { path: '',                                                loadComponent: () => import('./components/angular/bundle-optimization/bundle-optimization').then(m => m.BundleOptimizationDemo) },
+        { path: 'testing-defer-blocks-with-deferblockfixture',      loadComponent: () => import('./components/angular/bundle-optimization/subtopics/testing-defer-blocks-with-deferblockfixture/testing-defer-blocks-with-deferblockfixture').then(m => m.TestingDeferBlocksWithDeferblockfixtureSubtopic) },
+        { path: 'detecting-duplicate-dependencies-across-lazy-chunks', loadComponent: () => import('./components/angular/bundle-optimization/subtopics/detecting-duplicate-dependencies-across-lazy-chunks/detecting-duplicate-dependencies-across-lazy-chunks').then(m => m.DetectingDuplicateDependenciesAcrossLazyChunksSubtopic) },
+        { path: 'automated-bundle-budget-enforcement-in-ci',        loadComponent: () => import('./components/angular/bundle-optimization/subtopics/automated-bundle-budget-enforcement-in-ci/automated-bundle-budget-enforcement-in-ci').then(m => m.AutomatedBundleBudgetEnforcementInCiSubtopic) },
+      ] },
       { path: 'wizard-form',        loadComponent: () => import('./components/angular/wizard-form/wizard-form').then(m => m.WizardFormDemo) },
       { path: 'web-workers',        loadComponent: () => import('./components/angular/web-workers/web-workers').then(m => m.WebWorkersDemo) },
       { path: 'pwa',                loadComponent: () => import('./components/angular/pwa/pwa').then(m => m.PwaDemo) },

@@ -4353,6 +4353,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'bundle-optimization/testing-defer-blocks-with-deferblockfixture': {
+    apis: ['DeferBlockBehavior.Manual', 'fixture.getDeferBlocks()', 'DeferBlockState'],
+    related: [
+      { label: 'Bundle Optimization (overview)',                              route: '/angular/bundle-optimization' },
+      { label: 'Detecting Duplicate Dependencies Across Lazy Chunks — next',    route: '/angular/bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks' },
+    ],
+    tip: 'Angular\'s default test behavior (Playthrough) auto-progresses through every @defer state synchronously — opt into DeferBlockBehavior.Manual to actually verify the placeholder, loading, and error UI.',
+    docs: [
+      { label: '@defer Testing Guide', url: 'https://angular.dev/guide/templates/defer#testing-defer' },
+      { label: '@defer Guide',         url: 'https://angular.dev/guide/templates/defer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'DeferBlockFixture.render(DeferBlockState.Error) lets you test the error UI without a genuinely failing chunk load.',
+      'Manual mode applies to ALL states including Complete — even the final loaded-content assertion needs an explicit .render() call.',
+    ],
+  },
+
+  'bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks': {
+    apis: ['esbuild metafile', '--stats-json', 'common-chunk extraction'],
+    related: [
+      { label: 'Testing @defer Blocks with DeferBlockFixture — previous',        route: '/angular/bundle-optimization/testing-defer-blocks-with-deferblockfixture' },
+      { label: 'Bundle Optimization (overview)',                                  route: '/angular/bundle-optimization' },
+      { label: 'Automated Bundle Budget Enforcement in CI — next',                  route: '/angular/bundle-optimization/automated-bundle-budget-enforcement-in-ci' },
+    ],
+    tip: 'Common-chunk extraction relies on resolving to the SAME underlying module — inconsistent import paths across features can defeat it and silently duplicate a large dependency.',
+    docs: [
+      { label: 'esbuild Metafile',      url: 'https://esbuild.github.io/api/#metafile' },
+      { label: 'esbuild Bundle Analyzer', url: 'https://esbuild.github.io/analyze/' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Comparing raw chunk file sizes is not enough — the metafile shows exactly which source files contributed to each output chunk.',
+      'The usual fix is import-path consistency (often via a small shared wrapper module), not a bundler configuration change.',
+    ],
+  },
+
+  'bundle-optimization/automated-bundle-budget-enforcement-in-ci': {
+    apis: ['angular.json budgets', 'PR size-diff comment', 'baseline JSON'],
+    related: [
+      { label: 'Detecting Duplicate Dependencies Across Lazy Chunks — previous', route: '/angular/bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks' },
+      { label: 'Bundle Optimization (overview)',                                  route: '/angular/bundle-optimization' },
+    ],
+    tip: 'A static budget catches one big jump but misses ten small PRs that each add a modest amount, quietly bloating the bundle over months — a percentage-based trend check catches gradual creep.',
+    docs: [
+      { label: 'Angular Build Budgets', url: 'https://angular.dev/reference/configs/workspace-config#configuring-size-budgets' },
+      { label: 'GitHub Actions',        url: 'https://docs.github.com/en/actions' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A trend check should be a review-visible comment, not a hard merge block — the static angular.json budget remains the hard ceiling.',
+      'The baseline must only update on merge to the target branch — updating it on every PR build makes the trend check meaningless.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

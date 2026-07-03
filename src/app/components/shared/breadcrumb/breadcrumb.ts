@@ -172,6 +172,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'building-a-why-did-this-render-debug-helper': 'Building a "Why Did This Render?" Debug Helper',
   'safely-enabling-devtools-on-staging': 'Safely Enabling DevTools on Staging',
   'turning-a-profiler-finding-into-a-regression-test': 'Turning a Profiler Finding into a Regression Test',
+  'testing-defer-blocks-with-deferblockfixture': 'Testing @defer Blocks with DeferBlockFixture',
+  'detecting-duplicate-dependencies-across-lazy-chunks': 'Detecting Duplicate Dependencies Across Lazy Chunks',
+  'automated-bundle-budget-enforcement-in-ci': 'Automated Bundle Budget Enforcement in CI',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
