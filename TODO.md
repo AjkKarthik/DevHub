@@ -1434,7 +1434,7 @@ off here with a date.
 - [x] `/angular/micro-frontends` — Micro-Frontends (2026-07-03 — 3 subtopics: testing-cross-mfe-communication-with-a-mocked-event-bus, debugging-duplicate-angular-runtime-issues, css-style-isolation-with-shadowdom-encapsulation)
 - [x] `/angular/angular-devtools` — Angular DevTools (2026-07-03 — 3 subtopics: building-a-why-did-this-render-debug-helper, safely-enabling-devtools-on-staging, turning-a-profiler-finding-into-a-regression-test)
 - [x] `/angular/bundle-optimization` — Bundle Optimization (2026-07-03 — 3 subtopics: testing-defer-blocks-with-deferblockfixture, detecting-duplicate-dependencies-across-lazy-chunks, automated-bundle-budget-enforcement-in-ci)
-- [ ] `/angular/wizard-form` — Multi-Step Wizard Form
+- [x] `/angular/wizard-form` — Multi-Step Wizard Form (2026-07-03 — 3 subtopics: deep-linking-wizard-steps-with-query-params, cdk-stepper-vs-hand-rolled-wizard, testing-wizard-steps-in-isolation)
 - [ ] `/angular/web-workers` — Web Workers
 - [ ] `/angular/pwa` — PWA & Service Workers
 - [ ] `/angular/i18n` — Internationalisation (i18n)
