@@ -1435,7 +1435,7 @@ off here with a date.
 - [x] `/angular/angular-devtools` — Angular DevTools (2026-07-03 — 3 subtopics: building-a-why-did-this-render-debug-helper, safely-enabling-devtools-on-staging, turning-a-profiler-finding-into-a-regression-test)
 - [x] `/angular/bundle-optimization` — Bundle Optimization (2026-07-03 — 3 subtopics: testing-defer-blocks-with-deferblockfixture, detecting-duplicate-dependencies-across-lazy-chunks, automated-bundle-budget-enforcement-in-ci)
 - [x] `/angular/wizard-form` — Multi-Step Wizard Form (2026-07-03 — 3 subtopics: deep-linking-wizard-steps-with-query-params, cdk-stepper-vs-hand-rolled-wizard, testing-wizard-steps-in-isolation)
-- [ ] `/angular/web-workers` — Web Workers
+- [x] `/angular/web-workers` — Web Workers (2026-07-03 — 3 subtopics: testing-components-that-use-web-workers, building-a-worker-pool-for-parallel-task-dispatch, debugging-and-profiling-web-workers-in-devtools)
 - [ ] `/angular/pwa` — PWA & Service Workers
 - [ ] `/angular/i18n` — Internationalisation (i18n)
 - [ ] `/angular/e2e` — E2E Testing with Playwright
