@@ -1429,7 +1429,7 @@ off here with a date.
 - [x] `/angular/let-template-vars` — @let Template Variables (2026-07-03 — 3 subtopics: testing-let-driven-templates, profiling-let-recompute-cost, let-inside-ng-template-scope-closure)
 - [x] `/angular/standalone-migration` — Standalone Migration (2026-07-03 — 3 subtopics: testing-hybrid-standalone-and-ngmodule-components, scam-pattern-incremental-migration-walkthrough, debugging-nullinjectorerror-after-migration)
 - [x] `/angular/error-handling-patterns` — Error Handling Patterns (2026-07-03 — 3 subtopics: testing-a-layered-error-handling-system, retry-with-exponential-backoff-and-give-up, recovering-from-component-rendering-errors)
-- [ ] `/angular/msw` — Mock Service Worker (MSW)
+- [x] `/angular/msw` — Mock Service Worker (MSW) (2026-07-03 — 3 subtopics: testing-auth-interceptor-flows-with-msw, testing-loading-states-with-msw-delay, debugging-unhandled-requests-and-query-param-matching)
 - [ ] `/angular/accessibility` — Accessibility (a11y)
 - [ ] `/angular/micro-frontends` — Micro-Frontends
 - [ ] `/angular/angular-devtools` — Angular DevTools
