@@ -1433,7 +1433,7 @@ off here with a date.
 - [x] `/angular/accessibility` — Accessibility (a11y) (2026-07-03 — 3 subtopics: automated-accessibility-testing-with-jest-axe, building-a-reusable-route-change-focus-management-service, testing-focus-trap-and-restoration-in-modals)
 - [x] `/angular/micro-frontends` — Micro-Frontends (2026-07-03 — 3 subtopics: testing-cross-mfe-communication-with-a-mocked-event-bus, debugging-duplicate-angular-runtime-issues, css-style-isolation-with-shadowdom-encapsulation)
 - [x] `/angular/angular-devtools` — Angular DevTools (2026-07-03 — 3 subtopics: building-a-why-did-this-render-debug-helper, safely-enabling-devtools-on-staging, turning-a-profiler-finding-into-a-regression-test)
-- [ ] `/angular/bundle-optimization` — Bundle Optimization
+- [x] `/angular/bundle-optimization` — Bundle Optimization (2026-07-03 — 3 subtopics: testing-defer-blocks-with-deferblockfixture, detecting-duplicate-dependencies-across-lazy-chunks, automated-bundle-budget-enforcement-in-ci)
 - [ ] `/angular/wizard-form` — Multi-Step Wizard Form
 - [ ] `/angular/web-workers` — Web Workers
 - [ ] `/angular/pwa` — PWA & Service Workers
