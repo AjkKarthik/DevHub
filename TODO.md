@@ -1430,7 +1430,7 @@ off here with a date.
 - [x] `/angular/standalone-migration` — Standalone Migration (2026-07-03 — 3 subtopics: testing-hybrid-standalone-and-ngmodule-components, scam-pattern-incremental-migration-walkthrough, debugging-nullinjectorerror-after-migration)
 - [x] `/angular/error-handling-patterns` — Error Handling Patterns (2026-07-03 — 3 subtopics: testing-a-layered-error-handling-system, retry-with-exponential-backoff-and-give-up, recovering-from-component-rendering-errors)
 - [x] `/angular/msw` — Mock Service Worker (MSW) (2026-07-03 — 3 subtopics: testing-auth-interceptor-flows-with-msw, testing-loading-states-with-msw-delay, debugging-unhandled-requests-and-query-param-matching)
-- [ ] `/angular/accessibility` — Accessibility (a11y)
+- [x] `/angular/accessibility` — Accessibility (a11y) (2026-07-03 — 3 subtopics: automated-accessibility-testing-with-jest-axe, building-a-reusable-route-change-focus-management-service, testing-focus-trap-and-restoration-in-modals)
 - [ ] `/angular/micro-frontends` — Micro-Frontends
 - [ ] `/angular/angular-devtools` — Angular DevTools
 - [ ] `/angular/bundle-optimization` — Bundle Optimization
