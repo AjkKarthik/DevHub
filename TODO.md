@@ -1427,7 +1427,7 @@ off here with a date.
 - [x] `/angular/typed-forms` — Typed Reactive Forms (2026-07-03 — 3 subtopics: testing-typed-reactive-forms, writing-type-safe-custom-validators, populating-a-typed-form-from-resource)
 - [x] `/angular/host-directives` — Host Directives (2026-07-03 — 3 subtopics: testing-components-that-use-hostdirectives, coordinating-multiple-stacked-host-directives, optional-host-directive-injection-for-shared-components)
 - [x] `/angular/let-template-vars` — @let Template Variables (2026-07-03 — 3 subtopics: testing-let-driven-templates, profiling-let-recompute-cost, let-inside-ng-template-scope-closure)
-- [ ] `/angular/standalone-migration` — Standalone Migration
+- [x] `/angular/standalone-migration` — Standalone Migration (2026-07-03 — 3 subtopics: testing-hybrid-standalone-and-ngmodule-components, scam-pattern-incremental-migration-walkthrough, debugging-nullinjectorerror-after-migration)
 - [ ] `/angular/error-handling-patterns` — Error Handling Patterns
 - [ ] `/angular/msw` — Mock Service Worker (MSW)
 - [ ] `/angular/accessibility` — Accessibility (a11y)
