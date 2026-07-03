@@ -6162,6 +6162,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'generics/testing-generic-code-parameterized-tests-across-multiple-type-arguments': {
+    apis: ['[Theory]', '[InlineData]', 'INumber<T>', 'multi-type test coverage'],
+    related: [
+      { label: 'Generics (overview)',                                    route: '/csharp/generics' },
+      { label: 'Generic Attributes (C# 11) — next',                       route: '/csharp/generics/generic-attributes-c-11-type-safe-custom-attributes' },
+    ],
+    tip: '"Works for any type" is a claim that needs a test per representative type — a generic method proven correct for int can still misbehave for decimal or a custom constrained type.',
+    docs: [
+      { label: 'xUnit Theory Data', url: 'https://xunit.net/docs/getting-started/netcore/cmdline#write-first-theory' },
+    ],
+    resources: [
+      { label: 'Generic Collections', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'A missing constraint is a COMPILE error, not a runtime one — no unit test can "catch" it, since the test project fails to build entirely.',
+      'decimal is the type most likely to reveal a rounding/precision bug a generic algorithm handles correctly for int and double alone.',
+    ],
+  },
+
+  'generics/generic-attributes-c-11-type-safe-custom-attributes': {
+    apis: ['Attribute<T>', 'static abstract in constraints', 'typeof() vs generic args'],
+    related: [
+      { label: 'Testing Generic Code Across Multiple Type Arguments — previous', route: '/csharp/generics/testing-generic-code-parameterized-tests-across-multiple-type-arguments' },
+      { label: 'Generics (overview)',                                            route: '/csharp/generics' },
+      { label: 'Writing Your Own Static Abstract Interface Members — next',        route: '/csharp/generics/writing-your-own-static-abstract-interface-members' },
+    ],
+    tip: 'A generic attribute\'s where T : IValidator constraint is enforced by the compiler — the old typeof(...) pattern accepts any type and only fails at runtime reflection time.',
+    docs: [
+      { label: 'Generic Attributes — C# 11', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#generic-attributes' },
+    ],
+    resources: [
+      { label: 'Generic Collections', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'A generic attribute\'s type argument must be a fully CLOSED concrete type — you cannot propagate an outer unbound type parameter into it.',
+      'This is a genuinely new C# 11 syntax location for generics, not just an application of existing generic class/method rules.',
+    ],
+  },
+
+  'generics/writing-your-own-static-abstract-interface-members': {
+    apis: ['static abstract', 'IParseable<T>', 'CRTP-like self-reference'],
+    related: [
+      { label: 'Generic Attributes (C# 11) — previous', route: '/csharp/generics/generic-attributes-c-11-type-safe-custom-attributes' },
+      { label: 'Generics (overview)',                    route: '/csharp/generics' },
+    ],
+    tip: 'T.Zero and T.CreateChecked(count) from the main topic\'s INumber<T> examples ARE static abstract members — a general C# 11 feature you can apply to your own interfaces, not a BCL-only mechanism.',
+    docs: [
+      { label: 'Static Abstract Members — C# 11', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#static-abstract-members-in-interfaces' },
+    ],
+    resources: [
+      { label: 'Generic Collections', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'Static abstract dispatch has no instance and no vtable — resolved through the generic type system at JIT specialization, which is why it also works for structs, unlike ordinary virtual dispatch.',
+      'The self-referencing constraint pattern (IParseable<T> where T : IParseable<T>) mirrors exactly how INumber<T> itself is declared.',
+    ],
+  },
+
   collections: {
     apis: ['List<T>', 'Dictionary<K,V>', 'HashSet<T>', 'IEnumerable<T>', 'Span<T>'],
     related: [

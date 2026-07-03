@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Generics"
+    topicRoute="/csharp/generics"
+    subtopicLabel="Writing Your Own Static Abstract Interface Members" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Writing Your Own Static Abstract Interface Members</h1>
+  <p class="page-subtitle">
+    The main topic treats INumber&lt;T&gt; as a ready-made interface to consume.
+    Here's the general-purpose feature underneath it — applicable to your own interfaces.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 11" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing, generic attributes, and static abstract members together round out
+      the C# 11+ generics features and verification practices the main topic's
+      introductory scope doesn't have room to cover.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generics"
+    topicRoute="/csharp/generics"
+    [prev]="{ label: 'Generic Attributes (C# 11): Type-Safe Custom Attributes', route: '/csharp/generics/generic-attributes-c-11-type-safe-custom-attributes' }" />
+</div>

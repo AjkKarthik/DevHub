@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Generics"
+    topicRoute="/csharp/generics"
+    subtopicLabel="Testing Generic Code Across Multiple Type Arguments" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Generic Code Across Multiple Type Arguments</h1>
+  <p class="page-subtitle">
+    The main topic's whole pitch is "works for any type" — that claim needs a test per
+    representative type, not just a single manual try during development.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 1" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing verifies generic algorithms work correctly. The next subtopic covers
+      a brand-new C# 11 feature the main topic never mentions — attaching type
+      parameters to attributes themselves.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generics"
+    topicRoute="/csharp/generics"
+    [next]="{ label: 'Generic Attributes (C# 11): Type-Safe Custom Attributes', route: '/csharp/generics/generic-attributes-c-11-type-safe-custom-attributes' }" />
+</div>

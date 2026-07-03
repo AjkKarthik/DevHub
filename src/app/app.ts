@@ -367,6 +367,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Positional Pattern Matching with Records', route: '/csharp/records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions' },
     { label: 'Testing Records: Equality, Hash Codes, and Constructor Validation', route: '/csharp/records/testing-records-equality-hash-codes-and-constructor-validation' },
   ],
+  'generics': [
+    { label: 'Testing Generic Code Across Multiple Type Arguments', route: '/csharp/generics/testing-generic-code-parameterized-tests-across-multiple-type-arguments' },
+    { label: 'Generic Attributes (C# 11): Type-Safe Custom Attributes', route: '/csharp/generics/generic-attributes-c-11-type-safe-custom-attributes' },
+    { label: 'Writing Your Own Static Abstract Interface Members', route: '/csharp/generics/writing-your-own-static-abstract-interface-members' },
+  ],
 };
 
 @Component({

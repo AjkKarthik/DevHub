@@ -412,7 +412,12 @@ export const routes: Routes = [
         { path: 'positional-pattern-matching-with-records-deconstruction-in-switch-expressions', loadComponent: () => import('./components/backend/csharp/records/subtopics/positional-pattern-matching-with-records-deconstruction-in-switch-expressions/positional-pattern-matching-with-records-deconstruction-in-switch-expressions').then(m => m.PositionalPatternMatchingWithRecordsDeconstructionInSwitchExpressionsSubtopic) },
         { path: 'testing-records-equality-hash-codes-and-constructor-validation', loadComponent: () => import('./components/backend/csharp/records/subtopics/testing-records-equality-hash-codes-and-constructor-validation/testing-records-equality-hash-codes-and-constructor-validation').then(m => m.TestingRecordsEqualityHashCodesAndConstructorValidationSubtopic) },
       ] },
-      { path: 'generics',        loadComponent: () => import('./components/backend/csharp/generics/generics').then(m => m.CsharpGenerics) },
+      { path: 'generics', children: [
+        { path: '',                                                             loadComponent: () => import('./components/backend/csharp/generics/generics').then(m => m.CsharpGenerics) },
+        { path: 'testing-generic-code-parameterized-tests-across-multiple-type-arguments', loadComponent: () => import('./components/backend/csharp/generics/subtopics/testing-generic-code-parameterized-tests-across-multiple-type-arguments/testing-generic-code-parameterized-tests-across-multiple-type-arguments').then(m => m.TestingGenericCodeParameterizedTestsAcrossMultipleTypeArgumentsSubtopic) },
+        { path: 'generic-attributes-c-11-type-safe-custom-attributes',           loadComponent: () => import('./components/backend/csharp/generics/subtopics/generic-attributes-c-11-type-safe-custom-attributes/generic-attributes-c-11-type-safe-custom-attributes').then(m => m.GenericAttributesC11TypeSafeCustomAttributesSubtopic) },
+        { path: 'writing-your-own-static-abstract-interface-members',           loadComponent: () => import('./components/backend/csharp/generics/subtopics/writing-your-own-static-abstract-interface-members/writing-your-own-static-abstract-interface-members').then(m => m.WritingYourOwnStaticAbstractInterfaceMembersSubtopic) },
+      ] },
       { path: 'collections',     loadComponent: () => import('./components/backend/csharp/collections/collections').then(m => m.CsharpCollections) },
       { path: 'linq',            loadComponent: () => import('./components/backend/csharp/linq/linq').then(m => m.CsharpLinq) },
       { path: 'async',           loadComponent: () => import('./components/backend/csharp/async/async').then(m => m.CsharpAsync) },
