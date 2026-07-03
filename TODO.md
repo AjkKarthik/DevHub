@@ -1455,7 +1455,7 @@ off here with a date.
 - [x] `/csharp/pattern-matching` — Pattern Matching (2026-07-04 — 3 subtopics: testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests, pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws, how-the-compiler-lowers-property-patterns-repeated-access-and-performance)
 - [x] `/csharp/exceptions` — Exceptions (2026-07-04 — 3 subtopics: testing-exception-filters-verifying-when-predicate-logic, appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception, why-exceptions-are-slow-stack-walking-first-chance-exceptions)
 - [x] `/csharp/delegates` — Delegates & Events (2026-07-04 — 3 subtopics: testing-events-xunit-assert-raises-multicast-behavior, how-delegate-equality-actually-works-target-method-pairs, async-void-event-handlers-why-exceptions-vanish)
-- [ ] `/csharp/fields` — Fields & Constants
+- [x] `/csharp/fields` — Fields & Constants (2026-07-04 — 3 subtopics: testing-field-thread-safety-race-conditions-increment-vs-interlocked, static-field-initialization-order-beforefieldinit, asynclocal-correct-alternative-to-static-fields-for-per-request-state)
 - [ ] `/csharp/methods` — Methods
 - [ ] `/csharp/type-conversion` — Type Conversion
 - [ ] `/csharp/constructors` — Constructors
