@@ -422,6 +422,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'User-Defined Conversion Chaining', route: '/csharp/type-conversion/user-defined-conversion-chaining-one-operator-limit' },
     { label: 'Compile-Time Constant Overflow', route: '/csharp/type-conversion/compile-time-constant-overflow-always-checked' },
   ],
+  'constructors': [
+    { label: 'Testing Constructor Validation and Chaining', route: '/csharp/constructors/testing-constructor-validation-and-chaining' },
+    { label: 'Primary Constructor Parameter Capture', route: '/csharp/constructors/primary-constructor-parameter-capture-field-vs-fixed' },
+    { label: 'Diagnosing TypeInitializationException', route: '/csharp/constructors/diagnosing-typeinitializationexception-inner-exception' },
+  ],
 };
 
 @Component({

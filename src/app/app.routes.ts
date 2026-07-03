@@ -479,7 +479,12 @@ export const routes: Routes = [
         { path: 'user-defined-conversion-chaining-one-operator-limit', loadComponent: () => import('./components/backend/csharp/type-conversion/subtopics/user-defined-conversion-chaining-one-operator-limit/user-defined-conversion-chaining-one-operator-limit').then(m => m.UserDefinedConversionChainingOneOperatorLimitSubtopic) },
         { path: 'compile-time-constant-overflow-always-checked', loadComponent: () => import('./components/backend/csharp/type-conversion/subtopics/compile-time-constant-overflow-always-checked/compile-time-constant-overflow-always-checked').then(m => m.CompileTimeConstantOverflowAlwaysCheckedSubtopic) },
       ] },
-      { path: 'constructors',      loadComponent: () => import('./components/backend/csharp/constructors/constructors').then(m => m.CsharpConstructors) },
+      { path: 'constructors', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/constructors/constructors').then(m => m.CsharpConstructors) },
+        { path: 'testing-constructor-validation-and-chaining', loadComponent: () => import('./components/backend/csharp/constructors/subtopics/testing-constructor-validation-and-chaining/testing-constructor-validation-and-chaining').then(m => m.TestingConstructorValidationAndChainingSubtopic) },
+        { path: 'primary-constructor-parameter-capture-field-vs-fixed', loadComponent: () => import('./components/backend/csharp/constructors/subtopics/primary-constructor-parameter-capture-field-vs-fixed/primary-constructor-parameter-capture-field-vs-fixed').then(m => m.PrimaryConstructorParameterCaptureFieldVsFixedSubtopic) },
+        { path: 'diagnosing-typeinitializationexception-inner-exception', loadComponent: () => import('./components/backend/csharp/constructors/subtopics/diagnosing-typeinitializationexception-inner-exception/diagnosing-typeinitializationexception-inner-exception').then(m => m.DiagnosingTypeInitializationExceptionInnerExceptionSubtopic) },
+      ] },
       { path: 'properties-indexers', loadComponent: () => import('./components/backend/csharp/properties-indexers/properties-indexers').then(m => m.CsharpPropertiesIndexers) },
       { path: 'namespaces',        loadComponent: () => import('./components/backend/csharp/namespaces/namespaces').then(m => m.CsharpNamespaces) },
       // ── OOP ──

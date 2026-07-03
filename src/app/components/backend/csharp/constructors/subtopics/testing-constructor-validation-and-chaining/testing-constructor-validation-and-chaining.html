@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Constructors"
+    topicRoute="/csharp/constructors"
+    subtopicLabel="Testing Constructor Validation and Chaining" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Constructor Validation and Chaining: Verifying ParamName and Default Propagation</h1>
+  <p class="page-subtitle">
+    The main topic's Money challenge validates extensively and chains a convenience
+    constructor — but only ever demonstrates it by printing happy-path output. This
+    subtopic writes real tests for both.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing covers correctness — the next subtopics dig into a subtle capture rule for
+      C# 12 primary constructors, and how to actually diagnose a static constructor
+      failure in production.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Constructors"
+    topicRoute="/csharp/constructors"
+    [next]="{ label: 'Primary Constructor Parameter Capture', route: '/csharp/constructors/primary-constructor-parameter-capture-field-vs-fixed' }" />
+</div>

@@ -7009,6 +7009,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Static constructors run once per type, not per instance — exceptions in static constructors make the type permanently unavailable.', 'Primary constructor parameters are in scope for the entire class body — capture to a field if you need them stored.'],
   },
 
+  'constructors/testing-constructor-validation-and-chaining': {
+    apis: ['Assert.Throws', 'ParamName', 'Assert.Equal'],
+    related: [
+      { label: 'Primary Constructor Parameter Capture — next', route: '/csharp/constructors/primary-constructor-parameter-capture-field-vs-fixed' },
+      { label: 'Constructors (overview)', route: '/csharp/constructors' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Assert on ParamName, not just exception type — a bare Assert.Throws<ArgumentException>() cannot catch a copy-paste bug where the exception references the wrong parameter.',
+    docs: [
+      { label: 'ArgumentException.ParamName', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.argumentexception.paramname' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'For inputs violating MULTIPLE validation rules at once, only the FIRST failing check\'s exception is thrown — validation order determines which exception type/ParamName the caller sees.',
+      'Test that a convenience constructor chained via this(...) produces a result IDENTICAL to calling the primary constructor directly — guards against future duplication instead of genuine delegation.',
+    ],
+  },
+
+  'constructors/primary-constructor-parameter-capture-field-vs-fixed': {
+    apis: ['primary constructor', 'property initializer', 'compiler-generated field'],
+    related: [
+      { label: 'Testing Constructor Validation — previous', route: '/csharp/constructors/testing-constructor-validation-and-chaining' },
+      { label: 'Diagnosing TypeInitializationException — next', route: '/csharp/constructors/diagnosing-typeinitializationexception-inner-exception' },
+      { label: 'Constructors (overview)', route: '/csharp/constructors' },
+    ],
+    tip: 'A property initializer copies the parameter\'s value once, fixed forever. A method-body reference is silently promoted to its OWN compiler-generated field. Using both creates two independent copies that can drift apart.',
+    docs: [
+      { label: 'Primary Constructors', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12#primary-constructors' },
+    ],
+    resources: [
+      { label: 'C# 12 Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12', badge: 'docs' },
+    ],
+    gotchas: [
+      'Mutating a property later does NOT affect a separate compiler-generated field backing a method-body reference to the same original parameter.',
+      'The explicit "assign to a field" advice is genuinely necessary only when you need ONE shared, mutable storage location — not for simple read-only DI usage, which the compiler already handles equivalently.',
+    ],
+  },
+
+  'constructors/diagnosing-typeinitializationexception-inner-exception': {
+    apis: ['TypeInitializationException', 'InnerException', 'static constructor'],
+    related: [
+      { label: 'Primary Constructor Parameter Capture — previous', route: '/csharp/constructors/primary-constructor-parameter-capture-field-vs-fixed' },
+      { label: 'Constructors (overview)', route: '/csharp/constructors' },
+      { label: 'Exceptions', route: '/csharp/exceptions' },
+    ],
+    tip: 'TypeInitializationException.Message only says WHICH type failed — the actual root cause lives in InnerException. Logging only ex.Message silently discards the one piece of information that explains the failure.',
+    docs: [
+      { label: 'TypeInitializationException', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.typeinitializationexception' },
+    ],
+    resources: [
+      { label: 'Static Constructors', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors', badge: 'docs' },
+    ],
+    gotchas: [
+      'Once a static constructor throws, the type is permanently marked failed for the rest of the process — retrying the failing call accomplishes nothing.',
+      'InnerException is nearly always populated but is technically nullable — defensive diagnostic code should null-check before dereferencing it.',
+    ],
+  },
+
   'properties-indexers': {
     apis: ['get; set;', 'get; init;', 'auto-prop', 'expression-bodied', 'this[T]'],
     related: [{ label: 'Fields & Constants', route: '/csharp/fields' }, { label: 'Records & Structs', route: '/csharp/records' }, { label: 'OOP & Classes', route: '/csharp/oop' }],
