@@ -1459,7 +1459,7 @@ off here with a date.
 - [x] `/csharp/methods` — Methods (2026-07-04 — 3 subtopics: testing-logic-inside-local-functions-when-to-promote, in-parameter-defensive-copy-trap, caller-info-attributes-callermembername-callerlinenumber)
 - [x] `/csharp/type-conversion` — Type Conversion (2026-07-04 — 3 subtopics: testing-conversion-operators-and-overflow-boundaries, user-defined-conversion-chaining-one-operator-limit, compile-time-constant-overflow-always-checked)
 - [x] `/csharp/constructors` — Constructors (2026-07-04 — 3 subtopics: testing-constructor-validation-and-chaining, primary-constructor-parameter-capture-field-vs-fixed, diagnosing-typeinitializationexception-inner-exception)
-- [ ] `/csharp/properties-indexers` — Properties & Indexers
+- [x] `/csharp/properties-indexers` — Properties & Indexers (2026-07-04 — 3 subtopics: testing-computed-properties-and-indexers, init-accessors-and-readonly-fields-assignment-window, indexer-initializer-syntax-without-add)
 - [ ] `/csharp/namespaces` — Namespaces & Usings
 - [ ] `/csharp/inheritance` — Inheritance & Overriding
 - [ ] `/csharp/abstract-interfaces` — Abstract Classes & Interfaces
