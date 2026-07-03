@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Records &amp; Structs"
+    topicRoute="/csharp/records"
+    subtopicLabel="Polymorphic JSON Serialization of Record Hierarchies" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Polymorphic JSON Serialization of Record Hierarchies</h1>
+  <p class="page-subtitle">
+    The main topic says records "work with System.Text.Json" — but serializing a
+    mixed-type collection silently drops derived-record data unless you configure this.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since=".NET 7" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Serialization is one place record inheritance needs its own configuration.
+      The next subtopic covers a different area entirely — using records with C#'s
+      pattern-matching syntax.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Records &amp; Structs"
+    topicRoute="/csharp/records"
+    [next]="{ label: 'Positional Pattern Matching with Records', route: '/csharp/records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions' }" />
+</div>

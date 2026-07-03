@@ -6082,6 +6082,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'records/polymorphic-json-serialization-of-record-hierarchies-with-jsonderivedtype': {
+    apis: ['[JsonPolymorphic]', '[JsonDerivedType]', 'TypeDiscriminatorPropertyName'],
+    related: [
+      { label: 'Records & Structs (overview)',                              route: '/csharp/records' },
+      { label: 'Positional Pattern Matching with Records — next',           route: '/csharp/records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions' },
+    ],
+    tip: 'System.Text.Json serializes based on the STATIC type of a collection by default — a List<Animal> containing Dog instances silently drops Breed unless you configure JsonDerivedType.',
+    docs: [
+      { label: 'Polymorphic Serialization', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism' },
+    ],
+    resources: [
+      { label: 'C# 9 Records Blog', url: 'https://devblogs.microsoft.com/dotnet/c-9-0-on-the-record/', badge: 'blog' },
+    ],
+    gotchas: [
+      'EqualityContract has no bearing on serialization — polymorphic JSON output needs its own separate [JsonDerivedType] configuration.',
+      'The default discriminator field is "$type" — rename it via TypeDiscriminatorPropertyName if it collides with an existing API contract.',
+    ],
+  },
+
+  'records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions': {
+    apis: ['is (x, y)', 'switch expression', 'property pattern', 'relational pattern'],
+    related: [
+      { label: 'Polymorphic JSON Serialization of Record Hierarchies — previous', route: '/csharp/records/polymorphic-json-serialization-of-record-hierarchies-with-jsonderivedtype' },
+      { label: 'Records & Structs (overview)',                                     route: '/csharp/records' },
+      { label: 'Testing Records — next',                                            route: '/csharp/records/testing-records-equality-hash-codes-and-constructor-validation' },
+    ],
+    tip: 'A switch expression combining type patterns with positional/property patterns is the idiomatic replacement for the EqualityContract == workaround — it branches on type AND value together.',
+    docs: [
+      { label: 'Pattern Matching Overview', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching' },
+    ],
+    resources: [
+      { label: 'C# 9 Records Blog', url: 'https://devblogs.microsoft.com/dotnet/c-9-0-on-the-record/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Positional patterns match directly against a record\'s auto-generated Deconstruct — they can be combined with property patterns in the same expression.',
+      'Nested record patterns recurse naturally: order is (_, { City: "London" }) drills into a related record\'s own shape.',
+    ],
+  },
+
+  'records/testing-records-equality-hash-codes-and-constructor-validation': {
+    apis: ['Assert.Throws', 'GetHashCode() contract', 'with { } equality'],
+    related: [
+      { label: 'Positional Pattern Matching with Records — previous', route: '/csharp/records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions' },
+      { label: 'Records & Structs (overview)',                         route: '/csharp/records' },
+    ],
+    tip: '"Auto-generated" doesn\'t mean untestable — compact-constructor validation, custom with-based methods, and business-rule guards are all hand-written and need test coverage.',
+    docs: [
+      { label: 'Records (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record' },
+    ],
+    resources: [
+      { label: 'C# 9 Records Blog', url: 'https://devblogs.microsoft.com/dotnet/c-9-0-on-the-record/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Test the boundary (zero, not just negative) to catch an accidentally-too-strict guard clause.',
+      'When testing a with-based method, assert the ORIGINAL is unchanged too — not just the returned value — to catch a future accidental mutation regression.',
+    ],
+  },
+
   generics: {
     apis: ['where T :', 'IComparable<T>', 'in/out', 'default(T)', 'typeof(T)'],
     related: [

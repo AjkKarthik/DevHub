@@ -1033,7 +1033,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Types &amp; Patterns</p>
-      <a routerLink="/csharp/records" routerLinkActive="active"><span class="nl-text">Records &amp; Structs</span>@if(progress.isDone('csharp-records')){<span class="nl-done">✓</span>}@if(diff('csharp-records');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/records" routerLinkActive="active">
+        <span class="nl-text">Records &amp; Structs</span>
+        @if (progress.isDone('csharp-records')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-records'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('records')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('records')"
+                  (click)="toggleSubtopics('records', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('records'); as subs) {
+        @if (isSubtopicsExpanded('records')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/generics" routerLinkActive="active"><span class="nl-text">Generics</span>@if(progress.isDone('csharp-generics')){<span class="nl-done">✓</span>}@if(diff('csharp-generics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/null-safety" routerLinkActive="active"><span class="nl-text">Null Safety</span>@if(progress.isDone('csharp-null-safety')){<span class="nl-done">✓</span>}@if(diff('csharp-null-safety');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/pattern-matching" routerLinkActive="active"><span class="nl-text">Pattern Matching</span>@if(progress.isDone('csharp-pattern-matching')){<span class="nl-done">✓</span>}@if(diff('csharp-pattern-matching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
