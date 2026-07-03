@@ -314,8 +314,13 @@ main {
 }
 
 // Phase 10 — collapsible toggle for the subtopics list (collapsed by default)
+// Absolutely positioned (not a flex sibling) so its presence/absence never
+// shifts the difficulty dot's position — see .left-nav a's reserved padding-right.
 .nav-subtopics-toggle {
-  margin-left: auto;
+  position: absolute;
+  right: .55rem;
+  top: 50%;
+  transform: translateY(-50%);
   flex-shrink: 0;
   width: 18px;
   height: 18px;
@@ -333,7 +338,7 @@ main {
   transition: transform .15s, opacity .15s, background .12s;
 
   &:hover { opacity: 1; background: rgba(0,0,0,.06); }
-  &.open  { transform: rotate(90deg); }
+  &.open  { transform: translateY(-50%) rotate(90deg); }
 
   body.dark &:hover { background: rgba(255,255,255,.1); }
 }
@@ -363,7 +368,11 @@ main {
   display: flex;
   align-items: center;
   gap: .25rem;
-  padding: .42rem .75rem;
+  // Right padding reserves a fixed gutter for the (possibly absent) subtopics
+  // chevron — keeps the difficulty dot's horizontal position consistent
+  // whether or not a given topic has subtopics.
+  padding: .42rem 1.9rem .42rem .75rem;
+  position: relative;
   border-radius: 6px;
   text-decoration: none;
   color: var(--text2);
