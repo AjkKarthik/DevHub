@@ -346,7 +346,12 @@ export const routes: Routes = [
         { path: 'building-a-worker-pool-for-parallel-task-dispatch', loadComponent: () => import('./components/angular/web-workers/subtopics/building-a-worker-pool-for-parallel-task-dispatch/building-a-worker-pool-for-parallel-task-dispatch').then(m => m.BuildingAWorkerPoolForParallelTaskDispatchSubtopic) },
         { path: 'debugging-and-profiling-web-workers-in-devtools',   loadComponent: () => import('./components/angular/web-workers/subtopics/debugging-and-profiling-web-workers-in-devtools/debugging-and-profiling-web-workers-in-devtools').then(m => m.DebuggingAndProfilingWebWorkersInDevtoolsSubtopic) },
       ] },
-      { path: 'pwa',                loadComponent: () => import('./components/angular/pwa/pwa').then(m => m.PwaDemo) },
+      { path: 'pwa', children: [
+        { path: '',                                                    loadComponent: () => import('./components/angular/pwa/pwa').then(m => m.PwaDemo) },
+        { path: 'testing-update-prompts-and-install-banners',          loadComponent: () => import('./components/angular/pwa/subtopics/testing-update-prompts-and-install-banners/testing-update-prompts-and-install-banners').then(m => m.TestingUpdatePromptsAndInstallBannersSubtopic) },
+        { path: 'handling-unrecoverable-state-and-manual-update-checks', loadComponent: () => import('./components/angular/pwa/subtopics/handling-unrecoverable-state-and-manual-update-checks/handling-unrecoverable-state-and-manual-update-checks').then(m => m.HandlingUnrecoverableStateAndManualUpdateChecksSubtopic) },
+        { path: 'spa-routing-pitfalls-navigationurls-and-app-shell-fallback', loadComponent: () => import('./components/angular/pwa/subtopics/spa-routing-pitfalls-navigationurls-and-app-shell-fallback/spa-routing-pitfalls-navigationurls-and-app-shell-fallback').then(m => m.SpaRoutingPitfallsNavigationurlsAndAppShellFallbackSubtopic) },
+      ] },
       { path: 'i18n',               loadComponent: () => import('./components/angular/i18n/i18n').then(m => m.I18nDemo) },
       { path: 'e2e',                loadComponent: () => import('./components/angular/e2e/e2e').then(m => m.E2eDemo) },
       { path: 'harnesses',          loadComponent: () => import('./components/angular/harnesses/harnesses').then(m => m.HarnessesDemo) },

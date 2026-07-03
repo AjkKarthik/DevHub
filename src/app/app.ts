@@ -327,6 +327,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building a Worker Pool for Parallel Task Dispatch', route: '/angular/web-workers/building-a-worker-pool-for-parallel-task-dispatch' },
     { label: 'Debugging and Profiling Web Workers in DevTools', route: '/angular/web-workers/debugging-and-profiling-web-workers-in-devtools' },
   ],
+  'pwa': [
+    { label: 'Testing Update Prompts and Install Banners', route: '/angular/pwa/testing-update-prompts-and-install-banners' },
+    { label: 'Handling Unrecoverable State and Manual Update Checks', route: '/angular/pwa/handling-unrecoverable-state-and-manual-update-checks' },
+    { label: 'SPA Routing Pitfalls: navigationUrls and the App-Shell Fallback', route: '/angular/pwa/spa-routing-pitfalls-navigationurls-and-app-shell-fallback' },
+  ],
 };
 
 @Component({

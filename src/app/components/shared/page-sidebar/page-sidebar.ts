@@ -4536,6 +4536,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'pwa/testing-update-prompts-and-install-banners': {
+    apis: ['TestBed.overrideProvider', 'fake SwUpdate Subject', 'window.dispatchEvent', 'beforeinstallprompt'],
+    related: [
+      { label: 'PWA & Service Workers (overview)',                                route: '/angular/pwa' },
+      { label: 'Handling Unrecoverable State and Manual Update Checks — next',     route: '/angular/pwa/handling-unrecoverable-state-and-manual-update-checks' },
+    ],
+    tip: 'SwUpdate is an ordinary DI-provided class — substitute a fake with a plain Subject for versionUpdates so tests run deterministically with no real service worker.',
+    docs: [
+      { label: 'SwUpdate API', url: 'https://angular.dev/api/service-worker/SwUpdate' },
+      { label: 'Angular Testing Overview', url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'The fixture must be created BEFORE dispatching a fake beforeinstallprompt event — the component registers its listener in the constructor.',
+      'These tests verify the component\'s reaction only — pair them with manual verification via ng build + DevTools for the real end-to-end flow.',
+    ],
+  },
+
+  'pwa/handling-unrecoverable-state-and-manual-update-checks': {
+    apis: ['SwUpdate.unrecoverable', 'VERSION_INSTALLATION_FAILED', 'checkForUpdate()', 'visibilitychange'],
+    related: [
+      { label: 'Testing Update Prompts and Install Banners — previous', route: '/angular/pwa/testing-update-prompts-and-install-banners' },
+      { label: 'PWA & Service Workers (overview)',                       route: '/angular/pwa' },
+      { label: 'SPA Routing Pitfalls — next',                             route: '/angular/pwa/spa-routing-pitfalls-navigationurls-and-app-shell-fallback' },
+    ],
+    tip: 'unrecoverable means the CURRENTLY running app is broken (not that a new version is available) — respond with an immediate forced reload, not a dismissible prompt.',
+    docs: [
+      { label: 'SwUpdate API', url: 'https://angular.dev/api/service-worker/SwUpdate' },
+      { label: 'Page Visibility API — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A VERSION_READY-only implementation silently ignores VERSION_INSTALLATION_FAILED and unrecoverable — the app can break with zero user-facing signal.',
+      'The SW only checks for updates on startup and navigation by default — a long-lived tab needs an explicit checkForUpdate() trigger.',
+    ],
+  },
+
+  'pwa/spa-routing-pitfalls-navigationurls-and-app-shell-fallback': {
+    apis: ['navigationUrls', 'ngsw-config.json "index"', 'default exclusion patterns'],
+    related: [
+      { label: 'Handling Unrecoverable State and Manual Update Checks — previous', route: '/angular/pwa/handling-unrecoverable-state-and-manual-update-checks' },
+      { label: 'PWA & Service Workers (overview)',                                  route: '/angular/pwa' },
+    ],
+    tip: 'A dot in a route segment (e.g. /report.v2) is treated as a file request by the default navigationUrls exclusion pattern — re-include it explicitly or offline deep-links to it 404.',
+    docs: [
+      { label: 'Angular Service Worker Config', url: 'https://angular.dev/ecosystem/service-workers/config' },
+      { label: 'App Shell Guide',                url: 'https://angular.dev/ecosystem/service-workers/app-shell' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A server-side history-API-fallback fix only helps while online — the SW\'s own navigationUrls config governs behavior once it is actively intercepting requests, including offline.',
+      'Reproduce locally by checking "Offline" in DevTools\' Application panel after installing the SW, then navigating directly to the affected deep link.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

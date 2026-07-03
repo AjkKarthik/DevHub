@@ -2100,7 +2100,22 @@
         <span class="nl-text">PWA / Service Worker</span>
         @if (progress.isDone('pwa')) {<span class="nl-done">✓</span>}
         @if (diff('pwa'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('pwa')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('pwa')"
+                  (click)="toggleSubtopics('pwa', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('pwa'); as subs) {
+        @if (isSubtopicsExpanded('pwa')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/i18n" routerLinkActive="active">
         <span class="nl-text">i18n</span>
         @if (progress.isDone('i18n')) {<span class="nl-done">✓</span>}
