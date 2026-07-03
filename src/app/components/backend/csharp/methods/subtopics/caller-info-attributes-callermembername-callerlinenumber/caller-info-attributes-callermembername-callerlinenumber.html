@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Methods"
+    topicRoute="/csharp/methods"
+    subtopicLabel="Caller Info Attributes" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Caller Info Attributes: CallerMemberName, CallerLineNumber, and Free Diagnostic Context</h1>
+  <p class="page-subtitle">
+    A parameter feature the main topic never mentions — these attributes turn an optional
+    parameter into a compiler-filled diagnostic value, capturing call-site information for
+    free, at compile time.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 5.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Local-function testability, the in defensive-copy trap, and caller info attributes
+      together round out methods as more than just signatures — they cover design,
+      performance, and diagnostics concerns the main page's syntax tour doesn't reach.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Methods"
+    topicRoute="/csharp/methods"
+    [prev]="{ label: 'The in Parameter Defensive-Copy Trap', route: '/csharp/methods/in-parameter-defensive-copy-trap' }" />
+</div>

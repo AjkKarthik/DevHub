@@ -467,7 +467,12 @@ export const routes: Routes = [
         { path: 'static-field-initialization-order-beforefieldinit', loadComponent: () => import('./components/backend/csharp/fields/subtopics/static-field-initialization-order-beforefieldinit/static-field-initialization-order-beforefieldinit').then(m => m.StaticFieldInitializationOrderBeforefieldinitSubtopic) },
         { path: 'asynclocal-correct-alternative-to-static-fields-for-per-request-state', loadComponent: () => import('./components/backend/csharp/fields/subtopics/asynclocal-correct-alternative-to-static-fields-for-per-request-state/asynclocal-correct-alternative-to-static-fields-for-per-request-state').then(m => m.AsyncLocalCorrectAlternativeToStaticFieldsForPerRequestStateSubtopic) },
       ] },
-      { path: 'methods',           loadComponent: () => import('./components/backend/csharp/methods/methods').then(m => m.CsharpMethods) },
+      { path: 'methods', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/methods/methods').then(m => m.CsharpMethods) },
+        { path: 'testing-logic-inside-local-functions-when-to-promote', loadComponent: () => import('./components/backend/csharp/methods/subtopics/testing-logic-inside-local-functions-when-to-promote/testing-logic-inside-local-functions-when-to-promote').then(m => m.TestingLogicInsideLocalFunctionsWhenToPromoteSubtopic) },
+        { path: 'in-parameter-defensive-copy-trap', loadComponent: () => import('./components/backend/csharp/methods/subtopics/in-parameter-defensive-copy-trap/in-parameter-defensive-copy-trap').then(m => m.InParameterDefensiveCopyTrapSubtopic) },
+        { path: 'caller-info-attributes-callermembername-callerlinenumber', loadComponent: () => import('./components/backend/csharp/methods/subtopics/caller-info-attributes-callermembername-callerlinenumber/caller-info-attributes-callermembername-callerlinenumber').then(m => m.CallerInfoAttributesCallerMemberNameCallerLineNumberSubtopic) },
+      ] },
       { path: 'type-conversion',   loadComponent: () => import('./components/backend/csharp/type-conversion/type-conversion').then(m => m.CsharpTypeConversion) },
       { path: 'constructors',      loadComponent: () => import('./components/backend/csharp/constructors/constructors').then(m => m.CsharpConstructors) },
       { path: 'properties-indexers', loadComponent: () => import('./components/backend/csharp/properties-indexers/properties-indexers').then(m => m.CsharpPropertiesIndexers) },

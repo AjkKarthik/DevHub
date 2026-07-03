@@ -6808,6 +6808,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'methods/testing-logic-inside-local-functions-when-to-promote': {
+    apis: ['local function', 'InternalsVisibleTo', 'internal'],
+    related: [
+      { label: 'The in Parameter Defensive-Copy Trap — next', route: '/csharp/methods/in-parameter-defensive-copy-trap' },
+      { label: 'Methods (overview)', route: '/csharp/methods' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A local function can only ever be tested indirectly, through its enclosing method — if its internal logic has grown complex enough to deserve dedicated, isolated test cases, that need is itself a promotion signal, independent of the "second caller" rule.',
+    docs: [
+      { label: 'Local Functions', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/local-functions' },
+    ],
+    resources: [
+      { label: 'InternalsVisibleTo Attribute', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.internalsvisibletoattribute', badge: 'docs' },
+    ],
+    gotchas: [
+      'A local function has no existence as a member of the enclosing type — it can never be called directly from a unit test, only indirectly through the enclosing method.',
+      'Promoting to internal (paired with InternalsVisibleTo for the test assembly) requires no changes to the enclosing method\'s public signature, unlike workarounds that expose the local function as a delegate.',
+    ],
+  },
+
+  'methods/in-parameter-defensive-copy-trap': {
+    apis: ['in', 'readonly struct', 'defensive copy'],
+    related: [
+      { label: 'Testing Logic Inside Local Functions — previous', route: '/csharp/methods/testing-logic-inside-local-functions-when-to-promote' },
+      { label: 'Caller Info Attributes — next', route: '/csharp/methods/caller-info-attributes-callermembername-callerlinenumber' },
+      { label: 'Methods (overview)', route: '/csharp/methods' },
+    ],
+    tip: 'in only avoids copying when the struct is declared readonly struct — for a non-readonly struct, the compiler cannot prove instance methods won\'t mutate it, so it silently inserts a defensive copy before EACH instance method call.',
+    docs: [
+      { label: 'in Parameter Modifier', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters#in-parameter-modifier' },
+    ],
+    resources: [
+      { label: 'readonly struct', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct#readonly-struct', badge: 'docs' },
+    ],
+    gotchas: [
+      'The defensive copy happens per method call, not once at the call boundary — several calls on a non-readonly struct in parameter can cost MORE than passing by value once.',
+      'Even reading a property counts as a method call (getters are compiler-generated methods) — property reads through a non-readonly struct\'s in parameter can also trigger the copy.',
+    ],
+  },
+
+  'methods/caller-info-attributes-callermembername-callerlinenumber': {
+    apis: ['[CallerMemberName]', '[CallerLineNumber]', '[CallerFilePath]'],
+    related: [
+      { label: 'The in Parameter Defensive-Copy Trap — previous', route: '/csharp/methods/in-parameter-defensive-copy-trap' },
+      { label: 'Methods (overview)', route: '/csharp/methods' },
+    ],
+    tip: 'These attributes are resolved entirely at compile time — the compiler substitutes the literal value directly into the generated IL at each call site, essentially free at runtime with no stack-walking involved.',
+    docs: [
+      { label: 'Caller Information', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/caller-information' },
+    ],
+    resources: [
+      { label: 'INotifyPropertyChanged Pattern', url: 'https://learn.microsoft.com/en-us/dotnet/desktop/wpf/data/how-to-implement-property-change-notification', badge: 'docs' },
+    ],
+    gotchas: [
+      'CallerMemberName always resolves to whoever directly calls the method AT THAT CALL SITE — a wrapper method reports its OWN name unless it explicitly accepts and forwards its own [CallerMemberName] parameter.',
+      'These attributes must decorate an optional parameter and follow the same positional rule as any other optional parameter — after all required parameters.',
+    ],
+  },
+
   exceptions: {
     apis: ['try/catch/finally', 'when', 'throw', 'Exception', 'AggregateException'],
     related: [
