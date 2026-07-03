@@ -175,6 +175,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-defer-blocks-with-deferblockfixture': 'Testing @defer Blocks with DeferBlockFixture',
   'detecting-duplicate-dependencies-across-lazy-chunks': 'Detecting Duplicate Dependencies Across Lazy Chunks',
   'automated-bundle-budget-enforcement-in-ci': 'Automated Bundle Budget Enforcement in CI',
+  'deep-linking-wizard-steps-with-query-params': 'Deep-Linking Wizard Steps with Query Params',
+  'cdk-stepper-vs-hand-rolled-wizard': 'Angular CDK Stepper vs a Hand-Rolled Wizard',
+  'testing-wizard-steps-in-isolation': 'Testing Wizard Steps in Isolation',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

@@ -4414,6 +4414,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'wizard-form/deep-linking-wizard-steps-with-query-params': {
+    apis: ['ActivatedRoute.snapshot', 'Router.navigate()', 'queryParamsHandling', 'replaceUrl'],
+    related: [
+      { label: 'Multi-Step Wizard Form (overview)',                       route: '/angular/wizard-form' },
+      { label: 'Angular CDK Stepper vs a Hand-Rolled Wizard — next',       route: '/angular/wizard-form/cdk-stepper-vs-hand-rolled-wizard' },
+    ],
+    tip: 'One effect() writing step() to the URL on every change beats scattering router.navigate() calls inside next() and back() separately — it can never drift out of sync.',
+    docs: [
+      { label: 'Router — Query Parameters', url: 'https://angular.dev/guide/routing/read-route-state#query-parameters' },
+      { label: 'Router.navigate()',         url: 'https://angular.dev/api/router/Router#navigate' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'replaceUrl: true avoids flooding browser history with one entry per step — omit it deliberately if you WANT the back button to step through the wizard.',
+      'A step read from the URL must be clamped against real validated progress, not trusted at face value — a hand-edited URL can request any step.',
+    ],
+  },
+
+  'wizard-form/cdk-stepper-vs-hand-rolled-wizard': {
+    apis: ['CdkStepper', 'CdkStep', '[stepControl]', 'cdkStepperNext'],
+    related: [
+      { label: 'Deep-Linking Wizard Steps with Query Params — previous', route: '/angular/wizard-form/deep-linking-wizard-steps-with-query-params' },
+      { label: 'Multi-Step Wizard Form (overview)',                       route: '/angular/wizard-form' },
+      { label: 'Testing Wizard Steps in Isolation — next',                 route: '/angular/wizard-form/testing-wizard-steps-in-isolation' },
+    ],
+    tip: 'CdkStepper is deliberately unstyled — it manages step state, linear-mode validation gating, and keyboard/ARIA behavior only; you still write your own headers and CSS.',
+    docs: [
+      { label: 'CDK Stepper Overview', url: 'https://material.angular.dev/cdk/stepper/overview' },
+      { label: 'CdkStepper API',       url: 'https://material.angular.dev/cdk/stepper/api' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Extending CdkStepper requires re-providing it: { provide: CdkStepper, useExisting: YourComponent } — otherwise child <cdk-step> elements cannot find their parent.',
+      'linear mode gates advancement on [stepControl].valid — it has no built-in concept of conditionally SKIPPING a step entirely.',
+    ],
+  },
+
+  'wizard-form/testing-wizard-steps-in-isolation': {
+    apis: ['new FormBuilder()', 'TestBed.createComponent()', 'component.next()', 'fixture.detectChanges()'],
+    related: [
+      { label: 'Angular CDK Stepper vs a Hand-Rolled Wizard — previous', route: '/angular/wizard-form/cdk-stepper-vs-hand-rolled-wizard' },
+      { label: 'Multi-Step Wizard Form (overview)',                       route: '/angular/wizard-form' },
+    ],
+    tip: 'FormBuilder has no constructor dependencies — new FormBuilder() works in a plain describe block with no TestBed setup at all, the fastest tier for pure validator tests.',
+    docs: [
+      { label: 'Testing Reactive Forms', url: 'https://angular.dev/guide/forms/reactive-forms#testing-reactive-forms' },
+      { label: 'Component Testing Overview', url: 'https://angular.dev/guide/testing/components-basics' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Call component.next()/back() directly instead of clicking DOM buttons — the click handler is a thin wrapper with no separate logic to test.',
+      'back() must never validate — test it explicitly with a deliberately invalid step rather than assuming it mirrors next().',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

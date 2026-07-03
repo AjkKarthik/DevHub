@@ -317,6 +317,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Detecting Duplicate Dependencies Across Lazy Chunks', route: '/angular/bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks' },
     { label: 'Automated Bundle Budget Enforcement in CI', route: '/angular/bundle-optimization/automated-bundle-budget-enforcement-in-ci' },
   ],
+  'wizard-form': [
+    { label: 'Deep-Linking Wizard Steps with Query Params', route: '/angular/wizard-form/deep-linking-wizard-steps-with-query-params' },
+    { label: 'Angular CDK Stepper vs a Hand-Rolled Wizard', route: '/angular/wizard-form/cdk-stepper-vs-hand-rolled-wizard' },
+    { label: 'Testing Wizard Steps in Isolation', route: '/angular/wizard-form/testing-wizard-steps-in-isolation' },
+  ],
 };
 
 @Component({

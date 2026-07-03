@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Multi-Step Wizard Form"
+    topicRoute="/angular/wizard-form"
+    subtopicLabel="Angular CDK Stepper vs a Hand-Rolled Wizard" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Angular CDK Stepper vs a Hand-Rolled Wizard</h1>
+  <p class="page-subtitle">
+    The main topic name-drops <code>CdkStepper</code> as an alternative for complex
+    wizards but never shows it — here it is, built and compared to the hand-rolled version.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="CDK 7+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Try clicking Next on the Personal step without typing a first name —
+      <code>linear</code> mode blocks it automatically, with no <code>next()</code>
+      validation code required in the wizard component itself.
+    </p>
+    <app-live-playground
+      title="CdkStepper vs a Hand-Rolled Wizard"
+      template="angular-cli"
+      openFile="src/app/wizard.ts"
+      [files]="liveDemoFiles"
+      [dependencies]="dependencies" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Whichever implementation a wizard uses, its per-step forms still need test
+      coverage. The final subtopic tests each step's <code>FormGroup</code> in
+      isolation, then simulates full step-by-step navigation.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Multi-Step Wizard Form"
+    topicRoute="/angular/wizard-form"
+    [prev]="{ label: 'Deep-Linking Wizard Steps with Query Params', route: '/angular/wizard-form/deep-linking-wizard-steps-with-query-params' }"
+    [next]="{ label: 'Testing Wizard Steps in Isolation', route: '/angular/wizard-form/testing-wizard-steps-in-isolation' }" />
+</div>

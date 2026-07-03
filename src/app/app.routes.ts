@@ -334,7 +334,12 @@ export const routes: Routes = [
         { path: 'detecting-duplicate-dependencies-across-lazy-chunks', loadComponent: () => import('./components/angular/bundle-optimization/subtopics/detecting-duplicate-dependencies-across-lazy-chunks/detecting-duplicate-dependencies-across-lazy-chunks').then(m => m.DetectingDuplicateDependenciesAcrossLazyChunksSubtopic) },
         { path: 'automated-bundle-budget-enforcement-in-ci',        loadComponent: () => import('./components/angular/bundle-optimization/subtopics/automated-bundle-budget-enforcement-in-ci/automated-bundle-budget-enforcement-in-ci').then(m => m.AutomatedBundleBudgetEnforcementInCiSubtopic) },
       ] },
-      { path: 'wizard-form',        loadComponent: () => import('./components/angular/wizard-form/wizard-form').then(m => m.WizardFormDemo) },
+      { path: 'wizard-form', children: [
+        { path: '',                                          loadComponent: () => import('./components/angular/wizard-form/wizard-form').then(m => m.WizardFormDemo) },
+        { path: 'deep-linking-wizard-steps-with-query-params', loadComponent: () => import('./components/angular/wizard-form/subtopics/deep-linking-wizard-steps-with-query-params/deep-linking-wizard-steps-with-query-params').then(m => m.DeepLinkingWizardStepsWithQueryParamsSubtopic) },
+        { path: 'cdk-stepper-vs-hand-rolled-wizard',           loadComponent: () => import('./components/angular/wizard-form/subtopics/cdk-stepper-vs-hand-rolled-wizard/cdk-stepper-vs-hand-rolled-wizard').then(m => m.CdkStepperVsHandRolledWizardSubtopic) },
+        { path: 'testing-wizard-steps-in-isolation',           loadComponent: () => import('./components/angular/wizard-form/subtopics/testing-wizard-steps-in-isolation/testing-wizard-steps-in-isolation').then(m => m.TestingWizardStepsInIsolationSubtopic) },
+      ] },
       { path: 'web-workers',        loadComponent: () => import('./components/angular/web-workers/web-workers').then(m => m.WebWorkersDemo) },
       { path: 'pwa',                loadComponent: () => import('./components/angular/pwa/pwa').then(m => m.PwaDemo) },
       { path: 'i18n',               loadComponent: () => import('./components/angular/i18n/i18n').then(m => m.I18nDemo) },

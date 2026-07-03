@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Multi-Step Wizard Form"
+    topicRoute="/angular/wizard-form"
+    subtopicLabel="Deep-Linking Wizard Steps with Query Params" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Deep-Linking Wizard Steps with Query Params</h1>
+  <p class="page-subtitle">
+    The main topic mentions storing the step in a query param as a best practice — this
+    page builds the actual read/write sync, plus the browser-history trade-off it creates.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Click Next a few times, then reload the preview pane — the URL's <code>?step=</code>
+      param restores your position instead of resetting to step 1.
+    </p>
+    <app-live-playground
+      title="Deep-Linking Wizard Steps with Query Params"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Deep-linking is one way to make a wizard feel like a first-class multi-page flow.
+      The next subtopic compares the hand-rolled step model used so far against Angular
+      CDK's own <code>CdkStepper</code>, which handles some of this state for you.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Multi-Step Wizard Form"
+    topicRoute="/angular/wizard-form"
+    [next]="{ label: 'Angular CDK Stepper vs a Hand-Rolled Wizard', route: '/angular/wizard-form/cdk-stepper-vs-hand-rolled-wizard' }" />
+</div>
