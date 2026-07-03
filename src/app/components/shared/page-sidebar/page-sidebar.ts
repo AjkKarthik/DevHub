@@ -4231,6 +4231,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'micro-frontends/testing-cross-mfe-communication-with-a-mocked-event-bus': {
+    apis: ['window.dispatchEvent()', 'CustomEvent<T>', 'DestroyRef.onDestroy()'],
+    related: [
+      { label: 'Micro-Frontends (overview)',                                       route: '/angular/micro-frontends' },
+      { label: 'Debugging Duplicate Angular Runtime Issues — next',                  route: '/angular/micro-frontends/debugging-duplicate-angular-runtime-issues' },
+    ],
+    tip: 'window is the shared contract, not a direct code reference — the dispatching and listening sides of a cross-MFE event can be tested as two completely separate unit tests.',
+    docs: [
+      { label: 'CustomEvent API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent' },
+      { label: 'Native Federation Docs', url: 'https://www.npmjs.com/package/@angular-architects/native-federation' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A typo\'d event name string compiles fine — only asserting the EXACT type and detail shape against the shared interface catches it.',
+      'Test the cleanup path too — dispatching the event again after destroying the component catches a missing removeEventListener call.',
+    ],
+  },
+
+  'micro-frontends/debugging-duplicate-angular-runtime-issues': {
+    apis: ['shareAll()', 'singleton: true', 'providedIn: root'],
+    related: [
+      { label: 'Testing Cross-MFE Communication with a Mocked Event Bus — previous', route: '/angular/micro-frontends/testing-cross-mfe-communication-with-a-mocked-event-bus' },
+      { label: 'Micro-Frontends (overview)',                                          route: '/angular/micro-frontends' },
+      { label: 'CSS Style Isolation with ShadowDom Encapsulation — next',               route: '/angular/micro-frontends/css-style-isolation-with-shadowdom-encapsulation' },
+    ],
+    tip: 'A shared marker service (providedIn: root, random instanceId at construction) proves whether Angular is genuinely a singleton — the SAME id across the shell and a remote confirms sharing worked.',
+    docs: [
+      { label: 'Native Federation Config', url: 'https://www.npmjs.com/package/@angular-architects/native-federation' },
+      { label: 'Injectable API',           url: 'https://angular.dev/api/core/Injectable' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Compare chunk SIZES in the Network tab, not names — chunk names differ between apps due to separate build hashes regardless of sharing status.',
+      'Angular DevTools shows one app\'s component tree at a time and does not natively cross a federation boundary.',
+    ],
+  },
+
+  'micro-frontends/css-style-isolation-with-shadowdom-encapsulation': {
+    apis: ['ViewEncapsulation.ShadowDom', 'CSS custom properties', 'Shadow Root'],
+    related: [
+      { label: 'Debugging Duplicate Angular Runtime Issues — previous', route: '/angular/micro-frontends/debugging-duplicate-angular-runtime-issues' },
+      { label: 'Micro-Frontends (overview)',                              route: '/angular/micro-frontends' },
+    ],
+    tip: 'Emulated encapsulation only prevents component-to-component leakage within the SAME Angular app — ShadowDom creates a true browser-level boundary against another micro-frontend\'s global styles.',
+    docs: [
+      { label: 'ViewEncapsulation API', url: 'https://angular.dev/api/core/ViewEncapsulation' },
+      { label: 'MDN Shadow DOM',        url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'CSS custom properties DO cross shadow boundaries by inheritance — only regular selectors and non-inherited rules are blocked.',
+      'A shell\'s global font, CSS reset, or design-system base styles must be explicitly imported into the shadow-rooted component\'s own styleUrls, not inherited.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

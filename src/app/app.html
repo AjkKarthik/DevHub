@@ -2085,7 +2085,22 @@
         <span class="nl-text">Micro-Frontends</span>
         @if (progress.isDone('micro-frontends')) {<span class="nl-done">✓</span>}
         @if (diff('micro-frontends'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('micro-frontends')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('micro-frontends')"
+                  (click)="toggleSubtopics('micro-frontends', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('micro-frontends'); as subs) {
+        @if (isSubtopicsExpanded('micro-frontends')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/angular-devtools" routerLinkActive="active">
         <span class="nl-text">Angular DevTools</span>
         @if (progress.isDone('angular-devtools')) {<span class="nl-done">✓</span>}

@@ -166,6 +166,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'automated-accessibility-testing-with-jest-axe': 'Automated Accessibility Testing with jest-axe',
   'building-a-reusable-route-change-focus-management-service': 'Building a Reusable Route-Change Focus Management Service',
   'testing-focus-trap-and-restoration-in-modals': 'Testing Focus Trap and Restoration in Modals',
+  'testing-cross-mfe-communication-with-a-mocked-event-bus': 'Testing Cross-MFE Communication with a Mocked Event Bus',
+  'debugging-duplicate-angular-runtime-issues': 'Debugging Duplicate Angular Runtime Issues',
+  'css-style-isolation-with-shadowdom-encapsulation': 'CSS Style Isolation with ShadowDom Encapsulation',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

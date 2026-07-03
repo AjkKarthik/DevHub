@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Micro-Frontends"
+    topicRoute="/angular/micro-frontends"
+    subtopicLabel="CSS Style Isolation with ShadowDom Encapsulation" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">CSS Style Isolation with ShadowDom Encapsulation</h1>
+  <p class="page-subtitle">
+    Emulated encapsulation only protects against other Angular components in the SAME app
+    — ShadowDom creates a true browser-level boundary against another MFE's global styles.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 6" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Two buttons on the same page with the same global stylesheet loaded — the Emulated
+      one gets styled crimson by global CSS, the ShadowDom one is fully isolated but
+      still inherits a shared CSS custom property.
+    </p>
+    <app-live-playground
+      title="CSS style isolation with ShadowDom encapsulation"
+      template="angular-cli"
+      openFile="src/app/shadow-widget.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With cross-MFE testing, runtime debugging, and style isolation all covered, head
+      back to the topic overview to see how these combine with Native Federation setup.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Micro-Frontends"
+    topicRoute="/angular/micro-frontends"
+    [prev]="{ label: 'Debugging Duplicate Angular Runtime Issues', route: '/angular/micro-frontends/debugging-duplicate-angular-runtime-issues' }" />
+</div>

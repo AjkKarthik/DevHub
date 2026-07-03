@@ -302,6 +302,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building a Reusable Route-Change Focus Management Service', route: '/angular/accessibility/building-a-reusable-route-change-focus-management-service' },
     { label: 'Testing Focus Trap and Restoration in Modals', route: '/angular/accessibility/testing-focus-trap-and-restoration-in-modals' },
   ],
+  'micro-frontends': [
+    { label: 'Testing Cross-MFE Communication with a Mocked Event Bus', route: '/angular/micro-frontends/testing-cross-mfe-communication-with-a-mocked-event-bus' },
+    { label: 'Debugging Duplicate Angular Runtime Issues', route: '/angular/micro-frontends/debugging-duplicate-angular-runtime-issues' },
+    { label: 'CSS Style Isolation with ShadowDom Encapsulation', route: '/angular/micro-frontends/css-style-isolation-with-shadowdom-encapsulation' },
+  ],
 };
 
 @Component({

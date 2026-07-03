@@ -316,7 +316,12 @@ export const routes: Routes = [
         { path: 'building-a-reusable-route-change-focus-management-service', loadComponent: () => import('./components/angular/accessibility/subtopics/building-a-reusable-route-change-focus-management-service/building-a-reusable-route-change-focus-management-service').then(m => m.BuildingAReusableRouteChangeFocusManagementServiceSubtopic) },
         { path: 'testing-focus-trap-and-restoration-in-modals',     loadComponent: () => import('./components/angular/accessibility/subtopics/testing-focus-trap-and-restoration-in-modals/testing-focus-trap-and-restoration-in-modals').then(m => m.TestingFocusTrapAndRestorationInModalsSubtopic) },
       ] },
-      { path: 'micro-frontends',         loadComponent: () => import('./components/angular/micro-frontends/micro-frontends').then(m => m.MicroFrontendsDemo) },
+      { path: 'micro-frontends', children: [
+        { path: '',                                                loadComponent: () => import('./components/angular/micro-frontends/micro-frontends').then(m => m.MicroFrontendsDemo) },
+        { path: 'testing-cross-mfe-communication-with-a-mocked-event-bus', loadComponent: () => import('./components/angular/micro-frontends/subtopics/testing-cross-mfe-communication-with-a-mocked-event-bus/testing-cross-mfe-communication-with-a-mocked-event-bus').then(m => m.TestingCrossMfeCommunicationWithAMockedEventBusSubtopic) },
+        { path: 'debugging-duplicate-angular-runtime-issues',       loadComponent: () => import('./components/angular/micro-frontends/subtopics/debugging-duplicate-angular-runtime-issues/debugging-duplicate-angular-runtime-issues').then(m => m.DebuggingDuplicateAngularRuntimeIssuesSubtopic) },
+        { path: 'css-style-isolation-with-shadowdom-encapsulation',  loadComponent: () => import('./components/angular/micro-frontends/subtopics/css-style-isolation-with-shadowdom-encapsulation/css-style-isolation-with-shadowdom-encapsulation').then(m => m.CssStyleIsolationWithShadowdomEncapsulationSubtopic) },
+      ] },
       { path: 'angular-devtools',        loadComponent: () => import('./components/angular/angular-devtools/angular-devtools').then(m => m.AngularDevtoolsDemo) },
       { path: 'bundle-optimization',     loadComponent: () => import('./components/angular/bundle-optimization/bundle-optimization').then(m => m.BundleOptimizationDemo) },
       { path: 'wizard-form',        loadComponent: () => import('./components/angular/wizard-form/wizard-form').then(m => m.WizardFormDemo) },
