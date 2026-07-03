@@ -2066,7 +2066,22 @@
         <span class="nl-text">Harnesses</span>
         @if (progress.isDone('harnesses')) {<span class="nl-done">✓</span>}
         @if (diff('harnesses'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('harnesses')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('harnesses')"
+                  (click)="toggleSubtopics('harnesses', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('harnesses'); as subs) {
+        @if (isSubtopicsExpanded('harnesses')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

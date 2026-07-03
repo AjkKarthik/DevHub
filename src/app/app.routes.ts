@@ -364,7 +364,12 @@ export const routes: Routes = [
         { path: 'visual-regression-testing-with-screenshot-comparisons',       loadComponent: () => import('./components/angular/e2e/subtopics/visual-regression-testing-with-screenshot-comparisons/visual-regression-testing-with-screenshot-comparisons').then(m => m.VisualRegressionTestingWithScreenshotComparisonsSubtopic) },
         { path: 'debugging-flaky-tests-isolation-retries-and-sharding',        loadComponent: () => import('./components/angular/e2e/subtopics/debugging-flaky-tests-isolation-retries-and-sharding/debugging-flaky-tests-isolation-retries-and-sharding').then(m => m.DebuggingFlakyTestsIsolationRetriesAndShardingSubtopic) },
       ] },
-      { path: 'harnesses',          loadComponent: () => import('./components/angular/harnesses/harnesses').then(m => m.HarnessesDemo) },
+      { path: 'harnesses', children: [
+        { path: '',                                                     loadComponent: () => import('./components/angular/harnesses/harnesses').then(m => m.HarnessesDemo) },
+        { path: 'composing-nested-harnesses-with-getchildloader',       loadComponent: () => import('./components/angular/harnesses/subtopics/composing-nested-harnesses-with-getchildloader/composing-nested-harnesses-with-getchildloader').then(m => m.ComposingNestedHarnessesWithGetchildloaderSubtopic) },
+        { path: 'publishing-harnesses-as-a-librarys-public-testing-entry-point', loadComponent: () => import('./components/angular/harnesses/subtopics/publishing-harnesses-as-a-librarys-public-testing-entry-point/publishing-harnesses-as-a-librarys-public-testing-entry-point').then(m => m.PublishingHarnessesAsALibrarysPublicTestingEntryPointSubtopic) },
+        { path: 'debugging-harness-failures-common-causes-and-diagnosis', loadComponent: () => import('./components/angular/harnesses/subtopics/debugging-harness-failures-common-causes-and-diagnosis/debugging-harness-failures-common-causes-and-diagnosis').then(m => m.DebuggingHarnessFailuresCommonCausesAndDiagnosisSubtopic) },
+      ] },
       { path: 'ssr',                loadComponent: () => import('./components/angular/ssr/ssr').then(m => m.SsrDemo) },
       { path: 'cheatsheet',         loadComponent: () => import('./components/angular/cheatsheet/cheatsheet').then(m => m.CheatsheetComponent) },
       { path: 'errors',             loadComponent: () => import('./components/angular/errors-page/errors-page').then(m => m.ErrorsPageComponent) },

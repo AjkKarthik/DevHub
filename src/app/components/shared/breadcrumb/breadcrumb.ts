@@ -190,6 +190,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'reusing-authentication-state-across-tests-with-storagestate': 'Reusing Authentication State Across Tests with storageState',
   'visual-regression-testing-with-screenshot-comparisons': 'Visual Regression Testing with Screenshot Comparisons',
   'debugging-flaky-tests-isolation-retries-and-sharding': 'Debugging Flaky Tests: Isolation, Retries, and Sharding',
+  'composing-nested-harnesses-with-getchildloader': 'Composing Nested Harnesses with getChildLoader',
+  'publishing-harnesses-as-a-librarys-public-testing-entry-point': 'Publishing Harnesses as a Public Testing Entry Point',
+  'debugging-harness-failures-common-causes-and-diagnosis': 'Debugging Harness Failures: Common Causes and Diagnosis',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

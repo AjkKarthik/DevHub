@@ -4719,6 +4719,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'harnesses/composing-nested-harnesses-with-getchildloader': {
+    apis: ['locatorForAll(Harness)', 'getChildLoader()', 'HarnessPredicate.with()', 'locatorFor(Harness.with())'],
+    related: [
+      { label: 'Component Harnesses (overview)',                                route: '/angular/harnesses' },
+      { label: 'Publishing Harnesses as a Public Testing Entry Point — next',     route: '/angular/harnesses/publishing-harnesses-as-a-librarys-public-testing-entry-point' },
+    ],
+    tip: 'Pass a HARNESS CLASS (not a CSS string) to locatorForAll() to get an array of fully-functional child harness instances, composing recursively to any depth.',
+    docs: [
+      { label: 'CDK Component Harness Overview', url: 'https://material.angular.dev/cdk/test-harnesses/overview' },
+      { label: 'ComponentHarness API',            url: 'https://material.angular.dev/cdk/test-harnesses/api' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Filtering by a HarnessPredicate (finding a row by name) is far more resilient than index-based lookup, which silently breaks if sort order changes.',
+      'Each nested harness only knows its own local sub-tree — a row harness has zero knowledge of the table containing it.',
+    ],
+  },
+
+  'harnesses/publishing-harnesses-as-a-librarys-public-testing-entry-point': {
+    apis: ['ng-package.json', 'secondary entry point', 'public-api.ts', '@my-lib/component/testing'],
+    related: [
+      { label: 'Composing Nested Harnesses with getChildLoader — previous', route: '/angular/harnesses/composing-nested-harnesses-with-getchildloader' },
+      { label: 'Component Harnesses (overview)',                             route: '/angular/harnesses' },
+      { label: 'Debugging Harness Failures: Common Causes and Diagnosis — next', route: '/angular/harnesses/debugging-harness-failures-common-causes-and-diagnosis' },
+    ],
+    tip: 'A harness needs its OWN secondary entry point (separate ng-package.json + public-api.ts) — not just a co-located export — so production bundles never resolve @angular/cdk/testing.',
+    docs: [
+      { label: 'Angular Library Secondary Entry Points', url: 'https://angular.dev/tools/libraries/creating-libraries' },
+      { label: 'ng-packagr Documentation',                url: 'https://github.com/ng-packagr/ng-packagr' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A published harness\'s public methods are part of the library\'s semver contract — renaming or removing one is a breaking change, even if the component\'s runtime behavior is unaffected.',
+      'Internal DOM refactors of the component are safe in a patch release precisely because the harness absorbs them — that\'s the whole point of the abstraction.',
+    ],
+  },
+
+  'harnesses/debugging-harness-failures-common-causes-and-diagnosis': {
+    apis: ['fixture.whenStable()', 'getAllHarnesses() diagnostic', 'hostSelector mismatch', 'forgotten await'],
+    related: [
+      { label: 'Publishing Harnesses as a Public Testing Entry Point — previous', route: '/angular/harnesses/publishing-harnesses-as-a-librarys-public-testing-entry-point' },
+      { label: 'Component Harnesses (overview)',                                  route: '/angular/harnesses' },
+    ],
+    tip: 'A harness lookup failing intermittently in CI but not locally is almost always a timing issue (element not rendered yet) — add fixture.whenStable(), not a retry.',
+    docs: [
+      { label: 'CDK Component Harness Overview', url: 'https://material.angular.dev/cdk/test-harnesses/overview' },
+      { label: 'Angular Testing Overview',        url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'getHarness() silently returns the FIRST matching instance with no error when multiple exist — this produces a wrong-behavior bug, not a crash, making it the hardest category to diagnose.',
+      'A missing await on a harness method compares a Promise object against the expected value — check for this first, it\'s the fastest category to rule out.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

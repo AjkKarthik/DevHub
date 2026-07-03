@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Component Harnesses"
+    topicRoute="/angular/harnesses"
+    subtopicLabel="Composing Nested Harnesses with getChildLoader" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Composing Nested Harnesses with getChildLoader</h1>
+  <p class="page-subtitle">
+    The main topic mentions getChildLoader in one bullet without an example — here's
+    the full pattern for tables, rows, and predicate-based lookups by data, not index.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="CDK 9+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>DataTableHarness.getRows()</code> returns an array of fully-functional
+      <code>RowHarness</code> instances via <code>locatorForAll(RowHarness)</code>, and
+      <code>getRowByName()</code> uses a <code>HarnessPredicate</code> to find a row by
+      data, not by index.
+    </p>
+    <app-live-playground
+      title="Composing Nested Harnesses with getChildLoader"
+      template="angular-cli"
+      openFile="src/app/table-harness.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Once a harness is built for reuse across many test files, the next subtopic covers
+      how to actually SHIP it as a library's public testing entry point.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Component Harnesses"
+    topicRoute="/angular/harnesses"
+    [next]="{ label: 'Publishing Harnesses as a Public Testing Entry Point', route: '/angular/harnesses/publishing-harnesses-as-a-librarys-public-testing-entry-point' }" />
+</div>
