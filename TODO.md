@@ -1457,7 +1457,7 @@ off here with a date.
 - [x] `/csharp/delegates` — Delegates & Events (2026-07-04 — 3 subtopics: testing-events-xunit-assert-raises-multicast-behavior, how-delegate-equality-actually-works-target-method-pairs, async-void-event-handlers-why-exceptions-vanish)
 - [x] `/csharp/fields` — Fields & Constants (2026-07-04 — 3 subtopics: testing-field-thread-safety-race-conditions-increment-vs-interlocked, static-field-initialization-order-beforefieldinit, asynclocal-correct-alternative-to-static-fields-for-per-request-state)
 - [x] `/csharp/methods` — Methods (2026-07-04 — 3 subtopics: testing-logic-inside-local-functions-when-to-promote, in-parameter-defensive-copy-trap, caller-info-attributes-callermembername-callerlinenumber)
-- [ ] `/csharp/type-conversion` — Type Conversion
+- [x] `/csharp/type-conversion` — Type Conversion (2026-07-04 — 3 subtopics: testing-conversion-operators-and-overflow-boundaries, user-defined-conversion-chaining-one-operator-limit, compile-time-constant-overflow-always-checked)
 - [ ] `/csharp/constructors` — Constructors
 - [ ] `/csharp/properties-indexers` — Properties & Indexers
 - [ ] `/csharp/namespaces` — Namespaces & Usings
