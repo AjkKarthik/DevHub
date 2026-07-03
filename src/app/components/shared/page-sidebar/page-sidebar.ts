@@ -7078,6 +7078,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Auto-properties with private set can still be mutated inside the class — use init or readonly field if you want true immutability.', 'Indexers can be overloaded by parameter type — useful for DSL-style APIs.'],
   },
 
+  'properties-indexers/testing-computed-properties-and-indexers': {
+    apis: ['Assert.Equal', 'KeyNotFoundException', 'IndexOutOfRangeException'],
+    related: [
+      { label: 'init Accessors and readonly Fields — next', route: '/csharp/properties-indexers/init-accessors-and-readonly-fields-assignment-window' },
+      { label: 'Properties & Indexers (overview)', route: '/csharp/properties-indexers' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Mutate underlying state after construction and assert => properties reflect the change, while { get; } = expr properties stay fixed — directly testing the main topic\'s own recomputed-vs-frozen distinction.',
+    docs: [
+      { label: 'Auto-Implemented Properties', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/auto-implemented-properties' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Testing only the GET side of an indexer\'s validation misses asymmetric bugs — the SET side deserves its own explicit boundary tests.',
+      'Pin down the exact valid range from both sides — confirm the last VALID index does not throw, not just that a large invalid one does.',
+    ],
+  },
+
+  'properties-indexers/init-accessors-and-readonly-fields-assignment-window': {
+    apis: ['init', 'readonly', 'modreq(IsExternalInit)'],
+    related: [
+      { label: 'Testing Computed Properties — previous', route: '/csharp/properties-indexers/testing-computed-properties-and-indexers' },
+      { label: 'Indexer Initializer Syntax — next', route: '/csharp/properties-indexers/indexer-initializer-syntax-without-add' },
+      { label: 'Properties & Indexers (overview)', route: '/csharp/properties-indexers' },
+    ],
+    tip: 'init accessors are treated as part of the construction phase, so — like constructors — they can assign readonly fields of the SAME class. A regular set accessor cannot, since it can be called at any time after construction.',
+    docs: [
+      { label: 'init-only Setters', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/init' },
+    ],
+    resources: [
+      { label: 'Immutability in C#', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#init-only-setters', badge: 'docs' },
+    ],
+    gotchas: [
+      'The relaxation applies only to readonly fields declared in the SAME class as the init accessor — a base class\'s readonly fields remain the base constructor\'s exclusive responsibility.',
+      'A readonly field can be assigned multiple times as long as every assignment happens during construction — an inline initializer AND an init accessor can both legally assign the same field.',
+    ],
+  },
+
+  'properties-indexers/indexer-initializer-syntax-without-add': {
+    apis: ['object initializer', 'indexer set accessor'],
+    related: [
+      { label: 'init Accessors and readonly Fields — previous', route: '/csharp/properties-indexers/init-accessors-and-readonly-fields-assignment-window' },
+      { label: 'Properties & Indexers (overview)', route: '/csharp/properties-indexers' },
+    ],
+    tip: 'new Foo { ["key"] = value } works on ANY type with a settable indexer — no IEnumerable, no Add() method needed. It desugars directly to indexer-setter calls, a different mechanism from collection initializers entirely.',
+    docs: [
+      { label: 'Object and Collection Initializers', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers' },
+    ],
+    resources: [
+      { label: 'C# 6 Language Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6', badge: 'docs' },
+    ],
+    gotchas: [
+      'A get-only indexer (no set accessor) cannot support index-initializer syntax — there is no setter to desugar the bracket entries into.',
+      'Multi-parameter indexers work too — each comma-separated bracket group maps directly to the indexer\'s full parameter list, and index initializers can combine with ordinary property initializers in the same block.',
+    ],
+  },
+
   namespaces: {
     apis: ['namespace', 'using', 'global using', 'file-scoped namespace', 'alias'],
     related: [{ label: 'Variables & Types', route: '/csharp/basics' }, { label: 'OOP & Classes', route: '/csharp/oop' }, { label: 'Static, Partial & Enums', route: '/csharp/static-enums' }],

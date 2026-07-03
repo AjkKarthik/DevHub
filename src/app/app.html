@@ -1074,7 +1074,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/properties-indexers" routerLinkActive="active"><span class="nl-text">Properties &amp; Indexers</span>@if(progress.isDone('csharp-properties-indexers')){<span class="nl-done">✓</span>}@if(diff('csharp-properties-indexers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/properties-indexers" routerLinkActive="active">
+        <span class="nl-text">Properties &amp; Indexers</span>
+        @if (progress.isDone('csharp-properties-indexers')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-properties-indexers'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('properties-indexers')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('properties-indexers')"
+                  (click)="toggleSubtopics('properties-indexers', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('properties-indexers'); as subs) {
+        @if (isSubtopicsExpanded('properties-indexers')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/namespaces" routerLinkActive="active"><span class="nl-text">Namespaces</span>@if(progress.isDone('csharp-namespaces')){<span class="nl-done">✓</span>}@if(diff('csharp-namespaces');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

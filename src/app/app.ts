@@ -427,6 +427,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Primary Constructor Parameter Capture', route: '/csharp/constructors/primary-constructor-parameter-capture-field-vs-fixed' },
     { label: 'Diagnosing TypeInitializationException', route: '/csharp/constructors/diagnosing-typeinitializationexception-inner-exception' },
   ],
+  'properties-indexers': [
+    { label: 'Testing Computed Properties and Indexers', route: '/csharp/properties-indexers/testing-computed-properties-and-indexers' },
+    { label: 'init Accessors and readonly Fields', route: '/csharp/properties-indexers/init-accessors-and-readonly-fields-assignment-window' },
+    { label: 'Indexer Initializer Syntax', route: '/csharp/properties-indexers/indexer-initializer-syntax-without-add' },
+  ],
 };
 
 @Component({

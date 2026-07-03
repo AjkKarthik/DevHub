@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Properties & Indexers"
+    topicRoute="/csharp/properties-indexers"
+    subtopicLabel="init Accessors and readonly Fields" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">init Accessors and readonly Fields: The Special Assignment Window</h1>
+  <p class="page-subtitle">
+    The main topic mentions in one line that init accessors can assign readonly fields —
+    this subtopic demonstrates the pattern, explains why it works, and pins down its
+    exact boundaries.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 9.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding the init/readonly relationship rounds out immutable construction —
+      the final subtopic covers a completely different, lesser-known syntax built
+      directly on indexers.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Properties & Indexers"
+    topicRoute="/csharp/properties-indexers"
+    [prev]="{ label: 'Testing Computed Properties and Indexers', route: '/csharp/properties-indexers/testing-computed-properties-and-indexers' }"
+    [next]="{ label: 'Indexer Initializer Syntax', route: '/csharp/properties-indexers/indexer-initializer-syntax-without-add' }" />
+</div>

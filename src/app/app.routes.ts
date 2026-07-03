@@ -485,7 +485,12 @@ export const routes: Routes = [
         { path: 'primary-constructor-parameter-capture-field-vs-fixed', loadComponent: () => import('./components/backend/csharp/constructors/subtopics/primary-constructor-parameter-capture-field-vs-fixed/primary-constructor-parameter-capture-field-vs-fixed').then(m => m.PrimaryConstructorParameterCaptureFieldVsFixedSubtopic) },
         { path: 'diagnosing-typeinitializationexception-inner-exception', loadComponent: () => import('./components/backend/csharp/constructors/subtopics/diagnosing-typeinitializationexception-inner-exception/diagnosing-typeinitializationexception-inner-exception').then(m => m.DiagnosingTypeInitializationExceptionInnerExceptionSubtopic) },
       ] },
-      { path: 'properties-indexers', loadComponent: () => import('./components/backend/csharp/properties-indexers/properties-indexers').then(m => m.CsharpPropertiesIndexers) },
+      { path: 'properties-indexers', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/properties-indexers/properties-indexers').then(m => m.CsharpPropertiesIndexers) },
+        { path: 'testing-computed-properties-and-indexers', loadComponent: () => import('./components/backend/csharp/properties-indexers/subtopics/testing-computed-properties-and-indexers/testing-computed-properties-and-indexers').then(m => m.TestingComputedPropertiesAndIndexersSubtopic) },
+        { path: 'init-accessors-and-readonly-fields-assignment-window', loadComponent: () => import('./components/backend/csharp/properties-indexers/subtopics/init-accessors-and-readonly-fields-assignment-window/init-accessors-and-readonly-fields-assignment-window').then(m => m.InitAccessorsAndReadonlyFieldsAssignmentWindowSubtopic) },
+        { path: 'indexer-initializer-syntax-without-add', loadComponent: () => import('./components/backend/csharp/properties-indexers/subtopics/indexer-initializer-syntax-without-add/indexer-initializer-syntax-without-add').then(m => m.IndexerInitializerSyntaxWithoutAddSubtopic) },
+      ] },
       { path: 'namespaces',        loadComponent: () => import('./components/backend/csharp/namespaces/namespaces').then(m => m.CsharpNamespaces) },
       // ── OOP ──
       { path: 'inheritance',       loadComponent: () => import('./components/backend/csharp/inheritance/inheritance').then(m => m.CsharpInheritance) },
