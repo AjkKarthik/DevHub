@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Pattern Matching"
+    topicRoute="/csharp/pattern-matching"
+    subtopicLabel="Pattern Matching in EF Core LINQ Queries" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Pattern Matching in EF Core LINQ Queries: What Translates to SQL and What Throws</h1>
+  <p class="page-subtitle">
+    The main topic's Q&amp;A mentions in one line that EF Core can't translate pattern
+    expressions to SQL — this subtopic unpacks which patterns actually do translate, which
+    throw, and how that behavior changed across EF Core versions.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="EF Core 3.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Knowing which patterns survive SQL translation explains a real production gotcha —
+      the final subtopic goes one level deeper, into how the compiler actually lowers
+      property patterns into IL in the first place.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pattern Matching"
+    topicRoute="/csharp/pattern-matching"
+    [prev]="{ label: 'Testing Exhaustiveness with Reflection-Based Coverage Tests', route: '/csharp/pattern-matching/testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests' }"
+    [next]="{ label: 'How the Compiler Lowers Property Patterns', route: '/csharp/pattern-matching/how-the-compiler-lowers-property-patterns-repeated-access-and-performance' }" />
+</div>

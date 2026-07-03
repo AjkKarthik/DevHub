@@ -442,7 +442,12 @@ export const routes: Routes = [
         { path: 'nullable-reference-types-with-generic-type-parameters', loadComponent: () => import('./components/backend/csharp/null-safety/subtopics/nullable-reference-types-with-generic-type-parameters/nullable-reference-types-with-generic-type-parameters').then(m => m.NullableReferenceTypesWithGenericTypeParametersSubtopic) },
         { path: 'required-properties-and-system-text-json-deserialization', loadComponent: () => import('./components/backend/csharp/null-safety/subtopics/required-properties-and-system-text-json-deserialization/required-properties-and-system-text-json-deserialization').then(m => m.RequiredPropertiesAndSystemTextJsonDeserializationSubtopic) },
       ] },
-      { path: 'pattern-matching',loadComponent: () => import('./components/backend/csharp/pattern-matching/pattern-matching').then(m => m.CsharpPatternMatching) },
+      { path: 'pattern-matching', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/pattern-matching/pattern-matching').then(m => m.CsharpPatternMatching) },
+        { path: 'testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests', loadComponent: () => import('./components/backend/csharp/pattern-matching/subtopics/testing-exhaustiveness-reflection-coverage/testing-exhaustiveness-reflection-coverage').then(m => m.TestingExhaustivenessCatchingNewSubtypesWithReflectionBasedCoverageTestsSubtopic) },
+        { path: 'pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws', loadComponent: () => import('./components/backend/csharp/pattern-matching/subtopics/pattern-matching-ef-core-sql-translation/pattern-matching-ef-core-sql-translation').then(m => m.PatternMatchingInEfCoreLinqQueriesWhatTranslatesToSqlAndWhatThrowsSubtopic) },
+        { path: 'how-the-compiler-lowers-property-patterns-repeated-access-and-performance', loadComponent: () => import('./components/backend/csharp/pattern-matching/subtopics/how-the-compiler-lowers-property-patterns-repeated-access-and-performance/how-the-compiler-lowers-property-patterns-repeated-access-and-performance').then(m => m.HowTheCompilerLowersPropertyPatternsRepeatedAccessAndPerformanceSubtopic) },
+      ] },
       { path: 'exceptions',      loadComponent: () => import('./components/backend/csharp/exceptions/exceptions').then(m => m.CsharpExceptions) },
       { path: 'delegates',         loadComponent: () => import('./components/backend/csharp/delegates/delegates').then(m => m.CsharpDelegates) },
       // ── Fundamentals ──

@@ -6569,6 +6569,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'pattern-matching/testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests': {
+    apis: ['GetTypes', 'IsSubclassOf', '[Theory]', '[MemberData]', 'HashSet<Type>'],
+    related: [
+      { label: 'Pattern Matching in EF Core LINQ — next', route: '/csharp/pattern-matching/pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws' },
+      { label: 'Pattern Matching (overview)', route: '/csharp/pattern-matching' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'CS8509 only guarantees the switch has an arm for every subtype — it says nothing about whether that arm is actually tested. A reflection-based coverage test closes that specific gap.',
+    docs: [
+      { label: 'Reflection Overview', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection' },
+    ],
+    resources: [
+      { label: 'xUnit Theory/MemberData', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'A hand-maintained "tested types" list used only for the coverage check can itself drift out of sync — deriving it directly from the real test data (e.g. a Theory\'s MemberData) leaves only one source of truth.',
+      'A new subtype satisfying CS8509 (compiler is happy) tells you nothing about whether its behavior is actually exercised by any test.',
+    ],
+  },
+
+  'pattern-matching/pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws': {
+    apis: ['IQueryable', 'AsEnumerable', 'ToList', 'InvalidOperationException'],
+    related: [
+      { label: 'Testing Exhaustiveness — previous', route: '/csharp/pattern-matching/testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests' },
+      { label: 'How the Compiler Lowers Property Patterns — next', route: '/csharp/pattern-matching/how-the-compiler-lowers-property-patterns-repeated-access-and-performance' },
+      { label: 'LINQ', route: '/csharp/linq' },
+    ],
+    tip: 'Patterns that lower to simple comparisons on scalar, directly-mapped columns translate to SQL fine. Nested property patterns and positional patterns using Deconstruct do not — materialize with ToList()/AsEnumerable() first, then pattern-match in memory.',
+    docs: [
+      { label: 'Client vs. Server Evaluation', url: 'https://learn.microsoft.com/en-us/ef/core/querying/client-eval' },
+    ],
+    resources: [
+      { label: 'EF Core Query Translation', url: 'https://learn.microsoft.com/en-us/ef/core/querying/', badge: 'docs' },
+    ],
+    gotchas: [
+      'EF Core 3.0+ throws InvalidOperationException for an untranslatable pattern in a query predicate — but EF Core 2.x silently fell back to client evaluation, pulling far more rows into memory than intended.',
+      'A pattern that "looks simple" in C# source (like a nested property pattern) can still be untranslatable — what matters is whether it lowers to a construct EF Core\'s SQL translator recognizes, not how the pattern reads.',
+    ],
+  },
+
+  'pattern-matching/how-the-compiler-lowers-property-patterns-repeated-access-and-performance': {
+    apis: ['property pattern lowering', 'short-circuit evaluation'],
+    related: [
+      { label: 'Pattern Matching in EF Core LINQ — previous', route: '/csharp/pattern-matching/pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws' },
+      { label: 'Pattern Matching (overview)', route: '/csharp/pattern-matching' },
+    ],
+    tip: 'Within one pattern test, a property is read once and reused for every sub-condition against it. Across different switch arms, the same property is genuinely re-read per arm reached — patterns are not cached across the whole switch.',
+    docs: [
+      { label: 'Pattern Matching Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/patterns' },
+    ],
+    resources: [
+      { label: 'Pattern Matching Design Notes', url: 'https://github.com/dotnet/csharplang/blob/main/proposals/patterns.md', badge: 'code' },
+    ],
+    gotchas: [
+      'Property pattern sub-conditions short-circuit left to right, exactly like &&  — a failing early sub-condition means later properties in the same pattern are never even read.',
+      'Pattern matching lowers to ordinary field/property reads and comparisons — it is not meaningfully slower than an equivalent hand-written if/else chain with cached locals.',
+    ],
+  },
+
   exceptions: {
     apis: ['try/catch/finally', 'when', 'throw', 'Exception', 'AggregateException'],
     related: [
