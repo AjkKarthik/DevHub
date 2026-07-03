@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="OOP &amp; Classes"
+    topicRoute="/csharp/oop"
+    subtopicLabel="Testing Polymorphic Code: Mocking Interfaces and Verifying Virtual Dispatch" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Polymorphic Code: Mocking Interfaces and Verifying Virtual Dispatch</h1>
+  <p class="page-subtitle">
+    The main topic says interface-based design is "testable" but never shows a test.
+    Here's the actual Moq-based test, plus how to catch an override-vs-new bug directly.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing verifies OOP designs behave correctly from the outside. The next
+      subtopic goes inside a single object's own lifecycle — a classic initialization-order
+      footgun the main topic's constructor examples never trigger.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OOP &amp; Classes"
+    topicRoute="/csharp/oop"
+    [next]="{ label: 'Virtual Member Calls from Constructors: An Initialization-Order Footgun', route: '/csharp/oop/virtual-member-calls-from-constructors-an-initialization-order-footgun' }" />
+</div>

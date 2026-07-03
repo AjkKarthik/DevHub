@@ -1004,7 +1004,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Object-Oriented</p>
-      <a routerLink="/csharp/oop" routerLinkActive="active"><span class="nl-text">Classes &amp; OOP</span>@if(progress.isDone('csharp-oop')){<span class="nl-done">✓</span>}@if(diff('csharp-oop');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/oop" routerLinkActive="active">
+        <span class="nl-text">Classes &amp; OOP</span>
+        @if (progress.isDone('csharp-oop')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-oop'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('oop')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('oop')"
+                  (click)="toggleSubtopics('oop', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('oop'); as subs) {
+        @if (isSubtopicsExpanded('oop')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/inheritance" routerLinkActive="active"><span class="nl-text">Inheritance &amp; Overriding</span>@if(progress.isDone('csharp-inheritance')){<span class="nl-done">✓</span>}@if(diff('csharp-inheritance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/abstract-interfaces" routerLinkActive="active"><span class="nl-text">Abstract &amp; Interfaces</span>@if(progress.isDone('csharp-abstract-interfaces')){<span class="nl-done">✓</span>}@if(diff('csharp-abstract-interfaces');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/static-enums" routerLinkActive="active"><span class="nl-text">Static, Partial &amp; Enums</span>@if(progress.isDone('csharp-static-enums')){<span class="nl-done">✓</span>}@if(diff('csharp-static-enums');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

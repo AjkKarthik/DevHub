@@ -400,7 +400,12 @@ export const routes: Routes = [
         { path: 'checked-and-unchecked-arithmetic-detecting-integer-overflow', loadComponent: () => import('./components/backend/csharp/basics/subtopics/checked-and-unchecked-arithmetic-detecting-integer-overflow/checked-and-unchecked-arithmetic-detecting-integer-overflow').then(m => m.CheckedAndUncheckedArithmeticDetectingIntegerOverflowSubtopic) },
         { path: 'spant-and-stackalloc-parsing-without-heap-allocations',   loadComponent: () => import('./components/backend/csharp/basics/subtopics/spant-and-stackalloc-parsing-without-heap-allocations/spant-and-stackalloc-parsing-without-heap-allocations').then(m => m.SpantAndStackallocParsingWithoutHeapAllocationsSubtopic) },
       ] },
-      { path: 'oop',             loadComponent: () => import('./components/backend/csharp/oop/oop').then(m => m.CsharpOop) },
+      { path: 'oop', children: [
+        { path: '',                                                          loadComponent: () => import('./components/backend/csharp/oop/oop').then(m => m.CsharpOop) },
+        { path: 'testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch', loadComponent: () => import('./components/backend/csharp/oop/subtopics/testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch/testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch').then(m => m.TestingPolymorphicCodeMockingInterfacesAndVerifyingVirtualDispatchSubtopic) },
+        { path: 'virtual-member-calls-from-constructors-an-initialization-order-footgun', loadComponent: () => import('./components/backend/csharp/oop/subtopics/virtual-member-calls-from-constructors-an-initialization-order-footgun/virtual-member-calls-from-constructors-an-initialization-order-footgun').then(m => m.VirtualMemberCallsFromConstructorsAnInitializationOrderFootgunSubtopic) },
+        { path: 'explicit-interface-implementation-resolving-name-collisions', loadComponent: () => import('./components/backend/csharp/oop/subtopics/explicit-interface-implementation-resolving-name-collisions/explicit-interface-implementation-resolving-name-collisions').then(m => m.ExplicitInterfaceImplementationResolvingNameCollisionsSubtopic) },
+      ] },
       { path: 'records',         loadComponent: () => import('./components/backend/csharp/records/records').then(m => m.CsharpRecords) },
       { path: 'generics',        loadComponent: () => import('./components/backend/csharp/generics/generics').then(m => m.CsharpGenerics) },
       { path: 'collections',     loadComponent: () => import('./components/backend/csharp/collections/collections').then(m => m.CsharpCollections) },

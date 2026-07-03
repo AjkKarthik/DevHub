@@ -5978,6 +5978,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'oop/testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch': {
+    apis: ['Mock<T>', '.Setup()', '.Verify()', 'Times.Once'],
+    related: [
+      { label: 'Classes & OOP (overview)',                                     route: '/csharp/oop' },
+      { label: 'Virtual Member Calls from Constructors — next',                 route: '/csharp/oop/virtual-member-calls-from-constructors-an-initialization-order-footgun' },
+    ],
+    tip: 'Coding against interfaces isn\'t just a style preference — it\'s the specific mechanism that makes mocking possible in a unit test.',
+    docs: [
+      { label: 'Moq — GitHub', url: 'https://github.com/devlooped/moq' },
+      { label: 'Unit Testing Best Practices', url: 'https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test using the derived type directly (Dog d = new Dog()) cannot catch an override-vs-new bug — the test must use a base-typed reference to exercise the distinction.',
+      'Times.Once/Times.Never verification catches duplicate-call bugs a return-value-only test misses entirely.',
+    ],
+  },
+
+  'oop/virtual-member-calls-from-constructors-an-initialization-order-footgun': {
+    apis: ['CA2214 analyzer', 'constructor execution order', 'virtual dispatch'],
+    related: [
+      { label: 'Testing Polymorphic Code — previous', route: '/csharp/oop/testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch' },
+      { label: 'Classes & OOP (overview)',              route: '/csharp/oop' },
+      { label: 'Explicit Interface Implementation — next', route: '/csharp/oop/explicit-interface-implementation-resolving-name-collisions' },
+    ],
+    tip: 'Base class constructors run BEFORE derived class field initializers — a virtual call from a base constructor sees uninitialized derived state.',
+    docs: [
+      { label: 'CA2214 Rule', url: 'https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2214' },
+      { label: 'Constructors Guide', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/constructors' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A NullReferenceException from this bug points its stack trace at the derived override, which looks completely correct in isolation — the root cause is elsewhere.',
+      'The fix is structural: never call virtual/abstract members from a constructor — expose an explicitly-invoked post-construction method instead.',
+    ],
+  },
+
+  'oop/explicit-interface-implementation-resolving-name-collisions': {
+    apis: ['void IInterface.Method()', 'interface-typed cast', 'IDisposable.Dispose()'],
+    related: [
+      { label: 'Virtual Member Calls from Constructors — previous', route: '/csharp/oop/virtual-member-calls-from-constructors-an-initialization-order-footgun' },
+      { label: 'Classes & OOP (overview)',                            route: '/csharp/oop' },
+    ],
+    tip: 'An explicitly-implemented member is not part of the class\'s own public surface — access it only through the interface type, e.g. ((IPrintable)doc).Print().',
+    docs: [
+      { label: 'Explicit Interface Implementation', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/interfaces/explicit-interface-implementation' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Two interfaces declaring the same method name can coexist on one class with completely different bodies, disambiguated by which interface they belong to.',
+      'Explicit implementation is deliberately used even with no collision (IDisposable.Dispose()) to keep a rarely-needed member off a type\'s primary public API.',
+    ],
+  },
+
   oop: {
     apis: ['class', 'interface', 'abstract', 'sealed', 'override', 'virtual'],
     related: [
