@@ -709,8 +709,8 @@ func main() {
 
   qna: QnaItem[] = [
     {
-      q: 'Should I use gin.Default() or gin.New() for a production server?',
-      a: 'Prefer gin.New() with explicit middleware. gin.Default() attaches Logger and Recovery — both are reasonable for production, but gin.New() gives you control over which middleware runs and in what order. You can then add r.Use(gin.Recovery()) and a structured logger (zerolog, zap) that outputs JSON instead of colored text. Always add gin.Recovery() — without it, a panic in any handler kills the goroutine silently.'
+      q: 'If you forget to add gin.Recovery() after switching from gin.Default() to gin.New(), what actually happens when a handler panics — does it crash the whole server?',
+      a: 'It does not crash the whole process, but it does take down the request in a way that can be worse than a clean error response: Gin runs each request handler inside its own goroutine (spawned per-connection by the underlying net/http server), and an unrecovered panic in a goroutine terminates that goroutine — but critically, an unrecovered panic that escapes a goroutine spawned by net/http\'s own connection-handling machinery causes the HTTP server to log a panic stack trace and abruptly close that connection without sending any response at all, rather than a graceful 500. The client sees a broken connection with no status code, other in-flight requests on other goroutines are unaffected, but that one request fails opaquely — which is exactly the ungraceful behavior gin.Recovery() exists to replace with a clean 500 response and controlled logging.'
     },
     {
       q: 'How do I return a custom error format across all handlers?',

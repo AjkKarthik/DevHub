@@ -248,15 +248,15 @@ sudo aide --check                    # compare current to baseline`,
       explanation: 'PasswordAuthentication no forces key-based authentication, preventing brute-force password attacks. Ensure your public key is in ~/.ssh/authorized_keys before applying, then restart sshd. Combine with PermitRootLogin no.',
     },
     {
-      q: 'What is the purpose of fail2ban?',
+      q: 'A botnet attacks a server using a different source IP for every single login attempt (distributed brute force, one attempt per IP). Does fail2ban\'s default per-IP ban strategy stop this attack?',
       options: [
-        'Encrypts SSH connections',
-        'Monitors logs for repeated failed login attempts and temporarily bans offending IPs via firewall rules',
-        'Validates SSH key fingerprints',
-        'Audits file system changes',
+        'Yes, fail2ban automatically detects and bans the entire subnet range once it sees a pattern',
+        'No — since fail2ban bans are keyed by source IP and each attempt comes from a different IP, no single IP ever accumulates enough failures to trigger a ban, making per-IP banning ineffective against distributed brute force',
+        'fail2ban switches to banning by username instead of IP automatically',
+        'The attack is blocked because fail2ban has a global rate limit across all IPs by default',
       ],
       answer: 1,
-      explanation: 'fail2ban scans log files (auth.log, secure) for repeated failures and creates temporary firewall rules (iptables/nftables) to ban the offending IP. Configurable ban time, max retries, and which services to protect.',
+      explanation: 'fail2ban\'s core mechanism counts failures PER SOURCE IP within a time window — it is specifically designed to catch one attacker hammering from one (or a small pool of) address, and does nothing to stop an attack deliberately distributed across many different IPs where each individual IP only ever makes one or two attempts, staying well under any reasonable ban threshold. Defending against genuinely distributed brute force requires different controls layered on top: rate-limiting at a CDN/WAF level with broader heuristics, requiring key-based (not password) SSH auth so brute force is computationally infeasible regardless of attempt count, or moving SSH off the public internet entirely behind a VPN or bastion with its own access controls.',
     },
   ];
 

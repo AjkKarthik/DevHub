@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Routing &amp; Navigation"
+    topicRoute="/angular/routing"
+    subtopicLabel="Router Events &amp; Navigation Lifecycle" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Router Events &amp; Navigation Lifecycle</h1>
+  <p class="page-subtitle">
+    The full NavigationStart-to-NavigationEnd event pipeline, building a correct loading
+    indicator, and walking the resolved RouterState tree for breadcrumbs.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Every router event logged to the console with its navigation id, plus a loading
+      indicator wired to the full start/end/cancel/error set — not just start and end.
+    </p>
+    <app-live-playground
+      title="Router events and navigation lifecycle"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Routing & Navigation"
+    topicRoute="/angular/routing"
+    [prev]="{ label: 'Custom UrlMatchers & Route Config', route: '/angular/routing/custom-url-matchers-route-config' }"
+    [next]="{ label: 'Route Reuse Strategy', route: '/angular/routing/route-reuse-strategy' }" />
+</div>

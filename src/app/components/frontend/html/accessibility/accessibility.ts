@@ -504,8 +504,8 @@ modal.addEventListener('keydown', (e) => {
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between aria-label and aria-labelledby?',
-      a: '<code>aria-label</code> provides an inline string as the accessible name — good for icon buttons and controls with no visible label. <code>aria-labelledby</code> references the id(s) of existing visible elements — the referenced text becomes the accessible name. <code>aria-labelledby</code> is preferred when visible text exists: it stays in sync with visual content and works with translation tools automatically.'
+      q: 'An element has `aria-labelledby="title subtitle"` referencing two separate elements. How does the browser combine their text into a single accessible name, and what happens if one of the referenced ids does not exist in the document?',
+      a: 'When aria-labelledby references multiple space-separated ids, the browser concatenates the text content of each referenced element IN THE ORDER LISTED (not DOM order), joined with spaces, to form the single accessible name — this is actually a capability aria-label does not have, since aria-label can only ever be one literal string, while aria-labelledby can compose a name from multiple visually-separate pieces (e.g. a heading plus a status badge). If one of the referenced ids does not exist in the document, that reference is simply skipped/ignored when building the accessible name — it does not throw an error or invalidate the whole attribute, but it does mean the accessible name silently ends up incomplete, which is a common accessibility bug when an id gets renamed in markup but the aria-labelledby reference is not updated to match.'
     },
     {
       q: 'Does adding ARIA make a site more accessible?',
@@ -520,8 +520,8 @@ modal.addEventListener('keydown', (e) => {
       a: 'No — colour contrast is a CSS/design concern covered by WCAG Success Criterion 1.4.3 (Contrast Minimum, AA level). The requirement is a minimum 4.5:1 ratio for normal text and 3:1 for large text (18pt/14pt bold). ARIA does not affect contrast. Use tools like the WebAIM Contrast Checker or browser DevTools accessibility panel to verify.'
     },
     {
-      q: 'What is the difference between aria-label and aria-labelledby?',
-      a: 'aria-label provides an inline string as the accessible name: <code>aria-label="Close dialog"</code>. aria-labelledby references the ID of another element whose text content becomes the accessible name: <code>aria-labelledby="dialog-title"</code>. Prefer aria-labelledby — it reuses visible text and stays in sync automatically. Use aria-label only when there is no visible text to reference.'
+      q: 'If an element has both a visible text label AND an aria-label attribute, which one does a screen reader announce?',
+      a: 'The aria-label — it takes precedence over the element\'s own visible text content when computing the accessible name. This is a common, hard-to-spot bug: a developer adds aria-label="Submit" for a button whose visible text has since been changed to "Save Changes," and screen reader users hear the STALE "Submit" label while sighted users see "Save Changes" — the two experiences silently diverge. If visible text already exists and is accurate, it is usually safer to omit aria-label entirely and let the visible text serve as the accessible name.'
     },
     {
       q: 'What is a focus trap and when should you implement one?',

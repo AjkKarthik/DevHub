@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Exception handling chains: try specific → try general → try global fallback.',
     ],
   },
+  {
+    heading: 'Chain of Responsibility vs. a Simple If-Else Chain',
+    points: [
+      'A hardcoded if-else chain couples the CALLER to every possible handler and their exact order — Chain of Responsibility decouples the caller entirely, which just sends a request into the chain, from the handlers, which are independently defined and can be reordered or extended without touching caller code.',
+      'Each handler in the chain decides independently whether to process a request and/or pass it along — this means handlers can be added, removed, or reordered by only changing the chain\'s construction/wiring code, without modifying the handler classes themselves or the code that submits requests.',
+      'A common real-world example is HTTP middleware pipelines (authentication, logging, rate limiting, each as a link in the chain) — each middleware decides whether to handle the request itself, pass it to the next middleware, or short-circuit the chain entirely.',
+      'A chain with no handler willing to process a given request needs an explicit strategy — either a default terminal handler that handles anything unhandled, or an explicit signal that the request was unhandled — silently dropping unhandled requests is a common bug if this case is not deliberately addressed.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

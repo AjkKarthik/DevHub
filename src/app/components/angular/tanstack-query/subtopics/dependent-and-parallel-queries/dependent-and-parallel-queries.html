@@ -1,0 +1,42 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TanStack Query"
+    topicRoute="/angular/tanstack-query"
+    subtopicLabel="Dependent &amp; Parallel Queries" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Dependent &amp; Parallel Queries</h1>
+  <p class="page-subtitle">
+    Chaining queries with enabled so a second query waits for the first, and injectQueries()
+    for a dynamic, runtime-determined array of parallel queries.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="@tanstack/angular-query-experimental" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A posts query that waits for the user query to resolve, plus a dynamic array of tag
+      queries built from a signal array via <code>injectQueries()</code> — add more IDs and
+      watch new queries spin up automatically.
+    </p>
+    <app-live-playground
+      title="Dependent and parallel queries"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="tsqDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="TanStack Query"
+    topicRoute="/angular/tanstack-query"
+    [prev]="{ label: 'Optimistic Updates & Rollback', route: '/angular/tanstack-query/optimistic-updates-rollback' }"
+    [next]="{ label: 'Infinite Queries & Pagination', route: '/angular/tanstack-query/infinite-queries-pagination' }" />
+</div>

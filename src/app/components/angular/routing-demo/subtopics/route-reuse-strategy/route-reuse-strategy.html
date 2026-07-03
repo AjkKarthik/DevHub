@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Routing &amp; Navigation"
+    topicRoute="/angular/routing"
+    subtopicLabel="Route Reuse Strategy" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Route Reuse Strategy</h1>
+  <p class="page-subtitle">
+    Why Angular destroys components across route changes by default, and how a custom
+    RouteReuseStrategy caches specific routes to preserve state across navigation.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Tab A opts into caching via <code>data: {{ '{' }} reuse: true {{ '}' }}</code> — type in
+      its input, switch to Tab B, switch back, and the draft text is still there.
+    </p>
+    <app-live-playground
+      title="Route reuse strategy"
+      template="angular-cli"
+      openFile="src/app/reuse-strategy.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Routing & Navigation"
+    topicRoute="/angular/routing"
+    [prev]="{ label: 'Router Events & Navigation Lifecycle', route: '/angular/routing/router-events-navigation-lifecycle' }"
+    [next]="{ label: 'View Transitions & Relative Navigation', route: '/angular/routing/view-transitions-relative-navigation' }" />
+</div>

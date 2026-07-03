@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HTTP Interceptors"
+    topicRoute="/angular/http-interceptors"
+    subtopicLabel="Auth Interceptor &amp; Token Refresh" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Auth Interceptor &amp; Token Refresh</h1>
+  <p class="page-subtitle">
+    Attaching a token to every request is the easy 80% — refreshing an expired one exactly
+    once, even when three requests 401 at the same instant, is the interview question.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="Angular 15" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Fire 3 parallel requests against a simulated expired token — watch the console: the
+      refresh call fires exactly once, shared across all three, thanks to
+      <code>shareReplay(1)</code>.
+    </p>
+    <app-live-playground
+      title="Auth interceptor and token refresh"
+      template="angular-cli"
+      openFile="src/app/auth.interceptor.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Auth is one specific interceptor concern — the next subtopic covers the more general
+      pattern of centralizing error handling (403, 5xx, offline) for every request in one
+      place, instead of repeating status-code branching in every component.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTTP Interceptors"
+    topicRoute="/angular/http-interceptors"
+    [prev]="{ label: 'What Are Interceptors?', route: '/angular/http-interceptors/what-are-interceptors' }"
+    [next]="{ label: 'Global Error Interceptor', route: '/angular/http-interceptors/global-error-interceptor' }" />
+</div>

@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Zod + Reactive Forms"
+    topicRoute="/angular/zod-forms"
+    subtopicLabel="Discriminated Unions &amp; Transforms" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Discriminated Unions &amp; Transforms</h1>
+  <p class="page-subtitle">
+    Validating a form whose shape switches based on a field with z.discriminatedUnion(),
+    and reshaping raw form values into clean typed data with .transform().
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Zod 3+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A payment form that switches between card and bank-transfer fields, validated by a
+      discriminated union — plus a comma-separated tags input turned into a clean array by
+      <code>.transform()</code> as part of parsing.
+    </p>
+    <app-live-playground
+      title="Discriminated unions and transforms"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="zodDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Zod + Reactive Forms"
+    topicRoute="/angular/zod-forms"
+    [next]="{ label: 'Async Validation with Zod', route: '/angular/zod-forms/async-validation-with-zod' }" />
+</div>

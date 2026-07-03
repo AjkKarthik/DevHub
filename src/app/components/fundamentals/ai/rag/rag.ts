@@ -292,8 +292,8 @@ function topKChunks(
 
   qna: QnaItem[] = [
     {
-      q: 'How do I evaluate RAG pipeline quality?',
-      a: 'Evaluate two components separately: (1) Retrieval quality — recall@k (are the relevant chunks in the top-k?), MRR (mean reciprocal rank), nDCG. (2) Generation quality — faithfulness (does the answer use the retrieved context?), answer relevance (does it answer the question?), context precision (are the retrieved chunks actually used?). Tools: RAGAS (automated RAG evaluation), DeepEval, TruLens. Build a golden dataset of (question, answer, ground-truth chunks) for offline evaluation.',
+      q: 'Why should you evaluate retrieval quality and generation quality separately in a RAG pipeline, rather than only checking the final answer?',
+      a: 'A wrong final answer can come from either stage, and treating them as one blob makes debugging guesswork: retrieval could fetch the wrong chunks entirely (a retrieval failure), or retrieval could fetch the RIGHT chunks but the LLM still ignores or misreads them when generating the answer (a generation failure). Measuring retrieval with recall@k/MRR and generation with faithfulness/answer-relevance separately tells you which stage to actually fix — improving your embedding model or chunking strategy does nothing if the real problem is the generation prompt ignoring correctly-retrieved context, and vice versa.',
     },
     {
       q: 'What is the difference between naive RAG and agentic RAG?',

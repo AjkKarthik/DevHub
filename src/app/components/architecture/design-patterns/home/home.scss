@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $accent: #6b21a8;
 $accent-dark: #a78bfa;
 $tint: #f5f3ff;
@@ -50,7 +52,7 @@ $tint: #f5f3ff;
 }
 .key-points-btn {
   background: none; border: none; cursor: pointer; font-size: .75rem; color: $accent; font-weight: 600; padding: 0; line-height: 1;
-  &:hover { color: darken($accent, 10%); text-decoration: underline; }
+  &:hover { color: color.adjust($accent, $lightness: -10%); text-decoration: underline; }
 }
 .arrow-link { font-size: .82rem; color: $accent; font-weight: 700; text-decoration: none; &:hover { text-decoration: underline; } }
 .card.soon { opacity: .75; .card-main { cursor: default; } }

@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template-Driven vs Reactive Forms"
+    topicRoute="/angular/forms"
+    subtopicLabel="Cross-Field Validators" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Cross-Field Validators — Validating Relationships Between Fields</h1>
+  <p class="page-subtitle">
+    "Does the confirm password match?" is a question no single control can answer on its
+    own — the validator has to live on the FormGroup, and so does its error.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A password/confirm pair — the mismatch error is read from <code>form.errors</code>,
+      not either control's own <code>.errors</code>.
+    </p>
+    <app-live-playground
+      title="Cross-field validators"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      The last subtopic covers what changes at compile time once you add TypeScript generics
+      to the mix — typed forms, and why <code>form.controls.emal</code> becomes a compiler
+      error instead of a silent runtime bug.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template-Driven vs Reactive Forms"
+    topicRoute="/angular/forms"
+    [prev]="{ label: 'FormGroup, FormControl & FormArray', route: '/angular/forms/formgroup-formcontrol-formarray' }"
+    [next]="{ label: 'Typed Forms', route: '/angular/forms/typed-forms' }" />
+</div>

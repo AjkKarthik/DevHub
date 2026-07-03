@@ -439,8 +439,8 @@ this.userResource.reload(); // sync back with server truth`,
 
   qna: QnaItem[] = [
     {
-      q: 'What is resource() and how does it differ from httpResource()?',
-      a: "<code>resource()</code> works with any async source — <code>fetch()</code>, a custom Promise, even a timer — and is framework-agnostic inside the loader. <code>httpResource()</code> specifically wraps Angular's <code>HttpClient</code> and integrates with interceptors (auth tokens, XSRF, error handlers) and testing utilities. Prefer <code>httpResource()</code> for HTTP calls; use <code>resource()</code> when you need fine-grained control over the fetch or are using a non-HTTP data source.",
+      q: 'A team uses resource() with a loader that calls fetch() directly instead of using httpResource(), specifically to make an HTTP call. In a component test, HttpTestingController.expectOne() is used to assert the request was made — does this work?',
+      a: "No — HttpTestingController only intercepts requests made through Angular's HttpClient (and its HTTP_INTERCEPTORS chain); a resource() loader calling the browser's native fetch() directly bypasses HttpClient entirely, so HttpTestingController never sees that request and expectOne() will fail to find any matching request, even though a real HTTP call is genuinely happening. This is a concrete, practical reason to prefer httpResource() (or a loader that calls HttpClient internally) over raw fetch() inside resource() for anything HTTP-related: it isn't just about getting interceptors for auth/XSRF, it's also about staying testable with Angular's standard HTTP testing utilities — a fetch()-based resource loader needs to be tested by mocking the global fetch function instead, a different and less Angular-idiomatic testing pattern.",
     },
     {
       q: 'How does the params() function make resource() reactive?',

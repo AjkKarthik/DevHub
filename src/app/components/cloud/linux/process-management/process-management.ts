@@ -248,15 +248,15 @@ function scheduleProcesses(procs: Process[]): number[] {
       explanation: 'SIGTERM (15) requests a graceful shutdown — the process can catch it, clean up, and exit. SIGKILL (9) cannot be caught, blocked, or ignored — the kernel terminates the process immediately with no cleanup. Always try SIGTERM first.',
     },
     {
-      q: 'What is a zombie process?',
+      q: 'Can you free up resources by directly killing a zombie process with kill -9?',
       options: [
-        'A process consuming excessive CPU',
-        'A process that has exited but whose entry remains in the process table because the parent has not called wait()',
-        'A process running in the background',
-        'A process with no controlling terminal',
+        'Yes, kill -9 immediately removes any process table entry',
+        'No — a zombie has already exited and has no running process to kill; the only fix is getting the PARENT to call wait() (or killing/fixing the parent so it does)',
+        'Yes, but only for zombies older than a few minutes',
+        'No, zombies can only be removed by rebooting the system',
       ],
       answer: 1,
-      explanation: 'A zombie (defunct) process has finished execution but its process table entry remains because the parent has not read its exit status via wait(). Zombies consume minimal resources but accumulate if the parent is buggy. Kill the parent to clean them up.',
+      explanation: 'This is a common misunderstanding: a zombie is not a "stuck" running process — it has already finished executing and holds essentially no resources beyond its process table entry. kill -9 sends a signal to a running process, but there is no running process left to receive it. The entry only disappears once the PARENT calls wait() to collect the exit status, which is why the actual fix targets the parent (or its replacement, like init/systemd adopting an orphan), never the zombie entry itself.',
     },
   ];
 

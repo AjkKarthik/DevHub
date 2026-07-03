@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Mock Service Worker (MSW)"
+    topicRoute="/angular/msw"
+    subtopicLabel="Testing Auth Interceptor Flows with MSW" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Auth Interceptor Flows with MSW</h1>
+  <p class="page-subtitle">
+    A test that would pass even if the interceptor never ran doesn't prove anything — the
+    MSW handler itself must depend on the interceptor's effect.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="MSW 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      The MSW handler reads <code>request.headers.get('Authorization')</code> directly —
+      proving <code>authInterceptor</code> genuinely attached the token, not just that a
+      response came back.
+    </p>
+    <app-live-playground
+      title="Testing auth interceptor flows with MSW"
+      template="angular-cli"
+      openFile="src/app/profile.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With auth flows covered, the next subtopic tests something most examples skip
+      entirely — the loading state while a request is still in flight.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Mock Service Worker (MSW)"
+    topicRoute="/angular/msw"
+    [next]="{ label: 'Testing Loading States with MSW delay()', route: '/angular/msw/testing-loading-states-with-msw-delay' }" />
+</div>

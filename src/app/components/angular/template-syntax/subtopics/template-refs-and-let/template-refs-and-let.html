@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template Syntax"
+    topicRoute="/angular/templates"
+    subtopicLabel="Template Refs &amp; &#64;let" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Template Reference Variables &amp; &#64;let</h1>
+  <p class="page-subtitle">
+    #ref hands you an element or component instance directly in the template; &#64;let names
+    the result of an expression so it isn't re-evaluated every time you read it.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 18" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A template reference read from an event handler, plus <code>&#64;let</code> aliasing a
+      signal call — including its block-scoping inside a nested <code>&#64;if</code>.
+    </p>
+    <app-live-playground
+      title="Template refs and @let"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Reference variables and <code>&#64;let</code> name things — the last subtopic covers
+      TRANSFORMING them for display, with Angular's built-in and custom pipes.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template Syntax"
+    topicRoute="/angular/templates"
+    [prev]="{ label: 'Property, Event & Two-Way Binding', route: '/angular/templates/property-event-two-way-binding' }"
+    [next]="{ label: 'Pipes — Built-in & Custom', route: '/angular/templates/pipes-built-in-custom' }" />
+</div>

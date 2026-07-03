@@ -584,14 +584,10 @@ result.forEach(i => console.log(\`[\${i.severity.toUpperCase()}] \${i.message}\`
       explanation: 'CI runners are ephemeral — local layer cache is lost between runs. Registry-backed cache exports the build cache to a special registry tag after building, and imports it at the start of the next run. This gives stateless runners the benefit of incremental builds.',
     },
     {
-      q: 'What is the main benefit of multi-stage Docker builds?',
-      options: [
-        'Faster build times by parallelising build stages',
-        'Smaller final images — build dependencies (compilers, test tools) stay in build stages and are not included in the final runtime image',
-        'Enables building for multiple architectures simultaneously',
-        'Reduces the number of image layers'],
+      q: 'A Dockerfile has three stages: `build` (compiles the app), `test` (runs the test suite against the build output), and a final runtime stage that `COPY --from=build`. If the test stage fails, does `docker build` still produce the final runtime image?',
+      options: ['Yes, always — test stage failures are only warnings by default', 'No — if the final stage does not depend on (COPY --from) the test stage, Docker may not even execute it during a plain `docker build`, since BuildKit only builds stages that the target image actually depends on; the test stage must be explicitly targeted or made a dependency to guarantee it runs and gates the build', 'No, Docker always runs every stage defined in the Dockerfile regardless of dependencies', 'Test stage failures are impossible to detect from docker build\'s exit code'],
       answer: 1,
-      explanation: 'Multi-stage builds use multiple FROM instructions. The build stage installs compilers, test deps, and builds binaries. The final stage copies only the built artifacts from the build stage — no compilers, no source code, no test deps. A Node.js app might go from 1.2GB (with node_modules and dev tools) to 150MB (just the production runtime). Smaller images = faster pulls, smaller attack surface, lower storage cost.',
+      explanation: 'A crucial and frequently-missed multi-stage subtlety: BuildKit (the modern Docker builder) only executes the stages that the final target stage transitively depends on via COPY --from or FROM. A `test` stage that nothing else references is dead code from the builder\'s perspective — `docker build .` can silently skip it entirely, meaning failing tests never block the image from being built. To actually gate the build on tests passing, either make a later stage COPY something from the test stage (forcing it to run) or run the test stage as an explicit separate `docker build --target test` step in the CI pipeline before building the final image.',
     },
   ];
 

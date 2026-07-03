@@ -461,14 +461,10 @@ console.log(analysePipeline(logs));
       explanation: 'The test pyramid has many fast unit tests at the base, fewer integration tests in the middle, and very few slow E2E tests at the top. In CI: unit tests on every commit (fastest, most reliable signal); integration tests on PR merge; E2E tests on a schedule or post-merge on main. This gives fast PR feedback while keeping the expensive E2E suite from blocking developers.',
     },
     {
-      q: 'What is test flakiness in CI and why is it a serious problem?',
-      options: [
-        'Tests that fail due to slow network connections only',
-        'Tests that pass sometimes and fail other times without code changes — erodes trust in the test suite and forces ignoring failures',
-        'Tests that take more than 5 minutes to run',
-        'Tests that only run on certain operating systems'],
+      q: 'A team\'s CI has a "retry failed tests up to 2 times automatically" setting to reduce flaky-test noise. What is the hidden cost of this setting compared to quarantining and fixing flaky tests directly?',
+      options: ['There is no cost — auto-retry is strictly better than quarantine', 'Auto-retry masks the existence of flakiness entirely (a test that passes on retry shows green, with no visible signal that anything was wrong), so the flaky-test count silently grows over time since nothing forces anyone to notice or fix them, unlike quarantine which keeps flaky tests visibly excluded and tracked', 'Auto-retry makes the pipeline run faster', 'Auto-retry only works for unit tests, not integration tests'],
       answer: 1,
-      explanation: 'A flaky test fails intermittently without code changes — due to race conditions, time-dependent logic, network calls, or random data. When developers see failures, they assume "probably flaky, rerun" and merge failing code. Once a team ignores CI failures, CI loses all value. Fix: quarantine flaky tests immediately, fix or delete them. Track flakiness metrics to prevent accumulation.',
+      explanation: 'Quarantine makes flakiness a visible, tracked liability — a quarantined test still shows up on a dashboard as "broken, needs fixing," creating pressure to actually fix it. Auto-retry instead hides the symptom: if a test fails once but passes on retry, the pipeline reports success with no visible trace that anything was flaky, so there is no natural forcing function to ever investigate or fix the underlying non-determinism. Over time, a team relying purely on auto-retry can accumulate a large and growing population of flaky tests that nobody tracks, each one silently adding minutes to CI runtime via retries, until the pipeline is both slow and its "success" signal is quietly less trustworthy than it appears.',
     },
   ];
 

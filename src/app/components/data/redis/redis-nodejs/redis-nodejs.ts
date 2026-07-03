@@ -300,10 +300,10 @@ function cacheMiddleware(redis: Redis, ttlSec: number) {
       explanation: 'Pipeline: sends commands in batch, reducing RTT. Not atomic — other clients can interleave between commands. MULTI/EXEC: groups commands into a transaction that Redis executes atomically. Use pipeline for performance; use MULTI for correctness.',
     },
     {
-      q: 'Why do Pub/Sub subscribers need a dedicated Redis connection?',
-      options: ['For performance isolation', 'A subscribed connection enters subscriber mode and cannot issue regular Redis commands — using a separate connection prevents blocking the main client', 'Redis limits commands per connection in subscriber mode', 'To support pattern subscriptions'],
+      q: 'What connection pooling behavior differs for a dedicated Pub/Sub connection compared to the connections used for regular commands in ioredis/node-redis?',
+      options: ['Pub/Sub connections are automatically load-balanced across a pool just like regular commands', 'A Pub/Sub subscriber connection is a single, long-lived, dedicated connection that is NOT returned to any pool between messages — unlike regular command connections which are typically pooled/reused across many short-lived operations, since the subscriber connection must stay open and in subscribe mode indefinitely to keep receiving messages', 'Pub/Sub connections close automatically after each message is received', 'Pub/Sub connections share the exact same pool slot as regular commands by default'],
       answer: 1,
-      explanation: 'node-redis and ioredis both recommend a separate client for subscriptions because subscribed connections only handle SUBSCRIBE/UNSUBSCRIBE commands. Sharing with the main client would block all regular operations while waiting for messages.',
+      explanation: 'Regular Redis operations (GET, SET, etc.) benefit from connection pooling — the client library can reuse a small number of connections across many short request/response cycles. A Pub/Sub subscription is fundamentally different: it requires one connection to remain open, idle-but-listening, for as long as the subscription is active (potentially hours or days), which is incompatible with the "borrow, use briefly, return" pattern of a connection pool — this is a second reason (beyond blocking regular commands) that Pub/Sub subscribers are architected as standalone dedicated connections outside the normal pool.',
     },
     {
       q: 'What is ioredis auto-reconnect and why does it matter?',

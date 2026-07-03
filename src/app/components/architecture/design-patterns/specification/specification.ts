@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Ardalis.Specification is a popular .NET library with EF Core integration and pagination support.',
     ],
   },
+  {
+    heading: 'Combining Specifications for Composable Business Rules',
+    points: [
+      'The Specification pattern encapsulates a business rule as a reusable, testable object with a single satisfiedBy() (or similar) method — rather than scattering the same conditional logic as inline if-statements across multiple places in the codebase that need to check the same rule.',
+      'Specifications can be combined using logical operators (And, Or, Not) to build complex business rules from simpler, individually-testable pieces — an "IsEligibleForDiscount" specification might combine an "IsLoyalCustomer" specification AND a "HasMinimumOrderValue" specification.',
+      'This composability means new business rule combinations can often be expressed by combining EXISTING specifications, rather than writing new bespoke conditional logic for every new combination of rules a business analyst comes up with.',
+      'The same Specification object can be used both to filter an in-memory collection (checking satisfiedBy() against each item) and to build a database query (translating the specification into a WHERE clause) — a powerful reuse benefit, though implementing the query-translation side adds real complexity beyond the simpler in-memory case.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [
@@ -369,8 +378,8 @@ const qna: QnaItem[] = [
     a: 'Use Specification when: (1) the predicate represents a named business rule (EligibleForDiscountSpec), (2) the same predicate is used in multiple places, (3) the predicate needs to work for both querying and in-memory validation. Use direct LINQ for: one-off queries that are not reused, simple lookups like GetById, and application-level filtering that does not represent a domain concept.',
   },
   {
-    q: 'How do I combine specifications with OR logic?',
-    a: 'Implement an OrSpec composite: return a new specification whose ToExpression() is an Expression.OrElse of the two inner expressions. Use a Parameter Replacer to ensure both expressions use the same ParameterExpression before combining. Ardalis.Specification handles this automatically with its Where() builder. For simple cases, a single lambda with || in ToExpression() is cleaner than building the OR composite manually.',
+    q: 'Why does naively combining two Expression<Func<T,bool>> objects with && or || in C# fail to compile, even though both expressions look like ordinary boolean logic?',
+    a: 'Expression<Func<T,bool>> is a tree of Expression objects, not compiled code — the && and || C# operators are not overloaded to combine two full Expression trees together; they only work on actual boolean VALUES, or on Expression nodes within the SAME expression being built. Combining two independently-defined LINQ expressions requires the ExpressionVisitor pattern to rewrite one expression\'s parameter to match the other\'s (a Parameter Replacer), then wrap both bodies in an Expression.AndAlso or Expression.OrElse node manually — this is precisely the mechanical complexity that libraries like LinqKit\'s PredicateBuilder or Ardalis.Specification exist to hide, since hand-rolling it correctly (including capturing closures properly) is easy to get subtly wrong.',
   },
   { q: 'How do you combine specifications using And, Or, and Not operators?', a: 'Composite specifications use the Composite pattern: AndSpecification takes two specifications and isSatisfiedBy returns left.isSatisfiedBy(x) AND right.isSatisfiedBy(x). OrSpecification: left OR right. NotSpecification: NOT child. For Expression<Func<T,bool>>: use PredicateBuilder or manual expression tree combination. C# Ardalis.Specification: spec.And(otherSpec). Fluent API example: new PremiumSpec().And(new ActiveSpec()).Or(new LoyaltyProgramSpec()). This allows building complex business rules from simple primitive specifications without code duplication. Each primitive specification is independently named, tested, and documented.' },
   { q: 'What is the difference between Specification pattern and raw LINQ Where clauses?', a: 'Raw LINQ: repository.Where(c => c.IsPremium && c.TotalSpend > 1000 && c.IsActive). This duplicates the business rule at every call site. If the definition of a premium customer changes, you must update every Where clause. Specification: PremiumCustomerSpec encapsulates the rule once. repository.FindAll(new PremiumCustomerSpec()) reads like domain language and is reused everywhere. Validation also reuses the spec: validator.Validate(customer, new PremiumCustomerSpec()). Specifications make business rules explicit, named, reusable, and testable. For trivial queries used once, raw LINQ is fine. For recurring business rules, Specification adds significant maintainability value.' },

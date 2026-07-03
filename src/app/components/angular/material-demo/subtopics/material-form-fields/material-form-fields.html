@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular Material"
+    topicRoute="/angular/material"
+    subtopicLabel="Form Fields, Inputs &amp; Validation" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Form Fields, Inputs &amp; Validation</h1>
+  <p class="page-subtitle">
+    MatFormField wraps every Material input with a floating label and automatic error
+    display — mat-error shows itself with zero manual conditional logic.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      An email field with automatic validation display, plus a Material select — both
+      wired to a plain reactive <code>FormGroup</code>.
+    </p>
+    <app-live-playground
+      title="Material form fields"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="materialDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Forms are one slice of Material — the next subtopic covers the everyday building
+      blocks you'll reach for constantly outside forms: buttons, dialogs, snackbars, and cards.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Angular Material"
+    topicRoute="/angular/material"
+    [prev]="{ label: 'Setup & Theming', route: '/angular/material/material-setup-theming' }"
+    [next]="{ label: 'Buttons, Dialogs & Snackbars', route: '/angular/material/material-common-components' }" />
+</div>

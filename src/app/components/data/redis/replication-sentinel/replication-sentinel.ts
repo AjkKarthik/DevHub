@@ -239,10 +239,10 @@ async function getReplicationLag(redis: Redis) {
       explanation: 'Because Redis replication is asynchronous, writes acknowledged by the old master but not yet replicated to the new master can be lost during failover. min-replicas-to-write reduces this risk at the cost of availability.',
     },
     {
-      q: 'What is the minimum number of Sentinels for a reliable Redis Sentinel setup?',
-      options: ['1', '2', '3', '5'],
-      answer: 2,
-      explanation: '3 Sentinels is the minimum for quorum-based failover. With 2, losing one leaves 1 Sentinel which cannot form a quorum. 3 Sentinels means losing 1 still allows 2 to agree. Place Sentinels on separate machines/failure domains.',
+      q: 'Why does an even number of Sentinels (e.g. 4) provide worse split-brain protection than an odd number (e.g. 3 or 5) with the same fault tolerance target?',
+      options: ['Even numbers of Sentinels are not supported by Redis at all', 'A quorum-based majority vote can tie with an even number of voters during a network partition (e.g. 2 vs 2 out of 4), leaving neither side able to reach majority and trigger failover, whereas an odd number always produces a clear majority on one side of any partition', 'Even-numbered Sentinel counts cause a configuration parsing error', 'Sentinels with even IDs are ignored during quorum calculation'],
+      answer: 1,
+      explanation: 'With an odd count, a network partition splitting Sentinels into two groups always produces one group with a strict majority and one without — the majority side can reach quorum and act, the minority side cannot, avoiding any ambiguity. With an even count, a partition can split evenly (2-2 out of 4, 3-3 out of 6), leaving BOTH sides unable to reach a strict majority — neither can safely trigger failover, which can leave the cluster stuck with no decision-maker during exactly the kind of network event failover is meant to handle. This is why odd counts (3, 5, 7) are always recommended over even counts, even when the even count technically has more total Sentinels.',
     },
     {
       q: 'What does REPLICAOF command do?',

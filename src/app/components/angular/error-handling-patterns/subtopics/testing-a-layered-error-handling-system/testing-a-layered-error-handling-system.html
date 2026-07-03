@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Error Handling Patterns"
+    topicRoute="/angular/error-handling-patterns"
+    subtopicLabel="Testing a Layered Error Handling System" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing a Layered Error Handling System</h1>
+  <p class="page-subtitle">
+    Each of the three error layers gets its own isolated test — testing them together
+    makes it impossible to tell which layer actually broke.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>GlobalErrorHandler</code> tested with a plain mock logger, and
+      <code>ProductListComponent</code> tested through a full error → retry → success
+      cycle using <code>HttpTestingController</code>.
+    </p>
+    <app-live-playground
+      title="Testing a layered error handling system"
+      template="angular-cli"
+      openFile="src/app/product-list.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the layered system now testable, the next subtopic builds a genuinely resilient
+      retry strategy — exponential backoff with a give-up state.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling Patterns"
+    topicRoute="/angular/error-handling-patterns"
+    [next]="{ label: 'Retry with Exponential Backoff and a Give-Up State', route: '/angular/error-handling-patterns/retry-with-exponential-backoff-and-give-up' }" />
+</div>

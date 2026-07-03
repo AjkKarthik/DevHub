@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Outbox pattern: commands serialised to DB, consumed asynchronously — Command + queuing.',
     ],
   },
+  {
+    heading: 'Command Pattern Enabling Undo/Redo and Queuing',
+    points: [
+      'Encapsulating a request as an object (rather than a direct method call) makes the request itself a first-class value that can be stored, logged, passed around, and executed later — this is what enables features like undo/redo, since each executed command can be retained and its inverse operation invoked.',
+      'Implementing undo requires each Command to know how to reverse its own effect (an undo() method alongside execute()) — this is a real design constraint, since not every operation has a natural, cleanly reversible inverse (like sending an email), limiting where undo can genuinely be supported.',
+      'Command objects can be queued and executed later (or on a different thread), which is the foundation of task queues and job scheduling systems — the request\'s execution is decoupled in TIME from when it was originally issued, not just decoupled from the specific object that issues it.',
+      'Macro commands (a composite of multiple individual commands executed as one unit) let complex multi-step operations be treated and undone as a single atomic action, combining Command with Composite for operations that logically belong together.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

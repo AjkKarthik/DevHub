@@ -293,15 +293,15 @@ function parseServiceStatus(output: string): ServiceHealth {
       explanation: 'Restart=on-failure restarts the service if the main process exits with non-zero status or is killed by a signal (not SIGTERM). Intentional stops via systemctl stop are not restarted.',
     },
     {
-      q: 'What is the difference between systemctl start and systemctl enable?',
+      q: 'A service was enabled (systemctl enable myapp) but never started (no systemctl start). The server reboots. Does myapp end up running after the reboot?',
       options: [
-        'start makes the service boot on startup; enable starts it immediately',
-        'start runs the service now (single session); enable configures it to start automatically at boot',
-        'start applies to socket units; enable applies to service units',
-        'They are aliases for the same action',
+        'No — enable without ever having started the service does nothing at boot either',
+        'Yes — enable creates the boot-time symlink regardless of whether the service was ever manually started; the symlink is what systemd\'s boot sequence follows, independent of the service\'s current runtime state',
+        'Only if the service was started at least once before the reboot',
+        'It depends on whether the unit file has a WantedBy directive, unrelated to enable',
       ],
       answer: 1,
-      explanation: 'systemctl start runs the service immediately in the current session. systemctl enable creates symlinks so it starts at boot. Use both together: systemctl enable --now servicename. disable removes the boot symlinks.',
+      explanation: 'enable and start are entirely independent, orthogonal actions on two different things: start affects the service\'s CURRENT running state; enable affects whether a symlink exists in a target\'s .wants/ directory that systemd\'s boot sequence checks. Because enable just creates that symlink (pointing at the unit file) without touching the service\'s running state at all, a service that is enabled-but-never-started will still be started automatically on the NEXT boot — the symlink is checked fresh at every boot regardless of what happened during the current session. This is a subtle but common source of confusion: "enabled" describes boot-time intent, not current status, which is why `systemctl status` shows both "enabled" (config) and "active/inactive" (runtime) as separate, independent fields.',
     },
     {
       q: 'When must you run systemctl daemon-reload?',

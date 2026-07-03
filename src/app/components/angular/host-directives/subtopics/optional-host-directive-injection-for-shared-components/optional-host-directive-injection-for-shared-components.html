@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Host Directives"
+    topicRoute="/angular/host-directives"
+    subtopicLabel="Optional Host Directive Injection for Shared Components" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Optional Host Directive Injection for Shared Components</h1>
+  <p class="page-subtitle">
+    A reusable directive cannot know in advance what else is composed on its host —
+    inject(Dir, {{ '{' }} optional: true {{ '}' }}) lets it adapt instead of crashing.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 15+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>AnalyticsTrackerDirective</code> works on a plain button (click-only) and on a
+      draggable element (click + drag distance) — the same directive class, adapting via
+      optional injection.
+    </p>
+    <app-live-playground
+      title="Optional host directive injection for shared components"
+      template="angular-cli"
+      openFile="src/app/analytics-tracker.directive.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing, cross-directive coordination, and optional injection all covered, head
+      back to the topic overview to see how hostDirectives compares to inheritance overall.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Host Directives"
+    topicRoute="/angular/host-directives"
+    [prev]="{ label: 'Coordinating Multiple Stacked Host Directives', route: '/angular/host-directives/coordinating-multiple-stacked-host-directives' }" />
+</div>

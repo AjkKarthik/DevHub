@@ -305,8 +305,8 @@ print(model.score(X_test, y_test))    # held-out test accuracy`,
 
   qna: QnaItem[] = [
     {
-      q: 'When should I use cross-validation instead of a simple train/val/test split?',
-      a: 'Use k-fold cross-validation when you have limited data. It trains k models on different fold rotations and averages performance — giving a lower-variance estimate of generalisation error. With large datasets (100k+ rows), a simple 80/10/10 split is usually sufficient and much faster.',
+      q: 'What is nested cross-validation, and when do you need it instead of plain K-fold CV?',
+      a: 'Plain K-fold CV alone becomes biased if you also use it to select hyperparameters (e.g. via GridSearchCV) and then report that same CV score as your final performance estimate — the score is inflated because the hyperparameters were chosen specifically to do well on those folds. Nested cross-validation fixes this with two loops: an outer loop that holds out a test fold for honest final evaluation, and an inner loop (run only on the remaining data) that performs hyperparameter search — so the reported outer-loop score never touches data the hyperparameter selection process saw. Use nested CV whenever you both tune hyperparameters AND need an unbiased estimate of real-world performance; skip it (plain CV is fine) if you already have a fixed, untuned model.',
     },
     {
       q: 'What is the difference between a parameter and a hyperparameter?',

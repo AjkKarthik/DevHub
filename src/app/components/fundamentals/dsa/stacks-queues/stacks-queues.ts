@@ -259,8 +259,8 @@ while (stack.length && nums[stack.at(-1)!] < current) {
 
   qna: QnaItem[] = [
     {
-      q: 'How do you implement a queue using two stacks?',
-      a: 'Use two stacks: inbox and outbox. Push to inbox. On dequeue, if outbox is empty, pop all from inbox to outbox (reversing order), then pop from outbox. Amortised O(1) per operation — each element moves at most twice.',
+      q: 'In the two-stack queue implementation, is a SINGLE dequeue call ever O(n) instead of O(1)?',
+      a: 'Yes — when outbox is empty and a dequeue triggers pouring the entire inbox into outbox, that individual call costs O(n). This does not contradict the "O(1) amortized" claim: amortized analysis is about the AVERAGE cost across a sequence of operations, not the cost of any single call. Since each element is poured from inbox to outbox at most once across its entire lifetime in the queue, the total pouring work across n operations is bounded by O(n), which averages out to O(1) per operation even though some individual calls are visibly more expensive than others.',
     },
     {
       q: 'What is the difference between a stack and a deque?',

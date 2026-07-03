@@ -788,10 +788,9 @@ func main() {
       explanation: 'A large interface requires mocks to implement every method even if the function under test uses only one. Small interfaces can be satisfied by many types (accidentally or intentionally), making code more composable. io.Reader (1 method) can be satisfied by files, buffers, HTTP bodies, and any custom type — a large interface would exclude most of them.'
     },
     {
-      q: 'What is the functional options pattern in Go and what problem does it solve?',
-      options: ['A way to implement functional programming', 'A way to provide optional constructor parameters without breaking backward compatibility — using variadic ...Option functions that modify a config struct', 'A pattern for pure functions only', 'Replaces dependency injection'],
-      answer: 1,
-      explanation: 'Functional options solve the "how do you add optional config to a New() function without breaking callers?" problem. Define a type Option func(*Config), provide WithX() functions that return Options, and accept ...Option in New(). Callers use only the options they care about. Adding a new option is backward-compatible. This pattern is used by gRPC, zap, and many standard Go libraries.'
+      q: 'An Option func(*Config) needs to return an error if the caller passes an invalid value (e.g. WithTimeout(-1)). What is the standard way to make functional options fallible without breaking the ...Option variadic signature?',
+      options: ['Options can never return errors — validation must happen entirely inside New() after applying all options', 'Change the Option type to `func(*Config) error`, have New() collect and return the first error from applying each option, and have WithX() functions validate their own input before returning', 'Panic inside the option function when validation fails', 'Use a separate Validate() method called manually by every caller after constructing options'], answer: 1,
+      explanation: 'The pattern extends cleanly to fallible options: change the type from `type Option func(*Config)` to `type Option func(*Config) error`, and New() applies each option in sequence, returning immediately (or accumulating) if any option returns a non-nil error. WithTimeout(d) then validates d internally and returns an error-returning closure — e.g. `func WithTimeout(d time.Duration) Option { return func(c *Config) error { if d <= 0 { return errors.New("timeout must be positive") }; c.Timeout = d; return nil } }`. This keeps validation colocated with each option instead of a monolithic post-hoc check in New(), and preserves the same call-site ergonomics (`New(WithTimeout(5*time.Second))`).'
     },
   ];
 

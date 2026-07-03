@@ -293,15 +293,15 @@ console.log(parseEnvFile(env));
       explanation: 'source ~/.bashrc (or . ~/.bashrc) runs the file in the current shell, applying changes immediately. exec bash replaces the current shell with a new one (also works but loses session state).',
     },
     {
-      q: 'What is the difference between VAR=value and export VAR=value?',
+      q: 'A script sets `export DB_HOST=prod-db`, then later in the SAME script runs `DB_HOST=staging-db some_command`, prefixing the command with a plain (non-exported) assignment. What value of DB_HOST does some_command actually see?',
       options: [
-        'No difference; both set variables in the current and child processes',
-        'VAR=value sets a shell variable visible only in the current shell; export makes it available to child processes',
-        'export is only for system-wide variables in /etc/environment',
-        'VAR=value is read-only; export allows modification',
+        'prod-db, because the earlier export permanently locks the value for the rest of the script',
+        'staging-db — a variable assignment placed immediately before a command (VAR=value command) applies only to that single command\'s environment, temporarily overriding any exported value for just that invocation, without changing the shell\'s own exported value afterward',
+        'An error, since you cannot reassign an already-exported variable',
+        'Both values simultaneously, causing undefined behavior',
       ],
       answer: 1,
-      explanation: 'Without export, a variable is a shell-local variable not inherited by child processes. export marks it for export to the environment of child processes spawned from the current shell.',
+      explanation: 'A prefix assignment (VAR=value command) is a distinct, narrower mechanism from both plain assignment and export — it sets the variable ONLY in the environment of that one command being launched, overriding whatever the shell\'s own copy of the variable currently is (exported or not), and the shell\'s own DB_HOST reverts to prod-db immediately after that command finishes. This is commonly used to override a config value for a single invocation without permanently changing the shell session — e.g. `DEBUG=1 ./run-tests.sh` runs with DEBUG set for that script only, leaving the parent shell\'s environment untouched.',
     },
     {
       q: 'Which file is the correct place to set environment variables for interactive login shells?',

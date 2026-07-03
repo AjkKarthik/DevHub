@@ -472,12 +472,12 @@ city = signal(CITIES[this.country()][0]);`,
       a: 'It solves the "dependent dropdown reset" problem. Without it, you need an <code>effect()</code> to watch the parent signal and call <code>.set()</code> on the child — that\'s an anti-pattern that Angular 19+ warns about because it can cause feedback loops. <code>linkedSignal()</code> makes the reset declarative: the signal auto-resets when its source changes, without any side-effect code.',
     },
     {
-      q: 'What is the difference between linkedSignal and computed?',
-      a: '<code>computed()</code> is strictly read-only — you cannot call <code>.set()</code> or <code>.update()</code> on it. <code>linkedSignal()</code> is writable — the user can change it manually, but it resets to the computed default whenever its source changes. Choose <code>computed()</code> for pure derivations; choose <code>linkedSignal()</code> when the value should also accept user overrides.',
+      q: 'A linkedSignal() is manually set by the user to override its computed default. Before the source changes again, an effect() reads that linkedSignal. Does the effect see the user\'s manual override, or does it see the original computed value?',
+      a: 'The effect sees the user\'s manual override — a linkedSignal() behaves like a regular WritableSignal from any consumer\'s perspective once .set() or .update() has been called on it; there is no special "the computed default is still the real value underneath" behavior. Any effect(), computed(), or template binding reading the linkedSignal gets whatever its CURRENT value is, whether that came from the initial computation or from a manual write — the distinction between "computed default" and "user override" only matters for determining WHEN the value resets (on source change), not for what value consumers see at any given moment in between resets.',
     },
     {
-      q: 'When does linkedSignal reset to the computed value?',
-      a: 'Only when the <strong>source</strong> signal changes. Manual calls to <code>.set()</code> or <code>.update()</code> on the linkedSignal do NOT reset it — those changes are preserved until the next source change. This is the key contract: the reset happens on source changes, not on user writes.',
+      q: 'A linkedSignal\'s source reads TWO signals: `source: () => ({ a: sigA(), b: sigB() })`. Only sigA changes; sigB stays the same. Does the linkedSignal reset?',
+      a: 'Yes — the source function itself is treated as a computed-like reactive expression, so ANY change to ANY signal read within it (sigA or sigB) causes the source to re-evaluate and produce a new object, and linkedSignal treats that new source value as a reset trigger regardless of which specific field inside the object actually changed. This matters because the source returns a brand-new object reference on every re-evaluation (even if b\'s value is literally unchanged), so the reset fires based on "did the source function re-run," not "did the specific field the linkedSignal cares about actually change value" — a subtlety worth knowing if you expected partial-field changes to leave the linkedSignal untouched.',
     },
     {
       q: 'What is the long form of linkedSignal?',

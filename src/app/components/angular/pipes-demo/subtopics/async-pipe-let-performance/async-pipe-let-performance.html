@@ -1,0 +1,52 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Pipes"
+    topicRoute="/angular/pipes"
+    subtopicLabel="AsyncPipe, @let &amp; Performance" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">AsyncPipe, &#64;let &amp; Performance</h1>
+  <p class="page-subtitle">
+    Every | async in a template is its own subscription — &#64;let resolves it once and
+    reuses the value, and computed() usually beats an impure pipe for derived state.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 18" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Two subscriptions to the same source side by side with one <code>&#64;let</code>-based
+      single subscription — check the console to see the difference in emission counts.
+    </p>
+    <app-live-playground
+      title="AsyncPipe, @let, and performance"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Pipes</h2>
+    <p>
+      You now know the shared digit-info argument syntax across every formatting pipe,
+      locale registration, <code>SlicePipe</code>/<code>JsonPipe</code> specifics (and why
+      <code>JsonPipe</code> must never ship to production), the multiple-subscription trap
+      that <code>&#64;let</code> solves, and when <code>computed()</code> beats an impure
+      pipe for derived state. Combined with the pipe basics and custom
+      <code>PipeTransform</code> pattern from the Template Syntax topic, that's the complete
+      pipes toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pipes"
+    topicRoute="/angular/pipes"
+    [prev]="{ label: 'Collection & String Pipes', route: '/angular/pipes/collection-string-pipes' }" />
+</div>

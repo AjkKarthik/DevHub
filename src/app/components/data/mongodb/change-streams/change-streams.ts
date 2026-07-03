@@ -506,8 +506,8 @@ startStockMonitor().catch(console.error);`,
       a: 'Change streams provide <strong>at-least-once delivery</strong>, not exactly-once. The driver retries on transient errors — if you process an event but crash before saving the resume token, the event will be reprocessed on restart. Design your event handlers to be idempotent (safe to process the same event multiple times). Common patterns: use upsert + document versioning, check if the action was already taken before acting, or use a separate "processed events" tracking collection.',
     },
     {
-      q: 'What is fullDocumentBeforeChange and when should I use it?',
-      a: '<code>fullDocumentBeforeChange</code> (MongoDB 6.0+) captures the document\'s state <em>before</em> the change was applied. Enable it on a collection: <code>collMod: "orders", changeStreamPreAndPostImages: { enabled: true }</code>. Then open the stream with <code>{ fullDocumentBeforeChange: "required" }</code>. Use cases: audit trails ("what was the previous value?"), undo systems, debounce comparisons (was the status actually different?). There is a storage overhead — pre-images are stored temporarily in the config.system.preimages collection.',
+      q: 'How long are pre-images retained in config.system.preimages, and what happens to fullDocumentBeforeChange if you request it after that window passes?',
+      a: 'Pre-images have a configurable expiry (expireAfterSeconds on the pre-images collection, default tied to the oplog window if unset) — once a pre-image expires and is removed, a change stream event for that operation will report fullDocumentBeforeChange as null even though the operation itself is still available in the change stream, since the underlying pre-image data has already been cleaned up. This means fullDocumentBeforeChange is only reliable for near-real-time consumers processing events shortly after they occur — it is not a substitute for a genuine long-term audit log if you need to reconstruct "before" state for events processed much later.',
     },
     {
       q: 'How do I use change streams in a NestJS or Express application?',

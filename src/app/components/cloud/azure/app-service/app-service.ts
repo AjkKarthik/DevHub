@@ -334,8 +334,8 @@ console.log(checkHealth(results));
       a: 'Autoscale operates on the App Service Plan — it adds or removes VM instances based on metric thresholds (CPU %, memory, HTTP queue length) or a schedule. Scale-out adds an instance; scale-in removes one. The Standard tier supports up to 10 instances; Premium up to 30. Autoscale has a cool-down period (default 5 minutes) between actions to avoid oscillation. All apps sharing the plan scale together — there is no per-app instance count.'
     },
     {
-      q: 'What is the purpose of App Service Deployment Slots?',
-      a: 'Deployment slots are live environments (staging, QA) within the same App Service. You deploy to a slot, warm it up, then <strong>swap</strong> it into production with zero downtime. Azure swaps the routing instantly; if issues arise, swap back. Slot settings can be marked as slot-specific (not swapped) or shared.',
+      q: 'What happens to autoscale settings and custom domains when you swap a staging slot into production?',
+      a: 'Autoscale settings, custom domain names, and SSL bindings are tied to the SLOT itself (production vs staging), not swapped along with the app content — after a swap, production keeps its own custom domain and autoscale rules while now running the code that was previously in staging. This is a common surprise: teams sometimes expect a swap to bring staging\'s configuration into production too, but a swap only exchanges the app content and slot-specific app settings that are explicitly marked as non-sticky, not infrastructure-level configuration like domains and scaling rules.',
     },
   ];
 

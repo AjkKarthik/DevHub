@@ -1,0 +1,52 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Content Projection"
+    topicRoute="/angular/content-projection"
+    subtopicLabel="Recursive Templates with NgTemplateOutlet" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Recursive Templates with NgTemplateOutlet</h1>
+  <p class="page-subtitle">
+    Rendering arbitrarily deep tree structures — nested comments, file trees, org charts —
+    with a single ng-template that references itself via NgTemplateOutlet.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A file tree of arbitrary depth rendered by one recursive
+      <code>&lt;ng-template&gt;</code> — no separate recursive component needed.
+    </p>
+    <app-live-playground
+      title="Recursive templates with NgTemplateOutlet"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Content Projection</h2>
+    <p>
+      You now know how to project content into components created OUTSIDE any template
+      (<code>projectableNodes</code>), how to build compound-component APIs like Tabs where
+      a parent orchestrates projected children via <code>contentChildren()</code>, and how to
+      render arbitrarily deep tree structures with a single self-referencing
+      <code>&lt;ng-template&gt;</code>. Combined with slots, <code>select</code>,
+      <code>ngProjectAs</code>, and the content-query lifecycle from the main topic, that's
+      the complete content projection toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Content Projection"
+    topicRoute="/angular/content-projection"
+    [prev]="{ label: 'Compound Components with Content Queries', route: '/angular/content-projection/compound-components-content-queries' }" />
+</div>

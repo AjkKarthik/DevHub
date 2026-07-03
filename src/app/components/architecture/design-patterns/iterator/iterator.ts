@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'External iterators are more flexible; internal iterators are more concise for simple traversals.',
     ],
   },
+  {
+    heading: 'Iterator Decoupling Traversal From Collection Implementation',
+    points: [
+      'Iterator provides a uniform way to traverse different collection types (an array, a linked list, a tree) through the same interface, without client code needing to know or depend on the specific underlying data structure being traversed.',
+      'This decoupling means a collection\'s internal implementation can change (switching from an array-backed to a linked-list-backed structure) without breaking any client code that iterates over it, since client code depends only on the Iterator interface, never on the collection\'s internal representation.',
+      'Most modern languages have built-in iterator protocols (for...of in JavaScript, IEnumerable in C#, Iterable in Java) baked directly into the language — the Iterator pattern is so fundamental that it has largely become invisible infrastructure rather than something developers explicitly implement by hand in everyday code.',
+      'External iterators (where the client explicitly calls next()) give the client fine-grained control over traversal pacing, while internal iterators (like forEach, where the collection itself drives traversal and calls back into client code) are simpler to use but offer less control — both variants solve the same core decoupling problem differently.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

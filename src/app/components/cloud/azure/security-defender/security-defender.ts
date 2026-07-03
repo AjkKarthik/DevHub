@@ -364,15 +364,15 @@ export function calculateSecureScore(controls: SecurityControl[]) {
       explanation: 'Defender for Cloud generates alerts per resource, but each alert is seen in isolation. Microsoft Sentinel is a SIEM/SOAR that correlates signals from multiple sources: Defender alerts, Entra ID sign-in logs, NSG flow logs, Azure Activity logs, and endpoint telemetry (Defender for Endpoint). This correlation exposes the full attack chain: e.g., a suspicious process on VM X → correlates with an Entra ID sign-in from an anomalous IP → plus NSG logs showing lateral movement — a full incident Sentinel can automatically raise and trigger a response playbook for.'
     },
     {
-      q: 'What does the Defender for Cloud secure score represent?',
+      q: 'Why can two subscriptions with the exact same number of unresolved recommendations end up with different Secure Scores?',
       options: [
-        'The number of active security alerts across all subscriptions',
-        'A percentage score measuring how closely your resources follow security best practice recommendations',
-        'The total cost of Defender plans enabled across your environment',
-        'A compliance score based on regulatory standards only',
+        'Secure Score is randomized to prevent gaming the metric',
+        'Each security control (and each recommendation within it) is weighted differently based on its security impact, so resolving a handful of high-weight recommendations raises the score more than resolving many low-weight ones — raw recommendation count alone does not determine the score',
+        'Secure Score only counts recommendations from paid Defender plans, so free-tier subscriptions always score lower',
+        'The score is purely a function of subscription age, not actual security posture',
       ],
       answer: 1,
-      explanation: 'The secure score aggregates security findings into a percentage the higher the score, the fewer recommendations remain unresolved. Remediating recommendations increases the score and improves your security posture.',
+      explanation: 'Secure Score is not "unresolved recommendations count / total recommendations" — each control (e.g. "Enable MFA," "Remediate vulnerabilities") carries its own weighting based on its actual security impact, and points within a control are further split across the individual resources affected. Two environments with the same NUMBER of open recommendations can have meaningfully different scores if one environment\'s open items are concentrated in high-weight controls (like exposed management ports) versus low-weight ones (like resource tagging hygiene) — this is intentional, so the score reflects genuine risk reduction priority, not just a raw completion percentage.',
     },
   ];
 
@@ -398,8 +398,8 @@ export function calculateSecureScore(controls: SecurityControl[]) {
       a: '<strong>Multi-cloud connectors</strong> bring non-Azure clouds into Defender for Cloud\'s single pane. (1) <strong>AWS connector</strong>: uses a cross-account IAM role (no credentials stored in Azure — role trust relationship only) to read AWS resource inventory via AWS Security Hub, GuardDuty, and Config. Discovers: EC2, S3, RDS, EKS, Lambda. Applies Defender CSPM recommendations (e.g., "S3 bucket should not allow public access") and can run Defender for Servers on EC2 via Arc. (2) <strong>GCP connector</strong>: reads GCP projects via Workload Identity Federation. Discovers: Compute Engine, GKE, Cloud SQL, Cloud Storage. (3) <strong>Azure Arc</strong>: onboard on-premises servers as Azure resources. Once Arc-enabled, Defender for Servers protects them exactly like Azure VMs — same Secure Score, JIT access, FIM, and threat detection. Multi-cloud data appears in a unified inventory and Secure Score per cloud.'
     },
     {
-      q: 'What is the difference between Defender for Cloud and Microsoft Sentinel?',
-      a: '<strong>Defender for Cloud</strong> is a CSPM (Cloud Security Posture Management) + CWPP (Cloud Workload Protection) tool focused on Azure resource security posture, compliance, and threat detection for workloads. <strong>Microsoft Sentinel</strong> is a SIEM/SOAR for collecting security events across your entire estate (cloud + on-premises) for investigation, hunting, and automated response.',
+      q: 'If an organization only enables Defender for Cloud and never connects Sentinel, what visibility gap remains?',
+      a: 'Defender for Cloud alone only sees signals from Azure (and connected multi-cloud) resources — it cannot correlate those signals with events from on-premises systems, Microsoft 365, third-party SIEM feeds, or SaaS applications outside its connectors. A multi-stage attack that starts with a phishing email in Microsoft 365 and pivots into Azure would show fragments in Defender for Cloud, but only Sentinel\'s cross-estate correlation can connect those fragments into one recognizable attack chain and trigger an automated SOAR response.',
     },
   ];
 

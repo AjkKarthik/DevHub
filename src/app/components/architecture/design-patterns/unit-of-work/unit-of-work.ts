@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Nested UoW (UoW inside UoW) is usually a design smell — one UoW per business operation.',
     ],
   },
+  {
+    heading: 'Unit of Work Coordinating Multiple Repository Changes Atomically',
+    points: [
+      'Unit of Work tracks all changes (new, modified, deleted objects) made during a single business transaction across potentially multiple Repositories, and commits them all together as one atomic database transaction — without it, each Repository operation might commit independently, risking a partially-applied set of changes if one operation fails partway through.',
+      'This pattern is what allows a business operation touching multiple aggregates (updating an Order and creating a related Invoice) to succeed or fail as a single unit, rather than risking one change committing while a related change fails, leaving the database in an inconsistent state.',
+      'Many ORMs (Entity Framework\'s DbContext, for example) implement Unit of Work internally — changes tracked across multiple repository-like operations are only actually persisted when SaveChanges() is called, meaning developers using such an ORM are often using Unit of Work implicitly without hand-rolling it themselves.',
+      'Unit of Work and Repository are complementary but distinct patterns — Repository abstracts HOW individual objects are persisted, while Unit of Work coordinates WHEN a batch of changes across potentially multiple repositories is actually committed together as one transaction.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

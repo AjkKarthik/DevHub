@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="linkedSignal()"
+    topicRoute="/angular/linked-signal"
+    subtopicLabel="Debugging Unexpected linkedSignal Resets" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Debugging Unexpected linkedSignal Resets</h1>
+  <p class="page-subtitle">
+    Two opposite symptoms — resets too often vs not enough — and the console-logging
+    technique that tells you which one you're looking at.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 19+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Instrumented <code>source</code>, <code>computation</code>, and a read-only
+      <code>effect()</code> trace show exactly when each part runs — click "Change B" and
+      watch <code>[source]</code> fire while <code>[computation]</code> stays quiet.
+    </p>
+    <app-live-playground
+      title="Debugging unexpected linkedSignal resets"
+      template="angular-cli"
+      openFile="src/app/debug-demo.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing, async integration, and debugging all covered, head back to the topic
+      overview to see how linkedSignal compares against computed() and signal() overall.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="linkedSignal()"
+    topicRoute="/angular/linked-signal"
+    [prev]="{ label: 'linkedSignal with resource() for Editable Drafts', route: '/angular/linked-signal/linkedsignal-with-resource-for-editable-drafts' }" />
+</div>

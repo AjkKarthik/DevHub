@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="&#64;let Template Variables"
+    topicRoute="/angular/let-template-vars"
+    subtopicLabel="Profiling &#64;let Recompute Cost" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Profiling &#64;let Recompute Cost</h1>
+  <p class="page-subtitle">
+    Proving — with a counter you can watch climb — that &#64;let really does recompute on
+    every change detection cycle, while computed() does not.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 18+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Click "Trigger unrelated change detection" repeatedly — watch the
+      <code>&#64;let</code> recompute counter climb every click, while the
+      <code>computed()</code> counter stays flat.
+    </p>
+    <app-live-playground
+      title="Profiling @let recompute cost"
+      template="angular-cli"
+      openFile="src/app/profiling-demo.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With performance proven empirically, the final subtopic covers &#64;let's scoping
+      rules in the more complex context of ng-template and structural directives.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="&#64;let Template Variables"
+    topicRoute="/angular/let-template-vars"
+    [prev]="{ label: 'Testing @let-Driven Templates', route: '/angular/let-template-vars/testing-let-driven-templates' }"
+    [next]="{ label: '@let Inside ng-template and Structural Directives', route: '/angular/let-template-vars/let-inside-ng-template-scope-closure' }" />
+</div>

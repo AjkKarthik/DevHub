@@ -308,15 +308,15 @@ console.log(renderTemplate(tmpl, ctx));
       explanation: 'set -e exits on error, -u errors on unset variable references, -o pipefail makes the pipeline fail if any command fails not just the last one. Combined they enforce strict error handling.',
     },
     {
-      q: 'What is process substitution in bash?',
+      q: 'What does >(cmd) — output process substitution, as opposed to input process substitution <(cmd) — let you do that a regular pipe cannot?',
       options: [
-        'Running a process as a background job',
-        'Substituting a command output as a named file descriptor using <(cmd) or >(cmd)',
-        'Replacing a process with another using exec',
-        'Substituting environment variables into a command',
+        'Nothing different — >(cmd) and | cmd are exactly equivalent',
+        'It lets you write to MULTIPLE command "sinks" simultaneously via one write, e.g. `command | tee >(gzip > out.gz) >(wc -l > count.txt)` fans one output stream into several independent downstream commands, each reading from its own FIFO',
+        '>(cmd) only works with commands that never produce output',
+        'It converts a command\'s output into an environment variable automatically',
       ],
       answer: 1,
-      explanation: 'Process substitution <(cmd) runs cmd and presents its output as a file, allowing it to be used where a filename is expected. Example: diff <(sort file1) <(sort file2).',
+      explanation: '>(cmd) creates a FIFO that cmd reads from, and the FIFO\'s path is substituted where you\'d normally put a filename to WRITE to. Combined with tee, this lets a single stream of output fan out to multiple independent commands at once (e.g. compress a copy, count lines in another copy, and grep a third copy — all from one pass over the data) — something a linear pipe chain (cmd1 | cmd2 | cmd3) cannot do, since a pipe only has one downstream reader.',
     },
   ];
 

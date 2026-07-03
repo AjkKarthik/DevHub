@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HTTP Client"
+    topicRoute="/angular/http"
+    subtopicLabel="HttpClient Setup" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">HttpClient Setup — provideHttpClient() and Cold Observables</h1>
+  <p class="page-subtitle">
+    One provider call unlocks HttpClient everywhere via inject() — and every method it
+    exposes returns a cold Observable that does nothing until something subscribes.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Angular 15" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A paginated GET request using a typed generic and <code>HttpParams</code> for the
+      query string — hits a real public test API.
+    </p>
+    <app-live-playground
+      title="HttpClient setup"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With HttpClient wired up, the next subtopic covers the two modern ways to turn a GET
+      request into something your template can read directly — <code>toSignal()</code> and
+      <code>httpResource()</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTTP Client"
+    topicRoute="/angular/http"
+    [next]="{ label: 'GET Requests — toSignal() and httpResource()', route: '/angular/http/get-requests' }" />
+</div>

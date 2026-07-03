@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Custom Directives"
+    topicRoute="/angular/directives"
+    subtopicLabel="Directive Composition API" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Directive Composition API (hostDirectives)</h1>
+  <p class="page-subtitle">
+    Bundle ripple, tooltip, and focus behavior onto one component with zero forwarding
+    boilerplate — consumers see one clean selector, not three directives to remember.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 15" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>FancyButton</code> that bundles a ripple effect (fully hidden) and a tooltip
+      directive (re-exposed as a clean <code>tooltip</code> input).
+    </p>
+    <app-live-playground
+      title="Directive Composition API"
+      template="angular-cli"
+      openFile="src/app/fancy-button.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Custom Directives</h2>
+    <p>
+      You now know how to modify an existing element with an attribute directive
+      (<code>ElementRef</code> + <code>Renderer2</code>), control DOM presence with a custom
+      structural directive (<code>TemplateRef</code> + <code>ViewContainerRef</code>), and
+      bundle multiple directives onto one host with zero consumer-side boilerplate via
+      <code>hostDirectives</code>. Combined with <code>&#64;if</code>/<code>&#64;for</code> from
+      the Signals topic, that's the complete template-extension toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Custom Directives"
+    topicRoute="/angular/directives"
+    [prev]="{ label: 'Custom Structural Directives', route: '/angular/directives/custom-structural-directives' }" />
+</div>

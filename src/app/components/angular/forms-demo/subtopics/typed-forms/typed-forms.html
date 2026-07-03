@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template-Driven vs Reactive Forms"
+    topicRoute="/angular/forms"
+    subtopicLabel="Typed Forms" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Typed Forms — Catching Field Typos at Compile Time</h1>
+  <p class="page-subtitle">
+    Since Angular 14, form.controls.emal isn't a silent runtime undefined anymore —
+    it's a TypeScript error, on by default, with almost no generics to write by hand.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 14" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A two-field typed form — try renaming <code>form.controls.name</code> to
+      <code>form.controls.nam</code> in the StackBlitz editor and watch TypeScript flag it.
+    </p>
+    <app-live-playground
+      title="Typed forms"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Template-Driven vs Reactive Forms</h2>
+    <p>
+      You now know when to reach for <code>ngModel</code> versus <code>FormBuilder</code>,
+      how <code>FormControl</code>/<code>FormGroup</code>/<code>FormArray</code> combine into
+      any shape of form, how to validate relationships BETWEEN fields, and how TypeScript
+      catches field-name mistakes before they ever reach runtime. Combined with the previous
+      topic's <code>inject()</code>, guards, signal-based services, and custom/async
+      validators, that's the complete modern Angular forms toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template-Driven vs Reactive Forms"
+    topicRoute="/angular/forms"
+    [prev]="{ label: 'Cross-Field Validators', route: '/angular/forms/cross-field-validators' }" />
+</div>

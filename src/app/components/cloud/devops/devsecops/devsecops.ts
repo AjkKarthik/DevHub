@@ -586,14 +586,9 @@ console.log(scoreVulnerabilities(vulns));
       explanation: 'The SolarWinds, Log4Shell (Log4j), and xz-utils attacks are famous supply chain examples. By compromising a widely-used library, tool, or build pipeline, attackers can inject malicious code into thousands of downstream applications without touching any of them directly. Defences: pin dependency versions, verify checksums/SBOMs, sign images, use private registries with scanning, monitor for unexpected dependency changes.',
     },
     {
-      q: 'What is the difference between SAST and DAST in DevSecOps?',
-      options: [
-        'SAST scans running applications; DAST scans source code',
-        'SAST (Static) analyses source code without running it; DAST (Dynamic) tests a running application by sending requests and analysing responses',
-        'SAST is manual; DAST is automated',
-        'They are identical — both scan for the same vulnerability types'],
-      answer: 1,
-      explanation: 'SAST (Static Application Security Testing) analyses source code, bytecode, or binary at rest — finds injection flaws, hardcoded secrets, insecure patterns. Runs in pre-commit or CI without deploying. DAST (Dynamic Application Security Testing) sends HTTP requests to a running app and analyses responses — finds SQL injection, XSS, broken auth, configuration issues. Needs a deployed environment. Use both: SAST for early feedback, DAST for runtime vulnerabilities SAST misses.',
+      q: 'A codebase passes SAST cleanly (no flagged patterns) but a DAST scan against the deployed staging environment finds a broken authentication vulnerability. Why can SAST miss a bug that DAST catches, given SAST examines the actual source code?',
+      options: ['SAST tools are simply less accurate than DAST tools in general', 'Broken authentication is often a logic/configuration flaw across multiple components interacting at runtime (e.g. a misconfigured session timeout, an auth middleware applied to the wrong route group) — SAST reasons about code patterns within files, not the emergent runtime behavior of the fully wired, deployed system', 'DAST tools have access to source code that SAST tools do not', 'SAST only scans the last file changed in each commit'], answer: 1,
+      explanation: 'SAST is fundamentally a code-pattern and data-flow analysis over source in isolation — excellent at catching known-dangerous patterns (string-concatenated SQL, unsanitized input reaching a sink) that are visible by reading the code. Many broken-authentication bugs are not a "bad code pattern" in any single file at all — they emerge from how components are WIRED and CONFIGURED together at runtime (a route accidentally left outside the auth middleware\'s scope, a session cookie missing the Secure flag due to environment config, an authorization check that exists in code but is bypassed by a specific request sequence). DAST, by actually exercising the deployed, fully-configured system with real HTTP requests, can surface exactly this class of emergent, configuration-dependent, multi-component vulnerability that no amount of single-file static analysis would catch.',
     },
   ];
 

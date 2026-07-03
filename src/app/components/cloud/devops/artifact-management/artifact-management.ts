@@ -447,15 +447,15 @@ console.log(resolveDeployTarget(versions, 'production')); // "1.2.1" (latest wit
       explanation: 'Artifact promotion retagging or copying the exact artifact (same Docker image digest, same binary file) from a dev registry to a staging registry, then to a prod registry as it passes tests at each stage. This guarantees that what was tested in staging is exactly what runs in production. Rebuilding risks subtle differences from changed dependencies, updated build tools, or non-deterministic build steps.',
     },
     {
-      q: 'What is the difference between a Docker image tag and a digest?',
+      q: 'Even after switching production manifests to reference an immutable version tag like myapp:v2.3.1 instead of :latest, is the deployment now fully reproducible byte-for-byte on every future pull?',
       options: [
-        'Tags and digests are identical — both identify the same image uniquely',
-        'A tag is a mutable pointer that can be overwritten; a digest (sha256:...) is an immutable content hash that always refers to exactly the same image bytes',
-        'Digests are only used in production; tags are for development',
-        'Tags are content-addressed; digests are human-readable aliases',
+        'Yes, always — a version-number tag can never be reassigned by anyone once pushed',
+        'Not necessarily — a version tag is just as mutable as :latest at the registry level unless the registry enforces tag immutability; a compromised or careless push could still overwrite v2.3.1 with different bytes',
+        'Yes, but only for images pushed to Docker Hub specifically',
+        'No, version tags are always resolved to a random image on each pull',
       ],
       answer: 1,
-      explanation: 'A tag like myapp:1.2.3 can be overwritten — a new push to the same tag points to different bytes. A digest like myapp@sha256:abc123 is the SHA256 hash of the image manifest — immutable. For production security, pin to digest: if the tag gets overwritten, digest pinning still pulls the exact tested image. Use tags for human readability; use digests for reproducibility.',
+      explanation: 'A version-number-looking tag like v2.3.1 carries no more built-in immutability guarantee than :latest — Docker registries treat every tag as a mutable pointer by default, and `docker push` to an existing tag simply reassigns it, regardless of whether the tag "looks like" a fixed version. The only way to get a true reproducibility guarantee is either enabling registry-level tag immutability (a feature many registries like ECR and ACR support explicitly) or referencing the image by its content digest (sha256:...), which cryptographically identifies the exact bytes and cannot be reassigned to different content.',
     },
   ];
 
@@ -481,8 +481,8 @@ console.log(resolveDeployTarget(versions, 'production')); // "1.2.1" (latest wit
       a: 'Two strategies: (1) **Per-service SemVer** — each service has its own version, bumped by conventional commits scoped to that service (`fix(auth-service): ...`). Tools like `nx affected` or `changesets` determine which services need new versions. Each service image is tagged independently: `auth-service:2.1.3`, `payment-service:1.4.0`. (2) **Monorepo build SHA** — all services use the same Git SHA tag for images from the same commit: `auth-service:main-abc1234`, `payment-service:main-abc1234`. Simple to implement; harder to communicate what changed in a given release. For teams that deploy services independently, per-service SemVer gives clearer change semantics; for teams that deploy together, the SHA approach is simpler.',
     },
     {
-      q: 'How do you implement artifact retention without deleting images that are currently deployed?',
-      a: 'Two approaches: (1) Tag-based protection — before deleting old tags, query your deployment systems (Kubernetes namespaces, ECS task definitions) for all currently-used image references, and exclude them from the retention sweep. A script can kubectl get pods -A -o jsonpath="{.items[*].spec.containers[*].image}" to get live images. (2) Registry features — registries like ACR, ECR, and Harbor let you set lifecycle policies with exemptions for images tagged with specific prefixes (e.g., prod-* or pinned-*). Tag images with prod-<version> at promotion time and the lifecycle policy skips them. Always test retention policies in a non-production registry first.',
+      q: 'If a retention policy deletes an image tag that a running deployment still references by that same mutable tag, what breaks?',
+      a: 'Not the currently-running pods — they already pulled and are running the image bytes, which stay in memory/on-disk on the node regardless of what happens in the registry. The real breakage surfaces LATER: any new pod scheduled, scaled up, or restarted (a node failure, a rolling update, an autoscaler event) will try to pull that now-deleted tag and fail with an image-pull error, potentially well after the original deletion, when the connection between cause and effect is far from obvious.',
     },
   ];
 

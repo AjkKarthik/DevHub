@@ -580,8 +580,8 @@ Console.WriteLine(name.Length);            // safe after ThrowIfNull`,
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between <code>int?</code> and <code>string?</code>?',
-      a: '<code>int?</code> is <code>Nullable&lt;int&gt;</code> — a real runtime struct with <code>HasValue</code> and <code>Value</code> properties. It has a small runtime overhead (boxing when assigned to <code>object</code>). <code>string?</code> is only a compile-time annotation when <code>#nullable enable</code> is active. At runtime, a <code>string?</code> variable is exactly the same as a <code>string</code> — the annotation exists solely so the compiler can warn you about potential null dereferences. Disabling nullable reference types removes all <code>string?</code> annotations but has zero effect on <code>int?</code>.',
+      q: 'A method has a `string?` parameter and is called with a literal `null` from a project WITHOUT `#nullable enable` set. Does the compiler warn about the mismatch between the caller and the annotation?',
+      a: 'No — nullable reference type warnings are opt-in per compilation context, and a calling project that has not enabled `#nullable enable` (or set it in the .csproj) simply does not run the nullable analysis at all, so it will not flag anything as a warning regardless of what the CALLED method\'s signature says. This is a real cross-project gotcha in solutions with mixed nullable-enabled and nullable-disabled projects: a library that carefully annotates its API surface with `string?` vs `string` only actually protects consumers who have ALSO opted into nullable reference type checking themselves — a caller in a nullable-disabled project gets zero compiler protection from the library\'s careful annotations, even though the annotations are still visible in IntelliSense as documentation.',
     },
     {
       q: 'Does <code>#nullable enable</code> affect runtime behaviour?',

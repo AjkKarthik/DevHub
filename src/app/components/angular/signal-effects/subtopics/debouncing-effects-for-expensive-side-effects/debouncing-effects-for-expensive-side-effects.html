@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signal Effects"
+    topicRoute="/angular/signal-effects"
+    subtopicLabel="Debouncing Effects for Expensive Side Effects" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Debouncing Effects for Expensive Side Effects</h1>
+  <p class="page-subtitle">
+    Microtask batching does not debounce separate keystrokes — using onCleanup() as a
+    manual timer, or bridging to RxJS's debounceTime() for cancellable async work.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 16+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Typing quickly into the search box only triggers <code>expensiveAutoSave</code> once,
+      500ms after the last keystroke — each re-run cancels the previous pending timeout via
+      <code>onCleanup</code>.
+    </p>
+    <app-live-playground
+      title="Debouncing effects for expensive side effects"
+      template="angular-cli"
+      openFile="src/app/search-box.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing, DOM measurement, and debouncing all covered, head back to the topic
+      overview to see how effects compare against computed() for the full picture.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signal Effects"
+    topicRoute="/angular/signal-effects"
+    [prev]="{ label: 'afterRenderEffect for DOM Measurements', route: '/angular/signal-effects/afterrendereffect-for-dom-measurements' }" />
+</div>

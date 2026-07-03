@@ -515,8 +515,8 @@ END;`,
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between SNAPSHOT isolation and READ COMMITTED SNAPSHOT (RCSI)?',
-      a: '<strong>SNAPSHOT isolation</strong>: each transaction sees a consistent snapshot taken at <em>transaction start</em> — repeated reads return the same data throughout. Writers still take locks. <strong>RCSI</strong>: each <em>statement</em> sees a snapshot at statement start — a new SELECT in the same transaction may see rows committed by other transactions between statements. RCSI requires no application changes (READ COMMITTED becomes lock-free for reads). Microsoft recommends RCSI as the default for new SQL Server databases.',
+      q: 'A long-running report runs under SNAPSHOT isolation and takes 10 minutes to complete, reading from a table that gets heavily updated during that window. What specific SQL Server error can this trigger that RCSI would not, and why?',
+      a: 'This can trigger error 3960 ("Snapshot isolation transaction aborted due to update conflict") or, more commonly for long-running SNAPSHOT readers, exhaustion of the version store in tempdb — SNAPSHOT isolation must retain every version of every row needed to reconstruct the transaction-start snapshot for the ENTIRE duration of that long transaction, so a 10-minute SNAPSHOT read against a heavily-updated table forces SQL Server to keep a very large volume of old row versions alive in tempdb\'s version store the whole time. RCSI does not have this problem to nearly the same degree because each individual STATEMENT only needs versions back to that statement\'s own start, not the whole transaction\'s — a multi-statement RCSI transaction releases its need for older versions much sooner. This is a concrete operational reason RCSI is generally preferred over full SNAPSHOT isolation for read-heavy OLTP workloads, reserving SNAPSHOT for cases that specifically need transaction-length consistency.',
     },
     {
       q: 'Can I use SAVEPOINTs to partially roll back a transaction?',

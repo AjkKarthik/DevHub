@@ -298,8 +298,8 @@ console.log(isValidResourceId(id)); // true`
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between ARM templates (JSON) and Bicep?',
-      a: 'Both produce the same result — ARM JSON sent to the ARM REST API. Bicep is a cleaner DSL with modules, loops (<code>for</code>), conditions, and type safety. <strong>bicep build</strong> compiles to ARM JSON; <strong>bicep decompile</strong> converts existing JSON to Bicep as a starting point. For new templates, use Bicep; migrate old JSON templates over time.'
+      q: 'If your team has a large existing library of ARM JSON templates, what is a low-risk way to start adopting Bicep without a big-bang rewrite?',
+      a: 'Run <strong>bicep decompile</strong> on existing JSON templates to get a starting-point .bicep file, then only rewrite/clean up new modules going forward in Bicep while leaving stable, working JSON templates untouched — since both compile down to identical ARM JSON deployed through the same ARM REST API, they can be mixed in the same deployment pipeline indefinitely (a Bicep module can even reference an existing ARM JSON template as a linked template). This avoids the risk of a full rewrite while letting new infrastructure code benefit from Bicep\'s cleaner syntax immediately.'
     },
     {
       q: 'When should you use Complete vs Incremental deployment mode?',

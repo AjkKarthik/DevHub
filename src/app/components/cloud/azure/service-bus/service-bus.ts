@@ -351,15 +351,15 @@ console.log(result, 'after', calls, 'attempts'); // 'success' after 3 attempts`
       explanation: 'Classic Geo-Disaster Recovery (GDR) replicates only metadata (namespace entities: queues, topics, subscriptions, rules) to the secondary namespace. Messages already in the primary namespace at failover time are not replicated and are lost after failover. The newer Geo-Replication feature (Premium tier) replicates both metadata AND messages — use it when message loss on failover is unacceptable.'
     },
     {
-      q: 'How do Azure Service Bus topics differ from queues?',
+      q: 'If a topic subscription has no active receiver for an extended period, what happens to the messages accumulating in that subscription?',
       options: [
-        'Queues support multiple consumers reading the same message; topics support only one',
-        'Topics enable publish/subscribe via subscriptions so multiple consumers each receive a copy; queues deliver each message to exactly one consumer',
-        'Topics are for FIFO ordering; queues are for unordered delivery',
-        'There is no functional difference topics are deprecated aliases for queues',
+        'They are automatically forwarded to all other subscriptions on the same topic',
+        'They accumulate in that subscription\'s own dedicated message store until the subscription\'s max size is reached or the message TTL expires — other subscriptions on the same topic are unaffected',
+        'The entire topic stops accepting new messages for all subscriptions until the idle subscription is drained',
+        'Service Bus automatically deletes the idle subscription after 24 hours',
       ],
       answer: 1,
-      explanation: 'Service Bus queues use competing-consumer pattern (one receiver per message). Topics use pub/sub each subscription gets its own filtered copy of every message, enabling fan-out to multiple independent consumers.',
+      explanation: 'Each subscription on a topic maintains its OWN independent copy of every matching message in its own logical queue-like store — a subscription with no consumer simply accumulates messages up to its configured max size or until messages expire via TTL, completely independently of every other subscription on the same topic. This isolation is what makes topics safe for fan-out to consumers with very different processing speeds or uptime: a slow or temporarily offline consumer\'s subscription filling up does not back up or block delivery to any other subscription\'s consumers.',
     },
   ];
 

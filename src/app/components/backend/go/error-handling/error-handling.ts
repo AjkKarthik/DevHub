@@ -552,8 +552,8 @@ func main() {
       a: 'When a goroutine panics, Go stops executing the current function and begins unwinding the stack, running all deferred functions in LIFO order along the way. If none of those deferred functions call `recover()`, the goroutine crashes. If a deferred function calls `recover()`, it catches the panic value and the goroutine continues normally from that deferred function\'s return.'
     },
     {
-      q: 'What is a sentinel error and when should I use one?',
-      a: 'A sentinel error is a package-level variable: `var ErrNotFound = errors.New("not found")`. Use them for expected, named failure conditions that callers might specifically handle (like SQL\'s `sql.ErrNoRows`). Callers use `errors.Is(err, ErrNotFound)` to check. Avoid sentinels for implementation details — only export sentinels that represent meaningful conditions for callers.'
+      q: 'If a sentinel error like sql.ErrNoRows gets wrapped multiple times as it propagates up through several function calls (each adding fmt.Errorf("...: %w", err) context), does errors.Is(err, sql.ErrNoRows) still work at the top level?',
+      a: 'Yes — that is the entire point of the %w wrapping verb. errors.Is walks the chain of wrapped errors by repeatedly calling Unwrap() on each layer until it finds a match or runs out of wrappers, so it doesn\'t matter how many fmt.Errorf("...: %w", err) layers were added in between; as long as every layer used %w (not the plain %v, which does NOT preserve the chain), errors.Is(err, sql.ErrNoRows) at the outermost caller still correctly matches. This is precisely why %w vs %v matters: %v produces a new unrelated error whose text merely mentions the original, breaking errors.Is entirely.'
     },
     {
       q: 'Should I always handle every error immediately?',

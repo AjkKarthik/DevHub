@@ -611,8 +611,8 @@ func main() {
       a: 'Use WaitGroup when you just need to wait for goroutines to finish without collecting their results. Use a channel when goroutines produce results that need to be collected, or when you need to signal between goroutines. errgroup (golang.org/x/sync) is the best choice when goroutines can fail — it combines WaitGroup semantics with automatic error propagation and context cancellation.'
     },
     {
-      q: 'What is GOMAXPROCS and should I change it?',
-      a: 'GOMAXPROCS sets how many OS threads can execute Go code simultaneously — it defaults to the number of available CPU cores. For most programs, the default is optimal. You might reduce it to simulate limited concurrency in tests, or set it to 1 for single-threaded performance profiling. Increase is rarely useful since Go already uses all cores by default. Set via `runtime.GOMAXPROCS(n)` or the `GOMAXPROCS` environment variable.'
+      q: 'A Go service runs in a Kubernetes pod with a CPU limit of "2" (2 cores), on a node that has 64 physical cores. Why can this cause CPU throttling even though the app is not fully utilizing its allotted quota, and how does GOMAXPROCS relate?',
+      a: 'runtime.NumCPU() (which GOMAXPROCS defaults to) reads the host\'s total CPU count, not the container\'s cgroup CPU limit — so the Go runtime schedules goroutines across up to 64 logical processors, spawning far more OS threads than the pod is actually entitled to. The kernel\'s CFS throttling then repeatedly stalls the container whenever it briefly bursts across threads that collectively exceed its 2-core quota within a scheduling period, causing latency spikes that look like "the app isn\'t even busy but keeps getting throttled." The fix is setting GOMAXPROCS explicitly to match the container\'s CPU limit (or using the automaxprocs library, which reads the cgroup limit at startup and calls runtime.GOMAXPROCS accordingly) so the Go scheduler\'s parallelism matches what the container is actually allowed to use.'
     },
     {
       q: 'How do I prevent a goroutine from running forever?',

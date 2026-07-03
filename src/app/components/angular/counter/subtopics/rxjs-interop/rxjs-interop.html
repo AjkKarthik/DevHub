@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signals &amp; Reactive State"
+    topicRoute="/angular/counter"
+    subtopicLabel="RxJS Interop" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">RxJS Interop — toSignal() and toObservable()</h1>
+  <p class="page-subtitle">
+    HttpClient, route params, and form valueChanges still hand you Observables.
+    toSignal() and toObservable() are the bridge that lets your signal-based
+    components talk to them without giving up either model.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A search-as-you-type box: the input's value lives in a plain <code>signal()</code>,
+      <code>toObservable()</code> feeds it into <code>debounceTime</code> +
+      <code>distinctUntilChanged</code> + <code>switchMap</code>, and <code>toSignal()</code>
+      brings the results straight back into a signal the template reads directly.
+    </p>
+    <app-live-playground
+      title="RxJS interop"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Signals &amp; Reactive State</h2>
+    <p>
+      <code>signal()</code> holds state, <code>computed()</code> derives it,
+      <code>effect()</code> reacts to it, <code>&#64;if</code>/<code>&#64;for</code> render it,
+      services share it, and <code>toSignal()</code>/<code>toObservable()</code> connect it to
+      RxJS when you need to. That's the complete picture — every other Angular topic that uses
+      signals is built from these same six pieces.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signals & Reactive State"
+    topicRoute="/angular/counter"
+    [prev]="{ label: 'Signals in Services', route: '/angular/counter/readonly-and-services' }" />
+</div>

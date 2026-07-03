@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Icon/image caches in UI frameworks: one Bitmap per icon type, shared across all toolbar buttons.',
     ],
   },
+  {
+    heading: 'Intrinsic vs. Extrinsic State — The Core Flyweight Distinction',
+    points: [
+      'Flyweight works by splitting an object\'s state into intrinsic state (shared, context-independent data stored once inside the flyweight, like a character glyph\'s shape) and extrinsic state (context-specific data supplied by the client at use time, like that character\'s position on screen).',
+      'Only intrinsic state is actually shared between flyweight instances — extrinsic state must be passed in by the caller on every operation, meaning Flyweight trades some API complexity (callers must track and supply extrinsic state) for the memory savings of sharing intrinsic state.',
+      'A Flyweight factory ensures identical intrinsic state maps to the SAME shared instance (via caching/interning) rather than creating a new object every time — without this factory-level deduplication, the pattern provides no actual memory benefit, since duplicate objects would still be created.',
+      'Flyweight is only worth the added complexity when a system genuinely needs to create a very large number of similar objects (thousands of characters, particles, or map tiles) where the memory savings are substantial — for a small number of objects, the pattern\'s overhead is not justified by any meaningful memory benefit.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

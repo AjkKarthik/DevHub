@@ -1,0 +1,54 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signals &amp; Reactive State"
+    topicRoute="/angular/counter"
+    subtopicLabel="What Is a Signal?" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">What Is a Signal?</h1>
+  <p class="page-subtitle">
+    Before computed(), before effect(), before any of the advanced patterns — this is the
+    one idea everything else in Angular's reactivity system is built on. Start here if
+    you've never written <code>signal()</code> before.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="beginner" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      This is the simplest possible signal — no cart, no auth, no history log, just a
+      number and two buttons. Edit the code directly in the editor below and watch it
+      update live.
+    </p>
+    <app-live-playground
+      title="Signal basics — counter"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      <code>signal()</code> is the foundation — a plain, writable, synchronous value. On
+      its own it's not much more than a variable with extra bookkeeping. The reason
+      Angular's signal system is powerful is what gets <em>built on top</em> of it:
+      <code>computed()</code> derives new values automatically whenever a signal it reads
+      changes, and <code>effect()</code> runs side effects the same way. Both of those
+      only make sense once <code>signal()</code> itself is second nature — which is exactly
+      why this is subtopic one.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signals & Reactive State"
+    topicRoute="/angular/counter"
+    [next]="{ label: 'computed() — Derived State', route: '/angular/counter/computed' }" />
+</div>

@@ -587,14 +587,9 @@ console.log(classifyAlert({ errorRatePct: 0, p99LatencyMs: 150, memoryPct: 45, c
       explanation: 'If your SLO allows 0.1% errors over 30 days, and you\'re currently seeing 1.44% errors (14.4× the allowance), the 30-day budget will be fully consumed in 30d ÷ 14.4 ≈ 2 days — but with a 1-hour confirmation window, the worst case is ~2 hours. This is the trigger for an immediate page — you\'re burning budget fast enough to violate the SLO very soon.',
     },
     {
-      q: 'What are the Four Golden Signals for monitoring a service?',
-      options: [
-        'CPU, memory, disk, network',
-        'Latency, traffic, errors, and saturation — the signals most indicative of whether a service is healthy from a user perspective',
-        'P50, P95, P99, P99.9 latency percentiles',
-        'Availability, reliability, scalability, maintainability'],
-      answer: 1,
-      explanation: 'Google SRE\'s Four Golden Signals: Latency (how long requests take — distinguish successful vs error latency), Traffic (request rate — qps, transactions/sec), Errors (rate of failed requests — HTTP 5xx, exceptions, policy violations), Saturation (how "full" the service is — CPU, queue depth, disk). These four signals give the most actionable signal for service health. Alert on all four; correlate them during incidents.',
+      q: 'A dashboard shows Traffic and Errors both flat/normal, but Latency has spiked and Saturation is climbing. What incident pattern does this specific combination most likely indicate, versus a spike in all four signals together?',
+      options: ['A traffic surge overwhelming the service (a "thundering herd")', 'A resource leak or a slow downstream dependency degrading the service internally — requests are still arriving at a normal rate and mostly succeeding, but each one is taking longer and consuming more resources, which is a different failure mode than an external load spike', 'A DDoS attack', 'A deployment that broke request routing entirely'], answer: 1,
+      explanation: 'The specific PATTERN across the four golden signals, not just their individual values, is what makes them diagnostically useful together. Traffic normal + Errors normal + Latency up + Saturation up points inward — something internal is degrading (a memory leak causing more GC pauses, a downstream database query getting slower, a connection pool exhausting) rather than an external load spike, because if the problem were incoming load, Traffic itself would be elevated. This is why Google SRE stresses correlating all four together during an incident rather than alerting on any single signal in isolation — the same "high saturation" reading means something completely different depending on whether traffic caused it or an internal degradation did.',
     },
   ];
 

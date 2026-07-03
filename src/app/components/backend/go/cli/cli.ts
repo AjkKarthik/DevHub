@@ -722,10 +722,10 @@ func main() {
       explanation: 'Create a context that is cancelled on SIGINT: ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt); defer cancel(). Pass it to cobra: rootCmd.ExecuteContext(ctx). Cobra sets cmd.Context() to this context for all commands. RunE functions retrieve it with cmd.Context() and pass it to long-running operations so they cancel cleanly on Ctrl+C.'
     },
     {
-      q: 'What is the difference between RunE and Run in a Cobra command?',
-      options: ['They are identical', 'RunE returns an error; Run returns nothing — prefer RunE so Cobra can propagate the error and set the exit code', 'Run is async; RunE is synchronous', 'RunE is deprecated'],
+      q: 'A command defines both PreRunE and RunE. If PreRunE returns an error, does RunE still execute?',
+      options: ['Yes, both always run regardless of errors', 'No — Cobra runs the Run hooks in order (PersistentPreRun(E), PreRun(E), Run(E), PostRun(E)) and stops at the first one that returns an error, skipping the rest', 'RunE runs first to decide whether PreRunE should run', 'PreRunE errors are only logged, never block execution'],
       answer: 1,
-      explanation: 'Run func(cmd *cobra.Command, args []string) has no return value — errors must be handled internally or trigger os.Exit. RunE func(cmd *cobra.Command, args []string) error returns an error. Cobra prints the error and exits with code 1. Use RunE: it enables proper error propagation, cleaner testing, and you can check cmd.SilenceErrors and cmd.SilenceUsage to control output.'
+      explanation: 'Cobra executes command hooks in a fixed sequence and short-circuits on the first error: PersistentPreRunE, PreRunE, RunE, PostRunE, PersistentPostRunE. If PreRunE returns a non-nil error, Cobra stops immediately — RunE (and the Post hooks) never execute, and the error propagates up the same way a RunE error would. This makes PreRunE the right place for validation that should prevent the main action from running at all (e.g. checking required flag combinations that flag.Parse alone can\'t express).'
     },
   ];
 

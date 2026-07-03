@@ -256,10 +256,8 @@ async function consume(bucketKey: string, rate: number, capacity: number): Promi
       explanation: 'Lua scripts run atomically in Redis — the event loop is blocked for the script duration. This guarantees no race conditions between script steps. Keep scripts short to avoid blocking other clients for too long.',
     },
     {
-      q: 'What is the difference between redis.call() and redis.pcall() in Lua?',
-      options: ['redis.call() is async; redis.pcall() is sync', 'redis.call() raises an error on command failure; redis.pcall() catches errors and returns them as a Lua table', 'redis.pcall() only works with read commands', 'There is no functional difference'],
-      answer: 1,
-      explanation: 'redis.call() propagates command errors as Lua errors (aborting the script). redis.pcall() catches errors and returns {err: msg} — enabling per-command error handling within the script without aborting.',
+      q: 'A Lua script calls redis.call() on a command that fails partway through a multi-step script. What happens to the rest of the script?',
+      options: ['The script continues normally, ignoring the failed command', 'The script aborts entirely at that point — any Redis state changes already made by earlier commands in the script are NOT automatically rolled back', 'Redis automatically retries the failed command up to 3 times', 'The script pauses and waits for manual intervention'], answer: 1, explanation: 'redis.call() raises a Lua error on command failure, which aborts script execution immediately at that point. Critically, Redis does NOT roll back earlier writes the script already made — there is no transactional rollback. This is why scripts performing multiple write steps should either validate all preconditions before the first write, or use redis.pcall() where partial-failure handling genuinely needs to be explicit and intentional rather than relying on an abort-with-no-rollback default.',
     },
     {
       q: 'What is EVALSHA and why use it instead of EVAL?',

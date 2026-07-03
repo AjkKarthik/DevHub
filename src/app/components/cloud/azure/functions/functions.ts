@@ -343,8 +343,8 @@ retry(() => {
       a: 'By default, Durable Functions stores orchestration state in <strong>Azure Storage</strong> (history table, instance table, work-item queue, large message blobs). For high-throughput scenarios, switch to the <strong>Netherite backend</strong> (EventHubs + Azure Storage, much higher throughput and lower latency). The <strong>MSSQL backend</strong> stores state in a SQL database — useful for SQL-native visibility and querying of orchestration state. Configure the backend in host.json under extensions.durableTask.storageProvider.'
     },
     {
-      q: 'When should you use Durable Functions instead of regular Azure Functions?',
-      a: 'Use Durable Functions when you need stateful orchestration: long-running workflows (minutes to days), fan-out/fan-in over many activities, human approval steps, or reliable retry across multiple activities. Regular Functions are stateless and run for seconds/minutes — they cannot reliably coordinate multi-step workflows without Durable.',
+      q: 'How does Durable Functions survive a host restart in the middle of a multi-day orchestration without losing progress?',
+      a: 'Durable Functions uses "event sourcing": rather than keeping the orchestrator\'s progress in memory, every awaited step (an activity completing, a timer firing) is persisted as an event to Azure Storage (queues and tables by default). If the host restarts mid-orchestration, the orchestrator function is REPLAYED from the beginning against the persisted event history — completed steps return their already-recorded results instantly instead of re-executing, so the orchestrator "catches up" to exactly where it left off and continues from there, deterministically, with no lost state.',
     },
   ];
 

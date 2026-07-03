@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Change Detection"
+    topicRoute="/angular/change-detection"
+    subtopicLabel="Testing OnPush Components" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing OnPush Components</h1>
+  <p class="page-subtitle">
+    Why fixture.detectChanges() can hide real OnPush bugs by bypassing the gate it's meant
+    to test, and how to write tests that actually prove a component re-renders correctly.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      An OnPush counter component plus its spec file, showing a test that PROVES the DOM
+      does not update until <code>detectChanges()</code> is explicitly called again.
+    </p>
+    <app-live-playground
+      title="Testing OnPush components"
+      template="angular-cli"
+      openFile="src/app/counter.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Change Detection</h2>
+    <p>
+      You now know what embedded views <code>&#64;for</code>/<code>&#64;if</code> actually
+      create and how dynamically created components attach to the CD tree, how to bridge
+      non-Angular-aware callbacks into OnPush with <code>NgZone</code> and signals, and how
+      to write tests that genuinely prove OnPush re-renders correctly instead of accidentally
+      masking real bugs. Combined with the CD tree fundamentals, the five OnPush triggers, and
+      zoneless migration from the main topic, that's the complete change detection toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Change Detection"
+    topicRoute="/angular/change-detection"
+    [prev]="{ label: 'Bridging External Libraries to OnPush', route: '/angular/change-detection/bridging-external-libraries-onpush' }" />
+</div>

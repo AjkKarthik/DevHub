@@ -240,10 +240,9 @@ async function getTopN(n: number): Promise<Array<{userId: string; score: number}
       explanation: 'ZRANGEBYSCORE key min max returns members with scores between min and max in ascending order. Use -inf and +inf for unbounded. Add WITHSCORES to include scores. ZREVRANGEBYSCORE goes descending. In Redis 6.2+, use ZRANGE with BYSCORE.',
     },
     {
-      q: 'What is the internal data structure of a large Redis sorted set?',
-      options: ['Binary search tree', 'Skiplist combined with a hash table', 'B-tree', 'Red-black tree'],
-      answer: 1,
-      explanation: 'Large sorted sets use a skiplist (for O(log N) range queries and ordered iteration) plus a hash table (for O(1) member-to-score lookup). Small sorted sets (< zset-max-listpack-entries entries of small values) use listpack encoding.',
+      q: 'Why does a large Redis sorted set need BOTH a skiplist AND a hash table internally, rather than just one or the other?',
+      options: ['Redis maintains both purely for backward-compatibility with older data files, not for functional reasons', 'Each structure is optimized for a different access pattern the sorted set must support: the skiplist gives O(log N) ordered range queries (ZRANGE, ZRANGEBYSCORE) by score, while the hash table gives O(1) direct member-to-score lookup (ZSCORE) — a skiplist alone would make ZSCORE O(log N) instead of O(1), and a hash table alone could not efficiently answer ordered range queries at all', 'The hash table is used only for garbage collection, not for actual lookups', 'Only one structure is active at a time; Redis switches between them based on query type'], answer: 1,
+      explanation: 'These two structures serve genuinely different query needs that a single structure cannot satisfy efficiently: "give me all members with scores between X and Y in order" needs a structure organized by score (the skiplist), while "what is this specific member\'s score" needs a structure organized by member (the hash table) for O(1) lookup instead of an O(log N) skiplist search. Maintaining both simultaneously (kept in sync on every write) lets a sorted set answer both query types at their respective optimal complexity, at the cost of roughly double the pointer/bookkeeping overhead compared to using just one structure — a deliberate tradeoff for large sorted sets where both access patterns matter.',
     },
     {
       q: 'How do you implement a leaderboard with Redis sorted sets?',

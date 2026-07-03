@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="&#64;let Template Variables"
+    topicRoute="/angular/let-template-vars"
+    subtopicLabel="Testing &#64;let-Driven Templates" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing &#64;let-Driven Templates</h1>
+  <p class="page-subtitle">
+    &#64;let has no runtime value to inspect — verify behavior by asserting on the rendered
+    DOM across every consumer of the same variable.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 18+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A cart summary with <code>count</code> and <code>empty</code> declared via
+      <code>&#64;let</code> and read in three places — tests assert all three rendered
+      outcomes agree for the same underlying data change.
+    </p>
+    <app-live-playground
+      title="Testing @let-driven templates"
+      template="angular-cli"
+      openFile="src/app/cart-summary.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing covered, the next subtopic proves — with actual profiling, not just
+      the theory — that &#64;let really does recompute on every change detection cycle.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="&#64;let Template Variables"
+    topicRoute="/angular/let-template-vars"
+    [next]="{ label: 'Profiling @let Recompute Cost', route: '/angular/let-template-vars/profiling-let-recompute-cost' }" />
+</div>

@@ -313,8 +313,8 @@ getMobileHome('user-123').then(r => console.log(JSON.stringify(r, null, 2)));`,
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between an API Gateway and a Load Balancer?',
-      a: 'A load balancer distributes traffic across instances of the same service (layer 4/7 routing by IP/URL). An API gateway sits higher in the stack: it understands requests semantically, performs auth, aggregation, transformation, and routes to different services based on path.',
+      q: 'Does adding an API gateway eliminate the need for load balancers in front of each backend service?',
+      a: 'No — this is a common misconception. The gateway and load balancers solve different problems at different layers and are typically used TOGETHER: the gateway routes a request to the correct SERVICE based on path/content, then a load balancer in front of that service distributes the request across its multiple running INSTANCES. Removing the load balancer would mean the gateway sends every request for a service to just one instance, eliminating the redundancy and horizontal scaling the load balancer provides.',
     },
     {
       q: 'When should I use a managed gateway (Kong, AWS API Gateway) vs building my own?',

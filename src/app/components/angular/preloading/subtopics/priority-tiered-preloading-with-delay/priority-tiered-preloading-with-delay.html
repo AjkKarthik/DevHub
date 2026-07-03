@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Preloading Strategies"
+    topicRoute="/angular/preloading"
+    subtopicLabel="Priority-Tiered Preloading with Delay" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Priority-Tiered Preloading with Delay</h1>
+  <p class="page-subtitle">
+    Going beyond the binary preload/skip flag — a custom <code>PreloadingStrategy</code>
+    that staggers preloading across priority tiers using RxJS <code>timer()</code>.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>TieredPreloadStrategy</code> that reads a <code>data.preload</code> tier
+      ('high' | 'medium' | 'low') off each route and delays the actual <code>load()</code>
+      call accordingly — open the browser console to watch the staggered schedule.
+    </p>
+    <app-live-playground
+      title="Priority-tiered preloading with delay"
+      template="angular-cli"
+      openFile="src/app/tiered-preload.strategy.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Tiered preloading only matters if it actually helps — the next subtopic covers
+      unit-testing a custom <code>PreloadingStrategy</code> in isolation, followed by
+      measuring whether preloading is truly reducing perceived navigation latency.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Preloading Strategies"
+    topicRoute="/angular/preloading"
+    [next]="{ label: 'Testing Preloading Strategies', route: '/angular/preloading/testing-preloading-strategies' }" />
+</div>

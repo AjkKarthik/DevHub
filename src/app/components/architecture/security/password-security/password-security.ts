@@ -250,8 +250,8 @@ const quiz: QuizQuestion[] = [
 
 const qna: QnaItem[] = [
   {
-    q: 'What is the NIST guidance on password policy (SP 800-63B)?',
-    a: 'NIST SP 800-63B recommends: <ul><li>Minimum 8 characters; support up to 64+</li><li>Check against known-breached password lists (HaveIBeenPwned)</li><li><strong>No mandatory complexity rules</strong> (uppercase/number/symbol requirements produce weak, predictable patterns)</li><li><strong>No mandatory periodic rotation</strong> — only require changes when breach is suspected</li><li>Allow paste into password fields (enables password managers)</li><li>No security questions</li></ul>',
+    q: 'Why does NIST SP 800-63B specifically call out mandatory complexity rules (requiring uppercase, number, symbol) as counterproductive rather than just unnecessary?',
+    a: 'Research NIST cites shows that forcing complexity rules pushes users toward PREDICTABLE patterns that satisfy the rule mechanically rather than genuinely increasing entropy — "Password1!" satisfies every common complexity requirement (uppercase, number, symbol) while being one of the most commonly guessed password patterns, since users reliably capitalize the first letter, append a number, and add "!" at the end when forced to. A long passphrase like "correct horse battery staple" has far more actual entropy and is easier to remember, but would often fail naive complexity rules for lacking a symbol or number — meaning the rule actively steers users away from stronger passwords toward weaker, more guessable ones that merely look complex.',
   },
   {
     q: 'How does credential stuffing differ from brute force, and how do you defend against each?',

@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    subtopicLabel="contentChild() &amp; Migration" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">contentChild() &amp; Migration Patterns</h1>
+  <p class="page-subtitle">
+    The mirror image of viewChild() — reading content the PARENT projected in — plus the
+    mostly-mechanical rules for migrating a whole component off the old decorator APIs.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 17.3" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A <code>Tabs</code> wrapper reading its projected <code>&lt;app-tab&gt;</code> children
+      via <code>contentChildren()</code> to build a tab bar.
+    </p>
+    <app-live-playground
+      title="contentChild and migration"
+      template="angular-cli"
+      openFile="src/app/tabs.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Parent-Child Communication</h2>
+    <p>
+      <code>input()</code> flows data down, <code>output()</code> flows events up,
+      <code>model()</code> does both at once, <code>viewChild()</code> reaches into a
+      component's own template, and <code>contentChild()</code> reaches into whatever a
+      parent projected in. Combined with the two migration rules — never mix
+      <code>&#64;Input()</code> with <code>input()</code>, and prefer shared state over deep
+      prop-drilling — that's the complete modern component-communication toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    [prev]="{ label: 'viewChild() and viewChildren()', route: '/angular/parent-child/viewchild-viewchildren' }" />
+</div>

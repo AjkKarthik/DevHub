@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    subtopicLabel="model() — Two-Way Binding" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">model() — Two-Way Binding with ModelSignal</h1>
+  <p class="page-subtitle">
+    input() flows data down, output() flows events up — model() does both at once,
+    the same "banana in a box" [(prop)] syntax as ngModel, on your own components.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17.1" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Two independent stepper components bound to the SAME parent signal via
+      <code>[(value)]</code> — change either one and watch both stay in sync.
+    </p>
+    <app-live-playground
+      title="model() two-way binding"
+      template="angular-cli"
+      openFile="src/app/qty-stepper.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      input/output/model cover data flowing between parent and child through bindings — the
+      next subtopic covers reaching directly into a child's rendered view from the parent's
+      own class, with <code>viewChild()</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Parent-Child Communication"
+    topicRoute="/angular/parent-child"
+    [prev]="{ label: 'output() — Modern @Output', route: '/angular/parent-child/output-signals' }"
+    [next]="{ label: 'viewChild() and viewChildren()', route: '/angular/parent-child/viewchild-viewchildren' }" />
+</div>

@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="NgOptimizedImage"
+    topicRoute="/angular/ng-image"
+    subtopicLabel="Custom Loader with Blur-Up LQIP Placeholder" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Custom Loader with Blur-Up LQIP Placeholder</h1>
+  <p class="page-subtitle">
+    Implementing the placeholder input end to end — one loader function that serves both
+    the tiny blurred preview and the full-resolution image.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>blurCdnLoader</code> is called with a tiny width for the placeholder and the
+      full width for the real image — plus a <code>staticFallbackLoader</code> variant for
+      CDNs without resizing support.
+    </p>
+    <app-live-playground
+      title="Custom loader with blur-up LQIP placeholder"
+      template="angular-cli"
+      openFile="src/app/blur-loader.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With placeholder loading covered, the next subtopic shifts to verifying components
+      that use NgOptimizedImage actually render the right attributes — unit testing.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NgOptimizedImage"
+    topicRoute="/angular/ng-image"
+    [next]="{ label: 'Testing Components That Use NgOptimizedImage', route: '/angular/ng-image/testing-components-that-use-ngoptimizedimage' }" />
+</div>

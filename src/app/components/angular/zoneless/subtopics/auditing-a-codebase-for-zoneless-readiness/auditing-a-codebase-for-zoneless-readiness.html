@@ -1,0 +1,47 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Zoneless Angular"
+    topicRoute="/angular/zoneless"
+    subtopicLabel="Auditing a Codebase for Zoneless Readiness" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Auditing a Codebase for Zoneless Readiness</h1>
+  <p class="page-subtitle">
+    Finding risky plain-field mutations in async callbacks systematically, before flipping
+    the zoneless provider on a large app — not by hoping tests catch it.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 18+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A safe signal-based counter and a risky plain-field counter run side by side —
+      click "Start both timers" and watch one update, the other freeze.
+    </p>
+    <app-live-playground
+      title="Auditing a codebase for zoneless readiness"
+      template="angular-cli"
+      openFile="src/app/risky-component.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With a safe migration audit process covered, the next subtopic looks at how zoneless
+      apps behave differently during server-side rendering and hydration.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Zoneless Angular"
+    topicRoute="/angular/zoneless"
+    [next]="{ label: 'Zoneless SSR and Incremental Hydration', route: '/angular/zoneless/zoneless-ssr-and-incremental-hydration' }" />
+</div>

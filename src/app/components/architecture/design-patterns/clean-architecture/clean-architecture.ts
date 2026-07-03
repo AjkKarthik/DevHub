@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'MyApp.Api: Program.cs, Controllers, request/response models; references Application + Infrastructure.',
     ],
   },
+  {
+    heading: 'Use Cases as First-Class Citizens',
+    points: [
+      'Clean Architecture treats each application use case (PlaceOrder, CancelSubscription) as an explicit, named class rather than a method buried inside a large "OrderService" — this makes the application\'s actual capabilities directly discoverable by scanning the use case folder, without needing to read implementation details.',
+      'This explicit use-case-per-class structure naturally supports the Single Responsibility Principle — each use case class has exactly one reason to change (the business rule for that specific use case), rather than accumulating many loosely related methods in one large service class.',
+      'Use cases depend on abstractions (repository interfaces, gateway interfaces) defined in the domain layer, never on concrete infrastructure implementations directly — this is what allows a use case to be tested with in-memory fakes instead of a real database or external API.',
+      'This pattern pairs naturally with CQRS-style command/query handlers — each use case can be implemented as a single command or query handler, giving the codebase a consistent, predictable shape for locating and understanding any given business capability.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

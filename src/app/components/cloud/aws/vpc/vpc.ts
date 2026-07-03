@@ -430,10 +430,9 @@ console.log(keyCommands);`,
       explanation: 'Stateless means NACLs evaluate each packet independently with no knowledge of prior packets. If you allow inbound TCP port 443, the response packets (outbound on ephemeral ports 1024-65535) are blocked unless you also add an outbound allow rule.'
     },
     {
-      q: 'What is the key difference between a VPC Security Group and a Network ACL (NACL)?',
-      options: ['They are functionally identical with different names', 'Security Groups are stateful and operate at the instance level; NACLs are stateless and operate at the subnet level', 'NACLs only support allow rules, never deny rules', 'Security Groups can deny specific traffic; NACLs cannot'],
-      answer: 1,
-      explanation: 'Security Groups are stateful (return traffic is automatically allowed regardless of outbound rules) and attached to individual ENIs/instances, supporting only Allow rules. NACLs are stateless (you must explicitly allow both inbound AND outbound return traffic) and operate at the subnet level as a coarser-grained additional layer of defense, supporting both Allow and explicit Deny rules evaluated in numbered order.',
+      q: 'An instance in a subnet cannot reach the internet. The Security Group allows all outbound traffic and the route table has a valid route to an Internet Gateway. What else might be silently blocking traffic, given that both Security Groups and NACLs apply simultaneously?',
+      options: ['Nothing else can block traffic if the Security Group and route table are both correct', 'The subnet\'s NACL — even with a correct Security Group and route table, a NACL missing an explicit inbound allow rule for the ephemeral port range (1024-65535) used by return traffic will silently drop responses, since NACLs are stateless and do not auto-allow return traffic the way Security Groups do', 'DNS resolution must be disabled for the VPC', 'The instance needs a second Elastic Network Interface'], answer: 1,
+      explanation: 'Because Security Groups and NACLs are layered and independently enforced, a fully-correct Security Group is not sufficient on its own — the subnet\'s NACL must ALSO explicitly permit the traffic, and because NACLs are stateless, that means allowing both the outbound request AND the inbound RETURN traffic on the ephemeral port range the client used. A common misconfiguration is a NACL that allows outbound HTTP/HTTPS but forgets to allow the corresponding inbound ephemeral-port response traffic — the outbound request leaves fine, but the response is silently dropped at the NACL, producing a connection-timeout symptom that looks identical to a routing problem even though routing and the Security Group are both correctly configured.',
     },
   ];
 

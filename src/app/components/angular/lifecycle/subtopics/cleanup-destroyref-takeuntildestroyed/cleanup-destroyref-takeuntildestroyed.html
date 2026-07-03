@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Lifecycle Hooks"
+    topicRoute="/angular/lifecycle"
+    subtopicLabel="Cleanup — DestroyRef &amp; takeUntilDestroyed" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Cleanup — DestroyRef &amp; takeUntilDestroyed()</h1>
+  <p class="page-subtitle">
+    DestroyRef works anywhere with an injection context, not just component classes —
+    and takeUntilDestroyed() replaces the classic Subject + takeUntil boilerplate entirely.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A polling service combining <code>takeUntilDestroyed()</code> for an RxJS interval and
+      <code>DestroyRef.onDestroy()</code> for a native <code>setInterval</code>.
+    </p>
+    <app-live-playground
+      title="Cleanup — DestroyRef and takeUntilDestroyed"
+      template="angular-cli"
+      openFile="src/app/polling.service.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Lifecycle Hooks</h2>
+    <p>
+      You now know the guaranteed hook sequence, the real ngOnChanges-vs-signal-inputs gap,
+      when it's safe to touch the DOM (and its SSR-safe <code>afterNextRender()</code>
+      replacement), and the three cleanup mechanisms that coexist for different situations.
+      Combined with <code>effect()</code> from the Signals topic, that's the complete picture
+      of how a component's lifetime actually works — classic and signal-based alike.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Lifecycle Hooks"
+    topicRoute="/angular/lifecycle"
+    [prev]="{ label: 'View & Content Hooks', route: '/angular/lifecycle/view-content-hooks-afternextrender' }" />
+</div>

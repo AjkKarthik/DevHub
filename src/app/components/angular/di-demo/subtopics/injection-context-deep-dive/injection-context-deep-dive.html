@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dependency Injection"
+    topicRoute="/angular/di"
+    subtopicLabel="Injection Context Deep Dive" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Injection Context Deep Dive</h1>
+  <p class="page-subtitle">
+    Where inject() actually works, why functional guards get it for free, the composable
+    "inject function" pattern, and how to safely defer injection with runInInjectionContext().
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A composable inject function resolved at field-init time, plus a broken vs. fixed
+      deferred <code>inject()</code> call inside <code>setTimeout</code> — check the console
+      and the on-screen log after clicking each button.
+    </p>
+    <app-live-playground
+      title="Injection context deep dive"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Dependency Injection"
+    topicRoute="/angular/di"
+    [next]="{ label: 'Multi-Providers & Extension Points', route: '/angular/di/multi-providers-extension-points' }" />
+</div>

@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Mock Service Worker (MSW)"
+    topicRoute="/angular/msw"
+    subtopicLabel="Testing Loading States with MSW delay()" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Loading States with MSW delay()</h1>
+  <p class="page-subtitle">
+    Most examples jump straight to the final resolved content — delay() creates a
+    guaranteed window to actually verify the interim loading UI.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="MSW 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A three-part assertion — loading present, then resolved content, then loading
+      gone — catches bugs a single "shows final content" test would miss entirely.
+    </p>
+    <app-live-playground
+      title="Testing loading states with MSW delay()"
+      template="angular-cli"
+      openFile="src/app/product-list.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With auth flows and loading states covered, the final subtopic tackles a common
+      integration snag — silently mismatched URLs between handlers and HttpClient calls.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Mock Service Worker (MSW)"
+    topicRoute="/angular/msw"
+    [prev]="{ label: 'Testing Auth Interceptor Flows with MSW', route: '/angular/msw/testing-auth-interceptor-flows-with-msw' }"
+    [next]="{ label: 'Debugging Unhandled Requests and Query-Param Matching', route: '/angular/msw/debugging-unhandled-requests-and-query-param-matching' }" />
+</div>

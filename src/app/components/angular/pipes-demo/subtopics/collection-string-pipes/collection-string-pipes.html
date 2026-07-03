@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Pipes"
+    topicRoute="/angular/pipes"
+    subtopicLabel="Collection &amp; String Pipes" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Collection &amp; String Pipes</h1>
+  <p class="page-subtitle">
+    SlicePipe works on arrays AND strings with negative-index support, and JsonPipe is
+    a debugging superpower that must never ship to production.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="beginner" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>slice</code> with both positive and negative indices, case pipes, and a
+      deliberately-flagged <code>JsonPipe</code> "remove before shipping" example.
+    </p>
+    <app-live-playground
+      title="Collection and string pipes"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Every pipe so far transforms static data — the last subtopic covers the one that
+      handles ASYNCHRONOUS data, the <code>&#64;let</code> alias pattern that pairs with it,
+      and when a <code>computed()</code> signal is the better choice entirely.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pipes"
+    topicRoute="/angular/pipes"
+    [prev]="{ label: 'Formatting Pipes & Locale', route: '/angular/pipes/formatting-pipes-locale' }"
+    [next]="{ label: 'AsyncPipe, @let & Performance', route: '/angular/pipes/async-pipe-let-performance' }" />
+</div>

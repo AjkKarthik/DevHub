@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Flight control systems: all planes talk to control tower (mediator), not to each other.',
     ],
   },
+  {
+    heading: 'Mediator Centralizing Many-to-Many Communication',
+    points: [
+      'Without a Mediator, a set of interacting objects (UI form fields validating and enabling/disabling each other) tend to develop many direct references to each other, creating a tangled web of dependencies where every object needs to know about every other object it might need to communicate with.',
+      'Mediator centralizes this communication logic into a single coordinator object — individual colleague objects only know about the Mediator, not about each other, reducing N-squared potential direct relationships down to N relationships (each colleague to the mediator).',
+      'This centralization trades distributed complexity (many small, tangled relationships) for concentrated complexity (one Mediator class that knows about and coordinates all the colleagues) — the Mediator itself can become a large, complex class if it accumulates too much coordination logic.',
+      'Mediator is closely related to but distinct from Observer — Mediator typically coordinates a fixed, known set of colleague objects with potentially complex, specific interaction rules, while Observer supports a dynamic, open-ended number of subscribers reacting generically to a single subject\'s state changes.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

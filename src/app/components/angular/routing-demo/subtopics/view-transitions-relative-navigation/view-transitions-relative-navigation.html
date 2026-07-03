@@ -1,0 +1,52 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Routing &amp; Navigation"
+    topicRoute="/angular/routing"
+    subtopicLabel="View Transitions &amp; Relative Navigation" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">View Transitions &amp; Relative Navigation</h1>
+  <p class="page-subtitle">
+    Free animated route changes with withViewTransitions(), navigating relative to the
+    current route instead of hardcoding absolute paths, and UrlTree parse/serialize utilities.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17+ (withViewTransitions)" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Navigating between List and Detail cross-fades via the native View Transitions API
+      (best seen in a Chromium-based browser) — the "Back to list" button uses relative
+      navigation (<code>../</code>) instead of a hardcoded absolute path.
+    </p>
+    <app-live-playground
+      title="View transitions and relative navigation"
+      template="angular-cli"
+      openFile="src/app/detail.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Routing &amp; Navigation</h2>
+    <p>
+      You now know custom <code>UrlMatcher</code> functions and function-based redirects,
+      the full router event pipeline for progress bars and breadcrumbs, how to override the
+      default destroy-on-navigate behavior with a custom <code>RouteReuseStrategy</code>, and
+      modern navigation polish — <code>withViewTransitions()</code>, relative navigation, and
+      <code>UrlTree</code> parsing. Combined with the routing fundamentals, params, lazy
+      loading, and guards from the main Routing topic, that's the complete router toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Routing & Navigation"
+    topicRoute="/angular/routing"
+    [prev]="{ label: 'Route Reuse Strategy', route: '/angular/routing/route-reuse-strategy' }" />
+</div>

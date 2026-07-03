@@ -57,6 +57,15 @@ const theory: TheoryPoint[] = [
       'Fat interfaces cause compilation coupling — every change to the interface forces all implementors to recompile.',
     ],
   },
+  {
+    heading: 'SOLID as a Coherent Set, Not Five Independent Rules',
+    points: [
+      'The five SOLID principles reinforce each other rather than operating independently — a class violating Single Responsibility (doing too much) typically also becomes harder to extend without modification (violating Open/Closed), since its many responsibilities are entangled together within one class.',
+      'Liskov Substitution and Interface Segregation work together to keep abstractions honest — Liskov ensures a subtype can genuinely stand in for its base type without surprising behavior, while Interface Segregation prevents interfaces from being so broad that satisfying Liskov substitutability becomes awkward or forces meaningless implementations.',
+      'Dependency Inversion is often the principle that makes the other four practically achievable at scale — depending on abstractions rather than concrete implementations is what allows Open/Closed extension (new implementations of an abstraction) without modifying code that depends on that abstraction.',
+      'SOLID principles are heuristics for managing complexity as software grows, not rules to apply dogmatically to every single class regardless of size or stability — a small, simple, rarely-changing class does not necessarily benefit from strict SOLID compliance the way a large, evolving, business-critical class does.',
+    ],
+  },
 ];
 
 const codeTabs: CodeTab[] = [

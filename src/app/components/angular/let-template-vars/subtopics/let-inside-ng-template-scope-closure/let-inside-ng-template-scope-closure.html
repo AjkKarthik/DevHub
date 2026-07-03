@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="&#64;let Template Variables"
+    topicRoute="/angular/let-template-vars"
+    subtopicLabel="&#64;let Inside ng-template and Structural Directives" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">&#64;let Inside ng-template and Structural Directives</h1>
+  <p class="page-subtitle">
+    A worked example of &#64;let's closure over ng-template content — the rule is about
+    where the template is written, not where it is rendered.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 18+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>&lt;ng-template #userCard&gt;</code> reads <code>user</code> and
+      <code>greeting</code>, both declared as <code>&#64;let</code> OUTSIDE the template,
+      then renders via <code>ngTemplateOutlet</code> further down.
+    </p>
+    <app-live-playground
+      title="@let inside ng-template — scope closure"
+      template="angular-cli"
+      openFile="src/app/nested-template.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing, profiling, and scoping across ng-template boundaries all covered, head
+      back to the topic overview to see how &#64;let compares against computed() overall.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="&#64;let Template Variables"
+    topicRoute="/angular/let-template-vars"
+    [prev]="{ label: 'Profiling @let Recompute Cost', route: '/angular/let-template-vars/profiling-let-recompute-cost' }" />
+</div>

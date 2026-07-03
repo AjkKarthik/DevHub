@@ -249,8 +249,8 @@ async function getSuggestions(user: string): Promise<string[]> {
 
   qna: QnaItem[] = [
     {
-      q: 'When should I use a set vs a sorted set for unique membership?',
-      a: 'Use a set when you need membership only (is X a member?) or set algebra (SINTER/SUNION/SDIFF). Use a sorted set when you also need ordering by score (leaderboard, expiry-based eviction, timeline ordering). Sorted sets use more memory than sets for the same number of members.',
+      q: 'Can you fake "unique membership plus insertion order" using a plain set alone, or does that genuinely require a sorted set?',
+      a: 'A plain Redis set has no concept of order at all — SMEMBERS returns elements in an implementation-defined, non-deterministic order that can even change between calls (especially once a set converts from intset to hashtable encoding), so there is no way to recover insertion order from a set no matter how you query it. A sorted set genuinely requires the extra memory overhead of tracking a score if you need order, but for "unique + ordered by insertion" specifically, a common workaround is a sorted set scored by a monotonically increasing counter or timestamp at insertion time — turning "insertion order" into "score order," which a plain set structurally cannot represent.',
     },
     {
       q: 'What is the difference between SUNION and SUNIONSTORE?',

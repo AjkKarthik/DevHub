@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular Material"
+    topicRoute="/angular/material"
+    subtopicLabel="Buttons, Dialogs &amp; Snackbars" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Buttons, Dialogs &amp; Snackbars</h1>
+  <p class="page-subtitle">
+    Six button variants sharing one color API, plus the two async overlay patterns you'll
+    use constantly — a modal dialog that returns a result, and a toast that just informs.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A snackbar toast and a confirm dialog that returns a boolean result via
+      <code>afterClosed()</code>.
+    </p>
+    <app-live-playground
+      title="Material common components"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="materialDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Cards and dialogs display content — the next subtopic covers displaying larger
+      DATASETS, with <code>MatTable</code>'s sorting and pagination.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Angular Material"
+    topicRoute="/angular/material"
+    [prev]="{ label: 'Form Fields, Inputs & Validation', route: '/angular/material/material-form-fields' }"
+    [next]="{ label: 'MatTable — Sorting & Pagination', route: '/angular/material/mattable-sorting-pagination' }" />
+</div>

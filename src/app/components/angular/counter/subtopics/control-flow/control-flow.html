@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signals &amp; Reactive State"
+    topicRoute="/angular/counter"
+    subtopicLabel="&#64;if and &#64;for — Control Flow" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">&#64;if and &#64;for — Control Flow with Signals</h1>
+  <p class="page-subtitle">
+    The built-in control flow blocks read signals exactly like any other expression —
+    no pipes, no subscriptions. This is where signal() and computed() actually show up
+    in the templates you write every day.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="beginner" since="Angular 17" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A filtered task list — toggle "Show completed" to see <code>&#64;for</code> react to a
+      <code>computed</code>-style filtered view, and watch <code>&#64;empty</code> kick in when
+      the filtered list is empty.
+    </p>
+    <app-live-playground
+      title="@if / @for basics"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      You now know how all three signal primitives connect to what actually renders on screen:
+      <code>signal()</code> holds the state, <code>computed()</code> derives a value from it, and
+      <code>&#64;if</code>/<code>&#64;for</code> read either one directly to decide what appears in
+      the DOM. Next: what changes when a signal lives in a shared, injectable <em>service</em>
+      instead of a single component.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signals & Reactive State"
+    topicRoute="/angular/counter"
+    [prev]="{ label: 'effect() — Reactive Side Effects', route: '/angular/counter/effects' }"
+    [next]="{ label: 'Signals in Services', route: '/angular/counter/readonly-and-services' }" />
+</div>

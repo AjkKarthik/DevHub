@@ -424,8 +424,8 @@ runWithConcurrency(tasks, 2).then(results => {
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between Promise.all and Promise.allSettled?',
-      a: '<code>Promise.all</code> is fail-fast — any rejection immediately rejects the whole thing. Use it when you need ALL to succeed and want to fail on the first error. <code>Promise.allSettled</code> always waits for every promise and returns <code>{status, value/reason}</code> for each. Use it when you want to process partial results even if some fail.',
+      q: 'If you use Promise.all and one promise rejects, do the OTHER still-pending promises get cancelled?',
+      a: 'No — this is a common misconception. JavaScript promises have no cancellation mechanism built in. Promise.all rejecting immediately just means the .catch()/await site stops waiting and moves on; the other promises keep running to completion (or eventual rejection) in the background, and any side effects they were performing (network requests, timers, writes) still happen — they are simply no longer being awaited by that particular Promise.all call. If you genuinely need to abort in-flight work, that requires an explicit mechanism like AbortController, not just Promise.all rejecting.',
     },
     {
       q: 'What is an unhandled promise rejection?',

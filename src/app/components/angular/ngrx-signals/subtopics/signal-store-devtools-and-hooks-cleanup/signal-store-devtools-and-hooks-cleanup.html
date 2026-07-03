@@ -1,0 +1,55 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="NgRx Signals"
+    topicRoute="/angular/ngrx-signals"
+    subtopicLabel="Signal Store DevTools &amp; Hooks Cleanup" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Signal Store DevTools &amp; Hooks Cleanup</h1>
+  <p class="page-subtitle">
+    onDestroy cleanup for resources a store opens itself, component-scoped store lifetime
+    semantics, and connecting signal stores to the Redux DevTools extension.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="@ngrx/signals 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A component-scoped timer store — mount and unmount the widget to see
+      <code>onInit</code>/<code>onDestroy</code> correctly pair up in the console, with no
+      leaked intervals.
+    </p>
+    <app-live-playground
+      title="Signal store devtools and hooks cleanup"
+      template="angular-cli"
+      openFile="src/app/timer.store.ts"
+      [dependencies]="ngrxDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed NgRx Signals</h2>
+    <p>
+      You now know how to layer filtering/sorting/pagination on top of
+      <code>withEntities()</code> with efficiently-memoized computed signals, how to test a
+      signal store with plain <code>TestBed.inject()</code> and mocked
+      <code>rxMethod()</code> dependencies, and how <code>onDestroy</code> cleanup and
+      component-scoped store lifetimes work. Combined with store composition,
+      <code>patchState()</code>, async operations, and
+      <code>signalStoreFeature()</code> from the main topic, that's the complete
+      <code>&#64;ngrx/signals</code> toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NgRx Signals"
+    topicRoute="/angular/ngrx-signals"
+    [prev]="{ label: 'Testing NgRx Signal Stores', route: '/angular/ngrx-signals/testing-ngrx-signal-stores' }" />
+</div>

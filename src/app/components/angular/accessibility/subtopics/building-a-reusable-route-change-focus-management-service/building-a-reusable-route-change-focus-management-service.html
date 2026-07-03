@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Accessibility (a11y)"
+    topicRoute="/angular/accessibility"
+    subtopicLabel="Building a Reusable Route-Change Focus Management Service" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Building a Reusable Route-Change Focus Management Service</h1>
+  <p class="page-subtitle">
+    The one-line h1.focus() snippet has three real gaps — same-page anchor jumps, pages
+    with no h1, and stealing focus on the very first page load.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>FocusManagementService</code> skips same-fragment navigations, falls back to a
+      main landmark when no <code>h1</code> exists, and skips the very first navigation.
+    </p>
+    <app-live-playground
+      title="Building a reusable route-change focus management service"
+      template="angular-cli"
+      openFile="src/app/focus-management.service.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With focus management now production-ready, the final subtopic tests the specific
+      focus-trap and focus-restoration behavior of cdkTrapFocus modals.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Accessibility (a11y)"
+    topicRoute="/angular/accessibility"
+    [prev]="{ label: 'Automated Accessibility Testing with jest-axe', route: '/angular/accessibility/automated-accessibility-testing-with-jest-axe' }"
+    [next]="{ label: 'Testing Focus Trap and Restoration in Modals', route: '/angular/accessibility/testing-focus-trap-and-restoration-in-modals' }" />
+</div>

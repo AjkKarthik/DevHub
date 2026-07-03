@@ -412,10 +412,9 @@ function zip(iterableA, iterableB) {
       explanation: 'Symbol() always creates a brand-new unique symbol. Symbol.for(key) looks up (or creates) a symbol in the global registry — same key returns the same symbol across calls, modules, and realms.',
     },
     {
-      q: 'Are Symbol keys visible in JSON.stringify()?',
-      options: ['Yes, always', 'No — Symbol properties are silently omitted', 'Yes, but encoded as strings', 'Only with a replacer function'],
-      answer: 1,
-      explanation: 'Symbol-keyed properties are non-enumerable from JSON\'s perspective. JSON.stringify() silently ignores them. They are also omitted from Object.keys(), for...in, and Object.assign(). Use Object.getOwnPropertySymbols() to explicitly retrieve them.',
+      q: 'A team stores a piece of sensitive internal state on an object using a Symbol key, reasoning that "JSON.stringify skips it, so it won\'t leak in API responses." Is this a safe way to keep that data out of a serialized response?',
+      options: ['Yes, Symbol keys are cryptographically hidden from any form of introspection', 'It is safe specifically against JSON.stringify, but NOT a general security boundary — Object.getOwnPropertySymbols() can still read the Symbol-keyed value directly if code has a reference to the object, and Symbols only hide data from enumeration-based APIs, not from anything with object access', 'Symbol keys throw an error if any code tries to read them without the exact same Symbol reference', 'Symbol-keyed properties are automatically deleted after JSON.stringify is called once'], answer: 1,
+      explanation: 'Symbol keys being skipped by JSON.stringify is a serialization convenience, not an access-control mechanism — any code that holds a reference to the object can call Object.getOwnPropertySymbols(obj) to enumerate all Symbol keys and then read their values directly, entirely bypassing the "hidden from JSON" property. This distinction matters in practice: Symbols are the right tool for avoiding accidental property name collisions or keeping metadata out of casual enumeration (for...in, Object.keys, JSON output), but they provide zero protection against deliberate or careless code that explicitly looks for them — genuine access control requires closures, WeakMaps keyed by a private token, or the # private class field syntax, not Symbol-keyed properties on an otherwise-public object.',
     },
   ];
 

@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="FormArray — Dynamic Fields"
+    topicRoute="/angular/form-array"
+    subtopicLabel="Validating the Array Itself" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Validating the Array Itself</h1>
+  <p class="page-subtitle">
+    "Every item is valid" and "the array is valid" are two different questions — a
+    min-item-count rule lives on the array, not on any single row.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      An attendee list requiring both a non-empty name per row (item-level) AND at least
+      one attendee overall (array-level) — remove the last attendee to see the array-level
+      error appear.
+    </p>
+    <app-live-playground
+      title="FormArray-level validation"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed FormArray — Dynamic Fields</h2>
+    <p>
+      You now have the complete picture: wiring a FormArray of FormGroups with the extra
+      <code>formGroupName</code> level per row, typed generics constraining what can be
+      pushed, the everyday add/remove/reorder/bulk-replace operations (plus the
+      <code>reset()</code> gotcha), and array-level validation as a genuinely separate layer
+      from item-level rules.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="FormArray — Dynamic Fields"
+    topicRoute="/angular/form-array"
+    [prev]="{ label: 'Add, Remove & Reorder', route: '/angular/form-array/formarray-crud-patterns' }" />
+</div>

@@ -1,0 +1,54 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Zod + Reactive Forms"
+    topicRoute="/angular/zod-forms"
+    subtopicLabel="Nested Schemas &amp; Error Formatting" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Nested Schemas &amp; Error Formatting</h1>
+  <p class="page-subtitle">
+    Validating nested objects and FormArray-shaped lists, and formatting ZodError with
+    flatten() and format() instead of manually searching the issues array.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Zod 3+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A deliberately invalid nested order (bad customer address, one bad line item) shown
+      through both <code>flatten()</code>'s top-level map and <code>format()</code>'s full
+      nested error tree.
+    </p>
+    <app-live-playground
+      title="Nested schemas and error formatting"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="zodDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Zod + Reactive Forms</h2>
+    <p>
+      You now know discriminated unions for shape-switching forms and <code>.transform()</code>
+      for reshaping raw values, how to bridge Zod's async refinements to Angular's genuinely
+      separate <code>AsyncValidatorFn</code> interface, and how to validate nested/FormArray
+      structures and format their errors with <code>flatten()</code> and <code>format()</code>.
+      Combined with the integration strategies, <code>zodValidator</code> factory, and
+      cross-field <code>.refine()</code> from the main topic, that's the complete Zod +
+      Reactive Forms toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Zod + Reactive Forms"
+    topicRoute="/angular/zod-forms"
+    [prev]="{ label: 'Async Validation with Zod', route: '/angular/zod-forms/async-validation-with-zod' }" />
+</div>

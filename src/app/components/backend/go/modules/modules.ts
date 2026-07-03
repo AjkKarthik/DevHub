@@ -487,10 +487,9 @@ go build -mod=vendor ./...`,
       explanation: 'For application repositories, committing go.work is sometimes fine if the whole team shares the same directory structure. For libraries, committing go.work forces all cloners to have matching local paths that likely don\'t exist on their machines. The rule: go.work.gitignore it from library repos; set GOWORK=off in CI.'
     },
     {
-      q: 'What does go mod tidy do and when should you run it?',
-      options: ['It upgrades all dependencies to the latest version', 'It adds missing and removes unused dependencies from go.mod and go.sum, then verifies that both files are consistent', 'It only updates go.sum', 'It removes the vendor directory'],
-      answer: 1,
-      explanation: 'go mod tidy reconciles go.mod with the actual imports in your code: it adds any packages you import but have not listed, and removes packages you list but no longer use. It also updates go.sum with the checksums for all required modules. Run it after: adding/removing imports, upgrading dependencies, or before committing to ensure go.mod and go.sum are not stale. CI should fail if go mod tidy changes anything.'
+      q: 'A CI pipeline runs `go build` successfully but never runs `go mod tidy`. A developer removes the last usage of a dependency in code but forgets to update go.mod. What is the actual consequence?',
+      options: ['The build fails immediately since go.mod references an import that no longer exists in the code', 'Nothing breaks the build — the now-unused dependency simply lingers in go.mod/go.sum indefinitely, since go build does not prune unused requirements', 'go.sum becomes corrupted and all future builds fail', 'The Go toolchain automatically runs tidy behavior as part of every build'], answer: 1,
+      explanation: 'go build only cares that every import actually used in the code is resolvable — it does not care about, and will not remove, extra entries sitting in go.mod that nothing imports anymore. This means an unused dependency (and its transitive dependencies, still recorded in go.sum) can silently accumulate over time, bloating the module graph and keeping stale/vulnerable transitive dependencies "required" long after the code stopped needing them. This is why teams typically add a CI check that runs `go mod tidy` and fails the build if it produces any diff — enforcing that go.mod stays accurate rather than relying on developers to remember.'
     },
   ];
 

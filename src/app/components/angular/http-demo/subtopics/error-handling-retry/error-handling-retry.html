@@ -1,0 +1,51 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HTTP Client"
+    topicRoute="/angular/http"
+    subtopicLabel="Error Handling &amp; Retry" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Error Handling &amp; Retry Strategies</h1>
+  <p class="page-subtitle">
+    catchError recovers the stream, retry() gives a failed request a fixed number of
+    second chances, and HttpErrorResponse.status tells you which of the three actually happened.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A request to a URL that always 404s — watch it retry twice, then branch its status
+      message based on the error's actual HTTP status code.
+    </p>
+    <app-live-playground
+      title="Error handling and retry"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed HTTP Client</h2>
+    <p>
+      You now have the full picture: <code>provideHttpClient()</code> and typed generics,
+      <code>toSignal()</code>/<code>httpResource()</code> for reads, one-shot
+      <code>subscribe()</code> with optimistic updates for writes, and
+      <code>catchError</code>/<code>retry()</code> for when any of it fails. Functional
+      interceptors — the request pipeline that sits in front of all of this — get their own
+      dedicated topic next.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HTTP Client"
+    topicRoute="/angular/http"
+    [prev]="{ label: 'Mutation Requests — POST, PUT, DELETE', route: '/angular/http/mutation-requests' }" />
+</div>

@@ -302,15 +302,15 @@ console.log(claims);
       explanation: 'Conditional Access evaluates every sign-in against configured policies (conditions: who, where, what device, what app, risk level) and applies controls: require MFA, require Intune-compliant device, require hybrid Azure AD join, block access, or require password change. It is the primary zero-trust enforcement mechanism in Entra ID.'
     },
     {
-      q: 'What do Conditional Access policies in Microsoft Entra ID control?',
+      q: 'Why is it strongly recommended to exclude at least one "break-glass" emergency admin account from every Conditional Access policy?',
       options: [
-        'The billing scope for subscriptions',
-        'Which Azure regions users can access resources from',
-        'Access decisions based on signals like user, location, device, and risk enforcing MFA or blocking access',
-        'Password expiry schedules for service principals',
+        'Break-glass accounts do not need this since Conditional Access never applies to admin roles',
+        'A misconfigured Conditional Access policy (e.g. one that accidentally requires a compliant device that no longer exists) can lock out ALL users including admins — an excluded emergency account with a strong, offline-stored credential ensures there is always a way back in',
+        'Excluding an account is required for licensing reasons only',
+        'Break-glass accounts are only relevant for on-premises Active Directory, not Entra ID',
       ],
-      answer: 2,
-      explanation: 'Conditional Access evaluates signals (identity, location, device compliance, app, risk) and enforces policies such as requiring MFA, blocking legacy auth, or requiring compliant devices.',
+      answer: 1,
+      explanation: 'Because Conditional Access policies are evaluated on every sign-in including administrators, a policy bug or overly broad condition (targeting "All users" instead of a specific group, or requiring a device compliance state that got misconfigured) can lock every single account out of the tenant simultaneously, with no way to sign in and fix the policy through the portal. Keeping at least one emergency-access account permanently excluded from Conditional Access, with a strong credential stored securely offline, is the standard safety net against this exact scenario.',
     },
   ];
 

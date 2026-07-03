@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="AG Grid with Angular"
+    topicRoute="/angular/ag-grid"
+    subtopicLabel="Editable Cells &amp; Value Setters" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Editable Cells &amp; Value Setters</h1>
+  <p class="page-subtitle">
+    Inline editing with typed cellEditors, validating and rejecting edits with valueSetter,
+    and keeping a signal-based rowData array correctly in sync instead of silently mutated.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ag-grid-community 22+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A number-typed salary editor with a validating <code>valueSetter</code> (rejects
+      negative values) and a select-typed status editor — double-click a cell to edit.
+    </p>
+    <app-live-playground
+      title="Editable cells and value setters"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="agGridDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="AG Grid with Angular"
+    topicRoute="/angular/ag-grid"
+    [prev]="{ label: 'Custom Cell Renderers as Angular Components', route: '/angular/ag-grid/custom-cell-renderers-angular-components' }"
+    [next]="{ label: 'Master/Detail & Row Grouping', route: '/angular/ag-grid/master-detail-row-grouping' }" />
+</div>

@@ -1,4 +1,5 @@
 // ── Angular Interview Prep — red theme ────────────────────────────────────────
+@use "sass:color";
 
 $accent:       #dd0031;
 $accent-light: #fff1f2;
@@ -301,7 +302,7 @@ $badge-senior: #dc2626;
 
     &:hover {
       border-color: $accent;
-      color: lighten($accent, 18%);
+      color: color.adjust($accent, $lightness: 18%);
     }
 
     &.active {
@@ -313,7 +314,7 @@ $badge-senior: #dc2626;
 
   .iv-toggle-all {
     background: rgba($accent, 0.15);
-    color: lighten($accent, 22%);
+    color: color.adjust($accent, $lightness: 22%);
 
     &:hover {
       background: $accent;
@@ -341,7 +342,7 @@ $badge-senior: #dc2626;
 
   .iv-badge--topic {
     background: rgba($accent, 0.18);
-    color: lighten($accent, 25%);
+    color: color.adjust($accent, $lightness: 25%);
   }
 
   .iv-answer {

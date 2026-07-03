@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Route Resolvers &amp; Named Outlets"
+    topicRoute="/angular/route-resolvers"
+    subtopicLabel="Named Outlet Lifecycle &amp; Detail Drawer Pattern" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Named Outlet Lifecycle &amp; Detail Drawer Pattern</h1>
+  <p class="page-subtitle">
+    RouterOutlet's (activate)/(deactivate) events as outlet-level lifecycle hooks, and
+    building a URL-addressable detail drawer that survives refresh and closes via back button.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A list with a named-outlet detail drawer that animates open/closed, coordinated
+      entirely through <code>(activate)</code>/<code>(deactivate)</code> events rather
+      than a manually-managed boolean flag.
+    </p>
+    <app-live-playground
+      title="Named outlet lifecycle and detail drawer pattern"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed Route Resolvers &amp; Named Outlets</h2>
+    <p>
+      You now know how to test a <code>ResolveFn</code> directly, how
+      <code>runGuardsAndResolvers</code> controls re-fetching on param changes and how to
+      cache a resolver's underlying request with <code>shareReplay</code>, and how
+      <code>(activate)</code>/<code>(deactivate)</code> outlet events power a
+      URL-addressable detail-drawer pattern. Combined with resolver fundamentals,
+      <code>ResolveFn</code>, resolved-data access, and named outlets from the main topic,
+      that's the complete route resolvers and named outlets toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Route Resolvers &amp; Named Outlets"
+    topicRoute="/angular/route-resolvers"
+    [prev]="{ label: 'runGuardsAndResolvers & Resolver Caching', route: '/angular/route-resolvers/run-guards-and-resolvers-caching' }" />
+</div>

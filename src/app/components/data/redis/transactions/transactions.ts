@@ -238,8 +238,8 @@ async function reserveItem(itemId: string, qty: number): Promise<boolean> {
       a: 'Redis transactions do not support rollback because: (1) command errors (wrong type) indicate programmer bugs, not runtime conditions; (2) rollback would sacrifice performance (Redis is optimised for simplicity and speed). If a command in MULTI/EXEC fails, other commands still execute. Only syntax errors at queue time abort the whole transaction.',
     },
     {
-      q: 'What is the DISCARD command?',
-      a: 'DISCARD aborts a MULTI/EXEC transaction — flushes the queued commands and exits transaction mode. Also unWATCHes all watched keys. Use when you detect a condition mid-queue that means the transaction should not proceed. After DISCARD, the connection returns to normal command mode.',
+      q: 'If a client disconnects abruptly after MULTI but before calling EXEC or DISCARD, what happens to the queued commands?',
+      a: 'The queued commands are simply discarded along with the connection itself — a MULTI/EXEC transaction\'s queued state exists only in the context of that specific client connection, so when the connection closes (cleanly or abruptly), Redis discards any commands that were queued but never executed, and any WATCHed keys are automatically unwatched as part of the same cleanup. No partial or orphaned transaction state persists server-side after a client disconnects mid-transaction — there is nothing equivalent to a "dangling transaction" left behind to clean up.',
     },
     {
       q: 'How does Lua scripting compare to MULTI/EXEC for atomic operations?',

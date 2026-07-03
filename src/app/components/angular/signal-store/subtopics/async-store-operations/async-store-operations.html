@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signal Store Pattern"
+    topicRoute="/angular/store"
+    subtopicLabel="Async Store Operations" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Async Store Operations</h1>
+  <p class="page-subtitle">
+    No actions, no effects — a store's async method is just an async method, with
+    dedicated loading/error signals and a finally block that never leaves the UI stuck.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 16" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A todos store with a simulated fetch — try both the succeeding and failing buttons,
+      and watch <code>loading</code> always reset correctly either way.
+    </p>
+    <app-live-playground
+      title="Async store operations"
+      template="angular-cli"
+      openFile="src/app/todos.store.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Plain signal stores are one point on a spectrum — the next subtopic covers when to
+      reach for <code>&#64;ngrx/signals</code> or classic NgRx instead, and when a plain store
+      is genuinely the better choice.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signal Store Pattern"
+    topicRoute="/angular/store"
+    [next]="{ label: 'Signal Store vs NgRx', route: '/angular/store/signal-store-vs-ngrx' }" />
+</div>

@@ -396,10 +396,8 @@ flaky().then(console.log).catch(console.error);`,
       explanation: 'Facade provides a simplified interface to a complex subsystem. Example: a PaymentFacade.charge() that internally coordinates card tokenisation, fraud check, and ledger update — callers only see one method. Reduces coupling between callers and the complex internals.',
     },
     {
-      q: 'What is the Strategy pattern?',
-      options: ['Runs code at a set time interval', 'Defines a family of algorithms and makes them interchangeable at runtime', 'Ensures a class has only one instance', 'Notifies subscribers of state changes'],
-      answer: 1,
-      explanation: 'Strategy encapsulates a family of algorithms (sort by price, sort by name, sort by rating) and makes them swappable without changing the calling code. In JS this is often just a function parameter — passing different comparators to Array.sort() is a Strategy pattern.',
+      q: 'In JavaScript specifically, do you usually need a formal Strategy class hierarchy to apply the Strategy pattern?',
+      options: ['Yes, JavaScript requires classes implementing a common interface just like Java or C#', 'No — since functions are first-class values in JavaScript, a plain function passed as a parameter (like a custom comparator passed to Array.sort()) already IS a Strategy, with no class hierarchy needed', 'No, but only if using TypeScript with interfaces', 'Yes, but only when using ES6 class syntax'], answer: 1, explanation: 'This is a case where JavaScript\'s first-class functions make a classic OOP pattern nearly invisible in practice — the "family of interchangeable algorithms" that Strategy formalizes in class-based languages is just a function value in JS. Passing arr.sort((a, b) => a.price - b.price) versus arr.sort((a, b) => a.name.localeCompare(b.name)) is swapping strategies at the call site, with no Strategy interface, base class, or concrete strategy classes required at all.',
     },
     {
       q: 'When should you use the Factory pattern instead of calling `new` directly?',

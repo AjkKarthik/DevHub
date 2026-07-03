@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Signal Effects"
+    topicRoute="/angular/signal-effects"
+    subtopicLabel="afterRenderEffect for DOM Measurements" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">afterRenderEffect for DOM Measurements</h1>
+  <p class="page-subtitle">
+    Why plain effect() can read stale layout, and how separate read/write phases prevent
+    layout thrashing while staying signal-driven.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 19+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Toggling columns re-measures the box's actual rendered width through a
+      <code>read</code>/<code>write</code> phase pair — the read phase's return value
+      flows directly into the write phase.
+    </p>
+    <app-live-playground
+      title="afterRenderEffect for DOM measurements"
+      template="angular-cli"
+      openFile="src/app/measured-box.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With DOM measurement covered, the final subtopic tackles a different practical
+      problem — effects that fire too often for expensive side effects.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Signal Effects"
+    topicRoute="/angular/signal-effects"
+    [prev]="{ label: 'Testing Signal Effects and Cleanup', route: '/angular/signal-effects/testing-signal-effects-and-cleanup' }"
+    [next]="{ label: 'Debouncing Effects for Expensive Side Effects', route: '/angular/signal-effects/debouncing-effects-for-expensive-side-effects' }" />
+</div>

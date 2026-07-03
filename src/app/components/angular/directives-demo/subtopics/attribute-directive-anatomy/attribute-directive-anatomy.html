@@ -1,0 +1,47 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Custom Directives"
+    topicRoute="/angular/directives"
+    subtopicLabel="Attribute Directive Anatomy" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Attribute Directive Anatomy</h1>
+  <p class="page-subtitle">
+    Modify an existing element without adding or removing DOM nodes — ElementRef and
+    Renderer2 for safe mutation, HostListener for events, input() for configuration.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A highlight-on-hover directive using <code>Renderer2</code> for the color and a
+      signal <code>input()</code> for configurability.
+    </p>
+    <app-live-playground
+      title="Attribute directive anatomy"
+      template="angular-cli"
+      openFile="src/app/highlight.directive.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Attribute directives modify what's already there — the next subtopic covers
+      structural directives, which control whether an element exists in the DOM at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Custom Directives"
+    topicRoute="/angular/directives"
+    [next]="{ label: 'Custom Structural Directives', route: '/angular/directives/custom-structural-directives' }" />
+</div>

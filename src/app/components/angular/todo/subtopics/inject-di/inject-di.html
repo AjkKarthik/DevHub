@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Reactive Forms &amp; Signal Services"
+    topicRoute="/angular/todo"
+    subtopicLabel="inject() — Modern Dependency Injection" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">inject() — Modern Dependency Injection</h1>
+  <p class="page-subtitle">
+    A field initialiser that resolves a dependency with no constructor at all —
+    and the only way to get DI inside Angular's functional guards, interceptors,
+    and resolvers, which have no constructor to inject into.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Angular 14" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A component injecting a service with a single field-initialiser line —
+      no constructor, no parameter list.
+    </p>
+    <app-live-playground
+      title="inject() basics"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      <code>inject()</code> is how every other piece of this topic gets its dependencies —
+      the form builder in the next subtopic, the shared service two subtopics from now,
+      and the functional route guards after that all lean on it. Next: building the reactive
+      form itself with <code>FormBuilder</code> and <code>Validators</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Reactive Forms & Signal Services"
+    topicRoute="/angular/todo"
+    [next]="{ label: 'Reactive Forms Basics', route: '/angular/todo/reactive-forms-basics' }" />
+</div>

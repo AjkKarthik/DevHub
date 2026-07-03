@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template-Driven vs Reactive Forms"
+    topicRoute="/angular/forms"
+    subtopicLabel="Template-Driven vs Reactive" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Template-Driven vs Reactive — Two Real APIs, Not a Style Choice</h1>
+  <p class="page-subtitle">
+    One keeps the form model in the DOM via ngModel, the other keeps it in the class via
+    FormBuilder — and which one fits depends on how complex the form actually is.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="beginner" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      The same email field, built twice — once with <code>ngModel</code>, once with
+      <code>formControlName</code> — submitting to the same "last submitted" display.
+    </p>
+    <app-live-playground
+      title="Template-driven vs reactive"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      From here on, everything assumes reactive forms — the next subtopic covers the object
+      model reactive forms are actually built from: <code>FormControl</code>,
+      <code>FormGroup</code>, and <code>FormArray</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template-Driven vs Reactive Forms"
+    topicRoute="/angular/forms"
+    [next]="{ label: 'FormGroup, FormControl & FormArray', route: '/angular/forms/formgroup-formcontrol-formarray' }" />
+</div>

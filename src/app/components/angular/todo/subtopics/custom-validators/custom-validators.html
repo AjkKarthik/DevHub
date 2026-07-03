@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Reactive Forms &amp; Signal Services"
+    topicRoute="/angular/todo"
+    subtopicLabel="Custom &amp; Async Validators" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Custom &amp; Async Validators</h1>
+  <p class="page-subtitle">
+    A sync validator is just a function. An async one adds a PENDING status, a debounce,
+    and a switchMap — the same pattern you'd use for a live username-availability check.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Type a username — <code>noEmoji</code> validates synchronously as you type, while
+      <code>uniqueUsernameValidator</code> debounces 300ms before checking against a fake
+      "taken usernames" list.
+    </p>
+    <app-live-playground
+      title="Custom validators"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Validators decide WHETHER a value is valid. The last subtopic covers the flags that
+      decide WHEN to actually show that to the user — touched, dirty, and status — so errors
+      do not flash on screen before the user has had a chance to type anything.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Reactive Forms & Signal Services"
+    topicRoute="/angular/todo"
+    [prev]="{ label: 'Signal-Based Services', route: '/angular/todo/signal-based-services' }"
+    [next]="{ label: 'Form State — touched, dirty, status', route: '/angular/todo/form-state' }" />
+</div>

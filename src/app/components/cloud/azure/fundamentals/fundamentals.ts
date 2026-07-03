@@ -242,8 +242,8 @@ console.log(parseResourceId(id));
 
   qna: QnaItem[] = [
     {
-      q: 'What is the difference between an Azure Region and an Availability Zone?',
-      a: 'A Region is a geographic area (e.g. "East US") that contains one or more datacenters. An Availability Zone is a physically separate building within that region — with its own power, cooling and network — used to protect against single-datacenter failure. Not all regions have AZs.'
+      q: 'What is a "region pair" in Azure, and why does it matter for disaster recovery planning?',
+      a: 'Azure pairs most regions with another region in the same geography (e.g. East US is paired with West US) at least 300 miles apart, chosen so both regions are unlikely to be affected by the same natural disaster or large-scale outage simultaneously. Region pairs also get priority treatment during Azure-wide incidents: if a region needs to be restored, Microsoft prioritizes bringing one region in each pair back online first, and platform services with geo-redundant replication (like GRS storage) automatically use the paired region as the replication target — making it the natural choice for cross-region disaster recovery architecture.'
     },
     {
       q: 'Can a resource belong to multiple Resource Groups?',

@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dependency Injection"
+    topicRoute="/angular/di"
+    subtopicLabel="Multi-Providers &amp; Extension Points" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Multi-Providers &amp; Extension Points</h1>
+  <p class="page-subtitle">
+    How multi: true collects values instead of overwriting them, building your own
+    self-registering extension point, and the empty-registrations gotcha to avoid.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 2+ (provideAppInitializer: 19+)" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Two independent "features" self-register widgets onto the same
+      <code>multi: true</code> token — the dashboard shell injects the token once and
+      renders whatever is registered, without knowing about either widget ahead of time.
+    </p>
+    <app-live-playground
+      title="Multi-providers and extension points"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Dependency Injection"
+    topicRoute="/angular/di"
+    [prev]="{ label: 'Injection Context Deep Dive', route: '/angular/di/injection-context-deep-dive' }"
+    [next]="{ label: 'Environment Injectors & Standalone Bootstrap', route: '/angular/di/environment-injectors-standalone-bootstrap' }" />
+</div>

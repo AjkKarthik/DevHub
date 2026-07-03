@@ -527,10 +527,10 @@ func main() {
       explanation: 'Only the sender should close a channel. Closing signals "no more values will be sent." Closing from the receiver is dangerous if another sender goroutine still exists — it would panic when it tries to send. Channels are garbage collected when unreachable; no explicit close is needed for GC.'
     },
     {
-      q: 'What happens when you select on multiple channels that are all ready simultaneously?',
-      options: ['The first case always wins', 'The runtime selects a ready case uniformly at random', 'It panics', 'The case with the smallest buffer wins'],
-      answer: 1,
-      explanation: 'When multiple cases in a select statement are simultaneously ready, Go picks one at random with equal probability. This prevents starvation and is by design. If you need prioritised selection (one channel has higher priority), implement it explicitly: first check the high-priority channel with a non-blocking select, then fall through to the regular select.'
+      q: 'A select statement has one case reading from a high-throughput channel and another reading from a rarely-used shutdown channel. Over many iterations of a loop containing this select, is the shutdown case guaranteed to eventually be picked even while the busy channel is almost always also ready?',
+      options: ['No — if the busy channel is ready far more often, random per-iteration selection means the shutdown case could theoretically be starved for a very long time if both happen to be ready together repeatedly', 'Yes, Go guarantees round-robin fairness across all cases over time', 'The shutdown case is always prioritized since it appears with `<-ctx.Done()`', 'select processes cases in declaration order when multiple are ready'],
+      answer: 0,
+      explanation: 'Each individual select evaluation is an independent uniform-random choice among the currently-ready cases — Go makes no long-run fairness guarantee across many iterations. In practice, if the busy channel is ready on essentially every iteration and the shutdown channel becomes ready only once, that one iteration where both are ready still has just a 50% chance of picking shutdown (with two ready cases), so shutdown responsiveness is probabilistic, not instant. For guaranteed-prompt shutdown handling, check ctx.Done() with a dedicated, unbuffered non-blocking select before or in addition to the main select, rather than relying on random tie-breaking alone.'
     },
   ];
 

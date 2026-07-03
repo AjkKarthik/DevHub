@@ -1,0 +1,53 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="AG Grid with Angular"
+    topicRoute="/angular/ag-grid"
+    subtopicLabel="Master/Detail &amp; Row Grouping" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Master/Detail &amp; Row Grouping</h1>
+  <p class="page-subtitle">
+    Organizing flat data into collapsible groups with aggregation, versus nesting a genuinely
+    separate related dataset per row with master/detail — and when to reach for each.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="ag-grid-community 22+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Employees grouped by department, with a <code>sum</code> aggregation showing total
+      salary per group — expand/collapse each group and toggle
+      <code>groupDefaultExpanded</code> in the exercise.
+    </p>
+    <app-live-playground
+      title="Row grouping and aggregation"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [dependencies]="agGridDeps"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed AG Grid with Angular</h2>
+    <p>
+      You now know how to build cell renderers as full Angular components with
+      <code>ICellRendererAngularComp</code>, how to make cells editable with typed editors
+      and a validating <code>valueSetter</code>, and how to organize data with row grouping +
+      aggregation versus nesting genuinely related data with master/detail. Combined with
+      column definitions, selection/filtering/export, signals integration, and performance
+      guidance from the main topic, that's the complete AG Grid toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="AG Grid with Angular"
+    topicRoute="/angular/ag-grid"
+    [prev]="{ label: 'Editable Cells & Value Setters', route: '/angular/ag-grid/editable-cells-value-setters' }" />
+</div>

@@ -1,0 +1,40 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Change Detection"
+    topicRoute="/angular/change-detection"
+    subtopicLabel="Bridging External Libraries to OnPush" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Bridging External Libraries to OnPush</h1>
+  <p class="page-subtitle">
+    Making vanilla JS widgets, third-party SDKs, and raw callback APIs correctly trigger
+    OnPush re-renders with NgZone.run() and signals as the zone-agnostic bridge.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A simulated third-party callback updates a plain field (unreliable under OnPush) side
+      by side with a signal update (always correct) — watch which value actually renders.
+    </p>
+    <app-live-playground
+      title="Bridging external libraries to OnPush"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Change Detection"
+    topicRoute="/angular/change-detection"
+    [prev]="{ label: 'Embedded Views & Dynamic Component CD', route: '/angular/change-detection/embedded-views-dynamic-cd' }"
+    [next]="{ label: 'Testing OnPush Components', route: '/angular/change-detection/testing-onpush-components' }" />
+</div>

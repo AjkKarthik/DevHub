@@ -434,8 +434,8 @@ builder.Services.AddScoped<AuditFilter>();`,
       a: 'Yes. IActionFilter runs inside the MVC pipeline, IEndpointFilter runs at the endpoint level (outside MVC). The IEndpointFilter executes first. Both are valid on controllers, but prefer IActionFilter for controller-specific concerns that need ActionContext.',
     },
     {
-      q: 'What is the difference between [ServiceFilter] and [TypeFilter]?',
-      a: '[ServiceFilter(typeof(T))] resolves T from the DI container — the filter must be registered as a service. [TypeFilter(typeof(T))] uses ActivatorUtilities to create the filter, allowing you to pass additional constructor arguments via the Arguments property without requiring DI registration.',
+      q: 'If a filter has constructor dependencies but was never registered in the DI container, which attribute must you use?',
+      a: '[TypeFilter(typeof(T))] — it uses ActivatorUtilities to construct the filter directly, resolving what dependencies it can from DI while allowing extra constructor arguments to be passed explicitly via the Arguments property. [ServiceFilter(typeof(T))] would throw at runtime, since it strictly requires T to already be registered as a service in the container — it has no fallback construction mechanism.',
     },
     {
       q: 'How do result filters differ from action filters?',

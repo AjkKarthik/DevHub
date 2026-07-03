@@ -286,8 +286,8 @@ class DashboardBroadcaster {
       a: 'On connect: PUBLISH presence:join userId. On disconnect: PUBLISH presence:leave userId. Subscribers track online users in a set. Add a heartbeat: publish every 30s with SETEX user:online:id 60 1 (auto-expires = offline detection). Keyspace notifications on expired events can also detect disconnection.',
     },
     {
-      q: 'What are Redis keyspace notifications used for?',
-      a: 'Keyspace notifications fire Pub/Sub events when keys change. Enable: <code>notify-keyspace-events KEA</code> (K=keyspace, E=keyevent, A=all, x=expired, g=generic, l=list, z=zset). Subscribe to <code>__keyevent@0__:expired</code> to react when any key expires — useful for TTL-based workflows like session cleanup.',
+      q: 'Are Redis keyspace notification events guaranteed to be delivered to a subscriber, and what does that mean for using them as a reliability-critical mechanism?',
+      a: 'No — keyspace notifications are delivered via ordinary Redis Pub/Sub under the hood, which inherits Pub/Sub\'s at-most-once, fire-and-forget delivery semantics: if a subscriber is disconnected, slow, or simply not yet connected when a key expires or changes, that notification is lost forever with no replay mechanism, no persistence, and no way to know it was missed. This makes keyspace notifications a reasonable BEST-EFFORT trigger for things like cache-warming or logging, but a poor foundation for anything requiring reliable delivery (like guaranteed session cleanup or billing-critical expiry handling) — for guaranteed processing of expiry-like events, a Redis Stream (which persists entries and supports consumer groups with acknowledgment) is the more appropriate building block.',
     },
     {
       q: 'Can Redis Pub/Sub messages be delivered to offline subscribers?',

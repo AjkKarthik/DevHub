@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="@defer — Deferred Loading"
+    topicRoute="/angular/defer"
+    subtopicLabel="Performance &amp; Prefetching" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Performance &amp; Prefetching</h1>
+  <p class="page-subtitle">
+    &#64;defer improves Time to Interactive — but only when applied to genuinely heavy
+    components, and prefetch lets you download early without rendering early.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 17.2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A chart widget that prefetches on idle but only renders once scrolled into view —
+      by the time you see it, the chunk may already be cached.
+    </p>
+    <app-live-playground
+      title="@defer performance and prefetch"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>You've completed &#64;defer — Deferred Loading</h2>
+    <p>
+      You now know what <code>&#64;defer</code> actually does and why it exists, the full
+      set of trigger conditions, the three companion blocks for a clean loading UX, the
+      standalone-only requirement plus how nesting and SSR work, and — most importantly —
+      when deferring genuinely helps versus when it just adds overhead. That's template-level
+      code splitting, end to end.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="@defer — Deferred Loading"
+    topicRoute="/angular/defer"
+    [prev]="{ label: 'Requirements & Nesting', route: '/angular/defer/defer-requirements-nesting' }" />
+</div>

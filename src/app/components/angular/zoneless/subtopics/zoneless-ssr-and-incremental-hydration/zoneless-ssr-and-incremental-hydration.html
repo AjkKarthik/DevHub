@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Zoneless Angular"
+    topicRoute="/angular/zoneless"
+    subtopicLabel="Zoneless SSR and Incremental Hydration" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Zoneless SSR and Incremental Hydration</h1>
+  <p class="page-subtitle">
+    Why a dehydrated <code>&#64;defer</code> block runs genuinely zero reactive machinery in a
+    zoneless app — and why <code>resource()</code> is the supported way to fetch during
+    zoneless SSR.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 19+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A product page with an incrementally-hydrated reviews section using
+      <code>&#64;defer (hydrate on viewport)</code>, fetching data via <code>resource()</code>
+      so Angular's SSR lifecycle can wait for it correctly.
+    </p>
+    <app-live-playground
+      title="Zoneless SSR and incremental hydration"
+      template="angular-cli"
+      openFile="src/app/product-page.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With migration auditing and SSR/hydration covered, the final subtopic revisits the
+      main topic's own NgZone interop example with a sharper question — is it necessary?
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Zoneless Angular"
+    topicRoute="/angular/zoneless"
+    [prev]="{ label: 'Auditing a Codebase for Zoneless Readiness', route: '/angular/zoneless/auditing-a-codebase-for-zoneless-readiness' }"
+    [next]="{ label: 'When ngZone.run() Is Actually Unnecessary', route: '/angular/zoneless/when-ngzone-run-is-actually-unnecessary' }" />
+</div>

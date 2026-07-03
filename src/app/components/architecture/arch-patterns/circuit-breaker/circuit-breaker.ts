@@ -363,8 +363,8 @@ class ProductService {
 
   qna: QnaItem[] = [
     {
-      q: 'How does a circuit breaker differ from a retry?',
-      a: 'Retry handles transient failures (single failed request) by trying again immediately. Circuit breaker handles sustained failures (service is down) by stopping all calls for a cooldown period. Use both: retry for blips, circuit breaker to stop hammering a dead service.',
+      q: 'Why does combining retry WITHOUT a circuit breaker on a dying downstream service make the outage worse rather than better?',
+      a: 'Retries alone, applied against a service that is genuinely overloaded or failing, multiply the request volume hitting that already-struggling service (each failed call becomes 2-4x the calls after retries), which is the opposite of what a struggling service needs — this can push a partially-degraded service into full failure, and en masse across many calling services, retry storms can turn a brief blip into a prolonged outage. A circuit breaker sitting above the retry logic detects the sustained failure pattern and stops sending ANY traffic (retried or not) for a cooldown period, giving the downstream service room to recover — which is why production resilience libraries (Polly, resilience4j) explicitly layer circuit breaker around retry, never retry alone.',
     },
     {
       q: 'What is the Bulkhead pattern and how does it complement circuit breakers?',

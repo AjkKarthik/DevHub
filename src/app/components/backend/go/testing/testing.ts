@@ -733,10 +733,9 @@ func BenchmarkPushPop(b *testing.B) {
       explanation: 'TestMain is an optional hook — if defined, the testing framework calls it instead of running tests directly. You perform shared setup (start a DB, seed test data, spin up a test server), call m.Run() to run all tests in the package, then perform teardown, then os.Exit(m.Run()). Without TestMain, tests run automatically.'
     },
     {
-      q: 'What does the -race flag do and when should you use it?',
-      options: ['It runs tests in a random order', 'It enables the Go race detector — instruments memory accesses to detect concurrent data races at runtime', 'It parallelises test execution', 'It skips slow tests'],
-      answer: 1,
-      explanation: 'go test -race instruments every memory read and write with shadow memory tracking. If two goroutines access the same variable concurrently and at least one write is not protected by a synchronisation primitive, the race detector panics with a detailed report showing the conflicting goroutine stacks. Always run -race in CI. It carries ~5–10x runtime overhead, so avoid it in production binaries. Some race conditions only manifest under specific timing — -race catches them deterministically.'
+      q: 'A test suite passes cleanly under `go test -race` in CI, but a data race still occurs in production. Why doesn\'t a clean -race run guarantee the absence of race conditions?',
+      options: ['The race detector only checks the first goroutine spawned in each test', 'The race detector can only report races on code paths that actually execute with genuinely concurrent, conflicting access during that specific test run — it detects races dynamically, not statically, so an untested interleaving or an under-exercised concurrent code path can still harbor a race that simply never triggered during the test', '-race is disabled by default in CI environments regardless of the flag', 'Production always uses a different race detector than tests'], answer: 1,
+      explanation: 'The Go race detector is a DYNAMIC analysis tool — it instruments memory accesses and flags races only when it actually observes two goroutines concurrently touching the same memory with a conflicting unsynchronized access during that particular execution. If a test suite doesn\'t exercise a particular concurrent code path with enough parallelism, timing variance, or the specific interleaving that triggers the bug, -race has nothing to detect, even though the underlying race condition exists in the code. This is why -race in CI substantially reduces risk but is not a formal guarantee — production traffic patterns and load can surface races that a test suite\'s narrower execution paths never hit.'
     },
   ];
 

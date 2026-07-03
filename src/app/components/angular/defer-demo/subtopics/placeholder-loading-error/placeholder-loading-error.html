@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="@defer — Deferred Loading"
+    topicRoute="/angular/defer"
+    subtopicLabel="Placeholder, Loading &amp; Error" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">&#64;placeholder, &#64;loading, and &#64;error — The Companion Blocks</h1>
+  <p class="page-subtitle">
+    What the user sees before, during, and if a deferred chunk fails to download —
+    all optional, but layout-shift-and-confusion-preventing in real production UI.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A full lifecycle: delayed placeholder, minimum-duration loading indicator, and an
+      error fallback — all three companion blocks together.
+    </p>
+    <app-live-playground
+      title="@placeholder, @loading, @error"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      The companion blocks handle the UX — the next subtopic covers the technical
+      constraints: what kind of component CAN be deferred, and how nesting and
+      server-side rendering interact with it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="@defer — Deferred Loading"
+    topicRoute="/angular/defer"
+    [prev]="{ label: 'Trigger Conditions', route: '/angular/defer/defer-triggers' }"
+    [next]="{ label: 'Requirements & Nesting', route: '/angular/defer/defer-requirements-nesting' }" />
+</div>

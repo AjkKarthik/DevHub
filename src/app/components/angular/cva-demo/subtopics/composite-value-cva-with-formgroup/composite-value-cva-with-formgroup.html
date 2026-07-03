@@ -1,0 +1,41 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Control Value Accessor"
+    topicRoute="/angular/cva"
+    subtopicLabel="Composite Value CVA with FormGroup" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Composite Value CVA with FormGroup</h1>
+  <p class="page-subtitle">
+    Building a CVA component whose value is a whole object, backed by a private internal
+    FormGroup — and the emitEvent: false guard that prevents a spurious feedback loop.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A three-field address widget that presents as ONE <code>formControlName</code> to the
+      parent — prefill it programmatically and toggle disabled state to see both propagate
+      correctly through the internal FormGroup.
+    </p>
+    <app-live-playground
+      title="Composite value CVA with FormGroup"
+      template="angular-cli"
+      openFile="src/app/address-input.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Control Value Accessor"
+    topicRoute="/angular/cva"
+    [prev]="{ label: 'NgControl Self-Injection for Validation Display', route: '/angular/cva/ngcontrol-self-injection-validation-display' }"
+    [next]="{ label: 'Testing CVA Components', route: '/angular/cva/testing-cva-components' }" />
+</div>

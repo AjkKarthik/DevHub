@@ -1,0 +1,39 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dynamic / Schema-Driven Forms"
+    topicRoute="/angular/dynamic-forms"
+    subtopicLabel="Nested &amp; Array Schema Fields" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Nested &amp; Array Schema Fields</h1>
+  <p class="page-subtitle">
+    Recursive schema nesting for group fields, repeatable array fields built from an
+    itemSchema, and why tracking form-array items by $index silently corrupts state.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 2+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A schema with a nested "address" group and a repeatable "emergency contacts" array,
+      both built recursively from the same <code>buildForm()</code> function.
+    </p>
+    <app-live-playground
+      title="Nested and array schema fields"
+      template="angular-cli"
+      openFile="src/app/form-builder.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <app-subtopic-nav
+    topicLabel="Dynamic / Schema-Driven Forms"
+    topicRoute="/angular/dynamic-forms"
+    [next]="{ label: 'Schema-Driven Cross-Field & Async Validation', route: '/angular/dynamic-forms/schema-driven-cross-field-and-async-validation' }" />
+</div>

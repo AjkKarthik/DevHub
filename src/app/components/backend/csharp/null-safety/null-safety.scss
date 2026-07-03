@@ -1,4 +1,6 @@
 // ── Variables ────────────────────────────────────────────────────────────────
+@use "sass:color";
+
 $cs-purple:       #6b21a8;
 $cs-violet:       #7c3aed;
 $cs-violet-light: #a78bfa;
@@ -98,7 +100,7 @@ $dark-violet-bg:  #1e1730;
   .page-header-icon.cs-icon { background: #7c3aed; color: #fff; }
 
   .page-title {
-    background: linear-gradient(135deg, $cs-violet-light 0%, lighten($cs-violet, 20%) 100%);
+    background: linear-gradient(135deg, $cs-violet-light 0%, color.adjust($cs-violet, $lightness: 20%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

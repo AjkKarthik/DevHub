@@ -6,6 +6,172 @@ import { filter, map, startWith } from 'rxjs';
 const ROUTE_LABELS: Record<string, string> = {
   '':                   'Home',
   'counter':            'Signals & State',
+  'what-is-a-signal':   'What Is a Signal?',
+  'computed':           'computed() — Derived State',
+  'effects':            'effect() — Reactive Side Effects',
+  'control-flow':       '@if and @for — Control Flow',
+  'readonly-and-services': 'Signals in Services',
+  'rxjs-interop':       'RxJS Interop',
+  'inject-di':          'inject() — Modern Dependency Injection',
+  'reactive-forms-basics': 'Reactive Forms Basics',
+  'signal-based-services': 'Signal-Based Services',
+  'form-state':         'Form State — touched, dirty, status',
+  'template-driven-vs-reactive': 'Template-Driven vs Reactive',
+  'formgroup-formcontrol-formarray': 'FormGroup, FormControl & FormArray',
+  'cross-field-validators': 'Cross-Field Validators',
+  'httpclient-setup':   'HttpClient Setup',
+  'get-requests':       'GET Requests — toSignal() and httpResource()',
+  'mutation-requests':  'Mutation Requests — POST, PUT, DELETE',
+  'error-handling-retry': 'Error Handling & Retry',
+  'what-are-interceptors': 'What Are Interceptors?',
+  'auth-interceptor-token-refresh': 'Auth Interceptor & Token Refresh',
+  'global-error-interceptor': 'Global Error Interceptor',
+  'loading-spinner-httpcontext': 'Loading Spinner & HttpContext',
+  'input-signals':      'input() — Modern @Input',
+  'output-signals':     'output() — Modern @Output',
+  'model-two-way-binding': 'model() — Two-Way Binding',
+  'viewchild-viewchildren': 'viewChild() and viewChildren()',
+  'contentchild-migration': 'contentChild() & Migration',
+  'dynamic-formarray-of-groups': 'FormArray of FormGroups',
+  'typed-formarray':    'Typed FormArray',
+  'formarray-crud-patterns': 'Add, Remove & Reorder',
+  'formarray-level-validation': 'Validating the Array Itself',
+  'defer-basics':        'What Is @defer?',
+  'defer-triggers':      'Trigger Conditions',
+  'placeholder-loading-error': 'Placeholder, Loading & Error',
+  'defer-requirements-nesting': 'Requirements & Nesting',
+  'defer-performance-prefetch': 'Performance & Prefetching',
+  'material-setup-theming': 'Setup & Theming',
+  'material-form-fields':  'Form Fields, Inputs & Validation',
+  'material-common-components': 'Buttons, Dialogs & Snackbars',
+  'mattable-sorting-pagination': 'MatTable — Sorting & Pagination',
+  'material-testing-accessibility': 'Testing, Accessibility & Performance',
+  'async-store-operations': 'Async Store Operations',
+  'signal-store-vs-ngrx': 'Signal Store vs NgRx',
+  'testing-composing-stores': 'Testing & Composing Stores',
+  'interpolation-expressions': 'Interpolation & Expressions',
+  'property-event-two-way-binding': 'Property, Event & Two-Way Binding',
+  'template-refs-and-let': 'Template Refs & @let',
+  'pipes-built-in-custom': 'Pipes — Built-in & Custom',
+  'attribute-directive-anatomy': 'Attribute Directive Anatomy',
+  'custom-structural-directives': 'Custom Structural Directives',
+  'directive-composition-api': 'Directive Composition API',
+  'lifecycle-hook-sequence': 'The Hook Sequence',
+  'init-hooks-ngonchanges-ngoninit': 'ngOnChanges & ngOnInit',
+  'view-content-hooks-afternextrender': 'View & Content Hooks',
+  'cleanup-destroyref-takeuntildestroyed': 'Cleanup — DestroyRef & takeUntilDestroyed',
+  'formatting-pipes-locale': 'Formatting Pipes & Locale',
+  'collection-string-pipes': 'Collection & String Pipes',
+  'async-pipe-let-performance': 'AsyncPipe, @let & Performance',
+  'injection-context-deep-dive': 'Injection Context Deep Dive',
+  'multi-providers-extension-points': 'Multi-Providers & Extension Points',
+  'environment-injectors-standalone-bootstrap': 'Environment Injectors & Standalone Bootstrap',
+  'custom-url-matchers-route-config': 'Custom UrlMatchers & Route Config',
+  'router-events-navigation-lifecycle': 'Router Events & Navigation Lifecycle',
+  'route-reuse-strategy': 'Route Reuse Strategy',
+  'view-transitions-relative-navigation': 'View Transitions & Relative Navigation',
+  'custom-plugins-click-interactions': 'Custom Plugins & Click Interactions',
+  'mixed-charts-annotations': 'Mixed Charts & Annotations',
+  'time-scale-large-datasets': 'Time Scale & Large Datasets',
+  'discriminated-unions-and-transforms': 'Discriminated Unions & Transforms',
+  'async-validation-with-zod': 'Async Validation with Zod',
+  'nested-schemas-error-formatting': 'Nested Schemas & Error Formatting',
+  'programmatic-projection-createcomponent': 'Programmatic Projection with createComponent',
+  'compound-components-content-queries': 'Compound Components with Content Queries',
+  'recursive-templates-ngtemplateoutlet': 'Recursive Templates with NgTemplateOutlet',
+  'embedded-views-dynamic-cd': 'Embedded Views & Dynamic Component CD',
+  'bridging-external-libraries-onpush': 'Bridging External Libraries to OnPush',
+  'testing-onpush-components': 'Testing OnPush Components',
+  'dynamic-validators-runtime': 'Dynamic Validators at Runtime',
+  'validator-directives-template-forms': 'Validator Directives for Template Forms',
+  'generic-reusable-validators': 'Generic Reusable Validators',
+  'custom-operators-and-pipe': 'Custom Operators & pipe()',
+  'multicasting-share-operators': 'Multicasting & share() Operators',
+  'testing-rxjs-marble-diagrams': 'Testing RxJS with Marble Diagrams',
+  'cdk-menu-keyboard-navigation': 'CDK Menu & Keyboard Navigation',
+  'cdk-table-headless-data-table': 'CDK Table — Headless Data Table',
+  'building-custom-overlay-component': 'Building a Custom Overlay Component',
+  'custom-cell-renderers-angular-components': 'Custom Cell Renderers as Angular Components',
+  'editable-cells-value-setters': 'Editable Cells & Value Setters',
+  'master-detail-row-grouping': 'Master/Detail & Row Grouping',
+  'optimistic-updates-rollback': 'Optimistic Updates & Rollback',
+  'dependent-and-parallel-queries': 'Dependent & Parallel Queries',
+  'infinite-queries-pagination': 'Infinite Queries & Pagination',
+  'intervals-and-recurring-events': 'Intervals & Recurring Events',
+  'timezone-handling-date-fns-tz': 'Timezone Handling with date-fns-tz',
+  'reactive-date-range-picker': 'Reactive Date Range Picker',
+  'animation-callbacks-lifecycle-events': 'Animation Callbacks & Lifecycle Events',
+  'group-sequence-parallel-orchestration': 'group() vs sequence() Orchestration',
+  'css-only-and-view-transitions-alternatives': 'CSS-Only & View Transitions Alternatives',
+  'ngcontrol-self-injection-validation-display': 'NgControl Self-Injection for Validation Display',
+  'composite-value-cva-with-formgroup': 'Composite Value CVA with FormGroup',
+  'testing-cva-components': 'Testing CVA Components',
+  'testing-directives-with-host-components': 'Testing Directives with Host Components',
+  'testing-routed-components-and-guards': 'Testing Routed Components & Guards',
+  'test-doubles-and-mocking-strategies': 'Test Doubles & Mocking Strategies',
+  'theme-tokens-and-custom-variants': 'Theme Tokens & Custom Variants',
+  'component-variant-patterns-with-cva': 'Component Variant Patterns with cva',
+  'tailwind-transitions-and-animations': 'Tailwind Transitions & Animations',
+  'rxresource-and-observable-integration': 'rxResource & Observable Integration',
+  'resource-reload-and-polling-patterns': 'Resource Reload & Polling Patterns',
+  'testing-resource-based-components': 'Testing resource()-Based Components',
+  'withentities-filtering-pagination-sorting': 'withEntities — Filtering, Pagination & Sorting',
+  'testing-ngrx-signal-stores': 'Testing NgRx Signal Stores',
+  'signal-store-devtools-and-hooks-cleanup': 'Signal Store DevTools & Hooks Cleanup',
+  'nested-and-array-schema-fields': 'Nested & Array Schema Fields',
+  'schema-driven-cross-field-and-async-validation': 'Schema-Driven Cross-Field & Async Validation',
+  'custom-field-renderer-registry-pattern': 'Custom Field Renderer Registry Pattern',
+  'testing-route-resolvers': 'Testing Route Resolvers',
+  'run-guards-and-resolvers-caching': 'runGuardsAndResolvers & Resolver Caching',
+  'named-outlet-lifecycle-and-detail-drawer-pattern': 'Named Outlet Lifecycle & Detail Drawer Pattern',
+  'priority-tiered-preloading-with-delay': 'Priority-Tiered Preloading with Delay',
+  'testing-preloading-strategies': 'Testing Preloading Strategies',
+  'measuring-preload-effectiveness': 'Measuring Preload Effectiveness',
+  'canactivatechild-for-nested-admin-sections': 'canActivateChild for Nested Admin Sections',
+  'tracing-guard-execution-order': 'Tracing Guard Execution Order',
+  'async-guards-with-navigation-loading-indicator': 'Async Guards with a Navigation Loading Indicator',
+  'custom-loader-with-blur-up-lqip-placeholder': 'Custom Loader with Blur-Up LQIP Placeholder',
+  'testing-components-that-use-ngoptimizedimage': 'Testing Components That Use NgOptimizedImage',
+  'measuring-lcp-impact-with-performanceobserver': 'Measuring LCP Impact with PerformanceObserver',
+  'testing-destroyref-cleanup-and-takeuntildestroyed': 'Testing DestroyRef Cleanup and takeUntilDestroyed',
+  'runininjectioncontext-for-composables-outside-construction': 'runInInjectionContext for Composables Outside Construction',
+  'wrapping-a-non-observable-third-party-api': 'Wrapping a Non-Observable Third-Party API',
+  'testing-linkedsignal-reset-behavior': 'Testing linkedSignal Reset Behavior',
+  'linkedsignal-with-resource-for-editable-drafts': 'linkedSignal with resource() for Editable Drafts',
+  'debugging-unexpected-linkedsignal-resets': 'Debugging Unexpected linkedSignal Resets',
+  'auditing-a-codebase-for-zoneless-readiness': 'Auditing a Codebase for Zoneless Readiness',
+  'zoneless-ssr-and-incremental-hydration': 'Zoneless SSR and Incremental Hydration',
+  'when-ngzone-run-is-actually-unnecessary': 'When ngZone.run() Is Actually Unnecessary',
+  'testing-signal-effects-and-cleanup': 'Testing Signal Effects and Cleanup',
+  'afterrendereffect-for-dom-measurements': 'afterRenderEffect for DOM Measurements',
+  'debouncing-effects-for-expensive-side-effects': 'Debouncing Effects for Expensive Side Effects',
+  'testing-typed-reactive-forms': 'Testing Typed Reactive Forms',
+  'writing-type-safe-custom-validators': 'Writing Type-Safe Custom Validators',
+  'populating-a-typed-form-from-resource': 'Populating a Typed Form from resource()',
+  'testing-components-that-use-hostdirectives': 'Testing Components That Use hostDirectives',
+  'coordinating-multiple-stacked-host-directives': 'Coordinating Multiple Stacked Host Directives',
+  'optional-host-directive-injection-for-shared-components': 'Optional Host Directive Injection for Shared Components',
+  'testing-let-driven-templates': 'Testing @let-Driven Templates',
+  'profiling-let-recompute-cost': 'Profiling @let Recompute Cost',
+  'let-inside-ng-template-scope-closure': '@let Inside ng-template and Structural Directives',
+  'testing-hybrid-standalone-and-ngmodule-components': 'Testing Hybrid Standalone and NgModule Components',
+  'scam-pattern-incremental-migration-walkthrough': 'SCAM Pattern — Incremental Migration Walkthrough',
+  'debugging-nullinjectorerror-after-migration': 'Debugging NullInjectorError After Migration',
+  'testing-a-layered-error-handling-system': 'Testing a Layered Error Handling System',
+  'retry-with-exponential-backoff-and-give-up': 'Retry with Exponential Backoff and a Give-Up State',
+  'recovering-from-component-rendering-errors': 'Recovering from Component Rendering Errors',
+  'testing-auth-interceptor-flows-with-msw': 'Testing Auth Interceptor Flows with MSW',
+  'testing-loading-states-with-msw-delay': 'Testing Loading States with MSW delay()',
+  'debugging-unhandled-requests-and-query-param-matching': 'Debugging Unhandled Requests and Query-Param Matching',
+  'automated-accessibility-testing-with-jest-axe': 'Automated Accessibility Testing with jest-axe',
+  'building-a-reusable-route-change-focus-management-service': 'Building a Reusable Route-Change Focus Management Service',
+  'testing-focus-trap-and-restoration-in-modals': 'Testing Focus Trap and Restoration in Modals',
+  // Composite keys — these subtopic slugs collide with existing top-level Angular topics
+  // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
+  // pageLabel() tries this key first.
+  'todo/route-guards':      'Route Guards',
+  'todo/custom-validators': 'Custom & Async Validators',
+  'forms/typed-forms':      'Typed Forms',
   'templates':          'Template Syntax',
   'directives':         'Directives',
   'lifecycle':          'Lifecycle Hooks',
@@ -1095,6 +1261,10 @@ const TECH_SECTIONS: Record<string, { label: string; path: string }> = {
             <span class="bc-current">{{ techSection()!.label }}</span>
           }
         }
+        @if (segments().length > 2) {
+          <span class="bc-sep">›</span>
+          <a [routerLink]="parentTopicRoute()" class="bc-section-link">{{ parentTopicLabel() }}</a>
+        }
         @if (segments().length > 1) {
           <span class="bc-sep">›</span>
           <span class="bc-current">{{ pageLabel() }}</span>
@@ -1155,44 +1325,68 @@ export class BreadcrumbComponent {
     return segs.length > 0 ? (TECH_SECTIONS[segs[0]] ?? null) : null;
   };
 
+  /** Middle crumb for subtopic-depth routes: /hub/topic/subtopic → links to /hub/topic. */
+  parentTopicRoute = () => {
+    const segs = this.segments();
+    return '/' + segs[0] + '/' + segs[1];
+  };
+
+  parentTopicLabel = () => {
+    const segs = this.segments();
+    if (segs.length < 3) return '';
+    return this.labelMapFor(segs[0])[segs[1]] ?? segs[1];
+  };
+
   pageLabel = () => {
     const segs = this.segments();
     if (segs.length < 2) return '';
     const key = segs[segs.length - 1];
-    const labels = segs[0] === 'csharp'       ? CSHARP_LABELS
-                 : segs[0] === 'aspnet'       ? ASPNET_LABELS
-                 : segs[0] === 'sql'          ? SQL_LABELS
-                 : segs[0] === 'typescript'   ? TYPESCRIPT_LABELS
-                 : segs[0] === 'react'        ? REACT_LABELS
-                 : segs[0] === 'javascript'   ? JAVASCRIPT_LABELS
-                 : segs[0] === 'html'         ? HTML_LABELS
-                 : segs[0] === 'css'          ? CSS_LABELS
-                 : segs[0] === 'performance'  ? PERFORMANCE_LABELS
-                 : segs[0] === 'blazor'       ? BLAZOR_LABELS
-                 : segs[0] === 'node'         ? NODE_LABELS
-                 : segs[0] === 'python'       ? PYTHON_LABELS
-                 : segs[0] === 'go'           ? GO_LABELS
-                 : segs[0] === 'devops'       ? DEVOPS_LABELS
-                 : segs[0] === 'containers'   ? CONTAINERS_LABELS
-                 : segs[0] === 'aws'          ? AWS_LABELS
-                 : segs[0] === 'azure'        ? AZURE_LABELS
-                 : segs[0] === 'linux'        ? LINUX_LABELS
-                 : segs[0] === 'terraform'    ? TERRAFORM_LABELS
-                 : segs[0] === 'service-mesh'  ? MESH_LABELS
-                 : segs[0] === 'system-design' ? SYSDESIGN_LABELS
-                 : segs[0] === 'arch-patterns'    ? ARCH_LABELS
-                 : segs[0] === 'design-patterns' ? DP_LABELS
-                 : segs[0] === 'security'        ? SECURITY_LABELS
-                 : segs[0] === 'api-design'      ? API_DESIGN_LABELS
-                 : segs[0] === 'observability'   ? OBS_LABELS
-                 : segs[0] === 'mongodb'         ? MONGO_LABELS
-                 : segs[0] === 'redis'           ? REDIS_LABELS
-                 : segs[0] === 'graphql'         ? GQL_LABELS
-                 : segs[0] === 'messaging'       ? MESSAGING_LABELS
-                 : segs[0] === 'testing-hub'    ? TESTING_LABELS
-                 : segs[0] === 'dsa'            ? DSA_LABELS
-                 : segs[0] === 'ai'             ? AI_LABELS
-                 : ROUTE_LABELS;
-    return labels[key] ?? key;
+    const map = this.labelMapFor(segs[0]);
+    // Subtopic leaf slugs (3-segment /hub/topic/subtopic routes) can collide with an
+    // unrelated top-level topic's own slug — try the composite 'topic/subtopic' key
+    // first to disambiguate.
+    if (segs.length >= 3) {
+      const compositeKey = segs[segs.length - 2] + '/' + key;
+      if (map[compositeKey] !== undefined) return map[compositeKey];
+    }
+    return map[key] ?? key;
   };
+
+  private labelMapFor(hubSlug: string): Record<string, string> {
+    const labels = hubSlug === 'csharp'       ? CSHARP_LABELS
+                 : hubSlug === 'aspnet'       ? ASPNET_LABELS
+                 : hubSlug === 'sql'          ? SQL_LABELS
+                 : hubSlug === 'typescript'   ? TYPESCRIPT_LABELS
+                 : hubSlug === 'react'        ? REACT_LABELS
+                 : hubSlug === 'javascript'   ? JAVASCRIPT_LABELS
+                 : hubSlug === 'html'         ? HTML_LABELS
+                 : hubSlug === 'css'          ? CSS_LABELS
+                 : hubSlug === 'performance'  ? PERFORMANCE_LABELS
+                 : hubSlug === 'blazor'       ? BLAZOR_LABELS
+                 : hubSlug === 'node'         ? NODE_LABELS
+                 : hubSlug === 'python'       ? PYTHON_LABELS
+                 : hubSlug === 'go'           ? GO_LABELS
+                 : hubSlug === 'devops'       ? DEVOPS_LABELS
+                 : hubSlug === 'containers'   ? CONTAINERS_LABELS
+                 : hubSlug === 'aws'          ? AWS_LABELS
+                 : hubSlug === 'azure'        ? AZURE_LABELS
+                 : hubSlug === 'linux'        ? LINUX_LABELS
+                 : hubSlug === 'terraform'    ? TERRAFORM_LABELS
+                 : hubSlug === 'service-mesh'  ? MESH_LABELS
+                 : hubSlug === 'system-design' ? SYSDESIGN_LABELS
+                 : hubSlug === 'arch-patterns'    ? ARCH_LABELS
+                 : hubSlug === 'design-patterns' ? DP_LABELS
+                 : hubSlug === 'security'        ? SECURITY_LABELS
+                 : hubSlug === 'api-design'      ? API_DESIGN_LABELS
+                 : hubSlug === 'observability'   ? OBS_LABELS
+                 : hubSlug === 'mongodb'         ? MONGO_LABELS
+                 : hubSlug === 'redis'           ? REDIS_LABELS
+                 : hubSlug === 'graphql'         ? GQL_LABELS
+                 : hubSlug === 'messaging'       ? MESSAGING_LABELS
+                 : hubSlug === 'testing-hub'    ? TESTING_LABELS
+                 : hubSlug === 'dsa'            ? DSA_LABELS
+                 : hubSlug === 'ai'             ? AI_LABELS
+                 : ROUTE_LABELS;
+    return labels;
+  }
 }

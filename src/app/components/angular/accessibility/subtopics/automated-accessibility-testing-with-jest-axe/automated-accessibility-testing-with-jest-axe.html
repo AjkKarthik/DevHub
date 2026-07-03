@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Accessibility (a11y)"
+    topicRoute="/angular/accessibility"
+    subtopicLabel="Automated Accessibility Testing with jest-axe" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Automated Accessibility Testing with jest-axe</h1>
+  <p class="page-subtitle">
+    axe-core catches technical DOM violations deterministically, but it cannot catch wrong
+    announcement wording or confusing focus order — know the boundary.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      One test passes axe with a proper <code>aria-label</code>, the other demonstrates a
+      REAL caught violation — the exact <code>"button-name"</code> rule id when the label
+      is missing.
+    </p>
+    <app-live-playground
+      title="Automated accessibility testing with jest-axe"
+      template="angular-cli"
+      openFile="src/app/icon-button.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With automated scanning covered, the next subtopic builds a production-realistic
+      focus management service beyond the main topic's one-line route-focus snippet.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Accessibility (a11y)"
+    topicRoute="/angular/accessibility"
+    [next]="{ label: 'Building a Reusable Route-Change Focus Management Service', route: '/angular/accessibility/building-a-reusable-route-change-focus-management-service' }" />
+</div>

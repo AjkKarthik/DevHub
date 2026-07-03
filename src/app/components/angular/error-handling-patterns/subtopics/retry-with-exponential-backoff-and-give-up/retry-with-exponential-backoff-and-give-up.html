@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Error Handling Patterns"
+    topicRoute="/angular/error-handling-patterns"
+    subtopicLabel="Retry with Exponential Backoff and a Give-Up State" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Retry with Exponential Backoff and a Give-Up State</h1>
+  <p class="page-subtitle">
+    A flat retry delay can pile more load on a struggling server — exponential backoff,
+    selective retry by status, and a distinct "we gave up" message solve that.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>resilientGet()</code> retries only transient statuses with a growing delay
+      (1s, 2s, 4s, 8s...) and gives up immediately on non-retryable errors like 404.
+    </p>
+    <app-live-playground
+      title="Retry with exponential backoff and a give-up state"
+      template="angular-cli"
+      openFile="src/app/resilient-fetch.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With resilient HTTP retries covered, the final subtopic tackles a different failure
+      class — a component throwing during rendering, outside any &#64;defer block.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling Patterns"
+    topicRoute="/angular/error-handling-patterns"
+    [prev]="{ label: 'Testing a Layered Error Handling System', route: '/angular/error-handling-patterns/testing-a-layered-error-handling-system' }"
+    [next]="{ label: 'Recovering from Component Rendering Errors', route: '/angular/error-handling-patterns/recovering-from-component-rendering-errors' }" />
+</div>

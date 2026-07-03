@@ -276,8 +276,8 @@ async function getCart(cartId: string): Promise<Record<string, number>> {
       a: 'Use <strong>HSCAN key cursor [MATCH pattern] [COUNT count]</strong>. Start cursor at 0; use the returned cursor for next call; repeat until returned cursor is 0. COUNT is a hint not a guarantee. Never use HGETALL on a large hash — it blocks Redis and returns potentially millions of fields in one shot.',
     },
     {
-      q: 'What is the listpack (ziplist) optimisation for small Redis hashes?',
-      a: 'Small hashes use <strong>listpack</strong> encoding — a compact sequential memory layout much more efficient than a hash table. Thresholds: <code>hash-max-listpack-entries</code> (default 128) and <code>hash-max-listpack-value</code> (default 64 bytes). Exceeding either converts to hashtable. Keeping values small keeps hashes in listpack, saving significant memory.',
+      q: 'Why does listpack encoding make individual field lookups on a hash O(n) instead of O(1), and why is this an acceptable tradeoff for small hashes?',
+      a: 'Listpack stores fields sequentially as a flat, compact byte sequence rather than using hash-table buckets with computed offsets — finding a specific field means scanning entries linearly until a match is found, which is O(n) rather than the O(1) average-case lookup a real hashtable provides. This is an acceptable tradeoff specifically because listpack is only used for SMALL hashes (below hash-max-listpack-entries, default 128) — scanning at most 128 compact entries sequentially is still extremely fast in absolute terms (likely faster than a hashtable\'s pointer-chasing for such small N due to cache locality), while the memory savings from avoiding hash-table overhead (buckets, pointers, padding) are significant at that scale.',
     },
   ];
 

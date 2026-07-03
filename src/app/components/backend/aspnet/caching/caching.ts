@@ -458,8 +458,8 @@ public class SlowWeatherProvider : IWeatherProvider
       a: 'Only if you vary the cache key by user identity. Never cache a response keyed only on the URL if the response is user-specific — other users would see incorrect data. For output caching, use SetVaryByHeader("Authorization") or SetVaryByValue(ctx => ctx.User.Identity!.Name). For IMemoryCache, include the user ID in the key: "cart:{userId}".',
     },
     {
-      q: 'What is HybridCache in .NET 9?',
-      a: 'Microsoft.Extensions.Caching.Hybrid (introduced in .NET 9 preview) wraps IMemoryCache and IDistributedCache into a single unified API: cache.GetOrCreateAsync("key", factory). It uses the in-process cache as L1 (fast) and the distributed cache as L2 (shared). On a hit in L1, the distributed call is skipped entirely. It also handles stampede prevention and serialization automatically.',
+      q: 'A value is cached via HybridCache and then updated in the database on one instance of a horizontally-scaled app. That instance calls cache.RemoveAsync(key) to invalidate. Does this actually clear the value from OTHER instances\' local L1 in-memory caches, or only from the shared L2?',
+      a: 'HybridCache addresses this directly with a tag/broadcast invalidation mechanism specifically because naive removal would only clear the calling instance\'s own L1 and the shared L2 (IDistributedCache) — other instances\' local L1 in-memory copies would otherwise keep serving the stale value until their own TTL expires, since nothing tells THEM to evict it. HybridCache solves this by publishing an invalidation signal (backed by the distributed cache\'s pub/sub-like mechanism where supported, e.g. Redis) that other instances subscribe to, so a RemoveAsync/RemoveByTagAsync call on one instance propagates and evicts the corresponding L1 entries on all other instances too — this cross-instance L1 invalidation is one of the concrete problems HybridCache solves that manually combining IMemoryCache + IDistributedCache does not handle automatically.',
     },
     {
       q: 'How do I implement cache-group invalidation with IMemoryCache (without output caching)?',

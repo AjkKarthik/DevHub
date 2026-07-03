@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="@defer — Deferred Loading"
+    topicRoute="/angular/defer"
+    subtopicLabel="Trigger Conditions" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Trigger Conditions — When Does the Download Start?</h1>
+  <p class="page-subtitle">
+    viewport, interaction, hover, a signal expression, or a fixed timer — five ways to
+    decide exactly when a deferred chunk actually downloads.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 17" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Three live triggers side by side — click, hover, and a programmatic signal-driven
+      <code>when</code> trigger.
+    </p>
+    <app-live-playground
+      title="@defer triggers"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Triggers decide WHEN loading starts — the next subtopic covers what the user actually
+      SEES during and after that loading window, with the
+      <code>&#64;placeholder</code>/<code>&#64;loading</code>/<code>&#64;error</code> companion blocks.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="@defer — Deferred Loading"
+    topicRoute="/angular/defer"
+    [prev]="{ label: 'What Is @defer?', route: '/angular/defer/defer-basics' }"
+    [next]="{ label: 'Placeholder, Loading & Error', route: '/angular/defer/placeholder-loading-error' }" />
+</div>
