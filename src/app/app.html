@@ -2170,7 +2170,22 @@
         <span class="nl-text">SSR + Hydration</span>
         @if (progress.isDone('ssr')) {<span class="nl-done">✓</span>}
         @if (diff('ssr'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ssr')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ssr')"
+                  (click)="toggleSubtopics('ssr', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('ssr'); as subs) {
+        @if (isSubtopicsExpanded('ssr')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/micro-frontends" routerLinkActive="active">
         <span class="nl-text">Micro-Frontends</span>
         @if (progress.isDone('micro-frontends')) {<span class="nl-done">✓</span>}

@@ -4780,6 +4780,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'ssr/debugging-hydration-mismatches-step-by-step': {
+    apis: ['ngSkipHydration', 'View Page Source diagnosis', 'afterNextRender()', 'signal-captured values'],
+    related: [
+      { label: 'SSR & Hydration (overview)',                                    route: '/angular/ssr' },
+      { label: 'Testing SSR-Safe Components Without a Real Server — next',       route: '/angular/ssr/testing-ssr-safe-components-without-a-real-server' },
+    ],
+    tip: 'The fix for a non-deterministic value like new Date() or Math.random() is to CAPTURE it once in a signal — not to remove it or make it platform-conditional.',
+    docs: [
+      { label: 'Angular Hydration Guide', url: 'https://angular.dev/guide/hydration' },
+      { label: 'ngSkipHydration API',      url: 'https://angular.dev/api/core/ɵɵngSkipHydration' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A hydration mismatch warning does not crash the app — Angular recovers by re-rendering the affected subtree client-side, causing the exact flash hydration exists to prevent.',
+      'ngSkipHydration still pays the flash/re-render cost, just localized to one component — reserve it for content provably impossible to render deterministically.',
+    ],
+  },
+
+  'ssr/testing-ssr-safe-components-without-a-real-server': {
+    apis: ['TestBed.configureTestingModule PLATFORM_ID override', 'renderApplication()', 'fixture.whenStable()'],
+    related: [
+      { label: 'Debugging Hydration Mismatches Step by Step — previous', route: '/angular/ssr/debugging-hydration-mismatches-step-by-step' },
+      { label: 'SSR & Hydration (overview)',                              route: '/angular/ssr' },
+      { label: 'Incremental Hydration Triggers — next',                    route: '/angular/ssr/incremental-hydration-triggers-interaction-viewport-and-timer' },
+    ],
+    tip: 'Override PLATFORM_ID to \'server\' in a normal TestBed unit test to simulate SSR — no real Node process or Express server required.',
+    docs: [
+      { label: 'Angular Hydration Guide',   url: 'https://angular.dev/guide/hydration' },
+      { label: '@angular/platform-server',  url: 'https://angular.dev/api/platform-server' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A PLATFORM_ID override still runs inside a browser-like test environment — it verifies guard LOGIC but can miss module-scope window references only Node.js itself would catch.',
+      'afterNextRender() effects run asynchronously relative to detectChanges() — await fixture.whenStable() before asserting on them.',
+    ],
+  },
+
+  'ssr/incremental-hydration-triggers-interaction-viewport-and-timer': {
+    apis: ['hydrate on interaction', 'hydrate on viewport', 'hydrate on idle', 'compound hydrate triggers'],
+    related: [
+      { label: 'Testing SSR-Safe Components Without a Real Server — previous', route: '/angular/ssr/testing-ssr-safe-components-without-a-real-server' },
+      { label: 'SSR & Hydration (overview)',                                    route: '/angular/ssr' },
+    ],
+    tip: 'A hydrate-deferred block is still server-rendered and visible immediately — only the JS cost of attaching event listeners is deferred, not the content itself.',
+    docs: [
+      { label: '@defer with hydrate — Angular Guide', url: 'https://angular.dev/guide/incremental-hydration' },
+      { label: 'Angular Hydration Guide',              url: 'https://angular.dev/guide/hydration' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'withEventReplay() captures a click on a still-dehydrated block and replays it once hydration completes — nothing is silently dropped.',
+      'Choose the trigger by what the content actually is: interaction for content a user might never touch, viewport for content they\'ll likely scroll to, idle as a safe adaptive default.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

@@ -370,7 +370,12 @@ export const routes: Routes = [
         { path: 'publishing-harnesses-as-a-librarys-public-testing-entry-point', loadComponent: () => import('./components/angular/harnesses/subtopics/publishing-harnesses-as-a-librarys-public-testing-entry-point/publishing-harnesses-as-a-librarys-public-testing-entry-point').then(m => m.PublishingHarnessesAsALibrarysPublicTestingEntryPointSubtopic) },
         { path: 'debugging-harness-failures-common-causes-and-diagnosis', loadComponent: () => import('./components/angular/harnesses/subtopics/debugging-harness-failures-common-causes-and-diagnosis/debugging-harness-failures-common-causes-and-diagnosis').then(m => m.DebuggingHarnessFailuresCommonCausesAndDiagnosisSubtopic) },
       ] },
-      { path: 'ssr',                loadComponent: () => import('./components/angular/ssr/ssr').then(m => m.SsrDemo) },
+      { path: 'ssr', children: [
+        { path: '',                                                       loadComponent: () => import('./components/angular/ssr/ssr').then(m => m.SsrDemo) },
+        { path: 'debugging-hydration-mismatches-step-by-step',            loadComponent: () => import('./components/angular/ssr/subtopics/debugging-hydration-mismatches-step-by-step/debugging-hydration-mismatches-step-by-step').then(m => m.DebuggingHydrationMismatchesStepByStepSubtopic) },
+        { path: 'testing-ssr-safe-components-without-a-real-server',       loadComponent: () => import('./components/angular/ssr/subtopics/testing-ssr-safe-components-without-a-real-server/testing-ssr-safe-components-without-a-real-server').then(m => m.TestingSsrSafeComponentsWithoutARealServerSubtopic) },
+        { path: 'incremental-hydration-triggers-interaction-viewport-and-timer', loadComponent: () => import('./components/angular/ssr/subtopics/incremental-hydration-triggers-interaction-viewport-and-timer/incremental-hydration-triggers-interaction-viewport-and-timer').then(m => m.IncrementalHydrationTriggersInteractionViewportAndTimerSubtopic) },
+      ] },
       { path: 'cheatsheet',         loadComponent: () => import('./components/angular/cheatsheet/cheatsheet').then(m => m.CheatsheetComponent) },
       { path: 'errors',             loadComponent: () => import('./components/angular/errors-page/errors-page').then(m => m.ErrorsPageComponent) },
       { path: 'whats-new',          loadComponent: () => import('./components/angular/whats-new/whats-new').then(m => m.WhatsNewComponent) },

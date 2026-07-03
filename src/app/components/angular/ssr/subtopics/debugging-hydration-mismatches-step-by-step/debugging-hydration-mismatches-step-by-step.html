@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SSR & Hydration"
+    topicRoute="/angular/ssr"
+    subtopicLabel="Debugging Hydration Mismatches Step by Step" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Debugging Hydration Mismatches Step by Step</h1>
+  <p class="page-subtitle">
+    The main topic lists three causes in one paragraph — here's how each one actually
+    manifests, how to diagnose it, and the fix for each.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>fixed-timestamp.component.ts</code> and
+      <code>deferred-platform-class.component.ts</code> show the corrected patterns;
+      <code>broken-timestamp.component.ts</code> is kept for reference as the
+      deliberately-broken version.
+    </p>
+    <app-live-playground
+      title="Debugging Hydration Mismatches Step by Step"
+      template="angular-cli"
+      openFile="src/app/fixed-timestamp.component.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Once mismatches are understood, the next question is how to catch SSR-only
+      crashes (missing platform guards) BEFORE they reach production — via tests,
+      not manual server runs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SSR & Hydration"
+    topicRoute="/angular/ssr"
+    [next]="{ label: 'Testing SSR-Safe Components Without a Real Server', route: '/angular/ssr/testing-ssr-safe-components-without-a-real-server' }" />
+</div>

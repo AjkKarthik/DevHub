@@ -193,6 +193,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'composing-nested-harnesses-with-getchildloader': 'Composing Nested Harnesses with getChildLoader',
   'publishing-harnesses-as-a-librarys-public-testing-entry-point': 'Publishing Harnesses as a Public Testing Entry Point',
   'debugging-harness-failures-common-causes-and-diagnosis': 'Debugging Harness Failures: Common Causes and Diagnosis',
+  'debugging-hydration-mismatches-step-by-step': 'Debugging Hydration Mismatches Step by Step',
+  'testing-ssr-safe-components-without-a-real-server': 'Testing SSR-Safe Components Without a Real Server',
+  'incremental-hydration-triggers-interaction-viewport-and-timer': 'Incremental Hydration Triggers: Interaction, Viewport, and Timer',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
