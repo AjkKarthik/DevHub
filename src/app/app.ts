@@ -297,6 +297,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Testing Loading States with MSW delay()', route: '/angular/msw/testing-loading-states-with-msw-delay' },
     { label: 'Debugging Unhandled Requests and Query-Param Matching', route: '/angular/msw/debugging-unhandled-requests-and-query-param-matching' },
   ],
+  'accessibility': [
+    { label: 'Automated Accessibility Testing with jest-axe', route: '/angular/accessibility/automated-accessibility-testing-with-jest-axe' },
+    { label: 'Building a Reusable Route-Change Focus Management Service', route: '/angular/accessibility/building-a-reusable-route-change-focus-management-service' },
+    { label: 'Testing Focus Trap and Restoration in Modals', route: '/angular/accessibility/testing-focus-trap-and-restoration-in-modals' },
+  ],
 };
 
 @Component({

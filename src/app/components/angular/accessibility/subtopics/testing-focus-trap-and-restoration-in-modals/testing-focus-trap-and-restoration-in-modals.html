@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Accessibility (a11y)"
+    topicRoute="/angular/accessibility"
+    subtopicLabel="Testing Focus Trap and Restoration in Modals" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Focus Trap and Restoration in Modals</h1>
+  <p class="page-subtitle">
+    document.activeElement is real, queryable DOM state — initial focus, Tab-wrapping, and
+    focus restoration are all directly assertable, no browser automation needed.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="CDK 6" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Three tests: <code>cdkFocusInitial</code> lands on the safe Cancel button, Tab from
+      the last element wraps back to the first, and closing the dialog returns focus to
+      the original trigger.
+    </p>
+    <app-live-playground
+      title="Testing focus trap and restoration in modals"
+      template="angular-cli"
+      openFile="src/app/confirm-dialog.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With automated scanning, focus management, and focus-trap testing all covered, head
+      back to the topic overview to see how FocusMonitor, LiveAnnouncer, and cdkTrapFocus
+      fit together.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Accessibility (a11y)"
+    topicRoute="/angular/accessibility"
+    [prev]="{ label: 'Building a Reusable Route-Change Focus Management Service', route: '/angular/accessibility/building-a-reusable-route-change-focus-management-service' }" />
+</div>

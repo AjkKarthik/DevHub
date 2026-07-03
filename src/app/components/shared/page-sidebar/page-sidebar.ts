@@ -4170,6 +4170,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'accessibility/automated-accessibility-testing-with-jest-axe': {
+    apis: ['jest-axe', 'axe()', 'toHaveNoViolations()'],
+    related: [
+      { label: 'Accessibility (a11y) (overview)',                                  route: '/angular/accessibility' },
+      { label: 'Building a Reusable Route-Change Focus Management Service — next', route: '/angular/accessibility/building-a-reusable-route-change-focus-management-service' },
+    ],
+    tip: 'axe-core checks the rendered DOM against a technical ruleset — it cannot catch wrong announcement wording or confusing focus order, which need a real screen reader session.',
+    docs: [
+      { label: 'jest-axe',   url: 'https://github.com/nickcolley/jest-axe' },
+      { label: 'axe-core Rules', url: 'https://dequeuniversity.com/rules/axe/' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A component can be accessible in its default state but violate a rule only in another state (loading, error, empty) — scan each meaningful state separately.',
+      'Add axe scans directly inside existing functional tests rather than a separate, easily-skipped a11y-only suite.',
+    ],
+  },
+
+  'accessibility/building-a-reusable-route-change-focus-management-service': {
+    apis: ['Router.events', 'NavigationEnd', 'UrlTree'],
+    related: [
+      { label: 'Automated Accessibility Testing with jest-axe — previous',       route: '/angular/accessibility/automated-accessibility-testing-with-jest-axe' },
+      { label: 'Accessibility (a11y) (overview)',                                   route: '/angular/accessibility' },
+      { label: 'Testing Focus Trap and Restoration in Modals — next',                route: '/angular/accessibility/testing-focus-trap-and-restoration-in-modals' },
+    ],
+    tip: 'Skip focus management for same-page fragment-only navigations (anchor jumps) — stealing focus back to the heading fights the user\'s intended in-page scroll.',
+    docs: [
+      { label: 'Router Events API', url: 'https://angular.dev/api/router/Event' },
+      { label: 'a11y Focus Guide',  url: 'https://web.dev/articles/focus' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Fall back to a main landmark when a page has no h1, rather than silently doing nothing.',
+      'Skip focus management on the very first navigation (initial page load) — the browser already placed focus naturally.',
+    ],
+  },
+
+  'accessibility/testing-focus-trap-and-restoration-in-modals': {
+    apis: ['document.activeElement', 'cdkTrapFocus', 'cdkFocusInitial'],
+    related: [
+      { label: 'Building a Reusable Route-Change Focus Management Service — previous', route: '/angular/accessibility/building-a-reusable-route-change-focus-management-service' },
+      { label: 'Accessibility (a11y) (overview)',                                        route: '/angular/accessibility' },
+    ],
+    tip: 'document.activeElement is real, queryable DOM state — the initial focus target, Tab-wrapping, and focus restoration on close are all directly assertable in a normal unit test.',
+    docs: [
+      { label: 'cdkTrapFocus API',  url: 'https://material.angular.io/cdk/a11y/api' },
+      { label: 'FocusMonitor API',  url: 'https://material.angular.io/cdk/a11y/api#FocusMonitor' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Assert the SPECIFIC cdkFocusInitial element receives focus, not just "some element inside the dialog" — catches a real safety bug if it lands on a destructive action by mistake.',
+      'A dialog\'s specific tabbable-element structure varies enough that testing Tab-wrap behavior for YOUR dialog is still worthwhile, not redundant with CDK\'s own tests.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

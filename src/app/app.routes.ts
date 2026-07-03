@@ -310,7 +310,12 @@ export const routes: Routes = [
         { path: 'testing-loading-states-with-msw-delay',         loadComponent: () => import('./components/angular/msw/subtopics/testing-loading-states-with-msw-delay/testing-loading-states-with-msw-delay').then(m => m.TestingLoadingStatesWithMswDelaySubtopic) },
         { path: 'debugging-unhandled-requests-and-query-param-matching', loadComponent: () => import('./components/angular/msw/subtopics/debugging-unhandled-requests-and-query-param-matching/debugging-unhandled-requests-and-query-param-matching').then(m => m.DebuggingUnhandledRequestsAndQueryParamMatchingSubtopic) },
       ] },
-      { path: 'accessibility',           loadComponent: () => import('./components/angular/accessibility/accessibility').then(m => m.AccessibilityDemo) },
+      { path: 'accessibility', children: [
+        { path: '',                                                loadComponent: () => import('./components/angular/accessibility/accessibility').then(m => m.AccessibilityDemo) },
+        { path: 'automated-accessibility-testing-with-jest-axe',    loadComponent: () => import('./components/angular/accessibility/subtopics/automated-accessibility-testing-with-jest-axe/automated-accessibility-testing-with-jest-axe').then(m => m.AutomatedAccessibilityTestingWithJestAxeSubtopic) },
+        { path: 'building-a-reusable-route-change-focus-management-service', loadComponent: () => import('./components/angular/accessibility/subtopics/building-a-reusable-route-change-focus-management-service/building-a-reusable-route-change-focus-management-service').then(m => m.BuildingAReusableRouteChangeFocusManagementServiceSubtopic) },
+        { path: 'testing-focus-trap-and-restoration-in-modals',     loadComponent: () => import('./components/angular/accessibility/subtopics/testing-focus-trap-and-restoration-in-modals/testing-focus-trap-and-restoration-in-modals').then(m => m.TestingFocusTrapAndRestorationInModalsSubtopic) },
+      ] },
       { path: 'micro-frontends',         loadComponent: () => import('./components/angular/micro-frontends/micro-frontends').then(m => m.MicroFrontendsDemo) },
       { path: 'angular-devtools',        loadComponent: () => import('./components/angular/angular-devtools/angular-devtools').then(m => m.AngularDevtoolsDemo) },
       { path: 'bundle-optimization',     loadComponent: () => import('./components/angular/bundle-optimization/bundle-optimization').then(m => m.BundleOptimizationDemo) },

@@ -1803,7 +1803,22 @@
         <span class="nl-text">Accessibility (a11y)</span>
         @if (progress.isDone('accessibility')) {<span class="nl-done">✓</span>}
         @if (diff('accessibility'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('accessibility')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('accessibility')"
+                  (click)="toggleSubtopics('accessibility', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('accessibility'); as subs) {
+        @if (isSubtopicsExpanded('accessibility')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/ag-grid" routerLinkActive="active">
         <span class="nl-text">AG Grid</span>
         @if (progress.isDone('ag-grid')) {<span class="nl-done">✓</span>}
