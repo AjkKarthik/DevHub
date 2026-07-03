@@ -377,6 +377,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'FrozenDictionary and FrozenSet: Optimizing for Read-Heavy Lookups', route: '/csharp/collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups' },
     { label: 'Testing Concurrent Collections: Catching Race Conditions', route: '/csharp/collections/testing-concurrent-collections-catching-race-conditions-in-getoradd' },
   ],
+  'linq': [
+    { label: 'Writing Custom Lazy LINQ Operators with yield return', route: '/csharp/linq/writing-custom-lazy-linq-operators-with-yield-return' },
+    { label: 'Expression Trees: Why EF Core Needs Expression<Func<T,bool>>', route: '/csharp/linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool' },
+    { label: 'Testing LINQ-Based Repository Methods with EF Core In-Memory', route: '/csharp/linq/testing-linq-based-repository-methods-with-ef-core-in-memory' },
+  ],
 };
 
 @Component({

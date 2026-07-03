@@ -424,7 +424,12 @@ export const routes: Routes = [
         { path: 'frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups', loadComponent: () => import('./components/backend/csharp/collections/subtopics/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups').then(m => m.FrozendictionaryAndFrozensetOptimizingForReadHeavyLookupsSubtopic) },
         { path: 'testing-concurrent-collections-catching-race-conditions-in-getoradd', loadComponent: () => import('./components/backend/csharp/collections/subtopics/testing-concurrent-collections-catching-race-conditions-in-getoradd/testing-concurrent-collections-catching-race-conditions-in-getoradd').then(m => m.TestingConcurrentCollectionsCatchingRaceConditionsInGetoraddSubtopic) },
       ] },
-      { path: 'linq',            loadComponent: () => import('./components/backend/csharp/linq/linq').then(m => m.CsharpLinq) },
+      { path: 'linq', children: [
+        { path: '',                                                       loadComponent: () => import('./components/backend/csharp/linq/linq').then(m => m.CsharpLinq) },
+        { path: 'writing-custom-lazy-linq-operators-with-yield-return',   loadComponent: () => import('./components/backend/csharp/linq/subtopics/writing-custom-lazy-linq-operators-with-yield-return/writing-custom-lazy-linq-operators-with-yield-return').then(m => m.WritingCustomLazyLinqOperatorsWithYieldReturnSubtopic) },
+        { path: 'expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool', loadComponent: () => import('./components/backend/csharp/linq/subtopics/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool').then(m => m.ExpressionTreesWhyEfCoreNeedsExpressionFuncTBoolNotFuncTBoolSubtopic) },
+        { path: 'testing-linq-based-repository-methods-with-ef-core-in-memory', loadComponent: () => import('./components/backend/csharp/linq/subtopics/testing-linq-based-repository-methods-with-ef-core-in-memory/testing-linq-based-repository-methods-with-ef-core-in-memory').then(m => m.TestingLinqBasedRepositoryMethodsWithEfCoreInMemorySubtopic) },
+      ] },
       { path: 'async',           loadComponent: () => import('./components/backend/csharp/async/async').then(m => m.CsharpAsync) },
       { path: 'null-safety',     loadComponent: () => import('./components/backend/csharp/null-safety/null-safety').then(m => m.CsharpNullSafety) },
       { path: 'pattern-matching',loadComponent: () => import('./components/backend/csharp/pattern-matching/pattern-matching').then(m => m.CsharpPatternMatching) },

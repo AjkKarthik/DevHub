@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="LINQ"
+    topicRoute="/csharp/linq"
+    subtopicLabel="Testing LINQ-Based Repository Methods with EF Core In-Memory" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing LINQ-Based Repository Methods with EF Core In-Memory</h1>
+  <p class="page-subtitle">
+    The main topic warns about untranslatable operators and eager materialization —
+    here's how to test for both, and exactly what the in-memory provider can't catch.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="EF Core 3" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Custom operators, expression trees, and repository testing together cover the
+      production concerns that separate a working LINQ query from one that's
+      genuinely verified to behave correctly.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="LINQ"
+    topicRoute="/csharp/linq"
+    [prev]="{ label: 'Expression Trees: Why EF Core Needs Expression&lt;Func&lt;T,bool&gt;&gt;', route: '/csharp/linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool' }" />
+</div>

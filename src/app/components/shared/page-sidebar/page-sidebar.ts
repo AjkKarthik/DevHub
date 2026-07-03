@@ -6325,6 +6325,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'linq/writing-custom-lazy-linq-operators-with-yield-return': {
+    apis: ['yield return', 'IEnumerator<T> state machine', 'eager wrapper pattern'],
+    related: [
+      { label: 'LINQ (overview)',                                    route: '/csharp/linq' },
+      { label: 'Expression Trees — next',                             route: '/csharp/linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool' },
+    ],
+    tip: 'A method containing yield return anywhere has its ENTIRE body deferred, including argument validation — split into an eager public wrapper plus a private lazy core method to validate at call time.',
+    docs: [
+      { label: 'yield Statement', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/yield' },
+      { label: 'Iterators',        url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' },
+    ],
+    resources: [
+      { label: '101 LINQ Samples', url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool' },
+    ],
+    gotchas: [
+      'yield return is the exact mechanism the BCL\'s own Where/Select use internally to achieve the deferred execution the main topic describes.',
+      'A correctly-written custom operator composes mid-chain with built-in LINQ operators exactly like a native one.',
+    ],
+  },
+
+  'linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool': {
+    apis: ['Expression<Func<T,bool>>', 'BinaryExpression', 'MemberExpression', '.Compile()'],
+    related: [
+      { label: 'Writing Custom Lazy LINQ Operators — previous', route: '/csharp/linq/writing-custom-lazy-linq-operators-with-yield-return' },
+      { label: 'LINQ (overview)',                                route: '/csharp/linq' },
+      { label: 'Testing LINQ-Based Repository Methods — next',    route: '/csharp/linq/testing-linq-based-repository-methods-with-ef-core-in-memory' },
+    ],
+    tip: 'Func<T,bool> compiles to opaque IL; Expression<Func<T,bool>> compiles to an inspectable TREE of objects — this is the entire mechanism EF Core uses to translate LINQ into SQL.',
+    docs: [
+      { label: 'Expression Trees', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/expression-trees' },
+    ],
+    resources: [
+      { label: '101 LINQ Samples', url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An Expression<Func<T,bool>> is not directly callable — you must call .Compile() first to get back an invocable delegate.',
+      'A MethodCallExpression node (a custom C# method embedded in a predicate) is exactly why EF Core throws InvalidOperationException on untranslatable operators.',
+    ],
+  },
+
+  'linq/testing-linq-based-repository-methods-with-ef-core-in-memory': {
+    apis: ['UseInMemoryDatabase', 'IQueryable<T> composition', 'query translation gaps'],
+    related: [
+      { label: 'Expression Trees — previous', route: '/csharp/linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool' },
+      { label: 'LINQ (overview)',              route: '/csharp/linq' },
+    ],
+    tip: 'The EF Core in-memory provider does NOT use the same query translation pipeline as a real SQL provider — a query that passes in-memory can still throw against a real database.',
+    docs: [
+      { label: 'Testing with InMemory Provider', url: 'https://learn.microsoft.com/en-us/ef/core/testing/testing-without-the-database' },
+    ],
+    resources: [
+      { label: '101 LINQ Samples', url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool' },
+    ],
+    gotchas: [
+      'N+1 query regressions are hard to catch with the in-memory provider — it does not execute real round-trip SQL the way a genuine database does.',
+      'An IQueryable<T> return type alone does not prove a method preserved queryability — compose an additional filter onto the result to verify.',
+    ],
+  },
+
   async: {
     apis: ['async', 'await', 'Task<T>', 'CancellationToken', 'ConfigureAwait(false)'],
     related: [

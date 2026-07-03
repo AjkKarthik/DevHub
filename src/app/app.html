@@ -1104,7 +1104,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/linq" routerLinkActive="active"><span class="nl-text">LINQ</span>@if(progress.isDone('csharp-linq')){<span class="nl-done">✓</span>}@if(diff('csharp-linq');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/linq" routerLinkActive="active">
+        <span class="nl-text">LINQ</span>
+        @if (progress.isDone('csharp-linq')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-linq'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('linq')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('linq')"
+                  (click)="toggleSubtopics('linq', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('linq'); as subs) {
+        @if (isSubtopicsExpanded('linq')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/strings-datetime" routerLinkActive="active"><span class="nl-text">Strings, DateTime &amp; Math</span>@if(progress.isDone('csharp-strings-datetime')){<span class="nl-done">✓</span>}@if(diff('csharp-strings-datetime');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/io-serialization" routerLinkActive="active"><span class="nl-text">I/O &amp; Serialization</span>@if(progress.isDone('csharp-io-serialization')){<span class="nl-done">✓</span>}@if(diff('csharp-io-serialization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/regex" routerLinkActive="active"><span class="nl-text">Regular Expressions</span>@if(progress.isDone('csharp-regex')){<span class="nl-done">✓</span>}@if(diff('csharp-regex');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

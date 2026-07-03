@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="LINQ"
+    topicRoute="/csharp/linq"
+    subtopicLabel="Expression Trees: Why EF Core Needs Expression&lt;Func&lt;T,bool&gt;&gt;" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Expression Trees: Why EF Core Needs Expression&lt;Func&lt;T,bool&gt;&gt;</h1>
+  <p class="page-subtitle">
+    The main topic says IQueryable "builds an expression tree" without ever showing
+    one. Here's what that tree literally is, and how to walk it yourself.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 3" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Custom operators and expression trees both extend how LINQ pipelines are built.
+      The final subtopic verifies LINQ-based repository code actually behaves
+      correctly, without needing a real database.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="LINQ"
+    topicRoute="/csharp/linq"
+    [prev]="{ label: 'Writing Custom Lazy LINQ Operators with yield return', route: '/csharp/linq/writing-custom-lazy-linq-operators-with-yield-return' }"
+    [next]="{ label: 'Testing LINQ-Based Repository Methods with EF Core In-Memory', route: '/csharp/linq/testing-linq-based-repository-methods-with-ef-core-in-memory' }" />
+</div>
