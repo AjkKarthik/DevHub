@@ -282,6 +282,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Profiling @let Recompute Cost', route: '/angular/let-template-vars/profiling-let-recompute-cost' },
     { label: '@let Inside ng-template and Structural Directives', route: '/angular/let-template-vars/let-inside-ng-template-scope-closure' },
   ],
+  'standalone-migration': [
+    { label: 'Testing Hybrid Standalone and NgModule Components', route: '/angular/standalone-migration/testing-hybrid-standalone-and-ngmodule-components' },
+    { label: 'SCAM Pattern — Incremental Migration Walkthrough', route: '/angular/standalone-migration/scam-pattern-incremental-migration-walkthrough' },
+    { label: 'Debugging NullInjectorError After Migration', route: '/angular/standalone-migration/debugging-nullinjectorerror-after-migration' },
+  ],
 };
 
 @Component({

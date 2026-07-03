@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Standalone Migration"
+    topicRoute="/angular/standalone-migration"
+    subtopicLabel="SCAM Pattern — Incremental Migration Walkthrough" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">SCAM Pattern — Incremental Migration Walkthrough</h1>
+  <p class="page-subtitle">
+    Extracting one component into its own tiny module changes nothing consumer-visible —
+    the safe intermediate step for shrinking a giant shared module one piece at a time.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Three files show the exact progression: a tangled <code>SharedModule</code>
+      (step 1), <code>UserCardComponent</code> extracted into its own SCAM (step 2),
+      then fully standalone with the SCAM deleted (step 3).
+    </p>
+    <app-live-playground
+      title="SCAM pattern — incremental migration walkthrough"
+      template="angular-cli"
+      openFile="src/app/step2-scam.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With a safe, gradual migration strategy covered, the final subtopic tackles the
+      class of runtime errors that show up when a migration goes wrong.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Standalone Migration"
+    topicRoute="/angular/standalone-migration"
+    [prev]="{ label: 'Testing Hybrid Standalone and NgModule Components', route: '/angular/standalone-migration/testing-hybrid-standalone-and-ngmodule-components' }"
+    [next]="{ label: 'Debugging NullInjectorError After Migration', route: '/angular/standalone-migration/debugging-nullinjectorerror-after-migration' }" />
+</div>

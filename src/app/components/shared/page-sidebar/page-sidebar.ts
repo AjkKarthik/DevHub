@@ -3987,6 +3987,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'standalone-migration/testing-hybrid-standalone-and-ngmodule-components': {
+    apis: ['TestBed imports[]', 'TestBed declarations[]', 'compileComponents()'],
+    related: [
+      { label: 'Standalone Migration (overview)',                                route: '/angular/standalone-migration' },
+      { label: 'SCAM Pattern — Incremental Migration Walkthrough — next',           route: '/angular/standalone-migration/scam-pattern-incremental-migration-walkthrough' },
+    ],
+    tip: 'A migrated component moves from TestBed declarations[] to imports[] — this is a separate one-line change from the source file migration, easy to forget since it lives in the spec file.',
+    docs: [
+      { label: 'Standalone Guide', url: 'https://angular.dev/guide/components/importing' },
+      { label: 'Testing Guide',    url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A standalone component can import a whole legacy NgModule directly in its own imports array — this is what enables gradual, file-by-file migration.',
+      'Migrate a component\'s .ts and .spec.ts files in the SAME commit so a broken test surfaces the declarations-vs-imports mismatch immediately in CI.',
+    ],
+  },
+
+  'standalone-migration/scam-pattern-incremental-migration-walkthrough': {
+    apis: ['SCAM (Single Component Angular Module)', '@NgModule (single-component)', 'dependency graph ordering'],
+    related: [
+      { label: 'Testing Hybrid Standalone and NgModule Components — previous', route: '/angular/standalone-migration/testing-hybrid-standalone-and-ngmodule-components' },
+      { label: 'Standalone Migration (overview)',                                route: '/angular/standalone-migration' },
+      { label: 'Debugging NullInjectorError After Migration — next',              route: '/angular/standalone-migration/debugging-nullinjectorerror-after-migration' },
+    ],
+    tip: 'Extracting a component into its own SCAM changes nothing consumer-visible — SharedModule still exports the same component, just re-exported through an intermediate module.',
+    docs: [
+      { label: 'Standalone Guide', url: 'https://angular.dev/guide/components/importing' },
+      { label: 'NgModule API',     url: 'https://angular.dev/api/core/NgModule' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Migrate in dependency-graph order (leaf components first), not alphabetically — this minimizes each step\'s blast radius.',
+      'A SCAM wraps exactly ONE component, never several — bundling multiple components defeats the purpose of independent extractability.',
+    ],
+  },
+
+  'standalone-migration/debugging-nullinjectorerror-after-migration': {
+    apis: ['NullInjectorError', 'importProvidersFrom()', 'per-route providers[]'],
+    related: [
+      { label: 'SCAM Pattern — Incremental Migration Walkthrough — previous', route: '/angular/standalone-migration/scam-pattern-incremental-migration-walkthrough' },
+      { label: 'Standalone Migration (overview)',                              route: '/angular/standalone-migration' },
+    ],
+    tip: 'The bracketed injector chain in a NullInjectorError message names WHICH injector was searched — root, a specific component, or a lazy route — directly narrowing down where the fix belongs.',
+    docs: [
+      { label: 'DI Errors Guide',    url: 'https://angular.dev/errors/NG0201' },
+      { label: 'importProvidersFrom', url: 'https://angular.dev/api/core/importProvidersFrom' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A custom provider registered directly in the deleted AppModule.providers (not providedIn: root) is easy to drop silently during Pass 3 cleanup.',
+      'A plain Routes array has no module-level providers field, but individual route objects DO support their own providers[] — the scoping moves, it does not disappear.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

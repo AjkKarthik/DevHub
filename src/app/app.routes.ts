@@ -292,7 +292,12 @@ export const routes: Routes = [
         { path: 'profiling-let-recompute-cost',            loadComponent: () => import('./components/angular/let-template-vars/subtopics/profiling-let-recompute-cost/profiling-let-recompute-cost').then(m => m.ProfilingLetRecomputeCostSubtopic) },
         { path: 'let-inside-ng-template-scope-closure',    loadComponent: () => import('./components/angular/let-template-vars/subtopics/let-inside-ng-template-scope-closure/let-inside-ng-template-scope-closure').then(m => m.LetInsideNgTemplateScopeClosureSubtopic) },
       ] },
-      { path: 'standalone-migration',    loadComponent: () => import('./components/angular/standalone-migration/standalone-migration').then(m => m.StandaloneMigrationDemo) },
+      { path: 'standalone-migration', children: [
+        { path: '',                                              loadComponent: () => import('./components/angular/standalone-migration/standalone-migration').then(m => m.StandaloneMigrationDemo) },
+        { path: 'testing-hybrid-standalone-and-ngmodule-components', loadComponent: () => import('./components/angular/standalone-migration/subtopics/testing-hybrid-standalone-and-ngmodule-components/testing-hybrid-standalone-and-ngmodule-components').then(m => m.TestingHybridStandaloneAndNgmoduleComponentsSubtopic) },
+        { path: 'scam-pattern-incremental-migration-walkthrough',    loadComponent: () => import('./components/angular/standalone-migration/subtopics/scam-pattern-incremental-migration-walkthrough/scam-pattern-incremental-migration-walkthrough').then(m => m.ScamPatternIncrementalMigrationWalkthroughSubtopic) },
+        { path: 'debugging-nullinjectorerror-after-migration',       loadComponent: () => import('./components/angular/standalone-migration/subtopics/debugging-nullinjectorerror-after-migration/debugging-nullinjectorerror-after-migration').then(m => m.DebuggingNullinjectorerrorAfterMigrationSubtopic) },
+      ] },
       { path: 'error-handling-patterns', loadComponent: () => import('./components/angular/error-handling-patterns/error-handling-patterns').then(m => m.ErrorHandlingPatternsDemo) },
       { path: 'msw',                     loadComponent: () => import('./components/angular/msw/msw').then(m => m.MswDemo) },
       { path: 'accessibility',           loadComponent: () => import('./components/angular/accessibility/accessibility').then(m => m.AccessibilityDemo) },

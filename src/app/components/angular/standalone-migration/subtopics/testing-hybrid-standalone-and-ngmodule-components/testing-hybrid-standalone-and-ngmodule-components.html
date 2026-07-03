@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Standalone Migration"
+    topicRoute="/angular/standalone-migration"
+    subtopicLabel="Testing Hybrid Standalone and NgModule Components" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Hybrid Standalone and NgModule Components</h1>
+  <p class="page-subtitle">
+    Migrating a component's source file also means migrating its spec file — one line
+    moves from declarations to imports, easy to forget since it's a separate file.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A migrated <code>UserBadgeComponent</code> tested with the correct
+      <code>imports: [UserBadgeComponent]</code> config, with the old
+      <code>declarations</code>-based version shown commented out for contrast.
+    </p>
+    <app-live-playground
+      title="Testing hybrid standalone and NgModule components"
+      template="angular-cli"
+      openFile="src/app/user-badge.component.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing covered, the next subtopic walks through the SCAM pattern for gradually
+      migrating a shared module one component at a time.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Standalone Migration"
+    topicRoute="/angular/standalone-migration"
+    [next]="{ label: 'SCAM Pattern — Incremental Migration Walkthrough', route: '/angular/standalone-migration/scam-pattern-incremental-migration-walkthrough' }" />
+</div>

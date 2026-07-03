@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Standalone Migration"
+    topicRoute="/angular/standalone-migration"
+    subtopicLabel="Debugging NullInjectorError After Migration" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Debugging NullInjectorError After Migration</h1>
+  <p class="page-subtitle">
+    Four distinct post-migration causes produce the same error shape — reading the
+    injector chain in the message narrows down where the fix belongs.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>AnalyticsService</code> (not <code>providedIn: 'root'</code>) was historically
+      registered in <code>AppModule.providers</code> — <code>app.config.ts</code>
+      explicitly re-registers it, simulating the exact fix for a dropped provider.
+    </p>
+    <app-live-playground
+      title="Debugging NullInjectorError after migration"
+      template="angular-cli"
+      openFile="src/app/app.config.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing, gradual migration strategy, and DI debugging all covered, head back to
+      the topic overview to see the full 3-pass schematic workflow.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Standalone Migration"
+    topicRoute="/angular/standalone-migration"
+    [prev]="{ label: 'SCAM Pattern — Incremental Migration Walkthrough', route: '/angular/standalone-migration/scam-pattern-incremental-migration-walkthrough' }" />
+</div>

@@ -2055,7 +2055,22 @@
         <span class="nl-text">Standalone Migration</span>
         @if (progress.isDone('standalone-migration')) {<span class="nl-done">✓</span>}
         @if (diff('standalone-migration'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('standalone-migration')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('standalone-migration')"
+                  (click)="toggleSubtopics('standalone-migration', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('standalone-migration'); as subs) {
+        @if (isSubtopicsExpanded('standalone-migration')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
