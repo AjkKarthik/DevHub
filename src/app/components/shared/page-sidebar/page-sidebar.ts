@@ -6628,6 +6628,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'exceptions/testing-exception-filters-verifying-when-predicate-logic': {
+    apis: ['Assert.Throws', 'Assert.ThrowsAsync', 'when', '[Fact]'],
+    related: [
+      { label: 'AppDomain.UnhandledException — next', route: '/csharp/exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception' },
+      { label: 'Exceptions (overview)', route: '/csharp/exceptions' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Extract an exception filter\'s predicate into its own named function and unit test it directly with no try/catch at all — Assert.Throws alone cannot prove which filter matched or whether its logic is correct.',
+    docs: [
+      { label: 'Exception Filters', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/exception-filters' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Assert.Throws<T> only proves SOME catch clause let the exception through — it cannot distinguish which filter evaluated or whether the filter\'s condition was too broad or too narrow.',
+      'Testing "logging without catching" requires asserting on a side effect (a spy/counter) since the exception propagates identically whether or not the filter\'s logging ran.',
+    ],
+  },
+
+  'exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception': {
+    apis: ['AppDomain.UnhandledException', 'TaskScheduler.UnobservedTaskException', 'SetObserved'],
+    related: [
+      { label: 'Testing Exception Filters — previous', route: '/csharp/exceptions/testing-exception-filters-verifying-when-predicate-logic' },
+      { label: 'Why Exceptions Are Slow — next', route: '/csharp/exceptions/why-exceptions-are-slow-stack-walking-first-chance-exceptions' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'AppDomain.UnhandledException only fires for synchronous exceptions that crash the process — it never sees a fire-and-forget Task\'s exception, which is trapped inside the Task object and only surfaces via the separate TaskScheduler.UnobservedTaskException event.',
+    docs: [
+      { label: 'AppDomain.UnhandledException', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.appdomain.unhandledexception' },
+      { label: 'TaskScheduler.UnobservedTaskException', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskscheduler.unobservedtaskexception' },
+    ],
+    resources: [
+      { label: 'Exception Handling Best Practices', url: 'https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions', badge: 'docs' },
+    ],
+    gotchas: [
+      'AppDomain.UnhandledException is a notification, not a recovery mechanism — by the time it fires the process is already terminating.',
+      'A fire-and-forget async method that throws fails completely silently unless TaskScheduler.UnobservedTaskException is explicitly wired up — no crash, no log, nothing.',
+    ],
+  },
+
+  'exceptions/why-exceptions-are-slow-stack-walking-first-chance-exceptions': {
+    apis: ['StackTrace', 'first-chance exception', 'TryParse'],
+    related: [
+      { label: 'AppDomain.UnhandledException — previous', route: '/csharp/exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception' },
+      { label: 'Exceptions (overview)', route: '/csharp/exceptions' },
+    ],
+    tip: 'The real cost of throwing is the CLR walking the call stack to build the trace and find a handler — not allocating the exception object. A try block that never throws has effectively zero overhead.',
+    docs: [
+      { label: 'Exception Performance', url: 'https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions' },
+    ],
+    resources: [
+      { label: '.NET Exception Handling', url: 'https://learn.microsoft.com/en-us/dotnet/standard/exceptions/', badge: 'docs' },
+    ],
+    gotchas: [
+      'The stack-walking cost scales with call-stack DEPTH at the throw site, not with the exception object\'s size or type.',
+      'The "avoid exceptions for control flow" guidance targets FREQUENT throws in hot paths — a single rare exception, even from deep in a call stack, has negligible cost.',
+    ],
+  },
+
   exceptions: {
     apis: ['try/catch/finally', 'when', 'throw', 'Exception', 'AggregateException'],
     related: [

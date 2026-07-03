@@ -448,7 +448,12 @@ export const routes: Routes = [
         { path: 'pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws', loadComponent: () => import('./components/backend/csharp/pattern-matching/subtopics/pattern-matching-ef-core-sql-translation/pattern-matching-ef-core-sql-translation').then(m => m.PatternMatchingInEfCoreLinqQueriesWhatTranslatesToSqlAndWhatThrowsSubtopic) },
         { path: 'how-the-compiler-lowers-property-patterns-repeated-access-and-performance', loadComponent: () => import('./components/backend/csharp/pattern-matching/subtopics/how-the-compiler-lowers-property-patterns-repeated-access-and-performance/how-the-compiler-lowers-property-patterns-repeated-access-and-performance').then(m => m.HowTheCompilerLowersPropertyPatternsRepeatedAccessAndPerformanceSubtopic) },
       ] },
-      { path: 'exceptions',      loadComponent: () => import('./components/backend/csharp/exceptions/exceptions').then(m => m.CsharpExceptions) },
+      { path: 'exceptions', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/exceptions/exceptions').then(m => m.CsharpExceptions) },
+        { path: 'testing-exception-filters-verifying-when-predicate-logic', loadComponent: () => import('./components/backend/csharp/exceptions/subtopics/testing-exception-filters-verifying-when-predicate-logic/testing-exception-filters-verifying-when-predicate-logic').then(m => m.TestingExceptionFiltersVerifyingWhenPredicateLogicSubtopic) },
+        { path: 'appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception', loadComponent: () => import('./components/backend/csharp/exceptions/subtopics/unhandled-and-unobserved-exceptions/unhandled-and-unobserved-exceptions').then(m => m.AppDomainUnhandledExceptionAndTaskSchedulerUnobservedTaskExceptionSubtopic) },
+        { path: 'why-exceptions-are-slow-stack-walking-first-chance-exceptions', loadComponent: () => import('./components/backend/csharp/exceptions/subtopics/why-exceptions-are-slow-stack-walking-first-chance-exceptions/why-exceptions-are-slow-stack-walking-first-chance-exceptions').then(m => m.WhyExceptionsAreSlowStackWalkingFirstChanceExceptionsSubtopic) },
+      ] },
       { path: 'delegates',         loadComponent: () => import('./components/backend/csharp/delegates/delegates').then(m => m.CsharpDelegates) },
       // ── Fundamentals ──
       { path: 'fields',            loadComponent: () => import('./components/backend/csharp/fields/fields').then(m => m.CsharpFields) },

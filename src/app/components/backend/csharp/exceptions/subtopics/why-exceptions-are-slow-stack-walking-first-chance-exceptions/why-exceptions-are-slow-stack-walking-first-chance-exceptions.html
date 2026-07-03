@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Exceptions"
+    topicRoute="/csharp/exceptions"
+    subtopicLabel="Why Exceptions Are Slow" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why Exceptions Are Slow: Stack Walking, First-Chance Exceptions, and When It Actually Matters</h1>
+  <p class="page-subtitle">
+    The main topic asserts exceptions are "expensive" without explaining why — this
+    subtopic unpacks the real cost (stack walking, not allocation) and shows exactly
+    where that cost does and doesn't matter.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Framework 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing filter logic, handling truly unhandled failures, and understanding the real
+      performance cost together round out exception handling as a production concern, not
+      just try/catch syntax.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Exceptions"
+    topicRoute="/csharp/exceptions"
+    [prev]="{ label: 'AppDomain.UnhandledException and TaskScheduler.UnobservedTaskException', route: '/csharp/exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception' }" />
+</div>
