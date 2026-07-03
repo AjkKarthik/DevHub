@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Fields & Constants"
+    topicRoute="/csharp/fields"
+    subtopicLabel="Static Field Initialization Order" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Static Field Initialization Order: Cross-Type Dependencies and the beforefieldinit Trap</h1>
+  <p class="page-subtitle">
+    The main topic shows static fields initializing "once at startup" — within a single
+    class that's true and predictable. Across different classes, the real order depends
+    on lazy first-use, not declaration order.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 1.0 / CLR" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding real initialization order explains a rare but genuinely hard-to-debug
+      bug class — the final subtopic covers the correct fix for the main page's own
+      "never store per-request state in a static field" warning.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Fields & Constants"
+    topicRoute="/csharp/fields"
+    [prev]="{ label: 'Testing Field Thread-Safety', route: '/csharp/fields/testing-field-thread-safety-race-conditions-increment-vs-interlocked' }"
+    [next]="{ label: 'AsyncLocal: The Correct Alternative to Static Fields', route: '/csharp/fields/asynclocal-correct-alternative-to-static-fields-for-per-request-state' }" />
+</div>

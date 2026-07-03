@@ -994,7 +994,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/fields" routerLinkActive="active"><span class="nl-text">Fields &amp; Constants</span>@if(progress.isDone('csharp-fields')){<span class="nl-done">✓</span>}@if(diff('csharp-fields');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/fields" routerLinkActive="active">
+        <span class="nl-text">Fields &amp; Constants</span>
+        @if (progress.isDone('csharp-fields')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-fields'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('fields')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('fields')"
+                  (click)="toggleSubtopics('fields', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('fields'); as subs) {
+        @if (isSubtopicsExpanded('fields')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/methods" routerLinkActive="active"><span class="nl-text">Methods</span>@if(progress.isDone('csharp-methods')){<span class="nl-done">✓</span>}@if(diff('csharp-methods');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/type-conversion" routerLinkActive="active"><span class="nl-text">Type Conversion</span>@if(progress.isDone('csharp-type-conversion')){<span class="nl-done">✓</span>}@if(diff('csharp-type-conversion');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/constructors" routerLinkActive="active"><span class="nl-text">Constructors</span>@if(progress.isDone('csharp-constructors')){<span class="nl-done">✓</span>}@if(diff('csharp-constructors');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

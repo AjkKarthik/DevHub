@@ -6748,6 +6748,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'fields/testing-field-thread-safety-race-conditions-increment-vs-interlocked': {
+    apis: ['Interlocked.Increment', 'Task.WhenAll', 'volatile'],
+    related: [
+      { label: 'Static Field Initialization Order — next', route: '/csharp/fields/static-field-initialization-order-beforefieldinit' },
+      { label: 'Fields & Constants (overview)', route: '/csharp/fields' },
+      { label: 'Threading', route: '/csharp/threading' },
+    ],
+    tip: 'A sequential test, no matter how many iterations, never exposes a race condition — only genuine concurrent execution (Task.WhenAll over many Task.Run calls) can. High thread/iteration counts make failures on broken code highly likely, though never guaranteed.',
+    docs: [
+      { label: 'Interlocked Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked' },
+    ],
+    resources: [
+      { label: 'Thread-Safe Collections', url: 'https://learn.microsoft.com/en-us/dotnet/standard/collections/thread-safe/', badge: 'docs' },
+    ],
+    gotchas: [
+      'volatile does not make ++ atomic — a concurrent-increment test against a volatile field reproduces the same undercount as a plain, non-volatile field.',
+      'A race-condition test is inherently probabilistic — it may occasionally pass even against genuinely broken code, which does not mean the code is safe.',
+    ],
+  },
+
+  'fields/static-field-initialization-order-beforefieldinit': {
+    apis: ['beforefieldinit', 'static constructor', 'ExecutionEngine'],
+    related: [
+      { label: 'Testing Field Thread-Safety — previous', route: '/csharp/fields/testing-field-thread-safety-race-conditions-increment-vs-interlocked' },
+      { label: 'AsyncLocal — next', route: '/csharp/fields/asynclocal-correct-alternative-to-static-fields-for-per-request-state' },
+      { label: 'Fields & Constants (overview)', route: '/csharp/fields' },
+    ],
+    tip: 'Cross-type static initialization is lazy and triggered by first use — the order two independent types initialize in depends on which type your program touches first, not declaration order.',
+    docs: [
+      { label: 'Static Constructors', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors' },
+    ],
+    resources: [
+      { label: 'beforefieldinit Explained', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors', badge: 'docs' },
+    ],
+    gotchas: [
+      'A circular static dependency between two types does not throw or deadlock — the CLR simply does not re-enter a type already initializing, silently observing its partially-initialized (default) state instead.',
+      'A type with no explicit static constructor is marked beforefieldinit, giving the CLR permission to initialize it any time before first use — sometimes earlier than expected.',
+    ],
+  },
+
+  'fields/asynclocal-correct-alternative-to-static-fields-for-per-request-state': {
+    apis: ['AsyncLocal<T>', 'ExecutionContext', 'IHttpContextAccessor'],
+    related: [
+      { label: 'Static Field Initialization Order — previous', route: '/csharp/fields/static-field-initialization-order-beforefieldinit' },
+      { label: 'Fields & Constants (overview)', route: '/csharp/fields' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'AsyncLocal<T> flows its value along the logical async call chain (following ExecutionContext across every await), unlike [ThreadStatic] which is scoped to a single OS thread and breaks when a continuation resumes on a different thread.',
+    docs: [
+      { label: 'AsyncLocal<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.asynclocal-1' },
+    ],
+    resources: [
+      { label: 'ExecutionContext Flow', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.executioncontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'AsyncLocal<T> values flow strictly downward — a callee\'s write never propagates back up to its caller, and never crosses sideways into a sibling branch that already forked off.',
+      'ASP.NET Core\'s IHttpContextAccessor is implemented internally using an AsyncLocal<HttpContext> — understanding AsyncLocal directly demystifies how it achieves per-request isolation.',
+    ],
+  },
+
   exceptions: {
     apis: ['try/catch/finally', 'when', 'throw', 'Exception', 'AggregateException'],
     related: [

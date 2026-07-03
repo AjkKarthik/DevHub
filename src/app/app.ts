@@ -407,6 +407,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How Delegate Equality Actually Works', route: '/csharp/delegates/how-delegate-equality-actually-works-target-method-pairs' },
     { label: 'async void Event Handlers', route: '/csharp/delegates/async-void-event-handlers-why-exceptions-vanish' },
   ],
+  'fields': [
+    { label: 'Testing Field Thread-Safety', route: '/csharp/fields/testing-field-thread-safety-race-conditions-increment-vs-interlocked' },
+    { label: 'Static Field Initialization Order', route: '/csharp/fields/static-field-initialization-order-beforefieldinit' },
+    { label: 'AsyncLocal: Correct Alternative to Static Fields', route: '/csharp/fields/asynclocal-correct-alternative-to-static-fields-for-per-request-state' },
+  ],
 };
 
 @Component({

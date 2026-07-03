@@ -461,7 +461,12 @@ export const routes: Routes = [
         { path: 'async-void-event-handlers-why-exceptions-vanish', loadComponent: () => import('./components/backend/csharp/delegates/subtopics/async-void-event-handlers-why-exceptions-vanish/async-void-event-handlers-why-exceptions-vanish').then(m => m.AsyncVoidEventHandlersWhyExceptionsVanishSubtopic) },
       ] },
       // ── Fundamentals ──
-      { path: 'fields',            loadComponent: () => import('./components/backend/csharp/fields/fields').then(m => m.CsharpFields) },
+      { path: 'fields', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/fields/fields').then(m => m.CsharpFields) },
+        { path: 'testing-field-thread-safety-race-conditions-increment-vs-interlocked', loadComponent: () => import('./components/backend/csharp/fields/subtopics/testing-field-thread-safety-race-conditions-increment-vs-interlocked/testing-field-thread-safety-race-conditions-increment-vs-interlocked').then(m => m.TestingFieldThreadSafetyRaceConditionsIncrementVsInterlockedSubtopic) },
+        { path: 'static-field-initialization-order-beforefieldinit', loadComponent: () => import('./components/backend/csharp/fields/subtopics/static-field-initialization-order-beforefieldinit/static-field-initialization-order-beforefieldinit').then(m => m.StaticFieldInitializationOrderBeforefieldinitSubtopic) },
+        { path: 'asynclocal-correct-alternative-to-static-fields-for-per-request-state', loadComponent: () => import('./components/backend/csharp/fields/subtopics/asynclocal-correct-alternative-to-static-fields-for-per-request-state/asynclocal-correct-alternative-to-static-fields-for-per-request-state').then(m => m.AsyncLocalCorrectAlternativeToStaticFieldsForPerRequestStateSubtopic) },
+      ] },
       { path: 'methods',           loadComponent: () => import('./components/backend/csharp/methods/methods').then(m => m.CsharpMethods) },
       { path: 'type-conversion',   loadComponent: () => import('./components/backend/csharp/type-conversion/type-conversion').then(m => m.CsharpTypeConversion) },
       { path: 'constructors',      loadComponent: () => import('./components/backend/csharp/constructors/constructors').then(m => m.CsharpConstructors) },

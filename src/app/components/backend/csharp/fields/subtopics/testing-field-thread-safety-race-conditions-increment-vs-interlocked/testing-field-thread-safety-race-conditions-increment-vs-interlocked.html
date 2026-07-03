@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Fields & Constants"
+    topicRoute="/csharp/fields"
+    subtopicLabel="Testing Field Thread-Safety: Race Conditions" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Field Thread-Safety: Catching Race Conditions in ++ vs Interlocked</h1>
+  <p class="page-subtitle">
+    The main topic explains why plain ++ isn't atomic under concurrency — this subtopic
+    writes a test that actually reproduces the race condition, and proves Interlocked
+    genuinely fixes it.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing thread-safety covers concurrent correctness — the next subtopics dig into
+      static field initialization order and the correct alternative to static fields for
+      per-request state.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Fields & Constants"
+    topicRoute="/csharp/fields"
+    [next]="{ label: 'Static Field Initialization Order', route: '/csharp/fields/static-field-initialization-order-beforefieldinit' }" />
+</div>
