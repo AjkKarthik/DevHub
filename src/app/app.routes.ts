@@ -352,7 +352,12 @@ export const routes: Routes = [
         { path: 'handling-unrecoverable-state-and-manual-update-checks', loadComponent: () => import('./components/angular/pwa/subtopics/handling-unrecoverable-state-and-manual-update-checks/handling-unrecoverable-state-and-manual-update-checks').then(m => m.HandlingUnrecoverableStateAndManualUpdateChecksSubtopic) },
         { path: 'spa-routing-pitfalls-navigationurls-and-app-shell-fallback', loadComponent: () => import('./components/angular/pwa/subtopics/spa-routing-pitfalls-navigationurls-and-app-shell-fallback/spa-routing-pitfalls-navigationurls-and-app-shell-fallback').then(m => m.SpaRoutingPitfallsNavigationurlsAndAppShellFallbackSubtopic) },
       ] },
-      { path: 'i18n',               loadComponent: () => import('./components/angular/i18n/i18n').then(m => m.I18nDemo) },
+      { path: 'i18n', children: [
+        { path: '',                                                     loadComponent: () => import('./components/angular/i18n/i18n').then(m => m.I18nDemo) },
+        { path: 'testing-components-that-use-transloco-and-signal-i18n', loadComponent: () => import('./components/angular/i18n/subtopics/testing-components-that-use-transloco-and-signal-i18n/testing-components-that-use-transloco-and-signal-i18n').then(m => m.TestingComponentsThatUseTranslocoAndSignalI18nSubtopic) },
+        { path: 'building-rtl-layout-support-with-logical-css-properties', loadComponent: () => import('./components/angular/i18n/subtopics/building-rtl-layout-support-with-logical-css-properties/building-rtl-layout-support-with-logical-css-properties').then(m => m.BuildingRtlLayoutSupportWithLogicalCssPropertiesSubtopic) },
+        { path: 'ssr-locale-detection-and-avoiding-hydration-mismatches', loadComponent: () => import('./components/angular/i18n/subtopics/ssr-locale-detection-and-avoiding-hydration-mismatches/ssr-locale-detection-and-avoiding-hydration-mismatches').then(m => m.SsrLocaleDetectionAndAvoidingHydrationMismatchesSubtopic) },
+      ] },
       { path: 'e2e',                loadComponent: () => import('./components/angular/e2e/e2e').then(m => m.E2eDemo) },
       { path: 'harnesses',          loadComponent: () => import('./components/angular/harnesses/harnesses').then(m => m.HarnessesDemo) },
       { path: 'ssr',                loadComponent: () => import('./components/angular/ssr/ssr').then(m => m.SsrDemo) },

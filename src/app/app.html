@@ -2120,7 +2120,22 @@
         <span class="nl-text">i18n</span>
         @if (progress.isDone('i18n')) {<span class="nl-done">✓</span>}
         @if (diff('i18n'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('i18n')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('i18n')"
+                  (click)="toggleSubtopics('i18n', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('i18n'); as subs) {
+        @if (isSubtopicsExpanded('i18n')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/ssr" routerLinkActive="active">
         <span class="nl-text">SSR + Hydration</span>
         @if (progress.isDone('ssr')) {<span class="nl-done">✓</span>}

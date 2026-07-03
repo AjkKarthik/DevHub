@@ -4597,6 +4597,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'i18n/testing-components-that-use-transloco-and-signal-i18n': {
+    apis: ['TranslocoTestingModule', 'fixture.detectChanges()', 'setActiveLang()', 'Intl.PluralRules'],
+    related: [
+      { label: 'Internationalisation (i18n) (overview)',                       route: '/angular/i18n' },
+      { label: 'Building RTL Layout Support with Logical CSS Properties — next', route: '/angular/i18n/building-rtl-layout-support-with-logical-css-properties' },
+    ],
+    tip: 'Assert against the SAME translation map or Transloco testing config the component reads from — not a duplicated literal — so a translator copy edit doesn\'t spuriously break the test.',
+    docs: [
+      { label: 'Transloco Testing Guide', url: 'https://jsverse.gitbook.io/transloco/testing' },
+      { label: 'Angular Testing Overview', url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Also assert the DOM text actually CHANGED after a language switch, not just that it matches the new locale — a broken reactivity chain can coincidentally render correct text.',
+      'TranslocoTestingModule supplies translation JSON in-memory, bypassing TranslocoHttpLoader\'s real HTTP fetch entirely.',
+    ],
+  },
+
+  'i18n/building-rtl-layout-support-with-logical-css-properties': {
+    apis: ['dir attribute', 'margin-inline-start/end', 'inset-inline-start/end', 'text-align: start/end'],
+    related: [
+      { label: 'Testing Components That Use Transloco and Signal-Based i18n — previous', route: '/angular/i18n/testing-components-that-use-transloco-and-signal-i18n' },
+      { label: 'Internationalisation (i18n) (overview)',                                  route: '/angular/i18n' },
+      { label: 'SSR Locale Detection and Avoiding Hydration Mismatches — next',            route: '/angular/i18n/ssr-locale-detection-and-avoiding-hydration-mismatches' },
+    ],
+    tip: 'CSS logical properties (margin-inline-start, text-align: start) resolve automatically based on the ambient dir attribute — most layout CSS needs zero [dir]-specific overrides once authored this way.',
+    docs: [
+      { label: 'CSS Logical Properties — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values' },
+      { label: 'dir attribute — MDN',          url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Only icons that encode directional MEANING (a "next" chevron) should flip under RTL — icons for universal concepts (a settings gear) generally should not.',
+      'Logical properties handle spacing/positioning automatically but do NOT mirror the visual content of an SVG or icon glyph — that needs an explicit [dir="rtl"] transform rule.',
+    ],
+  },
+
+  'i18n/ssr-locale-detection-and-avoiding-hydration-mismatches': {
+    apis: ['Accept-Language header', 'TransferState', 'makeStateKey', 'isPlatformServer'],
+    related: [
+      { label: 'Building RTL Layout Support with Logical CSS Properties — previous', route: '/angular/i18n/building-rtl-layout-support-with-logical-css-properties' },
+      { label: 'Internationalisation (i18n) (overview)',                              route: '/angular/i18n' },
+    ],
+    tip: 'The server and client see different locale signals (Accept-Language header vs navigator.language) — serialize the server\'s decision via TransferState so the client\'s first render reuses it instead of re-deciding.',
+    docs: [
+      { label: 'Angular SSR Guide',    url: 'https://angular.dev/guide/ssr' },
+      { label: 'TransferState API',    url: 'https://angular.dev/api/core/TransferState' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Never cache the detected locale in a module-level variable on the SSR server — a Node process serves many concurrent requests from different users.',
+      'A flash from the correct locale to a different one right after page load is the visible symptom of a hydration mismatch caused by client-side re-detection.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

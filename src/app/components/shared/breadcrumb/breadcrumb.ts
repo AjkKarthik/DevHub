@@ -184,6 +184,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-update-prompts-and-install-banners': 'Testing Update Prompts and Install Banners',
   'handling-unrecoverable-state-and-manual-update-checks': 'Handling Unrecoverable State and Manual Update Checks',
   'spa-routing-pitfalls-navigationurls-and-app-shell-fallback': 'SPA Routing Pitfalls: navigationUrls and the App-Shell Fallback',
+  'testing-components-that-use-transloco-and-signal-i18n': 'Testing Components That Use Transloco and Signal-Based i18n',
+  'building-rtl-layout-support-with-logical-css-properties': 'Building RTL Layout Support with Logical CSS Properties',
+  'ssr-locale-detection-and-avoiding-hydration-mismatches': 'SSR Locale Detection and Avoiding Hydration Mismatches',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.
