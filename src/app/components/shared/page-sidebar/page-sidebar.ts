@@ -6940,6 +6940,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['(T)cast throws InvalidCastException on failure; as returns null — choose based on whether failure is exceptional.', 'Numeric conversions can silently lose data (double→int truncates); use checked{} to catch overflow.'],
   },
 
+  'type-conversion/testing-conversion-operators-and-overflow-boundaries': {
+    apis: ['Assert.Throws<OverflowException>', 'implicit operator', 'explicit operator'],
+    related: [
+      { label: 'User-Defined Conversion Chaining — next', route: '/csharp/type-conversion/user-defined-conversion-chaining-one-operator-limit' },
+      { label: 'Type Conversion (overview)', route: '/csharp/type-conversion' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A round-trip test (convert one direction, then back) catches asymmetric conversion-operator bugs. For overflow, test the exact boundary from BOTH sides — MaxValue itself must not throw, MaxValue+1 must.',
+    docs: [
+      { label: 'User-Defined Conversions', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/conversions#user-defined-conversions' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Testing only "some large number overflows" can hide an off-by-one error in overflow-detection logic — test the exact boundary from both sides.',
+      'User-defined conversion operators compile to ordinary static methods and can be tested directly via natural conversion syntax, no reflection needed.',
+    ],
+  },
+
+  'type-conversion/user-defined-conversion-chaining-one-operator-limit': {
+    apis: ['implicit operator', 'explicit operator', 'CS0029', 'CS0030'],
+    related: [
+      { label: 'Testing Conversion Operators — previous', route: '/csharp/type-conversion/testing-conversion-operators-and-overflow-boundaries' },
+      { label: 'Compile-Time Constant Overflow — next', route: '/csharp/type-conversion/compile-time-constant-overflow-always-checked' },
+      { label: 'Type Conversion (overview)', route: '/csharp/type-conversion' },
+    ],
+    tip: 'C# allows at most ONE user-defined conversion operator per conversion, combined with any number of built-in conversions — it never automatically chains two user-defined operators together, even implicit ones.',
+    docs: [
+      { label: 'Conversion Operators', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/user-defined-conversion-operators' },
+    ],
+    resources: [
+      { label: 'C# Language Specification', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/conversions', badge: 'docs' },
+    ],
+    gotchas: [
+      'If TypeA converts to TypeB and TypeB converts to TypeC, TypeA does NOT automatically convert to TypeC — two separate conversion steps are required.',
+      'Explicit cast syntax does not lift the one-user-defined-operator limit — it only additionally allows explicit (not just implicit) operators to be used for that one permitted hop.',
+    ],
+  },
+
+  'type-conversion/compile-time-constant-overflow-always-checked': {
+    apis: ['const', 'unchecked()', 'CS0220', 'CheckForOverflowUnderflow'],
+    related: [
+      { label: 'User-Defined Conversion Chaining — previous', route: '/csharp/type-conversion/user-defined-conversion-chaining-one-operator-limit' },
+      { label: 'Type Conversion (overview)', route: '/csharp/type-conversion' },
+      { label: 'Fields & Constants', route: '/csharp/fields' },
+    ],
+    tip: 'Constant expressions the compiler can fully evaluate are ALWAYS checked for overflow, regardless of the surrounding checked/unchecked context or the CheckForOverflowUnderflow project setting — an intentional overflowing constant needs an explicit unchecked(...) wrapper.',
+    docs: [
+      { label: 'checked and unchecked', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/checked-and-unchecked' },
+    ],
+    resources: [
+      { label: 'Constant Expressions', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#constant-expressions', badge: 'docs' },
+    ],
+    gotchas: [
+      'The project-wide CheckForOverflowUnderflow MSBuild property only affects runtime arithmetic — it does NOT let an overflowing constant expression compile.',
+      'unchecked(...) on a constant expression overrides a COMPILE-TIME ERROR (CS0220), a different purpose than the runtime unchecked block from the main topic.',
+    ],
+  },
+
   constructors: {
     apis: ['this()', 'base()', 'static ctor', 'primary ctor (C#12)', 'required'],
     related: [{ label: 'OOP & Classes', route: '/csharp/oop' }, { label: 'Fields & Constants', route: '/csharp/fields' }, { label: 'Records & Structs', route: '/csharp/records' }],

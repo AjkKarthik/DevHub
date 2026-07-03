@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Type Conversion"
+    topicRoute="/csharp/type-conversion"
+    subtopicLabel="Testing Conversion Operators and Overflow Boundaries" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Implicit/Explicit Conversion Operators and Overflow Boundaries</h1>
+  <p class="page-subtitle">
+    The main topic's Temperature struct and checked/unchecked examples are all
+    demonstrated by running and printing — this subtopic shows how to actually test
+    conversion operators and pin down the exact overflow boundary.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing operators covers correctness — the next subtopics dig into a genuinely
+      deep language rule about chaining user-defined conversions, and a compile-time
+      overflow gotcha that catches even unchecked-context code.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Type Conversion"
+    topicRoute="/csharp/type-conversion"
+    [next]="{ label: 'User-Defined Conversion Chaining', route: '/csharp/type-conversion/user-defined-conversion-chaining-one-operator-limit' }" />
+</div>

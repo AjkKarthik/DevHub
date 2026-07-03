@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Type Conversion"
+    topicRoute="/csharp/type-conversion"
+    subtopicLabel="User-Defined Conversion Chaining" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">User-Defined Conversion Chaining: Why C# Only Allows One User-Defined Operator</h1>
+  <p class="page-subtitle">
+    The main topic shows one conversion operator hop at a time — this subtopic explains
+    what happens when two types each declare their own operator, and why the compiler
+    refuses to chain them automatically.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 1.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding the one-hop rule explains a genuinely common compile error — the
+      final subtopic covers a related but distinct gotcha: overflow that gets caught at
+      compile time regardless of checked/unchecked context.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Type Conversion"
+    topicRoute="/csharp/type-conversion"
+    [prev]="{ label: 'Testing Conversion Operators and Overflow Boundaries', route: '/csharp/type-conversion/testing-conversion-operators-and-overflow-boundaries' }"
+    [next]="{ label: 'Compile-Time Constant Overflow', route: '/csharp/type-conversion/compile-time-constant-overflow-always-checked' }" />
+</div>

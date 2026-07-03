@@ -473,7 +473,12 @@ export const routes: Routes = [
         { path: 'in-parameter-defensive-copy-trap', loadComponent: () => import('./components/backend/csharp/methods/subtopics/in-parameter-defensive-copy-trap/in-parameter-defensive-copy-trap').then(m => m.InParameterDefensiveCopyTrapSubtopic) },
         { path: 'caller-info-attributes-callermembername-callerlinenumber', loadComponent: () => import('./components/backend/csharp/methods/subtopics/caller-info-attributes-callermembername-callerlinenumber/caller-info-attributes-callermembername-callerlinenumber').then(m => m.CallerInfoAttributesCallerMemberNameCallerLineNumberSubtopic) },
       ] },
-      { path: 'type-conversion',   loadComponent: () => import('./components/backend/csharp/type-conversion/type-conversion').then(m => m.CsharpTypeConversion) },
+      { path: 'type-conversion', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/type-conversion/type-conversion').then(m => m.CsharpTypeConversion) },
+        { path: 'testing-conversion-operators-and-overflow-boundaries', loadComponent: () => import('./components/backend/csharp/type-conversion/subtopics/testing-conversion-operators-and-overflow-boundaries/testing-conversion-operators-and-overflow-boundaries').then(m => m.TestingConversionOperatorsAndOverflowBoundariesSubtopic) },
+        { path: 'user-defined-conversion-chaining-one-operator-limit', loadComponent: () => import('./components/backend/csharp/type-conversion/subtopics/user-defined-conversion-chaining-one-operator-limit/user-defined-conversion-chaining-one-operator-limit').then(m => m.UserDefinedConversionChainingOneOperatorLimitSubtopic) },
+        { path: 'compile-time-constant-overflow-always-checked', loadComponent: () => import('./components/backend/csharp/type-conversion/subtopics/compile-time-constant-overflow-always-checked/compile-time-constant-overflow-always-checked').then(m => m.CompileTimeConstantOverflowAlwaysCheckedSubtopic) },
+      ] },
       { path: 'constructors',      loadComponent: () => import('./components/backend/csharp/constructors/constructors').then(m => m.CsharpConstructors) },
       { path: 'properties-indexers', loadComponent: () => import('./components/backend/csharp/properties-indexers/properties-indexers').then(m => m.CsharpPropertiesIndexers) },
       { path: 'namespaces',        loadComponent: () => import('./components/backend/csharp/namespaces/namespaces').then(m => m.CsharpNamespaces) },

@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Type Conversion"
+    topicRoute="/csharp/type-conversion"
+    subtopicLabel="Compile-Time Constant Overflow" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Compile-Time Constant Overflow: Always Checked, Regardless of unchecked Context</h1>
+  <p class="page-subtitle">
+    The main topic says C# arithmetic is unchecked by default — true for runtime values,
+    but constant expressions the compiler can fully evaluate are always treated as
+    checked, overflowing into a compile error instead.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 1.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing conversions, understanding operator chaining limits, and knowing exactly
+      when overflow is checked versus unchecked together complete the picture of type
+      conversion as a set of precise, learnable compiler rules rather than folklore.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Type Conversion"
+    topicRoute="/csharp/type-conversion"
+    [prev]="{ label: 'User-Defined Conversion Chaining', route: '/csharp/type-conversion/user-defined-conversion-chaining-one-operator-limit' }" />
+</div>
