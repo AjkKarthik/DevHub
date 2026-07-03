@@ -402,6 +402,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'AppDomain.UnhandledException and TaskScheduler.UnobservedTaskException', route: '/csharp/exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception' },
     { label: 'Why Exceptions Are Slow', route: '/csharp/exceptions/why-exceptions-are-slow-stack-walking-first-chance-exceptions' },
   ],
+  'delegates': [
+    { label: "Testing Events: Assert.Raises", route: '/csharp/delegates/testing-events-xunit-assert-raises-multicast-behavior' },
+    { label: 'How Delegate Equality Actually Works', route: '/csharp/delegates/how-delegate-equality-actually-works-target-method-pairs' },
+    { label: 'async void Event Handlers', route: '/csharp/delegates/async-void-event-handlers-why-exceptions-vanish' },
+  ],
 };
 
 @Component({

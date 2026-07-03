@@ -6688,6 +6688,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'delegates/testing-events-xunit-assert-raises-multicast-behavior': {
+    apis: ['Assert.Raises', 'RaisedEvent<T>', 'GetInvocationList'],
+    related: [
+      { label: 'How Delegate Equality Actually Works — next', route: '/csharp/delegates/how-delegate-equality-actually-works-target-method-pairs' },
+      { label: 'Delegates & Events (overview)', route: '/csharp/delegates' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Assert.Raises<TEventArgs> handles the subscribe/run/unsubscribe cycle and gives direct access to the exact Sender and Arguments — reserve the manual flag pattern for proving an event did NOT fire, since there is no Assert.DoesNotRaise.',
+    docs: [
+      { label: 'xUnit Assert.Raises', url: 'https://xunit.net/docs/getting-started/netcore/cmdline' },
+    ],
+    resources: [
+      { label: 'Testing Events in .NET', url: 'https://learn.microsoft.com/en-us/dotnet/standard/events/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A flag-based "event did not fire" test must always unsubscribe in a finally block — an event test that forgets to unsubscribe leaves its handler attached to a service instance that might outlive the test.',
+      'Testing multicast order and partial-failure behavior directly (subscribe multiple handlers appending to a shared list) proves your production code\'s actual reliance on that behavior, rather than trusting it from documentation.',
+    ],
+  },
+
+  'delegates/how-delegate-equality-actually-works-target-method-pairs': {
+    apis: ['Delegate.Equals', 'Delegate.Combine', 'Delegate.Remove'],
+    related: [
+      { label: 'Testing Events — previous', route: '/csharp/delegates/testing-events-xunit-assert-raises-multicast-behavior' },
+      { label: 'async void Event Handlers — next', route: '/csharp/delegates/async-void-event-handlers-why-exceptions-vanish' },
+      { label: 'Delegates & Events (overview)', route: '/csharp/delegates' },
+    ],
+    tip: 'Delegate equality compares the underlying (target, method) pair, not the delegate wrapper object\'s own identity — two separately created delegates wrapping the same instance method ARE delegate-equal despite failing ReferenceEquals.',
+    docs: [
+      { label: 'Delegate.Equals', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.delegate.equals' },
+    ],
+    resources: [
+      { label: 'Delegates Overview', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Each evaluation of a capturing lambda creates its own distinct closure instance — even syntactically identical lambdas are NOT delegate-equal, which is why you cannot -= a lambda you never stored a reference to.',
+      '-= removes only ONE matching entry per call — subscribing the same method-group handler N times requires N calls to -= to fully unsubscribe it.',
+    ],
+  },
+
+  'delegates/async-void-event-handlers-why-exceptions-vanish': {
+    apis: ['async void', 'SynchronizationContext', 'async Task'],
+    related: [
+      { label: 'How Delegate Equality Actually Works — previous', route: '/csharp/delegates/how-delegate-equality-actually-works-target-method-pairs' },
+      { label: 'Delegates & Events (overview)', route: '/csharp/delegates' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'An async void handler that throws after its first await does so on a resumed continuation, after the original synchronous event-raise call has already returned — no surrounding try/catch can ever catch it. Wrap the entire handler body in its own try/catch.',
+    docs: [
+      { label: 'Async Void Considered Harmful', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming' },
+    ],
+    resources: [
+      { label: 'Async/Await Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'EventHandler-shaped delegates require void, not Task — async void cannot be fully avoided for standard .NET event subscribers that need to await something.',
+      'An async void subscriber mixed into a multicast delegate does not block sibling handlers even if it eventually throws — it "returns" to the loop at its first await, well before any later throw.',
+    ],
+  },
+
   exceptions: {
     apis: ['try/catch/finally', 'when', 'throw', 'Exception', 'AggregateException'],
     related: [

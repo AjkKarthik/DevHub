@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Delegates & Events"
+    topicRoute="/csharp/delegates"
+    subtopicLabel="How Delegate Equality Actually Works" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">How Delegate Equality Actually Works: Target+Method Pairs, Not Object References</h1>
+  <p class="page-subtitle">
+    The main topic says "-= compares by reference equality" — that's a simplification.
+    This subtopic explains the real (target, method) pair comparison and why it makes
+    method-group unsubscription work but lambda unsubscription fail.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 1.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding real delegate equality explains subtle subscription bugs — the final
+      subtopic covers a different, equally dangerous event-handling footgun specific to
+      async void methods.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Delegates & Events"
+    topicRoute="/csharp/delegates"
+    [prev]="{ label: 'Testing Events: Assert.Raises', route: '/csharp/delegates/testing-events-xunit-assert-raises-multicast-behavior' }"
+    [next]="{ label: 'async void Event Handlers', route: '/csharp/delegates/async-void-event-handlers-why-exceptions-vanish' }" />
+</div>

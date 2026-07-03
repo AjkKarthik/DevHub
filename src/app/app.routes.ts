@@ -454,7 +454,12 @@ export const routes: Routes = [
         { path: 'appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception', loadComponent: () => import('./components/backend/csharp/exceptions/subtopics/unhandled-and-unobserved-exceptions/unhandled-and-unobserved-exceptions').then(m => m.AppDomainUnhandledExceptionAndTaskSchedulerUnobservedTaskExceptionSubtopic) },
         { path: 'why-exceptions-are-slow-stack-walking-first-chance-exceptions', loadComponent: () => import('./components/backend/csharp/exceptions/subtopics/why-exceptions-are-slow-stack-walking-first-chance-exceptions/why-exceptions-are-slow-stack-walking-first-chance-exceptions').then(m => m.WhyExceptionsAreSlowStackWalkingFirstChanceExceptionsSubtopic) },
       ] },
-      { path: 'delegates',         loadComponent: () => import('./components/backend/csharp/delegates/delegates').then(m => m.CsharpDelegates) },
+      { path: 'delegates', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/delegates/delegates').then(m => m.CsharpDelegates) },
+        { path: 'testing-events-xunit-assert-raises-multicast-behavior', loadComponent: () => import('./components/backend/csharp/delegates/subtopics/testing-events-xunit-assert-raises-multicast-behavior/testing-events-xunit-assert-raises-multicast-behavior').then(m => m.TestingEventsXunitAssertRaisesMulticastBehaviorSubtopic) },
+        { path: 'how-delegate-equality-actually-works-target-method-pairs', loadComponent: () => import('./components/backend/csharp/delegates/subtopics/how-delegate-equality-actually-works-target-method-pairs/how-delegate-equality-actually-works-target-method-pairs').then(m => m.HowDelegateEqualityActuallyWorksTargetMethodPairsSubtopic) },
+        { path: 'async-void-event-handlers-why-exceptions-vanish', loadComponent: () => import('./components/backend/csharp/delegates/subtopics/async-void-event-handlers-why-exceptions-vanish/async-void-event-handlers-why-exceptions-vanish').then(m => m.AsyncVoidEventHandlersWhyExceptionsVanishSubtopic) },
+      ] },
       // ── Fundamentals ──
       { path: 'fields',            loadComponent: () => import('./components/backend/csharp/fields/fields').then(m => m.CsharpFields) },
       { path: 'methods',           loadComponent: () => import('./components/backend/csharp/methods/methods').then(m => m.CsharpMethods) },

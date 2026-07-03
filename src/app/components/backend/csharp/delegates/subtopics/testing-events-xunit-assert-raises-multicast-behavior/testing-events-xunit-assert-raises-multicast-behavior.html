@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Delegates & Events"
+    topicRoute="/csharp/delegates"
+    subtopicLabel="Testing Events: xUnit's Assert.Raises and Multicast Behavior" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Events: xUnit's Assert.Raises and Verifying Multicast Delegate Behavior</h1>
+  <p class="page-subtitle">
+    The main topic demonstrates a full event-raising OrderService but never shows how to
+    test it — testing an event means verifying a side effect and its exact arguments, not
+    a return value.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing event behavior covers correctness — the next subtopics dig into how
+      delegate equality actually works under the hood, and a dangerous event-handling
+      footgun specific to async void methods.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Delegates & Events"
+    topicRoute="/csharp/delegates"
+    [next]="{ label: 'How Delegate Equality Actually Works', route: '/csharp/delegates/how-delegate-equality-actually-works-target-method-pairs' }" />
+</div>
