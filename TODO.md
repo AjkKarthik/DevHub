@@ -1450,7 +1450,7 @@ off here with a date.
 - [x] `/csharp/generics` — Generics (2026-07-03 — 3 subtopics: testing-generic-code-parameterized-tests-across-multiple-type-arguments, generic-attributes-c-11-type-safe-custom-attributes, writing-your-own-static-abstract-interface-members)
 - [x] `/csharp/collections` — Collections (2026-07-03 — 3 subtopics: writing-custom-iequalitycomparer-and-icomparer-implementations, frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups, testing-concurrent-collections-catching-race-conditions-in-getoradd)
 - [x] `/csharp/linq` — LINQ (2026-07-03 — 3 subtopics: writing-custom-lazy-linq-operators-with-yield-return, expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool, testing-linq-based-repository-methods-with-ef-core-in-memory)
-- [ ] `/csharp/async` — async / await
+- [x] `/csharp/async` — async / await (2026-07-03 — 3 subtopics: testing-async-code-verifying-cancellation-and-task-failure-behavior, iasyncdisposable-and-await-using-async-resource-cleanup, producer-consumer-pipelines-with-system-threading-channels)
 - [ ] `/csharp/null-safety` — Null Safety
 - [ ] `/csharp/pattern-matching` — Pattern Matching
 - [ ] `/csharp/exceptions` — Exceptions
