@@ -1437,7 +1437,7 @@ off here with a date.
 - [x] `/angular/wizard-form` — Multi-Step Wizard Form (2026-07-03 — 3 subtopics: deep-linking-wizard-steps-with-query-params, cdk-stepper-vs-hand-rolled-wizard, testing-wizard-steps-in-isolation)
 - [x] `/angular/web-workers` — Web Workers (2026-07-03 — 3 subtopics: testing-components-that-use-web-workers, building-a-worker-pool-for-parallel-task-dispatch, debugging-and-profiling-web-workers-in-devtools)
 - [x] `/angular/pwa` — PWA & Service Workers (2026-07-03 — 3 subtopics: testing-update-prompts-and-install-banners, handling-unrecoverable-state-and-manual-update-checks, spa-routing-pitfalls-navigationurls-and-app-shell-fallback)
-- [ ] `/angular/i18n` — Internationalisation (i18n)
+- [x] `/angular/i18n` — Internationalisation (i18n) (2026-07-03 — 3 subtopics: testing-components-that-use-transloco-and-signal-i18n, building-rtl-layout-support-with-logical-css-properties, ssr-locale-detection-and-avoiding-hydration-mismatches)
 - [ ] `/angular/e2e` — E2E Testing with Playwright
 - [ ] `/angular/harnesses` — Component Harnesses
 - [ ] `/angular/ssr` — SSR & Hydration
