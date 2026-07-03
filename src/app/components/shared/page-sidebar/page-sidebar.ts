@@ -6406,6 +6406,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'async/testing-async-code-verifying-cancellation-and-task-failure-behavior': {
+    apis: ['async Task test methods', 'Assert.ThrowsAsync', 'InnerExceptions'],
+    related: [
+      { label: 'async / await (overview)',                            route: '/csharp/async' },
+      { label: 'IAsyncDisposable and await using — next',              route: '/csharp/async/iasyncdisposable-and-await-using-async-resource-cleanup' },
+    ],
+    tip: 'A test method must itself be async Task (not async void) — otherwise the test has the exact same "no Task to observe" problem the main topic describes for async void in general.',
+    docs: [
+      { label: 'Testing Async Code — xUnit', url: 'https://xunit.net/docs/getting-started/netcore/cmdline' },
+    ],
+    resources: [
+      { label: 'Async Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'Task.WhenAll re-throws only the FIRST exception when awaited — assert on the WhenAll task\'s own .Exception.InnerExceptions to prove ALL failures are recorded.',
+      'Cancelling a token BEFORE calling a method only proves the entry-point check works — cancel mid-operation for a stronger test.',
+    ],
+  },
+
+  'async/iasyncdisposable-and-await-using-async-resource-cleanup': {
+    apis: ['IAsyncDisposable', 'DisposeAsync()', 'await using'],
+    related: [
+      { label: 'Testing Async Code — previous',                         route: '/csharp/async/testing-async-code-verifying-cancellation-and-task-failure-behavior' },
+      { label: 'async / await (overview)',                               route: '/csharp/async' },
+      { label: 'Producer/Consumer Pipelines with Channels — next',        route: '/csharp/async/producer-consumer-pipelines-with-system-threading-channels' },
+    ],
+    tip: 'A synchronous Dispose() cannot await real async cleanup without blocking a thread — IAsyncDisposable.DisposeAsync() exists specifically to allow genuine non-blocking cleanup.',
+    docs: [
+      { label: 'IAsyncDisposable', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.iasyncdisposable' },
+    ],
+    resources: [
+      { label: 'Async Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'await using can only be used inside a method the compiler has already transformed into an async state machine.',
+      'Reserve IAsyncDisposable for types whose cleanup genuinely requires async I/O — plain IDisposable remains correct for purely synchronous cleanup.',
+    ],
+  },
+
+  'async/producer-consumer-pipelines-with-system-threading-channels': {
+    apis: ['Channel.CreateBounded', 'ChannelWriter', 'ChannelReader.ReadAllAsync'],
+    related: [
+      { label: 'IAsyncDisposable and await using — previous', route: '/csharp/async/iasyncdisposable-and-await-using-async-resource-cleanup' },
+      { label: 'async / await (overview)',                     route: '/csharp/async' },
+    ],
+    tip: 'Channel<T> decouples a producer\'s pace from a consumer\'s — a genuinely different problem than SemaphoreSlim (which caps concurrent operations), and consumed via await foreach unlike thread-blocking BlockingCollection<T>.',
+    docs: [
+      { label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/channels' },
+    ],
+    resources: [
+      { label: 'Async Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'A bounded channel applies natural backpressure — WriteAsync asynchronously waits once full, rather than buffering unboundedly.',
+      'writer.Complete() with no arguments signals normal completion silently — use Complete(exception) to propagate a producer failure to consumers.',
+    ],
+  },
+
   'null-safety': {
     apis: ['?.', '??', '??=', '!', 'ArgumentNullException.ThrowIfNull', '#nullable enable'],
     related: [

@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="async / await"
+    topicRoute="/csharp/async"
+    subtopicLabel="IAsyncDisposable and await using: Async Resource Cleanup" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">IAsyncDisposable and await using: Async Resource Cleanup</h1>
+  <p class="page-subtitle">
+    The main topic covers async streams and cancellation extensively but never mentions
+    this C# 8 feature — what happens when cleaning up a resource itself needs async work.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 8" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Async cleanup is one production concern the main topic skips. The final
+      subtopic covers a different one — a modern async-first producer/consumer
+      primitive that replaces older blocking-collection patterns.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="async / await"
+    topicRoute="/csharp/async"
+    [prev]="{ label: 'Testing Async Code: Verifying Cancellation and Task Failure Behavior', route: '/csharp/async/testing-async-code-verifying-cancellation-and-task-failure-behavior' }"
+    [next]="{ label: 'Producer/Consumer Pipelines with System.Threading.Channels', route: '/csharp/async/producer-consumer-pipelines-with-system-threading-channels' }" />
+</div>

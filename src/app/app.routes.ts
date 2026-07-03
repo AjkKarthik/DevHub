@@ -430,7 +430,12 @@ export const routes: Routes = [
         { path: 'expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool', loadComponent: () => import('./components/backend/csharp/linq/subtopics/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool').then(m => m.ExpressionTreesWhyEfCoreNeedsExpressionFuncTBoolNotFuncTBoolSubtopic) },
         { path: 'testing-linq-based-repository-methods-with-ef-core-in-memory', loadComponent: () => import('./components/backend/csharp/linq/subtopics/testing-linq-based-repository-methods-with-ef-core-in-memory/testing-linq-based-repository-methods-with-ef-core-in-memory').then(m => m.TestingLinqBasedRepositoryMethodsWithEfCoreInMemorySubtopic) },
       ] },
-      { path: 'async',           loadComponent: () => import('./components/backend/csharp/async/async').then(m => m.CsharpAsync) },
+      { path: 'async', children: [
+        { path: '',                                                          loadComponent: () => import('./components/backend/csharp/async/async').then(m => m.CsharpAsync) },
+        { path: 'testing-async-code-verifying-cancellation-and-task-failure-behavior', loadComponent: () => import('./components/backend/csharp/async/subtopics/testing-async-code-verifying-cancellation-and-task-failure-behavior/testing-async-code-verifying-cancellation-and-task-failure-behavior').then(m => m.TestingAsyncCodeVerifyingCancellationAndTaskFailureBehaviorSubtopic) },
+        { path: 'iasyncdisposable-and-await-using-async-resource-cleanup',    loadComponent: () => import('./components/backend/csharp/async/subtopics/iasyncdisposable-and-await-using-async-resource-cleanup/iasyncdisposable-and-await-using-async-resource-cleanup').then(m => m.IasyncdisposableAndAwaitUsingAsyncResourceCleanupSubtopic) },
+        { path: 'producer-consumer-pipelines-with-system-threading-channels', loadComponent: () => import('./components/backend/csharp/async/subtopics/producer-consumer-pipelines-with-system-threading-channels/producer-consumer-pipelines-with-system-threading-channels').then(m => m.ProducerConsumerPipelinesWithSystemThreadingChannelsSubtopic) },
+      ] },
       { path: 'null-safety',     loadComponent: () => import('./components/backend/csharp/null-safety/null-safety').then(m => m.CsharpNullSafety) },
       { path: 'pattern-matching',loadComponent: () => import('./components/backend/csharp/pattern-matching/pattern-matching').then(m => m.CsharpPatternMatching) },
       { path: 'exceptions',      loadComponent: () => import('./components/backend/csharp/exceptions/exceptions').then(m => m.CsharpExceptions) },
