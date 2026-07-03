@@ -1448,7 +1448,7 @@ off here with a date.
 - [x] `/csharp/oop` — OOP & Classes (2026-07-03 — 3 subtopics: testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch, virtual-member-calls-from-constructors-an-initialization-order-footgun, explicit-interface-implementation-resolving-name-collisions)
 - [x] `/csharp/records` — Records & Structs (2026-07-03 — 3 subtopics: polymorphic-json-serialization-of-record-hierarchies-with-jsonderivedtype, positional-pattern-matching-with-records-deconstruction-in-switch-expressions, testing-records-equality-hash-codes-and-constructor-validation)
 - [x] `/csharp/generics` — Generics (2026-07-03 — 3 subtopics: testing-generic-code-parameterized-tests-across-multiple-type-arguments, generic-attributes-c-11-type-safe-custom-attributes, writing-your-own-static-abstract-interface-members)
-- [ ] `/csharp/collections` — Collections
+- [x] `/csharp/collections` — Collections (2026-07-03 — 3 subtopics: writing-custom-iequalitycomparer-and-icomparer-implementations, frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups, testing-concurrent-collections-catching-race-conditions-in-getoradd)
 - [ ] `/csharp/linq` — LINQ
 - [ ] `/csharp/async` — async / await
 - [ ] `/csharp/null-safety` — Null Safety
