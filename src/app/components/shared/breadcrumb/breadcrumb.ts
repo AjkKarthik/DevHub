@@ -178,6 +178,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'deep-linking-wizard-steps-with-query-params': 'Deep-Linking Wizard Steps with Query Params',
   'cdk-stepper-vs-hand-rolled-wizard': 'Angular CDK Stepper vs a Hand-Rolled Wizard',
   'testing-wizard-steps-in-isolation': 'Testing Wizard Steps in Isolation',
+  'testing-components-that-use-web-workers': 'Testing Components That Use Web Workers',
+  'building-a-worker-pool-for-parallel-task-dispatch': 'Building a Worker Pool for Parallel Task Dispatch',
+  'debugging-and-profiling-web-workers-in-devtools': 'Debugging and Profiling Web Workers in DevTools',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

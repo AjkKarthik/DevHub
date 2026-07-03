@@ -322,6 +322,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Angular CDK Stepper vs a Hand-Rolled Wizard', route: '/angular/wizard-form/cdk-stepper-vs-hand-rolled-wizard' },
     { label: 'Testing Wizard Steps in Isolation', route: '/angular/wizard-form/testing-wizard-steps-in-isolation' },
   ],
+  'web-workers': [
+    { label: 'Testing Components That Use Web Workers', route: '/angular/web-workers/testing-components-that-use-web-workers' },
+    { label: 'Building a Worker Pool for Parallel Task Dispatch', route: '/angular/web-workers/building-a-worker-pool-for-parallel-task-dispatch' },
+    { label: 'Debugging and Profiling Web Workers in DevTools', route: '/angular/web-workers/debugging-and-profiling-web-workers-in-devtools' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Web Workers"
+    topicRoute="/angular/web-workers"
+    subtopicLabel="Building a Worker Pool for Parallel Task Dispatch" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Building a Worker Pool for Parallel Task Dispatch</h1>
+  <p class="page-subtitle">
+    The main topic's "reuse one worker" advice handles sequential calls. A worker pool
+    solves a different problem — running a BATCH of independent tasks truly in parallel.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      20 square-number tasks are dispatched at once — the pool distributes them across
+      <code>navigator.hardwareConcurrency - 1</code> workers, running several in parallel.
+    </p>
+    <app-live-playground
+      title="Building a Worker Pool for Parallel Task Dispatch"
+      template="angular-cli"
+      openFile="src/app/worker-pool.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Once several workers are running concurrently, actually diagnosing a stuck or slow
+      one becomes harder — the final subtopic covers debugging and profiling workers
+      directly in DevTools.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Web Workers"
+    topicRoute="/angular/web-workers"
+    [prev]="{ label: 'Testing Components That Use Web Workers', route: '/angular/web-workers/testing-components-that-use-web-workers' }"
+    [next]="{ label: 'Debugging and Profiling Web Workers in DevTools', route: '/angular/web-workers/debugging-and-profiling-web-workers-in-devtools' }" />
+</div>

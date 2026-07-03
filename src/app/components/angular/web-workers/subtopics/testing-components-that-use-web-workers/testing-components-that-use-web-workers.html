@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Web Workers"
+    topicRoute="/angular/web-workers"
+    subtopicLabel="Testing Components That Use Web Workers" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Components That Use Web Workers</h1>
+  <p class="page-subtitle">
+    jsdom has no Worker implementation at all — this page shows the injectable-factory
+    pattern that makes worker-dependent components testable without a real thread.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Open <code>sum.component.spec.ts</code> — a <code>MockWorker</code> satisfies the same
+      surface a real <code>Worker</code> exposes, letting tests trigger responses and errors
+      synchronously and assert cleanup on every exit path.
+    </p>
+    <app-live-playground
+      title="Testing Components That Use Web Workers"
+      template="angular-cli"
+      openFile="src/app/sum.component.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing covers a single worker. The next subtopic scales up to a POOL of workers for
+      parallelising many tasks at once, and the one after that covers debugging real workers
+      in DevTools.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Web Workers"
+    topicRoute="/angular/web-workers"
+    [next]="{ label: 'Building a Worker Pool for Parallel Task Dispatch', route: '/angular/web-workers/building-a-worker-pool-for-parallel-task-dispatch' }" />
+</div>

@@ -1,0 +1,47 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Web Workers"
+    topicRoute="/angular/web-workers"
+    subtopicLabel="Debugging and Profiling Web Workers in DevTools" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Debugging and Profiling Web Workers in DevTools</h1>
+  <p class="page-subtitle">
+    The main topic never covers what to do when something goes wrong — here's how to
+    set breakpoints inside a worker and visually confirm it's really off-thread.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Open your browser's DevTools, start a Performance recording, then click Compute —
+      the main thread's lane should stay clear while a separate lane shows the worker's work.
+    </p>
+    <app-live-playground
+      title="Debugging and Profiling Web Workers in DevTools"
+      template="angular-cli"
+      openFile="src/app/heavy.worker.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With creation, testing, pooling, and debugging all covered, you have a full
+      production-ready workflow for offloading work with Web Workers in Angular.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Web Workers"
+    topicRoute="/angular/web-workers"
+    [prev]="{ label: 'Building a Worker Pool for Parallel Task Dispatch', route: '/angular/web-workers/building-a-worker-pool-for-parallel-task-dispatch' }" />
+</div>

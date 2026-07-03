@@ -340,7 +340,12 @@ export const routes: Routes = [
         { path: 'cdk-stepper-vs-hand-rolled-wizard',           loadComponent: () => import('./components/angular/wizard-form/subtopics/cdk-stepper-vs-hand-rolled-wizard/cdk-stepper-vs-hand-rolled-wizard').then(m => m.CdkStepperVsHandRolledWizardSubtopic) },
         { path: 'testing-wizard-steps-in-isolation',           loadComponent: () => import('./components/angular/wizard-form/subtopics/testing-wizard-steps-in-isolation/testing-wizard-steps-in-isolation').then(m => m.TestingWizardStepsInIsolationSubtopic) },
       ] },
-      { path: 'web-workers',        loadComponent: () => import('./components/angular/web-workers/web-workers').then(m => m.WebWorkersDemo) },
+      { path: 'web-workers', children: [
+        { path: '',                                             loadComponent: () => import('./components/angular/web-workers/web-workers').then(m => m.WebWorkersDemo) },
+        { path: 'testing-components-that-use-web-workers',       loadComponent: () => import('./components/angular/web-workers/subtopics/testing-components-that-use-web-workers/testing-components-that-use-web-workers').then(m => m.TestingComponentsThatUseWebWorkersSubtopic) },
+        { path: 'building-a-worker-pool-for-parallel-task-dispatch', loadComponent: () => import('./components/angular/web-workers/subtopics/building-a-worker-pool-for-parallel-task-dispatch/building-a-worker-pool-for-parallel-task-dispatch').then(m => m.BuildingAWorkerPoolForParallelTaskDispatchSubtopic) },
+        { path: 'debugging-and-profiling-web-workers-in-devtools',   loadComponent: () => import('./components/angular/web-workers/subtopics/debugging-and-profiling-web-workers-in-devtools/debugging-and-profiling-web-workers-in-devtools').then(m => m.DebuggingAndProfilingWebWorkersInDevtoolsSubtopic) },
+      ] },
       { path: 'pwa',                loadComponent: () => import('./components/angular/pwa/pwa').then(m => m.PwaDemo) },
       { path: 'i18n',               loadComponent: () => import('./components/angular/i18n/i18n').then(m => m.I18nDemo) },
       { path: 'e2e',                loadComponent: () => import('./components/angular/e2e/e2e').then(m => m.E2eDemo) },

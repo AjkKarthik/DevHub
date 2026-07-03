@@ -4475,6 +4475,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'web-workers/testing-components-that-use-web-workers': {
+    apis: ['WorkerFactory (injectable)', 'MockWorker', 'jasmine.createSpy', 'fixture.destroy()'],
+    related: [
+      { label: 'Web Workers (overview)',                                      route: '/angular/web-workers' },
+      { label: 'Building a Worker Pool for Parallel Task Dispatch — next',     route: '/angular/web-workers/building-a-worker-pool-for-parallel-task-dispatch' },
+    ],
+    tip: 'jsdom has no Worker implementation at all — wrap worker creation behind an injectable factory so tests can substitute a synchronous mock instead of a real thread.',
+    docs: [
+      { label: 'Angular Testing Overview', url: 'https://angular.dev/guide/testing' },
+      { label: 'Web Workers API — MDN',     url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A mock worker only needs to satisfy postMessage/onmessage/onerror/terminate — it does not need to run any real off-thread logic.',
+      'Test cleanup on ALL exit paths — success, error, AND early component destruction (fixture.destroy() while a task is still pending).',
+    ],
+  },
+
+  'web-workers/building-a-worker-pool-for-parallel-task-dispatch': {
+    apis: ['navigator.hardwareConcurrency', 'Promise.all()', 'task ID correlation', 'pool.run()'],
+    related: [
+      { label: 'Testing Components That Use Web Workers — previous', route: '/angular/web-workers/testing-components-that-use-web-workers' },
+      { label: 'Web Workers (overview)',                              route: '/angular/web-workers' },
+      { label: 'Debugging and Profiling Web Workers in DevTools — next', route: '/angular/web-workers/debugging-and-profiling-web-workers-in-devtools' },
+    ],
+    tip: 'Size the pool to roughly navigator.hardwareConcurrency — more workers than available CPU cores adds thread-scheduling overhead without real added parallelism.',
+    docs: [
+      { label: 'navigator.hardwareConcurrency — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Navigator/hardwareConcurrency' },
+      { label: 'Web Workers API — MDN',               url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Tasks complete out of order under real concurrency — echo a unique ID back from the worker so responses route to the correct caller.',
+      'Terminate all pool workers together when the pool itself is discarded, not after each individual task.',
+    ],
+  },
+
+  'web-workers/debugging-and-profiling-web-workers-in-devtools': {
+    apis: ['Sources panel context dropdown', 'chrome://inspect/#workers', 'Performance panel worker lanes', 'debugger;'],
+    related: [
+      { label: 'Building a Worker Pool for Parallel Task Dispatch — previous', route: '/angular/web-workers/building-a-worker-pool-for-parallel-task-dispatch' },
+      { label: 'Web Workers (overview)',                                       route: '/angular/web-workers' },
+    ],
+    tip: 'The Performance panel records every active thread — each worker gets its own flame-chart lane beneath the main thread\'s, the most direct way to visually confirm work actually moved off-thread.',
+    docs: [
+      { label: 'Chrome DevTools — Multi-Thread JS Debugging', url: 'https://developer.chrome.com/docs/devtools/javascript/reference' },
+      { label: 'Chrome DevTools — Performance Panel',          url: 'https://developer.chrome.com/docs/devtools/performance' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A short-lived worker may finish before you select its context from the dropdown — add a temporary debugger; statement at the top of the worker script to guarantee a pause.',
+      'A worker breakpoint pauses only that worker thread — the main page stays fully interactive, unlike a main-thread breakpoint.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],
