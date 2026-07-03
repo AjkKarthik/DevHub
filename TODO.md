@@ -1439,7 +1439,7 @@ off here with a date.
 - [x] `/angular/pwa` — PWA & Service Workers (2026-07-03 — 3 subtopics: testing-update-prompts-and-install-banners, handling-unrecoverable-state-and-manual-update-checks, spa-routing-pitfalls-navigationurls-and-app-shell-fallback)
 - [x] `/angular/i18n` — Internationalisation (i18n) (2026-07-03 — 3 subtopics: testing-components-that-use-transloco-and-signal-i18n, building-rtl-layout-support-with-logical-css-properties, ssr-locale-detection-and-avoiding-hydration-mismatches)
 - [x] `/angular/e2e` — E2E Testing with Playwright (2026-07-03 — 3 subtopics: reusing-authentication-state-across-tests-with-storagestate, visual-regression-testing-with-screenshot-comparisons, debugging-flaky-tests-isolation-retries-and-sharding)
-- [ ] `/angular/harnesses` — Component Harnesses
+- [x] `/angular/harnesses` — Component Harnesses (2026-07-03 — 3 subtopics: composing-nested-harnesses-with-getchildloader, publishing-harnesses-as-a-librarys-public-testing-entry-point, debugging-harness-failures-common-causes-and-diagnosis)
 - [ ] `/angular/ssr` — SSR & Hydration
 
 #### C# — 50 topic pages
