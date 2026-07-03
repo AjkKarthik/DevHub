@@ -480,6 +480,21 @@ to the topic page, not its subtopics.
   retroactively) — check whether a topic's demo code imports anything beyond `@angular/core`,
   `@angular/common`, `@angular/forms`, `@angular/router`, or `rxjs` BEFORE writing the
   `liveDemoFiles`, not after.
+- **Long descriptive subtopic slugs can exceed the Windows/git `MAX_PATH` (260 chars) even
+  though the `Write` tool succeeds.** A subtopic folder path is
+  `C:\Users\...\DevHub\src\app\components\<hub-area>\<topic>\subtopics\<slug>\<slug>.ts` —
+  the slug appears TWICE (folder + filename), so a ~90-character descriptive slug alone
+  produces a ~290-character absolute path. The `Write` tool writes the file fine (Node's fs
+  tolerates long paths), but `git add` then fails with `error: open(...): Filename too long`
+  — this surfaces only at commit time, not at write time. Confirmed twice in one topic's
+  batch (`/csharp/pattern-matching`, 2026-07-04): two of three subtopic slugs were long
+  enough to trip this. **Fix**: keep the folder/file name short (~40 chars, e.g.
+  `pattern-matching-ef-core-sql-translation`) while leaving the ROUTE URL itself as
+  descriptive as normal in `app.routes.ts` — only the `loadComponent` import path needs to
+  point at the short folder; the `path:` (URL segment) and every other wiring touchpoint
+  (SUBTOPICS map, breadcrumb, sidebar, search index, nav labels) keep using the long,
+  descriptive route string unchanged. Run `git add -A` before considering a subtopic batch
+  done — a successful build does NOT catch this, only `git add` does.
 
 ### Non-Angular hubs (C#, SQL, Python, Go, etc.) — the "See it run" section has no live playground
 

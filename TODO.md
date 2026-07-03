@@ -1452,7 +1452,7 @@ off here with a date.
 - [x] `/csharp/linq` — LINQ (2026-07-03 — 3 subtopics: writing-custom-lazy-linq-operators-with-yield-return, expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool, testing-linq-based-repository-methods-with-ef-core-in-memory)
 - [x] `/csharp/async` — async / await (2026-07-03 — 3 subtopics: testing-async-code-verifying-cancellation-and-task-failure-behavior, iasyncdisposable-and-await-using-async-resource-cleanup, producer-consumer-pipelines-with-system-threading-channels)
 - [x] `/csharp/null-safety` — Null Safety (2026-07-04 — 3 subtopics: enforcing-nullable-warnings-as-build-errors, nullable-reference-types-with-generic-type-parameters, required-properties-and-system-text-json-deserialization)
-- [ ] `/csharp/pattern-matching` — Pattern Matching
+- [x] `/csharp/pattern-matching` — Pattern Matching (2026-07-04 — 3 subtopics: testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests, pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws, how-the-compiler-lowers-property-patterns-repeated-access-and-performance)
 - [ ] `/csharp/exceptions` — Exceptions
 - [ ] `/csharp/delegates` — Delegates & Events
 - [ ] `/csharp/fields` — Fields & Constants
