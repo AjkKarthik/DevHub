@@ -394,7 +394,12 @@ export const routes: Routes = [
     path: 'csharp',
     children: [
       { path: '',                loadComponent: () => import('./components/backend/csharp/home/home').then(m => m.CsharpHome) },
-      { path: 'basics',          loadComponent: () => import('./components/backend/csharp/basics/basics').then(m => m.CsharpBasics) },
+      { path: 'basics', children: [
+        { path: '',                                                     loadComponent: () => import('./components/backend/csharp/basics/basics').then(m => m.CsharpBasics) },
+        { path: 'nullable-value-types-hasvalue-and-null-coalescing-operators', loadComponent: () => import('./components/backend/csharp/basics/subtopics/nullable-value-types-hasvalue-and-null-coalescing-operators/nullable-value-types-hasvalue-and-null-coalescing-operators').then(m => m.NullableValueTypesHasvalueAndNullCoalescingOperatorsSubtopic) },
+        { path: 'checked-and-unchecked-arithmetic-detecting-integer-overflow', loadComponent: () => import('./components/backend/csharp/basics/subtopics/checked-and-unchecked-arithmetic-detecting-integer-overflow/checked-and-unchecked-arithmetic-detecting-integer-overflow').then(m => m.CheckedAndUncheckedArithmeticDetectingIntegerOverflowSubtopic) },
+        { path: 'spant-and-stackalloc-parsing-without-heap-allocations',   loadComponent: () => import('./components/backend/csharp/basics/subtopics/spant-and-stackalloc-parsing-without-heap-allocations/spant-and-stackalloc-parsing-without-heap-allocations').then(m => m.SpantAndStackallocParsingWithoutHeapAllocationsSubtopic) },
+      ] },
       { path: 'oop',             loadComponent: () => import('./components/backend/csharp/oop/oop').then(m => m.CsharpOop) },
       { path: 'records',         loadComponent: () => import('./components/backend/csharp/records/records').then(m => m.CsharpRecords) },
       { path: 'generics',        loadComponent: () => import('./components/backend/csharp/generics/generics').then(m => m.CsharpGenerics) },

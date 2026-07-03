@@ -5918,6 +5918,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'basics/nullable-value-types-hasvalue-and-null-coalescing-operators': {
+    apis: ['Nullable<T>', 'HasValue', 'Value', 'GetValueOrDefault()', '?? / ??='],
+    related: [
+      { label: 'Variables & Types (overview)',                                    route: '/csharp/basics' },
+      { label: 'Checked and Unchecked Arithmetic — next',                          route: '/csharp/basics/checked-and-unchecked-arithmetic-detecting-integer-overflow' },
+    ],
+    tip: 'int? is Nullable<int> — a real struct with runtime behavior. string? is a compiler-only warning annotation. Same syntax, unrelated mechanisms.',
+    docs: [
+      { label: 'Nullable Value Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types' },
+      { label: 'Null-Coalescing Operators', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Accessing .Value on a null Nullable<T> throws InvalidOperationException, not NullReferenceException.',
+      'Arithmetic operators propagate null (5 + null = null); relational comparisons collapse to false when either side is null — an asymmetry worth remembering.',
+    ],
+  },
+
+  'basics/checked-and-unchecked-arithmetic-detecting-integer-overflow': {
+    apis: ['checked', 'unchecked', 'OverflowException', 'CheckForOverflowUnderflow'],
+    related: [
+      { label: 'Nullable Value Types — previous', route: '/csharp/basics/nullable-value-types-hasvalue-and-null-coalescing-operators' },
+      { label: 'Variables & Types (overview)',     route: '/csharp/basics' },
+      { label: 'Span<T> and stackalloc — next',     route: '/csharp/basics/spant-and-stackalloc-parsing-without-heap-allocations' },
+    ],
+    tip: 'C# integer arithmetic is unchecked by default — overflow silently wraps around with no exception. Wrap in checked(...) or set CheckForOverflowUnderflow project-wide to catch it.',
+    docs: [
+      { label: 'checked and unchecked', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/checked-and-unchecked' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A silently-wrapped running total or accumulator is a common, easy-to-hit real bug — not just a theoretical edge case.',
+      'decimal protects against PRECISION loss, not overflow — decimal can still overflow, just at a much larger magnitude.',
+    ],
+  },
+
+  'basics/spant-and-stackalloc-parsing-without-heap-allocations': {
+    apis: ['Span<T>', 'ReadOnlySpan<T>', 'stackalloc', 'AsSpan()'],
+    related: [
+      { label: 'Checked and Unchecked Arithmetic — previous', route: '/csharp/basics/checked-and-unchecked-arithmetic-detecting-integer-overflow' },
+      { label: 'Variables & Types (overview)',                 route: '/csharp/basics' },
+    ],
+    tip: 'Span<T> is a stack-only VIEW over existing memory — slicing a span is zero-allocation, unlike Substring() or array copying which always allocate.',
+    docs: [
+      { label: 'Span<T> Guide', url: 'https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/' },
+      { label: 'stackalloc',    url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/stackalloc' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Never stackalloc a size derived directly from untrusted input without an upper bound — risks StackOverflowException.',
+      'Span<T> is a ref struct — cannot be a class field, cannot cross an await boundary, cannot be returned pointing at its own stack frame.',
+    ],
+  },
+
   oop: {
     apis: ['class', 'interface', 'abstract', 'sealed', 'override', 'virtual'],
     related: [

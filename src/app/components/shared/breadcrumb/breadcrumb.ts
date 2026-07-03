@@ -273,6 +273,9 @@ const ROUTE_LABELS: Record<string, string> = {
 
 const CSHARP_LABELS: Record<string, string> = {
   'basics':               'Variables & Types',
+  'basics/nullable-value-types-hasvalue-and-null-coalescing-operators': 'Nullable Value Types: int?, HasValue, and Null-Coalescing',
+  'basics/checked-and-unchecked-arithmetic-detecting-integer-overflow': 'Checked and Unchecked Arithmetic: Detecting Integer Overflow',
+  'basics/spant-and-stackalloc-parsing-without-heap-allocations': 'Span<T> and stackalloc: Parsing Without Heap Allocations',
   'fields':               'Fields & Constants',
   'methods':              'Methods',
   'type-conversion':      'Type Conversion',
