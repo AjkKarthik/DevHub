@@ -4658,6 +4658,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'e2e/reusing-authentication-state-across-tests-with-storagestate': {
+    apis: ['storageState()', 'setup project', 'dependencies: [\'setup\']', 'test.beforeEach vs setup'],
+    related: [
+      { label: 'E2E Testing with Playwright (overview)',                        route: '/angular/e2e' },
+      { label: 'Visual Regression Testing with Screenshot Comparisons — next',   route: '/angular/e2e/visual-regression-testing-with-screenshot-comparisons' },
+    ],
+    tip: 'A dedicated setup project authenticates ONCE and every dependent test starts already logged in — a beforeEach UI login still re-runs the full flow before every single test.',
+    docs: [
+      { label: 'Playwright Auth Guide', url: 'https://playwright.dev/docs/auth' },
+      { label: 'Test Projects & Dependencies', url: 'https://playwright.dev/docs/test-projects' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A saved storage state is a snapshot — stale session tokens can cause unexplained 401s unrelated to the feature under test.',
+      'Create one storage-state file PER ROLE (admin, regular user) via separate setup tests and Playwright projects.',
+    ],
+  },
+
+  'e2e/visual-regression-testing-with-screenshot-comparisons': {
+    apis: ['toHaveScreenshot()', '--update-snapshots', 'mask option', 'animations: \'disabled\''],
+    related: [
+      { label: 'Reusing Authentication State Across Tests with storageState — previous', route: '/angular/e2e/reusing-authentication-state-across-tests-with-storagestate' },
+      { label: 'E2E Testing with Playwright (overview)',                                  route: '/angular/e2e' },
+      { label: 'Debugging Flaky Tests: Isolation, Retries, and Sharding — next',           route: '/angular/e2e/debugging-flaky-tests-isolation-retries-and-sharding' },
+    ],
+    tip: 'The most common real-world failure is a baseline generated on one OS being compared on another — generate and update baselines from within the SAME environment CI uses.',
+    docs: [
+      { label: 'Playwright Visual Comparisons', url: 'https://playwright.dev/docs/test-snapshots' },
+      { label: 'toHaveScreenshot API',            url: 'https://playwright.dev/docs/api/class-pageassertions#page-assertions-to-have-screenshot-1' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Use the mask option to exclude dynamic content (a live timestamp) from the pixel diff instead of giving up on visual testing for that page.',
+      'Set a small maxDiffPixelRatio tolerance — byte-for-byte pixel identity is rarely achievable across different OS/GPU rendering.',
+    ],
+  },
+
+  'e2e/debugging-flaky-tests-isolation-retries-and-sharding': {
+    apis: ['test.describe.serial()', '--shard', 'merge-reports', 'trace: \'on-first-retry\''],
+    related: [
+      { label: 'Visual Regression Testing with Screenshot Comparisons — previous', route: '/angular/e2e/visual-regression-testing-with-screenshot-comparisons' },
+      { label: 'E2E Testing with Playwright (overview)',                            route: '/angular/e2e' },
+    ],
+    tip: 'A test that fails once and passes on retry often indicates a real state-isolation bug being masked, not genuine timing flakiness — check the trace before trusting the retry.',
+    docs: [
+      { label: 'Playwright Test Isolation', url: 'https://playwright.dev/docs/browser-contexts' },
+      { label: 'Playwright Sharding',        url: 'https://playwright.dev/docs/test-sharding' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'The most common real flakiness cause is SERVER-side shared state (two parallel tests creating rows with the same hardcoded name) — client-side context isolation is automatic, server-side is not.',
+      'Sharding runs each shard on a separate process — any test relying on in-memory state shared with another test breaks silently once sharded.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

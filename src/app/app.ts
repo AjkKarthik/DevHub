@@ -337,6 +337,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building RTL Layout Support with Logical CSS Properties', route: '/angular/i18n/building-rtl-layout-support-with-logical-css-properties' },
     { label: 'SSR Locale Detection and Avoiding Hydration Mismatches', route: '/angular/i18n/ssr-locale-detection-and-avoiding-hydration-mismatches' },
   ],
+  'e2e': [
+    { label: 'Reusing Authentication State Across Tests with storageState', route: '/angular/e2e/reusing-authentication-state-across-tests-with-storagestate' },
+    { label: 'Visual Regression Testing with Screenshot Comparisons', route: '/angular/e2e/visual-regression-testing-with-screenshot-comparisons' },
+    { label: 'Debugging Flaky Tests: Isolation, Retries, and Sharding', route: '/angular/e2e/debugging-flaky-tests-isolation-retries-and-sharding' },
+  ],
 };
 
 @Component({

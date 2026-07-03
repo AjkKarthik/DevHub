@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="E2E Testing with Playwright"
+    topicRoute="/angular/e2e"
+    subtopicLabel="Reusing Authentication State Across Tests with storageState" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Reusing Authentication State Across Tests with storageState</h1>
+  <p class="page-subtitle">
+    The main topic's login example runs the full UI login in every single test.
+    storageState authenticates once and lets every other test start already logged in.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Playwright 1.31+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Open <code>auth.setup.ts</code>, <code>dashboard.spec.ts</code>, and
+      <code>playwright.config.ts</code> — a dedicated setup project authenticates once
+      and every dependent test's browser context starts pre-authenticated.
+    </p>
+    <app-live-playground
+      title="Reusing Authentication State Across Tests with storageState"
+      template="angular-cli"
+      openFile="playwright.config.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With login cost eliminated from most tests, the next subtopic covers a different
+      assertion type entirely — catching unintended visual regressions with screenshot comparisons.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="E2E Testing with Playwright"
+    topicRoute="/angular/e2e"
+    [next]="{ label: 'Visual Regression Testing with Screenshot Comparisons', route: '/angular/e2e/visual-regression-testing-with-screenshot-comparisons' }" />
+</div>

@@ -358,7 +358,12 @@ export const routes: Routes = [
         { path: 'building-rtl-layout-support-with-logical-css-properties', loadComponent: () => import('./components/angular/i18n/subtopics/building-rtl-layout-support-with-logical-css-properties/building-rtl-layout-support-with-logical-css-properties').then(m => m.BuildingRtlLayoutSupportWithLogicalCssPropertiesSubtopic) },
         { path: 'ssr-locale-detection-and-avoiding-hydration-mismatches', loadComponent: () => import('./components/angular/i18n/subtopics/ssr-locale-detection-and-avoiding-hydration-mismatches/ssr-locale-detection-and-avoiding-hydration-mismatches').then(m => m.SsrLocaleDetectionAndAvoidingHydrationMismatchesSubtopic) },
       ] },
-      { path: 'e2e',                loadComponent: () => import('./components/angular/e2e/e2e').then(m => m.E2eDemo) },
+      { path: 'e2e', children: [
+        { path: '',                                                         loadComponent: () => import('./components/angular/e2e/e2e').then(m => m.E2eDemo) },
+        { path: 'reusing-authentication-state-across-tests-with-storagestate', loadComponent: () => import('./components/angular/e2e/subtopics/reusing-authentication-state-across-tests-with-storagestate/reusing-authentication-state-across-tests-with-storagestate').then(m => m.ReusingAuthenticationStateAcrossTestsWithStoragestateSubtopic) },
+        { path: 'visual-regression-testing-with-screenshot-comparisons',       loadComponent: () => import('./components/angular/e2e/subtopics/visual-regression-testing-with-screenshot-comparisons/visual-regression-testing-with-screenshot-comparisons').then(m => m.VisualRegressionTestingWithScreenshotComparisonsSubtopic) },
+        { path: 'debugging-flaky-tests-isolation-retries-and-sharding',        loadComponent: () => import('./components/angular/e2e/subtopics/debugging-flaky-tests-isolation-retries-and-sharding/debugging-flaky-tests-isolation-retries-and-sharding').then(m => m.DebuggingFlakyTestsIsolationRetriesAndShardingSubtopic) },
+      ] },
       { path: 'harnesses',          loadComponent: () => import('./components/angular/harnesses/harnesses').then(m => m.HarnessesDemo) },
       { path: 'ssr',                loadComponent: () => import('./components/angular/ssr/ssr').then(m => m.SsrDemo) },
       { path: 'cheatsheet',         loadComponent: () => import('./components/angular/cheatsheet/cheatsheet').then(m => m.CheatsheetComponent) },

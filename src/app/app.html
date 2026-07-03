@@ -2046,7 +2046,22 @@
         <span class="nl-text">E2E (Playwright)</span>
         @if (progress.isDone('e2e')) {<span class="nl-done">✓</span>}
         @if (diff('e2e'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('e2e')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('e2e')"
+                  (click)="toggleSubtopics('e2e', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('e2e'); as subs) {
+        @if (isSubtopicsExpanded('e2e')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/harnesses" routerLinkActive="active">
         <span class="nl-text">Harnesses</span>
         @if (progress.isDone('harnesses')) {<span class="nl-done">✓</span>}

@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="E2E Testing with Playwright"
+    topicRoute="/angular/e2e"
+    subtopicLabel="Debugging Flaky Tests: Isolation, Retries, and Sharding" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Debugging Flaky Tests: Isolation, Retries, and Sharding</h1>
+  <p class="page-subtitle">
+    The main topic sets retries: 2 with a one-line comment. Here's what actually
+    causes flakiness, and why retries mask a bug instead of fixing it.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Playwright 1.30+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>create-item.spec.ts</code> shows the exact shared-literal bug pattern behind
+      "randomly fails in CI, never locally" flakiness and the unique-per-run fix;
+      <code>serial-onboarding.spec.ts</code> shows when <code>describe.serial()</code>
+      is the right tool instead.
+    </p>
+    <app-live-playground
+      title="Debugging Flaky Tests: Isolation, Retries, and Sharding"
+      template="angular-cli"
+      openFile="e2e/create-item.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Auth reuse, visual regression, and flakiness diagnosis together cover the three
+      production E2E concerns that separate a demo suite from one that survives daily
+      CI runs at scale.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="E2E Testing with Playwright"
+    topicRoute="/angular/e2e"
+    [prev]="{ label: 'Visual Regression Testing with Screenshot Comparisons', route: '/angular/e2e/visual-regression-testing-with-screenshot-comparisons' }" />
+</div>
