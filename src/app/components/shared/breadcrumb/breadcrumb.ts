@@ -157,6 +157,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-hybrid-standalone-and-ngmodule-components': 'Testing Hybrid Standalone and NgModule Components',
   'scam-pattern-incremental-migration-walkthrough': 'SCAM Pattern — Incremental Migration Walkthrough',
   'debugging-nullinjectorerror-after-migration': 'Debugging NullInjectorError After Migration',
+  'testing-a-layered-error-handling-system': 'Testing a Layered Error Handling System',
+  'retry-with-exponential-backoff-and-give-up': 'Retry with Exponential Backoff and a Give-Up State',
+  'recovering-from-component-rendering-errors': 'Recovering from Component Rendering Errors',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

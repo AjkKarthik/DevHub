@@ -287,6 +287,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SCAM Pattern — Incremental Migration Walkthrough', route: '/angular/standalone-migration/scam-pattern-incremental-migration-walkthrough' },
     { label: 'Debugging NullInjectorError After Migration', route: '/angular/standalone-migration/debugging-nullinjectorerror-after-migration' },
   ],
+  'error-handling-patterns': [
+    { label: 'Testing a Layered Error Handling System', route: '/angular/error-handling-patterns/testing-a-layered-error-handling-system' },
+    { label: 'Retry with Exponential Backoff and a Give-Up State', route: '/angular/error-handling-patterns/retry-with-exponential-backoff-and-give-up' },
+    { label: 'Recovering from Component Rendering Errors', route: '/angular/error-handling-patterns/recovering-from-component-rendering-errors' },
+  ],
 };
 
 @Component({

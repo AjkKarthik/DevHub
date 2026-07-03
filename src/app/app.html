@@ -1539,7 +1539,22 @@
         <span class="nl-text">Error Handling Patterns</span>
         @if (progress.isDone('error-handling-patterns')) {<span class="nl-done">✓</span>}
         @if (diff('error-handling-patterns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('error-handling-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('error-handling-patterns')"
+                  (click)="toggleSubtopics('error-handling-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('error-handling-patterns'); as subs) {
+        @if (isSubtopicsExpanded('error-handling-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/routing" routerLinkActive="active">
         <span class="nl-text">Routing</span>
         @if (progress.isDone('routing')) {<span class="nl-done">✓</span>}

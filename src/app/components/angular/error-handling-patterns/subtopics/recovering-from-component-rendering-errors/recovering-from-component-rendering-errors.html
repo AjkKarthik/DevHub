@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Error Handling Patterns"
+    topicRoute="/angular/error-handling-patterns"
+    subtopicLabel="Recovering from Component Rendering Errors" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Recovering from Component Rendering Errors</h1>
+  <p class="page-subtitle">
+    Angular has no built-in way to retry a failed render — the practical fix is
+    destroying the crashed instance and mounting a genuinely fresh one.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>RiskyWidgetComponent</code> crashes on null data — "Fix data and remount"
+      destroys the crashed instance via <code>&#64;if</code> and creates a fresh one with
+      valid data.
+    </p>
+    <app-live-playground
+      title="Recovering from component rendering errors"
+      template="angular-cli"
+      openFile="src/app/remountable-panel.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing, resilient retries, and rendering-error recovery all covered, head back
+      to the topic overview to see how the three error layers fit together end to end.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling Patterns"
+    topicRoute="/angular/error-handling-patterns"
+    [prev]="{ label: 'Retry with Exponential Backoff and a Give-Up State', route: '/angular/error-handling-patterns/retry-with-exponential-backoff-and-give-up' }" />
+</div>

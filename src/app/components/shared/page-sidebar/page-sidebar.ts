@@ -4048,6 +4048,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'error-handling-patterns/testing-a-layered-error-handling-system': {
+    apis: ['HttpTestingController', 'jasmine.createSpy()', 'fixture.detectChanges()'],
+    related: [
+      { label: 'Error Handling Patterns (overview)',                     route: '/angular/error-handling-patterns' },
+      { label: 'Retry with Exponential Backoff and a Give-Up State — next', route: '/angular/error-handling-patterns/retry-with-exponential-backoff-and-give-up' },
+    ],
+    tip: 'Test each of the three error layers independently — testing them together makes it hard to tell which layer actually failed when an assertion breaks.',
+    docs: [
+      { label: 'HttpTestingController API', url: 'https://angular.dev/api/common/http/testing/HttpTestingController' },
+      { label: 'Testing Guide',              url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Also assert the error was RE-THROWN after interceptor handling — a side-effect-only test misses the "accidentally swallowed the error" regression.',
+      'Assert the rendered text is the FRIENDLY mapped message, not the raw HttpErrorResponse — a direct regression test for the "never show raw error.message" guidance.',
+    ],
+  },
+
+  'error-handling-patterns/retry-with-exponential-backoff-and-give-up': {
+    apis: ['retry({ delay })', 'timer()', 'RETRYABLE_STATUSES'],
+    related: [
+      { label: 'Testing a Layered Error Handling System — previous',       route: '/angular/error-handling-patterns/testing-a-layered-error-handling-system' },
+      { label: 'Error Handling Patterns (overview)',                        route: '/angular/error-handling-patterns' },
+      { label: 'Recovering from Component Rendering Errors — next',          route: '/angular/error-handling-patterns/recovering-from-component-rendering-errors' },
+    ],
+    tip: 'A flat retry delay can add MORE load to an already-struggling server — exponential backoff (1s, 2s, 4s...) gives increasing breathing room with each failure.',
+    docs: [
+      { label: 'RxJS retry() API', url: 'https://rxjs.dev/api/index/function/retry' },
+      { label: 'RxJS timer() API', url: 'https://rxjs.dev/api/index/function/timer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Only retry genuinely transient statuses (0, 408, 429, 5xx) — retrying a 401 or 404 wastes time and delays showing an unavoidable error.',
+      'A give-up-after-retries error state should read differently from a normal first-attempt error — it signals persistence was already attempted.',
+    ],
+  },
+
+  'error-handling-patterns/recovering-from-component-rendering-errors': {
+    apis: ['@if (re-mount)', 'signal()', 'setTimeout() (destroy/create gap)'],
+    related: [
+      { label: 'Retry with Exponential Backoff and a Give-Up State — previous', route: '/angular/error-handling-patterns/retry-with-exponential-backoff-and-give-up' },
+      { label: 'Error Handling Patterns (overview)',                             route: '/angular/error-handling-patterns' },
+    ],
+    tip: 'Angular gives no built-in way to retry a failed render on the same instance — toggle an @if-gated signal off then on to destroy the crashed instance and mount a genuinely fresh one.',
+    docs: [
+      { label: 'ErrorHandler API', url: 'https://angular.dev/api/core/ErrorHandler' },
+      { label: '@defer Guide',     url: 'https://angular.dev/guide/templates/defer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'The re-mount pattern only helps for TRANSIENT causes — consistently bad data crashes the new instance again immediately, so a max-attempts guard is needed.',
+      'Angular has no true per-component-subtree error boundary API — a wrapper "error boundary" component is a pragmatic workaround, not a guaranteed-correct isolation mechanism.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

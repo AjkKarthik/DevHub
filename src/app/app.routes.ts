@@ -298,7 +298,12 @@ export const routes: Routes = [
         { path: 'scam-pattern-incremental-migration-walkthrough',    loadComponent: () => import('./components/angular/standalone-migration/subtopics/scam-pattern-incremental-migration-walkthrough/scam-pattern-incremental-migration-walkthrough').then(m => m.ScamPatternIncrementalMigrationWalkthroughSubtopic) },
         { path: 'debugging-nullinjectorerror-after-migration',       loadComponent: () => import('./components/angular/standalone-migration/subtopics/debugging-nullinjectorerror-after-migration/debugging-nullinjectorerror-after-migration').then(m => m.DebuggingNullinjectorerrorAfterMigrationSubtopic) },
       ] },
-      { path: 'error-handling-patterns', loadComponent: () => import('./components/angular/error-handling-patterns/error-handling-patterns').then(m => m.ErrorHandlingPatternsDemo) },
+      { path: 'error-handling-patterns', children: [
+        { path: '',                                            loadComponent: () => import('./components/angular/error-handling-patterns/error-handling-patterns').then(m => m.ErrorHandlingPatternsDemo) },
+        { path: 'testing-a-layered-error-handling-system',      loadComponent: () => import('./components/angular/error-handling-patterns/subtopics/testing-a-layered-error-handling-system/testing-a-layered-error-handling-system').then(m => m.TestingALayeredErrorHandlingSystemSubtopic) },
+        { path: 'retry-with-exponential-backoff-and-give-up',   loadComponent: () => import('./components/angular/error-handling-patterns/subtopics/retry-with-exponential-backoff-and-give-up/retry-with-exponential-backoff-and-give-up').then(m => m.RetryWithExponentialBackoffAndGiveUpSubtopic) },
+        { path: 'recovering-from-component-rendering-errors',   loadComponent: () => import('./components/angular/error-handling-patterns/subtopics/recovering-from-component-rendering-errors/recovering-from-component-rendering-errors').then(m => m.RecoveringFromComponentRenderingErrorsSubtopic) },
+      ] },
       { path: 'msw',                     loadComponent: () => import('./components/angular/msw/msw').then(m => m.MswDemo) },
       { path: 'accessibility',           loadComponent: () => import('./components/angular/accessibility/accessibility').then(m => m.AccessibilityDemo) },
       { path: 'micro-frontends',         loadComponent: () => import('./components/angular/micro-frontends/micro-frontends').then(m => m.MicroFrontendsDemo) },
