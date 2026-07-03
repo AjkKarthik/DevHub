@@ -1659,7 +1659,22 @@
         <span class="nl-text">Mock Service Worker</span>
         @if (progress.isDone('msw')) {<span class="nl-done">✓</span>}
         @if (diff('msw'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('msw')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('msw')"
+                  (click)="toggleSubtopics('msw', $event)" aria-label="Toggle subtopics">›</button>
+        }
       </a>
+      @if (subtopicsOf('msw'); as subs) {
+        @if (isSubtopicsExpanded('msw')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/angular/route-resolvers" routerLinkActive="active">
         <span class="nl-text">Route Resolvers</span>
         @if (progress.isDone('route-resolvers')) {<span class="nl-done">✓</span>}

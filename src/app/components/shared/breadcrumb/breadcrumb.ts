@@ -160,6 +160,9 @@ const ROUTE_LABELS: Record<string, string> = {
   'testing-a-layered-error-handling-system': 'Testing a Layered Error Handling System',
   'retry-with-exponential-backoff-and-give-up': 'Retry with Exponential Backoff and a Give-Up State',
   'recovering-from-component-rendering-errors': 'Recovering from Component Rendering Errors',
+  'testing-auth-interceptor-flows-with-msw': 'Testing Auth Interceptor Flows with MSW',
+  'testing-loading-states-with-msw-delay': 'Testing Loading States with MSW delay()',
+  'debugging-unhandled-requests-and-query-param-matching': 'Debugging Unhandled Requests and Query-Param Matching',
   // Composite keys — these subtopic slugs collide with existing top-level Angular topics
   // (/angular/route-guards, /angular/custom-validators, /angular/typed-forms);
   // pageLabel() tries this key first.

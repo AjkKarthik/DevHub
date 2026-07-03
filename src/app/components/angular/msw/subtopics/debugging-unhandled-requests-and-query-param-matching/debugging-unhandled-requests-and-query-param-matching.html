@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Mock Service Worker (MSW)"
+    topicRoute="/angular/msw"
+    subtopicLabel="Debugging Unhandled Requests and Query-Param Matching" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Debugging Unhandled Requests and Query-Param Matching</h1>
+  <p class="page-subtitle">
+    MSW matches the path only, ignoring the query string by default — a systematic
+    checklist for diagnosing "why isn't my handler matching" bugs.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="intermediate" since="MSW 2" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      The handler explicitly parses <code>?page=</code> via
+      <code>new URL(request.url).searchParams</code> — a bare-path handler would return
+      identical data for every page and silently mask a real bug.
+    </p>
+    <app-live-playground
+      title="Debugging unhandled requests and query-param matching"
+      template="angular-cli"
+      openFile="src/app/product-list.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With auth flows, loading states, and URL/query matching all covered, head back to
+      the topic overview to see how MSW fits into the full testing toolkit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Mock Service Worker (MSW)"
+    topicRoute="/angular/msw"
+    [prev]="{ label: 'Testing Loading States with MSW delay()', route: '/angular/msw/testing-loading-states-with-msw-delay' }" />
+</div>

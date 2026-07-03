@@ -292,6 +292,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Retry with Exponential Backoff and a Give-Up State', route: '/angular/error-handling-patterns/retry-with-exponential-backoff-and-give-up' },
     { label: 'Recovering from Component Rendering Errors', route: '/angular/error-handling-patterns/recovering-from-component-rendering-errors' },
   ],
+  'msw': [
+    { label: 'Testing Auth Interceptor Flows with MSW', route: '/angular/msw/testing-auth-interceptor-flows-with-msw' },
+    { label: 'Testing Loading States with MSW delay()', route: '/angular/msw/testing-loading-states-with-msw-delay' },
+    { label: 'Debugging Unhandled Requests and Query-Param Matching', route: '/angular/msw/debugging-unhandled-requests-and-query-param-matching' },
+  ],
 };
 
 @Component({

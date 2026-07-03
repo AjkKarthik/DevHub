@@ -4109,6 +4109,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'msw/testing-auth-interceptor-flows-with-msw': {
+    apis: ['request.headers.get()', 'withInterceptors()', 'server.use()'],
+    related: [
+      { label: 'Mock Service Worker (overview)',                    route: '/angular/msw' },
+      { label: 'Testing Loading States with MSW delay() — next',      route: '/angular/msw/testing-loading-states-with-msw-delay' },
+    ],
+    tip: 'A test asserting final UI content would pass even if the interceptor never ran — the MSW handler itself must inspect the request (e.g. read the Authorization header) to genuinely prove the interceptor\'s effect.',
+    docs: [
+      { label: 'MSW http.get() API',   url: 'https://mswjs.io/docs/api/http' },
+      { label: 'HttpInterceptorFn API', url: 'https://angular.dev/api/common/http/HttpInterceptorFn' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'MSW handlers can maintain simple in-memory state across requests within one test to simulate token-refresh-then-retry scenarios.',
+      'Combine MSW (HTTP layer) with a router mock/spy (side-effect layer) — they are complementary tools for the same auth flow, not alternatives.',
+    ],
+  },
+
+  'msw/testing-loading-states-with-msw-delay': {
+    apis: ['delay()', 'screen.getByRole()', 'screen.queryByRole()'],
+    related: [
+      { label: 'Testing Auth Interceptor Flows with MSW — previous',  route: '/angular/msw/testing-auth-interceptor-flows-with-msw' },
+      { label: 'Mock Service Worker (overview)',                        route: '/angular/msw' },
+      { label: 'Debugging Unhandled Requests and Query-Param Matching — next', route: '/angular/msw/debugging-unhandled-requests-and-query-param-matching' },
+    ],
+    tip: 'findByText() only cares about the eventual result — it never observes whether a loading indicator appeared or was properly cleared; use delay() to create a guaranteed window for those separate assertions.',
+    docs: [
+      { label: 'MSW delay() API',        url: 'https://mswjs.io/docs/api/delay' },
+      { label: 'Testing Library queries', url: 'https://testing-library.com/docs/queries/about' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A three-part assertion (present, then resolved, then absent) catches bugs a single final-state check would miss — like a spinner that never clears.',
+      'A sufficiently fast mock response can resolve before the test framework asserts on loading UI without an artificial delay.',
+    ],
+  },
+
+  'msw/debugging-unhandled-requests-and-query-param-matching': {
+    apis: ['onUnhandledRequest', 'new URL(request.url)', 'searchParams'],
+    related: [
+      { label: 'Testing Loading States with MSW delay() — previous', route: '/angular/msw/testing-loading-states-with-msw-delay' },
+      { label: 'Mock Service Worker (overview)',                       route: '/angular/msw' },
+    ],
+    tip: 'MSW matches the path only and ignores the query string by default — a handler must parse searchParams itself to respond differently per page/filter/sort value.',
+    docs: [
+      { label: 'MSW Request Matching', url: 'https://mswjs.io/docs/http/intercepting-requests' },
+      { label: 'MSW onUnhandledRequest', url: 'https://mswjs.io/docs/api/setup-server/listen' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'onUnhandledRequest: "error" during active test development surfaces the exact mismatched URL immediately, instead of a console warning that is easy to miss.',
+      'A test asserting SOME content rendered after a paginated fetch can pass even with fully broken pagination if the handler ignores query params entirely.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],

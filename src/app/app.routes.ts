@@ -304,7 +304,12 @@ export const routes: Routes = [
         { path: 'retry-with-exponential-backoff-and-give-up',   loadComponent: () => import('./components/angular/error-handling-patterns/subtopics/retry-with-exponential-backoff-and-give-up/retry-with-exponential-backoff-and-give-up').then(m => m.RetryWithExponentialBackoffAndGiveUpSubtopic) },
         { path: 'recovering-from-component-rendering-errors',   loadComponent: () => import('./components/angular/error-handling-patterns/subtopics/recovering-from-component-rendering-errors/recovering-from-component-rendering-errors').then(m => m.RecoveringFromComponentRenderingErrorsSubtopic) },
       ] },
-      { path: 'msw',                     loadComponent: () => import('./components/angular/msw/msw').then(m => m.MswDemo) },
+      { path: 'msw', children: [
+        { path: '',                                             loadComponent: () => import('./components/angular/msw/msw').then(m => m.MswDemo) },
+        { path: 'testing-auth-interceptor-flows-with-msw',       loadComponent: () => import('./components/angular/msw/subtopics/testing-auth-interceptor-flows-with-msw/testing-auth-interceptor-flows-with-msw').then(m => m.TestingAuthInterceptorFlowsWithMswSubtopic) },
+        { path: 'testing-loading-states-with-msw-delay',         loadComponent: () => import('./components/angular/msw/subtopics/testing-loading-states-with-msw-delay/testing-loading-states-with-msw-delay').then(m => m.TestingLoadingStatesWithMswDelaySubtopic) },
+        { path: 'debugging-unhandled-requests-and-query-param-matching', loadComponent: () => import('./components/angular/msw/subtopics/debugging-unhandled-requests-and-query-param-matching/debugging-unhandled-requests-and-query-param-matching').then(m => m.DebuggingUnhandledRequestsAndQueryParamMatchingSubtopic) },
+      ] },
       { path: 'accessibility',           loadComponent: () => import('./components/angular/accessibility/accessibility').then(m => m.AccessibilityDemo) },
       { path: 'micro-frontends',         loadComponent: () => import('./components/angular/micro-frontends/micro-frontends').then(m => m.MicroFrontendsDemo) },
       { path: 'angular-devtools',        loadComponent: () => import('./components/angular/angular-devtools/angular-devtools').then(m => m.AngularDevtoolsDemo) },
