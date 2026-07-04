@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="P/Invoke & Native Interop" topicRoute="/csharp/pinvoke" subtopicLabel="Why Blittable Types Skip Marshalling" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why Blittable Types Skip Marshalling Entirely: Pinning and Direct Pointer Passing vs the Full Marshal-Copy-Convert Cycle</h1>
+  <p class="page-subtitle">The main topic page's Q&A defines blittable versus non-blittable types. Here's the mechanism: a blittable type's managed and native layouts are byte-identical, so the GC only needs to pin it in place — a non-blittable type needs an entirely separate, converted buffer built from scratch.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/csharp/pinvoke">P/Invoke &amp; Native Interop</a>: a classic gotcha the main page's own <code>SetLastError</code>/<code>GetLastPInvokeError</code> pattern doesn't fully warn about — how the last error can be silently clobbered before you ever read it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="P/Invoke & Native Interop"
+    topicRoute="/csharp/pinvoke"
+    [prev]="{ label: 'Testing P/Invoke Code', route: '/csharp/pinvoke/testing-code-calling-pinvoke-wrapping-native-calls-behind-interface' }"
+    [next]="{ label: 'SetLastError Can Be Silently Clobbered', route: '/csharp/pinvoke/setlasterror-silently-clobbered-by-pinvoke-call-in-between' }"
+  />
+</div>

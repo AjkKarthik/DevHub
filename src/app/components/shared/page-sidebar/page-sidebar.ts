@@ -9135,6 +9135,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'pinvoke': {
+    apis: ['[LibraryImport]', 'SafeHandle', 'Marshal.GetLastPInvokeError'],
+    related: [{ label: 'Unsafe Code & Pointers', route: '/csharp/unsafe-pointers' }, { label: 'Structs', route: '/csharp/structs' }, { label: 'Native AOT', route: '/csharp/native-aot' }],
+    tip: 'Prefer [LibraryImport] over [DllImport] — source-generated marshalling is AOT-safe and produces compile-time errors for unsupported signatures rather than runtime failures.',
+    docs: [{ label: 'Platform Invoke (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke' }],
+    resources: [{ label: 'runtime Interop Source', url: 'https://github.com/dotnet/runtime/tree/main/src/libraries/System.Runtime.InteropServices', badge: 'code' }],
+    gotchas: ['Blittable types are only pinned in place (zero copy); non-blittable types need a full allocate-convert-copy-free cycle.', 'Marshal.GetLastPInvokeError() must be read on the very next line — any intervening call can silently clobber it.'],
+  },
+
+  'pinvoke/testing-code-calling-pinvoke-wrapping-native-calls-behind-interface': {
+    apis: ['IFileSystemInterop', 'Moq', 'SafeHandle'],
+    related: [
+      { label: 'Why Blittable Types Skip Marshalling Entirely — next', route: '/csharp/pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle' },
+      { label: 'P/Invoke & Native Interop (overview)', route: '/csharp/pinvoke' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Wrap a static P/Invoke class behind a thin interface — business logic depends on the interface (mockable in tests), while a separate, explicitly-tagged integration test suite verifies the real native call.',
+    docs: [
+      { label: 'Mock Native Dependencies', url: 'https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices' },
+    ],
+    resources: [
+      { label: 'Moq Documentation', url: 'https://github.com/devlooped/moq', badge: 'code' },
+    ],
+    gotchas: [
+      'Interface-wrapping does not test the native call itself — a genuine integration test suite is still needed for that.',
+      'A test calling a real native library directly, even if it runs fast, is still an integration test by nature.',
+    ],
+  },
+
+  'pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle': {
+    apis: ['Marshal.SizeOf', 'fixed', 'blittable types'],
+    related: [
+      { label: 'Testing P/Invoke Code — previous', route: '/csharp/pinvoke/testing-code-calling-pinvoke-wrapping-native-calls-behind-interface' },
+      { label: 'SetLastError Can Be Silently Clobbered — next', route: '/csharp/pinvoke/setlasterror-silently-clobbered-by-pinvoke-call-in-between' },
+      { label: 'P/Invoke & Native Interop (overview)', route: '/csharp/pinvoke' },
+    ],
+    tip: 'A blittable type has an identical byte layout in managed and native memory — the marshaller only needs to pin it in place. A non-blittable type has no native equivalent to pin, requiring a full allocate-convert-copy-free cycle instead.',
+    docs: [
+      { label: 'Blittable and Non-Blittable Types', url: 'https://learn.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types' },
+    ],
+    resources: [
+      { label: 'Marshal Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal', badge: 'docs' },
+    ],
+    gotchas: [
+      'An array of a fully blittable struct is itself blittable — it gets the same single-pin, zero-copy treatment as a primitive array.',
+      'Marshal.SizeOf throws for genuinely non-blittable types — a reliable way to test blittability at runtime.',
+    ],
+  },
+
+  'pinvoke/setlasterror-silently-clobbered-by-pinvoke-call-in-between': {
+    apis: ['Marshal.GetLastPInvokeError', 'SetLastError', 'GetLastError'],
+    related: [
+      { label: 'Why Blittable Types Skip Marshalling Entirely — previous', route: '/csharp/pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle' },
+      { label: 'P/Invoke & Native Interop (overview)', route: '/csharp/pinvoke' },
+      { label: 'Unsafe Code & Pointers', route: '/csharp/unsafe-pointers' },
+    ],
+    tip: 'The last error is thread-local OS state overwritten by essentially every SetLastError-marked native call — including calls hidden inside framework code. Capture it on the literal next line after the P/Invoke call, before any other code runs.',
+    docs: [
+      { label: 'Marshal.GetLastPInvokeError Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.getlastpinvokeerror' },
+    ],
+    resources: [
+      { label: 'SetLastError in P/Invoke', url: 'https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke#setlasterror-and-error-handling', badge: 'docs' },
+    ],
+    gotchas: [
+      'A seemingly-unrelated logging call, or even a property getter, can internally route through its own native call and clobber the cached error first.',
+      'Capture the error unconditionally as the very next statement — never after constructing a log message or exception text.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

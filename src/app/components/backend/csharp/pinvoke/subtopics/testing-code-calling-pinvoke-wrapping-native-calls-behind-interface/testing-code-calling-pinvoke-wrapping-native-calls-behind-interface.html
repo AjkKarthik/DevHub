@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="P/Invoke & Native Interop" topicRoute="/csharp/pinvoke" subtopicLabel="Testing P/Invoke Code" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Code That Calls P/Invoke: Wrapping Native Calls Behind an Interface So Business Logic Is Testable Without the Native Library</h1>
+  <p class="page-subtitle">Every example on the main topic page calls a static P/Invoke method directly — genuinely untestable in isolation. Wrap it behind a thin interface so the business logic layered on top becomes fast and deterministic to test, while a separate suite verifies the real native call.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 7+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at why blittable types (like the main <a routerLink="/csharp/pinvoke">P/Invoke &amp; Native Interop</a> page's own primitives and structs) skip marshalling entirely, while non-blittable ones need the full conversion cycle.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="P/Invoke & Native Interop"
+    topicRoute="/csharp/pinvoke"
+    [next]="{ label: 'Why Blittable Types Skip Marshalling Entirely', route: '/csharp/pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle' }"
+  />
+</div>

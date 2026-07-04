@@ -670,7 +670,12 @@ export const routes: Routes = [
         { path: 'why-bdn-runs-benchmarks-isolated-process-not-in-process', loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/subtopics/why-bdn-runs-benchmarks-isolated-process-not-in-process/why-bdn-runs-benchmarks-isolated-process-not-in-process').then(m => m.WhyBdnRunsBenchmarksIsolatedProcessNotInProcessSubtopic) },
         { path: 'when-mean-lies-bimodal-distribution-hides-two-performance-paths', loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/subtopics/when-mean-lies-bimodal-distribution-hides-two-performance-paths/when-mean-lies-bimodal-distribution-hides-two-performance-paths').then(m => m.WhenMeanLiesBimodalDistributionHidesTwoPerformancePathsSubtopic) },
       ] },
-      { path: 'pinvoke',          loadComponent: () => import('./components/backend/csharp/pinvoke/pinvoke').then(m => m.CsharpPinvoke) },
+      { path: 'pinvoke', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/pinvoke/pinvoke').then(m => m.CsharpPinvoke) },
+        { path: 'testing-code-calling-pinvoke-wrapping-native-calls-behind-interface', loadComponent: () => import('./components/backend/csharp/pinvoke/subtopics/testing-code-calling-pinvoke-wrapping-native-calls-behind-interface/testing-code-calling-pinvoke-wrapping-native-calls-behind-interface').then(m => m.TestingCodeCallingPinvokeWrappingNativeCallsBehindInterfaceSubtopic) },
+        { path: 'why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle', loadComponent: () => import('./components/backend/csharp/pinvoke/subtopics/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle').then(m => m.WhyBlittableTypesSkipMarshallingPinningVsFullMarshalCycleSubtopic) },
+        { path: 'setlasterror-silently-clobbered-by-pinvoke-call-in-between', loadComponent: () => import('./components/backend/csharp/pinvoke/subtopics/setlasterror-silently-clobbered-by-pinvoke-call-in-between/setlasterror-silently-clobbered-by-pinvoke-call-in-between').then(m => m.SetlasterrorSilentlyClobberedByPinvokeCallInBetweenSubtopic) },
+      ] },
       { path: 'dotnet-cli',       loadComponent: () => import('./components/backend/csharp/dotnet-cli/dotnet-cli').then(m => m.CsharpDotnetCli) },
       // ── What's New ──
       { path: 'whats-new-9-10',    loadComponent: () => import('./components/backend/csharp/whats-new-9-10/whats-new-9-10').then(m => m.CsharpWhatsNew910) },
