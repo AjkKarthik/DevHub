@@ -1513,7 +1513,7 @@ off here with a date.
 - [x] `/aspnet/api-versioning` — API Versioning (2026-07-04 — 3 subtopics: testing-versioned-endpoints-return-genuinely-different-shapes, why-omitting-apiversion-constraint-causes-ambiguous-match, what-happens-when-combined-version-readers-disagree)
 - [x] `/aspnet/http-clients` — HttpClient & Resilience (2026-07-04 — 3 subtopics: testing-retry-strategy-fires-transient-not-deterministic-errors, why-transient-delegatinghandlers-shared-across-pool-rotation, addhedging-shared-pipeline-can-hedge-non-idempotent-requests)
 - [x] `/aspnet/grpc` — gRPC Services (2026-07-04 — 3 subtopics: testing-server-streaming-rpc-cancellation-stops-mid-stream, how-proto3-optional-actually-tracks-field-presence, grpc-web-cors-needs-allowed-request-headers-not-exposed)
-- [ ] `/aspnet/ef-core-basics` — EF Core Basics
+- [x] `/aspnet/ef-core-basics` — EF Core Basics (2026-07-04 — 3 subtopics: testing-asnotracking-queries-genuinely-arent-tracked-sqlite, how-change-tracker-snapshot-produces-minimal-update, reload-discards-edit-getdatabasevaluesasync-preserves-it)
 - [ ] `/aspnet/ef-relationships` — EF Core Relationships
 - [ ] `/aspnet/ef-performance` — EF Core Performance
 - [ ] `/aspnet/caching` — Caching
