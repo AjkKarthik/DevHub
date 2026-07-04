@@ -1470,7 +1470,7 @@ off here with a date.
 - [x] `/csharp/tuples` — Tuples & Anonymous Types (2026-07-04 — 3 subtopics: testing-tuple-returning-methods-deconstruction-assertions, valuetuple-8-element-limit-trest-chaining-mechanism, renaming-tuple-field-breaks-some-callers-not-others)
 - [x] `/csharp/arrays` — Arrays (2026-07-04 — 3 subtopics: testing-array-equality-sequenceequal-not-equals, real-cost-of-array-covariance-runtime-type-check-every-store, params-array-hidden-allocation-every-call-span-fix)
 - [x] `/csharp/strings-datetime` — Strings, DateTime & Math (2026-07-04 — 3 subtopics: testing-culture-sensitive-code-turkish-locale-ci-failures, interning-boundary-which-strings-interned-automatically, string-create-span-char-allocation-free-building)
-- [ ] `/csharp/io-serialization` — I/O & Serialization
+- [x] `/csharp/io-serialization` — I/O & Serialization (2026-07-04 — 3 subtopics: testing-file-io-without-touching-real-filesystem-abstraction, where-jsonserializeroptions-cache-lives-cold-cache-per-instance, sync-over-async-file-io-deadlocks-result-hangs-forever)
 - [ ] `/csharp/gc-disposable` — GC & IDisposable
 - [ ] `/csharp/threading` — Threading
 - [ ] `/csharp/tasks` — Tasks & Parallel
