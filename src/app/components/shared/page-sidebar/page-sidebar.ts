@@ -11363,6 +11363,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/controllers/testing-actionresult-catches-null-returns-200-ok-bug': {
+    apis: ['ActionResult<T>.Result', 'ActionResult<T>.Value', 'NotFoundResult'],
+    related: [
+      { label: 'How Binding Source Inference Decides FromBody vs FromQuery — next', route: '/aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery' },
+      { label: 'Controllers & Actions (overview)', route: '/aspnet/controllers' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Calling a controller action directly and asserting response.Result is a specific NotFoundResult (not just checking .Value is null) is what actually distinguishes an explicit 404 from the buggy bare-null-return case producing 200 OK.',
+    docs: [
+      { label: 'ActionResult<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A direct method-call unit test never exercises the actual HTTP translation layer — an integration test with WebApplicationFactory is still needed to prove the real status code a client receives.',
+      'The compiler allows returning null from an ActionResult<T> action with zero warnings, which is exactly why this bug needs a dedicated test rather than relying on code review alone.',
+    ],
+  },
+
+  'aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery': {
+    apis: ['ModelMetadata.IsComplexType', 'TypeConverter.CanConvertFrom()', '[FromQuery]'],
+    related: [
+      { label: 'Testing the Null-Return 200 OK Bug — previous', route: '/aspnet/controllers/testing-actionresult-catches-null-returns-200-ok-bug' },
+      { label: 'CreatedAtAction’s Runtime Failure Mode — next', route: '/aspnet/controllers/createdataction-throws-runtime-despite-nameof-safety' },
+      { label: 'Controllers & Actions (overview)', route: '/aspnet/controllers' },
+    ],
+    tip: 'A type counts as "simple" (infers to FromQuery) only if it has a registered TypeConverter that can convert from a string — a record with a single string property has no such converter and infers to FromBody despite looking simple.',
+    docs: [
+      { label: 'Model Binding in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/models/model-binding' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Guid, DateTime, decimal, and every enum type infer correctly to FromQuery, since .NET registers a TypeConverter for each automatically — but records and classes never get one just because their properties are simple.',
+      'An explicit [FromQuery] attribute completely bypasses the simple/complex inference check — it is the only reliable fix for a record-shaped query parameter.',
+    ],
+  },
+
+  'aspnet/controllers/createdataction-throws-runtime-despite-nameof-safety': {
+    apis: ['CreatedAtAction()', 'IUrlHelper', 'nameof()'],
+    related: [
+      { label: 'How Binding Source Inference Decides FromBody vs FromQuery — previous', route: '/aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery' },
+      { label: 'Controllers & Actions (overview)', route: '/aspnet/controllers' },
+      { label: 'Routing', route: '/aspnet/routing' },
+    ],
+    tip: 'nameof(GetById) only guarantees the method name compiles — a route template change on the target action (like adding a version segment) still compiles cleanly and throws InvalidOperationException at runtime the first time the routeValues no longer satisfy the new route.',
+    docs: [
+      { label: 'IUrlHelper Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iurlhelper' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'This failure only surfaces on the first real request that hits the affected code path — a unit test calling the action method directly never exercises IUrlHelper\'s actual route resolution.',
+      'An integration test using WebApplicationFactory that asserts on the real HTTP status code (and ideally follows the returned Location header) is the only reliable way to catch this before production.',
+    ],
+  },
+
   'aspnet/minimal-apis': {
     apis: ['app.MapGet()', 'TypedResults', 'Results<T1,T2>', 'IEndpointFilter', 'RouteGroupBuilder'],
     related: [

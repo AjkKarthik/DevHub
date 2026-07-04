@@ -652,6 +652,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How UseStaticFiles Computes ETag', route: '/aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache' },
     { label: 'StartsWith Path Traversal Guard Bypass', route: '/aspnet/static-files/startswith-path-traversal-guard-sibling-directory-bypass' },
   ],
+  'controllers': [
+    { label: 'Testing the Null-Return 200 OK Bug', route: '/aspnet/controllers/testing-actionresult-catches-null-returns-200-ok-bug' },
+    { label: 'How Binding Source Inference Decides FromBody vs FromQuery', route: '/aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery' },
+    { label: 'CreatedAtAction’s Runtime Failure Mode', route: '/aspnet/controllers/createdataction-throws-runtime-despite-nameof-safety' },
+  ],
 };
 
 @Component({

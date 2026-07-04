@@ -762,7 +762,12 @@ export const routes: Routes = [
         { path: 'startswith-path-traversal-guard-sibling-directory-bypass', loadComponent: () => import('./components/backend/aspnet/static-files/subtopics/startswith-path-traversal-guard-sibling-directory-bypass/startswith-path-traversal-guard-sibling-directory-bypass').then(m => m.StartswithPathTraversalGuardSiblingDirectoryBypassSubtopic) },
       ] },
       // ── Web API ──
-      { path: 'controllers',          loadComponent: () => import('./components/backend/aspnet/controllers/controllers').then(m => m.AspnetControllers) },
+      { path: 'controllers', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/controllers/controllers').then(m => m.AspnetControllers) },
+        { path: 'testing-actionresult-catches-null-returns-200-ok-bug', loadComponent: () => import('./components/backend/aspnet/controllers/subtopics/testing-actionresult-catches-null-returns-200-ok-bug/testing-actionresult-catches-null-returns-200-ok-bug').then(m => m.TestingActionresultCatchesNullReturns200OkBugSubtopic) },
+        { path: 'how-binding-source-inference-decides-frombody-vs-fromquery', loadComponent: () => import('./components/backend/aspnet/controllers/subtopics/how-binding-source-inference-decides-frombody-vs-fromquery/how-binding-source-inference-decides-frombody-vs-fromquery').then(m => m.HowBindingSourceInferenceDecidesFrombodyVsFromquerySubtopic) },
+        { path: 'createdataction-throws-runtime-despite-nameof-safety', loadComponent: () => import('./components/backend/aspnet/controllers/subtopics/createdataction-throws-runtime-despite-nameof-safety/createdataction-throws-runtime-despite-nameof-safety').then(m => m.CreatedatactionThrowsRuntimeDespiteNameofSafetySubtopic) },
+      ] },
       { path: 'minimal-apis',         loadComponent: () => import('./components/backend/aspnet/minimal-apis/minimal-apis').then(m => m.AspnetMinimalApis) },
       { path: 'model-binding',        loadComponent: () => import('./components/backend/aspnet/model-binding/model-binding').then(m => m.AspnetModelBinding) },
       { path: 'filters',              loadComponent: () => import('./components/backend/aspnet/filters/filters').then(m => m.AspnetFilters) },
