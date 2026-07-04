@@ -11776,6 +11776,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/openapi-swagger/testing-openapi-spec-catches-typedresults-regression-to-iresult': {
+    apis: ['/openapi/v1.json', 'MapOpenApi()', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Why the Generator Inspects the Signature, Not the Body — next', route: '/aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body' },
+      { label: 'OpenAPI & Swagger (overview)', route: '/aspnet/openapi-swagger' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A TypedResults endpoint reverted to bare IResult produces zero build errors and behaves identically at runtime — only the generated spec silently degrades, which is why an integration test fetching /openapi/v1.json and asserting on schema content is the only signal that catches it.',
+    docs: [
+      { label: 'OpenAPI in ASP.NET Core (.NET 9)', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A snapshot-based test comparing the current spec\'s documented response codes per endpoint against a checked-in baseline scales to any number of routes without hand-writing one assertion block per endpoint.',
+      'Ordinary functional tests checking runtime status codes never catch this — the endpoint behaves identically either way; only the spec content differs.',
+    ],
+  },
+
+  'aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body': {
+    apis: ['Results<T1,T2>', 'TypedResults', 'IResult'],
+    related: [
+      { label: 'Testing the Spec Catches a TypedResults Regression — previous', route: '/aspnet/openapi-swagger/testing-openapi-spec-catches-typedresults-regression-to-iresult' },
+      { label: 'Generating Clients Against a Live Server Undermines PR Diffs — next', route: '/aspnet/openapi-swagger/generating-clients-against-live-server-undermines-diffing-prs' },
+      { label: 'OpenAPI & Swagger (overview)', route: '/aspnet/openapi-swagger' },
+    ],
+    tip: 'The OpenAPI generator only reflects on a method\'s DECLARED return type — calling TypedResults.Ok() and TypedResults.NotFound() inside a method still declared as Task<IResult> produces the same undocumented spec as plain Results.Ok(), since both get implicitly widened to IResult at the method boundary.',
+    docs: [
+      { label: 'Minimal APIs and TypedResults', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/responses' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Results<T1,T2> only has implicit conversion operators FROM its own declared type parameters — attempting to return an unrelated IResult type from a Results<T1,T2>-declared method is a genuine compile error, guaranteeing the spec stays complete.',
+      'The fix is changing the METHOD\'S OWN signature to the union type, not just calling TypedResults factory methods somewhere inside the body.',
+    ],
+  },
+
+  'aspnet/openapi-swagger/generating-clients-against-live-server-undermines-diffing-prs': {
+    apis: ['nswag.json', 'fromDocument', 'AddOpenApi()'],
+    related: [
+      { label: 'Why the Generator Inspects the Signature, Not the Body — previous', route: '/aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body' },
+      { label: 'OpenAPI & Swagger (overview)', route: '/aspnet/openapi-swagger' },
+      { label: 'DevOps & CI/CD', route: '/devops' },
+    ],
+    tip: 'Generating a client from a live localhost URL makes the output depend on whatever transient, possibly-uncommitted state happens to be running on a developer\'s machine — generate from a fixed, committed spec file or CI build artifact instead to keep "diff the client in PRs" reliable.',
+    docs: [
+      { label: 'NSwag Documentation', url: 'https://github.com/RicoSuter/NSwag' },
+    ],
+    resources: [
+      { label: 'Microsoft Kiota', url: 'https://github.com/microsoft/kiota', badge: 'code' },
+    ],
+    gotchas: [
+      'Modern .NET tooling can generate the OpenAPI document as a build-time artifact without an actual listening HTTP server, using the same reflection-based process that would otherwise run per-request.',
+      'Two developers on different branches regenerating a client from their own local dev servers can produce spurious, unrelated diff churn in an otherwise small PR.',
+    ],
+  },
+
   'aspnet/api-versioning': {
     apis: ['AddApiVersioning()', '[ApiVersion]', '[MapToApiVersion]', '[Deprecated]', 'ApiVersioningOptions', 'ReportApiVersions'],
     related: [

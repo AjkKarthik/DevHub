@@ -682,6 +682,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why the Re-Executed Error Endpoint Must Restore the Status Code', route: '/aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code' },
     { label: 'A Handler That Writes Before Returning False Corrupts the Next', route: '/aspnet/error-handling/handler-writes-before-returning-false-corrupts-next-handler' },
   ],
+  'openapi-swagger': [
+    { label: 'Testing the Spec Catches a TypedResults Regression', route: '/aspnet/openapi-swagger/testing-openapi-spec-catches-typedresults-regression-to-iresult' },
+    { label: 'Why the Generator Inspects the Signature, Not the Body', route: '/aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body' },
+    { label: 'Generating Clients Against a Live Server Undermines PR Diffs', route: '/aspnet/openapi-swagger/generating-clients-against-live-server-undermines-diffing-prs' },
+  ],
 };
 
 @Component({

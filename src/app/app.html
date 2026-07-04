@@ -398,7 +398,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/openapi-swagger" routerLinkActive="active"><span class="nl-text">OpenAPI &amp; Swagger</span>@if(progress.isDone('aspnet-openapi-swagger')){<span class="nl-done">✓</span>}@if(diff('aspnet-openapi-swagger');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/openapi-swagger" routerLinkActive="active">
+        <span class="nl-text">OpenAPI &amp; Swagger</span>
+        @if (progress.isDone('aspnet-openapi-swagger')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-openapi-swagger'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('openapi-swagger')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('openapi-swagger')"
+                  (click)="toggleSubtopics('openapi-swagger', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('openapi-swagger'); as subs) {
+        @if (isSubtopicsExpanded('openapi-swagger')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/api-versioning" routerLinkActive="active"><span class="nl-text">API Versioning</span>@if(progress.isDone('aspnet-api-versioning')){<span class="nl-done">✓</span>}@if(diff('aspnet-api-versioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/http-clients" routerLinkActive="active"><span class="nl-text">HttpClient &amp; Resilience</span>@if(progress.isDone('aspnet-http-clients')){<span class="nl-done">✓</span>}@if(diff('aspnet-http-clients');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/grpc" routerLinkActive="active"><span class="nl-text">gRPC Services</span>@if(progress.isDone('aspnet-grpc')){<span class="nl-done">✓</span>}@if(diff('aspnet-grpc');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

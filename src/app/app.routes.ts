@@ -792,7 +792,12 @@ export const routes: Routes = [
         { path: 'why-reexecuted-error-endpoint-must-explicitly-restore-status-code', loadComponent: () => import('./components/backend/aspnet/error-handling/subtopics/why-reexecuted-error-endpoint-must-explicitly-restore-status-code/why-reexecuted-error-endpoint-must-explicitly-restore-status-code').then(m => m.WhyReexecutedErrorEndpointMustExplicitlyRestoreStatusCodeSubtopic) },
         { path: 'handler-writes-before-returning-false-corrupts-next-handler', loadComponent: () => import('./components/backend/aspnet/error-handling/subtopics/handler-writes-before-returning-false-corrupts-next-handler/handler-writes-before-returning-false-corrupts-next-handler').then(m => m.HandlerWritesBeforeReturningFalseCorruptsNextHandlerSubtopic) },
       ] },
-      { path: 'openapi-swagger',      loadComponent: () => import('./components/backend/aspnet/openapi-swagger/openapi-swagger').then(m => m.AspnetOpenApiSwagger) },
+      { path: 'openapi-swagger', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/openapi-swagger/openapi-swagger').then(m => m.AspnetOpenApiSwagger) },
+        { path: 'testing-openapi-spec-catches-typedresults-regression-to-iresult', loadComponent: () => import('./components/backend/aspnet/openapi-swagger/subtopics/testing-openapi-spec-catches-typedresults-regression-to-iresult/testing-openapi-spec-catches-typedresults-regression-to-iresult').then(m => m.TestingOpenapiSpecCatchesTypedresultsRegressionToIresultSubtopic) },
+        { path: 'why-generator-inspects-signature-not-method-body', loadComponent: () => import('./components/backend/aspnet/openapi-swagger/subtopics/why-generator-inspects-signature-not-method-body/why-generator-inspects-signature-not-method-body').then(m => m.WhyGeneratorInspectsSignatureNotMethodBodySubtopic) },
+        { path: 'generating-clients-against-live-server-undermines-diffing-prs', loadComponent: () => import('./components/backend/aspnet/openapi-swagger/subtopics/generating-clients-against-live-server-undermines-diffing-prs/generating-clients-against-live-server-undermines-diffing-prs').then(m => m.GeneratingClientsAgainstLiveServerUndermineDiffingPrsSubtopic) },
+      ] },
       { path: 'api-versioning',       loadComponent: () => import('./components/backend/aspnet/api-versioning/api-versioning').then(m => m.AspnetApiVersioning) },
       { path: 'http-clients',         loadComponent: () => import('./components/backend/aspnet/http-clients/http-clients').then(m => m.AspnetHttpClients) },
       { path: 'grpc',                 loadComponent: () => import('./components/backend/aspnet/grpc/grpc').then(m => m.AspnetGrpc) },

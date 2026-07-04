@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="OpenAPI &amp; Swagger"
+    topicRoute="/aspnet/openapi-swagger"
+    subtopicLabel="Signature vs Method Body"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Why the Generator Inspects the Signature, Not the Method Body</h1>
+  <p class="page-subtitle">
+    Calling TypedResults.Ok() and TypedResults.NotFound() inside a method does nothing for the spec if
+    the method itself is still declared as returning bare Task&lt;IResult&gt;. The generator only reflects
+    on the signature — it never looks inside.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own TypedResults guidance. The final
+      subtopic in this set turns to the page's own NSwag client-generation setup — and a workflow gotcha
+      in generating against a live localhost server rather than a committed spec file.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OpenAPI &amp; Swagger"
+    topicRoute="/aspnet/openapi-swagger"
+    [prev]="{ label: 'Testing That the Spec Catches a TypedResults Regression to IResult', route: '/aspnet/openapi-swagger/testing-openapi-spec-catches-typedresults-regression-to-iresult' }"
+    [next]="{ label: 'Generating Clients Against a Live Server Undermines Diffing Them in PRs', route: '/aspnet/openapi-swagger/generating-clients-against-live-server-undermines-diffing-prs' }"
+  />
+</div>

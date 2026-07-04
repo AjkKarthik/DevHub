@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="OpenAPI &amp; Swagger"
+    topicRoute="/aspnet/openapi-swagger"
+    subtopicLabel="Testing the Generated Spec's Content"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That the Spec Catches a TypedResults Regression to IResult</h1>
+  <p class="page-subtitle">
+    The main page's own mistake shows a TypedResults endpoint silently reverted to bare IResult, losing
+    schema with zero build errors. Here's the integration test that fetches the real spec and fails the
+    moment that documentation quietly degrades.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 9+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own IResult regression mistake. The next subtopic goes
+      underneath that same mistake — explaining exactly WHY calling TypedResults inside a method body
+      still fails to help if the method's own signature is still declared as bare IResult.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OpenAPI &amp; Swagger"
+    topicRoute="/aspnet/openapi-swagger"
+    [next]="{ label: 'Why the Generator Inspects the Signature, Not the Method Body', route: '/aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body' }"
+  />
+</div>
