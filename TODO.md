@@ -1498,7 +1498,7 @@ off here with a date.
 #### ASP.NET Core — 45 topic pages
 
 - [x] `/aspnet/hosting-startup` — Hosting & Startup (2026-07-04 — 3 subtopics: testing-environment-branching-without-real-environment-variable, what-builder-build-actually-seals-servicecollection-vs-serviceprovider, applicationstopping-fires-before-in-flight-requests-finish-draining)
-- [ ] `/aspnet/middleware` — Middleware Pipeline
+- [x] `/aspnet/middleware` — Middleware Pipeline (2026-07-04 — 3 subtopics: testing-custom-middleware-isolation-applicationbuilder-no-kestrel, how-middleware-pipeline-built-requestdelegate-composition-nested-closures, onstarting-callbacks-run-lifo-order-last-registered-fires-first)
 - [ ] `/aspnet/routing` — Routing
 - [ ] `/aspnet/configuration` — Configuration & Options
 - [ ] `/aspnet/dependency-injection` — Dependency Injection
