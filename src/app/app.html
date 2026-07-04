@@ -318,7 +318,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/minimal-apis" routerLinkActive="active"><span class="nl-text">Minimal APIs</span>@if(progress.isDone('aspnet-minimal-apis')){<span class="nl-done">✓</span>}@if(diff('aspnet-minimal-apis');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/minimal-apis" routerLinkActive="active">
+        <span class="nl-text">Minimal APIs</span>
+        @if (progress.isDone('aspnet-minimal-apis')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-minimal-apis'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('minimal-apis')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('minimal-apis')"
+                  (click)="toggleSubtopics('minimal-apis', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('minimal-apis'); as subs) {
+        @if (isSubtopicsExpanded('minimal-apis')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/model-binding" routerLinkActive="active"><span class="nl-text">Model Binding &amp; Validation</span>@if(progress.isDone('aspnet-model-binding')){<span class="nl-done">✓</span>}@if(diff('aspnet-model-binding');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/filters" routerLinkActive="active"><span class="nl-text">Filters &amp; Endpoint Filters</span>@if(progress.isDone('aspnet-filters')){<span class="nl-done">✓</span>}@if(diff('aspnet-filters');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/error-handling" routerLinkActive="active"><span class="nl-text">Error Handling</span>@if(progress.isDone('aspnet-error-handling')){<span class="nl-done">✓</span>}@if(diff('aspnet-error-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

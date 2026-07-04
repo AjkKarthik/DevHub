@@ -768,7 +768,12 @@ export const routes: Routes = [
         { path: 'how-binding-source-inference-decides-frombody-vs-fromquery', loadComponent: () => import('./components/backend/aspnet/controllers/subtopics/how-binding-source-inference-decides-frombody-vs-fromquery/how-binding-source-inference-decides-frombody-vs-fromquery').then(m => m.HowBindingSourceInferenceDecidesFrombodyVsFromquerySubtopic) },
         { path: 'createdataction-throws-runtime-despite-nameof-safety', loadComponent: () => import('./components/backend/aspnet/controllers/subtopics/createdataction-throws-runtime-despite-nameof-safety/createdataction-throws-runtime-despite-nameof-safety').then(m => m.CreatedatactionThrowsRuntimeDespiteNameofSafetySubtopic) },
       ] },
-      { path: 'minimal-apis',         loadComponent: () => import('./components/backend/aspnet/minimal-apis/minimal-apis').then(m => m.AspnetMinimalApis) },
+      { path: 'minimal-apis', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/minimal-apis/minimal-apis').then(m => m.AspnetMinimalApis) },
+        { path: 'testing-endpoint-filter-isolation-no-test-server', loadComponent: () => import('./components/backend/aspnet/minimal-apis/subtopics/testing-endpoint-filter-isolation-no-test-server/testing-endpoint-filter-isolation-no-test-server').then(m => m.TestingEndpointFilterIsolationNoTestServerSubtopic) },
+        { path: 'forgotten-di-registration-silently-falls-through-body-binding', loadComponent: () => import('./components/backend/aspnet/minimal-apis/subtopics/forgotten-di-registration-silently-falls-through-body-binding/forgotten-di-registration-silently-falls-through-body-binding').then(m => m.ForgottenDiRegistrationSilentlyFallsThroughBodyBindingSubtopic) },
+        { path: 'linkgenerator-getpathbyname-returns-null-instead-of-throwing', loadComponent: () => import('./components/backend/aspnet/minimal-apis/subtopics/linkgenerator-getpathbyname-returns-null-instead-of-throwing/linkgenerator-getpathbyname-returns-null-instead-of-throwing').then(m => m.LinkgeneratorGetpathbynameReturnsNullInsteadOfThrowingSubtopic) },
+      ] },
       { path: 'model-binding',        loadComponent: () => import('./components/backend/aspnet/model-binding/model-binding').then(m => m.AspnetModelBinding) },
       { path: 'filters',              loadComponent: () => import('./components/backend/aspnet/filters/filters').then(m => m.AspnetFilters) },
       { path: 'error-handling',       loadComponent: () => import('./components/backend/aspnet/error-handling/error-handling').then(m => m.AspnetErrorHandling) },

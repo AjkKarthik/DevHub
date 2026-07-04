@@ -657,6 +657,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How Binding Source Inference Decides FromBody vs FromQuery', route: '/aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery' },
     { label: 'CreatedAtAction’s Runtime Failure Mode', route: '/aspnet/controllers/createdataction-throws-runtime-despite-nameof-safety' },
   ],
+  'minimal-apis': [
+    { label: 'Testing an Endpoint Filter in Isolation', route: '/aspnet/minimal-apis/testing-endpoint-filter-isolation-no-test-server' },
+    { label: 'A Forgotten DI Registration Silently Falls Through', route: '/aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding' },
+    { label: 'LinkGenerator’s Silent Null Return', route: '/aspnet/minimal-apis/linkgenerator-getpathbyname-returns-null-instead-of-throwing' },
+  ],
 };
 
 @Component({

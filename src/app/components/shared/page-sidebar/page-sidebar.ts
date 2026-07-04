@@ -11445,6 +11445,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/minimal-apis/testing-endpoint-filter-isolation-no-test-server': {
+    apis: ['IEndpointFilter', 'EndpointFilterInvocationContext', 'EndpointFilterDelegate'],
+    related: [
+      { label: 'A Forgotten DI Registration Silently Falls Through — next', route: '/aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding' },
+      { label: 'Minimal APIs (overview)', route: '/aspnet/minimal-apis' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A fake next delegate that records whether it was called lets a test prove short-circuit behavior directly — a filter with an inverted condition can return a correct-looking result while still accidentally letting an invalid request reach the handler.',
+    docs: [
+      { label: 'IEndpointFilter Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.iendpointfilter' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Testing filters in isolation proves each filter\'s own logic — it says nothing about ordering or interaction when multiple filters are chained on the same endpoint, which still needs integration coverage.',
+      'Assert on whether the fake next delegate was actually called, not just on the filter\'s returned result type — that is what catches an inverted condition bug.',
+    ],
+  },
+
+  'aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding': {
+    apis: ['IServiceProviderIsService', 'IsService()', '[FromBody] inference'],
+    related: [
+      { label: 'Testing an Endpoint Filter in Isolation — previous', route: '/aspnet/minimal-apis/testing-endpoint-filter-isolation-no-test-server' },
+      { label: 'LinkGenerator’s Silent Null Return — next', route: '/aspnet/minimal-apis/linkgenerator-getpathbyname-returns-null-instead-of-throwing' },
+      { label: 'Minimal APIs (overview)', route: '/aspnet/minimal-apis' },
+    ],
+    tip: 'A handler parameter of an unregistered service type does not throw a DI exception — IsService() returns false and the parameter silently falls through to complex-type-from-body inference, producing a confusing validation error instead.',
+    docs: [
+      { label: 'IServiceProviderIsService Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iserviceproviderisservice' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A controller\'s constructor throws an immediate, unambiguous InvalidOperationException for the exact same missing registration — minimal API handlers give no such clear signal.',
+      'A reflection-based CI check that verifies every service-shaped handler parameter is actually registered in DI catches this class of mistake automatically.',
+    ],
+  },
+
+  'aspnet/minimal-apis/linkgenerator-getpathbyname-returns-null-instead-of-throwing': {
+    apis: ['LinkGenerator', 'GetPathByName()', 'TypedResults.Created()'],
+    related: [
+      { label: 'A Forgotten DI Registration Silently Falls Through — previous', route: '/aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding' },
+      { label: 'Minimal APIs (overview)', route: '/aspnet/minimal-apis' },
+      { label: 'CreatedAtAction’s Runtime Failure Mode', route: '/aspnet/controllers/createdataction-throws-runtime-despite-nameof-safety' },
+    ],
+    tip: 'Unlike CreatedAtAction/IUrlHelper (which throws when route values don\'t match), LinkGenerator.GetPathByName returns null silently — passing that into TypedResults.Created produces a 201 response with a missing Location header.',
+    docs: [
+      { label: 'LinkGenerator Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.routing.linkgenerator' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A test asserting only on the 201 status code passes even with this bug — assert explicitly on response.Headers.Location being non-null to catch it.',
+      '.WithName() is purely a runtime string key with no compile-time link to the route template — a later route-template change compiles fine everywhere and only fails at the moment GetPathByName actually runs.',
+    ],
+  },
+
   'aspnet/model-binding': {
     apis: ['[FromBody]', '[FromQuery]', '[FromRoute]', '[FromHeader]', '[AsParameters]', 'IParsable<T>'],
     related: [

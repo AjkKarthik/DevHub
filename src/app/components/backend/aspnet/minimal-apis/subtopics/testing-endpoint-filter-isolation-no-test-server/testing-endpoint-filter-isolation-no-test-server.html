@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Minimal APIs"
+    topicRoute="/aspnet/minimal-apis"
+    subtopicLabel="Testing an Endpoint Filter in Isolation"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing an Endpoint Filter in Isolation — No Test Server Needed</h1>
+  <p class="page-subtitle">
+    The main page's own ValidationFilter&lt;T&gt; either short-circuits or calls next(). Here's how to
+    prove BOTH paths — and catch an inverted condition bug — without a WebApplicationFactory or a real
+    HTTP request.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own endpoint filter pattern. The next subtopic goes underneath
+      the page's "no [FromServices] needed" claim — explaining exactly how DI parameter inference decides
+      what counts as a service, and what happens silently when it guesses wrong.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Minimal APIs"
+    topicRoute="/aspnet/minimal-apis"
+    [next]="{ label: 'A Forgotten DI Registration Silently Falls Through to Body Binding', route: '/aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding' }"
+  />
+</div>
