@@ -683,7 +683,12 @@ export const routes: Routes = [
         { path: 'automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file', loadComponent: () => import('./components/backend/csharp/dotnet-cli/subtopics/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file').then(m => m.AutomaticRestoreDoesntUseLockedModeLocalBuildsDriftFromLockFileSubtopic) },
       ] },
       // ── What's New ──
-      { path: 'whats-new-9-10',    loadComponent: () => import('./components/backend/csharp/whats-new-9-10/whats-new-9-10').then(m => m.CsharpWhatsNew910) },
+      { path: 'whats-new-9-10', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/whats-new-9-10/whats-new-9-10').then(m => m.CsharpWhatsNew910) },
+        { path: 'testing-record-equality-collection-properties-not-list-reference-trap', loadComponent: () => import('./components/backend/csharp/whats-new-9-10/subtopics/testing-record-equality-collection-properties-not-list-reference-trap/testing-record-equality-collection-properties-not-list-reference-trap').then(m => m.TestingRecordEqualityCollectionPropertiesNotListReferenceTrapSubtopic) },
+        { path: 'compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive', loadComponent: () => import('./components/backend/csharp/whats-new-9-10/subtopics/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive').then(m => m.CompilerGeneratesEqualitycontractVirtualEqualsChainTypeSensitiveSubtopic) },
+        { path: 'records-as-dictionary-keys-break-when-reference-property-mutated', loadComponent: () => import('./components/backend/csharp/whats-new-9-10/subtopics/records-as-dictionary-keys-break-when-reference-property-mutated/records-as-dictionary-keys-break-when-reference-property-mutated').then(m => m.RecordsAsDictionaryKeysBreakWhenReferencePropertyMutatedSubtopic) },
+      ] },
       { path: 'whats-new-11-12',   loadComponent: () => import('./components/backend/csharp/whats-new-11-12/whats-new-11-12').then(m => m.CsharpWhatsNew1112) },
       { path: 'whats-new-latest',  loadComponent: () => import('./components/backend/csharp/whats-new-latest/whats-new-latest').then(m => m.CsharpWhatsNewLatest) },
       { path: 'cheatsheet',        loadComponent: () => import('./components/backend/csharp/cheatsheet/cheatsheet').then(m => m.CsharpCheatsheetComponent) },

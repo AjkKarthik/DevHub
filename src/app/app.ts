@@ -587,6 +587,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How rollForward Picks an SDK Version', route: '/csharp/dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm' },
     { label: 'Local Builds Can Silently Drift From the Lock File', route: '/csharp/dotnet-cli/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file' },
   ],
+  'whats-new-9-10': [
+    { label: 'Testing Record Equality With Collections', route: '/csharp/whats-new-9-10/testing-record-equality-collection-properties-not-list-reference-trap' },
+    { label: 'What the Compiler Actually Generates for Type-Sensitive Equality', route: '/csharp/whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive' },
+    { label: 'Records as Dictionary Keys Can Silently Break', route: '/csharp/whats-new-9-10/records-as-dictionary-keys-break-when-reference-property-mutated' },
+  ],
 };
 
 @Component({

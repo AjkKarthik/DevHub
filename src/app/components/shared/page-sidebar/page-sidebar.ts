@@ -9282,6 +9282,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Top-level programs (C# 9) only work in one file per project — the entry point file.', 'Pattern matching improvements in C# 9 (and, or, not) are only available with the C# 9 or higher language version.'],
   },
 
+  'whats-new-9-10/testing-record-equality-collection-properties-not-list-reference-trap': {
+    apis: ['record', 'List<T>', 'ImmutableArray<T>'],
+    related: [
+      { label: 'What the Compiler Actually Generates for Type-Sensitive Equality — next', route: '/csharp/whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive' },
+      { label: "What's New in C# 9 & 10 (overview)", route: '/csharp/whats-new-9-10' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test that assigns a record to a second variable never constructs a second object — it always trivially passes. Only separately-constructed instances with equal-content nested collections actually exercise the List<T> reference-equality gotcha.',
+    docs: [
+      { label: 'Records (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records' },
+    ],
+    resources: [
+      { label: 'ImmutableArray<T> Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'Comparing a record to itself via simple variable assignment proves nothing about the equality implementation.',
+      'A regression test documenting List<T>\'s reference-equality behavior prevents a future "fix" from silently changing behavior other code depends on.',
+    ],
+  },
+
+  'whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive': {
+    apis: ['EqualityContract', 'virtual Equals', 'sealed record'],
+    related: [
+      { label: 'Testing Record Equality With Collections — previous', route: '/csharp/whats-new-9-10/testing-record-equality-collection-properties-not-list-reference-trap' },
+      { label: 'Records as Dictionary Keys Can Silently Break — next', route: '/csharp/whats-new-9-10/records-as-dictionary-keys-break-when-reference-property-mutated' },
+      { label: "What's New in C# 9 & 10 (overview)", route: '/csharp/whats-new-9-10' },
+    ],
+    tip: 'The generated Equals method checks the virtual EqualityContract property FIRST — if the runtime types differ, it short-circuits and returns false before any property is ever compared.',
+    docs: [
+      { label: 'Record Equality (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records#value-equality' },
+    ],
+    resources: [
+      { label: 'sharplab.io (Decompile Records)', url: 'https://sharplab.io/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Casting two records to a common base type before comparing them does not bypass type-sensitivity — EqualityContract is virtual and still resolves to each object\'s real runtime type.',
+      'Sealing a record lets the compiler optimize the generated equality code, since no derived type could ever cause EqualityContract to differ.',
+    ],
+  },
+
+  'whats-new-9-10/records-as-dictionary-keys-break-when-reference-property-mutated': {
+    apis: ['GetHashCode', 'Dictionary<TKey,TValue>', 'ImmutableArray<T>'],
+    related: [
+      { label: 'What the Compiler Actually Generates for Type-Sensitive Equality — previous', route: '/csharp/whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive' },
+      { label: "What's New in C# 9 & 10 (overview)", route: '/csharp/whats-new-9-10' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'init only prevents reassigning a property — if that property references a genuinely mutable object, mutating it after the record is used as a Dictionary key silently changes the effective hash code, breaking lookups.',
+    docs: [
+      { label: 'Dictionary<TKey,TValue> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2' },
+    ],
+    resources: [
+      { label: 'GetHashCode Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.object.gethashcode#notes-to-inheritors', badge: 'docs' },
+    ],
+    gotchas: [
+      'Enumerating .Keys directly (which ignores hashing) can quickly confirm a "missing" entry is still physically present in the dictionary.',
+      'List<T> happens to avoid this specific bug (object-identity hashing), but only at the cost of the separate reference-equality gotcha covered earlier in this topic.',
+    ],
+  },
+
   'whats-new-11-12': {
     apis: ['required', 'raw strings', 'INumber<T>', 'primary ctor', 'collection expressions []', 'default lambda'],
     related: [{ label: 'What\'s New 9 & 10', route: '/csharp/whats-new-9-10' }, { label: 'What\'s New Latest', route: '/csharp/whats-new-latest' }, { label: 'Generics', route: '/csharp/generics' }],

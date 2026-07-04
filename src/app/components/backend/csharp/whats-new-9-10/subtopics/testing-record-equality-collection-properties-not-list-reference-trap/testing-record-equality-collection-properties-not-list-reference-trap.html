@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="What's New in C# 9 & 10" topicRoute="/csharp/whats-new-9-10" subtopicLabel="Testing Record Equality With Collections" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Record Equality With Collection Properties: Asserting Structural Equality Without the List&lt;T&gt; Reference-Equality Trap</h1>
+  <p class="page-subtitle">The main topic page's own Common Mistakes section shows records with a List&lt;T&gt; property comparing unequal even with matching content. See how to write a test that actually exercises this — and one naive test shape that never catches it at all.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 9+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at what the main <a routerLink="/csharp/whats-new-9-10">What's New in C# 9 &amp; 10</a> page's own "type-sensitive" record equality claim actually looks like in generated code — the EqualityContract property and virtual Equals chain behind it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="What's New in C# 9 & 10"
+    topicRoute="/csharp/whats-new-9-10"
+    [next]="{ label: 'What the Compiler Actually Generates for Type-Sensitive Equality', route: '/csharp/whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive' }"
+  />
+</div>
