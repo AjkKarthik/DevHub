@@ -652,7 +652,12 @@ export const routes: Routes = [
         { path: 'generic-instantiation-needs-own-jsonserializable-source-gen', loadComponent: () => import('./components/backend/csharp/json-advanced/subtopics/generic-instantiation-needs-own-jsonserializable-source-gen/generic-instantiation-needs-own-jsonserializable-source-gen').then(m => m.GenericInstantiationNeedsOwnJsonserializableSourceGenSubtopic) },
         { path: 'unknown-type-discriminator-throws-jsonexception-not-forward-compatible', loadComponent: () => import('./components/backend/csharp/json-advanced/subtopics/unknown-type-discriminator-throws-jsonexception-not-forward-compatible/unknown-type-discriminator-throws-jsonexception-not-forward-compatible').then(m => m.UnknownTypeDiscriminatorThrowsJsonexceptionNotForwardCompatibleSubtopic) },
       ] },
-      { path: 'unsafe-pointers',  loadComponent: () => import('./components/backend/csharp/unsafe-pointers/unsafe-pointers').then(m => m.CsharpUnsafePointers) },
+      { path: 'unsafe-pointers', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/unsafe-pointers/unsafe-pointers').then(m => m.CsharpUnsafePointers) },
+        { path: 'testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws', loadComponent: () => import('./components/backend/csharp/unsafe-pointers/subtopics/testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws/testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws').then(m => m.TestingSafeWrapperDisposeIdempotentUseAfterDisposeThrowsSubtopic) },
+        { path: 'pinned-object-fragments-heap-blocks-gc-compaction-neighbors', loadComponent: () => import('./components/backend/csharp/unsafe-pointers/subtopics/pinned-object-fragments-heap-blocks-gc-compaction-neighbors/pinned-object-fragments-heap-blocks-gc-compaction-neighbors').then(m => m.PinnedObjectFragmentsHeapBlocksGcCompactionNeighborsSubtopic) },
+        { path: 'stackalloc-inside-loop-never-frees-between-iterations-stackoverflow', loadComponent: () => import('./components/backend/csharp/unsafe-pointers/subtopics/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow').then(m => m.StackallocInsideLoopNeverFreesBetweenIterationsStackoverflowSubtopic) },
+      ] },
       { path: 'native-aot',       loadComponent: () => import('./components/backend/csharp/native-aot/native-aot').then(m => m.CsharpNativeAot) },
       { path: 'benchmarkdotnet',  loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/benchmarkdotnet').then(m => m.CsharpBenchmarkdotnet) },
       { path: 'pinvoke',          loadComponent: () => import('./components/backend/csharp/pinvoke/pinvoke').then(m => m.CsharpPinvoke) },

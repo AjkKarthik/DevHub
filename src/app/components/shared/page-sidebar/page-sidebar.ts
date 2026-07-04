@@ -8928,6 +8928,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'unsafe-pointers': {
+    apis: ['unsafe', 'fixed', 'stackalloc', 'NativeMemory'],
+    related: [{ label: 'Span<T> & Memory<T>', route: '/csharp/span-memory' }, { label: 'Structs', route: '/csharp/structs' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }],
+    tip: 'Prefer Span<T> and MemoryMarshal for most high-performance scenarios — they cover 90% of what unsafe pointers are used for, with bounds checking and no unsafe keyword needed.',
+    docs: [{ label: 'Unsafe Code (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/unsafe-code' }],
+    resources: [{ label: 'NativeMemory Class Source', url: 'https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Runtime/InteropServices/NativeMemory.cs', badge: 'code' }],
+    gotchas: ['A pinned object blocks GC compaction for everything around it, not just itself — fragmenting the heap over many or long-lived pins.', 'stackalloc inside a loop accumulates on the same stack frame instead of freeing between iterations, risking an uncatchable StackOverflowException.'],
+  },
+
+  'unsafe-pointers/testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws': {
+    apis: ['ObjectDisposedException', 'IDisposable', 'Record.Exception'],
+    related: [
+      { label: 'Why a Pinned Object Fragments the Heap — next', route: '/csharp/unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors' },
+      { label: 'Unsafe Code & Pointers (overview)', route: '/csharp/unsafe-pointers' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'You cannot unit test pointer arithmetic directly, but you can and must test the safety contract of a wrapper around it: idempotent Dispose, use-after-dispose throws, and correct observable state.',
+    docs: [
+      { label: 'Implement a Dispose Method', url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose' },
+    ],
+    resources: [
+      { label: 'ObjectDisposedException Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.objectdisposedexception', badge: 'docs' },
+    ],
+    gotchas: [
+      'A double-free of native memory is undefined behaviour at the allocator level — it may not throw a catchable .NET exception at all, unlike a typical logic bug.',
+      'No unit test can directly prove a native memory leak was avoided — that requires a memory profiler observing actual process memory.',
+    ],
+  },
+
+  'unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors': {
+    apis: ['fixed', 'GCHandle.Alloc', 'GCHandleType.Pinned'],
+    related: [
+      { label: 'Testing the Safe Wrapper Pattern — previous', route: '/csharp/unsafe-pointers/testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws' },
+      { label: 'stackalloc Inside a Loop Never Frees Between Iterations — next', route: '/csharp/unsafe-pointers/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow' },
+      { label: 'Unsafe Code & Pointers (overview)', route: '/csharp/unsafe-pointers' },
+    ],
+    tip: '.NET\'s compacting GC slides survivors together to keep the heap contiguous — a pinned object cannot move, splitting what would be one free region into several fragmented ones around it.',
+    docs: [
+      { label: 'Fundamentals of Garbage Collection', url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals' },
+    ],
+    resources: [
+      { label: 'GCHandle Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.gchandle', badge: 'docs' },
+    ],
+    gotchas: [
+      'A single short-lived pin has negligible cost — the real damage comes from many pins accumulating in a hot loop, or a long-lived pin held across an entire operation.',
+      'NativeMemory and stackalloc never need pinning at all — they are never on the GC heap in the first place.',
+    ],
+  },
+
+  'unsafe-pointers/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow': {
+    apis: ['stackalloc', 'Span<T>', 'StackOverflowException'],
+    related: [
+      { label: 'Why a Pinned Object Fragments the Heap — previous', route: '/csharp/unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors' },
+      { label: 'Unsafe Code & Pointers (overview)', route: '/csharp/unsafe-pointers' },
+      { label: 'Span<T> & Memory<T>', route: '/csharp/span-memory' },
+    ],
+    tip: 'A method\'s stack frame does not shrink between loop iterations — stackalloc inside a loop body accumulates stack usage for the whole call, unlike a heap allocation which becomes GC-eligible each iteration.',
+    docs: [
+      { label: 'stackalloc Expression', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/stackalloc' },
+    ],
+    resources: [
+      { label: 'StackOverflowException Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.stackoverflowexception', badge: 'docs' },
+    ],
+    gotchas: [
+      'StackOverflowException cannot be caught by any try/catch — it terminates the process immediately.',
+      'Recursion multiplies stackalloc\'d bytes by recursion depth, not loop iteration count — a small per-call size can still overflow at deep enough nesting.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

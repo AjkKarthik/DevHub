@@ -562,6 +562,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Every Generic Instantiation Needs Its Own JsonSerializable', route: '/csharp/json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen' },
     { label: 'Unknown Discriminator Values Throw at Deserialize', route: '/csharp/json-advanced/unknown-type-discriminator-throws-jsonexception-not-forward-compatible' },
   ],
+  'unsafe-pointers': [
+    { label: 'Testing the Safe Wrapper Pattern', route: '/csharp/unsafe-pointers/testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws' },
+    { label: 'Why a Pinned Object Fragments the Heap', route: '/csharp/unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors' },
+    { label: 'stackalloc Inside a Loop Never Frees Between Iterations', route: '/csharp/unsafe-pointers/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow' },
+  ],
 };
 
 @Component({

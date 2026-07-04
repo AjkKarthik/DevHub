@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Unsafe Code & Pointers" topicRoute="/csharp/unsafe-pointers" subtopicLabel="Why a Pinned Object Fragments the Heap" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why a Pinned Object Fragments the Heap: fixed Blocks GC Compaction for Everything Around It, Not Just the Pinned Object</h1>
+  <p class="page-subtitle">The main topic page says "keep fixed blocks short" without explaining why. Here's the mechanism: .NET's compacting GC slides survivors together to keep the heap contiguous — a pinned object can't move, splitting one contiguous free region into several fragmented ones.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 1.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/csharp/unsafe-pointers">Unsafe Code &amp; Pointers</a>: a stackalloc gotcha the main page's own "stack memory, no GC" description doesn't warn about — why stackalloc inside a loop never frees between iterations.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Unsafe Code & Pointers"
+    topicRoute="/csharp/unsafe-pointers"
+    [prev]="{ label: 'Testing the Safe Wrapper Pattern', route: '/csharp/unsafe-pointers/testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws' }"
+    [next]="{ label: 'stackalloc Inside a Loop Never Frees Between Iterations', route: '/csharp/unsafe-pointers/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow' }"
+  />
+</div>

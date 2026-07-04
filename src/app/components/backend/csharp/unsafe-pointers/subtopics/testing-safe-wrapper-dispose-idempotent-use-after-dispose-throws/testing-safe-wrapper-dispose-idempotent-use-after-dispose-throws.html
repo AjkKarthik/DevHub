@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Unsafe Code & Pointers" topicRoute="/csharp/unsafe-pointers" subtopicLabel="Testing the Safe Wrapper Pattern" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing the Safe Wrapper Pattern: Proving Dispose Is Idempotent and Use-After-Dispose Throws, Without Writing Unsafe Code in the Test</h1>
+  <p class="page-subtitle">You cannot unit test pointer arithmetic directly — but you can, and must, test the safety contract of a wrapper like the main page's own UnmanagedBuffer: idempotent Dispose, use-after-dispose throws, and correct observable state.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 1.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at what the main <a routerLink="/csharp/unsafe-pointers">Unsafe Code &amp; Pointers</a> page's own <code>fixed</code> statement actually costs the GC — why a pinned object blocks compaction for everything around it, not just itself.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Unsafe Code & Pointers"
+    topicRoute="/csharp/unsafe-pointers"
+    [next]="{ label: 'Why a Pinned Object Fragments the Heap', route: '/csharp/unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors' }"
+  />
+</div>
