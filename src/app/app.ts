@@ -597,6 +597,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How static abstract Members Actually Dispatch', route: '/csharp/whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization' },
     { label: 'Primary Constructor Parameters Captured for Object Lifetime', route: '/csharp/whats-new-11-12/primary-constructor-parameter-captured-as-field-object-entire-lifetime' },
   ],
+  'whats-new-latest': [
+    { label: 'Testing With FakeTimeProvider', route: '/csharp/whats-new-latest/testing-time-dependent-code-with-faketimeprovider-without-sleeping' },
+    { label: 'How Dynamic PGO Actually Re-JITs a Method', route: '/csharp/whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement' },
+    { label: 'HybridCache Stampede Protection Is Per-Process', route: '/csharp/whats-new-latest/hybridcache-stampede-protection-only-coalesces-within-one-process' },
+  ],
 };
 
 @Component({

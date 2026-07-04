@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="What's New in C# 13+" topicRoute="/csharp/whats-new-latest" subtopicLabel="Testing With FakeTimeProvider" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Time-Dependent Code with FakeTimeProvider: Advancing Time Deterministically Without Sleeping</h1>
+  <p class="page-subtitle">The main topic page sketches FakeTimeProvider in a two-line comment. See the actual test — and the one overload mismatch (a Task.Delay call missing the TimeProvider argument) that silently reintroduces real sleeping.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at how the main <a routerLink="/csharp/whats-new-latest">What's New in C# 13+</a> page's own Dynamic PGO mechanism actually re-JITs a hot method — tiered compilation and on-stack replacement.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="What's New in C# 13+"
+    topicRoute="/csharp/whats-new-latest"
+    [next]="{ label: 'How Dynamic PGO Actually Re-JITs a Method', route: '/csharp/whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement' }"
+  />
+</div>

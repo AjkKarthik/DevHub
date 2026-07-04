@@ -9420,6 +9420,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['New language features require updating <LangVersion> in .csproj — they don\'t activate automatically.', 'Some .NET 10/11 APIs are marked [Experimental] — check the docs before using in production.'],
   },
 
+  'whats-new-latest/testing-time-dependent-code-with-faketimeprovider-without-sleeping': {
+    apis: ['FakeTimeProvider', 'Task.Delay(delay, time, ct)', 'TimeProvider'],
+    related: [
+      { label: 'How Dynamic PGO Actually Re-JITs a Method — next', route: '/csharp/whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement' },
+      { label: "What's New in C# 13+ (overview)", route: '/csharp/whats-new-latest' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Only Task.Delay calls that explicitly pass the TimeProvider as an argument are backed by FakeTimeProvider\'s timers — a plain Task.Delay(delay, ct) always uses the real system clock, regardless of what TimeProvider is injected elsewhere.',
+    docs: [
+      { label: 'Testing Time Dependencies', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/timeprovider-di-testing' },
+    ],
+    resources: [
+      { label: 'Microsoft.Extensions.Time.Testing', url: 'https://www.nuget.org/packages/Microsoft.Extensions.TimeProvider.Testing', badge: 'code' },
+    ],
+    gotchas: [
+      'fake.Advance() fires any timer it passes, synchronously, within the same call — no real wall-clock time elapses.',
+      'A test asserting a delay task is still incomplete after Advance() can be masking a missing TimeProvider argument, not confirming correct behavior.',
+    ],
+  },
+
+  'whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement': {
+    apis: ['Tier 0/Tier 1', 'On-Stack Replacement', 'DOTNET_TieredPGO'],
+    related: [
+      { label: 'Testing With FakeTimeProvider — previous', route: '/csharp/whats-new-latest/testing-time-dependent-code-with-faketimeprovider-without-sleeping' },
+      { label: 'HybridCache Stampede Protection Is Per-Process — next', route: '/csharp/whats-new-latest/hybridcache-stampede-protection-only-coalesces-within-one-process' },
+      { label: "What's New in C# 13+ (overview)", route: '/csharp/whats-new-latest' },
+    ],
+    tip: 'On-Stack Replacement (OSR) can swap a currently-executing method\'s compiled code mid-loop, transplanting its live state into the newly-optimized Tier 1 version — a single long-running call can visibly speed up partway through its own execution.',
+    docs: [
+      { label: 'Tiered Compilation (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/core/runtime-config/compilation' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime PGO Design Docs', url: 'https://github.com/dotnet/runtime/blob/main/docs/design/features/tiered-compilation.md', badge: 'code' },
+    ],
+    gotchas: [
+      'BenchmarkDotNet\'s warmup phase exists partly to let the JIT reach Tier 1 steady-state for the benchmarked method, not just to warm CPU caches.',
+      'Tier 0 code includes profiling instrumentation (call counts, observed types) — this is the real runtime data Dynamic PGO uses for devirtualization at Tier 1.',
+    ],
+  },
+
+  'whats-new-latest/hybridcache-stampede-protection-only-coalesces-within-one-process': {
+    apis: ['HybridCache', 'GetOrCreateAsync', 'RemoveByTagAsync'],
+    related: [
+      { label: 'How Dynamic PGO Actually Re-JITs a Method — previous', route: '/csharp/whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement' },
+      { label: "What's New in C# 13+ (overview)", route: '/csharp/whats-new-latest' },
+      { label: 'Redis', route: '/redis' },
+    ],
+    tip: 'Stampede protection coalesces concurrent factory calls within one process — a scaled-out deployment can still see up to N simultaneous factory calls (one per instance) when the shared L2 cache itself goes cold at the same moment.',
+    docs: [
+      { label: 'HybridCache Library (MS Docs)', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid' },
+    ],
+    resources: [
+      { label: 'HybridCache Source', url: 'https://github.com/dotnet/aspnetcore/tree/main/src/Caching/Hybrid', badge: 'code' },
+    ],
+    gotchas: [
+      'A rolling deployment restarting every instance\'s L1 is usually safe if the shared L2 stays warm — the real risk is L2 itself going cold across the cluster simultaneously.',
+      'Jittered expiration, refresh-ahead background jobs, or an explicit distributed lock are the standard mitigations for genuinely hot, cluster-wide keys.',
+    ],
+  },
+
   // ── C# Cheat Sheet ─────────────────────────────────────────────────────────
   'csharp/cheatsheet': {
     apis: ['var', 'record', 'LINQ', 'async/await', 'pattern matching', 'generics'],

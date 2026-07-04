@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="What's New in C# 13+" topicRoute="/csharp/whats-new-latest" subtopicLabel="How Dynamic PGO Re-JITs" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">How Dynamic PGO Actually Re-JITs a Method: Tiered Compilation and On-Stack Replacement</h1>
+  <p class="page-subtitle">The main topic page's Q&A describes Dynamic PGO in three sentences. Here's the actual tiering pipeline — Tier 0's instrumented fast compile, the call-count threshold, and On-Stack Replacement, the mechanism that swaps a currently-running method's code mid-execution.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/csharp/whats-new-latest">What's New in C# 13+</a>: a real production gotcha connecting to the main page's own HybridCache content — why stampede protection only coalesces callers within one process.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="What's New in C# 13+"
+    topicRoute="/csharp/whats-new-latest"
+    [prev]="{ label: 'Testing With FakeTimeProvider', route: '/csharp/whats-new-latest/testing-time-dependent-code-with-faketimeprovider-without-sleeping' }"
+    [next]="{ label: 'HybridCache Stampede Protection Is Per-Process', route: '/csharp/whats-new-latest/hybridcache-stampede-protection-only-coalesces-within-one-process' }"
+  />
+</div>

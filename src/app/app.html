@@ -1982,7 +1982,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/whats-new-latest" routerLinkActive="active"><span class="nl-text">🆕 C# 13+ (.NET 9-11)</span>@if(progress.isDone('csharp-whats-new-latest')){<span class="nl-done">✓</span>}@if(diff('csharp-whats-new-latest');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/whats-new-latest" routerLinkActive="active">
+        <span class="nl-text">🆕 C# 13+ (.NET 9-11)</span>
+        @if (progress.isDone('csharp-whats-new-latest')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-whats-new-latest'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('whats-new-latest')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('whats-new-latest')"
+                  (click)="toggleSubtopics('whats-new-latest', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('whats-new-latest'); as subs) {
+        @if (isSubtopicsExpanded('whats-new-latest')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
