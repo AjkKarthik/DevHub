@@ -1465,7 +1465,7 @@ off here with a date.
 - [x] `/csharp/abstract-interfaces` — Abstract Classes & Interfaces (2026-07-04 — 3 subtopics: testing-default-interface-method-resolution, default-interface-method-diamond-problem, static-abstract-members-generic-constraint-requirement)
 - [x] `/csharp/static-enums` — Static Classes, Partial Classes & Enums (2026-07-04 — 3 subtopics: testing-flags-enums-reflection-based-power-of-two-guard, modern-partial-methods-return-types-mandatory-implementation, enum-value-stability-serialization-compatibility)
 - [x] `/csharp/structures` — Structures (struct) (2026-07-04 — 3 subtopics: testing-the-struct-copy-mutation-trap, ref-struct-interfaces-generic-constraint-dispatch, array-vs-list-vs-foreach-struct-mutation)
-- [ ] `/csharp/system-object` — System.Object
+- [x] `/csharp/system-object` — System.Object (2026-07-04 — 3 subtopics: testing-the-equals-gethashcode-contract, gethashcode-instability-across-process-runs, record-equality-and-equalitycontract)
 - [ ] `/csharp/extension-methods` — Extension Methods
 - [ ] `/csharp/tuples` — Tuples & Anonymous Types
 - [ ] `/csharp/arrays` — Arrays
