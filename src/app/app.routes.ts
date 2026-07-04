@@ -804,7 +804,12 @@ export const routes: Routes = [
         { path: 'why-omitting-apiversion-constraint-causes-ambiguous-match', loadComponent: () => import('./components/backend/aspnet/api-versioning/subtopics/why-omitting-apiversion-constraint-causes-ambiguous-match/why-omitting-apiversion-constraint-causes-ambiguous-match').then(m => m.WhyOmittingApiversionConstraintCausesAmbiguousMatchSubtopic) },
         { path: 'what-happens-when-combined-version-readers-disagree', loadComponent: () => import('./components/backend/aspnet/api-versioning/subtopics/what-happens-when-combined-version-readers-disagree/what-happens-when-combined-version-readers-disagree').then(m => m.WhatHappensWhenCombinedVersionReadersDisagreeSubtopic) },
       ] },
-      { path: 'http-clients',         loadComponent: () => import('./components/backend/aspnet/http-clients/http-clients').then(m => m.AspnetHttpClients) },
+      { path: 'http-clients', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/http-clients/http-clients').then(m => m.AspnetHttpClients) },
+        { path: 'testing-retry-strategy-fires-transient-not-deterministic-errors', loadComponent: () => import('./components/backend/aspnet/http-clients/subtopics/testing-retry-strategy-fires-transient-not-deterministic-errors/testing-retry-strategy-fires-transient-not-deterministic-errors').then(m => m.TestingRetryStrategyFiresTransientNotDeterministicErrorsSubtopic) },
+        { path: 'why-transient-delegatinghandlers-shared-across-pool-rotation', loadComponent: () => import('./components/backend/aspnet/http-clients/subtopics/why-transient-delegatinghandlers-shared-across-pool-rotation/why-transient-delegatinghandlers-shared-across-pool-rotation').then(m => m.WhyTransientDelegatinghandlersSharedAcrossPoolRotationSubtopic) },
+        { path: 'addhedging-shared-pipeline-can-hedge-non-idempotent-requests', loadComponent: () => import('./components/backend/aspnet/http-clients/subtopics/addhedging-shared-pipeline-can-hedge-non-idempotent-requests/addhedging-shared-pipeline-can-hedge-non-idempotent-requests').then(m => m.AddhedgingSharedPipelineCanHedgeNonIdempotentRequestsSubtopic) },
+      ] },
       { path: 'grpc',                 loadComponent: () => import('./components/backend/aspnet/grpc/grpc').then(m => m.AspnetGrpc) },
       { path: 'ef-core-basics',       loadComponent: () => import('./components/backend/aspnet/ef-core-basics/ef-core-basics').then(m => m.AspnetEfCoreBasics) },
       { path: 'ef-relationships',     loadComponent: () => import('./components/backend/aspnet/ef-relationships/ef-relationships').then(m => m.AspnetEfRelationships) },

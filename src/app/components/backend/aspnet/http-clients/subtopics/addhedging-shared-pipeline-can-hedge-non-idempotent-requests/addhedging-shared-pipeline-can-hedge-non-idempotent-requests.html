@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HttpClient &amp; Resilience"
+    topicRoute="/aspnet/http-clients"
+    subtopicLabel="Hedging's Method-Blindness Risk"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">AddHedging() on a Shared Pipeline Can Hedge Non-Idempotent Requests</h1>
+  <p class="page-subtitle">
+    The main page warns never to hedge POST/PUT, but its own typed client wraps both reads and writes in
+    one class with one shared pipeline. Adding hedging for a slow read method silently hedges every write
+    too, unless ShouldHandle explicitly filters by HTTP method.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the HttpClient &amp; Resilience deep-dive set: testing that retry scope matches
+      documented behavior, understanding the real scale of Transient handler sharing, and now the
+      method-blindness risk hiding inside a shared hedging pipeline. This wraps this batch's ASP.NET Core
+      topics — head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HttpClient &amp; Resilience"
+    topicRoute="/aspnet/http-clients"
+    [prev]="{ label: 'Why Transient DelegatingHandlers Are Shared Across a Pool Rotation', route: '/aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation' }"
+  />
+</div>

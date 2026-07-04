@@ -697,6 +697,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why Omitting apiVersion Causes an Ambiguous Match', route: '/aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match' },
     { label: 'What Happens When Combined Version Readers Disagree', route: '/aspnet/api-versioning/what-happens-when-combined-version-readers-disagree' },
   ],
+  'http-clients': [
+    { label: 'Testing Retry Strategy Scope', route: '/aspnet/http-clients/testing-retry-strategy-fires-transient-not-deterministic-errors' },
+    { label: 'Why Transient Handlers Are Shared Across a Pool Rotation', route: '/aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation' },
+    { label: 'AddHedging’s Method-Blindness Risk', route: '/aspnet/http-clients/addhedging-shared-pipeline-can-hedge-non-idempotent-requests' },
+  ],
 };
 
 @Component({

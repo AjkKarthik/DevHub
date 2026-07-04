@@ -11942,6 +11942,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/http-clients/testing-retry-strategy-fires-transient-not-deterministic-errors': {
+    apis: ['ShouldHandle', 'DelegatingHandler', 'AddStandardResilienceHandler()'],
+    related: [
+      { label: 'Why Transient Handlers Are Shared Across a Pool Rotation — next', route: '/aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation' },
+      { label: 'HttpClient & Resilience (overview)', route: '/aspnet/http-clients' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A fake DelegatingHandler that returns a fixed status code and counts its own invocations directly proves how many attempts the pipeline makes — verifying YOUR client\'s actual configured behavior, not just trusting the library\'s documented defaults.',
+    docs: [
+      { label: 'Resilience in .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/resilience/' },
+    ],
+    resources: [
+      { label: 'App-vNext/Polly', url: 'https://github.com/App-vNext/Polly', badge: 'code' },
+    ],
+    gotchas: [
+      'A custom ShouldHandle override can narrow or widen which status codes retry for a SPECIFIC client — test the actual configured pipeline, not just the library defaults.',
+      'Proving a status code explicitly does NOT retry (like TooManyRequests on a payment pipeline) is just as important as proving one does, especially where idempotency matters.',
+    ],
+  },
+
+  'aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation': {
+    apis: ['DelegatingHandler', 'IHttpClientFactory', 'HttpMessageHandler'],
+    related: [
+      { label: 'Testing Retry Strategy Scope — previous', route: '/aspnet/http-clients/testing-retry-strategy-fires-transient-not-deterministic-errors' },
+      { label: 'AddHedging’s Method-Blindness Risk — next', route: '/aspnet/http-clients/addhedging-shared-pipeline-can-hedge-non-idempotent-requests' },
+      { label: 'HttpClient & Resilience (overview)', route: '/aspnet/http-clients' },
+    ],
+    tip: 'For a pooled DelegatingHandler, "Transient" means one instance per ~2-minute pool rotation, not one per HTTP request — a single instance can be concurrently executing thousands of overlapping requests before it is ever replaced.',
+    docs: [
+      { label: 'IHttpClientFactory in .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory' },
+    ],
+    resources: [
+      { label: 'dotnet/extensions', url: 'https://github.com/dotnet/extensions', badge: 'code' },
+    ],
+    gotchas: [
+      'A race condition on a shared instance field only manifests under genuine concurrent load — sequential manual testing never triggers the interleaving that causes it.',
+      'Use local variables (or HttpRequestMessage.Options), never instance fields, for anything request-specific inside a DelegatingHandler.',
+    ],
+  },
+
+  'aspnet/http-clients/addhedging-shared-pipeline-can-hedge-non-idempotent-requests': {
+    apis: ['AddHedging()', 'HttpHedgingStrategyOptions', 'ShouldHandle'],
+    related: [
+      { label: 'Why Transient Handlers Are Shared Across a Pool Rotation — previous', route: '/aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation' },
+      { label: 'HttpClient & Resilience (overview)', route: '/aspnet/http-clients' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'A resilience pipeline attached to a typed client applies to every request that client makes, across every HTTP method — hedging added to speed up a slow read method silently also hedges every write method on the same client unless ShouldHandle filters by request.Method.',
+    docs: [
+      { label: 'Resilience in .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/resilience/' },
+    ],
+    resources: [
+      { label: 'App-vNext/Polly', url: 'https://github.com/App-vNext/Polly', badge: 'code' },
+    ],
+    gotchas: [
+      'HTTP client-side cancellation of a "losing" hedged request rarely stops server-side processing already underway — the downstream can still fully commit a duplicate non-idempotent write.',
+      'Explicitly restrict hedging to GET/HEAD via ShouldHandle, or split read and write operations into separate typed client registrations.',
+    ],
+  },
+
   'aspnet/grpc': {
     apis: ['MapGrpcService<T>()', 'ServerCallContext', 'IServerStreamWriter<T>', 'IAsyncStreamReader<T>', 'RpcException', 'GrpcChannel'],
     related: [
