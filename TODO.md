@@ -1474,7 +1474,7 @@ off here with a date.
 - [x] `/csharp/gc-disposable` — GC & IDisposable (2026-07-04 — 3 subtopics: testing-dispose-actually-called-spy-wrapper-double-dispose, pattern-based-disposal-ref-structs-cannot-implement-idisposable, disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose)
 - [x] `/csharp/threading` — Threading (2026-07-04 — 3 subtopics: testing-race-conditions-stress-testing-concurrent-code, old-lock-codegen-bug-monitor-enter-ref-bool-taken, lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free)
 - [x] `/csharp/tasks` — Tasks & Parallel (2026-07-04 — 3 subtopics: testing-async-timing-deterministic-controllable-taskcompletionsource, valuetask-await-once-rule-when-worth-complexity, whenall-doesnt-start-tasks-parallel-just-awaits-running)
-- [ ] `/csharp/reflection` — Reflection & Attributes
+- [x] `/csharp/reflection` — Reflection & Attributes (2026-07-04 — 3 subtopics: testing-reflection-code-attribute-discovery-cache-behavior, beyond-expression-trees-dynamicmethod-reflection-emit, generic-type-reflection-traps-generictypedefinition)
 - [ ] `/csharp/iterators` — Iterators & yield
 - [ ] `/csharp/functional-csharp` — Functional C# & Result Pattern
 - [ ] `/csharp/regex` — Regular Expressions
