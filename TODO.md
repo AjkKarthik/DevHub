@@ -1501,7 +1501,7 @@ off here with a date.
 - [x] `/aspnet/middleware` — Middleware Pipeline (2026-07-04 — 3 subtopics: testing-custom-middleware-isolation-applicationbuilder-no-kestrel, how-middleware-pipeline-built-requestdelegate-composition-nested-closures, onstarting-callbacks-run-lifo-order-last-registered-fires-first)
 - [x] `/aspnet/routing` — Routing (2026-07-04 — 3 subtopics: testing-route-precedence-catching-ambiguous-routes-before-production, how-route-precedence-actually-computed-segment-scoring-algorithm, typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check)
 - [x] `/aspnet/configuration` — Configuration & Options (2026-07-04 — 3 subtopics: testing-options-validation-actually-rejects-bad-config-not-just-compiles, how-optionsmonitor-detects-file-change-changetoken-propagation, onchange-returns-idisposable-must-be-disposed-or-callback-leaks)
-- [ ] `/aspnet/dependency-injection` — Dependency Injection
+- [x] `/aspnet/dependency-injection` — Dependency Injection (2026-07-04 — 3 subtopics: testing-servicescopefactory-backgroundservice-genuinely-fresh-scope, createasyncscope-vs-createscope, activatorutilities-bypasses-validateonbuild)
 - [ ] `/aspnet/logging` — Logging & Diagnostics
 - [ ] `/aspnet/static-files` — Static Files & Uploads
 - [ ] `/aspnet/controllers` — Controllers & Actions
