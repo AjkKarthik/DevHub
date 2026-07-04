@@ -554,7 +554,12 @@ export const routes: Routes = [
         { path: 'string-create-span-char-allocation-free-building', loadComponent: () => import('./components/backend/csharp/strings-datetime/subtopics/string-create-span-char-allocation-free-building/string-create-span-char-allocation-free-building').then(m => m.StringCreateSpanCharAllocationFreeBuildingSubtopic) },
       ] },
       // ── Data / Memory ──
-      { path: 'io-serialization',  loadComponent: () => import('./components/backend/csharp/io-serialization/io-serialization').then(m => m.CsharpIoSerialization) },
+      { path: 'io-serialization', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/io-serialization/io-serialization').then(m => m.CsharpIoSerialization) },
+        { path: 'testing-file-io-without-touching-real-filesystem-abstraction', loadComponent: () => import('./components/backend/csharp/io-serialization/subtopics/testing-file-io-without-touching-real-filesystem-abstraction/testing-file-io-without-touching-real-filesystem-abstraction').then(m => m.TestingFileIoWithoutTouchingRealFilesystemAbstractionSubtopic) },
+        { path: 'where-jsonserializeroptions-cache-lives-cold-cache-per-instance', loadComponent: () => import('./components/backend/csharp/io-serialization/subtopics/where-jsonserializeroptions-cache-lives-cold-cache-per-instance/where-jsonserializeroptions-cache-lives-cold-cache-per-instance').then(m => m.WhereJsonserializeroptionsCacheLivesColdCachePerInstanceSubtopic) },
+        { path: 'sync-over-async-file-io-deadlocks-result-hangs-forever', loadComponent: () => import('./components/backend/csharp/io-serialization/subtopics/sync-over-async-file-io-deadlocks-result-hangs-forever/sync-over-async-file-io-deadlocks-result-hangs-forever').then(m => m.SyncOverAsyncFileIoDeadlocksResultHangsForeverSubtopic) },
+      ] },
       { path: 'gc-disposable',     loadComponent: () => import('./components/backend/csharp/gc-disposable/gc-disposable').then(m => m.CsharpGcDisposable) },
       // ── Concurrency ──
       { path: 'threading',         loadComponent: () => import('./components/backend/csharp/threading/threading').then(m => m.CsharpThreading) },

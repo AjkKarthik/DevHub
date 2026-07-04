@@ -7833,6 +7833,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['JsonSerializer is case-insensitive by default for deserialization but case-sensitive for serialization — use JsonSerializerOptions to control.', 'Streams must be disposed — always wrap in using or use File.ReadAllText for simple reads.'],
   },
 
+  'io-serialization/testing-file-io-without-touching-real-filesystem-abstraction': {
+    apis: ['IFileSystem', 'System.IO.Abstractions', 'MockFileSystem'],
+    related: [
+      { label: 'Where the JsonSerializerOptions Cache Lives — next', route: '/csharp/io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance' },
+      { label: 'I/O & Serialization (overview)', route: '/csharp/io-serialization' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Depend on an IFileSystem abstraction (or the System.IO.Abstractions NuGet package) instead of calling File/StreamReader directly — tests can then run entirely in memory with no real files created or cleaned up.',
+    docs: [
+      { label: 'System.IO.Abstractions', url: 'https://github.com/TestableIO/System.IO.Abstractions' },
+    ],
+    resources: [
+      { label: 'File I/O (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/io/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Testing file-handling code by creating real temp files is slow and flaky (leftover files, path collisions between parallel test runs) — an abstraction seam avoids this entirely.',
+      'The same "depend on an abstraction" principle already used for databases and HTTP clients applies just as directly to file I/O.',
+    ],
+  },
+
+  'io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance': {
+    apis: ['JsonTypeInfo', 'JsonSerializerOptions', 'JsonSerializerContext'],
+    related: [
+      { label: 'Testing File I/O — previous', route: '/csharp/io-serialization/testing-file-io-without-touching-real-filesystem-abstraction' },
+      { label: 'Sync-over-Async File I/O Deadlocks — next', route: '/csharp/io-serialization/sync-over-async-file-io-deadlocks-result-hangs-forever' },
+      { label: 'I/O & Serialization (overview)', route: '/csharp/io-serialization' },
+    ],
+    tip: 'The JsonTypeInfo cache lives on each JsonSerializerOptions INSTANCE, populated lazily per type on first use — two instances with identical settings never share a cache, since cache sharing is tied to instance identity, not value equality.',
+    docs: [
+      { label: 'JsonSerializerOptions', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions' },
+    ],
+    resources: [
+      { label: 'JSON Source Generation', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/source-generation', badge: 'docs' },
+    ],
+    gotchas: [
+      'A static readonly options singleton only avoids REPEATED cold caches across calls — it still pays the one-time lazy cache-building cost the first time each type is used through it.',
+      'JSON source generation is the only approach that removes the cold-cache cost entirely, by generating the JsonTypeInfo at compile time instead of lazily at runtime.',
+    ],
+  },
+
+  'io-serialization/sync-over-async-file-io-deadlocks-result-hangs-forever': {
+    apis: ['SynchronizationContext', '.Result', 'ConfigureAwait'],
+    related: [
+      { label: 'Where the JsonSerializerOptions Cache Lives — previous', route: '/csharp/io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance' },
+      { label: 'I/O & Serialization (overview)', route: '/csharp/io-serialization' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'Calling .Result on an async file operation from a context with a SynchronizationContext (classic ASP.NET, WPF, WinForms) can deadlock permanently — the blocked thread and the awaited continuation each wait on the other forever. ASP.NET Core has no SynchronizationContext, so it doesn\'t deadlock the same way, but still blocks a thread.',
+    docs: [
+      { label: 'Async/Await Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming' },
+    ],
+    resources: [
+      { label: 'SynchronizationContext', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.synchronizationcontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'A library method using .Result can "work fine" when tested from ASP.NET Core, then deadlock the moment it\'s reused from a WPF or classic ASP.NET caller — the bug depends on the CALLER\'s context, not the library code itself.',
+      'The deadlock does not resolve itself over time — it is a genuine circular wait that persists indefinitely regardless of how quickly the underlying I/O actually finishes.',
+    ],
+  },
+
   'gc-disposable': {
     apis: ['IDisposable', 'Dispose()', '~Finalizer', 'using', 'GC.SuppressFinalize', 'WeakReference'],
     related: [{ label: 'async / await', route: '/csharp/async' }, { label: 'I/O & Serialization', route: '/csharp/io-serialization' }, { label: 'Threading', route: '/csharp/threading' }],

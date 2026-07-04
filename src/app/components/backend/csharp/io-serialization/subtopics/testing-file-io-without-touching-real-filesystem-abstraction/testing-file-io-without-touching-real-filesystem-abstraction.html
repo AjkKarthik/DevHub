@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="I/O & Serialization" topicRoute="/csharp/io-serialization" subtopicLabel="Testing File I/O" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing File I/O Without Touching the Real File System: Abstracting via IFileSystem</h1>
+  <p class="page-subtitle">The main topic page's own LogProcessor challenge takes real file paths and opens StreamReader/StreamWriter directly — untestable without touching disk. See how a small IFileSystem seam (or System.IO.Abstractions) fixes that.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we go deeper into a fact the main <a routerLink="/csharp/io-serialization">I/O & Serialization</a> page's own Common Mistakes section states outright but doesn't explain the mechanism behind: exactly where the JsonSerializerOptions reflection cache lives, and why a new instance always means starting cold.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="I/O & Serialization"
+    topicRoute="/csharp/io-serialization"
+    [next]="{ label: 'Where the JsonSerializerOptions Cache Lives', route: '/csharp/io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance' }"
+  />
+</div>

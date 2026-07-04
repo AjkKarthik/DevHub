@@ -482,6 +482,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Interning Boundary', route: '/csharp/strings-datetime/interning-boundary-which-strings-interned-automatically' },
     { label: 'string.Create and Span<char>', route: '/csharp/strings-datetime/string-create-span-char-allocation-free-building' },
   ],
+  'io-serialization': [
+    { label: 'Testing File I/O', route: '/csharp/io-serialization/testing-file-io-without-touching-real-filesystem-abstraction' },
+    { label: 'Where the JsonSerializerOptions Cache Lives', route: '/csharp/io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance' },
+    { label: 'Sync-over-Async File I/O Deadlocks', route: '/csharp/io-serialization/sync-over-async-file-io-deadlocks-result-hangs-forever' },
+  ],
 };
 
 @Component({

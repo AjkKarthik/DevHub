@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="I/O & Serialization" topicRoute="/csharp/io-serialization" subtopicLabel="Sync-over-Async File I/O Deadlocks" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Sync-over-Async File I/O Deadlocks: Why .Result Can Hang Forever in SynchronizationContext-Bound Hosts</h1>
+  <p class="page-subtitle">The main topic page warns that sync file I/O hurts throughput. Calling .Result on an async file operation is worse — in classic ASP.NET, WPF, or WinForms, it can deadlock permanently. See exactly why, and why ASP.NET Core is largely immune.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since=".NET Core 2+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the I/O &amp; Serialization deep dives — from testing file-handling logic without touching disk, to exactly where the JSON serializer's cache lives, to the specific deadlock risk hiding behind "just call .Result, it's simpler."</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="I/O & Serialization"
+    topicRoute="/csharp/io-serialization"
+    [prev]="{ label: 'Where the JsonSerializerOptions Cache Lives', route: '/csharp/io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance' }"
+  />
+</div>
