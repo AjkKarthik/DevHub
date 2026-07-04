@@ -11610,6 +11610,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/filters/testing-filters-execute-in-documented-pipeline-order': {
+    apis: ['ActionExecutionDelegate', 'options.Filters.Add<T>()', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Why next() Runs the Action Even After Result Is Set — next', route: '/aspnet/filters/why-next-runs-action-even-after-context-result-is-set' },
+      { label: 'Filters & Endpoint Filters (overview)', route: '/aspnet/filters' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Testing each filter in isolation proves its own logic — it says nothing about whether multiple registered filters actually nest in the intended order. A shared, request-scoped execution log recorded by every filter is what proves the real sequence.',
+    docs: [
+      { label: 'Filters in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/filters' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A comment like "// outermost" next to a filter registration call is not enforced by the compiler or any test — a reordered registration call breaks the intended nesting silently.',
+      'IEndpointFilter applies to controllers too, via endpoint metadata, and wraps OUTSIDE every IActionFilter — worth proving explicitly if a controller action mixes both filter types.',
+    ],
+  },
+
+  'aspnet/filters/why-next-runs-action-even-after-context-result-is-set': {
+    apis: ['ActionExecutionDelegate', 'context.Result', 'OnActionExecutionAsync'],
+    related: [
+      { label: 'Testing That Filters Execute in the Documented Order — previous', route: '/aspnet/filters/testing-filters-execute-in-documented-pipeline-order' },
+      { label: 'IFilterFactory’s Captive Dependency Risk — next', route: '/aspnet/filters/ifilterfactory-isreusable-silently-recreates-captive-dependency' },
+      { label: 'Filters & Endpoint Filters (overview)', route: '/aspnet/filters' },
+    ],
+    tip: 'next() is simply an unconditional delegate call to whatever comes next in the pipeline — it never checks whether context.Result was already set, which is exactly why short-circuiting requires NOT calling next() at all, not setting Result before calling it.',
+    docs: [
+      { label: 'IAsyncActionFilter Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.filters.iasyncactionfilter' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Calling next() a second time by accident (a copy-paste mistake) re-invokes the action a second time with no built-in duplicate-call detection — dangerous for actions with side effects.',
+      'The short-circuit mechanism is entirely the ABSENCE of a next() call — there is no special "cancel" API, which is why returning early is the correct and only fix.',
+    ],
+  },
+
+  'aspnet/filters/ifilterfactory-isreusable-silently-recreates-captive-dependency': {
+    apis: ['IFilterFactory', 'IsReusable', 'CreateInstance()'],
+    related: [
+      { label: 'Why next() Runs the Action Even After Result Is Set — previous', route: '/aspnet/filters/why-next-runs-action-even-after-context-result-is-set' },
+      { label: 'Filters & Endpoint Filters (overview)', route: '/aspnet/filters' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'IsReusable => true caches the FIRST resolved filter instance for reuse across every subsequent request — if CreateInstance() resolved a Scoped dependency, this recreates the exact captive-dependency bug from the Dependency Injection topic, just via a different mechanism.',
+    docs: [
+      { label: 'IFilterFactory Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.filters.ifilterfactory' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The bug is often invisible on the first request and only manifests once the captured Scoped dependency (like a DbContext) has already been disposed — an intermittent, request-order-dependent failure.',
+      'IsReusable should only be true when CreateInstance() resolves exclusively Singleton-safe dependencies — the same rule that governs whether it is safe to inject a service into an actual DI Singleton.',
+    ],
+  },
+
   'aspnet/error-handling': {
     apis: ['UseExceptionHandler()', 'IExceptionHandler', 'ProblemDetails', 'AddProblemDetails()', 'IProblemDetailsService'],
     related: [

@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Filters &amp; Endpoint Filters"
+    topicRoute="/aspnet/filters"
+    subtopicLabel="IFilterFactory's Captive Dependency Risk"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">IFilterFactory.IsReusable Can Silently Recreate a Captive Dependency</h1>
+  <p class="page-subtitle">
+    The main page's own factory correctly sets IsReusable to false without explaining what it controls.
+    Flipping it to true caches the first resolved Scoped dependency forever — the same captive-dependency
+    bug from the DI topic, wearing a different disguise.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Filters &amp; Endpoint Filters deep-dive set: testing that filters actually
+      execute in the documented order, understanding exactly why next() runs the action regardless of
+      Result, and now the captive-dependency risk behind IFilterFactory's own caching hint. Head back to
+      the topic overview to continue with the next ASP.NET Core topic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Filters &amp; Endpoint Filters"
+    topicRoute="/aspnet/filters"
+    [prev]="{ label: 'Why next() Runs the Action Even After context.Result Is Set', route: '/aspnet/filters/why-next-runs-action-even-after-context-result-is-set' }"
+  />
+</div>

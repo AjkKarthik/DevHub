@@ -780,7 +780,12 @@ export const routes: Routes = [
         { path: 'how-recursive-nested-validation-walks-object-graph-circular-reference', loadComponent: () => import('./components/backend/aspnet/model-binding/subtopics/how-recursive-nested-validation-walks-object-graph-circular-reference/how-recursive-nested-validation-walks-object-graph-circular-reference').then(m => m.HowRecursiveNestedValidationWalksObjectGraphCircularReferenceSubtopic) },
         { path: 'fluentvalidation-setvalidator-new-silently-bypasses-di', loadComponent: () => import('./components/backend/aspnet/model-binding/subtopics/fluentvalidation-setvalidator-new-silently-bypasses-di/fluentvalidation-setvalidator-new-silently-bypasses-di').then(m => m.FluentvalidationSetvalidatorNewSilentlyBypassesDiSubtopic) },
       ] },
-      { path: 'filters',              loadComponent: () => import('./components/backend/aspnet/filters/filters').then(m => m.AspnetFilters) },
+      { path: 'filters', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/filters/filters').then(m => m.AspnetFilters) },
+        { path: 'testing-filters-execute-in-documented-pipeline-order', loadComponent: () => import('./components/backend/aspnet/filters/subtopics/testing-filters-execute-in-documented-pipeline-order/testing-filters-execute-in-documented-pipeline-order').then(m => m.TestingFiltersExecuteInDocumentedPipelineOrderSubtopic) },
+        { path: 'why-next-runs-action-even-after-context-result-is-set', loadComponent: () => import('./components/backend/aspnet/filters/subtopics/why-next-runs-action-even-after-context-result-is-set/why-next-runs-action-even-after-context-result-is-set').then(m => m.WhyNextRunsActionEvenAfterContextResultIsSetSubtopic) },
+        { path: 'ifilterfactory-isreusable-silently-recreates-captive-dependency', loadComponent: () => import('./components/backend/aspnet/filters/subtopics/ifilterfactory-isreusable-silently-recreates-captive-dependency/ifilterfactory-isreusable-silently-recreates-captive-dependency').then(m => m.IfilterfactoryIsreusableSilentlyRecreatesCaptiveDependencySubtopic) },
+      ] },
       { path: 'error-handling',       loadComponent: () => import('./components/backend/aspnet/error-handling/error-handling').then(m => m.AspnetErrorHandling) },
       { path: 'openapi-swagger',      loadComponent: () => import('./components/backend/aspnet/openapi-swagger/openapi-swagger').then(m => m.AspnetOpenApiSwagger) },
       { path: 'api-versioning',       loadComponent: () => import('./components/backend/aspnet/api-versioning/api-versioning').then(m => m.AspnetApiVersioning) },

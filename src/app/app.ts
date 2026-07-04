@@ -667,6 +667,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How Recursive Nested Validation Walks the Object Graph', route: '/aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference' },
     { label: 'FluentValidation’s SetValidator DI Bypass', route: '/aspnet/model-binding/fluentvalidation-setvalidator-new-silently-bypasses-di' },
   ],
+  'filters': [
+    { label: 'Testing That Filters Execute in the Documented Order', route: '/aspnet/filters/testing-filters-execute-in-documented-pipeline-order' },
+    { label: 'Why next() Runs the Action Even After Result Is Set', route: '/aspnet/filters/why-next-runs-action-even-after-context-result-is-set' },
+    { label: 'IFilterFactory’s Captive Dependency Risk', route: '/aspnet/filters/ifilterfactory-isreusable-silently-recreates-captive-dependency' },
+  ],
 };
 
 @Component({

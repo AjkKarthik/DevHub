@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Filters &amp; Endpoint Filters"
+    topicRoute="/aspnet/filters"
+    subtopicLabel="Why next() Runs the Action Anyway"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Why next() Runs the Action Even After context.Result Is Set</h1>
+  <p class="page-subtitle">
+    The main page's own mistake #1 states the symptom without the mechanism. next() is simply an
+    unconditional delegate call — it never checks whether Result was already set, which is exactly why
+    the short-circuit only works if you never call it at all.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own short-circuit mistake. The final
+      subtopic in this set turns to <code>IFilterFactory.IsReusable</code> — and a captive-dependency risk
+      hiding behind what looks like a harmless performance optimization.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Filters &amp; Endpoint Filters"
+    topicRoute="/aspnet/filters"
+    [prev]="{ label: 'Testing That Filters Execute in the Documented Pipeline Order', route: '/aspnet/filters/testing-filters-execute-in-documented-pipeline-order' }"
+    [next]="{ label: 'IFilterFactory.IsReusable Can Silently Recreate a Captive Dependency', route: '/aspnet/filters/ifilterfactory-isreusable-silently-recreates-captive-dependency' }"
+  />
+</div>
