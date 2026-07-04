@@ -607,6 +607,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What builder.Build() Actually Seals', route: '/aspnet/hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider' },
     { label: 'ApplicationStopping Fires Before Requests Finish Draining', route: '/aspnet/hosting-startup/applicationstopping-fires-before-in-flight-requests-finish-draining' },
   ],
+  'middleware': [
+    { label: 'Testing Custom Middleware in Isolation', route: '/aspnet/middleware/testing-custom-middleware-isolation-applicationbuilder-no-kestrel' },
+    { label: 'How the Middleware Pipeline Is Actually Built', route: '/aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures' },
+    { label: 'OnStarting Callbacks Run in LIFO Order', route: '/aspnet/middleware/onstarting-callbacks-run-lifo-order-last-registered-fires-first' },
+  ],
 };
 
 @Component({

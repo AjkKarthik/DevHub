@@ -10872,6 +10872,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/middleware/testing-custom-middleware-isolation-applicationbuilder-no-kestrel': {
+    apis: ['DefaultHttpContext', 'RequestDelegate', 'ApplicationBuilder'],
+    related: [
+      { label: 'How the Middleware Pipeline Is Actually Built — next', route: '/aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures' },
+      { label: 'Middleware Pipeline (overview)', route: '/aspnet/middleware' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A middleware class is just a plain C# class with an InvokeAsync method — instantiate it directly with a hand-written "next" delegate and a DefaultHttpContext, no Kestrel or WebApplicationFactory needed.',
+    docs: [
+      { label: 'Write Custom Middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write' },
+    ],
+    resources: [
+      { label: 'DefaultHttpContext Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.defaulthttpcontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'DefaultHttpContext needs context.Response.Body explicitly assigned to a real stream (like MemoryStream) before testing middleware that writes response content.',
+      'Testing InvokeAsync in isolation is not the same as verifying the middleware cooperates correctly in a real composed pipeline — build a minimal ApplicationBuilder pipeline for that.',
+    ],
+  },
+
+  'aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures': {
+    apis: ['IApplicationBuilder.Build()', 'RequestDelegate', 'closures'],
+    related: [
+      { label: 'Testing Custom Middleware in Isolation — previous', route: '/aspnet/middleware/testing-custom-middleware-isolation-applicationbuilder-no-kestrel' },
+      { label: 'OnStarting Callbacks Run in LIFO Order — next', route: '/aspnet/middleware/onstarting-callbacks-run-lifo-order-last-registered-fires-first' },
+      { label: 'Middleware Pipeline (overview)', route: '/aspnet/middleware' },
+    ],
+    tip: 'Build() composes middleware from the inside out, in reverse registration order, into ONE deeply-nested RequestDelegate — the "Russian doll" analogy is literally true at the implementation level, not just a mental model.',
+    docs: [
+      { label: 'How Middleware Runs', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/#middleware-order' },
+    ],
+    resources: [
+      { label: 'IApplicationBuilder Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.iapplicationbuilder', badge: 'docs' },
+    ],
+    gotchas: [
+      'There is no per-request loop over a list of middleware — the entire nested call chain is compiled once, at startup.',
+      'A middleware ordering mistake fails based on what HttpContext state a later middleware would have populated, not because of any compiler-detectable error.',
+    ],
+  },
+
+  'aspnet/middleware/onstarting-callbacks-run-lifo-order-last-registered-fires-first': {
+    apis: ['Response.OnStarting', 'LIFO', 'context.Items'],
+    related: [
+      { label: 'How the Middleware Pipeline Is Actually Built — previous', route: '/aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures' },
+      { label: 'Middleware Pipeline (overview)', route: '/aspnet/middleware' },
+      { label: 'Hosting & Startup', route: '/aspnet/hosting-startup' },
+    ],
+    tip: 'OnStarting callbacks fire in LIFO order — the callback registered LAST (closest to the endpoint) runs FIRST, the reverse of what registration order suggests. Store shared values in context.Items before calling next() instead of relying on cross-callback ordering.',
+    docs: [
+      { label: 'HttpResponse.OnStarting Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httpresponse.onstarting' },
+    ],
+    resources: [
+      { label: 'aspnetcore HttpResponse Source', url: 'https://github.com/dotnet/aspnetcore/blob/main/src/Http/Http.Abstractions/src/HttpResponse.cs', badge: 'code' },
+    ],
+    gotchas: [
+      'Reordering unrelated app.Use() calls in Program.cs can silently flip which OnStarting callback fires first, breaking a dependency between two callbacks with no compiler warning.',
+      'This LIFO rule applies only to OnStarting — the rest of the pipeline follows the normal nested "Russian doll" execution order.',
+    ],
+  },
+
   'aspnet/routing': {
     apis: ['MapGet()', 'MapControllers()', '[Route]', 'IRouteConstraint', 'LinkGenerator'],
     related: [
