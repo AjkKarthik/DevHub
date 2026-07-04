@@ -532,6 +532,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why xUnit Creates a New Instance Per Test', route: '/csharp/unit-testing/why-xunit-creates-new-instance-per-test-classfixture' },
     { label: 'TimeProvider and FakeTimeProvider', route: '/csharp/unit-testing/timeprovider-faketimeprovider-deterministic-time-dependent-tests' },
   ],
+  'expression-trees': [
+    { label: 'Testing Dynamic Expression Trees', route: '/csharp/expression-trees/testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result' },
+    { label: 'The ParameterExpression Identity Problem', route: '/csharp/expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda' },
+    { label: 'Captured Variables Are Not ConstantExpression', route: '/csharp/expression-trees/captured-variables-not-constantexpression-hidden-closure-class' },
+  ],
 };
 
 @Component({

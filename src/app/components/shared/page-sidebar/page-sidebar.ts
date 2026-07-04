@@ -8514,6 +8514,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'expression-trees': {
+    apis: ['Expression<T>', 'ExpressionVisitor', 'IQueryable<T>'],
+    related: [{ label: 'LINQ', route: '/csharp/linq' }, { label: 'Reflection & Attributes', route: '/csharp/reflection' }, { label: 'Delegates & Events', route: '/csharp/delegates' }],
+    tip: 'Expression<Func<T,bool>> stores a lambda as an inspectable data tree instead of compiled code — this is what lets EF Core translate u => u.Age >= 18 into WHERE age >= 18 in SQL.',
+    docs: [{ label: 'Expression Trees (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/' }],
+    resources: [{ label: 'ExpressionVisitor Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expressionvisitor', badge: 'docs' }],
+    gotchas: ['Calling .AsEnumerable() or .ToList() mid-query drops back to IEnumerable — everything after runs client-side, a silent performance disaster.', 'Only expression lambdas convert to trees — statement bodies, assignments, and async lambdas never compile to Expression<T>.'],
+  },
+
+  'expression-trees/testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result': {
+    apis: ['NodeType', 'ExpressionType', 'MemberExpression'],
+    related: [
+      { label: 'The ParameterExpression Identity Problem — next', route: '/csharp/expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda' },
+      { label: 'Expression Trees (overview)', route: '/csharp/expression-trees' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Compiling and running a dynamically-built tree against in-memory data can pass perfectly while the SAME tree fails EF Core translation — assert on NodeType and operand shape directly to catch this before it reaches production.',
+    docs: [
+      { label: 'Expression Trees (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/' },
+    ],
+    resources: [
+      { label: 'ExpressionType Enum', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expressiontype', badge: 'docs' },
+    ],
+    gotchas: [
+      'A wrong operator (GreaterThanOrEqual instead of GreaterThan) can still pass a compiled/run test if boundary values are never exercised — shape assertions catch it deterministically.',
+      'A lightweight ExpressionVisitor flagging untranslatable node types catches "could not be translated" failures in milliseconds, with no database needed.',
+    ],
+  },
+
+  'expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda': {
+    apis: ['ParameterExpression', 'ExpressionVisitor', 'ReferenceEquals'],
+    related: [
+      { label: 'Testing Dynamic Expression Trees — previous', route: '/csharp/expression-trees/testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result' },
+      { label: 'Captured Variables Are Not ConstantExpression — next', route: '/csharp/expression-trees/captured-variables-not-constantexpression-hidden-closure-class' },
+      { label: 'Expression Trees (overview)', route: '/csharp/expression-trees' },
+    ],
+    tip: 'Two lambdas both named "x" have genuinely different ParameterExpression objects — binding is by reference, not name. Naively AndAlso-combining two predicate bodies produces a tree referencing an undeclared parameter, throwing InvalidOperationException at Compile() time.',
+    docs: [
+      { label: 'ParameterExpression Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.parameterexpression' },
+    ],
+    resources: [
+      { label: 'ExpressionVisitor Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expressionvisitor', badge: 'docs' },
+    ],
+    gotchas: [
+      'The ParameterReplacerVisitor fix substitutes the actual PARAMETEREXPRESSION OBJECT throughout the tree — it does not touch names at all.',
+      'The final Expression.Lambda call must declare whichever parameter object the rewritten, combined body actually references throughout.',
+    ],
+  },
+
+  'expression-trees/captured-variables-not-constantexpression-hidden-closure-class': {
+    apis: ['MemberExpression', 'closure class', 'FieldInfo'],
+    related: [
+      { label: 'The ParameterExpression Identity Problem — previous', route: '/csharp/expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda' },
+      { label: 'Expression Trees (overview)', route: '/csharp/expression-trees' },
+      { label: 'Reflection & Attributes', route: '/csharp/reflection' },
+    ],
+    tip: 'A captured local variable compiles into a MemberExpression reading a field off a compiler-generated closure class instance — not a plain ConstantExpression. This is exactly why EF Core can treat captured variables as reusable, parameterized query values.',
+    docs: [
+      { label: 'MemberExpression Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.memberexpression' },
+    ],
+    resources: [
+      { label: 'EF.CompileQuery', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.ef.compilequery', badge: 'docs' },
+    ],
+    gotchas: [
+      'An ExpressionVisitor overriding only VisitConstant() to find "all literal values" will completely miss captured variables, since they appear as MemberExpression nodes.',
+      'Reading the actual captured value requires reflection — reading the field off the closure instance object, not reading a value directly embedded in the tree.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

@@ -616,7 +616,12 @@ export const routes: Routes = [
         { path: 'why-xunit-creates-new-instance-per-test-classfixture', loadComponent: () => import('./components/backend/csharp/unit-testing/subtopics/why-xunit-creates-new-instance-per-test-classfixture/why-xunit-creates-new-instance-per-test-classfixture').then(m => m.WhyXunitCreatesNewInstancePerTestClassfixtureSubtopic) },
         { path: 'timeprovider-faketimeprovider-deterministic-time-dependent-tests', loadComponent: () => import('./components/backend/csharp/unit-testing/subtopics/timeprovider-faketimeprovider-deterministic-time-dependent-tests/timeprovider-faketimeprovider-deterministic-time-dependent-tests').then(m => m.TimeproviderFaketimeproviderDeterministicTimeDependentTestsSubtopic) },
       ] },
-      { path: 'expression-trees',  loadComponent: () => import('./components/backend/csharp/expression-trees/expression-trees').then(m => m.CsharpExpressionTrees) },
+      { path: 'expression-trees', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/expression-trees/expression-trees').then(m => m.CsharpExpressionTrees) },
+        { path: 'testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result', loadComponent: () => import('./components/backend/csharp/expression-trees/subtopics/testing-dynamic-expression-trees-tree-shape/testing-dynamic-expression-trees-tree-shape').then(m => m.TestingDynamicExpressionTreesAssertingTreeShapeNotCompiledResultSubtopic) },
+        { path: 'parameterexpression-identity-problem-andalso-unusable-lambda', loadComponent: () => import('./components/backend/csharp/expression-trees/subtopics/parameterexpression-identity-problem-andalso-unusable-lambda/parameterexpression-identity-problem-andalso-unusable-lambda').then(m => m.ParameterexpressionIdentityProblemAndalsoUnusableLambdaSubtopic) },
+        { path: 'captured-variables-not-constantexpression-hidden-closure-class', loadComponent: () => import('./components/backend/csharp/expression-trees/subtopics/captured-variables-not-constantexpression-hidden-closure-class/captured-variables-not-constantexpression-hidden-closure-class').then(m => m.CapturedVariablesNotConstantexpressionHiddenClosureClassSubtopic) },
+      ] },
       { path: 'dynamic',           loadComponent: () => import('./components/backend/csharp/dynamic/dynamic').then(m => m.CsharpDynamic) },
       { path: 'source-generators', loadComponent: () => import('./components/backend/csharp/source-generators/source-generators').then(m => m.CsharpSourceGenerators) },
       { path: 'span-memory',      loadComponent: () => import('./components/backend/csharp/span-memory/span-memory').then(m => m.CsharpSpanMemory) },
