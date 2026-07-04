@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Caching"
+    topicRoute="/aspnet/caching"
+    subtopicLabel="Lazy Expiry Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How IMemoryCache Expiry Is Actually Enforced — Lazy Checks, Not Timers</h1>
+  <p class="page-subtitle">
+    The main page explains what the expiration options mean but not when removal actually happens. There
+    is no per-entry timer — expiry is checked on access and by an activity-triggered scan, so untouched
+    expired entries linger in memory.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own expiration guidance. The final
+      subtopic in this set turns to write-invalidate — and a stale-repopulation race the page's
+      "mini-stampede" warning doesn't cover.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Caching"
+    topicRoute="/aspnet/caching"
+    [prev]="{ label: 'Testing That GetOrCreateAsync Can Run the Factory More Than Once', route: '/aspnet/caching/testing-getorcreateasync-concurrent-misses-factory-runs-twice' }"
+    [next]="{ label: 'Write-Invalidate Has a Stale-Repopulation Race the TTL Must Backstop', route: '/aspnet/caching/write-invalidate-stale-repopulation-race-ttl-backstop' }"
+  />
+</div>

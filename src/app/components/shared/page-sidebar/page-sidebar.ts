@@ -12340,7 +12340,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Configuration & Options', route: '/aspnet/configuration' },
       { label: 'Dependency Injection',  route: '/aspnet/dependency-injection' },
     ],
-    tip: 'Use GetOrCreateAsync() rather than a get-then-set pattern — it prevents cache stampede by serializing factory execution for the same key under concurrent cache misses.',
+    tip: 'Use GetOrCreateAsync() rather than a get-then-set pattern — but note it does NOT serialize concurrent factory executions; for genuine stampede protection use a per-key lock or HybridCache (.NET 9).',
     docs: [
       { label: 'Caching in .NET',             url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview' },
       { label: 'Output caching middleware',    url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output' },
@@ -12353,6 +12353,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'IMemoryCache is per-process — in a multi-server deployment each pod has its own cache, so a write on server A is invisible to server B until TTL expires. Use IDistributedCache (Redis) for shared state.',
       'Never cache user-specific data without including the user ID in the cache key — omitting it means one user sees another user\'s data.',
+    ],
+  },
+
+  'aspnet/caching/testing-getorcreateasync-concurrent-misses-factory-runs-twice': {
+    apis: ['GetOrCreateAsync()', 'SemaphoreSlim', 'HybridCache'],
+    related: [
+      { label: 'How IMemoryCache Expiry Is Actually Enforced — next', route: '/aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers' },
+      { label: 'Caching (overview)', route: '/aspnet/caching' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'The GetOrCreateAsync extension method has no locking — N concurrent cold misses run N factories, with the entry holding whichever result committed last. A gated concurrency test counting factory invocations proves this directly.',
+    docs: [
+      { label: 'Caching in .NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'A never-cleaned static dictionary of per-key semaphores is its own memory leak for unbounded key spaces — use reference counting, striped locking, or HybridCache instead.',
+      'HybridCache (.NET 9) genuinely has single-flight stampede protection built in — the accurate version of the claim often over-attributed to plain GetOrCreateAsync.',
+    ],
+  },
+
+  'aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers': {
+    apis: ['ExpirationScanFrequency', 'RegisterPostEvictionCallback()', 'SizeLimit'],
+    related: [
+      { label: 'Testing GetOrCreateAsync Under Concurrent Misses — previous', route: '/aspnet/caching/testing-getorcreateasync-concurrent-misses-factory-runs-twice' },
+      { label: 'Write-Invalidate’s Stale-Repopulation Race — next', route: '/aspnet/caching/write-invalidate-stale-repopulation-race-ttl-backstop' },
+      { label: 'Caching (overview)', route: '/aspnet/caching' },
+    ],
+    tip: 'There is no per-entry expiry timer — expired entries are removed on access or by a scan piggy-backed on other cache activity, so a quiet, write-heavy cache can hold expired entries (and their memory) indefinitely.',
+    docs: [
+      { label: 'Memory caching in .NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/memory' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'RegisterPostEvictionCallback fires at eviction, not at nominal TTL — never use it as a scheduling mechanism; use PeriodicTimer in a BackgroundService instead.',
+      'A stale READ is still impossible — TryGetValue checks expiry on every access; only the physical memory reclamation is lazy.',
+    ],
+  },
+
+  'aspnet/caching/write-invalidate-stale-repopulation-race-ttl-backstop': {
+    apis: ['cache.Remove()', 'delayed double-delete', 'versioned keys'],
+    related: [
+      { label: 'How IMemoryCache Expiry Is Actually Enforced — previous', route: '/aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers' },
+      { label: 'Caching (overview)', route: '/aspnet/caching' },
+      { label: 'EF Performance', route: '/aspnet/ef-performance' },
+    ],
+    tip: 'A reader that queried the OLD database value before a write can repopulate the cache AFTER the writer\'s Remove() ran — silently undoing the invalidation for the full TTL, which makes the TTL the correctness backstop, not just memory hygiene.',
+    docs: [
+      { label: 'Caching in .NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Every step of the race succeeds without error — no log entry, no exception, just quietly stale data; sequential tests never catch it, only a deterministically interleaved concurrency test does.',
+      'Delayed double-delete shrinks the stale window cheaply; version-checked population closes it completely — but keep the TTL in every variant as the last line of defense.',
     ],
   },
 

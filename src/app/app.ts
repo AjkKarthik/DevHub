@@ -726,6 +726,16 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What EF.CompileQuery Actually Eliminates', route: '/aspnet/ef-performance/what-ef-compilequery-actually-eliminates' },
     { label: 'A Captured Reference to a Pooled DbContext Leaks Across Requests', route: '/aspnet/ef-performance/captured-reference-pooled-dbcontext-leaks-across-requests' },
   ],
+  // NOTE: keyed 'aspnet-caching', NOT bare 'caching' — the Web
+  // Performance, Node.js, and System Design hubs all already own routes
+  // at the same bare slug. Pre-emptively hub-prefixing avoids repeating
+  // the exact 'routing' collision hit earlier the moment any of those
+  // hubs get their own caching subtopics.
+  'aspnet-caching': [
+    { label: 'Testing GetOrCreateAsync Under Concurrent Misses', route: '/aspnet/caching/testing-getorcreateasync-concurrent-misses-factory-runs-twice' },
+    { label: 'How IMemoryCache Expiry Is Actually Enforced', route: '/aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers' },
+    { label: 'Write-Invalidate’s Stale-Repopulation Race', route: '/aspnet/caching/write-invalidate-stale-repopulation-race-ttl-backstop' },
+  ],
 };
 
 @Component({

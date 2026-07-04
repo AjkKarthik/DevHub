@@ -834,7 +834,12 @@ export const routes: Routes = [
         { path: 'what-ef-compilequery-actually-eliminates', loadComponent: () => import('./components/backend/aspnet/ef-performance/subtopics/what-ef-compilequery-actually-eliminates/what-ef-compilequery-actually-eliminates').then(m => m.WhatEfCompilequeryActuallyEliminatesSubtopic) },
         { path: 'captured-reference-pooled-dbcontext-leaks-across-requests', loadComponent: () => import('./components/backend/aspnet/ef-performance/subtopics/captured-reference-pooled-dbcontext-leaks-across-requests/captured-reference-pooled-dbcontext-leaks-across-requests').then(m => m.CapturedReferencePooledDbcontextLeaksAcrossRequestsSubtopic) },
       ] },
-      { path: 'caching',              loadComponent: () => import('./components/backend/aspnet/caching/caching').then(m => m.AspnetCaching) },
+      { path: 'caching', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/caching/caching').then(m => m.AspnetCaching) },
+        { path: 'testing-getorcreateasync-concurrent-misses-factory-runs-twice', loadComponent: () => import('./components/backend/aspnet/caching/subtopics/testing-getorcreateasync-concurrent-misses-factory-runs-twice/testing-getorcreateasync-concurrent-misses-factory-runs-twice').then(m => m.TestingGetorcreateasyncConcurrentMissesFactoryRunsTwiceSubtopic) },
+        { path: 'how-imemorycache-expiry-actually-enforced-lazy-not-timers', loadComponent: () => import('./components/backend/aspnet/caching/subtopics/how-imemorycache-expiry-actually-enforced-lazy-not-timers/how-imemorycache-expiry-actually-enforced-lazy-not-timers').then(m => m.HowImemorycacheExpiryActuallyEnforcedLazyNotTimersSubtopic) },
+        { path: 'write-invalidate-stale-repopulation-race-ttl-backstop', loadComponent: () => import('./components/backend/aspnet/caching/subtopics/write-invalidate-stale-repopulation-race-ttl-backstop/write-invalidate-stale-repopulation-race-ttl-backstop').then(m => m.WriteInvalidateStaleRepopulationRaceTtlBackstopSubtopic) },
+      ] },
       // ── Security ──
       { path: 'authentication',       loadComponent: () => import('./components/backend/aspnet/authentication/authentication').then(m => m.AspnetAuthentication) },
       { path: 'authorization',        loadComponent: () => import('./components/backend/aspnet/authorization/authorization').then(m => m.AspnetAuthorization) },

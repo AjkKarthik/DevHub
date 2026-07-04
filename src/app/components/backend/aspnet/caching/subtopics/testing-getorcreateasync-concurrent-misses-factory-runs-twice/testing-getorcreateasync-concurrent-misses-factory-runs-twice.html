@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Caching"
+    topicRoute="/aspnet/caching"
+    subtopicLabel="Testing GetOrCreateAsync Under Concurrency"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That GetOrCreateAsync Can Run the Factory More Than Once</h1>
+  <p class="page-subtitle">
+    The main page credits GetOrCreateAsync with stampede protection — "only one call populates the entry,
+    others wait." A concurrency test shows the extension method has no locking at all: N simultaneous cold
+    misses run N factories.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests — and corrects — the main page's own stampede claim. The next subtopic goes
+      underneath the page's expiration options — explaining when an expired IMemoryCache entry is
+      actually removed, which is later than the TTL suggests.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Caching"
+    topicRoute="/aspnet/caching"
+    [next]="{ label: 'How IMemoryCache Expiry Is Actually Enforced — Lazy Checks, Not Timers', route: '/aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers' }"
+  />
+</div>
