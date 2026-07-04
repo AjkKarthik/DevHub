@@ -1490,7 +1490,7 @@ off here with a date.
 - [x] `/csharp/native-aot` — Native AOT (2026-07-04 — 3 subtopics: testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors, dynamicallyaccessedmembers-redeclared-every-level-call-chain, clean-trim-analysis-still-fails-full-aot-publish-different-checks)
 - [x] `/csharp/benchmarkdotnet` — BenchmarkDotNet (2026-07-04 — 3 subtopics: catching-performance-regression-ci-committed-baseline-not-eyeballing, why-bdn-runs-benchmarks-isolated-process-not-in-process, when-mean-lies-bimodal-distribution-hides-two-performance-paths)
 - [x] `/csharp/pinvoke` — P/Invoke & Native Interop (2026-07-04 — 3 subtopics: testing-code-calling-pinvoke-wrapping-native-calls-behind-interface, why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle, setlasterror-silently-clobbered-by-pinvoke-call-in-between)
-- [ ] `/csharp/dotnet-cli` — .NET CLI & Tooling
+- [x] `/csharp/dotnet-cli` — .NET CLI & Tooling (2026-07-04 — 3 subtopics: verifying-build-reproducible-simulating-clean-machine-restore-lock-file, how-rollforward-picks-sdk-version-feature-band-matching-algorithm, automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file)
 - [ ] `/csharp/whats-new-9-10` — What's New in C# 9 & 10
 - [ ] `/csharp/whats-new-11-12` — What's New in C# 11 & 12
 - [ ] `/csharp/whats-new-latest` — What's New in C# 13+ & .NET 10/11
