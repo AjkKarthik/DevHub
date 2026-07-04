@@ -11528,6 +11528,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/model-binding/testing-iparsable-tryparse-graceful-failure-daterange': {
+    apis: ['IParsable<T>.TryParse()', 'FormatException', 'IndexOutOfRangeException'],
+    related: [
+      { label: 'How Recursive Nested Validation Walks the Object Graph — next', route: '/aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference' },
+      { label: 'Model Binding & Validation (overview)', route: '/aspnet/model-binding' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A bare catch { } inside TryParse can hide that different malformed inputs throw different exception types internally — enumerate every malformed shape a real query string could contain and prove TryParse never lets an exception escape.',
+    docs: [
+      { label: 'IParsable<TSelf> Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.iparsable-1' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Narrowing a blanket catch block to a specific exception type is only safe after confirming every failure path actually throws that same type — otherwise a narrower catch can silently reintroduce an unhandled exception.',
+      'ASP.NET Core\'s binding infrastructure calls TryParse, not Parse — an implementation that lets an exception escape TryParse breaks that contract and can produce an unhandled 500 instead of a 400.',
+    ],
+  },
+
+  'aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference': {
+    apis: ['DefaultObjectValidator', '[ValidateNever]', 'StackOverflowException'],
+    related: [
+      { label: 'Testing IParsable’s TryParse for Graceful Failure — previous', route: '/aspnet/model-binding/testing-iparsable-tryparse-graceful-failure-daterange' },
+      { label: 'FluentValidation’s SetValidator DI Bypass — next', route: '/aspnet/model-binding/fluentvalidation-setvalidator-new-silently-bypasses-di' },
+      { label: 'Model Binding & Validation (overview)', route: '/aspnet/model-binding' },
+    ],
+    tip: 'A genuinely circular object graph (an EF Core entity with both navigation directions populated) sends the recursive validator into infinite recursion — StackOverflowException cannot be caught and crashes the entire process, not just the request.',
+    docs: [
+      { label: 'Model Validation in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/models/validation' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Breaking the cycle at just ONE point (typically the "back" navigation property) with [ValidateNever] is sufficient — it does not need to be applied on both sides of the relationship.',
+      'Using separate DTO types for the API surface (never binding requests directly to EF Core entities with navigation properties) eliminates this risk entirely, since a JSON payload cannot itself express a circular reference.',
+    ],
+  },
+
+  'aspnet/model-binding/fluentvalidation-setvalidator-new-silently-bypasses-di': {
+    apis: ['SetValidator()', 'IValidator<T>', 'AddValidatorsFromAssemblyContaining()'],
+    related: [
+      { label: 'How Recursive Nested Validation Walks the Object Graph — previous', route: '/aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference' },
+      { label: 'Model Binding & Validation (overview)', route: '/aspnet/model-binding' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Calling new ChildValidator() inside a parent validator\'s constructor silently bypasses DI — the moment the child needs a real dependency, a parameterless-constructor workaround can quietly drop the actual business rule.',
+    docs: [
+      { label: 'FluentValidation ASP.NET Core Integration', url: 'https://docs.fluentvalidation.net/en/latest/aspnet.html' },
+    ],
+    resources: [
+      { label: 'FluentValidation', url: 'https://github.com/FluentValidation/FluentValidation', badge: 'code' },
+    ],
+    gotchas: [
+      'Since AddValidatorsFromAssemblyContaining registers validators as Singleton by default, a manually-constructed child validator is created exactly once and reused forever — the same practical effect as a captive dependency.',
+      'Inject IValidator<TChild> as a constructor parameter on the parent validator instead of calling new — this lets SetValidator() receive a properly DI-resolved instance with its own dependencies and intended lifetime respected.',
+    ],
+  },
+
   'aspnet/filters': {
     apis: ['IActionFilter', 'IAsyncActionFilter', 'IExceptionFilter', 'IEndpointFilter', 'ServiceFilterAttribute'],
     related: [

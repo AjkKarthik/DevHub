@@ -774,7 +774,12 @@ export const routes: Routes = [
         { path: 'forgotten-di-registration-silently-falls-through-body-binding', loadComponent: () => import('./components/backend/aspnet/minimal-apis/subtopics/forgotten-di-registration-silently-falls-through-body-binding/forgotten-di-registration-silently-falls-through-body-binding').then(m => m.ForgottenDiRegistrationSilentlyFallsThroughBodyBindingSubtopic) },
         { path: 'linkgenerator-getpathbyname-returns-null-instead-of-throwing', loadComponent: () => import('./components/backend/aspnet/minimal-apis/subtopics/linkgenerator-getpathbyname-returns-null-instead-of-throwing/linkgenerator-getpathbyname-returns-null-instead-of-throwing').then(m => m.LinkgeneratorGetpathbynameReturnsNullInsteadOfThrowingSubtopic) },
       ] },
-      { path: 'model-binding',        loadComponent: () => import('./components/backend/aspnet/model-binding/model-binding').then(m => m.AspnetModelBinding) },
+      { path: 'model-binding', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/model-binding/model-binding').then(m => m.AspnetModelBinding) },
+        { path: 'testing-iparsable-tryparse-graceful-failure-daterange', loadComponent: () => import('./components/backend/aspnet/model-binding/subtopics/testing-iparsable-tryparse-graceful-failure-daterange/testing-iparsable-tryparse-graceful-failure-daterange').then(m => m.TestingIparsableTryparseGracefulFailureDaterangeSubtopic) },
+        { path: 'how-recursive-nested-validation-walks-object-graph-circular-reference', loadComponent: () => import('./components/backend/aspnet/model-binding/subtopics/how-recursive-nested-validation-walks-object-graph-circular-reference/how-recursive-nested-validation-walks-object-graph-circular-reference').then(m => m.HowRecursiveNestedValidationWalksObjectGraphCircularReferenceSubtopic) },
+        { path: 'fluentvalidation-setvalidator-new-silently-bypasses-di', loadComponent: () => import('./components/backend/aspnet/model-binding/subtopics/fluentvalidation-setvalidator-new-silently-bypasses-di/fluentvalidation-setvalidator-new-silently-bypasses-di').then(m => m.FluentvalidationSetvalidatorNewSilentlyBypassesDiSubtopic) },
+      ] },
       { path: 'filters',              loadComponent: () => import('./components/backend/aspnet/filters/filters').then(m => m.AspnetFilters) },
       { path: 'error-handling',       loadComponent: () => import('./components/backend/aspnet/error-handling/error-handling').then(m => m.AspnetErrorHandling) },
       { path: 'openapi-swagger',      loadComponent: () => import('./components/backend/aspnet/openapi-swagger/openapi-swagger').then(m => m.AspnetOpenApiSwagger) },

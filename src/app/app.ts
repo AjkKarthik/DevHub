@@ -662,6 +662,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Forgotten DI Registration Silently Falls Through', route: '/aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding' },
     { label: 'LinkGenerator’s Silent Null Return', route: '/aspnet/minimal-apis/linkgenerator-getpathbyname-returns-null-instead-of-throwing' },
   ],
+  'model-binding': [
+    { label: 'Testing IParsable’s TryParse for Graceful Failure', route: '/aspnet/model-binding/testing-iparsable-tryparse-graceful-failure-daterange' },
+    { label: 'How Recursive Nested Validation Walks the Object Graph', route: '/aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference' },
+    { label: 'FluentValidation’s SetValidator DI Bypass', route: '/aspnet/model-binding/fluentvalidation-setvalidator-new-silently-bypasses-di' },
+  ],
 };
 
 @Component({
