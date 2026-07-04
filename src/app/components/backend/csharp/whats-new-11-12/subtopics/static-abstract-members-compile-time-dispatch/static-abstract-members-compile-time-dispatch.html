@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="What's New in C# 11 & 12" topicRoute="/csharp/whats-new-11-12" subtopicLabel="How static abstract Members Dispatch" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">How static abstract Interface Members Actually Dispatch: Compile-Time Generic Specialization, Not Virtual Dispatch</h1>
+  <p class="page-subtitle">The main topic page says generic math enables algorithms over numeric types with static abstract members. Here's how T.Zero and T + T actually resolve with no instance to dispatch through — the JIT compiles a fully separate, specialized method per value type.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 11+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/csharp/whats-new-11-12">What's New in C# 11 &amp; 12</a>: a real production gotcha connecting to the main page's own primary constructor content — why referencing a parameter anywhere in the body captures it for the object's entire lifetime.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="What's New in C# 11 & 12"
+    topicRoute="/csharp/whats-new-11-12"
+    [prev]="{ label: 'Testing Generic Math Across Types', route: '/csharp/whats-new-11-12/testing-generic-math-across-numeric-types-one-suite-every-inumber-implementation' }"
+    [next]="{ label: 'Primary Constructor Parameters Captured for Object Lifetime', route: '/csharp/whats-new-11-12/primary-constructor-parameter-captured-as-field-object-entire-lifetime' }"
+  />
+</div>

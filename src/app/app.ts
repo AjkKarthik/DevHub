@@ -592,6 +592,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What the Compiler Actually Generates for Type-Sensitive Equality', route: '/csharp/whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive' },
     { label: 'Records as Dictionary Keys Can Silently Break', route: '/csharp/whats-new-9-10/records-as-dictionary-keys-break-when-reference-property-mutated' },
   ],
+  'whats-new-11-12': [
+    { label: 'Testing Generic Math Across Types', route: '/csharp/whats-new-11-12/testing-generic-math-across-numeric-types-one-suite-every-inumber-implementation' },
+    { label: 'How static abstract Members Actually Dispatch', route: '/csharp/whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization' },
+    { label: 'Primary Constructor Parameters Captured for Object Lifetime', route: '/csharp/whats-new-11-12/primary-constructor-parameter-captured-as-field-object-entire-lifetime' },
+  ],
 };
 
 @Component({

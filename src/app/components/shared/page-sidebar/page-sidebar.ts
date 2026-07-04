@@ -9351,6 +9351,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['required members must be set in an object initializer — they cannot be set after construction.', 'Raw string literals (""") must start and end with the same number of quotes (minimum 3).'],
   },
 
+  'whats-new-11-12/testing-generic-math-across-numeric-types-one-suite-every-inumber-implementation': {
+    apis: ['INumber<T>', 'xUnit [Theory]', 'generic test base class'],
+    related: [
+      { label: 'How static abstract Members Actually Dispatch — next', route: '/csharp/whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization' },
+      { label: "What's New in C# 11 & 12 (overview)", route: '/csharp/whats-new-11-12' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A shared generic test base class (constrained the same way as the production code, e.g. where T : INumber<T>) lets test CASES be written exactly once and automatically apply to every concrete numeric type.',
+    docs: [
+      { label: 'Generic Math (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/math' },
+    ],
+    resources: [
+      { label: 'xUnit Theory Data', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Floating-point types can make an exact-equality assertion flaky in a way int/decimal never would — override just the comparison mechanism per type when needed.',
+      'Type-specific edge cases (integer truncation, decimal precision) belong in that type\'s own dedicated test, not the shared base class.',
+    ],
+  },
+
+  'whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization': {
+    apis: ['static abstract', 'INumber<T>', 'JIT specialization'],
+    related: [
+      { label: 'Testing Generic Math Across Types — previous', route: '/csharp/whats-new-11-12/testing-generic-math-across-numeric-types-one-suite-every-inumber-implementation' },
+      { label: 'Primary Constructor Parameters Captured for Object Lifetime — next', route: '/csharp/whats-new-11-12/primary-constructor-parameter-captured-as-field-object-entire-lifetime' },
+      { label: "What's New in C# 11 & 12 (overview)", route: '/csharp/whats-new-11-12' },
+    ],
+    tip: 'For value-type generic instantiations, the JIT compiles a fully separate, specialized method body per concrete T — T.Zero resolves to a direct call at compile time, with zero vtable dispatch overhead.',
+    docs: [
+      { label: 'Static Abstract Members in Interfaces', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#static-abstract-members-in-interfaces' },
+    ],
+    resources: [
+      { label: 'sharplab.io (Inspect Generated Code)', url: 'https://sharplab.io/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Only value-type generic instantiations get full JIT specialization — reference-type instantiations share one compiled body with ordinary runtime dispatch inside it.',
+      'This is why generic math has no measurable overhead versus hand-written type-specific arithmetic code.',
+    ],
+  },
+
+  'whats-new-11-12/primary-constructor-parameter-captured-as-field-object-entire-lifetime': {
+    apis: ['primary constructor', 'backing field capture', 'IServiceProvider'],
+    related: [
+      { label: 'How static abstract Members Actually Dispatch — previous', route: '/csharp/whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization' },
+      { label: "What's New in C# 11 & 12 (overview)", route: '/csharp/whats-new-11-12' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'A primary constructor parameter referenced ANYWHERE in the type\'s body — even a rarely-called diagnostic method — gets captured as a field for the object\'s entire lifetime, not just during construction.',
+    docs: [
+      { label: 'Primary Constructors (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12#primary-constructors' },
+    ],
+    resources: [
+      { label: 'sharplab.io (Inspect Generated Fields)', url: 'https://sharplab.io/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The compiler re-evaluates which parameters need backing fields on every build — removing all references outside the original transient use removes the capture on the next compile.',
+      'A traditional constructor makes the field-vs-transient decision explicit; a primary constructor makes it implicit, driven purely by incidental references.',
+    ],
+  },
+
   'whats-new-latest': {
     apis: ['params span', 'lock object', 'field keyword', 'partial property', 'extensions (C#14)', 'LINQ CountBy'],
     related: [{ label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }, { label: 'async / await', route: '/csharp/async' }, { label: 'Collections', route: '/csharp/collections' }],

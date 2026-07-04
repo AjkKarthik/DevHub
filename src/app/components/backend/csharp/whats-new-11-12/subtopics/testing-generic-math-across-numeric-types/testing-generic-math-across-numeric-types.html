@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="What's New in C# 11 & 12" topicRoute="/csharp/whats-new-11-12" subtopicLabel="Testing Generic Math Across Types" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Generic Math Code Across Numeric Types: One Test Suite Exercising Every INumber&lt;T&gt; Implementation</h1>
+  <p class="page-subtitle">The main topic page's own Statistics&lt;T&gt; challenge asks you to verify it works for int, double, and decimal. See how a shared generic test base class exercises every numeric type from one set of test cases, instead of three drifting-apart copies.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 11+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at how the main <a routerLink="/csharp/whats-new-11-12">What's New in C# 11 &amp; 12</a> page's own static abstract interface members actually dispatch — compile-time generic specialization, not virtual dispatch at all.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="What's New in C# 11 & 12"
+    topicRoute="/csharp/whats-new-11-12"
+    [next]="{ label: 'How static abstract Members Actually Dispatch', route: '/csharp/whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization' }"
+  />
+</div>
