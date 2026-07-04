@@ -11859,6 +11859,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/api-versioning/testing-versioned-endpoints-return-genuinely-different-shapes': {
+    apis: ['[ApiVersion]', '[MapToApiVersion]', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Why Omitting apiVersion Causes an Ambiguous Match — next', route: '/aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match' },
+      { label: 'API Versioning (overview)', route: '/aspnet/api-versioning' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'An action missing [MapToApiVersion] still returns 200 OK — just with the WRONG version\'s shape. Assert on version-specific fields in the response body, not just the status code, to catch this class of regression.',
+    docs: [
+      { label: 'Asp.Versioning NuGet', url: 'https://www.nuget.org/packages/Asp.Versioning.Mvc' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnet-api-versioning', url: 'https://github.com/dotnet/aspnet-api-versioning', badge: 'code' },
+    ],
+    gotchas: [
+      'A status-code-only test passes even with a v2-only action silently leaking into v1 — the endpoint still returns 200, just with the wrong DTO shape.',
+      'ReportApiVersions and Deprecated=true only affect response HEADERS, not the body — test them with separate, explicit assertions.',
+    ],
+  },
+
+  'aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match': {
+    apis: ['{version:apiVersion}', 'IActionConstraint', 'AmbiguousMatchException'],
+    related: [
+      { label: 'Testing That Versioned Endpoints Return Different Shapes — previous', route: '/aspnet/api-versioning/testing-versioned-endpoints-return-genuinely-different-shapes' },
+      { label: 'What Happens When Combined Version Readers Disagree — next', route: '/aspnet/api-versioning/what-happens-when-combined-version-readers-disagree' },
+      { label: 'API Versioning (overview)', route: '/aspnet/api-versioning' },
+    ],
+    tip: 'Without the :apiVersion constraint, two actions sharing an identical route template throw AmbiguousMatchException (500) on EVERY request to that route, not just wrong-version ones — the constraint is what plugs versioning into routing\'s own tie-breaking mechanism.',
+    docs: [
+      { label: 'API versioning wiki', url: 'https://github.com/dotnet/aspnet-api-versioning/wiki' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnet-api-versioning', url: 'https://github.com/dotnet/aspnet-api-versioning', badge: 'code' },
+    ],
+    gotchas: [
+      'This failure is actually EASIER to catch than a missing [MapToApiVersion] — it throws loudly on the very first manual test, rather than silently returning a plausible-looking wrong response.',
+      '[MapToApiVersion] is versioning-specific metadata the base routing system has no built-in awareness of without the constraint acting as the bridge.',
+    ],
+  },
+
+  'aspnet/api-versioning/what-happens-when-combined-version-readers-disagree': {
+    apis: ['ApiVersionReader.Combine()', 'AmbiguousApiVersionException', 'UrlSegmentApiVersionReader'],
+    related: [
+      { label: 'Why Omitting apiVersion Causes an Ambiguous Match — previous', route: '/aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match' },
+      { label: 'API Versioning (overview)', route: '/aspnet/api-versioning' },
+      { label: 'Routing', route: '/aspnet/routing' },
+    ],
+    tip: '"First match in configuration order" only describes the case where ONE reader finds a value — when a URL segment and a header extract DIFFERENT versions from the same request, Asp.Versioning returns 400 Bad Request rather than silently picking one.',
+    docs: [
+      { label: 'API versioning wiki', url: 'https://github.com/dotnet/aspnet-api-versioning/wiki' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnet-api-versioning', url: 'https://github.com/dotnet/aspnet-api-versioning', badge: 'code' },
+    ],
+    gotchas: [
+      'An API gateway or proxy that injects its own version header independently of a URL segment a caller specified can trigger this conflict entirely by accident.',
+      'Monitor 400 responses specifically tied to AmbiguousApiVersionException — a spike is a strong signal some component in the request path is adding conflicting version info.',
+    ],
+  },
+
   'aspnet/http-clients': {
     apis: ['IHttpClientFactory', 'AddHttpClient<T>()', 'AddStandardResilienceHandler()', 'DelegatingHandler', 'ResiliencePipeline', 'HttpClientHandler'],
     related: [

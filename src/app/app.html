@@ -418,7 +418,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/api-versioning" routerLinkActive="active"><span class="nl-text">API Versioning</span>@if(progress.isDone('aspnet-api-versioning')){<span class="nl-done">✓</span>}@if(diff('aspnet-api-versioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/api-versioning" routerLinkActive="active">
+        <span class="nl-text">API Versioning</span>
+        @if (progress.isDone('aspnet-api-versioning')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-api-versioning'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspnet-api-versioning')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspnet-api-versioning')"
+                  (click)="toggleSubtopics('aspnet-api-versioning', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspnet-api-versioning'); as subs) {
+        @if (isSubtopicsExpanded('aspnet-api-versioning')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/http-clients" routerLinkActive="active"><span class="nl-text">HttpClient &amp; Resilience</span>@if(progress.isDone('aspnet-http-clients')){<span class="nl-done">✓</span>}@if(diff('aspnet-http-clients');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/grpc" routerLinkActive="active"><span class="nl-text">gRPC Services</span>@if(progress.isDone('aspnet-grpc')){<span class="nl-done">✓</span>}@if(diff('aspnet-grpc');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/fluent-validation" routerLinkActive="active"><span class="nl-text">FluentValidation</span>@if(progress.isDone('aspnet-fluent-validation')){<span class="nl-done">✓</span>}@if(diff('aspnet-fluent-validation');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

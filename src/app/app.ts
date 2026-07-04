@@ -687,6 +687,16 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why the Generator Inspects the Signature, Not the Body', route: '/aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body' },
     { label: 'Generating Clients Against a Live Server Undermines PR Diffs', route: '/aspnet/openapi-swagger/generating-clients-against-live-server-undermines-diffing-prs' },
   ],
+  // NOTE: keyed 'aspnet-api-versioning', NOT bare 'api-versioning' — the
+  // API Design hub already owns a route at the same bare slug
+  // (/api-design/api-versioning). Pre-emptively hub-prefixing avoids
+  // repeating the exact 'routing' collision hit earlier the moment that
+  // hub gets its own api-versioning subtopics.
+  'aspnet-api-versioning': [
+    { label: 'Testing That Versioned Endpoints Return Different Shapes', route: '/aspnet/api-versioning/testing-versioned-endpoints-return-genuinely-different-shapes' },
+    { label: 'Why Omitting apiVersion Causes an Ambiguous Match', route: '/aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match' },
+    { label: 'What Happens When Combined Version Readers Disagree', route: '/aspnet/api-versioning/what-happens-when-combined-version-readers-disagree' },
+  ],
 };
 
 @Component({

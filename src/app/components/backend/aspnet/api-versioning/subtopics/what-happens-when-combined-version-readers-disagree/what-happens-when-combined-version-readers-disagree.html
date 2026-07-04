@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="API Versioning"
+    topicRoute="/aspnet/api-versioning"
+    subtopicLabel="When Combined Readers Disagree"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">What Happens When Combined Version Readers Disagree</h1>
+  <p class="page-subtitle">
+    The main page says the negotiator "picks the first match in configuration order." That only describes
+    the case where one reader finds a value — when a URL segment and a header disagree on the SAME
+    request, Asp.Versioning returns 400, not a silent pick.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the API Versioning deep-dive set: testing that versioned endpoints stay genuinely
+      isolated, understanding exactly why the route constraint matters, and now the disagreement failure
+      mode hiding behind combined version readers. This wraps the current ASP.NET Core Phase 10 batch —
+      head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="API Versioning"
+    topicRoute="/aspnet/api-versioning"
+    [prev]="{ label: 'Why Omitting the apiVersion Constraint Causes an Ambiguous Match', route: '/aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match' }"
+  />
+</div>

@@ -798,7 +798,12 @@ export const routes: Routes = [
         { path: 'why-generator-inspects-signature-not-method-body', loadComponent: () => import('./components/backend/aspnet/openapi-swagger/subtopics/why-generator-inspects-signature-not-method-body/why-generator-inspects-signature-not-method-body').then(m => m.WhyGeneratorInspectsSignatureNotMethodBodySubtopic) },
         { path: 'generating-clients-against-live-server-undermines-diffing-prs', loadComponent: () => import('./components/backend/aspnet/openapi-swagger/subtopics/generating-clients-against-live-server-undermines-diffing-prs/generating-clients-against-live-server-undermines-diffing-prs').then(m => m.GeneratingClientsAgainstLiveServerUndermineDiffingPrsSubtopic) },
       ] },
-      { path: 'api-versioning',       loadComponent: () => import('./components/backend/aspnet/api-versioning/api-versioning').then(m => m.AspnetApiVersioning) },
+      { path: 'api-versioning', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/api-versioning/api-versioning').then(m => m.AspnetApiVersioning) },
+        { path: 'testing-versioned-endpoints-return-genuinely-different-shapes', loadComponent: () => import('./components/backend/aspnet/api-versioning/subtopics/testing-versioned-endpoints-return-genuinely-different-shapes/testing-versioned-endpoints-return-genuinely-different-shapes').then(m => m.TestingVersionedEndpointsReturnGenuinelyDifferentShapesSubtopic) },
+        { path: 'why-omitting-apiversion-constraint-causes-ambiguous-match', loadComponent: () => import('./components/backend/aspnet/api-versioning/subtopics/why-omitting-apiversion-constraint-causes-ambiguous-match/why-omitting-apiversion-constraint-causes-ambiguous-match').then(m => m.WhyOmittingApiversionConstraintCausesAmbiguousMatchSubtopic) },
+        { path: 'what-happens-when-combined-version-readers-disagree', loadComponent: () => import('./components/backend/aspnet/api-versioning/subtopics/what-happens-when-combined-version-readers-disagree/what-happens-when-combined-version-readers-disagree').then(m => m.WhatHappensWhenCombinedVersionReadersDisagreeSubtopic) },
+      ] },
       { path: 'http-clients',         loadComponent: () => import('./components/backend/aspnet/http-clients/http-clients').then(m => m.AspnetHttpClients) },
       { path: 'grpc',                 loadComponent: () => import('./components/backend/aspnet/grpc/grpc').then(m => m.AspnetGrpc) },
       { path: 'ef-core-basics',       loadComponent: () => import('./components/backend/aspnet/ef-core-basics/ef-core-basics').then(m => m.AspnetEfCoreBasics) },
