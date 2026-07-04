@@ -542,6 +542,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Inside the DLR Call Site', route: '/csharp/dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback' },
     { label: 'Anonymous Types as dynamic', route: '/csharp/dynamic/anonymous-types-as-dynamic-assembly-boundary-hidden-cost' },
   ],
+  'source-generators': [
+    { label: 'Testing Source Generators', route: '/csharp/source-generators/testing-source-generators-in-memory-pipeline-snapshotting-output' },
+    { label: 'Why Symbols Defeat Incremental Caching', route: '/csharp/source-generators/why-symbols-defeat-incremental-caching-leak-compilation' },
+    { label: 'Debugging a Source Generator', route: '/csharp/source-generators/debugging-source-generator-debugger-launch-technique' },
+  ],
 };
 
 @Component({

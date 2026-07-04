@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Source Generators" topicRoute="/csharp/source-generators" subtopicLabel="Debugging a Source Generator" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Debugging a Source Generator: Why Debugger.Launch() Inside Initialize() Is the Standard Technique</h1>
+  <p class="page-subtitle">A generator runs inside the compiler process, not your application — that's why a normal debug session never hits a breakpoint in generator code. See why Debugger.Launch() at the top of Initialize() is the fix.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Source Generators deep dives — from testing pipeline output automatically, to why symbols defeat incremental caching, to actually stepping through a buggy generator's own logic with a real debugger.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Source Generators"
+    topicRoute="/csharp/source-generators"
+    [prev]="{ label: 'Why Symbols Defeat Incremental Caching', route: '/csharp/source-generators/why-symbols-defeat-incremental-caching-leak-compilation' }"
+  />
+</div>

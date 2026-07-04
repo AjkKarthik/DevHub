@@ -8652,6 +8652,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'source-generators': {
+    apis: ['IIncrementalGenerator', 'ForAttributeWithMetadataName', 'RegisterSourceOutput'],
+    related: [{ label: 'Reflection & Attributes', route: '/csharp/reflection' }, { label: 'Regular Expressions', route: '/csharp/regex' }, { label: 'I/O & Serialization', route: '/csharp/io-serialization' }],
+    tip: 'Extract a small, equatable data model early in the pipeline, before the first .Select() that produces cached output — symbols and syntax nodes hold references to the entire compilation and defeat caching.',
+    docs: [{ label: 'Source Generators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview' }],
+    resources: [{ label: 'Incremental Generators Cookbook', url: 'https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.cookbook.md', badge: 'docs' }],
+    gotchas: ['Always use IIncrementalGenerator, never the deprecated V1 ISourceGenerator — V1 regenerates everything on every keystroke.', 'A slow predicate in ForAttributeWithMetadataName makes every keypress slow, since it runs on every syntax node, not just ones with your attribute.'],
+  },
+
+  'source-generators/testing-source-generators-in-memory-pipeline-snapshotting-output': {
+    apis: ['CSharpGeneratorDriver', 'GeneratorDriverRunResult', 'Verify'],
+    related: [
+      { label: 'Why Symbols Defeat Incremental Caching — next', route: '/csharp/source-generators/why-symbols-defeat-incremental-caching-leak-compilation' },
+      { label: 'Source Generators (overview)', route: '/csharp/source-generators' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'CSharpGeneratorDriver.RunGeneratorsAndUpdateCompilation runs your generator against an in-memory Compilation, letting you assert on the exact generated source text as a fast unit test — no real project build needed.',
+    docs: [
+      { label: 'Unit Testing Generators', url: 'https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md#unit-testing-of-generators' },
+    ],
+    resources: [
+      { label: 'Verify Snapshot Testing', url: 'https://github.com/VerifyTests/Verify', badge: 'code' },
+    ],
+    gotchas: [
+      'A generator that silently produces incorrect code on bad input is far harder to debug than one that reports a diagnostic — test that ReportDiagnostic actually fires for malformed attribute usage.',
+      'Snapshot testing (Verify) fits generated source text specifically better than dozens of brittle Assert.Contains substring checks.',
+    ],
+  },
+
+  'source-generators/why-symbols-defeat-incremental-caching-leak-compilation': {
+    apis: ['INamedTypeSymbol', 'SymbolEqualityComparer', 'record'],
+    related: [
+      { label: 'Testing Source Generators — previous', route: '/csharp/source-generators/testing-source-generators-in-memory-pipeline-snapshotting-output' },
+      { label: 'Debugging a Source Generator — next', route: '/csharp/source-generators/debugging-source-generator-debugger-launch-technique' },
+      { label: 'Source Generators (overview)', route: '/csharp/source-generators' },
+    ],
+    tip: 'A symbol holds a reference to its owning Compilation, which transitively holds every SyntaxTree and full source text — retaining one symbol past the first .Select() stage leaks the whole compilation and defeats value-equality caching.',
+    docs: [
+      { label: 'Incremental Generators', url: 'https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md' },
+    ],
+    resources: [
+      { label: 'INamedTypeSymbol Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol', badge: 'docs' },
+    ],
+    gotchas: [
+      'A model containing even ONE syntax node or symbol field still defeats caching, regardless of how many other fields are genuinely simple values — record equality is only as good as its weakest field.',
+      'Symbols from two different Compilation snapshots representing the "same" logical type generally do not compare as equal, defeating the incremental engine\'s cache-hit check.',
+    ],
+  },
+
+  'source-generators/debugging-source-generator-debugger-launch-technique': {
+    apis: ['Debugger.Launch()', 'VBCSCompiler', 'IIncrementalGenerator'],
+    related: [
+      { label: 'Why Symbols Defeat Incremental Caching — previous', route: '/csharp/source-generators/why-symbols-defeat-incremental-caching-leak-compilation' },
+      { label: 'Source Generators (overview)', route: '/csharp/source-generators' },
+      { label: 'Reflection & Attributes', route: '/csharp/reflection' },
+    ],
+    tip: 'A generator runs inside the C# compiler process, not your application — a normal debug session never hits its breakpoints. Debugger.Launch() as the first line of Initialize() prompts to attach a debugger directly to the compiler process during the next build.',
+    docs: [
+      { label: 'Debug Source Generators', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview#debug-source-generators' },
+    ],
+    resources: [
+      { label: 'Debugger.Launch Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.debugger.launch', badge: 'docs' },
+    ],
+    gotchas: [
+      'An unconditional Debugger.Launch() call prompts a debugger-attach dialog on EVERY build — guard it behind an environment variable or #if so ordinary builds stay uninterrupted.',
+      'EmitCompilerGeneratedFiles only shows the final generated text — it does not let you step through the generator\'s own transform/emit logic.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

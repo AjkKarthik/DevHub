@@ -1761,7 +1761,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/source-generators" routerLinkActive="active"><span class="nl-text">Source Generators</span>@if(progress.isDone('csharp-source-generators')){<span class="nl-done">✓</span>}@if(diff('csharp-source-generators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/source-generators" routerLinkActive="active">
+        <span class="nl-text">Source Generators</span>
+        @if (progress.isDone('csharp-source-generators')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-source-generators'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('source-generators')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('source-generators')"
+                  (click)="toggleSubtopics('source-generators', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('source-generators'); as subs) {
+        @if (isSubtopicsExpanded('source-generators')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/di-dotnet" routerLinkActive="active"><span class="nl-text">Dependency Injection in .NET</span>@if(progress.isDone('csharp-di-dotnet')){<span class="nl-done">✓</span>}@if(diff('csharp-di-dotnet');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/native-aot" routerLinkActive="active"><span class="nl-text">Native AOT</span>@if(progress.isDone('csharp-native-aot')){<span class="nl-done">✓</span>}@if(diff('csharp-native-aot');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/benchmarkdotnet" routerLinkActive="active"><span class="nl-text">BenchmarkDotNet</span>@if(progress.isDone('csharp-benchmarkdotnet')){<span class="nl-done">✓</span>}@if(diff('csharp-benchmarkdotnet');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

@@ -628,7 +628,12 @@ export const routes: Routes = [
         { path: 'inside-dlr-call-site-rule-cache-slow-path-fallback', loadComponent: () => import('./components/backend/csharp/dynamic/subtopics/inside-dlr-call-site-rule-cache-slow-path-fallback/inside-dlr-call-site-rule-cache-slow-path-fallback').then(m => m.InsideDlrCallSiteRuleCacheSlowPathFallbackSubtopic) },
         { path: 'anonymous-types-as-dynamic-assembly-boundary-hidden-cost', loadComponent: () => import('./components/backend/csharp/dynamic/subtopics/anonymous-types-as-dynamic-assembly-boundary-hidden-cost/anonymous-types-as-dynamic-assembly-boundary-hidden-cost').then(m => m.AnonymousTypesAsDynamicAssemblyBoundaryHiddenCostSubtopic) },
       ] },
-      { path: 'source-generators', loadComponent: () => import('./components/backend/csharp/source-generators/source-generators').then(m => m.CsharpSourceGenerators) },
+      { path: 'source-generators', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/source-generators/source-generators').then(m => m.CsharpSourceGenerators) },
+        { path: 'testing-source-generators-in-memory-pipeline-snapshotting-output', loadComponent: () => import('./components/backend/csharp/source-generators/subtopics/testing-source-generators-in-memory-pipeline-snapshotting-output/testing-source-generators-in-memory-pipeline-snapshotting-output').then(m => m.TestingSourceGeneratorsInMemoryPipelineSnapshottingOutputSubtopic) },
+        { path: 'why-symbols-defeat-incremental-caching-leak-compilation', loadComponent: () => import('./components/backend/csharp/source-generators/subtopics/why-symbols-defeat-incremental-caching-leak-compilation/why-symbols-defeat-incremental-caching-leak-compilation').then(m => m.WhySymbolsDefeatIncrementalCachingLeakCompilationSubtopic) },
+        { path: 'debugging-source-generator-debugger-launch-technique', loadComponent: () => import('./components/backend/csharp/source-generators/subtopics/debugging-source-generator-debugger-launch-technique/debugging-source-generator-debugger-launch-technique').then(m => m.DebuggingSourceGeneratorDebuggerLaunchTechniqueSubtopic) },
+      ] },
       { path: 'span-memory',      loadComponent: () => import('./components/backend/csharp/span-memory/span-memory').then(m => m.CsharpSpanMemory) },
       { path: 'di-dotnet',        loadComponent: () => import('./components/backend/csharp/di-dotnet/di-dotnet').then(m => m.CsharpDiDotnet) },
       { path: 'json-advanced',    loadComponent: () => import('./components/backend/csharp/json-advanced/json-advanced').then(m => m.CsharpJsonAdvanced) },
