@@ -1,0 +1,30 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Configuration & Options" topicRoute="/aspnet/configuration" subtopicLabel="Testing Options Validation" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Options Validation Actually Rejects Bad Config — Not Just That It Compiles</h1>
+  <p class="page-subtitle">The main topic page's own JwtOptionsValidator is exactly the kind of logic that needs a test — a validator with an inverted condition or typo still compiles and runs, producing a confidently wrong verdict. See how to test it directly, no host or config files needed.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="ASP.NET Core 2.2+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at how the main <a routerLink="/aspnet/configuration">Configuration &amp; Options</a> page's own IOptionsMonitor hot-reload actually detects a file change — ChangeToken propagation and why OnChange can fire twice for one edit.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Configuration & Options"
+    topicRoute="/aspnet/configuration"
+    [next]="{ label: 'How IOptionsMonitor Actually Detects a File Change', route: '/aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation' }"
+  />
+</div>

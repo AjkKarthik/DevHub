@@ -622,6 +622,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How Route Precedence Is Actually Computed', route: '/aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm' },
     { label: 'A Renamed WithName() Silently Breaks LinkGenerator', route: '/aspnet/routing/typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check' },
   ],
+  'configuration': [
+    { label: 'Testing Options Validation', route: '/aspnet/configuration/testing-options-validation-actually-rejects-bad-config-not-just-compiles' },
+    { label: 'How IOptionsMonitor Actually Detects a File Change', route: '/aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation' },
+    { label: 'OnChange Returns an IDisposable That Must Be Disposed', route: '/aspnet/configuration/onchange-returns-idisposable-must-be-disposed-or-callback-leaks' },
+  ],
 };
 
 @Component({

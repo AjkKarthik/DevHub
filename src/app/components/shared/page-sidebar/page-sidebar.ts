@@ -11036,6 +11036,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/configuration/testing-options-validation-actually-rejects-bad-config-not-just-compiles': {
+    apis: ['IValidateOptions<T>', 'ValidateOptionsResult', 'OptionsValidationException'],
+    related: [
+      { label: 'How IOptionsMonitor Actually Detects a File Change — next', route: '/aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation' },
+      { label: 'Configuration & Options (overview)', route: '/aspnet/configuration' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A custom IValidateOptions<T> validator with an inverted condition or typo still compiles and runs — test it directly with hand-constructed good and bad POCOs, not just through real config files.',
+    docs: [
+      { label: 'Options Validation', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/options#options-validation' },
+    ],
+    resources: [
+      { label: 'IValidateOptions Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.options.ivalidateoptions-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'ValidateOnStart() only guarantees validation logic runs at startup — it says nothing about whether that logic is actually correct.',
+      'A validator needs both a known-good-passes test and a known-bad-fails test to confirm its logic, not just one or the other.',
+    ],
+  },
+
+  'aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation': {
+    apis: ['IChangeToken', 'PhysicalFileProvider', 'FileSystemWatcher'],
+    related: [
+      { label: 'Testing Options Validation — previous', route: '/aspnet/configuration/testing-options-validation-actually-rejects-bad-config-not-just-compiles' },
+      { label: 'OnChange Returns an IDisposable That Must Be Disposed — next', route: '/aspnet/configuration/onchange-returns-idisposable-must-be-disposed-or-callback-leaks' },
+      { label: 'Configuration & Options (overview)', route: '/aspnet/configuration' },
+    ],
+    tip: 'Many editors save via write-temp-then-rename, generating multiple file-system events for one logical edit — OnChange firing twice for a single save is expected FileSystemWatcher behavior, not a bug.',
+    docs: [
+      { label: 'IChangeToken Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.primitives.ichangetoken' },
+    ],
+    resources: [
+      { label: 'FileSystemWatcher Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.io.filesystemwatcher', badge: 'docs' },
+    ],
+    gotchas: [
+      'A value-comparison debounce inside the OnChange callback addresses the root cause more reliably than a time-based debounce.',
+      'IChangeToken is one-shot — IOptionsMonitor re-subscribes a new token after every fire internally.',
+    ],
+  },
+
+  'aspnet/configuration/onchange-returns-idisposable-must-be-disposed-or-callback-leaks': {
+    apis: ['OnChange()', 'IDisposable', 'gcroot'],
+    related: [
+      { label: 'How IOptionsMonitor Actually Detects a File Change — previous', route: '/aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation' },
+      { label: 'Configuration & Options (overview)', route: '/aspnet/configuration' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'IOptionsMonitor is a Singleton — a Scoped service that registers an OnChange callback without disposing the returned handle leaks one subscriber entry (and everything its closure captures) per instance, for the process lifetime.',
+    docs: [
+      { label: 'IOptionsMonitor Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.options.ioptionsmonitor-1' },
+    ],
+    resources: [
+      { label: 'dotnet-gcdump (Leak Diagnosis)', url: 'https://learn.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-gcdump', badge: 'docs' },
+    ],
+    gotchas: [
+      'A gcroot trace on a leaked Scoped instance tracing back to a Singleton IOptionsMonitor is the unambiguous signature of this exact leak.',
+      'This is the same underlying leak shape as an un-unsubscribed .NET event handler — a long-lived publisher holding a short-lived subscriber alive.',
+    ],
+  },
+
   'aspnet/dependency-injection': {
     apis: ['AddSingleton()', 'AddScoped()', 'AddTransient()', 'IServiceProvider', 'ActivatorUtilities'],
     related: [

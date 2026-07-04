@@ -1,0 +1,30 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Configuration & Options" topicRoute="/aspnet/configuration" subtopicLabel="OnChange Disposal Leak" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">OnChange() Returns an IDisposable That Must Be Disposed — Otherwise the Callback Closure Leaks Forever</h1>
+  <p class="page-subtitle">The main topic page's own FeatureFlagService stores OnChange's result in a field named "_listener" but never disposes it. That field name is a hint at intent — the singleton IOptionsMonitor holds the callback forever unless the returned IDisposable is explicitly disposed.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="ASP.NET Core 2+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/aspnet/configuration">Configuration &amp; Options</a> — from testing options validation, to how IOptionsMonitor detects file changes, to this OnChange disposal-leak gotcha. Return to the topic overview to continue with the next ASP.NET Core topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Configuration & Options"
+    topicRoute="/aspnet/configuration"
+    [prev]="{ label: 'How IOptionsMonitor Actually Detects a File Change', route: '/aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation' }"
+  />
+</div>
