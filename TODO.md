@@ -1467,7 +1467,7 @@ off here with a date.
 - [x] `/csharp/structures` — Structures (struct) (2026-07-04 — 3 subtopics: testing-the-struct-copy-mutation-trap, ref-struct-interfaces-generic-constraint-dispatch, array-vs-list-vs-foreach-struct-mutation)
 - [x] `/csharp/system-object` — System.Object (2026-07-04 — 3 subtopics: testing-the-equals-gethashcode-contract, gethashcode-instability-across-process-runs, record-equality-and-equalitycontract)
 - [x] `/csharp/extension-methods` — Extension Methods (2026-07-04 — 3 subtopics: testing-for-extension-method-shadowing, resolving-extension-method-ambiguity-cs0121, extension-methods-on-structs-this-in-t-receiver)
-- [ ] `/csharp/tuples` — Tuples & Anonymous Types
+- [x] `/csharp/tuples` — Tuples & Anonymous Types (2026-07-04 — 3 subtopics: testing-tuple-returning-methods-deconstruction-assertions, valuetuple-8-element-limit-trest-chaining-mechanism, renaming-tuple-field-breaks-some-callers-not-others)
 - [ ] `/csharp/arrays` — Arrays
 - [ ] `/csharp/strings-datetime` — Strings, DateTime & Math
 - [ ] `/csharp/io-serialization` — I/O & Serialization
