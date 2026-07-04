@@ -1482,7 +1482,7 @@ off here with a date.
 - [x] `/csharp/unit-testing` — Unit Testing (xUnit & Moq) (2026-07-04 — 3 subtopics: testing-your-test-doubles-mock-setup-matches-production-behavior, why-xunit-creates-new-instance-per-test-classfixture, timeprovider-faketimeprovider-deterministic-time-dependent-tests)
 - [x] `/csharp/expression-trees` — Expression Trees (2026-07-04 — 3 subtopics: testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result, parameterexpression-identity-problem-andalso-unusable-lambda, captured-variables-not-constantexpression-hidden-closure-class)
 - [x] `/csharp/dynamic` — dynamic & the DLR (2026-07-04 — 3 subtopics: testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths, inside-dlr-call-site-rule-cache-slow-path-fallback, anonymous-types-as-dynamic-assembly-boundary-hidden-cost)
-- [ ] `/csharp/source-generators` — Source Generators
+- [x] `/csharp/source-generators` — Source Generators (2026-07-04 — 3 subtopics: testing-source-generators-in-memory-pipeline-snapshotting-output, why-symbols-defeat-incremental-caching-leak-compilation, debugging-source-generator-debugger-launch-technique)
 - [ ] `/csharp/span-memory` — Span<T> & Memory<T>
 - [ ] `/csharp/di-dotnet` — Dependency Injection in .NET
 - [ ] `/csharp/json-advanced` — System.Text.Json Advanced
