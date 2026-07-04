@@ -749,7 +749,12 @@ export const routes: Routes = [
         { path: 'createasyncscope-vs-createscope', loadComponent: () => import('./components/backend/aspnet/dependency-injection/subtopics/createasyncscope-vs-createscope/createasyncscope-vs-createscope').then(m => m.HowCreateasyncscopeDiffersCreatescopeInternallyAsyncdisposableWarningSubtopic) },
         { path: 'activatorutilities-bypasses-validateonbuild', loadComponent: () => import('./components/backend/aspnet/dependency-injection/subtopics/activatorutilities-bypasses-validateonbuild/activatorutilities-bypasses-validateonbuild').then(m => m.ActivatorutilitiesCreateinstanceBypassesValidateonbuildEntirelySubtopic) },
       ] },
-      { path: 'logging',              loadComponent: () => import('./components/backend/aspnet/logging/logging').then(m => m.AspnetLogging) },
+      { path: 'logging', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/logging/logging').then(m => m.AspnetLogging) },
+        { path: 'testing-structured-log-properties-with-fake-logger', loadComponent: () => import('./components/backend/aspnet/logging/subtopics/testing-structured-log-properties-with-fake-logger/testing-structured-log-properties-with-fake-logger').then(m => m.TestingStructuredLogPropertiesWithFakeLoggerSubtopic) },
+        { path: 'how-beginscope-propagates-ambient-context-asynclocal', loadComponent: () => import('./components/backend/aspnet/logging/subtopics/how-beginscope-propagates-ambient-context-asynclocal/how-beginscope-propagates-ambient-context-asynclocal').then(m => m.HowBeginscopePropagatesAmbientContextAsynclocalSubtopic) },
+        { path: 'reusing-eventid-across-loggermessage-methods-compiles-cleanly', loadComponent: () => import('./components/backend/aspnet/logging/subtopics/reusing-eventid-across-loggermessage-methods-compiles-cleanly/reusing-eventid-across-loggermessage-methods-compiles-cleanly').then(m => m.ReusingEventidAcrossLoggermessageMethodsCompilesCleanlySubtopic) },
+      ] },
       { path: 'static-files',         loadComponent: () => import('./components/backend/aspnet/static-files/static-files').then(m => m.AspnetStaticFiles) },
       // ── Web API ──
       { path: 'controllers',          loadComponent: () => import('./components/backend/aspnet/controllers/controllers').then(m => m.AspnetControllers) },

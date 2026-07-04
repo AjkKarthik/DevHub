@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Logging &amp; Diagnostics"
+    topicRoute="/aspnet/logging"
+    subtopicLabel="EventId Collisions Across LoggerMessage Methods"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Reusing an EventId Across Two LoggerMessage Methods Compiles Cleanly</h1>
+  <p class="page-subtitle">
+    The main page warns to never reuse an EventId in production — but never shows what actually breaks
+    if you do. The compiler won't catch it, and a dashboard keying on the bare numeric ID silently
+    blends two unrelated events together.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Logging &amp; Diagnostics deep-dive set: testing structured properties, tracing
+      how ambient scope context actually propagates, and now the exact production failure mode behind an
+      EventId collision. Head back to the topic overview to continue with the next ASP.NET Core topic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Logging &amp; Diagnostics"
+    topicRoute="/aspnet/logging"
+    [prev]="{ label: 'How BeginScope Propagates Ambient Context via AsyncLocal', route: '/aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal' }"
+  />
+</div>

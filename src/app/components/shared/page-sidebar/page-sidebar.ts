@@ -11200,6 +11200,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/logging/testing-structured-log-properties-with-fake-logger': {
+    apis: ['ILogger<T>.Log<TState>()', 'IReadOnlyList<KeyValuePair<string,object>>', 'FormattedLogValues'],
+    related: [
+      { label: 'How BeginScope Propagates Ambient Context — next', route: '/aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal' },
+      { label: 'Logging & Diagnostics (overview)', route: '/aspnet/logging' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A hand-written fake ILogger<T> that captures the IReadOnlyList<KeyValuePair<string,object>> state passed to Log<TState>() lets a test assert the exact structured property name and value — a rendered message string alone can look correct while the property name is silently wrong.',
+    docs: [
+      { label: 'ILogger Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      '[LoggerMessage] source-generated methods call the same underlying ILogger.Log<TState>() method — the same fake logger tests both approaches identically.',
+      'A template/argument mismatch (like a typo\'d holder name) compiles cleanly and renders a correct-looking message while the structured property is wrong.',
+    ],
+  },
+
+  'aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal': {
+    apis: ['AsyncLocal<T>', 'ExecutionContext', 'LoggerExternalScopeProvider'],
+    related: [
+      { label: 'Testing Structured Log Properties — previous', route: '/aspnet/logging/testing-structured-log-properties-with-fake-logger' },
+      { label: 'Reusing an EventId Across LoggerMessage Methods — next', route: '/aspnet/logging/reusing-eventid-across-loggermessage-methods-compiles-cleanly' },
+      { label: 'Logging & Diagnostics (overview)', route: '/aspnet/logging' },
+    ],
+    tip: 'BeginScope\'s ambient properties flow via AsyncLocal<T> riding on ExecutionContext, which the runtime automatically copies into every await continuation and Task.Run — a fire-and-forget Task.Run started inside a scope captures a snapshot that outlives the scope\'s own disposal.',
+    docs: [
+      { label: 'AsyncLocal<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.asynclocal-1' },
+    ],
+    resources: [
+      { label: 'ExecutionContext Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.executioncontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'AsyncLocal propagation is a COPY at capture time, not a live reference — disposing the outer scope has zero effect on an already-detached fire-and-forget task.',
+      'A background worker should establish its own explicit scope from data passed directly to it, rather than relying on whatever ambient scope happened to be active at Task.Run() time.',
+    ],
+  },
+
+  'aspnet/logging/reusing-eventid-across-loggermessage-methods-compiles-cleanly': {
+    apis: ['EventId', 'EventId.Name', '[LoggerMessage(EventId=...)]'],
+    related: [
+      { label: 'How BeginScope Propagates Ambient Context — previous', route: '/aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal' },
+      { label: 'Logging & Diagnostics (overview)', route: '/aspnet/logging' },
+      { label: 'Middleware Pipeline', route: '/aspnet/middleware' },
+    ],
+    tip: 'The [LoggerMessage] source generator validates each attribute independently — it has no visibility into EventId values assigned elsewhere, so two unrelated log methods in different classes can share the same numeric EventId with zero compiler warnings.',
+    docs: [
+      { label: 'EventId Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.eventid' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A dashboard or alert keying on the bare numeric EventId.Id silently blends two unrelated events together if they ever collide — always set EventName too, since most sinks index it as an independent disambiguator.',
+      'A reflection-based CI test that scans every [LoggerMessage] attribute for duplicate EventIds without distinct EventNames catches this automatically, without relying on manual code review.',
+    ],
+  },
+
   'aspnet/static-files': {
     apis: ['UseStaticFiles()', 'StaticFileOptions', 'IFormFile', 'IWebHostEnvironment', 'FileStreamResult'],
     related: [

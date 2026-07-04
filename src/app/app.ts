@@ -637,6 +637,16 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'CreateAsyncScope() vs CreateScope() Internally', route: '/aspnet/dependency-injection/createasyncscope-vs-createscope' },
     { label: 'ActivatorUtilities Bypasses ValidateOnBuild', route: '/aspnet/dependency-injection/activatorutilities-bypasses-validateonbuild' },
   ],
+  // NOTE: keyed 'aspnet-logging', NOT bare 'logging' — the Node.js hub
+  // (/node/logging) and the DevOps hub (/devops/logging) already share
+  // this exact bare route slug. Pre-emptively hub-prefixing avoids
+  // repeating the 'routing' collision the moment either of those hubs
+  // gets its own Phase 10 subtopics for logging.
+  'aspnet-logging': [
+    { label: 'Testing Structured Log Properties With a Fake ILogger', route: '/aspnet/logging/testing-structured-log-properties-with-fake-logger' },
+    { label: 'How BeginScope Propagates Ambient Context via AsyncLocal', route: '/aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal' },
+    { label: 'Reusing an EventId Across LoggerMessage Methods', route: '/aspnet/logging/reusing-eventid-across-loggermessage-methods-compiles-cleanly' },
+  ],
 };
 
 @Component({

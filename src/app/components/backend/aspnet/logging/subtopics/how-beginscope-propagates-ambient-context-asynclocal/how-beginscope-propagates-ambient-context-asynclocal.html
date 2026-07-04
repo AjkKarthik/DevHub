@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Logging &amp; Diagnostics"
+    topicRoute="/aspnet/logging"
+    subtopicLabel="BeginScope's AsyncLocal Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How BeginScope Propagates Ambient Context via AsyncLocal</h1>
+  <p class="page-subtitle">
+    The main page says a scope "travels with the async context automatically" without explaining how.
+    The mechanism is AsyncLocal&lt;T&gt; riding on ExecutionContext — and it has a real blind spot around
+    fire-and-forget background tasks.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanism behind the main page's own log scopes. The final subtopic in
+      this set turns to <code>[LoggerMessage]</code>'s <code>EventId</code> — and a subtle production gotcha
+      the main page's own "never reuse an EventId" warning doesn't fully explain.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Logging &amp; Diagnostics"
+    topicRoute="/aspnet/logging"
+    [prev]="{ label: 'Testing Structured Log Properties With a Fake ILogger', route: '/aspnet/logging/testing-structured-log-properties-with-fake-logger' }"
+    [next]="{ label: 'Reusing an EventId Across Two LoggerMessage Methods Compiles Cleanly', route: '/aspnet/logging/reusing-eventid-across-loggermessage-methods-compiles-cleanly' }"
+  />
+</div>
