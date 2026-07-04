@@ -755,7 +755,12 @@ export const routes: Routes = [
         { path: 'how-beginscope-propagates-ambient-context-asynclocal', loadComponent: () => import('./components/backend/aspnet/logging/subtopics/how-beginscope-propagates-ambient-context-asynclocal/how-beginscope-propagates-ambient-context-asynclocal').then(m => m.HowBeginscopePropagatesAmbientContextAsynclocalSubtopic) },
         { path: 'reusing-eventid-across-loggermessage-methods-compiles-cleanly', loadComponent: () => import('./components/backend/aspnet/logging/subtopics/reusing-eventid-across-loggermessage-methods-compiles-cleanly/reusing-eventid-across-loggermessage-methods-compiles-cleanly').then(m => m.ReusingEventidAcrossLoggermessageMethodsCompilesCleanlySubtopic) },
       ] },
-      { path: 'static-files',         loadComponent: () => import('./components/backend/aspnet/static-files/static-files').then(m => m.AspnetStaticFiles) },
+      { path: 'static-files', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/static-files/static-files').then(m => m.AspnetStaticFiles) },
+        { path: 'testing-magic-number-validation-fake-byte-streams', loadComponent: () => import('./components/backend/aspnet/static-files/subtopics/testing-magic-number-validation-fake-byte-streams/testing-magic-number-validation-fake-byte-streams').then(m => m.TestingMagicNumberValidationFakeByteStreamsSubtopic) },
+        { path: 'how-usestaticfiles-computes-etag-touching-file-busts-cache', loadComponent: () => import('./components/backend/aspnet/static-files/subtopics/how-usestaticfiles-computes-etag-touching-file-busts-cache/how-usestaticfiles-computes-etag-touching-file-busts-cache').then(m => m.HowUsestaticfilesComputesEtagTouchingFileBustsCacheSubtopic) },
+        { path: 'startswith-path-traversal-guard-sibling-directory-bypass', loadComponent: () => import('./components/backend/aspnet/static-files/subtopics/startswith-path-traversal-guard-sibling-directory-bypass/startswith-path-traversal-guard-sibling-directory-bypass').then(m => m.StartswithPathTraversalGuardSiblingDirectoryBypassSubtopic) },
+      ] },
       // ── Web API ──
       { path: 'controllers',          loadComponent: () => import('./components/backend/aspnet/controllers/controllers').then(m => m.AspnetControllers) },
       { path: 'minimal-apis',         loadComponent: () => import('./components/backend/aspnet/minimal-apis/minimal-apis').then(m => m.AspnetMinimalApis) },

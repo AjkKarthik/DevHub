@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Static Files &amp; Uploads"
+    topicRoute="/aspnet/static-files"
+    subtopicLabel="Testing Magic Number Validation"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Magic Number Validation With Fake Byte Streams</h1>
+  <p class="page-subtitle">
+    The main page's fix for Content-Type spoofing reads a file's first few bytes — exactly the kind of
+    boundary-condition code that needs a real test. Here's how to cover every edge case with nothing but
+    in-memory byte arrays.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own file-validation fix. The next subtopic looks at a
+      different corner of the page — how <code>UseStaticFiles()</code>'s <code>ETag</code> is actually
+      computed, and why touching a file without changing its content still invalidates every client's cache.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Static Files &amp; Uploads"
+    topicRoute="/aspnet/static-files"
+    [next]="{ label: 'How UseStaticFiles Computes ETag — Why Touching a File Busts the Cache', route: '/aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache' }"
+  />
+</div>

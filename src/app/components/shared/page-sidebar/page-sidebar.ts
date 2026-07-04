@@ -11281,6 +11281,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/static-files/testing-magic-number-validation-fake-byte-streams': {
+    apis: ['MemoryStream', 'Stream.ReadExactlyAsync()', 'Span<byte>.SequenceEqual()'],
+    related: [
+      { label: 'How UseStaticFiles Computes ETag — next', route: '/aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache' },
+      { label: 'Static Files & Uploads (overview)', route: '/aspnet/static-files' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Magic-number validation only reads the first few bytes of a stream — a MemoryStream wrapping a hand-built byte array covers every edge case (valid, spoofed, partial-match, too-short) with no real image files needed on disk.',
+    docs: [
+      { label: 'Stream.ReadExactlyAsync', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.io.stream.readexactlyasync' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A magic-number check proves a file BEGINS with the correct signature — it says nothing about a polyglot file with malicious content appended after a valid header.',
+      'Always rewind the stream position after reading the header bytes, or the caller\'s subsequent save/copy operation silently skips the first few bytes of the file.',
+    ],
+  },
+
+  'aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache': {
+    apis: ['FileInfo.LastWriteTimeUtc', 'ETag', 'If-None-Match'],
+    related: [
+      { label: 'Testing Magic Number Validation — previous', route: '/aspnet/static-files/testing-magic-number-validation-fake-byte-streams' },
+      { label: 'StartsWith Path Traversal Guard Bypass — next', route: '/aspnet/static-files/startswith-path-traversal-guard-sibling-directory-bypass' },
+      { label: 'Static Files & Uploads (overview)', route: '/aspnet/static-files' },
+    ],
+    tip: 'The built-in ETag is a weak validator derived from file length and LastWriteTimeUtc, not content bytes — a deployment step that resets file timestamps (zip extraction, git checkout) busts every client\'s cache even when content never changed.',
+    docs: [
+      { label: 'HTTP Caching Middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/middleware' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Content-hash-based custom ETags are immune to timestamp resets but require reading the entire file — cache the computed hash rather than recomputing it on every request.',
+      'Files with content-hashed URLs (app.a1b2c3d4.js) sidestep this entirely, since long-TTL caching means the client never sends a conditional request within the TTL window.',
+    ],
+  },
+
+  'aspnet/static-files/startswith-path-traversal-guard-sibling-directory-bypass': {
+    apis: ['string.StartsWith()', 'Path.GetFullPath()', 'Path.DirectorySeparatorChar'],
+    related: [
+      { label: 'How UseStaticFiles Computes ETag — previous', route: '/aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache' },
+      { label: 'Static Files & Uploads (overview)', route: '/aspnet/static-files' },
+      { label: 'Security & Auth', route: '/security' },
+    ],
+    tip: 'string.StartsWith(uploadRoot) is a raw character-prefix comparison with no awareness of directory boundaries — a sibling folder like "uploads-backup" passes the check since it shares the same character prefix as "uploads".',
+    docs: [
+      { label: 'Path.GetFullPath Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.io.path.getfullpath' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The fix is appending the directory separator to the expected root before comparing — this turns a character-prefix check into a genuine directory-boundary check.',
+      'Even a correctly separator-aware check cannot detect a symbolic link inside the allowed directory resolving outside it — that requires resolving the canonical path or restricting write access to the upload directory.',
+    ],
+  },
+
   'aspnet/controllers': {
     apis: ['ControllerBase', '[ApiController]', 'ActionResult<T>', 'IActionResult', '[Route]', 'Problem()'],
     related: [

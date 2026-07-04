@@ -647,6 +647,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How BeginScope Propagates Ambient Context via AsyncLocal', route: '/aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal' },
     { label: 'Reusing an EventId Across LoggerMessage Methods', route: '/aspnet/logging/reusing-eventid-across-loggermessage-methods-compiles-cleanly' },
   ],
+  'static-files': [
+    { label: 'Testing Magic Number Validation With Fake Byte Streams', route: '/aspnet/static-files/testing-magic-number-validation-fake-byte-streams' },
+    { label: 'How UseStaticFiles Computes ETag', route: '/aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache' },
+    { label: 'StartsWith Path Traversal Guard Bypass', route: '/aspnet/static-files/startswith-path-traversal-guard-sibling-directory-bypass' },
+  ],
 };
 
 @Component({
