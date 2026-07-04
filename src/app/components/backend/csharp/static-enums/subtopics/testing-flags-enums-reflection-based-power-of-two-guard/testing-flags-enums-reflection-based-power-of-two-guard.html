@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Static, Partial & Enums"
+    topicRoute="/csharp/static-enums"
+    subtopicLabel="Testing Flags Enums: Reflection-Based Power-of-Two Guard" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing [Flags] Enums: A Reflection-Based Guard Against Non-Power-of-Two Values</h1>
+  <p class="page-subtitle">
+    The main topic shows the Admin = 3 overlap bug once, in prose — this subtopic writes a
+    reusable, reflection-based test that catches it automatically, for every current and
+    future [Flags] enum in the codebase.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing flags enums covers correctness — the next subtopics dig into modern partial
+      methods with return types, and a serialization compatibility trap the main topic
+      never mentions.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Static, Partial & Enums"
+    topicRoute="/csharp/static-enums"
+    [next]="{ label: 'Modern Partial Methods (C# 9+)', route: '/csharp/static-enums/modern-partial-methods-return-types-mandatory-implementation' }" />
+</div>

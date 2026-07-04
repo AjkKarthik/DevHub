@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Static, Partial & Enums"
+    topicRoute="/csharp/static-enums"
+    subtopicLabel="Modern Partial Methods (C# 9+)" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Modern Partial Methods (C# 9+): Return Types and When an Implementation Becomes Mandatory</h1>
+  <p class="page-subtitle">
+    The main topic's partial method example is deliberately the simple, silently-erasable
+    void shape — this subtopic shows the modern C# 9+ shape source generators rely on,
+    where a return type makes the implementation mandatory, not optional.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 9.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding mandatory vs optional partial methods matters for source-generator
+      code — the final subtopic covers a completely different production concern: what
+      happens to serialized enum data when values get reordered.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Static, Partial & Enums"
+    topicRoute="/csharp/static-enums"
+    [prev]="{ label: 'Testing Flags Enums', route: '/csharp/static-enums/testing-flags-enums-reflection-based-power-of-two-guard' }"
+    [next]="{ label: 'Enum Value Stability', route: '/csharp/static-enums/enum-value-stability-serialization-compatibility' }" />
+</div>

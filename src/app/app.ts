@@ -447,6 +447,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Default Interface Method Diamond Problem', route: '/csharp/abstract-interfaces/default-interface-method-diamond-problem' },
     { label: 'static abstract Members and Generic Constraints', route: '/csharp/abstract-interfaces/static-abstract-members-generic-constraint-requirement' },
   ],
+  'static-enums': [
+    { label: 'Testing Flags Enums', route: '/csharp/static-enums/testing-flags-enums-reflection-based-power-of-two-guard' },
+    { label: 'Modern Partial Methods (C# 9+)', route: '/csharp/static-enums/modern-partial-methods-return-types-mandatory-implementation' },
+    { label: 'Enum Value Stability', route: '/csharp/static-enums/enum-value-stability-serialization-compatibility' },
+  ],
 };
 
 @Component({

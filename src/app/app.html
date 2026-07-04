@@ -1178,7 +1178,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/static-enums" routerLinkActive="active"><span class="nl-text">Static, Partial &amp; Enums</span>@if(progress.isDone('csharp-static-enums')){<span class="nl-done">✓</span>}@if(diff('csharp-static-enums');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/static-enums" routerLinkActive="active">
+        <span class="nl-text">Static, Partial &amp; Enums</span>
+        @if (progress.isDone('csharp-static-enums')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-static-enums'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('static-enums')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('static-enums')"
+                  (click)="toggleSubtopics('static-enums', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('static-enums'); as subs) {
+        @if (isSubtopicsExpanded('static-enums')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/structures" routerLinkActive="active"><span class="nl-text">Structures</span>@if(progress.isDone('csharp-structures')){<span class="nl-done">✓</span>}@if(diff('csharp-structures');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/system-object" routerLinkActive="active"><span class="nl-text">System.Object</span>@if(progress.isDone('csharp-system-object')){<span class="nl-done">✓</span>}@if(diff('csharp-system-object');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

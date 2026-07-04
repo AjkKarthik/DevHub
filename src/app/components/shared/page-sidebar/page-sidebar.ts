@@ -7350,6 +7350,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Enum.Parse throws on unknown values — use Enum.TryParse for user input.', 'Partial classes must be in the same assembly — they are merged at compile time, not at runtime.'],
   },
 
+  'static-enums/testing-flags-enums-reflection-based-power-of-two-guard': {
+    apis: ['Enum.GetValues', 'FlagsAttribute', 'reflection'],
+    related: [
+      { label: 'Modern Partial Methods — next', route: '/csharp/static-enums/modern-partial-methods-return-types-mandatory-implementation' },
+      { label: 'Static, Partial & Enums (overview)', route: '/csharp/static-enums' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A single reflection-driven test parameterized over every [Flags]-decorated type in the assembly can validate that every primitive member is a power of two — protecting against future regressions, not just the enum as originally written.',
+    docs: [
+      { label: 'FlagsAttribute', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.flagsattribute' },
+    ],
+    resources: [
+      { label: 'xUnit Theory/MemberData', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'A "value is the union of other present values" heuristic cannot distinguish an intentional composite from an accidental bit overlap — both look structurally identical.',
+      'Explicitly listing known composite members (like All) is more reliable than automatic structural detection alone.',
+    ],
+  },
+
+  'static-enums/modern-partial-methods-return-types-mandatory-implementation': {
+    apis: ['partial method', 'source generator', 'CS8795'],
+    related: [
+      { label: 'Testing Flags Enums — previous', route: '/csharp/static-enums/testing-flags-enums-reflection-based-power-of-two-guard' },
+      { label: 'Enum Value Stability — next', route: '/csharp/static-enums/enum-value-stability-serialization-compatibility' },
+      { label: 'Static, Partial & Enums (overview)', route: '/csharp/static-enums' },
+    ],
+    tip: 'The silent-erasure behavior of partial methods applies only to the original void/implicit-private/no-out-params shape. A partial method with a real return type (C# 9+) makes the implementation MANDATORY — omitting it is a compile error, not silent removal.',
+    docs: [
+      { label: 'Partial Methods', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/partial-classes-and-methods' },
+    ],
+    resources: [
+      { label: 'Source Generators', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview', badge: 'docs' },
+    ],
+    gotchas: [
+      'The relaxed C# 9+ rules (any accessibility, any return type) exist specifically to support source generators declaring a contract for the developer to implement.',
+      'There is no safe default value the compiler could invent for a non-void return — this is exactly why the implementation becomes mandatory rather than optional.',
+    ],
+  },
+
+  'static-enums/enum-value-stability-serialization-compatibility': {
+    apis: ['enum', 'JsonStringEnumConverter', 'explicit values'],
+    related: [
+      { label: 'Modern Partial Methods — previous', route: '/csharp/static-enums/modern-partial-methods-return-types-mandatory-implementation' },
+      { label: 'Static, Partial & Enums (overview)', route: '/csharp/static-enums' },
+      { label: 'Fields & Constants', route: '/csharp/fields' },
+    ],
+    tip: 'Auto-incremented enum values are positional, not semantic — inserting a new member later silently shifts every subsequent member\'s value, corrupting any already-persisted data storing the old integers. Always assign explicit values for anything persisted or transmitted.',
+    docs: [
+      { label: 'Enum Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum' },
+    ],
+    resources: [
+      { label: 'JsonStringEnumConverter', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonstringenumconverter', badge: 'docs' },
+    ],
+    gotchas: [
+      'JsonStringEnumConverter only protects the specific path of JSON serialized through a configured JsonSerializer — database columns, binary serializers, and message queues storing raw integers remain fully exposed.',
+      'Implicit (auto-incremented) values are only safe for enums whose values never outlive a single process execution.',
+    ],
+  },
+
   structures: {
     apis: ['struct', 'ref struct', 'readonly struct', 'record struct', 'Span<T>'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }, { label: 'Collections', route: '/csharp/collections' }],

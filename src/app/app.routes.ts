@@ -510,7 +510,12 @@ export const routes: Routes = [
         { path: 'default-interface-method-diamond-problem', loadComponent: () => import('./components/backend/csharp/abstract-interfaces/subtopics/default-interface-method-diamond-problem/default-interface-method-diamond-problem').then(m => m.DefaultInterfaceMethodDiamondProblemSubtopic) },
         { path: 'static-abstract-members-generic-constraint-requirement', loadComponent: () => import('./components/backend/csharp/abstract-interfaces/subtopics/static-abstract-members-generic-constraint-requirement/static-abstract-members-generic-constraint-requirement').then(m => m.StaticAbstractMembersGenericConstraintRequirementSubtopic) },
       ] },
-      { path: 'static-enums',      loadComponent: () => import('./components/backend/csharp/static-enums/static-enums').then(m => m.CsharpStaticEnums) },
+      { path: 'static-enums', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/static-enums/static-enums').then(m => m.CsharpStaticEnums) },
+        { path: 'testing-flags-enums-reflection-based-power-of-two-guard', loadComponent: () => import('./components/backend/csharp/static-enums/subtopics/testing-flags-enums-reflection-based-power-of-two-guard/testing-flags-enums-reflection-based-power-of-two-guard').then(m => m.TestingFlagsEnumsReflectionBasedPowerOfTwoGuardSubtopic) },
+        { path: 'modern-partial-methods-return-types-mandatory-implementation', loadComponent: () => import('./components/backend/csharp/static-enums/subtopics/modern-partial-methods-return-types-mandatory-implementation/modern-partial-methods-return-types-mandatory-implementation').then(m => m.ModernPartialMethodsReturnTypesMandatoryImplementationSubtopic) },
+        { path: 'enum-value-stability-serialization-compatibility', loadComponent: () => import('./components/backend/csharp/static-enums/subtopics/enum-value-stability-serialization-compatibility/enum-value-stability-serialization-compatibility').then(m => m.EnumValueStabilitySerializationCompatibilitySubtopic) },
+      ] },
       { path: 'structures',        loadComponent: () => import('./components/backend/csharp/structures/structures').then(m => m.CsharpStructures) },
       { path: 'system-object',     loadComponent: () => import('./components/backend/csharp/system-object/system-object').then(m => m.CsharpSystemObject) },
       // ── Types ──
