@@ -743,7 +743,12 @@ export const routes: Routes = [
         { path: 'how-optionsmonitor-detects-file-change-changetoken-propagation', loadComponent: () => import('./components/backend/aspnet/configuration/subtopics/how-optionsmonitor-detects-file-change-changetoken-propagation/how-optionsmonitor-detects-file-change-changetoken-propagation').then(m => m.HowOptionsmonitorDetectsFileChangeChangetokenPropagationSubtopic) },
         { path: 'onchange-returns-idisposable-must-be-disposed-or-callback-leaks', loadComponent: () => import('./components/backend/aspnet/configuration/subtopics/onchange-returns-idisposable-must-be-disposed-or-callback-leaks/onchange-returns-idisposable-must-be-disposed-or-callback-leaks').then(m => m.OnchangeReturnsIdisposableMustBeDisposedOrCallbackLeaksSubtopic) },
       ] },
-      { path: 'dependency-injection', loadComponent: () => import('./components/backend/aspnet/dependency-injection/dependency-injection').then(m => m.AspnetDependencyInjection) },
+      { path: 'dependency-injection', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/dependency-injection/dependency-injection').then(m => m.AspnetDependencyInjection) },
+        { path: 'testing-servicescopefactory-backgroundservice-genuinely-fresh-scope', loadComponent: () => import('./components/backend/aspnet/dependency-injection/subtopics/testing-servicescopefactory-backgroundservice-genuinely-fresh-scope/testing-servicescopefactory-backgroundservice-genuinely-fresh-scope').then(m => m.TestingServicescopefactoryBackgroundserviceGenuinelyFreshScopeSubtopic) },
+        { path: 'createasyncscope-vs-createscope', loadComponent: () => import('./components/backend/aspnet/dependency-injection/subtopics/createasyncscope-vs-createscope/createasyncscope-vs-createscope').then(m => m.HowCreateasyncscopeDiffersCreatescopeInternallyAsyncdisposableWarningSubtopic) },
+        { path: 'activatorutilities-bypasses-validateonbuild', loadComponent: () => import('./components/backend/aspnet/dependency-injection/subtopics/activatorutilities-bypasses-validateonbuild/activatorutilities-bypasses-validateonbuild').then(m => m.ActivatorutilitiesCreateinstanceBypassesValidateonbuildEntirelySubtopic) },
+      ] },
       { path: 'logging',              loadComponent: () => import('./components/backend/aspnet/logging/logging').then(m => m.AspnetLogging) },
       { path: 'static-files',         loadComponent: () => import('./components/backend/aspnet/static-files/static-files').then(m => m.AspnetStaticFiles) },
       // ── Web API ──

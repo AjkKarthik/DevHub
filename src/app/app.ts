@@ -627,6 +627,16 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How IOptionsMonitor Actually Detects a File Change', route: '/aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation' },
     { label: 'OnChange Returns an IDisposable That Must Be Disposed', route: '/aspnet/configuration/onchange-returns-idisposable-must-be-disposed-or-callback-leaks' },
   ],
+  // NOTE: keyed 'aspnet-dependency-injection', NOT bare 'dependency-injection'
+  // — the Blazor hub already owns a route at the same bare slug
+  // ('/blazor/dependency-injection'). No Blazor subtopics exist for it yet,
+  // but pre-emptively hub-prefixing avoids repeating the exact 'routing'
+  // collision hit above the moment Blazor's own DI subtopics are added.
+  'aspnet-dependency-injection': [
+    { label: 'Testing a Fresh Scope Per BackgroundService Iteration', route: '/aspnet/dependency-injection/testing-servicescopefactory-backgroundservice-genuinely-fresh-scope' },
+    { label: 'CreateAsyncScope() vs CreateScope() Internally', route: '/aspnet/dependency-injection/createasyncscope-vs-createscope' },
+    { label: 'ActivatorUtilities Bypasses ValidateOnBuild', route: '/aspnet/dependency-injection/activatorutilities-bypasses-validateonbuild' },
+  ],
 };
 
 @Component({

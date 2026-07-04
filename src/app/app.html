@@ -232,7 +232,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/dependency-injection" routerLinkActive="active"><span class="nl-text">Dependency Injection</span>@if(progress.isDone('aspnet-dependency-injection')){<span class="nl-done">✓</span>}@if(diff('aspnet-dependency-injection');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/dependency-injection" routerLinkActive="active">
+        <span class="nl-text">Dependency Injection</span>
+        @if (progress.isDone('aspnet-dependency-injection')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-dependency-injection'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspnet-dependency-injection')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspnet-dependency-injection')"
+                  (click)="toggleSubtopics('aspnet-dependency-injection', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspnet-dependency-injection'); as subs) {
+        @if (isSubtopicsExpanded('aspnet-dependency-injection')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/logging" routerLinkActive="active"><span class="nl-text">Logging &amp; Diagnostics</span>@if(progress.isDone('aspnet-logging')){<span class="nl-done">✓</span>}@if(diff('aspnet-logging');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/static-files" routerLinkActive="active"><span class="nl-text">Static Files &amp; Uploads</span>@if(progress.isDone('aspnet-static-files')){<span class="nl-done">✓</span>}@if(diff('aspnet-static-files');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/feature-flags" routerLinkActive="active"><span class="nl-text">Feature Flags</span>@if(progress.isDone('aspnet-feature-flags')){<span class="nl-done">✓</span>}@if(diff('aspnet-feature-flags');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

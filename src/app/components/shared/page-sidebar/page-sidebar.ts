@@ -11118,6 +11118,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/dependency-injection/testing-servicescopefactory-backgroundservice-genuinely-fresh-scope': {
+    apis: ['IServiceScopeFactory', 'CreateScope()', 'BackgroundService'],
+    related: [
+      { label: 'CreateAsyncScope() vs CreateScope() Internally — next', route: '/aspnet/dependency-injection/createasyncscope-vs-createscope' },
+      { label: 'Dependency Injection (overview)', route: '/aspnet/dependency-injection' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Prove "fresh scope per iteration" by comparing a marker Guid set at construction across two separate scope-creation calls, not by trusting a code comment — a refactor that hoists scope creation outside a loop compiles cleanly and passes ValidateOnBuild.',
+    docs: [
+      { label: 'IServiceScopeFactory Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory' },
+    ],
+    resources: [
+      { label: 'BackgroundService Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.backgroundservice', badge: 'docs' },
+    ],
+    gotchas: [
+      'Neither ValidateOnBuild nor ValidateScopes can catch a scope accidentally created outside a loop — that is a runtime control-flow mistake, not a registration-time one.',
+      'Testing a real BackgroundService\'s per-iteration behavior needs a testability seam (an event or virtual method) since ExecuteAsync\'s loop body is otherwise opaque to test code.',
+    ],
+  },
+
+  'aspnet/dependency-injection/createasyncscope-vs-createscope': {
+    apis: ['CreateAsyncScope()', 'IAsyncDisposable', 'AsyncServiceScope'],
+    related: [
+      { label: 'Testing a Fresh Scope Per BackgroundService Iteration — previous', route: '/aspnet/dependency-injection/testing-servicescopefactory-backgroundservice-genuinely-fresh-scope' },
+      { label: 'ActivatorUtilities Bypasses ValidateOnBuild — next', route: '/aspnet/dependency-injection/activatorutilities-bypasses-validateonbuild' },
+      { label: 'Dependency Injection (overview)', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'A Scoped service that implements ONLY IAsyncDisposable (no synchronous IDisposable) disposed from a synchronous CreateScope() forces the container to block the thread via DisposeAsync().GetAwaiter().GetResult() — CreateAsyncScope() avoids this entirely.',
+    docs: [
+      { label: 'IAsyncDisposable Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.iasyncdisposable' },
+    ],
+    resources: [
+      { label: 'AsyncServiceScope Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.asyncservicescope', badge: 'docs' },
+    ],
+    gotchas: [
+      'A type implementing BOTH IDisposable and IAsyncDisposable (like EF Core\'s DbContext) never hits the blocking fallback — a synchronous scope simply calls its synchronous Dispose() path directly.',
+      'The blocking fallback is silent — it does not throw, it just blocks a thread-pool thread for the duration of the async cleanup.',
+    ],
+  },
+
+  'aspnet/dependency-injection/activatorutilities-bypasses-validateonbuild': {
+    apis: ['ActivatorUtilities.CreateInstance<T>()', 'ValidateOnBuild', 'IServiceProvider'],
+    related: [
+      { label: 'CreateAsyncScope() vs CreateScope() Internally — previous', route: '/aspnet/dependency-injection/createasyncscope-vs-createscope' },
+      { label: 'Dependency Injection (overview)', route: '/aspnet/dependency-injection' },
+      { label: 'Middleware Pipeline', route: '/aspnet/middleware' },
+    ],
+    tip: 'ValidateOnBuild only walks types REGISTERED in the container — a type constructed exclusively via ActivatorUtilities.CreateInstance<T>() is invisible to that walk, so a missing constructor dependency only throws the first time that exact call site runs.',
+    docs: [
+      { label: 'ActivatorUtilities Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.activatorutilities' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A dedicated activation smoke test that calls ActivatorUtilities.CreateInstance<T>() for every known plugin type catches this gap in a fast unit test instead of production traffic.',
+      'Other tests exercising different plugins or endpoints provide zero coverage for this — each ActivatorUtilities call site is an independent gap.',
+    ],
+  },
+
   'aspnet/logging': {
     apis: ['ILogger<T>', 'ILoggerFactory', 'LogLevel', '[LoggerMessage]', 'BeginScope()'],
     related: [
