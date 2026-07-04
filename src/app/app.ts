@@ -452,6 +452,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Modern Partial Methods (C# 9+)', route: '/csharp/static-enums/modern-partial-methods-return-types-mandatory-implementation' },
     { label: 'Enum Value Stability', route: '/csharp/static-enums/enum-value-stability-serialization-compatibility' },
   ],
+  'structures': [
+    { label: 'Testing the Struct-Copy Mutation Trap', route: '/csharp/structures/testing-the-struct-copy-mutation-trap' },
+    { label: 'ref struct Interfaces (C# 13)', route: '/csharp/structures/ref-struct-interfaces-generic-constraint-dispatch' },
+    { label: 'Array vs List vs foreach Struct Mutation', route: '/csharp/structures/array-vs-list-vs-foreach-struct-mutation' },
+  ],
 };
 
 @Component({

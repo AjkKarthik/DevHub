@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Records & Structs"
+    topicRoute="/csharp/structures"
+    subtopicLabel="ref struct Interfaces (C# 13)" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">ref struct Interfaces (C# 13): Implementing Without Boxing, Constrained to Generic Dispatch Only</h1>
+  <p class="page-subtitle">
+    The main topic mentions this brand-new capability in one clause — this subtopic shows
+    it in real code, explains why ref struct couldn't implement interfaces before, and
+    pins down the exact boundary C# 13 draws.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 13.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding the generic-dispatch-only boundary sets up the final subtopic: a
+      completely different, classic gotcha about how array, list, and foreach mutation
+      semantics differ for structs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Records & Structs"
+    topicRoute="/csharp/structures"
+    [prev]="{ label: 'Testing the Struct-Copy Mutation Trap', route: '/csharp/structures/testing-the-struct-copy-mutation-trap' }"
+    [next]="{ label: 'Array vs List vs foreach Struct Mutation', route: '/csharp/structures/array-vs-list-vs-foreach-struct-mutation' }" />
+</div>

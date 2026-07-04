@@ -516,7 +516,12 @@ export const routes: Routes = [
         { path: 'modern-partial-methods-return-types-mandatory-implementation', loadComponent: () => import('./components/backend/csharp/static-enums/subtopics/modern-partial-methods-return-types-mandatory-implementation/modern-partial-methods-return-types-mandatory-implementation').then(m => m.ModernPartialMethodsReturnTypesMandatoryImplementationSubtopic) },
         { path: 'enum-value-stability-serialization-compatibility', loadComponent: () => import('./components/backend/csharp/static-enums/subtopics/enum-value-stability-serialization-compatibility/enum-value-stability-serialization-compatibility').then(m => m.EnumValueStabilitySerializationCompatibilitySubtopic) },
       ] },
-      { path: 'structures',        loadComponent: () => import('./components/backend/csharp/structures/structures').then(m => m.CsharpStructures) },
+      { path: 'structures', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/structures/structures').then(m => m.CsharpStructures) },
+        { path: 'testing-the-struct-copy-mutation-trap', loadComponent: () => import('./components/backend/csharp/structures/subtopics/testing-the-struct-copy-mutation-trap/testing-the-struct-copy-mutation-trap').then(m => m.TestingTheStructCopyMutationTrapSubtopic) },
+        { path: 'ref-struct-interfaces-generic-constraint-dispatch', loadComponent: () => import('./components/backend/csharp/structures/subtopics/ref-struct-interfaces-generic-constraint-dispatch/ref-struct-interfaces-generic-constraint-dispatch').then(m => m.RefStructInterfacesGenericConstraintDispatchSubtopic) },
+        { path: 'array-vs-list-vs-foreach-struct-mutation', loadComponent: () => import('./components/backend/csharp/structures/subtopics/array-vs-list-vs-foreach-struct-mutation/array-vs-list-vs-foreach-struct-mutation').then(m => m.ArrayVsListVsForeachStructMutationSubtopic) },
+      ] },
       { path: 'system-object',     loadComponent: () => import('./components/backend/csharp/system-object/system-object').then(m => m.CsharpSystemObject) },
       // ── Types ──
       { path: 'extension-methods', loadComponent: () => import('./components/backend/csharp/extension-methods/extension-methods').then(m => m.CsharpExtensionMethods) },

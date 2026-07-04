@@ -7419,6 +7419,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Structs are copied on assignment — mutating a local copy does not affect the original.', 'ref struct cannot be boxed, stored in arrays, or used as generic type arguments.'],
   },
 
+  'structures/testing-the-struct-copy-mutation-trap': {
+    apis: ['Assert.Equal', 'with expression', 'record struct'],
+    related: [
+      { label: 'ref struct Interfaces — next', route: '/csharp/structures/ref-struct-interfaces-generic-constraint-dispatch' },
+      { label: 'Structures (overview)', route: '/csharp/structures' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test proving the copy-mutation trap must re-read the property AFTERWARD and assert on that fresh read — asserting only on the local copy proves nothing, since of course it holds the value you just assigned.',
+    docs: [
+      { label: 'Struct Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'The trap applies to ANY struct-returning getter — class properties, Dictionary indexers, LINQ projections — not just the main topic\'s class-property example.',
+      'record struct\'s "with" support does not change the underlying copy-semantics rule — directly mutating a retrieved record struct copy is still silently lost.',
+    ],
+  },
+
+  'structures/ref-struct-interfaces-generic-constraint-dispatch': {
+    apis: ['ref struct', 'interface', 'generic constraint'],
+    related: [
+      { label: 'Testing the Struct-Copy Mutation Trap — previous', route: '/csharp/structures/testing-the-struct-copy-mutation-trap' },
+      { label: 'Array vs List vs foreach — next', route: '/csharp/structures/array-vs-list-vs-foreach-struct-mutation' },
+      { label: 'Static Abstract Members', route: '/csharp/abstract-interfaces/static-abstract-members-generic-constraint-requirement' },
+    ],
+    tip: 'C# 13 lets ref struct implement interfaces, but ONLY the generic-constrained dispatch path is permitted — assigning to an interface-typed variable or parameter still requires boxing and remains illegal for ref struct.',
+    docs: [
+      { label: 'ref struct', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/ref-struct' },
+    ],
+    resources: [
+      { label: 'C# 13 Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-13', badge: 'docs' },
+    ],
+    gotchas: [
+      'Prior to C# 13, ref struct implementing an interface at all was a compile error — this is newly permitted, not a previously-existing but restricted capability.',
+      'The mechanism is the same constrained-dispatch machinery that powers static abstract interface members — specialized per concrete type argument, zero boxing.',
+    ],
+  },
+
+  'structures/array-vs-list-vs-foreach-struct-mutation': {
+    apis: ['T[]', 'List<T>', 'foreach', 'CS1612'],
+    related: [
+      { label: 'ref struct Interfaces — previous', route: '/csharp/structures/ref-struct-interfaces-generic-constraint-dispatch' },
+      { label: 'Structures (overview)', route: '/csharp/structures' },
+      { label: 'Collections', route: '/csharp/collections' },
+    ],
+    tip: 'A raw array\'s indexer is a special, addressable-variable construct — array[i].X = 5 genuinely mutates. List<T>\'s indexer is an ordinary method call returning a copy — list[i].X = 5 is CS1612. foreach always copies, for both.',
+    docs: [
+      { label: 'Arrays', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/' },
+    ],
+    resources: [
+      { label: 'Struct Design Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct', badge: 'docs' },
+    ],
+    gotchas: [
+      'The array indexer\'s special addressability applies to single-dimensional, multi-dimensional, and jagged arrays alike — it is a property of array types generally, not one specific form.',
+      'Only an indexed for-loop can mutate struct elements in an array in place — foreach can never do this, regardless of container type.',
+    ],
+  },
+
   'system-object': {
     apis: ['ToString()', 'Equals()', 'GetHashCode()', 'GetType()', 'MemberwiseClone()'],
     related: [{ label: 'OOP & Classes', route: '/csharp/oop' }, { label: 'Records & Structs', route: '/csharp/records' }, { label: 'Collections', route: '/csharp/collections' }],
