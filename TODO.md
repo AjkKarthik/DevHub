@@ -1485,7 +1485,7 @@ off here with a date.
 - [x] `/csharp/source-generators` — Source Generators (2026-07-04 — 3 subtopics: testing-source-generators-in-memory-pipeline-snapshotting-output, why-symbols-defeat-incremental-caching-leak-compilation, debugging-source-generator-debugger-launch-technique)
 - [x] `/csharp/span-memory` — Span<T> & Memory<T> (2026-07-04 — 3 subtopics: testing-methods-accepting-span-cannot-wrap-call-in-lambda, whats-actually-inside-span-ref-field-fast-restricted, arraypool-rent-returns-dirty-memory-stale-data-leak)
 - [x] `/csharp/di-dotnet` — Dependency Injection in .NET (2026-07-04 — 3 subtopics: testing-di-container-configuration-every-registration-resolves, how-validatescopes-catches-captive-dependency-root-child-scope, multiple-implementations-single-t-injection-returns-last)
-- [ ] `/csharp/json-advanced` — System.Text.Json Advanced
+- [x] `/csharp/json-advanced` — System.Text.Json Advanced (2026-07-04 — 3 subtopics: testing-custom-jsonconverter-round-trips-exact-json-shape, generic-instantiation-needs-own-jsonserializable-source-gen, unknown-type-discriminator-throws-jsonexception-not-forward-compatible)
 - [ ] `/csharp/unsafe-pointers` — Unsafe Code & Pointers
 - [ ] `/csharp/native-aot` — Native AOT
 - [ ] `/csharp/benchmarkdotnet` — BenchmarkDotNet
