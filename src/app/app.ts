@@ -502,6 +502,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ValueTask: The One-Await Rule', route: '/csharp/tasks/valuetask-await-once-rule-when-worth-complexity' },
     { label: 'WhenAll Does Not Start Tasks in Parallel', route: '/csharp/tasks/whenall-doesnt-start-tasks-parallel-just-awaits-running' },
   ],
+  'reflection': [
+    { label: 'Testing Reflection-Based Code', route: '/csharp/reflection/testing-reflection-code-attribute-discovery-cache-behavior' },
+    { label: 'Beyond Expression Trees', route: '/csharp/reflection/beyond-expression-trees-dynamicmethod-reflection-emit' },
+    { label: 'Generic Type Reflection Traps', route: '/csharp/reflection/generic-type-reflection-traps-generictypedefinition' },
+  ],
 };
 
 @Component({

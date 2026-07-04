@@ -580,7 +580,12 @@ export const routes: Routes = [
         { path: 'whenall-doesnt-start-tasks-parallel-just-awaits-running', loadComponent: () => import('./components/backend/csharp/tasks/subtopics/whenall-doesnt-start-tasks-parallel-just-awaits-running/whenall-doesnt-start-tasks-parallel-just-awaits-running').then(m => m.WhenallDoesntStartTasksParallelJustAwaitsRunningSubtopic) },
       ] },
       // ── Advanced & Quality ──
-      { path: 'reflection',        loadComponent: () => import('./components/backend/csharp/reflection/reflection').then(m => m.CsharpReflection) },
+      { path: 'reflection', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/reflection/reflection').then(m => m.CsharpReflection) },
+        { path: 'testing-reflection-code-attribute-discovery-cache-behavior', loadComponent: () => import('./components/backend/csharp/reflection/subtopics/testing-reflection-code-attribute-discovery-cache-behavior/testing-reflection-code-attribute-discovery-cache-behavior').then(m => m.TestingReflectionCodeAttributeDiscoveryCacheBehaviorSubtopic) },
+        { path: 'beyond-expression-trees-dynamicmethod-reflection-emit', loadComponent: () => import('./components/backend/csharp/reflection/subtopics/beyond-expression-trees-dynamicmethod-reflection-emit/beyond-expression-trees-dynamicmethod-reflection-emit').then(m => m.BeyondExpressionTreesDynamicmethodReflectionEmitSubtopic) },
+        { path: 'generic-type-reflection-traps-generictypedefinition', loadComponent: () => import('./components/backend/csharp/reflection/subtopics/generic-type-reflection-traps-generictypedefinition/generic-type-reflection-traps-generictypedefinition').then(m => m.GenericTypeReflectionTrapsGenerictypedefinitionSubtopic) },
+      ] },
       { path: 'iterators',         loadComponent: () => import('./components/backend/csharp/iterators/iterators').then(m => m.CsharpIterators) },
       { path: 'functional-csharp', loadComponent: () => import('./components/backend/csharp/functional-csharp/functional-csharp').then(m => m.CsharpFunctionalCsharp) },
       { path: 'regex',             loadComponent: () => import('./components/backend/csharp/regex/regex').then(m => m.CsharpRegex) },

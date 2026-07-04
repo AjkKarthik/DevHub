@@ -8100,6 +8100,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  reflection: {
+    apis: ['Type', 'PropertyInfo', 'Activator.CreateInstance', 'GetCustomAttribute'],
+    related: [{ label: 'Generics', route: '/csharp/generics' }, { label: 'Delegates & Events', route: '/csharp/delegates' }, { label: 'Expression Trees', route: '/csharp/expression-trees' }],
+    tip: 'Cache PropertyInfo/MethodInfo per type in a static ConcurrentDictionary — member lookup is the expensive part of reflection, not reusing the cached object.',
+    docs: [{ label: 'Reflection (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/reflection-and-attributes/' }],
+    resources: [{ label: 'Type Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.type', badge: 'docs' }],
+    gotchas: ['Attributes are passive metadata — they do nothing unless some code reads them via GetCustomAttribute.', 'GetProperties()/GetFields() return public members only by default — pass BindingFlags.NonPublic for private members.'],
+  },
+
+  'reflection/testing-reflection-code-attribute-discovery-cache-behavior': {
+    apis: ['ReferenceEquals', 'GetCustomAttribute<T>', 'ConcurrentDictionary'],
+    related: [
+      { label: 'Beyond Expression Trees — next', route: '/csharp/reflection/beyond-expression-trees-dynamicmethod-reflection-emit' },
+      { label: 'Reflection & Attributes (overview)', route: '/csharp/reflection' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Assert on WHICH specific members were discovered (and which undecorated ones were skipped) rather than just confirming the scan ran without errors — and prove a MemberInfo cache genuinely avoids re-scanning with ReferenceEquals, not just equal-looking results.',
+    docs: [
+      { label: 'Reflection (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/reflection-and-attributes/' },
+    ],
+    resources: [
+      { label: 'PropertyInfo Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.reflection.propertyinfo', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test confirming attribute-driven code runs without errors says nothing about whether it discovered the right members and skipped the wrong ones.',
+      'Two independently-computed PropertyInfo arrays can look content-equal without being the same cached instance — ReferenceEquals or a call-count spy proves a genuine cache hit.',
+    ],
+  },
+
+  'reflection/beyond-expression-trees-dynamicmethod-reflection-emit': {
+    apis: ['DynamicMethod', 'ILGenerator', 'OpCodes'],
+    related: [
+      { label: 'Testing Reflection-Based Code — previous', route: '/csharp/reflection/testing-reflection-code-attribute-discovery-cache-behavior' },
+      { label: 'Generic Type Reflection Traps — next', route: '/csharp/reflection/generic-type-reflection-traps-generictypedefinition' },
+      { label: 'Reflection & Attributes (overview)', route: '/csharp/reflection' },
+    ],
+    tip: 'Expression.Lambda(...).Compile() already produces genuine JIT-compiled IL — hand-written IL via Reflection.Emit reaches the same runtime speed but with far higher correctness risk, and belongs almost exclusively in serializer/ORM/DI-container internals.',
+    docs: [
+      { label: 'System.Reflection.Emit', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.reflection.emit' },
+    ],
+    resources: [
+      { label: 'Expression Trees', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Mistakes in hand-written IL don\'t always fail at compile time — some only surface as InvalidProgramException at invocation, with no compile-time safety net.',
+      'Reaching for Reflection.Emit without first profiling and confirming expression-tree-compiled delegates are still the bottleneck is a common overengineering trap.',
+    ],
+  },
+
+  'reflection/generic-type-reflection-traps-generictypedefinition': {
+    apis: ['GetGenericTypeDefinition', 'IsGenericType', 'GetInterfaces'],
+    related: [
+      { label: 'Beyond Expression Trees — previous', route: '/csharp/reflection/beyond-expression-trees-dynamicmethod-reflection-emit' },
+      { label: 'Reflection & Attributes (overview)', route: '/csharp/reflection' },
+      { label: 'Generics', route: '/csharp/generics' },
+    ],
+    tip: 'typeof(List<int>) and typeof(List<>) are entirely different Type objects — use GetGenericTypeDefinition() to compare a closed generic type against its open definition, and walk GetInterfaces() to detect "implements IEnumerable<T> for any T".',
+    docs: [
+      { label: 'Type.GetGenericTypeDefinition', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.type.getgenerictypedefinition' },
+    ],
+    resources: [
+      { label: 'Generics (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/generics', badge: 'docs' },
+    ],
+    gotchas: [
+      'typeof(IEnumerable<>).IsAssignableFrom(someClosedType) unreliably returns false even for types that genuinely implement a closed IEnumerable<T> — walking GetInterfaces() and comparing GetGenericTypeDefinition() is the correct technique.',
+      'Calling GetGenericTypeDefinition() on a non-generic type throws InvalidOperationException — always guard with IsGenericType first.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],
