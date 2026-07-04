@@ -1507,7 +1507,7 @@ off here with a date.
 - [x] `/aspnet/controllers` — Controllers & Actions (2026-07-04 — 3 subtopics: testing-actionresult-catches-null-returns-200-ok-bug, how-binding-source-inference-decides-frombody-vs-fromquery, createdataction-throws-runtime-despite-nameof-safety)
 - [x] `/aspnet/minimal-apis` — Minimal APIs (2026-07-04 — 3 subtopics: testing-endpoint-filter-isolation-no-test-server, forgotten-di-registration-silently-falls-through-body-binding, linkgenerator-getpathbyname-returns-null-instead-of-throwing)
 - [x] `/aspnet/model-binding` — Model Binding & Validation (2026-07-04 — 3 subtopics: testing-iparsable-tryparse-graceful-failure-daterange, how-recursive-nested-validation-walks-object-graph-circular-reference, fluentvalidation-setvalidator-new-silently-bypasses-di)
-- [ ] `/aspnet/filters` — Filters & Endpoint Filters
+- [x] `/aspnet/filters` — Filters & Endpoint Filters (2026-07-04 — 3 subtopics: testing-filters-execute-in-documented-pipeline-order, why-next-runs-action-even-after-context-result-is-set, ifilterfactory-isreusable-silently-recreates-captive-dependency)
 - [ ] `/aspnet/error-handling` — Error Handling
 - [ ] `/aspnet/openapi-swagger` — OpenAPI & Swagger
 - [ ] `/aspnet/api-versioning` — API Versioning
