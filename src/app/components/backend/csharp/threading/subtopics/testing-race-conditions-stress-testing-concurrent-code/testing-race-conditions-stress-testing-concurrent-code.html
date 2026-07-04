@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Threading" topicRoute="/csharp/threading" subtopicLabel="Testing for Race Conditions" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing for Race Conditions: Stress-Testing Concurrent Code to Catch What Single-Threaded Tests Never Will</h1>
+  <p class="page-subtitle">The main topic page's own SafeCounter demo is verified by printing output, not a repeatable test. See how spinning up many threads against shared state turns "probably thread-safe" into an assertable, if probabilistic, test.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at exactly why the main <a routerLink="/csharp/threading">Threading</a> page's own one-line explanation of lock's compiled form — Monitor.Enter/Exit in a try/finally — includes a ref bool parameter, and the historical bug that made it necessary.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Threading"
+    topicRoute="/csharp/threading"
+    [next]="{ label: 'The Old lock Codegen Bug', route: '/csharp/threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken' }"
+  />
+</div>

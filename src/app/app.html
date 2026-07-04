@@ -1520,7 +1520,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/threading" routerLinkActive="active"><span class="nl-text">Threading</span>@if(progress.isDone('csharp-threading')){<span class="nl-done">✓</span>}@if(diff('csharp-threading');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/threading" routerLinkActive="active">
+        <span class="nl-text">Threading</span>
+        @if (progress.isDone('csharp-threading')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-threading'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('threading')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('threading')"
+                  (click)="toggleSubtopics('threading', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('threading'); as subs) {
+        @if (isSubtopicsExpanded('threading')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/tasks" routerLinkActive="active"><span class="nl-text">Tasks</span>@if(progress.isDone('csharp-tasks')){<span class="nl-done">✓</span>}@if(diff('csharp-tasks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/async" routerLinkActive="active">
         <span class="nl-text">async / await</span>

@@ -492,6 +492,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Pattern-Based Disposal on ref structs', route: '/csharp/gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable' },
     { label: 'Disposed but Still Running', route: '/csharp/gc-disposable/disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose' },
   ],
+  'threading': [
+    { label: 'Testing for Race Conditions', route: '/csharp/threading/testing-race-conditions-stress-testing-concurrent-code' },
+    { label: 'The Old lock Codegen Bug', route: '/csharp/threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken' },
+    { label: 'Lazy Thread-Safety Modes', route: '/csharp/threading/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free' },
+  ],
 };
 
 @Component({

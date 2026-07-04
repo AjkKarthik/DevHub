@@ -567,7 +567,12 @@ export const routes: Routes = [
         { path: 'disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose', loadComponent: () => import('./components/backend/csharp/gc-disposable/subtopics/disposed-but-still-running-event-fire-forget/disposed-but-still-running-event-fire-forget').then(m => m.DisposedButStillRunningEventHandlerFireAndForgetOutlivesDisposeSubtopic) },
       ] },
       // ── Concurrency ──
-      { path: 'threading',         loadComponent: () => import('./components/backend/csharp/threading/threading').then(m => m.CsharpThreading) },
+      { path: 'threading', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/threading/threading').then(m => m.CsharpThreading) },
+        { path: 'testing-race-conditions-stress-testing-concurrent-code', loadComponent: () => import('./components/backend/csharp/threading/subtopics/testing-race-conditions-stress-testing-concurrent-code/testing-race-conditions-stress-testing-concurrent-code').then(m => m.TestingRaceConditionsStressTestingConcurrentCodeSubtopic) },
+        { path: 'old-lock-codegen-bug-monitor-enter-ref-bool-taken', loadComponent: () => import('./components/backend/csharp/threading/subtopics/old-lock-codegen-bug-monitor-enter-ref-bool-taken/old-lock-codegen-bug-monitor-enter-ref-bool-taken').then(m => m.OldLockCodegenBugMonitorEnterRefBoolTakenSubtopic) },
+        { path: 'lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free', loadComponent: () => import('./components/backend/csharp/threading/subtopics/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free').then(m => m.LazyHiddenThreadSafetyModesConcurrentdictionaryFixNotFreeSubtopic) },
+      ] },
       { path: 'tasks',             loadComponent: () => import('./components/backend/csharp/tasks/tasks').then(m => m.CsharpTasks) },
       // ── Advanced & Quality ──
       { path: 'reflection',        loadComponent: () => import('./components/backend/csharp/reflection/reflection').then(m => m.CsharpReflection) },

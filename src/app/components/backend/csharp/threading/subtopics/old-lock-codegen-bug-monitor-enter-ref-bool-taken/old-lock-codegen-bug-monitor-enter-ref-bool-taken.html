@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Threading" topicRoute="/csharp/threading" subtopicLabel="The Old lock Codegen Bug" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">The Old lock Codegen Bug: Why Monitor.Enter Takes a ref bool "taken" Parameter</h1>
+  <p class="page-subtitle">The main topic page states lock compiles to Monitor.Enter/Exit in a try/finally in one line. See the reliability gap in the OLD pre-C# 4 lowering that made the ref bool taken parameter necessary — a permanent lock leak from a mistimed asynchronous exception.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 4+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic goes deeper into the main <a routerLink="/csharp/threading">Threading</a> page's own Common Mistakes section on <code>ConcurrentDictionary.GetOrAdd</code> — specifically, why wrapping the factory in <code>Lazy&lt;T&gt;</code> isn't automatically free of its own thread-safety cost.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Threading"
+    topicRoute="/csharp/threading"
+    [prev]="{ label: 'Testing for Race Conditions', route: '/csharp/threading/testing-race-conditions-stress-testing-concurrent-code' }"
+    [next]="{ label: 'Lazy Thread-Safety Modes', route: '/csharp/threading/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free' }"
+  />
+</div>

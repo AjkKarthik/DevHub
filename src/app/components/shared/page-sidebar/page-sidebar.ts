@@ -7971,6 +7971,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['lock() prevents concurrent access but can cause deadlocks if two threads lock in different orders.', 'volatile ensures visibility across threads but does not prevent race conditions on compound operations (read-modify-write).'],
   },
 
+  'threading/testing-race-conditions-stress-testing-concurrent-code': {
+    apis: ['Thread', 'Parallel.For', 'Assert.Equal'],
+    related: [
+      { label: 'The Old lock Codegen Bug — next', route: '/csharp/threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken' },
+      { label: 'Threading (overview)', route: '/csharp/threading' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Spin up many threads hammering shared state concurrently, then assert on an invariant a race condition would violate — a single-threaded test exercises none of the interleaving that could expose a synchronization bug.',
+    docs: [
+      { label: 'Managed Threading Best Practices', url: 'https://learn.microsoft.com/en-us/dotnet/standard/threading/managed-threading-best-practices' },
+    ],
+    resources: [
+      { label: 'Thread Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread', badge: 'docs' },
+    ],
+    gotchas: [
+      'Race conditions are probabilistic — a stress test passing once does not prove the code is free of them; increasing thread count and iterations improves confidence but never guarantees certainty.',
+      'A demonstration test proving an UNSAFE implementation fails is itself flaky by nature — usually written as documentation rather than a hard CI-blocking assertion.',
+    ],
+  },
+
+  'threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken': {
+    apis: ['Monitor.Enter', 'ref bool taken', 'ThreadAbortException'],
+    related: [
+      { label: 'Testing for Race Conditions — previous', route: '/csharp/threading/testing-race-conditions-stress-testing-concurrent-code' },
+      { label: 'Lazy Thread-Safety Modes — next', route: '/csharp/threading/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free' },
+      { label: 'Threading (overview)', route: '/csharp/threading' },
+    ],
+    tip: 'Monitor.Enter(obj, ref taken) sets taken atomically with acquiring the lock — this closes a real reliability gap in the old pre-C# 4 codegen where an asynchronous exception at the wrong moment could leak a lock permanently.',
+    docs: [
+      { label: 'Monitor Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.monitor' },
+    ],
+    resources: [
+      { label: 'lock Statement', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock', badge: 'docs' },
+    ],
+    gotchas: [
+      'The specific trigger (Thread.Abort()) is effectively unavailable on .NET Core/.NET 5+, which always throws PlatformNotSupportedException — the pattern remains defensive rather than addressing an actively common failure mode today.',
+      'The old lowering called Monitor.Enter(obj) BEFORE the try block began — the modern lowering\'s ref bool parameter is what makes the finally block\'s decision to call Exit always correct.',
+    ],
+  },
+
+  'threading/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free': {
+    apis: ['Lazy<T>', 'LazyThreadSafetyMode', 'ConcurrentDictionary.GetOrAdd'],
+    related: [
+      { label: 'The Old lock Codegen Bug — previous', route: '/csharp/threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken' },
+      { label: 'Threading (overview)', route: '/csharp/threading' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'The default Lazy<T> mode (ExecutionAndPublication) uses an internal lock to guarantee single execution — for a cheap, side-effect-free factory, PublicationOnly can be a better trade-off, avoiding that lock\'s contention entirely.',
+    docs: [
+      { label: 'Lazy<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.lazy-1' },
+    ],
+    resources: [
+      { label: 'LazyThreadSafetyMode', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.lazythreadsafetymode', badge: 'docs' },
+    ],
+    gotchas: [
+      'Wrapping a ConcurrentDictionary value in Lazy<T> is not a free fix — the default mode\'s internal lock means every .Value access may briefly synchronize, trading one cost for another.',
+      'PublicationOnly allows the factory to run on multiple threads concurrently (same risk as raw GetOrAdd) — only appropriate when the factory is cheap and side-effect-free.',
+    ],
+  },
+
   tasks: {
     apis: ['Task.Run()', 'Task.WhenAll()', 'Parallel.ForEach()', 'TaskCompletionSource', 'ContinueWith()'],
     related: [{ label: 'async / await', route: '/csharp/async' }, { label: 'Threading', route: '/csharp/threading' }, { label: 'Exceptions', route: '/csharp/exceptions' }],
