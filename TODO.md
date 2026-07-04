@@ -1493,7 +1493,7 @@ off here with a date.
 - [x] `/csharp/dotnet-cli` — .NET CLI & Tooling (2026-07-04 — 3 subtopics: verifying-build-reproducible-simulating-clean-machine-restore-lock-file, how-rollforward-picks-sdk-version-feature-band-matching-algorithm, automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file)
 - [x] `/csharp/whats-new-9-10` — What's New in C# 9 & 10 (2026-07-04 — 3 subtopics: testing-record-equality-collection-properties-not-list-reference-trap, compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive, records-as-dictionary-keys-break-when-reference-property-mutated)
 - [x] `/csharp/whats-new-11-12` — What's New in C# 11 & 12 (2026-07-04 — 3 subtopics: testing-generic-math-across-numeric-types-one-suite-every-inumber-implementation, how-static-abstract-interface-members-dispatch-compile-time-generic-specialization, primary-constructor-parameter-captured-as-field-object-entire-lifetime)
-- [ ] `/csharp/whats-new-latest` — What's New in C# 13+ & .NET 10/11
+- [x] `/csharp/whats-new-latest` — What's New in C# 13+ & .NET 10/11 (2026-07-04 — 3 subtopics: testing-time-dependent-code-with-faketimeprovider-without-sleeping, how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement, hybridcache-stampede-protection-only-coalesces-within-one-process)
 
 #### ASP.NET Core — 45 topic pages
 
