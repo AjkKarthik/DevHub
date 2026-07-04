@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Regular Expressions" topicRoute="/csharp/regex" subtopicLabel="The Unicode Digit Trap" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">\d Matches More Than ASCII Digits: The Unicode Category Trap in .NET Regex Validation</h1>
+  <p class="page-subtitle">The main topic page's own patterns use \d assuming it means ASCII 0-9. By default it matches any Unicode decimal-digit character — a real gap between "the regex says valid" and what int.Parse actually accepts.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Regular Expressions deep dives — from proving the ReDoS defense actually works, to the combinatorial mechanics behind why it's needed, to a quieter Unicode-category gap in what \d actually validates.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Regular Expressions"
+    topicRoute="/csharp/regex"
+    [prev]="{ label: 'Inside the Backtracking Engine', route: '/csharp/regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step' }"
+  />
+</div>

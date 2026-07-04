@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Regular Expressions" topicRoute="/csharp/regex" subtopicLabel="Testing Regex Patterns for ReDoS" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Regex Patterns for ReDoS: Proving matchTimeout Actually Fires Before Shipping</h1>
+  <p class="page-subtitle">The main topic page's own LogParser challenge sets a 200ms matchTimeout, but never verifies it fires. See how to craft a pathological input and prove the ReDoS defense genuinely works — and compare it against NonBacktracking.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 4.5+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at exactly WHY a pattern like the main <a routerLink="/csharp/regex">Regular Expressions</a> page's own <code>(a+)+$</code> explodes combinatorially — traced step by step through the backtracking engine.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Regular Expressions"
+    topicRoute="/csharp/regex"
+    [next]="{ label: 'Inside the Backtracking Engine', route: '/csharp/regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step' }"
+  />
+</div>

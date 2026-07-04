@@ -598,7 +598,12 @@ export const routes: Routes = [
         { path: 'proving-result-genuine-monad-three-monad-laws', loadComponent: () => import('./components/backend/csharp/functional-csharp/subtopics/proving-result-genuine-monad-three-monad-laws/proving-result-genuine-monad-three-monad-laws').then(m => m.ProvingResultGenuineMonadThreeMonadLawsSubtopic) },
         { path: 'result-equality-traps-never-equal-by-default', loadComponent: () => import('./components/backend/csharp/functional-csharp/subtopics/result-equality-traps-never-equal-by-default/result-equality-traps-never-equal-by-default').then(m => m.ResultEqualityTrapsNeverEqualByDefaultSubtopic) },
       ] },
-      { path: 'regex',             loadComponent: () => import('./components/backend/csharp/regex/regex').then(m => m.CsharpRegex) },
+      { path: 'regex', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/regex/regex').then(m => m.CsharpRegex) },
+        { path: 'testing-regex-redos-proving-matchtimeout-fires', loadComponent: () => import('./components/backend/csharp/regex/subtopics/testing-regex-redos-proving-matchtimeout-fires/testing-regex-redos-proving-matchtimeout-fires').then(m => m.TestingRegexRedosProvingMatchtimeoutFiresSubtopic) },
+        { path: 'inside-backtracking-engine-nested-quantifiers-traced-step-by-step', loadComponent: () => import('./components/backend/csharp/regex/subtopics/inside-backtracking-engine-nested-quantifiers-traced-step-by-step/inside-backtracking-engine-nested-quantifiers-traced-step-by-step').then(m => m.InsideBacktrackingEngineNestedQuantifiersTracedStepByStepSubtopic) },
+        { path: 'unicode-digit-trap-d-matches-more-than-ascii', loadComponent: () => import('./components/backend/csharp/regex/subtopics/unicode-digit-trap-d-matches-more-than-ascii/unicode-digit-trap-d-matches-more-than-ascii').then(m => m.UnicodeDigitTrapDMatchesMoreThanAsciiSubtopic) },
+      ] },
       { path: 'channels',          loadComponent: () => import('./components/backend/csharp/channels/channels').then(m => m.CsharpChannels) },
       { path: 'unit-testing',      loadComponent: () => import('./components/backend/csharp/unit-testing/unit-testing').then(m => m.CsharpUnitTesting) },
       { path: 'expression-trees',  loadComponent: () => import('./components/backend/csharp/expression-trees/expression-trees').then(m => m.CsharpExpressionTrees) },

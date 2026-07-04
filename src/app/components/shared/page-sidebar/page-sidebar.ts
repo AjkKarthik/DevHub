@@ -8307,6 +8307,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  regex: {
+    apis: ['Regex.IsMatch', 'Regex.Match', '[GeneratedRegex]'],
+    related: [{ label: 'Strings, DateTime & Math', route: '/csharp/strings-datetime' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'I/O & Serialization', route: '/csharp/io-serialization' }],
+    tip: 'Always check match.Success before reading match.Value or groups — failed matches return Match.Empty, not null.',
+    docs: [{ label: 'Regular Expressions (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expressions' }],
+    resources: [{ label: '[GeneratedRegex]', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-source-generators', badge: 'docs' }],
+    gotchas: ['Nested quantifiers like (a+)+ backtrack exponentially on crafted input — always set matchTimeout on regexes that process user input.', 'Never construct new Regex(pattern) in a hot path — use static readonly or [GeneratedRegex] instead.'],
+  },
+
+  'regex/testing-regex-redos-proving-matchtimeout-fires': {
+    apis: ['matchTimeout', 'RegexMatchTimeoutException', 'NonBacktracking'],
+    related: [
+      { label: 'Inside the Backtracking Engine — next', route: '/csharp/regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step' },
+      { label: 'Regular Expressions (overview)', route: '/csharp/regex' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Craft a genuinely pathological input and assert RegexMatchTimeoutException fires within a bounded wall-clock time — configuring matchTimeout and verifying it actually engages are two different claims.',
+    docs: [
+      { label: 'Regex Timeouts', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-behavior' },
+    ],
+    resources: [
+      { label: 'RegexMatchTimeoutException', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regexmatchtimeoutexception', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test suite exercising only well-formed inputs never exercises the timeout/ReDoS defense path at all.',
+      'NonBacktracking provides guaranteed O(n) time with no exception ever thrown; matchTimeout is a safety net that lets the engine attempt up to a bounded duration before throwing — a real behavioral difference worth testing for both.',
+    ],
+  },
+
+  'regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step': {
+    apis: ['(a+)+', 'catastrophic backtracking', 'partitioning'],
+    related: [
+      { label: 'Testing Regex Patterns for ReDoS — previous', route: '/csharp/regex/testing-regex-redos-proving-matchtimeout-fires' },
+      { label: 'The Unicode Digit Trap — next', route: '/csharp/regex/unicode-digit-trap-d-matches-more-than-ascii' },
+      { label: 'Regular Expressions (overview)', route: '/csharp/regex' },
+    ],
+    tip: 'Any pattern shape creating multiple ways to partition the same input among repeated sub-patterns is vulnerable — not just nested quantifiers like (a+)+, but alternation like (a|aa)+ too. Removing the redundant ambiguity is often the real fix, not just a timeout.',
+    docs: [
+      { label: 'Regex Backtracking', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/backtracking-in-regular-expressions' },
+    ],
+    resources: [
+      { label: 'Catastrophic Backtracking', url: 'https://www.regular-expressions.info/catastrophic.html', badge: 'blog' },
+    ],
+    gotchas: [
+      'The worst case is a FAILING match — a successful match can stop at the first partitioning that works, but proving no match requires exhausting every partitioning.',
+      '(a+)+ simplifies to a+ with identical matching power and zero backtracking risk — many vulnerable patterns can be rewritten to remove the ambiguity entirely.',
+    ],
+  },
+
+  'regex/unicode-digit-trap-d-matches-more-than-ascii': {
+    apis: ['\\d', 'RegexOptions.ECMAScript', 'Nd category'],
+    related: [
+      { label: 'Inside the Backtracking Engine — previous', route: '/csharp/regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step' },
+      { label: 'Regular Expressions (overview)', route: '/csharp/regex' },
+      { label: 'Strings, DateTime & Math', route: '/csharp/strings-datetime' },
+    ],
+    tip: '\\d matches any Unicode Nd (Decimal Digit Number) category character by default, not just ASCII 0-9 — a "validated" string can still throw in int.Parse. Use RegexOptions.ECMAScript or an explicit [0-9] character class for strict ASCII-only validation.',
+    docs: [
+      { label: 'Character Classes', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions' },
+    ],
+    resources: [
+      { label: 'Unicode Category Nd', url: 'https://www.unicode.org/reports/tr44/#General_Category_Values', badge: 'docs' },
+    ],
+    gotchas: [
+      'A string satisfying \\d{4} can contain Arabic-Indic or fullwidth digit characters that int.Parse\'s default NumberStyles reject, producing a FormatException on "validated" input.',
+      '\\w has the same broader-than-ASCII behavior as \\d — whether that matters depends on whether the system genuinely needs to support internationalized input.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

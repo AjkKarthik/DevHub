@@ -517,6 +517,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Proving Result Is a Genuine Monad', route: '/csharp/functional-csharp/proving-result-genuine-monad-three-monad-laws' },
     { label: 'Result Equality Traps', route: '/csharp/functional-csharp/result-equality-traps-never-equal-by-default' },
   ],
+  'regex': [
+    { label: 'Testing Regex Patterns for ReDoS', route: '/csharp/regex/testing-regex-redos-proving-matchtimeout-fires' },
+    { label: 'Inside the Backtracking Engine', route: '/csharp/regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step' },
+    { label: 'The Unicode Digit Trap', route: '/csharp/regex/unicode-digit-trap-d-matches-more-than-ascii' },
+  ],
 };
 
 @Component({
