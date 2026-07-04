@@ -1511,7 +1511,7 @@ off here with a date.
 - [x] `/aspnet/error-handling` — Error Handling (2026-07-04 — 3 subtopics: testing-exceptionhandler-chain-ordering-works-as-documented, why-reexecuted-error-endpoint-must-explicitly-restore-status-code, handler-writes-before-returning-false-corrupts-next-handler)
 - [x] `/aspnet/openapi-swagger` — OpenAPI & Swagger (2026-07-04 — 3 subtopics: testing-openapi-spec-catches-typedresults-regression-to-iresult, why-generator-inspects-signature-not-method-body, generating-clients-against-live-server-undermines-diffing-prs)
 - [x] `/aspnet/api-versioning` — API Versioning (2026-07-04 — 3 subtopics: testing-versioned-endpoints-return-genuinely-different-shapes, why-omitting-apiversion-constraint-causes-ambiguous-match, what-happens-when-combined-version-readers-disagree)
-- [ ] `/aspnet/http-clients` — HttpClient & Resilience
+- [x] `/aspnet/http-clients` — HttpClient & Resilience (2026-07-04 — 3 subtopics: testing-retry-strategy-fires-transient-not-deterministic-errors, why-transient-delegatinghandlers-shared-across-pool-rotation, addhedging-shared-pipeline-can-hedge-non-idempotent-requests)
 - [ ] `/aspnet/grpc` — gRPC Services
 - [ ] `/aspnet/ef-core-basics` — EF Core Basics
 - [ ] `/aspnet/ef-relationships` — EF Core Relationships
