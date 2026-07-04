@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Inheritance & Overriding"
+    topicRoute="/csharp/inheritance"
+    subtopicLabel="How sealed Enables Devirtualization" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">How sealed Enables Devirtualization: A Real Performance Signal, Not Just Correctness</h1>
+  <p class="page-subtitle">
+    The main topic states twice that sealed lets the JIT devirtualize calls, without ever
+    explaining the mechanism. This subtopic covers why virtual calls cost more, and
+    exactly what guarantee sealing provides that unlocks the optimization.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 1.0 / CLR JIT" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding devirtualization completes the sealed picture — the final subtopic
+      covers a different C# 9 feature's own hidden compiler mechanism: what actually gets
+      generated for a covariant return type override.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Inheritance & Overriding"
+    topicRoute="/csharp/inheritance"
+    [prev]="{ label: 'Testing the Hiding Trap', route: '/csharp/inheritance/testing-the-hiding-trap-new-vs-override' }"
+    [next]="{ label: 'Covariant Return Types: The Hidden Bridge Method', route: '/csharp/inheritance/covariant-return-types-hidden-bridge-method' }" />
+</div>

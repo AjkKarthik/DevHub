@@ -437,6 +437,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'extern alias', route: '/csharp/namespaces/extern-alias-resolving-assembly-type-name-collisions' },
     { label: 'Resolving CS0104 Ambiguous Type References', route: '/csharp/namespaces/resolving-cs0104-ambiguous-using-directives' },
   ],
+  'inheritance': [
+    { label: 'Testing the Hiding Trap: new vs override', route: '/csharp/inheritance/testing-the-hiding-trap-new-vs-override' },
+    { label: 'How sealed Enables Devirtualization', route: '/csharp/inheritance/how-sealed-enables-devirtualization' },
+    { label: 'Covariant Return Types: The Hidden Bridge Method', route: '/csharp/inheritance/covariant-return-types-hidden-bridge-method' },
+  ],
 };
 
 @Component({

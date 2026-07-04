@@ -7213,6 +7213,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['new hides the base method but does not participate in polymorphism — a base reference still calls the base version.', 'Calling virtual methods in a constructor uses the most-derived override — dangerous when the derived class is not yet initialized.'],
   },
 
+  'inheritance/testing-the-hiding-trap-new-vs-override': {
+    apis: ['Assert.Equal', 'virtual', 'override', 'new'],
+    related: [
+      { label: 'How sealed Enables Devirtualization — next', route: '/csharp/inheritance/how-sealed-enables-devirtualization' },
+      { label: 'Inheritance & Overriding (overview)', route: '/csharp/inheritance' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test calling through a DERIVED-typed reference can never distinguish override from new — only a call through a BASE-typed reference exposes the difference. Assert both reference types return the SAME result to catch a regression.',
+    docs: [
+      { label: 'Polymorphism', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/polymorphism' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Promoting CS0108 to a build error catches unintentional hiding even before any test runs — an earlier, complementary check to runtime tests.',
+      'A test asserting only the derived-typed call\'s result cannot catch a regression from override to new — it must call through a base-typed reference.',
+    ],
+  },
+
+  'inheritance/how-sealed-enables-devirtualization': {
+    apis: ['sealed', 'sealed override', 'vtable'],
+    related: [
+      { label: 'Testing the Hiding Trap — previous', route: '/csharp/inheritance/testing-the-hiding-trap-new-vs-override' },
+      { label: 'Covariant Return Types — next', route: '/csharp/inheritance/covariant-return-types-hidden-bridge-method' },
+      { label: 'Inheritance & Overriding (overview)', route: '/csharp/inheritance' },
+    ],
+    tip: 'sealed itself does not devirtualize calls — it removes the POSSIBILITY of further overrides, which lets the JIT PROVE only one implementation exists and skip the vtable lookup. The performance win is secondary; use sealed primarily for correctness.',
+    docs: [
+      { label: 'Sealed Classes and Methods', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/sealed' },
+    ],
+    resources: [
+      { label: 'BenchmarkDotNet', url: 'https://benchmarkdotnet.org/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A sealed override provides the same devirtualization eligibility for that ONE member, even on a class still open to subclassing for its other members.',
+      'Sealing broadly for performance can block legitimate extensibility and interfere with subclass-based mocking frameworks — the gain is usually negligible outside genuinely hot loops.',
+    ],
+  },
+
+  'inheritance/covariant-return-types-hidden-bridge-method': {
+    apis: ['covariant return', 'bridge method', 'CompilerGeneratedAttribute'],
+    related: [
+      { label: 'How sealed Enables Devirtualization — previous', route: '/csharp/inheritance/how-sealed-enables-devirtualization' },
+      { label: 'Inheritance & Overriding (overview)', route: '/csharp/inheritance' },
+    ],
+    tip: 'A C# 9 covariant return override compiles to TWO methods — the one you wrote, and a compiler-generated bridge with the original base signature, since the CLR itself has no native concept of covariant overriding.',
+    docs: [
+      { label: 'Covariant Returns', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#covariant-return-types' },
+    ],
+    resources: [
+      { label: 'System.Reflection', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.reflection', badge: 'docs' },
+    ],
+    gotchas: [
+      'Reflection over a type using covariant returns can surface BOTH the covariant method and the hidden bridge method as distinct MethodInfo entries.',
+      'Calls through a derived-typed reference are resolved directly by the compiler to the covariant method; calls through a base-typed reference genuinely dispatch through the bridge method via the vtable.',
+    ],
+  },
+
   'abstract-interfaces': {
     apis: ['abstract', 'interface', 'default interface method', 'explicit impl', 'IComparable<T>'],
     related: [{ label: 'OOP & Classes', route: '/csharp/oop' }, { label: 'Inheritance & Overriding', route: '/csharp/inheritance' }, { label: 'Generics', route: '/csharp/generics' }],

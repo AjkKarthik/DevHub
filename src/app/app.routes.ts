@@ -498,7 +498,12 @@ export const routes: Routes = [
         { path: 'resolving-cs0104-ambiguous-using-directives', loadComponent: () => import('./components/backend/csharp/namespaces/subtopics/resolving-cs0104-ambiguous-using-directives/resolving-cs0104-ambiguous-using-directives').then(m => m.ResolvingCs0104AmbiguousUsingDirectivesSubtopic) },
       ] },
       // ── OOP ──
-      { path: 'inheritance',       loadComponent: () => import('./components/backend/csharp/inheritance/inheritance').then(m => m.CsharpInheritance) },
+      { path: 'inheritance', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/inheritance/inheritance').then(m => m.CsharpInheritance) },
+        { path: 'testing-the-hiding-trap-new-vs-override', loadComponent: () => import('./components/backend/csharp/inheritance/subtopics/testing-the-hiding-trap-new-vs-override/testing-the-hiding-trap-new-vs-override').then(m => m.TestingTheHidingTrapNewVsOverrideSubtopic) },
+        { path: 'how-sealed-enables-devirtualization', loadComponent: () => import('./components/backend/csharp/inheritance/subtopics/how-sealed-enables-devirtualization/how-sealed-enables-devirtualization').then(m => m.HowSealedEnablesDevirtualizationSubtopic) },
+        { path: 'covariant-return-types-hidden-bridge-method', loadComponent: () => import('./components/backend/csharp/inheritance/subtopics/covariant-return-types-hidden-bridge-method/covariant-return-types-hidden-bridge-method').then(m => m.CovariantReturnTypesHiddenBridgeMethodSubtopic) },
+      ] },
       { path: 'abstract-interfaces', loadComponent: () => import('./components/backend/csharp/abstract-interfaces/abstract-interfaces').then(m => m.CsharpAbstractInterfaces) },
       { path: 'static-enums',      loadComponent: () => import('./components/backend/csharp/static-enums/static-enums').then(m => m.CsharpStaticEnums) },
       { path: 'structures',        loadComponent: () => import('./components/backend/csharp/structures/structures').then(m => m.CsharpStructures) },
