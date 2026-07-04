@@ -1500,7 +1500,7 @@ off here with a date.
 - [x] `/aspnet/hosting-startup` — Hosting & Startup (2026-07-04 — 3 subtopics: testing-environment-branching-without-real-environment-variable, what-builder-build-actually-seals-servicecollection-vs-serviceprovider, applicationstopping-fires-before-in-flight-requests-finish-draining)
 - [x] `/aspnet/middleware` — Middleware Pipeline (2026-07-04 — 3 subtopics: testing-custom-middleware-isolation-applicationbuilder-no-kestrel, how-middleware-pipeline-built-requestdelegate-composition-nested-closures, onstarting-callbacks-run-lifo-order-last-registered-fires-first)
 - [x] `/aspnet/routing` — Routing (2026-07-04 — 3 subtopics: testing-route-precedence-catching-ambiguous-routes-before-production, how-route-precedence-actually-computed-segment-scoring-algorithm, typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check)
-- [ ] `/aspnet/configuration` — Configuration & Options
+- [x] `/aspnet/configuration` — Configuration & Options (2026-07-04 — 3 subtopics: testing-options-validation-actually-rejects-bad-config-not-just-compiles, how-optionsmonitor-detects-file-change-changetoken-propagation, onchange-returns-idisposable-must-be-disposed-or-callback-leaks)
 - [ ] `/aspnet/dependency-injection` — Dependency Injection
 - [ ] `/aspnet/logging` — Logging & Diagnostics
 - [ ] `/aspnet/static-files` — Static Files & Uploads
