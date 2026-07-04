@@ -702,6 +702,15 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why Transient Handlers Are Shared Across a Pool Rotation', route: '/aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation' },
     { label: 'AddHedging’s Method-Blindness Risk', route: '/aspnet/http-clients/addhedging-shared-pipeline-can-hedge-non-idempotent-requests' },
   ],
+  // NOTE: keyed 'aspnet-grpc', NOT bare 'grpc' — the Go hub already owns
+  // a route at the same bare slug (/go/grpc). Pre-emptively hub-prefixing
+  // avoids repeating the exact 'routing' collision hit earlier the
+  // moment that hub gets its own gRPC subtopics.
+  'aspnet-grpc': [
+    { label: 'Testing Server-Streaming RPC Cancellation', route: '/aspnet/grpc/testing-server-streaming-rpc-cancellation-stops-mid-stream' },
+    { label: 'How proto3 optional Tracks Field Presence', route: '/aspnet/grpc/how-proto3-optional-actually-tracks-field-presence' },
+    { label: 'gRPC-Web CORS Needs Allowed Request Headers', route: '/aspnet/grpc/grpc-web-cors-needs-allowed-request-headers-not-exposed' },
+  ],
 };
 
 @Component({

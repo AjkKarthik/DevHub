@@ -810,7 +810,12 @@ export const routes: Routes = [
         { path: 'why-transient-delegatinghandlers-shared-across-pool-rotation', loadComponent: () => import('./components/backend/aspnet/http-clients/subtopics/why-transient-delegatinghandlers-shared-across-pool-rotation/why-transient-delegatinghandlers-shared-across-pool-rotation').then(m => m.WhyTransientDelegatinghandlersSharedAcrossPoolRotationSubtopic) },
         { path: 'addhedging-shared-pipeline-can-hedge-non-idempotent-requests', loadComponent: () => import('./components/backend/aspnet/http-clients/subtopics/addhedging-shared-pipeline-can-hedge-non-idempotent-requests/addhedging-shared-pipeline-can-hedge-non-idempotent-requests').then(m => m.AddhedgingSharedPipelineCanHedgeNonIdempotentRequestsSubtopic) },
       ] },
-      { path: 'grpc',                 loadComponent: () => import('./components/backend/aspnet/grpc/grpc').then(m => m.AspnetGrpc) },
+      { path: 'grpc', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/grpc/grpc').then(m => m.AspnetGrpc) },
+        { path: 'testing-server-streaming-rpc-cancellation-stops-mid-stream', loadComponent: () => import('./components/backend/aspnet/grpc/subtopics/testing-server-streaming-rpc-cancellation-stops-mid-stream/testing-server-streaming-rpc-cancellation-stops-mid-stream').then(m => m.TestingServerStreamingRpcCancellationStopsMidStreamSubtopic) },
+        { path: 'how-proto3-optional-actually-tracks-field-presence', loadComponent: () => import('./components/backend/aspnet/grpc/subtopics/how-proto3-optional-actually-tracks-field-presence/how-proto3-optional-actually-tracks-field-presence').then(m => m.HowProto3OptionalActuallyTracksFieldPresenceSubtopic) },
+        { path: 'grpc-web-cors-needs-allowed-request-headers-not-exposed', loadComponent: () => import('./components/backend/aspnet/grpc/subtopics/grpc-web-cors-needs-allowed-request-headers-not-exposed/grpc-web-cors-needs-allowed-request-headers-not-exposed').then(m => m.GrpcWebCorsNeedsAllowedRequestHeadersNotExposedSubtopic) },
+      ] },
       { path: 'ef-core-basics',       loadComponent: () => import('./components/backend/aspnet/ef-core-basics/ef-core-basics').then(m => m.AspnetEfCoreBasics) },
       { path: 'ef-relationships',     loadComponent: () => import('./components/backend/aspnet/ef-relationships/ef-relationships').then(m => m.AspnetEfRelationships) },
       { path: 'ef-performance',       loadComponent: () => import('./components/backend/aspnet/ef-performance/ef-performance').then(m => m.AspnetEfPerformance) },

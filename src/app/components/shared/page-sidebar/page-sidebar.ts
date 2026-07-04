@@ -12025,6 +12025,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/grpc/testing-server-streaming-rpc-cancellation-stops-mid-stream': {
+    apis: ['TestServerCallContext', 'IServerStreamWriter<T>', 'CancellationTokenSource'],
+    related: [
+      { label: 'How proto3 optional Tracks Field Presence — next', route: '/aspnet/grpc/how-proto3-optional-actually-tracks-field-presence' },
+      { label: 'gRPC Services (overview)', route: '/aspnet/grpc' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A fake IServerStreamWriter<T> collecting written items, combined with TestServerCallContext\'s own CancellationToken, proves a streaming RPC genuinely stops writing once cancellation fires — not just that it eventually completes.',
+    docs: [
+      { label: 'gRPC for .NET overview', url: 'https://learn.microsoft.com/en-us/aspnet/core/grpc/' },
+    ],
+    resources: [
+      { label: 'grpc/grpc-dotnet', url: 'https://github.com/grpc/grpc-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'Cancelling based on a fixed wall-clock delay tuned against the RPC\'s own artificial per-item delay is timing-fragile — triggering cancellation via a write-count callback on the fake stream writer is more deterministic.',
+      'Test cancellation WHILE the RPC is still running, not after it completes naturally — the whole point is proving it reacts to an in-progress cancellation.',
+    ],
+  },
+
+  'aspnet/grpc/how-proto3-optional-actually-tracks-field-presence': {
+    apis: ['optional', 'oneof', 'HasXxx'],
+    related: [
+      { label: 'Testing Server-Streaming RPC Cancellation — previous', route: '/aspnet/grpc/testing-server-streaming-rpc-cancellation-stops-mid-stream' },
+      { label: 'gRPC-Web CORS Needs Allowed Request Headers — next', route: '/aspnet/grpc/grpc-web-cors-needs-allowed-request-headers-not-exposed' },
+      { label: 'gRPC Services (overview)', route: '/aspnet/grpc' },
+    ],
+    tip: 'proto3 optional is implemented as a hidden single-member oneof, reusing Protobuf\'s existing "which member is set" tracking — this is why an optional field gets a generated HasXxx property but a plain scalar field never does.',
+    docs: [
+      { label: 'gRPC services with C#', url: 'https://learn.microsoft.com/en-us/aspnet/core/grpc/basics' },
+    ],
+    resources: [
+      { label: 'grpc/grpc-dotnet', url: 'https://github.com/grpc/grpc-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'Two separate optional fields do NOT automatically become mutually exclusive — each gets its own independent hidden oneof; use an explicit shared oneof for genuine mutual exclusivity.',
+      'The wire format itself is unchanged by optional — the presence tracking lives entirely in the generated code, not in a new wire representation.',
+    ],
+  },
+
+  'aspnet/grpc/grpc-web-cors-needs-allowed-request-headers-not-exposed': {
+    apis: ['WithHeaders()', 'WithExposedHeaders()', 'CORS preflight'],
+    related: [
+      { label: 'How proto3 optional Tracks Field Presence — previous', route: '/aspnet/grpc/how-proto3-optional-actually-tracks-field-presence' },
+      { label: 'gRPC Services (overview)', route: '/aspnet/grpc' },
+      { label: 'HttpClient & Resilience', route: '/aspnet/http-clients' },
+    ],
+    tip: 'WithExposedHeaders only controls which response headers JavaScript can read — it says nothing about whether the browser is allowed to SEND gRPC-Web\'s own request headers, which requires WithHeaders and is validated separately at CORS preflight time.',
+    docs: [
+      { label: 'gRPC-Web in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/grpc/grpcweb' },
+    ],
+    resources: [
+      { label: 'grpc/grpc-dotnet', url: 'https://github.com/grpc/grpc-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'A failed CORS preflight produces zero server-side log entries — the actual request never leaves the browser, making this failure mode look like a generic, unexplained network error.',
+      'Check the browser\'s Network tab for whether the actual (non-OPTIONS) request even appears before investigating any server-side gRPC code.',
+    ],
+  },
+
   'aspnet/ef-core-basics': {
     apis: ['DbContext', 'DbSet<T>', 'SaveChangesAsync()', 'FindAsync()', 'AsNoTracking()', 'OnModelCreating()'],
     related: [

@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="gRPC Services"
+    topicRoute="/aspnet/grpc"
+    subtopicLabel="Testing Streaming Cancellation"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That a Server-Streaming RPC's Cancellation Stops It Mid-Stream</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A names the fake IServerStreamWriter testing pattern but never shows the
+    actual test. Here's how to prove the page's own cancellation-check fix genuinely stops a stream
+    partway through, not just that it eventually finishes.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own cancellation-handling mistake. The next subtopic goes
+      underneath proto3's <code>optional</code> keyword — explaining the actual mechanism that lets it
+      distinguish "unset" from "zero" where a plain scalar field cannot.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="gRPC Services"
+    topicRoute="/aspnet/grpc"
+    [next]="{ label: 'How proto3 optional Actually Tracks Field Presence', route: '/aspnet/grpc/how-proto3-optional-actually-tracks-field-presence' }"
+  />
+</div>
