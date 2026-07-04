@@ -1503,7 +1503,7 @@ off here with a date.
 - [x] `/aspnet/configuration` — Configuration & Options (2026-07-04 — 3 subtopics: testing-options-validation-actually-rejects-bad-config-not-just-compiles, how-optionsmonitor-detects-file-change-changetoken-propagation, onchange-returns-idisposable-must-be-disposed-or-callback-leaks)
 - [x] `/aspnet/dependency-injection` — Dependency Injection (2026-07-04 — 3 subtopics: testing-servicescopefactory-backgroundservice-genuinely-fresh-scope, createasyncscope-vs-createscope, activatorutilities-bypasses-validateonbuild)
 - [x] `/aspnet/logging` — Logging & Diagnostics (2026-07-04 — 3 subtopics: testing-structured-log-properties-with-fake-logger, how-beginscope-propagates-ambient-context-asynclocal, reusing-eventid-across-loggermessage-methods-compiles-cleanly)
-- [ ] `/aspnet/static-files` — Static Files & Uploads
+- [x] `/aspnet/static-files` — Static Files & Uploads (2026-07-04 — 3 subtopics: testing-magic-number-validation-fake-byte-streams, how-usestaticfiles-computes-etag-touching-file-busts-cache, startswith-path-traversal-guard-sibling-directory-bypass)
 - [ ] `/aspnet/controllers` — Controllers & Actions
 - [ ] `/aspnet/minimal-apis` — Minimal APIs
 - [ ] `/aspnet/model-binding` — Model Binding & Validation
