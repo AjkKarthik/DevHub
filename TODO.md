@@ -1480,7 +1480,7 @@ off here with a date.
 - [x] `/csharp/regex` — Regular Expressions (2026-07-04 — 3 subtopics: testing-regex-redos-proving-matchtimeout-fires, inside-backtracking-engine-nested-quantifiers-traced-step-by-step, unicode-digit-trap-d-matches-more-than-ascii)
 - [x] `/csharp/channels` — Channels & Producer/Consumer (2026-07-04 — 3 subtopics: testing-channel-pipelines-without-mocks-real-channel-test-double, how-readallasync-detects-completion-waittoreadasync-tryread, rendezvous-channel-capacity-zero-writeasync-waits-for-reader)
 - [x] `/csharp/unit-testing` — Unit Testing (xUnit & Moq) (2026-07-04 — 3 subtopics: testing-your-test-doubles-mock-setup-matches-production-behavior, why-xunit-creates-new-instance-per-test-classfixture, timeprovider-faketimeprovider-deterministic-time-dependent-tests)
-- [ ] `/csharp/expression-trees` — Expression Trees
+- [x] `/csharp/expression-trees` — Expression Trees (2026-07-04 — 3 subtopics: testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result, parameterexpression-identity-problem-andalso-unusable-lambda, captured-variables-not-constantexpression-hidden-closure-class)
 - [ ] `/csharp/dynamic` — dynamic & the DLR
 - [ ] `/csharp/source-generators` — Source Generators
 - [ ] `/csharp/span-memory` — Span<T> & Memory<T>
