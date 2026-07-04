@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Authentication"
+    topicRoute="/aspnet/authentication"
+    subtopicLabel="Testing JWT ClockSkew"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That an Expired JWT Still Validates Under Default ClockSkew</h1>
+  <p class="page-subtitle">
+    The main page notes the default 5-minute skew in one sentence. Put against its own 15-minute-token
+    advice, that default silently turns every token into a 20-minute one — here are the tests that make
+    the widening visible and pin the production configuration.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own ClockSkew remark. The next subtopic goes underneath the
+      page's multi-pod cookie fix — explaining why its <code>SetApplicationName</code> line is
+      load-bearing, not decorative, even after the key ring is shared.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Authentication"
+    topicRoute="/aspnet/authentication"
+    [next]="{ label: 'Why SetApplicationName Matters Even With Shared Data Protection Keys', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' }"
+  />
+</div>

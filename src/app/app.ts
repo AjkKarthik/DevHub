@@ -736,6 +736,15 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How IMemoryCache Expiry Is Actually Enforced', route: '/aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers' },
     { label: 'Write-Invalidate’s Stale-Repopulation Race', route: '/aspnet/caching/write-invalidate-stale-repopulation-race-ttl-backstop' },
   ],
+  // NOTE: keyed 'aspnet-authentication', NOT bare 'authentication' — the
+  // Blazor hub already owns a route at the same bare slug
+  // (/blazor/authentication). Pre-emptively hub-prefixing avoids
+  // repeating the exact 'routing' collision hit earlier.
+  'aspnet-authentication': [
+    { label: 'Testing JWT ClockSkew — Expired Tokens Still Validate', route: '/aspnet/authentication/testing-jwt-clockskew-expired-token-still-validates' },
+    { label: 'Why SetApplicationName Matters With Shared Keys', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' },
+    { label: 'JWT Claim-Type Mapping — sub Becomes NameIdentifier', route: '/aspnet/authentication/jwt-claim-type-mapping-sub-becomes-nameidentifier' },
+  ],
 };
 
 @Component({

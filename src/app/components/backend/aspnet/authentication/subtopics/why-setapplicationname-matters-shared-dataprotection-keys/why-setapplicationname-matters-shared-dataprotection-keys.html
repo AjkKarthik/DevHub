@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Authentication"
+    topicRoute="/aspnet/authentication"
+    subtopicLabel="SetApplicationName's Real Job"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Why SetApplicationName Matters Even With Shared Data Protection Keys</h1>
+  <p class="page-subtitle">
+    The main page's multi-pod fix has two lines but explains only one. The application discriminator is
+    part of the subkey derivation itself — two apps on the same key ring with different names still
+    cannot decrypt each other's cookies.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own multi-pod cookie fix. The final
+      subtopic in this set turns to JWT claim consumption — and the inbound claim-type mapping that makes
+      the <code>sub</code> you wrote into a claim type you did not expect to read.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Authentication"
+    topicRoute="/aspnet/authentication"
+    [prev]="{ label: 'Testing That an Expired JWT Still Validates Under Default ClockSkew', route: '/aspnet/authentication/testing-jwt-clockskew-expired-token-still-validates' }"
+    [next]="{ label: 'JWT Claim-Type Mapping — Your sub Becomes NameIdentifier', route: '/aspnet/authentication/jwt-claim-type-mapping-sub-becomes-nameidentifier' }"
+  />
+</div>

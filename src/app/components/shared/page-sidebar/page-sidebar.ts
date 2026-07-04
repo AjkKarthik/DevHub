@@ -12440,6 +12440,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/authentication/testing-jwt-clockskew-expired-token-still-validates': {
+    apis: ['TokenValidationParameters.ClockSkew', 'JwtSecurityTokenHandler.ValidateToken()', 'IOptionsMonitor<JwtBearerOptions>'],
+    related: [
+      { label: 'Why SetApplicationName Matters With Shared Keys — next', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' },
+      { label: 'Authentication (overview)', route: '/aspnet/authentication' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'The default ClockSkew is 5 minutes — a "15-minute" access token is really accepted for up to 20 minutes unless the ClockSkew line survives every copy-paste; a token minted with exp two minutes in the past still validates under the default.',
+    docs: [
+      { label: 'JWT Bearer authentication', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authentication/configure-jwt-bearer-authentication' },
+    ],
+    resources: [
+      { label: 'AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet', url: 'https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'Pin the production configuration itself: resolve IOptionsMonitor<JwtBearerOptions> from the real DI container in a test and assert on the configured skew — behavioral tests alone never catch the Program.cs regression.',
+      'ClockSkew pads BOTH boundaries: tokens are accepted from (nbf − skew) to (exp + skew) — the nbf side is the availability reason the feature exists.',
+    ],
+  },
+
+  'aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys': {
+    apis: ['SetApplicationName()', 'IDataProtectionProvider', 'PersistKeysToStackExchangeRedis()'],
+    related: [
+      { label: 'Testing JWT ClockSkew — previous', route: '/aspnet/authentication/testing-jwt-clockskew-expired-token-still-validates' },
+      { label: 'JWT Claim-Type Mapping — next', route: '/aspnet/authentication/jwt-claim-type-mapping-sub-becomes-nameidentifier' },
+      { label: 'Authentication (overview)', route: '/aspnet/authentication' },
+    ],
+    tip: 'The application discriminator participates in subkey derivation — two apps on the SAME key ring with different application names still cannot decrypt each other\'s cookies, which is why the multi-pod fix needs both PersistKeys AND SetApplicationName.',
+    docs: [
+      { label: 'Data Protection configuration', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The default discriminator derives from the content root path — identical pods share it by coincidence, and deployment slot swaps or container layout changes silently diverge it, causing mass logouts with a genuinely shared key ring.',
+      'Renaming the cookie SCHEME is a breaking change too — the scheme name is part of the same purpose chain, so a rename invalidates every outstanding cookie.',
+    ],
+  },
+
+  'aspnet/authentication/jwt-claim-type-mapping-sub-becomes-nameidentifier': {
+    apis: ['MapInboundClaims', 'NameClaimType / RoleClaimType', 'ClaimTypes.NameIdentifier'],
+    related: [
+      { label: 'Why SetApplicationName Matters With Shared Keys — previous', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' },
+      { label: 'Authentication (overview)', route: '/aspnet/authentication' },
+      { label: 'Authorization', route: '/aspnet/authorization' },
+    ],
+    tip: 'A legacy inbound map renames compact JWT claim types while building the principal — "sub" becomes ClaimTypes.NameIdentifier, so FindFirst("sub") returns null even though the raw token plainly contains it; the wire token is untouched, only the in-memory principal differs.',
+    docs: [
+      { label: 'Mapping claims from external providers', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authentication/claims' },
+    ],
+    resources: [
+      { label: 'AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet', url: 'https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'IsInRole() and Identity.Name read whatever RoleClaimType/NameClaimType point at — an external issuer\'s compact "role" and "name" claims match neither default, so [Authorize(Roles=...)] returns 403 despite the role being visibly in User.Claims.',
+      'MapInboundClaims, NameClaimType, RoleClaimType, and the claim types your own /login issues are ONE configuration set — change them together or the mismatch just moves to the other side of the seam.',
+    ],
+  },
+
   'aspnet/authorization': {
     apis: ['[Authorize]', '[AllowAnonymous]', 'AddAuthorization()', 'RequireAuthenticatedUser()', 'RequireRole()', 'RequireClaim()', 'IAuthorizationRequirement', 'IAuthorizationService'],
     related: [

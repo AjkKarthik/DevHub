@@ -841,7 +841,12 @@ export const routes: Routes = [
         { path: 'write-invalidate-stale-repopulation-race-ttl-backstop', loadComponent: () => import('./components/backend/aspnet/caching/subtopics/write-invalidate-stale-repopulation-race-ttl-backstop/write-invalidate-stale-repopulation-race-ttl-backstop').then(m => m.WriteInvalidateStaleRepopulationRaceTtlBackstopSubtopic) },
       ] },
       // ── Security ──
-      { path: 'authentication',       loadComponent: () => import('./components/backend/aspnet/authentication/authentication').then(m => m.AspnetAuthentication) },
+      { path: 'authentication', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/authentication/authentication').then(m => m.AspnetAuthentication) },
+        { path: 'testing-jwt-clockskew-expired-token-still-validates', loadComponent: () => import('./components/backend/aspnet/authentication/subtopics/testing-jwt-clockskew-expired-token-still-validates/testing-jwt-clockskew-expired-token-still-validates').then(m => m.TestingJwtClockskewExpiredTokenStillValidatesSubtopic) },
+        { path: 'why-setapplicationname-matters-shared-dataprotection-keys', loadComponent: () => import('./components/backend/aspnet/authentication/subtopics/why-setapplicationname-matters-shared-dataprotection-keys/why-setapplicationname-matters-shared-dataprotection-keys').then(m => m.WhySetapplicationnameMattersSharedDataprotectionKeysSubtopic) },
+        { path: 'jwt-claim-type-mapping-sub-becomes-nameidentifier', loadComponent: () => import('./components/backend/aspnet/authentication/subtopics/jwt-claim-type-mapping-sub-becomes-nameidentifier/jwt-claim-type-mapping-sub-becomes-nameidentifier').then(m => m.JwtClaimTypeMappingSubBecomesNameidentifierSubtopic) },
+      ] },
       { path: 'authorization',        loadComponent: () => import('./components/backend/aspnet/authorization/authorization').then(m => m.AspnetAuthorization) },
       { path: 'cors',                 loadComponent: () => import('./components/backend/aspnet/cors/cors').then(m => m.AspnetCors) },
       { path: 'rate-limiting',        loadComponent: () => import('./components/backend/aspnet/rate-limiting/rate-limiting').then(m => m.AspnetRateLimiting) },
