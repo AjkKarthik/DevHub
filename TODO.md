@@ -1497,7 +1497,7 @@ off here with a date.
 
 #### ASP.NET Core — 45 topic pages
 
-- [ ] `/aspnet/hosting-startup` — Hosting & Startup
+- [x] `/aspnet/hosting-startup` — Hosting & Startup (2026-07-04 — 3 subtopics: testing-environment-branching-without-real-environment-variable, what-builder-build-actually-seals-servicecollection-vs-serviceprovider, applicationstopping-fires-before-in-flight-requests-finish-draining)
 - [ ] `/aspnet/middleware` — Middleware Pipeline
 - [ ] `/aspnet/routing` — Routing
 - [ ] `/aspnet/configuration` — Configuration & Options

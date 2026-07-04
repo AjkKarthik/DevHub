@@ -544,6 +544,29 @@ identically):
    follow the Angular convention exactly**: bare composite `'basics/<subtopic-slug>'`, no
    `csharp/` prefix.
 
+### ASP.NET Core hub subtopic wiring — differs from C# in one specific place
+
+Confirmed by direct file inspection before the ASP.NET pilot (`/aspnet/hosting-startup`,
+2026-07-04) — do this same check before any other new hub's first subtopic set:
+1. **`SIDEBAR_MAP` keys for ordinary ASP.NET topic pages are FULL-PATH PREFIXED**
+   (`'aspnet/hosting-startup'`, not bare `'hosting-startup'`) — the OPPOSITE of the C# hub's
+   bare-key convention. Confirmed via `page-sidebar.ts`'s `routeKey()` (the full URL path
+   minus leading slash) and its lookup fallback, which only strips a leading `angular/` or
+   `csharp/` prefix — **not** `aspnet/` — meaning a bare key would never be found for this
+   hub. **Subtopic composite sidebar keys follow the SAME full-path convention**:
+   `'aspnet/hosting-startup/<subtopic-slug>'`, not a bare `'hosting-startup/<subtopic-slug>'`.
+2. Progress/search keys are `aspnet-` prefixed (`aspnet-hosting-startup`), same pattern as
+   C#'s `csharp-` prefix. Breadcrumb `ASPNET_LABELS` map uses bare keys (`hosting-startup`),
+   same as C#'s `CSHARP_LABELS` — composite subtopic keys there are bare too
+   (`'hosting-startup/<subtopic-slug>'`), confirmed via the same generic composite-key-first
+   lookup all hubs share in `breadcrumb.ts`. The nav accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) key off the bare topic slug,
+   exactly as in C# — this part of `app.ts`'s single flat `SUBTOPICS` map is unaffected by
+   hub-specific sidebar/prefix differences.
+3. Theme: ASP.NET subtopic pages use the hub's teal accent (`$accent: #0e7490`,
+   `$tint: #ecfeff`) and the `.asp-page`/`.asp-icon`/`.asp-section` CSS classes (NOT C#'s
+   purple/`.cs-page`), `tech="aspnet"` in `app-page-meta`. Icon content stays `ASP`.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.
