@@ -592,7 +592,12 @@ export const routes: Routes = [
         { path: 'why-getenumerator-sometimes-returns-itself-thread-id-check', loadComponent: () => import('./components/backend/csharp/iterators/subtopics/why-getenumerator-sometimes-returns-itself-thread-id-check/why-getenumerator-sometimes-returns-itself-thread-id-check').then(m => m.WhyGetenumeratorSometimesReturnsItselfThreadIdCheckSubtopic) },
         { path: 'iterator-exceptions-stack-traces-movenext-not-call-site', loadComponent: () => import('./components/backend/csharp/iterators/subtopics/iterator-exceptions-stack-traces-movenext-not-call-site/iterator-exceptions-stack-traces-movenext-not-call-site').then(m => m.IteratorExceptionsStackTracesMovenextNotCallSiteSubtopic) },
       ] },
-      { path: 'functional-csharp', loadComponent: () => import('./components/backend/csharp/functional-csharp/functional-csharp').then(m => m.CsharpFunctionalCsharp) },
+      { path: 'functional-csharp', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/functional-csharp/functional-csharp').then(m => m.CsharpFunctionalCsharp) },
+        { path: 'testing-railway-pipelines-asserting-which-step-failed', loadComponent: () => import('./components/backend/csharp/functional-csharp/subtopics/testing-railway-pipelines-asserting-which-step-failed/testing-railway-pipelines-asserting-which-step-failed').then(m => m.TestingRailwayPipelinesAssertingWhichStepFailedSubtopic) },
+        { path: 'proving-result-genuine-monad-three-monad-laws', loadComponent: () => import('./components/backend/csharp/functional-csharp/subtopics/proving-result-genuine-monad-three-monad-laws/proving-result-genuine-monad-three-monad-laws').then(m => m.ProvingResultGenuineMonadThreeMonadLawsSubtopic) },
+        { path: 'result-equality-traps-never-equal-by-default', loadComponent: () => import('./components/backend/csharp/functional-csharp/subtopics/result-equality-traps-never-equal-by-default/result-equality-traps-never-equal-by-default').then(m => m.ResultEqualityTrapsNeverEqualByDefaultSubtopic) },
+      ] },
       { path: 'regex',             loadComponent: () => import('./components/backend/csharp/regex/regex').then(m => m.CsharpRegex) },
       { path: 'channels',          loadComponent: () => import('./components/backend/csharp/channels/channels').then(m => m.CsharpChannels) },
       { path: 'unit-testing',      loadComponent: () => import('./components/backend/csharp/unit-testing/unit-testing').then(m => m.CsharpUnitTesting) },

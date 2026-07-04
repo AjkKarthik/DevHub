@@ -512,6 +512,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why GetEnumerator Sometimes Returns Itself', route: '/csharp/iterators/why-getenumerator-sometimes-returns-itself-thread-id-check' },
     { label: 'Iterator Exceptions and Stack Traces', route: '/csharp/iterators/iterator-exceptions-stack-traces-movenext-not-call-site' },
   ],
+  'functional-csharp': [
+    { label: 'Testing Railway-Oriented Pipelines', route: '/csharp/functional-csharp/testing-railway-pipelines-asserting-which-step-failed' },
+    { label: 'Proving Result Is a Genuine Monad', route: '/csharp/functional-csharp/proving-result-genuine-monad-three-monad-laws' },
+    { label: 'Result Equality Traps', route: '/csharp/functional-csharp/result-equality-traps-never-equal-by-default' },
+  ],
 };
 
 @Component({

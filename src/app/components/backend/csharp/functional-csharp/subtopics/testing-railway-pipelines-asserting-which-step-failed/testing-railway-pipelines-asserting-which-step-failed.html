@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Functional C# & Result" topicRoute="/csharp/functional-csharp" subtopicLabel="Testing Railway-Oriented Pipelines" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Railway-Oriented Pipelines: Asserting WHICH Step Failed, Not Just That Something Failed</h1>
+  <p class="page-subtitle">The main topic page's own ProcessOrder and RegistrationService pipelines rely on Bind's short-circuiting. See how to prove later steps were genuinely skipped — not just that the final Result looks like a failure.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we make good on the main <a routerLink="/csharp/functional-csharp">Functional C# & Result</a> page's own quiz question — that Result&lt;T&gt; is a monad — by actually proving the three monad laws hold for it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functional C# & Result"
+    topicRoute="/csharp/functional-csharp"
+    [next]="{ label: 'Proving Result Is a Genuine Monad', route: '/csharp/functional-csharp/proving-result-genuine-monad-three-monad-laws' }"
+  />
+</div>

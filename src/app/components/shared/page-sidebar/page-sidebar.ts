@@ -8238,6 +8238,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'functional-csharp': {
+    apis: ['Result<T>', '.Map()', '.Bind()', '.Match()'],
+    related: [{ label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'Exceptions', route: '/csharp/exceptions' }, { label: 'Generics', route: '/csharp/generics' }],
+    tip: 'Result<T> makes failure an explicit return type — Bind chains fallible operations and short-circuits automatically on the first failure, eliminating repetitive if (result.IsFailed) return... boilerplate.',
+    docs: [{ label: 'Result Pattern', url: 'https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/' }],
+    resources: [{ label: 'ErrorOr NuGet', url: 'https://www.nuget.org/packages/ErrorOr', badge: 'docs' }],
+    gotchas: ['Use Result<T> for expected domain failures; throw exceptions for infrastructure failures and programming errors.', 'Never write async Result<T> — use Task<Result<T>> instead, Result does not implement the awaitable pattern.'],
+  },
+
+  'functional-csharp/testing-railway-pipelines-asserting-which-step-failed': {
+    apis: ['Bind', 'Assert.Equal', 'call-count spy'],
+    related: [
+      { label: 'Proving Result Is a Genuine Monad — next', route: '/csharp/functional-csharp/proving-result-genuine-monad-three-monad-laws' },
+      { label: 'Functional C# & Result (overview)', route: '/csharp/functional-csharp' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test asserting only result.IsFailed says nothing about whether later pipeline steps were genuinely skipped — a call-count spy on each Bind step proves short-circuiting actually happened, not just that the final Result looks like a failure.',
+    docs: [
+      { label: 'Result Pattern', url: 'https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'A bug that wrongly invokes a later step (like charging payment) after an earlier step failed can still produce a final Result showing failure — only a call-count assertion on that specific step catches it.',
+      'Asserting on the SPECIFIC error message (not just IsFailed) confirms the pipeline failed at the expected step, for the expected reason.',
+    ],
+  },
+
+  'functional-csharp/proving-result-genuine-monad-three-monad-laws': {
+    apis: ['left identity', 'right identity', 'associativity'],
+    related: [
+      { label: 'Testing Railway-Oriented Pipelines — previous', route: '/csharp/functional-csharp/testing-railway-pipelines-asserting-which-step-failed' },
+      { label: 'Result Equality Traps — next', route: '/csharp/functional-csharp/result-equality-traps-never-equal-by-default' },
+      { label: 'Functional C# & Result (overview)', route: '/csharp/functional-csharp' },
+    ],
+    tip: 'Left identity, right identity, and associativity are concrete, verifiable equalities between Result<T> values built two different ways — associativity is exactly why a Bind chain is safe to reason about one step at a time regardless of grouping.',
+    docs: [
+      { label: 'Monad (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Monad_(functional_programming)' },
+    ],
+    resources: [
+      { label: 'Railway Oriented Programming', url: 'https://fsharpforfunandprofit.com/rop/', badge: 'blog' },
+    ],
+    gotchas: [
+      'The monad laws must hold unconditionally, including when intermediate functions fail — not just on the happy path.',
+      'Associativity is about GROUPING, not reordering — both sides of the law still execute f before g.',
+    ],
+  },
+
+  'functional-csharp/result-equality-traps-never-equal-by-default': {
+    apis: ['Equals', 'sealed record', 'ReferenceEquals'],
+    related: [
+      { label: 'Proving Result Is a Genuine Monad — previous', route: '/csharp/functional-csharp/proving-result-genuine-monad-three-monad-laws' },
+      { label: 'Functional C# & Result (overview)', route: '/csharp/functional-csharp' },
+      { label: 'System.Object', route: '/csharp/system-object' },
+    ],
+    tip: 'The main page\'s hand-rolled Result<T> is a sealed CLASS with no equality override — Assert.Equal on two logically-identical Results silently fails via reference equality. Assert on unwrapped fields, or change the declaration to a sealed record for automatic value equality.',
+    docs: [
+      { label: 'Records', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records' },
+    ],
+    resources: [
+      { label: 'Equality Comparisons', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/equality-comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'Two Result<T> instances printing the same value in a test failure message are NOT necessarily equal — printed representation and equality comparison are separate mechanisms.',
+      'Changing Result<T> from "sealed class" to "sealed record" is a one-time, low-risk fix that makes whole-object Assert.Equal comparisons work everywhere in the codebase.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],
