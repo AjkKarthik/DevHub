@@ -1368,7 +1368,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Collections &amp; Data</p>
-      <a routerLink="/csharp/arrays" routerLinkActive="active"><span class="nl-text">Arrays</span>@if(progress.isDone('csharp-arrays')){<span class="nl-done">✓</span>}@if(diff('csharp-arrays');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/arrays" routerLinkActive="active">
+        <span class="nl-text">Arrays</span>
+        @if (progress.isDone('csharp-arrays')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-arrays'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('arrays')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('arrays')"
+                  (click)="toggleSubtopics('arrays', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('arrays'); as subs) {
+        @if (isSubtopicsExpanded('arrays')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/collections" routerLinkActive="active">
         <span class="nl-text">Collections</span>
         @if (progress.isDone('csharp-collections')) {<span class="nl-done">✓</span>}

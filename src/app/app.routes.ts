@@ -541,7 +541,12 @@ export const routes: Routes = [
         { path: 'valuetuple-8-element-limit-trest-chaining-mechanism', loadComponent: () => import('./components/backend/csharp/tuples/subtopics/valuetuple-8-element-limit-trest-chaining-mechanism/valuetuple-8-element-limit-trest-chaining-mechanism').then(m => m.Valuetuple8ElementLimitTrestChainingMechanismSubtopic) },
         { path: 'renaming-tuple-field-breaks-some-callers-not-others', loadComponent: () => import('./components/backend/csharp/tuples/subtopics/renaming-tuple-field-breaks-some-callers-not-others/renaming-tuple-field-breaks-some-callers-not-others').then(m => m.RenamingTupleFieldBreaksSomeCallersNotOthersSubtopic) },
       ] },
-      { path: 'arrays',            loadComponent: () => import('./components/backend/csharp/arrays/arrays').then(m => m.CsharpArrays) },
+      { path: 'arrays', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/arrays/arrays').then(m => m.CsharpArrays) },
+        { path: 'testing-array-equality-sequenceequal-not-equals', loadComponent: () => import('./components/backend/csharp/arrays/subtopics/testing-array-equality-sequenceequal-not-equals/testing-array-equality-sequenceequal-not-equals').then(m => m.TestingArrayEqualitySequenceequalNotEqualsSubtopic) },
+        { path: 'real-cost-of-array-covariance-runtime-type-check-every-store', loadComponent: () => import('./components/backend/csharp/arrays/subtopics/real-cost-of-array-covariance-runtime-type-check-every-store/real-cost-of-array-covariance-runtime-type-check-every-store').then(m => m.RealCostOfArrayCovarianceRuntimeTypeCheckEveryStoreSubtopic) },
+        { path: 'params-array-hidden-allocation-every-call-span-fix', loadComponent: () => import('./components/backend/csharp/arrays/subtopics/params-array-hidden-allocation-every-call-span-fix/params-array-hidden-allocation-every-call-span-fix').then(m => m.ParamsArrayHiddenAllocationEveryCallSpanFixSubtopic) },
+      ] },
       { path: 'strings-datetime',  loadComponent: () => import('./components/backend/csharp/strings-datetime/strings-datetime').then(m => m.CsharpStringsDatetime) },
       // ── Data / Memory ──
       { path: 'io-serialization',  loadComponent: () => import('./components/backend/csharp/io-serialization/io-serialization').then(m => m.CsharpIoSerialization) },

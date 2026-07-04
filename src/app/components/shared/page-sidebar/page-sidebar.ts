@@ -7695,6 +7695,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Array covariance lets string[] be assigned to object[] — but writing an int to that reference throws at runtime.', 'Jagged arrays (T[][]) have different syntax and behavior than multi-dimensional arrays (T[,]).'],
   },
 
+  'arrays/testing-array-equality-sequenceequal-not-equals': {
+    apis: ['SequenceEqual', 'Assert.Equal', 'IEnumerable'],
+    related: [
+      { label: 'The Real Cost of Array Covariance — next', route: '/csharp/arrays/real-cost-of-array-covariance-runtime-type-check-every-store' },
+      { label: 'Arrays (overview)', route: '/csharp/arrays' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Arrays never override Equals()/== — both compare references. xUnit\'s Assert.Equal appears to work on arrays only because it special-cases IEnumerable internally; use SequenceEqual explicitly in plain code.',
+    docs: [
+      { label: 'Arrays (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/' },
+    ],
+    resources: [
+      { label: 'Enumerable.SequenceEqual', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.sequenceequal', badge: 'docs' },
+    ],
+    gotchas: [
+      'A production if (arr1 == arr2) check silently compares references, not content — no compiler warning, no exception, just quietly wrong logic.',
+      'ReferenceEquals and == on arrays behave identically — there is no partial content-awareness in either.',
+    ],
+  },
+
+  'arrays/real-cost-of-array-covariance-runtime-type-check-every-store': {
+    apis: ['stelem.ref', 'stelem.i4', 'ArrayTypeMismatchException'],
+    related: [
+      { label: 'Testing Array Equality — previous', route: '/csharp/arrays/testing-array-equality-sequenceequal-not-equals' },
+      { label: 'params Arrays Silently Allocate — next', route: '/csharp/arrays/params-array-hidden-allocation-every-call-span-fix' },
+      { label: 'Arrays (overview)', route: '/csharp/arrays' },
+    ],
+    tip: 'Every store into a reference-type array compiles to stelem.ref, which the CLR checks against the array\'s actual runtime element type on every write — not just the write that would fail. Value-type arrays (stelem.i4) pay no such cost.',
+    docs: [
+      { label: 'Arrays (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/' },
+    ],
+    resources: [
+      { label: 'Array Covariance', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/covariance-and-arrays', badge: 'docs' },
+    ],
+    gotchas: [
+      'The covariant check runs on every reference-type array store, including ones guaranteed to succeed — the JIT cannot statically prove an array reference is not covariantly aliased.',
+      'int[]/double[] stores have zero type-check overhead — value-type arrays cannot be covariantly backed by an incompatible array.',
+    ],
+  },
+
+  'arrays/params-array-hidden-allocation-every-call-span-fix': {
+    apis: ['params ReadOnlySpan<T>', 'params T[]'],
+    related: [
+      { label: 'The Real Cost of Array Covariance — previous', route: '/csharp/arrays/real-cost-of-array-covariance-runtime-type-check-every-store' },
+      { label: 'Arrays (overview)', route: '/csharp/arrays' },
+      { label: 'Span & Memory', route: '/csharp/collections' },
+    ],
+    tip: 'Every params T[] call site allocates a new heap array, even for a 2-3 argument call — invisible because no "new" keyword appears at the call site. C# 12\'s params ReadOnlySpan<T> can eliminate this for read-only, non-escaping call sites.',
+    docs: [
+      { label: 'params Modifier', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters#params-modifier' },
+    ],
+    resources: [
+      { label: 'Span<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.span-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'params ReadOnlySpan<T> is not a drop-in replacement for methods that need to retain, return, or use the arguments across an await — those must keep the params T[] overload.',
+      'The allocation happens on every call regardless of argument count — even a tiny 2-element params call allocates a full array each time.',
+    ],
+  },
+
   'strings-datetime': {
     apis: ['string.Format', 'StringBuilder', 'DateOnly', 'TimeOnly', 'TimeSpan', 'Math'],
     related: [{ label: 'Variables & Types', route: '/csharp/basics' }, { label: 'LINQ', route: '/csharp/linq' }, { label: 'I/O & Serialization', route: '/csharp/io-serialization' }],

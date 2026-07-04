@@ -472,6 +472,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: '8-Element Limit and TRest Chaining', route: '/csharp/tuples/valuetuple-8-element-limit-trest-chaining-mechanism' },
     { label: 'Renaming a Tuple Field', route: '/csharp/tuples/renaming-tuple-field-breaks-some-callers-not-others' },
   ],
+  'arrays': [
+    { label: 'Testing Array Equality', route: '/csharp/arrays/testing-array-equality-sequenceequal-not-equals' },
+    { label: 'The Real Cost of Array Covariance', route: '/csharp/arrays/real-cost-of-array-covariance-runtime-type-check-every-store' },
+    { label: 'params Arrays Silently Allocate', route: '/csharp/arrays/params-array-hidden-allocation-every-call-span-fix' },
+  ],
 };
 
 @Component({
