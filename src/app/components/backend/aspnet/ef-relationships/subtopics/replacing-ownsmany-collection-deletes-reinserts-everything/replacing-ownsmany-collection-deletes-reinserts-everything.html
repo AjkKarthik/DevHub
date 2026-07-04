@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="EF Core Relationships"
+    topicRoute="/aspnet/ef-relationships"
+    subtopicLabel="OwnsMany's Replacement Gotcha"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Replacing an OwnsMany Collection Deletes and Reinserts Everything</h1>
+  <p class="page-subtitle">
+    The main page warns owned entities have no identity outside their owner. The unstated consequence:
+    replacing the whole collection property (rather than mutating it in place) breaks reference identity
+    entirely — every row gets deleted and reinserted, even unchanged ones.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the EF Core Relationships deep-dive set: testing cascade-delete safety with real
+      database constraints, understanding skip navigations' diffing mechanism, and now the collection-
+      replacement gotcha hiding behind owned entities' lack of identity. This wraps this extended ASP.NET
+      Core batch — head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="EF Core Relationships"
+    topicRoute="/aspnet/ef-relationships"
+    [prev]="{ label: 'How Skip Navigations Determine Join-Table INSERT/DELETE', route: '/aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete' }"
+  />
+</div>

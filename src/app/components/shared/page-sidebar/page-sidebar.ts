@@ -12190,6 +12190,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/ef-relationships/testing-deletebehavior-restrict-genuinely-throws-sqlite': {
+    apis: ['DeleteBehavior.Restrict', 'DbUpdateException', 'UseSqlite()'],
+    related: [
+      { label: 'How Skip Navigations Determine Join-Table INSERT/DELETE — next', route: '/aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete' },
+      { label: 'EF Relationships (overview)', route: '/aspnet/ef-relationships' },
+      { label: 'EF Core Basics', route: '/aspnet/ef-core-basics' },
+    ],
+    tip: 'DeleteBehavior.Restrict relies on the DATABASE\'s own foreign-key enforcement — UseInMemoryDatabase() has no real FK constraint checking at all, so a test using it would give a false-positive pass regardless of what OnDelete behavior is actually configured.',
+    docs: [
+      { label: 'Relationships', url: 'https://learn.microsoft.com/en-us/ef/core/modeling/relationships' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A regression to DeleteBehavior.SetNull also succeeds without throwing, just like Cascade would — assert on what happened to the child row when no exception was thrown, not just whether one was thrown.',
+      'Use UseSqlite (not UseInMemoryDatabase) for any test verifying database-level constraint behavior — foreign keys, unique constraints, cascade rules.',
+    ],
+  },
+
+  'aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete': {
+    apis: ['Include()', 'skip navigation', 'ICollection<T>.Add()/Remove()'],
+    related: [
+      { label: 'Testing That DeleteBehavior.Restrict Genuinely Throws — previous', route: '/aspnet/ef-relationships/testing-deletebehavior-restrict-genuinely-throws-sqlite' },
+      { label: 'Replacing an OwnsMany Collection Deletes and Reinserts Everything — next', route: '/aspnet/ef-relationships/replacing-ownsmany-collection-deletes-reinserts-everything' },
+      { label: 'EF Relationships (overview)', route: '/aspnet/ef-relationships' },
+    ],
+    tip: 'Include() establishes the diffable baseline for a skip navigation, the collection equivalent of OriginalValues for a scalar property — SaveChangesAsync compares that baseline against the current in-memory collection to compute exactly which join-table rows to INSERT or DELETE.',
+    docs: [
+      { label: 'Many-to-Many Relationships', url: 'https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Initializing a collection to an empty list (= []) only prevents a NullReferenceException — it does not give EF Core a genuine baseline reflecting the real, currently-associated entities.',
+      'This is the SAME underlying diffing mechanism as scalar-property change tracking, just applied to collection membership instead of a single value.',
+    ],
+  },
+
+  'aspnet/ef-relationships/replacing-ownsmany-collection-deletes-reinserts-everything': {
+    apis: ['OwnsMany()', '.NET object reference identity', 'value objects'],
+    related: [
+      { label: 'How Skip Navigations Determine Join-Table INSERT/DELETE — previous', route: '/aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete' },
+      { label: 'EF Relationships (overview)', route: '/aspnet/ef-relationships' },
+      { label: 'EF Performance', route: '/aspnet/ef-performance' },
+    ],
+    tip: 'Owned entities have no identity to compare by — mutating the loaded, tracked collection (Add/Remove) preserves .NET reference identity for unchanged entries, but replacing the whole property with a new List<T> breaks that identity entirely, forcing a delete-everything-then-reinsert-everything operation.',
+    docs: [
+      { label: 'Owned Entity Types', url: 'https://learn.microsoft.com/en-us/ef/core/modeling/owned-entities' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Both the efficient diffing pattern and the naive replace-everything pattern produce the identical FINAL collection contents — only inspecting the generated SQL (via LogTo) reveals the difference.',
+      'If matching entries by a stable key across updates seems necessary, that is a signal the type should be a regular entity with its own DbSet, not an owned type.',
+    ],
+  },
+
   'aspnet/ef-performance': {
     apis: ['AsNoTracking()', 'AsSplitQuery()', 'EF.CompileQuery()', 'ExecuteDeleteAsync()', 'ExecuteUpdateAsync()', 'FromSqlRaw()'],
     related: [

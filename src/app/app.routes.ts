@@ -822,7 +822,12 @@ export const routes: Routes = [
         { path: 'how-change-tracker-snapshot-produces-minimal-update', loadComponent: () => import('./components/backend/aspnet/ef-core-basics/subtopics/how-change-tracker-snapshot-produces-minimal-update/how-change-tracker-snapshot-produces-minimal-update').then(m => m.HowChangeTrackerSnapshotProducesMinimalUpdateSubtopic) },
         { path: 'reload-discards-edit-getdatabasevaluesasync-preserves-it', loadComponent: () => import('./components/backend/aspnet/ef-core-basics/subtopics/reload-discards-edit-getdatabasevaluesasync-preserves-it/reload-discards-edit-getdatabasevaluesasync-preserves-it').then(m => m.ReloadDiscardsEditGetdatabasevaluesasyncPreservesItSubtopic) },
       ] },
-      { path: 'ef-relationships',     loadComponent: () => import('./components/backend/aspnet/ef-relationships/ef-relationships').then(m => m.AspnetEfRelationships) },
+      { path: 'ef-relationships', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/ef-relationships/ef-relationships').then(m => m.AspnetEfRelationships) },
+        { path: 'testing-deletebehavior-restrict-genuinely-throws-sqlite', loadComponent: () => import('./components/backend/aspnet/ef-relationships/subtopics/testing-deletebehavior-restrict-genuinely-throws-sqlite/testing-deletebehavior-restrict-genuinely-throws-sqlite').then(m => m.TestingDeletebehaviorRestrictGenuinelyThrowsSqliteSubtopic) },
+        { path: 'how-skip-navigations-determine-join-table-insert-delete', loadComponent: () => import('./components/backend/aspnet/ef-relationships/subtopics/how-skip-navigations-determine-join-table-insert-delete/how-skip-navigations-determine-join-table-insert-delete').then(m => m.HowSkipNavigationsDetermineJoinTableInsertDeleteSubtopic) },
+        { path: 'replacing-ownsmany-collection-deletes-reinserts-everything', loadComponent: () => import('./components/backend/aspnet/ef-relationships/subtopics/replacing-ownsmany-collection-deletes-reinserts-everything/replacing-ownsmany-collection-deletes-reinserts-everything').then(m => m.ReplacingOwnsmanyCollectionDeletesReinsertsEverythingSubtopic) },
+      ] },
       { path: 'ef-performance',       loadComponent: () => import('./components/backend/aspnet/ef-performance/ef-performance').then(m => m.AspnetEfPerformance) },
       { path: 'caching',              loadComponent: () => import('./components/backend/aspnet/caching/caching').then(m => m.AspnetCaching) },
       // ── Security ──

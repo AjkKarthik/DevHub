@@ -716,6 +716,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How the Change Tracker Snapshot Produces a Minimal UPDATE', route: '/aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update' },
     { label: 'Reload vs GetDatabaseValuesAsync for Concurrency Recovery', route: '/aspnet/ef-core-basics/reload-discards-edit-getdatabasevaluesasync-preserves-it' },
   ],
+  'ef-relationships': [
+    { label: 'Testing That DeleteBehavior.Restrict Genuinely Throws', route: '/aspnet/ef-relationships/testing-deletebehavior-restrict-genuinely-throws-sqlite' },
+    { label: 'How Skip Navigations Determine Join-Table INSERT/DELETE', route: '/aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete' },
+    { label: 'Replacing an OwnsMany Collection Deletes and Reinserts Everything', route: '/aspnet/ef-relationships/replacing-ownsmany-collection-deletes-reinserts-everything' },
+  ],
 };
 
 @Component({

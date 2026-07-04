@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="EF Core Relationships"
+    topicRoute="/aspnet/ef-relationships"
+    subtopicLabel="Skip Navigations' Diffing Mechanism"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How Skip Navigations Determine Join-Table INSERT/DELETE</h1>
+  <p class="page-subtitle">
+    The main page says EF Core "handles the join table INSERT automatically" after Include()-then-Add().
+    It's the same OriginalValues/CurrentValues diffing mechanism from EF Core Basics, just applied to
+    collection membership instead of scalar properties.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 5+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own skip-navigation guidance. The final
+      subtopic in this set turns to <code>OwnsMany</code> — and a gotcha when replacing the entire
+      collection instead of mutating it, since owned entities have no identity to diff against at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="EF Core Relationships"
+    topicRoute="/aspnet/ef-relationships"
+    [prev]="{ label: 'Testing That DeleteBehavior.Restrict Genuinely Throws', route: '/aspnet/ef-relationships/testing-deletebehavior-restrict-genuinely-throws-sqlite' }"
+    [next]="{ label: 'Replacing an OwnsMany Collection Deletes and Reinserts Everything', route: '/aspnet/ef-relationships/replacing-ownsmany-collection-deletes-reinserts-everything' }"
+  />
+</div>
