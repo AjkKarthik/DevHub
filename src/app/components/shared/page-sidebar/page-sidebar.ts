@@ -8376,6 +8376,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  channels: {
+    apis: ['Channel.CreateBounded', 'ChannelWriter<T>', 'ChannelReader<T>'],
+    related: [{ label: 'Tasks & Parallel', route: '/csharp/tasks' }, { label: 'async / await', route: '/csharp/async' }, { label: 'Threading', route: '/csharp/threading' }],
+    tip: 'Bounded channels apply backpressure via WriteAsync — default to bounded, since unbounded with a slow consumer is a slow memory leak.',
+    docs: [{ label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels' }],
+    resources: [{ label: 'An Introduction to System.Threading.Channels', url: 'https://devblogs.microsoft.com/dotnet/an-introduction-to-system-threading-channels/', badge: 'blog' }],
+    gotchas: ['Forgetting writer.Complete() leaves the consumer\'s await foreach running forever.', 'SingleWriter/SingleReader are performance promises, not runtime constraints — lying causes data corruption.'],
+  },
+
+  'channels/testing-channel-pipelines-without-mocks-real-channel-test-double': {
+    apis: ['Channel.CreateUnbounded', 'TryRead', 'reader.Completion'],
+    related: [
+      { label: 'How ReadAllAsync Detects Completion — next', route: '/csharp/channels/how-readallasync-detects-completion-waittoreadasync-tryread' },
+      { label: 'Channels & Producer/Consumer (overview)', route: '/csharp/channels' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Because production code depends only on ChannelWriter<T>/ChannelReader<T> abstractions, a real throwaway channel substitutes perfectly as a test double — no mocking framework needed to verify backpressure or completion propagation.',
+    docs: [
+      { label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'Genuinely proving backpressure requires filling the channel and asserting a second write has NOT completed — configuration alone does not prove runtime behavior.',
+      'A test verifying shutdown must check reader.Completion actually completes, not just that no exception was thrown.',
+    ],
+  },
+
+  'channels/how-readallasync-detects-completion-waittoreadasync-tryread': {
+    apis: ['WaitToReadAsync', 'TryRead', 'IAsyncEnumerable'],
+    related: [
+      { label: 'Testing Channel-Based Pipelines — previous', route: '/csharp/channels/testing-channel-pipelines-without-mocks-real-channel-test-double' },
+      { label: 'The Rendezvous Channel — next', route: '/csharp/channels/rendezvous-channel-capacity-zero-writeasync-waits-for-reader' },
+      { label: 'Channels & Producer/Consumer (overview)', route: '/csharp/channels' },
+    ],
+    tip: 'ReadAllAsync is functionally equivalent to "while WaitToReadAsync, then while TryRead" — WaitToReadAsync returning false is precisely the signal that the channel is completed and fully drained.',
+    docs: [
+      { label: 'ChannelReader<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels.channelreader-1' },
+    ],
+    resources: [
+      { label: 'IAsyncEnumerable<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.iasyncenumerable-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'In a multi-reader scenario, TryRead can fail even right after WaitToReadAsync returns true — another reader may have taken the item first.',
+      'WaitToReadAsync returning false is the normal completion signal, not an error condition.',
+    ],
+  },
+
+  'channels/rendezvous-channel-capacity-zero-writeasync-waits-for-reader': {
+    apis: ['Channel.CreateBounded(0)', 'rendezvous', 'BoundedChannelFullMode'],
+    related: [
+      { label: 'How ReadAllAsync Detects Completion — previous', route: '/csharp/channels/how-readallasync-detects-completion-waittoreadasync-tryread' },
+      { label: 'Channels & Producer/Consumer (overview)', route: '/csharp/channels' },
+      { label: 'Tasks & Parallel', route: '/csharp/tasks' },
+    ],
+    tip: 'Channel.CreateBounded<T>(0) creates a rendezvous channel — WriteAsync can only complete at the exact moment a reader is actively receiving the item, with zero buffer storage, unlike even capacity 1.',
+    docs: [
+      { label: 'BoundedChannelOptions', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels.boundedchanneloptions' },
+    ],
+    resources: [
+      { label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels', badge: 'docs' },
+    ],
+    gotchas: [
+      'A WriteAsync completing on a POSITIVE-capacity channel only proves the item was stored — only capacity 0 guarantees a consumer is actively receiving it right now.',
+      'DropOldest/DropNewest full modes are meaningless on a capacity-0 channel — there is no buffer to have an "oldest" item in.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

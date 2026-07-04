@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Channels & Producer/Consumer" topicRoute="/csharp/channels" subtopicLabel="How ReadAllAsync Detects Completion" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">How ReadAllAsync Actually Detects Completion: WaitToReadAsync and TryRead Under the Hood</h1>
+  <p class="page-subtitle">The main topic page says ReadAllAsync "ends gracefully after Complete() + drain." See the exact two-primitive protocol underneath — WaitToReadAsync and TryRead — and why a manual consumer loop must retry after a failed TryRead.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Core 3+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic looks at an unusual, rarely-covered configuration the main <a routerLink="/csharp/channels">Channels & Producer/Consumer</a> page's own bounded-channel section doesn't mention: what happens with capacity zero.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Channels & Producer/Consumer"
+    topicRoute="/csharp/channels"
+    [prev]="{ label: 'Testing Channel-Based Pipelines', route: '/csharp/channels/testing-channel-pipelines-without-mocks-real-channel-test-double' }"
+    [next]="{ label: 'The Rendezvous Channel', route: '/csharp/channels/rendezvous-channel-capacity-zero-writeasync-waits-for-reader' }"
+  />
+</div>

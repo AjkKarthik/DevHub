@@ -604,7 +604,12 @@ export const routes: Routes = [
         { path: 'inside-backtracking-engine-nested-quantifiers-traced-step-by-step', loadComponent: () => import('./components/backend/csharp/regex/subtopics/inside-backtracking-engine-nested-quantifiers-traced-step-by-step/inside-backtracking-engine-nested-quantifiers-traced-step-by-step').then(m => m.InsideBacktrackingEngineNestedQuantifiersTracedStepByStepSubtopic) },
         { path: 'unicode-digit-trap-d-matches-more-than-ascii', loadComponent: () => import('./components/backend/csharp/regex/subtopics/unicode-digit-trap-d-matches-more-than-ascii/unicode-digit-trap-d-matches-more-than-ascii').then(m => m.UnicodeDigitTrapDMatchesMoreThanAsciiSubtopic) },
       ] },
-      { path: 'channels',          loadComponent: () => import('./components/backend/csharp/channels/channels').then(m => m.CsharpChannels) },
+      { path: 'channels', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/channels/channels').then(m => m.CsharpChannels) },
+        { path: 'testing-channel-pipelines-without-mocks-real-channel-test-double', loadComponent: () => import('./components/backend/csharp/channels/subtopics/testing-channel-pipelines-without-mocks-real-channel-test-double/testing-channel-pipelines-without-mocks-real-channel-test-double').then(m => m.TestingChannelPipelinesWithoutMocksRealChannelTestDoubleSubtopic) },
+        { path: 'how-readallasync-detects-completion-waittoreadasync-tryread', loadComponent: () => import('./components/backend/csharp/channels/subtopics/how-readallasync-detects-completion-waittoreadasync-tryread/how-readallasync-detects-completion-waittoreadasync-tryread').then(m => m.HowReadallasyncDetectsCompletionWaittoreadasyncTryreadSubtopic) },
+        { path: 'rendezvous-channel-capacity-zero-writeasync-waits-for-reader', loadComponent: () => import('./components/backend/csharp/channels/subtopics/rendezvous-channel-capacity-zero-writeasync-waits-for-reader/rendezvous-channel-capacity-zero-writeasync-waits-for-reader').then(m => m.RendezvousChannelCapacityZeroWriteasyncWaitsForReaderSubtopic) },
+      ] },
       { path: 'unit-testing',      loadComponent: () => import('./components/backend/csharp/unit-testing/unit-testing').then(m => m.CsharpUnitTesting) },
       { path: 'expression-trees',  loadComponent: () => import('./components/backend/csharp/expression-trees/expression-trees').then(m => m.CsharpExpressionTrees) },
       { path: 'dynamic',           loadComponent: () => import('./components/backend/csharp/dynamic/dynamic').then(m => m.CsharpDynamic) },

@@ -1657,7 +1657,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/channels" routerLinkActive="active"><span class="nl-text">Channels</span>@if(progress.isDone('csharp-channels')){<span class="nl-done">✓</span>}@if(diff('csharp-channels');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/channels" routerLinkActive="active">
+        <span class="nl-text">Channels</span>
+        @if (progress.isDone('csharp-channels')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-channels'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('channels')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('channels')"
+                  (click)="toggleSubtopics('channels', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('channels'); as subs) {
+        @if (isSubtopicsExpanded('channels')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

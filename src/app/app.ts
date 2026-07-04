@@ -522,6 +522,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Inside the Backtracking Engine', route: '/csharp/regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step' },
     { label: 'The Unicode Digit Trap', route: '/csharp/regex/unicode-digit-trap-d-matches-more-than-ascii' },
   ],
+  'channels': [
+    { label: 'Testing Channel-Based Pipelines', route: '/csharp/channels/testing-channel-pipelines-without-mocks-real-channel-test-double' },
+    { label: 'How ReadAllAsync Detects Completion', route: '/csharp/channels/how-readallasync-detects-completion-waittoreadasync-tryread' },
+    { label: 'The Rendezvous Channel', route: '/csharp/channels/rendezvous-channel-capacity-zero-writeasync-waits-for-reader' },
+  ],
 };
 
 @Component({
