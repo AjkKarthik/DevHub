@@ -457,6 +457,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ref struct Interfaces (C# 13)', route: '/csharp/structures/ref-struct-interfaces-generic-constraint-dispatch' },
     { label: 'Array vs List vs foreach Struct Mutation', route: '/csharp/structures/array-vs-list-vs-foreach-struct-mutation' },
   ],
+  'system-object': [
+    { label: 'Testing the Equals/GetHashCode Contract', route: '/csharp/system-object/testing-the-equals-gethashcode-contract' },
+    { label: 'Why GetHashCode Is Never Stable Across Runs', route: '/csharp/system-object/gethashcode-instability-across-process-runs' },
+    { label: 'Record Equality and EqualityContract', route: '/csharp/system-object/record-equality-and-equalitycontract' },
+  ],
 };
 
 @Component({

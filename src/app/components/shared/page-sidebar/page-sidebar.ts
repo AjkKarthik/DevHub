@@ -7488,6 +7488,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Boxing a value type wraps it in a heap object — frequent boxing causes GC pressure.', 'object.ReferenceEquals() always checks reference identity — override Equals() for value equality.'],
   },
 
+  'system-object/testing-the-equals-gethashcode-contract': {
+    apis: ['IEquatable<T>', 'reflexive', 'symmetric', 'transitive'],
+    related: [
+      { label: 'GetHashCode Instability — next', route: '/csharp/system-object/gethashcode-instability-across-process-runs' },
+      { label: 'System.Object (overview)', route: '/csharp/system-object' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A generic verifier taking two equal instances and one unequal instance can check reflexivity, symmetry, and hash-consistency in one reusable call — transitivity needs a dedicated 3-instance check, since pairwise tests can never expose it.',
+    docs: [
+      { label: 'Object.Equals', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.object.equals' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Symmetry violations (a.Equals(b) != b.Equals(a)) most often arise from asymmetric type-checking logic between two different types being compared.',
+      'Transitivity violations are most commonly introduced by "fuzzy" tolerance-based equality, where being close enough to two different values does not guarantee those values are close enough to each other.',
+    ],
+  },
+
+  'system-object/gethashcode-instability-across-process-runs': {
+    apis: ['GetHashCode()', 'HashCode.Combine', 'SHA256'],
+    related: [
+      { label: 'Testing the Equals/GetHashCode Contract — previous', route: '/csharp/system-object/testing-the-equals-gethashcode-contract' },
+      { label: 'Record Equality — next', route: '/csharp/system-object/record-equality-and-equalitycontract' },
+      { label: 'System.Object (overview)', route: '/csharp/system-object' },
+    ],
+    tip: '.NET randomizes hash seeds per PROCESS (a deliberate anti-hash-flooding security measure) — the same logical value can and will produce a different GetHashCode() on the next process run. Never persist a hash code as a stable identifier.',
+    docs: [
+      { label: 'Object.GetHashCode', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.object.gethashcode' },
+    ],
+    resources: [
+      { label: 'SHA256 Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha256', badge: 'docs' },
+    ],
+    gotchas: [
+      'HashCode.Combine only controls how field hashes are COMBINED — it does nothing to stabilize the underlying field hash codes (e.g. string.GetHashCode()) themselves across process runs.',
+      'For a genuinely stable, persistable identifier, use a GUID, a database auto-increment ID, or an explicit cryptographic hash (SHA-256) — never GetHashCode().',
+    ],
+  },
+
+  'system-object/record-equality-and-equalitycontract': {
+    apis: ['record', 'EqualityContract', 'GetType()'],
+    related: [
+      { label: 'GetHashCode Instability — previous', route: '/csharp/system-object/gethashcode-instability-across-process-runs' },
+      { label: 'System.Object (overview)', route: '/csharp/system-object' },
+      { label: 'Records & Structs', route: '/csharp/records' },
+    ],
+    tip: 'Every record has a hidden, compiler-generated, virtual EqualityContract property returning its own most-derived type — the generated Equals checks this FIRST, which is why a base record and a derived record with identical fields are never equal.',
+    docs: [
+      { label: 'Records', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/records' },
+    ],
+    resources: [
+      { label: 'Record Equality', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/records', badge: 'docs' },
+    ],
+    gotchas: [
+      'Two sibling record types deriving from the same base (like Dog and Cat both deriving from Animal) are never equal to each other, even with matching field values — EqualityContract is unique per most-derived type, not per inheritance branch.',
+      'This mirrors the main topic\'s own GetType() == typeof(T) exact-type-check reasoning for ordinary classes, applied automatically by the compiler to every record.',
+    ],
+  },
+
   'extension-methods': {
     apis: ['this T param', 'static class', 'LINQ extensions', 'fluent API', 'IEnumerable<T>'],
     related: [{ label: 'LINQ', route: '/csharp/linq' }, { label: 'Static, Partial & Enums', route: '/csharp/static-enums' }, { label: 'Delegates & Events', route: '/csharp/delegates' }],
