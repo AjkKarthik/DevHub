@@ -634,7 +634,12 @@ export const routes: Routes = [
         { path: 'why-symbols-defeat-incremental-caching-leak-compilation', loadComponent: () => import('./components/backend/csharp/source-generators/subtopics/why-symbols-defeat-incremental-caching-leak-compilation/why-symbols-defeat-incremental-caching-leak-compilation').then(m => m.WhySymbolsDefeatIncrementalCachingLeakCompilationSubtopic) },
         { path: 'debugging-source-generator-debugger-launch-technique', loadComponent: () => import('./components/backend/csharp/source-generators/subtopics/debugging-source-generator-debugger-launch-technique/debugging-source-generator-debugger-launch-technique').then(m => m.DebuggingSourceGeneratorDebuggerLaunchTechniqueSubtopic) },
       ] },
-      { path: 'span-memory',      loadComponent: () => import('./components/backend/csharp/span-memory/span-memory').then(m => m.CsharpSpanMemory) },
+      { path: 'span-memory', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/span-memory/span-memory').then(m => m.CsharpSpanMemory) },
+        { path: 'testing-methods-accepting-span-cannot-wrap-call-in-lambda', loadComponent: () => import('./components/backend/csharp/span-memory/subtopics/testing-methods-accepting-span-cannot-wrap-call-in-lambda/testing-methods-accepting-span-cannot-wrap-call-in-lambda').then(m => m.TestingMethodsAcceptingSpanCannotWrapCallInLambdaSubtopic) },
+        { path: 'whats-actually-inside-span-ref-field-fast-restricted', loadComponent: () => import('./components/backend/csharp/span-memory/subtopics/whats-actually-inside-span-ref-field-fast-restricted/whats-actually-inside-span-ref-field-fast-restricted').then(m => m.WhatsActuallyInsideSpanRefFieldFastRestrictedSubtopic) },
+        { path: 'arraypool-rent-returns-dirty-memory-stale-data-leak', loadComponent: () => import('./components/backend/csharp/span-memory/subtopics/arraypool-rent-returns-dirty-memory-stale-data-leak/arraypool-rent-returns-dirty-memory-stale-data-leak').then(m => m.ArraypoolRentReturnsDirtyMemoryStaleDataLeakSubtopic) },
+      ] },
       { path: 'di-dotnet',        loadComponent: () => import('./components/backend/csharp/di-dotnet/di-dotnet').then(m => m.CsharpDiDotnet) },
       { path: 'json-advanced',    loadComponent: () => import('./components/backend/csharp/json-advanced/json-advanced').then(m => m.CsharpJsonAdvanced) },
       { path: 'unsafe-pointers',  loadComponent: () => import('./components/backend/csharp/unsafe-pointers/unsafe-pointers').then(m => m.CsharpUnsafePointers) },

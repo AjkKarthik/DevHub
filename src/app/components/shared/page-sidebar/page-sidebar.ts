@@ -8721,6 +8721,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'span-memory': {
+    apis: ['Span<T>', 'Memory<T>', 'ArrayPool<T>'],
+    related: [{ label: 'Arrays', route: '/csharp/arrays' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }, { label: 'Strings, DateTime & Math', route: '/csharp/strings-datetime' }],
+    tip: 'Span<T> is a ref struct living exclusively on the stack — a pointer and length representing a contiguous slice with no heap allocation. It cannot be a class field, boxed, used across await, or stored in arrays.',
+    docs: [{ label: 'Memory and Span (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/' }],
+    resources: [{ label: 'Span<T> Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.span-1', badge: 'docs' }],
+    gotchas: ['Span<T> cannot cross await boundaries — use Memory<T> in APIs that need to store or await the data, calling .Span for synchronous processing.', 'Always return rented ArrayPool arrays — forgetting leaks the buffer back to the GC path and defeats the purpose.'],
+  },
+
+  'span-memory/testing-methods-accepting-span-cannot-wrap-call-in-lambda': {
+    apis: ['Assert.Throws', 'ref struct capture', 'CS8175'],
+    related: [
+      { label: 'What Is Actually Inside a Span<T> — next', route: '/csharp/span-memory/whats-actually-inside-span-ref-field-fast-restricted' },
+      { label: 'Span<T> & Memory<T> (overview)', route: '/csharp/span-memory' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A Span<T> local variable declared outside a lambda cannot be captured inside it — Assert.Throws(() => method(mySpan)) is a compile error if mySpan is captured; construct the span inline inside the lambda, or use a plain try/catch instead.',
+    docs: [
+      { label: 'ref struct Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/ref-struct' },
+    ],
+    resources: [
+      { label: 'xUnit Assert.Throws', url: 'https://xunit.net/docs/comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'Capturing an ordinary reference-type local (like a string) in a lambda is unaffected — only ref struct locals trigger the restriction.',
+      'Constructing the span fresh inside the lambda body (e.g. "text".AsSpan()) compiles fine, since nothing is captured from an outer scope.',
+    ],
+  },
+
+  'span-memory/whats-actually-inside-span-ref-field-fast-restricted': {
+    apis: ['ref field', 'managed pointer', 'stackalloc'],
+    related: [
+      { label: 'Testing Methods That Accept Span<T> — previous', route: '/csharp/span-memory/testing-methods-accepting-span-cannot-wrap-call-in-lambda' },
+      { label: 'ArrayPool Rent Returns Dirty Memory — next', route: '/csharp/span-memory/arraypool-rent-returns-dirty-memory-stale-data-leak' },
+      { label: 'Span<T> & Memory<T> (overview)', route: '/csharp/span-memory' },
+    ],
+    tip: 'Span<T> internally stores a ref field — a genuine managed pointer that can reference the middle of an array or stack memory. Every one of its restrictions (no class fields, no boxing, no await, no arrays) follows from the CLR not supporting ref fields in ordinary heap-tracked storage.',
+    docs: [
+      { label: 'Span<T> Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.span-1' },
+    ],
+    resources: [
+      { label: 'Write Safe Efficient Code', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/write-safe-efficient-code', badge: 'docs' },
+    ],
+    gotchas: [
+      'Writing through a Span<T> mutates the ORIGINAL array directly — proving no copy was ever made, unlike Substring which genuinely allocates.',
+      'Memory<T> avoids all these restrictions by storing an ordinary object reference plus start/length instead of a ref field, at the cost of needing .Span for actual access.',
+    ],
+  },
+
+  'span-memory/arraypool-rent-returns-dirty-memory-stale-data-leak': {
+    apis: ['ArrayPool<T>.Rent', 'clearArray', 'Return'],
+    related: [
+      { label: 'What Is Actually Inside a Span<T> — previous', route: '/csharp/span-memory/whats-actually-inside-span-ref-field-fast-restricted' },
+      { label: 'Span<T> & Memory<T> (overview)', route: '/csharp/span-memory' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'ArrayPool<T>.Rent does not clear the array by default — a rented buffer can contain a previous, unrelated caller\'s real data. Use Return(array, clearArray: true) specifically when the buffer held sensitive data.',
+    docs: [
+      { label: 'ArrayPool<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.buffers.arraypool-1' },
+    ],
+    resources: [
+      { label: 'ArrayPool.Return Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.buffers.arraypool-1.return', badge: 'docs' },
+    ],
+    gotchas: [
+      'Tracking "actual length" separately (the main page\'s own recommendation) prevents reading garbage beyond what THIS caller wrote — it does nothing to stop a LATER caller from seeing THIS caller\'s leftover data if never cleared.',
+      'Clearing has a real performance cost — apply it deliberately for buffers holding sensitive data, not reflexively for every rent/return cycle.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

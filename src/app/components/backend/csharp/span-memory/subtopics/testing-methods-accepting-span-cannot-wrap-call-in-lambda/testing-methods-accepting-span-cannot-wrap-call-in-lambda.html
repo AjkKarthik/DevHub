@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Span<T> & Memory<T>" topicRoute="/csharp/span-memory" subtopicLabel="Testing Methods That Accept Span<T>" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Methods That Accept Span&lt;T&gt;: Why You Can't Just Wrap the Call in a Lambda</h1>
+  <p class="page-subtitle">The main topic page lists ref-struct restrictions on Span&lt;T&gt;. One of them breaks the instinctive Assert.Throws(() => method(mySpan)) pattern at compile time. See exactly why, and the two clean fixes.</p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET Core 2.1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at exactly what's stored inside a <code>Span&lt;T&gt;</code> value that makes it both this fast AND this restricted — the main <a routerLink="/csharp/span-memory">Span&lt;T&gt; & Memory&lt;T&gt;</a> page's own ref-struct rule, traced to its actual mechanism.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Span<T> & Memory<T>"
+    topicRoute="/csharp/span-memory"
+    [next]="{ label: 'What Is Actually Inside a Span<T>', route: '/csharp/span-memory/whats-actually-inside-span-ref-field-fast-restricted' }"
+  />
+</div>

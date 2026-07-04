@@ -547,6 +547,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why Symbols Defeat Incremental Caching', route: '/csharp/source-generators/why-symbols-defeat-incremental-caching-leak-compilation' },
     { label: 'Debugging a Source Generator', route: '/csharp/source-generators/debugging-source-generator-debugger-launch-technique' },
   ],
+  'span-memory': [
+    { label: 'Testing Methods That Accept Span<T>', route: '/csharp/span-memory/testing-methods-accepting-span-cannot-wrap-call-in-lambda' },
+    { label: 'What Is Actually Inside a Span<T>', route: '/csharp/span-memory/whats-actually-inside-span-ref-field-fast-restricted' },
+    { label: 'ArrayPool Rent Returns Dirty Memory', route: '/csharp/span-memory/arraypool-rent-returns-dirty-memory-stale-data-leak' },
+  ],
 };
 
 @Component({
