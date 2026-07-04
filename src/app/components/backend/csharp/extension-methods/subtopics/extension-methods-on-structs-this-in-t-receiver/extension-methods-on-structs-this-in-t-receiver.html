@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Extension Methods"
+    topicRoute="/csharp/extension-methods"
+    subtopicLabel="Extension Methods on Structs: this in T" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Extension Methods on Structs: Using this in T to Avoid Copying the Receiver</h1>
+  <p class="page-subtitle">
+    Every extension method example on the main topic uses a plain by-value receiver — for
+    a large struct, this copies it on every call. This subtopic covers this in T, the
+    C# 7.2 syntax that passes the receiver by readonly reference instead.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 7.2" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing for shadowing, resolving ambiguity, and knowing the this in T receiver
+      optimization together complete extension methods as a precise, production-ready
+      toolkit beyond LINQ and fluent APIs alone.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Extension Methods"
+    topicRoute="/csharp/extension-methods"
+    [prev]="{ label: 'Resolving Extension Method Ambiguity', route: '/csharp/extension-methods/resolving-extension-method-ambiguity-cs0121' }" />
+</div>

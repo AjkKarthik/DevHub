@@ -462,6 +462,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why GetHashCode Is Never Stable Across Runs', route: '/csharp/system-object/gethashcode-instability-across-process-runs' },
     { label: 'Record Equality and EqualityContract', route: '/csharp/system-object/record-equality-and-equalitycontract' },
   ],
+  'extension-methods': [
+    { label: 'Testing for Extension Method Shadowing', route: '/csharp/extension-methods/testing-for-extension-method-shadowing' },
+    { label: 'Resolving Extension Method Ambiguity', route: '/csharp/extension-methods/resolving-extension-method-ambiguity-cs0121' },
+    { label: 'Extension Methods on Structs: this in T', route: '/csharp/extension-methods/extension-methods-on-structs-this-in-t-receiver' },
+  ],
 };
 
 @Component({

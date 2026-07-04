@@ -7557,6 +7557,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Extension methods cannot access private members — they are syntactic sugar for static method calls.', 'If a type gains an instance method with the same name, it takes precedence over the extension method.'],
   },
 
+  'extension-methods/testing-for-extension-method-shadowing': {
+    apis: ['reflection', 'GetMethod', 'BindingFlags'],
+    related: [
+      { label: 'Resolving Extension Method Ambiguity — next', route: '/csharp/extension-methods/resolving-extension-method-ambiguity-cs0121' },
+      { label: 'Extension Methods (overview)', route: '/csharp/extension-methods' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test asserting on a DISTINGUISHABLE result the extension specifically produces catches a future instance method silently shadowing it — a test that only checks "it compiles" or "returns some value" proves nothing about which implementation ran.',
+    docs: [
+      { label: 'Extension Methods', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods' },
+    ],
+    resources: [
+      { label: 'Reflection GetMethod', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.type.getmethod', badge: 'docs' },
+    ],
+    gotchas: [
+      'A reflection tripwire checking for an exact signature only catches genuine shadowing conflicts — a new instance method with the same name but different parameters coexists via ordinary overload resolution.',
+      'Instance methods always win over extensions with the same signature, silently, with zero compiler warning — this is exactly why a regression test matters for types you do not control.',
+    ],
+  },
+
+  'extension-methods/resolving-extension-method-ambiguity-cs0121': {
+    apis: ['CS0121', 'using directive', 'scope proximity'],
+    related: [
+      { label: 'Testing for Extension Method Shadowing — previous', route: '/csharp/extension-methods/testing-for-extension-method-shadowing' },
+      { label: 'Extension Methods on Structs — next', route: '/csharp/extension-methods/extension-methods-on-structs-this-in-t-receiver' },
+      { label: 'Extension Methods (overview)', route: '/csharp/extension-methods' },
+    ],
+    tip: 'Extension method resolution prefers candidates CLOSER in scope automatically — genuine CS0121 ambiguity only arises when two competing extensions are reached via equally "distant" using directives. Fix it by calling the static method directly.',
+    docs: [
+      { label: 'Extension Method Invocation', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods' },
+    ],
+    resources: [
+      { label: 'Method Resolution', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions', badge: 'docs' },
+    ],
+    gotchas: [
+      'A using alias cannot disambiguate an extension method call — it applies to types and namespaces, not to which fluent call resolves where. Fall back to the explicit static call instead.',
+      'Only genuinely APPLICABLE candidates (matching the call site\'s argument count/types) participate in ambiguity resolution — a method requiring extra arguments is not a competing candidate at all.',
+    ],
+  },
+
+  'extension-methods/extension-methods-on-structs-this-in-t-receiver': {
+    apis: ['this in T', 'readonly struct', 'defensive copy'],
+    related: [
+      { label: 'Resolving Extension Method Ambiguity — previous', route: '/csharp/extension-methods/resolving-extension-method-ambiguity-cs0121' },
+      { label: 'Extension Methods (overview)', route: '/csharp/extension-methods' },
+      { label: 'Structures', route: '/csharp/structures' },
+    ],
+    tip: 'this in T passes the extension method\'s receiver by readonly reference instead of by value — avoiding a full struct copy on every call, but only genuinely if the struct is declared readonly struct.',
+    docs: [
+      { label: 'in Parameter Modifier', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters#in-parameter-modifier' },
+    ],
+    resources: [
+      { label: 'readonly struct', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct#readonly-struct', badge: 'docs' },
+    ],
+    gotchas: [
+      'For a non-readonly struct, this in T silently falls back to a defensive copy anyway — exactly the same trap as an ordinary in parameter, just applied to the receiver.',
+      'this in T forbids direct field mutation on the receiver regardless of whether the struct itself is readonly — that restriction comes from "in" itself, a separate rule from the defensive-copy question.',
+    ],
+  },
+
   tuples: {
     apis: ['(T1, T2)', 'ValueTuple', 'anonymous type', 'named fields', 'deconstruction'],
     related: [{ label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'Records & Structs', route: '/csharp/records' }, { label: 'LINQ', route: '/csharp/linq' }],

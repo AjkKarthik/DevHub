@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Extension Methods"
+    topicRoute="/csharp/extension-methods"
+    subtopicLabel="Testing for Extension Method Shadowing" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing for Extension Method Shadowing: Catching a Silently Broken Contract</h1>
+  <p class="page-subtitle">
+    The main topic's own Common Mistake shows a later-added instance method silently
+    shadowing an extension, with zero compiler warning — this subtopic writes tests that
+    would actually catch that exact regression.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 3.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing shadowing risk covers a real regression class — the next subtopics dig into
+      a genuine ambiguity error between two imported extension namespaces, and a
+      struct-specific performance optimization for the extension receiver itself.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Extension Methods"
+    topicRoute="/csharp/extension-methods"
+    [next]="{ label: 'Resolving Extension Method Ambiguity', route: '/csharp/extension-methods/resolving-extension-method-ambiguity-cs0121' }" />
+</div>

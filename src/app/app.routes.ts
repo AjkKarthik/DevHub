@@ -529,7 +529,12 @@ export const routes: Routes = [
         { path: 'record-equality-and-equalitycontract', loadComponent: () => import('./components/backend/csharp/system-object/subtopics/record-equality-and-equalitycontract/record-equality-and-equalitycontract').then(m => m.RecordEqualityAndEqualityContractSubtopic) },
       ] },
       // ── Types ──
-      { path: 'extension-methods', loadComponent: () => import('./components/backend/csharp/extension-methods/extension-methods').then(m => m.CsharpExtensionMethods) },
+      { path: 'extension-methods', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/extension-methods/extension-methods').then(m => m.CsharpExtensionMethods) },
+        { path: 'testing-for-extension-method-shadowing', loadComponent: () => import('./components/backend/csharp/extension-methods/subtopics/testing-for-extension-method-shadowing/testing-for-extension-method-shadowing').then(m => m.TestingForExtensionMethodShadowingSubtopic) },
+        { path: 'resolving-extension-method-ambiguity-cs0121', loadComponent: () => import('./components/backend/csharp/extension-methods/subtopics/resolving-extension-method-ambiguity-cs0121/resolving-extension-method-ambiguity-cs0121').then(m => m.ResolvingExtensionMethodAmbiguityCs0121Subtopic) },
+        { path: 'extension-methods-on-structs-this-in-t-receiver', loadComponent: () => import('./components/backend/csharp/extension-methods/subtopics/extension-methods-on-structs-this-in-t-receiver/extension-methods-on-structs-this-in-t-receiver').then(m => m.ExtensionMethodsOnStructsThisInTReceiverSubtopic) },
+      ] },
       { path: 'tuples',            loadComponent: () => import('./components/backend/csharp/tuples/tuples').then(m => m.CsharpTuples) },
       { path: 'arrays',            loadComponent: () => import('./components/backend/csharp/arrays/arrays').then(m => m.CsharpArrays) },
       { path: 'strings-datetime',  loadComponent: () => import('./components/backend/csharp/strings-datetime/strings-datetime').then(m => m.CsharpStringsDatetime) },

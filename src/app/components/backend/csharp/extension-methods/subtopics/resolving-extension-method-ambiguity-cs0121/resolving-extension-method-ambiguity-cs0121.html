@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Extension Methods"
+    topicRoute="/csharp/extension-methods"
+    subtopicLabel="Resolving Extension Method Ambiguity" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Resolving Extension Method Ambiguity: When Two Imported Namespaces Both Extend the Same Type</h1>
+  <p class="page-subtitle">
+    The main topic covers a MISSING using directive causing "method not found" — this
+    subtopic covers the opposite: two imported namespaces both extending the same type
+    with the same name, and the scope-proximity rule that usually (but not always) saves you.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 3.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding ambiguity resolution completes the extension-method-resolution
+      picture — the final subtopic covers a struct-specific performance concern for the
+      extension method's own receiver parameter.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Extension Methods"
+    topicRoute="/csharp/extension-methods"
+    [prev]="{ label: 'Testing for Extension Method Shadowing', route: '/csharp/extension-methods/testing-for-extension-method-shadowing' }"
+    [next]="{ label: 'Extension Methods on Structs: this in T', route: '/csharp/extension-methods/extension-methods-on-structs-this-in-t-receiver' }" />
+</div>
