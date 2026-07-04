@@ -10953,6 +10953,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/routing/testing-route-precedence-catching-ambiguous-routes-before-production': {
+    apis: ['TestServer', 'AmbiguousMatchException', 'UseTestServer'],
+    related: [
+      { label: 'How Route Precedence Is Actually Computed — next', route: '/aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm' },
+      { label: 'Routing (overview)', route: '/aspnet/routing' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'AmbiguousMatchException is thrown at host startup — a minimal TestServer-backed host with the same route registrations catches route conflicts in CI, long before any real deployment.',
+    docs: [
+      { label: 'Testing Middleware and Routing', url: 'https://learn.microsoft.com/en-us/aspnet/core/test/middleware' },
+    ],
+    resources: [
+      { label: 'TestServer Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.testhost.testserver', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test that only covers a shared registration method can miss routes registered conditionally, directly in Program.cs, outside that method.',
+      'Route ambiguity involving feature-flagged routes requires exercising the specific configuration that enables them, not just the default configuration.',
+    ],
+  },
+
+  'aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm': {
+    apis: ['RouteEndpoint', 'precedence scoring', 'segment matching'],
+    related: [
+      { label: 'Testing Route Precedence — previous', route: '/aspnet/routing/testing-route-precedence-catching-ambiguous-routes-before-production' },
+      { label: 'A Renamed WithName() Silently Breaks LinkGenerator — next', route: '/aspnet/routing/typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check' },
+      { label: 'Routing (overview)', route: '/aspnet/routing' },
+    ],
+    tip: 'Route precedence comparison walks two templates segment-by-segment, left to right — the FIRST position where they differ decides the winner outright, regardless of what either template does at later segments.',
+    docs: [
+      { label: 'Route Template Precedence', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing#route-template-precedence-in-minimal-api-apps' },
+    ],
+    resources: [
+      { label: 'aspnetcore Routing Source', url: 'https://github.com/dotnet/aspnetcore/tree/main/src/Http/Routing', badge: 'code' },
+    ],
+    gotchas: [
+      'Total constraint count across a whole template does not determine precedence — position of the first divergence does.',
+      'Two identically-shaped templates differing only by an added constraint resolve the constrained one as more specific at that position.',
+    ],
+  },
+
+  'aspnet/routing/typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check': {
+    apis: ['WithName()', 'LinkGenerator.GetPathByName', 'IEndpointNameMetadata'],
+    related: [
+      { label: 'How Route Precedence Is Actually Computed — previous', route: '/aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm' },
+      { label: 'Routing (overview)', route: '/aspnet/routing' },
+      { label: 'Middleware Pipeline', route: '/aspnet/middleware' },
+    ],
+    tip: 'WithName() and GetPathByName()/GetUriByName() are connected only by matching string literals — renaming or typo\'ing one without the other compiles and starts cleanly, failing only at runtime by returning null.',
+    docs: [
+      { label: 'LinkGenerator Class', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing#use-linkgenerator' },
+    ],
+    resources: [
+      { label: 'IEndpointNameMetadata Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.routing.iendpointnamemetadata', badge: 'docs' },
+    ],
+    gotchas: [
+      'GetPathByName/GetUriByName return null on a name mismatch, not an exception — the failure is only as loud as whatever the calling code does with that null.',
+      'A broken link with no server-side exception can surface only through indirect signals, like a customer support ticket, days or weeks later.',
+    ],
+  },
+
   'aspnet/configuration': {
     apis: ['IConfiguration', 'IOptions<T>', 'IOptionsSnapshot<T>', 'IOptionsMonitor<T>', 'ValidateOnStart()'],
     related: [

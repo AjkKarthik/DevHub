@@ -528,13 +528,26 @@ identically):
    don't prefix these three calls.
 2. **`SUBTOPICS` map in `app.ts` has NO hub namespacing** — it's one
    `Record<string, SubtopicNavEntry[]>` keyed by bare route slug for every hub combined.
-   This is a latent collision risk: if two different hubs ever both have a topic at the
-   same slug (e.g. `basics`, which SQL/TypeScript/React hubs also use) AND both get
-   subtopics, the second one written will silently overwrite/collide with the first's
-   entry. Not yet hit in practice (only Angular `counter`/`todo`/etc. and C# `basics` exist
-   so far, no actual slug clash yet) — but check for an existing key before adding a new
-   hub's entry, and flag to fix the map's structure (e.g. hub-prefixed keys) if a real
-   collision is ever hit.
+   This is a genuine collision risk, **hit for real** on 2026-07-04: ASP.NET's `routing`
+   topic collided with Angular's PRE-EXISTING bare `routing` key (`/angular/routing`'s own
+   subtopics, `custom-url-matchers-route-config` etc.) — `ng build` failed with
+   `TS1117: An object literal cannot have multiple properties with the same name`.
+   **Always grep for the exact bare key (unquoted AND quoted forms, e.g. both `routing:`
+   and `'routing':`) across the ENTIRE file before adding a new hub's SUBTOPICS entry** —
+   an `Edit` tool old_string match on a nearby anchor line succeeding does NOT mean the key
+   itself is unique; the build's duplicate-key error is what actually caught this, not the
+   grep-first check (which used the wrong quoting style and missed the existing entry).
+   **Resolution applied**: hub-prefixed the COLLIDING entry only (`'aspnet-routing'`, not
+   bare `'routing'`) rather than restructuring the whole map — Angular's existing bare
+   `routing` key was left untouched. Every consumer of the colliding hub's key
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics` calls in that hub's own
+   `app.html` nav block) must then use the SAME prefixed string, not the bare topic slug —
+   this is hub-specific once a collision forces prefixing, unlike the normal (collision-free)
+   case where these three calls key off the bare slug shared with `SUBTOPICS`. **Blazor
+   also has its own `routing` topic** (`frontend/blazor/routing/routing.ts`, still bare
+   `routing` if it ever gets subtopics) — since Angular already occupies bare `routing` and
+   ASP.NET now uses `aspnet-routing`, Blazor's future subtopic entry must ALSO be
+   hub-prefixed (e.g. `blazor-routing`) to avoid a three-way clash.
 3. **`SIDEBAR_MAP` keys for ordinary C# topic pages are BARE** (`basics`, `oop`, `fields`),
    matching Angular — NOT hub-prefixed as an earlier reading of this file's own WIRING
    CHECKLIST step 7 implied. That `'csharp/cheatsheet'`-style full-path prefix is used ONLY

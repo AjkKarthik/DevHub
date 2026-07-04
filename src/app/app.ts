@@ -612,6 +612,16 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How the Middleware Pipeline Is Actually Built', route: '/aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures' },
     { label: 'OnStarting Callbacks Run in LIFO Order', route: '/aspnet/middleware/onstarting-callbacks-run-lifo-order-last-registered-fires-first' },
   ],
+  // NOTE: keyed 'aspnet-routing', NOT bare 'routing' — the Angular hub
+  // already owns the bare 'routing' key above (its own /angular/routing
+  // subtopics). This is the shared flat SUBTOPICS map's documented
+  // collision risk, hit for real here; resolved by hub-prefixing this
+  // one entry rather than restructuring the whole map.
+  'aspnet-routing': [
+    { label: 'Testing Route Precedence', route: '/aspnet/routing/testing-route-precedence-catching-ambiguous-routes-before-production' },
+    { label: 'How Route Precedence Is Actually Computed', route: '/aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm' },
+    { label: 'A Renamed WithName() Silently Breaks LinkGenerator', route: '/aspnet/routing/typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check' },
+  ],
 };
 
 @Component({

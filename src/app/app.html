@@ -192,7 +192,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/routing" routerLinkActive="active"><span class="nl-text">Routing</span>@if(progress.isDone('aspnet-routing')){<span class="nl-done">✓</span>}@if(diff('aspnet-routing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/routing" routerLinkActive="active">
+        <span class="nl-text">Routing</span>
+        @if (progress.isDone('aspnet-routing')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-routing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspnet-routing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspnet-routing')"
+                  (click)="toggleSubtopics('aspnet-routing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspnet-routing'); as subs) {
+        @if (isSubtopicsExpanded('aspnet-routing')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/configuration" routerLinkActive="active"><span class="nl-text">Configuration &amp; Options</span>@if(progress.isDone('aspnet-configuration')){<span class="nl-done">✓</span>}@if(diff('aspnet-configuration');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/dependency-injection" routerLinkActive="active"><span class="nl-text">Dependency Injection</span>@if(progress.isDone('aspnet-dependency-injection')){<span class="nl-done">✓</span>}@if(diff('aspnet-dependency-injection');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/logging" routerLinkActive="active"><span class="nl-text">Logging &amp; Diagnostics</span>@if(progress.isDone('aspnet-logging')){<span class="nl-done">✓</span>}@if(diff('aspnet-logging');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

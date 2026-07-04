@@ -1,0 +1,31 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Routing" topicRoute="/aspnet/routing" subtopicLabel="How Route Precedence Is Computed" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How Route Precedence Is Actually Computed: The Segment-Scoring Algorithm Behind Literals &gt; Constraints &gt; Parameters &gt; Catch-Alls</h1>
+  <p class="page-subtitle">The main topic page's precedence ranking describes a single segment in isolation. Real routes have multiple segments — comparison walks both templates left to right, and the FIRST position where they differ decides the winner, not total specificity.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="ASP.NET Core 3+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/aspnet/routing">Routing</a>: a real production gotcha connecting to the main page's own LinkGenerator content — why a typo'd or renamed WithName() breaks link generation silently, with no compile-time check at all.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Routing"
+    topicRoute="/aspnet/routing"
+    [prev]="{ label: 'Testing Route Precedence', route: '/aspnet/routing/testing-route-precedence-catching-ambiguous-routes-before-production' }"
+    [next]="{ label: 'A Renamed WithName() Silently Breaks LinkGenerator', route: '/aspnet/routing/typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check' }"
+  />
+</div>
