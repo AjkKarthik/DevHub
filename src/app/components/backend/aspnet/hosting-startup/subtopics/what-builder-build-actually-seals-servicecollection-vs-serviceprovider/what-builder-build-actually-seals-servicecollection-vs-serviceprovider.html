@@ -1,0 +1,31 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hosting & Startup" topicRoute="/aspnet/hosting-startup" subtopicLabel="What Build() Actually Seals" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">What builder.Build() Actually Seals: IServiceCollection vs IServiceProvider Are Two Different Objects</h1>
+  <p class="page-subtitle">The main topic page says Build() "seals the DI container." Here's the mechanism: builder.Services is a mutable list of ServiceDescriptor entries, and Build() compiles it into an entirely different, read-only IServiceProvider — which is why registration after Build() throws.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="ASP.NET Core 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/aspnet/hosting-startup">Hosting &amp; Startup</a>: a real production gotcha connecting to the main page's own graceful-shutdown content — why ApplicationStopping fires before in-flight requests actually finish draining.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Hosting & Startup"
+    topicRoute="/aspnet/hosting-startup"
+    [prev]="{ label: 'Testing Environment Branching', route: '/aspnet/hosting-startup/testing-environment-branching-without-real-environment-variable' }"
+    [next]="{ label: 'ApplicationStopping Fires Before Requests Finish Draining', route: '/aspnet/hosting-startup/applicationstopping-fires-before-in-flight-requests-finish-draining' }"
+  />
+</div>

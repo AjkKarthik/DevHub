@@ -485,6 +485,9 @@ const CSHARP_LABELS: Record<string, string> = {
 
 const ASPNET_LABELS: Record<string, string> = {
   'hosting-startup':       'Hosting & Startup',
+  'hosting-startup/testing-environment-branching-without-real-environment-variable': 'Testing Environment Branching',
+  'hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider': 'What builder.Build() Actually Seals',
+  'hosting-startup/applicationstopping-fires-before-in-flight-requests-finish-draining': 'ApplicationStopping Fires Before Requests Finish Draining',
   'middleware':            'Middleware Pipeline',
   'routing':               'Routing',
   'configuration':         'Configuration & Options',

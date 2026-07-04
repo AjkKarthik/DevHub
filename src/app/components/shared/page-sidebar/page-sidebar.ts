@@ -10791,6 +10791,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/hosting-startup/testing-environment-branching-without-real-environment-variable': {
+    apis: ['IHostEnvironment', 'IWebHostEnvironment', 'Environments'],
+    related: [
+      { label: 'What builder.Build() Actually Seals — next', route: '/aspnet/hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider' },
+      { label: 'Hosting & Startup (overview)', route: '/aspnet/hosting-startup' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Extract environment-dependent registration decisions into a method taking IHostEnvironment as a parameter — a test can pass a minimal fake implementation with any EnvironmentName, no real environment variable needed.',
+    docs: [
+      { label: 'IHostEnvironment Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostenvironment' },
+    ],
+    resources: [
+      { label: 'Environments Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.environments', badge: 'docs' },
+    ],
+    gotchas: [
+      'Environment.SetEnvironmentVariable in a test mutates process-wide state that can race across parallel test execution.',
+      'IsDevelopment()/IsProduction() are just extension methods comparing EnvironmentName — easy to fake without any real environment variable.',
+    ],
+  },
+
+  'aspnet/hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider': {
+    apis: ['IServiceCollection', 'IServiceProvider', 'ServiceDescriptor'],
+    related: [
+      { label: 'Testing Environment Branching — previous', route: '/aspnet/hosting-startup/testing-environment-branching-without-real-environment-variable' },
+      { label: 'ApplicationStopping Fires Before Requests Finish Draining — next', route: '/aspnet/hosting-startup/applicationstopping-fires-before-in-flight-requests-finish-draining' },
+      { label: 'Hosting & Startup (overview)', route: '/aspnet/hosting-startup' },
+    ],
+    tip: 'builder.Services (IServiceCollection) is a mutable list of ServiceDescriptor entries. Build() compiles it into a completely different object — IServiceProvider — which has no mutation API at all, by design.',
+    docs: [
+      { label: 'Dependency Injection Fundamentals', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection' },
+    ],
+    resources: [
+      { label: 'ServiceDescriptor Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor', badge: 'docs' },
+    ],
+    gotchas: [
+      'There is no code path that lets an already-built IServiceProvider accept new ServiceDescriptor entries after the fact.',
+      'ValidateOnBuild\'s checks run during Build() itself, not at each individual Add*() call, since only Build() sees the complete registration set.',
+    ],
+  },
+
+  'aspnet/hosting-startup/applicationstopping-fires-before-in-flight-requests-finish-draining': {
+    apis: ['IHostApplicationLifetime', 'ApplicationStopping', 'ApplicationStopped'],
+    related: [
+      { label: 'What builder.Build() Actually Seals — previous', route: '/aspnet/hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider' },
+      { label: 'Hosting & Startup (overview)', route: '/aspnet/hosting-startup' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'ApplicationStopping fires at the START of the shutdown sequence, not after requests finish — disposing a shared, request-used resource there races any request still in flight. Defer such disposal to ApplicationStopped.',
+    docs: [
+      { label: 'IHostApplicationLifetime Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostapplicationlifetime' },
+    ],
+    resources: [
+      { label: 'Host Shutdown Documentation', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host#ihostapplicationlifetime', badge: 'docs' },
+    ],
+    gotchas: [
+      'Intermittent ObjectDisposedException failures only during deployments are a classic symptom of disposing a shared resource too early in the shutdown sequence.',
+      'ApplicationStopped fires only after the HTTP server has genuinely finished serving in-flight requests (or the shutdown timeout was hit).',
+    ],
+  },
+
   'aspnet/middleware': {
     apis: ['IMiddleware', 'RequestDelegate', 'Use()', 'Run()', 'Map()', 'IApplicationBuilder'],
     related: [

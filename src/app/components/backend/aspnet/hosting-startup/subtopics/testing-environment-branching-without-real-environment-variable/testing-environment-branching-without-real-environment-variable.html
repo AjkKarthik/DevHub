@@ -1,0 +1,30 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Hosting & Startup" topicRoute="/aspnet/hosting-startup" subtopicLabel="Testing Environment Branching" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Environment-Specific Startup Branching Without Setting a Real Environment Variable</h1>
+  <p class="page-subtitle">The main topic page warns that ASPNETCORE_ENVIRONMENT must be a real OS environment variable. See how to extract environment-dependent registration decisions into a testable method — no real environment variable or host construction needed.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="ASP.NET Core 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at what the main <a routerLink="/aspnet/hosting-startup">Hosting &amp; Startup</a> page's own <code>builder.Build()</code> actually seals at the object level — why IServiceCollection and IServiceProvider are two genuinely different objects.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Hosting & Startup"
+    topicRoute="/aspnet/hosting-startup"
+    [next]="{ label: 'What builder.Build() Actually Seals', route: '/aspnet/hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider' }"
+  />
+</div>

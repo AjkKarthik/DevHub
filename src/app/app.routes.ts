@@ -719,7 +719,12 @@ export const routes: Routes = [
     children: [
       { path: '', loadComponent: () => import('./components/backend/aspnet/home/home').then(m => m.AspnetHome) },
       // ── Fundamentals ──
-      { path: 'hosting-startup',      loadComponent: () => import('./components/backend/aspnet/hosting-startup/hosting-startup').then(m => m.AspnetHostingStartup) },
+      { path: 'hosting-startup', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/hosting-startup/hosting-startup').then(m => m.AspnetHostingStartup) },
+        { path: 'testing-environment-branching-without-real-environment-variable', loadComponent: () => import('./components/backend/aspnet/hosting-startup/subtopics/testing-environment-branching-without-real-environment-variable/testing-environment-branching-without-real-environment-variable').then(m => m.TestingEnvironmentBranchingWithoutRealEnvironmentVariableSubtopic) },
+        { path: 'what-builder-build-actually-seals-servicecollection-vs-serviceprovider', loadComponent: () => import('./components/backend/aspnet/hosting-startup/subtopics/what-builder-build-actually-seals-servicecollection-vs-serviceprovider/what-builder-build-actually-seals-servicecollection-vs-serviceprovider').then(m => m.WhatBuilderBuildActuallySealsServicecollectionVsServiceproviderSubtopic) },
+        { path: 'applicationstopping-fires-before-in-flight-requests-finish-draining', loadComponent: () => import('./components/backend/aspnet/hosting-startup/subtopics/applicationstopping-fires-before-in-flight-requests-finish-draining/applicationstopping-fires-before-in-flight-requests-finish-draining').then(m => m.ApplicationstoppingFiresBeforeInFlightRequestsFinishDrainingSubtopic) },
+      ] },
       { path: 'middleware',           loadComponent: () => import('./components/backend/aspnet/middleware/middleware').then(m => m.AspnetMiddleware) },
       { path: 'routing',              loadComponent: () => import('./components/backend/aspnet/routing/routing').then(m => m.AspnetRouting) },
       { path: 'configuration',        loadComponent: () => import('./components/backend/aspnet/configuration/configuration').then(m => m.AspnetConfiguration) },

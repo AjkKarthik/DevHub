@@ -152,7 +152,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Fundamentals</p>
-      <a routerLink="/aspnet/hosting-startup" routerLinkActive="active"><span class="nl-text">Hosting &amp; Startup</span>@if(progress.isDone('aspnet-hosting-startup')){<span class="nl-done">✓</span>}@if(diff('aspnet-hosting-startup');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/hosting-startup" routerLinkActive="active">
+        <span class="nl-text">Hosting &amp; Startup</span>
+        @if (progress.isDone('aspnet-hosting-startup')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-hosting-startup'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('hosting-startup')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('hosting-startup')"
+                  (click)="toggleSubtopics('hosting-startup', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('hosting-startup'); as subs) {
+        @if (isSubtopicsExpanded('hosting-startup')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/middleware" routerLinkActive="active"><span class="nl-text">Middleware Pipeline</span>@if(progress.isDone('aspnet-middleware')){<span class="nl-done">✓</span>}@if(diff('aspnet-middleware');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/routing" routerLinkActive="active"><span class="nl-text">Routing</span>@if(progress.isDone('aspnet-routing')){<span class="nl-done">✓</span>}@if(diff('aspnet-routing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/configuration" routerLinkActive="active"><span class="nl-text">Configuration &amp; Options</span>@if(progress.isDone('aspnet-configuration')){<span class="nl-done">✓</span>}@if(diff('aspnet-configuration');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
