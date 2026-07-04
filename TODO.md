@@ -1516,7 +1516,7 @@ off here with a date.
 - [x] `/aspnet/ef-core-basics` — EF Core Basics (2026-07-04 — 3 subtopics: testing-asnotracking-queries-genuinely-arent-tracked-sqlite, how-change-tracker-snapshot-produces-minimal-update, reload-discards-edit-getdatabasevaluesasync-preserves-it)
 - [x] `/aspnet/ef-relationships` — EF Core Relationships (2026-07-04 — 3 subtopics: testing-deletebehavior-restrict-genuinely-throws-sqlite, how-skip-navigations-determine-join-table-insert-delete, replacing-ownsmany-collection-deletes-reinserts-everything)
 - [x] `/aspnet/ef-performance` — EF Core Performance (2026-07-05 — 3 subtopics: testing-executeupdateasync-bypasses-savechanges-interceptors, what-ef-compilequery-actually-eliminates, captured-reference-pooled-dbcontext-leaks-across-requests)
-- [ ] `/aspnet/caching` — Caching
+- [x] `/aspnet/caching` — Caching (2026-07-05 — 3 subtopics: testing-getorcreateasync-concurrent-misses-factory-runs-twice, how-imemorycache-expiry-actually-enforced-lazy-not-timers, write-invalidate-stale-repopulation-race-ttl-backstop)
 - [ ] `/aspnet/authentication` — Authentication
 - [ ] `/aspnet/authorization` — Authorization
 - [ ] `/aspnet/cors` — CORS & Security Headers
