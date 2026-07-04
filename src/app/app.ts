@@ -572,6 +572,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DynamicallyAccessedMembers Must Be Re-Declared at Every Level', route: '/csharp/native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain' },
     { label: 'Clean Trim Analysis Can Still Fail a Full AOT Publish', route: '/csharp/native-aot/clean-trim-analysis-still-fails-full-aot-publish-different-checks' },
   ],
+  'benchmarkdotnet': [
+    { label: 'Catching Regressions in CI', route: '/csharp/benchmarkdotnet/catching-performance-regression-ci-committed-baseline-not-eyeballing' },
+    { label: 'Why BDN Runs Benchmarks in an Isolated Process', route: '/csharp/benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process' },
+    { label: 'When Mean Lies: Bimodal Distributions', route: '/csharp/benchmarkdotnet/when-mean-lies-bimodal-distribution-hides-two-performance-paths' },
+  ],
 };
 
 @Component({

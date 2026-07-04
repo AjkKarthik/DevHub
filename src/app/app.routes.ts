@@ -664,7 +664,12 @@ export const routes: Routes = [
         { path: 'dynamicallyaccessedmembers-redeclared-every-level-call-chain', loadComponent: () => import('./components/backend/csharp/native-aot/subtopics/dynamicallyaccessedmembers-redeclared-every-level-call-chain/dynamicallyaccessedmembers-redeclared-every-level-call-chain').then(m => m.DynamicallyAccessedMembersRedeclaredEveryLevelCallChainSubtopic) },
         { path: 'clean-trim-analysis-still-fails-full-aot-publish-different-checks', loadComponent: () => import('./components/backend/csharp/native-aot/subtopics/clean-trim-analysis-still-fails-full-aot-publish-different-checks/clean-trim-analysis-still-fails-full-aot-publish-different-checks').then(m => m.CleanTrimAnalysisStillFailsFullAotPublishDifferentChecksSubtopic) },
       ] },
-      { path: 'benchmarkdotnet',  loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/benchmarkdotnet').then(m => m.CsharpBenchmarkdotnet) },
+      { path: 'benchmarkdotnet', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/benchmarkdotnet').then(m => m.CsharpBenchmarkdotnet) },
+        { path: 'catching-performance-regression-ci-committed-baseline-not-eyeballing', loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/subtopics/catching-performance-regression-ci-committed-baseline-not-eyeballing/catching-performance-regression-ci-committed-baseline-not-eyeballing').then(m => m.CatchingPerformanceRegressionCiCommittedBaselineNotEyeballingSubtopic) },
+        { path: 'why-bdn-runs-benchmarks-isolated-process-not-in-process', loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/subtopics/why-bdn-runs-benchmarks-isolated-process-not-in-process/why-bdn-runs-benchmarks-isolated-process-not-in-process').then(m => m.WhyBdnRunsBenchmarksIsolatedProcessNotInProcessSubtopic) },
+        { path: 'when-mean-lies-bimodal-distribution-hides-two-performance-paths', loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/subtopics/when-mean-lies-bimodal-distribution-hides-two-performance-paths/when-mean-lies-bimodal-distribution-hides-two-performance-paths').then(m => m.WhenMeanLiesBimodalDistributionHidesTwoPerformancePathsSubtopic) },
+      ] },
       { path: 'pinvoke',          loadComponent: () => import('./components/backend/csharp/pinvoke/pinvoke').then(m => m.CsharpPinvoke) },
       { path: 'dotnet-cli',       loadComponent: () => import('./components/backend/csharp/dotnet-cli/dotnet-cli').then(m => m.CsharpDotnetCli) },
       // ── What's New ──

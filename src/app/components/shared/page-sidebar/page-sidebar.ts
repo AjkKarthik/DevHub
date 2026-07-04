@@ -9066,6 +9066,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'benchmarkdotnet': {
+    apis: ['[Benchmark]', '[MemoryDiagnoser]', 'BenchmarkRunner.Run'],
+    related: [{ label: 'Span<T> & Memory<T>', route: '/csharp/span-memory' }, { label: 'LINQ', route: '/csharp/linq' }, { label: 'Native AOT', route: '/csharp/native-aot' }],
+    tip: 'Always run benchmarks in Release mode — Debug builds disable inlining and other JIT optimisations, making the numbers meaningless for production performance.',
+    docs: [{ label: 'BenchmarkDotNet Documentation', url: 'https://benchmarkdotnet.org/articles/overview.html' }],
+    resources: [{ label: 'BenchmarkDotNet Source', url: 'https://github.com/dotnet/BenchmarkDotNet', badge: 'code' }],
+    gotchas: ['A single averaged Mean can hide a bimodal distribution — a fast path and a slow path bundled into one benchmark.', 'BenchmarkRunner.Run generates and launches a separate isolated child process per job — it does not call your methods in-process.'],
+  },
+
+  'benchmarkdotnet/catching-performance-regression-ci-committed-baseline-not-eyeballing': {
+    apis: ['JsonExporter', 'BenchmarkDotNet.Artifacts', 'StdDev'],
+    related: [
+      { label: 'Why BDN Runs Benchmarks in an Isolated Process — next', route: '/csharp/benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process' },
+      { label: 'BenchmarkDotNet (overview)', route: '/csharp/benchmarkdotnet' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Export BDN results as JSON, commit them as a baseline, and diff a fresh CI run against it with a meaningful tolerance — an exact-match comparison fails constantly on natural run-to-run variance.',
+    docs: [
+      { label: 'BenchmarkDotNet Exporters', url: 'https://benchmarkdotnet.org/articles/configs/exporters.html' },
+    ],
+    resources: [
+      { label: 'PerfDotNet Regression Tools', url: 'https://github.com/dotnet/BenchmarkDotNet/issues?q=regression', badge: 'docs' },
+    ],
+    gotchas: [
+      'A flat percentage tolerance is proportionally tighter for very fast, nanosecond-scale benchmarks than for slower ones — noise is roughly constant in absolute terms.',
+      'Never auto-update the committed baseline on every CI run — that would silently accept every regression as the new normal.',
+    ],
+  },
+
+  'benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process': {
+    apis: ['BenchmarkRunner.Run', 'RuntimeMoniker', '[SimpleJob]'],
+    related: [
+      { label: 'Catching Regressions in CI — previous', route: '/csharp/benchmarkdotnet/catching-performance-regression-ci-committed-baseline-not-eyeballing' },
+      { label: 'When Mean Lies: Bimodal Distributions — next', route: '/csharp/benchmarkdotnet/when-mean-lies-bimodal-distribution-hides-two-performance-paths' },
+      { label: 'BenchmarkDotNet (overview)', route: '/csharp/benchmarkdotnet' },
+    ],
+    tip: 'BDN generates a minimal C# project per job configuration, compiles it, and launches it as a separate child process — this is exactly why multi-runtime comparisons in one run are possible at all.',
+    docs: [
+      { label: 'How BenchmarkDotNet Works', url: 'https://benchmarkdotnet.org/articles/guides/how-it-works.html' },
+    ],
+    resources: [
+      { label: 'BenchmarkDotNet Toolchains', url: 'https://benchmarkdotnet.org/articles/configs/toolchains.html', badge: 'docs' },
+    ],
+    gotchas: [
+      'A single BenchmarkRunner.Run call can take tens of seconds by itself, from the generate-compile-launch pipeline alone — never embed it in a routine unit test suite.',
+      'Process isolation exists specifically so JIT tiering state and GC pressure from one benchmark cannot contaminate the next.',
+    ],
+  },
+
+  'benchmarkdotnet/when-mean-lies-bimodal-distribution-hides-two-performance-paths': {
+    apis: ['StatisticColumn.Min', 'StatisticColumn.Max', 'MultimodalDistribution'],
+    related: [
+      { label: 'Why BDN Runs Benchmarks in an Isolated Process — previous', route: '/csharp/benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process' },
+      { label: 'BenchmarkDotNet (overview)', route: '/csharp/benchmarkdotnet' },
+      { label: 'Span<T> & Memory<T>', route: '/csharp/span-memory' },
+    ],
+    tip: 'When a benchmark bundles a fast path (cache hit) and a slow path (cache miss) into one method, the Mean is a weighted average no individual call ever exhibits — add Min/Max/percentile columns, or split into two explicitly-labeled benchmarks.',
+    docs: [
+      { label: 'BenchmarkDotNet Statistics', url: 'https://benchmarkdotnet.org/articles/guides/statistics.html' },
+    ],
+    resources: [
+      { label: 'BenchmarkDotNet Columns Reference', url: 'https://benchmarkdotnet.org/articles/configs/columns.html', badge: 'docs' },
+    ],
+    gotchas: [
+      'A moderate StdDev does not rule out a bimodal distribution — it can look reasonable even when two very different clusters exist.',
+      'Splitting a benchmark into separate, explicitly-labeled methods per code path usually produces more genuinely useful numbers than one averaged benchmark.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

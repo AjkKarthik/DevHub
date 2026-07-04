@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="BenchmarkDotNet" topicRoute="/csharp/benchmarkdotnet" subtopicLabel="Isolated Process Execution" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why BenchmarkDotNet Runs Each Benchmark in Its Own Isolated Process, Not In-Process Inside BenchmarkRunner.Run</h1>
+  <p class="page-subtitle">Every example on the main topic page reads as if BenchmarkRunner.Run calls your [Benchmark] methods directly. It doesn't — BDN generates, compiles, and launches a separate child process per job configuration, eliminating cross-benchmark JIT and GC contamination by construction.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="BDN 0.x" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/csharp/benchmarkdotnet">BenchmarkDotNet</a>: a production gotcha the main page's own Mean/StdDev columns don't fully warn about — why a single averaged Mean can hide two completely different performance paths.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="BenchmarkDotNet"
+    topicRoute="/csharp/benchmarkdotnet"
+    [prev]="{ label: 'Catching Regressions in CI', route: '/csharp/benchmarkdotnet/catching-performance-regression-ci-committed-baseline-not-eyeballing' }"
+    [next]="{ label: 'When Mean Lies: Bimodal Distributions', route: '/csharp/benchmarkdotnet/when-mean-lies-bimodal-distribution-hides-two-performance-paths' }"
+  />
+</div>
