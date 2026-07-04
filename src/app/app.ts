@@ -567,6 +567,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why a Pinned Object Fragments the Heap', route: '/csharp/unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors' },
     { label: 'stackalloc Inside a Loop Never Frees Between Iterations', route: '/csharp/unsafe-pointers/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow' },
   ],
+  'native-aot': [
+    { label: 'Testing AOT Compatibility Fast', route: '/csharp/native-aot/testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors' },
+    { label: 'DynamicallyAccessedMembers Must Be Re-Declared at Every Level', route: '/csharp/native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain' },
+    { label: 'Clean Trim Analysis Can Still Fail a Full AOT Publish', route: '/csharp/native-aot/clean-trim-analysis-still-fails-full-aot-publish-different-checks' },
+  ],
 };
 
 @Component({

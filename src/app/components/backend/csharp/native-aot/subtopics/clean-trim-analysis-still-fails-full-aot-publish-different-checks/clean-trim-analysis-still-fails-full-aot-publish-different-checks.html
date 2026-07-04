@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Native AOT" topicRoute="/csharp/native-aot" subtopicLabel="Trim Analysis vs Full AOT Publish" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">A Clean IsAotCompatible Build Can Still Fail dotnet publish -p:PublishAot=true — Trim Analysis and Native Compilation Check Different Things</h1>
+  <p class="page-subtitle">The main topic page recommends checking a package's IsAotCompatible metadata and running trim analysis in CI. Both are good advice — but trim analysis and the actual ILC native compiler check genuinely different properties, and a package can pass one while failing the other.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/csharp/native-aot">Native AOT</a> — from fast trim-analysis testing, to how DynamicallyAccessedMembers propagates through call chains, to this trim-analysis-versus-ILC distinction. Return to the topic overview to continue with the next C# topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Native AOT"
+    topicRoute="/csharp/native-aot"
+    [prev]="{ label: 'DynamicallyAccessedMembers Must Be Re-Declared at Every Level', route: '/csharp/native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain' }"
+  />
+</div>

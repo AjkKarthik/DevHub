@@ -658,7 +658,12 @@ export const routes: Routes = [
         { path: 'pinned-object-fragments-heap-blocks-gc-compaction-neighbors', loadComponent: () => import('./components/backend/csharp/unsafe-pointers/subtopics/pinned-object-fragments-heap-blocks-gc-compaction-neighbors/pinned-object-fragments-heap-blocks-gc-compaction-neighbors').then(m => m.PinnedObjectFragmentsHeapBlocksGcCompactionNeighborsSubtopic) },
         { path: 'stackalloc-inside-loop-never-frees-between-iterations-stackoverflow', loadComponent: () => import('./components/backend/csharp/unsafe-pointers/subtopics/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow').then(m => m.StackallocInsideLoopNeverFreesBetweenIterationsStackoverflowSubtopic) },
       ] },
-      { path: 'native-aot',       loadComponent: () => import('./components/backend/csharp/native-aot/native-aot').then(m => m.CsharpNativeAot) },
+      { path: 'native-aot', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/native-aot/native-aot').then(m => m.CsharpNativeAot) },
+        { path: 'testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors', loadComponent: () => import('./components/backend/csharp/native-aot/subtopics/testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors/testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors').then(m => m.TestingAotCompatibilityBeforeSlowPublishTreatTrimWarningsAsErrorsSubtopic) },
+        { path: 'dynamicallyaccessedmembers-redeclared-every-level-call-chain', loadComponent: () => import('./components/backend/csharp/native-aot/subtopics/dynamicallyaccessedmembers-redeclared-every-level-call-chain/dynamicallyaccessedmembers-redeclared-every-level-call-chain').then(m => m.DynamicallyAccessedMembersRedeclaredEveryLevelCallChainSubtopic) },
+        { path: 'clean-trim-analysis-still-fails-full-aot-publish-different-checks', loadComponent: () => import('./components/backend/csharp/native-aot/subtopics/clean-trim-analysis-still-fails-full-aot-publish-different-checks/clean-trim-analysis-still-fails-full-aot-publish-different-checks').then(m => m.CleanTrimAnalysisStillFailsFullAotPublishDifferentChecksSubtopic) },
+      ] },
       { path: 'benchmarkdotnet',  loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/benchmarkdotnet').then(m => m.CsharpBenchmarkdotnet) },
       { path: 'pinvoke',          loadComponent: () => import('./components/backend/csharp/pinvoke/pinvoke').then(m => m.CsharpPinvoke) },
       { path: 'dotnet-cli',       loadComponent: () => import('./components/backend/csharp/dotnet-cli/dotnet-cli').then(m => m.CsharpDotnetCli) },

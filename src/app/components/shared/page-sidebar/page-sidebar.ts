@@ -8997,6 +8997,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'native-aot': {
+    apis: ['PublishAot', '[DynamicallyAccessedMembers]', '[LibraryImport]'],
+    related: [{ label: 'System.Text.Json Advanced', route: '/csharp/json-advanced' }, { label: 'Reflection', route: '/csharp/reflection' }, { label: 'Unsafe Code & Pointers', route: '/csharp/unsafe-pointers' }],
+    tip: 'Set IsAotCompatible=true to run the trimmer\'s static reachability analysis during a normal, fast dotnet build — catching most trim-incompatible patterns without paying the multi-minute native compilation cost.',
+    docs: [{ label: 'Native AOT Deployment (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/' }],
+    resources: [{ label: 'dotnet/runtime AOT Docs', url: 'https://github.com/dotnet/runtime/blob/main/docs/design/coreclr/botr/readytorun-overview.md', badge: 'code' }],
+    gotchas: ['A clean trim-analysis build does not guarantee a full AOT publish succeeds — ILC checks genuinely different things.', '[DynamicallyAccessedMembers] must be re-declared at every level of a call chain that forwards a generic type parameter.'],
+  },
+
+  'native-aot/testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors': {
+    apis: ['IsAotCompatible', 'TreatWarningsAsErrors', 'IL2026'],
+    related: [
+      { label: 'DynamicallyAccessedMembers Must Be Re-Declared at Every Level — next', route: '/csharp/native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain' },
+      { label: 'Native AOT (overview)', route: '/csharp/native-aot' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'IsAotCompatible=true runs the same trim analysis a full AOT publish depends on, but during a normal, fast dotnet build — turning trim-incompatible code into a build failure on every commit instead of a slow, occasional discovery.',
+    docs: [
+      { label: 'Prepare Libraries for Trimming', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/prepare-libraries-for-trimming' },
+    ],
+    resources: [
+      { label: 'Trimming Options Reference', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trimming-options', badge: 'docs' },
+    ],
+    gotchas: [
+      'A full AOT publish takes minutes — never use it as the everyday feedback loop for catching trim mistakes.',
+      'IsAotCompatible is a strong first filter, not a full substitute for periodically running the real AOT publish.',
+    ],
+  },
+
+  'native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain': {
+    apis: ['[DynamicallyAccessedMembers]', 'IL2091', 'DynamicallyAccessedMemberTypes'],
+    related: [
+      { label: 'Testing AOT Compatibility Fast — previous', route: '/csharp/native-aot/testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors' },
+      { label: 'Clean Trim Analysis Can Still Fail a Full AOT Publish — next', route: '/csharp/native-aot/clean-trim-analysis-still-fails-full-aot-publish-different-checks' },
+      { label: 'Native AOT (overview)', route: '/csharp/native-aot' },
+    ],
+    tip: 'The trimmer analyzes each method definition independently — every intermediate wrapper method that forwards a generic type parameter toward a reflection call must re-declare the same [DynamicallyAccessedMembers] annotation, or an IL2091 warning fires at that specific method.',
+    docs: [
+      { label: 'DynamicallyAccessedMembersAttribute Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.dynamicallyaccessedmembersattribute' },
+    ],
+    resources: [
+      { label: 'Trimmer Warning Codes', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trimming-options#trim-warnings', badge: 'docs' },
+    ],
+    gotchas: [
+      'A correctly annotated outermost call site does not fix warnings at unannotated intermediate methods further down the chain.',
+      'JIT-run code works fine despite missing annotations, since JIT never trims anything — the warnings exist specifically for a future Native AOT publish.',
+    ],
+  },
+
+  'native-aot/clean-trim-analysis-still-fails-full-aot-publish-different-checks': {
+    apis: ['ILC', 'PublishAot', 'Reflection.Emit'],
+    related: [
+      { label: 'DynamicallyAccessedMembers Must Be Re-Declared at Every Level — previous', route: '/csharp/native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain' },
+      { label: 'Native AOT (overview)', route: '/csharp/native-aot' },
+      { label: 'System.Text.Json Advanced', route: '/csharp/json-advanced' },
+    ],
+    tip: 'Trim analysis and the actual ILC native compiler check different things — a library can be genuinely trim-clean while still containing a code path (like Reflection.Emit-based dynamic codegen) that ILC simply cannot compile to native code.',
+    docs: [
+      { label: 'Native AOT Compatibility', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/#limitations-of-native-aot-deployment' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime ILC Source', url: 'https://github.com/dotnet/runtime/tree/main/src/coreclr/tools/aot/ILCompiler', badge: 'code' },
+    ],
+    gotchas: [
+      'A package\'s IsAotCompatible=true metadata reflects the author\'s own test matrix — a rarely-used configuration flag can activate an untested code path.',
+      'A full AOT publish remains a necessary, periodic gate even after trim analysis passes cleanly — it is the only stage that actually invokes ILC.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

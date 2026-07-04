@@ -1858,7 +1858,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/native-aot" routerLinkActive="active"><span class="nl-text">Native AOT</span>@if(progress.isDone('csharp-native-aot')){<span class="nl-done">✓</span>}@if(diff('csharp-native-aot');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/native-aot" routerLinkActive="active">
+        <span class="nl-text">Native AOT</span>
+        @if (progress.isDone('csharp-native-aot')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-native-aot'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('native-aot')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('native-aot')"
+                  (click)="toggleSubtopics('native-aot', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('native-aot'); as subs) {
+        @if (isSubtopicsExpanded('native-aot')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/benchmarkdotnet" routerLinkActive="active"><span class="nl-text">BenchmarkDotNet</span>@if(progress.isDone('csharp-benchmarkdotnet')){<span class="nl-done">✓</span>}@if(diff('csharp-benchmarkdotnet');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/pinvoke" routerLinkActive="active"><span class="nl-text">P/Invoke &amp; Native Interop</span>@if(progress.isDone('csharp-pinvoke')){<span class="nl-done">✓</span>}@if(diff('csharp-pinvoke');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/dotnet-cli" routerLinkActive="active"><span class="nl-text">.NET CLI &amp; Tooling</span>@if(progress.isDone('csharp-dotnet-cli')){<span class="nl-done">✓</span>}@if(diff('csharp-dotnet-cli');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
