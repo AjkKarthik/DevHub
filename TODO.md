@@ -1466,7 +1466,7 @@ off here with a date.
 - [x] `/csharp/static-enums` — Static Classes, Partial Classes & Enums (2026-07-04 — 3 subtopics: testing-flags-enums-reflection-based-power-of-two-guard, modern-partial-methods-return-types-mandatory-implementation, enum-value-stability-serialization-compatibility)
 - [x] `/csharp/structures` — Structures (struct) (2026-07-04 — 3 subtopics: testing-the-struct-copy-mutation-trap, ref-struct-interfaces-generic-constraint-dispatch, array-vs-list-vs-foreach-struct-mutation)
 - [x] `/csharp/system-object` — System.Object (2026-07-04 — 3 subtopics: testing-the-equals-gethashcode-contract, gethashcode-instability-across-process-runs, record-equality-and-equalitycontract)
-- [ ] `/csharp/extension-methods` — Extension Methods
+- [x] `/csharp/extension-methods` — Extension Methods (2026-07-04 — 3 subtopics: testing-for-extension-method-shadowing, resolving-extension-method-ambiguity-cs0121, extension-methods-on-structs-this-in-t-receiver)
 - [ ] `/csharp/tuples` — Tuples & Anonymous Types
 - [ ] `/csharp/arrays` — Arrays
 - [ ] `/csharp/strings-datetime` — Strings, DateTime & Math
