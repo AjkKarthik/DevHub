@@ -8169,6 +8169,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  iterators: {
+    apis: ['yield return', 'yield break', 'IEnumerable<T>', 'IAsyncEnumerable<T>'],
+    related: [{ label: 'Generics', route: '/csharp/generics' }, { label: 'async / await', route: '/csharp/async' }, { label: 'LINQ', route: '/csharp/linq' }],
+    tip: 'A method containing yield return does not run when called — it constructs a state machine. The body runs incrementally, one yield at a time, driven by MoveNext().',
+    docs: [{ label: 'Iterators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' }],
+    resources: [{ label: 'IEnumerable<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1', badge: 'docs' }],
+    gotchas: ['Enumerating the same IEnumerable twice re-runs the entire pipeline — materialise with ToList() if reuse is needed.', 'yield return is allowed in try/finally but NOT in try/catch.'],
+  },
+
+  'iterators/testing-iterator-actually-lazy-side-effects-not-run-before-enumeration': {
+    apis: ['yield return', 'MoveNext', 'Assert.Throws'],
+    related: [
+      { label: 'Why GetEnumerator Sometimes Returns Itself — next', route: '/csharp/iterators/why-getenumerator-sometimes-returns-itself-thread-id-check' },
+      { label: 'Iterators & yield (overview)', route: '/csharp/iterators' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A boolean flag set as the first action inside an iterator body, checked before and after enumeration, directly and deterministically proves deferred execution — no reliance on console output timing needed.',
+    docs: [
+      { label: 'Iterators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' },
+    ],
+    resources: [
+      { label: 'yield Statement', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/yield', badge: 'docs' },
+    ],
+    gotchas: [
+      'A meaningful validation-wrapper test asserts the exception fires on the CALL itself, with zero enumeration involved — not just that it eventually throws.',
+      'Equal final values between a materialized and lazy sequence say nothing about how many times expensive side effects ran along the way — count actual invocations to prove it.',
+    ],
+  },
+
+  'iterators/why-getenumerator-sometimes-returns-itself-thread-id-check': {
+    apis: ['GetEnumerator', 'ManagedThreadId', 'state machine'],
+    related: [
+      { label: 'Testing That an Iterator Is Lazy — previous', route: '/csharp/iterators/testing-iterator-actually-lazy-side-effects-not-run-before-enumeration' },
+      { label: 'Iterator Exceptions and Stack Traces — next', route: '/csharp/iterators/iterator-exceptions-stack-traces-movenext-not-call-site' },
+      { label: 'Iterators & yield (overview)', route: '/csharp/iterators' },
+    ],
+    tip: 'The compiler-generated iterator class returns "this" from GetEnumerator() only on the FIRST call, on the SAME thread that created it — every other case (a second call, or a different thread) allocates a genuinely new instance to preserve the independent-cursor guarantee.',
+    docs: [
+      { label: 'Iterators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' },
+    ],
+    resources: [
+      { label: 'IEnumerator<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'A single same-thread foreach gets one allocation total; multiple overlapping enumerations or cross-thread enumeration each trigger an additional allocation.',
+      'The thread-id check specifically prevents a race where two threads could otherwise both be handed the same mutable object as their "independent" cursor.',
+    ],
+  },
+
+  'iterators/iterator-exceptions-stack-traces-movenext-not-call-site': {
+    apis: ['MoveNext', 'StackTrace', 'ArgumentOutOfRangeException'],
+    related: [
+      { label: 'Why GetEnumerator Sometimes Returns Itself — previous', route: '/csharp/iterators/why-getenumerator-sometimes-returns-itself-thread-id-check' },
+      { label: 'Iterators & yield (overview)', route: '/csharp/iterators' },
+      { label: 'Exceptions', route: '/csharp/exceptions' },
+    ],
+    tip: 'An exception thrown inside a yield body has a stack trace rooted in the compiler-generated MoveNext() frame, not the original call site — the eager-validation-wrapper pattern is partly an observability fix, giving future exceptions a trace pointing at the real caller.',
+    docs: [
+      { label: 'Iterators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' },
+    ],
+    resources: [
+      { label: 'StackTrace Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktrace', badge: 'docs' },
+    ],
+    gotchas: [
+      'A stack trace is a snapshot of what is CURRENTLY executing — the original call site\'s frame has already been popped by the time deferred enumeration and any resulting exception happen.',
+      'Only code moved OUT of the iterator body gets a call-site-rooted trace — exceptions from the actual per-element logic inside the private iterator still show a MoveNext()-rooted trace.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

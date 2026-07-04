@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Iterators & yield" topicRoute="/csharp/iterators" subtopicLabel="Why GetEnumerator Sometimes Returns Itself" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why the Same Iterator Object Sometimes Returns Itself from GetEnumerator() — and Sometimes Doesn't</h1>
+  <p class="page-subtitle">The main topic page says each GetEnumerator() call hands out an independent cursor, from a single generated class. See the thread-id check that makes both true: the first same-thread call gets "this" for free; every other case allocates fresh.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="C# 2+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic looks at a debugging-specific consequence of the main <a routerLink="/csharp/iterators">Iterators & yield</a> page's own deferred-execution and state-machine sections: why an exception thrown inside a yield body produces a confusing stack trace in production logs.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Iterators & yield"
+    topicRoute="/csharp/iterators"
+    [prev]="{ label: 'Testing That an Iterator Is Lazy', route: '/csharp/iterators/testing-iterator-actually-lazy-side-effects-not-run-before-enumeration' }"
+    [next]="{ label: 'Iterator Exceptions and Stack Traces', route: '/csharp/iterators/iterator-exceptions-stack-traces-movenext-not-call-site' }"
+  />
+</div>

@@ -1362,7 +1362,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/iterators" routerLinkActive="active"><span class="nl-text">Iterators &amp; yield</span>@if(progress.isDone('csharp-iterators')){<span class="nl-done">✓</span>}@if(diff('csharp-iterators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/iterators" routerLinkActive="active">
+        <span class="nl-text">Iterators &amp; yield</span>
+        @if (progress.isDone('csharp-iterators')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-iterators'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('iterators')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('iterators')"
+                  (click)="toggleSubtopics('iterators', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('iterators'); as subs) {
+        @if (isSubtopicsExpanded('iterators')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/functional-csharp" routerLinkActive="active"><span class="nl-text">Functional C# &amp; Result</span>@if(progress.isDone('csharp-functional-csharp')){<span class="nl-done">✓</span>}@if(diff('csharp-functional-csharp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

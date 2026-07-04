@@ -507,6 +507,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Beyond Expression Trees', route: '/csharp/reflection/beyond-expression-trees-dynamicmethod-reflection-emit' },
     { label: 'Generic Type Reflection Traps', route: '/csharp/reflection/generic-type-reflection-traps-generictypedefinition' },
   ],
+  'iterators': [
+    { label: 'Testing That an Iterator Is Lazy', route: '/csharp/iterators/testing-iterator-actually-lazy-side-effects-not-run-before-enumeration' },
+    { label: 'Why GetEnumerator Sometimes Returns Itself', route: '/csharp/iterators/why-getenumerator-sometimes-returns-itself-thread-id-check' },
+    { label: 'Iterator Exceptions and Stack Traces', route: '/csharp/iterators/iterator-exceptions-stack-traces-movenext-not-call-site' },
+  ],
 };
 
 @Component({

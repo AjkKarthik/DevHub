@@ -586,7 +586,12 @@ export const routes: Routes = [
         { path: 'beyond-expression-trees-dynamicmethod-reflection-emit', loadComponent: () => import('./components/backend/csharp/reflection/subtopics/beyond-expression-trees-dynamicmethod-reflection-emit/beyond-expression-trees-dynamicmethod-reflection-emit').then(m => m.BeyondExpressionTreesDynamicmethodReflectionEmitSubtopic) },
         { path: 'generic-type-reflection-traps-generictypedefinition', loadComponent: () => import('./components/backend/csharp/reflection/subtopics/generic-type-reflection-traps-generictypedefinition/generic-type-reflection-traps-generictypedefinition').then(m => m.GenericTypeReflectionTrapsGenerictypedefinitionSubtopic) },
       ] },
-      { path: 'iterators',         loadComponent: () => import('./components/backend/csharp/iterators/iterators').then(m => m.CsharpIterators) },
+      { path: 'iterators', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/iterators/iterators').then(m => m.CsharpIterators) },
+        { path: 'testing-iterator-actually-lazy-side-effects-not-run-before-enumeration', loadComponent: () => import('./components/backend/csharp/iterators/subtopics/testing-iterator-actually-lazy-side-effects-not-run-before-enumeration/testing-iterator-actually-lazy-side-effects-not-run-before-enumeration').then(m => m.TestingIteratorActuallyLazySideEffectsNotRunBeforeEnumerationSubtopic) },
+        { path: 'why-getenumerator-sometimes-returns-itself-thread-id-check', loadComponent: () => import('./components/backend/csharp/iterators/subtopics/why-getenumerator-sometimes-returns-itself-thread-id-check/why-getenumerator-sometimes-returns-itself-thread-id-check').then(m => m.WhyGetenumeratorSometimesReturnsItselfThreadIdCheckSubtopic) },
+        { path: 'iterator-exceptions-stack-traces-movenext-not-call-site', loadComponent: () => import('./components/backend/csharp/iterators/subtopics/iterator-exceptions-stack-traces-movenext-not-call-site/iterator-exceptions-stack-traces-movenext-not-call-site').then(m => m.IteratorExceptionsStackTracesMovenextNotCallSiteSubtopic) },
+      ] },
       { path: 'functional-csharp', loadComponent: () => import('./components/backend/csharp/functional-csharp/functional-csharp').then(m => m.CsharpFunctionalCsharp) },
       { path: 'regex',             loadComponent: () => import('./components/backend/csharp/regex/regex').then(m => m.CsharpRegex) },
       { path: 'channels',          loadComponent: () => import('./components/backend/csharp/channels/channels').then(m => m.CsharpChannels) },
