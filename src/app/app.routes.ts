@@ -828,7 +828,12 @@ export const routes: Routes = [
         { path: 'how-skip-navigations-determine-join-table-insert-delete', loadComponent: () => import('./components/backend/aspnet/ef-relationships/subtopics/how-skip-navigations-determine-join-table-insert-delete/how-skip-navigations-determine-join-table-insert-delete').then(m => m.HowSkipNavigationsDetermineJoinTableInsertDeleteSubtopic) },
         { path: 'replacing-ownsmany-collection-deletes-reinserts-everything', loadComponent: () => import('./components/backend/aspnet/ef-relationships/subtopics/replacing-ownsmany-collection-deletes-reinserts-everything/replacing-ownsmany-collection-deletes-reinserts-everything').then(m => m.ReplacingOwnsmanyCollectionDeletesReinsertsEverythingSubtopic) },
       ] },
-      { path: 'ef-performance',       loadComponent: () => import('./components/backend/aspnet/ef-performance/ef-performance').then(m => m.AspnetEfPerformance) },
+      { path: 'ef-performance', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/ef-performance/ef-performance').then(m => m.AspnetEfPerformance) },
+        { path: 'testing-executeupdateasync-bypasses-savechanges-interceptors', loadComponent: () => import('./components/backend/aspnet/ef-performance/subtopics/testing-executeupdateasync-bypasses-savechanges-interceptors/testing-executeupdateasync-bypasses-savechanges-interceptors').then(m => m.TestingExecuteupdateasyncBypassesSavechangesInterceptorsSubtopic) },
+        { path: 'what-ef-compilequery-actually-eliminates', loadComponent: () => import('./components/backend/aspnet/ef-performance/subtopics/what-ef-compilequery-actually-eliminates/what-ef-compilequery-actually-eliminates').then(m => m.WhatEfCompilequeryActuallyEliminatesSubtopic) },
+        { path: 'captured-reference-pooled-dbcontext-leaks-across-requests', loadComponent: () => import('./components/backend/aspnet/ef-performance/subtopics/captured-reference-pooled-dbcontext-leaks-across-requests/captured-reference-pooled-dbcontext-leaks-across-requests').then(m => m.CapturedReferencePooledDbcontextLeaksAcrossRequestsSubtopic) },
+      ] },
       { path: 'caching',              loadComponent: () => import('./components/backend/aspnet/caching/caching').then(m => m.AspnetCaching) },
       // ── Security ──
       { path: 'authentication',       loadComponent: () => import('./components/backend/aspnet/authentication/authentication').then(m => m.AspnetAuthentication) },

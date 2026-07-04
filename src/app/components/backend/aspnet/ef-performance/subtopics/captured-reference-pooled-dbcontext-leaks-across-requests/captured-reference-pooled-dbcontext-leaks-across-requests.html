@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="EF Core Performance"
+    topicRoute="/aspnet/ef-performance"
+    subtopicLabel="Pooled Context Reference Leaks"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">A Captured Reference to a Pooled DbContext Leaks Across Requests</h1>
+  <p class="page-subtitle">
+    The main page warns against storing state ON a pooled DbContext. A subtler variant: capturing a
+    REFERENCE to the instance itself in a fire-and-forget Task. Since pooled instances are reset and
+    reused, not destroyed, the stale reference silently operates on a future, unrelated request's context.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the EF Core Performance deep-dive set: testing the bulk-operations interceptor
+      bypass, refining the mechanics behind compiled queries, and now a subtler variant of the page's own
+      pooled-DbContext safety warning. Head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="EF Core Performance"
+    topicRoute="/aspnet/ef-performance"
+    [prev]="{ label: 'What EF.CompileQuery Actually Eliminates', route: '/aspnet/ef-performance/what-ef-compilequery-actually-eliminates' }"
+  />
+</div>

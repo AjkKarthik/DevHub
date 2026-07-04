@@ -524,7 +524,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/ef-performance" routerLinkActive="active"><span class="nl-text">EF Performance</span>@if(progress.isDone('aspnet-ef-performance')){<span class="nl-done">✓</span>}@if(diff('aspnet-ef-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/ef-performance" routerLinkActive="active">
+        <span class="nl-text">EF Performance</span>
+        @if (progress.isDone('aspnet-ef-performance')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-ef-performance'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ef-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ef-performance')"
+                  (click)="toggleSubtopics('ef-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ef-performance'); as subs) {
+        @if (isSubtopicsExpanded('ef-performance')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/caching" routerLinkActive="active"><span class="nl-text">Caching</span>@if(progress.isDone('aspnet-caching')){<span class="nl-done">✓</span>}@if(diff('aspnet-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/output-caching-advanced" routerLinkActive="active"><span class="nl-text">Output Caching Advanced</span>@if(progress.isDone('aspnet-output-caching-advanced')){<span class="nl-done">✓</span>}@if(diff('aspnet-output-caching-advanced');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/dapper" routerLinkActive="active"><span class="nl-text">Dapper &amp; Raw SQL</span>@if(progress.isDone('aspnet-dapper')){<span class="nl-done">✓</span>}@if(diff('aspnet-dapper');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

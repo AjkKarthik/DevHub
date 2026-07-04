@@ -12273,6 +12273,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/ef-performance/testing-executeupdateasync-bypasses-savechanges-interceptors': {
+    apis: ['ISaveChangesInterceptor', 'ExecuteUpdateAsync()', 'AddInterceptors()'],
+    related: [
+      { label: 'What EF.CompileQuery Actually Eliminates — next', route: '/aspnet/ef-performance/what-ef-compilequery-actually-eliminates' },
+      { label: 'EF Performance (overview)', route: '/aspnet/ef-performance' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'ISaveChangesInterceptor is wired specifically into the SaveChangesAsync pipeline — ExecuteUpdateAsync and ExecuteDeleteAsync translate directly to SQL through a separate code path, so a counting interceptor in a test directly proves the bypass rather than trusting the docs.',
+    docs: [
+      { label: 'Bulk operations', url: 'https://learn.microsoft.com/en-us/ef/core/saving/execute-insert-update-delete' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Switching a load-loop-save pattern to ExecuteUpdateAsync for performance silently removes any audit logging or domain-event dispatching that depends on a SaveChanges interceptor — with zero compiler warning.',
+      'A database-level trigger observes every UPDATE regardless of which client-side API produced it — the robust mechanism for requirements that must apply universally.',
+    ],
+  },
+
+  'aspnet/ef-performance/what-ef-compilequery-actually-eliminates': {
+    apis: ['EF.CompileAsyncQuery()', 'query plan cache', 'Expression trees'],
+    related: [
+      { label: 'Testing That ExecuteUpdateAsync Bypasses SaveChanges Interceptors — previous', route: '/aspnet/ef-performance/testing-executeupdateasync-bypasses-savechanges-interceptors' },
+      { label: 'A Captured Reference to a Pooled DbContext Leaks Across Requests — next', route: '/aspnet/ef-performance/captured-reference-pooled-dbcontext-leaks-across-requests' },
+      { label: 'EF Performance (overview)', route: '/aspnet/ef-performance' },
+    ],
+    tip: 'EF Core already caches query plans by expression shape — a repeated call to the same query shape reuses the cached SQL. What EF.CompileQuery actually eliminates is the per-call cache LOOKUP (hashing and comparing the expression tree), not translation that would otherwise repeat.',
+    docs: [
+      { label: 'Compiled queries', url: 'https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics#compiled-queries' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The full 1–5ms translation cost applies only to the FIRST call for a given query shape — subsequent calls pay the smaller (but non-zero) cache-lookup cost, which is what compiled queries remove.',
+      'The benefit scales with call volume — at moderate call counts the database round-trip dwarfs the microsecond-scale lookup savings, matching the main page\'s own "high-frequency" framing.',
+    ],
+  },
+
+  'aspnet/ef-performance/captured-reference-pooled-dbcontext-leaks-across-requests': {
+    apis: ['AddDbContextPool()', 'IDbContextFactory<T>', 'Task.Run()'],
+    related: [
+      { label: 'What EF.CompileQuery Actually Eliminates — previous', route: '/aspnet/ef-performance/what-ef-compilequery-actually-eliminates' },
+      { label: 'EF Performance (overview)', route: '/aspnet/ef-performance' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Pooled DbContext instances are reset and reused at scope end, not destroyed — a reference captured in a fire-and-forget Task silently continues to function against an instance the pool has already handed to a later, unrelated request, instead of throwing ObjectDisposedException.',
+    docs: [
+      { label: 'DbContext pooling', url: 'https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics#dbcontext-pooling' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Capture only primitive values (like an entity ID) in a background Task, and create a fresh context inside it via IDbContextFactory — never the scoped/pooled context itself.',
+      'A test with poolSize: 1 forces deterministic instance reuse, making this cross-request leak directly reproducible instead of relying on production traffic timing.',
+    ],
+  },
+
   'aspnet/caching': {
     apis: ['IMemoryCache', 'GetOrCreateAsync()', 'IDistributedCache', 'AddOutputCache()', 'IOutputCacheStore', 'EvictByTagAsync()'],
     related: [

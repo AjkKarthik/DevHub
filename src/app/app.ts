@@ -721,6 +721,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How Skip Navigations Determine Join-Table INSERT/DELETE', route: '/aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete' },
     { label: 'Replacing an OwnsMany Collection Deletes and Reinserts Everything', route: '/aspnet/ef-relationships/replacing-ownsmany-collection-deletes-reinserts-everything' },
   ],
+  'ef-performance': [
+    { label: 'Testing That ExecuteUpdateAsync Bypasses SaveChanges Interceptors', route: '/aspnet/ef-performance/testing-executeupdateasync-bypasses-savechanges-interceptors' },
+    { label: 'What EF.CompileQuery Actually Eliminates', route: '/aspnet/ef-performance/what-ef-compilequery-actually-eliminates' },
+    { label: 'A Captured Reference to a Pooled DbContext Leaks Across Requests', route: '/aspnet/ef-performance/captured-reference-pooled-dbcontext-leaks-across-requests' },
+  ],
 };
 
 @Component({
