@@ -535,7 +535,12 @@ export const routes: Routes = [
         { path: 'resolving-extension-method-ambiguity-cs0121', loadComponent: () => import('./components/backend/csharp/extension-methods/subtopics/resolving-extension-method-ambiguity-cs0121/resolving-extension-method-ambiguity-cs0121').then(m => m.ResolvingExtensionMethodAmbiguityCs0121Subtopic) },
         { path: 'extension-methods-on-structs-this-in-t-receiver', loadComponent: () => import('./components/backend/csharp/extension-methods/subtopics/extension-methods-on-structs-this-in-t-receiver/extension-methods-on-structs-this-in-t-receiver').then(m => m.ExtensionMethodsOnStructsThisInTReceiverSubtopic) },
       ] },
-      { path: 'tuples',            loadComponent: () => import('./components/backend/csharp/tuples/tuples').then(m => m.CsharpTuples) },
+      { path: 'tuples', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/tuples/tuples').then(m => m.CsharpTuples) },
+        { path: 'testing-tuple-returning-methods-deconstruction-assertions', loadComponent: () => import('./components/backend/csharp/tuples/subtopics/testing-tuple-returning-methods-deconstruction-assertions/testing-tuple-returning-methods-deconstruction-assertions').then(m => m.TestingTupleReturningMethodsDeconstructionAssertionsSubtopic) },
+        { path: 'valuetuple-8-element-limit-trest-chaining-mechanism', loadComponent: () => import('./components/backend/csharp/tuples/subtopics/valuetuple-8-element-limit-trest-chaining-mechanism/valuetuple-8-element-limit-trest-chaining-mechanism').then(m => m.Valuetuple8ElementLimitTrestChainingMechanismSubtopic) },
+        { path: 'renaming-tuple-field-breaks-some-callers-not-others', loadComponent: () => import('./components/backend/csharp/tuples/subtopics/renaming-tuple-field-breaks-some-callers-not-others/renaming-tuple-field-breaks-some-callers-not-others').then(m => m.RenamingTupleFieldBreaksSomeCallersNotOthersSubtopic) },
+      ] },
       { path: 'arrays',            loadComponent: () => import('./components/backend/csharp/arrays/arrays').then(m => m.CsharpArrays) },
       { path: 'strings-datetime',  loadComponent: () => import('./components/backend/csharp/strings-datetime/strings-datetime').then(m => m.CsharpStringsDatetime) },
       // ── Data / Memory ──

@@ -467,6 +467,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Resolving Extension Method Ambiguity', route: '/csharp/extension-methods/resolving-extension-method-ambiguity-cs0121' },
     { label: 'Extension Methods on Structs: this in T', route: '/csharp/extension-methods/extension-methods-on-structs-this-in-t-receiver' },
   ],
+  'tuples': [
+    { label: 'Testing Tuple-Returning Methods', route: '/csharp/tuples/testing-tuple-returning-methods-deconstruction-assertions' },
+    { label: '8-Element Limit and TRest Chaining', route: '/csharp/tuples/valuetuple-8-element-limit-trest-chaining-mechanism' },
+    { label: 'Renaming a Tuple Field', route: '/csharp/tuples/renaming-tuple-field-breaks-some-callers-not-others' },
+  ],
 };
 
 @Component({

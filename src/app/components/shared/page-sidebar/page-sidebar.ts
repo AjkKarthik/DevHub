@@ -7626,6 +7626,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Tuple field names are compile-time only — at runtime they are Item1, Item2, etc.', 'Anonymous types are reference types limited to their declaring scope — use records for cross-method data transfer.'],
   },
 
+  'tuples/testing-tuple-returning-methods-deconstruction-assertions': {
+    apis: ['Assert.Equal', 'IEquatable<T>', 'ValueTuple'],
+    related: [
+      { label: '8-Element Limit and TRest Chaining — next', route: '/csharp/tuples/valuetuple-8-element-limit-trest-chaining-mechanism' },
+      { label: 'Tuples & Anonymous Types (overview)', route: '/csharp/tuples' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Assert.Equal against a literal tuple value (e.g. Assert.Equal(("Alice", 30), result)) leverages ValueTuple\'s own structural equality and compares positionally — usually simpler and more robust than asserting each named field individually.',
+    docs: [
+      { label: 'Value Tuples', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-tuples' },
+    ],
+    resources: [
+      { label: 'xUnit Assert.Equal', url: 'https://xunit.net/docs/comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'Asserting via named field access (result.Name) is bound to whatever position that name currently aliases — a whole-tuple comparison against a literal value tests the actual runtime positions directly.',
+      'ValueTuple already implements IEquatable<T> with element-by-element equality — no custom comparer is needed for Assert.Equal to work correctly on a whole tuple.',
+    ],
+  },
+
+  'tuples/valuetuple-8-element-limit-trest-chaining-mechanism': {
+    apis: ['ValueTuple<T1..T7,TRest>', 'ITuple', 'TupleElementNamesAttribute'],
+    related: [
+      { label: 'Testing Tuple-Returning Methods — previous', route: '/csharp/tuples/testing-tuple-returning-methods-deconstruction-assertions' },
+      { label: 'Renaming a Tuple Field — next', route: '/csharp/tuples/renaming-tuple-field-breaks-some-callers-not-others' },
+      { label: 'Tuples & Anonymous Types (overview)', route: '/csharp/tuples' },
+    ],
+    tip: 'ValueTuple only defines arity up to 7 — an 8+ element tuple is the compiler nesting ValueTuple<T1..T7,TRest> instances inside each other, with the outer struct\'s real field named Rest, not Item8.',
+    docs: [
+      { label: 'ValueTuple Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple' },
+    ],
+    resources: [
+      { label: 'ITuple Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.ituple', badge: 'docs' },
+    ],
+    gotchas: [
+      '.Item8 (and beyond) is a compiler-synthesized property reaching through the real .Rest field — raw reflection on the outer struct shows only Item1..Item7 and Rest, never a literal Item8.',
+      'ITuple.Length and its indexer correctly flatten the nested TRest chain for you — GetFields() on the outer struct does not.',
+    ],
+  },
+
+  'tuples/renaming-tuple-field-breaks-some-callers-not-others': {
+    apis: ['TupleElementNamesAttribute', 'deconstruction', 'CS1061'],
+    related: [
+      { label: '8-Element Limit and TRest Chaining — previous', route: '/csharp/tuples/valuetuple-8-element-limit-trest-chaining-mechanism' },
+      { label: 'Tuples & Anonymous Types (overview)', route: '/csharp/tuples' },
+      { label: 'Records', route: '/csharp/records' },
+    ],
+    tip: 'Renaming a named tuple field is a compile-time break for dot-notation callers (result.OldName) but a complete silent no-op for positional deconstruction callers (var (x, y) = ...) — the same rename has two very different outcomes.',
+    docs: [
+      { label: 'Value Tuples', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-tuples' },
+    ],
+    resources: [
+      { label: 'Records', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records', badge: 'docs' },
+    ],
+    gotchas: [
+      'Grepping a codebase for the old field name only finds dot-notation callers — deconstructing callers never reference the field name in their source at all.',
+      'A class or record property rename is uniformly breaking for every consumer; a named tuple\'s rename has an asymmetric, partially-silent blast radius — prefer a record for a genuinely public, evolving contract.',
+    ],
+  },
+
   arrays: {
     apis: ['T[]', 'T[,]', 'T[][]', 'Array.Sort', 'ArraySegment<T>', 'array expressions []'],
     related: [{ label: 'Collections', route: '/csharp/collections' }, { label: 'Span & Memory', route: '/csharp/collections' }, { label: 'LINQ', route: '/csharp/linq' }],
