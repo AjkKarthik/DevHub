@@ -1475,7 +1475,7 @@ off here with a date.
 - [x] `/csharp/threading` — Threading (2026-07-04 — 3 subtopics: testing-race-conditions-stress-testing-concurrent-code, old-lock-codegen-bug-monitor-enter-ref-bool-taken, lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free)
 - [x] `/csharp/tasks` — Tasks & Parallel (2026-07-04 — 3 subtopics: testing-async-timing-deterministic-controllable-taskcompletionsource, valuetask-await-once-rule-when-worth-complexity, whenall-doesnt-start-tasks-parallel-just-awaits-running)
 - [x] `/csharp/reflection` — Reflection & Attributes (2026-07-04 — 3 subtopics: testing-reflection-code-attribute-discovery-cache-behavior, beyond-expression-trees-dynamicmethod-reflection-emit, generic-type-reflection-traps-generictypedefinition)
-- [ ] `/csharp/iterators` — Iterators & yield
+- [x] `/csharp/iterators` — Iterators & yield (2026-07-04 — 3 subtopics: testing-iterator-actually-lazy-side-effects-not-run-before-enumeration, why-getenumerator-sometimes-returns-itself-thread-id-check, iterator-exceptions-stack-traces-movenext-not-call-site)
 - [ ] `/csharp/functional-csharp` — Functional C# & Result Pattern
 - [ ] `/csharp/regex` — Regular Expressions
 - [ ] `/csharp/channels` — Channels & Producer/Consumer
