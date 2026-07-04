@@ -1479,7 +1479,7 @@ off here with a date.
 - [x] `/csharp/functional-csharp` — Functional C# & Result Pattern (2026-07-04 — 3 subtopics: testing-railway-pipelines-asserting-which-step-failed, proving-result-genuine-monad-three-monad-laws, result-equality-traps-never-equal-by-default)
 - [x] `/csharp/regex` — Regular Expressions (2026-07-04 — 3 subtopics: testing-regex-redos-proving-matchtimeout-fires, inside-backtracking-engine-nested-quantifiers-traced-step-by-step, unicode-digit-trap-d-matches-more-than-ascii)
 - [x] `/csharp/channels` — Channels & Producer/Consumer (2026-07-04 — 3 subtopics: testing-channel-pipelines-without-mocks-real-channel-test-double, how-readallasync-detects-completion-waittoreadasync-tryread, rendezvous-channel-capacity-zero-writeasync-waits-for-reader)
-- [ ] `/csharp/unit-testing` — Unit Testing (xUnit & Moq)
+- [x] `/csharp/unit-testing` — Unit Testing (xUnit & Moq) (2026-07-04 — 3 subtopics: testing-your-test-doubles-mock-setup-matches-production-behavior, why-xunit-creates-new-instance-per-test-classfixture, timeprovider-faketimeprovider-deterministic-time-dependent-tests)
 - [ ] `/csharp/expression-trees` — Expression Trees
 - [ ] `/csharp/dynamic` — dynamic & the DLR
 - [ ] `/csharp/source-generators` — Source Generators
