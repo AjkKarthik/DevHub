@@ -1681,7 +1681,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced &amp; Quality</p>
-      <a routerLink="/csharp/unit-testing" routerLinkActive="active"><span class="nl-text">Unit Testing (xUnit &amp; Moq)</span>@if(progress.isDone('csharp-unit-testing')){<span class="nl-done">✓</span>}@if(diff('csharp-unit-testing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/unit-testing" routerLinkActive="active">
+        <span class="nl-text">Unit Testing (xUnit &amp; Moq)</span>
+        @if (progress.isDone('csharp-unit-testing')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-unit-testing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('unit-testing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('unit-testing')"
+                  (click)="toggleSubtopics('unit-testing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('unit-testing'); as subs) {
+        @if (isSubtopicsExpanded('unit-testing')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/reflection" routerLinkActive="active">
         <span class="nl-text">Reflection &amp; Attributes</span>
         @if (progress.isDone('csharp-reflection')) {<span class="nl-done">✓</span>}

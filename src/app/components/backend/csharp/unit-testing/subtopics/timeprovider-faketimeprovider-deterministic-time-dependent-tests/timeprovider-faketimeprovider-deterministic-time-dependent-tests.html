@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Unit Testing (xUnit & Moq)" topicRoute="/csharp/unit-testing" subtopicLabel="TimeProvider and FakeTimeProvider" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">TimeProvider and FakeTimeProvider: Making Time-Dependent Code Deterministic Without DateTime.Now</h1>
+  <p class="page-subtitle">The main topic page mentions TimeProvider once in its Quick Reference. See how injecting it (instead of calling DateTime.UtcNow directly) makes expiry logic and Task.Delay-based retries fully deterministic and instant to test.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Unit Testing deep dives — from verifying test doubles stay honest, to why xUnit's per-test isolation model exists, to making time-dependent code fully deterministic with TimeProvider.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Unit Testing (xUnit & Moq)"
+    topicRoute="/csharp/unit-testing"
+    [prev]="{ label: 'Why xUnit Creates a New Instance Per Test', route: '/csharp/unit-testing/why-xunit-creates-new-instance-per-test-classfixture' }"
+  />
+</div>

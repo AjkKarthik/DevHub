@@ -8445,6 +8445,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'unit-testing': {
+    apis: ['[Fact]', '[Theory]', 'Mock<T>', 'Assert.Throws'],
+    related: [{ label: 'Generics', route: '/csharp/generics' }, { label: 'Delegates & Events', route: '/csharp/delegates' }, { label: 'Functional C# & Result', route: '/csharp/functional-csharp' }],
+    tip: 'One logical assertion per test — a test that verifies two independent behaviors makes it impossible to tell which one broke when it fails.',
+    docs: [{ label: 'xUnit Documentation', url: 'https://xunit.net/docs/getting-started/netcore/cmdline' }],
+    resources: [{ label: 'Moq GitHub', url: 'https://github.com/devlooped/moq', badge: 'code' }],
+    gotchas: ['Never mark a test method async void — xUnit cannot await it, and any thrown exception is silently swallowed.', 'Prefer asserting on state/results over Verify() — interaction-based assertions couple tests to implementation details.'],
+  },
+
+  'unit-testing/testing-your-test-doubles-mock-setup-matches-production-behavior': {
+    apis: ['Mock<T>', 'contract test', 'IUserRepo'],
+    related: [
+      { label: 'Why xUnit Creates a New Instance Per Test — next', route: '/csharp/unit-testing/why-xunit-creates-new-instance-per-test-classfixture' },
+      { label: 'Unit Testing (xUnit & Moq) (overview)', route: '/csharp/unit-testing' },
+      { label: 'Functional C# & Result', route: '/csharp/functional-csharp' },
+    ],
+    tip: 'A passing unit test suite using mocks only proves the code behaves correctly given the mock\'s assumptions — a small set of contract tests, run against both the real implementation and any fakes, catches drift between assumption and reality.',
+    docs: [
+      { label: 'Moq Quickstart', url: 'https://github.com/devlooped/moq/wiki/Quickstart' },
+    ],
+    resources: [
+      { label: 'Contract Testing', url: 'https://martinfowler.com/bliki/ContractTest.html', badge: 'blog' },
+    ],
+    gotchas: [
+      'Two implementations can both compile against the same interface while disagreeing completely on behavior for edge cases (null vs exception) — nothing about the interface itself catches that mismatch.',
+      'Contract tests are a small, targeted addition, not a replacement for everyday mocked unit tests.',
+    ],
+  },
+
+  'unit-testing/why-xunit-creates-new-instance-per-test-classfixture': {
+    apis: ['IClassFixture<T>', 'constructor', 'IDisposable'],
+    related: [
+      { label: 'Testing Your Test Doubles — previous', route: '/csharp/unit-testing/testing-your-test-doubles-mock-setup-matches-production-behavior' },
+      { label: 'TimeProvider and FakeTimeProvider — next', route: '/csharp/unit-testing/timeprovider-faketimeprovider-deterministic-time-dependent-tests' },
+      { label: 'Unit Testing (xUnit & Moq) (overview)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Each test method runs against its own freshly-constructed instance — this eliminates test-order dependence by construction. IClassFixture<T> is the deliberate, explicit exception, sharing one instance across a whole test class only where the performance win is worth the shared-state risk.',
+    docs: [
+      { label: 'Shared Context in xUnit', url: 'https://xunit.net/docs/shared-context' },
+    ],
+    resources: [
+      { label: 'xUnit Documentation', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'xUnit has no [SetUp]/[TearDown] attributes because the constructor and IDisposable.Dispose() already fill that role, once per test, via the language\'s own object lifecycle.',
+      'IClassFixture-shared state IS visible across test methods — one test\'s mutation can affect another, introducing the exact test-order dependence the default per-test-instance model prevents.',
+    ],
+  },
+
+  'unit-testing/timeprovider-faketimeprovider-deterministic-time-dependent-tests': {
+    apis: ['TimeProvider', 'FakeTimeProvider', 'Task.Delay(delay, timeProvider)'],
+    related: [
+      { label: 'Why xUnit Creates a New Instance Per Test — previous', route: '/csharp/unit-testing/why-xunit-creates-new-instance-per-test-classfixture' },
+      { label: 'Unit Testing (xUnit & Moq) (overview)', route: '/csharp/unit-testing' },
+      { label: 'Tasks & Parallel', route: '/csharp/tasks' },
+    ],
+    tip: 'Inject TimeProvider (production uses TimeProvider.System, tests use FakeTimeProvider) instead of calling DateTime.UtcNow directly — Advance(TimeSpan) fast-forwards through expiry checks and Task.Delay-based retries instantly, with no real waiting.',
+    docs: [
+      { label: 'TimeProvider Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.timeprovider' },
+    ],
+    resources: [
+      { label: 'Testing Time-Dependent Code', url: 'https://learn.microsoft.com/en-us/dotnet/standard/datetime/how-to-use-timeprovider', badge: 'docs' },
+    ],
+    gotchas: [
+      'FakeTimeProvider integrates with Task.Delay(delay, timeProvider) and TimeProvider.CreateTimer — not just simple DateTime.UtcNow checks.',
+      'This is the same underlying idea as substituting a controllable TaskCompletionSource for real async operations — both replace real waiting with a fully test-controlled stand-in.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

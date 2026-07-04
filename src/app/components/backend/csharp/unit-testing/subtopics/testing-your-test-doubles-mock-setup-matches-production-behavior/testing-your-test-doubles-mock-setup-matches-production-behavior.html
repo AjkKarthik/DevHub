@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Unit Testing (xUnit & Moq)" topicRoute="/csharp/unit-testing" subtopicLabel="Testing Your Test Doubles" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Your Test Doubles: How Do You Know Your Mock Setup Still Matches Production Behavior?</h1>
+  <p class="page-subtitle">The main topic page shows how to create a Mock&lt;T&gt; but never asks whether its assumptions stay true. See the "mocks lie" problem and how a small set of contract tests catches drift cheaply, without full integration testing everywhere.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="xUnit 2+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at exactly why the main <a routerLink="/csharp/unit-testing">Unit Testing (xUnit & Moq)</a> page's own claim — "xUnit creates a new instance of the test class for every test method" — is true, and what IClassFixture deliberately undoes about it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Unit Testing (xUnit & Moq)"
+    topicRoute="/csharp/unit-testing"
+    [next]="{ label: 'Why xUnit Creates a New Instance Per Test', route: '/csharp/unit-testing/why-xunit-creates-new-instance-per-test-classfixture' }"
+  />
+</div>

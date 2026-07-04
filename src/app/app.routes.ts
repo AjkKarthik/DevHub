@@ -610,7 +610,12 @@ export const routes: Routes = [
         { path: 'how-readallasync-detects-completion-waittoreadasync-tryread', loadComponent: () => import('./components/backend/csharp/channels/subtopics/how-readallasync-detects-completion-waittoreadasync-tryread/how-readallasync-detects-completion-waittoreadasync-tryread').then(m => m.HowReadallasyncDetectsCompletionWaittoreadasyncTryreadSubtopic) },
         { path: 'rendezvous-channel-capacity-zero-writeasync-waits-for-reader', loadComponent: () => import('./components/backend/csharp/channels/subtopics/rendezvous-channel-capacity-zero-writeasync-waits-for-reader/rendezvous-channel-capacity-zero-writeasync-waits-for-reader').then(m => m.RendezvousChannelCapacityZeroWriteasyncWaitsForReaderSubtopic) },
       ] },
-      { path: 'unit-testing',      loadComponent: () => import('./components/backend/csharp/unit-testing/unit-testing').then(m => m.CsharpUnitTesting) },
+      { path: 'unit-testing', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/unit-testing/unit-testing').then(m => m.CsharpUnitTesting) },
+        { path: 'testing-your-test-doubles-mock-setup-matches-production-behavior', loadComponent: () => import('./components/backend/csharp/unit-testing/subtopics/testing-your-test-doubles-mock-setup-matches-production-behavior/testing-your-test-doubles-mock-setup-matches-production-behavior').then(m => m.TestingYourTestDoublesMockSetupMatchesProductionBehaviorSubtopic) },
+        { path: 'why-xunit-creates-new-instance-per-test-classfixture', loadComponent: () => import('./components/backend/csharp/unit-testing/subtopics/why-xunit-creates-new-instance-per-test-classfixture/why-xunit-creates-new-instance-per-test-classfixture').then(m => m.WhyXunitCreatesNewInstancePerTestClassfixtureSubtopic) },
+        { path: 'timeprovider-faketimeprovider-deterministic-time-dependent-tests', loadComponent: () => import('./components/backend/csharp/unit-testing/subtopics/timeprovider-faketimeprovider-deterministic-time-dependent-tests/timeprovider-faketimeprovider-deterministic-time-dependent-tests').then(m => m.TimeproviderFaketimeproviderDeterministicTimeDependentTestsSubtopic) },
+      ] },
       { path: 'expression-trees',  loadComponent: () => import('./components/backend/csharp/expression-trees/expression-trees').then(m => m.CsharpExpressionTrees) },
       { path: 'dynamic',           loadComponent: () => import('./components/backend/csharp/dynamic/dynamic').then(m => m.CsharpDynamic) },
       { path: 'source-generators', loadComponent: () => import('./components/backend/csharp/source-generators/source-generators').then(m => m.CsharpSourceGenerators) },

@@ -527,6 +527,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How ReadAllAsync Detects Completion', route: '/csharp/channels/how-readallasync-detects-completion-waittoreadasync-tryread' },
     { label: 'The Rendezvous Channel', route: '/csharp/channels/rendezvous-channel-capacity-zero-writeasync-waits-for-reader' },
   ],
+  'unit-testing': [
+    { label: 'Testing Your Test Doubles', route: '/csharp/unit-testing/testing-your-test-doubles-mock-setup-matches-production-behavior' },
+    { label: 'Why xUnit Creates a New Instance Per Test', route: '/csharp/unit-testing/why-xunit-creates-new-instance-per-test-classfixture' },
+    { label: 'TimeProvider and FakeTimeProvider', route: '/csharp/unit-testing/timeprovider-faketimeprovider-deterministic-time-dependent-tests' },
+  ],
 };
 
 @Component({
