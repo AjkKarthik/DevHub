@@ -1489,7 +1489,7 @@ off here with a date.
 - [x] `/csharp/unsafe-pointers` — Unsafe Code & Pointers (2026-07-04 — 3 subtopics: testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws, pinned-object-fragments-heap-blocks-gc-compaction-neighbors, stackalloc-inside-loop-never-frees-between-iterations-stackoverflow)
 - [x] `/csharp/native-aot` — Native AOT (2026-07-04 — 3 subtopics: testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors, dynamicallyaccessedmembers-redeclared-every-level-call-chain, clean-trim-analysis-still-fails-full-aot-publish-different-checks)
 - [x] `/csharp/benchmarkdotnet` — BenchmarkDotNet (2026-07-04 — 3 subtopics: catching-performance-regression-ci-committed-baseline-not-eyeballing, why-bdn-runs-benchmarks-isolated-process-not-in-process, when-mean-lies-bimodal-distribution-hides-two-performance-paths)
-- [ ] `/csharp/pinvoke` — P/Invoke & Native Interop
+- [x] `/csharp/pinvoke` — P/Invoke & Native Interop (2026-07-04 — 3 subtopics: testing-code-calling-pinvoke-wrapping-native-calls-behind-interface, why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle, setlasterror-silently-clobbered-by-pinvoke-call-in-between)
 - [ ] `/csharp/dotnet-cli` — .NET CLI & Tooling
 - [ ] `/csharp/whats-new-9-10` — What's New in C# 9 & 10
 - [ ] `/csharp/whats-new-11-12` — What's New in C# 11 & 12
