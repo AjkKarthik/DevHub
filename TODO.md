@@ -1512,7 +1512,7 @@ off here with a date.
 - [x] `/aspnet/openapi-swagger` — OpenAPI & Swagger (2026-07-04 — 3 subtopics: testing-openapi-spec-catches-typedresults-regression-to-iresult, why-generator-inspects-signature-not-method-body, generating-clients-against-live-server-undermines-diffing-prs)
 - [x] `/aspnet/api-versioning` — API Versioning (2026-07-04 — 3 subtopics: testing-versioned-endpoints-return-genuinely-different-shapes, why-omitting-apiversion-constraint-causes-ambiguous-match, what-happens-when-combined-version-readers-disagree)
 - [x] `/aspnet/http-clients` — HttpClient & Resilience (2026-07-04 — 3 subtopics: testing-retry-strategy-fires-transient-not-deterministic-errors, why-transient-delegatinghandlers-shared-across-pool-rotation, addhedging-shared-pipeline-can-hedge-non-idempotent-requests)
-- [ ] `/aspnet/grpc` — gRPC Services
+- [x] `/aspnet/grpc` — gRPC Services (2026-07-04 — 3 subtopics: testing-server-streaming-rpc-cancellation-stops-mid-stream, how-proto3-optional-actually-tracks-field-presence, grpc-web-cors-needs-allowed-request-headers-not-exposed)
 - [ ] `/aspnet/ef-core-basics` — EF Core Basics
 - [ ] `/aspnet/ef-relationships` — EF Core Relationships
 - [ ] `/aspnet/ef-performance` — EF Core Performance
