@@ -1463,7 +1463,7 @@ off here with a date.
 - [x] `/csharp/namespaces` — Namespaces & Usings (2026-07-04 — 3 subtopics: detecting-unused-using-directives-ide0005, extern-alias-resolving-assembly-type-name-collisions, resolving-cs0104-ambiguous-using-directives)
 - [x] `/csharp/inheritance` — Inheritance & Overriding (2026-07-04 — 3 subtopics: testing-the-hiding-trap-new-vs-override, how-sealed-enables-devirtualization, covariant-return-types-hidden-bridge-method)
 - [x] `/csharp/abstract-interfaces` — Abstract Classes & Interfaces (2026-07-04 — 3 subtopics: testing-default-interface-method-resolution, default-interface-method-diamond-problem, static-abstract-members-generic-constraint-requirement)
-- [ ] `/csharp/static-enums` — Static Classes, Partial Classes & Enums
+- [x] `/csharp/static-enums` — Static Classes, Partial Classes & Enums (2026-07-04 — 3 subtopics: testing-flags-enums-reflection-based-power-of-two-guard, modern-partial-methods-return-types-mandatory-implementation, enum-value-stability-serialization-compatibility)
 - [ ] `/csharp/structures` — Structures (struct)
 - [ ] `/csharp/system-object` — System.Object
 - [ ] `/csharp/extension-methods` — Extension Methods
