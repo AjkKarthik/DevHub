@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Abstract Classes & Interfaces"
+    topicRoute="/csharp/abstract-interfaces"
+    subtopicLabel="Testing Default Interface Method Resolution" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Default Interface Method Resolution: Interface-Typed vs Class-Typed References</h1>
+  <p class="page-subtitle">
+    The main topic's own Common Mistake shows default methods are only reachable through
+    an interface-typed reference — a compile-time fact, not a runtime one. This subtopic
+    shows what genuinely can (and can't) be tested about it.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 8.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding what's testable about default methods sets up the next subtopics: a
+      genuine diamond-conflict resolution rule, and a hard boundary on where static
+      abstract members can even be called from.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Abstract Classes & Interfaces"
+    topicRoute="/csharp/abstract-interfaces"
+    [next]="{ label: 'Default Interface Method Diamond Problem', route: '/csharp/abstract-interfaces/default-interface-method-diamond-problem' }" />
+</div>

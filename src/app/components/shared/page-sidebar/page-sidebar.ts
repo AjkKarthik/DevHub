@@ -7281,6 +7281,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['A class can implement multiple interfaces but inherit only one class — design for this constraint early.', 'Default interface methods are not inherited by implementing classes — they are only callable through the interface type.'],
   },
 
+  'abstract-interfaces/testing-default-interface-method-resolution': {
+    apis: ['default interface method', 'interface-typed reference'],
+    related: [
+      { label: 'Default Interface Method Diamond Problem — next', route: '/csharp/abstract-interfaces/default-interface-method-diamond-problem' },
+      { label: 'Abstract Classes & Interfaces (overview)', route: '/csharp/abstract-interfaces' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Whether a default interface method is reachable is a compile-time fact (interface-typed vs class-typed reference), not something Assert.Throws can observe — but the LOGIC inside the default IS ordinary runtime-testable behavior.',
+    docs: [
+      { label: 'Default Interface Methods', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#default-interface-methods' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'A class-typed reference test can never verify default-method reachability — CS1061 is a compile error, not something a runtime assertion can catch.',
+      'A class\'s own implementation of a member wins over the interface default through BOTH reference shapes — unlike a default-only implementation, reachable only via interface-typed references.',
+    ],
+  },
+
+  'abstract-interfaces/default-interface-method-diamond-problem': {
+    apis: ['CS8705', 'default interface method', 'most specific interface'],
+    related: [
+      { label: 'Testing Default Interface Method Resolution — previous', route: '/csharp/abstract-interfaces/testing-default-interface-method-resolution' },
+      { label: 'static abstract Members — next', route: '/csharp/abstract-interfaces/static-abstract-members-generic-constraint-requirement' },
+      { label: 'Abstract Classes & Interfaces (overview)', route: '/csharp/abstract-interfaces' },
+    ],
+    tip: 'Two interfaces each declaring their OWN default for the same member signature produce CS8705 — the compiler refuses to guess and forces the implementing class to resolve it. A SHARED ancestor default is not a conflict at all.',
+    docs: [
+      { label: 'Default Interface Members', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#default-interface-methods' },
+    ],
+    resources: [
+      { label: 'C# 8 Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8', badge: 'docs' },
+    ],
+    gotchas: [
+      'If one interface\'s default is MORE SPECIFIC (extends and overrides a shared ancestor) while the other contributes no override, the compiler can resolve the conflict automatically — no class-level override is required.',
+      'This differs from explicit implementation of ABSTRACT (bodyless) members — that pattern lets two separate implementations coexist; a genuine default-vs-default conflict requires ONE class implementation satisfying both.',
+    ],
+  },
+
+  'abstract-interfaces/static-abstract-members-generic-constraint-requirement': {
+    apis: ['static abstract', 'constrained.callvirt', 'INumber<T>'],
+    related: [
+      { label: 'Default Interface Method Diamond Problem — previous', route: '/csharp/abstract-interfaces/default-interface-method-diamond-problem' },
+      { label: 'Abstract Classes & Interfaces (overview)', route: '/csharp/abstract-interfaces' },
+      { label: 'Generics', route: '/csharp/generics' },
+    ],
+    tip: 'A static abstract interface member can ONLY be called through a generic type parameter constrained to that interface (T.Create(...)) — never directly on the interface type itself, since there is no instance to carry runtime-type information.',
+    docs: [
+      { label: 'Static Abstract Members', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#static-abstract-members-in-interfaces' },
+    ],
+    resources: [
+      { label: 'Generic Math', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/math', badge: 'docs' },
+    ],
+    gotchas: [
+      'Static members have never been callable through an instance reference in C#, interface-typed or not — this is a fundamental rule that predates static abstract interface members.',
+      'The generic constraint is the ONLY mechanism supplying the missing runtime-type information — this is why generic math (INumber<T>) requires exactly this feature.',
+    ],
+  },
+
   'static-enums': {
     apis: ['static class', 'partial class', 'enum', 'Flags', '[EnumMember]', 'Enum.Parse'],
     related: [{ label: 'OOP & Classes', route: '/csharp/oop' }, { label: 'Extension Methods', route: '/csharp/extension-methods' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }],

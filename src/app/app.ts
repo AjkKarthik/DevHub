@@ -442,6 +442,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How sealed Enables Devirtualization', route: '/csharp/inheritance/how-sealed-enables-devirtualization' },
     { label: 'Covariant Return Types: The Hidden Bridge Method', route: '/csharp/inheritance/covariant-return-types-hidden-bridge-method' },
   ],
+  'abstract-interfaces': [
+    { label: 'Testing Default Interface Method Resolution', route: '/csharp/abstract-interfaces/testing-default-interface-method-resolution' },
+    { label: 'Default Interface Method Diamond Problem', route: '/csharp/abstract-interfaces/default-interface-method-diamond-problem' },
+    { label: 'static abstract Members and Generic Constraints', route: '/csharp/abstract-interfaces/static-abstract-members-generic-constraint-requirement' },
+  ],
 };
 
 @Component({

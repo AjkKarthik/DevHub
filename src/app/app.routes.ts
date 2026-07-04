@@ -504,7 +504,12 @@ export const routes: Routes = [
         { path: 'how-sealed-enables-devirtualization', loadComponent: () => import('./components/backend/csharp/inheritance/subtopics/how-sealed-enables-devirtualization/how-sealed-enables-devirtualization').then(m => m.HowSealedEnablesDevirtualizationSubtopic) },
         { path: 'covariant-return-types-hidden-bridge-method', loadComponent: () => import('./components/backend/csharp/inheritance/subtopics/covariant-return-types-hidden-bridge-method/covariant-return-types-hidden-bridge-method').then(m => m.CovariantReturnTypesHiddenBridgeMethodSubtopic) },
       ] },
-      { path: 'abstract-interfaces', loadComponent: () => import('./components/backend/csharp/abstract-interfaces/abstract-interfaces').then(m => m.CsharpAbstractInterfaces) },
+      { path: 'abstract-interfaces', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/abstract-interfaces/abstract-interfaces').then(m => m.CsharpAbstractInterfaces) },
+        { path: 'testing-default-interface-method-resolution', loadComponent: () => import('./components/backend/csharp/abstract-interfaces/subtopics/testing-default-interface-method-resolution/testing-default-interface-method-resolution').then(m => m.TestingDefaultInterfaceMethodResolutionSubtopic) },
+        { path: 'default-interface-method-diamond-problem', loadComponent: () => import('./components/backend/csharp/abstract-interfaces/subtopics/default-interface-method-diamond-problem/default-interface-method-diamond-problem').then(m => m.DefaultInterfaceMethodDiamondProblemSubtopic) },
+        { path: 'static-abstract-members-generic-constraint-requirement', loadComponent: () => import('./components/backend/csharp/abstract-interfaces/subtopics/static-abstract-members-generic-constraint-requirement/static-abstract-members-generic-constraint-requirement').then(m => m.StaticAbstractMembersGenericConstraintRequirementSubtopic) },
+      ] },
       { path: 'static-enums',      loadComponent: () => import('./components/backend/csharp/static-enums/static-enums').then(m => m.CsharpStaticEnums) },
       { path: 'structures',        loadComponent: () => import('./components/backend/csharp/structures/structures').then(m => m.CsharpStructures) },
       { path: 'system-object',     loadComponent: () => import('./components/backend/csharp/system-object/system-object').then(m => m.CsharpSystemObject) },
