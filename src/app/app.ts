@@ -552,6 +552,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What Is Actually Inside a Span<T>', route: '/csharp/span-memory/whats-actually-inside-span-ref-field-fast-restricted' },
     { label: 'ArrayPool Rent Returns Dirty Memory', route: '/csharp/span-memory/arraypool-rent-returns-dirty-memory-stale-data-leak' },
   ],
+  'di-dotnet': [
+    { label: 'Testing Your DI Container Configuration', route: '/csharp/di-dotnet/testing-di-container-configuration-every-registration-resolves' },
+    { label: 'How ValidateScopes Catches Captive Dependencies', route: '/csharp/di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope' },
+    { label: 'Multiple Implementations, Single T Injection', route: '/csharp/di-dotnet/multiple-implementations-single-t-injection-returns-last' },
+  ],
 };
 
 @Component({

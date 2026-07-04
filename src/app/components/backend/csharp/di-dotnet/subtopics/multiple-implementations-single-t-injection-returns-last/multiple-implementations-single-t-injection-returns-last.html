@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dependency Injection in .NET" topicRoute="/csharp/di-dotnet" subtopicLabel="Multiple Implementations, Single T" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">When Multiple Implementations Are Registered, Injecting a Single T Silently Returns Only the Last One</h1>
+  <p class="page-subtitle">The main topic page shows IEnumerable&lt;T&gt; collecting every implementation. The flip side is rarely mentioned: a plain, single T silently resolves to only the last-registered implementation — no error, no warning.</p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET Core 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This closes out the deep dive on <a routerLink="/csharp/di-dotnet">Dependency Injection in .NET</a> — from testing container configuration, to the root/child scope mechanics behind captive-dependency detection, to this silent multiple-registration gotcha. Return to the topic overview to continue with the next C# topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dependency Injection in .NET"
+    topicRoute="/csharp/di-dotnet"
+    [prev]="{ label: 'How ValidateScopes Catches Captive Dependencies', route: '/csharp/di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope' }"
+  />
+</div>

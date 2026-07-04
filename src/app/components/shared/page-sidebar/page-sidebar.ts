@@ -8790,6 +8790,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'di-dotnet': {
+    apis: ['IServiceCollection', 'IServiceProvider', 'ValidateOnBuild'],
+    related: [{ label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }, { label: 'Interfaces', route: '/csharp/interfaces' }],
+    tip: 'ValidateOnBuild and ValidateScopes are both enabled by default in ASP.NET Core Development environment — they catch missing registrations and captive dependencies at startup, but are disabled outside Development for performance, so the same bugs fail silently in production.',
+    docs: [{ label: 'Dependency Injection (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection' }],
+    resources: [{ label: 'DependencyInjection Source', url: 'https://github.com/dotnet/runtime/tree/main/src/libraries/Microsoft.Extensions.DependencyInjection', badge: 'code' }],
+    gotchas: ['A singleton depending on a scoped service captures it forever unless IServiceScopeFactory is used to create a proper child scope.', 'Injecting a single T when multiple implementations are registered silently resolves to only the last one registered.'],
+  },
+
+  'di-dotnet/testing-di-container-configuration-every-registration-resolves': {
+    apis: ['BuildServiceProvider', 'ServiceDescriptor', 'GetService'],
+    related: [
+      { label: 'How ValidateScopes Catches Captive Dependencies — next', route: '/csharp/di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope' },
+      { label: 'Dependency Injection in .NET (overview)', route: '/csharp/di-dotnet' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A unit test can build a real ServiceProvider from the SAME registration method Program.cs calls, then iterate every ServiceDescriptor and call GetService on each — proving every registration resolves, without starting the full host.',
+    docs: [
+      { label: 'Dependency Injection Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines' },
+    ],
+    resources: [
+      { label: 'ServiceProviderOptions Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovideroptions', badge: 'docs' },
+    ],
+    gotchas: [
+      'BuildServiceProvider succeeding only performs structural checks — it does not necessarily construct every registered type.',
+      'Validation at real startup only runs when the host actually starts — a fast unit test suite never exercises it unless it builds a real ServiceProvider itself.',
+    ],
+  },
+
+  'di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope': {
+    apis: ['ValidateScopes', 'IServiceScopeFactory', 'CreateScope'],
+    related: [
+      { label: 'Testing Your DI Container Configuration — previous', route: '/csharp/di-dotnet/testing-di-container-configuration-every-registration-resolves' },
+      { label: 'Multiple Implementations, Single T Injection — next', route: '/csharp/di-dotnet/multiple-implementations-single-t-injection-returns-last' },
+      { label: 'Dependency Injection in .NET (overview)', route: '/csharp/di-dotnet' },
+    ],
+    tip: 'A singleton is constructed once, resolved from the root scope — if its constructor requires a scoped service, that scoped instance is resolved directly in the root scope too, exactly the condition ValidateScopes throws on.',
+    docs: [
+      { label: 'Scoped Service Validation', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines#scope-validation' },
+    ],
+    resources: [
+      { label: 'IServiceScopeFactory Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory', badge: 'docs' },
+    ],
+    gotchas: [
+      'A scoped service depending on another scoped service never trips ValidateScopes — both resolve within the same proper child scope.',
+      'Disabling ValidateScopes outside Development does not fix the captive dependency bug — it only stops throwing on it.',
+    ],
+  },
+
+  'di-dotnet/multiple-implementations-single-t-injection-returns-last': {
+    apis: ['IEnumerable<T>', 'TryAddScoped', 'keyed services'],
+    related: [
+      { label: 'How ValidateScopes Catches Captive Dependencies — previous', route: '/csharp/di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope' },
+      { label: 'Dependency Injection in .NET (overview)', route: '/csharp/di-dotnet' },
+      { label: 'Interfaces', route: '/csharp/interfaces' },
+    ],
+    tip: 'Requesting a plain T when multiple implementations are registered silently resolves to the LAST one registered, with no error — request IEnumerable<T> to get every implementation, or use TryAddScoped/keyed services to make a single choice explicit.',
+    docs: [
+      { label: 'Multiple Implementations of an Interface', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines#registering-multiple-implementations' },
+    ],
+    resources: [
+      { label: 'Scrutor (Assembly Scanning)', url: 'https://github.com/khellang/Scrutor', badge: 'code' },
+    ],
+    gotchas: [
+      'Registration order from assembly scanning (Scrutor, plugin loaders) is not guaranteed to match source-code order, making "last wins" unpredictable across builds.',
+      'A single-T consumer and an IEnumerable<T> consumer see completely different results from the exact same registrations.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

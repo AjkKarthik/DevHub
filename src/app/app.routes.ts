@@ -640,7 +640,12 @@ export const routes: Routes = [
         { path: 'whats-actually-inside-span-ref-field-fast-restricted', loadComponent: () => import('./components/backend/csharp/span-memory/subtopics/whats-actually-inside-span-ref-field-fast-restricted/whats-actually-inside-span-ref-field-fast-restricted').then(m => m.WhatsActuallyInsideSpanRefFieldFastRestrictedSubtopic) },
         { path: 'arraypool-rent-returns-dirty-memory-stale-data-leak', loadComponent: () => import('./components/backend/csharp/span-memory/subtopics/arraypool-rent-returns-dirty-memory-stale-data-leak/arraypool-rent-returns-dirty-memory-stale-data-leak').then(m => m.ArraypoolRentReturnsDirtyMemoryStaleDataLeakSubtopic) },
       ] },
-      { path: 'di-dotnet',        loadComponent: () => import('./components/backend/csharp/di-dotnet/di-dotnet').then(m => m.CsharpDiDotnet) },
+      { path: 'di-dotnet', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/di-dotnet/di-dotnet').then(m => m.CsharpDiDotnet) },
+        { path: 'testing-di-container-configuration-every-registration-resolves', loadComponent: () => import('./components/backend/csharp/di-dotnet/subtopics/testing-di-container-configuration-every-registration-resolves/testing-di-container-configuration-every-registration-resolves').then(m => m.TestingDiContainerConfigurationEveryRegistrationResolvesSubtopic) },
+        { path: 'how-validatescopes-catches-captive-dependency-root-child-scope', loadComponent: () => import('./components/backend/csharp/di-dotnet/subtopics/how-validatescopes-catches-captive-dependency-root-child-scope/how-validatescopes-catches-captive-dependency-root-child-scope').then(m => m.HowValidatescopesCatchesCaptiveDependencyRootChildScopeSubtopic) },
+        { path: 'multiple-implementations-single-t-injection-returns-last', loadComponent: () => import('./components/backend/csharp/di-dotnet/subtopics/multiple-implementations-single-t-injection-returns-last/multiple-implementations-single-t-injection-returns-last').then(m => m.MultipleImplementationsSingleTInjectionReturnsLastSubtopic) },
+      ] },
       { path: 'json-advanced',    loadComponent: () => import('./components/backend/csharp/json-advanced/json-advanced').then(m => m.CsharpJsonAdvanced) },
       { path: 'unsafe-pointers',  loadComponent: () => import('./components/backend/csharp/unsafe-pointers/unsafe-pointers').then(m => m.CsharpUnsafePointers) },
       { path: 'native-aot',       loadComponent: () => import('./components/backend/csharp/native-aot/native-aot').then(m => m.CsharpNativeAot) },

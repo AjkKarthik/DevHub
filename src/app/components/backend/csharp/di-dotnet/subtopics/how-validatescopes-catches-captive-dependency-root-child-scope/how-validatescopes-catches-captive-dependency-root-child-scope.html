@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dependency Injection in .NET" topicRoute="/csharp/di-dotnet" subtopicLabel="ValidateScopes: Root vs Child Scope" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">How ValidateScopes Actually Catches a Captive Dependency: Root Scope vs Child Scope Resolution</h1>
+  <p class="page-subtitle">The main topic page says the runtime "catches this in development mode." Here's exactly what that means: every container has one root scope and per-request child scopes, and ValidateScopes throws the moment a scoped service resolves directly in the root scope.</p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET Core 2.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Now that the ROOT-versus-CHILD scope mechanism is clear, the next subtopic covers a completely different, silent failure mode back in the main <a routerLink="/csharp/di-dotnet">Dependency Injection in .NET</a> page: what actually happens when multiple implementations are registered but only a single instance is injected.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dependency Injection in .NET"
+    topicRoute="/csharp/di-dotnet"
+    [prev]="{ label: 'Testing Your DI Container Configuration', route: '/csharp/di-dotnet/testing-di-container-configuration-every-registration-resolves' }"
+    [next]="{ label: 'Multiple Implementations, Single T Injection', route: '/csharp/di-dotnet/multiple-implementations-single-t-injection-returns-last' }"
+  />
+</div>
