@@ -497,6 +497,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Old lock Codegen Bug', route: '/csharp/threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken' },
     { label: 'Lazy Thread-Safety Modes', route: '/csharp/threading/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free' },
   ],
+  'tasks': [
+    { label: 'Testing Async Timing Deterministically', route: '/csharp/tasks/testing-async-timing-deterministic-controllable-taskcompletionsource' },
+    { label: 'ValueTask: The One-Await Rule', route: '/csharp/tasks/valuetask-await-once-rule-when-worth-complexity' },
+    { label: 'WhenAll Does Not Start Tasks in Parallel', route: '/csharp/tasks/whenall-doesnt-start-tasks-parallel-just-awaits-running' },
+  ],
 };
 
 @Component({

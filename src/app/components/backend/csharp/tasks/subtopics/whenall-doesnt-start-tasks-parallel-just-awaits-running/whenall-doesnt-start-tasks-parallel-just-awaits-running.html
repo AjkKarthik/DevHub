@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tasks" topicRoute="/csharp/tasks" subtopicLabel="WhenAll Does Not Start Tasks in Parallel" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Task.WhenAll Doesn't Start Tasks in Parallel — It Just Awaits Ones Already Running</h1>
+  <p class="page-subtitle">The main topic page notes tasks are "already running when passed in" to WhenAll. See exactly why — an async method runs synchronously up to its first genuine await — and the real consequence for where CPU-bound work belongs in an async method.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 4+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Tasks deep dives — from deterministically testing race and timeout logic, to ValueTask's allocation trade-off and one-await rule, to the exact mechanism that makes Task.WhenAll's concurrency actually work.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tasks"
+    topicRoute="/csharp/tasks"
+    [prev]="{ label: 'ValueTask: The One-Await Rule', route: '/csharp/tasks/valuetask-await-once-rule-when-worth-complexity' }"
+  />
+</div>

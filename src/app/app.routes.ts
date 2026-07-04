@@ -573,7 +573,12 @@ export const routes: Routes = [
         { path: 'old-lock-codegen-bug-monitor-enter-ref-bool-taken', loadComponent: () => import('./components/backend/csharp/threading/subtopics/old-lock-codegen-bug-monitor-enter-ref-bool-taken/old-lock-codegen-bug-monitor-enter-ref-bool-taken').then(m => m.OldLockCodegenBugMonitorEnterRefBoolTakenSubtopic) },
         { path: 'lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free', loadComponent: () => import('./components/backend/csharp/threading/subtopics/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free').then(m => m.LazyHiddenThreadSafetyModesConcurrentdictionaryFixNotFreeSubtopic) },
       ] },
-      { path: 'tasks',             loadComponent: () => import('./components/backend/csharp/tasks/tasks').then(m => m.CsharpTasks) },
+      { path: 'tasks', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/tasks/tasks').then(m => m.CsharpTasks) },
+        { path: 'testing-async-timing-deterministic-controllable-taskcompletionsource', loadComponent: () => import('./components/backend/csharp/tasks/subtopics/testing-async-timing-deterministic-controllable-taskcompletionsource/testing-async-timing-deterministic-controllable-taskcompletionsource').then(m => m.TestingAsyncTimingDeterministicControllableTaskcompletionsourceSubtopic) },
+        { path: 'valuetask-await-once-rule-when-worth-complexity', loadComponent: () => import('./components/backend/csharp/tasks/subtopics/valuetask-await-once-rule-when-worth-complexity/valuetask-await-once-rule-when-worth-complexity').then(m => m.ValuetaskAwaitOnceRuleWhenWorthComplexitySubtopic) },
+        { path: 'whenall-doesnt-start-tasks-parallel-just-awaits-running', loadComponent: () => import('./components/backend/csharp/tasks/subtopics/whenall-doesnt-start-tasks-parallel-just-awaits-running/whenall-doesnt-start-tasks-parallel-just-awaits-running').then(m => m.WhenallDoesntStartTasksParallelJustAwaitsRunningSubtopic) },
+      ] },
       // ── Advanced & Quality ──
       { path: 'reflection',        loadComponent: () => import('./components/backend/csharp/reflection/reflection').then(m => m.CsharpReflection) },
       { path: 'iterators',         loadComponent: () => import('./components/backend/csharp/iterators/iterators').then(m => m.CsharpIterators) },

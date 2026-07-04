@@ -8040,6 +8040,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['ContinueWith captures the current synchronization context by default — use TaskScheduler.Default to avoid UI thread marshaling.', 'Parallel.ForEach uses thread-pool threads — don\'t use it for I/O-bound work; use async LINQ or PLINQ instead.'],
   },
 
+  'tasks/testing-async-timing-deterministic-controllable-taskcompletionsource': {
+    apis: ['TaskCompletionSource', 'Task.WhenAny', 'SetResult'],
+    related: [
+      { label: 'ValueTask: The One-Await Rule — next', route: '/csharp/tasks/valuetask-await-once-rule-when-worth-complexity' },
+      { label: 'Tasks (overview)', route: '/csharp/tasks' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Substitute a TaskCompletionSource for real async work in a test, then call SetResult() at exactly the moment you want — this makes timeout/race logic testable instantly and deterministically, with zero real wall-clock waiting.',
+    docs: [
+      { label: 'TaskCompletionSource<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1' },
+    ],
+    resources: [
+      { label: 'Task.WhenAny', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenany', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test whose pass/fail outcome depends on real wall-clock race timing (e.g. Task.Delay-based timeouts) is fundamentally non-deterministic — replacing the delay with a controlled TaskCompletionSource removes the flakiness at its root.',
+      'The test can construct EVERY possible race outcome deliberately by choosing which source to complete and when, rather than hoping real timing produces the case being tested.',
+    ],
+  },
+
+  'tasks/valuetask-await-once-rule-when-worth-complexity': {
+    apis: ['ValueTask<T>', 'AsTask()', 'IsCompletedSuccessfully'],
+    related: [
+      { label: 'Testing Async Timing Deterministically — previous', route: '/csharp/tasks/testing-async-timing-deterministic-controllable-taskcompletionsource' },
+      { label: 'WhenAll Does Not Start Tasks in Parallel — next', route: '/csharp/tasks/whenall-doesnt-start-tasks-parallel-just-awaits-running' },
+      { label: 'Tasks (overview)', route: '/csharp/tasks' },
+    ],
+    tip: 'ValueTask<T> avoids a heap allocation only on the synchronous-completion fast path — but it may only be consumed (awaited, .Result read, or .AsTask()) exactly once; awaiting the same instance twice is undefined behavior.',
+    docs: [
+      { label: 'ValueTask<T> Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.valuetask-1' },
+    ],
+    resources: [
+      { label: 'Understanding ValueTask', url: 'https://devblogs.microsoft.com/dotnet/understanding-the-whys-whats-and-whens-of-valuetask/', badge: 'blog' },
+    ],
+    gotchas: [
+      'A pattern that re-awaits the same task after checking it against WhenAny (safe with Task<T>) is a genuine bug if the underlying type is ValueTask<T> instead.',
+      'Convert to Task<T> via .AsTask() exactly once if you need multi-await or WhenAll/WhenAny semantics on a ValueTask-returning method.',
+    ],
+  },
+
+  'tasks/whenall-doesnt-start-tasks-parallel-just-awaits-running': {
+    apis: ['Task.WhenAll', 'async state machine', 'Task.Run'],
+    related: [
+      { label: 'ValueTask: The One-Await Rule — previous', route: '/csharp/tasks/valuetask-await-once-rule-when-worth-complexity' },
+      { label: 'Tasks (overview)', route: '/csharp/tasks' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'An async method runs synchronously on the calling thread up to its first genuine await — Task.WhenAll doesn\'t start anything, it just awaits work that\'s usually already in flight by the time it\'s called.',
+    docs: [
+      { label: 'Task.WhenAll', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenall' },
+    ],
+    resources: [
+      { label: 'Async/Await Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'Awaiting a task individually before constructing the array passed to WhenAll defeats concurrency entirely — it forces sequential execution despite looking like async code.',
+      'CPU-bound work placed before an async method\'s first await still blocks the calling thread synchronously — declaring a method async does not retroactively make that portion non-blocking.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],
