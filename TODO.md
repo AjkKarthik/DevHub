@@ -1461,7 +1461,7 @@ off here with a date.
 - [x] `/csharp/constructors` — Constructors (2026-07-04 — 3 subtopics: testing-constructor-validation-and-chaining, primary-constructor-parameter-capture-field-vs-fixed, diagnosing-typeinitializationexception-inner-exception)
 - [x] `/csharp/properties-indexers` — Properties & Indexers (2026-07-04 — 3 subtopics: testing-computed-properties-and-indexers, init-accessors-and-readonly-fields-assignment-window, indexer-initializer-syntax-without-add)
 - [x] `/csharp/namespaces` — Namespaces & Usings (2026-07-04 — 3 subtopics: detecting-unused-using-directives-ide0005, extern-alias-resolving-assembly-type-name-collisions, resolving-cs0104-ambiguous-using-directives)
-- [ ] `/csharp/inheritance` — Inheritance & Overriding
+- [x] `/csharp/inheritance` — Inheritance & Overriding (2026-07-04 — 3 subtopics: testing-the-hiding-trap-new-vs-override, how-sealed-enables-devirtualization, covariant-return-types-hidden-bridge-method)
 - [ ] `/csharp/abstract-interfaces` — Abstract Classes & Interfaces
 - [ ] `/csharp/static-enums` — Static Classes, Partial Classes & Enums
 - [ ] `/csharp/structures` — Structures (struct)
