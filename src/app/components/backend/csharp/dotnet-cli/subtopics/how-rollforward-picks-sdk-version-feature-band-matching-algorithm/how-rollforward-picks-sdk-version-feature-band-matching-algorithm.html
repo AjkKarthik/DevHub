@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel=".NET CLI & Tooling" topicRoute="/csharp/dotnet-cli" subtopicLabel="How rollForward Picks an SDK" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">How rollForward Actually Picks an SDK Version: The Feature-Band Matching Algorithm Behind latestMinor</h1>
+  <p class="page-subtitle">The main topic page's global.json table lists rollForward values as outcomes. Here's the actual algorithm: SDK versions encode a feature band digit, and latestMinor specifically means finding the highest installed feature band, then the highest patch within it.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Core 3.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/csharp/dotnet-cli">.NET CLI &amp; Tooling</a>: a real gotcha connecting back to the main page's own packages.lock.json advice — why a plain <code>dotnet build</code> locally can silently drift from what CI's <code>--locked-mode</code> enforces.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel=".NET CLI & Tooling"
+    topicRoute="/csharp/dotnet-cli"
+    [prev]="{ label: 'Verifying True Reproducibility', route: '/csharp/dotnet-cli/verifying-build-reproducible-simulating-clean-machine-restore-lock-file' }"
+    [next]="{ label: 'Local Builds Can Silently Drift From the Lock File', route: '/csharp/dotnet-cli/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file' }"
+  />
+</div>

@@ -676,7 +676,12 @@ export const routes: Routes = [
         { path: 'why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle', loadComponent: () => import('./components/backend/csharp/pinvoke/subtopics/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle').then(m => m.WhyBlittableTypesSkipMarshallingPinningVsFullMarshalCycleSubtopic) },
         { path: 'setlasterror-silently-clobbered-by-pinvoke-call-in-between', loadComponent: () => import('./components/backend/csharp/pinvoke/subtopics/setlasterror-silently-clobbered-by-pinvoke-call-in-between/setlasterror-silently-clobbered-by-pinvoke-call-in-between').then(m => m.SetlasterrorSilentlyClobberedByPinvokeCallInBetweenSubtopic) },
       ] },
-      { path: 'dotnet-cli',       loadComponent: () => import('./components/backend/csharp/dotnet-cli/dotnet-cli').then(m => m.CsharpDotnetCli) },
+      { path: 'dotnet-cli', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/dotnet-cli/dotnet-cli').then(m => m.CsharpDotnetCli) },
+        { path: 'verifying-build-reproducible-simulating-clean-machine-restore-lock-file', loadComponent: () => import('./components/backend/csharp/dotnet-cli/subtopics/verifying-build-reproducible-simulating-clean-machine-restore-lock-file/verifying-build-reproducible-simulating-clean-machine-restore-lock-file').then(m => m.VerifyingBuildReproducibleSimulatingCleanMachineRestoreLockFileSubtopic) },
+        { path: 'how-rollforward-picks-sdk-version-feature-band-matching-algorithm', loadComponent: () => import('./components/backend/csharp/dotnet-cli/subtopics/how-rollforward-picks-sdk-version-feature-band-matching-algorithm/how-rollforward-picks-sdk-version-feature-band-matching-algorithm').then(m => m.HowRollforwardPicksSdkVersionFeatureBandMatchingAlgorithmSubtopic) },
+        { path: 'automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file', loadComponent: () => import('./components/backend/csharp/dotnet-cli/subtopics/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file').then(m => m.AutomaticRestoreDoesntUseLockedModeLocalBuildsDriftFromLockFileSubtopic) },
+      ] },
       // ── What's New ──
       { path: 'whats-new-9-10',    loadComponent: () => import('./components/backend/csharp/whats-new-9-10/whats-new-9-10').then(m => m.CsharpWhatsNew910) },
       { path: 'whats-new-11-12',   loadComponent: () => import('./components/backend/csharp/whats-new-11-12/whats-new-11-12').then(m => m.CsharpWhatsNew1112) },

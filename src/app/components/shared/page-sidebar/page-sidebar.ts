@@ -9204,6 +9204,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'dotnet-cli': {
+    apis: ['global.json', 'packages.lock.json', 'dotnet tool restore'],
+    related: [{ label: 'Native AOT', route: '/csharp/native-aot' }, { label: 'BenchmarkDotNet', route: '/csharp/benchmarkdotnet' }, { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' }],
+    tip: 'Commit global.json to pin the SDK version and packages.lock.json for reproducible restores — but verify reproducibility against a genuinely clean NuGet cache, not just a warm one.',
+    docs: [{ label: '.NET CLI Overview (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/' }],
+    resources: [{ label: 'dotnet/sdk Source', url: 'https://github.com/dotnet/sdk', badge: 'code' }],
+    gotchas: ['A restore that "passes" on a warm NuGet cache proves little — clear the cache first to genuinely test reproducibility.', 'An ordinary local dotnet build does not use --locked-mode and can silently rewrite the committed lock file.'],
+  },
+
+  'dotnet-cli/verifying-build-reproducible-simulating-clean-machine-restore-lock-file': {
+    apis: ['dotnet nuget locals', 'packages.lock.json', '--locked-mode'],
+    related: [
+      { label: 'How rollForward Picks an SDK Version — next', route: '/csharp/dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm' },
+      { label: '.NET CLI & Tooling (overview)', route: '/csharp/dotnet-cli' },
+      { label: 'Native AOT', route: '/csharp/native-aot' },
+    ],
+    tip: 'Run "dotnet nuget locals all --clear" before "dotnet restore --locked-mode" to genuinely simulate a fresh machine — a restore that only ever ran against a warm cache proves little about real reproducibility.',
+    docs: [
+      { label: 'dotnet nuget locals Command', url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-nuget-locals' },
+    ],
+    resources: [
+      { label: 'NuGet Lock Files', url: 'https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#locking-dependencies', badge: 'docs' },
+    ],
+    gotchas: [
+      'A clean-cache restore check is genuinely slow — run it periodically (weekly, pre-release), not on every commit.',
+      'CI reusing a persistent NuGet cache between runs can mask a lock file that would fail on a truly fresh machine.',
+    ],
+  },
+
+  'dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm': {
+    apis: ['global.json', 'rollForward', 'dotnet --list-sdks'],
+    related: [
+      { label: 'Verifying True Reproducibility — previous', route: '/csharp/dotnet-cli/verifying-build-reproducible-simulating-clean-machine-restore-lock-file' },
+      { label: 'Local Builds Can Silently Drift From the Lock File — next', route: '/csharp/dotnet-cli/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file' },
+      { label: '.NET CLI & Tooling (overview)', route: '/csharp/dotnet-cli' },
+    ],
+    tip: 'SDK versions encode a feature band digit (major.minor.SBBpp) — rollForward: "latestMinor" finds the highest feature band actually installed on the current machine, then the highest patch within it.',
+    docs: [
+      { label: 'global.json SDK Resolution', url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/global-json' },
+    ],
+    resources: [
+      { label: '.NET SDK Versioning', url: 'https://learn.microsoft.com/en-us/dotnet/core/versions/', badge: 'docs' },
+    ],
+    gotchas: [
+      'rollForward cannot select a feature band that is not installed on the current machine — it is constrained to what actually exists there.',
+      '"feature" and "latestMinor" encode genuinely different resolution policies, not interchangeable names for the same behavior.',
+    ],
+  },
+
+  'dotnet-cli/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file': {
+    apis: ['RestoreLockedMode', 'NU1004', '--force-evaluate'],
+    related: [
+      { label: 'How rollForward Picks an SDK Version — previous', route: '/csharp/dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm' },
+      { label: '.NET CLI & Tooling (overview)', route: '/csharp/dotnet-cli' },
+      { label: 'Native AOT', route: '/csharp/native-aot' },
+    ],
+    tip: 'An ordinary local "dotnet build" triggers an implicit restore that does NOT use --locked-mode — it can silently rewrite packages.lock.json. Set RestoreLockedMode=true in Directory.Build.props to close this gap.',
+    docs: [
+      { label: 'Package Reference Locking', url: 'https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#locking-dependencies' },
+    ],
+    resources: [
+      { label: 'NU1004 Error Reference', url: 'https://learn.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu1004', badge: 'docs' },
+    ],
+    gotchas: [
+      'An NU1004 failure can be triggered by an external feed change (a new compatible package version becoming available), not just the developer\'s own commits.',
+      '"dotnet restore --force-evaluate" is the deliberate escape hatch for intentionally updating a locked dependency.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

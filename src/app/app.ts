@@ -582,6 +582,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why Blittable Types Skip Marshalling Entirely', route: '/csharp/pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle' },
     { label: 'SetLastError Can Be Silently Clobbered', route: '/csharp/pinvoke/setlasterror-silently-clobbered-by-pinvoke-call-in-between' },
   ],
+  'dotnet-cli': [
+    { label: 'Verifying True Reproducibility', route: '/csharp/dotnet-cli/verifying-build-reproducible-simulating-clean-machine-restore-lock-file' },
+    { label: 'How rollForward Picks an SDK Version', route: '/csharp/dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm' },
+    { label: 'Local Builds Can Silently Drift From the Lock File', route: '/csharp/dotnet-cli/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file' },
+  ],
 };
 
 @Component({
