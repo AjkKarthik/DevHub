@@ -711,6 +711,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How proto3 optional Tracks Field Presence', route: '/aspnet/grpc/how-proto3-optional-actually-tracks-field-presence' },
     { label: 'gRPC-Web CORS Needs Allowed Request Headers', route: '/aspnet/grpc/grpc-web-cors-needs-allowed-request-headers-not-exposed' },
   ],
+  'ef-core-basics': [
+    { label: 'Testing That AsNoTracking Queries Are Genuinely Untracked', route: '/aspnet/ef-core-basics/testing-asnotracking-queries-genuinely-arent-tracked-sqlite' },
+    { label: 'How the Change Tracker Snapshot Produces a Minimal UPDATE', route: '/aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update' },
+    { label: 'Reload vs GetDatabaseValuesAsync for Concurrency Recovery', route: '/aspnet/ef-core-basics/reload-discards-edit-getdatabasevaluesasync-preserves-it' },
+  ],
 };
 
 @Component({

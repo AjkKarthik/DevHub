@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="EF Core Basics"
+    topicRoute="/aspnet/ef-core-basics"
+    subtopicLabel="Testing AsNoTracking Genuinely Works"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That AsNoTracking() Queries Genuinely Aren't Tracked</h1>
+  <p class="page-subtitle">
+    A refactor can silently drop AsNoTracking() from a fluent LINQ chain while the query still returns
+    correct data. Here's how to prove a query attaches zero entities to the tracker — not just that it
+    returns the right rows.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own AsNoTracking guidance. The next subtopic goes underneath
+      the load-then-modify pattern — explaining exactly how the change tracker's snapshot comparison
+      produces a minimal UPDATE, and why context.Update() has no such snapshot to compare against.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="EF Core Basics"
+    topicRoute="/aspnet/ef-core-basics"
+    [next]="{ label: 'How the Change Tracker Snapshot Produces a Minimal UPDATE', route: '/aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update' }"
+  />
+</div>

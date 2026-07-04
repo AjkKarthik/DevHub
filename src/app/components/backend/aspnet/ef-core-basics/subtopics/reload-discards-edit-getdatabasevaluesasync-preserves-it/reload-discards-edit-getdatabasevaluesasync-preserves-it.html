@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="EF Core Basics"
+    topicRoute="/aspnet/ef-core-basics"
+    subtopicLabel="Reload vs GetDatabaseValuesAsync"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Reload() Discards the Edit, GetDatabaseValuesAsync Preserves It</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A treats "reload + retry" as one simple recovery step. It hides two
+    opposite strategies — one throws away the user's in-progress edit, the other preserves it through a
+    genuine retry against the new row version.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the EF Core Basics deep-dive set: testing that AsNoTracking works genuinely,
+      understanding the change tracker's snapshot mechanism, and now the real choice hiding behind
+      concurrency-conflict recovery. This wraps this batch's ASP.NET Core topics — head back to the topic
+      overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="EF Core Basics"
+    topicRoute="/aspnet/ef-core-basics"
+    [prev]="{ label: 'How the Change Tracker Snapshot Produces a Minimal UPDATE', route: '/aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update' }"
+  />
+</div>

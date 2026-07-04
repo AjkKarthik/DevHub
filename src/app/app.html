@@ -484,7 +484,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Data</p>
-      <a routerLink="/aspnet/ef-core-basics" routerLinkActive="active"><span class="nl-text">EF Core Basics</span>@if(progress.isDone('aspnet-ef-core-basics')){<span class="nl-done">✓</span>}@if(diff('aspnet-ef-core-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/ef-core-basics" routerLinkActive="active">
+        <span class="nl-text">EF Core Basics</span>
+        @if (progress.isDone('aspnet-ef-core-basics')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-ef-core-basics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ef-core-basics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ef-core-basics')"
+                  (click)="toggleSubtopics('ef-core-basics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ef-core-basics'); as subs) {
+        @if (isSubtopicsExpanded('ef-core-basics')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/ef-relationships" routerLinkActive="active"><span class="nl-text">EF Relationships</span>@if(progress.isDone('aspnet-ef-relationships')){<span class="nl-done">✓</span>}@if(diff('aspnet-ef-relationships');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/ef-performance" routerLinkActive="active"><span class="nl-text">EF Performance</span>@if(progress.isDone('aspnet-ef-performance')){<span class="nl-done">✓</span>}@if(diff('aspnet-ef-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/caching" routerLinkActive="active"><span class="nl-text">Caching</span>@if(progress.isDone('aspnet-caching')){<span class="nl-done">✓</span>}@if(diff('aspnet-caching');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

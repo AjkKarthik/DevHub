@@ -12108,6 +12108,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/ef-core-basics/testing-asnotracking-queries-genuinely-arent-tracked-sqlite': {
+    apis: ['ChangeTracker.Entries()', 'AsNoTracking()', 'UseSqlite()'],
+    related: [
+      { label: 'How the Change Tracker Snapshot Produces a Minimal UPDATE — next', route: '/aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update' },
+      { label: 'EF Core Basics (overview)', route: '/aspnet/ef-core-basics' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A refactor can silently drop AsNoTracking() from a fluent LINQ chain while the query still returns correct data — assert on context.ChangeTracker.Entries().Count() directly, since the returned VALUES look identical either way.',
+    docs: [
+      { label: 'EF Core overview', url: 'https://learn.microsoft.com/en-us/ef/core/' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Change tracking is a core, provider-agnostic EF Core feature — UseSqlite versus UseInMemoryDatabase makes no difference to whether this specific assertion is correct, though SQLite is still the better default for a whole test suite.',
+      'A test checking returned data alone provides zero coverage for a missing AsNoTracking() call — the values are identical either way.',
+    ],
+  },
+
+  'aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update': {
+    apis: ['OriginalValues', 'CurrentValues', 'Entry().Property().IsModified'],
+    related: [
+      { label: 'Testing That AsNoTracking Queries Are Genuinely Untracked — previous', route: '/aspnet/ef-core-basics/testing-asnotracking-queries-genuinely-arent-tracked-sqlite' },
+      { label: 'Reload vs GetDatabaseValuesAsync for Concurrency Recovery — next', route: '/aspnet/ef-core-basics/reload-discards-edit-getdatabasevaluesasync-preserves-it' },
+      { label: 'EF Core Basics (overview)', route: '/aspnet/ef-core-basics' },
+    ],
+    tip: 'SaveChangesAsync compares CurrentValues against a stored OriginalValues snapshot property-by-property — a never-loaded (detached) entity has no such snapshot, which is exactly why context.Update() must conservatively mark every property Modified.',
+    docs: [
+      { label: 'Change Tracking in EF Core', url: 'https://learn.microsoft.com/en-us/ef/core/change-tracking/' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The Attach + explicit IsModified pattern sidesteps the snapshot problem entirely by having the developer directly declare which property changed, rather than asking EF Core to infer it via comparison.',
+      'AsNoTracking() saves memory specifically by skipping the OriginalValues snapshot maintenance this mechanism depends on.',
+    ],
+  },
+
+  'aspnet/ef-core-basics/reload-discards-edit-getdatabasevaluesasync-preserves-it': {
+    apis: ['DbUpdateConcurrencyException', 'Reload()', 'GetDatabaseValuesAsync()'],
+    related: [
+      { label: 'How the Change Tracker Snapshot Produces a Minimal UPDATE — previous', route: '/aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update' },
+      { label: 'EF Core Basics (overview)', route: '/aspnet/ef-core-basics' },
+      { label: 'EF Relationships', route: '/aspnet/ef-relationships' },
+    ],
+    tip: 'Reload() overwrites CurrentValues with the database\'s latest state, discarding the user\'s in-progress edit entirely — OriginalValues.SetValues(await GetDatabaseValuesAsync()) updates only the concurrency baseline, preserving the edit for a genuine retry.',
+    docs: [
+      { label: 'Handling Concurrency Conflicts', url: 'https://learn.microsoft.com/en-us/ef/core/saving/concurrency' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Blindly auto-retrying with SetValues can silently overwrite another user\'s legitimate change if both edits touched the SAME field — compare which properties each edit changed before deciding whether an automatic retry is safe.',
+      'Reload() is the right choice specifically when the UI\'s intent is to show the user the latest state and let them decide, not for an invisible automatic retry.',
+    ],
+  },
+
   'aspnet/ef-relationships': {
     apis: ['HasMany()', 'HasOne()', 'WithMany()', 'WithOne()', 'Include()', 'ThenInclude()', 'OwnsOne()', 'OnDelete()'],
     related: [

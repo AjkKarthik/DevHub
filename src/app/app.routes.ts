@@ -816,7 +816,12 @@ export const routes: Routes = [
         { path: 'how-proto3-optional-actually-tracks-field-presence', loadComponent: () => import('./components/backend/aspnet/grpc/subtopics/how-proto3-optional-actually-tracks-field-presence/how-proto3-optional-actually-tracks-field-presence').then(m => m.HowProto3OptionalActuallyTracksFieldPresenceSubtopic) },
         { path: 'grpc-web-cors-needs-allowed-request-headers-not-exposed', loadComponent: () => import('./components/backend/aspnet/grpc/subtopics/grpc-web-cors-needs-allowed-request-headers-not-exposed/grpc-web-cors-needs-allowed-request-headers-not-exposed').then(m => m.GrpcWebCorsNeedsAllowedRequestHeadersNotExposedSubtopic) },
       ] },
-      { path: 'ef-core-basics',       loadComponent: () => import('./components/backend/aspnet/ef-core-basics/ef-core-basics').then(m => m.AspnetEfCoreBasics) },
+      { path: 'ef-core-basics', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/ef-core-basics/ef-core-basics').then(m => m.AspnetEfCoreBasics) },
+        { path: 'testing-asnotracking-queries-genuinely-arent-tracked-sqlite', loadComponent: () => import('./components/backend/aspnet/ef-core-basics/subtopics/testing-asnotracking-queries-genuinely-arent-tracked-sqlite/testing-asnotracking-queries-genuinely-arent-tracked-sqlite').then(m => m.TestingAsnotrackingQueriesGenuinelyArentTrackedSqliteSubtopic) },
+        { path: 'how-change-tracker-snapshot-produces-minimal-update', loadComponent: () => import('./components/backend/aspnet/ef-core-basics/subtopics/how-change-tracker-snapshot-produces-minimal-update/how-change-tracker-snapshot-produces-minimal-update').then(m => m.HowChangeTrackerSnapshotProducesMinimalUpdateSubtopic) },
+        { path: 'reload-discards-edit-getdatabasevaluesasync-preserves-it', loadComponent: () => import('./components/backend/aspnet/ef-core-basics/subtopics/reload-discards-edit-getdatabasevaluesasync-preserves-it/reload-discards-edit-getdatabasevaluesasync-preserves-it').then(m => m.ReloadDiscardsEditGetdatabasevaluesasyncPreservesItSubtopic) },
+      ] },
       { path: 'ef-relationships',     loadComponent: () => import('./components/backend/aspnet/ef-relationships/ef-relationships').then(m => m.AspnetEfRelationships) },
       { path: 'ef-performance',       loadComponent: () => import('./components/backend/aspnet/ef-performance/ef-performance').then(m => m.AspnetEfPerformance) },
       { path: 'caching',              loadComponent: () => import('./components/backend/aspnet/caching/caching').then(m => m.AspnetCaching) },
