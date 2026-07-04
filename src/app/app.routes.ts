@@ -622,7 +622,12 @@ export const routes: Routes = [
         { path: 'parameterexpression-identity-problem-andalso-unusable-lambda', loadComponent: () => import('./components/backend/csharp/expression-trees/subtopics/parameterexpression-identity-problem-andalso-unusable-lambda/parameterexpression-identity-problem-andalso-unusable-lambda').then(m => m.ParameterexpressionIdentityProblemAndalsoUnusableLambdaSubtopic) },
         { path: 'captured-variables-not-constantexpression-hidden-closure-class', loadComponent: () => import('./components/backend/csharp/expression-trees/subtopics/captured-variables-not-constantexpression-hidden-closure-class/captured-variables-not-constantexpression-hidden-closure-class').then(m => m.CapturedVariablesNotConstantexpressionHiddenClosureClassSubtopic) },
       ] },
-      { path: 'dynamic',           loadComponent: () => import('./components/backend/csharp/dynamic/dynamic').then(m => m.CsharpDynamic) },
+      { path: 'dynamic', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/dynamic/dynamic').then(m => m.CsharpDynamic) },
+        { path: 'testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths', loadComponent: () => import('./components/backend/csharp/dynamic/subtopics/testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths/testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths').then(m => m.TestingDynamicobjectWrappersTrygetmemberFallbackFailPathsSubtopic) },
+        { path: 'inside-dlr-call-site-rule-cache-slow-path-fallback', loadComponent: () => import('./components/backend/csharp/dynamic/subtopics/inside-dlr-call-site-rule-cache-slow-path-fallback/inside-dlr-call-site-rule-cache-slow-path-fallback').then(m => m.InsideDlrCallSiteRuleCacheSlowPathFallbackSubtopic) },
+        { path: 'anonymous-types-as-dynamic-assembly-boundary-hidden-cost', loadComponent: () => import('./components/backend/csharp/dynamic/subtopics/anonymous-types-as-dynamic-assembly-boundary-hidden-cost/anonymous-types-as-dynamic-assembly-boundary-hidden-cost').then(m => m.AnonymousTypesAsDynamicAssemblyBoundaryHiddenCostSubtopic) },
+      ] },
       { path: 'source-generators', loadComponent: () => import('./components/backend/csharp/source-generators/source-generators').then(m => m.CsharpSourceGenerators) },
       { path: 'span-memory',      loadComponent: () => import('./components/backend/csharp/span-memory/span-memory').then(m => m.CsharpSpanMemory) },
       { path: 'di-dotnet',        loadComponent: () => import('./components/backend/csharp/di-dotnet/di-dotnet').then(m => m.CsharpDiDotnet) },

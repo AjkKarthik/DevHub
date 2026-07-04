@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="dynamic & the DLR" topicRoute="/csharp/dynamic" subtopicLabel="Testing DynamicObject Wrappers" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing DynamicObject Wrappers: Verifying TryGetMember Fallback and Fail Paths Without Reflection</h1>
+  <p class="page-subtitle">The main topic page's own fluent config wrapper is never tested. See how to exercise it through the real dynamic keyword, and why asserting specifically on RuntimeBinderException catches bugs a generic exception check would miss.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 4+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we go inside the main <a routerLink="/csharp/dynamic">dynamic & the DLR</a> page's own call-site caching claim — exactly how CallSite&lt;T&gt; builds its rule cache, and what happens when it falls back to the slow path.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="dynamic & the DLR"
+    topicRoute="/csharp/dynamic"
+    [next]="{ label: 'Inside the DLR Call Site', route: '/csharp/dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback' }"
+  />
+</div>

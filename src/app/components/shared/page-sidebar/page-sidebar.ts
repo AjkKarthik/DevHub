@@ -8583,6 +8583,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  dynamic: {
+    apis: ['dynamic', 'ExpandoObject', 'DynamicObject'],
+    related: [{ label: 'Reflection & Attributes', route: '/csharp/reflection' }, { label: 'Tuples & Anonymous Types', route: '/csharp/tuples' }, { label: 'Expression Trees', route: '/csharp/expression-trees' }],
+    tip: 'dynamic is an interop tool, not a modelling tool — when you control the type, define the type. Reserve it for COM interop, DLR-hosted languages, and bridging third-party objects with no shared interface.',
+    docs: [{ label: 'Using Type dynamic (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic' }],
+    resources: [{ label: 'DynamicObject Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject', badge: 'docs' }],
+    gotchas: ['dynamic is not supported under NativeAOT — any dynamic operation throws PlatformNotSupportedException at runtime.', 'Extension methods cannot be resolved on a dynamic operand — dynamicList.Where(...) compiles but throws at runtime.'],
+  },
+
+  'dynamic/testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths': {
+    apis: ['TryGetMember', 'RuntimeBinderException', 'GetDynamicMemberNames'],
+    related: [
+      { label: 'Inside the DLR Call Site — next', route: '/csharp/dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback' },
+      { label: 'dynamic & the DLR (overview)', route: '/csharp/dynamic' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Test a DynamicObject subclass through the real dynamic keyword, not reflection — and assert specifically on RuntimeBinderException for the fail path, since a generic exception check would miss a bug where your override throws the wrong exception type.',
+    docs: [
+      { label: 'DynamicObject Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject' },
+    ],
+    resources: [
+      { label: 'RuntimeBinderException', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.csharp.runtimebinder.runtimebinderexception', badge: 'docs' },
+    ],
+    gotchas: [
+      'GetDynamicMemberNames() has no automatic connection to TryGetMember — a member TryGetMember resolves correctly can still be missing from the exposed name list.',
+      'Testing through dynamic exercises the whole binder pipeline; calling TryGetMember directly via reflection does not.',
+    ],
+  },
+
+  'dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback': {
+    apis: ['CallSite<T>', 'DLR binder', 'Rule cache'],
+    related: [
+      { label: 'Testing DynamicObject Wrappers — previous', route: '/csharp/dynamic/testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths' },
+      { label: 'Anonymous Types as dynamic — next', route: '/csharp/dynamic/anonymous-types-as-dynamic-assembly-boundary-hidden-cost' },
+      { label: 'dynamic & the DLR (overview)', route: '/csharp/dynamic' },
+    ],
+    tip: 'A call site\'s performance depends on how many DISTINCT runtime types it has ever seen, not their relative frequency — monomorphic (one type) is fastest, polymorphic (a small stable set) still benefits from caching, megamorphic (endless new types) gets no benefit at all.',
+    docs: [
+      { label: 'Dynamic Language Runtime Overview', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/dynamic-language-runtime-overview' },
+    ],
+    resources: [
+      { label: 'CallSiteBinder Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.callsitebinder', badge: 'docs' },
+    ],
+    gotchas: [
+      'A heavily skewed but only-two-type split (95%/5%) stays comfortably polymorphic — degradation depends on the count of distinct types, not their frequency.',
+      'For genuinely megamorphic workloads, explicit interfaces or expression trees compile down to something faster than dynamic dispatch.',
+    ],
+  },
+
+  'dynamic/anonymous-types-as-dynamic-assembly-boundary-hidden-cost': {
+    apis: ['anonymous type', 'RuntimeBinderException', 'ExpandoObject'],
+    related: [
+      { label: 'Inside the DLR Call Site — previous', route: '/csharp/dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback' },
+      { label: 'dynamic & the DLR (overview)', route: '/csharp/dynamic' },
+      { label: 'Tuples & Anonymous Types', route: '/csharp/tuples' },
+    ],
+    tip: 'Returning an anonymous type as dynamic works around the method-boundary restriction, but the DLR binder can fail to resolve a property specifically when the caller lives in a DIFFERENT assembly — the same source code works in one assembly layout and throws RuntimeBinderException in another.',
+    docs: [
+      { label: 'Anonymous Types (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/anonymous-types' },
+    ],
+    resources: [
+      { label: 'ExpandoObject Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.dynamic.expandoobject', badge: 'docs' },
+    ],
+    gotchas: [
+      'Unit tests living in the same assembly as the library under test never exercise this cross-assembly failure mode at all — it can stay dormant through a fully green test suite.',
+      'A named public record eliminates the risk entirely — its properties are accessible from any assembly with no dynamic binder involved.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],
