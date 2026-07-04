@@ -646,7 +646,12 @@ export const routes: Routes = [
         { path: 'how-validatescopes-catches-captive-dependency-root-child-scope', loadComponent: () => import('./components/backend/csharp/di-dotnet/subtopics/how-validatescopes-catches-captive-dependency-root-child-scope/how-validatescopes-catches-captive-dependency-root-child-scope').then(m => m.HowValidatescopesCatchesCaptiveDependencyRootChildScopeSubtopic) },
         { path: 'multiple-implementations-single-t-injection-returns-last', loadComponent: () => import('./components/backend/csharp/di-dotnet/subtopics/multiple-implementations-single-t-injection-returns-last/multiple-implementations-single-t-injection-returns-last').then(m => m.MultipleImplementationsSingleTInjectionReturnsLastSubtopic) },
       ] },
-      { path: 'json-advanced',    loadComponent: () => import('./components/backend/csharp/json-advanced/json-advanced').then(m => m.CsharpJsonAdvanced) },
+      { path: 'json-advanced', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/json-advanced/json-advanced').then(m => m.CsharpJsonAdvanced) },
+        { path: 'testing-custom-jsonconverter-round-trips-exact-json-shape', loadComponent: () => import('./components/backend/csharp/json-advanced/subtopics/testing-custom-jsonconverter-round-trips-exact-json-shape/testing-custom-jsonconverter-round-trips-exact-json-shape').then(m => m.TestingCustomJsonconverterRoundTripsExactJsonShapeSubtopic) },
+        { path: 'generic-instantiation-needs-own-jsonserializable-source-gen', loadComponent: () => import('./components/backend/csharp/json-advanced/subtopics/generic-instantiation-needs-own-jsonserializable-source-gen/generic-instantiation-needs-own-jsonserializable-source-gen').then(m => m.GenericInstantiationNeedsOwnJsonserializableSourceGenSubtopic) },
+        { path: 'unknown-type-discriminator-throws-jsonexception-not-forward-compatible', loadComponent: () => import('./components/backend/csharp/json-advanced/subtopics/unknown-type-discriminator-throws-jsonexception-not-forward-compatible/unknown-type-discriminator-throws-jsonexception-not-forward-compatible').then(m => m.UnknownTypeDiscriminatorThrowsJsonexceptionNotForwardCompatibleSubtopic) },
+      ] },
       { path: 'unsafe-pointers',  loadComponent: () => import('./components/backend/csharp/unsafe-pointers/unsafe-pointers').then(m => m.CsharpUnsafePointers) },
       { path: 'native-aot',       loadComponent: () => import('./components/backend/csharp/native-aot/native-aot').then(m => m.CsharpNativeAot) },
       { path: 'benchmarkdotnet',  loadComponent: () => import('./components/backend/csharp/benchmarkdotnet/benchmarkdotnet').then(m => m.CsharpBenchmarkdotnet) },

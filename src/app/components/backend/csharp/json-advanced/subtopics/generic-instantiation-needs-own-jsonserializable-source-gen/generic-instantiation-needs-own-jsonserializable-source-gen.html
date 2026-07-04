@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="System.Text.Json Advanced" topicRoute="/csharp/json-advanced" subtopicLabel="Generic Types Need Their Own JsonSerializable" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why Every Generic Instantiation Needs Its Own [JsonSerializable]: PagedResult&lt;Product&gt; Is a Distinct Type to the Source Generator</h1>
+  <p class="page-subtitle">Reflection-based serialization handles any generic instantiation automatically at runtime. Source generation does not — PagedResult&lt;Product&gt; and PagedResult&lt;Order&gt; are unrelated types to the generator, and a missing registration only fails at runtime, often only in a Native AOT build.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/csharp/json-advanced">System.Text.Json Advanced</a>: what actually happens when a polymorphic API's $type discriminator doesn't match any known JsonDerivedType — a forward-compatibility gotcha the main page's own polymorphism example doesn't cover.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="System.Text.Json Advanced"
+    topicRoute="/csharp/json-advanced"
+    [prev]="{ label: 'Testing Custom JsonConverter Round-Trips', route: '/csharp/json-advanced/testing-custom-jsonconverter-round-trips-exact-json-shape' }"
+    [next]="{ label: 'Unknown Discriminator Values Throw at Deserialize', route: '/csharp/json-advanced/unknown-type-discriminator-throws-jsonexception-not-forward-compatible' }"
+  />
+</div>

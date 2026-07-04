@@ -8859,6 +8859,75 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'json-advanced': {
+    apis: ['JsonSerializer', 'JsonConverter<T>', 'JsonSerializerContext'],
+    related: [{ label: 'Attributes', route: '/csharp/attributes' }, { label: 'Generics', route: '/csharp/generics' }, { label: 'Source Generators', route: '/csharp/source-generators' }],
+    tip: 'Create JsonSerializerOptions once as a static/singleton instance — it builds an internal reflection cache on first use, and attempting to mutate it afterward throws InvalidOperationException.',
+    docs: [{ label: 'System.Text.Json Overview', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/overview' }],
+    resources: [{ label: 'System.Text.Json Source', url: 'https://github.com/dotnet/runtime/tree/main/src/libraries/System.Text.Json', badge: 'code' }],
+    gotchas: ['A round-trip test (serialize then deserialize) can hide a converter bug where Read and Write share the same wrong assumption.', 'Each closed generic instantiation needs its own [JsonSerializable] — PagedResult<Product> does not cover PagedResult<Order>.'],
+  },
+
+  'json-advanced/testing-custom-jsonconverter-round-trips-exact-json-shape': {
+    apis: ['JsonConverter<T>.Write', 'Utf8JsonWriter', 'ArrayBufferWriter<byte>'],
+    related: [
+      { label: 'Every Generic Instantiation Needs Its Own JsonSerializable — next', route: '/csharp/json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen' },
+      { label: 'System.Text.Json Advanced (overview)', route: '/csharp/json-advanced' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A round-trip test only proves Read can undo whatever Write produced. Assert the exact JSON string Write emits, and separately test Read against a hand-written JSON literal, to catch a bug shared by both methods.',
+    docs: [
+      { label: 'Write Custom Converters', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to' },
+    ],
+    resources: [
+      { label: 'JsonConverter<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonconverter-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'Asserting object equality after a round trip proves far less than asserting the exact JSON string produced.',
+      'A converter\'s Write/Read methods can be tested directly against Utf8JsonWriter/Utf8JsonReader, without going through JsonSerializer at all.',
+    ],
+  },
+
+  'json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen': {
+    apis: ['[JsonSerializable]', 'JsonSerializerContext', 'JsonTypeInfo<T>'],
+    related: [
+      { label: 'Testing Custom JsonConverter Round-Trips — previous', route: '/csharp/json-advanced/testing-custom-jsonconverter-round-trips-exact-json-shape' },
+      { label: 'Unknown Discriminator Values Throw at Deserialize — next', route: '/csharp/json-advanced/unknown-type-discriminator-throws-jsonexception-not-forward-compatible' },
+      { label: 'System.Text.Json Advanced (overview)', route: '/csharp/json-advanced' },
+    ],
+    tip: 'PagedResult<Product> and PagedResult<Order> are completely unrelated types to the source generator — every closed generic instantiation used anywhere in the app needs its own explicit [JsonSerializable] entry.',
+    docs: [
+      { label: 'Source Generation Modes', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/source-generation-modes' },
+    ],
+    resources: [
+      { label: 'JsonSerializerContext Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonserializercontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'A missing registration compiles fine and only throws NotSupportedException at runtime when that exact type is actually serialized.',
+      'A reflection-fallback resolver chained after the source-generated context can mask a missing registration in normal dev builds — only a trimmed Native AOT build has no fallback left.',
+    ],
+  },
+
+  'json-advanced/unknown-type-discriminator-throws-jsonexception-not-forward-compatible': {
+    apis: ['[JsonPolymorphic]', '[JsonDerivedType]', 'JsonException'],
+    related: [
+      { label: 'Every Generic Instantiation Needs Its Own JsonSerializable — previous', route: '/csharp/json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen' },
+      { label: 'System.Text.Json Advanced (overview)', route: '/csharp/json-advanced' },
+      { label: 'Messaging & Kafka', route: '/messaging' },
+    ],
+    tip: 'An unrecognized $type discriminator throws JsonException for the ENTIRE deserialize call, not just the one unrecognized element — this makes polymorphic JSON a rolling-deployment hazard unless a fallback converter is used.',
+    docs: [
+      { label: 'Polymorphic Type Discriminators', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism' },
+    ],
+    resources: [
+      { label: 'JsonDerivedTypeAttribute Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonderivedtypeattribute', badge: 'docs' },
+    ],
+    gotchas: [
+      'Newer readers can always read older data (discriminators are additive) — but older readers cannot read a genuinely new discriminator value, since it did not exist when they were compiled.',
+      'A custom converter with an explicit fallback case is the only way to degrade gracefully instead of throwing on an unrecognized discriminator.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],

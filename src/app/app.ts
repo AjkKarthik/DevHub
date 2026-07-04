@@ -557,6 +557,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How ValidateScopes Catches Captive Dependencies', route: '/csharp/di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope' },
     { label: 'Multiple Implementations, Single T Injection', route: '/csharp/di-dotnet/multiple-implementations-single-t-injection-returns-last' },
   ],
+  'json-advanced': [
+    { label: 'Testing Custom JsonConverter Round-Trips', route: '/csharp/json-advanced/testing-custom-jsonconverter-round-trips-exact-json-shape' },
+    { label: 'Every Generic Instantiation Needs Its Own JsonSerializable', route: '/csharp/json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen' },
+    { label: 'Unknown Discriminator Values Throw at Deserialize', route: '/csharp/json-advanced/unknown-type-discriminator-throws-jsonexception-not-forward-compatible' },
+  ],
 };
 
 @Component({

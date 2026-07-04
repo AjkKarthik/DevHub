@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="System.Text.Json Advanced" topicRoute="/csharp/json-advanced" subtopicLabel="Unknown Discriminator Throws" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Unknown $type Discriminator Values Throw JsonException at Deserialize Time — Polymorphic APIs Are Not Forward Compatible By Default</h1>
+  <p class="page-subtitle">The main topic page's Shape example always deserializes with every derived type known. In a real rolling deployment, an older reader can encounter a genuinely new discriminator value — and the whole deserialize call fails, not just that one element.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 7+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/csharp/json-advanced">System.Text.Json Advanced</a> — from testing custom converters, to generic type registration for source generation, to polymorphic forward-compatibility. Return to the topic overview to continue with the next C# topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="System.Text.Json Advanced"
+    topicRoute="/csharp/json-advanced"
+    [prev]="{ label: 'Every Generic Instantiation Needs Its Own JsonSerializable', route: '/csharp/json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen' }"
+  />
+</div>

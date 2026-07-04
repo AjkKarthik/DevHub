@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="System.Text.Json Advanced" topicRoute="/csharp/json-advanced" subtopicLabel="Testing Custom JsonConverter Round-Trips" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Custom JsonConverter Round-Trips: Asserting the Exact JSON Shape, Not Just Object Equality</h1>
+  <p class="page-subtitle">A round-trip test can pass even when Read and Write share the same bug. See why asserting the exact JSON string — not just that the object survives a round trip — is the only way to catch an asymmetric converter mistake.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET Core 3.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at a source-generation gotcha the main <a routerLink="/csharp/json-advanced">System.Text.Json Advanced</a> page's own PagedResult&lt;Product&gt; example hints at: why every generic instantiation needs its own [JsonSerializable] registration.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="System.Text.Json Advanced"
+    topicRoute="/csharp/json-advanced"
+    [next]="{ label: 'Every Generic Instantiation Needs Its Own JsonSerializable', route: '/csharp/json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen' }"
+  />
+</div>
