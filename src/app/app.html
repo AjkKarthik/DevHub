@@ -1474,7 +1474,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Memory &amp; Resources</p>
-      <a routerLink="/csharp/gc-disposable" routerLinkActive="active"><span class="nl-text">GC &amp; IDisposable</span>@if(progress.isDone('csharp-gc-disposable')){<span class="nl-done">✓</span>}@if(diff('csharp-gc-disposable');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/gc-disposable" routerLinkActive="active">
+        <span class="nl-text">GC &amp; IDisposable</span>
+        @if (progress.isDone('csharp-gc-disposable')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-gc-disposable'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('gc-disposable')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('gc-disposable')"
+                  (click)="toggleSubtopics('gc-disposable', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('gc-disposable'); as subs) {
+        @if (isSubtopicsExpanded('gc-disposable')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/span-memory" routerLinkActive="active"><span class="nl-text">Span&lt;T&gt; &amp; Memory&lt;T&gt;</span>@if(progress.isDone('csharp-span-memory')){<span class="nl-done">✓</span>}@if(diff('csharp-span-memory');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/unsafe-pointers" routerLinkActive="active"><span class="nl-text">Unsafe Code &amp; Pointers</span>@if(progress.isDone('csharp-unsafe-pointers')){<span class="nl-done">✓</span>}@if(diff('csharp-unsafe-pointers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GC & IDisposable" topicRoute="/csharp/gc-disposable" subtopicLabel="Disposed but Still Running" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Disposed but Still Running: Why an Event Handler or Fire-and-Forget Task Can Outlive Dispose()</h1>
+  <p class="page-subtitle">The main topic page's _disposed guard protects direct callers. It does nothing to stop an event publisher's stored delegate or an already-running fire-and-forget task from touching the object after Dispose() has run.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since=".NET 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the GC &amp; IDisposable deep dives — from verifying disposal actually happened, to the pattern-based mechanism behind using itself, to the subtler ways an object can keep running after its own Dispose() call returns.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GC & IDisposable"
+    topicRoute="/csharp/gc-disposable"
+    [prev]="{ label: 'Pattern-Based Disposal on ref structs', route: '/csharp/gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable' }"
+  />
+</div>

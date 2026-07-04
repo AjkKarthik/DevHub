@@ -7902,6 +7902,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Finalizers run on the GC thread — never acquire locks or throw exceptions inside them.', 'using() calls Dispose on exit even if an exception is thrown — prefer using declarations over explicit try/finally.'],
   },
 
+  'gc-disposable/testing-dispose-actually-called-spy-wrapper-double-dispose': {
+    apis: ['DisposeSpy', 'Assert.Equal', 'IAsyncDisposable'],
+    related: [
+      { label: 'Pattern-Based Disposal on ref structs — next', route: '/csharp/gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable' },
+      { label: 'GC & IDisposable (overview)', route: '/csharp/gc-disposable' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A spy wrapper substituted for a disposable dependency turns "did my class actually dispose its field" and "is double-dispose safe" into directly assertable call counts, instead of unverifiable claims.',
+    docs: [
+      { label: 'Dispose Pattern (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose' },
+    ],
+    resources: [
+      { label: 'IAsyncDisposable', url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test that only checks Dispose() doesn\'t throw says nothing about whether the underlying resource\'s Dispose() was actually invoked.',
+      'Double-dispose safety is required by the IDisposable contract but not enforced by the interface itself — a class\'s own _disposed guard is what makes it safe, and that guard deserves a dedicated test.',
+    ],
+  },
+
+  'gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable': {
+    apis: ['ref struct', 'pattern-based disposal', 'DisposeAsync'],
+    related: [
+      { label: 'Testing That Dispose() Was Called — previous', route: '/csharp/gc-disposable/testing-dispose-actually-called-spy-wrapper-double-dispose' },
+      { label: 'Disposed but Still Running — next', route: '/csharp/gc-disposable/disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose' },
+      { label: 'GC & IDisposable (overview)', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'using resolves via pattern matching on a public parameterless Dispose() method — no IDisposable required. This is what lets ref structs, which are forbidden from implementing any interface, still participate in using blocks.',
+    docs: [
+      { label: 'ref struct', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/ref-struct' },
+    ],
+    resources: [
+      { label: 'using statement', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using', badge: 'docs' },
+    ],
+    gotchas: [
+      'ref structs cannot implement any interface at all, since interface dispatch can require boxing, which conflicts with a ref struct\'s stack-only restriction.',
+      'The same pattern-based resolution applies to foreach (GetEnumerator), await (GetAwaiter), and await using (DisposeAsync) — none require their "classic" interface.',
+    ],
+  },
+
+  'gc-disposable/disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose': {
+    apis: ['event -=', 'CancellationTokenSource', 'ObjectDisposedException'],
+    related: [
+      { label: 'Pattern-Based Disposal on ref structs — previous', route: '/csharp/gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable' },
+      { label: 'GC & IDisposable (overview)', route: '/csharp/gc-disposable' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'The _disposed guard only protects direct callers of public methods — an event publisher\'s stored delegate or an already-running fire-and-forget task can still touch the object after Dispose() returns unless you explicitly unsubscribe or cancel.',
+    docs: [
+      { label: 'Events (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/events/' },
+    ],
+    resources: [
+      { label: 'CancellationTokenSource', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource', badge: 'docs' },
+    ],
+    gotchas: [
+      'Forgetting to unsubscribe from an external event inside Dispose() leaves the publisher holding a live reference that can fire against a "disposed" object later.',
+      'Cancellation is cooperative — Cancel() only takes effect at the next checkpoint the running code observes, not immediately, so a brief window of touching released state remains possible.',
+    ],
+  },
+
   threading: {
     apis: ['Thread', 'ThreadPool', 'lock', 'Monitor', 'Interlocked', 'volatile'],
     related: [{ label: 'Tasks', route: '/csharp/tasks' }, { label: 'async / await', route: '/csharp/async' }, { label: 'Delegates & Events', route: '/csharp/delegates' }],

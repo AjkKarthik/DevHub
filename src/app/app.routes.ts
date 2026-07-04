@@ -560,7 +560,12 @@ export const routes: Routes = [
         { path: 'where-jsonserializeroptions-cache-lives-cold-cache-per-instance', loadComponent: () => import('./components/backend/csharp/io-serialization/subtopics/where-jsonserializeroptions-cache-lives-cold-cache-per-instance/where-jsonserializeroptions-cache-lives-cold-cache-per-instance').then(m => m.WhereJsonserializeroptionsCacheLivesColdCachePerInstanceSubtopic) },
         { path: 'sync-over-async-file-io-deadlocks-result-hangs-forever', loadComponent: () => import('./components/backend/csharp/io-serialization/subtopics/sync-over-async-file-io-deadlocks-result-hangs-forever/sync-over-async-file-io-deadlocks-result-hangs-forever').then(m => m.SyncOverAsyncFileIoDeadlocksResultHangsForeverSubtopic) },
       ] },
-      { path: 'gc-disposable',     loadComponent: () => import('./components/backend/csharp/gc-disposable/gc-disposable').then(m => m.CsharpGcDisposable) },
+      { path: 'gc-disposable', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/gc-disposable/gc-disposable').then(m => m.CsharpGcDisposable) },
+        { path: 'testing-dispose-actually-called-spy-wrapper-double-dispose', loadComponent: () => import('./components/backend/csharp/gc-disposable/subtopics/testing-dispose-actually-called-spy-wrapper-double-dispose/testing-dispose-actually-called-spy-wrapper-double-dispose').then(m => m.TestingDisposeActuallyCalledSpyWrapperDoubleDisposeSubtopic) },
+        { path: 'pattern-based-disposal-ref-structs-cannot-implement-idisposable', loadComponent: () => import('./components/backend/csharp/gc-disposable/subtopics/pattern-based-disposal-ref-structs-cannot-implement-idisposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable').then(m => m.PatternBasedDisposalRefStructsCannotImplementIdisposableSubtopic) },
+        { path: 'disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose', loadComponent: () => import('./components/backend/csharp/gc-disposable/subtopics/disposed-but-still-running-event-fire-forget/disposed-but-still-running-event-fire-forget').then(m => m.DisposedButStillRunningEventHandlerFireAndForgetOutlivesDisposeSubtopic) },
+      ] },
       // ── Concurrency ──
       { path: 'threading',         loadComponent: () => import('./components/backend/csharp/threading/threading').then(m => m.CsharpThreading) },
       { path: 'tasks',             loadComponent: () => import('./components/backend/csharp/tasks/tasks').then(m => m.CsharpTasks) },

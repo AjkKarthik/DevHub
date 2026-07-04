@@ -487,6 +487,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Where the JsonSerializerOptions Cache Lives', route: '/csharp/io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance' },
     { label: 'Sync-over-Async File I/O Deadlocks', route: '/csharp/io-serialization/sync-over-async-file-io-deadlocks-result-hangs-forever' },
   ],
+  'gc-disposable': [
+    { label: 'Testing That Dispose() Was Called', route: '/csharp/gc-disposable/testing-dispose-actually-called-spy-wrapper-double-dispose' },
+    { label: 'Pattern-Based Disposal on ref structs', route: '/csharp/gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable' },
+    { label: 'Disposed but Still Running', route: '/csharp/gc-disposable/disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose' },
+  ],
 };
 
 @Component({
