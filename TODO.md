@@ -1481,7 +1481,7 @@ off here with a date.
 - [x] `/csharp/channels` — Channels & Producer/Consumer (2026-07-04 — 3 subtopics: testing-channel-pipelines-without-mocks-real-channel-test-double, how-readallasync-detects-completion-waittoreadasync-tryread, rendezvous-channel-capacity-zero-writeasync-waits-for-reader)
 - [x] `/csharp/unit-testing` — Unit Testing (xUnit & Moq) (2026-07-04 — 3 subtopics: testing-your-test-doubles-mock-setup-matches-production-behavior, why-xunit-creates-new-instance-per-test-classfixture, timeprovider-faketimeprovider-deterministic-time-dependent-tests)
 - [x] `/csharp/expression-trees` — Expression Trees (2026-07-04 — 3 subtopics: testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result, parameterexpression-identity-problem-andalso-unusable-lambda, captured-variables-not-constantexpression-hidden-closure-class)
-- [ ] `/csharp/dynamic` — dynamic & the DLR
+- [x] `/csharp/dynamic` — dynamic & the DLR (2026-07-04 — 3 subtopics: testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths, inside-dlr-call-site-rule-cache-slow-path-fallback, anonymous-types-as-dynamic-assembly-boundary-hidden-cost)
 - [ ] `/csharp/source-generators` — Source Generators
 - [ ] `/csharp/span-memory` — Span<T> & Memory<T>
 - [ ] `/csharp/di-dotnet` — Dependency Injection in .NET
