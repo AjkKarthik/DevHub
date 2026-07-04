@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Error Handling"
+    topicRoute="/aspnet/error-handling"
+    subtopicLabel="Testing Exception Handler Chain Ordering"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That the IExceptionHandler Chain Actually Works as Documented</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A describes a real handler-ordering bug in detail. Here's the integration
+    test that would actually catch it — and a subtler inheritance-based variant the same class of bug
+    can hide behind.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own documented ordering gotcha. The next subtopic goes
+      underneath <code>UseStatusCodePagesWithReExecute</code> — explaining exactly why its error endpoint
+      must explicitly restore the original status code rather than relying on re-execution alone.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/aspnet/error-handling"
+    [next]="{ label: 'Why the Re-Executed Error Endpoint Must Explicitly Restore the Status Code', route: '/aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code' }"
+  />
+</div>

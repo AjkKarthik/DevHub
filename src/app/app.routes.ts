@@ -786,7 +786,12 @@ export const routes: Routes = [
         { path: 'why-next-runs-action-even-after-context-result-is-set', loadComponent: () => import('./components/backend/aspnet/filters/subtopics/why-next-runs-action-even-after-context-result-is-set/why-next-runs-action-even-after-context-result-is-set').then(m => m.WhyNextRunsActionEvenAfterContextResultIsSetSubtopic) },
         { path: 'ifilterfactory-isreusable-silently-recreates-captive-dependency', loadComponent: () => import('./components/backend/aspnet/filters/subtopics/ifilterfactory-isreusable-silently-recreates-captive-dependency/ifilterfactory-isreusable-silently-recreates-captive-dependency').then(m => m.IfilterfactoryIsreusableSilentlyRecreatesCaptiveDependencySubtopic) },
       ] },
-      { path: 'error-handling',       loadComponent: () => import('./components/backend/aspnet/error-handling/error-handling').then(m => m.AspnetErrorHandling) },
+      { path: 'error-handling', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/error-handling/error-handling').then(m => m.AspnetErrorHandling) },
+        { path: 'testing-exceptionhandler-chain-ordering-works-as-documented', loadComponent: () => import('./components/backend/aspnet/error-handling/subtopics/testing-exceptionhandler-chain-ordering-works-as-documented/testing-exceptionhandler-chain-ordering-works-as-documented').then(m => m.TestingExceptionhandlerChainOrderingWorksAsDocumentedSubtopic) },
+        { path: 'why-reexecuted-error-endpoint-must-explicitly-restore-status-code', loadComponent: () => import('./components/backend/aspnet/error-handling/subtopics/why-reexecuted-error-endpoint-must-explicitly-restore-status-code/why-reexecuted-error-endpoint-must-explicitly-restore-status-code').then(m => m.WhyReexecutedErrorEndpointMustExplicitlyRestoreStatusCodeSubtopic) },
+        { path: 'handler-writes-before-returning-false-corrupts-next-handler', loadComponent: () => import('./components/backend/aspnet/error-handling/subtopics/handler-writes-before-returning-false-corrupts-next-handler/handler-writes-before-returning-false-corrupts-next-handler').then(m => m.HandlerWritesBeforeReturningFalseCorruptsNextHandlerSubtopic) },
+      ] },
       { path: 'openapi-swagger',      loadComponent: () => import('./components/backend/aspnet/openapi-swagger/openapi-swagger').then(m => m.AspnetOpenApiSwagger) },
       { path: 'api-versioning',       loadComponent: () => import('./components/backend/aspnet/api-versioning/api-versioning').then(m => m.AspnetApiVersioning) },
       { path: 'http-clients',         loadComponent: () => import('./components/backend/aspnet/http-clients/http-clients').then(m => m.AspnetHttpClients) },

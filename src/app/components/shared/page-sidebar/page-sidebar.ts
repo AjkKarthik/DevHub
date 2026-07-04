@@ -11693,6 +11693,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/error-handling/testing-exceptionhandler-chain-ordering-works-as-documented': {
+    apis: ['IExceptionHandler', 'AddExceptionHandler<T>()', 'TryHandleAsync()'],
+    related: [
+      { label: 'Why the Re-Executed Error Endpoint Must Restore the Status Code — next', route: '/aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code' },
+      { label: 'Error Handling (overview)', route: '/aspnet/error-handling' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Registration order determines evaluation order for IExceptionHandler — an integration test that throws each exception type and asserts on the SPECIFIC response shape is the only thing that proves the chain is ordered correctly, not just documented correctly.',
+    docs: [
+      { label: 'IExceptionHandler Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.diagnostics.iexceptionhandler' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A handler checking a BASE exception type still incorrectly claims a MORE DERIVED type\'s exceptions if registered before that derived type\'s own handler — both handlers can be individually correct, yet ordering still produces the wrong result.',
+      'There is no compiler enforcement of IExceptionHandler registration order, unlike C#\'s own catch-block ordering rules for try/catch chains.',
+    ],
+  },
+
+  'aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code': {
+    apis: ['UseStatusCodePagesWithReExecute()', 'IStatusCodeReExecuteFeature', 'Results.Problem(statusCode:)'],
+    related: [
+      { label: 'Testing the IExceptionHandler Chain Ordering — previous', route: '/aspnet/error-handling/testing-exceptionhandler-chain-ordering-works-as-documented' },
+      { label: 'A Handler That Writes Before Returning False Corrupts the Next — next', route: '/aspnet/error-handling/handler-writes-before-returning-false-corrupts-next-handler' },
+      { label: 'Error Handling (overview)', route: '/aspnet/error-handling' },
+    ],
+    tip: 'Re-execution only preserves the original status code as information the error endpoint can read — the actual response status is whatever that endpoint explicitly sets, which is why Results.Problem(statusCode: code) is not decorative.',
+    docs: [
+      { label: 'Handle Errors in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A route parameter binding correctly (e.g. code=404) does NOT guarantee the actual HTTP response status code matches — a handler calling Results.Ok() still sends 200 regardless of what the route value contains.',
+      'A test asserting only on response body content can pass even when the actual response.StatusCode is wrong — assert on both independently.',
+    ],
+  },
+
+  'aspnet/error-handling/handler-writes-before-returning-false-corrupts-next-handler': {
+    apis: ['ctx.Response.StatusCode', 'IExceptionHandler', 'IProblemDetailsService.WriteAsync()'],
+    related: [
+      { label: 'Why the Re-Executed Error Endpoint Must Restore the Status Code — previous', route: '/aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code' },
+      { label: 'Error Handling (overview)', route: '/aspnet/error-handling' },
+      { label: 'Filters & Endpoint Filters', route: '/aspnet/filters' },
+    ],
+    tip: 'HttpContext is a single shared object across the whole handler chain with no snapshot-and-restore mechanism — a handler that sets StatusCode speculatively before deciding to return false leaves that value in place for whatever handler runs next.',
+    docs: [
+      { label: 'Handle Errors in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Decide whether a handler will claim an exception FIRST, using only local variables — only touch ctx.Response (StatusCode, headers, body) AFTER that decision is final.',
+      'A mismatch between response.StatusCode and the ProblemDetails body\'s own Status field is a strong smoke-test signal that an earlier handler touched the response before declining to handle the exception.',
+    ],
+  },
+
   'aspnet/openapi-swagger': {
     apis: ['AddOpenApi()', 'MapOpenApi()', '.WithSummary()', '.WithDescription()', 'TypedResults', 'IOpenApiOperationTransformer'],
     related: [

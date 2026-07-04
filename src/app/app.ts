@@ -672,6 +672,16 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why next() Runs the Action Even After Result Is Set', route: '/aspnet/filters/why-next-runs-action-even-after-context-result-is-set' },
     { label: 'IFilterFactory’s Captive Dependency Risk', route: '/aspnet/filters/ifilterfactory-isreusable-silently-recreates-captive-dependency' },
   ],
+  // NOTE: keyed 'aspnet-error-handling', NOT bare 'error-handling' — the
+  // JavaScript, Blazor, Node.js, Go, and GraphQL hubs ALL already own a
+  // route at the same bare slug. Pre-emptively hub-prefixing avoids
+  // repeating the exact 'routing' collision hit earlier the moment any
+  // of those hubs get their own error-handling subtopics.
+  'aspnet-error-handling': [
+    { label: 'Testing the IExceptionHandler Chain Ordering', route: '/aspnet/error-handling/testing-exceptionhandler-chain-ordering-works-as-documented' },
+    { label: 'Why the Re-Executed Error Endpoint Must Restore the Status Code', route: '/aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code' },
+    { label: 'A Handler That Writes Before Returning False Corrupts the Next', route: '/aspnet/error-handling/handler-writes-before-returning-false-corrupts-next-handler' },
+  ],
 };
 
 @Component({

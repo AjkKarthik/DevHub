@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Error Handling"
+    topicRoute="/aspnet/error-handling"
+    subtopicLabel="Restoring the Original Status Code"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Why the Re-Executed Error Endpoint Must Explicitly Restore the Status Code</h1>
+  <p class="page-subtitle">
+    The main page's own error endpoint passes statusCode: code into Results.Problem() — not decoration.
+    Re-execution only preserves the original status as information to read; forgetting to re-apply it
+    turns a 404 into a silent 200.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own status-code-pages guidance. The
+      final subtopic in this set turns to <code>IExceptionHandler</code>'s own "never write a partial
+      response then return false" warning — and exactly what corruption looks like when that rule is broken.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/aspnet/error-handling"
+    [prev]="{ label: 'Testing That the IExceptionHandler Chain Actually Works as Documented', route: '/aspnet/error-handling/testing-exceptionhandler-chain-ordering-works-as-documented' }"
+    [next]="{ label: 'A Handler That Writes Before Returning False Corrupts the Next Handler', route: '/aspnet/error-handling/handler-writes-before-returning-false-corrupts-next-handler' }"
+  />
+</div>
