@@ -1487,7 +1487,7 @@ off here with a date.
 - [x] `/csharp/di-dotnet` — Dependency Injection in .NET (2026-07-04 — 3 subtopics: testing-di-container-configuration-every-registration-resolves, how-validatescopes-catches-captive-dependency-root-child-scope, multiple-implementations-single-t-injection-returns-last)
 - [x] `/csharp/json-advanced` — System.Text.Json Advanced (2026-07-04 — 3 subtopics: testing-custom-jsonconverter-round-trips-exact-json-shape, generic-instantiation-needs-own-jsonserializable-source-gen, unknown-type-discriminator-throws-jsonexception-not-forward-compatible)
 - [x] `/csharp/unsafe-pointers` — Unsafe Code & Pointers (2026-07-04 — 3 subtopics: testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws, pinned-object-fragments-heap-blocks-gc-compaction-neighbors, stackalloc-inside-loop-never-frees-between-iterations-stackoverflow)
-- [ ] `/csharp/native-aot` — Native AOT
+- [x] `/csharp/native-aot` — Native AOT (2026-07-04 — 3 subtopics: testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors, dynamicallyaccessedmembers-redeclared-every-level-call-chain, clean-trim-analysis-still-fails-full-aot-publish-different-checks)
 - [ ] `/csharp/benchmarkdotnet` — BenchmarkDotNet
 - [ ] `/csharp/pinvoke` — P/Invoke & Native Interop
 - [ ] `/csharp/dotnet-cli` — .NET CLI & Tooling
