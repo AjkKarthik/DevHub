@@ -547,7 +547,12 @@ export const routes: Routes = [
         { path: 'real-cost-of-array-covariance-runtime-type-check-every-store', loadComponent: () => import('./components/backend/csharp/arrays/subtopics/real-cost-of-array-covariance-runtime-type-check-every-store/real-cost-of-array-covariance-runtime-type-check-every-store').then(m => m.RealCostOfArrayCovarianceRuntimeTypeCheckEveryStoreSubtopic) },
         { path: 'params-array-hidden-allocation-every-call-span-fix', loadComponent: () => import('./components/backend/csharp/arrays/subtopics/params-array-hidden-allocation-every-call-span-fix/params-array-hidden-allocation-every-call-span-fix').then(m => m.ParamsArrayHiddenAllocationEveryCallSpanFixSubtopic) },
       ] },
-      { path: 'strings-datetime',  loadComponent: () => import('./components/backend/csharp/strings-datetime/strings-datetime').then(m => m.CsharpStringsDatetime) },
+      { path: 'strings-datetime', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/strings-datetime/strings-datetime').then(m => m.CsharpStringsDatetime) },
+        { path: 'testing-culture-sensitive-code-turkish-locale-ci-failures', loadComponent: () => import('./components/backend/csharp/strings-datetime/subtopics/testing-culture-sensitive-code-turkish-locale-ci-failures/testing-culture-sensitive-code-turkish-locale-ci-failures').then(m => m.TestingCultureSensitiveCodeTurkishLocaleCiFailuresSubtopic) },
+        { path: 'interning-boundary-which-strings-interned-automatically', loadComponent: () => import('./components/backend/csharp/strings-datetime/subtopics/interning-boundary-which-strings-interned-automatically/interning-boundary-which-strings-interned-automatically').then(m => m.InterningBoundaryWhichStringsInternedAutomaticallySubtopic) },
+        { path: 'string-create-span-char-allocation-free-building', loadComponent: () => import('./components/backend/csharp/strings-datetime/subtopics/string-create-span-char-allocation-free-building/string-create-span-char-allocation-free-building').then(m => m.StringCreateSpanCharAllocationFreeBuildingSubtopic) },
+      ] },
       // ── Data / Memory ──
       { path: 'io-serialization',  loadComponent: () => import('./components/backend/csharp/io-serialization/io-serialization').then(m => m.CsharpIoSerialization) },
       { path: 'gc-disposable',     loadComponent: () => import('./components/backend/csharp/gc-disposable/gc-disposable').then(m => m.CsharpGcDisposable) },

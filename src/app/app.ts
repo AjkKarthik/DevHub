@@ -477,6 +477,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Real Cost of Array Covariance', route: '/csharp/arrays/real-cost-of-array-covariance-runtime-type-check-every-store' },
     { label: 'params Arrays Silently Allocate', route: '/csharp/arrays/params-array-hidden-allocation-every-call-span-fix' },
   ],
+  'strings-datetime': [
+    { label: 'Testing Culture-Sensitive Code', route: '/csharp/strings-datetime/testing-culture-sensitive-code-turkish-locale-ci-failures' },
+    { label: 'The Interning Boundary', route: '/csharp/strings-datetime/interning-boundary-which-strings-interned-automatically' },
+    { label: 'string.Create and Span<char>', route: '/csharp/strings-datetime/string-create-span-char-allocation-free-building' },
+  ],
 };
 
 @Component({

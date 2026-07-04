@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strings, DateTime & Math" topicRoute="/csharp/strings-datetime" subtopicLabel="The Interning Boundary" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">The Interning Boundary: Which Strings Get Interned Automatically and Which Never Do</h1>
+  <p class="page-subtitle">The main topic page mentions interning in one paragraph. See the precise rule: compile-time literals and constant-folded concatenation are interned automatically; anything computed at runtime never is, no matter how identical the content.</p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Having seen where the runtime draws the line on automatic string identity, the last subtopic looks at a modern, allocation-free way to BUILD a string in the first place — <code>string.Create</code> and <code>Span&lt;char&gt;</code>, an alternative to <code>StringBuilder</code> the main <a routerLink="/csharp/strings-datetime">Strings, DateTime & Math</a> page doesn't cover.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Strings, DateTime & Math"
+    topicRoute="/csharp/strings-datetime"
+    [prev]="{ label: 'Testing Culture-Sensitive Code', route: '/csharp/strings-datetime/testing-culture-sensitive-code-turkish-locale-ci-failures' }"
+    [next]="{ label: 'string.Create and Span<char>', route: '/csharp/strings-datetime/string-create-span-char-allocation-free-building' }"
+  />
+</div>

@@ -1428,7 +1428,26 @@
           </div>
         }
       }
-      <a routerLink="/csharp/strings-datetime" routerLinkActive="active"><span class="nl-text">Strings, DateTime &amp; Math</span>@if(progress.isDone('csharp-strings-datetime')){<span class="nl-done">✓</span>}@if(diff('csharp-strings-datetime');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/csharp/strings-datetime" routerLinkActive="active">
+        <span class="nl-text">Strings, DateTime &amp; Math</span>
+        @if (progress.isDone('csharp-strings-datetime')) {<span class="nl-done">✓</span>}
+        @if (diff('csharp-strings-datetime'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('strings-datetime')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('strings-datetime')"
+                  (click)="toggleSubtopics('strings-datetime', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('strings-datetime'); as subs) {
+        @if (isSubtopicsExpanded('strings-datetime')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/csharp/io-serialization" routerLinkActive="active"><span class="nl-text">I/O &amp; Serialization</span>@if(progress.isDone('csharp-io-serialization')){<span class="nl-done">✓</span>}@if(diff('csharp-io-serialization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/regex" routerLinkActive="active"><span class="nl-text">Regular Expressions</span>@if(progress.isDone('csharp-regex')){<span class="nl-done">✓</span>}@if(diff('csharp-regex');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/csharp/json-advanced" routerLinkActive="active"><span class="nl-text">System.Text.Json Advanced</span>@if(progress.isDone('csharp-json-advanced')){<span class="nl-done">✓</span>}@if(diff('csharp-json-advanced');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

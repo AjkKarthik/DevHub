@@ -7764,6 +7764,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['string concatenation in a loop creates O(n²) allocations — use StringBuilder for building strings iteratively.', 'DateTime.Now is local time; DateTime.UtcNow is UTC — always store and compare in UTC.'],
   },
 
+  'strings-datetime/testing-culture-sensitive-code-turkish-locale-ci-failures': {
+    apis: ['CultureInfo', 'ToUpperInvariant', 'CurrentCulture'],
+    related: [
+      { label: 'The Interning Boundary — next', route: '/csharp/strings-datetime/interning-boundary-which-strings-interned-automatically' },
+      { label: 'Strings, DateTime & Math (overview)', route: '/csharp/strings-datetime' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Force CurrentCulture to tr-TR inside a test (in a try/finally that restores it) to deterministically reproduce the classic "Turkey test" casing bug — passing under that locale is a strong signal the code is culture-safe everywhere.',
+    docs: [
+      { label: 'CultureInfo Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo' },
+    ],
+    resources: [
+      { label: 'String.ToUpperInvariant', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.string.toupperinvariant', badge: 'docs' },
+    ],
+    gotchas: [
+      'ToUpper()/ToLower() with no arguments use CultureInfo.CurrentCulture, an ambient environment setting — the same input can produce a different result purely based on the running machine\'s locale.',
+      'A test suite that never forces a non-default locale can pass indefinitely while still containing a real, environment-dependent bug.',
+    ],
+  },
+
+  'strings-datetime/interning-boundary-which-strings-interned-automatically': {
+    apis: ['string.Intern', 'ReferenceEquals', 'const string'],
+    related: [
+      { label: 'Testing Culture-Sensitive Code — previous', route: '/csharp/strings-datetime/testing-culture-sensitive-code-turkish-locale-ci-failures' },
+      { label: 'string.Create and Span<char> — next', route: '/csharp/strings-datetime/string-create-span-char-allocation-free-building' },
+      { label: 'Strings, DateTime & Math (overview)', route: '/csharp/strings-datetime' },
+    ],
+    tip: 'Automatic interning only applies to strings the compiler resolves at compile time (literals and constant-folded concatenation) — anything computed at runtime is a fresh, non-interned object regardless of matching content.',
+    docs: [
+      { label: 'String.Intern', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.string.intern' },
+    ],
+    resources: [
+      { label: 'String Interning', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.string.isinterned', badge: 'docs' },
+    ],
+    gotchas: [
+      '"hel" + "lo" (two literals) is constant-folded and interned at compile time — string.Concat("hel", "lo") is a runtime call and is never automatically interned, despite identical output.',
+      'string.Intern() adds a string to a process-wide pool that is never garbage collected for the process lifetime — a real memory-leak risk if overused, and rarely necessary since == already gives correct value comparison.',
+    ],
+  },
+
+  'strings-datetime/string-create-span-char-allocation-free-building': {
+    apis: ['string.Create', 'Span<char>', 'SpanAction'],
+    related: [
+      { label: 'The Interning Boundary — previous', route: '/csharp/strings-datetime/interning-boundary-which-strings-interned-automatically' },
+      { label: 'Strings, DateTime & Math (overview)', route: '/csharp/strings-datetime' },
+      { label: 'Span & Memory', route: '/csharp/collections' },
+    ],
+    tip: 'string.Create writes directly into the destination string\'s own memory — one allocation, zero copies — but only when the exact final length is known upfront. For variable-length building, StringBuilder remains the correct tool.',
+    docs: [
+      { label: 'String.Create', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.string.create' },
+    ],
+    resources: [
+      { label: 'Span<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.span-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'string.Create cannot resize — writing past the declared length throws, and under-filling leaves unfilled characters as default values.',
+      'Capturing locals in the callback lambda instead of passing them through the state parameter allocates a closure object, defeating the point of using string.Create in a hot path.',
+    ],
+  },
+
   'io-serialization': {
     apis: ['File', 'StreamReader', 'JsonSerializer', 'BinaryWriter', 'Encoding.UTF8'],
     related: [{ label: 'async / await', route: '/csharp/async' }, { label: 'Exceptions', route: '/csharp/exceptions' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }],

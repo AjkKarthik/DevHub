@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strings, DateTime & Math" topicRoute="/csharp/strings-datetime" subtopicLabel="string.Create and Span<char>" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">string.Create and Span&lt;char&gt;: Building a String Once, Allocation-Free, Without a StringBuilder Layer</h1>
+  <p class="page-subtitle">StringBuilder is O(n) but still involves a buffer plus a final copy on ToString(). When the final length is known upfront, string.Create writes characters directly into the destination string's own memory — one allocation, zero copies.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Core 2.1" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Strings, DateTime &amp; Math deep dives — from culture-safe testing, to the compiler's interning boundary, to a genuinely allocation-free way to construct a string when its length is already known.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Strings, DateTime & Math"
+    topicRoute="/csharp/strings-datetime"
+    [prev]="{ label: 'The Interning Boundary', route: '/csharp/strings-datetime/interning-boundary-which-strings-interned-automatically' }"
+  />
+</div>
