@@ -1471,7 +1471,7 @@ off here with a date.
 - [x] `/csharp/arrays` — Arrays (2026-07-04 — 3 subtopics: testing-array-equality-sequenceequal-not-equals, real-cost-of-array-covariance-runtime-type-check-every-store, params-array-hidden-allocation-every-call-span-fix)
 - [x] `/csharp/strings-datetime` — Strings, DateTime & Math (2026-07-04 — 3 subtopics: testing-culture-sensitive-code-turkish-locale-ci-failures, interning-boundary-which-strings-interned-automatically, string-create-span-char-allocation-free-building)
 - [x] `/csharp/io-serialization` — I/O & Serialization (2026-07-04 — 3 subtopics: testing-file-io-without-touching-real-filesystem-abstraction, where-jsonserializeroptions-cache-lives-cold-cache-per-instance, sync-over-async-file-io-deadlocks-result-hangs-forever)
-- [ ] `/csharp/gc-disposable` — GC & IDisposable
+- [x] `/csharp/gc-disposable` — GC & IDisposable (2026-07-04 — 3 subtopics: testing-dispose-actually-called-spy-wrapper-double-dispose, pattern-based-disposal-ref-structs-cannot-implement-idisposable, disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose)
 - [ ] `/csharp/threading` — Threading
 - [ ] `/csharp/tasks` — Tasks & Parallel
 - [ ] `/csharp/reflection` — Reflection & Attributes
