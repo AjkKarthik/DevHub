@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Namespaces & Usings"
+    topicRoute="/csharp/namespaces"
+    subtopicLabel="Resolving CS0104 Ambiguous Type References" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Resolving CS0104: When Two using Directives Import the Same Type Name</h1>
+  <p class="page-subtitle">
+    The main topic states a using-resolution ordering rule but never shows where it
+    stops helping — two ordinary, unaliased usings for unrelated namespaces that both
+    export a same-named type produce a genuine compile error.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Unused-using hygiene, the rare extern alias mechanism, and resolving genuine
+      simple-name ambiguity together complete the namespace/using toolkit beyond the
+      main topic's happy-path syntax tour.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Namespaces & Usings"
+    topicRoute="/csharp/namespaces"
+    [prev]="{ label: 'extern alias', route: '/csharp/namespaces/extern-alias-resolving-assembly-type-name-collisions' }" />
+</div>

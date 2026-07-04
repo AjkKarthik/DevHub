@@ -7146,6 +7146,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Global usings affect all files in the project — only use them for universally needed namespaces (System, System.Collections.Generic).', 'Aliasing a namespace (using Alias = Long.Namespace) only applies to the current file.'],
   },
 
+  'namespaces/detecting-unused-using-directives-ide0005': {
+    apis: ['IDE0005', 'dotnet format', '.editorconfig'],
+    related: [
+      { label: 'extern alias — next', route: '/csharp/namespaces/extern-alias-resolving-assembly-type-name-collisions' },
+      { label: 'Namespaces & Usings (overview)', route: '/csharp/namespaces' },
+    ],
+    tip: 'An unused using in GlobalUsings.cs is invisible unless you check every file — "dotnet format --diagnostics IDE0005 --verify-no-changes" run in CI catches this automatically instead of relying on manual audits.',
+    docs: [
+      { label: 'IDE0005 Rule', url: 'https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0005' },
+    ],
+    resources: [
+      { label: 'dotnet format', url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format', badge: 'docs' },
+    ],
+    gotchas: [
+      'An unused using is not purely inert — a later name collision elsewhere in the project can turn it into a genuine CS0104 ambiguity.',
+      'Promote IDE0005 to a build warning or error via .editorconfig to turn a dimmed IDE hint into an enforced CI signal.',
+    ],
+  },
+
+  'namespaces/extern-alias-resolving-assembly-type-name-collisions': {
+    apis: ['extern alias', '::', 'Aliases (csproj)'],
+    related: [
+      { label: 'Detecting Unused using Directives — previous', route: '/csharp/namespaces/detecting-unused-using-directives-ide0005' },
+      { label: 'Resolving CS0104 — next', route: '/csharp/namespaces/resolving-cs0104-ambiguous-using-directives' },
+      { label: 'Namespaces & Usings (overview)', route: '/csharp/namespaces' },
+    ],
+    tip: 'extern alias solves a problem an ordinary using alias cannot express — two ASSEMBLIES defining a type with the identical fully-qualified name. It requires both a project-level Aliases reference config AND an "extern alias" declaration in source.',
+    docs: [
+      { label: 'extern alias', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/extern-alias' },
+    ],
+    resources: [
+      { label: 'Namespaces Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/namespaces', badge: 'docs' },
+    ],
+    gotchas: [
+      'The CS0433 ambiguity only occurs when BOTH conflicting assemblies are referenced by the same project simultaneously.',
+      'The :: operator is otherwise essentially unused in C# — its entire purpose is disambiguating which assembly alias a type comes from.',
+    ],
+  },
+
+  'namespaces/resolving-cs0104-ambiguous-using-directives': {
+    apis: ['CS0104', 'using alias', 'fully qualified name'],
+    related: [
+      { label: 'extern alias — previous', route: '/csharp/namespaces/extern-alias-resolving-assembly-type-name-collisions' },
+      { label: 'Namespaces & Usings (overview)', route: '/csharp/namespaces' },
+    ],
+    tip: '"File-local wins over global, aliases win over unaliased" only resolves conflicts involving an alias — two ordinary usings for unrelated namespaces exporting the same simple type name produce a genuine CS0104 error requiring a using alias or full qualification.',
+    docs: [
+      { label: 'using Directive', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/using-directive' },
+    ],
+    resources: [
+      { label: 'Resolving Ambiguous References', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/using-directive', badge: 'docs' },
+    ],
+    gotchas: [
+      'CS0104 triggers lazily — a file can have both conflicting usings present and compile fine as long as the ambiguous simple name is never referenced unqualified.',
+      'Fully qualifying the type at its use site is a valid alias-free fix, best for a type referenced only once or twice in the file.',
+    ],
+  },
+
   inheritance: {
     apis: [':', 'base', 'virtual', 'override', 'new (hiding)', 'sealed override'],
     related: [{ label: 'OOP & Classes', route: '/csharp/oop' }, { label: 'Abstract & Interfaces', route: '/csharp/abstract-interfaces' }, { label: 'System.Object', route: '/csharp/system-object' }],

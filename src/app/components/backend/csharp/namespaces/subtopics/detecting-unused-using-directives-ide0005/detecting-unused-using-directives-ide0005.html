@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Namespaces & Usings"
+    topicRoute="/csharp/namespaces"
+    subtopicLabel="Detecting Unused using Directives" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Detecting and Removing Unused using Directives: IDE0005 and dotnet format</h1>
+  <p class="page-subtitle">
+    The main topic fights REPETITION of using directives with global using — it never
+    addresses the opposite problem: usings that quietly become dead weight after the
+    code that needed them is refactored away.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since=".NET 6+ SDK" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Keeping usings clean is routine hygiene — the next subtopics cover two genuinely
+      deep resolution-rule corners: a rarely-used assembly-collision mechanism, and the
+      real ambiguity error two unrelated usings can trigger together.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Namespaces & Usings"
+    topicRoute="/csharp/namespaces"
+    [next]="{ label: 'extern alias', route: '/csharp/namespaces/extern-alias-resolving-assembly-type-name-collisions' }" />
+</div>

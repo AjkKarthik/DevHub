@@ -491,7 +491,12 @@ export const routes: Routes = [
         { path: 'init-accessors-and-readonly-fields-assignment-window', loadComponent: () => import('./components/backend/csharp/properties-indexers/subtopics/init-accessors-and-readonly-fields-assignment-window/init-accessors-and-readonly-fields-assignment-window').then(m => m.InitAccessorsAndReadonlyFieldsAssignmentWindowSubtopic) },
         { path: 'indexer-initializer-syntax-without-add', loadComponent: () => import('./components/backend/csharp/properties-indexers/subtopics/indexer-initializer-syntax-without-add/indexer-initializer-syntax-without-add').then(m => m.IndexerInitializerSyntaxWithoutAddSubtopic) },
       ] },
-      { path: 'namespaces',        loadComponent: () => import('./components/backend/csharp/namespaces/namespaces').then(m => m.CsharpNamespaces) },
+      { path: 'namespaces', children: [
+        { path: '', loadComponent: () => import('./components/backend/csharp/namespaces/namespaces').then(m => m.CsharpNamespaces) },
+        { path: 'detecting-unused-using-directives-ide0005', loadComponent: () => import('./components/backend/csharp/namespaces/subtopics/detecting-unused-using-directives-ide0005/detecting-unused-using-directives-ide0005').then(m => m.DetectingUnusedUsingDirectivesIde0005Subtopic) },
+        { path: 'extern-alias-resolving-assembly-type-name-collisions', loadComponent: () => import('./components/backend/csharp/namespaces/subtopics/extern-alias-resolving-assembly-type-name-collisions/extern-alias-resolving-assembly-type-name-collisions').then(m => m.ExternAliasResolvingAssemblyTypeNameCollisionsSubtopic) },
+        { path: 'resolving-cs0104-ambiguous-using-directives', loadComponent: () => import('./components/backend/csharp/namespaces/subtopics/resolving-cs0104-ambiguous-using-directives/resolving-cs0104-ambiguous-using-directives').then(m => m.ResolvingCs0104AmbiguousUsingDirectivesSubtopic) },
+      ] },
       // ── OOP ──
       { path: 'inheritance',       loadComponent: () => import('./components/backend/csharp/inheritance/inheritance').then(m => m.CsharpInheritance) },
       { path: 'abstract-interfaces', loadComponent: () => import('./components/backend/csharp/abstract-interfaces/abstract-interfaces').then(m => m.CsharpAbstractInterfaces) },

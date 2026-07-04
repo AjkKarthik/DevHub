@@ -432,6 +432,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'init Accessors and readonly Fields', route: '/csharp/properties-indexers/init-accessors-and-readonly-fields-assignment-window' },
     { label: 'Indexer Initializer Syntax', route: '/csharp/properties-indexers/indexer-initializer-syntax-without-add' },
   ],
+  'namespaces': [
+    { label: 'Detecting Unused using Directives', route: '/csharp/namespaces/detecting-unused-using-directives-ide0005' },
+    { label: 'extern alias', route: '/csharp/namespaces/extern-alias-resolving-assembly-type-name-collisions' },
+    { label: 'Resolving CS0104 Ambiguous Type References', route: '/csharp/namespaces/resolving-cs0104-ambiguous-using-directives' },
+  ],
 };
 
 @Component({
