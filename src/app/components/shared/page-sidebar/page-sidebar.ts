@@ -14138,6 +14138,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/opentelemetry/testing-custom-spans-and-metrics-with-activitylistener-and-meterlistener': {
+    apis: ['ActivityListener', 'MeterListener', 'ActivitySource'],
+    related: [
+      { label: 'SetTag Sampling Gap — next', route: '/aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span' },
+      { label: 'OpenTelemetry (overview)', route: '/aspnet/opentelemetry' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'ActivityListener and MeterListener observe telemetry directly in-process — no exporter, collector, or backend needed to verify custom spans and metrics.',
+    docs: [
+      { label: 'OpenTelemetry .NET documentation', url: 'https://opentelemetry.io/docs/languages/net/' },
+    ],
+    resources: [
+      { label: 'open-telemetry/opentelemetry-dotnet', url: 'https://github.com/open-telemetry/opentelemetry-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'A test\'s ActivityListener can produce a null Activity if its own Sample callback doesn\'t return AllData — the same symptom as an unregistered ActivitySource, a different test-specific cause.',
+      'MeterListener\'s measurement event callback captures every measurement a matching instrument records — no metrics-exporting pipeline needed.',
+    ],
+  },
+
+  'aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span': {
+    apis: ['Activity.IsAllDataRequested', 'Activity.SetTag()', 'ActivitySamplingResult'],
+    related: [
+      { label: 'Testing Spans and Metrics — previous', route: '/aspnet/opentelemetry/testing-custom-spans-and-metrics-with-activitylistener-and-meterlistener' },
+      { label: 'Fire-and-Forget Span Gotcha — next', route: '/aspnet/opentelemetry/fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent' },
+      { label: 'OpenTelemetry (overview)', route: '/aspnet/opentelemetry' },
+    ],
+    tip: 'activity?.SetTag(...) guards against a null Activity, not against IsAllDataRequested == false — guard expensive tag computations with an explicit check instead.',
+    docs: [
+      { label: 'OpenTelemetry .NET documentation', url: 'https://opentelemetry.io/docs/languages/net/' },
+    ],
+    resources: [
+      { label: 'open-telemetry/opentelemetry-dotnet', url: 'https://github.com/open-telemetry/opentelemetry-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'A non-null Activity with IsAllDataRequested false still propagates trace context, but its attributes are discarded — SetTag still computes whatever value it\'s given.',
+      'Only guard tags whose VALUE is expensive to compute — the guard itself has a cost comparable to a cheap property-access tag.',
+    ],
+  },
+
+  'aspnet/opentelemetry/fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent': {
+    apis: ['Activity.Current', 'ActivitySource.StartActivity()'],
+    related: [
+      { label: 'SetTag Sampling Gap — previous', route: '/aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span' },
+      { label: 'OpenTelemetry (overview)', route: '/aspnet/opentelemetry' },
+    ],
+    tip: 'A fire-and-forget task started inside a using activity block inherits the parent span as context — but the parent is disposed the instant the enclosing method returns.',
+    docs: [
+      { label: 'OpenTelemetry .NET documentation', url: 'https://opentelemetry.io/docs/languages/net/' },
+    ],
+    resources: [
+      { label: 'open-telemetry/opentelemetry-dotnet', url: 'https://github.com/open-telemetry/opentelemetry-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'Activity.Current flows through async continuations, including into fire-and-forget calls, unless explicitly cleared before starting detached work.',
+      'The fix is to give genuinely detached background work its OWN independent trace, not to skip creating a span for it entirely.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

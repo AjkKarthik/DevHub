@@ -876,6 +876,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Passive Health Checks Don’t Verify Recovery — Just Retry After a Timeout', route: '/aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout' },
     { label: 'Proxy Pipeline Order Is Not Arbitrary', route: '/aspnet/yarp/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing' },
   ],
+  'aspnet-opentelemetry': [
+    { label: 'Testing Custom Spans and Metrics With ActivityListener', route: '/aspnet/opentelemetry/testing-custom-spans-and-metrics-with-activitylistener-and-meterlistener' },
+    { label: 'SetTag Guards Against Null, Not Against a Sampled-Out Span', route: '/aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span' },
+    { label: 'Fire-and-Forget Work Inside a Span Outlives Its Parent', route: '/aspnet/opentelemetry/fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent' },
+  ],
 };
 
 @Component({

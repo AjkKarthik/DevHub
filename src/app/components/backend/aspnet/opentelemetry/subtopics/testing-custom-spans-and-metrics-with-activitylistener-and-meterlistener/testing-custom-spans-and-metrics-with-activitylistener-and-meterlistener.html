@@ -1,0 +1,41 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="OpenTelemetry"
+    topicRoute="/aspnet/opentelemetry"
+    subtopicLabel="Testing Spans and Metrics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Custom Spans and Metrics With ActivityListener and MeterListener</h1>
+  <p class="page-subtitle">
+    None of the main page's own custom spans or metrics are ever verified. ActivityListener and
+    MeterListener observe telemetry directly in-process — no exporter, collector, or backend needed.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing covered, the next subtopic digs into a gap in the main page's own null-conditional
+      SetTag calls — they guard against an unregistered ActivitySource, but not against a span that's been
+      sampled out of full data collection.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OpenTelemetry"
+    topicRoute="/aspnet/opentelemetry"
+    [next]="{ label: 'SetTag Guards Against Null, Not Against a Sampled-Out Span', route: '/aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span' }"
+  />
+</div>

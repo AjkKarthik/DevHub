@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="OpenTelemetry"
+    topicRoute="/aspnet/opentelemetry"
+    subtopicLabel="SetTag Sampling Gap"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">SetTag Guards Against Null, Not Against a Sampled-Out Span</h1>
+  <p class="page-subtitle">
+    The null-conditional operator on activity?.SetTag(...) only guards against an unregistered
+    ActivitySource. A non-null Activity with IsAllDataRequested false still runs — and pays for — any
+    expensive tag computation.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With sampling mechanics clear, the final subtopic extends the main page's own Custom Spans example
+      with a natural but dangerous addition — starting fire-and-forget work inside a using activity block.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OpenTelemetry"
+    topicRoute="/aspnet/opentelemetry"
+    [prev]="{ label: 'Testing Custom Spans and Metrics With ActivityListener', route: '/aspnet/opentelemetry/testing-custom-spans-and-metrics-with-activitylistener-and-meterlistener' }"
+    [next]="{ label: 'Fire-and-Forget Work Inside a Span Outlives Its Parent', route: '/aspnet/opentelemetry/fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent' }"
+  />
+</div>

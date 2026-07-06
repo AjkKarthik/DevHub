@@ -1048,7 +1048,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/opentelemetry" routerLinkActive="active"><span class="nl-text">OpenTelemetry</span>@if(progress.isDone('aspnet-opentelemetry')){<span class="nl-done">✓</span>}@if(diff('aspnet-opentelemetry');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/opentelemetry" routerLinkActive="active">
+        <span class="nl-text">OpenTelemetry</span>
+        @if (progress.isDone('aspnet-opentelemetry')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-opentelemetry'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspnet-opentelemetry')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspnet-opentelemetry')"
+                  (click)="toggleSubtopics('aspnet-opentelemetry', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspnet-opentelemetry'); as subs) {
+        @if (isSubtopicsExpanded('aspnet-opentelemetry')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
