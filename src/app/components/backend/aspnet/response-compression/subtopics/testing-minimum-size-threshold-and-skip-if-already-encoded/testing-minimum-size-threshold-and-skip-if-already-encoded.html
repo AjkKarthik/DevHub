@@ -1,0 +1,41 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Response Compression"
+    topicRoute="/aspnet/response-compression"
+    subtopicLabel="Testing Threshold Behaviors"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Minimum Size Threshold and Skip-If-Already-Encoded</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A states two specific, testable claims — a minimum-size threshold, and a
+    skip-if-already-compressed check — but never demonstrates either with code.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With threshold behaviors covered, the next subtopic clarifies exactly what the main page's own
+      "first matching provider wins" phrase means — registration order is a tie-breaker, not a blanket
+      override of what the client actually supports.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Response Compression"
+    topicRoute="/aspnet/response-compression"
+    [next]="{ label: 'Registration Order Only Breaks Ties Among Supported Encodings', route: '/aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings' }"
+  />
+</div>

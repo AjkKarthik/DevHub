@@ -13961,6 +13961,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/response-compression/testing-minimum-size-threshold-and-skip-if-already-encoded': {
+    apis: ['AddResponseCompression()', 'ResponseCompressionOptions', 'Content-Encoding'],
+    related: [
+      { label: 'Registration Order Mechanics — next', route: '/aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings' },
+      { label: 'Response Compression (overview)', route: '/aspnet/response-compression' },
+      { label: 'Output Caching Advanced', route: '/aspnet/output-caching-advanced' },
+    ],
+    tip: 'Tiny responses are skipped below a minimum-size threshold, and responses with an existing Content-Encoding header are never recompressed — both are testable, falsifiable claims.',
+    docs: [
+      { label: 'Response compression in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/response-compression' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Every compression format adds its own framing overhead — for tiny payloads, that overhead can exceed the savings, making the compressed response LARGER than the original.',
+      'An endpoint that manually sets Content-Encoding causes the middleware to skip its own compression entirely, preventing double-encoding.',
+    ],
+  },
+
+  'aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings': {
+    apis: ['BrotliCompressionProvider', 'GzipCompressionProvider', 'Accept-Encoding'],
+    related: [
+      { label: 'Testing Threshold Behaviors — previous', route: '/aspnet/response-compression/testing-minimum-size-threshold-and-skip-if-already-encoded' },
+      { label: 'Diagnostic Middleware Ordering — next', route: '/aspnet/response-compression/diagnostic-middleware-must-wrap-compression-not-nest-inside-it' },
+      { label: 'Response Compression (overview)', route: '/aspnet/response-compression' },
+    ],
+    tip: 'Registration order is only a tie-breaker among encodings the client actually declared in Accept-Encoding — it never overrides a client that doesn\'t support the preferred provider.',
+    docs: [
+      { label: 'Response compression in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/response-compression' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Removing Gzip because "Brotli is registered first" breaks every client that supports gzip but not Brotli — their responses go uncompressed instead of falling back.',
+      'A client sending no Accept-Encoding header at all always gets an uncompressed response, regardless of how many providers are configured.',
+    ],
+  },
+
+  'aspnet/response-compression/diagnostic-middleware-must-wrap-compression-not-nest-inside-it': {
+    apis: ['UseResponseCompression()', 'HttpContext.Response'],
+    related: [
+      { label: 'Registration Order Mechanics — previous', route: '/aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings' },
+      { label: 'Response Compression (overview)', route: '/aspnet/response-compression' },
+    ],
+    tip: 'A middleware reading Content-Encoding after next() only sees the finalized header if it is registered BEFORE (outside) UseResponseCompression(), not after.',
+    docs: [
+      { label: 'Response compression in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/response-compression' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A diagnostic middleware registered AFTER UseResponseCompression() reads an empty Content-Encoding on every request, even genuinely compressed ones.',
+      'DevTools showing the correct Content-Encoding on the real response is conclusive proof compression works — a silent diagnostic logger points to a middleware-ordering bug, not a config bug.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Response Compression"
+    topicRoute="/aspnet/response-compression"
+    subtopicLabel="Registration Order Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Registration Order Only Breaks Ties Among Supported Encodings</h1>
+  <p class="page-subtitle">
+    "First matching provider wins" requires an actual match first. A client that never lists "br" in
+    Accept-Encoding will never get Brotli, no matter how highly it's registered.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With provider selection mechanics clear, the final subtopic returns to the main page's own Verify
+      Compression diagnostic snippet — its placement relative to UseResponseCompression() determines
+      whether it can actually observe the header it's trying to log.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Response Compression"
+    topicRoute="/aspnet/response-compression"
+    [prev]="{ label: 'Testing Minimum Size Threshold and Skip-If-Already-Encoded', route: '/aspnet/response-compression/testing-minimum-size-threshold-and-skip-if-already-encoded' }"
+    [next]="{ label: 'Diagnostic Middleware Must Wrap Compression, Not Nest Inside It', route: '/aspnet/response-compression/diagnostic-middleware-must-wrap-compression-not-nest-inside-it' }"
+  />
+</div>

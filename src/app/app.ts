@@ -861,6 +861,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'UseMessageRetry and UseDelayedRedelivery Multiply, Not Add', route: '/aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add' },
     { label: 'Send() Hardcoded Queue Name Can Silently Point at an Empty Queue', route: '/aspnet/masstransit/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue' },
   ],
+  'response-compression': [
+    { label: 'Testing Minimum Size Threshold and Skip-If-Already-Encoded', route: '/aspnet/response-compression/testing-minimum-size-threshold-and-skip-if-already-encoded' },
+    { label: 'Registration Order Only Breaks Ties Among Supported Encodings', route: '/aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings' },
+    { label: 'Diagnostic Middleware Must Wrap Compression, Not Nest Inside It', route: '/aspnet/response-compression/diagnostic-middleware-must-wrap-compression-not-nest-inside-it' },
+  ],
 };
 
 @Component({
