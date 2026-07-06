@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Anti-forgery &amp; CSRF"
+    topicRoute="/aspnet/csrf"
+    subtopicLabel="Token-Pair Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Cookie Token and Request Token Are Not the Same String</h1>
+  <p class="page-subtitle">
+    The main page says "the server checks that both tokens match" — read literally, that sounds like a
+    simple string comparison. ASP.NET Core actually issues two different, cryptographically related
+    values.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the token-pair mechanics clear, the final subtopic looks at the main page's own two middleware
+      examples — UseAntiforgery() and the hand-rolled AntiforgeryMiddleware — and why registering both
+      together is redundant, not layered protection.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Anti-forgery &amp; CSRF"
+    topicRoute="/aspnet/csrf"
+    [prev]="{ label: 'Testing GET Requests Cannot Reach State-Changing Endpoints', route: '/aspnet/csrf/testing-get-requests-cant-reach-state-changing-endpoints' }"
+    [next]="{ label: 'Manual Validation Middleware and UseAntiforgery() Are Redundant', route: '/aspnet/csrf/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered' }"
+  />
+</div>

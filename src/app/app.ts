@@ -841,6 +841,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How Dapper Decides Whether to Close the Connection It Used', route: '/aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used' },
     { label: 'TransferAsync Holds Its Connection Open Far Too Long', route: '/aspnet/dapper/transferasync-example-holds-its-connection-open-far-too-long' },
   ],
+  'csrf': [
+    { label: 'Testing GET Requests Cannot Reach State-Changing Endpoints', route: '/aspnet/csrf/testing-get-requests-cant-reach-state-changing-endpoints' },
+    { label: 'Cookie Token and Request Token Are Not the Same String', route: '/aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string' },
+    { label: 'Manual Validation Middleware and UseAntiforgery() Are Redundant', route: '/aspnet/csrf/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered' },
+  ],
 };
 
 @Component({

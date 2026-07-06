@@ -944,7 +944,12 @@ export const routes: Routes = [
         { path: 'how-dapper-decides-whether-to-close-the-connection-it-used', loadComponent: () => import('./components/backend/aspnet/dapper/subtopics/how-dapper-decides-whether-to-close-the-connection-it-used/how-dapper-decides-whether-to-close-the-connection-it-used').then(m => m.HowDapperDecidesWhetherToCloseTheConnectionItUsedSubtopic) },
         { path: 'transferasync-example-holds-its-connection-open-far-too-long', loadComponent: () => import('./components/backend/aspnet/dapper/subtopics/transferasync-example-holds-its-connection-open-far-too-long/transferasync-example-holds-its-connection-open-far-too-long').then(m => m.TransferasyncExampleHoldsItsConnectionOpenFarTooLongSubtopic) },
       ] },
-      { path: 'csrf',                      loadComponent: () => import('./components/backend/aspnet/csrf/csrf').then(m => m.AspnetCsrf) },
+      { path: 'csrf', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/csrf/csrf').then(m => m.AspnetCsrf) },
+        { path: 'testing-get-requests-cant-reach-state-changing-endpoints', loadComponent: () => import('./components/backend/aspnet/csrf/subtopics/testing-get-requests-cant-reach-state-changing-endpoints/testing-get-requests-cant-reach-state-changing-endpoints').then(m => m.TestingGetRequestsCantReachStateChangingEndpointsSubtopic) },
+        { path: 'cookie-token-and-request-token-are-not-the-same-string', loadComponent: () => import('./components/backend/aspnet/csrf/subtopics/cookie-token-and-request-token-are-not-the-same-string/cookie-token-and-request-token-are-not-the-same-string').then(m => m.CookieTokenAndRequestTokenAreNotTheSameStringSubtopic) },
+        { path: 'manual-validation-middleware-and-useantiforgery-are-redundant-not-layered', loadComponent: () => import('./components/backend/aspnet/csrf/subtopics/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered').then(m => m.ManualValidationMiddlewareAndUseantiforgeryAreRedundantNotLayeredSubtopic) },
+      ] },
       { path: 'feature-flags',             loadComponent: () => import('./components/backend/aspnet/feature-flags/feature-flags').then(m => m.AspnetFeatureFlags) },
       { path: 'localization',              loadComponent: () => import('./components/backend/aspnet/localization/localization').then(m => m.AspnetLocalization) },
       { path: 'masstransit',               loadComponent: () => import('./components/backend/aspnet/masstransit/masstransit').then(m => m.AspnetMasstransit) },

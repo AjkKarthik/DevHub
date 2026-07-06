@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Anti-forgery &amp; CSRF"
+    topicRoute="/aspnet/csrf"
+    subtopicLabel="Testing GET Can't Change State"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing GET Requests Cannot Reach State-Changing Endpoints</h1>
+  <p class="page-subtitle">
+    The main page's own "Using GET endpoints for state changes" mistake shows the fix, but never a
+    regression test that would catch someone reintroducing it. This is a routing test, not an antiforgery
+    test — the two are easy to confuse.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since=".NET 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With verb-level routing covered, the next subtopic corrects a simplification in how the main page
+      describes the double-submit pattern itself — the cookie token and the request token are not actually
+      the same string.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Anti-forgery &amp; CSRF"
+    topicRoute="/aspnet/csrf"
+    [next]="{ label: 'Cookie Token and Request Token Are Not the Same String', route: '/aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string' }"
+  />
+</div>

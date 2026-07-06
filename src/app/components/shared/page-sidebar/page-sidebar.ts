@@ -13725,6 +13725,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/csrf/testing-get-requests-cant-reach-state-changing-endpoints': {
+    apis: ['MapGet()', 'MapDelete()', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Token-Pair Mechanics — next', route: '/aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string' },
+      { label: 'Anti-forgery & CSRF (overview)', route: '/aspnet/csrf' },
+      { label: 'Web Security Essentials', route: '/aspnet/web-security' },
+    ],
+    tip: 'A 404 on GET proves a route does not exist at all — that is a routing guarantee, not an antiforgery one. Assert the specific status code, not just "not successful."',
+    docs: [
+      { label: 'Prevent CSRF attacks in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Antiforgery only ever runs for the verbs it is wired to (POST/PUT/PATCH/DELETE) — a GET route pointed at the same handler bypasses it entirely, not because a token check failed.',
+      'A 404 (no route), a 400 (failed antiforgery), and a 405 (wrong method) are all "not successful" — assert the SPECIFIC status code to tell them apart.',
+    ],
+  },
+
+  'aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string': {
+    apis: ['IAntiforgery', 'GetAndStoreTokens()', 'AntiforgeryTokenSet'],
+    related: [
+      { label: 'Testing GET Cannot Change State — previous', route: '/aspnet/csrf/testing-get-requests-cant-reach-state-changing-endpoints' },
+      { label: 'Middleware Redundancy — next', route: '/aspnet/csrf/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered' },
+      { label: 'Anti-forgery & CSRF (overview)', route: '/aspnet/csrf' },
+    ],
+    tip: 'The cookie token and the request token are two DIFFERENT cryptographically related values — not one shared string compared twice.',
+    docs: [
+      { label: 'Prevent CSRF attacks in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Presenting the cookie token as the request token fails validation — knowing one does not let an attacker derive or substitute the other.',
+      'A token "living in a cookie only" is dangerous because it removes the second channel entirely, not because it duplicates one exposed secret.',
+    ],
+  },
+
+  'aspnet/csrf/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered': {
+    apis: ['UseAntiforgery()', 'IAntiforgery', 'ValidateRequestAsync()', 'AntiforgeryValidationException'],
+    related: [
+      { label: 'Token-Pair Mechanics — previous', route: '/aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string' },
+      { label: 'Anti-forgery & CSRF (overview)', route: '/aspnet/csrf' },
+    ],
+    tip: 'Registering both UseAntiforgery() and a custom validation middleware is not layered protection — whichever runs first wins on failure, and the other becomes dead code.',
+    docs: [
+      { label: 'Prevent CSRF attacks in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Whichever middleware runs first short-circuits the pipeline on failure — the second one\'s ValidateRequestAsync() call never executes for a failing request.',
+      'To customize the failure response without double-validating, wrap app.UseAntiforgery() in a try/catch middleware registered just before it, rather than replacing it entirely.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],
