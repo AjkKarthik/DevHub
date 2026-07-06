@@ -859,7 +859,12 @@ export const routes: Routes = [
         { path: 'how-browser-decides-simple-vs-preflight-request', loadComponent: () => import('./components/backend/aspnet/cors/subtopics/how-browser-decides-simple-vs-preflight-request/how-browser-decides-simple-vs-preflight-request').then(m => m.HowBrowserDecidesSimpleVsPreflightRequestSubtopic) },
         { path: 'misspelled-requirecors-policy-name-fails-silently-no-headers', loadComponent: () => import('./components/backend/aspnet/cors/subtopics/misspelled-requirecors-policy-name-fails-silently-no-headers/misspelled-requirecors-policy-name-fails-silently-no-headers').then(m => m.MisspelledRequirecorsPolicyNameFailsSilentlyNoHeadersSubtopic) },
       ] },
-      { path: 'rate-limiting',        loadComponent: () => import('./components/backend/aspnet/rate-limiting/rate-limiting').then(m => m.AspnetRateLimiting) },
+      { path: 'rate-limiting', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/rate-limiting/rate-limiting').then(m => m.AspnetRateLimiting) },
+        { path: 'testing-fixed-window-boundary-burst-with-faketimeprovider', loadComponent: () => import('./components/backend/aspnet/rate-limiting/subtopics/testing-fixed-window-boundary-burst-with-faketimeprovider/testing-fixed-window-boundary-burst-with-faketimeprovider').then(m => m.TestingFixedWindowBoundaryBurstWithFaketimeproviderSubtopic) },
+        { path: 'concurrency-permit-held-until-response-fully-transmitted', loadComponent: () => import('./components/backend/aspnet/rate-limiting/subtopics/concurrency-permit-held-until-response-fully-transmitted/concurrency-permit-held-until-response-fully-transmitted').then(m => m.ConcurrencyPermitHeldUntilResponseFullyTransmittedSubtopic) },
+        { path: 'partition-factory-runs-once-tier-upgrade-ignored-until-evicted', loadComponent: () => import('./components/backend/aspnet/rate-limiting/subtopics/partition-factory-runs-once-tier-upgrade-ignored-until-evicted/partition-factory-runs-once-tier-upgrade-ignored-until-evicted').then(m => m.PartitionFactoryRunsOnceTierUpgradeIgnoredUntilEvictedSubtopic) },
+      ] },
       { path: 'web-security',         loadComponent: () => import('./components/backend/aspnet/web-security/web-security').then(m => m.AspnetWebSecurity) },
       { path: 'secrets',              loadComponent: () => import('./components/backend/aspnet/secrets/secrets').then(m => m.AspnetSecrets) },
       // ── Quality ──

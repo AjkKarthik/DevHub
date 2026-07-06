@@ -12684,6 +12684,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/rate-limiting/testing-fixed-window-boundary-burst-with-faketimeprovider': {
+    apis: ['TimeProvider', 'FakeTimeProvider', 'FixedWindowRateLimiterOptions.TimeProvider'],
+    related: [
+      { label: 'Concurrency Permit Release Mechanics — next', route: '/aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted' },
+      { label: 'Rate Limiting (overview)', route: '/aspnet/rate-limiting' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'The rate limiter primitives accept an injectable TimeProvider specifically so tests can drive window rollover deterministically with FakeTimeProvider — no Task.Delay, no flakiness.',
+    docs: [
+      { label: 'Rate limiting middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A fixed window resets its ENTIRE counter at the boundary regardless of when within the window requests landed — a client can send PermitLimit requests just before and PermitLimit more just after, doubling throughput briefly.',
+      'Sliding window tracks per-segment counts and only expires the oldest segment as time advances — the same clock-advance technique produces little to no burst under sliding window, a concretely testable difference.',
+    ],
+  },
+
+  'aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted': {
+    apis: ['RateLimitingMiddleware', 'IAsyncEnumerable<T> streaming', 'Results.Stream()'],
+    related: [
+      { label: 'Testing the Boundary Burst — previous', route: '/aspnet/rate-limiting/testing-fixed-window-boundary-burst-with-faketimeprovider' },
+      { label: 'Partition Factory Runs Once — next', route: '/aspnet/rate-limiting/partition-factory-runs-once-tier-upgrade-ignored-until-evicted' },
+      { label: 'Rate Limiting (overview)', route: '/aspnet/rate-limiting' },
+    ],
+    tip: 'The concurrency permit is released only after the wrapped next() call fully completes — for a streaming response that means the ENTIRE transmission to the client, not just server-side generation time.',
+    docs: [
+      { label: 'Rate limiting middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A slow or paused client reading a streamed response directly occupies a limited concurrency permit for the full duration of its slow read — turning client-side slowness into server-side throughput starvation for other clients.',
+      'Sizing a concurrency limiter around expected generation time alone silently under-provisions for streaming endpoints where client read speed dominates permit lifetime.',
+    ],
+  },
+
+  'aspnet/rate-limiting/partition-factory-runs-once-tier-upgrade-ignored-until-evicted': {
+    apis: ['RateLimitPartition.GetFixedWindowLimiter()', 'partition eviction', 'PartitionedRateLimiter'],
+    related: [
+      { label: 'Concurrency Permit Release Mechanics — previous', route: '/aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted' },
+      { label: 'Rate Limiting (overview)', route: '/aspnet/rate-limiting' },
+      { label: 'Redis Rate Limiting', route: '/redis/rate-limiting' },
+    ],
+    tip: 'A partition\'s factory delegate runs once per distinct key and is cached — a mid-session external change (like a subscription tier upgrade) has no effect on an active user\'s limit until their partition is evicted from memory.',
+    docs: [
+      { label: 'Rate limiting middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'An actively-requesting user never triggers idle-based eviction, so a captured Free-tier limit can persist indefinitely across an entire session even after a real upgrade to Premium.',
+      'Folding the changing state into the partition KEY itself (e.g. "userId:tier") scopes cache invalidation to exactly the users who changed, unlike a blunt periodic full-cache clear that resets everyone\'s in-progress window simultaneously.',
+    ],
+  },
+
   'aspnet/web-security': {
     apis: ['FromSqlInterpolated()', 'HtmlEncoder.Encode()', 'AddAntiforgery()', '[ValidateAntiForgeryToken]', 'IAntiforgery', 'LocalRedirect()', 'Content-Security-Policy', 'Path.GetFullPath()'],
     related: [

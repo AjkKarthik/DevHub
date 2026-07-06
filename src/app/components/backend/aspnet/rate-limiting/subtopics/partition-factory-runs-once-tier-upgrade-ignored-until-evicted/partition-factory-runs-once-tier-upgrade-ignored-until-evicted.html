@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Rate Limiting"
+    topicRoute="/aspnet/rate-limiting"
+    subtopicLabel="Partition Factory Runs Once"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Partition Factory Runs Once — Tier Upgrade Ignored Until Evicted</h1>
+  <p class="page-subtitle">
+    The main page already notes partitions are cached by key — this subtopic shows the consequence: a
+    factory reading a user's subscription tier only ever runs once per key, so a mid-session upgrade has no
+    effect until the partition is evicted from memory.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Rate Limiting deep-dive set: proving the fixed-window boundary burst with a real
+      test, understanding exactly when a concurrency permit releases, and now the partition-caching gotcha
+      that silently freezes a user's limit at first-contact values. Head back to the topic overview to
+      continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Rate Limiting"
+    topicRoute="/aspnet/rate-limiting"
+    [prev]="{ label: 'Concurrency Permit Held Until Response Fully Transmitted', route: '/aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted' }"
+  />
+</div>

@@ -758,6 +758,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How the Browser Decides Simple vs Preflight Request', route: '/aspnet/cors/how-browser-decides-simple-vs-preflight-request' },
     { label: 'Misspelled RequireCors Policy Name Fails Silently', route: '/aspnet/cors/misspelled-requirecors-policy-name-fails-silently-no-headers' },
   ],
+  // NOTE: keyed 'aspnet-rate-limiting', NOT bare 'rate-limiting' — the
+  // Redis hub (/data/redis/rate-limiting) and API Design hub
+  // (/architecture/api-design/rate-limiting) already own that bare slug.
+  'aspnet-rate-limiting': [
+    { label: 'Testing the Fixed-Window Boundary Burst With FakeTimeProvider', route: '/aspnet/rate-limiting/testing-fixed-window-boundary-burst-with-faketimeprovider' },
+    { label: 'Concurrency Permit Held Until Response Fully Transmitted', route: '/aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted' },
+    { label: 'Partition Factory Runs Once — Tier Upgrade Ignored Until Evicted', route: '/aspnet/rate-limiting/partition-factory-runs-once-tier-upgrade-ignored-until-evicted' },
+  ],
 };
 
 @Component({
