@@ -14020,6 +14020,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/websockets/testing-websocket-endpoints-with-testservers-websocketclient': {
+    apis: ['TestServer.CreateWebSocketClient()', 'WebSocket', 'CloseAsync()'],
+    related: [
+      { label: 'Close Handshake Mechanics — next', route: '/aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop' },
+      { label: 'WebSockets (overview)', route: '/aspnet/websockets' },
+      { label: 'SignalR', route: '/aspnet/signalr' },
+    ],
+    tip: 'HttpClient can\'t open a WebSocket at all — use TestServer.CreateWebSocketClient() to connect a real in-memory WebSocket for testing.',
+    docs: [
+      { label: 'WebSockets in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/websockets' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'An echo-only test never proves the closing handshake works — forgetting CloseAsync() on the server leaves the client waiting for a reply that never comes.',
+      'CreateWebSocketClient() connects directly to the in-memory TestServer — no real socket or port is involved.',
+    ],
+  },
+
+  'aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop': {
+    apis: ['WebSocketState', 'CloseAsync()', 'ReceiveAsync()'],
+    related: [
+      { label: 'Testing WebSockets — previous', route: '/aspnet/websockets/testing-websocket-endpoints-with-testservers-websocketclient' },
+      { label: 'Multi-Frame Truncation Gap — next', route: '/aspnet/websockets/receive-loop-examples-silently-truncate-multi-frame-messages' },
+      { label: 'WebSockets (overview)', route: '/aspnet/websockets' },
+    ],
+    tip: 'ws.State already transitions to CloseReceived before your code checks MessageType — the manual CloseAsync() call exists to complete the handshake, not to end the loop.',
+    docs: [
+      { label: 'WebSockets in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/websockets' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Removing the Close-message check doesn\'t hang the server loop — the outer while(State==Open) exits fine — but the peer never receives a close frame back.',
+      'The framework sets ws.State to CloseReceived as part of processing the incoming close frame, before your code ever calls CloseAsync().',
+    ],
+  },
+
+  'aspnet/websockets/receive-loop-examples-silently-truncate-multi-frame-messages': {
+    apis: ['ReceiveAsync()', 'WebSocketReceiveResult.EndOfMessage', 'MemoryStream'],
+    related: [
+      { label: 'Close Handshake Mechanics — previous', route: '/aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop' },
+      { label: 'WebSockets (overview)', route: '/aspnet/websockets' },
+    ],
+    tip: 'Fragmentation is the SENDER\'s choice, not the server\'s — always accumulate until EndOfMessage is true instead of processing after one ReceiveAsync call.',
+    docs: [
+      { label: 'WebSockets in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/websockets' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A message fitting comfortably in the receive buffer can still arrive across multiple frames — buffer size has no bearing on whether a sender chooses to fragment.',
+      'Non-browser clients, large payloads, and proxies can all fragment messages a typical browser wouldn\'t, making single-ReceiveAsync code a latent bug, not a theoretical one.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

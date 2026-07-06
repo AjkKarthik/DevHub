@@ -974,7 +974,12 @@ export const routes: Routes = [
         { path: 'registration-order-only-breaks-ties-among-client-supported-encodings', loadComponent: () => import('./components/backend/aspnet/response-compression/subtopics/registration-order-only-breaks-ties-among-client-supported-encodings/registration-order-only-breaks-ties-among-client-supported-encodings').then(m => m.RegistrationOrderOnlyBreaksTiesAmongClientSupportedEncodingsSubtopic) },
         { path: 'diagnostic-middleware-must-wrap-compression-not-nest-inside-it', loadComponent: () => import('./components/backend/aspnet/response-compression/subtopics/diagnostic-middleware-must-wrap-compression-not-nest-inside-it/diagnostic-middleware-must-wrap-compression-not-nest-inside-it').then(m => m.DiagnosticMiddlewareMustWrapCompressionNotNestInsideItSubtopic) },
       ] },
-      { path: 'websockets',                loadComponent: () => import('./components/backend/aspnet/websockets/websockets').then(m => m.AspnetWebsockets) },
+      { path: 'websockets', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/websockets/websockets').then(m => m.AspnetWebsockets) },
+        { path: 'testing-websocket-endpoints-with-testservers-websocketclient', loadComponent: () => import('./components/backend/aspnet/websockets/subtopics/testing-websocket-endpoints-with-testservers-websocketclient/testing-websocket-endpoints-with-testservers-websocketclient').then(m => m.TestingWebsocketEndpointsWithTestserversWebsocketclientSubtopic) },
+        { path: 'close-handshake-mechanics-what-actually-ends-the-receive-loop', loadComponent: () => import('./components/backend/aspnet/websockets/subtopics/close-handshake-mechanics-what-actually-ends-the-receive-loop/close-handshake-mechanics-what-actually-ends-the-receive-loop').then(m => m.CloseHandshakeMechanicsWhatActuallyEndsTheReceiveLoopSubtopic) },
+        { path: 'receive-loop-examples-silently-truncate-multi-frame-messages', loadComponent: () => import('./components/backend/aspnet/websockets/subtopics/receive-loop-examples-silently-truncate-multi-frame-messages/receive-loop-examples-silently-truncate-multi-frame-messages').then(m => m.ReceiveLoopExamplesSilentlyTruncateMultiFrameMessagesSubtopic) },
+      ] },
       { path: 'yarp',                      loadComponent: () => import('./components/backend/aspnet/yarp/yarp').then(m => m.AspnetYarp) },
       { path: 'opentelemetry',             loadComponent: () => import('./components/backend/aspnet/opentelemetry/opentelemetry').then(m => m.AspnetOpentelemetry) },
       { path: 'cheatsheet',           loadComponent: () => import('./components/backend/aspnet/cheatsheet/cheatsheet').then(m => m.AspnetCheatsheet) },

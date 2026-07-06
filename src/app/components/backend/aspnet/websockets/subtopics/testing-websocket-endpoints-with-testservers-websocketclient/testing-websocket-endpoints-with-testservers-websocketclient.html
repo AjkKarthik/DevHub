@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="WebSockets"
+    topicRoute="/aspnet/websockets"
+    subtopicLabel="Testing With TestServer"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing WebSocket Endpoints With TestServer's WebSocketClient</h1>
+  <p class="page-subtitle">
+    None of the main page's own receive-loop endpoints are ever tested. WebApplicationFactory's HttpClient
+    can't open a WebSocket at all — TestServer's own CreateWebSocketClient() connects a real WebSocket
+    directly to the in-memory server.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing covered, the next subtopic digs into what the manual Close-message check inside the
+      receive loop is actually for — it isn't primarily what ends the loop, it's what completes the
+      closing handshake.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="WebSockets"
+    topicRoute="/aspnet/websockets"
+    [next]="{ label: 'Close Handshake Mechanics: What Actually Ends the Receive Loop', route: '/aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop' }"
+  />
+</div>

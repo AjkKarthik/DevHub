@@ -866,6 +866,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Registration Order Only Breaks Ties Among Supported Encodings', route: '/aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings' },
     { label: 'Diagnostic Middleware Must Wrap Compression, Not Nest Inside It', route: '/aspnet/response-compression/diagnostic-middleware-must-wrap-compression-not-nest-inside-it' },
   ],
+  'aspnet-websockets': [
+    { label: 'Testing WebSocket Endpoints With TestServer’s WebSocketClient', route: '/aspnet/websockets/testing-websocket-endpoints-with-testservers-websocketclient' },
+    { label: 'Close Handshake Mechanics: What Actually Ends the Receive Loop', route: '/aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop' },
+    { label: 'Receive-Loop Examples Silently Truncate Multi-Frame Messages', route: '/aspnet/websockets/receive-loop-examples-silently-truncate-multi-frame-messages' },
+  ],
 };
 
 @Component({
