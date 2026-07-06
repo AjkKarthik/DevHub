@@ -1520,7 +1520,7 @@ off here with a date.
 - [x] `/aspnet/authentication` — Authentication (2026-07-05 — 3 subtopics: testing-jwt-clockskew-expired-token-still-validates, why-setapplicationname-matters-shared-dataprotection-keys, jwt-claim-type-mapping-sub-becomes-nameidentifier)
 - [x] `/aspnet/authorization` — Authorization (2026-07-06 — 3 subtopics: testing-multi-handler-or-semantics-fail-veto, how-authorization-middleware-combines-default-fallback-policies, allowanonymous-anywhere-wins-authorize-cannot-override)
 - [x] `/aspnet/cors` — CORS & Security Headers (2026-07-06 — 3 subtopics: testing-preflight-bypasses-auth-middleware-terminal-response, how-browser-decides-simple-vs-preflight-request, misspelled-requirecors-policy-name-fails-silently-no-headers)
-- [ ] `/aspnet/rate-limiting` — Rate Limiting
+- [x] `/aspnet/rate-limiting` — Rate Limiting (2026-07-06 — 3 subtopics: testing-fixed-window-boundary-burst-with-faketimeprovider, concurrency-permit-held-until-response-fully-transmitted, partition-factory-runs-once-tier-upgrade-ignored-until-evicted)
 - [ ] `/aspnet/web-security` — Web Security Essentials
 - [ ] `/aspnet/secrets` — Secrets & Data Protection
 - [ ] `/aspnet/testing` — Testing ASP.NET Core
