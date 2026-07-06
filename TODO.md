@@ -1529,7 +1529,7 @@ off here with a date.
 - [x] `/aspnet/health-checks` — Health Checks & Observability (2026-07-06 — 3 subtopics: testing-health-check-boundary-logic-and-liveness-runs-zero-checks, db-check-connection-pool-contention-causes-cascading-failure, degraded-returns-200-by-default-invisible-to-load-balancers)
 - [x] `/aspnet/deployment` — Deployment & Hosting (2026-07-06 — 3 subtopics: testing-forwardedheaders-trust-configuration-rejects-spoofed-ips, how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip, healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image)
 - [x] `/aspnet/performance` — Performance & Diagnostics (2026-07-06 — 3 subtopics: testing-allocation-regressions-with-getallocatedbytesforthread, server-gc-heap-count-follows-perceived-not-actual-cpu-limit, streaming-query-missing-cancellationtoken-runs-after-disconnect)
-- [ ] `/aspnet/aspire` — .NET Aspire
+- [x] `/aspnet/aspire` — .NET Aspire (2026-07-06 — 3 subtopics: testing-apphost-topology-with-distributedapplicationtestingbuilder, addproject-type-parameter-requires-build-not-just-project-reference, otel-exporter-needs-endpoint-guard-when-running-outside-apphost)
 - [ ] `/aspnet/fluent-validation` — FluentValidation
 - [ ] `/aspnet/minimal-api-advanced` — Minimal API Advanced
 - [ ] `/aspnet/output-caching-advanced` — Output Caching Advanced
