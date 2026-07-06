@@ -12603,6 +12603,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/cors/testing-preflight-bypasses-auth-middleware-terminal-response': {
+    apis: ['CorsMiddleware', 'WebApplicationFactory<T>', 'HttpRequestMessage(HttpMethod.Options, ...)'],
+    related: [
+      { label: 'How Browser Decides Simple vs Preflight — next', route: '/aspnet/cors/how-browser-decides-simple-vs-preflight-request' },
+      { label: 'CORS & Security Headers (overview)', route: '/aspnet/cors' },
+      { label: 'Authorization', route: '/aspnet/authorization' },
+    ],
+    tip: 'CorsMiddleware answers a preflight request itself and returns without calling next() — auth middleware never even sees a genuine preflight when CORS is registered first, regardless of any special-casing in the auth pipeline.',
+    docs: [
+      { label: 'Enable CORS in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/cors' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The "CORS before auth" rule is unconditional only when a FallbackPolicy is configured — otherwise a public endpoint with no [Authorize] happens to work regardless of ordering, a fragile coincidence.',
+      'Test both orderings with an instrumented handler (a static counter) to prove the handler never runs for a preflight, in either ordering — for different reasons (CORS short-circuit vs. 401 short-circuit).',
+    ],
+  },
+
+  'aspnet/cors/how-browser-decides-simple-vs-preflight-request': {
+    apis: ['CORS-safelisted headers', 'Content-Type safelist', 'Fetch API'],
+    related: [
+      { label: 'Testing Preflight Bypasses Auth — previous', route: '/aspnet/cors/testing-preflight-bypasses-auth-middleware-terminal-response' },
+      { label: 'Misspelled RequireCors Policy Name — next', route: '/aspnet/cors/misspelled-requirecors-policy-name-fails-silently-no-headers' },
+      { label: 'CORS & Security Headers (overview)', route: '/aspnet/cors' },
+    ],
+    tip: 'application/json always preflights — not because of authentication or CORS config, but because Content-Type is only "simple" for exactly three values (form-urlencoded, multipart/form-data, text/plain), and JSON is none of them.',
+    docs: [
+      { label: 'Fetch CORS protocol (MDN)', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The simple-vs-preflight decision is made entirely client-side, before any network round trip — the server\'s CORS configuration only affects whether a sent preflight succeeds, never whether one is sent.',
+      'GET requests are NOT automatically exempt from preflighting — a GET with a non-safelisted header (most commonly Authorization) still triggers one.',
+    ],
+  },
+
+  'aspnet/cors/misspelled-requirecors-policy-name-fails-silently-no-headers': {
+    apis: ['ICorsPolicyProvider', '.RequireCors()', 'CorsOptions.AddPolicy()'],
+    related: [
+      { label: 'How Browser Decides Simple vs Preflight — previous', route: '/aspnet/cors/how-browser-decides-simple-vs-preflight-request' },
+      { label: 'CORS & Security Headers (overview)', route: '/aspnet/cors' },
+      { label: 'Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A misspelled .RequireCors("...") name resolves to null via ICorsPolicyProvider — CorsMiddleware treats that as "nothing to apply" and calls next() with no exception anywhere; the response just silently loses its Access-Control-Allow-Origin header.',
+    docs: [
+      { label: 'Enable CORS in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/cors' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'curl, Postman, and status-code-only integration tests all see an identical 200 response whether the CORS policy resolved or silently failed — only asserting on the Access-Control-Allow-Origin header itself catches the gap.',
+      'The natural debugging instinct (re-checking WithOrigins() for a typo) points at the wrong config — the real bug is a mismatched policy NAME string between AddPolicy() and RequireCors().',
+    ],
+  },
+
   'aspnet/rate-limiting': {
     apis: ['AddRateLimiter()', 'UseRateLimiter()', 'AddFixedWindowLimiter()', 'AddSlidingWindowLimiter()', 'AddTokenBucketLimiter()', 'AddConcurrencyLimiter()', 'RequireRateLimiting()', 'OnRejected'],
     related: [

@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="CORS & Security Headers"
+    topicRoute="/aspnet/cors"
+    subtopicLabel="Simple vs Preflight Request Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How the Browser Decides Simple vs Preflight Request</h1>
+  <p class="page-subtitle">
+    The decision is made entirely client-side against a fixed spec safelist — before any network round
+    trip and independent of the server's CORS configuration. This is exactly why application/json always
+    preflights, even with zero custom headers.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With both the middleware-ordering mechanics and the browser's own preflight decision pinned down,
+      the final subtopic covers a related, easy-to-miss failure mode on the server side: a misspelled
+      RequireCors() policy name that fails completely silently, with no exception anywhere.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="CORS & Security Headers"
+    topicRoute="/aspnet/cors"
+    [prev]="{ label: 'Testing That Preflight Terminates Before Auth Middleware Runs', route: '/aspnet/cors/testing-preflight-bypasses-auth-middleware-terminal-response' }"
+    [next]="{ label: 'Misspelled RequireCors Policy Name Fails Silently — No Headers', route: '/aspnet/cors/misspelled-requirecors-policy-name-fails-silently-no-headers' }"
+  />
+</div>

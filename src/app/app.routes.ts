@@ -853,7 +853,12 @@ export const routes: Routes = [
         { path: 'how-authorization-middleware-combines-default-fallback-policies', loadComponent: () => import('./components/backend/aspnet/authorization/subtopics/how-authorization-middleware-combines-default-fallback-policies/how-authorization-middleware-combines-default-fallback-policies').then(m => m.HowAuthorizationMiddlewareCombinesDefaultFallbackPoliciesSubtopic) },
         { path: 'allowanonymous-anywhere-wins-authorize-cannot-override', loadComponent: () => import('./components/backend/aspnet/authorization/subtopics/allowanonymous-anywhere-wins-authorize-cannot-override/allowanonymous-anywhere-wins-authorize-cannot-override').then(m => m.AllowanonymousAnywhereWinsAuthorizeCannotOverrideSubtopic) },
       ] },
-      { path: 'cors',                 loadComponent: () => import('./components/backend/aspnet/cors/cors').then(m => m.AspnetCors) },
+      { path: 'cors', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/cors/cors').then(m => m.AspnetCors) },
+        { path: 'testing-preflight-bypasses-auth-middleware-terminal-response', loadComponent: () => import('./components/backend/aspnet/cors/subtopics/testing-preflight-bypasses-auth-middleware-terminal-response/testing-preflight-bypasses-auth-middleware-terminal-response').then(m => m.TestingPreflightBypassesAuthMiddlewareTerminalResponseSubtopic) },
+        { path: 'how-browser-decides-simple-vs-preflight-request', loadComponent: () => import('./components/backend/aspnet/cors/subtopics/how-browser-decides-simple-vs-preflight-request/how-browser-decides-simple-vs-preflight-request').then(m => m.HowBrowserDecidesSimpleVsPreflightRequestSubtopic) },
+        { path: 'misspelled-requirecors-policy-name-fails-silently-no-headers', loadComponent: () => import('./components/backend/aspnet/cors/subtopics/misspelled-requirecors-policy-name-fails-silently-no-headers/misspelled-requirecors-policy-name-fails-silently-no-headers').then(m => m.MisspelledRequirecorsPolicyNameFailsSilentlyNoHeadersSubtopic) },
+      ] },
       { path: 'rate-limiting',        loadComponent: () => import('./components/backend/aspnet/rate-limiting/rate-limiting').then(m => m.AspnetRateLimiting) },
       { path: 'web-security',         loadComponent: () => import('./components/backend/aspnet/web-security/web-security').then(m => m.AspnetWebSecurity) },
       { path: 'secrets',              loadComponent: () => import('./components/backend/aspnet/secrets/secrets').then(m => m.AspnetSecrets) },

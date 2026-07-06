@@ -753,6 +753,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How Authorization Middleware Combines Default & Fallback Policies', route: '/aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies' },
     { label: 'AllowAnonymous Anywhere Wins — Authorize Cannot Override It', route: '/aspnet/authorization/allowanonymous-anywhere-wins-authorize-cannot-override' },
   ],
+  'cors': [
+    { label: 'Testing That Preflight Terminates Before Auth Middleware Runs', route: '/aspnet/cors/testing-preflight-bypasses-auth-middleware-terminal-response' },
+    { label: 'How the Browser Decides Simple vs Preflight Request', route: '/aspnet/cors/how-browser-decides-simple-vs-preflight-request' },
+    { label: 'Misspelled RequireCors Policy Name Fails Silently', route: '/aspnet/cors/misspelled-requirecors-policy-name-fails-silently-no-headers' },
+  ],
 };
 
 @Component({
