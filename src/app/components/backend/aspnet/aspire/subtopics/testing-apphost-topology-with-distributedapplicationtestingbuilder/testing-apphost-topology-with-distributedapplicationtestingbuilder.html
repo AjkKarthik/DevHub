@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel=".NET Aspire"
+    topicRoute="/aspnet/aspire"
+    subtopicLabel="Testing AppHost Topology"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing the AppHost Topology With DistributedApplicationTestingBuilder</h1>
+  <p class="page-subtitle">
+    The main page mentions Aspire.Hosting.Testing in one Q&A line without showing it. This subtopic shows
+    the full pattern — real containers, real services, CreateHttpClient resolving the random port via the
+    same service discovery the app itself uses.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Aspire 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With integration testing covered, the next subtopic digs into a mechanic the main page glosses over —
+      exactly how the AddProject&lt;T&gt;() type parameter gets generated, and why adding a project reference
+      alone isn't enough to make it show up.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel=".NET Aspire"
+    topicRoute="/aspnet/aspire"
+    [next]="{ label: 'AddProject Type Parameter Requires a Build, Not Just a Project Reference', route: '/aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference' }"
+  />
+</div>

@@ -816,6 +816,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Server GC Heap Count Follows Perceived, Not Actual, CPU Limit', route: '/aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit' },
     { label: 'Streaming Query Missing CancellationToken Runs After Disconnect', route: '/aspnet/performance/streaming-query-missing-cancellationtoken-runs-after-disconnect' },
   ],
+  'aspire': [
+    { label: 'Testing the AppHost Topology With DistributedApplicationTestingBuilder', route: '/aspnet/aspire/testing-apphost-topology-with-distributedapplicationtestingbuilder' },
+    { label: 'AddProject Type Parameter Requires a Build, Not Just a Project Reference', route: '/aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference' },
+    { label: 'OTel Exporter Needs an Endpoint Guard Outside the AppHost', route: '/aspnet/aspire/otel-exporter-needs-endpoint-guard-when-running-outside-apphost' },
+  ],
 };
 
 @Component({

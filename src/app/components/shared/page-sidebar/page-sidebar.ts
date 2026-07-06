@@ -13427,6 +13427,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/aspire/testing-apphost-topology-with-distributedapplicationtestingbuilder': {
+    apis: ['DistributedApplicationTestingBuilder', 'CreateHttpClient()', 'WaitForResourceAsync()'],
+    related: [
+      { label: 'AddProject Source Generation — next', route: '/aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference' },
+      { label: '.NET Aspire (overview)', route: '/aspnet/aspire' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'DistributedApplicationTestingBuilder starts the SAME real topology (real containers, real service processes) inside a test fixture — CreateHttpClient(resourceName) resolves the random port via the same service discovery the running app uses.',
+    docs: [
+      { label: '.NET Aspire overview', url: 'https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspire', url: 'https://github.com/dotnet/aspire', badge: 'code' },
+    ],
+    gotchas: [
+      'StartAsync() initiates the startup sequence but does not wait for each resource to finish its OWN startup — WaitForResourceAsync(..., KnownResourceStates.Running) is needed to avoid CI-specific race conditions.',
+      'A resource-name mismatch between AppHost and service is invisible to WebApplicationFactory-based tests using mocks — only a real-topology test catches it.',
+    ],
+  },
+
+  'aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference': {
+    apis: ['AddProject<T>()', 'Aspire.AppHost.Sdk', 'ProjectReference'],
+    related: [
+      { label: 'Testing AppHost Topology — previous', route: '/aspnet/aspire/testing-apphost-topology-with-distributedapplicationtestingbuilder' },
+      { label: 'OTel Exporter Endpoint Guard — next', route: '/aspnet/aspire/otel-exporter-needs-endpoint-guard-when-running-outside-apphost' },
+      { label: '.NET Aspire (overview)', route: '/aspnet/aspire' },
+    ],
+    tip: 'Projects.MyApp_Api is generated at BUILD time from the AppHost\'s ProjectReference entries — adding a new reference doesn\'t make its type resolve until the AppHost is actually built once.',
+    docs: [
+      { label: '.NET Aspire overview', url: 'https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspire', url: 'https://github.com/dotnet/aspire', badge: 'code' },
+    ],
+    gotchas: [
+      'The type parameter (compile-time, identifies which project) and the string resource name (runtime, service discovery key) are completely independent — the same project type can be registered under multiple different resource names.',
+      'A stale/renamed ProjectReference path fails at MSBuild evaluation, before the source generator even runs — a different, earlier error than "forgot to build."',
+    ],
+  },
+
+  'aspnet/aspire/otel-exporter-needs-endpoint-guard-when-running-outside-apphost': {
+    apis: ['AddOtlpExporter()', 'OTEL_EXPORTER_OTLP_ENDPOINT', 'AddServiceDefaults()'],
+    related: [
+      { label: 'AddProject Source Generation — previous', route: '/aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference' },
+      { label: '.NET Aspire (overview)', route: '/aspnet/aspire' },
+      { label: 'Health Checks & Observability', route: '/aspnet/health-checks' },
+    ],
+    tip: 'An unguarded AddOtlpExporter() call configures an exporter regardless of whether OTEL_EXPORTER_OTLP_ENDPOINT is set — running a service standalone (outside the AppHost) silently exports to nothing, with no visible error.',
+    docs: [
+      { label: '.NET Aspire overview', url: 'https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspire', url: 'https://github.com/dotnet/aspire', badge: 'code' },
+    ],
+    gotchas: [
+      'OTLP exporters fail silently and asynchronously — a try/catch around the registration call has nothing to catch, since the actual network attempt happens later, off the request path.',
+      'The robust pattern checks for the endpoint\'s presence at configuration time and falls back to a no-op or console exporter — matching what Microsoft\'s actual generated ServiceDefaults template does, unlike the main page\'s own simplified illustrative code.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

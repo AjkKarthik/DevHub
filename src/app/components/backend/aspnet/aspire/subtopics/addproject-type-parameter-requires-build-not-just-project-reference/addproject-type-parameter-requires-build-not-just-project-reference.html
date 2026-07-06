@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel=".NET Aspire"
+    topicRoute="/aspnet/aspire"
+    subtopicLabel="AddProject Source Generation"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">AddProject Type Parameter Requires a Build, Not Just a Project Reference</h1>
+  <p class="page-subtitle">
+    Projects.MyApp_Api isn't hand-written — it's generated at build time from the AppHost's ProjectReference
+    entries. Add a new reference and the type simply doesn't exist yet until the AppHost is actually built.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Aspire 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the compile-time/runtime split behind AddProject() covered, the final subtopic looks at what
+      happens on the runtime side when a service built for Aspire orchestration runs OUTSIDE it entirely —
+      in a plain dotnet run or a test host with no OTLP endpoint injected.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel=".NET Aspire"
+    topicRoute="/aspnet/aspire"
+    [prev]="{ label: 'Testing the AppHost Topology With DistributedApplicationTestingBuilder', route: '/aspnet/aspire/testing-apphost-topology-with-distributedapplicationtestingbuilder' }"
+    [next]="{ label: 'OTel Exporter Needs an Endpoint Guard When Running Outside the AppHost', route: '/aspnet/aspire/otel-exporter-needs-endpoint-guard-when-running-outside-apphost' }"
+  />
+</div>

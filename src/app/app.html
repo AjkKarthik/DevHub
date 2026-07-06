@@ -815,7 +815,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/aspire" routerLinkActive="active"><span class="nl-text">.NET Aspire</span>@if(progress.isDone('aspnet-aspire')){<span class="nl-done">✓</span>}@if(diff('aspnet-aspire');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/aspire" routerLinkActive="active">
+        <span class="nl-text">.NET Aspire</span>
+        @if (progress.isDone('aspnet-aspire')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-aspire'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspire')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspire')"
+                  (click)="toggleSubtopics('aspire', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspire'); as subs) {
+        @if (isSubtopicsExpanded('aspire')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/masstransit" routerLinkActive="active"><span class="nl-text">MassTransit</span>@if(progress.isDone('aspnet-masstransit')){<span class="nl-done">✓</span>}@if(diff('aspnet-masstransit');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/response-compression" routerLinkActive="active"><span class="nl-text">Response Compression</span>@if(progress.isDone('aspnet-response-compression')){<span class="nl-done">✓</span>}@if(diff('aspnet-response-compression');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/websockets" routerLinkActive="active"><span class="nl-text">WebSockets</span>@if(progress.isDone('aspnet-websockets')){<span class="nl-done">✓</span>}@if(diff('aspnet-websockets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
