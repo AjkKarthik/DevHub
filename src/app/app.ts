@@ -766,6 +766,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Concurrency Permit Held Until Response Fully Transmitted', route: '/aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted' },
     { label: 'Partition Factory Runs Once — Tier Upgrade Ignored Until Evicted', route: '/aspnet/rate-limiting/partition-factory-runs-once-tier-upgrade-ignored-until-evicted' },
   ],
+  'web-security': [
+    { label: 'Testing That Antiforgery Validation Actually Rejects Forged Requests', route: '/aspnet/web-security/testing-antiforgery-token-validation-with-webapplicationfactory' },
+    { label: 'Contextual Encoding — HTML Encode Doesn\'t Protect Attributes or JS', route: '/aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js' },
+    { label: 'Missing Separator in StartsWith Check — Sibling-Directory Bypass', route: '/aspnet/web-security/missing-separator-in-startswith-check-allows-sibling-directory-bypass' },
+  ],
 };
 
 @Component({

@@ -12766,6 +12766,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/web-security/testing-antiforgery-token-validation-with-webapplicationfactory': {
+    apis: ['IAntiforgery.ValidateRequestAsync()', 'WebApplicationFactory<T>', 'CookieContainer'],
+    related: [
+      { label: 'Contextual Encoding — next', route: '/aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js' },
+      { label: 'Web Security Essentials (overview)', route: '/aspnet/web-security' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test proving a well-formed request succeeds cannot distinguish "CSRF protection works" from "it was silently removed" — only a request with a missing or mismatched header actually exercises the rejection path.',
+    docs: [
+      { label: 'Antiforgery in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A legitimate request needs BOTH a valid cookie and a matching header — an attacker\'s forged cross-origin request can trigger the cookie automatically but cannot read the token to attach the matching header.',
+      'WebApplicationFactory\'s CreateClient() enables cookie persistence by default, but a manually constructed HttpClientHandler with UseCookies = false silently breaks cookie-dependent test flows.',
+    ],
+  },
+
+  'aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js': {
+    apis: ['HtmlEncoder', 'JavaScriptEncoder', 'UrlEncoder'],
+    related: [
+      { label: 'Testing Antiforgery Validation — previous', route: '/aspnet/web-security/testing-antiforgery-token-validation-with-webapplicationfactory' },
+      { label: 'Missing Separator Path Bypass — next', route: '/aspnet/web-security/missing-separator-in-startswith-check-allows-sibling-directory-bypass' },
+      { label: 'Web Security Essentials (overview)', route: '/aspnet/web-security' },
+    ],
+    tip: 'HtmlEncoder protects a text-node sink correctly, but an unquoted HTML attribute or an inline <script> block needs a different encoder — HTML entities are never decoded by the JavaScript parser.',
+    docs: [
+      { label: 'Prevent XSS in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/cross-site-scripting' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Razor\'s automatic @value encoding is safe because the compiler knows the syntactic context at compile time — manually built HTML in a minimal API has no such tracking, so each interpolation point needs its own matching encoder.',
+      'Quoting an HTML attribute closes the unquoted-attribute injection vector, but the value inside still needs HtmlEncoder for embedded quotes and angle brackets — quoting alone is not sufficient either.',
+    ],
+  },
+
+  'aspnet/web-security/missing-separator-in-startswith-check-allows-sibling-directory-bypass': {
+    apis: ['Path.GetFullPath()', 'string.StartsWith()', 'Path.DirectorySeparatorChar'],
+    related: [
+      { label: 'Contextual Encoding — previous', route: '/aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js' },
+      { label: 'Web Security Essentials (overview)', route: '/aspnet/web-security' },
+      { label: 'CORS & Security Headers', route: '/aspnet/cors' },
+    ],
+    tip: 'full.StartsWith(root) is a pure text-prefix comparison — a sibling directory like "uploads-secret" passes it even though it is a completely different directory from "uploads". Appending Path.DirectorySeparatorChar forces a genuine boundary match.',
+    docs: [
+      { label: 'OWASP Path Traversal', url: 'https://owasp.org/www-community/attacks/Path_Traversal' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A test suite trying only a valid filename and an obvious "../../etc/passwd" attempt cannot distinguish the correct check from the missing-separator regression — neither input resolves into a prefix-colliding sibling directory.',
+      'StringComparison.OrdinalIgnoreCase fixes a case-sensitivity problem, not the boundary problem — it does not make "uploads-secret" stop matching "uploads" as a prefix.',
+    ],
+  },
+
   'aspnet/secrets': {
     apis: ['dotnet user-secrets', 'AddUserSecrets<T>()', 'AddEnvironmentVariables()', 'AddAzureKeyVault()', 'IDataProtector', 'AddDataProtection()', 'PersistKeysToStackExchangeRedis()', 'ProtectCookies()'],
     related: [

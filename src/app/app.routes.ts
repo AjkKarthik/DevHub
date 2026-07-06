@@ -865,7 +865,12 @@ export const routes: Routes = [
         { path: 'concurrency-permit-held-until-response-fully-transmitted', loadComponent: () => import('./components/backend/aspnet/rate-limiting/subtopics/concurrency-permit-held-until-response-fully-transmitted/concurrency-permit-held-until-response-fully-transmitted').then(m => m.ConcurrencyPermitHeldUntilResponseFullyTransmittedSubtopic) },
         { path: 'partition-factory-runs-once-tier-upgrade-ignored-until-evicted', loadComponent: () => import('./components/backend/aspnet/rate-limiting/subtopics/partition-factory-runs-once-tier-upgrade-ignored-until-evicted/partition-factory-runs-once-tier-upgrade-ignored-until-evicted').then(m => m.PartitionFactoryRunsOnceTierUpgradeIgnoredUntilEvictedSubtopic) },
       ] },
-      { path: 'web-security',         loadComponent: () => import('./components/backend/aspnet/web-security/web-security').then(m => m.AspnetWebSecurity) },
+      { path: 'web-security', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/web-security/web-security').then(m => m.AspnetWebSecurity) },
+        { path: 'testing-antiforgery-token-validation-with-webapplicationfactory', loadComponent: () => import('./components/backend/aspnet/web-security/subtopics/testing-antiforgery-token-validation-with-webapplicationfactory/testing-antiforgery-token-validation-with-webapplicationfactory').then(m => m.TestingAntiforgeryTokenValidationWithWebapplicationfactorySubtopic) },
+        { path: 'contextual-encoding-html-encode-doesnt-protect-attributes-or-js', loadComponent: () => import('./components/backend/aspnet/web-security/subtopics/contextual-encoding-html-encode-doesnt-protect-attributes-or-js/contextual-encoding-html-encode-doesnt-protect-attributes-or-js').then(m => m.ContextualEncodingHtmlEncodeDoesntProtectAttributesOrJsSubtopic) },
+        { path: 'missing-separator-in-startswith-check-allows-sibling-directory-bypass', loadComponent: () => import('./components/backend/aspnet/web-security/subtopics/missing-separator-in-startswith-check-allows-sibling-directory-bypass/missing-separator-in-startswith-check-allows-sibling-directory-bypass').then(m => m.MissingSeparatorInStartswithCheckAllowsSiblingDirectoryBypassSubtopic) },
+      ] },
       { path: 'secrets',              loadComponent: () => import('./components/backend/aspnet/secrets/secrets').then(m => m.AspnetSecrets) },
       // ── Quality ──
       { path: 'testing',              loadComponent: () => import('./components/backend/aspnet/testing/testing').then(m => m.AspnetTesting) },
