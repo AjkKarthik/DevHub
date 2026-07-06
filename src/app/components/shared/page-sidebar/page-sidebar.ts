@@ -13784,6 +13784,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/feature-flags/testing-feature-flagged-code-mocking-and-config-override': {
+    apis: ['IFeatureManager', 'IsEnabledAsync()', 'WebApplicationFactory<T>', 'ConfigureAppConfiguration()'],
+    related: [
+      { label: 'PercentageFilter Mechanics — next', route: '/aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user' },
+      { label: 'Feature Flags (overview)', route: '/aspnet/feature-flags' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Mock IFeatureManager to test branching logic; override FeatureManagement config in a WebApplicationFactory to test that [FeatureGate] itself is wired correctly.',
+    docs: [
+      { label: 'Feature flags in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core' },
+    ],
+    resources: [
+      { label: 'microsoft/FeatureManagement-Dotnet', url: 'https://github.com/microsoft/FeatureManagement-Dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'An IFeatureManager mock can never catch a typo\'d flag name — IFeatureManager silently returns false for any unrecognized flag, with no error raised.',
+      '[FeatureGate] is evaluated by the action-filter pipeline reading real configuration — proving it works requires a real WebApplicationFactory, not a mock.',
+    ],
+  },
+
+  'aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user': {
+    apis: ['PercentageFilter', 'TargetingFilter', 'ITargetingContextAccessor'],
+    related: [
+      { label: 'Testing Feature Flags — previous', route: '/aspnet/feature-flags/testing-feature-flagged-code-mocking-and-config-override' },
+      { label: 'RequirementType Default Gap — next', route: '/aspnet/feature-flags/featuregate-multiple-flags-defaults-to-requirementtype-all' },
+      { label: 'Feature Flags (overview)', route: '/aspnet/feature-flags' },
+    ],
+    tip: 'PercentageFilter re-rolls independently on every IsEnabledAsync call — the same user can get a different answer on their very next request.',
+    docs: [
+      { label: 'Feature flags in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core' },
+    ],
+    resources: [
+      { label: 'microsoft/FeatureManagement-Dotnet', url: 'https://github.com/microsoft/FeatureManagement-Dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'A multi-step flow checking the same flag at each step can flip a user between old and new UI mid-session — decide once and reuse the result instead.',
+      'TargetingFilter is sticky per user because it is driven by stable identity/group inputs, not randomness — unlike PercentageFilter.',
+    ],
+  },
+
+  'aspnet/feature-flags/featuregate-multiple-flags-defaults-to-requirementtype-all': {
+    apis: ['FeatureGateAttribute', 'RequirementType'],
+    related: [
+      { label: 'PercentageFilter Mechanics — previous', route: '/aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user' },
+      { label: 'Feature Flags (overview)', route: '/aspnet/feature-flags' },
+    ],
+    tip: '[FeatureGate("A", "B")] with no leading RequirementType argument defaults to RequirementType.All — requiring BOTH flags, not either one.',
+    docs: [
+      { label: 'Feature flags in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core' },
+    ],
+    resources: [
+      { label: 'microsoft/FeatureManagement-Dotnet', url: 'https://github.com/microsoft/FeatureManagement-Dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'The requirement type is a silent default, not a compiler error — its absence is easier to overlook in review than a wrong flag name.',
+      'An endpoint 404ing more than expected can be a missing RequirementType.Any, not a misconfigured flag.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

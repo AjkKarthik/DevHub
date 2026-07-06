@@ -950,7 +950,12 @@ export const routes: Routes = [
         { path: 'cookie-token-and-request-token-are-not-the-same-string', loadComponent: () => import('./components/backend/aspnet/csrf/subtopics/cookie-token-and-request-token-are-not-the-same-string/cookie-token-and-request-token-are-not-the-same-string').then(m => m.CookieTokenAndRequestTokenAreNotTheSameStringSubtopic) },
         { path: 'manual-validation-middleware-and-useantiforgery-are-redundant-not-layered', loadComponent: () => import('./components/backend/aspnet/csrf/subtopics/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered').then(m => m.ManualValidationMiddlewareAndUseantiforgeryAreRedundantNotLayeredSubtopic) },
       ] },
-      { path: 'feature-flags',             loadComponent: () => import('./components/backend/aspnet/feature-flags/feature-flags').then(m => m.AspnetFeatureFlags) },
+      { path: 'feature-flags', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/feature-flags/feature-flags').then(m => m.AspnetFeatureFlags) },
+        { path: 'testing-feature-flagged-code-mocking-and-config-override', loadComponent: () => import('./components/backend/aspnet/feature-flags/subtopics/testing-feature-flagged-code-mocking-and-config-override/testing-feature-flagged-code-mocking-and-config-override').then(m => m.TestingFeatureFlaggedCodeMockingAndConfigOverrideSubtopic) },
+        { path: 'percentagefilter-re-rolls-on-every-call-not-sticky-per-user', loadComponent: () => import('./components/backend/aspnet/feature-flags/subtopics/percentagefilter-re-rolls-on-every-call-not-sticky-per-user/percentagefilter-re-rolls-on-every-call-not-sticky-per-user').then(m => m.PercentagefilterReRollsOnEveryCallNotStickyPerUserSubtopic) },
+        { path: 'featuregate-multiple-flags-defaults-to-requirementtype-all', loadComponent: () => import('./components/backend/aspnet/feature-flags/subtopics/featuregate-multiple-flags-defaults-to-requirementtype-all/featuregate-multiple-flags-defaults-to-requirementtype-all').then(m => m.FeaturegateMultipleFlagsDefaultsToRequirementtypeAllSubtopic) },
+      ] },
       { path: 'localization',              loadComponent: () => import('./components/backend/aspnet/localization/localization').then(m => m.AspnetLocalization) },
       { path: 'masstransit',               loadComponent: () => import('./components/backend/aspnet/masstransit/masstransit').then(m => m.AspnetMasstransit) },
       { path: 'response-compression',      loadComponent: () => import('./components/backend/aspnet/response-compression/response-compression').then(m => m.AspnetResponseCompression) },

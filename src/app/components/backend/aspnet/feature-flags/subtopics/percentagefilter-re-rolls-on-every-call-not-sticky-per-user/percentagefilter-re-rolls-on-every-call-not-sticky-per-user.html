@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Feature Flags"
+    topicRoute="/aspnet/feature-flags"
+    subtopicLabel="PercentageFilter Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">PercentageFilter Re-Rolls on Every Call — Not Sticky Per User</h1>
+  <p class="page-subtitle">
+    "Enables the flag for a random X% of requests" is accurate but easy to misread as per-user consistency.
+    PercentageFilter has no session or identity concept — the same user can get a different answer on
+    their very next request.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With PercentageFilter's mechanics clear, the final subtopic returns to the main page's own
+      RequirementType.Any example — and a near-identical-looking overload that silently defaults to
+      requiring ALL listed flags instead.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Feature Flags"
+    topicRoute="/aspnet/feature-flags"
+    [prev]="{ label: 'Testing Feature-Flagged Code: Mocking vs Config Override', route: '/aspnet/feature-flags/testing-feature-flagged-code-mocking-and-config-override' }"
+    [next]="{ label: 'FeatureGate With Multiple Flags Defaults to RequirementType.All', route: '/aspnet/feature-flags/featuregate-multiple-flags-defaults-to-requirementtype-all' }"
+  />
+</div>

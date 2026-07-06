@@ -846,6 +846,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Cookie Token and Request Token Are Not the Same String', route: '/aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string' },
     { label: 'Manual Validation Middleware and UseAntiforgery() Are Redundant', route: '/aspnet/csrf/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered' },
   ],
+  'feature-flags': [
+    { label: 'Testing Feature-Flagged Code: Mocking vs Config Override', route: '/aspnet/feature-flags/testing-feature-flagged-code-mocking-and-config-override' },
+    { label: 'PercentageFilter Re-Rolls on Every Call — Not Sticky Per User', route: '/aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user' },
+    { label: 'FeatureGate With Multiple Flags Defaults to RequirementType.All', route: '/aspnet/feature-flags/featuregate-multiple-flags-defaults-to-requirementtype-all' },
+  ],
 };
 
 @Component({
