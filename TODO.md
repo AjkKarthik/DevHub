@@ -1532,7 +1532,7 @@ off here with a date.
 - [x] `/aspnet/aspire` — .NET Aspire (2026-07-06 — 3 subtopics: testing-apphost-topology-with-distributedapplicationtestingbuilder, addproject-type-parameter-requires-build-not-just-project-reference, otel-exporter-needs-endpoint-guard-when-running-outside-apphost)
 - [x] `/aspnet/fluent-validation` — FluentValidation (2026-07-06 — 3 subtopics: testing-async-mustasync-rules-with-fluentvalidation-testhelper, inline-when-defaults-to-all-validators-in-the-same-rulefor-chain, adding-one-mustasync-rule-breaks-every-synchronous-validate-caller)
 - [x] `/aspnet/minimal-api-advanced` — Minimal API Advanced (2026-07-06 — 3 subtopics: testing-endpoint-filters-without-webapplicationfactory, ctx-arguments-oftype-is-fragile-use-getargument-by-position, nested-group-filters-execute-outside-in-like-middleware)
-- [ ] `/aspnet/output-caching-advanced` — Output Caching Advanced
+- [x] `/aspnet/output-caching-advanced` — Output Caching Advanced (2026-07-06 — 3 subtopics: testing-tag-eviction-with-fake-outputcachestore, how-cache-stampede-locking-survives-population-failures, custom-ioutputcachepolicy-skips-every-built-in-safety-check)
 - [ ] `/aspnet/dapper` — Dapper & Raw SQL
 - [ ] `/aspnet/csrf` — Anti-forgery & CSRF
 - [ ] `/aspnet/feature-flags` — Feature Flags
