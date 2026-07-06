@@ -13843,6 +13843,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/localization/testing-localized-responses-fixed-culture-provider-vs-accept-language': {
+    apis: ['IRequestCultureProvider', 'RequestLocalizationOptions', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Resource Fallback Hierarchy — next', route: '/aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys' },
+      { label: 'Localization & Globalization (overview)', route: '/aspnet/localization' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Accept-Language tests prove negotiation AND translation together; a fixed custom IRequestCultureProvider isolates translation correctness alone.',
+    docs: [
+      { label: 'Globalization and localization in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A fixed-culture-provider test clears opts.RequestCultureProviders entirely — it cannot catch a real negotiation-pipeline regression like wrong middleware ordering.',
+      'An unsupported Accept-Language value falls back to the default culture silently in a properly configured app — it does not throw.',
+    ],
+  },
+
+  'aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys': {
+    apis: ['IStringLocalizer<T>', 'CultureInfo', 'ResourceManager'],
+    related: [
+      { label: 'Testing Localized Responses — previous', route: '/aspnet/localization/testing-localized-responses-fixed-culture-provider-vs-accept-language' },
+      { label: 'Culture Cookie\'s Missing Arabic — next', route: '/aspnet/localization/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic' },
+      { label: 'Localization & Globalization (overview)', route: '/aspnet/localization' },
+    ],
+    tip: 'A region like fr-FR falls back through its parent culture fr, then the default — no fr-FR.resx file needs to exist for this to work.',
+    docs: [
+      { label: 'Globalization and localization in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Copying every key into a new region-specific resx file (instead of only the keys that differ) freezes a snapshot that silently drifts from future neutral-file updates.',
+      'Missing-key fallback and missing-file fallback resolve via the exact same culture-hierarchy walk — they are not different mechanisms.',
+    ],
+  },
+
+  'aspnet/localization/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic': {
+    apis: ['CookieRequestCultureProvider', 'IOptions<RequestLocalizationOptions>'],
+    related: [
+      { label: 'Resource Fallback Hierarchy — previous', route: '/aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys' },
+      { label: 'Localization & Globalization (overview)', route: '/aspnet/localization' },
+    ],
+    tip: 'Validate culture cookie input against IOptions<RequestLocalizationOptions>.SupportedUICultures instead of a second hardcoded array — one list, no drift.',
+    docs: [
+      { label: 'Globalization and localization in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A hardcoded culture-validation array with no link to the real SupportedUICultures configuration will silently drift out of sync as cultures are added.',
+      'A 400 from this kind of endpoint does not always mean the app lacks support for that culture — the endpoint\'s own list may just be stale.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

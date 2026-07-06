@@ -312,7 +312,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/localization" routerLinkActive="active"><span class="nl-text">Localization</span>@if(progress.isDone('aspnet-localization')){<span class="nl-done">✓</span>}@if(diff('aspnet-localization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/localization" routerLinkActive="active">
+        <span class="nl-text">Localization</span>
+        @if (progress.isDone('aspnet-localization')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-localization'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('localization')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('localization')"
+                  (click)="toggleSubtopics('localization', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('localization'); as subs) {
+        @if (isSubtopicsExpanded('localization')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

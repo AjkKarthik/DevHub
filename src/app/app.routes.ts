@@ -956,7 +956,12 @@ export const routes: Routes = [
         { path: 'percentagefilter-re-rolls-on-every-call-not-sticky-per-user', loadComponent: () => import('./components/backend/aspnet/feature-flags/subtopics/percentagefilter-re-rolls-on-every-call-not-sticky-per-user/percentagefilter-re-rolls-on-every-call-not-sticky-per-user').then(m => m.PercentagefilterReRollsOnEveryCallNotStickyPerUserSubtopic) },
         { path: 'featuregate-multiple-flags-defaults-to-requirementtype-all', loadComponent: () => import('./components/backend/aspnet/feature-flags/subtopics/featuregate-multiple-flags-defaults-to-requirementtype-all/featuregate-multiple-flags-defaults-to-requirementtype-all').then(m => m.FeaturegateMultipleFlagsDefaultsToRequirementtypeAllSubtopic) },
       ] },
-      { path: 'localization',              loadComponent: () => import('./components/backend/aspnet/localization/localization').then(m => m.AspnetLocalization) },
+      { path: 'localization', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/localization/localization').then(m => m.AspnetLocalization) },
+        { path: 'testing-localized-responses-fixed-culture-provider-vs-accept-language', loadComponent: () => import('./components/backend/aspnet/localization/subtopics/testing-localized-responses-fixed-culture-provider-vs-accept-language/testing-localized-responses-fixed-culture-provider-vs-accept-language').then(m => m.TestingLocalizedResponsesFixedCultureProviderVsAcceptLanguageSubtopic) },
+        { path: 'resx-fallback-follows-culture-hierarchy-not-just-missing-keys', loadComponent: () => import('./components/backend/aspnet/localization/subtopics/resx-fallback-follows-culture-hierarchy-not-just-missing-keys/resx-fallback-follows-culture-hierarchy-not-just-missing-keys').then(m => m.ResxFallbackFollowsCultureHierarchyNotJustMissingKeysSubtopic) },
+        { path: 'culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic', loadComponent: () => import('./components/backend/aspnet/localization/subtopics/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic').then(m => m.CultureCookieEndpointHardcodedListSilentlyRejectsArabicSubtopic) },
+      ] },
       { path: 'masstransit',               loadComponent: () => import('./components/backend/aspnet/masstransit/masstransit').then(m => m.AspnetMasstransit) },
       { path: 'response-compression',      loadComponent: () => import('./components/backend/aspnet/response-compression/response-compression').then(m => m.AspnetResponseCompression) },
       { path: 'websockets',                loadComponent: () => import('./components/backend/aspnet/websockets/websockets').then(m => m.AspnetWebsockets) },

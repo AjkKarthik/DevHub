@@ -851,6 +851,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'PercentageFilter Re-Rolls on Every Call — Not Sticky Per User', route: '/aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user' },
     { label: 'FeatureGate With Multiple Flags Defaults to RequirementType.All', route: '/aspnet/feature-flags/featuregate-multiple-flags-defaults-to-requirementtype-all' },
   ],
+  'localization': [
+    { label: 'Testing Localized Responses: Fixed Provider vs Accept-Language', route: '/aspnet/localization/testing-localized-responses-fixed-culture-provider-vs-accept-language' },
+    { label: 'Resource Fallback Follows Culture Hierarchy, Not Just Missing Keys', route: '/aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys' },
+    { label: 'Culture Cookie Endpoint Silently Rejects Arabic', route: '/aspnet/localization/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic' },
+  ],
 };
 
 @Component({
