@@ -790,6 +790,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'StartAsync Returns Before ExecuteAsync Actually Completes', route: '/aspnet/background-services/startasync-returns-before-executeasync-actually-completes' },
     { label: 'Channel Writer Never Completed Loses Items on Shutdown', route: '/aspnet/background-services/channel-writer-never-completed-loses-items-on-graceful-shutdown' },
   ],
+  'signalr': [
+    { label: 'Testing Hub Methods With Mocked Clients, Groups, and Context', route: '/aspnet/signalr/testing-hub-methods-with-mocked-clients-groups-and-context' },
+    { label: 'How Groups and Context Persist Across Transient Hub Instances', route: '/aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances' },
+    { label: 'Connection Identity Captured Once — Ignores Later Claim Changes', route: '/aspnet/signalr/connection-identity-captured-once-ignores-later-claim-changes' },
+  ],
 };
 
 @Component({

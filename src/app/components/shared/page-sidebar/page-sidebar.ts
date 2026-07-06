@@ -13096,6 +13096,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/signalr/testing-hub-methods-with-mocked-clients-groups-and-context': {
+    apis: ['Hub.Clients', 'Hub.Groups', 'IHubCallerClients', 'IClientProxy'],
+    related: [
+      { label: 'Groups & Context Architecture — next', route: '/aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances' },
+      { label: 'SignalR (overview)', route: '/aspnet/signalr' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Hub.Clients and Hub.Groups are ordinary public, settable properties — no reflection needed. OthersInGroup(), Group(), and Caller each return a SEPARATE IClientProxy that must be substituted one level deeper.',
+    docs: [
+      { label: 'ASP.NET Core SignalR', url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'An unconfigured substitute member returns null by default — that\'s only a problem if the code under test actually calls something on it; only configure the members the specific hub method actually touches.',
+      'SendAsync() is an extension method wrapping SendCoreAsync(method, args, ct) — verification assertions must target SendCoreAsync, not SendAsync, since mocking libraries can\'t intercept extension methods.',
+    ],
+  },
+
+  'aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances': {
+    apis: ['HubConnectionContext', 'HubLifetimeManager<THub>', 'Context.Items'],
+    related: [
+      { label: 'Testing Hub Methods — previous', route: '/aspnet/signalr/testing-hub-methods-with-mocked-clients-groups-and-context' },
+      { label: 'Stale Connection Identity — next', route: '/aspnet/signalr/connection-identity-captured-once-ignores-later-claim-changes' },
+      { label: 'SignalR (overview)', route: '/aspnet/signalr' },
+    ],
+    tip: 'The Hub instance really is thrown away after every call — Context.Items and Groups membership persist because they live on separate, longer-lived objects (the per-connection HubConnectionContext and a Singleton-scoped HubLifetimeManager) that each new Hub instance is just handed a reference to.',
+    docs: [
+      { label: 'ASP.NET Core SignalR', url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Context.Items is scoped per-CONNECTION, not per-user — two browser tabs for the same user get two entirely separate Items dictionaries, exactly like Groups membership.',
+      'Groups.AddToGroupAsync() delegates to a process-wide Singleton registry shared across ALL connections and Hub instances — architecturally nothing like the disposable Hub object it\'s called from.',
+    ],
+  },
+
+  'aspnet/signalr/connection-identity-captured-once-ignores-later-claim-changes': {
+    apis: ['Context.User', 'HubConnectionContext', 'IHubContext<T>.Clients.Client()'],
+    related: [
+      { label: 'Groups & Context Architecture — previous', route: '/aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances' },
+      { label: 'SignalR (overview)', route: '/aspnet/signalr' },
+      { label: 'Authentication', route: '/aspnet/authentication' },
+    ],
+    tip: 'Unlike an HTTP API, a SignalR connection validates its JWT exactly ONCE at connect time — an expired token or a revoked role has zero effect on an already-open connection until it actually reconnects.',
+    docs: [
+      { label: 'ASP.NET Core SignalR', url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'ClockSkew tolerance only matters at the moment JWT validation actually RUNS — for an established connection, that happened once at connect time and never recurs, so there is no "grace period then disconnect" behavior tied to expiry.',
+      'Forcing an immediate permission change requires explicitly closing the specific user\'s open connections (via a UserId → ConnectionId map) — relying on natural reconnection is not sufficient for a healthy, still-open connection.',
+    ],
+  },
+
   'aspnet/health-checks': {
     apis: ['AddHealthChecks()', 'MapHealthChecks()', 'IHealthCheck', 'HealthCheckResult', 'AddDbContextCheck<T>()', 'AddUrlGroup()', 'UIResponseWriter', 'AddOpenTelemetry()'],
     related: [

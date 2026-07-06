@@ -890,7 +890,12 @@ export const routes: Routes = [
         { path: 'startasync-returns-before-executeasync-actually-completes', loadComponent: () => import('./components/backend/aspnet/background-services/subtopics/startasync-returns-before-executeasync-actually-completes/startasync-returns-before-executeasync-actually-completes').then(m => m.StartasyncReturnsBeforeExecuteasyncActuallyCompletesSubtopic) },
         { path: 'channel-writer-never-completed-loses-items-on-graceful-shutdown', loadComponent: () => import('./components/backend/aspnet/background-services/subtopics/channel-writer-never-completed-loses-items-on-graceful-shutdown/channel-writer-never-completed-loses-items-on-graceful-shutdown').then(m => m.ChannelWriterNeverCompletedLosesItemsOnGracefulShutdownSubtopic) },
       ] },
-      { path: 'signalr',              loadComponent: () => import('./components/backend/aspnet/signalr/signalr').then(m => m.AspnetSignalR) },
+      { path: 'signalr', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/signalr/signalr').then(m => m.AspnetSignalR) },
+        { path: 'testing-hub-methods-with-mocked-clients-groups-and-context', loadComponent: () => import('./components/backend/aspnet/signalr/subtopics/testing-hub-methods-with-mocked-clients-groups-and-context/testing-hub-methods-with-mocked-clients-groups-and-context').then(m => m.TestingHubMethodsWithMockedClientsGroupsAndContextSubtopic) },
+        { path: 'how-groups-and-context-persist-across-transient-hub-instances', loadComponent: () => import('./components/backend/aspnet/signalr/subtopics/how-groups-and-context-persist-across-transient-hub-instances/how-groups-and-context-persist-across-transient-hub-instances').then(m => m.HowGroupsAndContextPersistAcrossTransientHubInstancesSubtopic) },
+        { path: 'connection-identity-captured-once-ignores-later-claim-changes', loadComponent: () => import('./components/backend/aspnet/signalr/subtopics/connection-identity-captured-once-ignores-later-claim-changes/connection-identity-captured-once-ignores-later-claim-changes').then(m => m.ConnectionIdentityCapturedOnceIgnoresLaterClaimChangesSubtopic) },
+      ] },
       { path: 'health-checks',        loadComponent: () => import('./components/backend/aspnet/health-checks/health-checks').then(m => m.AspnetHealthChecks) },
       { path: 'deployment',           loadComponent: () => import('./components/backend/aspnet/deployment/deployment').then(m => m.AspnetDeployment) },
       { path: 'performance',          loadComponent: () => import('./components/backend/aspnet/performance/performance').then(m => m.AspnetPerformance) },

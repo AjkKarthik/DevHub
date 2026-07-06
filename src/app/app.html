@@ -735,7 +735,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/signalr" routerLinkActive="active"><span class="nl-text">SignalR</span>@if(progress.isDone('aspnet-signalr')){<span class="nl-done">✓</span>}@if(diff('aspnet-signalr');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/signalr" routerLinkActive="active">
+        <span class="nl-text">SignalR</span>
+        @if (progress.isDone('aspnet-signalr')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-signalr'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('signalr')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('signalr')"
+                  (click)="toggleSubtopics('signalr', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('signalr'); as subs) {
+        @if (isSubtopicsExpanded('signalr')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/health-checks" routerLinkActive="active"><span class="nl-text">Health Checks</span>@if(progress.isDone('aspnet-health-checks')){<span class="nl-done">✓</span>}@if(diff('aspnet-health-checks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/deployment" routerLinkActive="active"><span class="nl-text">Deployment</span>@if(progress.isDone('aspnet-deployment')){<span class="nl-done">✓</span>}@if(diff('aspnet-deployment');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/performance" routerLinkActive="active"><span class="nl-text">Performance & Diagnostics</span>@if(progress.isDone('aspnet-performance')){<span class="nl-done">✓</span>}@if(diff('aspnet-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

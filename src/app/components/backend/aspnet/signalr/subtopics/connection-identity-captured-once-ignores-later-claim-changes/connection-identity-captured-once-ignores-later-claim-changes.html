@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SignalR"
+    topicRoute="/aspnet/signalr"
+    subtopicLabel="Stale Connection Identity"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Connection Identity Captured Once — Ignores Later Claim Changes</h1>
+  <p class="page-subtitle">
+    Unlike an HTTP API where every request re-validates its JWT, a SignalR connection authenticates ONCE at
+    connect time. A token expiring or a role being revoked mid-connection has zero effect until the client
+    actually reconnects.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the SignalR deep-dive set: testing hub methods against real substitutes, understanding
+      the three layers of state lifetime behind Groups and Context, and now the connection-identity gotcha
+      that affects any app relying on live authorization checks over long-lived connections. Head back to
+      the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SignalR"
+    topicRoute="/aspnet/signalr"
+    [prev]="{ label: 'How Groups and Context Persist Across Transient Hub Instances', route: '/aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances' }"
+  />
+</div>

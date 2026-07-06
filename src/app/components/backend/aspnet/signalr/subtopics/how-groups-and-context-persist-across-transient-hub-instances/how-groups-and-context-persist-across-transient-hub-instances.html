@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SignalR"
+    topicRoute="/aspnet/signalr"
+    subtopicLabel="Groups & Context Architecture"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How Groups and Context Persist Across Transient Hub Instances</h1>
+  <p class="page-subtitle">
+    The Hub object really is thrown away after every call. Context.Items and Groups membership persist
+    because they live on entirely separate objects — a per-connection context and a Singleton-scoped
+    lifetime manager — that each new Hub instance is simply handed a reference to.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the three state-lifetime layers pinned down, the final subtopic covers a related identity gotcha:
+      Context.User is captured once at connect time and never refreshed, so a JWT expiry or role change
+      mid-connection has zero effect until the client reconnects.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SignalR"
+    topicRoute="/aspnet/signalr"
+    [prev]="{ label: 'Testing Hub Methods With Mocked Clients, Groups, and Context', route: '/aspnet/signalr/testing-hub-methods-with-mocked-clients-groups-and-context' }"
+    [next]="{ label: 'Connection Identity Captured Once — Ignores Later Claim Changes', route: '/aspnet/signalr/connection-identity-captured-once-ignores-later-claim-changes' }"
+  />
+</div>
