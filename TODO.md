@@ -1530,7 +1530,7 @@ off here with a date.
 - [x] `/aspnet/deployment` — Deployment & Hosting (2026-07-06 — 3 subtopics: testing-forwardedheaders-trust-configuration-rejects-spoofed-ips, how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip, healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image)
 - [x] `/aspnet/performance` — Performance & Diagnostics (2026-07-06 — 3 subtopics: testing-allocation-regressions-with-getallocatedbytesforthread, server-gc-heap-count-follows-perceived-not-actual-cpu-limit, streaming-query-missing-cancellationtoken-runs-after-disconnect)
 - [x] `/aspnet/aspire` — .NET Aspire (2026-07-06 — 3 subtopics: testing-apphost-topology-with-distributedapplicationtestingbuilder, addproject-type-parameter-requires-build-not-just-project-reference, otel-exporter-needs-endpoint-guard-when-running-outside-apphost)
-- [ ] `/aspnet/fluent-validation` — FluentValidation
+- [x] `/aspnet/fluent-validation` — FluentValidation (2026-07-06 — 3 subtopics: testing-async-mustasync-rules-with-fluentvalidation-testhelper, inline-when-defaults-to-all-validators-in-the-same-rulefor-chain, adding-one-mustasync-rule-breaks-every-synchronous-validate-caller)
 - [ ] `/aspnet/minimal-api-advanced` — Minimal API Advanced
 - [ ] `/aspnet/output-caching-advanced` — Output Caching Advanced
 - [ ] `/aspnet/dapper` — Dapper & Raw SQL
