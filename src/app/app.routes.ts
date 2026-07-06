@@ -847,7 +847,12 @@ export const routes: Routes = [
         { path: 'why-setapplicationname-matters-shared-dataprotection-keys', loadComponent: () => import('./components/backend/aspnet/authentication/subtopics/why-setapplicationname-matters-shared-dataprotection-keys/why-setapplicationname-matters-shared-dataprotection-keys').then(m => m.WhySetapplicationnameMattersSharedDataprotectionKeysSubtopic) },
         { path: 'jwt-claim-type-mapping-sub-becomes-nameidentifier', loadComponent: () => import('./components/backend/aspnet/authentication/subtopics/jwt-claim-type-mapping-sub-becomes-nameidentifier/jwt-claim-type-mapping-sub-becomes-nameidentifier').then(m => m.JwtClaimTypeMappingSubBecomesNameidentifierSubtopic) },
       ] },
-      { path: 'authorization',        loadComponent: () => import('./components/backend/aspnet/authorization/authorization').then(m => m.AspnetAuthorization) },
+      { path: 'authorization', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/authorization/authorization').then(m => m.AspnetAuthorization) },
+        { path: 'testing-multi-handler-or-semantics-fail-veto', loadComponent: () => import('./components/backend/aspnet/authorization/subtopics/testing-multi-handler-or-semantics-fail-veto/testing-multi-handler-or-semantics-fail-veto').then(m => m.TestingMultiHandlerOrSemanticsFailVetoSubtopic) },
+        { path: 'how-authorization-middleware-combines-default-fallback-policies', loadComponent: () => import('./components/backend/aspnet/authorization/subtopics/how-authorization-middleware-combines-default-fallback-policies/how-authorization-middleware-combines-default-fallback-policies').then(m => m.HowAuthorizationMiddlewareCombinesDefaultFallbackPoliciesSubtopic) },
+        { path: 'allowanonymous-anywhere-wins-authorize-cannot-override', loadComponent: () => import('./components/backend/aspnet/authorization/subtopics/allowanonymous-anywhere-wins-authorize-cannot-override/allowanonymous-anywhere-wins-authorize-cannot-override').then(m => m.AllowanonymousAnywhereWinsAuthorizeCannotOverrideSubtopic) },
+      ] },
       { path: 'cors',                 loadComponent: () => import('./components/backend/aspnet/cors/cors').then(m => m.AspnetCors) },
       { path: 'rate-limiting',        loadComponent: () => import('./components/backend/aspnet/rate-limiting/rate-limiting').then(m => m.AspnetRateLimiting) },
       { path: 'web-security',         loadComponent: () => import('./components/backend/aspnet/web-security/web-security').then(m => m.AspnetWebSecurity) },

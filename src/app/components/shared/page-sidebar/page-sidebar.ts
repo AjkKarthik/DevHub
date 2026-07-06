@@ -12522,6 +12522,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/authorization/testing-multi-handler-or-semantics-fail-veto': {
+    apis: ['AuthorizationHandlerContext', 'IAuthorizationHandler.HandleAsync()', 'context.Succeed() / context.Fail()'],
+    related: [
+      { label: 'How Middleware Combines Policies — next', route: '/aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies' },
+      { label: 'Authorization (overview)', route: '/aspnet/authorization' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Every registered handler for a requirement always runs to completion — there is no early exit on Succeed(). The requirement passes only if the aggregate, after all handlers finish, has at least one Succeed and zero Fails.',
+    docs: [
+      { label: 'Requirement-based authorization', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'context.Fail() is an order-independent veto — a Fail() from a handler registered AFTER another handler already called Succeed() still wins.',
+      'If every handler for a requirement abstains (calls neither Succeed nor Fail), the requirement is NOT satisfied — no opinion defaults to deny, not allow.',
+    ],
+  },
+
+  'aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies': {
+    apis: ['FallbackPolicy', 'DefaultPolicy', 'IAuthorizationPolicyProvider'],
+    related: [
+      { label: 'Testing Multi-Handler OR Semantics — previous', route: '/aspnet/authorization/testing-multi-handler-or-semantics-fail-veto' },
+      { label: 'AllowAnonymous Anywhere Wins — next', route: '/aspnet/authorization/allowanonymous-anywhere-wins-authorize-cannot-override' },
+      { label: 'Authorization (overview)', route: '/aspnet/authorization' },
+    ],
+    tip: 'FallbackPolicy is not a baseline ANDed under every other policy — it only runs for endpoints with ZERO authorization metadata. A custom policy missing RequireAuthenticatedUser() bypasses it entirely once that policy is attached to the endpoint.',
+    docs: [
+      { label: 'Globally require authenticated users', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies#globally-require-all-users-to-be-authenticated' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Only [Authorize(Roles=...)]/[Authorize(Policy=...)] built from the framework\'s own role/claim shorthand auto-combine RequireAuthenticatedUser() — hand-rolled AddRequirements() policies must add it explicitly.',
+      'A resolved policy can be inspected directly via IAuthorizationPolicyProvider.GetPolicyAsync() — check for DenyAnonymousAuthorizationRequirement to confirm authentication is actually required.',
+    ],
+  },
+
+  'aspnet/authorization/allowanonymous-anywhere-wins-authorize-cannot-override': {
+    apis: ['[AllowAnonymous]', 'IAllowAnonymousData', '.AllowAnonymous()'],
+    related: [
+      { label: 'How Middleware Combines Policies — previous', route: '/aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies' },
+      { label: 'Authorization (overview)', route: '/aspnet/authorization' },
+      { label: 'Authentication', route: '/aspnet/authentication' },
+    ],
+    tip: 'AllowAnonymous metadata is checked FIRST, unconditionally, before any policy resolution — it is not a specificity contest with Authorize, it is a hard pre-emptive bypass, and it silently reopens just the ONE endpoint that carries it.',
+    docs: [
+      { label: 'Authorization overview', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A group protected with .RequireAuthorization() is not an enforced floor — one stray .AllowAnonymous() on a single mapped endpoint inside it reopens just that endpoint, with no build warning or runtime log.',
+      'Only an integration test asserting the actual HTTP status code for an unauthenticated request catches this — testing the surrounding feature\'s happy path never will, since sibling endpoints in the same group remain correctly protected.',
+    ],
+  },
+
   'aspnet/cors': {
     apis: ['AddCors()', 'UseCors()', 'WithOrigins()', 'AllowAnyOrigin()', 'AllowCredentials()', 'UseHsts()', 'UseHttpsRedirection()', 'RequireCors()'],
     related: [

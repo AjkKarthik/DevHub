@@ -745,6 +745,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why SetApplicationName Matters With Shared Keys', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' },
     { label: 'JWT Claim-Type Mapping — sub Becomes NameIdentifier', route: '/aspnet/authentication/jwt-claim-type-mapping-sub-becomes-nameidentifier' },
   ],
+  // NOTE: keyed 'aspnet-authorization', NOT bare 'authorization' — the
+  // Service Mesh hub already owns a route at the same bare slug
+  // (/service-mesh/authorization).
+  'aspnet-authorization': [
+    { label: 'Testing Multi-Handler OR Semantics — the Fail() Veto', route: '/aspnet/authorization/testing-multi-handler-or-semantics-fail-veto' },
+    { label: 'How Authorization Middleware Combines Default & Fallback Policies', route: '/aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies' },
+    { label: 'AllowAnonymous Anywhere Wins — Authorize Cannot Override It', route: '/aspnet/authorization/allowanonymous-anywhere-wins-authorize-cannot-override' },
+  ],
 };
 
 @Component({

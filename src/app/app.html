@@ -590,7 +590,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/authorization" routerLinkActive="active"><span class="nl-text">Authorization</span>@if(progress.isDone('aspnet-authorization')){<span class="nl-done">✓</span>}@if(diff('aspnet-authorization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/authorization" routerLinkActive="active">
+        <span class="nl-text">Authorization</span>
+        @if (progress.isDone('aspnet-authorization')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-authorization'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspnet-authorization')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspnet-authorization')"
+                  (click)="toggleSubtopics('aspnet-authorization', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspnet-authorization'); as subs) {
+        @if (isSubtopicsExpanded('aspnet-authorization')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/cors" routerLinkActive="active"><span class="nl-text">CORS & Security Headers</span>@if(progress.isDone('aspnet-cors')){<span class="nl-done">✓</span>}@if(diff('aspnet-cors');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/rate-limiting" routerLinkActive="active"><span class="nl-text">Rate Limiting</span>@if(progress.isDone('aspnet-rate-limiting')){<span class="nl-done">✓</span>}@if(diff('aspnet-rate-limiting');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/web-security" routerLinkActive="active"><span class="nl-text">Web Security</span>@if(progress.isDone('aspnet-web-security')){<span class="nl-done">✓</span>}@if(diff('aspnet-web-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

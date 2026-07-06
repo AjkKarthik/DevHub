@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Authorization"
+    topicRoute="/aspnet/authorization"
+    subtopicLabel="AllowAnonymous Always Wins"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">AllowAnonymous Anywhere Wins — Authorize Cannot Override It</h1>
+  <p class="page-subtitle">
+    The main page's own protected-group example has a silent gap: one stray .AllowAnonymous() on a single
+    endpoint inside a .RequireAuthorization() group reopens JUST that endpoint — no error, no warning, and
+    every sibling endpoint keeps working correctly.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Authorization deep-dive set: proving the multi-handler OR/veto rule with a direct
+      test, understanding exactly when FallbackPolicy does and doesn't apply, and now the AllowAnonymous
+      precedence rule that can silently undo both. Head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Authorization"
+    topicRoute="/aspnet/authorization"
+    [prev]="{ label: 'How Authorization Middleware Combines Default & Fallback Policies', route: '/aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies' }"
+  />
+</div>
