@@ -12932,6 +12932,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/testing/testing-role-based-auth-per-test-without-new-factory-subclass': {
+    apis: ['WithWebHostBuilder()', 'IOptions<T>', 'AuthenticationHandler<T>'],
+    related: [
+      { label: 'Collection Fixtures vs Parallelism — next', route: '/aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes' },
+      { label: 'Testing ASP.NET Core (overview)', route: '/aspnet/testing' },
+      { label: 'Authorization', route: '/aspnet/authorization' },
+    ],
+    tip: 'A configurable TestAuthHandler reading claims from a mutable IOptions<TestAuthOptions> bag, combined with WithWebHostBuilder() to layer per-test overrides, covers any role/claim combination without a new WebApplicationFactory subclass per scenario.',
+    docs: [
+      { label: 'Integration tests in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'WithWebHostBuilder() returns a NEW, independent factory that layers config on top of the base fixture — it never mutates the shared IClassFixture instance other tests in the class use.',
+      'Directly mutating a shared options Singleton between test methods only looks safe under sequential execution — it silently breaks the moment the fixture is shared across classes via a collection fixture.',
+    ],
+  },
+
+  'aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes': {
+    apis: ['[Collection]', '[CollectionDefinition]', 'ICollectionFixture<T>'],
+    related: [
+      { label: 'Testing Per-Test Auth — previous', route: '/aspnet/testing/testing-role-based-auth-per-test-without-new-factory-subclass' },
+      { label: 'Singleton State Leaks — next', route: '/aspnet/testing/singleton-state-in-shared-factory-leaks-across-test-methods' },
+      { label: 'Testing ASP.NET Core (overview)', route: '/aspnet/testing' },
+    ],
+    tip: 'xUnit\'s parallelism unit is the test COLLECTION, not the class — grouping classes under the same [Collection] name to share a fixture is exactly what forces them to run sequentially relative to each other, never concurrently.',
+    docs: [
+      { label: 'Running Tests in Parallel (xUnit)', url: 'https://xunit.net/docs/running-tests-in-parallel' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'For a cheap-to-start in-process WebApplicationFactory, the lost parallelism from a large shared collection frequently outweighs the setup-cost savings — reserve collections for genuinely expensive resources like a real database container.',
+      'Every class without an explicit [Collection] attribute is its own separate, parallel-eligible collection by default — this is the baseline being traded away when classes are grouped.',
+    ],
+  },
+
+  'aspnet/testing/singleton-state-in-shared-factory-leaks-across-test-methods': {
+    apis: ['AddSingleton<T>()', 'IMemoryCache', 'PartitionedRateLimiter<HttpContext>'],
+    related: [
+      { label: 'Collection Fixtures vs Parallelism — previous', route: '/aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes' },
+      { label: 'Testing ASP.NET Core (overview)', route: '/aspnet/testing' },
+      { label: 'Rate Limiting', route: '/aspnet/rate-limiting' },
+    ],
+    tip: 'Any Singleton the REAL application registers (a rate limiter, an IMemoryCache) is shared by every test method in an IClassFixture-backed class — a narrower, easier-to-miss risk than a hand-written static test field.',
+    docs: [
+      { label: 'Integration tests in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'A test that hard-codes the same authenticated identity for every request shares that identity\'s rate-limiter partition (or cache key) across every other test method that hits the same endpoint — a test-order-dependent flakiness source.',
+      'The fix is almost always giving each test its own distinguishing key into the shared Singleton\'s state, not replacing or isolating the Singleton itself.',
+    ],
+  },
+
   'aspnet/background-services': {
     apis: ['IHostedService', 'BackgroundService', 'ExecuteAsync()', 'IServiceScopeFactory', 'PeriodicTimer', 'Channel<T>', 'AddHostedService<T>()', 'stoppingToken'],
     related: [

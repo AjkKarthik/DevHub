@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Testing ASP.NET Core"
+    topicRoute="/aspnet/testing"
+    subtopicLabel="Singleton State Leaks"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Singleton State in a Shared Factory Leaks Across Test Methods</h1>
+  <p class="page-subtitle">
+    The main page's "shared static field" mistake covers hand-written test statics. A narrower, easier-to-miss
+    version lives in the REAL application's own Singleton services — a rate limiter or cache shared by every
+    test method in an IClassFixture-backed class, not just across files.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 2.1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Testing ASP.NET Core deep-dive set: filling the main page's own per-test auth gap,
+      understanding the parallelism trade-off behind shared collection fixtures, and now the Singleton-state
+      leak that produces the same test-order flakiness through a third, distinct cause. Head back to the
+      topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing ASP.NET Core"
+    topicRoute="/aspnet/testing"
+    [prev]="{ label: 'Collection Fixtures Silently Disable Parallelism for Grouped Classes', route: '/aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes' }"
+  />
+</div>

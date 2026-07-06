@@ -695,7 +695,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Quality</p>
-      <a routerLink="/aspnet/testing" routerLinkActive="active"><span class="nl-text">Testing</span>@if(progress.isDone('aspnet-testing')){<span class="nl-done">✓</span>}@if(diff('aspnet-testing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/testing" routerLinkActive="active">
+        <span class="nl-text">Testing</span>
+        @if (progress.isDone('aspnet-testing')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-testing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspnet-testing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspnet-testing')"
+                  (click)="toggleSubtopics('aspnet-testing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspnet-testing'); as subs) {
+        @if (isSubtopicsExpanded('aspnet-testing')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/background-services" routerLinkActive="active"><span class="nl-text">Background Services</span>@if(progress.isDone('aspnet-background-services')){<span class="nl-done">✓</span>}@if(diff('aspnet-background-services');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/signalr" routerLinkActive="active"><span class="nl-text">SignalR</span>@if(progress.isDone('aspnet-signalr')){<span class="nl-done">✓</span>}@if(diff('aspnet-signalr');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/health-checks" routerLinkActive="active"><span class="nl-text">Health Checks</span>@if(progress.isDone('aspnet-health-checks')){<span class="nl-done">✓</span>}@if(diff('aspnet-health-checks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

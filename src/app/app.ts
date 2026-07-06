@@ -776,6 +776,15 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'IOptionsMonitor OnChange Never Fires for Env Vars or Key Vault', route: '/aspnet/secrets/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault' },
     { label: 'Pruning Data Protection Keys Invalidates Time-Limited Tokens', route: '/aspnet/secrets/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens' },
   ],
+  // NOTE: keyed 'aspnet-testing', NOT bare 'testing' — Angular's own
+  // /angular/testing topic (with its own subtopics), plus React,
+  // Node.js, Go, GraphQL, and Terraform hubs, all already own that
+  // bare slug.
+  'aspnet-testing': [
+    { label: 'Testing Role-Based Auth Per Test, Without a New Factory Subclass', route: '/aspnet/testing/testing-role-based-auth-per-test-without-new-factory-subclass' },
+    { label: 'Collection Fixtures Silently Disable Parallelism for Grouped Classes', route: '/aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes' },
+    { label: 'Singleton State in a Shared Factory Leaks Across Test Methods', route: '/aspnet/testing/singleton-state-in-shared-factory-leaks-across-test-methods' },
+  ],
 };
 
 @Component({

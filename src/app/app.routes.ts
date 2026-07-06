@@ -878,7 +878,12 @@ export const routes: Routes = [
         { path: 'pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens', loadComponent: () => import('./components/backend/aspnet/secrets/subtopics/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens').then(m => m.PruningDataProtectionKeysInvalidatesStillValidTimeLimitedTokensSubtopic) },
       ] },
       // ── Quality ──
-      { path: 'testing',              loadComponent: () => import('./components/backend/aspnet/testing/testing').then(m => m.AspnetTesting) },
+      { path: 'testing', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/testing/testing').then(m => m.AspnetTesting) },
+        { path: 'testing-role-based-auth-per-test-without-new-factory-subclass', loadComponent: () => import('./components/backend/aspnet/testing/subtopics/testing-role-based-auth-per-test-without-new-factory-subclass/testing-role-based-auth-per-test-without-new-factory-subclass').then(m => m.TestingRoleBasedAuthPerTestWithoutNewFactorySubclassSubtopic) },
+        { path: 'collection-fixtures-silently-disable-parallelism-for-grouped-classes', loadComponent: () => import('./components/backend/aspnet/testing/subtopics/collection-fixtures-silently-disable-parallelism-for-grouped-classes/collection-fixtures-silently-disable-parallelism-for-grouped-classes').then(m => m.CollectionFixturesSilentlyDisableParallelismForGroupedClassesSubtopic) },
+        { path: 'singleton-state-in-shared-factory-leaks-across-test-methods', loadComponent: () => import('./components/backend/aspnet/testing/subtopics/singleton-state-in-shared-factory-leaks-across-test-methods/singleton-state-in-shared-factory-leaks-across-test-methods').then(m => m.SingletonStateInSharedFactoryLeaksAcrossTestMethodsSubtopic) },
+      ] },
       { path: 'background-services',  loadComponent: () => import('./components/backend/aspnet/background-services/background-services').then(m => m.AspnetBackgroundServices) },
       { path: 'signalr',              loadComponent: () => import('./components/backend/aspnet/signalr/signalr').then(m => m.AspnetSignalR) },
       { path: 'health-checks',        loadComponent: () => import('./components/backend/aspnet/health-checks/health-checks').then(m => m.AspnetHealthChecks) },

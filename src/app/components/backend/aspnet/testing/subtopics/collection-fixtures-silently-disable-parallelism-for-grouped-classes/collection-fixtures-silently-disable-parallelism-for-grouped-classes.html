@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Testing ASP.NET Core"
+    topicRoute="/aspnet/testing"
+    subtopicLabel="Collection Fixtures vs Parallelism"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Collection Fixtures Silently Disable Parallelism for Grouped Classes</h1>
+  <p class="page-subtitle">
+    The main page mentions parallel test classes and shared collection fixtures as two separate facts.
+    They're the same mechanism — grouping classes into one collection to share a factory is exactly what
+    forces them to run sequentially instead of across every CPU core.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="xUnit 2+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the collection/parallelism trade-off pinned down, the final subtopic covers a related sharing
+      risk one level deeper — Singleton DI state that leaks across test METHODS within the same
+      IClassFixture-shared factory, a narrower case than the page's own "shared static field" mistake.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Testing ASP.NET Core"
+    topicRoute="/aspnet/testing"
+    [prev]="{ label: 'Testing Role-Based Authorization Per Test, Without a New Factory Subclass', route: '/aspnet/testing/testing-role-based-auth-per-test-without-new-factory-subclass' }"
+    [next]="{ label: 'Singleton State in a Shared Factory Leaks Across Test Methods', route: '/aspnet/testing/singleton-state-in-shared-factory-leaks-across-test-methods' }"
+  />
+</div>
