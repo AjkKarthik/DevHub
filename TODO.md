@@ -1539,7 +1539,7 @@ off here with a date.
 - [x] `/aspnet/localization` — Localization & Globalization (2026-07-07 — 3 subtopics: testing-localized-responses-fixed-culture-provider-vs-accept-language, resx-fallback-follows-culture-hierarchy-not-just-missing-keys, culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic)
 - [x] `/aspnet/masstransit` — MassTransit (2026-07-07 — 3 subtopics: testing-masstransit-consumers-and-request-reply-with-itestharness, usemessageretry-and-usedelayedredelivery-multiply-not-add, send-hardcoded-queue-name-can-silently-point-at-an-empty-queue)
 - [x] `/aspnet/response-compression` — Response Compression (2026-07-07 — 3 subtopics: testing-minimum-size-threshold-and-skip-if-already-encoded, registration-order-only-breaks-ties-among-client-supported-encodings, diagnostic-middleware-must-wrap-compression-not-nest-inside-it)
-- [ ] `/aspnet/websockets` — WebSockets
+- [x] `/aspnet/websockets` — WebSockets (2026-07-07 — 3 subtopics: testing-websocket-endpoints-with-testservers-websocketclient, close-handshake-mechanics-what-actually-ends-the-receive-loop, receive-loop-examples-silently-truncate-multi-frame-messages)
 - [ ] `/aspnet/yarp` — YARP Reverse Proxy
 - [ ] `/aspnet/opentelemetry` — OpenTelemetry
 
