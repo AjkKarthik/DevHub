@@ -1523,7 +1523,7 @@ off here with a date.
 - [x] `/aspnet/rate-limiting` — Rate Limiting (2026-07-06 — 3 subtopics: testing-fixed-window-boundary-burst-with-faketimeprovider, concurrency-permit-held-until-response-fully-transmitted, partition-factory-runs-once-tier-upgrade-ignored-until-evicted)
 - [x] `/aspnet/web-security` — Web Security Essentials (2026-07-06 — 3 subtopics: testing-antiforgery-token-validation-with-webapplicationfactory, contextual-encoding-html-encode-doesnt-protect-attributes-or-js, missing-separator-in-startswith-check-allows-sibling-directory-bypass)
 - [x] `/aspnet/secrets` — Secrets & Data Protection (2026-07-06 — 3 subtopics: testing-validateonstart-only-fails-fast-via-host-startasync, ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault, pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens)
-- [ ] `/aspnet/testing` — Testing ASP.NET Core
+- [x] `/aspnet/testing` — Testing ASP.NET Core (2026-07-06 — 3 subtopics: testing-role-based-auth-per-test-without-new-factory-subclass, collection-fixtures-silently-disable-parallelism-for-grouped-classes, singleton-state-in-shared-factory-leaks-across-test-methods)
 - [ ] `/aspnet/background-services` — Background Services
 - [ ] `/aspnet/signalr` — SignalR
 - [ ] `/aspnet/health-checks` — Health Checks & Observability
