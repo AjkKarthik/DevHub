@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Web Security Essentials"
+    topicRoute="/aspnet/web-security"
+    subtopicLabel="Contextual Output Encoding"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Contextual Encoding — HTML Encode Doesn't Protect Attributes or JS</h1>
+  <p class="page-subtitle">
+    "Encode with HtmlEncoder" is only correct for a text-node sink. An unquoted attribute or an inline
+    &lt;script&gt; block needs a different encoder entirely — HTML entities aren't decoded by the JavaScript
+    parser at all.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With encoding context pinned down, the final subtopic returns to the main page's own path-traversal
+      check and explains a one-character detail in its own code — the trailing separator in the
+      StartsWith() comparison — that many adapted copies of this exact check silently drop.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Web Security Essentials"
+    topicRoute="/aspnet/web-security"
+    [prev]="{ label: 'Testing That Antiforgery Validation Actually Rejects Forged Requests', route: '/aspnet/web-security/testing-antiforgery-token-validation-with-webapplicationfactory' }"
+    [next]="{ label: 'Missing Separator in StartsWith Check Allows Sibling-Directory Bypass', route: '/aspnet/web-security/missing-separator-in-startswith-check-allows-sibling-directory-bypass' }"
+  />
+</div>

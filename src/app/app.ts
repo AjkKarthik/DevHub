@@ -745,6 +745,92 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why SetApplicationName Matters With Shared Keys', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' },
     { label: 'JWT Claim-Type Mapping — sub Becomes NameIdentifier', route: '/aspnet/authentication/jwt-claim-type-mapping-sub-becomes-nameidentifier' },
   ],
+  // NOTE: keyed 'aspnet-authorization', NOT bare 'authorization' — the
+  // Service Mesh hub already owns a route at the same bare slug
+  // (/service-mesh/authorization).
+  'aspnet-authorization': [
+    { label: 'Testing Multi-Handler OR Semantics — the Fail() Veto', route: '/aspnet/authorization/testing-multi-handler-or-semantics-fail-veto' },
+    { label: 'How Authorization Middleware Combines Default & Fallback Policies', route: '/aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies' },
+    { label: 'AllowAnonymous Anywhere Wins — Authorize Cannot Override It', route: '/aspnet/authorization/allowanonymous-anywhere-wins-authorize-cannot-override' },
+  ],
+  'cors': [
+    { label: 'Testing That Preflight Terminates Before Auth Middleware Runs', route: '/aspnet/cors/testing-preflight-bypasses-auth-middleware-terminal-response' },
+    { label: 'How the Browser Decides Simple vs Preflight Request', route: '/aspnet/cors/how-browser-decides-simple-vs-preflight-request' },
+    { label: 'Misspelled RequireCors Policy Name Fails Silently', route: '/aspnet/cors/misspelled-requirecors-policy-name-fails-silently-no-headers' },
+  ],
+  // NOTE: keyed 'aspnet-rate-limiting', NOT bare 'rate-limiting' — the
+  // Redis hub (/data/redis/rate-limiting) and API Design hub
+  // (/architecture/api-design/rate-limiting) already own that bare slug.
+  'aspnet-rate-limiting': [
+    { label: 'Testing the Fixed-Window Boundary Burst With FakeTimeProvider', route: '/aspnet/rate-limiting/testing-fixed-window-boundary-burst-with-faketimeprovider' },
+    { label: 'Concurrency Permit Held Until Response Fully Transmitted', route: '/aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted' },
+    { label: 'Partition Factory Runs Once — Tier Upgrade Ignored Until Evicted', route: '/aspnet/rate-limiting/partition-factory-runs-once-tier-upgrade-ignored-until-evicted' },
+  ],
+  'web-security': [
+    { label: 'Testing That Antiforgery Validation Actually Rejects Forged Requests', route: '/aspnet/web-security/testing-antiforgery-token-validation-with-webapplicationfactory' },
+    { label: 'Contextual Encoding — HTML Encode Doesn\'t Protect Attributes or JS', route: '/aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js' },
+    { label: 'Missing Separator in StartsWith Check — Sibling-Directory Bypass', route: '/aspnet/web-security/missing-separator-in-startswith-check-allows-sibling-directory-bypass' },
+  ],
+  'secrets': [
+    { label: 'Testing That ValidateOnStart() Fails Fast Via Host StartAsync', route: '/aspnet/secrets/testing-validateonstart-only-fails-fast-via-host-startasync' },
+    { label: 'IOptionsMonitor OnChange Never Fires for Env Vars or Key Vault', route: '/aspnet/secrets/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault' },
+    { label: 'Pruning Data Protection Keys Invalidates Time-Limited Tokens', route: '/aspnet/secrets/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens' },
+  ],
+  // NOTE: keyed 'aspnet-testing', NOT bare 'testing' — Angular's own
+  // /angular/testing topic (with its own subtopics), plus React,
+  // Node.js, Go, GraphQL, and Terraform hubs, all already own that
+  // bare slug.
+  'aspnet-testing': [
+    { label: 'Testing Role-Based Auth Per Test, Without a New Factory Subclass', route: '/aspnet/testing/testing-role-based-auth-per-test-without-new-factory-subclass' },
+    { label: 'Collection Fixtures Silently Disable Parallelism for Grouped Classes', route: '/aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes' },
+    { label: 'Singleton State in a Shared Factory Leaks Across Test Methods', route: '/aspnet/testing/singleton-state-in-shared-factory-leaks-across-test-methods' },
+  ],
+  'background-services': [
+    { label: 'Testing Periodic Worker Loops With FakeTimeProvider Tick Control', route: '/aspnet/background-services/testing-periodic-worker-loops-with-faketimeprovider-tick-control' },
+    { label: 'StartAsync Returns Before ExecuteAsync Actually Completes', route: '/aspnet/background-services/startasync-returns-before-executeasync-actually-completes' },
+    { label: 'Channel Writer Never Completed Loses Items on Shutdown', route: '/aspnet/background-services/channel-writer-never-completed-loses-items-on-graceful-shutdown' },
+  ],
+  'signalr': [
+    { label: 'Testing Hub Methods With Mocked Clients, Groups, and Context', route: '/aspnet/signalr/testing-hub-methods-with-mocked-clients-groups-and-context' },
+    { label: 'How Groups and Context Persist Across Transient Hub Instances', route: '/aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances' },
+    { label: 'Connection Identity Captured Once — Ignores Later Claim Changes', route: '/aspnet/signalr/connection-identity-captured-once-ignores-later-claim-changes' },
+  ],
+  'health-checks': [
+    { label: 'Testing Boundary Logic and That Liveness Runs Zero Checks', route: '/aspnet/health-checks/testing-health-check-boundary-logic-and-liveness-runs-zero-checks' },
+    { label: 'DB Check Connection Pool Contention Causes Cascading Failure', route: '/aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure' },
+    { label: 'Degraded Returns 200 by Default — Invisible to Load Balancers', route: '/aspnet/health-checks/degraded-returns-200-by-default-invisible-to-load-balancers' },
+  ],
+  // NOTE: keyed 'aspnet-deployment', NOT bare 'deployment' — the
+  // Node.js hub (/node/deployment) already owns that bare slug.
+  'aspnet-deployment': [
+    { label: 'Testing ForwardedHeaders Trust Configuration Rejects Spoofed IPs', route: '/aspnet/deployment/testing-forwardedheaders-trust-configuration-rejects-spoofed-ips' },
+    { label: 'How ForwardedHeaders Walks Multi-Hop Chains to Resolve Client IP', route: '/aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip' },
+    { label: 'HEALTHCHECK curl Instruction Fails on the Minimal ASP.NET Runtime Image', route: '/aspnet/deployment/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image' },
+  ],
+  // NOTE: keyed 'aspnet-performance', NOT bare 'performance' — SQL,
+  // HTML, React, Blazor, Node.js, GraphQL, and Service Mesh hubs (plus
+  // an existing bare 'performance' entry at line ~1154) all already
+  // own that bare slug.
+  'aspnet-performance': [
+    { label: 'Testing Allocation Regressions With GetAllocatedBytesForCurrentThread', route: '/aspnet/performance/testing-allocation-regressions-with-getallocatedbytesforthread' },
+    { label: 'Server GC Heap Count Follows Perceived, Not Actual, CPU Limit', route: '/aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit' },
+    { label: 'Streaming Query Missing CancellationToken Runs After Disconnect', route: '/aspnet/performance/streaming-query-missing-cancellationtoken-runs-after-disconnect' },
+  ],
+  'aspire': [
+    { label: 'Testing the AppHost Topology With DistributedApplicationTestingBuilder', route: '/aspnet/aspire/testing-apphost-topology-with-distributedapplicationtestingbuilder' },
+    { label: 'AddProject Type Parameter Requires a Build, Not Just a Project Reference', route: '/aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference' },
+    { label: 'OTel Exporter Needs an Endpoint Guard Outside the AppHost', route: '/aspnet/aspire/otel-exporter-needs-endpoint-guard-when-running-outside-apphost' },
+  ],
+  'fluent-validation': [
+    { label: 'Testing Async MustAsync Rules With FluentValidation.TestHelper', route: '/aspnet/fluent-validation/testing-async-mustasync-rules-with-fluentvalidation-testhelper' },
+    { label: 'Inline When() Defaults to All Validators in the Same RuleFor Chain', route: '/aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain' },
+    { label: 'Adding One MustAsync Rule Breaks Every Synchronous Validate Caller', route: '/aspnet/fluent-validation/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller' },
+  ],
+  'minimal-api-advanced': [
+    { label: 'Testing Endpoint Filters Without WebApplicationFactory', route: '/aspnet/minimal-api-advanced/testing-endpoint-filters-without-webapplicationfactory' },
+    { label: 'ctx.Arguments.OfType() Is Fragile — Use GetArgument by Position', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' },
+    { label: 'Nested Group Filters Execute Outside-In Like Middleware', route: '/aspnet/minimal-api-advanced/nested-group-filters-execute-outside-in-like-middleware' },
+  ],
 };
 
 @Component({

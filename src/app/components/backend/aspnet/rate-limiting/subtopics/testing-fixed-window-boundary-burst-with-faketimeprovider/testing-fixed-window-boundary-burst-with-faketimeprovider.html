@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Rate Limiting"
+    topicRoute="/aspnet/rate-limiting"
+    subtopicLabel="Testing the Boundary Burst"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing the Fixed-Window Boundary Burst With FakeTimeProvider</h1>
+  <p class="page-subtitle">
+    The main page states the fixed-window boundary burst as a fact but never proves it. This subtopic
+    drives a FakeTimeProvider across exactly the window boundary to show 10 requests succeeding against a
+    "5 per minute" limit, deterministically and without sleeping.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the boundary burst proven by a real test, the next subtopic goes deeper into a mechanic the main
+      page simplifies — exactly when a concurrency-limiter permit is released, and why a slow client can
+      hold one far longer than the handler's actual compute time.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Rate Limiting"
+    topicRoute="/aspnet/rate-limiting"
+    [next]="{ label: 'Concurrency Permit Held Until Response Fully Transmitted', route: '/aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted' }"
+  />
+</div>

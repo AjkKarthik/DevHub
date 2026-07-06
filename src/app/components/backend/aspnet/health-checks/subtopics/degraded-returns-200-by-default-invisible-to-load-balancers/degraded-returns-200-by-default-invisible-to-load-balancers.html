@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Health Checks & Observability"
+    topicRoute="/aspnet/health-checks"
+    subtopicLabel="Degraded's Invisible Status Code"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Degraded Returns 200 by Default — Invisible to Load Balancers</h1>
+  <p class="page-subtitle">
+    Degraded's whole purpose is early alerting — but it returns the same 200 status code as Healthy, and
+    most load balancers route purely on 2xx vs non-2xx. The signal only reaches whatever actually parses the
+    JSON body.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 2.2+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Health Checks &amp; Observability deep-dive set: testing boundary logic and
+      proving liveness genuinely skips checks, understanding the cascading-failure risk of sharing a
+      connection pool with real traffic, and now why Degraded needs its own alerting path independent of
+      load-balancer routing. Head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Health Checks & Observability"
+    topicRoute="/aspnet/health-checks"
+    [prev]="{ label: 'DB Check Connection Pool Contention Causes Cascading Failure', route: '/aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure' }"
+  />
+</div>

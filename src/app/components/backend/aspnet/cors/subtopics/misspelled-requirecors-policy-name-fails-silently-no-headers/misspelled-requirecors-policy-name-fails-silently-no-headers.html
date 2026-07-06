@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="CORS & Security Headers"
+    topicRoute="/aspnet/cors"
+    subtopicLabel="Misspelled RequireCors Policy Name"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Misspelled RequireCors Policy Name Fails Silently — No Headers</h1>
+  <p class="page-subtitle">
+    Named CORS policies resolve lazily, per request. A typo in .RequireCors("...") throws no exception at
+    startup or runtime — the endpoint just returns 200 with no Access-Control-Allow-Origin header, invisible
+    to curl, Postman, and body-only tests alike.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the CORS &amp; Security Headers deep-dive set: proving the preflight-before-auth
+      ordering mechanically, understanding exactly why the browser preflights what it preflights, and now
+      the one silent failure mode that only a header-specific test can catch. Head back to the topic
+      overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="CORS & Security Headers"
+    topicRoute="/aspnet/cors"
+    [prev]="{ label: 'How the Browser Decides Simple vs Preflight Request', route: '/aspnet/cors/how-browser-decides-simple-vs-preflight-request' }"
+  />
+</div>

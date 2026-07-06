@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SignalR"
+    topicRoute="/aspnet/signalr"
+    subtopicLabel="Testing Hub Methods"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Hub Methods With Mocked Clients, Groups, and Context</h1>
+  <p class="page-subtitle">
+    The main page's own Q&A gestures at hub testing without showing the mechanics. Clients and Groups are
+    ordinary public settable properties — no reflection needed — but the Clients chain (OthersInGroup,
+    Caller, Group) needs its own nested substitutes one level deeper.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With hub testing mechanics covered, the next subtopic explains the architecture that makes it work —
+      why Context.Items survives across calls while Hub instance fields don't, even though both live on
+      objects the main page describes as "transient."
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SignalR"
+    topicRoute="/aspnet/signalr"
+    [next]="{ label: 'How Groups and Context Persist Across Transient Hub Instances', route: '/aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances' }"
+  />
+</div>

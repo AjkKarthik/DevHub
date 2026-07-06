@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Performance & Diagnostics"
+    topicRoute="/aspnet/performance"
+    subtopicLabel="Server GC in Containers"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Server GC Heap Count Follows Perceived, Not Actual, CPU Limit</h1>
+  <p class="page-subtitle">
+    "One heap per logical core" depends on the container correctly reporting its CPU allocation. A pod with
+    requests.cpu but no limits.cpu can let the runtime perceive the host's FULL core count, creating dozens
+    of unnecessary GC heaps.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since=".NET Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With container-aware GC sizing covered, the final subtopic returns to the main page's own streaming
+      code and flags a real inconsistency — one example correctly threads a CancellationToken through the
+      stream, the other doesn't, with a concrete resource-leak consequence.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Performance & Diagnostics"
+    topicRoute="/aspnet/performance"
+    [prev]="{ label: 'Testing Allocation Regressions With GetAllocatedBytesForCurrentThread', route: '/aspnet/performance/testing-allocation-regressions-with-getallocatedbytesforthread' }"
+    [next]="{ label: 'Streaming Query Missing CancellationToken Keeps Running After Disconnect', route: '/aspnet/performance/streaming-query-missing-cancellationtoken-runs-after-disconnect' }"
+  />
+</div>

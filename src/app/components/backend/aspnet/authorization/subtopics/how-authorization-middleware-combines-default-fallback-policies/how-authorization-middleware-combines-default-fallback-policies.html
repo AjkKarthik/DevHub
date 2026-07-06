@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Authorization"
+    topicRoute="/aspnet/authorization"
+    subtopicLabel="Default vs Fallback Policy Precedence"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How Authorization Middleware Combines Default &amp; Fallback Policies</h1>
+  <p class="page-subtitle">
+    FallbackPolicy is not a baseline ANDed under every other policy — it only runs when an endpoint has NO
+    authorization metadata at all. A custom policy that forgets RequireAuthenticatedUser() bypasses it
+    entirely, even with a strict FallbackPolicy configured.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With policy precedence pinned down, the final subtopic covers a related, equally silent gotcha: how a
+      single <code>.AllowAnonymous()</code> call — anywhere in the endpoint chain — always wins, even inside
+      a group already protected by <code>.RequireAuthorization()</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Authorization"
+    topicRoute="/aspnet/authorization"
+    [prev]="{ label: 'Testing Multi-Handler OR Semantics — and the Fail() Veto', route: '/aspnet/authorization/testing-multi-handler-or-semantics-fail-veto' }"
+    [next]="{ label: 'AllowAnonymous Anywhere Wins — Authorize Cannot Override It', route: '/aspnet/authorization/allowanonymous-anywhere-wins-authorize-cannot-override' }"
+  />
+</div>

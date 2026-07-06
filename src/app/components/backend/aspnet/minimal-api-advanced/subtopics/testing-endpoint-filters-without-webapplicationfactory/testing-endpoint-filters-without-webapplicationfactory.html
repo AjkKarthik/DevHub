@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Minimal API Advanced"
+    topicRoute="/aspnet/minimal-api-advanced"
+    subtopicLabel="Testing Endpoint Filters"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Endpoint Filters Without WebApplicationFactory</h1>
+  <p class="page-subtitle">
+    The main page's own ValidationFilter and LoggingFilter examples are never shown being tested.
+    EndpointFilterInvocationContext.Create() lets you construct the exact context a filter receives and
+    call InvokeAsync() directly, with no host involved.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With filter testing covered, the next subtopic digs into a fragility in the main page's own
+      ValidationFilter example — using ctx.Arguments.OfType&lt;T&gt;() to find the model can silently grab
+      the wrong parameter as a handler's signature evolves.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Minimal API Advanced"
+    topicRoute="/aspnet/minimal-api-advanced"
+    [next]="{ label: 'ctx.Arguments.OfType() Is Fragile — Use GetArgument by Position', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' }"
+  />
+</div>

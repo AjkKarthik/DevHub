@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Rate Limiting"
+    topicRoute="/aspnet/rate-limiting"
+    subtopicLabel="Concurrency Permit Release Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Concurrency Permit Held Until Response Fully Transmitted</h1>
+  <p class="page-subtitle">
+    "Released when the handler completes" is only true for buffered responses. A streaming endpoint holds
+    its concurrency permit for as long as the CLIENT takes to read the stream — turning slow clients into a
+    server-side throughput problem.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With permit-release mechanics pinned down, the final subtopic covers a related, easy-to-miss gotcha
+      in partitioned limiters: the per-partition factory only runs once per key, so a mid-session tier
+      upgrade silently has no effect on that user's existing limit.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Rate Limiting"
+    topicRoute="/aspnet/rate-limiting"
+    [prev]="{ label: 'Testing the Fixed-Window Boundary Burst With FakeTimeProvider', route: '/aspnet/rate-limiting/testing-fixed-window-boundary-burst-with-faketimeprovider' }"
+    [next]="{ label: 'Partition Factory Runs Once — Tier Upgrade Ignored Until Evicted', route: '/aspnet/rate-limiting/partition-factory-runs-once-tier-upgrade-ignored-until-evicted' }"
+  />
+</div>

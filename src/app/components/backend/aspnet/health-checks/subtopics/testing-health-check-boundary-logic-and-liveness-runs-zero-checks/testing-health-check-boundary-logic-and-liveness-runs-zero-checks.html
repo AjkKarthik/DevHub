@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Health Checks & Observability"
+    topicRoute="/aspnet/health-checks"
+    subtopicLabel="Testing Boundary Logic"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Health Check Boundary Logic and That Liveness Runs Zero Checks</h1>
+  <p class="page-subtitle">
+    The main page's own LicenseExpiryCheck has exact day-count boundaries that deserve direct unit tests —
+    and its liveness/readiness split deserves proof that the Predicate genuinely skips checks, not just
+    filters the response.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.2+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With health check testing covered, the next subtopic digs into a mechanic the main page hints at but
+      doesn't fully explore — why a readiness DB check sharing the connection pool with real traffic can
+      turn a slow database into a self-reinforcing outage.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Health Checks & Observability"
+    topicRoute="/aspnet/health-checks"
+    [next]="{ label: 'DB Check Connection Pool Contention Causes Cascading Failure', route: '/aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure' }"
+  />
+</div>

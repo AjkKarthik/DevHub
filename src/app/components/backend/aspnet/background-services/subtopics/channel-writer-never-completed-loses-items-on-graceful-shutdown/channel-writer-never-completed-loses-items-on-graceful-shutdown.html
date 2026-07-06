@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Background Services"
+    topicRoute="/aspnet/background-services"
+    subtopicLabel="Channel Draining at Shutdown"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Channel Writer Never Completed Loses Items on Graceful Shutdown</h1>
+  <p class="page-subtitle">
+    The main page's own EmailQueue example never calls Writer.Complete() — meaning every routine deploy, not
+    just a crash, silently discards whatever's still buffered in the channel when the worker's stoppingToken
+    fires.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Background Services deep-dive set: driving worker ticks deterministically in
+      tests, understanding exactly when StartAsync hands control back to the host, and now the graceful-
+      shutdown draining gap in the main page's own queue example. Head back to the topic overview to
+      continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Background Services"
+    topicRoute="/aspnet/background-services"
+    [prev]="{ label: 'StartAsync Returns Before ExecuteAsync Actually Completes', route: '/aspnet/background-services/startasync-returns-before-executeasync-actually-completes' }"
+  />
+</div>

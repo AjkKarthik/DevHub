@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel=".NET Aspire"
+    topicRoute="/aspnet/aspire"
+    subtopicLabel="OTel Exporter Endpoint Guard"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">OTel Exporter Needs an Endpoint Guard When Running Outside the AppHost</h1>
+  <p class="page-subtitle">
+    The main page's own illustrative ServiceDefaults code registers AddOtlpExporter() unconditionally. Run
+    that service standalone — a quick dotnet run, a test host — and it silently fails to export anywhere,
+    with no visible error.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Aspire 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the .NET Aspire deep-dive set: testing the real AppHost topology against real
+      containers, understanding the compile-time/runtime split behind AddProject(), and now the endpoint
+      guard that keeps AddServiceDefaults() safe to run in every environment. Head back to the topic
+      overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel=".NET Aspire"
+    topicRoute="/aspnet/aspire"
+    [prev]="{ label: 'AddProject Type Parameter Requires a Build, Not Just a Project Reference', route: '/aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference' }"
+  />
+</div>

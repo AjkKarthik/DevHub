@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Authorization"
+    topicRoute="/aspnet/authorization"
+    subtopicLabel="Testing Multi-Handler OR/Veto Semantics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Multi-Handler OR Semantics — and the Fail() Veto</h1>
+  <p class="page-subtitle">
+    The main page states "succeeds if any handler succeeds and none fails" as fact. This subtopic proves it
+    with a direct AuthorizationHandlerContext test, and shows the case that breaks people's intuition: a
+    Fail() registered after a Succeed() still wins.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the OR/veto mechanics pinned down by a real test, the next subtopic goes one level deeper into
+      the authorization middleware itself — how it decides which policy applies to a request in the first
+      place, and why FallbackPolicy is not the safety net most people assume it is.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Authorization"
+    topicRoute="/aspnet/authorization"
+    [next]="{ label: 'How Authorization Middleware Combines Default & Fallback Policies', route: '/aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies' }"
+  />
+</div>

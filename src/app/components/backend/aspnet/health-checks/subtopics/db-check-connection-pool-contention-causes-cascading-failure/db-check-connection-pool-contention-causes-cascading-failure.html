@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Health Checks & Observability"
+    topicRoute="/aspnet/health-checks"
+    subtopicLabel="DB Check Pool Contention"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">DB Check Connection Pool Contention Causes Cascading Failure</h1>
+  <p class="page-subtitle">
+    The main page warns about a DB check on liveness causing a crash-loop. A DB check on readiness has an
+    analogous but distinct risk — it shares the connection pool with real traffic, so it's most likely to
+    fail exactly when removing a pod does the most damage.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 2.2+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the pool-contention risk covered, the final subtopic follows a related thread — what actually
+      happens downstream when a Degraded result reaches a load balancer, and why the default 200 status code
+      quietly defeats the whole point of introducing Degraded in the first place.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Health Checks & Observability"
+    topicRoute="/aspnet/health-checks"
+    [prev]="{ label: 'Testing Health Check Boundary Logic and That Liveness Runs Zero Checks', route: '/aspnet/health-checks/testing-health-check-boundary-logic-and-liveness-runs-zero-checks' }"
+    [next]="{ label: 'Degraded Returns 200 by Default — Invisible to Load Balancers', route: '/aspnet/health-checks/degraded-returns-200-by-default-invisible-to-load-balancers' }"
+  />
+</div>

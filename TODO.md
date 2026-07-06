@@ -1518,20 +1518,20 @@ off here with a date.
 - [x] `/aspnet/ef-performance` — EF Core Performance (2026-07-05 — 3 subtopics: testing-executeupdateasync-bypasses-savechanges-interceptors, what-ef-compilequery-actually-eliminates, captured-reference-pooled-dbcontext-leaks-across-requests)
 - [x] `/aspnet/caching` — Caching (2026-07-05 — 3 subtopics: testing-getorcreateasync-concurrent-misses-factory-runs-twice, how-imemorycache-expiry-actually-enforced-lazy-not-timers, write-invalidate-stale-repopulation-race-ttl-backstop)
 - [x] `/aspnet/authentication` — Authentication (2026-07-05 — 3 subtopics: testing-jwt-clockskew-expired-token-still-validates, why-setapplicationname-matters-shared-dataprotection-keys, jwt-claim-type-mapping-sub-becomes-nameidentifier)
-- [ ] `/aspnet/authorization` — Authorization
-- [ ] `/aspnet/cors` — CORS & Security Headers
-- [ ] `/aspnet/rate-limiting` — Rate Limiting
-- [ ] `/aspnet/web-security` — Web Security Essentials
-- [ ] `/aspnet/secrets` — Secrets & Data Protection
-- [ ] `/aspnet/testing` — Testing ASP.NET Core
-- [ ] `/aspnet/background-services` — Background Services
-- [ ] `/aspnet/signalr` — SignalR
-- [ ] `/aspnet/health-checks` — Health Checks & Observability
-- [ ] `/aspnet/deployment` — Deployment & Hosting
-- [ ] `/aspnet/performance` — Performance & Diagnostics
-- [ ] `/aspnet/aspire` — .NET Aspire
-- [ ] `/aspnet/fluent-validation` — FluentValidation
-- [ ] `/aspnet/minimal-api-advanced` — Minimal API Advanced
+- [x] `/aspnet/authorization` — Authorization (2026-07-06 — 3 subtopics: testing-multi-handler-or-semantics-fail-veto, how-authorization-middleware-combines-default-fallback-policies, allowanonymous-anywhere-wins-authorize-cannot-override)
+- [x] `/aspnet/cors` — CORS & Security Headers (2026-07-06 — 3 subtopics: testing-preflight-bypasses-auth-middleware-terminal-response, how-browser-decides-simple-vs-preflight-request, misspelled-requirecors-policy-name-fails-silently-no-headers)
+- [x] `/aspnet/rate-limiting` — Rate Limiting (2026-07-06 — 3 subtopics: testing-fixed-window-boundary-burst-with-faketimeprovider, concurrency-permit-held-until-response-fully-transmitted, partition-factory-runs-once-tier-upgrade-ignored-until-evicted)
+- [x] `/aspnet/web-security` — Web Security Essentials (2026-07-06 — 3 subtopics: testing-antiforgery-token-validation-with-webapplicationfactory, contextual-encoding-html-encode-doesnt-protect-attributes-or-js, missing-separator-in-startswith-check-allows-sibling-directory-bypass)
+- [x] `/aspnet/secrets` — Secrets & Data Protection (2026-07-06 — 3 subtopics: testing-validateonstart-only-fails-fast-via-host-startasync, ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault, pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens)
+- [x] `/aspnet/testing` — Testing ASP.NET Core (2026-07-06 — 3 subtopics: testing-role-based-auth-per-test-without-new-factory-subclass, collection-fixtures-silently-disable-parallelism-for-grouped-classes, singleton-state-in-shared-factory-leaks-across-test-methods)
+- [x] `/aspnet/background-services` — Background Services (2026-07-06 — 3 subtopics: testing-periodic-worker-loops-with-faketimeprovider-tick-control, startasync-returns-before-executeasync-actually-completes, channel-writer-never-completed-loses-items-on-graceful-shutdown)
+- [x] `/aspnet/signalr` — SignalR (2026-07-06 — 3 subtopics: testing-hub-methods-with-mocked-clients-groups-and-context, how-groups-and-context-persist-across-transient-hub-instances, connection-identity-captured-once-ignores-later-claim-changes)
+- [x] `/aspnet/health-checks` — Health Checks & Observability (2026-07-06 — 3 subtopics: testing-health-check-boundary-logic-and-liveness-runs-zero-checks, db-check-connection-pool-contention-causes-cascading-failure, degraded-returns-200-by-default-invisible-to-load-balancers)
+- [x] `/aspnet/deployment` — Deployment & Hosting (2026-07-06 — 3 subtopics: testing-forwardedheaders-trust-configuration-rejects-spoofed-ips, how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip, healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image)
+- [x] `/aspnet/performance` — Performance & Diagnostics (2026-07-06 — 3 subtopics: testing-allocation-regressions-with-getallocatedbytesforthread, server-gc-heap-count-follows-perceived-not-actual-cpu-limit, streaming-query-missing-cancellationtoken-runs-after-disconnect)
+- [x] `/aspnet/aspire` — .NET Aspire (2026-07-06 — 3 subtopics: testing-apphost-topology-with-distributedapplicationtestingbuilder, addproject-type-parameter-requires-build-not-just-project-reference, otel-exporter-needs-endpoint-guard-when-running-outside-apphost)
+- [x] `/aspnet/fluent-validation` — FluentValidation (2026-07-06 — 3 subtopics: testing-async-mustasync-rules-with-fluentvalidation-testhelper, inline-when-defaults-to-all-validators-in-the-same-rulefor-chain, adding-one-mustasync-rule-breaks-every-synchronous-validate-caller)
+- [x] `/aspnet/minimal-api-advanced` — Minimal API Advanced (2026-07-06 — 3 subtopics: testing-endpoint-filters-without-webapplicationfactory, ctx-arguments-oftype-is-fragile-use-getargument-by-position, nested-group-filters-execute-outside-in-like-middleware)
 - [ ] `/aspnet/output-caching-advanced` — Output Caching Advanced
 - [ ] `/aspnet/dapper` — Dapper & Raw SQL
 - [ ] `/aspnet/csrf` — Anti-forgery & CSRF

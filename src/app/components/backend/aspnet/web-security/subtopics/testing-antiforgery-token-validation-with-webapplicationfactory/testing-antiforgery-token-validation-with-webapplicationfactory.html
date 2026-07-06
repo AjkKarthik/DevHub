@@ -1,0 +1,41 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Web Security Essentials"
+    topicRoute="/aspnet/web-security"
+    subtopicLabel="Testing Antiforgery Validation"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That Antiforgery Validation Actually Rejects Forged Requests</h1>
+  <p class="page-subtitle">
+    A test proving a well-formed request succeeds can't distinguish "CSRF protection works" from "CSRF
+    protection was silently removed." This subtopic shows the negative-path tests that actually verify it.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With antiforgery testing pinned down, the next subtopic corrects a simplification in the main page's
+      own XSS guidance — HTML-encoding alone does not protect every injection context, and matching the
+      wrong context to the wrong encoder is a real, common mistake.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Web Security Essentials"
+    topicRoute="/aspnet/web-security"
+    [next]="{ label: 'Contextual Encoding — HTML Encode Doesn\'t Protect Attributes or JS', route: '/aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js' }"
+  />
+</div>

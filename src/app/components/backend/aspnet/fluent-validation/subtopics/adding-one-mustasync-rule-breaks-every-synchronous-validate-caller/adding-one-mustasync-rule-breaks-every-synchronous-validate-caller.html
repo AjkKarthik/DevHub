@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="FluentValidation"
+    topicRoute="/aspnet/fluent-validation"
+    subtopicLabel="MustAsync Breaks Sync Callers"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Adding One MustAsync Rule Breaks Every Synchronous Validate Caller</h1>
+  <p class="page-subtitle">
+    The main page's CreateUserValidator and RegisterValidator examples are safe in isolation. Add a single
+    MustAsync rule to a previously-synchronous validator and every existing Validate() call site throws at
+    runtime — with no compile-time warning.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="FluentValidation 5+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the FluentValidation deep-dive set: idiomatic async-aware testing with TestHelper, the
+      exact scoping rules behind conditional validation, and now the sync/async contract change one new rule
+      can trigger across an entire codebase. Head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="FluentValidation"
+    topicRoute="/aspnet/fluent-validation"
+    [prev]="{ label: 'Inline When() Defaults to All Validators in the Same RuleFor Chain', route: '/aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain' }"
+  />
+</div>

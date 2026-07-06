@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Deployment & Hosting"
+    topicRoute="/aspnet/deployment"
+    subtopicLabel="Multi-Hop Proxy Chains"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How ForwardedHeaders Walks Multi-Hop Chains to Resolve Client IP</h1>
+  <p class="page-subtitle">
+    The main page assumes exactly one proxy hop. Behind a CDN AND a load balancer, X-Forwarded-For is a
+    list — the middleware walks it right-to-left, stopping at the first untrusted hop, which can silently
+    resolve to the wrong IP if even one intermediate proxy's CIDR is missing.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the trust-walking algorithm covered, the final subtopic returns to the main page's own exact
+      Dockerfile and flags a common real-world gotcha in its HEALTHCHECK instruction — one many production
+      .NET Docker setups hit on their first deploy.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Deployment & Hosting"
+    topicRoute="/aspnet/deployment"
+    [prev]="{ label: 'Testing That ForwardedHeaders Trust Configuration Rejects Spoofed IPs', route: '/aspnet/deployment/testing-forwardedheaders-trust-configuration-rejects-spoofed-ips' }"
+    [next]="{ label: 'HEALTHCHECK curl Instruction Fails on the Minimal ASP.NET Runtime Image', route: '/aspnet/deployment/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image' }"
+  />
+</div>

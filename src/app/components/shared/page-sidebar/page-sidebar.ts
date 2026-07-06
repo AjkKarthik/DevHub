@@ -12522,6 +12522,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/authorization/testing-multi-handler-or-semantics-fail-veto': {
+    apis: ['AuthorizationHandlerContext', 'IAuthorizationHandler.HandleAsync()', 'context.Succeed() / context.Fail()'],
+    related: [
+      { label: 'How Middleware Combines Policies — next', route: '/aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies' },
+      { label: 'Authorization (overview)', route: '/aspnet/authorization' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Every registered handler for a requirement always runs to completion — there is no early exit on Succeed(). The requirement passes only if the aggregate, after all handlers finish, has at least one Succeed and zero Fails.',
+    docs: [
+      { label: 'Requirement-based authorization', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'context.Fail() is an order-independent veto — a Fail() from a handler registered AFTER another handler already called Succeed() still wins.',
+      'If every handler for a requirement abstains (calls neither Succeed nor Fail), the requirement is NOT satisfied — no opinion defaults to deny, not allow.',
+    ],
+  },
+
+  'aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies': {
+    apis: ['FallbackPolicy', 'DefaultPolicy', 'IAuthorizationPolicyProvider'],
+    related: [
+      { label: 'Testing Multi-Handler OR Semantics — previous', route: '/aspnet/authorization/testing-multi-handler-or-semantics-fail-veto' },
+      { label: 'AllowAnonymous Anywhere Wins — next', route: '/aspnet/authorization/allowanonymous-anywhere-wins-authorize-cannot-override' },
+      { label: 'Authorization (overview)', route: '/aspnet/authorization' },
+    ],
+    tip: 'FallbackPolicy is not a baseline ANDed under every other policy — it only runs for endpoints with ZERO authorization metadata. A custom policy missing RequireAuthenticatedUser() bypasses it entirely once that policy is attached to the endpoint.',
+    docs: [
+      { label: 'Globally require authenticated users', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies#globally-require-all-users-to-be-authenticated' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Only [Authorize(Roles=...)]/[Authorize(Policy=...)] built from the framework\'s own role/claim shorthand auto-combine RequireAuthenticatedUser() — hand-rolled AddRequirements() policies must add it explicitly.',
+      'A resolved policy can be inspected directly via IAuthorizationPolicyProvider.GetPolicyAsync() — check for DenyAnonymousAuthorizationRequirement to confirm authentication is actually required.',
+    ],
+  },
+
+  'aspnet/authorization/allowanonymous-anywhere-wins-authorize-cannot-override': {
+    apis: ['[AllowAnonymous]', 'IAllowAnonymousData', '.AllowAnonymous()'],
+    related: [
+      { label: 'How Middleware Combines Policies — previous', route: '/aspnet/authorization/how-authorization-middleware-combines-default-fallback-policies' },
+      { label: 'Authorization (overview)', route: '/aspnet/authorization' },
+      { label: 'Authentication', route: '/aspnet/authentication' },
+    ],
+    tip: 'AllowAnonymous metadata is checked FIRST, unconditionally, before any policy resolution — it is not a specificity contest with Authorize, it is a hard pre-emptive bypass, and it silently reopens just the ONE endpoint that carries it.',
+    docs: [
+      { label: 'Authorization overview', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authorization/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A group protected with .RequireAuthorization() is not an enforced floor — one stray .AllowAnonymous() on a single mapped endpoint inside it reopens just that endpoint, with no build warning or runtime log.',
+      'Only an integration test asserting the actual HTTP status code for an unauthenticated request catches this — testing the surrounding feature\'s happy path never will, since sibling endpoints in the same group remain correctly protected.',
+    ],
+  },
+
   'aspnet/cors': {
     apis: ['AddCors()', 'UseCors()', 'WithOrigins()', 'AllowAnyOrigin()', 'AllowCredentials()', 'UseHsts()', 'UseHttpsRedirection()', 'RequireCors()'],
     related: [
@@ -12540,6 +12600,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'CORS is a browser security feature — server-to-server calls are not restricted by CORS. A malicious server can still call your API without a browser.',
       'UseCors() must come after UseRouting() but before UseAuthentication() and UseAuthorization() to apply correctly.',
+    ],
+  },
+
+  'aspnet/cors/testing-preflight-bypasses-auth-middleware-terminal-response': {
+    apis: ['CorsMiddleware', 'WebApplicationFactory<T>', 'HttpRequestMessage(HttpMethod.Options, ...)'],
+    related: [
+      { label: 'How Browser Decides Simple vs Preflight — next', route: '/aspnet/cors/how-browser-decides-simple-vs-preflight-request' },
+      { label: 'CORS & Security Headers (overview)', route: '/aspnet/cors' },
+      { label: 'Authorization', route: '/aspnet/authorization' },
+    ],
+    tip: 'CorsMiddleware answers a preflight request itself and returns without calling next() — auth middleware never even sees a genuine preflight when CORS is registered first, regardless of any special-casing in the auth pipeline.',
+    docs: [
+      { label: 'Enable CORS in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/cors' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The "CORS before auth" rule is unconditional only when a FallbackPolicy is configured — otherwise a public endpoint with no [Authorize] happens to work regardless of ordering, a fragile coincidence.',
+      'Test both orderings with an instrumented handler (a static counter) to prove the handler never runs for a preflight, in either ordering — for different reasons (CORS short-circuit vs. 401 short-circuit).',
+    ],
+  },
+
+  'aspnet/cors/how-browser-decides-simple-vs-preflight-request': {
+    apis: ['CORS-safelisted headers', 'Content-Type safelist', 'Fetch API'],
+    related: [
+      { label: 'Testing Preflight Bypasses Auth — previous', route: '/aspnet/cors/testing-preflight-bypasses-auth-middleware-terminal-response' },
+      { label: 'Misspelled RequireCors Policy Name — next', route: '/aspnet/cors/misspelled-requirecors-policy-name-fails-silently-no-headers' },
+      { label: 'CORS & Security Headers (overview)', route: '/aspnet/cors' },
+    ],
+    tip: 'application/json always preflights — not because of authentication or CORS config, but because Content-Type is only "simple" for exactly three values (form-urlencoded, multipart/form-data, text/plain), and JSON is none of them.',
+    docs: [
+      { label: 'Fetch CORS protocol (MDN)', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The simple-vs-preflight decision is made entirely client-side, before any network round trip — the server\'s CORS configuration only affects whether a sent preflight succeeds, never whether one is sent.',
+      'GET requests are NOT automatically exempt from preflighting — a GET with a non-safelisted header (most commonly Authorization) still triggers one.',
+    ],
+  },
+
+  'aspnet/cors/misspelled-requirecors-policy-name-fails-silently-no-headers': {
+    apis: ['ICorsPolicyProvider', '.RequireCors()', 'CorsOptions.AddPolicy()'],
+    related: [
+      { label: 'How Browser Decides Simple vs Preflight — previous', route: '/aspnet/cors/how-browser-decides-simple-vs-preflight-request' },
+      { label: 'CORS & Security Headers (overview)', route: '/aspnet/cors' },
+      { label: 'Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A misspelled .RequireCors("...") name resolves to null via ICorsPolicyProvider — CorsMiddleware treats that as "nothing to apply" and calls next() with no exception anywhere; the response just silently loses its Access-Control-Allow-Origin header.',
+    docs: [
+      { label: 'Enable CORS in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/cors' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'curl, Postman, and status-code-only integration tests all see an identical 200 response whether the CORS policy resolved or silently failed — only asserting on the Access-Control-Allow-Origin header itself catches the gap.',
+      'The natural debugging instinct (re-checking WithOrigins() for a typo) points at the wrong config — the real bug is a mismatched policy NAME string between AddPolicy() and RequireCors().',
     ],
   },
 
@@ -12564,6 +12684,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/rate-limiting/testing-fixed-window-boundary-burst-with-faketimeprovider': {
+    apis: ['TimeProvider', 'FakeTimeProvider', 'FixedWindowRateLimiterOptions.TimeProvider'],
+    related: [
+      { label: 'Concurrency Permit Release Mechanics — next', route: '/aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted' },
+      { label: 'Rate Limiting (overview)', route: '/aspnet/rate-limiting' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'The rate limiter primitives accept an injectable TimeProvider specifically so tests can drive window rollover deterministically with FakeTimeProvider — no Task.Delay, no flakiness.',
+    docs: [
+      { label: 'Rate limiting middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A fixed window resets its ENTIRE counter at the boundary regardless of when within the window requests landed — a client can send PermitLimit requests just before and PermitLimit more just after, doubling throughput briefly.',
+      'Sliding window tracks per-segment counts and only expires the oldest segment as time advances — the same clock-advance technique produces little to no burst under sliding window, a concretely testable difference.',
+    ],
+  },
+
+  'aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted': {
+    apis: ['RateLimitingMiddleware', 'IAsyncEnumerable<T> streaming', 'Results.Stream()'],
+    related: [
+      { label: 'Testing the Boundary Burst — previous', route: '/aspnet/rate-limiting/testing-fixed-window-boundary-burst-with-faketimeprovider' },
+      { label: 'Partition Factory Runs Once — next', route: '/aspnet/rate-limiting/partition-factory-runs-once-tier-upgrade-ignored-until-evicted' },
+      { label: 'Rate Limiting (overview)', route: '/aspnet/rate-limiting' },
+    ],
+    tip: 'The concurrency permit is released only after the wrapped next() call fully completes — for a streaming response that means the ENTIRE transmission to the client, not just server-side generation time.',
+    docs: [
+      { label: 'Rate limiting middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A slow or paused client reading a streamed response directly occupies a limited concurrency permit for the full duration of its slow read — turning client-side slowness into server-side throughput starvation for other clients.',
+      'Sizing a concurrency limiter around expected generation time alone silently under-provisions for streaming endpoints where client read speed dominates permit lifetime.',
+    ],
+  },
+
+  'aspnet/rate-limiting/partition-factory-runs-once-tier-upgrade-ignored-until-evicted': {
+    apis: ['RateLimitPartition.GetFixedWindowLimiter()', 'partition eviction', 'PartitionedRateLimiter'],
+    related: [
+      { label: 'Concurrency Permit Release Mechanics — previous', route: '/aspnet/rate-limiting/concurrency-permit-held-until-response-fully-transmitted' },
+      { label: 'Rate Limiting (overview)', route: '/aspnet/rate-limiting' },
+      { label: 'Redis Rate Limiting', route: '/redis/rate-limiting' },
+    ],
+    tip: 'A partition\'s factory delegate runs once per distinct key and is cached — a mid-session external change (like a subscription tier upgrade) has no effect on an active user\'s limit until their partition is evicted from memory.',
+    docs: [
+      { label: 'Rate limiting middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'An actively-requesting user never triggers idle-based eviction, so a captured Free-tier limit can persist indefinitely across an entire session even after a real upgrade to Premium.',
+      'Folding the changing state into the partition KEY itself (e.g. "userId:tier") scopes cache invalidation to exactly the users who changed, unlike a blunt periodic full-cache clear that resets everyone\'s in-progress window simultaneously.',
+    ],
+  },
+
   'aspnet/web-security': {
     apis: ['FromSqlInterpolated()', 'HtmlEncoder.Encode()', 'AddAntiforgery()', '[ValidateAntiForgeryToken]', 'IAntiforgery', 'LocalRedirect()', 'Content-Security-Policy', 'Path.GetFullPath()'],
     related: [
@@ -12583,6 +12763,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Razor pages auto-generate antiforgery tokens. Minimal API endpoints do NOT — call ValidateAntiforgeryToken() explicitly or use the IAntiforgery service middleware.',
       'Path.Combine(root, userInput) does NOT prevent traversal if userInput starts with / or \\ — it just replaces root. Always call Path.GetFullPath and verify the result starts with root.',
+    ],
+  },
+
+  'aspnet/web-security/testing-antiforgery-token-validation-with-webapplicationfactory': {
+    apis: ['IAntiforgery.ValidateRequestAsync()', 'WebApplicationFactory<T>', 'CookieContainer'],
+    related: [
+      { label: 'Contextual Encoding — next', route: '/aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js' },
+      { label: 'Web Security Essentials (overview)', route: '/aspnet/web-security' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test proving a well-formed request succeeds cannot distinguish "CSRF protection works" from "it was silently removed" — only a request with a missing or mismatched header actually exercises the rejection path.',
+    docs: [
+      { label: 'Antiforgery in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A legitimate request needs BOTH a valid cookie and a matching header — an attacker\'s forged cross-origin request can trigger the cookie automatically but cannot read the token to attach the matching header.',
+      'WebApplicationFactory\'s CreateClient() enables cookie persistence by default, but a manually constructed HttpClientHandler with UseCookies = false silently breaks cookie-dependent test flows.',
+    ],
+  },
+
+  'aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js': {
+    apis: ['HtmlEncoder', 'JavaScriptEncoder', 'UrlEncoder'],
+    related: [
+      { label: 'Testing Antiforgery Validation — previous', route: '/aspnet/web-security/testing-antiforgery-token-validation-with-webapplicationfactory' },
+      { label: 'Missing Separator Path Bypass — next', route: '/aspnet/web-security/missing-separator-in-startswith-check-allows-sibling-directory-bypass' },
+      { label: 'Web Security Essentials (overview)', route: '/aspnet/web-security' },
+    ],
+    tip: 'HtmlEncoder protects a text-node sink correctly, but an unquoted HTML attribute or an inline <script> block needs a different encoder — HTML entities are never decoded by the JavaScript parser.',
+    docs: [
+      { label: 'Prevent XSS in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/cross-site-scripting' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Razor\'s automatic @value encoding is safe because the compiler knows the syntactic context at compile time — manually built HTML in a minimal API has no such tracking, so each interpolation point needs its own matching encoder.',
+      'Quoting an HTML attribute closes the unquoted-attribute injection vector, but the value inside still needs HtmlEncoder for embedded quotes and angle brackets — quoting alone is not sufficient either.',
+    ],
+  },
+
+  'aspnet/web-security/missing-separator-in-startswith-check-allows-sibling-directory-bypass': {
+    apis: ['Path.GetFullPath()', 'string.StartsWith()', 'Path.DirectorySeparatorChar'],
+    related: [
+      { label: 'Contextual Encoding — previous', route: '/aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js' },
+      { label: 'Web Security Essentials (overview)', route: '/aspnet/web-security' },
+      { label: 'CORS & Security Headers', route: '/aspnet/cors' },
+    ],
+    tip: 'full.StartsWith(root) is a pure text-prefix comparison — a sibling directory like "uploads-secret" passes it even though it is a completely different directory from "uploads". Appending Path.DirectorySeparatorChar forces a genuine boundary match.',
+    docs: [
+      { label: 'OWASP Path Traversal', url: 'https://owasp.org/www-community/attacks/Path_Traversal' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A test suite trying only a valid filename and an obvious "../../etc/passwd" attempt cannot distinguish the correct check from the missing-separator regression — neither input resolves into a prefix-colliding sibling directory.',
+      'StringComparison.OrdinalIgnoreCase fixes a case-sensitivity problem, not the boundary problem — it does not make "uploads-secret" stop matching "uploads" as a prefix.',
     ],
   },
 
@@ -12609,6 +12849,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/secrets/testing-validateonstart-only-fails-fast-via-host-startasync': {
+    apis: ['ValidateOnStart()', 'IHost.StartAsync()', 'OptionsValidationException'],
+    related: [
+      { label: 'IOptionsMonitor Reload Sources — next', route: '/aspnet/secrets/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault' },
+      { label: 'Secrets & Data Protection (overview)', route: '/aspnet/secrets' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'ValidateOnStart() is a TIMING guarantee, not just an error-existence guarantee — a test that only resolves IOptions<T>.Value from a bare ServiceProvider sees the same exception whether ValidateOnStart() is configured or not; only exercising the real host StartAsync() proves the eager-at-startup behavior.',
+    docs: [
+      { label: 'Options validation', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/options-validation' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'ValidateOnStart() must be explicitly chained onto EACH options type\'s own registration — a new options class that forgets this call gets no fail-fast guarantee at all.',
+      'WebApplicationFactory.CreateClient() triggers the host\'s real startup internally, making it a valid way to prove a ValidateOnStart() failure surfaces before any request is served.',
+    ],
+  },
+
+  'aspnet/secrets/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault': {
+    apis: ['IOptionsMonitor<T>.OnChange()', 'ReloadInterval', 'AddAzureKeyVault()'],
+    related: [
+      { label: 'Testing ValidateOnStart() — previous', route: '/aspnet/secrets/testing-validateonstart-only-fails-fast-via-host-startasync' },
+      { label: 'Pruning Data Protection Keys — next', route: '/aspnet/secrets/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens' },
+      { label: 'Secrets & Data Protection (overview)', route: '/aspnet/secrets' },
+    ],
+    tip: 'IOptionsMonitor only reflects changes its underlying provider surfaces via a change token — environment variables load once at startup and never again, and Azure Key Vault behaves the same way unless ReloadInterval is explicitly configured.',
+    docs: [
+      { label: 'Azure Key Vault provider', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/key-vault-configuration' },
+    ],
+    resources: [
+      { label: 'Azure/azure-sdk-for-net', url: 'https://github.com/Azure/azure-sdk-for-net', badge: 'code' },
+    ],
+    gotchas: [
+      'Rotating a secret in Key Vault has zero effect on already-running pods unless ReloadInterval is set — without it, every instance keeps using the stale value until it restarts.',
+      'ReloadInterval only controls how fast the APPLICATION picks up a new secret — it says nothing about whether the OLD credential still works at the database/API itself until that system\'s credential is separately revoked.',
+    ],
+  },
+
+  'aspnet/secrets/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens': {
+    apis: ['ITimeLimitedDataProtector', 'SecurityTokenExpiredException', 'SetDefaultKeyLifetime()'],
+    related: [
+      { label: 'IOptionsMonitor Reload Sources — previous', route: '/aspnet/secrets/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault' },
+      { label: 'Secrets & Data Protection (overview)', route: '/aspnet/secrets' },
+      { label: 'Authentication', route: '/aspnet/authentication' },
+    ],
+    tip: 'A time-limited token\'s own expiry clock is independent of whether the key that encrypted it still exists in the key ring — pruning that key invalidates every still-young token encrypted with it all at once, not gradually like normal expiry.',
+    docs: [
+      { label: 'Data Protection API', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A bare catch around Unprotect() treats routine expiry and a missing/pruned key identically — logging the exception TYPE before discarding it is often the only signal a key-ring incident is happening, not normal token aging.',
+      'Safe key retention must cover the active key\'s own lifetime PLUS the longest token lifetime issued anywhere in the system — not just the token lifetime alone.',
+    ],
+  },
+
   // ── ASP.NET Quality ─────────────────────────────────────────────────────────
   'aspnet/testing': {
     apis: ['WebApplicationFactory<T>', 'CreateClient()', '[Fact]', '[Theory]', 'Substitute.For<T>()', 'ConfigureTestServices()', 'UseInMemoryDatabase()', 'UseSqlite(":memory:")'],
@@ -12632,6 +12932,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/testing/testing-role-based-auth-per-test-without-new-factory-subclass': {
+    apis: ['WithWebHostBuilder()', 'IOptions<T>', 'AuthenticationHandler<T>'],
+    related: [
+      { label: 'Collection Fixtures vs Parallelism — next', route: '/aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes' },
+      { label: 'Testing ASP.NET Core (overview)', route: '/aspnet/testing' },
+      { label: 'Authorization', route: '/aspnet/authorization' },
+    ],
+    tip: 'A configurable TestAuthHandler reading claims from a mutable IOptions<TestAuthOptions> bag, combined with WithWebHostBuilder() to layer per-test overrides, covers any role/claim combination without a new WebApplicationFactory subclass per scenario.',
+    docs: [
+      { label: 'Integration tests in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'WithWebHostBuilder() returns a NEW, independent factory that layers config on top of the base fixture — it never mutates the shared IClassFixture instance other tests in the class use.',
+      'Directly mutating a shared options Singleton between test methods only looks safe under sequential execution — it silently breaks the moment the fixture is shared across classes via a collection fixture.',
+    ],
+  },
+
+  'aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes': {
+    apis: ['[Collection]', '[CollectionDefinition]', 'ICollectionFixture<T>'],
+    related: [
+      { label: 'Testing Per-Test Auth — previous', route: '/aspnet/testing/testing-role-based-auth-per-test-without-new-factory-subclass' },
+      { label: 'Singleton State Leaks — next', route: '/aspnet/testing/singleton-state-in-shared-factory-leaks-across-test-methods' },
+      { label: 'Testing ASP.NET Core (overview)', route: '/aspnet/testing' },
+    ],
+    tip: 'xUnit\'s parallelism unit is the test COLLECTION, not the class — grouping classes under the same [Collection] name to share a fixture is exactly what forces them to run sequentially relative to each other, never concurrently.',
+    docs: [
+      { label: 'Running Tests in Parallel (xUnit)', url: 'https://xunit.net/docs/running-tests-in-parallel' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'For a cheap-to-start in-process WebApplicationFactory, the lost parallelism from a large shared collection frequently outweighs the setup-cost savings — reserve collections for genuinely expensive resources like a real database container.',
+      'Every class without an explicit [Collection] attribute is its own separate, parallel-eligible collection by default — this is the baseline being traded away when classes are grouped.',
+    ],
+  },
+
+  'aspnet/testing/singleton-state-in-shared-factory-leaks-across-test-methods': {
+    apis: ['AddSingleton<T>()', 'IMemoryCache', 'PartitionedRateLimiter<HttpContext>'],
+    related: [
+      { label: 'Collection Fixtures vs Parallelism — previous', route: '/aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes' },
+      { label: 'Testing ASP.NET Core (overview)', route: '/aspnet/testing' },
+      { label: 'Rate Limiting', route: '/aspnet/rate-limiting' },
+    ],
+    tip: 'Any Singleton the REAL application registers (a rate limiter, an IMemoryCache) is shared by every test method in an IClassFixture-backed class — a narrower, easier-to-miss risk than a hand-written static test field.',
+    docs: [
+      { label: 'Integration tests in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'A test that hard-codes the same authenticated identity for every request shares that identity\'s rate-limiter partition (or cache key) across every other test method that hits the same endpoint — a test-order-dependent flakiness source.',
+      'The fix is almost always giving each test its own distinguishing key into the shared Singleton\'s state, not replacing or isolating the Singleton itself.',
+    ],
+  },
+
   'aspnet/background-services': {
     apis: ['IHostedService', 'BackgroundService', 'ExecuteAsync()', 'IServiceScopeFactory', 'PeriodicTimer', 'Channel<T>', 'AddHostedService<T>()', 'stoppingToken'],
     related: [
@@ -12650,6 +13010,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Never inject a scoped service (DbContext, your repositories) directly into BackgroundService — it is a singleton. Always create a scope via IServiceScopeFactory.CreateAsyncScope().',
       'If ExecuteAsync throws an unhandled exception, the hosted service stops silently. Wrap the main loop in try/catch and log — or use IHostApplicationLifetime.StopApplication() to bring the whole process down on fatal errors.',
+    ],
+  },
+
+  'aspnet/background-services/testing-periodic-worker-loops-with-faketimeprovider-tick-control': {
+    apis: ['PeriodicTimer(period, TimeProvider)', 'FakeTimeProvider', 'BackgroundService.StartAsync()'],
+    related: [
+      { label: 'StartAsync/ExecuteAsync Mechanics — next', route: '/aspnet/background-services/startasync-returns-before-executeasync-actually-completes' },
+      { label: 'Background Services (overview)', route: '/aspnet/background-services' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Since .NET 8, PeriodicTimer accepts an injectable TimeProvider — pass a FakeTimeProvider and advance it in tests for fully deterministic tick behavior, with zero real elapsed time.',
+    docs: [
+      { label: 'Background tasks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime (Channels)', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'A BackgroundService can be tested directly — call StartAsync/StopAsync on the instance itself, no WebApplicationFactory or host required.',
+      'Advancing a fake clock by one big jump spanning several periods fires exactly ONE tick, not one per elapsed period — PeriodicTimer never catches up on missed ticks.',
+    ],
+  },
+
+  'aspnet/background-services/startasync-returns-before-executeasync-actually-completes': {
+    apis: ['BackgroundService.StartAsync()', 'ExecuteAsync()', 'IHostedService'],
+    related: [
+      { label: 'Testing Periodic Worker Loops — previous', route: '/aspnet/background-services/testing-periodic-worker-loops-with-faketimeprovider-tick-control' },
+      { label: 'Channel Draining at Shutdown — next', route: '/aspnet/background-services/channel-writer-never-completed-loses-items-on-graceful-shutdown' },
+      { label: 'Background Services (overview)', route: '/aspnet/background-services' },
+    ],
+    tip: 'BackgroundService.StartAsync only waits for ExecuteAsync to reach its first genuine, still-pending await — synchronous work (or await on an already-completed Task) runs inline and blocks host startup exactly like code in StartAsync itself.',
+    docs: [
+      { label: 'Background tasks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'await Task.FromResult(...) does not yield control — the compiler continues synchronously for an already-completed Task, so "async-flavored" initialization code gets no non-blocking benefit unless it awaits something genuinely still pending.',
+      'The host calls each hosted service\'s StartAsync sequentially, but for BackgroundService that only means "reach the first real await sequentially" — everything after that point runs concurrently with the next service\'s startup.',
+    ],
+  },
+
+  'aspnet/background-services/channel-writer-never-completed-loses-items-on-graceful-shutdown': {
+    apis: ['Channel<T>.Writer.Complete()', 'IHostApplicationLifetime.ApplicationStopping', 'ReadAllAsync()'],
+    related: [
+      { label: 'StartAsync/ExecuteAsync Mechanics — previous', route: '/aspnet/background-services/startasync-returns-before-executeasync-actually-completes' },
+      { label: 'Background Services (overview)', route: '/aspnet/background-services' },
+      { label: 'Rate Limiting', route: '/aspnet/rate-limiting' },
+    ],
+    tip: 'Without ever calling Writer.Complete(), a channel-backed queue\'s worker loop has only ONE way to exit — stoppingToken cancellation — discarding whatever\'s still buffered on every routine graceful shutdown, not just a crash.',
+    docs: [
+      { label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/channels' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime (Channels)', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'Calling Complete() alone does not fix the loss if the drain read still uses the same stoppingToken — the read is still cancelled at the same moment shutdown begins, regardless of Complete() having been called.',
+      'ApplicationStopping and a BackgroundService\'s own stoppingToken fire from the same shutdown sequence at essentially the same time — the drain read needs a genuinely separate, uncancelled token to have any chance of finishing.',
     ],
   },
 
@@ -12676,6 +13096,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/signalr/testing-hub-methods-with-mocked-clients-groups-and-context': {
+    apis: ['Hub.Clients', 'Hub.Groups', 'IHubCallerClients', 'IClientProxy'],
+    related: [
+      { label: 'Groups & Context Architecture — next', route: '/aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances' },
+      { label: 'SignalR (overview)', route: '/aspnet/signalr' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Hub.Clients and Hub.Groups are ordinary public, settable properties — no reflection needed. OthersInGroup(), Group(), and Caller each return a SEPARATE IClientProxy that must be substituted one level deeper.',
+    docs: [
+      { label: 'ASP.NET Core SignalR', url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'An unconfigured substitute member returns null by default — that\'s only a problem if the code under test actually calls something on it; only configure the members the specific hub method actually touches.',
+      'SendAsync() is an extension method wrapping SendCoreAsync(method, args, ct) — verification assertions must target SendCoreAsync, not SendAsync, since mocking libraries can\'t intercept extension methods.',
+    ],
+  },
+
+  'aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances': {
+    apis: ['HubConnectionContext', 'HubLifetimeManager<THub>', 'Context.Items'],
+    related: [
+      { label: 'Testing Hub Methods — previous', route: '/aspnet/signalr/testing-hub-methods-with-mocked-clients-groups-and-context' },
+      { label: 'Stale Connection Identity — next', route: '/aspnet/signalr/connection-identity-captured-once-ignores-later-claim-changes' },
+      { label: 'SignalR (overview)', route: '/aspnet/signalr' },
+    ],
+    tip: 'The Hub instance really is thrown away after every call — Context.Items and Groups membership persist because they live on separate, longer-lived objects (the per-connection HubConnectionContext and a Singleton-scoped HubLifetimeManager) that each new Hub instance is just handed a reference to.',
+    docs: [
+      { label: 'ASP.NET Core SignalR', url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Context.Items is scoped per-CONNECTION, not per-user — two browser tabs for the same user get two entirely separate Items dictionaries, exactly like Groups membership.',
+      'Groups.AddToGroupAsync() delegates to a process-wide Singleton registry shared across ALL connections and Hub instances — architecturally nothing like the disposable Hub object it\'s called from.',
+    ],
+  },
+
+  'aspnet/signalr/connection-identity-captured-once-ignores-later-claim-changes': {
+    apis: ['Context.User', 'HubConnectionContext', 'IHubContext<T>.Clients.Client()'],
+    related: [
+      { label: 'Groups & Context Architecture — previous', route: '/aspnet/signalr/how-groups-and-context-persist-across-transient-hub-instances' },
+      { label: 'SignalR (overview)', route: '/aspnet/signalr' },
+      { label: 'Authentication', route: '/aspnet/authentication' },
+    ],
+    tip: 'Unlike an HTTP API, a SignalR connection validates its JWT exactly ONCE at connect time — an expired token or a revoked role has zero effect on an already-open connection until it actually reconnects.',
+    docs: [
+      { label: 'ASP.NET Core SignalR', url: 'https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'ClockSkew tolerance only matters at the moment JWT validation actually RUNS — for an established connection, that happened once at connect time and never recurs, so there is no "grace period then disconnect" behavior tied to expiry.',
+      'Forcing an immediate permission change requires explicitly closing the specific user\'s open connections (via a UserId → ConnectionId map) — relying on natural reconnection is not sufficient for a healthy, still-open connection.',
+    ],
+  },
+
   'aspnet/health-checks': {
     apis: ['AddHealthChecks()', 'MapHealthChecks()', 'IHealthCheck', 'HealthCheckResult', 'AddDbContextCheck<T>()', 'AddUrlGroup()', 'UIResponseWriter', 'AddOpenTelemetry()'],
     related: [
@@ -12695,6 +13175,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'The default HealthCheckOptions.ResponseWriter returns a plain "Healthy"/"Unhealthy" string. Production monitoring tools expect JSON — always provide a custom ResponseWriter or use UIResponseWriter.',
       'Health check evaluation is sequential by default. Slow external checks (URL group, DNS) block the response. Set a per-check timeout via AddUrlGroup(..., timeout: TimeSpan.FromSeconds(3)).',
+    ],
+  },
+
+  'aspnet/health-checks/testing-health-check-boundary-logic-and-liveness-runs-zero-checks': {
+    apis: ['IHealthCheck.CheckHealthAsync()', 'HealthCheckOptions.Predicate', 'HealthCheckContext'],
+    related: [
+      { label: 'DB Check Pool Contention — next', route: '/aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure' },
+      { label: 'Health Checks & Observability (overview)', route: '/aspnet/health-checks' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Test the EXACT boundary values in a status switch (30, not just 31) — values comfortably clear of a boundary can\'t distinguish a strictly-greater-than comparison from a greater-than-or-equal one.',
+    docs: [
+      { label: 'Health checks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'A custom IHealthCheck can be unit tested directly — no WebApplicationFactory or HTTP layer needed, since CheckHealthAsync() is an ordinary interface method.',
+      'Proving liveness genuinely SKIPS registered checks (not just filters them from the response) requires a check that increments a counter or throws, confirming zero invocations on /health/live versus real invocations on /health/ready.',
+    ],
+  },
+
+  'aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure': {
+    apis: ['AddDbContextCheck<T>()', 'CanConnectAsync()', 'ADO.NET connection pool'],
+    related: [
+      { label: 'Testing Boundary Logic — previous', route: '/aspnet/health-checks/testing-health-check-boundary-logic-and-liveness-runs-zero-checks' },
+      { label: 'Degraded Status Code — next', route: '/aspnet/health-checks/degraded-returns-200-by-default-invisible-to-load-balancers' },
+      { label: 'Health Checks & Observability (overview)', route: '/aspnet/health-checks' },
+    ],
+    tip: 'AddDbContextCheck<T>() shares the SAME connection pool as real application traffic — under a DB slowdown, it\'s most likely to fail exactly when removing a pod does the most damage, concentrating pressure onto fewer survivors.',
+    docs: [
+      { label: 'Health checks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks' },
+    ],
+    resources: [
+      { label: 'Xabaril/AspNetCore.Diagnostics.HealthChecks', url: 'https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks', badge: 'code' },
+    ],
+    gotchas: [
+      'A dedicated, isolated connection pool for the health check avoids the cascading risk but can\'t detect application-side pool exhaustion where the database server itself is healthy.',
+      'This is a distinct failure shape from the liveness crash-loop the main page describes — pods get progressively removed from the load balancer rather than restarted, but the root cause (shared finite resource) is analogous.',
+    ],
+  },
+
+  'aspnet/health-checks/degraded-returns-200-by-default-invisible-to-load-balancers': {
+    apis: ['HealthCheckOptions.ResultStatusCodes', 'HealthStatus.Degraded', 'UIResponseWriter'],
+    related: [
+      { label: 'DB Check Pool Contention — previous', route: '/aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure' },
+      { label: 'Health Checks & Observability (overview)', route: '/aspnet/health-checks' },
+      { label: 'Observability & SRE', route: '/observability' },
+    ],
+    tip: 'Degraded returns HTTP 200 by default, identical to Healthy — since load balancers route on 2xx-vs-non-2xx status code alone, a Degraded pod gets its normal traffic share; the signal only reaches whatever parses the JSON body.',
+    docs: [
+      { label: 'Health checks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks' },
+    ],
+    resources: [
+      { label: 'Xabaril/AspNetCore.Diagnostics.HealthChecks', url: 'https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks', badge: 'code' },
+    ],
+    gotchas: [
+      'Mapping Degraded to a non-2xx status code trades a visibility problem for an availability problem — a pod still capable of serving traffic gets fully removed from rotation.',
+      'The correct fix is a separate alerting consumer parsing the response body\'s status field, running alongside normal 200-based load-balancer routing, not instead of it.',
     ],
   },
 
@@ -12721,6 +13261,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/deployment/testing-forwardedheaders-trust-configuration-rejects-spoofed-ips': {
+    apis: ['ForwardedHeadersOptions', 'HttpContext.Connection.RemoteIpAddress', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Multi-Hop Proxy Chains — next', route: '/aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip' },
+      { label: 'Deployment & Hosting (overview)', route: '/aspnet/deployment' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'A test proving a request from a TRUSTED proxy is honored can\'t prove spoofing protection works — only a test sending a forged header from an UNTRUSTED source, confirming it\'s ignored, exercises the actual security boundary.',
+    docs: [
+      { label: 'Host and deploy ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'TestServer has no real TCP socket — simulate the connecting IP via a test-only middleware setting HttpContext.Connection.RemoteIpAddress before ForwardedHeaders runs.',
+      'Testing only the "happy path" (trusted proxy honored) provides zero signal about whether KnownNetworks actually restricts anything at all.',
+    ],
+  },
+
+  'aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip': {
+    apis: ['ForwardedHeadersMiddleware', 'ForwardedHeadersOptions.ForwardLimit', 'X-Forwarded-For'],
+    related: [
+      { label: 'Testing ForwardedHeaders Trust — previous', route: '/aspnet/deployment/testing-forwardedheaders-trust-configuration-rejects-spoofed-ips' },
+      { label: 'HEALTHCHECK curl Gotcha — next', route: '/aspnet/deployment/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image' },
+      { label: 'Deployment & Hosting (overview)', route: '/aspnet/deployment' },
+    ],
+    tip: 'The middleware walks X-Forwarded-For from the rightmost entry backward, stopping at the first untrusted hop — missing even ONE intermediate proxy\'s CIDR silently resolves to that hop\'s IP instead of the true client.',
+    docs: [
+      { label: 'Docker with .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/docker/build-container' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Trusting every hop\'s CIDR range is necessary but not sufficient — ForwardLimit (default 1) independently caps how many list entries the middleware processes at all, regardless of trust.',
+      'A multi-hop chain needs BOTH every intermediate proxy\'s CIDR in KnownNetworks AND ForwardLimit raised to match the actual number of hops.',
+    ],
+  },
+
+  'aspnet/deployment/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image': {
+    apis: ['Docker HEALTHCHECK', 'mcr.microsoft.com/dotnet/aspnet', 'docker inspect'],
+    related: [
+      { label: 'Multi-Hop Proxy Chains — previous', route: '/aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip' },
+      { label: 'Deployment & Hosting (overview)', route: '/aspnet/deployment' },
+      { label: 'Health Checks & Observability', route: '/aspnet/health-checks' },
+    ],
+    tip: 'mcr.microsoft.com/dotnet/aspnet does not include curl by default — a HEALTHCHECK CMD curl instruction builds fine but reports the container unhealthy at runtime, even though the app itself works perfectly.',
+    docs: [
+      { label: 'Docker with .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/docker/build-container' },
+    ],
+    resources: [
+      { label: 'dotnet/dotnet-docker', url: 'https://github.com/dotnet/dotnet-docker', badge: 'code' },
+    ],
+    gotchas: [
+      'HEALTHCHECK instructions are never evaluated during docker build — only at container runtime, so the failure surfaces only after deployment.',
+      'A tiny separately-published .NET console app can perform the same HTTP check using the runtime already bundled in the image — no apt-get install, no extra attack surface.',
+    ],
+  },
+
   'aspnet/performance': {
     apis: ['AddResponseCompression()', 'UseResponseCompression()', 'dotnet-counters', 'dotnet-trace', 'dotnet-dump', '[Benchmark]', 'ObjectPool<T>', 'ArrayPool<T>'],
     related: [
@@ -12744,6 +13344,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/performance/testing-allocation-regressions-with-getallocatedbytesforthread': {
+    apis: ['GC.GetAllocatedBytesForCurrentThread()', '[MemoryDiagnoser]', 'GC.Collect()'],
+    related: [
+      { label: 'Server GC in Containers — next', route: '/aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit' },
+      { label: 'Performance & Diagnostics (overview)', route: '/aspnet/performance' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'GC.GetAllocatedBytesForCurrentThread() gives a fast, CI-friendly allocation regression gate — it can\'t replace BenchmarkDotNet\'s statistical timing rigor, but it catches gross allocation regressions in milliseconds, on every commit.',
+    docs: [
+      { label: '.NET diagnostic tools', url: 'https://learn.microsoft.com/en-us/dotnet/core/diagnostics/' },
+    ],
+    resources: [
+      { label: 'dotnet/BenchmarkDotNet', url: 'https://github.com/dotnet/BenchmarkDotNet', badge: 'code' },
+    ],
+    gotchas: [
+      'This technique measures allocations only — it provides zero visibility into pure timing regressions that don\'t change the allocation profile; use it alongside BenchmarkDotNet, not instead of it.',
+      'A GC.Collect() + GC.WaitForPendingFinalizers() call immediately before the "before" snapshot clears background allocations from prior tests without needing full test isolation.',
+    ],
+  },
+
+  'aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit': {
+    apis: ['Environment.ProcessorCount', 'DOTNET_GCHeapCount', 'resources.limits.cpu'],
+    related: [
+      { label: 'Testing Allocation Regressions — previous', route: '/aspnet/performance/testing-allocation-regressions-with-getallocatedbytesforthread' },
+      { label: 'Streaming Cancellation Gap — next', route: '/aspnet/performance/streaming-query-missing-cancellationtoken-runs-after-disconnect' },
+      { label: 'Performance & Diagnostics (overview)', route: '/aspnet/performance' },
+    ],
+    tip: 'Server GC heap count derives from the PERCEIVED processor count — a pod with requests.cpu but no limits.cpu lets the runtime see the host\'s full core count, creating far more heaps (and reserved memory) than the intended CPU allocation.',
+    docs: [
+      { label: 'Performance best practices', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/performance-best-practices' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Kubernetes requests.cpu is a scheduling hint, not an enforced ceiling — only limits.cpu gives the container runtime a hard quota the GC can actually perceive.',
+      'Switching to Workstation GC to avoid this symptom discards Server GC\'s throughput benefit entirely — fixing the missing resource limit (or capping DOTNET_GCHeapCount directly) addresses the root cause instead.',
+    ],
+  },
+
+  'aspnet/performance/streaming-query-missing-cancellationtoken-runs-after-disconnect': {
+    apis: ['CancellationToken', 'WithCancellation()', 'HttpContext.RequestAborted'],
+    related: [
+      { label: 'Server GC in Containers — previous', route: '/aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit' },
+      { label: 'Performance & Diagnostics (overview)', route: '/aspnet/performance' },
+      { label: 'Health Checks & Observability', route: '/aspnet/health-checks' },
+    ],
+    tip: 'A minimal API streaming IAsyncEnumerable<T> from EF Core without declaring a CancellationToken parameter leaves the underlying query with no explicit, immediate cancellation path when the client disconnects mid-export.',
+    docs: [
+      { label: 'Performance best practices', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/performance-best-practices' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The HTTP response tearing down and the underlying database query actually stopping are two independent events — an uncancelled query keeps holding a connection-pool slot for its full remaining duration.',
+      'Mid-stream disconnects are common specifically for LARGE exports — a user starting one, realizing it will take a while, and navigating away — making this exactly the scenario where the wasted resource cost is highest.',
+    ],
+  },
+
   'aspnet/aspire': {
     apis: ['AddProject<T>()', 'AddRedis()', 'AddPostgres()', 'WithReference()', 'AddServiceDefaults()', 'WithExternalHttpEndpoints()', 'ServiceDiscovery', 'azd up'],
     related: [
@@ -12764,6 +13424,186 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'AddServiceDefaults() must be called in each service project — not just the AppHost. Forgetting it in a service means that service has no OTel, health checks, or resilience handlers.',
       'Aspire containers (Redis, Postgres) use random host ports each run. Never hardcode ports in your service config — always rely on service discovery or the injected connection strings.',
+    ],
+  },
+
+  'aspnet/aspire/testing-apphost-topology-with-distributedapplicationtestingbuilder': {
+    apis: ['DistributedApplicationTestingBuilder', 'CreateHttpClient()', 'WaitForResourceAsync()'],
+    related: [
+      { label: 'AddProject Source Generation — next', route: '/aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference' },
+      { label: '.NET Aspire (overview)', route: '/aspnet/aspire' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'DistributedApplicationTestingBuilder starts the SAME real topology (real containers, real service processes) inside a test fixture — CreateHttpClient(resourceName) resolves the random port via the same service discovery the running app uses.',
+    docs: [
+      { label: '.NET Aspire overview', url: 'https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspire', url: 'https://github.com/dotnet/aspire', badge: 'code' },
+    ],
+    gotchas: [
+      'StartAsync() initiates the startup sequence but does not wait for each resource to finish its OWN startup — WaitForResourceAsync(..., KnownResourceStates.Running) is needed to avoid CI-specific race conditions.',
+      'A resource-name mismatch between AppHost and service is invisible to WebApplicationFactory-based tests using mocks — only a real-topology test catches it.',
+    ],
+  },
+
+  'aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference': {
+    apis: ['AddProject<T>()', 'Aspire.AppHost.Sdk', 'ProjectReference'],
+    related: [
+      { label: 'Testing AppHost Topology — previous', route: '/aspnet/aspire/testing-apphost-topology-with-distributedapplicationtestingbuilder' },
+      { label: 'OTel Exporter Endpoint Guard — next', route: '/aspnet/aspire/otel-exporter-needs-endpoint-guard-when-running-outside-apphost' },
+      { label: '.NET Aspire (overview)', route: '/aspnet/aspire' },
+    ],
+    tip: 'Projects.MyApp_Api is generated at BUILD time from the AppHost\'s ProjectReference entries — adding a new reference doesn\'t make its type resolve until the AppHost is actually built once.',
+    docs: [
+      { label: '.NET Aspire overview', url: 'https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspire', url: 'https://github.com/dotnet/aspire', badge: 'code' },
+    ],
+    gotchas: [
+      'The type parameter (compile-time, identifies which project) and the string resource name (runtime, service discovery key) are completely independent — the same project type can be registered under multiple different resource names.',
+      'A stale/renamed ProjectReference path fails at MSBuild evaluation, before the source generator even runs — a different, earlier error than "forgot to build."',
+    ],
+  },
+
+  'aspnet/aspire/otel-exporter-needs-endpoint-guard-when-running-outside-apphost': {
+    apis: ['AddOtlpExporter()', 'OTEL_EXPORTER_OTLP_ENDPOINT', 'AddServiceDefaults()'],
+    related: [
+      { label: 'AddProject Source Generation — previous', route: '/aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference' },
+      { label: '.NET Aspire (overview)', route: '/aspnet/aspire' },
+      { label: 'Health Checks & Observability', route: '/aspnet/health-checks' },
+    ],
+    tip: 'An unguarded AddOtlpExporter() call configures an exporter regardless of whether OTEL_EXPORTER_OTLP_ENDPOINT is set — running a service standalone (outside the AppHost) silently exports to nothing, with no visible error.',
+    docs: [
+      { label: '.NET Aspire overview', url: 'https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspire', url: 'https://github.com/dotnet/aspire', badge: 'code' },
+    ],
+    gotchas: [
+      'OTLP exporters fail silently and asynchronously — a try/catch around the registration call has nothing to catch, since the actual network attempt happens later, off the request path.',
+      'The robust pattern checks for the endpoint\'s presence at configuration time and falls back to a no-op or console exporter — matching what Microsoft\'s actual generated ServiceDefaults template does, unlike the main page\'s own simplified illustrative code.',
+    ],
+  },
+
+  'aspnet/fluent-validation/testing-async-mustasync-rules-with-fluentvalidation-testhelper': {
+    apis: ['TestValidateAsync()', 'ShouldHaveValidationErrorFor()', 'MustAsync()'],
+    related: [
+      { label: 'Inline When() Default Scope — next', route: '/aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain' },
+      { label: 'FluentValidation (overview)', route: '/aspnet/fluent-validation' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'FluentValidation.TestHelper\'s expression-based ShouldHaveValidationErrorFor(x => x.Property) survives property renames at compile time — a bare string comparison against PropertyName silently stops matching after a rename.',
+    docs: [
+      { label: 'FluentValidation testing', url: 'https://docs.fluentvalidation.net/en/latest/testing.html' },
+    ],
+    resources: [
+      { label: 'FluentValidation/FluentValidation', url: 'https://github.com/FluentValidation/FluentValidation', badge: 'code' },
+    ],
+    gotchas: [
+      'A validator containing any async rule must be tested with TestValidateAsync(), not the synchronous TestValidate() — calling the wrong one throws at runtime.',
+      'An unconfigured mock returning its library default can make a test pass for the wrong reason — always explicitly configure the mock\'s return value, even when it happens to match the default.',
+    ],
+  },
+
+  'aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain': {
+    apis: ['ApplyConditionTo', '.When()', 'RuleFor()'],
+    related: [
+      { label: 'Testing MustAsync Rules — previous', route: '/aspnet/fluent-validation/testing-async-mustasync-rules-with-fluentvalidation-testhelper' },
+      { label: 'MustAsync Breaks Sync Callers — next', route: '/aspnet/fluent-validation/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller' },
+      { label: 'FluentValidation (overview)', route: '/aspnet/fluent-validation' },
+    ],
+    tip: 'The inline .When() defaults to ApplyConditionTo.AllValidators — it retroactively applies to EVERY rule chained before it in that RuleFor() call, not just the immediately preceding one; pass ApplyConditionTo.CurrentValidator to scope it narrowly.',
+    docs: [
+      { label: 'Conditional validation', url: 'https://docs.fluentvalidation.net/en/latest/conditions.html' },
+    ],
+    resources: [
+      { label: 'FluentValidation/FluentValidation', url: 'https://github.com/FluentValidation/FluentValidation', badge: 'code' },
+    ],
+    gotchas: [
+      'A single .When() call has exactly one scope — there is no way to apply two different conditions to two different subsets of rules within one RuleFor() chain; split into separate RuleFor() calls for that.',
+      'The default scope silently makes earlier, intentionally-unconditional rules (like NotEmpty()) conditional too, with no visible change at those earlier call sites.',
+    ],
+  },
+
+  'aspnet/fluent-validation/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller': {
+    apis: ['Validate()', 'ValidateAsync()', 'MustAsync()'],
+    related: [
+      { label: 'Inline When() Default Scope — previous', route: '/aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain' },
+      { label: 'FluentValidation (overview)', route: '/aspnet/fluent-validation' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Adding even one MustAsync rule to a previously-synchronous validator changes its whole contract — every existing Validate() call site throws InvalidOperationException at runtime, with no compile-time warning.',
+    docs: [
+      { label: 'Async validation', url: 'https://docs.fluentvalidation.net/en/latest/async.html' },
+    ],
+    resources: [
+      { label: 'FluentValidation/FluentValidation', url: 'https://github.com/FluentValidation/FluentValidation', badge: 'code' },
+    ],
+    gotchas: [
+      'Before adding a MustAsync rule to an existing validator, grep the codebase for every Validate() call site on that specific type — each needs to become async, propagating up the call stack.',
+      'A regression test asserting Validate() does not throw synchronously is a deliberate tripwire that fails the moment someone adds an async rule without auditing existing callers.',
+    ],
+  },
+
+  'aspnet/minimal-api-advanced/testing-endpoint-filters-without-webapplicationfactory': {
+    apis: ['EndpointFilterInvocationContext.Create()', 'IEndpointFilter', 'EndpointFilterDelegate'],
+    related: [
+      { label: 'ctx.Arguments Fragility — next', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' },
+      { label: 'Minimal API Advanced (overview)', route: '/aspnet/minimal-api-advanced' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'IEndpointFilter.InvokeAsync() is an ordinary interface method — EndpointFilterInvocationContext.Create(httpContext, ...args) constructs the exact context a filter receives, with no host or real HTTP request needed.',
+    docs: [
+      { label: 'Minimal APIs quick reference', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A test asserting a real endpoint returns 400 proves wiring is correct for one scenario — a direct filter test is far cheaper for exhaustively covering the filter\'s own decision logic.',
+      'Neither test type alone catches every failure class — wiring gaps need integration tests, decision-logic edge cases need direct filter tests.',
+    ],
+  },
+
+  'aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position': {
+    apis: ['ctx.Arguments', 'ctx.GetArgument<T>()', 'OfType<T>()'],
+    related: [
+      { label: 'Testing Endpoint Filters — previous', route: '/aspnet/minimal-api-advanced/testing-endpoint-filters-without-webapplicationfactory' },
+      { label: 'Nested Group Filter Ordering — next', route: '/aspnet/minimal-api-advanced/nested-group-filters-execute-outside-in-like-middleware' },
+      { label: 'Minimal API Advanced (overview)', route: '/aspnet/minimal-api-advanced' },
+    ],
+    tip: 'ctx.Arguments.OfType<T>().FirstOrDefault() silently returns the WRONG parameter if a handler ever gains a second parameter of the same or a compatible type — no exception, just wrong validation results.',
+    docs: [
+      { label: 'Minimal APIs quick reference', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'ctx.GetArgument<T>(index) fixes the "new parameter added" case but is not immune to the model\'s own position shifting during a later reorder — a stale index landing on another same-typed parameter fails just as silently.',
+      'Both selection strategies are hidden couplings between the filter and the handler\'s exact signature — only an integration test exercising the real wiring closes the gap completely.',
+    ],
+  },
+
+  'aspnet/minimal-api-advanced/nested-group-filters-execute-outside-in-like-middleware': {
+    apis: ['MapGroup()', 'AddEndpointFilter()', 'RouteGroupBuilder'],
+    related: [
+      { label: 'ctx.Arguments Fragility — previous', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' },
+      { label: 'Minimal API Advanced (overview)', route: '/aspnet/minimal-api-advanced' },
+      { label: 'Filters & Endpoint Filters', route: '/aspnet/filters' },
+    ],
+    tip: 'Filters on nested route groups wrap exactly like middleware — the outer group\'s "before" code runs first, the inner group\'s runs next, then the handler, then the phases unwind in reverse.',
+    docs: [
+      { label: 'Minimal APIs quick reference', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'An outer filter\'s decision to call next() is committed BEFORE an inner filter even starts — it cannot see or react to what the inner filter decides, only what the whole nested chain ultimately returns.',
+      'A short-circuit bug in an OUTER group\'s filter lets execution fall through to EVERY filter and handler nested inside it — the blast radius scales with everything registered beneath it.',
     ],
   },
 
