@@ -775,7 +775,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/deployment" routerLinkActive="active"><span class="nl-text">Deployment</span>@if(progress.isDone('aspnet-deployment')){<span class="nl-done">✓</span>}@if(diff('aspnet-deployment');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/deployment" routerLinkActive="active">
+        <span class="nl-text">Deployment</span>
+        @if (progress.isDone('aspnet-deployment')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-deployment'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspnet-deployment')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspnet-deployment')"
+                  (click)="toggleSubtopics('aspnet-deployment', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspnet-deployment'); as subs) {
+        @if (isSubtopicsExpanded('aspnet-deployment')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/performance" routerLinkActive="active"><span class="nl-text">Performance & Diagnostics</span>@if(progress.isDone('aspnet-performance')){<span class="nl-done">✓</span>}@if(diff('aspnet-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/aspire" routerLinkActive="active"><span class="nl-text">.NET Aspire</span>@if(progress.isDone('aspnet-aspire')){<span class="nl-done">✓</span>}@if(diff('aspnet-aspire');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/masstransit" routerLinkActive="active"><span class="nl-text">MassTransit</span>@if(progress.isDone('aspnet-masstransit')){<span class="nl-done">✓</span>}@if(diff('aspnet-masstransit');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

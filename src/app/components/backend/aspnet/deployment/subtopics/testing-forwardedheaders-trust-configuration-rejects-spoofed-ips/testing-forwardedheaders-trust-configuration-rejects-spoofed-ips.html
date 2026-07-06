@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Deployment & Hosting"
+    topicRoute="/aspnet/deployment"
+    subtopicLabel="Testing ForwardedHeaders Trust"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That ForwardedHeaders Trust Configuration Rejects Spoofed IPs</h1>
+  <p class="page-subtitle">
+    The main page warns that clearing KnownNetworks without adding trusted entries enables IP spoofing —
+    but a test proving the trusted path works can't prove the untrusted path is actually rejected. Only a
+    dedicated rejection test can.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the trust boundary now proven by a real test, the next subtopic goes one level deeper into the
+      actual algorithm ForwardedHeadersMiddleware uses when a request has passed through MULTIPLE proxy
+      hops, not just one.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Deployment & Hosting"
+    topicRoute="/aspnet/deployment"
+    [next]="{ label: 'How ForwardedHeaders Walks Multi-Hop Chains to Resolve Client IP', route: '/aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip' }"
+  />
+</div>

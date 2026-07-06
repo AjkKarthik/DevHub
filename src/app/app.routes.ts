@@ -902,7 +902,12 @@ export const routes: Routes = [
         { path: 'db-check-connection-pool-contention-causes-cascading-failure', loadComponent: () => import('./components/backend/aspnet/health-checks/subtopics/db-check-connection-pool-contention-causes-cascading-failure/db-check-connection-pool-contention-causes-cascading-failure').then(m => m.DbCheckConnectionPoolContentionCausesCascadingFailureSubtopic) },
         { path: 'degraded-returns-200-by-default-invisible-to-load-balancers', loadComponent: () => import('./components/backend/aspnet/health-checks/subtopics/degraded-returns-200-by-default-invisible-to-load-balancers/degraded-returns-200-by-default-invisible-to-load-balancers').then(m => m.DegradedReturns200ByDefaultInvisibleToLoadBalancersSubtopic) },
       ] },
-      { path: 'deployment',           loadComponent: () => import('./components/backend/aspnet/deployment/deployment').then(m => m.AspnetDeployment) },
+      { path: 'deployment', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/deployment/deployment').then(m => m.AspnetDeployment) },
+        { path: 'testing-forwardedheaders-trust-configuration-rejects-spoofed-ips', loadComponent: () => import('./components/backend/aspnet/deployment/subtopics/testing-forwardedheaders-trust-configuration-rejects-spoofed-ips/testing-forwardedheaders-trust-configuration-rejects-spoofed-ips').then(m => m.TestingForwardedheadersTrustConfigurationRejectsSpoofedIpsSubtopic) },
+        { path: 'how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip', loadComponent: () => import('./components/backend/aspnet/deployment/subtopics/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip').then(m => m.HowForwardedheadersWalksMultiHopChainsToResolveClientIpSubtopic) },
+        { path: 'healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image', loadComponent: () => import('./components/backend/aspnet/deployment/subtopics/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image').then(m => m.HealthcheckCurlInstructionFailsOnMinimalAspnetRuntimeImageSubtopic) },
+      ] },
       { path: 'performance',          loadComponent: () => import('./components/backend/aspnet/performance/performance').then(m => m.AspnetPerformance) },
       { path: 'aspire',                    loadComponent: () => import('./components/backend/aspnet/aspire/aspire').then(m => m.AspnetAspire) },
       { path: 'fluent-validation',         loadComponent: () => import('./components/backend/aspnet/fluent-validation/fluent-validation').then(m => m.AspnetFluentValidation) },

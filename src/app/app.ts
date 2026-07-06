@@ -800,6 +800,13 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DB Check Connection Pool Contention Causes Cascading Failure', route: '/aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure' },
     { label: 'Degraded Returns 200 by Default — Invisible to Load Balancers', route: '/aspnet/health-checks/degraded-returns-200-by-default-invisible-to-load-balancers' },
   ],
+  // NOTE: keyed 'aspnet-deployment', NOT bare 'deployment' — the
+  // Node.js hub (/node/deployment) already owns that bare slug.
+  'aspnet-deployment': [
+    { label: 'Testing ForwardedHeaders Trust Configuration Rejects Spoofed IPs', route: '/aspnet/deployment/testing-forwardedheaders-trust-configuration-rejects-spoofed-ips' },
+    { label: 'How ForwardedHeaders Walks Multi-Hop Chains to Resolve Client IP', route: '/aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip' },
+    { label: 'HEALTHCHECK curl Instruction Fails on the Minimal ASP.NET Runtime Image', route: '/aspnet/deployment/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image' },
+  ],
 };
 
 @Component({

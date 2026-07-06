@@ -13261,6 +13261,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/deployment/testing-forwardedheaders-trust-configuration-rejects-spoofed-ips': {
+    apis: ['ForwardedHeadersOptions', 'HttpContext.Connection.RemoteIpAddress', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Multi-Hop Proxy Chains — next', route: '/aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip' },
+      { label: 'Deployment & Hosting (overview)', route: '/aspnet/deployment' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'A test proving a request from a TRUSTED proxy is honored can\'t prove spoofing protection works — only a test sending a forged header from an UNTRUSTED source, confirming it\'s ignored, exercises the actual security boundary.',
+    docs: [
+      { label: 'Host and deploy ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'TestServer has no real TCP socket — simulate the connecting IP via a test-only middleware setting HttpContext.Connection.RemoteIpAddress before ForwardedHeaders runs.',
+      'Testing only the "happy path" (trusted proxy honored) provides zero signal about whether KnownNetworks actually restricts anything at all.',
+    ],
+  },
+
+  'aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip': {
+    apis: ['ForwardedHeadersMiddleware', 'ForwardedHeadersOptions.ForwardLimit', 'X-Forwarded-For'],
+    related: [
+      { label: 'Testing ForwardedHeaders Trust — previous', route: '/aspnet/deployment/testing-forwardedheaders-trust-configuration-rejects-spoofed-ips' },
+      { label: 'HEALTHCHECK curl Gotcha — next', route: '/aspnet/deployment/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image' },
+      { label: 'Deployment & Hosting (overview)', route: '/aspnet/deployment' },
+    ],
+    tip: 'The middleware walks X-Forwarded-For from the rightmost entry backward, stopping at the first untrusted hop — missing even ONE intermediate proxy\'s CIDR silently resolves to that hop\'s IP instead of the true client.',
+    docs: [
+      { label: 'Docker with .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/docker/build-container' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Trusting every hop\'s CIDR range is necessary but not sufficient — ForwardLimit (default 1) independently caps how many list entries the middleware processes at all, regardless of trust.',
+      'A multi-hop chain needs BOTH every intermediate proxy\'s CIDR in KnownNetworks AND ForwardLimit raised to match the actual number of hops.',
+    ],
+  },
+
+  'aspnet/deployment/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image': {
+    apis: ['Docker HEALTHCHECK', 'mcr.microsoft.com/dotnet/aspnet', 'docker inspect'],
+    related: [
+      { label: 'Multi-Hop Proxy Chains — previous', route: '/aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip' },
+      { label: 'Deployment & Hosting (overview)', route: '/aspnet/deployment' },
+      { label: 'Health Checks & Observability', route: '/aspnet/health-checks' },
+    ],
+    tip: 'mcr.microsoft.com/dotnet/aspnet does not include curl by default — a HEALTHCHECK CMD curl instruction builds fine but reports the container unhealthy at runtime, even though the app itself works perfectly.',
+    docs: [
+      { label: 'Docker with .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/docker/build-container' },
+    ],
+    resources: [
+      { label: 'dotnet/dotnet-docker', url: 'https://github.com/dotnet/dotnet-docker', badge: 'code' },
+    ],
+    gotchas: [
+      'HEALTHCHECK instructions are never evaluated during docker build — only at container runtime, so the failure surfaces only after deployment.',
+      'A tiny separately-published .NET console app can perform the same HTTP check using the runtime already bundled in the image — no apt-get install, no extra attack surface.',
+    ],
+  },
+
   'aspnet/performance': {
     apis: ['AddResponseCompression()', 'UseResponseCompression()', 'dotnet-counters', 'dotnet-trace', 'dotnet-dump', '[Benchmark]', 'ObjectPool<T>', 'ArrayPool<T>'],
     related: [
