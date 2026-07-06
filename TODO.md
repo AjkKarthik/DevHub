@@ -1519,7 +1519,7 @@ off here with a date.
 - [x] `/aspnet/caching` — Caching (2026-07-05 — 3 subtopics: testing-getorcreateasync-concurrent-misses-factory-runs-twice, how-imemorycache-expiry-actually-enforced-lazy-not-timers, write-invalidate-stale-repopulation-race-ttl-backstop)
 - [x] `/aspnet/authentication` — Authentication (2026-07-05 — 3 subtopics: testing-jwt-clockskew-expired-token-still-validates, why-setapplicationname-matters-shared-dataprotection-keys, jwt-claim-type-mapping-sub-becomes-nameidentifier)
 - [x] `/aspnet/authorization` — Authorization (2026-07-06 — 3 subtopics: testing-multi-handler-or-semantics-fail-veto, how-authorization-middleware-combines-default-fallback-policies, allowanonymous-anywhere-wins-authorize-cannot-override)
-- [ ] `/aspnet/cors` — CORS & Security Headers
+- [x] `/aspnet/cors` — CORS & Security Headers (2026-07-06 — 3 subtopics: testing-preflight-bypasses-auth-middleware-terminal-response, how-browser-decides-simple-vs-preflight-request, misspelled-requirecors-policy-name-fails-silently-no-headers)
 - [ ] `/aspnet/rate-limiting` — Rate Limiting
 - [ ] `/aspnet/web-security` — Web Security Essentials
 - [ ] `/aspnet/secrets` — Secrets & Data Protection
