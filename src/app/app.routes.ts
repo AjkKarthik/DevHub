@@ -871,7 +871,12 @@ export const routes: Routes = [
         { path: 'contextual-encoding-html-encode-doesnt-protect-attributes-or-js', loadComponent: () => import('./components/backend/aspnet/web-security/subtopics/contextual-encoding-html-encode-doesnt-protect-attributes-or-js/contextual-encoding-html-encode-doesnt-protect-attributes-or-js').then(m => m.ContextualEncodingHtmlEncodeDoesntProtectAttributesOrJsSubtopic) },
         { path: 'missing-separator-in-startswith-check-allows-sibling-directory-bypass', loadComponent: () => import('./components/backend/aspnet/web-security/subtopics/missing-separator-in-startswith-check-allows-sibling-directory-bypass/missing-separator-in-startswith-check-allows-sibling-directory-bypass').then(m => m.MissingSeparatorInStartswithCheckAllowsSiblingDirectoryBypassSubtopic) },
       ] },
-      { path: 'secrets',              loadComponent: () => import('./components/backend/aspnet/secrets/secrets').then(m => m.AspnetSecrets) },
+      { path: 'secrets', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/secrets/secrets').then(m => m.AspnetSecrets) },
+        { path: 'testing-validateonstart-only-fails-fast-via-host-startasync', loadComponent: () => import('./components/backend/aspnet/secrets/subtopics/testing-validateonstart-only-fails-fast-via-host-startasync/testing-validateonstart-only-fails-fast-via-host-startasync').then(m => m.TestingValidateonstartOnlyFailsFastViaHostStartasyncSubtopic) },
+        { path: 'ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault', loadComponent: () => import('./components/backend/aspnet/secrets/subtopics/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault').then(m => m.IoptionsmonitorOnchangeNeverFiresForEnvVarsOrKeyVaultSubtopic) },
+        { path: 'pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens', loadComponent: () => import('./components/backend/aspnet/secrets/subtopics/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens').then(m => m.PruningDataProtectionKeysInvalidatesStillValidTimeLimitedTokensSubtopic) },
+      ] },
       // ── Quality ──
       { path: 'testing',              loadComponent: () => import('./components/backend/aspnet/testing/testing').then(m => m.AspnetTesting) },
       { path: 'background-services',  loadComponent: () => import('./components/backend/aspnet/background-services/background-services').then(m => m.AspnetBackgroundServices) },

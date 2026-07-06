@@ -670,7 +670,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/secrets" routerLinkActive="active"><span class="nl-text">Secrets & Data Protection</span>@if(progress.isDone('aspnet-secrets')){<span class="nl-done">✓</span>}@if(diff('aspnet-secrets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/secrets" routerLinkActive="active">
+        <span class="nl-text">Secrets & Data Protection</span>
+        @if (progress.isDone('aspnet-secrets')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-secrets'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('secrets')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('secrets')"
+                  (click)="toggleSubtopics('secrets', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('secrets'); as subs) {
+        @if (isSubtopicsExpanded('secrets')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/csrf" routerLinkActive="active"><span class="nl-text">Anti-forgery &amp; CSRF</span>@if(progress.isDone('aspnet-csrf')){<span class="nl-done">✓</span>}@if(diff('aspnet-csrf');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

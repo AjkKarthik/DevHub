@@ -771,6 +771,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Contextual Encoding — HTML Encode Doesn\'t Protect Attributes or JS', route: '/aspnet/web-security/contextual-encoding-html-encode-doesnt-protect-attributes-or-js' },
     { label: 'Missing Separator in StartsWith Check — Sibling-Directory Bypass', route: '/aspnet/web-security/missing-separator-in-startswith-check-allows-sibling-directory-bypass' },
   ],
+  'secrets': [
+    { label: 'Testing That ValidateOnStart() Fails Fast Via Host StartAsync', route: '/aspnet/secrets/testing-validateonstart-only-fails-fast-via-host-startasync' },
+    { label: 'IOptionsMonitor OnChange Never Fires for Env Vars or Key Vault', route: '/aspnet/secrets/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault' },
+    { label: 'Pruning Data Protection Keys Invalidates Time-Limited Tokens', route: '/aspnet/secrets/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens' },
+  ],
 };
 
 @Component({

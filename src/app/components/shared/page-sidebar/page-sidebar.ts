@@ -12849,6 +12849,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/secrets/testing-validateonstart-only-fails-fast-via-host-startasync': {
+    apis: ['ValidateOnStart()', 'IHost.StartAsync()', 'OptionsValidationException'],
+    related: [
+      { label: 'IOptionsMonitor Reload Sources — next', route: '/aspnet/secrets/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault' },
+      { label: 'Secrets & Data Protection (overview)', route: '/aspnet/secrets' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'ValidateOnStart() is a TIMING guarantee, not just an error-existence guarantee — a test that only resolves IOptions<T>.Value from a bare ServiceProvider sees the same exception whether ValidateOnStart() is configured or not; only exercising the real host StartAsync() proves the eager-at-startup behavior.',
+    docs: [
+      { label: 'Options validation', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/options-validation' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'ValidateOnStart() must be explicitly chained onto EACH options type\'s own registration — a new options class that forgets this call gets no fail-fast guarantee at all.',
+      'WebApplicationFactory.CreateClient() triggers the host\'s real startup internally, making it a valid way to prove a ValidateOnStart() failure surfaces before any request is served.',
+    ],
+  },
+
+  'aspnet/secrets/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault': {
+    apis: ['IOptionsMonitor<T>.OnChange()', 'ReloadInterval', 'AddAzureKeyVault()'],
+    related: [
+      { label: 'Testing ValidateOnStart() — previous', route: '/aspnet/secrets/testing-validateonstart-only-fails-fast-via-host-startasync' },
+      { label: 'Pruning Data Protection Keys — next', route: '/aspnet/secrets/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens' },
+      { label: 'Secrets & Data Protection (overview)', route: '/aspnet/secrets' },
+    ],
+    tip: 'IOptionsMonitor only reflects changes its underlying provider surfaces via a change token — environment variables load once at startup and never again, and Azure Key Vault behaves the same way unless ReloadInterval is explicitly configured.',
+    docs: [
+      { label: 'Azure Key Vault provider', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/key-vault-configuration' },
+    ],
+    resources: [
+      { label: 'Azure/azure-sdk-for-net', url: 'https://github.com/Azure/azure-sdk-for-net', badge: 'code' },
+    ],
+    gotchas: [
+      'Rotating a secret in Key Vault has zero effect on already-running pods unless ReloadInterval is set — without it, every instance keeps using the stale value until it restarts.',
+      'ReloadInterval only controls how fast the APPLICATION picks up a new secret — it says nothing about whether the OLD credential still works at the database/API itself until that system\'s credential is separately revoked.',
+    ],
+  },
+
+  'aspnet/secrets/pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens': {
+    apis: ['ITimeLimitedDataProtector', 'SecurityTokenExpiredException', 'SetDefaultKeyLifetime()'],
+    related: [
+      { label: 'IOptionsMonitor Reload Sources — previous', route: '/aspnet/secrets/ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault' },
+      { label: 'Secrets & Data Protection (overview)', route: '/aspnet/secrets' },
+      { label: 'Authentication', route: '/aspnet/authentication' },
+    ],
+    tip: 'A time-limited token\'s own expiry clock is independent of whether the key that encrypted it still exists in the key ring — pruning that key invalidates every still-young token encrypted with it all at once, not gradually like normal expiry.',
+    docs: [
+      { label: 'Data Protection API', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/introduction' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A bare catch around Unprotect() treats routine expiry and a missing/pruned key identically — logging the exception TYPE before discarding it is often the only signal a key-ring incident is happening, not normal token aging.',
+      'Safe key retention must cover the active key\'s own lifetime PLUS the longest token lifetime issued anywhere in the system — not just the token lifetime alone.',
+    ],
+  },
+
   // ── ASP.NET Quality ─────────────────────────────────────────────────────────
   'aspnet/testing': {
     apis: ['WebApplicationFactory<T>', 'CreateClient()', '[Fact]', '[Theory]', 'Substitute.For<T>()', 'ConfigureTestServices()', 'UseInMemoryDatabase()', 'UseSqlite(":memory:")'],
