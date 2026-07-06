@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Span<T> & Memory<T>" topicRoute="/csharp/span-memory" subtopicLabel="What Is Actually Inside a Span<T>" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">What Is Actually Inside a Span&lt;T&gt;: The Ref Field That Makes It Fast and Forces Every Other Restriction</h1>
+  <p class="page-subtitle">The main topic page lists Span&lt;T&gt;'s restrictions as a checklist. See how every one of them — no class fields, no boxing, no await, no arrays — follows from the same fact: Span&lt;T&gt; stores a genuine ref field, not a copy.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since=".NET Core 2.1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic looks at a quieter, security-relevant gotcha in the main <a routerLink="/csharp/span-memory">Span&lt;T&gt; & Memory&lt;T&gt;</a> page's own ArrayPool section: what a rented array actually contains before you write to it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Span<T> & Memory<T>"
+    topicRoute="/csharp/span-memory"
+    [prev]="{ label: 'Testing Methods That Accept Span<T>', route: '/csharp/span-memory/testing-methods-accepting-span-cannot-wrap-call-in-lambda' }"
+    [next]="{ label: 'ArrayPool Rent Returns Dirty Memory', route: '/csharp/span-memory/arraypool-rent-returns-dirty-memory-stale-data-leak' }"
+  />
+</div>

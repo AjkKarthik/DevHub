@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Component Harnesses"
+    topicRoute="/angular/harnesses"
+    subtopicLabel="Publishing Harnesses as a Public Testing Entry Point" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Publishing Harnesses as a Public Testing Entry Point</h1>
+  <p class="page-subtitle">
+    The main topic says to publish harnesses "alongside" components but never shows
+    how — it's a distinct secondary entry point, not just a co-located export.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="CDK 9+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      This demo shows a library's folder structure — the component's root entry point
+      and the harness's own <code>testing/</code> secondary entry point, each with its
+      own <code>ng-package.json</code> and <code>public-api.ts</code>.
+    </p>
+    <app-live-playground
+      title="Publishing Harnesses as a Public Testing Entry Point"
+      template="angular-cli"
+      openFile="projects/rating-lib/rating/testing/rating-harness.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With composition and publishing covered, the final subtopic tackles what to do
+      when a harness lookup fails — the failure modes the main topic never mentions.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Component Harnesses"
+    topicRoute="/angular/harnesses"
+    [prev]="{ label: 'Composing Nested Harnesses with getChildLoader', route: '/angular/harnesses/composing-nested-harnesses-with-getchildloader' }"
+    [next]="{ label: 'Debugging Harness Failures: Common Causes and Diagnosis', route: '/angular/harnesses/debugging-harness-failures-common-causes-and-diagnosis' }" />
+</div>

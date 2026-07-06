@@ -1,0 +1,39 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="LINQ"
+    topicRoute="/csharp/linq"
+    subtopicLabel="Writing Custom Lazy LINQ Operators with yield return" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Writing Custom Lazy LINQ Operators with yield return</h1>
+  <p class="page-subtitle">
+    The main topic explains laziness as a fact about Where/Select. Here's how to build
+    your own operator with that same property — and the eager-validation trap that breaks it.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 2" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Custom operators extend LINQ's vocabulary. The next subtopic goes underneath
+      IQueryable itself — what an expression tree actually is, and why EF Core needs one.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="LINQ"
+    topicRoute="/csharp/linq"
+    [next]="{ label: 'Expression Trees: Why EF Core Needs Expression&lt;Func&lt;T,bool&gt;&gt;', route: '/csharp/linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool' }" />
+</div>

@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tasks" topicRoute="/csharp/tasks" subtopicLabel="ValueTask: The One-Await Rule" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">ValueTask: Why You Can Only Await It Once, and When It's Actually Worth the Complexity</h1>
+  <p class="page-subtitle">The main topic page mentions ValueTask-related internals once, for library authors. ValueTask&lt;T&gt; is common in ordinary code too — see the allocation trade-off it makes, and the strict one-consumption rule that comes with it.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Core 2+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic corrects a subtle reading of the main <a routerLink="/csharp/tasks">Tasks</a> page's own WhenAll section — tasks aren't "started in parallel" by WhenAll at all; they're usually already running by the time WhenAll ever sees them.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tasks"
+    topicRoute="/csharp/tasks"
+    [prev]="{ label: 'Testing Async Timing Deterministically', route: '/csharp/tasks/testing-async-timing-deterministic-controllable-taskcompletionsource' }"
+    [next]="{ label: 'WhenAll Does Not Start Tasks in Parallel', route: '/csharp/tasks/whenall-doesnt-start-tasks-parallel-just-awaits-running' }"
+  />
+</div>

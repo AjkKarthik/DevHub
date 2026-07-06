@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Regular Expressions" topicRoute="/csharp/regex" subtopicLabel="Inside the Backtracking Engine" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Inside the Backtracking Engine: Why (a+)+ Explodes Combinatorially, Traced Step by Step</h1>
+  <p class="page-subtitle">The main topic page says nested quantifiers "backtrack exponentially" without showing why. See the exact partitioning explosion for a 4-character input, and why the fix is often removing the ambiguity, not just adding a timeout.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="C# 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic looks at a quieter, security-relevant gotcha in the main <a routerLink="/csharp/regex">Regular Expressions</a> page's own <code>\d</code> validation patterns: what "digit" actually means to .NET's regex engine by default.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Regular Expressions"
+    topicRoute="/csharp/regex"
+    [prev]="{ label: 'Testing Regex Patterns for ReDoS', route: '/csharp/regex/testing-regex-redos-proving-matchtimeout-fires' }"
+    [next]="{ label: 'The Unicode Digit Trap', route: '/csharp/regex/unicode-digit-trap-d-matches-more-than-ascii' }"
+  />
+</div>

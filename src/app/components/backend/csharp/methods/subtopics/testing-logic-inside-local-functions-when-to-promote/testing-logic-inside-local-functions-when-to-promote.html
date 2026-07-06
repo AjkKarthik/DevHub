@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Methods"
+    topicRoute="/csharp/methods"
+    subtopicLabel="Testing Logic Inside Local Functions" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Logic Inside Local Functions: When to Promote to a Testable Private Method</h1>
+  <p class="page-subtitle">
+    The main topic recommends local functions freely but never discusses testability — a
+    local function can only ever be tested indirectly, which is itself a promotion signal
+    the main topic's "second caller" rule misses.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 7.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testability shapes method design decisions — the next subtopics dig into two
+      deeper corners of the parameter system: a subtle performance trap with
+      <code>in</code>, and a feature that never appears on the main page at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Methods"
+    topicRoute="/csharp/methods"
+    [next]="{ label: 'The in Parameter Defensive-Copy Trap', route: '/csharp/methods/in-parameter-defensive-copy-trap' }" />
+</div>

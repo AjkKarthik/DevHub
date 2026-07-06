@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tuples & Anonymous Types" topicRoute="/csharp/tuples" subtopicLabel="Renaming a Tuple Field" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Renaming a Tuple Field: Why It Breaks Some Callers But Not Others</h1>
+  <p class="page-subtitle">Named tuple fields are compile-time-only — so renaming one is a hard compile error for dot-notation callers, yet a complete silent no-op for callers using positional deconstruction. See why grepping for the old name can't fully assess the blast radius.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 7+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop on the main <a routerLink="/csharp/tuples">Tuples & Anonymous Types</a> page's own guidance to prefer a record for a genuinely public, evolving API — now you've seen exactly why that guidance exists at the caller-compatibility level, not just as a style preference.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tuples & Anonymous Types"
+    topicRoute="/csharp/tuples"
+    [prev]="{ label: 'ValueTuple\'s 8-Element Limit and the TRest Chain', route: '/csharp/tuples/valuetuple-8-element-limit-trest-chaining-mechanism' }"
+  />
+</div>

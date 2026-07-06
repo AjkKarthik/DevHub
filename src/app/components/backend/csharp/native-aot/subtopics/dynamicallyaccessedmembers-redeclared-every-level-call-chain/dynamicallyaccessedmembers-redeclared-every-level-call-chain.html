@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Native AOT" topicRoute="/csharp/native-aot" subtopicLabel="DynamicallyAccessedMembers Propagation" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why [DynamicallyAccessedMembers] Must Be Re-Declared at Every Level of a Call Chain</h1>
+  <p class="page-subtitle">The main topic page shows the attribute on a single method. Real code wraps reflection-using methods in layers — and the trimmer analyzes each method definition independently, so the same annotation must be repeated at every level that forwards the type parameter.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 5+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/csharp/native-aot">Native AOT</a>: a real production gotcha the main page's own "check IsAotCompatible metadata" advice doesn't fully cover — why a clean trim-analysis build can still fail a full AOT publish.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Native AOT"
+    topicRoute="/csharp/native-aot"
+    [prev]="{ label: 'Testing AOT Compatibility Fast', route: '/csharp/native-aot/testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors' }"
+    [next]="{ label: 'Clean Trim Analysis Can Still Fail a Full AOT Publish', route: '/csharp/native-aot/clean-trim-analysis-still-fails-full-aot-publish-different-checks' }"
+  />
+</div>

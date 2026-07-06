@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SSR & Hydration"
+    topicRoute="/angular/ssr"
+    subtopicLabel="Incremental Hydration Triggers: Interaction, Viewport, and Timer" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Incremental Hydration Triggers: Interaction, Viewport, and Timer</h1>
+  <p class="page-subtitle">
+    The main topic shows one trigger. hydrate supports the full &#64;defer trigger
+    vocabulary — choosing the right one matters for actual perceived performance.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 19+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      The comment form uses <code>hydrate on interaction</code> — its JS cost is never
+      paid if the visitor never clicks into it. The related products list uses
+      <code>hydrate on viewport</code> for content further down the page.
+    </p>
+    <app-live-playground
+      title="Incremental Hydration Triggers"
+      template="angular-cli"
+      openFile="src/app/app.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Diagnosis, testing, and fine-grained hydration control together round out
+      production SSR practice beyond the main topic's introductory setup.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SSR & Hydration"
+    topicRoute="/angular/ssr"
+    [prev]="{ label: 'Testing SSR-Safe Components Without a Real Server', route: '/angular/ssr/testing-ssr-safe-components-without-a-real-server' }" />
+</div>

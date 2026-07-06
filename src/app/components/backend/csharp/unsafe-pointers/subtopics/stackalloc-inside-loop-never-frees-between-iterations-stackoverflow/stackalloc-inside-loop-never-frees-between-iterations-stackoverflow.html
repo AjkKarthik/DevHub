@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Unsafe Code & Pointers" topicRoute="/csharp/unsafe-pointers" subtopicLabel="stackalloc Inside a Loop" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">stackalloc Inside a Loop Never Frees Between Iterations — Stack Space Accumulates Until the Method Returns</h1>
+  <p class="page-subtitle">"No GC involved" also means no automatic per-iteration cleanup. A fresh stackalloc call on every loop pass keeps accumulating on the same stack frame until the whole method returns — risking an uncatchable StackOverflowException.</p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 7.2+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/csharp/unsafe-pointers">Unsafe Code &amp; Pointers</a> — from testing the safe wrapper pattern, to GC pinning mechanics, to this stackalloc accumulation gotcha. Return to the topic overview to continue with the next C# topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Unsafe Code & Pointers"
+    topicRoute="/csharp/unsafe-pointers"
+    [prev]="{ label: 'Why a Pinned Object Fragments the Heap', route: '/csharp/unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors' }"
+  />
+</div>

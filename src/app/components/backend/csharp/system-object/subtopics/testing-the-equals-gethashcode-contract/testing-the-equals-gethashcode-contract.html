@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="System.Object"
+    topicRoute="/csharp/system-object"
+    subtopicLabel="Testing the Equals/GetHashCode Contract" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing the Equals/GetHashCode Contract: A Reusable Generic Verifier</h1>
+  <p class="page-subtitle">
+    The main topic states the full equality contract explicitly but every example tests
+    it piecemeal — this subtopic writes one reusable, generic verifier that checks
+    reflexivity, symmetry, transitivity, consistency, and hash-consistency together.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing the contract covers correctness — the next subtopics dig into why hash
+      codes are never stable across process runs, and how record equality secretly
+      distinguishes a base record from a derived one.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="System.Object"
+    topicRoute="/csharp/system-object"
+    [next]="{ label: 'Why GetHashCode Is Never Stable Across Runs', route: '/csharp/system-object/gethashcode-instability-across-process-runs' }" />
+</div>

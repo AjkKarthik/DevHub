@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="API Versioning"
+    topicRoute="/aspnet/api-versioning"
+    subtopicLabel="Testing Version Isolation"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That Versioned Endpoints Return Genuinely Different Shapes</h1>
+  <p class="page-subtitle">
+    The main page's own mistake shows a missing [MapToApiVersion] silently leaking a v2 action into v1 —
+    still 200 OK, just the wrong shape. Here's the integration test that actually proves version
+    isolation, not just that a status code came back.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own version-isolation mistake. The next subtopic goes
+      underneath the <code>:apiVersion</code> route constraint — explaining exactly what breaks when it's
+      omitted, which is worse than the main page's "routes to the same controller" phrasing suggests.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="API Versioning"
+    topicRoute="/aspnet/api-versioning"
+    [next]="{ label: 'Why Omitting the apiVersion Constraint Causes an Ambiguous Match', route: '/aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match' }"
+  />
+</div>

@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="BenchmarkDotNet" topicRoute="/csharp/benchmarkdotnet" subtopicLabel="When Mean Lies" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">When Mean Lies: A Bimodal Distribution Hides Two Different Performance Paths Behind One Deceptively "Fine" Average</h1>
+  <p class="page-subtitle">The main topic page teaches Mean, Error, and StdDev as the primary columns to read. When a benchmark bundles a fast path and a slow path together, the Mean can be a number no individual call ever actually takes — here's how to catch it.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="BDN 0.x" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/csharp/benchmarkdotnet">BenchmarkDotNet</a> — from catching regressions in CI, to how BDN's isolated-process execution model works, to this bimodal-distribution gotcha. Return to the topic overview to continue with the next C# topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="BenchmarkDotNet"
+    topicRoute="/csharp/benchmarkdotnet"
+    [prev]="{ label: 'Why BDN Runs Benchmarks in an Isolated Process', route: '/csharp/benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process' }"
+  />
+</div>

@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="OOP &amp; Classes"
+    topicRoute="/csharp/oop"
+    subtopicLabel="Explicit Interface Implementation: Resolving Name Collisions" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Explicit Interface Implementation: Resolving Name Collisions</h1>
+  <p class="page-subtitle">
+    Every implementation on the main topic is implicit. Explicit implementation lets
+    two colliding interface methods coexist in one class with completely different bodies.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="C# 1" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing, construction order, and explicit interfaces together cover the OOP
+      mechanics that show up in real codebases and interviews but rarely fit into an
+      introductory topic page.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OOP &amp; Classes"
+    topicRoute="/csharp/oop"
+    [prev]="{ label: 'Virtual Member Calls from Constructors: An Initialization-Order Footgun', route: '/csharp/oop/virtual-member-calls-from-constructors-an-initialization-order-footgun' }" />
+</div>

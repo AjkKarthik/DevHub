@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="dynamic & the DLR" topicRoute="/csharp/dynamic" subtopicLabel="Anonymous Types as dynamic" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Returning Anonymous Types as dynamic: Working Around the Assembly-Boundary Restriction, and Its Hidden Cost</h1>
+  <p class="page-subtitle">Typing an anonymous-type return as dynamic lets callers access properties by name, working around the method-boundary restriction. See why the SAME code can throw RuntimeBinderException the moment a caller lives in a different assembly.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 4+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the dynamic &amp; the DLR deep dives — from testing DynamicObject's success and fail paths, to the call-site caching mechanics underneath every dynamic call, to a cross-assembly trap hiding in a common anonymous-type workaround.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="dynamic & the DLR"
+    topicRoute="/csharp/dynamic"
+    [prev]="{ label: 'Inside the DLR Call Site', route: '/csharp/dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback' }"
+  />
+</div>

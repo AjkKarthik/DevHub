@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="async / await"
+    topicRoute="/csharp/async"
+    subtopicLabel="Producer/Consumer Pipelines with System.Threading.Channels" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Producer/Consumer Pipelines with System.Threading.Channels</h1>
+  <p class="page-subtitle">
+    The main topic covers SemaphoreSlim and async streams, but never Channel&lt;T&gt; —
+    the modern, async-first primitive for decoupling a producer's pace from a consumer's.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET Core 3.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing, async cleanup, and producer/consumer pipelines together cover the
+      production concerns that separate a working async method from a robust,
+      well-tested async system.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="async / await"
+    topicRoute="/csharp/async"
+    [prev]="{ label: 'IAsyncDisposable and await using: Async Resource Cleanup', route: '/csharp/async/iasyncdisposable-and-await-using-async-resource-cleanup' }" />
+</div>

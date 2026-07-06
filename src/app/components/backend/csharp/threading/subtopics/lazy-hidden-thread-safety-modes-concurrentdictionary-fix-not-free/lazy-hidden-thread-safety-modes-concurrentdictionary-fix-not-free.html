@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Threading" topicRoute="/csharp/threading" subtopicLabel="Lazy Thread-Safety Modes" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Lazy&lt;T&gt;'s Hidden Thread-Safety Modes: Why the ConcurrentDictionary + Lazy Fix Isn't Free</h1>
+  <p class="page-subtitle">The main topic page fixes GetOrAdd's re-run factory problem by wrapping values in Lazy&lt;T&gt;. See the internal lock that fix implicitly relies on, and the two other LazyThreadSafetyMode options that trade guarantees differently.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Threading deep dives — from stress-testing for real race conditions, to the historical bug behind lock's exact compiled form, to the hidden cost inside the main page's own recommended Lazy&lt;T&gt; fix.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Threading"
+    topicRoute="/csharp/threading"
+    [prev]="{ label: 'The Old lock Codegen Bug', route: '/csharp/threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken' }"
+  />
+</div>

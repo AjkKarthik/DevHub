@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Delegates & Events"
+    topicRoute="/csharp/delegates"
+    subtopicLabel="async void Event Handlers: Why Exceptions Vanish" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">async void Event Handlers: Why Exceptions Vanish and Crash Unpredictably</h1>
+  <p class="page-subtitle">
+    Every event handler on the main topic is synchronous — in real code, handlers often
+    need to await something, forcing async void. This subtopic explains why that
+    combination is genuinely dangerous, not just unusual.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 5.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing events, understanding real delegate equality, and knowing the async void
+      danger together round out delegates and events as a production concern, not just
+      subscription syntax.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Delegates & Events"
+    topicRoute="/csharp/delegates"
+    [prev]="{ label: 'How Delegate Equality Actually Works', route: '/csharp/delegates/how-delegate-equality-actually-works-target-method-pairs' }" />
+</div>

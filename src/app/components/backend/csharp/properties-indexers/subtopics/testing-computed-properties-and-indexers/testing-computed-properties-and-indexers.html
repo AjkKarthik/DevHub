@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Properties & Indexers"
+    topicRoute="/csharp/properties-indexers"
+    subtopicLabel="Testing Computed Properties and Indexers" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Computed Properties and Indexers: Verifying Recomputation vs Fixed Values</h1>
+  <p class="page-subtitle">
+    The main topic's own Common Mistake distinguishes => expr (recomputed) from
+    {{ '{' }} get; {{ '}' }} = expr (fixed once) — a directly testable behavior this subtopic actually
+    verifies, alongside indexer boundary conditions.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing covers correctness — the next subtopics dig into a special CLR assignment
+      window for init accessors, and a lesser-known object-initializer syntax built
+      directly on indexers.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Properties & Indexers"
+    topicRoute="/csharp/properties-indexers"
+    [next]="{ label: 'init Accessors and readonly Fields', route: '/csharp/properties-indexers/init-accessors-and-readonly-fields-assignment-window' }" />
+</div>

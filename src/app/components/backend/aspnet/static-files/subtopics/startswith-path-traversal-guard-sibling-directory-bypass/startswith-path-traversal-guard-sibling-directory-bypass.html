@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Static Files &amp; Uploads"
+    topicRoute="/aspnet/static-files"
+    subtopicLabel="StartsWith Path Traversal Bypass"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">The StartsWith Path Traversal Guard Has a Sibling-Directory Bypass</h1>
+  <p class="page-subtitle">
+    The main page's own Download action guards traversal with a plain <code>StartsWith</code> check.
+    A sibling directory sharing the same character prefix — "uploads-backup" versus "uploads" — walks
+    right through it.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Static Files &amp; Uploads deep-dive set: testing the magic-number validation
+      fix, understanding the timestamp mechanics behind ETag, and now the exact string-comparison gap in
+      the page's own path traversal guard. Head back to the topic overview to continue with the next
+      ASP.NET Core topic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Static Files &amp; Uploads"
+    topicRoute="/aspnet/static-files"
+    [prev]="{ label: 'How UseStaticFiles Computes ETag — Why Touching a File Busts the Cache', route: '/aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache' }"
+  />
+</div>

@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Exceptions"
+    topicRoute="/csharp/exceptions"
+    subtopicLabel="AppDomain.UnhandledException and TaskScheduler.UnobservedTaskException" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">AppDomain.UnhandledException and TaskScheduler.UnobservedTaskException: The Last Line of Defense</h1>
+  <p class="page-subtitle">
+    The main topic never covers what happens when an exception escapes every catch block
+    you wrote — two genuinely different "last resort" mechanisms exist for synchronous
+    crashes versus silently failed fire-and-forget tasks.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Framework 2.0 / .NET 4.5+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Knowing how exceptions fail LOUD (process crash) or SILENT (unobserved task)
+      completes the failure-path picture — the final subtopic explains WHY exceptions
+      carry a real runtime cost in the first place.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Exceptions"
+    topicRoute="/csharp/exceptions"
+    [prev]="{ label: 'Testing Exception Filters', route: '/csharp/exceptions/testing-exception-filters-verifying-when-predicate-logic' }"
+    [next]="{ label: 'Why Exceptions Are Slow', route: '/csharp/exceptions/why-exceptions-are-slow-stack-walking-first-chance-exceptions' }" />
+</div>

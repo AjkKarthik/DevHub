@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Functional C# & Result" topicRoute="/csharp/functional-csharp" subtopicLabel="Result Equality Traps" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Two Successful Result&lt;T&gt; Instances Are Never Equal by Default — Even With the Same Value</h1>
+  <p class="page-subtitle">The main topic page's hand-rolled Result&lt;T&gt; is a sealed class, not a record — meaning Assert.Equal on two logically-identical Results silently fails. See why, and both the quick fix and the structural one.</p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Functional C# &amp; Result deep dives — from testing that a railway pipeline genuinely short-circuits, to proving Result&lt;T&gt; satisfies the monad laws, to the equality trap hiding in its own hand-rolled implementation.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functional C# & Result"
+    topicRoute="/csharp/functional-csharp"
+    [prev]="{ label: 'Proving Result Is a Genuine Monad', route: '/csharp/functional-csharp/proving-result-genuine-monad-three-monad-laws' }"
+  />
+</div>

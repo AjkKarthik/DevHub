@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tuples & Anonymous Types" topicRoute="/csharp/tuples" subtopicLabel="8-Element Limit and TRest Chaining" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">ValueTuple's 8-Element Limit and the Hidden TRest Chaining Mechanism</h1>
+  <p class="page-subtitle">The main topic page mentions the 8th-slot TRest chain in a single line. See exactly what the compiler generates for an 8+ element tuple, why the outer struct's real field is called <code>Rest</code> not <code>Item8</code>, and how <code>ITuple</code> flattens the chain at runtime.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="C# 7+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Now that you've seen the low-level TRest mechanics behind tuple arity, the last stop connects back to real-world API design: what happens when you RENAME a tuple's named field, and why some callers break while others don't.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tuples & Anonymous Types"
+    topicRoute="/csharp/tuples"
+    [prev]="{ label: 'Testing Tuple-Returning Methods', route: '/csharp/tuples/testing-tuple-returning-methods-deconstruction-assertions' }"
+    [next]="{ label: 'Renaming a Tuple Field: Why It Breaks Some Callers', route: '/csharp/tuples/renaming-tuple-field-breaks-some-callers-not-others' }"
+  />
+</div>

@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Expression Trees" topicRoute="/csharp/expression-trees" subtopicLabel="Captured Variables Are Not ConstantExpression" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Captured Variables Aren't ConstantExpression Nodes: The Hidden Closure Class Inside Every Captured Lambda</h1>
+  <p class="page-subtitle">The main topic page's factory API treats Expression.Constant as how literals appear. A captured local variable compiles into something different — a field read off a compiler-generated closure class — with real consequences for ExpressionVisitor code and EF Core query caching.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 3+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Expression Trees deep dives — from testing dynamically-built trees by their shape, to the parameter-identity mechanics behind combining predicates, to the hidden closure-field shape behind every captured variable.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Expression Trees"
+    topicRoute="/csharp/expression-trees"
+    [prev]="{ label: 'The ParameterExpression Identity Problem', route: '/csharp/expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda' }"
+  />
+</div>

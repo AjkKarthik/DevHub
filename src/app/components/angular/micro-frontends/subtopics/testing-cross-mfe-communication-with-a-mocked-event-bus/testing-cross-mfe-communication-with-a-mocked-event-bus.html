@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Micro-Frontends"
+    topicRoute="/angular/micro-frontends"
+    subtopicLabel="Testing Cross-MFE Communication with a Mocked Event Bus" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Cross-MFE Communication with a Mocked Event Bus</h1>
+  <p class="page-subtitle">
+    window is the shared contract, not a direct code reference — the dispatching and
+    listening sides can be tested as two completely separate unit tests.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>cart-events.spec.ts</code> tests the dispatching side, <code>header.spec.ts</code>
+      tests the listening side (including cleanup) — neither needs the other
+      micro-frontend's actual code running.
+    </p>
+    <app-live-playground
+      title="Testing cross-MFE communication with a mocked event bus"
+      template="angular-cli"
+      openFile="src/app/header.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With cross-MFE testing covered, the next subtopic tackles a harder-to-catch runtime
+      failure — detecting when Angular sharing silently didn't work.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Micro-Frontends"
+    topicRoute="/angular/micro-frontends"
+    [next]="{ label: 'Debugging Duplicate Angular Runtime Issues', route: '/angular/micro-frontends/debugging-duplicate-angular-runtime-issues' }" />
+</div>

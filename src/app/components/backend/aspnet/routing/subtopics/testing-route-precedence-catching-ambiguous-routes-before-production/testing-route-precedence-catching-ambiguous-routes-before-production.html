@@ -1,0 +1,30 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Routing" topicRoute="/aspnet/routing" subtopicLabel="Testing Route Precedence" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Route Precedence and Catching Ambiguous Routes Before They Reach Production</h1>
+  <p class="page-subtitle">The main topic page notes AmbiguousMatchException is thrown at startup — meaning it's genuinely testable in CI. See how a minimal TestServer-backed host verifies both clean startup and the page's own precedence claims directly.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="ASP.NET Core 3+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at how the main <a routerLink="/aspnet/routing">Routing</a> page's own precedence claim actually works — the segment-scoring algorithm behind literals outranking constrained parameters, which outrank unconstrained ones.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Routing"
+    topicRoute="/aspnet/routing"
+    [next]="{ label: 'How Route Precedence Is Actually Computed', route: '/aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm' }"
+  />
+</div>

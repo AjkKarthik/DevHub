@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="What's New in C# 9 & 10" topicRoute="/csharp/whats-new-9-10" subtopicLabel="Records as Dictionary Keys" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Records Used as Dictionary Keys Can Silently Break When a Reference-Typed Property Is Mutated After Insertion</h1>
+  <p class="page-subtitle">Init-only properties feel immutable, but they only prevent reassignment — if a record property is a reference to a genuinely mutable object, mutating that object after insertion silently changes the record's effective hash code, breaking dictionary lookups.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 9+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/csharp/whats-new-9-10">What's New in C# 9 &amp; 10</a> — from testing record equality with collections, to the EqualityContract mechanics behind type-sensitivity, to this dictionary-key mutation gotcha. Return to the topic overview to continue with the next C# topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="What's New in C# 9 & 10"
+    topicRoute="/csharp/whats-new-9-10"
+    [prev]="{ label: 'What the Compiler Actually Generates for Type-Sensitive Equality', route: '/csharp/whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive' }"
+  />
+</div>

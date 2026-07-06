@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Records &amp; Structs"
+    topicRoute="/csharp/records"
+    subtopicLabel="Positional Pattern Matching with Records" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Positional Pattern Matching with Records</h1>
+  <p class="page-subtitle">
+    The main topic uses one property pattern to work around EqualityContract.
+    Here's the full pattern-matching toolkit — and the idiomatic replacement for that workaround.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 9" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Serialization and pattern matching both extend how records behave beyond
+      equality and with-expressions. The final subtopic returns to correctness —
+      testing that equality, hash codes, and validation actually work as intended.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Records &amp; Structs"
+    topicRoute="/csharp/records"
+    [prev]="{ label: 'Polymorphic JSON Serialization of Record Hierarchies', route: '/csharp/records/polymorphic-json-serialization-of-record-hierarchies-with-jsonderivedtype' }"
+    [next]="{ label: 'Testing Records: Equality, Hash Codes, and Constructor Validation', route: '/csharp/records/testing-records-equality-hash-codes-and-constructor-validation' }" />
+</div>

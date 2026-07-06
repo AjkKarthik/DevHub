@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="What's New in C# 13+" topicRoute="/csharp/whats-new-latest" subtopicLabel="HybridCache Stampede Protection Scope" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">HybridCache's Stampede Protection Only Coalesces Callers Within One Process — Distributed Races Still Happen Across App Instances</h1>
+  <p class="page-subtitle">The main topic page describes stampede protection without specifying its scope. In-process coalescing genuinely prevents duplicate factory calls within one instance — but each app instance in a scaled-out deployment can independently invoke its own factory call at the same moment.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET 9+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/csharp/whats-new-latest">What's New in C# 13+</a> — from testing time-dependent code, to how Dynamic PGO re-JITs hot methods, to this HybridCache stampede-protection scope gotcha. This is the final C# hub Phase 10 topic — return to the topic overview to see the full C# learning path.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="What's New in C# 13+"
+    topicRoute="/csharp/whats-new-latest"
+    [prev]="{ label: 'How Dynamic PGO Actually Re-JITs a Method', route: '/csharp/whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement' }"
+  />
+</div>

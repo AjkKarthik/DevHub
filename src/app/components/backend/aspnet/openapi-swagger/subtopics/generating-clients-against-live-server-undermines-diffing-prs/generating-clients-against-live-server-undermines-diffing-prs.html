@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="OpenAPI &amp; Swagger"
+    topicRoute="/aspnet/openapi-swagger"
+    subtopicLabel="Client Generation Reproducibility"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Generating Clients Against a Live Server Undermines Diffing Them in PRs</h1>
+  <p class="page-subtitle">
+    The main page's own nswag.json points at a live localhost server while elsewhere recommending you
+    diff the generated client in PRs. Those two pieces of guidance quietly conflict — a live source makes
+    the generated output depend on whatever happens to be running on a developer's machine.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 9+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the OpenAPI &amp; Swagger deep-dive set: testing that the spec catches a
+      TypedResults regression, understanding exactly why the generator only ever inspects the signature,
+      and now a reproducibility gap in the page's own recommended client-generation workflow. This is the
+      last ASP.NET Core topic in this batch — head back to the topic overview, or explore another hub.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OpenAPI &amp; Swagger"
+    topicRoute="/aspnet/openapi-swagger"
+    [prev]="{ label: 'Why the Generator Inspects the Signature, Not the Method Body', route: '/aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body' }"
+  />
+</div>

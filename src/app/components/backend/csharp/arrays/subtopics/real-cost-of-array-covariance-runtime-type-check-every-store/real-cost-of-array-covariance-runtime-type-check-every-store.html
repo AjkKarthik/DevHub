@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Arrays" topicRoute="/csharp/arrays" subtopicLabel="The Real Cost of Array Covariance" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">The Real Cost of Array Covariance: A Runtime Type Check on Every Store, Not Just the First</h1>
+  <p class="page-subtitle">The main topic page shows the covariance trap firing once. See why the CLR's stelem.ref instruction actually checks every single store into a reference-type array — and why int[] stores never pay this cost at all.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic moves from array covariance mechanics to a different, extremely common hidden allocation: what actually happens on every call to a <code>params</code> array parameter, and the C# 12 fix for it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Arrays"
+    topicRoute="/csharp/arrays"
+    [prev]="{ label: 'Testing Array Equality', route: '/csharp/arrays/testing-array-equality-sequenceequal-not-equals' }"
+    [next]="{ label: 'params Arrays Silently Allocate Every Call', route: '/csharp/arrays/params-array-hidden-allocation-every-call-span-fix' }"
+  />
+</div>

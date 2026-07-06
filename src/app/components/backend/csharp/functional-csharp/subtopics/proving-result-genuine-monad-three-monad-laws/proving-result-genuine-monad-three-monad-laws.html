@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Functional C# & Result" topicRoute="/csharp/functional-csharp" subtopicLabel="Proving Result Is a Genuine Monad" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Proving Result&lt;T&gt; Is a Genuine Monad: What the Three Monad Laws Actually Require</h1>
+  <p class="page-subtitle">The main topic page's own quiz asserts "the three monad laws hold" without showing them. See left identity, right identity, and associativity demonstrated concretely against the page's own hand-rolled Result&lt;T&gt;.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic looks at a practical gotcha the main <a routerLink="/csharp/functional-csharp">Functional C# & Result</a> page's own hand-rolled Result&lt;T&gt; (a sealed class) quietly carries: two successful results with the identical value are never Equal by default.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Functional C# & Result"
+    topicRoute="/csharp/functional-csharp"
+    [prev]="{ label: 'Testing Railway-Oriented Pipelines', route: '/csharp/functional-csharp/testing-railway-pipelines-asserting-which-step-failed' }"
+    [next]="{ label: 'Result Equality Traps', route: '/csharp/functional-csharp/result-equality-traps-never-equal-by-default' }"
+  />
+</div>

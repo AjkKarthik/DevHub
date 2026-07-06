@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="PWA & Service Workers"
+    topicRoute="/angular/pwa"
+    subtopicLabel="SPA Routing Pitfalls: navigationUrls and the App-Shell Fallback" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">SPA Routing Pitfalls: navigationUrls and the App-Shell Fallback</h1>
+  <p class="page-subtitle">
+    A dot in a route segment silently breaks offline deep-linking by default — here's
+    why, and how ngsw-config.json's navigationUrls fixes it.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Build with <code>ng build</code>, serve the output, load the app once to install
+      the service worker, then check "Offline" in DevTools and navigate directly to
+      <code>/report.v2</code> — the <code>navigationUrls</code> override is what keeps it working.
+    </p>
+    <app-live-playground
+      title="SPA Routing Pitfalls: navigationUrls and the App-Shell Fallback"
+      template="angular-cli"
+      openFile="ngsw-config.json"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing, update robustness, and routing correctness together cover the three areas
+      most PWA implementations get wrong in production but never surface in a demo.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="PWA & Service Workers"
+    topicRoute="/angular/pwa"
+    [prev]="{ label: 'Handling Unrecoverable State and Manual Update Checks', route: '/angular/pwa/handling-unrecoverable-state-and-manual-update-checks' }" />
+</div>

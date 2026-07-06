@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="System.Object"
+    topicRoute="/csharp/system-object"
+    subtopicLabel="Record Equality and EqualityContract" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Record Equality and EqualityContract: Why a Base and Derived Record Are Never Equal</h1>
+  <p class="page-subtitle">
+    The main topic says records auto-generate equality from constructor parameters —
+    incomplete, since a hidden EqualityContract property checks the exact runtime type
+    FIRST, which is why a base and derived record with identical fields are never equal.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 9.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing the equality contract, understanding hash-code instability, and knowing
+      how record equality actually works together complete System.Object as a set of
+      precise, learnable runtime mechanisms rather than assumed defaults.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="System.Object"
+    topicRoute="/csharp/system-object"
+    [prev]="{ label: 'Why GetHashCode Is Never Stable Across Runs', route: '/csharp/system-object/gethashcode-instability-across-process-runs' }" />
+</div>

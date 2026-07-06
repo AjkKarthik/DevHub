@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Static Files &amp; Uploads"
+    topicRoute="/aspnet/static-files"
+    subtopicLabel="How ETag Is Actually Computed"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How UseStaticFiles Computes ETag — Why Touching a File Busts the Cache</h1>
+  <p class="page-subtitle">
+    The main page says ETag and Last-Modified are set "automatically" without saying what they're
+    actually derived from. It's file length and timestamp, not content — so a deploy that resets
+    timestamps busts every client's cache even when nothing changed.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the caching mechanics behind the main page's own ETag guidance. The last
+      subtopic in this set turns to the page's path traversal guard — and a subtle
+      <code>StartsWith</code> bypass that guard is vulnerable to as written.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Static Files &amp; Uploads"
+    topicRoute="/aspnet/static-files"
+    [prev]="{ label: 'Testing Magic Number Validation With Fake Byte Streams', route: '/aspnet/static-files/testing-magic-number-validation-fake-byte-streams' }"
+    [next]="{ label: 'The StartsWith Path Traversal Guard Has a Sibling-Directory Bypass', route: '/aspnet/static-files/startswith-path-traversal-guard-sibling-directory-bypass' }"
+  />
+</div>

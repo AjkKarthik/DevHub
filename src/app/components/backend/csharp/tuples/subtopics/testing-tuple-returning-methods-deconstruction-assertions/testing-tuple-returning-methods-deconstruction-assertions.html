@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tuples & Anonymous Types" topicRoute="/csharp/tuples" subtopicLabel="Testing Tuple-Returning Methods" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Tuple-Returning Methods: Deconstruction Assertions vs Positional Equality Pitfalls</h1>
+  <p class="page-subtitle">The main topic page never tests any of its own tuple-returning examples. Learn why a single whole-tuple <code>Assert.Equal</code> is usually the best test, and why asserting on named fields individually can mask a bug that positional comparison would catch.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 7+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The main <a routerLink="/csharp/tuples">Tuples & Anonymous Types</a> page shows how <code>ValueTuple</code> equality works but never applies it in a test. Next, go deeper into the compiler mechanics behind tuple element names — see how the 8-element limit is actually implemented via a hidden <code>TRest</code> chain.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tuples & Anonymous Types"
+    topicRoute="/csharp/tuples"
+    [next]="{ label: 'ValueTuple\'s 8-Element Limit and the Hidden TRest Chain', route: '/csharp/tuples/valuetuple-8-element-limit-trest-chaining-mechanism' }"
+  />
+</div>

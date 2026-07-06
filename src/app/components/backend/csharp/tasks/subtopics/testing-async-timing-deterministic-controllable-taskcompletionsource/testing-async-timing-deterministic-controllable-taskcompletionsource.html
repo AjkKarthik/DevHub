@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Tasks" topicRoute="/csharp/tasks" subtopicLabel="Testing Async Timing Deterministically" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Async Timing-Dependent Code Deterministically: Replacing Task.Delay with a Controllable TaskCompletionSource</h1>
+  <p class="page-subtitle">The main topic page's own timeout and cache-vs-database race patterns are genuinely hard to test with real Task.Delay calls. See how a TaskCompletionSource makes both instant and deterministic.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at a type the main <a routerLink="/csharp/tasks">Tasks</a> page only mentions once in passing — <code>ValueTask</code> — and the specific restriction that makes it a genuinely different tool from <code>Task&lt;T&gt;</code>, not just a faster drop-in replacement.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Tasks"
+    topicRoute="/csharp/tasks"
+    [next]="{ label: 'ValueTask: The One-Await Rule', route: '/csharp/tasks/valuetask-await-once-rule-when-worth-complexity' }"
+  />
+</div>

@@ -1,0 +1,30 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Middleware Pipeline" topicRoute="/aspnet/middleware" subtopicLabel="Testing Custom Middleware" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Custom Middleware in Isolation: Building a Minimal Pipeline with ApplicationBuilder, No Kestrel Needed</h1>
+  <p class="page-subtitle">The main topic page sketches this technique in one Q&A sentence. See the actual test for the page's own CorrelationIdMiddleware challenge — no WebApplicationFactory, no Kestrel, no real HTTP anywhere.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="ASP.NET Core 3+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at how the main <a routerLink="/aspnet/middleware">Middleware Pipeline</a> page's own "Russian doll" pipeline is actually built — RequestDelegate composition as nested closures, not a list iterated per request.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Middleware Pipeline"
+    topicRoute="/aspnet/middleware"
+    [next]="{ label: 'How the Middleware Pipeline Is Actually Built', route: '/aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures' }"
+  />
+</div>

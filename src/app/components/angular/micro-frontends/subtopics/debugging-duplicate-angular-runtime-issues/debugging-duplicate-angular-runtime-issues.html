@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Micro-Frontends"
+    topicRoute="/angular/micro-frontends"
+    subtopicLabel="Debugging Duplicate Angular Runtime Issues" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Debugging Duplicate Angular Runtime Issues</h1>
+  <p class="page-subtitle">
+    shareAll({{ '{' }} singleton: true {{ '}' }}) can silently fail — a Network tab
+    chunk-size check and a shared marker service prove whether sharing actually worked.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>RuntimeMarkerService</code> generates a random ID once — if Angular is truly
+      shared as a singleton, the shell and the "remote" widget both see the SAME id.
+    </p>
+    <app-live-playground
+      title="Debugging duplicate Angular runtime issues"
+      template="angular-cli"
+      openFile="src/app/runtime-marker.service.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With runtime sharing verification covered, the final subtopic tackles a different
+      cross-app problem — CSS style collisions between the shell and its remotes.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Micro-Frontends"
+    topicRoute="/angular/micro-frontends"
+    [prev]="{ label: 'Testing Cross-MFE Communication with a Mocked Event Bus', route: '/angular/micro-frontends/testing-cross-mfe-communication-with-a-mocked-event-bus' }"
+    [next]="{ label: 'CSS Style Isolation with ShadowDom Encapsulation', route: '/angular/micro-frontends/css-style-isolation-with-shadowdom-encapsulation' }" />
+</div>

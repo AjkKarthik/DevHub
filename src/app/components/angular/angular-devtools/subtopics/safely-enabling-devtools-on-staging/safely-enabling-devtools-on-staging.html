@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Angular DevTools"
+    topicRoute="/angular/angular-devtools"
+    subtopicLabel="Safely Enabling DevTools on Staging" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Safely Enabling DevTools on Staging</h1>
+  <p class="page-subtitle">
+    A runtime "if" check controls execution, not inclusion — a dynamic import plus a
+    separate staging environment file genuinely keeps debug tooling out of production.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 14+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A dynamic <code>import('&#64;angular/platform-browser')</code> plus a dedicated
+      <code>environment.staging.ts</code> swapped in via <code>fileReplacements</code> —
+      the production build never even references the debug-enabling branch.
+    </p>
+    <app-live-playground
+      title="Safely enabling DevTools on staging"
+      template="angular-cli"
+      openFile="src/main.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With staging enablement covered safely, the final subtopic turns a one-time DevTools
+      profiler finding into a permanent, automated regression test.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Angular DevTools"
+    topicRoute="/angular/angular-devtools"
+    [prev]="{ label: 'Building a Why Did This Render Debug Helper', route: '/angular/angular-devtools/building-a-why-did-this-render-debug-helper' }"
+    [next]="{ label: 'Turning a Profiler Finding into a Regression Test', route: '/angular/angular-devtools/turning-a-profiler-finding-into-a-regression-test' }" />
+</div>

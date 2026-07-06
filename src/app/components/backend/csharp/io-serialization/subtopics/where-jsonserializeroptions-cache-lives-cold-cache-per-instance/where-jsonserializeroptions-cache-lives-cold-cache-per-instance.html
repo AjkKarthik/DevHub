@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="I/O & Serialization" topicRoute="/csharp/io-serialization" subtopicLabel="Where the JsonSerializerOptions Cache Lives" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Where the JsonSerializerOptions Cache Actually Lives: Why a New Instance Always Means a Cold Cache</h1>
+  <p class="page-subtitle">The main topic page states that a fresh JsonSerializerOptions rebuilds the reflection cache every time. See exactly where that cache lives — per instance, per type, populated lazily — and why two instances with identical settings never share it.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Core 3+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic moves from JSON to the async-file-I/O section of the main <a routerLink="/csharp/io-serialization">I/O & Serialization</a> page: a classic, real-world deadlock that happens when synchronous code calls <code>.Result</code> on an async file operation in the wrong hosting context.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="I/O & Serialization"
+    topicRoute="/csharp/io-serialization"
+    [prev]="{ label: 'Testing File I/O', route: '/csharp/io-serialization/testing-file-io-without-touching-real-filesystem-abstraction' }"
+    [next]="{ label: 'Sync-over-Async File I/O Deadlocks', route: '/csharp/io-serialization/sync-over-async-file-io-deadlocks-result-hangs-forever' }"
+  />
+</div>

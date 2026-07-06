@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Dependency Injection in .NET" topicRoute="/csharp/di-dotnet" subtopicLabel="Testing DI Container Configuration" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Your DI Container Configuration: Building the ServiceProvider and Asserting Every Registration Resolves</h1>
+  <p class="page-subtitle">The main topic page's own startup validation only runs when the real host actually starts — never in a fast unit test suite. See how to build a real ServiceProvider from your registration code and catch missing dependencies in milliseconds.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET Core 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at exactly how the main <a routerLink="/csharp/di-dotnet">Dependency Injection in .NET</a> page's own ValidateScopes mechanism actually catches a captive dependency — root scope versus child scope resolution.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dependency Injection in .NET"
+    topicRoute="/csharp/di-dotnet"
+    [next]="{ label: 'How ValidateScopes Catches Captive Dependencies', route: '/csharp/di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope' }"
+  />
+</div>

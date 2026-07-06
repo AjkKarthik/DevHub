@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="EF Core Performance"
+    topicRoute="/aspnet/ef-performance"
+    subtopicLabel="Testing the Interceptor Bypass"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That ExecuteUpdateAsync Bypasses SaveChanges Interceptors</h1>
+  <p class="page-subtitle">
+    The main page mentions, almost in passing, that bulk operations skip interceptors and events tied to
+    SaveChangesAsync. Here's the test that proves it — and why switching to ExecuteUpdateAsync for a
+    performance win can silently remove audit logging or domain events for the affected rows.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own bulk-operations claim. The next subtopic corrects a subtle
+      overstatement in the page's own compiled-queries framing — explaining what EF.CompileQuery actually
+      eliminates, given EF Core already caches query plans by expression shape.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="EF Core Performance"
+    topicRoute="/aspnet/ef-performance"
+    [next]="{ label: 'What EF.CompileQuery Actually Eliminates', route: '/aspnet/ef-performance/what-ef-compilequery-actually-eliminates' }"
+  />
+</div>

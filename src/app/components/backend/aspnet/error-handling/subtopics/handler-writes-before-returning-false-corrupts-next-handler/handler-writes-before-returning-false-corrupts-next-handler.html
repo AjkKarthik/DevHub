@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Error Handling"
+    topicRoute="/aspnet/error-handling"
+    subtopicLabel="Handler Response Corruption"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">A Handler That Writes Before Returning False Corrupts the Next Handler</h1>
+  <p class="page-subtitle">
+    The main page states "never write a partial response then return false" as a rule without showing
+    what breaks. A speculative StatusCode assignment that a handler later abandons leaks straight into
+    the next handler's response — no reset, no warning.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Error Handling deep-dive set: testing that the exception handler chain follows
+      the documented order, understanding exactly how re-executed status-code pages restore their status,
+      and now the response-corruption risk hiding behind a handler's own speculative writes. Head back to
+      the topic overview to continue with the next ASP.NET Core topic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Error Handling"
+    topicRoute="/aspnet/error-handling"
+    [prev]="{ label: 'Why the Re-Executed Error Endpoint Must Explicitly Restore the Status Code', route: '/aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code' }"
+  />
+</div>

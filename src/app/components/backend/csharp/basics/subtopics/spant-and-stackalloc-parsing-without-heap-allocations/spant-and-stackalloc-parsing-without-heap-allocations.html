@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Variables &amp; Types"
+    topicRoute="/csharp/basics"
+    subtopicLabel="Span&lt;T&gt; and stackalloc: Parsing Without Heap Allocations" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Span&lt;T&gt; and stackalloc: Parsing Without Heap Allocations</h1>
+  <p class="page-subtitle">
+    The main topic covers the stack and the heap. Span&lt;T&gt; is a third memory
+    model — a stack-only view over existing memory that avoids allocating at all.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 7.2" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Nullable value types, overflow detection, and allocation-free memory views
+      together round out the value-type edge cases the main topic's introduction
+      doesn't have room to cover.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Variables &amp; Types"
+    topicRoute="/csharp/basics"
+    [prev]="{ label: 'Checked and Unchecked Arithmetic: Detecting Integer Overflow', route: '/csharp/basics/checked-and-unchecked-arithmetic-detecting-integer-overflow' }" />
+</div>

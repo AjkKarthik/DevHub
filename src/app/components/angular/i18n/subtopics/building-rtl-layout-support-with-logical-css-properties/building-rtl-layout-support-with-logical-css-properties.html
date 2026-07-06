@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Internationalisation (i18n)"
+    topicRoute="/angular/i18n"
+    subtopicLabel="Building RTL Layout Support with Logical CSS Properties" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Building RTL Layout Support with Logical CSS Properties</h1>
+  <p class="page-subtitle">
+    The main topic covers text translation extensively but never mentions layout
+    direction — a flawlessly translated Arabic UI still looks broken without this.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Switch to AR or HE — the card's padding, border accent, badge position, and text
+      alignment all flip automatically via logical CSS properties, no <code>[dir]</code>
+      overrides needed except for the chevron icon and the LTR-forced code snippet.
+    </p>
+    <app-live-playground
+      title="Building RTL Layout Support with Logical CSS Properties"
+      template="angular-cli"
+      openFile="src/app/card.component.scss"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Text and layout direction both need to be correct locally. The final subtopic
+      covers a different environment entirely — detecting locale correctly on the
+      SERVER during SSR, and avoiding hydration mismatches.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Internationalisation (i18n)"
+    topicRoute="/angular/i18n"
+    [prev]="{ label: 'Testing Components That Use Transloco and Signal-Based i18n', route: '/angular/i18n/testing-components-that-use-transloco-and-signal-i18n' }"
+    [next]="{ label: 'SSR Locale Detection and Avoiding Hydration Mismatches', route: '/angular/i18n/ssr-locale-detection-and-avoiding-hydration-mismatches' }" />
+</div>

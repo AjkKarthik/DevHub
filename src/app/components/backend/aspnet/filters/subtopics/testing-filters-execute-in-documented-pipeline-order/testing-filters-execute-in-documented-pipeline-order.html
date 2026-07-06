@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Filters &amp; Endpoint Filters"
+    topicRoute="/aspnet/filters"
+    subtopicLabel="Testing Filter Execution Order"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That Filters Execute in the Documented Pipeline Order</h1>
+  <p class="page-subtitle">
+    The main page's own Global Registration example registers two filters in a specific order with
+    comments claiming "outermost" and "second." Here's how to prove that with a real integration test —
+    not just trust the comments.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own filter-ordering claims. The next subtopic goes underneath
+      the page's own "set Result and call next() anyway" mistake — explaining exactly why the framework
+      lets that happen instead of automatically skipping the action.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Filters &amp; Endpoint Filters"
+    topicRoute="/aspnet/filters"
+    [next]="{ label: 'Why next() Runs the Action Even After context.Result Is Set', route: '/aspnet/filters/why-next-runs-action-even-after-context-result-is-set' }"
+  />
+</div>

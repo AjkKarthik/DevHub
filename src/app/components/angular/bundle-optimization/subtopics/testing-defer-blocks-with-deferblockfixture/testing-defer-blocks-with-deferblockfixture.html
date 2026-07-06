@@ -1,0 +1,47 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Bundle Optimization"
+    topicRoute="/angular/bundle-optimization"
+    subtopicLabel="Testing &#64;defer Blocks with DeferBlockFixture" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing &#64;defer Blocks with DeferBlockFixture</h1>
+  <p class="page-subtitle">
+    The default test behavior auto-progresses through every state — opt into Manual mode
+    to actually verify the placeholder, loading, and error UI.
+  </p>
+
+  <app-page-meta [readingTime]="6" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Four tests explicitly render each <code>&#64;defer</code> state — placeholder,
+      loading, complete, and error — using <code>DeferBlockBehavior.Manual</code>.
+    </p>
+    <app-live-playground
+      title="Testing @defer blocks with DeferBlockFixture"
+      template="angular-cli"
+      openFile="src/app/dashboard.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With per-state testing covered, the next subtopic tackles a subtler bundle-size
+      leak — duplicate dependencies silently bundled into multiple lazy chunks.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Bundle Optimization"
+    topicRoute="/angular/bundle-optimization"
+    [next]="{ label: 'Detecting Duplicate Dependencies Across Lazy Chunks', route: '/angular/bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks' }" />
+</div>

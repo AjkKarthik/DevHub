@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Expression Trees" topicRoute="/csharp/expression-trees" subtopicLabel="The ParameterExpression Identity Problem" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why Combining Two Predicates with AndAlso Silently Produces an Unusable Lambda: The ParameterExpression Identity Problem</h1>
+  <p class="page-subtitle">The main topic page notes each predicate has its own independent parameter object, in passing. See exactly why binding is by reference, not name, and why the naive combination throws InvalidOperationException at Compile() time.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 3+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic looks at a related, easy-to-miss node shape the main <a routerLink="/csharp/expression-trees">Expression Trees</a> page's own ExpressionVisitor section doesn't cover: what a captured local variable actually compiles into inside a tree.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Expression Trees"
+    topicRoute="/csharp/expression-trees"
+    [prev]="{ label: 'Testing Dynamic Expression Trees', route: '/csharp/expression-trees/testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result' }"
+    [next]="{ label: 'Captured Variables Are Not ConstantExpression', route: '/csharp/expression-trees/captured-variables-not-constantexpression-hidden-closure-class' }"
+  />
+</div>

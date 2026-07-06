@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Methods"
+    topicRoute="/csharp/methods"
+    subtopicLabel="The in Parameter Defensive-Copy Trap" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">The in Parameter Defensive-Copy Trap: When in Silently Copies Anyway</h1>
+  <p class="page-subtitle">
+    The main topic's <code>in BigPoint</code> example works because BigPoint is a readonly
+    struct — a precondition it never states. For a non-readonly struct, in silently makes
+    defensive copies that defeat the whole optimization.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 7.2" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding when in genuinely avoids copies matters for performance-sensitive
+      code — the final subtopic covers a completely different parameter-adjacent feature
+      the main page never mentions at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Methods"
+    topicRoute="/csharp/methods"
+    [prev]="{ label: 'Testing Logic Inside Local Functions', route: '/csharp/methods/testing-logic-inside-local-functions-when-to-promote' }"
+    [next]="{ label: 'Caller Info Attributes', route: '/csharp/methods/caller-info-attributes-callermembername-callerlinenumber' }" />
+</div>

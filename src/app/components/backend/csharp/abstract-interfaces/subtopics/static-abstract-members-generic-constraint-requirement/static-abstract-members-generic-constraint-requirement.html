@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Abstract Classes & Interfaces"
+    topicRoute="/csharp/abstract-interfaces"
+    subtopicLabel="static abstract Members and Generic Constraints" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why static abstract Interface Members Can Only Be Called Through a Generic Type Parameter</h1>
+  <p class="page-subtitle">
+    The main topic shows the correct generic-constraint usage but never the natural first
+    attempt — calling the static member directly on the interface. This subtopic shows
+    why that fails and what mechanism actually makes T.Create(...) work.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 11.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing default methods, resolving diamond conflicts, and understanding the static
+      abstract call boundary together round out interfaces as a set of precise compiler
+      and runtime rules, not just contract syntax.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Abstract Classes & Interfaces"
+    topicRoute="/csharp/abstract-interfaces"
+    [prev]="{ label: 'Default Interface Method Diamond Problem', route: '/csharp/abstract-interfaces/default-interface-method-diamond-problem' }" />
+</div>

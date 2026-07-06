@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dependency Injection"
+    topicRoute="/aspnet/dependency-injection"
+    subtopicLabel="ActivatorUtilities Bypasses ValidateOnBuild"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">ActivatorUtilities.CreateInstance Bypasses ValidateOnBuild Entirely</h1>
+  <p class="page-subtitle">
+    The main page lists <code>ActivatorUtilities.CreateInstance&lt;T&gt;()</code> and
+    <code>ValidateOnBuild</code> side by side as if they compose into full startup safety. They don't —
+    a type only ever constructed this way is invisible to the graph <code>ValidateOnBuild</code> walks.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Dependency Injection deep-dive set: testing the scope-freshness guarantee,
+      understanding the disposal mechanics behind <code>CreateAsyncScope()</code>, and now the exact gap
+      left by <code>ActivatorUtilities</code>-constructed types. Head back to the topic overview to continue
+      with the next ASP.NET Core topic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dependency Injection"
+    topicRoute="/aspnet/dependency-injection"
+    [prev]="{ label: 'How CreateAsyncScope() Differs From CreateScope() Internally', route: '/aspnet/dependency-injection/how-createasyncscope-differs-createscope-internally-asyncdisposable-warning' }"
+  />
+</div>

@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Generics"
+    topicRoute="/csharp/generics"
+    subtopicLabel="Generic Attributes (C# 11): Type-Safe Custom Attributes" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Generic Attributes (C# 11): Type-Safe Custom Attributes</h1>
+  <p class="page-subtitle">
+    Every generic construct on the main topic is a class, method, interface, or delegate.
+    C# 11 added a fifth place generics can appear — attributes themselves.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="C# 11" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Generic attributes are one new C# 11 generics feature. The final subtopic
+      covers the general-purpose mechanism underneath INumber&lt;T&gt; itself —
+      writing your own static abstract interface members.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generics"
+    topicRoute="/csharp/generics"
+    [prev]="{ label: 'Testing Generic Code Across Multiple Type Arguments', route: '/csharp/generics/testing-generic-code-parameterized-tests-across-multiple-type-arguments' }"
+    [next]="{ label: 'Writing Your Own Static Abstract Interface Members', route: '/csharp/generics/writing-your-own-static-abstract-interface-members' }" />
+</div>

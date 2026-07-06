@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Reflection & Attributes" topicRoute="/csharp/reflection" subtopicLabel="Generic Type Reflection Traps" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Generic Type Reflection Traps: Why typeof(List&lt;T&gt;) Never Equals typeof(List&lt;int&gt;) and What GetGenericTypeDefinition Actually Checks</h1>
+  <p class="page-subtitle">The main topic page's typeof/GetType foundation uses ordinary types. Once generics enter the picture, closed and open generic types are never equal, and detecting "implements IEnumerable&lt;T&gt; for any T" needs a genuinely different technique.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 2+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Reflection & Attributes deep dives — from testing attribute-driven scanners, to what raw IL emission buys you beyond expression trees, to the generic-type traps that appear the moment reflection meets List&lt;T&gt;-shaped code.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Reflection & Attributes"
+    topicRoute="/csharp/reflection"
+    [prev]="{ label: 'Beyond Expression Trees', route: '/csharp/reflection/beyond-expression-trees-dynamicmethod-reflection-emit' }"
+  />
+</div>

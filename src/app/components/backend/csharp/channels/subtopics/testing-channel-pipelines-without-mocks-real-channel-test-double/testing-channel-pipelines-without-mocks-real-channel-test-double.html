@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Channels & Producer/Consumer" topicRoute="/csharp/channels" subtopicLabel="Testing Channel-Based Pipelines" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Channel-Based Producers and Consumers Without Mocks: Using a Real Channel as the Test Double</h1>
+  <p class="page-subtitle">The main topic page mentions this technique in one sentence. See it demonstrated in full — proving backpressure and completion propagation genuinely work, using a real, throwaway channel instead of any mocking framework.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET Core 3+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at exactly how <code>ReadAllAsync</code>'s <code>await foreach</code> loop actually detects that a channel is complete and drained — the polling protocol underneath the main <a routerLink="/csharp/channels">Channels & Producer/Consumer</a> page's own completion theory.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Channels & Producer/Consumer"
+    topicRoute="/csharp/channels"
+    [next]="{ label: 'How ReadAllAsync Detects Completion', route: '/csharp/channels/how-readallasync-detects-completion-waittoreadasync-tryread' }"
+  />
+</div>

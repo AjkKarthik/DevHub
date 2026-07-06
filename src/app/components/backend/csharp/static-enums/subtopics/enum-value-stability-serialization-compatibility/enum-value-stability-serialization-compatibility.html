@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Static, Partial & Enums"
+    topicRoute="/csharp/static-enums"
+    subtopicLabel="Enum Value Stability" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Enum Value Stability: Why Reordering or Renumbering Breaks Serialized Data</h1>
+  <p class="page-subtitle">
+    The main topic shows auto-incrementing enum values without ever warning that they're
+    positional, not semantic — inserting a new member later can silently corrupt any
+    already-persisted data storing the old integer values.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 1.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing flags enums, understanding modern partial method mandates, and knowing
+      when enum values need to be explicit together round out this topic as production
+      concerns, not just declaration syntax.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Static, Partial & Enums"
+    topicRoute="/csharp/static-enums"
+    [prev]="{ label: 'Modern Partial Methods (C# 9+)', route: '/csharp/static-enums/modern-partial-methods-return-types-mandatory-implementation' }" />
+</div>

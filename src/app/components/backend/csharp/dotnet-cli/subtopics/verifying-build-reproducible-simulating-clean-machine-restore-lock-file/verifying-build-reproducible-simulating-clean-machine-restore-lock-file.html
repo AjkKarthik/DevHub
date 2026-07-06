@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel=".NET CLI & Tooling" topicRoute="/csharp/dotnet-cli" subtopicLabel="Verifying True Reproducibility" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Verifying Your Build Is Actually Reproducible: Simulating a Clean-Machine Restore Before Trusting packages.lock.json</h1>
+  <p class="page-subtitle">The main topic page recommends packages.lock.json and --locked-mode for CI. But a restore that "passes" on a warm NuGet cache proves almost nothing — see how to clear the cache first and turn reproducibility into a genuinely tested property.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Core 2.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, a deeper look at exactly how the main <a routerLink="/csharp/dotnet-cli">.NET CLI &amp; Tooling</a> page's own <code>rollForward: "latestMinor"</code> setting actually picks an SDK version among everything installed on a machine.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel=".NET CLI & Tooling"
+    topicRoute="/csharp/dotnet-cli"
+    [next]="{ label: 'How rollForward Actually Picks an SDK Version', route: '/csharp/dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm' }"
+  />
+</div>

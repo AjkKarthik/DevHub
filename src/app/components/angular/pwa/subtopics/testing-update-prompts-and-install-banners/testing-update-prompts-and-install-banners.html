@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="PWA & Service Workers"
+    topicRoute="/angular/pwa"
+    subtopicLabel="Testing Update Prompts and Install Banners" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Update Prompts and Install Banners</h1>
+  <p class="page-subtitle">
+    Neither SwUpdate nor beforeinstallprompt can be triggered for real in a unit test —
+    here's the fake-Subject and synthetic-event pattern that makes both testable.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Open <code>banners.spec.ts</code> — <code>SwUpdate.versionUpdates</code> is faked with
+      a plain Subject, and <code>beforeinstallprompt</code> is dispatched as a synthetic
+      window event, so both flows run deterministically with no real service worker involved.
+    </p>
+    <app-live-playground
+      title="Testing Update Prompts and Install Banners"
+      template="angular-cli"
+      openFile="src/app/banners.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the update UI testable, the next subtopic goes deeper into <code>SwUpdate</code>
+      itself — handling unrecoverable state and triggering manual update checks.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="PWA & Service Workers"
+    topicRoute="/angular/pwa"
+    [next]="{ label: 'Handling Unrecoverable State and Manual Update Checks', route: '/angular/pwa/handling-unrecoverable-state-and-manual-update-checks' }" />
+</div>

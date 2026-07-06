@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GC & IDisposable" topicRoute="/csharp/gc-disposable" subtopicLabel="Pattern-Based Disposal" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Pattern-Based Disposal: Why using Works on ref structs That Can't Implement IDisposable At All</h1>
+  <p class="page-subtitle">The main topic page treats using as tied to IDisposable. The compiler actually resolves using via pattern matching on a public Dispose() method — no interface required. See why this matters specifically for ref structs, which are forbidden from implementing any interface.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 8+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic looks at a subtler production bug the main <a routerLink="/csharp/gc-disposable">GC & IDisposable</a> page's own event and async coverage doesn't connect to disposal directly: a resource can keep running code after Dispose() returns, if something else still holds a reference to it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GC & IDisposable"
+    topicRoute="/csharp/gc-disposable"
+    [prev]="{ label: 'Testing That Dispose() Was Called', route: '/csharp/gc-disposable/testing-dispose-actually-called-spy-wrapper-double-dispose' }"
+    [next]="{ label: 'Disposed but Still Running', route: '/csharp/gc-disposable/disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose' }"
+  />
+</div>

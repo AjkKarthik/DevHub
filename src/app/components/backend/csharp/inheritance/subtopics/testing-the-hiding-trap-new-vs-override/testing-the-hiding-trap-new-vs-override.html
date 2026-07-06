@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Inheritance & Overriding"
+    topicRoute="/csharp/inheritance"
+    subtopicLabel="Testing the Hiding Trap: new vs override" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing the Hiding Trap: Proving new vs override Behavior Differs at Runtime</h1>
+  <p class="page-subtitle">
+    The main topic demonstrates the hiding trap once with console output — this subtopic
+    writes a test that would actually catch a regression from override back to new, and
+    shows why the obvious test shape fails to.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing polymorphic dispatch covers correctness — the next subtopics dig into how
+      sealed genuinely enables faster dispatch, and what the compiler actually generates
+      for a covariant return type override.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Inheritance & Overriding"
+    topicRoute="/csharp/inheritance"
+    [next]="{ label: 'How sealed Enables Devirtualization', route: '/csharp/inheritance/how-sealed-enables-devirtualization' }" />
+</div>

@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Multi-Step Wizard Form"
+    topicRoute="/angular/wizard-form"
+    subtopicLabel="Testing Wizard Steps in Isolation" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Wizard Steps in Isolation</h1>
+  <p class="page-subtitle">
+    The main topic's last best-practice bullet says to test each step's FormGroup in
+    isolation — this page writes both the fixture-free unit tests and the full navigation tests.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Open <code>wizard.spec.ts</code> — Tier 1 tests a <code>FormGroup</code> with zero
+      Angular test machinery; Tier 2 drives the real component's <code>next()</code>/<code>back()</code>
+      and asserts both the <code>step()</code> signal and the rendered DOM.
+    </p>
+    <app-live-playground
+      title="Testing Wizard Steps in Isolation"
+      template="angular-cli"
+      openFile="src/app/wizard.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With deep-linking, an alternative CDK-based implementation, and test coverage all
+      covered, you now have three genuinely different lenses on the same wizard pattern
+      from the main topic page.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Multi-Step Wizard Form"
+    topicRoute="/angular/wizard-form"
+    [prev]="{ label: 'Angular CDK Stepper vs a Hand-Rolled Wizard', route: '/angular/wizard-form/cdk-stepper-vs-hand-rolled-wizard' }" />
+</div>

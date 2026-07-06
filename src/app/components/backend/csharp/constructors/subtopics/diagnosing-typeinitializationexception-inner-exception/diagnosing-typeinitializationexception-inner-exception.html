@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Constructors"
+    topicRoute="/csharp/constructors"
+    subtopicLabel="Diagnosing TypeInitializationException" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Diagnosing TypeInitializationException: Why the Real Error Hides in InnerException</h1>
+  <p class="page-subtitle">
+    The main topic states that a failed static constructor makes the type permanently
+    unusable — this subtopic covers the single most important practical consequence:
+    the outer exception's message tells you almost nothing useful on its own.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1.0 / CLR" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing validation, understanding primary constructor capture semantics, and
+      knowing how to diagnose a failed static constructor together round out
+      constructors as a real production concern beyond just chaining syntax.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Constructors"
+    topicRoute="/csharp/constructors"
+    [prev]="{ label: 'Primary Constructor Parameter Capture', route: '/csharp/constructors/primary-constructor-parameter-capture-field-vs-fixed' }" />
+</div>

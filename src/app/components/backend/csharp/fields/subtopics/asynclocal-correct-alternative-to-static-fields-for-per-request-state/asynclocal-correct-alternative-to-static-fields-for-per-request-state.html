@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Fields & Constants"
+    topicRoute="/csharp/fields"
+    subtopicLabel="AsyncLocal: The Correct Alternative to Static Fields" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">AsyncLocal&lt;T&gt;: The Correct Alternative to Static Fields for Per-Request State</h1>
+  <p class="page-subtitle">
+    The main topic names AsyncLocal&lt;T&gt; in passing without explaining it — this
+    subtopic shows how it flows with the logical async call chain (not the thread),
+    giving true per-request isolation a static field can't.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Core 1.1" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing thread-safety, understanding cross-type initialization order, and knowing
+      the correct ambient-state mechanism together round out fields as a production
+      concern beyond just const vs readonly.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Fields & Constants"
+    topicRoute="/csharp/fields"
+    [prev]="{ label: 'Static Field Initialization Order', route: '/csharp/fields/static-field-initialization-order-beforefieldinit' }" />
+</div>

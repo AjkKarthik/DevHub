@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="gRPC Services"
+    topicRoute="/aspnet/grpc"
+    subtopicLabel="proto3 optional's Real Mechanism"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How proto3 optional Actually Tracks Field Presence</h1>
+  <p class="page-subtitle">
+    The main page says optional lets you distinguish "set to zero" from "never set" without explaining
+    how. The compiler wraps the field in a hidden single-member oneof — reusing the same "which member is
+    set" tracking a regular oneof already needs.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="proto3" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own <code>optional</code> guidance. The
+      final subtopic in this set turns to gRPC-Web's CORS configuration — and a preflight gotcha that
+      produces a confusing, silent network error with no server-side log at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="gRPC Services"
+    topicRoute="/aspnet/grpc"
+    [prev]="{ label: 'Testing That a Server-Streaming RPC Cancellation Stops It Mid-Stream', route: '/aspnet/grpc/testing-server-streaming-rpc-cancellation-stops-mid-stream' }"
+    [next]="{ label: 'gRPC-Web CORS Needs Allowed Request Headers, Not Just Exposed Ones', route: '/aspnet/grpc/grpc-web-cors-needs-allowed-request-headers-not-exposed' }"
+  />
+</div>

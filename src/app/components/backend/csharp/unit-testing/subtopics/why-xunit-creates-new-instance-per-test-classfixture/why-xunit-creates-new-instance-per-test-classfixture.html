@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Unit Testing (xUnit & Moq)" topicRoute="/csharp/unit-testing" subtopicLabel="Why xUnit Creates a New Instance Per Test" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why xUnit Creates a New Test Class Instance Per Test — and What IClassFixture Deliberately Undoes</h1>
+  <p class="page-subtitle">The main topic page states the per-test-instance rule in one line. See why it eliminates test-order dependence by construction, why xUnit has no [SetUp]/[TearDown], and the deliberate trade-off IClassFixture asks you to opt into.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="xUnit 2+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic goes deeper into the main <a routerLink="/csharp/unit-testing">Unit Testing (xUnit & Moq)</a> page's own testability section — specifically the <code>TimeProvider</code>/<code>FakeTimeProvider</code> mention, and how to make genuinely time-dependent code deterministic to test.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Unit Testing (xUnit & Moq)"
+    topicRoute="/csharp/unit-testing"
+    [prev]="{ label: 'Testing Your Test Doubles', route: '/csharp/unit-testing/testing-your-test-doubles-mock-setup-matches-production-behavior' }"
+    [next]="{ label: 'TimeProvider and FakeTimeProvider', route: '/csharp/unit-testing/timeprovider-faketimeprovider-deterministic-time-dependent-tests' }"
+  />
+</div>

@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Authentication"
+    topicRoute="/aspnet/authentication"
+    subtopicLabel="JWT Claim-Type Mapping"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">JWT Claim-Type Mapping — Your sub Becomes NameIdentifier</h1>
+  <p class="page-subtitle">
+    The main page's own /login writes a sub claim, yet FindFirst("sub") on the protected side returns
+    null. A legacy inbound map renames compact claim types while building the principal — and it is why
+    IsInRole() fails on standards-compliant external tokens.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Authentication deep-dive set: testing the ClockSkew widening, understanding the
+      application discriminator behind the multi-pod fix, and now the claim-type mapping seam between
+      issuing and consuming JWTs. Head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Authentication"
+    topicRoute="/aspnet/authentication"
+    [prev]="{ label: 'Why SetApplicationName Matters Even With Shared Data Protection Keys', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' }"
+  />
+</div>

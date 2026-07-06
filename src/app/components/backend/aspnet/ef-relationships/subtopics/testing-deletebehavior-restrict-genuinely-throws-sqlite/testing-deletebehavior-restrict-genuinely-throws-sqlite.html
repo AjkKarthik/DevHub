@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="EF Core Relationships"
+    topicRoute="/aspnet/ef-relationships"
+    subtopicLabel="Testing DeleteBehavior.Restrict"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That DeleteBehavior.Restrict Genuinely Throws</h1>
+  <p class="page-subtitle">
+    The main page's own fix for accidental cascade deletes is OnDelete(DeleteBehavior.Restrict). Proving
+    it actually blocks a delete requires a real database's foreign-key enforcement — UseInMemoryDatabase
+    gives a false-positive pass regardless of what OnDelete behavior is configured.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own cascade-delete safety guidance. The next subtopic goes
+      underneath skip navigations — explaining exactly how Include()-then-Add() determines which join-table
+      rows to insert, using the same snapshot-diffing mechanism the sibling EF Core Basics topic covers for
+      scalar properties.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="EF Core Relationships"
+    topicRoute="/aspnet/ef-relationships"
+    [next]="{ label: 'How Skip Navigations Determine Join-Table INSERT/DELETE', route: '/aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete' }"
+  />
+</div>

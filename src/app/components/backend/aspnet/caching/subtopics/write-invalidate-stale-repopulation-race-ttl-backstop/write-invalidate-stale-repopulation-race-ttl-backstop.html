@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Caching"
+    topicRoute="/aspnet/caching"
+    subtopicLabel="Write-Invalidate's Stale Race"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Write-Invalidate Has a Stale-Repopulation Race the TTL Must Backstop</h1>
+  <p class="page-subtitle">
+    The main page warns write-invalidate causes a brief miss window. The quieter danger in its own
+    CatalogService example: a mid-flight reader can write the OLD value into the cache after the
+    invalidation ran — undoing it silently for the full TTL.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Caching deep-dive set: testing GetOrCreateAsync's real concurrency contract,
+      understanding lazy expiry enforcement, and now the interleaving race hiding inside the page's own
+      cache-aside write path. Head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Caching"
+    topicRoute="/aspnet/caching"
+    [prev]="{ label: 'How IMemoryCache Expiry Is Actually Enforced — Lazy Checks, Not Timers', route: '/aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers' }"
+  />
+</div>

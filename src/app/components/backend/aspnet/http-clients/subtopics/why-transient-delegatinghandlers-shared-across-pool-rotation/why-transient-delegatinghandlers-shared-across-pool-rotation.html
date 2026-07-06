@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HttpClient &amp; Resilience"
+    topicRoute="/aspnet/http-clients"
+    subtopicLabel="Transient Handlers' Real Scope"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Why Transient DelegatingHandlers Are Shared Across a Pool Rotation</h1>
+  <p class="page-subtitle">
+    The main page says handlers are Transient and warns against storing per-request state, without
+    connecting the two. Transient here means one instance per ~2-minute pool rotation — shared across
+    potentially thousands of concurrent requests.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own Transient-handler rule. The final
+      subtopic in this set turns to <code>AddHedging()</code> — and a real risk when a shared pipeline
+      wraps both read and write endpoints of the same typed client.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HttpClient &amp; Resilience"
+    topicRoute="/aspnet/http-clients"
+    [prev]="{ label: 'Testing That Retry Fires for Transient Failures, Not Deterministic Ones', route: '/aspnet/http-clients/testing-retry-strategy-fires-transient-not-deterministic-errors' }"
+    [next]="{ label: 'AddHedging() on a Shared Pipeline Can Hedge Non-Idempotent Requests', route: '/aspnet/http-clients/addhedging-shared-pipeline-can-hedge-non-idempotent-requests' }"
+  />
+</div>

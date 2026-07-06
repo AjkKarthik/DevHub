@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="System.Object"
+    topicRoute="/csharp/system-object"
+    subtopicLabel="Why GetHashCode Is Never Stable Across Runs" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why GetHashCode Values Are Never Guaranteed Stable Across Process Runs (or .NET Versions)</h1>
+  <p class="page-subtitle">
+    The main topic covers hash-code stability WITHIN one running process — it never
+    addresses cross-process stability, which is deliberately absent by design, making
+    persisted hash codes a genuine correctness bug waiting to happen.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET Framework 4.5+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding hash-code instability protects against a real persistence bug — the
+      final subtopic covers a related but distinct equality mechanism: how records
+      correctly distinguish a base type from a derived one.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="System.Object"
+    topicRoute="/csharp/system-object"
+    [prev]="{ label: 'Testing the Equals/GetHashCode Contract', route: '/csharp/system-object/testing-the-equals-gethashcode-contract' }"
+    [next]="{ label: 'Record Equality and EqualityContract', route: '/csharp/system-object/record-equality-and-equalitycontract' }" />
+</div>

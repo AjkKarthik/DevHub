@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel=".NET CLI & Tooling" topicRoute="/csharp/dotnet-cli" subtopicLabel="Silent Lock File Drift" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">dotnet build's Automatic Restore Doesn't Use --locked-mode — Local Builds Can Silently Drift From the Committed Lock File</h1>
+  <p class="page-subtitle">The main topic page notes that restore "runs automatically before build." That automatic restore is a different, more permissive operation than CI's --locked-mode restore — it can silently rewrite packages.lock.json as a side effect of routine local development.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Core 2.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/csharp/dotnet-cli">.NET CLI &amp; Tooling</a> — from verifying true build reproducibility, to how rollForward resolves SDK versions, to this lock-file drift gotcha. Return to the topic overview to continue with the next C# topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel=".NET CLI & Tooling"
+    topicRoute="/csharp/dotnet-cli"
+    [prev]="{ label: 'How rollForward Picks an SDK Version', route: '/csharp/dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm' }"
+  />
+</div>

@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Logging &amp; Diagnostics"
+    topicRoute="/aspnet/logging"
+    subtopicLabel="Testing Structured Log Properties"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Structured Log Properties With a Fake ILogger</h1>
+  <p class="page-subtitle">
+    A rendered log message can look perfectly correct while its underlying structured property is
+    silently wrong. Here's how to test the actual key-value pairs a real sink like Seq would receive —
+    not just the printed string.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the OUTPUT of the main page's own structured-logging guidance. The next
+      subtopic goes underneath <code>logger.BeginScope(...)</code> itself — explaining exactly how ambient
+      scope properties propagate across <code>await</code> boundaries, and where that propagation silently
+      breaks.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Logging &amp; Diagnostics"
+    topicRoute="/aspnet/logging"
+    [next]="{ label: 'How BeginScope Propagates Ambient Context via AsyncLocal', route: '/aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal' }"
+  />
+</div>

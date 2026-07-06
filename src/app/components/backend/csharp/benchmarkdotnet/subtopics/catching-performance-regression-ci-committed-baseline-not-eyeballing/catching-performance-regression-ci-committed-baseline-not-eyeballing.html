@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="BenchmarkDotNet" topicRoute="/csharp/benchmarkdotnet" subtopicLabel="Catching Regressions in CI" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Catching a Performance Regression in CI: Comparing Against a Committed Baseline Instead of Eyeballing Numbers</h1>
+  <p class="page-subtitle">The main topic page mentions committing a baseline file in passing. See exactly what that comparison looks like: exporting BDN results as JSON, diffing against a committed baseline with a meaningful tolerance, and failing the build on a genuine regression.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="BDN 0.x" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, a look under the hood at how the main <a routerLink="/csharp/benchmarkdotnet">BenchmarkDotNet</a> page's own <code>BenchmarkRunner.Run&lt;T&gt;()</code> actually executes your benchmarks — in a separate, isolated process, not in-process.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="BenchmarkDotNet"
+    topicRoute="/csharp/benchmarkdotnet"
+    [next]="{ label: 'Why BDN Runs Benchmarks in an Isolated Process', route: '/csharp/benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process' }"
+  />
+</div>

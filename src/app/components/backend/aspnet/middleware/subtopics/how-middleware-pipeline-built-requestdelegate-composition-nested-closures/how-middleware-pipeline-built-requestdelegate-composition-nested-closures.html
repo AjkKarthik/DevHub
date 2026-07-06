@@ -1,0 +1,31 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Middleware Pipeline" topicRoute="/aspnet/middleware" subtopicLabel="How the Pipeline Is Actually Built" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How the Middleware Pipeline Is Actually Built: RequestDelegate Composition as Nested Closures, Not a List Iterated Per Request</h1>
+  <p class="page-subtitle">The main topic page's "Russian doll" analogy is literally true at the implementation level. See how Build() composes middleware from the inside out, in reverse, into one deeply-nested RequestDelegate — no per-request iteration at all.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="ASP.NET Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/aspnet/middleware">Middleware Pipeline</a>: a real production gotcha connecting to the main page's own OnStarting content — why the last-registered OnStarting callback actually fires first.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Middleware Pipeline"
+    topicRoute="/aspnet/middleware"
+    [prev]="{ label: 'Testing Custom Middleware in Isolation', route: '/aspnet/middleware/testing-custom-middleware-isolation-applicationbuilder-no-kestrel' }"
+    [next]="{ label: 'OnStarting Callbacks Run in LIFO Order', route: '/aspnet/middleware/onstarting-callbacks-run-lifo-order-last-registered-fires-first' }"
+  />
+</div>

@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Reflection & Attributes" topicRoute="/csharp/reflection" subtopicLabel="Beyond Expression Trees" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Beyond Expression Trees: What DynamicMethod and Reflection.Emit Buy You That Compiled Lambdas Don't</h1>
+  <p class="page-subtitle">The main topic page calls compiled expression trees "even faster" than cached reflection. See exactly what raw IL emission via Reflection.Emit adds beyond that — and why it almost never belongs in application code.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="C# 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic returns to the main <a routerLink="/csharp/reflection">Reflection & Attributes</a> page's own foundational typeof/GetType section — and a real trap that appears the moment generic types enter the picture.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Reflection & Attributes"
+    topicRoute="/csharp/reflection"
+    [prev]="{ label: 'Testing Reflection-Based Code', route: '/csharp/reflection/testing-reflection-code-attribute-discovery-cache-behavior' }"
+    [next]="{ label: 'Generic Type Reflection Traps', route: '/csharp/reflection/generic-type-reflection-traps-generictypedefinition' }"
+  />
+</div>

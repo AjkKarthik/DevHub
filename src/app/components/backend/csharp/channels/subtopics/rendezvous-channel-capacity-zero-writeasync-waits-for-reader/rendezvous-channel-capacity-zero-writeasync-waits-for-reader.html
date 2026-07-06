@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Channels & Producer/Consumer" topicRoute="/csharp/channels" subtopicLabel="The Rendezvous Channel" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Bounded Channel with Capacity 0: The Rendezvous Channel and Why WriteAsync Waits for an Active Reader</h1>
+  <p class="page-subtitle">The main topic page's sizing advice assumes a positive capacity. Capacity 0 is valid and genuinely different — WriteAsync can only complete at the exact moment a reader is actively receiving the item, with zero buffer storage at all.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since=".NET Core 3+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Channels &amp; Producer/Consumer deep dives — from testing pipelines without mocks, to the exact protocol behind ReadAllAsync's completion, to the rendezvous channel's genuinely different synchronization guarantee.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Channels & Producer/Consumer"
+    topicRoute="/csharp/channels"
+    [prev]="{ label: 'How ReadAllAsync Detects Completion', route: '/csharp/channels/how-readallasync-detects-completion-waittoreadasync-tryread' }"
+  />
+</div>

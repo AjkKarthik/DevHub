@@ -1,0 +1,39 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Records &amp; Structs"
+    topicRoute="/csharp/records"
+    subtopicLabel="Testing Records: Equality, Hash Codes, and Constructor Validation" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Records: Equality, Hash Codes, and Constructor Validation</h1>
+  <p class="page-subtitle">
+    "It's auto-generated" isn't a reason to skip testing — compact constructors,
+    custom methods, and the equality/hash-code contract all still need coverage.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 9" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Serialization, pattern matching, and test coverage together round out the
+      record mechanics that separate a demo value object from a production-ready one.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Records &amp; Structs"
+    topicRoute="/csharp/records"
+    [prev]="{ label: 'Positional Pattern Matching with Records', route: '/csharp/records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions' }" />
+</div>

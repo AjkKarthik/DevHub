@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="What's New in C# 9 & 10" topicRoute="/csharp/whats-new-9-10" subtopicLabel="EqualityContract Mechanics" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">What the Compiler Actually Generates for Type-Sensitive Record Equality: EqualityContract and the Virtual Equals Chain</h1>
+  <p class="page-subtitle">The main topic page states record equality is "type-sensitive" via a generated EqualityContract property. Here's exactly what the compiler generates — and why the type check happens first, before any property is ever compared.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 9+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/csharp/whats-new-9-10">What's New in C# 9 &amp; 10</a>: a real production gotcha connecting to the main page's own advice on record equality — how records can silently break as Dictionary keys.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="What's New in C# 9 & 10"
+    topicRoute="/csharp/whats-new-9-10"
+    [prev]="{ label: 'Testing Record Equality With Collections', route: '/csharp/whats-new-9-10/testing-record-equality-collection-properties-not-list-reference-trap' }"
+    [next]="{ label: 'Records as Dictionary Keys Can Silently Break', route: '/csharp/whats-new-9-10/records-as-dictionary-keys-break-when-reference-property-mutated' }"
+  />
+</div>

@@ -480,6 +480,105 @@ to the topic page, not its subtopics.
   retroactively) — check whether a topic's demo code imports anything beyond `@angular/core`,
   `@angular/common`, `@angular/forms`, `@angular/router`, or `rxjs` BEFORE writing the
   `liveDemoFiles`, not after.
+- **Long descriptive subtopic slugs can exceed the Windows/git `MAX_PATH` (260 chars) even
+  though the `Write` tool succeeds.** A subtopic folder path is
+  `C:\Users\...\DevHub\src\app\components\<hub-area>\<topic>\subtopics\<slug>\<slug>.ts` —
+  the slug appears TWICE (folder + filename), so a ~90-character descriptive slug alone
+  produces a ~290-character absolute path. The `Write` tool writes the file fine (Node's fs
+  tolerates long paths), but `git add` then fails with `error: open(...): Filename too long`
+  — this surfaces only at commit time, not at write time. Confirmed twice in one topic's
+  batch (`/csharp/pattern-matching`, 2026-07-04): two of three subtopic slugs were long
+  enough to trip this. **Fix**: keep the folder/file name short (~40 chars, e.g.
+  `pattern-matching-ef-core-sql-translation`) while leaving the ROUTE URL itself as
+  descriptive as normal in `app.routes.ts` — only the `loadComponent` import path needs to
+  point at the short folder; the `path:` (URL segment) and every other wiring touchpoint
+  (SUBTOPICS map, breadcrumb, sidebar, search index, nav labels) keep using the long,
+  descriptive route string unchanged. Run `git add -A` before considering a subtopic batch
+  done — a successful build does NOT catch this, only `git add` does.
+
+### Non-Angular hubs (C#, SQL, Python, Go, etc.) — the "See it run" section has no live playground
+
+`app-live-playground` embeds a StackBlitz project and only supports JS/TS-runnable
+templates (`angular-cli` and similar) — there is no in-browser runtime for C#/.NET, SQL,
+Python, or Go. Piloted on the C# hub's first subtopic set (`/csharp/basics`, 2026-07-03):
+**drop `app-live-playground` and `PlaygroundFile` entirely** for these hubs. Replace the
+"See it run" section with a plain `<app-code-block [tabs]="codeTabs" />` (the same
+`CodeTab[]` shape and shared component every main topic page already uses) inside a
+`<section class="cs-section"><h2>Code Examples</h2>...</section>` (swap the hub's own
+section class). **No separate "run it" link needs to be added by hand** — `app-page-meta`
+with `tech="csharp"` (or the hub's equivalent) ALREADY auto-renders the right external
+run-it buttons (.NET Fiddle + SharpLab for C#) next to the reading-time/difficulty badges,
+exactly as it does on every main topic page — confirmed rendering correctly in the pilot's
+browser verification. This means a non-Angular subtopic page is one shared component
+lighter than an Angular one: no `LivePlaygroundComponent`/`PlaygroundFile` import, no
+`liveDemoFiles` class field, no dependency-injection concerns (no StackBlitz template to
+configure). `TryIt`, `Misconceptions`, `SubtopicEyebrow`, `SubtopicNav`, `PageMeta`, and
+`TheoryBlock` are all unchanged and still required.
+
+### C# hub subtopic wiring — differs from Angular in three specific places
+
+Confirmed by direct file inspection before the C# pilot (do this same check before any
+OTHER non-Angular hub's first subtopic set — do not assume these conventions transfer
+identically):
+1. **Progress/search keys are `csharp-` PREFIXED** (`csharp-basics`), unlike Angular's bare
+   `counter`. Nav `@if (progress.isDone('csharp-basics'))` / `diff('csharp-basics')` — but
+   the **subtopic-accordion helper calls (`subtopicsOf`, `isSubtopicsExpanded`,
+   `toggleSubtopics`) key off the BARE topic slug** (`'basics'`, not `'csharp-basics'`),
+   because they index into `app.ts`'s single flat `SUBTOPICS` map shared across ALL hubs —
+   don't prefix these three calls.
+2. **`SUBTOPICS` map in `app.ts` has NO hub namespacing** — it's one
+   `Record<string, SubtopicNavEntry[]>` keyed by bare route slug for every hub combined.
+   This is a genuine collision risk, **hit for real** on 2026-07-04: ASP.NET's `routing`
+   topic collided with Angular's PRE-EXISTING bare `routing` key (`/angular/routing`'s own
+   subtopics, `custom-url-matchers-route-config` etc.) — `ng build` failed with
+   `TS1117: An object literal cannot have multiple properties with the same name`.
+   **Always grep for the exact bare key (unquoted AND quoted forms, e.g. both `routing:`
+   and `'routing':`) across the ENTIRE file before adding a new hub's SUBTOPICS entry** —
+   an `Edit` tool old_string match on a nearby anchor line succeeding does NOT mean the key
+   itself is unique; the build's duplicate-key error is what actually caught this, not the
+   grep-first check (which used the wrong quoting style and missed the existing entry).
+   **Resolution applied**: hub-prefixed the COLLIDING entry only (`'aspnet-routing'`, not
+   bare `'routing'`) rather than restructuring the whole map — Angular's existing bare
+   `routing` key was left untouched. Every consumer of the colliding hub's key
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics` calls in that hub's own
+   `app.html` nav block) must then use the SAME prefixed string, not the bare topic slug —
+   this is hub-specific once a collision forces prefixing, unlike the normal (collision-free)
+   case where these three calls key off the bare slug shared with `SUBTOPICS`. **Blazor
+   also has its own `routing` topic** (`frontend/blazor/routing/routing.ts`, still bare
+   `routing` if it ever gets subtopics) — since Angular already occupies bare `routing` and
+   ASP.NET now uses `aspnet-routing`, Blazor's future subtopic entry must ALSO be
+   hub-prefixed (e.g. `blazor-routing`) to avoid a three-way clash.
+3. **`SIDEBAR_MAP` keys for ordinary C# topic pages are BARE** (`basics`, `oop`, `fields`),
+   matching Angular — NOT hub-prefixed as an earlier reading of this file's own WIRING
+   CHECKLIST step 7 implied. That `'csharp/cheatsheet'`-style full-path prefix is used ONLY
+   by C#'s Practice/Reference pages (cheatsheet, errors, learning-paths, etc.), not regular
+   topic pages — confirmed via `page-sidebar.ts`'s lookup fallback, which tries the full key
+   first, then strips a leading `angular/`/`csharp/` and retries. **Subtopic sidebar keys
+   follow the Angular convention exactly**: bare composite `'basics/<subtopic-slug>'`, no
+   `csharp/` prefix.
+
+### ASP.NET Core hub subtopic wiring — differs from C# in one specific place
+
+Confirmed by direct file inspection before the ASP.NET pilot (`/aspnet/hosting-startup`,
+2026-07-04) — do this same check before any other new hub's first subtopic set:
+1. **`SIDEBAR_MAP` keys for ordinary ASP.NET topic pages are FULL-PATH PREFIXED**
+   (`'aspnet/hosting-startup'`, not bare `'hosting-startup'`) — the OPPOSITE of the C# hub's
+   bare-key convention. Confirmed via `page-sidebar.ts`'s `routeKey()` (the full URL path
+   minus leading slash) and its lookup fallback, which only strips a leading `angular/` or
+   `csharp/` prefix — **not** `aspnet/` — meaning a bare key would never be found for this
+   hub. **Subtopic composite sidebar keys follow the SAME full-path convention**:
+   `'aspnet/hosting-startup/<subtopic-slug>'`, not a bare `'hosting-startup/<subtopic-slug>'`.
+2. Progress/search keys are `aspnet-` prefixed (`aspnet-hosting-startup`), same pattern as
+   C#'s `csharp-` prefix. Breadcrumb `ASPNET_LABELS` map uses bare keys (`hosting-startup`),
+   same as C#'s `CSHARP_LABELS` — composite subtopic keys there are bare too
+   (`'hosting-startup/<subtopic-slug>'`), confirmed via the same generic composite-key-first
+   lookup all hubs share in `breadcrumb.ts`. The nav accordion helper calls
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) key off the bare topic slug,
+   exactly as in C# — this part of `app.ts`'s single flat `SUBTOPICS` map is unaffected by
+   hub-specific sidebar/prefix differences.
+3. Theme: ASP.NET subtopic pages use the hub's teal accent (`$accent: #0e7490`,
+   `$tint: #ecfeff`) and the `.asp-page`/`.asp-icon`/`.asp-section` CSS classes (NOT C#'s
+   purple/`.cs-page`), `tech="aspnet"` in `app-page-meta`. Icon content stays `ASP`.
 
 ## Current state (update when it changes!)
 

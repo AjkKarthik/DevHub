@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Internationalisation (i18n)"
+    topicRoute="/angular/i18n"
+    subtopicLabel="SSR Locale Detection and Avoiding Hydration Mismatches" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">SSR Locale Detection and Avoiding Hydration Mismatches</h1>
+  <p class="page-subtitle">
+    The main topic's one SSR bullet says "determine locale per-request" without
+    showing how — here's the Accept-Language parsing and the TransferState fix.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      <code>server.ts</code> parses <code>Accept-Language</code> per-request; the app
+      reads the resolved locale via <code>TransferState</code> so the client's first
+      render matches the server exactly, with nothing to reconcile during hydration.
+    </p>
+    <app-live-playground
+      title="SSR Locale Detection and Avoiding Hydration Mismatches"
+      template="angular-cli"
+      openFile="src/app/locale-token.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing, RTL layout, and SSR-correct locale detection together cover the three
+      production concerns the main topic's demo never has to face.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Internationalisation (i18n)"
+    topicRoute="/angular/i18n"
+    [prev]="{ label: 'Building RTL Layout Support with Logical CSS Properties', route: '/angular/i18n/building-rtl-layout-support-with-logical-css-properties' }" />
+</div>

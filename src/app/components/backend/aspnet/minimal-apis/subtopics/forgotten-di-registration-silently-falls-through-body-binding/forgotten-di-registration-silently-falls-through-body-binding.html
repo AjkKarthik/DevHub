@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Minimal APIs"
+    topicRoute="/aspnet/minimal-apis"
+    subtopicLabel="Forgotten DI Registration Fallthrough"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">A Forgotten DI Registration Silently Falls Through to Body Binding</h1>
+  <p class="page-subtitle">
+    The main page says service-type parameters "resolve automatically" without saying what happens when
+    the type isn't registered. Unlike a controller's loud DI exception, a minimal API handler silently
+    treats it as a body parameter instead.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's DI parameter inference claim. The final
+      subtopic in this set turns to <code>LinkGenerator.GetPathByName</code> — and a quieter failure mode
+      than the exception-throwing equivalent covered in the Controllers subtopics.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Minimal APIs"
+    topicRoute="/aspnet/minimal-apis"
+    [prev]="{ label: 'Testing an Endpoint Filter in Isolation — No Test Server Needed', route: '/aspnet/minimal-apis/testing-endpoint-filter-isolation-no-test-server' }"
+    [next]="{ label: 'LinkGenerator.GetPathByName Returns Null Instead of Throwing', route: '/aspnet/minimal-apis/linkgenerator-getpathbyname-returns-null-instead-of-throwing' }"
+  />
+</div>

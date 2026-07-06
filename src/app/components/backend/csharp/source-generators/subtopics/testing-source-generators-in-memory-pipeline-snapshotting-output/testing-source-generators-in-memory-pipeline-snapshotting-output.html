@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Source Generators" topicRoute="/csharp/source-generators" subtopicLabel="Testing Source Generators" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Source Generators: Running the Pipeline In-Memory and Snapshotting the Generated Code</h1>
+  <p class="page-subtitle">The main topic page mentions EmitCompilerGeneratedFiles for manual inspection. See how Roslyn's own CSharpGeneratorDriver API lets you run a generator in a fast unit test and assert on its exact output automatically.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we go deeper into the main <a routerLink="/csharp/source-generators">Source Generators</a> page's own small-model-discipline warning — exactly why passing a symbol through .Select() defeats incremental caching.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Source Generators"
+    topicRoute="/csharp/source-generators"
+    [next]="{ label: 'Why Symbols Defeat Incremental Caching', route: '/csharp/source-generators/why-symbols-defeat-incremental-caching-leak-compilation' }"
+  />
+</div>

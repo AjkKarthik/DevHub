@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Strings, DateTime & Math" topicRoute="/csharp/strings-datetime" subtopicLabel="Testing Culture-Sensitive Code" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Culture-Sensitive Code: Why Tests Pass Locally But Fail on a Turkish-Locale CI Runner</h1>
+  <p class="page-subtitle">The main topic page mentions the Turkish "İ"/"ı" casing bug in one line. See the exact test that reproduces it deterministically — and why "the Turkey test" is a real, recurring CI failure category, not a hypothetical edge case.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we move from string comparison culture-safety to a related but distinct string mechanic the main <a routerLink="/csharp/strings-datetime">Strings, DateTime & Math</a> page only mentions in one Q&amp;A line: exactly which strings the runtime automatically interns, and which never are.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Strings, DateTime & Math"
+    topicRoute="/csharp/strings-datetime"
+    [next]="{ label: 'The Interning Boundary', route: '/csharp/strings-datetime/interning-boundary-which-strings-interned-automatically' }"
+  />
+</div>

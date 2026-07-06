@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Exceptions"
+    topicRoute="/csharp/exceptions"
+    subtopicLabel="Testing Exception Filters: Verifying when Predicate Logic" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Exception Filters: Verifying "when" Predicate Logic Without Triggering Real Exceptions</h1>
+  <p class="page-subtitle">
+    The main topic demonstrates exception filters extensively but never how to test
+    them — Assert.Throws alone can't tell you which filter matched or whether its
+    predicate logic is correct.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 6.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing filter logic covers correctness — the next subtopics look at what happens
+      when exceptions escape everything: unhandled exceptions, unobserved task failures,
+      and the real performance cost of throwing in the first place.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Exceptions"
+    topicRoute="/csharp/exceptions"
+    [next]="{ label: 'AppDomain.UnhandledException and TaskScheduler.UnobservedTaskException', route: '/csharp/exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception' }" />
+</div>

@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Null Safety"
+    topicRoute="/csharp/null-safety"
+    subtopicLabel="Enforcing Nullable Warnings as Build Errors" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Enforcing Nullable Warnings as Build Errors</h1>
+  <p class="page-subtitle">
+    The main topic's own Q&amp;A admits nullable reference type annotations produce zero
+    runtime effect — this subtopic closes the loop by making a violated annotation
+    genuinely fail the build, not just print a warning nobody reads.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 8.0 / .NET SDK" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Making nullable warnings build-breaking is the enforcement layer; the next two
+      subtopics dig into edge cases the compiler itself handles more subtly — generic type
+      parameters, and what actually happens to <code>required</code> and nullable
+      annotations once JSON deserialization enters the picture.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Null Safety"
+    topicRoute="/csharp/null-safety"
+    [next]="{ label: 'Nullable Reference Types with Generic Type Parameters', route: '/csharp/null-safety/nullable-reference-types-with-generic-type-parameters' }" />
+</div>

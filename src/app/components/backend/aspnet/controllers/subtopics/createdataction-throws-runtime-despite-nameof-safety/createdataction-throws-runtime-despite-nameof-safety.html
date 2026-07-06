@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Controllers &amp; Actions"
+    topicRoute="/aspnet/controllers"
+    subtopicLabel="CreatedAtAction's Runtime Failure Mode"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">CreatedAtAction Can Still Throw at Runtime Despite nameof() Safety</h1>
+  <p class="page-subtitle">
+    The main page calls CreatedAtAction "refactor-safe" because of nameof(). That safety only covers
+    method renames — a route template change on the target action still compiles cleanly and throws the
+    first time a real request hits it.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 2.1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Controllers &amp; Actions deep-dive set: testing the null-return 200 OK bug,
+      understanding binding source inference's real algorithm, and now the exact limit of
+      <code>CreatedAtAction</code>'s refactor safety. Head back to the topic overview to continue with the
+      next ASP.NET Core topic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Controllers &amp; Actions"
+    topicRoute="/aspnet/controllers"
+    [prev]="{ label: 'How Binding Source Inference Actually Decides FromBody vs FromQuery', route: '/aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery' }"
+  />
+</div>

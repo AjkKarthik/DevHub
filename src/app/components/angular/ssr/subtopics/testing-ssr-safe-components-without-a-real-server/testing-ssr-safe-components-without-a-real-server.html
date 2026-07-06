@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SSR & Hydration"
+    topicRoute="/angular/ssr"
+    subtopicLabel="Testing SSR-Safe Components Without a Real Server" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing SSR-Safe Components Without a Real Server</h1>
+  <p class="page-subtitle">
+    The main topic shows the correct platform guard but never verifies it — here's how
+    to catch a missing guard as a fast test failure instead of a real server crash.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Open <code>theme.component.spec.ts</code> — <code>PLATFORM_ID</code> is
+      overridden to <code>'server'</code> in a normal TestBed unit test to simulate
+      the SSR environment, catching a missing platform guard as a fast test failure.
+    </p>
+    <app-live-playground
+      title="Testing SSR-Safe Components Without a Real Server"
+      template="angular-cli"
+      openFile="src/app/theme.component.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With mismatches and testing covered, the final subtopic goes deep on
+      incremental hydration — the specific triggers available for deferring hydration
+      until the user actually needs it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SSR & Hydration"
+    topicRoute="/angular/ssr"
+    [prev]="{ label: 'Debugging Hydration Mismatches Step by Step', route: '/angular/ssr/debugging-hydration-mismatches-step-by-step' }"
+    [next]="{ label: 'Incremental Hydration Triggers: Interaction, Viewport, and Timer', route: '/angular/ssr/incremental-hydration-triggers-interaction-viewport-and-timer' }" />
+</div>

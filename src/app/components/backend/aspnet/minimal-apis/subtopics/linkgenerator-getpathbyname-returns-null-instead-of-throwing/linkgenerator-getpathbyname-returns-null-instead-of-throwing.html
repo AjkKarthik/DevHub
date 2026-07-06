@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Minimal APIs"
+    topicRoute="/aspnet/minimal-apis"
+    subtopicLabel="LinkGenerator's Silent Null Return"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">LinkGenerator.GetPathByName Returns Null Instead of Throwing</h1>
+  <p class="page-subtitle">
+    The main page calls WithName() + LinkGenerator equivalent to a controller's CreatedAtAction. It
+    isn't — CreatedAtAction throws when route values don't match; LinkGenerator returns null silently,
+    producing a 201 response with a missing Location header.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Minimal APIs deep-dive set: testing an endpoint filter in isolation,
+      understanding how DI parameter inference fails silently, and now the quieter failure mode behind
+      <code>LinkGenerator</code>'s URL generation. Head back to the topic overview to continue with the
+      next ASP.NET Core topic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Minimal APIs"
+    topicRoute="/aspnet/minimal-apis"
+    [prev]="{ label: 'A Forgotten DI Registration Silently Falls Through to Body Binding', route: '/aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding' }"
+  />
+</div>

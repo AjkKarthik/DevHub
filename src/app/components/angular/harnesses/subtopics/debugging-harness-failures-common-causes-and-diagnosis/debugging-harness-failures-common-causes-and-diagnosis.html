@@ -1,0 +1,48 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Component Harnesses"
+    topicRoute="/angular/harnesses"
+    subtopicLabel="Debugging Harness Failures: Common Causes and Diagnosis" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Debugging Harness Failures: Common Causes and Diagnosis</h1>
+  <p class="page-subtitle">
+    The main topic only shows the happy path. Real harness failures fall into four
+    recurring categories, each with a distinct signature and fix.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="CDK 9+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      The first test fixes a Category 2 (timing) failure via
+      <code>fixture.whenStable()</code>; the second intentionally reproduces the
+      Category 4 (forgotten await) failure signature so you can recognize it.
+    </p>
+    <app-live-playground
+      title="Debugging Harness Failures: Common Causes and Diagnosis"
+      template="angular-cli"
+      openFile="src/app/rating.component.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Composition, publishing, and failure diagnosis together cover what it takes to
+      build, ship, and maintain a harness beyond the main topic's introductory example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Component Harnesses"
+    topicRoute="/angular/harnesses"
+    [prev]="{ label: 'Publishing Harnesses as a Public Testing Entry Point', route: '/angular/harnesses/publishing-harnesses-as-a-librarys-public-testing-entry-point' }" />
+</div>

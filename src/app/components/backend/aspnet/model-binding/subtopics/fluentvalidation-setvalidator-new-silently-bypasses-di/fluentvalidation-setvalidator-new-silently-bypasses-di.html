@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Model Binding &amp; Validation"
+    topicRoute="/aspnet/model-binding"
+    subtopicLabel="FluentValidation's SetValidator DI Bypass"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">FluentValidation's SetValidator(new X()) Silently Bypasses DI</h1>
+  <p class="page-subtitle">
+    The main page's own CreateOrderValidator constructs its child OrderItemValidator with plain new().
+    That's fine until the child needs a DI dependency — and the fix that seems obvious (a parameterless
+    overload) silently drops the real business rule instead.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Model Binding &amp; Validation deep-dive set: testing IParsable's graceful
+      failure, understanding recursive validation's circular-reference risk, and now the DI bypass hiding
+      inside FluentValidation's own child-validator pattern. Head back to the topic overview to continue
+      with the next ASP.NET Core topic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Model Binding &amp; Validation"
+    topicRoute="/aspnet/model-binding"
+    [prev]="{ label: 'How Recursive Nested Validation Walks the Object Graph', route: '/aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference' }"
+  />
+</div>

@@ -1,0 +1,31 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Configuration & Options" topicRoute="/aspnet/configuration" subtopicLabel="How IOptionsMonitor Detects Changes" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How IOptionsMonitor Actually Detects a File Change: ChangeToken Propagation and Why OnChange Can Fire Twice for One Edit</h1>
+  <p class="page-subtitle">The main topic page describes OnChange firing "whenever config reloads" as if it were a single, clean event. See the actual IChangeToken mechanism — and why many editors' save behavior causes a genuinely common double-fire for one logical edit.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="ASP.NET Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>Last in this deep dive on <a routerLink="/aspnet/configuration">Configuration &amp; Options</a>: a real production gotcha connecting directly to the main page's own FeatureFlagService example — why OnChange's returned IDisposable must actually be disposed.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Configuration & Options"
+    topicRoute="/aspnet/configuration"
+    [prev]="{ label: 'Testing Options Validation', route: '/aspnet/configuration/testing-options-validation-actually-rejects-bad-config-not-just-compiles' }"
+    [next]="{ label: 'OnChange Returns an IDisposable That Must Be Disposed', route: '/aspnet/configuration/onchange-returns-idisposable-must-be-disposed-or-callback-leaks' }"
+  />
+</div>

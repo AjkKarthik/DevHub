@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Iterators & yield" topicRoute="/csharp/iterators" subtopicLabel="Iterator Exceptions and Stack Traces" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Iterator Exceptions and Stack Traces: Why Production Logs Point to MoveNext(), Not Your Original Call Site</h1>
+  <p class="page-subtitle">The main topic page notes deferred validation makes exceptions "appear far from the call site." See exactly what that looks like in a production stack trace, and why the eager-validation-wrapper fix is partly an observability fix, not just a correctness one.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 2+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Iterators &amp; yield deep dives — from testing laziness deterministically, to the thread-id check behind independent cursors, to why production stack traces from deferred code point where they do.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Iterators & yield"
+    topicRoute="/csharp/iterators"
+    [prev]="{ label: 'Why GetEnumerator Sometimes Returns Itself', route: '/csharp/iterators/why-getenumerator-sometimes-returns-itself-thread-id-check' }"
+  />
+</div>

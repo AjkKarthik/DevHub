@@ -1,0 +1,44 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dependency Injection"
+    topicRoute="/aspnet/dependency-injection"
+    subtopicLabel="Testing IServiceScopeFactory in a BackgroundService"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That a BackgroundService Genuinely Gets a Fresh Scope Each Iteration</h1>
+  <p class="page-subtitle">
+    The main page's <code>OutboxProcessor</code> comment promises "each batch gets its own scope →
+    fresh DbContext per batch." A comment is not a guarantee — here's how to actually prove it with a test,
+    and the exact regression that test catches.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the OBSERVABLE BEHAVIOR of the main page's own <code>IServiceScopeFactory</code>
+      pattern. The next subtopic goes one level deeper — explaining what
+      <code>CreateAsyncScope()</code> actually does differently from <code>CreateScope()</code> under the
+      hood, and why the compiler nudges you toward the async version for any service implementing
+      <code>IAsyncDisposable</code>.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dependency Injection"
+    topicRoute="/aspnet/dependency-injection"
+    [next]="{ label: 'How CreateAsyncScope() Differs From CreateScope() Internally', route: '/aspnet/dependency-injection/how-createasyncscope-differs-createscope-internally-asyncdisposable-warning' }"
+  />
+</div>

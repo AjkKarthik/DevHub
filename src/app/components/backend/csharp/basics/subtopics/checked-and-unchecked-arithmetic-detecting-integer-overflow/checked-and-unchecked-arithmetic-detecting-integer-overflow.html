@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Variables &amp; Types"
+    topicRoute="/csharp/basics"
+    subtopicLabel="Checked and Unchecked Arithmetic: Detecting Integer Overflow" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Checked and Unchecked Arithmetic: Detecting Integer Overflow</h1>
+  <p class="page-subtitle">
+    C# integer arithmetic silently wraps around on overflow by default — no exception,
+    no warning. Here's how to turn that into a loud, catchable error.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 1" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Overflow is one way arithmetic on value types can silently go wrong. The final
+      subtopic moves to a different concern entirely — using <code>Span&lt;T&gt;</code>
+      and <code>stackalloc</code> to avoid heap allocations in performance-sensitive code.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Variables &amp; Types"
+    topicRoute="/csharp/basics"
+    [prev]="{ label: 'Nullable Value Types: int?, HasValue, and Null-Coalescing', route: '/csharp/basics/nullable-value-types-hasvalue-and-null-coalescing-operators' }"
+    [next]="{ label: 'Span&lt;T&gt; and stackalloc: Parsing Without Heap Allocations', route: '/csharp/basics/spant-and-stackalloc-parsing-without-heap-allocations' }" />
+</div>

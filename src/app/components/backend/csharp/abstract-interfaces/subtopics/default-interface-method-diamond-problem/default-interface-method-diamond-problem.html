@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Abstract Classes & Interfaces"
+    topicRoute="/csharp/abstract-interfaces"
+    subtopicLabel="Default Interface Method Diamond Problem" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Default Interface Method Diamond Problem: Resolving Conflicting Defaults</h1>
+  <p class="page-subtitle">
+    The main topic's default-method and explicit-implementation examples never combine —
+    this subtopic shows what happens when two interfaces each provide their own default
+    for the same method name, and the CS8705 conflict that results.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 8.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding default-method conflicts completes the interface-evolution picture —
+      the final subtopic covers a hard boundary on an entirely different C# 11 feature:
+      where static abstract members can actually be called from.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Abstract Classes & Interfaces"
+    topicRoute="/csharp/abstract-interfaces"
+    [prev]="{ label: 'Testing Default Interface Method Resolution', route: '/csharp/abstract-interfaces/testing-default-interface-method-resolution' }"
+    [next]="{ label: 'static abstract Members and Generic Constraints', route: '/csharp/abstract-interfaces/static-abstract-members-generic-constraint-requirement' }" />
+</div>

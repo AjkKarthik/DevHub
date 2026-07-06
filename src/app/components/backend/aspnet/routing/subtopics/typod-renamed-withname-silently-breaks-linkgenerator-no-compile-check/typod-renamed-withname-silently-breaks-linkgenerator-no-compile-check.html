@@ -1,0 +1,30 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Routing" topicRoute="/aspnet/routing" subtopicLabel="LinkGenerator Naming Mismatch" />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">A Renamed WithName() Silently Breaks LinkGenerator — No Compile-Time Check Connects the Two Strings</h1>
+  <p class="page-subtitle">The main topic page's own NotificationService example guards with "?? throw" — a hint at a real failure mode. WithName() and GetPathByName() are connected only by matching string literals, so renaming one without the other compiles and starts cleanly, failing only at runtime by returning null.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="ASP.NET Core 2.2+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/aspnet/routing">Routing</a> — from testing route precedence in CI, to the segment-scoring algorithm behind precedence, to this LinkGenerator naming-mismatch gotcha. Return to the topic overview to continue with the next ASP.NET Core topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Routing"
+    topicRoute="/aspnet/routing"
+    [prev]="{ label: 'How Route Precedence Is Actually Computed', route: '/aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm' }"
+  />
+</div>

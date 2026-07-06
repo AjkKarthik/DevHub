@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Variables &amp; Types"
+    topicRoute="/csharp/basics"
+    subtopicLabel="Nullable Value Types: int?, HasValue, and Null-Coalescing" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Nullable Value Types: int?, HasValue, and Null-Coalescing</h1>
+  <p class="page-subtitle">
+    The main topic covers nullable REFERENCE types (string?) — int? is a completely
+    different mechanism underneath, and it comes with its own operators and pitfalls.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="C# 2" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Nullable value types are one way a value can be "missing." The next subtopic
+      covers a different kind of edge case entirely — what happens when a value type
+      overflows its range instead of being absent.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Variables &amp; Types"
+    topicRoute="/csharp/basics"
+    [next]="{ label: 'Checked and Unchecked Arithmetic: Detecting Integer Overflow', route: '/csharp/basics/checked-and-unchecked-arithmetic-detecting-integer-overflow' }" />
+</div>

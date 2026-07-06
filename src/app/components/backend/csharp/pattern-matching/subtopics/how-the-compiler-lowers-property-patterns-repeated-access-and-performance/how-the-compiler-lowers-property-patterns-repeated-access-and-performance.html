@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Pattern Matching"
+    topicRoute="/csharp/pattern-matching"
+    subtopicLabel="How the Compiler Lowers Property Patterns" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">How the Compiler Lowers Property Patterns: Repeated Access and Performance</h1>
+  <p class="page-subtitle">
+    The main topic shows property pattern syntax extensively but never the generated code
+    underneath — this subtopic explains what's actually cached, what's re-evaluated, and
+    why patterns aren't meaningfully slower than hand-written checks.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 8.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with test-suite exhaustiveness and EF Core translation limits, understanding
+      how patterns actually lower completes the picture of pattern matching as a real
+      production tool, not just readable syntax sugar.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pattern Matching"
+    topicRoute="/csharp/pattern-matching"
+    [prev]="{ label: 'Pattern Matching in EF Core LINQ Queries', route: '/csharp/pattern-matching/pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws' }" />
+</div>

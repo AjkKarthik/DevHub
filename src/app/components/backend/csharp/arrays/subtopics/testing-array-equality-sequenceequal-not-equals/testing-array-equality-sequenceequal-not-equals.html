@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Arrays" topicRoute="/csharp/arrays" subtopicLabel="Testing Array Equality" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Array Equality: Why == and Equals() Don't Work and You Need SequenceEqual</h1>
+  <p class="page-subtitle">Arrays never override Equals() or == — both fall back to reference identity. See why xUnit's Assert.Equal appears to work anyway, and why plain code needs SequenceEqual to compare array contents correctly.</p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Now that you've seen a testing/comparison gotcha, the next subtopic goes deeper into the main <a routerLink="/csharp/arrays">Arrays</a> page's own covariance section — exactly what the runtime does on every single write to a covariant array reference.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Arrays"
+    topicRoute="/csharp/arrays"
+    [next]="{ label: 'The Real Cost of Array Covariance', route: '/csharp/arrays/real-cost-of-array-covariance-runtime-type-check-every-store' }"
+  />
+</div>

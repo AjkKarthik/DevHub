@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="OOP &amp; Classes"
+    topicRoute="/csharp/oop"
+    subtopicLabel="Virtual Member Calls from Constructors: An Initialization-Order Footgun" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Virtual Member Calls from Constructors: An Initialization-Order Footgun</h1>
+  <p class="page-subtitle">
+    None of the main topic's constructors call a virtual method. Here's exactly what
+    happens — and why it produces a NullReferenceException from "correct" code — when one does.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="C# 1" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Construction order is one subtle corner of interface/inheritance mechanics.
+      The final subtopic covers a completely different one — explicit interface
+      implementation, a feature the main topic never mentions at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OOP &amp; Classes"
+    topicRoute="/csharp/oop"
+    [prev]="{ label: 'Testing Polymorphic Code: Mocking Interfaces and Verifying Virtual Dispatch', route: '/csharp/oop/testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch' }"
+    [next]="{ label: 'Explicit Interface Implementation: Resolving Name Collisions', route: '/csharp/oop/explicit-interface-implementation-resolving-name-collisions' }" />
+</div>

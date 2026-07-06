@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Arrays" topicRoute="/csharp/arrays" subtopicLabel="params Arrays Silently Allocate" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">params int[] Silently Allocates a New Array Every Call — and the C# 12 Span Fix</h1>
+  <p class="page-subtitle">A params array parameter allocates a brand-new heap array at every call site, with no "new" keyword in sight. See why, and how C# 12's params ReadOnlySpan&lt;T&gt; overload can eliminate the allocation for read-only call sites.</p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 12" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This closes the loop on the main <a routerLink="/csharp/arrays">Arrays</a> page's own Span&lt;T&gt; guidance — the same zero-allocation philosophy now applied to a hidden allocation most C# developers never notice: the params call site itself.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Arrays"
+    topicRoute="/csharp/arrays"
+    [prev]="{ label: 'The Real Cost of Array Covariance', route: '/csharp/arrays/real-cost-of-array-covariance-runtime-type-check-every-store' }"
+  />
+</div>

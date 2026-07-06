@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="API Versioning"
+    topicRoute="/aspnet/api-versioning"
+    subtopicLabel="The apiVersion Constraint's Real Job"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Why Omitting the apiVersion Constraint Causes an Ambiguous Match</h1>
+  <p class="page-subtitle">
+    The main page says a missing constraint means requests "route to the same controller." With separate
+    versioned actions sharing a route template, it's worse — every request throws
+    AmbiguousMatchException, a 500 error, from the very first hit.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own route-constraint guidance. The
+      final subtopic in this set turns to <code>ApiVersionReader.Combine()</code> — and what actually
+      happens when its combined strategies disagree about which version a request is asking for.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="API Versioning"
+    topicRoute="/aspnet/api-versioning"
+    [prev]="{ label: 'Testing That Versioned Endpoints Return Genuinely Different Shapes', route: '/aspnet/api-versioning/testing-versioned-endpoints-return-genuinely-different-shapes' }"
+    [next]="{ label: 'What Happens When Combined Version Readers Disagree', route: '/aspnet/api-versioning/what-happens-when-combined-version-readers-disagree' }"
+  />
+</div>

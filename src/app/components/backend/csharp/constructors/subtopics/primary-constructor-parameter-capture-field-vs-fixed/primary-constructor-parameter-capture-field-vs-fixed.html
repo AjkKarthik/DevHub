@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Constructors"
+    topicRoute="/csharp/constructors"
+    subtopicLabel="Primary Constructor Parameter Capture" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Primary Constructor Parameter Capture: When It's a Field vs When It's Fixed</h1>
+  <p class="page-subtitle">
+    The main topic mentions capture in passing — a property initializer copies the value
+    once and fixes it forever, while a method-body reference is silently promoted to a
+    live, compiler-generated field. Using both creates two independent copies.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since="C# 12" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Understanding capture semantics prevents a genuinely subtle state-drift bug — the
+      final subtopic covers a related production concern: what actually happens when a
+      static constructor fails.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Constructors"
+    topicRoute="/csharp/constructors"
+    [prev]="{ label: 'Testing Constructor Validation and Chaining', route: '/csharp/constructors/testing-constructor-validation-and-chaining' }"
+    [next]="{ label: 'Diagnosing TypeInitializationException', route: '/csharp/constructors/diagnosing-typeinitializationexception-inner-exception' }" />
+</div>

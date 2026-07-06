@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="dynamic & the DLR" topicRoute="/csharp/dynamic" subtopicLabel="Inside the DLR Call Site" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Inside the DLR Call Site: How CallSite&lt;T&gt; Builds Its Rule Cache and When It Falls Back to the Slow Path</h1>
+  <p class="page-subtitle">The main topic page says call sites cache "per operand types" and degrade when types vary. See the concrete monomorphic → polymorphic → megamorphic progression — the same concept as polymorphic inline caching in other dynamic runtimes.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="C# 4+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic connects dynamic back to a topic covered earlier this session — using <code>dynamic</code> to work around the anonymous-type assembly-boundary restriction, and the hidden cost that comes with it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="dynamic & the DLR"
+    topicRoute="/csharp/dynamic"
+    [prev]="{ label: 'Testing DynamicObject Wrappers', route: '/csharp/dynamic/testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths' }"
+    [next]="{ label: 'Anonymous Types as dynamic', route: '/csharp/dynamic/anonymous-types-as-dynamic-assembly-boundary-hidden-cost' }"
+  />
+</div>

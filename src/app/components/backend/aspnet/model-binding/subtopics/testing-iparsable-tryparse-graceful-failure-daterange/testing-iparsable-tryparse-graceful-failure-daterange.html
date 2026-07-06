@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Model Binding &amp; Validation"
+    topicRoute="/aspnet/model-binding"
+    subtopicLabel="Testing IParsable's TryParse"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing IParsable's TryParse for Graceful Failure</h1>
+  <p class="page-subtitle">
+    The main page's own DateRange example wraps Parse in a blanket try/catch. Different malformed inputs
+    throw different exception types underneath — here's how to prove the catch actually covers all of
+    them, not just the one you thought of.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own IParsable example. The next subtopic goes underneath
+      DataAnnotations' recursive nested-object validation — explaining the actual walk, and a stack
+      overflow risk <code>[ValidateNever]</code> exists to prevent.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Model Binding &amp; Validation"
+    topicRoute="/aspnet/model-binding"
+    [next]="{ label: 'How Recursive Nested Validation Walks the Object Graph', route: '/aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference' }"
+  />
+</div>

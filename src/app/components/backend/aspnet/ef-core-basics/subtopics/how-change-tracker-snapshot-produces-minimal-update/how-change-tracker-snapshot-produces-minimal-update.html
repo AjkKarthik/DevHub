@@ -1,0 +1,44 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="EF Core Basics"
+    topicRoute="/aspnet/ef-core-basics"
+    subtopicLabel="The Change Tracker's Snapshot Mechanism"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How the Change Tracker Snapshot Produces a Minimal UPDATE</h1>
+  <p class="page-subtitle">
+    The main page states load-then-modify produces a minimal UPDATE and Update() marks everything
+    Modified, as two separate facts. The connection is OriginalValues vs CurrentValues — and why a
+    never-loaded entity has nothing to compare against.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own load-then-modify guidance. The
+      final subtopic in this set turns to <code>DbUpdateConcurrencyException</code> recovery — and the
+      real difference between two "catch it and decide" strategies the main page names but doesn't
+      contrast.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="EF Core Basics"
+    topicRoute="/aspnet/ef-core-basics"
+    [prev]="{ label: 'Testing That AsNoTracking() Queries Are Genuinely Untracked', route: '/aspnet/ef-core-basics/testing-asnotracking-queries-genuinely-arent-tracked-sqlite' }"
+    [next]="{ label: 'Reload() Discards the Edit, GetDatabaseValuesAsync Preserves It', route: '/aspnet/ef-core-basics/reload-discards-edit-getdatabasevaluesasync-preserves-it' }"
+  />
+</div>

@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="P/Invoke & Native Interop" topicRoute="/csharp/pinvoke" subtopicLabel="SetLastError Clobbering" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">SetLastError Can Be Silently Clobbered by Any P/Invoke Call in Between — Read It Immediately, Not After Other Work</h1>
+  <p class="page-subtitle">The main topic page shows CreateDirectory followed immediately by Marshal.GetLastPInvokeError() — safe. The gotcha appears the moment anything else, even an innocent-looking logging call, runs in between and happens to route through its own native call first.</p>
+
+  <app-page-meta [readingTime]="8" difficulty="advanced" since=".NET 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/csharp/pinvoke">P/Invoke &amp; Native Interop</a> — from testing code around P/Invoke, to why blittable types skip marshalling, to this SetLastError clobbering gotcha. Return to the topic overview to continue with the next C# topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="P/Invoke & Native Interop"
+    topicRoute="/csharp/pinvoke"
+    [prev]="{ label: 'Why Blittable Types Skip Marshalling Entirely', route: '/csharp/pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle' }"
+  />
+</div>

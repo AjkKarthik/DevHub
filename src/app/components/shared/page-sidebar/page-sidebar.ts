@@ -4231,6 +4231,616 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'micro-frontends/testing-cross-mfe-communication-with-a-mocked-event-bus': {
+    apis: ['window.dispatchEvent()', 'CustomEvent<T>', 'DestroyRef.onDestroy()'],
+    related: [
+      { label: 'Micro-Frontends (overview)',                                       route: '/angular/micro-frontends' },
+      { label: 'Debugging Duplicate Angular Runtime Issues — next',                  route: '/angular/micro-frontends/debugging-duplicate-angular-runtime-issues' },
+    ],
+    tip: 'window is the shared contract, not a direct code reference — the dispatching and listening sides of a cross-MFE event can be tested as two completely separate unit tests.',
+    docs: [
+      { label: 'CustomEvent API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent' },
+      { label: 'Native Federation Docs', url: 'https://www.npmjs.com/package/@angular-architects/native-federation' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A typo\'d event name string compiles fine — only asserting the EXACT type and detail shape against the shared interface catches it.',
+      'Test the cleanup path too — dispatching the event again after destroying the component catches a missing removeEventListener call.',
+    ],
+  },
+
+  'micro-frontends/debugging-duplicate-angular-runtime-issues': {
+    apis: ['shareAll()', 'singleton: true', 'providedIn: root'],
+    related: [
+      { label: 'Testing Cross-MFE Communication with a Mocked Event Bus — previous', route: '/angular/micro-frontends/testing-cross-mfe-communication-with-a-mocked-event-bus' },
+      { label: 'Micro-Frontends (overview)',                                          route: '/angular/micro-frontends' },
+      { label: 'CSS Style Isolation with ShadowDom Encapsulation — next',               route: '/angular/micro-frontends/css-style-isolation-with-shadowdom-encapsulation' },
+    ],
+    tip: 'A shared marker service (providedIn: root, random instanceId at construction) proves whether Angular is genuinely a singleton — the SAME id across the shell and a remote confirms sharing worked.',
+    docs: [
+      { label: 'Native Federation Config', url: 'https://www.npmjs.com/package/@angular-architects/native-federation' },
+      { label: 'Injectable API',           url: 'https://angular.dev/api/core/Injectable' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Compare chunk SIZES in the Network tab, not names — chunk names differ between apps due to separate build hashes regardless of sharing status.',
+      'Angular DevTools shows one app\'s component tree at a time and does not natively cross a federation boundary.',
+    ],
+  },
+
+  'micro-frontends/css-style-isolation-with-shadowdom-encapsulation': {
+    apis: ['ViewEncapsulation.ShadowDom', 'CSS custom properties', 'Shadow Root'],
+    related: [
+      { label: 'Debugging Duplicate Angular Runtime Issues — previous', route: '/angular/micro-frontends/debugging-duplicate-angular-runtime-issues' },
+      { label: 'Micro-Frontends (overview)',                              route: '/angular/micro-frontends' },
+    ],
+    tip: 'Emulated encapsulation only prevents component-to-component leakage within the SAME Angular app — ShadowDom creates a true browser-level boundary against another micro-frontend\'s global styles.',
+    docs: [
+      { label: 'ViewEncapsulation API', url: 'https://angular.dev/api/core/ViewEncapsulation' },
+      { label: 'MDN Shadow DOM',        url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'CSS custom properties DO cross shadow boundaries by inheritance — only regular selectors and non-inherited rules are blocked.',
+      'A shell\'s global font, CSS reset, or design-system base styles must be explicitly imported into the shadow-rooted component\'s own styleUrls, not inherited.',
+    ],
+  },
+
+  'angular-devtools/building-a-why-did-this-render-debug-helper': {
+    apis: ['effect()', 'console.log()', 'signal getters'],
+    related: [
+      { label: 'Angular DevTools (overview)',                        route: '/angular/angular-devtools' },
+      { label: 'Safely Enabling DevTools on Staging — next',           route: '/angular/angular-devtools/safely-enabling-devtools-on-staging' },
+    ],
+    tip: 'An effect() that compares previous vs current signal snapshots is a code-based complement to the Profiler\'s "why" tooltip — works without the extension installed and can be shared in a bug report.',
+    docs: [
+      { label: 'effect() API',    url: 'https://angular.dev/api/core/effect' },
+      { label: 'DevTools Guide',  url: 'https://angular.dev/tools/devtools' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'An effect()-based logger fires only when its tracked signal dependencies actually change — unlike a console.log in ngDoCheck, which fires on every CD cycle regardless.',
+      'Guard debug helpers like this behind an environment flag — they should never ship active to real production users.',
+    ],
+  },
+
+  'angular-devtools/safely-enabling-devtools-on-staging': {
+    apis: ['enableDebugTools()', 'dynamic import()', 'fileReplacements'],
+    related: [
+      { label: 'Building a "Why Did This Render?" Debug Helper — previous', route: '/angular/angular-devtools/building-a-why-did-this-render-debug-helper' },
+      { label: 'Angular DevTools (overview)',                                 route: '/angular/angular-devtools' },
+      { label: 'Turning a Profiler Finding into a Regression Test — next',      route: '/angular/angular-devtools/turning-a-profiler-finding-into-a-regression-test' },
+    ],
+    tip: 'A runtime "if" check controls whether debug-enabling code EXECUTES, not whether it is INCLUDED in the bundle — a dynamic import is needed to genuinely exclude it from production.',
+    docs: [
+      { label: 'enableDebugTools API', url: 'https://angular.dev/api/platform-browser/enableDebugTools' },
+      { label: 'File Replacements',    url: 'https://angular.dev/tools/cli/environments' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'The most robust pattern uses a SEPARATE environment.staging.ts file (via fileReplacements), so the production build never contains the debug-enabling branch at all.',
+      'A visible on-page banner is a stronger safety signal than a console warning, since testers may not have devtools open.',
+    ],
+  },
+
+  'angular-devtools/turning-a-profiler-finding-into-a-regression-test': {
+    apis: ['toBe() (reference equality)', 'computed()', 'jasmine expect()'],
+    related: [
+      { label: 'Safely Enabling DevTools on Staging — previous', route: '/angular/angular-devtools/safely-enabling-devtools-on-staging' },
+      { label: 'Angular DevTools (overview)',                      route: '/angular/angular-devtools' },
+    ],
+    tip: 'A DevTools trace is a one-time manual snapshot — converting the finding into an automated reference-equality assertion (toBe, not toEqual) is what makes the fix durable against future regressions.',
+    docs: [
+      { label: 'computed() API', url: 'https://angular.dev/api/core/computed' },
+      { label: 'Testing Guide',  url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A test asserting reference STABILITY needs a companion test proving a RELEVANT change still produces a NEW reference, or the assertion could trivially pass on a broken always-stable computed().',
+      'Performance regression tests assert the ABSENCE of unnecessary work — a genuinely different kind of claim from most functional tests.',
+    ],
+  },
+
+  'bundle-optimization/testing-defer-blocks-with-deferblockfixture': {
+    apis: ['DeferBlockBehavior.Manual', 'fixture.getDeferBlocks()', 'DeferBlockState'],
+    related: [
+      { label: 'Bundle Optimization (overview)',                              route: '/angular/bundle-optimization' },
+      { label: 'Detecting Duplicate Dependencies Across Lazy Chunks — next',    route: '/angular/bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks' },
+    ],
+    tip: 'Angular\'s default test behavior (Playthrough) auto-progresses through every @defer state synchronously — opt into DeferBlockBehavior.Manual to actually verify the placeholder, loading, and error UI.',
+    docs: [
+      { label: '@defer Testing Guide', url: 'https://angular.dev/guide/templates/defer#testing-defer' },
+      { label: '@defer Guide',         url: 'https://angular.dev/guide/templates/defer' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'DeferBlockFixture.render(DeferBlockState.Error) lets you test the error UI without a genuinely failing chunk load.',
+      'Manual mode applies to ALL states including Complete — even the final loaded-content assertion needs an explicit .render() call.',
+    ],
+  },
+
+  'bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks': {
+    apis: ['esbuild metafile', '--stats-json', 'common-chunk extraction'],
+    related: [
+      { label: 'Testing @defer Blocks with DeferBlockFixture — previous',        route: '/angular/bundle-optimization/testing-defer-blocks-with-deferblockfixture' },
+      { label: 'Bundle Optimization (overview)',                                  route: '/angular/bundle-optimization' },
+      { label: 'Automated Bundle Budget Enforcement in CI — next',                  route: '/angular/bundle-optimization/automated-bundle-budget-enforcement-in-ci' },
+    ],
+    tip: 'Common-chunk extraction relies on resolving to the SAME underlying module — inconsistent import paths across features can defeat it and silently duplicate a large dependency.',
+    docs: [
+      { label: 'esbuild Metafile',      url: 'https://esbuild.github.io/api/#metafile' },
+      { label: 'esbuild Bundle Analyzer', url: 'https://esbuild.github.io/analyze/' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Comparing raw chunk file sizes is not enough — the metafile shows exactly which source files contributed to each output chunk.',
+      'The usual fix is import-path consistency (often via a small shared wrapper module), not a bundler configuration change.',
+    ],
+  },
+
+  'bundle-optimization/automated-bundle-budget-enforcement-in-ci': {
+    apis: ['angular.json budgets', 'PR size-diff comment', 'baseline JSON'],
+    related: [
+      { label: 'Detecting Duplicate Dependencies Across Lazy Chunks — previous', route: '/angular/bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks' },
+      { label: 'Bundle Optimization (overview)',                                  route: '/angular/bundle-optimization' },
+    ],
+    tip: 'A static budget catches one big jump but misses ten small PRs that each add a modest amount, quietly bloating the bundle over months — a percentage-based trend check catches gradual creep.',
+    docs: [
+      { label: 'Angular Build Budgets', url: 'https://angular.dev/reference/configs/workspace-config#configuring-size-budgets' },
+      { label: 'GitHub Actions',        url: 'https://docs.github.com/en/actions' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A trend check should be a review-visible comment, not a hard merge block — the static angular.json budget remains the hard ceiling.',
+      'The baseline must only update on merge to the target branch — updating it on every PR build makes the trend check meaningless.',
+    ],
+  },
+
+  'wizard-form/deep-linking-wizard-steps-with-query-params': {
+    apis: ['ActivatedRoute.snapshot', 'Router.navigate()', 'queryParamsHandling', 'replaceUrl'],
+    related: [
+      { label: 'Multi-Step Wizard Form (overview)',                       route: '/angular/wizard-form' },
+      { label: 'Angular CDK Stepper vs a Hand-Rolled Wizard — next',       route: '/angular/wizard-form/cdk-stepper-vs-hand-rolled-wizard' },
+    ],
+    tip: 'One effect() writing step() to the URL on every change beats scattering router.navigate() calls inside next() and back() separately — it can never drift out of sync.',
+    docs: [
+      { label: 'Router — Query Parameters', url: 'https://angular.dev/guide/routing/read-route-state#query-parameters' },
+      { label: 'Router.navigate()',         url: 'https://angular.dev/api/router/Router#navigate' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'replaceUrl: true avoids flooding browser history with one entry per step — omit it deliberately if you WANT the back button to step through the wizard.',
+      'A step read from the URL must be clamped against real validated progress, not trusted at face value — a hand-edited URL can request any step.',
+    ],
+  },
+
+  'wizard-form/cdk-stepper-vs-hand-rolled-wizard': {
+    apis: ['CdkStepper', 'CdkStep', '[stepControl]', 'cdkStepperNext'],
+    related: [
+      { label: 'Deep-Linking Wizard Steps with Query Params — previous', route: '/angular/wizard-form/deep-linking-wizard-steps-with-query-params' },
+      { label: 'Multi-Step Wizard Form (overview)',                       route: '/angular/wizard-form' },
+      { label: 'Testing Wizard Steps in Isolation — next',                 route: '/angular/wizard-form/testing-wizard-steps-in-isolation' },
+    ],
+    tip: 'CdkStepper is deliberately unstyled — it manages step state, linear-mode validation gating, and keyboard/ARIA behavior only; you still write your own headers and CSS.',
+    docs: [
+      { label: 'CDK Stepper Overview', url: 'https://material.angular.dev/cdk/stepper/overview' },
+      { label: 'CdkStepper API',       url: 'https://material.angular.dev/cdk/stepper/api' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Extending CdkStepper requires re-providing it: { provide: CdkStepper, useExisting: YourComponent } — otherwise child <cdk-step> elements cannot find their parent.',
+      'linear mode gates advancement on [stepControl].valid — it has no built-in concept of conditionally SKIPPING a step entirely.',
+    ],
+  },
+
+  'wizard-form/testing-wizard-steps-in-isolation': {
+    apis: ['new FormBuilder()', 'TestBed.createComponent()', 'component.next()', 'fixture.detectChanges()'],
+    related: [
+      { label: 'Angular CDK Stepper vs a Hand-Rolled Wizard — previous', route: '/angular/wizard-form/cdk-stepper-vs-hand-rolled-wizard' },
+      { label: 'Multi-Step Wizard Form (overview)',                       route: '/angular/wizard-form' },
+    ],
+    tip: 'FormBuilder has no constructor dependencies — new FormBuilder() works in a plain describe block with no TestBed setup at all, the fastest tier for pure validator tests.',
+    docs: [
+      { label: 'Testing Reactive Forms', url: 'https://angular.dev/guide/forms/reactive-forms#testing-reactive-forms' },
+      { label: 'Component Testing Overview', url: 'https://angular.dev/guide/testing/components-basics' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Call component.next()/back() directly instead of clicking DOM buttons — the click handler is a thin wrapper with no separate logic to test.',
+      'back() must never validate — test it explicitly with a deliberately invalid step rather than assuming it mirrors next().',
+    ],
+  },
+
+  'web-workers/testing-components-that-use-web-workers': {
+    apis: ['WorkerFactory (injectable)', 'MockWorker', 'jasmine.createSpy', 'fixture.destroy()'],
+    related: [
+      { label: 'Web Workers (overview)',                                      route: '/angular/web-workers' },
+      { label: 'Building a Worker Pool for Parallel Task Dispatch — next',     route: '/angular/web-workers/building-a-worker-pool-for-parallel-task-dispatch' },
+    ],
+    tip: 'jsdom has no Worker implementation at all — wrap worker creation behind an injectable factory so tests can substitute a synchronous mock instead of a real thread.',
+    docs: [
+      { label: 'Angular Testing Overview', url: 'https://angular.dev/guide/testing' },
+      { label: 'Web Workers API — MDN',     url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A mock worker only needs to satisfy postMessage/onmessage/onerror/terminate — it does not need to run any real off-thread logic.',
+      'Test cleanup on ALL exit paths — success, error, AND early component destruction (fixture.destroy() while a task is still pending).',
+    ],
+  },
+
+  'web-workers/building-a-worker-pool-for-parallel-task-dispatch': {
+    apis: ['navigator.hardwareConcurrency', 'Promise.all()', 'task ID correlation', 'pool.run()'],
+    related: [
+      { label: 'Testing Components That Use Web Workers — previous', route: '/angular/web-workers/testing-components-that-use-web-workers' },
+      { label: 'Web Workers (overview)',                              route: '/angular/web-workers' },
+      { label: 'Debugging and Profiling Web Workers in DevTools — next', route: '/angular/web-workers/debugging-and-profiling-web-workers-in-devtools' },
+    ],
+    tip: 'Size the pool to roughly navigator.hardwareConcurrency — more workers than available CPU cores adds thread-scheduling overhead without real added parallelism.',
+    docs: [
+      { label: 'navigator.hardwareConcurrency — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Navigator/hardwareConcurrency' },
+      { label: 'Web Workers API — MDN',               url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Tasks complete out of order under real concurrency — echo a unique ID back from the worker so responses route to the correct caller.',
+      'Terminate all pool workers together when the pool itself is discarded, not after each individual task.',
+    ],
+  },
+
+  'web-workers/debugging-and-profiling-web-workers-in-devtools': {
+    apis: ['Sources panel context dropdown', 'chrome://inspect/#workers', 'Performance panel worker lanes', 'debugger;'],
+    related: [
+      { label: 'Building a Worker Pool for Parallel Task Dispatch — previous', route: '/angular/web-workers/building-a-worker-pool-for-parallel-task-dispatch' },
+      { label: 'Web Workers (overview)',                                       route: '/angular/web-workers' },
+    ],
+    tip: 'The Performance panel records every active thread — each worker gets its own flame-chart lane beneath the main thread\'s, the most direct way to visually confirm work actually moved off-thread.',
+    docs: [
+      { label: 'Chrome DevTools — Multi-Thread JS Debugging', url: 'https://developer.chrome.com/docs/devtools/javascript/reference' },
+      { label: 'Chrome DevTools — Performance Panel',          url: 'https://developer.chrome.com/docs/devtools/performance' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A short-lived worker may finish before you select its context from the dropdown — add a temporary debugger; statement at the top of the worker script to guarantee a pause.',
+      'A worker breakpoint pauses only that worker thread — the main page stays fully interactive, unlike a main-thread breakpoint.',
+    ],
+  },
+
+  'pwa/testing-update-prompts-and-install-banners': {
+    apis: ['TestBed.overrideProvider', 'fake SwUpdate Subject', 'window.dispatchEvent', 'beforeinstallprompt'],
+    related: [
+      { label: 'PWA & Service Workers (overview)',                                route: '/angular/pwa' },
+      { label: 'Handling Unrecoverable State and Manual Update Checks — next',     route: '/angular/pwa/handling-unrecoverable-state-and-manual-update-checks' },
+    ],
+    tip: 'SwUpdate is an ordinary DI-provided class — substitute a fake with a plain Subject for versionUpdates so tests run deterministically with no real service worker.',
+    docs: [
+      { label: 'SwUpdate API', url: 'https://angular.dev/api/service-worker/SwUpdate' },
+      { label: 'Angular Testing Overview', url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'The fixture must be created BEFORE dispatching a fake beforeinstallprompt event — the component registers its listener in the constructor.',
+      'These tests verify the component\'s reaction only — pair them with manual verification via ng build + DevTools for the real end-to-end flow.',
+    ],
+  },
+
+  'pwa/handling-unrecoverable-state-and-manual-update-checks': {
+    apis: ['SwUpdate.unrecoverable', 'VERSION_INSTALLATION_FAILED', 'checkForUpdate()', 'visibilitychange'],
+    related: [
+      { label: 'Testing Update Prompts and Install Banners — previous', route: '/angular/pwa/testing-update-prompts-and-install-banners' },
+      { label: 'PWA & Service Workers (overview)',                       route: '/angular/pwa' },
+      { label: 'SPA Routing Pitfalls — next',                             route: '/angular/pwa/spa-routing-pitfalls-navigationurls-and-app-shell-fallback' },
+    ],
+    tip: 'unrecoverable means the CURRENTLY running app is broken (not that a new version is available) — respond with an immediate forced reload, not a dismissible prompt.',
+    docs: [
+      { label: 'SwUpdate API', url: 'https://angular.dev/api/service-worker/SwUpdate' },
+      { label: 'Page Visibility API — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A VERSION_READY-only implementation silently ignores VERSION_INSTALLATION_FAILED and unrecoverable — the app can break with zero user-facing signal.',
+      'The SW only checks for updates on startup and navigation by default — a long-lived tab needs an explicit checkForUpdate() trigger.',
+    ],
+  },
+
+  'pwa/spa-routing-pitfalls-navigationurls-and-app-shell-fallback': {
+    apis: ['navigationUrls', 'ngsw-config.json "index"', 'default exclusion patterns'],
+    related: [
+      { label: 'Handling Unrecoverable State and Manual Update Checks — previous', route: '/angular/pwa/handling-unrecoverable-state-and-manual-update-checks' },
+      { label: 'PWA & Service Workers (overview)',                                  route: '/angular/pwa' },
+    ],
+    tip: 'A dot in a route segment (e.g. /report.v2) is treated as a file request by the default navigationUrls exclusion pattern — re-include it explicitly or offline deep-links to it 404.',
+    docs: [
+      { label: 'Angular Service Worker Config', url: 'https://angular.dev/ecosystem/service-workers/config' },
+      { label: 'App Shell Guide',                url: 'https://angular.dev/ecosystem/service-workers/app-shell' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A server-side history-API-fallback fix only helps while online — the SW\'s own navigationUrls config governs behavior once it is actively intercepting requests, including offline.',
+      'Reproduce locally by checking "Offline" in DevTools\' Application panel after installing the SW, then navigating directly to the affected deep link.',
+    ],
+  },
+
+  'i18n/testing-components-that-use-transloco-and-signal-i18n': {
+    apis: ['TranslocoTestingModule', 'fixture.detectChanges()', 'setActiveLang()', 'Intl.PluralRules'],
+    related: [
+      { label: 'Internationalisation (i18n) (overview)',                       route: '/angular/i18n' },
+      { label: 'Building RTL Layout Support with Logical CSS Properties — next', route: '/angular/i18n/building-rtl-layout-support-with-logical-css-properties' },
+    ],
+    tip: 'Assert against the SAME translation map or Transloco testing config the component reads from — not a duplicated literal — so a translator copy edit doesn\'t spuriously break the test.',
+    docs: [
+      { label: 'Transloco Testing Guide', url: 'https://jsverse.gitbook.io/transloco/testing' },
+      { label: 'Angular Testing Overview', url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Also assert the DOM text actually CHANGED after a language switch, not just that it matches the new locale — a broken reactivity chain can coincidentally render correct text.',
+      'TranslocoTestingModule supplies translation JSON in-memory, bypassing TranslocoHttpLoader\'s real HTTP fetch entirely.',
+    ],
+  },
+
+  'i18n/building-rtl-layout-support-with-logical-css-properties': {
+    apis: ['dir attribute', 'margin-inline-start/end', 'inset-inline-start/end', 'text-align: start/end'],
+    related: [
+      { label: 'Testing Components That Use Transloco and Signal-Based i18n — previous', route: '/angular/i18n/testing-components-that-use-transloco-and-signal-i18n' },
+      { label: 'Internationalisation (i18n) (overview)',                                  route: '/angular/i18n' },
+      { label: 'SSR Locale Detection and Avoiding Hydration Mismatches — next',            route: '/angular/i18n/ssr-locale-detection-and-avoiding-hydration-mismatches' },
+    ],
+    tip: 'CSS logical properties (margin-inline-start, text-align: start) resolve automatically based on the ambient dir attribute — most layout CSS needs zero [dir]-specific overrides once authored this way.',
+    docs: [
+      { label: 'CSS Logical Properties — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values' },
+      { label: 'dir attribute — MDN',          url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Only icons that encode directional MEANING (a "next" chevron) should flip under RTL — icons for universal concepts (a settings gear) generally should not.',
+      'Logical properties handle spacing/positioning automatically but do NOT mirror the visual content of an SVG or icon glyph — that needs an explicit [dir="rtl"] transform rule.',
+    ],
+  },
+
+  'i18n/ssr-locale-detection-and-avoiding-hydration-mismatches': {
+    apis: ['Accept-Language header', 'TransferState', 'makeStateKey', 'isPlatformServer'],
+    related: [
+      { label: 'Building RTL Layout Support with Logical CSS Properties — previous', route: '/angular/i18n/building-rtl-layout-support-with-logical-css-properties' },
+      { label: 'Internationalisation (i18n) (overview)',                              route: '/angular/i18n' },
+    ],
+    tip: 'The server and client see different locale signals (Accept-Language header vs navigator.language) — serialize the server\'s decision via TransferState so the client\'s first render reuses it instead of re-deciding.',
+    docs: [
+      { label: 'Angular SSR Guide',    url: 'https://angular.dev/guide/ssr' },
+      { label: 'TransferState API',    url: 'https://angular.dev/api/core/TransferState' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Never cache the detected locale in a module-level variable on the SSR server — a Node process serves many concurrent requests from different users.',
+      'A flash from the correct locale to a different one right after page load is the visible symptom of a hydration mismatch caused by client-side re-detection.',
+    ],
+  },
+
+  'e2e/reusing-authentication-state-across-tests-with-storagestate': {
+    apis: ['storageState()', 'setup project', 'dependencies: [\'setup\']', 'test.beforeEach vs setup'],
+    related: [
+      { label: 'E2E Testing with Playwright (overview)',                        route: '/angular/e2e' },
+      { label: 'Visual Regression Testing with Screenshot Comparisons — next',   route: '/angular/e2e/visual-regression-testing-with-screenshot-comparisons' },
+    ],
+    tip: 'A dedicated setup project authenticates ONCE and every dependent test starts already logged in — a beforeEach UI login still re-runs the full flow before every single test.',
+    docs: [
+      { label: 'Playwright Auth Guide', url: 'https://playwright.dev/docs/auth' },
+      { label: 'Test Projects & Dependencies', url: 'https://playwright.dev/docs/test-projects' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A saved storage state is a snapshot — stale session tokens can cause unexplained 401s unrelated to the feature under test.',
+      'Create one storage-state file PER ROLE (admin, regular user) via separate setup tests and Playwright projects.',
+    ],
+  },
+
+  'e2e/visual-regression-testing-with-screenshot-comparisons': {
+    apis: ['toHaveScreenshot()', '--update-snapshots', 'mask option', 'animations: \'disabled\''],
+    related: [
+      { label: 'Reusing Authentication State Across Tests with storageState — previous', route: '/angular/e2e/reusing-authentication-state-across-tests-with-storagestate' },
+      { label: 'E2E Testing with Playwright (overview)',                                  route: '/angular/e2e' },
+      { label: 'Debugging Flaky Tests: Isolation, Retries, and Sharding — next',           route: '/angular/e2e/debugging-flaky-tests-isolation-retries-and-sharding' },
+    ],
+    tip: 'The most common real-world failure is a baseline generated on one OS being compared on another — generate and update baselines from within the SAME environment CI uses.',
+    docs: [
+      { label: 'Playwright Visual Comparisons', url: 'https://playwright.dev/docs/test-snapshots' },
+      { label: 'toHaveScreenshot API',            url: 'https://playwright.dev/docs/api/class-pageassertions#page-assertions-to-have-screenshot-1' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Use the mask option to exclude dynamic content (a live timestamp) from the pixel diff instead of giving up on visual testing for that page.',
+      'Set a small maxDiffPixelRatio tolerance — byte-for-byte pixel identity is rarely achievable across different OS/GPU rendering.',
+    ],
+  },
+
+  'e2e/debugging-flaky-tests-isolation-retries-and-sharding': {
+    apis: ['test.describe.serial()', '--shard', 'merge-reports', 'trace: \'on-first-retry\''],
+    related: [
+      { label: 'Visual Regression Testing with Screenshot Comparisons — previous', route: '/angular/e2e/visual-regression-testing-with-screenshot-comparisons' },
+      { label: 'E2E Testing with Playwright (overview)',                            route: '/angular/e2e' },
+    ],
+    tip: 'A test that fails once and passes on retry often indicates a real state-isolation bug being masked, not genuine timing flakiness — check the trace before trusting the retry.',
+    docs: [
+      { label: 'Playwright Test Isolation', url: 'https://playwright.dev/docs/browser-contexts' },
+      { label: 'Playwright Sharding',        url: 'https://playwright.dev/docs/test-sharding' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'The most common real flakiness cause is SERVER-side shared state (two parallel tests creating rows with the same hardcoded name) — client-side context isolation is automatic, server-side is not.',
+      'Sharding runs each shard on a separate process — any test relying on in-memory state shared with another test breaks silently once sharded.',
+    ],
+  },
+
+  'harnesses/composing-nested-harnesses-with-getchildloader': {
+    apis: ['locatorForAll(Harness)', 'getChildLoader()', 'HarnessPredicate.with()', 'locatorFor(Harness.with())'],
+    related: [
+      { label: 'Component Harnesses (overview)',                                route: '/angular/harnesses' },
+      { label: 'Publishing Harnesses as a Public Testing Entry Point — next',     route: '/angular/harnesses/publishing-harnesses-as-a-librarys-public-testing-entry-point' },
+    ],
+    tip: 'Pass a HARNESS CLASS (not a CSS string) to locatorForAll() to get an array of fully-functional child harness instances, composing recursively to any depth.',
+    docs: [
+      { label: 'CDK Component Harness Overview', url: 'https://material.angular.dev/cdk/test-harnesses/overview' },
+      { label: 'ComponentHarness API',            url: 'https://material.angular.dev/cdk/test-harnesses/api' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'Filtering by a HarnessPredicate (finding a row by name) is far more resilient than index-based lookup, which silently breaks if sort order changes.',
+      'Each nested harness only knows its own local sub-tree — a row harness has zero knowledge of the table containing it.',
+    ],
+  },
+
+  'harnesses/publishing-harnesses-as-a-librarys-public-testing-entry-point': {
+    apis: ['ng-package.json', 'secondary entry point', 'public-api.ts', '@my-lib/component/testing'],
+    related: [
+      { label: 'Composing Nested Harnesses with getChildLoader — previous', route: '/angular/harnesses/composing-nested-harnesses-with-getchildloader' },
+      { label: 'Component Harnesses (overview)',                             route: '/angular/harnesses' },
+      { label: 'Debugging Harness Failures: Common Causes and Diagnosis — next', route: '/angular/harnesses/debugging-harness-failures-common-causes-and-diagnosis' },
+    ],
+    tip: 'A harness needs its OWN secondary entry point (separate ng-package.json + public-api.ts) — not just a co-located export — so production bundles never resolve @angular/cdk/testing.',
+    docs: [
+      { label: 'Angular Library Secondary Entry Points', url: 'https://angular.dev/tools/libraries/creating-libraries' },
+      { label: 'ng-packagr Documentation',                url: 'https://github.com/ng-packagr/ng-packagr' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A published harness\'s public methods are part of the library\'s semver contract — renaming or removing one is a breaking change, even if the component\'s runtime behavior is unaffected.',
+      'Internal DOM refactors of the component are safe in a patch release precisely because the harness absorbs them — that\'s the whole point of the abstraction.',
+    ],
+  },
+
+  'harnesses/debugging-harness-failures-common-causes-and-diagnosis': {
+    apis: ['fixture.whenStable()', 'getAllHarnesses() diagnostic', 'hostSelector mismatch', 'forgotten await'],
+    related: [
+      { label: 'Publishing Harnesses as a Public Testing Entry Point — previous', route: '/angular/harnesses/publishing-harnesses-as-a-librarys-public-testing-entry-point' },
+      { label: 'Component Harnesses (overview)',                                  route: '/angular/harnesses' },
+    ],
+    tip: 'A harness lookup failing intermittently in CI but not locally is almost always a timing issue (element not rendered yet) — add fixture.whenStable(), not a retry.',
+    docs: [
+      { label: 'CDK Component Harness Overview', url: 'https://material.angular.dev/cdk/test-harnesses/overview' },
+      { label: 'Angular Testing Overview',        url: 'https://angular.dev/guide/testing' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'getHarness() silently returns the FIRST matching instance with no error when multiple exist — this produces a wrong-behavior bug, not a crash, making it the hardest category to diagnose.',
+      'A missing await on a harness method compares a Promise object against the expected value — check for this first, it\'s the fastest category to rule out.',
+    ],
+  },
+
+  'ssr/debugging-hydration-mismatches-step-by-step': {
+    apis: ['ngSkipHydration', 'View Page Source diagnosis', 'afterNextRender()', 'signal-captured values'],
+    related: [
+      { label: 'SSR & Hydration (overview)',                                    route: '/angular/ssr' },
+      { label: 'Testing SSR-Safe Components Without a Real Server — next',       route: '/angular/ssr/testing-ssr-safe-components-without-a-real-server' },
+    ],
+    tip: 'The fix for a non-deterministic value like new Date() or Math.random() is to CAPTURE it once in a signal — not to remove it or make it platform-conditional.',
+    docs: [
+      { label: 'Angular Hydration Guide', url: 'https://angular.dev/guide/hydration' },
+      { label: 'ngSkipHydration API',      url: 'https://angular.dev/api/core/ɵɵngSkipHydration' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A hydration mismatch warning does not crash the app — Angular recovers by re-rendering the affected subtree client-side, causing the exact flash hydration exists to prevent.',
+      'ngSkipHydration still pays the flash/re-render cost, just localized to one component — reserve it for content provably impossible to render deterministically.',
+    ],
+  },
+
+  'ssr/testing-ssr-safe-components-without-a-real-server': {
+    apis: ['TestBed.configureTestingModule PLATFORM_ID override', 'renderApplication()', 'fixture.whenStable()'],
+    related: [
+      { label: 'Debugging Hydration Mismatches Step by Step — previous', route: '/angular/ssr/debugging-hydration-mismatches-step-by-step' },
+      { label: 'SSR & Hydration (overview)',                              route: '/angular/ssr' },
+      { label: 'Incremental Hydration Triggers — next',                    route: '/angular/ssr/incremental-hydration-triggers-interaction-viewport-and-timer' },
+    ],
+    tip: 'Override PLATFORM_ID to \'server\' in a normal TestBed unit test to simulate SSR — no real Node process or Express server required.',
+    docs: [
+      { label: 'Angular Hydration Guide',   url: 'https://angular.dev/guide/hydration' },
+      { label: '@angular/platform-server',  url: 'https://angular.dev/api/platform-server' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'A PLATFORM_ID override still runs inside a browser-like test environment — it verifies guard LOGIC but can miss module-scope window references only Node.js itself would catch.',
+      'afterNextRender() effects run asynchronously relative to detectChanges() — await fixture.whenStable() before asserting on them.',
+    ],
+  },
+
+  'ssr/incremental-hydration-triggers-interaction-viewport-and-timer': {
+    apis: ['hydrate on interaction', 'hydrate on viewport', 'hydrate on idle', 'compound hydrate triggers'],
+    related: [
+      { label: 'Testing SSR-Safe Components Without a Real Server — previous', route: '/angular/ssr/testing-ssr-safe-components-without-a-real-server' },
+      { label: 'SSR & Hydration (overview)',                                    route: '/angular/ssr' },
+    ],
+    tip: 'A hydrate-deferred block is still server-rendered and visible immediately — only the JS cost of attaching event listeners is deferred, not the content itself.',
+    docs: [
+      { label: '@defer with hydrate — Angular Guide', url: 'https://angular.dev/guide/incremental-hydration' },
+      { label: 'Angular Hydration Guide',              url: 'https://angular.dev/guide/hydration' },
+    ],
+    resources: [
+      { label: 'Angular — YouTube', url: 'https://www.youtube.com/@Angular', badge: 'video' },
+    ],
+    gotchas: [
+      'withEventReplay() captures a click on a still-dehydrated block and replays it once hydration completes — nothing is silently dropped.',
+      'Choose the trigger by what the content actually is: interaction for content a user might never touch, viewport for content they\'ll likely scroll to, idle as a safe adaptive default.',
+    ],
+  },
+
   // ── Template Syntax ────────────────────────────────────────────────────────
   templates: {
     apis: ['[property]', '(event)', '@if', '@for', 'async |', '?.'],
@@ -5308,6 +5918,126 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'basics/nullable-value-types-hasvalue-and-null-coalescing-operators': {
+    apis: ['Nullable<T>', 'HasValue', 'Value', 'GetValueOrDefault()', '?? / ??='],
+    related: [
+      { label: 'Variables & Types (overview)',                                    route: '/csharp/basics' },
+      { label: 'Checked and Unchecked Arithmetic — next',                          route: '/csharp/basics/checked-and-unchecked-arithmetic-detecting-integer-overflow' },
+    ],
+    tip: 'int? is Nullable<int> — a real struct with runtime behavior. string? is a compiler-only warning annotation. Same syntax, unrelated mechanisms.',
+    docs: [
+      { label: 'Nullable Value Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types' },
+      { label: 'Null-Coalescing Operators', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Accessing .Value on a null Nullable<T> throws InvalidOperationException, not NullReferenceException.',
+      'Arithmetic operators propagate null (5 + null = null); relational comparisons collapse to false when either side is null — an asymmetry worth remembering.',
+    ],
+  },
+
+  'basics/checked-and-unchecked-arithmetic-detecting-integer-overflow': {
+    apis: ['checked', 'unchecked', 'OverflowException', 'CheckForOverflowUnderflow'],
+    related: [
+      { label: 'Nullable Value Types — previous', route: '/csharp/basics/nullable-value-types-hasvalue-and-null-coalescing-operators' },
+      { label: 'Variables & Types (overview)',     route: '/csharp/basics' },
+      { label: 'Span<T> and stackalloc — next',     route: '/csharp/basics/spant-and-stackalloc-parsing-without-heap-allocations' },
+    ],
+    tip: 'C# integer arithmetic is unchecked by default — overflow silently wraps around with no exception. Wrap in checked(...) or set CheckForOverflowUnderflow project-wide to catch it.',
+    docs: [
+      { label: 'checked and unchecked', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/checked-and-unchecked' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A silently-wrapped running total or accumulator is a common, easy-to-hit real bug — not just a theoretical edge case.',
+      'decimal protects against PRECISION loss, not overflow — decimal can still overflow, just at a much larger magnitude.',
+    ],
+  },
+
+  'basics/spant-and-stackalloc-parsing-without-heap-allocations': {
+    apis: ['Span<T>', 'ReadOnlySpan<T>', 'stackalloc', 'AsSpan()'],
+    related: [
+      { label: 'Checked and Unchecked Arithmetic — previous', route: '/csharp/basics/checked-and-unchecked-arithmetic-detecting-integer-overflow' },
+      { label: 'Variables & Types (overview)',                 route: '/csharp/basics' },
+    ],
+    tip: 'Span<T> is a stack-only VIEW over existing memory — slicing a span is zero-allocation, unlike Substring() or array copying which always allocate.',
+    docs: [
+      { label: 'Span<T> Guide', url: 'https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/' },
+      { label: 'stackalloc',    url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/stackalloc' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Never stackalloc a size derived directly from untrusted input without an upper bound — risks StackOverflowException.',
+      'Span<T> is a ref struct — cannot be a class field, cannot cross an await boundary, cannot be returned pointing at its own stack frame.',
+    ],
+  },
+
+  'oop/testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch': {
+    apis: ['Mock<T>', '.Setup()', '.Verify()', 'Times.Once'],
+    related: [
+      { label: 'Classes & OOP (overview)',                                     route: '/csharp/oop' },
+      { label: 'Virtual Member Calls from Constructors — next',                 route: '/csharp/oop/virtual-member-calls-from-constructors-an-initialization-order-footgun' },
+    ],
+    tip: 'Coding against interfaces isn\'t just a style preference — it\'s the specific mechanism that makes mocking possible in a unit test.',
+    docs: [
+      { label: 'Moq — GitHub', url: 'https://github.com/devlooped/moq' },
+      { label: 'Unit Testing Best Practices', url: 'https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test using the derived type directly (Dog d = new Dog()) cannot catch an override-vs-new bug — the test must use a base-typed reference to exercise the distinction.',
+      'Times.Once/Times.Never verification catches duplicate-call bugs a return-value-only test misses entirely.',
+    ],
+  },
+
+  'oop/virtual-member-calls-from-constructors-an-initialization-order-footgun': {
+    apis: ['CA2214 analyzer', 'constructor execution order', 'virtual dispatch'],
+    related: [
+      { label: 'Testing Polymorphic Code — previous', route: '/csharp/oop/testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch' },
+      { label: 'Classes & OOP (overview)',              route: '/csharp/oop' },
+      { label: 'Explicit Interface Implementation — next', route: '/csharp/oop/explicit-interface-implementation-resolving-name-collisions' },
+    ],
+    tip: 'Base class constructors run BEFORE derived class field initializers — a virtual call from a base constructor sees uninitialized derived state.',
+    docs: [
+      { label: 'CA2214 Rule', url: 'https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2214' },
+      { label: 'Constructors Guide', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/constructors' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A NullReferenceException from this bug points its stack trace at the derived override, which looks completely correct in isolation — the root cause is elsewhere.',
+      'The fix is structural: never call virtual/abstract members from a constructor — expose an explicitly-invoked post-construction method instead.',
+    ],
+  },
+
+  'oop/explicit-interface-implementation-resolving-name-collisions': {
+    apis: ['void IInterface.Method()', 'interface-typed cast', 'IDisposable.Dispose()'],
+    related: [
+      { label: 'Virtual Member Calls from Constructors — previous', route: '/csharp/oop/virtual-member-calls-from-constructors-an-initialization-order-footgun' },
+      { label: 'Classes & OOP (overview)',                            route: '/csharp/oop' },
+    ],
+    tip: 'An explicitly-implemented member is not part of the class\'s own public surface — access it only through the interface type, e.g. ((IPrintable)doc).Print().',
+    docs: [
+      { label: 'Explicit Interface Implementation', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/interfaces/explicit-interface-implementation' },
+    ],
+    resources: [
+      { label: 'C# Language Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Two interfaces declaring the same method name can coexist on one class with completely different bodies, disambiguated by which interface they belong to.',
+      'Explicit implementation is deliberately used even with no collision (IDisposable.Dispose()) to keep a rarely-needed member off a type\'s primary public API.',
+    ],
+  },
+
   oop: {
     apis: ['class', 'interface', 'abstract', 'sealed', 'override', 'virtual'],
     related: [
@@ -5352,6 +6082,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'records/polymorphic-json-serialization-of-record-hierarchies-with-jsonderivedtype': {
+    apis: ['[JsonPolymorphic]', '[JsonDerivedType]', 'TypeDiscriminatorPropertyName'],
+    related: [
+      { label: 'Records & Structs (overview)',                              route: '/csharp/records' },
+      { label: 'Positional Pattern Matching with Records — next',           route: '/csharp/records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions' },
+    ],
+    tip: 'System.Text.Json serializes based on the STATIC type of a collection by default — a List<Animal> containing Dog instances silently drops Breed unless you configure JsonDerivedType.',
+    docs: [
+      { label: 'Polymorphic Serialization', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism' },
+    ],
+    resources: [
+      { label: 'C# 9 Records Blog', url: 'https://devblogs.microsoft.com/dotnet/c-9-0-on-the-record/', badge: 'blog' },
+    ],
+    gotchas: [
+      'EqualityContract has no bearing on serialization — polymorphic JSON output needs its own separate [JsonDerivedType] configuration.',
+      'The default discriminator field is "$type" — rename it via TypeDiscriminatorPropertyName if it collides with an existing API contract.',
+    ],
+  },
+
+  'records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions': {
+    apis: ['is (x, y)', 'switch expression', 'property pattern', 'relational pattern'],
+    related: [
+      { label: 'Polymorphic JSON Serialization of Record Hierarchies — previous', route: '/csharp/records/polymorphic-json-serialization-of-record-hierarchies-with-jsonderivedtype' },
+      { label: 'Records & Structs (overview)',                                     route: '/csharp/records' },
+      { label: 'Testing Records — next',                                            route: '/csharp/records/testing-records-equality-hash-codes-and-constructor-validation' },
+    ],
+    tip: 'A switch expression combining type patterns with positional/property patterns is the idiomatic replacement for the EqualityContract == workaround — it branches on type AND value together.',
+    docs: [
+      { label: 'Pattern Matching Overview', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/pattern-matching' },
+    ],
+    resources: [
+      { label: 'C# 9 Records Blog', url: 'https://devblogs.microsoft.com/dotnet/c-9-0-on-the-record/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Positional patterns match directly against a record\'s auto-generated Deconstruct — they can be combined with property patterns in the same expression.',
+      'Nested record patterns recurse naturally: order is (_, { City: "London" }) drills into a related record\'s own shape.',
+    ],
+  },
+
+  'records/testing-records-equality-hash-codes-and-constructor-validation': {
+    apis: ['Assert.Throws', 'GetHashCode() contract', 'with { } equality'],
+    related: [
+      { label: 'Positional Pattern Matching with Records — previous', route: '/csharp/records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions' },
+      { label: 'Records & Structs (overview)',                         route: '/csharp/records' },
+    ],
+    tip: '"Auto-generated" doesn\'t mean untestable — compact-constructor validation, custom with-based methods, and business-rule guards are all hand-written and need test coverage.',
+    docs: [
+      { label: 'Records (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record' },
+    ],
+    resources: [
+      { label: 'C# 9 Records Blog', url: 'https://devblogs.microsoft.com/dotnet/c-9-0-on-the-record/', badge: 'blog' },
+    ],
+    gotchas: [
+      'Test the boundary (zero, not just negative) to catch an accidentally-too-strict guard clause.',
+      'When testing a with-based method, assert the ORIGINAL is unchanged too — not just the returned value — to catch a future accidental mutation regression.',
+    ],
+  },
+
   generics: {
     apis: ['where T :', 'IComparable<T>', 'in/out', 'default(T)', 'typeof(T)'],
     related: [
@@ -5374,6 +6162,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'generics/testing-generic-code-parameterized-tests-across-multiple-type-arguments': {
+    apis: ['[Theory]', '[InlineData]', 'INumber<T>', 'multi-type test coverage'],
+    related: [
+      { label: 'Generics (overview)',                                    route: '/csharp/generics' },
+      { label: 'Generic Attributes (C# 11) — next',                       route: '/csharp/generics/generic-attributes-c-11-type-safe-custom-attributes' },
+    ],
+    tip: '"Works for any type" is a claim that needs a test per representative type — a generic method proven correct for int can still misbehave for decimal or a custom constrained type.',
+    docs: [
+      { label: 'xUnit Theory Data', url: 'https://xunit.net/docs/getting-started/netcore/cmdline#write-first-theory' },
+    ],
+    resources: [
+      { label: 'Generic Collections', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'A missing constraint is a COMPILE error, not a runtime one — no unit test can "catch" it, since the test project fails to build entirely.',
+      'decimal is the type most likely to reveal a rounding/precision bug a generic algorithm handles correctly for int and double alone.',
+    ],
+  },
+
+  'generics/generic-attributes-c-11-type-safe-custom-attributes': {
+    apis: ['Attribute<T>', 'static abstract in constraints', 'typeof() vs generic args'],
+    related: [
+      { label: 'Testing Generic Code Across Multiple Type Arguments — previous', route: '/csharp/generics/testing-generic-code-parameterized-tests-across-multiple-type-arguments' },
+      { label: 'Generics (overview)',                                            route: '/csharp/generics' },
+      { label: 'Writing Your Own Static Abstract Interface Members — next',        route: '/csharp/generics/writing-your-own-static-abstract-interface-members' },
+    ],
+    tip: 'A generic attribute\'s where T : IValidator constraint is enforced by the compiler — the old typeof(...) pattern accepts any type and only fails at runtime reflection time.',
+    docs: [
+      { label: 'Generic Attributes — C# 11', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#generic-attributes' },
+    ],
+    resources: [
+      { label: 'Generic Collections', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'A generic attribute\'s type argument must be a fully CLOSED concrete type — you cannot propagate an outer unbound type parameter into it.',
+      'This is a genuinely new C# 11 syntax location for generics, not just an application of existing generic class/method rules.',
+    ],
+  },
+
+  'generics/writing-your-own-static-abstract-interface-members': {
+    apis: ['static abstract', 'IParseable<T>', 'CRTP-like self-reference'],
+    related: [
+      { label: 'Generic Attributes (C# 11) — previous', route: '/csharp/generics/generic-attributes-c-11-type-safe-custom-attributes' },
+      { label: 'Generics (overview)',                    route: '/csharp/generics' },
+    ],
+    tip: 'T.Zero and T.CreateChecked(count) from the main topic\'s INumber<T> examples ARE static abstract members — a general C# 11 feature you can apply to your own interfaces, not a BCL-only mechanism.',
+    docs: [
+      { label: 'Static Abstract Members — C# 11', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#static-abstract-members-in-interfaces' },
+    ],
+    resources: [
+      { label: 'Generic Collections', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'Static abstract dispatch has no instance and no vtable — resolved through the generic type system at JIT specialization, which is why it also works for structs, unlike ordinary virtual dispatch.',
+      'The self-referencing constraint pattern (IParseable<T> where T : IParseable<T>) mirrors exactly how INumber<T> itself is declared.',
+    ],
+  },
+
   collections: {
     apis: ['List<T>', 'Dictionary<K,V>', 'HashSet<T>', 'IEnumerable<T>', 'Span<T>'],
     related: [
@@ -5393,6 +6239,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'List<T>.Remove() removes only the first matching element — use RemoveAll() to remove all occurrences.',
       'Iterating a Dictionary does not guarantee insertion order — use SortedDictionary or a List of tuples if order matters.',
+    ],
+  },
+
+  'collections/writing-custom-iequalitycomparer-and-icomparer-implementations': {
+    apis: ['IEqualityComparer<T>', 'IComparer<T>', 'GetHashCode() contract'],
+    related: [
+      { label: 'Collections (overview)',                                    route: '/csharp/collections' },
+      { label: 'FrozenDictionary and FrozenSet — next',                      route: '/csharp/collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups' },
+    ],
+    tip: 'Equals and GetHashCode in a custom comparer must normalize identically — a mismatch (like a missing .Trim() in one but not the other) breaks lookups silently.',
+    docs: [
+      { label: 'IEqualityComparer<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.iequalitycomparer-1' },
+      { label: 'IComparer<T>',          url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.icomparer-1' },
+    ],
+    resources: [
+      { label: 'Collection Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/guidelines-for-collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'IEqualityComparer<T> and IComparer<T> are separate concerns — a type can have well-defined equality with no natural ordering, or vice versa.',
+      'No built-in StringComparer variant handles domain-specific ordering like numeric version-string sorting — that needs a hand-written IComparer<T>.',
+    ],
+  },
+
+  'collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups': {
+    apis: ['FrozenDictionary<K,V>', 'FrozenSet<T>', 'ToFrozenDictionary()'],
+    related: [
+      { label: 'Writing Custom IEqualityComparer and IComparer Implementations — previous', route: '/csharp/collections/writing-custom-iequalitycomparer-and-icomparer-implementations' },
+      { label: 'Collections (overview)',                                                     route: '/csharp/collections' },
+      { label: 'Testing Concurrent Collections — next',                                       route: '/csharp/collections/testing-concurrent-collections-catching-race-conditions-in-getoradd' },
+    ],
+    tip: 'FrozenDictionary trades a slower one-time build for the fastest possible reads afterward — the textbook use case is a static lookup table built once at startup and read constantly.',
+    docs: [
+      { label: 'FrozenDictionary Overview', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.frozen.frozendictionary-2' },
+    ],
+    resources: [
+      { label: 'Collection Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/guidelines-for-collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'A collection built and read only a few times will likely spend MORE total time on Frozen construction than it saves — measure the read/write ratio first.',
+      'FrozenDictionary has no mutation API at all, unlike ImmutableDictionary which at least supports copy-on-write.',
+    ],
+  },
+
+  'collections/testing-concurrent-collections-catching-race-conditions-in-getoradd': {
+    apis: ['ConcurrentDictionary.GetOrAdd', 'Lazy<T>', 'Interlocked.Increment', 'Task.WhenAll'],
+    related: [
+      { label: 'FrozenDictionary and FrozenSet — previous', route: '/csharp/collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups' },
+      { label: 'Collections (overview)',                     route: '/csharp/collections' },
+    ],
+    tip: 'GetOrAdd\'s atomicity guarantee is about the DICTIONARY\'S final state, not about how many times the factory delegate itself runs — a counting factory under real concurrency proves this directly.',
+    docs: [
+      { label: 'ConcurrentDictionary.GetOrAdd', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2.getoradd' },
+    ],
+    resources: [
+      { label: 'Collection Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/guidelines-for-collections', badge: 'docs' },
+    ],
+    gotchas: [
+      'A race-condition test is deliberately probabilistic — this is a rare, legitimate exception to the general rule that flaky tests should be avoided.',
+      'The Lazy<T> fix should be tested as a hard invariant (factory count exactly 1), unlike the raw race test which only needs to reproduce the symptom most of the time.',
     ],
   },
 
@@ -5420,6 +6325,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'linq/writing-custom-lazy-linq-operators-with-yield-return': {
+    apis: ['yield return', 'IEnumerator<T> state machine', 'eager wrapper pattern'],
+    related: [
+      { label: 'LINQ (overview)',                                    route: '/csharp/linq' },
+      { label: 'Expression Trees — next',                             route: '/csharp/linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool' },
+    ],
+    tip: 'A method containing yield return anywhere has its ENTIRE body deferred, including argument validation — split into an eager public wrapper plus a private lazy core method to validate at call time.',
+    docs: [
+      { label: 'yield Statement', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/yield' },
+      { label: 'Iterators',        url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' },
+    ],
+    resources: [
+      { label: '101 LINQ Samples', url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool' },
+    ],
+    gotchas: [
+      'yield return is the exact mechanism the BCL\'s own Where/Select use internally to achieve the deferred execution the main topic describes.',
+      'A correctly-written custom operator composes mid-chain with built-in LINQ operators exactly like a native one.',
+    ],
+  },
+
+  'linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool': {
+    apis: ['Expression<Func<T,bool>>', 'BinaryExpression', 'MemberExpression', '.Compile()'],
+    related: [
+      { label: 'Writing Custom Lazy LINQ Operators — previous', route: '/csharp/linq/writing-custom-lazy-linq-operators-with-yield-return' },
+      { label: 'LINQ (overview)',                                route: '/csharp/linq' },
+      { label: 'Testing LINQ-Based Repository Methods — next',    route: '/csharp/linq/testing-linq-based-repository-methods-with-ef-core-in-memory' },
+    ],
+    tip: 'Func<T,bool> compiles to opaque IL; Expression<Func<T,bool>> compiles to an inspectable TREE of objects — this is the entire mechanism EF Core uses to translate LINQ into SQL.',
+    docs: [
+      { label: 'Expression Trees', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/expression-trees' },
+    ],
+    resources: [
+      { label: '101 LINQ Samples', url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An Expression<Func<T,bool>> is not directly callable — you must call .Compile() first to get back an invocable delegate.',
+      'A MethodCallExpression node (a custom C# method embedded in a predicate) is exactly why EF Core throws InvalidOperationException on untranslatable operators.',
+    ],
+  },
+
+  'linq/testing-linq-based-repository-methods-with-ef-core-in-memory': {
+    apis: ['UseInMemoryDatabase', 'IQueryable<T> composition', 'query translation gaps'],
+    related: [
+      { label: 'Expression Trees — previous', route: '/csharp/linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool' },
+      { label: 'LINQ (overview)',              route: '/csharp/linq' },
+    ],
+    tip: 'The EF Core in-memory provider does NOT use the same query translation pipeline as a real SQL provider — a query that passes in-memory can still throw against a real database.',
+    docs: [
+      { label: 'Testing with InMemory Provider', url: 'https://learn.microsoft.com/en-us/ef/core/testing/testing-without-the-database' },
+    ],
+    resources: [
+      { label: '101 LINQ Samples', url: 'https://learn.microsoft.com/en-us/samples/dotnet/try-samples/101-linq-samples/', badge: 'tool' },
+    ],
+    gotchas: [
+      'N+1 query regressions are hard to catch with the in-memory provider — it does not execute real round-trip SQL the way a genuine database does.',
+      'An IQueryable<T> return type alone does not prove a method preserved queryability — compose an additional filter onto the result to verify.',
+    ],
+  },
+
   async: {
     apis: ['async', 'await', 'Task<T>', 'CancellationToken', 'ConfigureAwait(false)'],
     related: [
@@ -5439,6 +6403,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'async void is a fire-and-forget trap — exceptions are unobserved. Only use it for event handlers, never for library methods.',
       'await inside a lock throws — use SemaphoreSlim.WaitAsync() as an async-safe mutex instead.',
+    ],
+  },
+
+  'async/testing-async-code-verifying-cancellation-and-task-failure-behavior': {
+    apis: ['async Task test methods', 'Assert.ThrowsAsync', 'InnerExceptions'],
+    related: [
+      { label: 'async / await (overview)',                            route: '/csharp/async' },
+      { label: 'IAsyncDisposable and await using — next',              route: '/csharp/async/iasyncdisposable-and-await-using-async-resource-cleanup' },
+    ],
+    tip: 'A test method must itself be async Task (not async void) — otherwise the test has the exact same "no Task to observe" problem the main topic describes for async void in general.',
+    docs: [
+      { label: 'Testing Async Code — xUnit', url: 'https://xunit.net/docs/getting-started/netcore/cmdline' },
+    ],
+    resources: [
+      { label: 'Async Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'Task.WhenAll re-throws only the FIRST exception when awaited — assert on the WhenAll task\'s own .Exception.InnerExceptions to prove ALL failures are recorded.',
+      'Cancelling a token BEFORE calling a method only proves the entry-point check works — cancel mid-operation for a stronger test.',
+    ],
+  },
+
+  'async/iasyncdisposable-and-await-using-async-resource-cleanup': {
+    apis: ['IAsyncDisposable', 'DisposeAsync()', 'await using'],
+    related: [
+      { label: 'Testing Async Code — previous',                         route: '/csharp/async/testing-async-code-verifying-cancellation-and-task-failure-behavior' },
+      { label: 'async / await (overview)',                               route: '/csharp/async' },
+      { label: 'Producer/Consumer Pipelines with Channels — next',        route: '/csharp/async/producer-consumer-pipelines-with-system-threading-channels' },
+    ],
+    tip: 'A synchronous Dispose() cannot await real async cleanup without blocking a thread — IAsyncDisposable.DisposeAsync() exists specifically to allow genuine non-blocking cleanup.',
+    docs: [
+      { label: 'IAsyncDisposable', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.iasyncdisposable' },
+    ],
+    resources: [
+      { label: 'Async Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'await using can only be used inside a method the compiler has already transformed into an async state machine.',
+      'Reserve IAsyncDisposable for types whose cleanup genuinely requires async I/O — plain IDisposable remains correct for purely synchronous cleanup.',
+    ],
+  },
+
+  'async/producer-consumer-pipelines-with-system-threading-channels': {
+    apis: ['Channel.CreateBounded', 'ChannelWriter', 'ChannelReader.ReadAllAsync'],
+    related: [
+      { label: 'IAsyncDisposable and await using — previous', route: '/csharp/async/iasyncdisposable-and-await-using-async-resource-cleanup' },
+      { label: 'async / await (overview)',                     route: '/csharp/async' },
+    ],
+    tip: 'Channel<T> decouples a producer\'s pace from a consumer\'s — a genuinely different problem than SemaphoreSlim (which caps concurrent operations), and consumed via await foreach unlike thread-blocking BlockingCollection<T>.',
+    docs: [
+      { label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/channels' },
+    ],
+    resources: [
+      { label: 'Async Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'A bounded channel applies natural backpressure — WriteAsync asynchronously waits once full, rather than buffering unboundedly.',
+      'writer.Complete() with no arguments signals normal completion silently — use Complete(exception) to propagate a producer failure to consumers.',
     ],
   },
 
@@ -5464,6 +6486,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'null-safety/enforcing-nullable-warnings-as-build-errors': {
+    apis: ['WarningsAsErrors', 'TreatWarningsAsErrors', 'CS8600-CS8629', '#nullable disable/restore'],
+    related: [
+      { label: 'Nullable Reference Types with Generics — next', route: '/csharp/null-safety/nullable-reference-types-with-generic-type-parameters' },
+      { label: 'Null Safety (overview)', route: '/csharp/null-safety' },
+    ],
+    tip: 'Start with WarningsAsErrors listing only the specific nullable codes (CS8600, CS8602, CS8603, CS8604) rather than TreatWarningsAsErrors=true, so unrelated warnings do not block adoption.',
+    docs: [
+      { label: 'Nullable Warnings Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings' },
+      { label: 'MSBuild WarningsAsErrors', url: 'https://learn.microsoft.com/en-us/visualstudio/msbuild/errors-and-warnings-msbuild' },
+    ],
+    resources: [
+      { label: 'Nullable Migration Strategies', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/nullable-migration-strategies', badge: 'docs' },
+    ],
+    gotchas: [
+      'By default, nullable warnings do not fail the build — a developer can see CS8602 in the build log and merge anyway unless WarningsAsErrors is set explicitly.',
+      'Retroactively enabling warnings-as-errors on a large legacy codebase can surface hundreds of pre-existing warnings at once — a per-file #nullable disable ratchet lets you enforce only new/audited files.',
+    ],
+  },
+
+  'null-safety/nullable-reference-types-with-generic-type-parameters': {
+    apis: ['where T : class', 'where T : struct', 'Nullable<T>', 'default(T)'],
+    related: [
+      { label: 'Enforcing Nullable Warnings — previous', route: '/csharp/null-safety/enforcing-nullable-warnings-as-build-errors' },
+      { label: 'required + System.Text.Json — next', route: '/csharp/null-safety/required-properties-and-system-text-json-deserialization' },
+      { label: 'Generics', route: '/csharp/generics' },
+    ],
+    tip: 'An unconstrained T? only behaves as a nullable annotation for reference-type instantiations — for value types it silently resolves to default(T), which is why LINQ\'s FirstOrDefault on List<int> returns 0 instead of a genuine "not found" signal.',
+    docs: [
+      { label: 'Generic Type Parameters and Nullability', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references#generics' },
+    ],
+    resources: [
+      { label: 'Nullable Reference Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references', badge: 'docs' },
+    ],
+    gotchas: [
+      'where T : class and where T : struct resolve T? to two entirely different mechanisms — an erased reference-type annotation versus the real Nullable<T> wrapper with HasValue/Value.',
+      'An unconstrained T? cannot mean Nullable<T> for value types — the compiler cannot know at compile time whether T will be a reference or value type, so it falls back to a permissive annotation that is only meaningful for reference-type instantiations.',
+    ],
+  },
+
+  'null-safety/required-properties-and-system-text-json-deserialization': {
+    apis: ['required', '[JsonRequired]', 'JsonSerializer.Deserialize', '[Required]', 'Validator.TryValidateObject'],
+    related: [
+      { label: 'Nullable Reference Types with Generics — previous', route: '/csharp/null-safety/nullable-reference-types-with-generic-type-parameters' },
+      { label: 'Null Safety (overview)', route: '/csharp/null-safety' },
+      { label: 'Records', route: '/csharp/records' },
+    ],
+    tip: 'required only enforces that a JSON key is present during deserialization since .NET 7 — it does not stop an explicit JSON null from being assigned to a non-nullable required property. Add DataAnnotations validation after deserialization to close that gap.',
+    docs: [
+      { label: 'required Modifier', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/required' },
+      { label: 'System.Text.Json Required Properties', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/required-properties' },
+    ],
+    resources: [
+      { label: 'System.Text.Json Overview', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/overview', badge: 'docs' },
+    ],
+    gotchas: [
+      'required string Bio (non-nullable, required) still allows an explicit JSON null through deserialization — the JSON key being present satisfies "required" even though the value violates the non-nullable intent.',
+      'required string? Bio (nullable AND required) is not a contradiction — it means the key must be present, but null is still an acceptable value for it.',
+    ],
+  },
+
   'pattern-matching': {
     apis: ['is', 'switch', 'when', 'and/or/not', 'property pattern', 'list pattern'],
     related: [
@@ -5483,6 +6566,304 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Property patterns only match the listed properties — unlisted ones are ignored; they cannot verify the object has no other state.',
       'The _ discard pattern in a switch expression matches everything — place it last or all subsequent arms are unreachable.',
+    ],
+  },
+
+  'pattern-matching/testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests': {
+    apis: ['GetTypes', 'IsSubclassOf', '[Theory]', '[MemberData]', 'HashSet<Type>'],
+    related: [
+      { label: 'Pattern Matching in EF Core LINQ — next', route: '/csharp/pattern-matching/pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws' },
+      { label: 'Pattern Matching (overview)', route: '/csharp/pattern-matching' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'CS8509 only guarantees the switch has an arm for every subtype — it says nothing about whether that arm is actually tested. A reflection-based coverage test closes that specific gap.',
+    docs: [
+      { label: 'Reflection Overview', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/reflection' },
+    ],
+    resources: [
+      { label: 'xUnit Theory/MemberData', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'A hand-maintained "tested types" list used only for the coverage check can itself drift out of sync — deriving it directly from the real test data (e.g. a Theory\'s MemberData) leaves only one source of truth.',
+      'A new subtype satisfying CS8509 (compiler is happy) tells you nothing about whether its behavior is actually exercised by any test.',
+    ],
+  },
+
+  'pattern-matching/pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws': {
+    apis: ['IQueryable', 'AsEnumerable', 'ToList', 'InvalidOperationException'],
+    related: [
+      { label: 'Testing Exhaustiveness — previous', route: '/csharp/pattern-matching/testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests' },
+      { label: 'How the Compiler Lowers Property Patterns — next', route: '/csharp/pattern-matching/how-the-compiler-lowers-property-patterns-repeated-access-and-performance' },
+      { label: 'LINQ', route: '/csharp/linq' },
+    ],
+    tip: 'Patterns that lower to simple comparisons on scalar, directly-mapped columns translate to SQL fine. Nested property patterns and positional patterns using Deconstruct do not — materialize with ToList()/AsEnumerable() first, then pattern-match in memory.',
+    docs: [
+      { label: 'Client vs. Server Evaluation', url: 'https://learn.microsoft.com/en-us/ef/core/querying/client-eval' },
+    ],
+    resources: [
+      { label: 'EF Core Query Translation', url: 'https://learn.microsoft.com/en-us/ef/core/querying/', badge: 'docs' },
+    ],
+    gotchas: [
+      'EF Core 3.0+ throws InvalidOperationException for an untranslatable pattern in a query predicate — but EF Core 2.x silently fell back to client evaluation, pulling far more rows into memory than intended.',
+      'A pattern that "looks simple" in C# source (like a nested property pattern) can still be untranslatable — what matters is whether it lowers to a construct EF Core\'s SQL translator recognizes, not how the pattern reads.',
+    ],
+  },
+
+  'pattern-matching/how-the-compiler-lowers-property-patterns-repeated-access-and-performance': {
+    apis: ['property pattern lowering', 'short-circuit evaluation'],
+    related: [
+      { label: 'Pattern Matching in EF Core LINQ — previous', route: '/csharp/pattern-matching/pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws' },
+      { label: 'Pattern Matching (overview)', route: '/csharp/pattern-matching' },
+    ],
+    tip: 'Within one pattern test, a property is read once and reused for every sub-condition against it. Across different switch arms, the same property is genuinely re-read per arm reached — patterns are not cached across the whole switch.',
+    docs: [
+      { label: 'Pattern Matching Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/patterns' },
+    ],
+    resources: [
+      { label: 'Pattern Matching Design Notes', url: 'https://github.com/dotnet/csharplang/blob/main/proposals/patterns.md', badge: 'code' },
+    ],
+    gotchas: [
+      'Property pattern sub-conditions short-circuit left to right, exactly like &&  — a failing early sub-condition means later properties in the same pattern are never even read.',
+      'Pattern matching lowers to ordinary field/property reads and comparisons — it is not meaningfully slower than an equivalent hand-written if/else chain with cached locals.',
+    ],
+  },
+
+  'exceptions/testing-exception-filters-verifying-when-predicate-logic': {
+    apis: ['Assert.Throws', 'Assert.ThrowsAsync', 'when', '[Fact]'],
+    related: [
+      { label: 'AppDomain.UnhandledException — next', route: '/csharp/exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception' },
+      { label: 'Exceptions (overview)', route: '/csharp/exceptions' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Extract an exception filter\'s predicate into its own named function and unit test it directly with no try/catch at all — Assert.Throws alone cannot prove which filter matched or whether its logic is correct.',
+    docs: [
+      { label: 'Exception Filters', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/exception-filters' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Assert.Throws<T> only proves SOME catch clause let the exception through — it cannot distinguish which filter evaluated or whether the filter\'s condition was too broad or too narrow.',
+      'Testing "logging without catching" requires asserting on a side effect (a spy/counter) since the exception propagates identically whether or not the filter\'s logging ran.',
+    ],
+  },
+
+  'exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception': {
+    apis: ['AppDomain.UnhandledException', 'TaskScheduler.UnobservedTaskException', 'SetObserved'],
+    related: [
+      { label: 'Testing Exception Filters — previous', route: '/csharp/exceptions/testing-exception-filters-verifying-when-predicate-logic' },
+      { label: 'Why Exceptions Are Slow — next', route: '/csharp/exceptions/why-exceptions-are-slow-stack-walking-first-chance-exceptions' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'AppDomain.UnhandledException only fires for synchronous exceptions that crash the process — it never sees a fire-and-forget Task\'s exception, which is trapped inside the Task object and only surfaces via the separate TaskScheduler.UnobservedTaskException event.',
+    docs: [
+      { label: 'AppDomain.UnhandledException', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.appdomain.unhandledexception' },
+      { label: 'TaskScheduler.UnobservedTaskException', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskscheduler.unobservedtaskexception' },
+    ],
+    resources: [
+      { label: 'Exception Handling Best Practices', url: 'https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions', badge: 'docs' },
+    ],
+    gotchas: [
+      'AppDomain.UnhandledException is a notification, not a recovery mechanism — by the time it fires the process is already terminating.',
+      'A fire-and-forget async method that throws fails completely silently unless TaskScheduler.UnobservedTaskException is explicitly wired up — no crash, no log, nothing.',
+    ],
+  },
+
+  'exceptions/why-exceptions-are-slow-stack-walking-first-chance-exceptions': {
+    apis: ['StackTrace', 'first-chance exception', 'TryParse'],
+    related: [
+      { label: 'AppDomain.UnhandledException — previous', route: '/csharp/exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception' },
+      { label: 'Exceptions (overview)', route: '/csharp/exceptions' },
+    ],
+    tip: 'The real cost of throwing is the CLR walking the call stack to build the trace and find a handler — not allocating the exception object. A try block that never throws has effectively zero overhead.',
+    docs: [
+      { label: 'Exception Performance', url: 'https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions' },
+    ],
+    resources: [
+      { label: '.NET Exception Handling', url: 'https://learn.microsoft.com/en-us/dotnet/standard/exceptions/', badge: 'docs' },
+    ],
+    gotchas: [
+      'The stack-walking cost scales with call-stack DEPTH at the throw site, not with the exception object\'s size or type.',
+      'The "avoid exceptions for control flow" guidance targets FREQUENT throws in hot paths — a single rare exception, even from deep in a call stack, has negligible cost.',
+    ],
+  },
+
+  'delegates/testing-events-xunit-assert-raises-multicast-behavior': {
+    apis: ['Assert.Raises', 'RaisedEvent<T>', 'GetInvocationList'],
+    related: [
+      { label: 'How Delegate Equality Actually Works — next', route: '/csharp/delegates/how-delegate-equality-actually-works-target-method-pairs' },
+      { label: 'Delegates & Events (overview)', route: '/csharp/delegates' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Assert.Raises<TEventArgs> handles the subscribe/run/unsubscribe cycle and gives direct access to the exact Sender and Arguments — reserve the manual flag pattern for proving an event did NOT fire, since there is no Assert.DoesNotRaise.',
+    docs: [
+      { label: 'xUnit Assert.Raises', url: 'https://xunit.net/docs/getting-started/netcore/cmdline' },
+    ],
+    resources: [
+      { label: 'Testing Events in .NET', url: 'https://learn.microsoft.com/en-us/dotnet/standard/events/', badge: 'docs' },
+    ],
+    gotchas: [
+      'A flag-based "event did not fire" test must always unsubscribe in a finally block — an event test that forgets to unsubscribe leaves its handler attached to a service instance that might outlive the test.',
+      'Testing multicast order and partial-failure behavior directly (subscribe multiple handlers appending to a shared list) proves your production code\'s actual reliance on that behavior, rather than trusting it from documentation.',
+    ],
+  },
+
+  'delegates/how-delegate-equality-actually-works-target-method-pairs': {
+    apis: ['Delegate.Equals', 'Delegate.Combine', 'Delegate.Remove'],
+    related: [
+      { label: 'Testing Events — previous', route: '/csharp/delegates/testing-events-xunit-assert-raises-multicast-behavior' },
+      { label: 'async void Event Handlers — next', route: '/csharp/delegates/async-void-event-handlers-why-exceptions-vanish' },
+      { label: 'Delegates & Events (overview)', route: '/csharp/delegates' },
+    ],
+    tip: 'Delegate equality compares the underlying (target, method) pair, not the delegate wrapper object\'s own identity — two separately created delegates wrapping the same instance method ARE delegate-equal despite failing ReferenceEquals.',
+    docs: [
+      { label: 'Delegate.Equals', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.delegate.equals' },
+    ],
+    resources: [
+      { label: 'Delegates Overview', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Each evaluation of a capturing lambda creates its own distinct closure instance — even syntactically identical lambdas are NOT delegate-equal, which is why you cannot -= a lambda you never stored a reference to.',
+      '-= removes only ONE matching entry per call — subscribing the same method-group handler N times requires N calls to -= to fully unsubscribe it.',
+    ],
+  },
+
+  'delegates/async-void-event-handlers-why-exceptions-vanish': {
+    apis: ['async void', 'SynchronizationContext', 'async Task'],
+    related: [
+      { label: 'How Delegate Equality Actually Works — previous', route: '/csharp/delegates/how-delegate-equality-actually-works-target-method-pairs' },
+      { label: 'Delegates & Events (overview)', route: '/csharp/delegates' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'An async void handler that throws after its first await does so on a resumed continuation, after the original synchronous event-raise call has already returned — no surrounding try/catch can ever catch it. Wrap the entire handler body in its own try/catch.',
+    docs: [
+      { label: 'Async Void Considered Harmful', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming' },
+    ],
+    resources: [
+      { label: 'Async/Await Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'EventHandler-shaped delegates require void, not Task — async void cannot be fully avoided for standard .NET event subscribers that need to await something.',
+      'An async void subscriber mixed into a multicast delegate does not block sibling handlers even if it eventually throws — it "returns" to the loop at its first await, well before any later throw.',
+    ],
+  },
+
+  'fields/testing-field-thread-safety-race-conditions-increment-vs-interlocked': {
+    apis: ['Interlocked.Increment', 'Task.WhenAll', 'volatile'],
+    related: [
+      { label: 'Static Field Initialization Order — next', route: '/csharp/fields/static-field-initialization-order-beforefieldinit' },
+      { label: 'Fields & Constants (overview)', route: '/csharp/fields' },
+      { label: 'Threading', route: '/csharp/threading' },
+    ],
+    tip: 'A sequential test, no matter how many iterations, never exposes a race condition — only genuine concurrent execution (Task.WhenAll over many Task.Run calls) can. High thread/iteration counts make failures on broken code highly likely, though never guaranteed.',
+    docs: [
+      { label: 'Interlocked Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked' },
+    ],
+    resources: [
+      { label: 'Thread-Safe Collections', url: 'https://learn.microsoft.com/en-us/dotnet/standard/collections/thread-safe/', badge: 'docs' },
+    ],
+    gotchas: [
+      'volatile does not make ++ atomic — a concurrent-increment test against a volatile field reproduces the same undercount as a plain, non-volatile field.',
+      'A race-condition test is inherently probabilistic — it may occasionally pass even against genuinely broken code, which does not mean the code is safe.',
+    ],
+  },
+
+  'fields/static-field-initialization-order-beforefieldinit': {
+    apis: ['beforefieldinit', 'static constructor', 'ExecutionEngine'],
+    related: [
+      { label: 'Testing Field Thread-Safety — previous', route: '/csharp/fields/testing-field-thread-safety-race-conditions-increment-vs-interlocked' },
+      { label: 'AsyncLocal — next', route: '/csharp/fields/asynclocal-correct-alternative-to-static-fields-for-per-request-state' },
+      { label: 'Fields & Constants (overview)', route: '/csharp/fields' },
+    ],
+    tip: 'Cross-type static initialization is lazy and triggered by first use — the order two independent types initialize in depends on which type your program touches first, not declaration order.',
+    docs: [
+      { label: 'Static Constructors', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors' },
+    ],
+    resources: [
+      { label: 'beforefieldinit Explained', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors', badge: 'docs' },
+    ],
+    gotchas: [
+      'A circular static dependency between two types does not throw or deadlock — the CLR simply does not re-enter a type already initializing, silently observing its partially-initialized (default) state instead.',
+      'A type with no explicit static constructor is marked beforefieldinit, giving the CLR permission to initialize it any time before first use — sometimes earlier than expected.',
+    ],
+  },
+
+  'fields/asynclocal-correct-alternative-to-static-fields-for-per-request-state': {
+    apis: ['AsyncLocal<T>', 'ExecutionContext', 'IHttpContextAccessor'],
+    related: [
+      { label: 'Static Field Initialization Order — previous', route: '/csharp/fields/static-field-initialization-order-beforefieldinit' },
+      { label: 'Fields & Constants (overview)', route: '/csharp/fields' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'AsyncLocal<T> flows its value along the logical async call chain (following ExecutionContext across every await), unlike [ThreadStatic] which is scoped to a single OS thread and breaks when a continuation resumes on a different thread.',
+    docs: [
+      { label: 'AsyncLocal<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.asynclocal-1' },
+    ],
+    resources: [
+      { label: 'ExecutionContext Flow', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.executioncontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'AsyncLocal<T> values flow strictly downward — a callee\'s write never propagates back up to its caller, and never crosses sideways into a sibling branch that already forked off.',
+      'ASP.NET Core\'s IHttpContextAccessor is implemented internally using an AsyncLocal<HttpContext> — understanding AsyncLocal directly demystifies how it achieves per-request isolation.',
+    ],
+  },
+
+  'methods/testing-logic-inside-local-functions-when-to-promote': {
+    apis: ['local function', 'InternalsVisibleTo', 'internal'],
+    related: [
+      { label: 'The in Parameter Defensive-Copy Trap — next', route: '/csharp/methods/in-parameter-defensive-copy-trap' },
+      { label: 'Methods (overview)', route: '/csharp/methods' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A local function can only ever be tested indirectly, through its enclosing method — if its internal logic has grown complex enough to deserve dedicated, isolated test cases, that need is itself a promotion signal, independent of the "second caller" rule.',
+    docs: [
+      { label: 'Local Functions', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/local-functions' },
+    ],
+    resources: [
+      { label: 'InternalsVisibleTo Attribute', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.internalsvisibletoattribute', badge: 'docs' },
+    ],
+    gotchas: [
+      'A local function has no existence as a member of the enclosing type — it can never be called directly from a unit test, only indirectly through the enclosing method.',
+      'Promoting to internal (paired with InternalsVisibleTo for the test assembly) requires no changes to the enclosing method\'s public signature, unlike workarounds that expose the local function as a delegate.',
+    ],
+  },
+
+  'methods/in-parameter-defensive-copy-trap': {
+    apis: ['in', 'readonly struct', 'defensive copy'],
+    related: [
+      { label: 'Testing Logic Inside Local Functions — previous', route: '/csharp/methods/testing-logic-inside-local-functions-when-to-promote' },
+      { label: 'Caller Info Attributes — next', route: '/csharp/methods/caller-info-attributes-callermembername-callerlinenumber' },
+      { label: 'Methods (overview)', route: '/csharp/methods' },
+    ],
+    tip: 'in only avoids copying when the struct is declared readonly struct — for a non-readonly struct, the compiler cannot prove instance methods won\'t mutate it, so it silently inserts a defensive copy before EACH instance method call.',
+    docs: [
+      { label: 'in Parameter Modifier', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters#in-parameter-modifier' },
+    ],
+    resources: [
+      { label: 'readonly struct', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct#readonly-struct', badge: 'docs' },
+    ],
+    gotchas: [
+      'The defensive copy happens per method call, not once at the call boundary — several calls on a non-readonly struct in parameter can cost MORE than passing by value once.',
+      'Even reading a property counts as a method call (getters are compiler-generated methods) — property reads through a non-readonly struct\'s in parameter can also trigger the copy.',
+    ],
+  },
+
+  'methods/caller-info-attributes-callermembername-callerlinenumber': {
+    apis: ['[CallerMemberName]', '[CallerLineNumber]', '[CallerFilePath]'],
+    related: [
+      { label: 'The in Parameter Defensive-Copy Trap — previous', route: '/csharp/methods/in-parameter-defensive-copy-trap' },
+      { label: 'Methods (overview)', route: '/csharp/methods' },
+    ],
+    tip: 'These attributes are resolved entirely at compile time — the compiler substitutes the literal value directly into the generated IL at each call site, essentially free at runtime with no stack-walking involved.',
+    docs: [
+      { label: 'Caller Information', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/caller-information' },
+    ],
+    resources: [
+      { label: 'INotifyPropertyChanged Pattern', url: 'https://learn.microsoft.com/en-us/dotnet/desktop/wpf/data/how-to-implement-property-change-notification', badge: 'docs' },
+    ],
+    gotchas: [
+      'CallerMemberName always resolves to whoever directly calls the method AT THAT CALL SITE — a wrapper method reports its OWN name unless it explicitly accepts and forwards its own [CallerMemberName] parameter.',
+      'These attributes must decorate an optional parameter and follow the same positional rule as any other optional parameter — after all required parameters.',
     ],
   },
 
@@ -5559,6 +6940,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['(T)cast throws InvalidCastException on failure; as returns null — choose based on whether failure is exceptional.', 'Numeric conversions can silently lose data (double→int truncates); use checked{} to catch overflow.'],
   },
 
+  'type-conversion/testing-conversion-operators-and-overflow-boundaries': {
+    apis: ['Assert.Throws<OverflowException>', 'implicit operator', 'explicit operator'],
+    related: [
+      { label: 'User-Defined Conversion Chaining — next', route: '/csharp/type-conversion/user-defined-conversion-chaining-one-operator-limit' },
+      { label: 'Type Conversion (overview)', route: '/csharp/type-conversion' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A round-trip test (convert one direction, then back) catches asymmetric conversion-operator bugs. For overflow, test the exact boundary from BOTH sides — MaxValue itself must not throw, MaxValue+1 must.',
+    docs: [
+      { label: 'User-Defined Conversions', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/conversions#user-defined-conversions' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Testing only "some large number overflows" can hide an off-by-one error in overflow-detection logic — test the exact boundary from both sides.',
+      'User-defined conversion operators compile to ordinary static methods and can be tested directly via natural conversion syntax, no reflection needed.',
+    ],
+  },
+
+  'type-conversion/user-defined-conversion-chaining-one-operator-limit': {
+    apis: ['implicit operator', 'explicit operator', 'CS0029', 'CS0030'],
+    related: [
+      { label: 'Testing Conversion Operators — previous', route: '/csharp/type-conversion/testing-conversion-operators-and-overflow-boundaries' },
+      { label: 'Compile-Time Constant Overflow — next', route: '/csharp/type-conversion/compile-time-constant-overflow-always-checked' },
+      { label: 'Type Conversion (overview)', route: '/csharp/type-conversion' },
+    ],
+    tip: 'C# allows at most ONE user-defined conversion operator per conversion, combined with any number of built-in conversions — it never automatically chains two user-defined operators together, even implicit ones.',
+    docs: [
+      { label: 'Conversion Operators', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/user-defined-conversion-operators' },
+    ],
+    resources: [
+      { label: 'C# Language Specification', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/conversions', badge: 'docs' },
+    ],
+    gotchas: [
+      'If TypeA converts to TypeB and TypeB converts to TypeC, TypeA does NOT automatically convert to TypeC — two separate conversion steps are required.',
+      'Explicit cast syntax does not lift the one-user-defined-operator limit — it only additionally allows explicit (not just implicit) operators to be used for that one permitted hop.',
+    ],
+  },
+
+  'type-conversion/compile-time-constant-overflow-always-checked': {
+    apis: ['const', 'unchecked()', 'CS0220', 'CheckForOverflowUnderflow'],
+    related: [
+      { label: 'User-Defined Conversion Chaining — previous', route: '/csharp/type-conversion/user-defined-conversion-chaining-one-operator-limit' },
+      { label: 'Type Conversion (overview)', route: '/csharp/type-conversion' },
+      { label: 'Fields & Constants', route: '/csharp/fields' },
+    ],
+    tip: 'Constant expressions the compiler can fully evaluate are ALWAYS checked for overflow, regardless of the surrounding checked/unchecked context or the CheckForOverflowUnderflow project setting — an intentional overflowing constant needs an explicit unchecked(...) wrapper.',
+    docs: [
+      { label: 'checked and unchecked', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/checked-and-unchecked' },
+    ],
+    resources: [
+      { label: 'Constant Expressions', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#constant-expressions', badge: 'docs' },
+    ],
+    gotchas: [
+      'The project-wide CheckForOverflowUnderflow MSBuild property only affects runtime arithmetic — it does NOT let an overflowing constant expression compile.',
+      'unchecked(...) on a constant expression overrides a COMPILE-TIME ERROR (CS0220), a different purpose than the runtime unchecked block from the main topic.',
+    ],
+  },
+
   constructors: {
     apis: ['this()', 'base()', 'static ctor', 'primary ctor (C#12)', 'required'],
     related: [{ label: 'OOP & Classes', route: '/csharp/oop' }, { label: 'Fields & Constants', route: '/csharp/fields' }, { label: 'Records & Structs', route: '/csharp/records' }],
@@ -5566,6 +7007,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'Constructors (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/constructors' }, { label: 'Primary Constructors', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12#primary-constructors' }],
     resources: [{ label: 'C# 12 Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12', badge: 'docs' }],
     gotchas: ['Static constructors run once per type, not per instance — exceptions in static constructors make the type permanently unavailable.', 'Primary constructor parameters are in scope for the entire class body — capture to a field if you need them stored.'],
+  },
+
+  'constructors/testing-constructor-validation-and-chaining': {
+    apis: ['Assert.Throws', 'ParamName', 'Assert.Equal'],
+    related: [
+      { label: 'Primary Constructor Parameter Capture — next', route: '/csharp/constructors/primary-constructor-parameter-capture-field-vs-fixed' },
+      { label: 'Constructors (overview)', route: '/csharp/constructors' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Assert on ParamName, not just exception type — a bare Assert.Throws<ArgumentException>() cannot catch a copy-paste bug where the exception references the wrong parameter.',
+    docs: [
+      { label: 'ArgumentException.ParamName', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.argumentexception.paramname' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'For inputs violating MULTIPLE validation rules at once, only the FIRST failing check\'s exception is thrown — validation order determines which exception type/ParamName the caller sees.',
+      'Test that a convenience constructor chained via this(...) produces a result IDENTICAL to calling the primary constructor directly — guards against future duplication instead of genuine delegation.',
+    ],
+  },
+
+  'constructors/primary-constructor-parameter-capture-field-vs-fixed': {
+    apis: ['primary constructor', 'property initializer', 'compiler-generated field'],
+    related: [
+      { label: 'Testing Constructor Validation — previous', route: '/csharp/constructors/testing-constructor-validation-and-chaining' },
+      { label: 'Diagnosing TypeInitializationException — next', route: '/csharp/constructors/diagnosing-typeinitializationexception-inner-exception' },
+      { label: 'Constructors (overview)', route: '/csharp/constructors' },
+    ],
+    tip: 'A property initializer copies the parameter\'s value once, fixed forever. A method-body reference is silently promoted to its OWN compiler-generated field. Using both creates two independent copies that can drift apart.',
+    docs: [
+      { label: 'Primary Constructors', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12#primary-constructors' },
+    ],
+    resources: [
+      { label: 'C# 12 Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12', badge: 'docs' },
+    ],
+    gotchas: [
+      'Mutating a property later does NOT affect a separate compiler-generated field backing a method-body reference to the same original parameter.',
+      'The explicit "assign to a field" advice is genuinely necessary only when you need ONE shared, mutable storage location — not for simple read-only DI usage, which the compiler already handles equivalently.',
+    ],
+  },
+
+  'constructors/diagnosing-typeinitializationexception-inner-exception': {
+    apis: ['TypeInitializationException', 'InnerException', 'static constructor'],
+    related: [
+      { label: 'Primary Constructor Parameter Capture — previous', route: '/csharp/constructors/primary-constructor-parameter-capture-field-vs-fixed' },
+      { label: 'Constructors (overview)', route: '/csharp/constructors' },
+      { label: 'Exceptions', route: '/csharp/exceptions' },
+    ],
+    tip: 'TypeInitializationException.Message only says WHICH type failed — the actual root cause lives in InnerException. Logging only ex.Message silently discards the one piece of information that explains the failure.',
+    docs: [
+      { label: 'TypeInitializationException', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.typeinitializationexception' },
+    ],
+    resources: [
+      { label: 'Static Constructors', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors', badge: 'docs' },
+    ],
+    gotchas: [
+      'Once a static constructor throws, the type is permanently marked failed for the rest of the process — retrying the failing call accomplishes nothing.',
+      'InnerException is nearly always populated but is technically nullable — defensive diagnostic code should null-check before dereferencing it.',
+    ],
   },
 
   'properties-indexers': {
@@ -5577,6 +7078,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Auto-properties with private set can still be mutated inside the class — use init or readonly field if you want true immutability.', 'Indexers can be overloaded by parameter type — useful for DSL-style APIs.'],
   },
 
+  'properties-indexers/testing-computed-properties-and-indexers': {
+    apis: ['Assert.Equal', 'KeyNotFoundException', 'IndexOutOfRangeException'],
+    related: [
+      { label: 'init Accessors and readonly Fields — next', route: '/csharp/properties-indexers/init-accessors-and-readonly-fields-assignment-window' },
+      { label: 'Properties & Indexers (overview)', route: '/csharp/properties-indexers' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Mutate underlying state after construction and assert => properties reflect the change, while { get; } = expr properties stay fixed — directly testing the main topic\'s own recomputed-vs-frozen distinction.',
+    docs: [
+      { label: 'Auto-Implemented Properties', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/auto-implemented-properties' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Testing only the GET side of an indexer\'s validation misses asymmetric bugs — the SET side deserves its own explicit boundary tests.',
+      'Pin down the exact valid range from both sides — confirm the last VALID index does not throw, not just that a large invalid one does.',
+    ],
+  },
+
+  'properties-indexers/init-accessors-and-readonly-fields-assignment-window': {
+    apis: ['init', 'readonly', 'modreq(IsExternalInit)'],
+    related: [
+      { label: 'Testing Computed Properties — previous', route: '/csharp/properties-indexers/testing-computed-properties-and-indexers' },
+      { label: 'Indexer Initializer Syntax — next', route: '/csharp/properties-indexers/indexer-initializer-syntax-without-add' },
+      { label: 'Properties & Indexers (overview)', route: '/csharp/properties-indexers' },
+    ],
+    tip: 'init accessors are treated as part of the construction phase, so — like constructors — they can assign readonly fields of the SAME class. A regular set accessor cannot, since it can be called at any time after construction.',
+    docs: [
+      { label: 'init-only Setters', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/init' },
+    ],
+    resources: [
+      { label: 'Immutability in C#', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#init-only-setters', badge: 'docs' },
+    ],
+    gotchas: [
+      'The relaxation applies only to readonly fields declared in the SAME class as the init accessor — a base class\'s readonly fields remain the base constructor\'s exclusive responsibility.',
+      'A readonly field can be assigned multiple times as long as every assignment happens during construction — an inline initializer AND an init accessor can both legally assign the same field.',
+    ],
+  },
+
+  'properties-indexers/indexer-initializer-syntax-without-add': {
+    apis: ['object initializer', 'indexer set accessor'],
+    related: [
+      { label: 'init Accessors and readonly Fields — previous', route: '/csharp/properties-indexers/init-accessors-and-readonly-fields-assignment-window' },
+      { label: 'Properties & Indexers (overview)', route: '/csharp/properties-indexers' },
+    ],
+    tip: 'new Foo { ["key"] = value } works on ANY type with a settable indexer — no IEnumerable, no Add() method needed. It desugars directly to indexer-setter calls, a different mechanism from collection initializers entirely.',
+    docs: [
+      { label: 'Object and Collection Initializers', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers' },
+    ],
+    resources: [
+      { label: 'C# 6 Language Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6', badge: 'docs' },
+    ],
+    gotchas: [
+      'A get-only indexer (no set accessor) cannot support index-initializer syntax — there is no setter to desugar the bracket entries into.',
+      'Multi-parameter indexers work too — each comma-separated bracket group maps directly to the indexer\'s full parameter list, and index initializers can combine with ordinary property initializers in the same block.',
+    ],
+  },
+
   namespaces: {
     apis: ['namespace', 'using', 'global using', 'file-scoped namespace', 'alias'],
     related: [{ label: 'Variables & Types', route: '/csharp/basics' }, { label: 'OOP & Classes', route: '/csharp/oop' }, { label: 'Static, Partial & Enums', route: '/csharp/static-enums' }],
@@ -5584,6 +7144,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'Namespaces (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/namespaces' }, { label: 'Global Usings', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#global-using-directives' }],
     resources: [{ label: 'C# 10 Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10', badge: 'docs' }],
     gotchas: ['Global usings affect all files in the project — only use them for universally needed namespaces (System, System.Collections.Generic).', 'Aliasing a namespace (using Alias = Long.Namespace) only applies to the current file.'],
+  },
+
+  'namespaces/detecting-unused-using-directives-ide0005': {
+    apis: ['IDE0005', 'dotnet format', '.editorconfig'],
+    related: [
+      { label: 'extern alias — next', route: '/csharp/namespaces/extern-alias-resolving-assembly-type-name-collisions' },
+      { label: 'Namespaces & Usings (overview)', route: '/csharp/namespaces' },
+    ],
+    tip: 'An unused using in GlobalUsings.cs is invisible unless you check every file — "dotnet format --diagnostics IDE0005 --verify-no-changes" run in CI catches this automatically instead of relying on manual audits.',
+    docs: [
+      { label: 'IDE0005 Rule', url: 'https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0005' },
+    ],
+    resources: [
+      { label: 'dotnet format', url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format', badge: 'docs' },
+    ],
+    gotchas: [
+      'An unused using is not purely inert — a later name collision elsewhere in the project can turn it into a genuine CS0104 ambiguity.',
+      'Promote IDE0005 to a build warning or error via .editorconfig to turn a dimmed IDE hint into an enforced CI signal.',
+    ],
+  },
+
+  'namespaces/extern-alias-resolving-assembly-type-name-collisions': {
+    apis: ['extern alias', '::', 'Aliases (csproj)'],
+    related: [
+      { label: 'Detecting Unused using Directives — previous', route: '/csharp/namespaces/detecting-unused-using-directives-ide0005' },
+      { label: 'Resolving CS0104 — next', route: '/csharp/namespaces/resolving-cs0104-ambiguous-using-directives' },
+      { label: 'Namespaces & Usings (overview)', route: '/csharp/namespaces' },
+    ],
+    tip: 'extern alias solves a problem an ordinary using alias cannot express — two ASSEMBLIES defining a type with the identical fully-qualified name. It requires both a project-level Aliases reference config AND an "extern alias" declaration in source.',
+    docs: [
+      { label: 'extern alias', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/extern-alias' },
+    ],
+    resources: [
+      { label: 'Namespaces Reference', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/namespaces', badge: 'docs' },
+    ],
+    gotchas: [
+      'The CS0433 ambiguity only occurs when BOTH conflicting assemblies are referenced by the same project simultaneously.',
+      'The :: operator is otherwise essentially unused in C# — its entire purpose is disambiguating which assembly alias a type comes from.',
+    ],
+  },
+
+  'namespaces/resolving-cs0104-ambiguous-using-directives': {
+    apis: ['CS0104', 'using alias', 'fully qualified name'],
+    related: [
+      { label: 'extern alias — previous', route: '/csharp/namespaces/extern-alias-resolving-assembly-type-name-collisions' },
+      { label: 'Namespaces & Usings (overview)', route: '/csharp/namespaces' },
+    ],
+    tip: '"File-local wins over global, aliases win over unaliased" only resolves conflicts involving an alias — two ordinary usings for unrelated namespaces exporting the same simple type name produce a genuine CS0104 error requiring a using alias or full qualification.',
+    docs: [
+      { label: 'using Directive', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/using-directive' },
+    ],
+    resources: [
+      { label: 'Resolving Ambiguous References', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/using-directive', badge: 'docs' },
+    ],
+    gotchas: [
+      'CS0104 triggers lazily — a file can have both conflicting usings present and compile fine as long as the ambiguous simple name is never referenced unqualified.',
+      'Fully qualifying the type at its use site is a valid alias-free fix, best for a type referenced only once or twice in the file.',
+    ],
   },
 
   inheritance: {
@@ -5595,6 +7213,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['new hides the base method but does not participate in polymorphism — a base reference still calls the base version.', 'Calling virtual methods in a constructor uses the most-derived override — dangerous when the derived class is not yet initialized.'],
   },
 
+  'inheritance/testing-the-hiding-trap-new-vs-override': {
+    apis: ['Assert.Equal', 'virtual', 'override', 'new'],
+    related: [
+      { label: 'How sealed Enables Devirtualization — next', route: '/csharp/inheritance/how-sealed-enables-devirtualization' },
+      { label: 'Inheritance & Overriding (overview)', route: '/csharp/inheritance' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test calling through a DERIVED-typed reference can never distinguish override from new — only a call through a BASE-typed reference exposes the difference. Assert both reference types return the SAME result to catch a regression.',
+    docs: [
+      { label: 'Polymorphism', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/polymorphism' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Promoting CS0108 to a build error catches unintentional hiding even before any test runs — an earlier, complementary check to runtime tests.',
+      'A test asserting only the derived-typed call\'s result cannot catch a regression from override to new — it must call through a base-typed reference.',
+    ],
+  },
+
+  'inheritance/how-sealed-enables-devirtualization': {
+    apis: ['sealed', 'sealed override', 'vtable'],
+    related: [
+      { label: 'Testing the Hiding Trap — previous', route: '/csharp/inheritance/testing-the-hiding-trap-new-vs-override' },
+      { label: 'Covariant Return Types — next', route: '/csharp/inheritance/covariant-return-types-hidden-bridge-method' },
+      { label: 'Inheritance & Overriding (overview)', route: '/csharp/inheritance' },
+    ],
+    tip: 'sealed itself does not devirtualize calls — it removes the POSSIBILITY of further overrides, which lets the JIT PROVE only one implementation exists and skip the vtable lookup. The performance win is secondary; use sealed primarily for correctness.',
+    docs: [
+      { label: 'Sealed Classes and Methods', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/sealed' },
+    ],
+    resources: [
+      { label: 'BenchmarkDotNet', url: 'https://benchmarkdotnet.org/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A sealed override provides the same devirtualization eligibility for that ONE member, even on a class still open to subclassing for its other members.',
+      'Sealing broadly for performance can block legitimate extensibility and interfere with subclass-based mocking frameworks — the gain is usually negligible outside genuinely hot loops.',
+    ],
+  },
+
+  'inheritance/covariant-return-types-hidden-bridge-method': {
+    apis: ['covariant return', 'bridge method', 'CompilerGeneratedAttribute'],
+    related: [
+      { label: 'How sealed Enables Devirtualization — previous', route: '/csharp/inheritance/how-sealed-enables-devirtualization' },
+      { label: 'Inheritance & Overriding (overview)', route: '/csharp/inheritance' },
+    ],
+    tip: 'A C# 9 covariant return override compiles to TWO methods — the one you wrote, and a compiler-generated bridge with the original base signature, since the CLR itself has no native concept of covariant overriding.',
+    docs: [
+      { label: 'Covariant Returns', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#covariant-return-types' },
+    ],
+    resources: [
+      { label: 'System.Reflection', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.reflection', badge: 'docs' },
+    ],
+    gotchas: [
+      'Reflection over a type using covariant returns can surface BOTH the covariant method and the hidden bridge method as distinct MethodInfo entries.',
+      'Calls through a derived-typed reference are resolved directly by the compiler to the covariant method; calls through a base-typed reference genuinely dispatch through the bridge method via the vtable.',
+    ],
+  },
+
   'abstract-interfaces': {
     apis: ['abstract', 'interface', 'default interface method', 'explicit impl', 'IComparable<T>'],
     related: [{ label: 'OOP & Classes', route: '/csharp/oop' }, { label: 'Inheritance & Overriding', route: '/csharp/inheritance' }, { label: 'Generics', route: '/csharp/generics' }],
@@ -5602,6 +7279,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'Interfaces (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces' }, { label: 'Abstract Classes', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/abstract-and-sealed-classes-and-class-members' }],
     resources: [{ label: 'Default Interface Methods', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#default-interface-methods', badge: 'docs' }],
     gotchas: ['A class can implement multiple interfaces but inherit only one class — design for this constraint early.', 'Default interface methods are not inherited by implementing classes — they are only callable through the interface type.'],
+  },
+
+  'abstract-interfaces/testing-default-interface-method-resolution': {
+    apis: ['default interface method', 'interface-typed reference'],
+    related: [
+      { label: 'Default Interface Method Diamond Problem — next', route: '/csharp/abstract-interfaces/default-interface-method-diamond-problem' },
+      { label: 'Abstract Classes & Interfaces (overview)', route: '/csharp/abstract-interfaces' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Whether a default interface method is reachable is a compile-time fact (interface-typed vs class-typed reference), not something Assert.Throws can observe — but the LOGIC inside the default IS ordinary runtime-testable behavior.',
+    docs: [
+      { label: 'Default Interface Methods', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#default-interface-methods' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'A class-typed reference test can never verify default-method reachability — CS1061 is a compile error, not something a runtime assertion can catch.',
+      'A class\'s own implementation of a member wins over the interface default through BOTH reference shapes — unlike a default-only implementation, reachable only via interface-typed references.',
+    ],
+  },
+
+  'abstract-interfaces/default-interface-method-diamond-problem': {
+    apis: ['CS8705', 'default interface method', 'most specific interface'],
+    related: [
+      { label: 'Testing Default Interface Method Resolution — previous', route: '/csharp/abstract-interfaces/testing-default-interface-method-resolution' },
+      { label: 'static abstract Members — next', route: '/csharp/abstract-interfaces/static-abstract-members-generic-constraint-requirement' },
+      { label: 'Abstract Classes & Interfaces (overview)', route: '/csharp/abstract-interfaces' },
+    ],
+    tip: 'Two interfaces each declaring their OWN default for the same member signature produce CS8705 — the compiler refuses to guess and forces the implementing class to resolve it. A SHARED ancestor default is not a conflict at all.',
+    docs: [
+      { label: 'Default Interface Members', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#default-interface-methods' },
+    ],
+    resources: [
+      { label: 'C# 8 Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8', badge: 'docs' },
+    ],
+    gotchas: [
+      'If one interface\'s default is MORE SPECIFIC (extends and overrides a shared ancestor) while the other contributes no override, the compiler can resolve the conflict automatically — no class-level override is required.',
+      'This differs from explicit implementation of ABSTRACT (bodyless) members — that pattern lets two separate implementations coexist; a genuine default-vs-default conflict requires ONE class implementation satisfying both.',
+    ],
+  },
+
+  'abstract-interfaces/static-abstract-members-generic-constraint-requirement': {
+    apis: ['static abstract', 'constrained.callvirt', 'INumber<T>'],
+    related: [
+      { label: 'Default Interface Method Diamond Problem — previous', route: '/csharp/abstract-interfaces/default-interface-method-diamond-problem' },
+      { label: 'Abstract Classes & Interfaces (overview)', route: '/csharp/abstract-interfaces' },
+      { label: 'Generics', route: '/csharp/generics' },
+    ],
+    tip: 'A static abstract interface member can ONLY be called through a generic type parameter constrained to that interface (T.Create(...)) — never directly on the interface type itself, since there is no instance to carry runtime-type information.',
+    docs: [
+      { label: 'Static Abstract Members', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#static-abstract-members-in-interfaces' },
+    ],
+    resources: [
+      { label: 'Generic Math', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/math', badge: 'docs' },
+    ],
+    gotchas: [
+      'Static members have never been callable through an instance reference in C#, interface-typed or not — this is a fundamental rule that predates static abstract interface members.',
+      'The generic constraint is the ONLY mechanism supplying the missing runtime-type information — this is why generic math (INumber<T>) requires exactly this feature.',
+    ],
   },
 
   'static-enums': {
@@ -5613,6 +7350,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Enum.Parse throws on unknown values — use Enum.TryParse for user input.', 'Partial classes must be in the same assembly — they are merged at compile time, not at runtime.'],
   },
 
+  'static-enums/testing-flags-enums-reflection-based-power-of-two-guard': {
+    apis: ['Enum.GetValues', 'FlagsAttribute', 'reflection'],
+    related: [
+      { label: 'Modern Partial Methods — next', route: '/csharp/static-enums/modern-partial-methods-return-types-mandatory-implementation' },
+      { label: 'Static, Partial & Enums (overview)', route: '/csharp/static-enums' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A single reflection-driven test parameterized over every [Flags]-decorated type in the assembly can validate that every primitive member is a power of two — protecting against future regressions, not just the enum as originally written.',
+    docs: [
+      { label: 'FlagsAttribute', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.flagsattribute' },
+    ],
+    resources: [
+      { label: 'xUnit Theory/MemberData', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'A "value is the union of other present values" heuristic cannot distinguish an intentional composite from an accidental bit overlap — both look structurally identical.',
+      'Explicitly listing known composite members (like All) is more reliable than automatic structural detection alone.',
+    ],
+  },
+
+  'static-enums/modern-partial-methods-return-types-mandatory-implementation': {
+    apis: ['partial method', 'source generator', 'CS8795'],
+    related: [
+      { label: 'Testing Flags Enums — previous', route: '/csharp/static-enums/testing-flags-enums-reflection-based-power-of-two-guard' },
+      { label: 'Enum Value Stability — next', route: '/csharp/static-enums/enum-value-stability-serialization-compatibility' },
+      { label: 'Static, Partial & Enums (overview)', route: '/csharp/static-enums' },
+    ],
+    tip: 'The silent-erasure behavior of partial methods applies only to the original void/implicit-private/no-out-params shape. A partial method with a real return type (C# 9+) makes the implementation MANDATORY — omitting it is a compile error, not silent removal.',
+    docs: [
+      { label: 'Partial Methods', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/partial-classes-and-methods' },
+    ],
+    resources: [
+      { label: 'Source Generators', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview', badge: 'docs' },
+    ],
+    gotchas: [
+      'The relaxed C# 9+ rules (any accessibility, any return type) exist specifically to support source generators declaring a contract for the developer to implement.',
+      'There is no safe default value the compiler could invent for a non-void return — this is exactly why the implementation becomes mandatory rather than optional.',
+    ],
+  },
+
+  'static-enums/enum-value-stability-serialization-compatibility': {
+    apis: ['enum', 'JsonStringEnumConverter', 'explicit values'],
+    related: [
+      { label: 'Modern Partial Methods — previous', route: '/csharp/static-enums/modern-partial-methods-return-types-mandatory-implementation' },
+      { label: 'Static, Partial & Enums (overview)', route: '/csharp/static-enums' },
+      { label: 'Fields & Constants', route: '/csharp/fields' },
+    ],
+    tip: 'Auto-incremented enum values are positional, not semantic — inserting a new member later silently shifts every subsequent member\'s value, corrupting any already-persisted data storing the old integers. Always assign explicit values for anything persisted or transmitted.',
+    docs: [
+      { label: 'Enum Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum' },
+    ],
+    resources: [
+      { label: 'JsonStringEnumConverter', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonstringenumconverter', badge: 'docs' },
+    ],
+    gotchas: [
+      'JsonStringEnumConverter only protects the specific path of JSON serialized through a configured JsonSerializer — database columns, binary serializers, and message queues storing raw integers remain fully exposed.',
+      'Implicit (auto-incremented) values are only safe for enums whose values never outlive a single process execution.',
+    ],
+  },
+
   structures: {
     apis: ['struct', 'ref struct', 'readonly struct', 'record struct', 'Span<T>'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }, { label: 'Collections', route: '/csharp/collections' }],
@@ -5620,6 +7417,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'Structure Types (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct' }, { label: 'ref struct', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/ref-struct' }],
     resources: [{ label: 'Choosing Struct vs Class', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct', badge: 'docs' }],
     gotchas: ['Structs are copied on assignment — mutating a local copy does not affect the original.', 'ref struct cannot be boxed, stored in arrays, or used as generic type arguments.'],
+  },
+
+  'structures/testing-the-struct-copy-mutation-trap': {
+    apis: ['Assert.Equal', 'with expression', 'record struct'],
+    related: [
+      { label: 'ref struct Interfaces — next', route: '/csharp/structures/ref-struct-interfaces-generic-constraint-dispatch' },
+      { label: 'Structures (overview)', route: '/csharp/structures' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test proving the copy-mutation trap must re-read the property AFTERWARD and assert on that fresh read — asserting only on the local copy proves nothing, since of course it holds the value you just assigned.',
+    docs: [
+      { label: 'Struct Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'The trap applies to ANY struct-returning getter — class properties, Dictionary indexers, LINQ projections — not just the main topic\'s class-property example.',
+      'record struct\'s "with" support does not change the underlying copy-semantics rule — directly mutating a retrieved record struct copy is still silently lost.',
+    ],
+  },
+
+  'structures/ref-struct-interfaces-generic-constraint-dispatch': {
+    apis: ['ref struct', 'interface', 'generic constraint'],
+    related: [
+      { label: 'Testing the Struct-Copy Mutation Trap — previous', route: '/csharp/structures/testing-the-struct-copy-mutation-trap' },
+      { label: 'Array vs List vs foreach — next', route: '/csharp/structures/array-vs-list-vs-foreach-struct-mutation' },
+      { label: 'Static Abstract Members', route: '/csharp/abstract-interfaces/static-abstract-members-generic-constraint-requirement' },
+    ],
+    tip: 'C# 13 lets ref struct implement interfaces, but ONLY the generic-constrained dispatch path is permitted — assigning to an interface-typed variable or parameter still requires boxing and remains illegal for ref struct.',
+    docs: [
+      { label: 'ref struct', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/ref-struct' },
+    ],
+    resources: [
+      { label: 'C# 13 Features', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-13', badge: 'docs' },
+    ],
+    gotchas: [
+      'Prior to C# 13, ref struct implementing an interface at all was a compile error — this is newly permitted, not a previously-existing but restricted capability.',
+      'The mechanism is the same constrained-dispatch machinery that powers static abstract interface members — specialized per concrete type argument, zero boxing.',
+    ],
+  },
+
+  'structures/array-vs-list-vs-foreach-struct-mutation': {
+    apis: ['T[]', 'List<T>', 'foreach', 'CS1612'],
+    related: [
+      { label: 'ref struct Interfaces — previous', route: '/csharp/structures/ref-struct-interfaces-generic-constraint-dispatch' },
+      { label: 'Structures (overview)', route: '/csharp/structures' },
+      { label: 'Collections', route: '/csharp/collections' },
+    ],
+    tip: 'A raw array\'s indexer is a special, addressable-variable construct — array[i].X = 5 genuinely mutates. List<T>\'s indexer is an ordinary method call returning a copy — list[i].X = 5 is CS1612. foreach always copies, for both.',
+    docs: [
+      { label: 'Arrays', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/' },
+    ],
+    resources: [
+      { label: 'Struct Design Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct', badge: 'docs' },
+    ],
+    gotchas: [
+      'The array indexer\'s special addressability applies to single-dimensional, multi-dimensional, and jagged arrays alike — it is a property of array types generally, not one specific form.',
+      'Only an indexed for-loop can mutate struct elements in an array in place — foreach can never do this, regardless of container type.',
+    ],
   },
 
   'system-object': {
@@ -5631,6 +7488,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Boxing a value type wraps it in a heap object — frequent boxing causes GC pressure.', 'object.ReferenceEquals() always checks reference identity — override Equals() for value equality.'],
   },
 
+  'system-object/testing-the-equals-gethashcode-contract': {
+    apis: ['IEquatable<T>', 'reflexive', 'symmetric', 'transitive'],
+    related: [
+      { label: 'GetHashCode Instability — next', route: '/csharp/system-object/gethashcode-instability-across-process-runs' },
+      { label: 'System.Object (overview)', route: '/csharp/system-object' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A generic verifier taking two equal instances and one unequal instance can check reflexivity, symmetry, and hash-consistency in one reusable call — transitivity needs a dedicated 3-instance check, since pairwise tests can never expose it.',
+    docs: [
+      { label: 'Object.Equals', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.object.equals' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Symmetry violations (a.Equals(b) != b.Equals(a)) most often arise from asymmetric type-checking logic between two different types being compared.',
+      'Transitivity violations are most commonly introduced by "fuzzy" tolerance-based equality, where being close enough to two different values does not guarantee those values are close enough to each other.',
+    ],
+  },
+
+  'system-object/gethashcode-instability-across-process-runs': {
+    apis: ['GetHashCode()', 'HashCode.Combine', 'SHA256'],
+    related: [
+      { label: 'Testing the Equals/GetHashCode Contract — previous', route: '/csharp/system-object/testing-the-equals-gethashcode-contract' },
+      { label: 'Record Equality — next', route: '/csharp/system-object/record-equality-and-equalitycontract' },
+      { label: 'System.Object (overview)', route: '/csharp/system-object' },
+    ],
+    tip: '.NET randomizes hash seeds per PROCESS (a deliberate anti-hash-flooding security measure) — the same logical value can and will produce a different GetHashCode() on the next process run. Never persist a hash code as a stable identifier.',
+    docs: [
+      { label: 'Object.GetHashCode', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.object.gethashcode' },
+    ],
+    resources: [
+      { label: 'SHA256 Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.sha256', badge: 'docs' },
+    ],
+    gotchas: [
+      'HashCode.Combine only controls how field hashes are COMBINED — it does nothing to stabilize the underlying field hash codes (e.g. string.GetHashCode()) themselves across process runs.',
+      'For a genuinely stable, persistable identifier, use a GUID, a database auto-increment ID, or an explicit cryptographic hash (SHA-256) — never GetHashCode().',
+    ],
+  },
+
+  'system-object/record-equality-and-equalitycontract': {
+    apis: ['record', 'EqualityContract', 'GetType()'],
+    related: [
+      { label: 'GetHashCode Instability — previous', route: '/csharp/system-object/gethashcode-instability-across-process-runs' },
+      { label: 'System.Object (overview)', route: '/csharp/system-object' },
+      { label: 'Records & Structs', route: '/csharp/records' },
+    ],
+    tip: 'Every record has a hidden, compiler-generated, virtual EqualityContract property returning its own most-derived type — the generated Equals checks this FIRST, which is why a base record and a derived record with identical fields are never equal.',
+    docs: [
+      { label: 'Records', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/records' },
+    ],
+    resources: [
+      { label: 'Record Equality', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/records', badge: 'docs' },
+    ],
+    gotchas: [
+      'Two sibling record types deriving from the same base (like Dog and Cat both deriving from Animal) are never equal to each other, even with matching field values — EqualityContract is unique per most-derived type, not per inheritance branch.',
+      'This mirrors the main topic\'s own GetType() == typeof(T) exact-type-check reasoning for ordinary classes, applied automatically by the compiler to every record.',
+    ],
+  },
+
   'extension-methods': {
     apis: ['this T param', 'static class', 'LINQ extensions', 'fluent API', 'IEnumerable<T>'],
     related: [{ label: 'LINQ', route: '/csharp/linq' }, { label: 'Static, Partial & Enums', route: '/csharp/static-enums' }, { label: 'Delegates & Events', route: '/csharp/delegates' }],
@@ -5638,6 +7555,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'Extension Methods (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods' }],
     resources: [{ label: 'Fluent API Pattern', url: 'https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/extension-methods', badge: 'docs' }],
     gotchas: ['Extension methods cannot access private members — they are syntactic sugar for static method calls.', 'If a type gains an instance method with the same name, it takes precedence over the extension method.'],
+  },
+
+  'extension-methods/testing-for-extension-method-shadowing': {
+    apis: ['reflection', 'GetMethod', 'BindingFlags'],
+    related: [
+      { label: 'Resolving Extension Method Ambiguity — next', route: '/csharp/extension-methods/resolving-extension-method-ambiguity-cs0121' },
+      { label: 'Extension Methods (overview)', route: '/csharp/extension-methods' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test asserting on a DISTINGUISHABLE result the extension specifically produces catches a future instance method silently shadowing it — a test that only checks "it compiles" or "returns some value" proves nothing about which implementation ran.',
+    docs: [
+      { label: 'Extension Methods', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods' },
+    ],
+    resources: [
+      { label: 'Reflection GetMethod', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.type.getmethod', badge: 'docs' },
+    ],
+    gotchas: [
+      'A reflection tripwire checking for an exact signature only catches genuine shadowing conflicts — a new instance method with the same name but different parameters coexists via ordinary overload resolution.',
+      'Instance methods always win over extensions with the same signature, silently, with zero compiler warning — this is exactly why a regression test matters for types you do not control.',
+    ],
+  },
+
+  'extension-methods/resolving-extension-method-ambiguity-cs0121': {
+    apis: ['CS0121', 'using directive', 'scope proximity'],
+    related: [
+      { label: 'Testing for Extension Method Shadowing — previous', route: '/csharp/extension-methods/testing-for-extension-method-shadowing' },
+      { label: 'Extension Methods on Structs — next', route: '/csharp/extension-methods/extension-methods-on-structs-this-in-t-receiver' },
+      { label: 'Extension Methods (overview)', route: '/csharp/extension-methods' },
+    ],
+    tip: 'Extension method resolution prefers candidates CLOSER in scope automatically — genuine CS0121 ambiguity only arises when two competing extensions are reached via equally "distant" using directives. Fix it by calling the static method directly.',
+    docs: [
+      { label: 'Extension Method Invocation', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods' },
+    ],
+    resources: [
+      { label: 'Method Resolution', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions', badge: 'docs' },
+    ],
+    gotchas: [
+      'A using alias cannot disambiguate an extension method call — it applies to types and namespaces, not to which fluent call resolves where. Fall back to the explicit static call instead.',
+      'Only genuinely APPLICABLE candidates (matching the call site\'s argument count/types) participate in ambiguity resolution — a method requiring extra arguments is not a competing candidate at all.',
+    ],
+  },
+
+  'extension-methods/extension-methods-on-structs-this-in-t-receiver': {
+    apis: ['this in T', 'readonly struct', 'defensive copy'],
+    related: [
+      { label: 'Resolving Extension Method Ambiguity — previous', route: '/csharp/extension-methods/resolving-extension-method-ambiguity-cs0121' },
+      { label: 'Extension Methods (overview)', route: '/csharp/extension-methods' },
+      { label: 'Structures', route: '/csharp/structures' },
+    ],
+    tip: 'this in T passes the extension method\'s receiver by readonly reference instead of by value — avoiding a full struct copy on every call, but only genuinely if the struct is declared readonly struct.',
+    docs: [
+      { label: 'in Parameter Modifier', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters#in-parameter-modifier' },
+    ],
+    resources: [
+      { label: 'readonly struct', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/struct#readonly-struct', badge: 'docs' },
+    ],
+    gotchas: [
+      'For a non-readonly struct, this in T silently falls back to a defensive copy anyway — exactly the same trap as an ordinary in parameter, just applied to the receiver.',
+      'this in T forbids direct field mutation on the receiver regardless of whether the struct itself is readonly — that restriction comes from "in" itself, a separate rule from the defensive-copy question.',
+    ],
   },
 
   tuples: {
@@ -5649,6 +7626,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Tuple field names are compile-time only — at runtime they are Item1, Item2, etc.', 'Anonymous types are reference types limited to their declaring scope — use records for cross-method data transfer.'],
   },
 
+  'tuples/testing-tuple-returning-methods-deconstruction-assertions': {
+    apis: ['Assert.Equal', 'IEquatable<T>', 'ValueTuple'],
+    related: [
+      { label: '8-Element Limit and TRest Chaining — next', route: '/csharp/tuples/valuetuple-8-element-limit-trest-chaining-mechanism' },
+      { label: 'Tuples & Anonymous Types (overview)', route: '/csharp/tuples' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Assert.Equal against a literal tuple value (e.g. Assert.Equal(("Alice", 30), result)) leverages ValueTuple\'s own structural equality and compares positionally — usually simpler and more robust than asserting each named field individually.',
+    docs: [
+      { label: 'Value Tuples', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-tuples' },
+    ],
+    resources: [
+      { label: 'xUnit Assert.Equal', url: 'https://xunit.net/docs/comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'Asserting via named field access (result.Name) is bound to whatever position that name currently aliases — a whole-tuple comparison against a literal value tests the actual runtime positions directly.',
+      'ValueTuple already implements IEquatable<T> with element-by-element equality — no custom comparer is needed for Assert.Equal to work correctly on a whole tuple.',
+    ],
+  },
+
+  'tuples/valuetuple-8-element-limit-trest-chaining-mechanism': {
+    apis: ['ValueTuple<T1..T7,TRest>', 'ITuple', 'TupleElementNamesAttribute'],
+    related: [
+      { label: 'Testing Tuple-Returning Methods — previous', route: '/csharp/tuples/testing-tuple-returning-methods-deconstruction-assertions' },
+      { label: 'Renaming a Tuple Field — next', route: '/csharp/tuples/renaming-tuple-field-breaks-some-callers-not-others' },
+      { label: 'Tuples & Anonymous Types (overview)', route: '/csharp/tuples' },
+    ],
+    tip: 'ValueTuple only defines arity up to 7 — an 8+ element tuple is the compiler nesting ValueTuple<T1..T7,TRest> instances inside each other, with the outer struct\'s real field named Rest, not Item8.',
+    docs: [
+      { label: 'ValueTuple Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple' },
+    ],
+    resources: [
+      { label: 'ITuple Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.ituple', badge: 'docs' },
+    ],
+    gotchas: [
+      '.Item8 (and beyond) is a compiler-synthesized property reaching through the real .Rest field — raw reflection on the outer struct shows only Item1..Item7 and Rest, never a literal Item8.',
+      'ITuple.Length and its indexer correctly flatten the nested TRest chain for you — GetFields() on the outer struct does not.',
+    ],
+  },
+
+  'tuples/renaming-tuple-field-breaks-some-callers-not-others': {
+    apis: ['TupleElementNamesAttribute', 'deconstruction', 'CS1061'],
+    related: [
+      { label: '8-Element Limit and TRest Chaining — previous', route: '/csharp/tuples/valuetuple-8-element-limit-trest-chaining-mechanism' },
+      { label: 'Tuples & Anonymous Types (overview)', route: '/csharp/tuples' },
+      { label: 'Records', route: '/csharp/records' },
+    ],
+    tip: 'Renaming a named tuple field is a compile-time break for dot-notation callers (result.OldName) but a complete silent no-op for positional deconstruction callers (var (x, y) = ...) — the same rename has two very different outcomes.',
+    docs: [
+      { label: 'Value Tuples', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-tuples' },
+    ],
+    resources: [
+      { label: 'Records', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records', badge: 'docs' },
+    ],
+    gotchas: [
+      'Grepping a codebase for the old field name only finds dot-notation callers — deconstructing callers never reference the field name in their source at all.',
+      'A class or record property rename is uniformly breaking for every consumer; a named tuple\'s rename has an asymmetric, partially-silent blast radius — prefer a record for a genuinely public, evolving contract.',
+    ],
+  },
+
   arrays: {
     apis: ['T[]', 'T[,]', 'T[][]', 'Array.Sort', 'ArraySegment<T>', 'array expressions []'],
     related: [{ label: 'Collections', route: '/csharp/collections' }, { label: 'Span & Memory', route: '/csharp/collections' }, { label: 'LINQ', route: '/csharp/linq' }],
@@ -5656,6 +7693,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'Arrays (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/' }, { label: 'Multi-dimensional Arrays', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/multidimensional-arrays' }],
     resources: [{ label: 'Array Class API', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.array', badge: 'docs' }],
     gotchas: ['Array covariance lets string[] be assigned to object[] — but writing an int to that reference throws at runtime.', 'Jagged arrays (T[][]) have different syntax and behavior than multi-dimensional arrays (T[,]).'],
+  },
+
+  'arrays/testing-array-equality-sequenceequal-not-equals': {
+    apis: ['SequenceEqual', 'Assert.Equal', 'IEnumerable'],
+    related: [
+      { label: 'The Real Cost of Array Covariance — next', route: '/csharp/arrays/real-cost-of-array-covariance-runtime-type-check-every-store' },
+      { label: 'Arrays (overview)', route: '/csharp/arrays' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Arrays never override Equals()/== — both compare references. xUnit\'s Assert.Equal appears to work on arrays only because it special-cases IEnumerable internally; use SequenceEqual explicitly in plain code.',
+    docs: [
+      { label: 'Arrays (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/' },
+    ],
+    resources: [
+      { label: 'Enumerable.SequenceEqual', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.sequenceequal', badge: 'docs' },
+    ],
+    gotchas: [
+      'A production if (arr1 == arr2) check silently compares references, not content — no compiler warning, no exception, just quietly wrong logic.',
+      'ReferenceEquals and == on arrays behave identically — there is no partial content-awareness in either.',
+    ],
+  },
+
+  'arrays/real-cost-of-array-covariance-runtime-type-check-every-store': {
+    apis: ['stelem.ref', 'stelem.i4', 'ArrayTypeMismatchException'],
+    related: [
+      { label: 'Testing Array Equality — previous', route: '/csharp/arrays/testing-array-equality-sequenceequal-not-equals' },
+      { label: 'params Arrays Silently Allocate — next', route: '/csharp/arrays/params-array-hidden-allocation-every-call-span-fix' },
+      { label: 'Arrays (overview)', route: '/csharp/arrays' },
+    ],
+    tip: 'Every store into a reference-type array compiles to stelem.ref, which the CLR checks against the array\'s actual runtime element type on every write — not just the write that would fail. Value-type arrays (stelem.i4) pay no such cost.',
+    docs: [
+      { label: 'Arrays (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/' },
+    ],
+    resources: [
+      { label: 'Array Covariance', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/covariance-and-arrays', badge: 'docs' },
+    ],
+    gotchas: [
+      'The covariant check runs on every reference-type array store, including ones guaranteed to succeed — the JIT cannot statically prove an array reference is not covariantly aliased.',
+      'int[]/double[] stores have zero type-check overhead — value-type arrays cannot be covariantly backed by an incompatible array.',
+    ],
+  },
+
+  'arrays/params-array-hidden-allocation-every-call-span-fix': {
+    apis: ['params ReadOnlySpan<T>', 'params T[]'],
+    related: [
+      { label: 'The Real Cost of Array Covariance — previous', route: '/csharp/arrays/real-cost-of-array-covariance-runtime-type-check-every-store' },
+      { label: 'Arrays (overview)', route: '/csharp/arrays' },
+      { label: 'Span & Memory', route: '/csharp/collections' },
+    ],
+    tip: 'Every params T[] call site allocates a new heap array, even for a 2-3 argument call — invisible because no "new" keyword appears at the call site. C# 12\'s params ReadOnlySpan<T> can eliminate this for read-only, non-escaping call sites.',
+    docs: [
+      { label: 'params Modifier', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/method-parameters#params-modifier' },
+    ],
+    resources: [
+      { label: 'Span<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.span-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'params ReadOnlySpan<T> is not a drop-in replacement for methods that need to retain, return, or use the arguments across an await — those must keep the params T[] overload.',
+      'The allocation happens on every call regardless of argument count — even a tiny 2-element params call allocates a full array each time.',
+    ],
   },
 
   'strings-datetime': {
@@ -5667,6 +7764,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['string concatenation in a loop creates O(n²) allocations — use StringBuilder for building strings iteratively.', 'DateTime.Now is local time; DateTime.UtcNow is UTC — always store and compare in UTC.'],
   },
 
+  'strings-datetime/testing-culture-sensitive-code-turkish-locale-ci-failures': {
+    apis: ['CultureInfo', 'ToUpperInvariant', 'CurrentCulture'],
+    related: [
+      { label: 'The Interning Boundary — next', route: '/csharp/strings-datetime/interning-boundary-which-strings-interned-automatically' },
+      { label: 'Strings, DateTime & Math (overview)', route: '/csharp/strings-datetime' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Force CurrentCulture to tr-TR inside a test (in a try/finally that restores it) to deterministically reproduce the classic "Turkey test" casing bug — passing under that locale is a strong signal the code is culture-safe everywhere.',
+    docs: [
+      { label: 'CultureInfo Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo' },
+    ],
+    resources: [
+      { label: 'String.ToUpperInvariant', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.string.toupperinvariant', badge: 'docs' },
+    ],
+    gotchas: [
+      'ToUpper()/ToLower() with no arguments use CultureInfo.CurrentCulture, an ambient environment setting — the same input can produce a different result purely based on the running machine\'s locale.',
+      'A test suite that never forces a non-default locale can pass indefinitely while still containing a real, environment-dependent bug.',
+    ],
+  },
+
+  'strings-datetime/interning-boundary-which-strings-interned-automatically': {
+    apis: ['string.Intern', 'ReferenceEquals', 'const string'],
+    related: [
+      { label: 'Testing Culture-Sensitive Code — previous', route: '/csharp/strings-datetime/testing-culture-sensitive-code-turkish-locale-ci-failures' },
+      { label: 'string.Create and Span<char> — next', route: '/csharp/strings-datetime/string-create-span-char-allocation-free-building' },
+      { label: 'Strings, DateTime & Math (overview)', route: '/csharp/strings-datetime' },
+    ],
+    tip: 'Automatic interning only applies to strings the compiler resolves at compile time (literals and constant-folded concatenation) — anything computed at runtime is a fresh, non-interned object regardless of matching content.',
+    docs: [
+      { label: 'String.Intern', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.string.intern' },
+    ],
+    resources: [
+      { label: 'String Interning', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.string.isinterned', badge: 'docs' },
+    ],
+    gotchas: [
+      '"hel" + "lo" (two literals) is constant-folded and interned at compile time — string.Concat("hel", "lo") is a runtime call and is never automatically interned, despite identical output.',
+      'string.Intern() adds a string to a process-wide pool that is never garbage collected for the process lifetime — a real memory-leak risk if overused, and rarely necessary since == already gives correct value comparison.',
+    ],
+  },
+
+  'strings-datetime/string-create-span-char-allocation-free-building': {
+    apis: ['string.Create', 'Span<char>', 'SpanAction'],
+    related: [
+      { label: 'The Interning Boundary — previous', route: '/csharp/strings-datetime/interning-boundary-which-strings-interned-automatically' },
+      { label: 'Strings, DateTime & Math (overview)', route: '/csharp/strings-datetime' },
+      { label: 'Span & Memory', route: '/csharp/collections' },
+    ],
+    tip: 'string.Create writes directly into the destination string\'s own memory — one allocation, zero copies — but only when the exact final length is known upfront. For variable-length building, StringBuilder remains the correct tool.',
+    docs: [
+      { label: 'String.Create', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.string.create' },
+    ],
+    resources: [
+      { label: 'Span<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.span-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'string.Create cannot resize — writing past the declared length throws, and under-filling leaves unfilled characters as default values.',
+      'Capturing locals in the callback lambda instead of passing them through the state parameter allocates a closure object, defeating the point of using string.Create in a hot path.',
+    ],
+  },
+
   'io-serialization': {
     apis: ['File', 'StreamReader', 'JsonSerializer', 'BinaryWriter', 'Encoding.UTF8'],
     related: [{ label: 'async / await', route: '/csharp/async' }, { label: 'Exceptions', route: '/csharp/exceptions' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }],
@@ -5674,6 +7831,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'File I/O (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/io/' }, { label: 'System.Text.Json', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/overview' }],
     resources: [{ label: 'JSON Serialization Guide', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/', badge: 'docs' }],
     gotchas: ['JsonSerializer is case-insensitive by default for deserialization but case-sensitive for serialization — use JsonSerializerOptions to control.', 'Streams must be disposed — always wrap in using or use File.ReadAllText for simple reads.'],
+  },
+
+  'io-serialization/testing-file-io-without-touching-real-filesystem-abstraction': {
+    apis: ['IFileSystem', 'System.IO.Abstractions', 'MockFileSystem'],
+    related: [
+      { label: 'Where the JsonSerializerOptions Cache Lives — next', route: '/csharp/io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance' },
+      { label: 'I/O & Serialization (overview)', route: '/csharp/io-serialization' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Depend on an IFileSystem abstraction (or the System.IO.Abstractions NuGet package) instead of calling File/StreamReader directly — tests can then run entirely in memory with no real files created or cleaned up.',
+    docs: [
+      { label: 'System.IO.Abstractions', url: 'https://github.com/TestableIO/System.IO.Abstractions' },
+    ],
+    resources: [
+      { label: 'File I/O (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/io/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Testing file-handling code by creating real temp files is slow and flaky (leftover files, path collisions between parallel test runs) — an abstraction seam avoids this entirely.',
+      'The same "depend on an abstraction" principle already used for databases and HTTP clients applies just as directly to file I/O.',
+    ],
+  },
+
+  'io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance': {
+    apis: ['JsonTypeInfo', 'JsonSerializerOptions', 'JsonSerializerContext'],
+    related: [
+      { label: 'Testing File I/O — previous', route: '/csharp/io-serialization/testing-file-io-without-touching-real-filesystem-abstraction' },
+      { label: 'Sync-over-Async File I/O Deadlocks — next', route: '/csharp/io-serialization/sync-over-async-file-io-deadlocks-result-hangs-forever' },
+      { label: 'I/O & Serialization (overview)', route: '/csharp/io-serialization' },
+    ],
+    tip: 'The JsonTypeInfo cache lives on each JsonSerializerOptions INSTANCE, populated lazily per type on first use — two instances with identical settings never share a cache, since cache sharing is tied to instance identity, not value equality.',
+    docs: [
+      { label: 'JsonSerializerOptions', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions' },
+    ],
+    resources: [
+      { label: 'JSON Source Generation', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/source-generation', badge: 'docs' },
+    ],
+    gotchas: [
+      'A static readonly options singleton only avoids REPEATED cold caches across calls — it still pays the one-time lazy cache-building cost the first time each type is used through it.',
+      'JSON source generation is the only approach that removes the cold-cache cost entirely, by generating the JsonTypeInfo at compile time instead of lazily at runtime.',
+    ],
+  },
+
+  'io-serialization/sync-over-async-file-io-deadlocks-result-hangs-forever': {
+    apis: ['SynchronizationContext', '.Result', 'ConfigureAwait'],
+    related: [
+      { label: 'Where the JsonSerializerOptions Cache Lives — previous', route: '/csharp/io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance' },
+      { label: 'I/O & Serialization (overview)', route: '/csharp/io-serialization' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'Calling .Result on an async file operation from a context with a SynchronizationContext (classic ASP.NET, WPF, WinForms) can deadlock permanently — the blocked thread and the awaited continuation each wait on the other forever. ASP.NET Core has no SynchronizationContext, so it doesn\'t deadlock the same way, but still blocks a thread.',
+    docs: [
+      { label: 'Async/Await Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming' },
+    ],
+    resources: [
+      { label: 'SynchronizationContext', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.synchronizationcontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'A library method using .Result can "work fine" when tested from ASP.NET Core, then deadlock the moment it\'s reused from a WPF or classic ASP.NET caller — the bug depends on the CALLER\'s context, not the library code itself.',
+      'The deadlock does not resolve itself over time — it is a genuine circular wait that persists indefinitely regardless of how quickly the underlying I/O actually finishes.',
+    ],
   },
 
   'gc-disposable': {
@@ -5685,6 +7902,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['Finalizers run on the GC thread — never acquire locks or throw exceptions inside them.', 'using() calls Dispose on exit even if an exception is thrown — prefer using declarations over explicit try/finally.'],
   },
 
+  'gc-disposable/testing-dispose-actually-called-spy-wrapper-double-dispose': {
+    apis: ['DisposeSpy', 'Assert.Equal', 'IAsyncDisposable'],
+    related: [
+      { label: 'Pattern-Based Disposal on ref structs — next', route: '/csharp/gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable' },
+      { label: 'GC & IDisposable (overview)', route: '/csharp/gc-disposable' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A spy wrapper substituted for a disposable dependency turns "did my class actually dispose its field" and "is double-dispose safe" into directly assertable call counts, instead of unverifiable claims.',
+    docs: [
+      { label: 'Dispose Pattern (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose' },
+    ],
+    resources: [
+      { label: 'IAsyncDisposable', url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test that only checks Dispose() doesn\'t throw says nothing about whether the underlying resource\'s Dispose() was actually invoked.',
+      'Double-dispose safety is required by the IDisposable contract but not enforced by the interface itself — a class\'s own _disposed guard is what makes it safe, and that guard deserves a dedicated test.',
+    ],
+  },
+
+  'gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable': {
+    apis: ['ref struct', 'pattern-based disposal', 'DisposeAsync'],
+    related: [
+      { label: 'Testing That Dispose() Was Called — previous', route: '/csharp/gc-disposable/testing-dispose-actually-called-spy-wrapper-double-dispose' },
+      { label: 'Disposed but Still Running — next', route: '/csharp/gc-disposable/disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose' },
+      { label: 'GC & IDisposable (overview)', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'using resolves via pattern matching on a public parameterless Dispose() method — no IDisposable required. This is what lets ref structs, which are forbidden from implementing any interface, still participate in using blocks.',
+    docs: [
+      { label: 'ref struct', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/ref-struct' },
+    ],
+    resources: [
+      { label: 'using statement', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/using', badge: 'docs' },
+    ],
+    gotchas: [
+      'ref structs cannot implement any interface at all, since interface dispatch can require boxing, which conflicts with a ref struct\'s stack-only restriction.',
+      'The same pattern-based resolution applies to foreach (GetEnumerator), await (GetAwaiter), and await using (DisposeAsync) — none require their "classic" interface.',
+    ],
+  },
+
+  'gc-disposable/disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose': {
+    apis: ['event -=', 'CancellationTokenSource', 'ObjectDisposedException'],
+    related: [
+      { label: 'Pattern-Based Disposal on ref structs — previous', route: '/csharp/gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable' },
+      { label: 'GC & IDisposable (overview)', route: '/csharp/gc-disposable' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'The _disposed guard only protects direct callers of public methods — an event publisher\'s stored delegate or an already-running fire-and-forget task can still touch the object after Dispose() returns unless you explicitly unsubscribe or cancel.',
+    docs: [
+      { label: 'Events (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/events/' },
+    ],
+    resources: [
+      { label: 'CancellationTokenSource', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource', badge: 'docs' },
+    ],
+    gotchas: [
+      'Forgetting to unsubscribe from an external event inside Dispose() leaves the publisher holding a live reference that can fire against a "disposed" object later.',
+      'Cancellation is cooperative — Cancel() only takes effect at the next checkpoint the running code observes, not immediately, so a brief window of touching released state remains possible.',
+    ],
+  },
+
   threading: {
     apis: ['Thread', 'ThreadPool', 'lock', 'Monitor', 'Interlocked', 'volatile'],
     related: [{ label: 'Tasks', route: '/csharp/tasks' }, { label: 'async / await', route: '/csharp/async' }, { label: 'Delegates & Events', route: '/csharp/delegates' }],
@@ -5692,6 +7969,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'Threading (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/threading/' }, { label: 'Synchronization Primitives', url: 'https://learn.microsoft.com/en-us/dotnet/standard/threading/overview-of-synchronization-primitives' }],
     resources: [{ label: 'Thread Safety Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/standard/threading/managed-threading-best-practices', badge: 'docs' }],
     gotchas: ['lock() prevents concurrent access but can cause deadlocks if two threads lock in different orders.', 'volatile ensures visibility across threads but does not prevent race conditions on compound operations (read-modify-write).'],
+  },
+
+  'threading/testing-race-conditions-stress-testing-concurrent-code': {
+    apis: ['Thread', 'Parallel.For', 'Assert.Equal'],
+    related: [
+      { label: 'The Old lock Codegen Bug — next', route: '/csharp/threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken' },
+      { label: 'Threading (overview)', route: '/csharp/threading' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Spin up many threads hammering shared state concurrently, then assert on an invariant a race condition would violate — a single-threaded test exercises none of the interleaving that could expose a synchronization bug.',
+    docs: [
+      { label: 'Managed Threading Best Practices', url: 'https://learn.microsoft.com/en-us/dotnet/standard/threading/managed-threading-best-practices' },
+    ],
+    resources: [
+      { label: 'Thread Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread', badge: 'docs' },
+    ],
+    gotchas: [
+      'Race conditions are probabilistic — a stress test passing once does not prove the code is free of them; increasing thread count and iterations improves confidence but never guarantees certainty.',
+      'A demonstration test proving an UNSAFE implementation fails is itself flaky by nature — usually written as documentation rather than a hard CI-blocking assertion.',
+    ],
+  },
+
+  'threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken': {
+    apis: ['Monitor.Enter', 'ref bool taken', 'ThreadAbortException'],
+    related: [
+      { label: 'Testing for Race Conditions — previous', route: '/csharp/threading/testing-race-conditions-stress-testing-concurrent-code' },
+      { label: 'Lazy Thread-Safety Modes — next', route: '/csharp/threading/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free' },
+      { label: 'Threading (overview)', route: '/csharp/threading' },
+    ],
+    tip: 'Monitor.Enter(obj, ref taken) sets taken atomically with acquiring the lock — this closes a real reliability gap in the old pre-C# 4 codegen where an asynchronous exception at the wrong moment could leak a lock permanently.',
+    docs: [
+      { label: 'Monitor Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.monitor' },
+    ],
+    resources: [
+      { label: 'lock Statement', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/lock', badge: 'docs' },
+    ],
+    gotchas: [
+      'The specific trigger (Thread.Abort()) is effectively unavailable on .NET Core/.NET 5+, which always throws PlatformNotSupportedException — the pattern remains defensive rather than addressing an actively common failure mode today.',
+      'The old lowering called Monitor.Enter(obj) BEFORE the try block began — the modern lowering\'s ref bool parameter is what makes the finally block\'s decision to call Exit always correct.',
+    ],
+  },
+
+  'threading/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free': {
+    apis: ['Lazy<T>', 'LazyThreadSafetyMode', 'ConcurrentDictionary.GetOrAdd'],
+    related: [
+      { label: 'The Old lock Codegen Bug — previous', route: '/csharp/threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken' },
+      { label: 'Threading (overview)', route: '/csharp/threading' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'The default Lazy<T> mode (ExecutionAndPublication) uses an internal lock to guarantee single execution — for a cheap, side-effect-free factory, PublicationOnly can be a better trade-off, avoiding that lock\'s contention entirely.',
+    docs: [
+      { label: 'Lazy<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.lazy-1' },
+    ],
+    resources: [
+      { label: 'LazyThreadSafetyMode', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.lazythreadsafetymode', badge: 'docs' },
+    ],
+    gotchas: [
+      'Wrapping a ConcurrentDictionary value in Lazy<T> is not a free fix — the default mode\'s internal lock means every .Value access may briefly synchronize, trading one cost for another.',
+      'PublicationOnly allows the factory to run on multiple threads concurrently (same risk as raw GetOrAdd) — only appropriate when the factory is cheap and side-effect-free.',
+    ],
   },
 
   tasks: {
@@ -5703,6 +8040,1239 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['ContinueWith captures the current synchronization context by default — use TaskScheduler.Default to avoid UI thread marshaling.', 'Parallel.ForEach uses thread-pool threads — don\'t use it for I/O-bound work; use async LINQ or PLINQ instead.'],
   },
 
+  'tasks/testing-async-timing-deterministic-controllable-taskcompletionsource': {
+    apis: ['TaskCompletionSource', 'Task.WhenAny', 'SetResult'],
+    related: [
+      { label: 'ValueTask: The One-Await Rule — next', route: '/csharp/tasks/valuetask-await-once-rule-when-worth-complexity' },
+      { label: 'Tasks (overview)', route: '/csharp/tasks' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Substitute a TaskCompletionSource for real async work in a test, then call SetResult() at exactly the moment you want — this makes timeout/race logic testable instantly and deterministically, with zero real wall-clock waiting.',
+    docs: [
+      { label: 'TaskCompletionSource<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1' },
+    ],
+    resources: [
+      { label: 'Task.WhenAny', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenany', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test whose pass/fail outcome depends on real wall-clock race timing (e.g. Task.Delay-based timeouts) is fundamentally non-deterministic — replacing the delay with a controlled TaskCompletionSource removes the flakiness at its root.',
+      'The test can construct EVERY possible race outcome deliberately by choosing which source to complete and when, rather than hoping real timing produces the case being tested.',
+    ],
+  },
+
+  'tasks/valuetask-await-once-rule-when-worth-complexity': {
+    apis: ['ValueTask<T>', 'AsTask()', 'IsCompletedSuccessfully'],
+    related: [
+      { label: 'Testing Async Timing Deterministically — previous', route: '/csharp/tasks/testing-async-timing-deterministic-controllable-taskcompletionsource' },
+      { label: 'WhenAll Does Not Start Tasks in Parallel — next', route: '/csharp/tasks/whenall-doesnt-start-tasks-parallel-just-awaits-running' },
+      { label: 'Tasks (overview)', route: '/csharp/tasks' },
+    ],
+    tip: 'ValueTask<T> avoids a heap allocation only on the synchronous-completion fast path — but it may only be consumed (awaited, .Result read, or .AsTask()) exactly once; awaiting the same instance twice is undefined behavior.',
+    docs: [
+      { label: 'ValueTask<T> Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.valuetask-1' },
+    ],
+    resources: [
+      { label: 'Understanding ValueTask', url: 'https://devblogs.microsoft.com/dotnet/understanding-the-whys-whats-and-whens-of-valuetask/', badge: 'blog' },
+    ],
+    gotchas: [
+      'A pattern that re-awaits the same task after checking it against WhenAny (safe with Task<T>) is a genuine bug if the underlying type is ValueTask<T> instead.',
+      'Convert to Task<T> via .AsTask() exactly once if you need multi-await or WhenAll/WhenAny semantics on a ValueTask-returning method.',
+    ],
+  },
+
+  'tasks/whenall-doesnt-start-tasks-parallel-just-awaits-running': {
+    apis: ['Task.WhenAll', 'async state machine', 'Task.Run'],
+    related: [
+      { label: 'ValueTask: The One-Await Rule — previous', route: '/csharp/tasks/valuetask-await-once-rule-when-worth-complexity' },
+      { label: 'Tasks (overview)', route: '/csharp/tasks' },
+      { label: 'async / await', route: '/csharp/async' },
+    ],
+    tip: 'An async method runs synchronously on the calling thread up to its first genuine await — Task.WhenAll doesn\'t start anything, it just awaits work that\'s usually already in flight by the time it\'s called.',
+    docs: [
+      { label: 'Task.WhenAll', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.whenall' },
+    ],
+    resources: [
+      { label: 'Async/Await Best Practices', url: 'https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming', badge: 'blog' },
+    ],
+    gotchas: [
+      'Awaiting a task individually before constructing the array passed to WhenAll defeats concurrency entirely — it forces sequential execution despite looking like async code.',
+      'CPU-bound work placed before an async method\'s first await still blocks the calling thread synchronously — declaring a method async does not retroactively make that portion non-blocking.',
+    ],
+  },
+
+  reflection: {
+    apis: ['Type', 'PropertyInfo', 'Activator.CreateInstance', 'GetCustomAttribute'],
+    related: [{ label: 'Generics', route: '/csharp/generics' }, { label: 'Delegates & Events', route: '/csharp/delegates' }, { label: 'Expression Trees', route: '/csharp/expression-trees' }],
+    tip: 'Cache PropertyInfo/MethodInfo per type in a static ConcurrentDictionary — member lookup is the expensive part of reflection, not reusing the cached object.',
+    docs: [{ label: 'Reflection (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/reflection-and-attributes/' }],
+    resources: [{ label: 'Type Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.type', badge: 'docs' }],
+    gotchas: ['Attributes are passive metadata — they do nothing unless some code reads them via GetCustomAttribute.', 'GetProperties()/GetFields() return public members only by default — pass BindingFlags.NonPublic for private members.'],
+  },
+
+  'reflection/testing-reflection-code-attribute-discovery-cache-behavior': {
+    apis: ['ReferenceEquals', 'GetCustomAttribute<T>', 'ConcurrentDictionary'],
+    related: [
+      { label: 'Beyond Expression Trees — next', route: '/csharp/reflection/beyond-expression-trees-dynamicmethod-reflection-emit' },
+      { label: 'Reflection & Attributes (overview)', route: '/csharp/reflection' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Assert on WHICH specific members were discovered (and which undecorated ones were skipped) rather than just confirming the scan ran without errors — and prove a MemberInfo cache genuinely avoids re-scanning with ReferenceEquals, not just equal-looking results.',
+    docs: [
+      { label: 'Reflection (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/reflection-and-attributes/' },
+    ],
+    resources: [
+      { label: 'PropertyInfo Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.reflection.propertyinfo', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test confirming attribute-driven code runs without errors says nothing about whether it discovered the right members and skipped the wrong ones.',
+      'Two independently-computed PropertyInfo arrays can look content-equal without being the same cached instance — ReferenceEquals or a call-count spy proves a genuine cache hit.',
+    ],
+  },
+
+  'reflection/beyond-expression-trees-dynamicmethod-reflection-emit': {
+    apis: ['DynamicMethod', 'ILGenerator', 'OpCodes'],
+    related: [
+      { label: 'Testing Reflection-Based Code — previous', route: '/csharp/reflection/testing-reflection-code-attribute-discovery-cache-behavior' },
+      { label: 'Generic Type Reflection Traps — next', route: '/csharp/reflection/generic-type-reflection-traps-generictypedefinition' },
+      { label: 'Reflection & Attributes (overview)', route: '/csharp/reflection' },
+    ],
+    tip: 'Expression.Lambda(...).Compile() already produces genuine JIT-compiled IL — hand-written IL via Reflection.Emit reaches the same runtime speed but with far higher correctness risk, and belongs almost exclusively in serializer/ORM/DI-container internals.',
+    docs: [
+      { label: 'System.Reflection.Emit', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.reflection.emit' },
+    ],
+    resources: [
+      { label: 'Expression Trees', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/', badge: 'docs' },
+    ],
+    gotchas: [
+      'Mistakes in hand-written IL don\'t always fail at compile time — some only surface as InvalidProgramException at invocation, with no compile-time safety net.',
+      'Reaching for Reflection.Emit without first profiling and confirming expression-tree-compiled delegates are still the bottleneck is a common overengineering trap.',
+    ],
+  },
+
+  'reflection/generic-type-reflection-traps-generictypedefinition': {
+    apis: ['GetGenericTypeDefinition', 'IsGenericType', 'GetInterfaces'],
+    related: [
+      { label: 'Beyond Expression Trees — previous', route: '/csharp/reflection/beyond-expression-trees-dynamicmethod-reflection-emit' },
+      { label: 'Reflection & Attributes (overview)', route: '/csharp/reflection' },
+      { label: 'Generics', route: '/csharp/generics' },
+    ],
+    tip: 'typeof(List<int>) and typeof(List<>) are entirely different Type objects — use GetGenericTypeDefinition() to compare a closed generic type against its open definition, and walk GetInterfaces() to detect "implements IEnumerable<T> for any T".',
+    docs: [
+      { label: 'Type.GetGenericTypeDefinition', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.type.getgenerictypedefinition' },
+    ],
+    resources: [
+      { label: 'Generics (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/generics', badge: 'docs' },
+    ],
+    gotchas: [
+      'typeof(IEnumerable<>).IsAssignableFrom(someClosedType) unreliably returns false even for types that genuinely implement a closed IEnumerable<T> — walking GetInterfaces() and comparing GetGenericTypeDefinition() is the correct technique.',
+      'Calling GetGenericTypeDefinition() on a non-generic type throws InvalidOperationException — always guard with IsGenericType first.',
+    ],
+  },
+
+  iterators: {
+    apis: ['yield return', 'yield break', 'IEnumerable<T>', 'IAsyncEnumerable<T>'],
+    related: [{ label: 'Generics', route: '/csharp/generics' }, { label: 'async / await', route: '/csharp/async' }, { label: 'LINQ', route: '/csharp/linq' }],
+    tip: 'A method containing yield return does not run when called — it constructs a state machine. The body runs incrementally, one yield at a time, driven by MoveNext().',
+    docs: [{ label: 'Iterators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' }],
+    resources: [{ label: 'IEnumerable<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1', badge: 'docs' }],
+    gotchas: ['Enumerating the same IEnumerable twice re-runs the entire pipeline — materialise with ToList() if reuse is needed.', 'yield return is allowed in try/finally but NOT in try/catch.'],
+  },
+
+  'iterators/testing-iterator-actually-lazy-side-effects-not-run-before-enumeration': {
+    apis: ['yield return', 'MoveNext', 'Assert.Throws'],
+    related: [
+      { label: 'Why GetEnumerator Sometimes Returns Itself — next', route: '/csharp/iterators/why-getenumerator-sometimes-returns-itself-thread-id-check' },
+      { label: 'Iterators & yield (overview)', route: '/csharp/iterators' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A boolean flag set as the first action inside an iterator body, checked before and after enumeration, directly and deterministically proves deferred execution — no reliance on console output timing needed.',
+    docs: [
+      { label: 'Iterators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' },
+    ],
+    resources: [
+      { label: 'yield Statement', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/yield', badge: 'docs' },
+    ],
+    gotchas: [
+      'A meaningful validation-wrapper test asserts the exception fires on the CALL itself, with zero enumeration involved — not just that it eventually throws.',
+      'Equal final values between a materialized and lazy sequence say nothing about how many times expensive side effects ran along the way — count actual invocations to prove it.',
+    ],
+  },
+
+  'iterators/why-getenumerator-sometimes-returns-itself-thread-id-check': {
+    apis: ['GetEnumerator', 'ManagedThreadId', 'state machine'],
+    related: [
+      { label: 'Testing That an Iterator Is Lazy — previous', route: '/csharp/iterators/testing-iterator-actually-lazy-side-effects-not-run-before-enumeration' },
+      { label: 'Iterator Exceptions and Stack Traces — next', route: '/csharp/iterators/iterator-exceptions-stack-traces-movenext-not-call-site' },
+      { label: 'Iterators & yield (overview)', route: '/csharp/iterators' },
+    ],
+    tip: 'The compiler-generated iterator class returns "this" from GetEnumerator() only on the FIRST call, on the SAME thread that created it — every other case (a second call, or a different thread) allocates a genuinely new instance to preserve the independent-cursor guarantee.',
+    docs: [
+      { label: 'Iterators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' },
+    ],
+    resources: [
+      { label: 'IEnumerator<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'A single same-thread foreach gets one allocation total; multiple overlapping enumerations or cross-thread enumeration each trigger an additional allocation.',
+      'The thread-id check specifically prevents a race where two threads could otherwise both be handed the same mutable object as their "independent" cursor.',
+    ],
+  },
+
+  'iterators/iterator-exceptions-stack-traces-movenext-not-call-site': {
+    apis: ['MoveNext', 'StackTrace', 'ArgumentOutOfRangeException'],
+    related: [
+      { label: 'Why GetEnumerator Sometimes Returns Itself — previous', route: '/csharp/iterators/why-getenumerator-sometimes-returns-itself-thread-id-check' },
+      { label: 'Iterators & yield (overview)', route: '/csharp/iterators' },
+      { label: 'Exceptions', route: '/csharp/exceptions' },
+    ],
+    tip: 'An exception thrown inside a yield body has a stack trace rooted in the compiler-generated MoveNext() frame, not the original call site — the eager-validation-wrapper pattern is partly an observability fix, giving future exceptions a trace pointing at the real caller.',
+    docs: [
+      { label: 'Iterators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/iterators' },
+    ],
+    resources: [
+      { label: 'StackTrace Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktrace', badge: 'docs' },
+    ],
+    gotchas: [
+      'A stack trace is a snapshot of what is CURRENTLY executing — the original call site\'s frame has already been popped by the time deferred enumeration and any resulting exception happen.',
+      'Only code moved OUT of the iterator body gets a call-site-rooted trace — exceptions from the actual per-element logic inside the private iterator still show a MoveNext()-rooted trace.',
+    ],
+  },
+
+  'functional-csharp': {
+    apis: ['Result<T>', '.Map()', '.Bind()', '.Match()'],
+    related: [{ label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'Exceptions', route: '/csharp/exceptions' }, { label: 'Generics', route: '/csharp/generics' }],
+    tip: 'Result<T> makes failure an explicit return type — Bind chains fallible operations and short-circuits automatically on the first failure, eliminating repetitive if (result.IsFailed) return... boilerplate.',
+    docs: [{ label: 'Result Pattern', url: 'https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/' }],
+    resources: [{ label: 'ErrorOr NuGet', url: 'https://www.nuget.org/packages/ErrorOr', badge: 'docs' }],
+    gotchas: ['Use Result<T> for expected domain failures; throw exceptions for infrastructure failures and programming errors.', 'Never write async Result<T> — use Task<Result<T>> instead, Result does not implement the awaitable pattern.'],
+  },
+
+  'functional-csharp/testing-railway-pipelines-asserting-which-step-failed': {
+    apis: ['Bind', 'Assert.Equal', 'call-count spy'],
+    related: [
+      { label: 'Proving Result Is a Genuine Monad — next', route: '/csharp/functional-csharp/proving-result-genuine-monad-three-monad-laws' },
+      { label: 'Functional C# & Result (overview)', route: '/csharp/functional-csharp' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test asserting only result.IsFailed says nothing about whether later pipeline steps were genuinely skipped — a call-count spy on each Bind step proves short-circuiting actually happened, not just that the final Result looks like a failure.',
+    docs: [
+      { label: 'Result Pattern', url: 'https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'A bug that wrongly invokes a later step (like charging payment) after an earlier step failed can still produce a final Result showing failure — only a call-count assertion on that specific step catches it.',
+      'Asserting on the SPECIFIC error message (not just IsFailed) confirms the pipeline failed at the expected step, for the expected reason.',
+    ],
+  },
+
+  'functional-csharp/proving-result-genuine-monad-three-monad-laws': {
+    apis: ['left identity', 'right identity', 'associativity'],
+    related: [
+      { label: 'Testing Railway-Oriented Pipelines — previous', route: '/csharp/functional-csharp/testing-railway-pipelines-asserting-which-step-failed' },
+      { label: 'Result Equality Traps — next', route: '/csharp/functional-csharp/result-equality-traps-never-equal-by-default' },
+      { label: 'Functional C# & Result (overview)', route: '/csharp/functional-csharp' },
+    ],
+    tip: 'Left identity, right identity, and associativity are concrete, verifiable equalities between Result<T> values built two different ways — associativity is exactly why a Bind chain is safe to reason about one step at a time regardless of grouping.',
+    docs: [
+      { label: 'Monad (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Monad_(functional_programming)' },
+    ],
+    resources: [
+      { label: 'Railway Oriented Programming', url: 'https://fsharpforfunandprofit.com/rop/', badge: 'blog' },
+    ],
+    gotchas: [
+      'The monad laws must hold unconditionally, including when intermediate functions fail — not just on the happy path.',
+      'Associativity is about GROUPING, not reordering — both sides of the law still execute f before g.',
+    ],
+  },
+
+  'functional-csharp/result-equality-traps-never-equal-by-default': {
+    apis: ['Equals', 'sealed record', 'ReferenceEquals'],
+    related: [
+      { label: 'Proving Result Is a Genuine Monad — previous', route: '/csharp/functional-csharp/proving-result-genuine-monad-three-monad-laws' },
+      { label: 'Functional C# & Result (overview)', route: '/csharp/functional-csharp' },
+      { label: 'System.Object', route: '/csharp/system-object' },
+    ],
+    tip: 'The main page\'s hand-rolled Result<T> is a sealed CLASS with no equality override — Assert.Equal on two logically-identical Results silently fails via reference equality. Assert on unwrapped fields, or change the declaration to a sealed record for automatic value equality.',
+    docs: [
+      { label: 'Records', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records' },
+    ],
+    resources: [
+      { label: 'Equality Comparisons', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/equality-comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'Two Result<T> instances printing the same value in a test failure message are NOT necessarily equal — printed representation and equality comparison are separate mechanisms.',
+      'Changing Result<T> from "sealed class" to "sealed record" is a one-time, low-risk fix that makes whole-object Assert.Equal comparisons work everywhere in the codebase.',
+    ],
+  },
+
+  regex: {
+    apis: ['Regex.IsMatch', 'Regex.Match', '[GeneratedRegex]'],
+    related: [{ label: 'Strings, DateTime & Math', route: '/csharp/strings-datetime' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'I/O & Serialization', route: '/csharp/io-serialization' }],
+    tip: 'Always check match.Success before reading match.Value or groups — failed matches return Match.Empty, not null.',
+    docs: [{ label: 'Regular Expressions (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expressions' }],
+    resources: [{ label: '[GeneratedRegex]', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-source-generators', badge: 'docs' }],
+    gotchas: ['Nested quantifiers like (a+)+ backtrack exponentially on crafted input — always set matchTimeout on regexes that process user input.', 'Never construct new Regex(pattern) in a hot path — use static readonly or [GeneratedRegex] instead.'],
+  },
+
+  'regex/testing-regex-redos-proving-matchtimeout-fires': {
+    apis: ['matchTimeout', 'RegexMatchTimeoutException', 'NonBacktracking'],
+    related: [
+      { label: 'Inside the Backtracking Engine — next', route: '/csharp/regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step' },
+      { label: 'Regular Expressions (overview)', route: '/csharp/regex' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Craft a genuinely pathological input and assert RegexMatchTimeoutException fires within a bounded wall-clock time — configuring matchTimeout and verifying it actually engages are two different claims.',
+    docs: [
+      { label: 'Regex Timeouts', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-behavior' },
+    ],
+    resources: [
+      { label: 'RegexMatchTimeoutException', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regexmatchtimeoutexception', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test suite exercising only well-formed inputs never exercises the timeout/ReDoS defense path at all.',
+      'NonBacktracking provides guaranteed O(n) time with no exception ever thrown; matchTimeout is a safety net that lets the engine attempt up to a bounded duration before throwing — a real behavioral difference worth testing for both.',
+    ],
+  },
+
+  'regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step': {
+    apis: ['(a+)+', 'catastrophic backtracking', 'partitioning'],
+    related: [
+      { label: 'Testing Regex Patterns for ReDoS — previous', route: '/csharp/regex/testing-regex-redos-proving-matchtimeout-fires' },
+      { label: 'The Unicode Digit Trap — next', route: '/csharp/regex/unicode-digit-trap-d-matches-more-than-ascii' },
+      { label: 'Regular Expressions (overview)', route: '/csharp/regex' },
+    ],
+    tip: 'Any pattern shape creating multiple ways to partition the same input among repeated sub-patterns is vulnerable — not just nested quantifiers like (a+)+, but alternation like (a|aa)+ too. Removing the redundant ambiguity is often the real fix, not just a timeout.',
+    docs: [
+      { label: 'Regex Backtracking', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/backtracking-in-regular-expressions' },
+    ],
+    resources: [
+      { label: 'Catastrophic Backtracking', url: 'https://www.regular-expressions.info/catastrophic.html', badge: 'blog' },
+    ],
+    gotchas: [
+      'The worst case is a FAILING match — a successful match can stop at the first partitioning that works, but proving no match requires exhausting every partitioning.',
+      '(a+)+ simplifies to a+ with identical matching power and zero backtracking risk — many vulnerable patterns can be rewritten to remove the ambiguity entirely.',
+    ],
+  },
+
+  'regex/unicode-digit-trap-d-matches-more-than-ascii': {
+    apis: ['\\d', 'RegexOptions.ECMAScript', 'Nd category'],
+    related: [
+      { label: 'Inside the Backtracking Engine — previous', route: '/csharp/regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step' },
+      { label: 'Regular Expressions (overview)', route: '/csharp/regex' },
+      { label: 'Strings, DateTime & Math', route: '/csharp/strings-datetime' },
+    ],
+    tip: '\\d matches any Unicode Nd (Decimal Digit Number) category character by default, not just ASCII 0-9 — a "validated" string can still throw in int.Parse. Use RegexOptions.ECMAScript or an explicit [0-9] character class for strict ASCII-only validation.',
+    docs: [
+      { label: 'Character Classes', url: 'https://learn.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions' },
+    ],
+    resources: [
+      { label: 'Unicode Category Nd', url: 'https://www.unicode.org/reports/tr44/#General_Category_Values', badge: 'docs' },
+    ],
+    gotchas: [
+      'A string satisfying \\d{4} can contain Arabic-Indic or fullwidth digit characters that int.Parse\'s default NumberStyles reject, producing a FormatException on "validated" input.',
+      '\\w has the same broader-than-ASCII behavior as \\d — whether that matters depends on whether the system genuinely needs to support internationalized input.',
+    ],
+  },
+
+  channels: {
+    apis: ['Channel.CreateBounded', 'ChannelWriter<T>', 'ChannelReader<T>'],
+    related: [{ label: 'Tasks & Parallel', route: '/csharp/tasks' }, { label: 'async / await', route: '/csharp/async' }, { label: 'Threading', route: '/csharp/threading' }],
+    tip: 'Bounded channels apply backpressure via WriteAsync — default to bounded, since unbounded with a slow consumer is a slow memory leak.',
+    docs: [{ label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels' }],
+    resources: [{ label: 'An Introduction to System.Threading.Channels', url: 'https://devblogs.microsoft.com/dotnet/an-introduction-to-system-threading-channels/', badge: 'blog' }],
+    gotchas: ['Forgetting writer.Complete() leaves the consumer\'s await foreach running forever.', 'SingleWriter/SingleReader are performance promises, not runtime constraints — lying causes data corruption.'],
+  },
+
+  'channels/testing-channel-pipelines-without-mocks-real-channel-test-double': {
+    apis: ['Channel.CreateUnbounded', 'TryRead', 'reader.Completion'],
+    related: [
+      { label: 'How ReadAllAsync Detects Completion — next', route: '/csharp/channels/how-readallasync-detects-completion-waittoreadasync-tryread' },
+      { label: 'Channels & Producer/Consumer (overview)', route: '/csharp/channels' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Because production code depends only on ChannelWriter<T>/ChannelReader<T> abstractions, a real throwaway channel substitutes perfectly as a test double — no mocking framework needed to verify backpressure or completion propagation.',
+    docs: [
+      { label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels' },
+    ],
+    resources: [
+      { label: 'xUnit Assertions', url: 'https://xunit.net/docs/comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'Genuinely proving backpressure requires filling the channel and asserting a second write has NOT completed — configuration alone does not prove runtime behavior.',
+      'A test verifying shutdown must check reader.Completion actually completes, not just that no exception was thrown.',
+    ],
+  },
+
+  'channels/how-readallasync-detects-completion-waittoreadasync-tryread': {
+    apis: ['WaitToReadAsync', 'TryRead', 'IAsyncEnumerable'],
+    related: [
+      { label: 'Testing Channel-Based Pipelines — previous', route: '/csharp/channels/testing-channel-pipelines-without-mocks-real-channel-test-double' },
+      { label: 'The Rendezvous Channel — next', route: '/csharp/channels/rendezvous-channel-capacity-zero-writeasync-waits-for-reader' },
+      { label: 'Channels & Producer/Consumer (overview)', route: '/csharp/channels' },
+    ],
+    tip: 'ReadAllAsync is functionally equivalent to "while WaitToReadAsync, then while TryRead" — WaitToReadAsync returning false is precisely the signal that the channel is completed and fully drained.',
+    docs: [
+      { label: 'ChannelReader<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels.channelreader-1' },
+    ],
+    resources: [
+      { label: 'IAsyncEnumerable<T>', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.iasyncenumerable-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'In a multi-reader scenario, TryRead can fail even right after WaitToReadAsync returns true — another reader may have taken the item first.',
+      'WaitToReadAsync returning false is the normal completion signal, not an error condition.',
+    ],
+  },
+
+  'channels/rendezvous-channel-capacity-zero-writeasync-waits-for-reader': {
+    apis: ['Channel.CreateBounded(0)', 'rendezvous', 'BoundedChannelFullMode'],
+    related: [
+      { label: 'How ReadAllAsync Detects Completion — previous', route: '/csharp/channels/how-readallasync-detects-completion-waittoreadasync-tryread' },
+      { label: 'Channels & Producer/Consumer (overview)', route: '/csharp/channels' },
+      { label: 'Tasks & Parallel', route: '/csharp/tasks' },
+    ],
+    tip: 'Channel.CreateBounded<T>(0) creates a rendezvous channel — WriteAsync can only complete at the exact moment a reader is actively receiving the item, with zero buffer storage, unlike even capacity 1.',
+    docs: [
+      { label: 'BoundedChannelOptions', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels.boundedchanneloptions' },
+    ],
+    resources: [
+      { label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.channels', badge: 'docs' },
+    ],
+    gotchas: [
+      'A WriteAsync completing on a POSITIVE-capacity channel only proves the item was stored — only capacity 0 guarantees a consumer is actively receiving it right now.',
+      'DropOldest/DropNewest full modes are meaningless on a capacity-0 channel — there is no buffer to have an "oldest" item in.',
+    ],
+  },
+
+  'unit-testing': {
+    apis: ['[Fact]', '[Theory]', 'Mock<T>', 'Assert.Throws'],
+    related: [{ label: 'Generics', route: '/csharp/generics' }, { label: 'Delegates & Events', route: '/csharp/delegates' }, { label: 'Functional C# & Result', route: '/csharp/functional-csharp' }],
+    tip: 'One logical assertion per test — a test that verifies two independent behaviors makes it impossible to tell which one broke when it fails.',
+    docs: [{ label: 'xUnit Documentation', url: 'https://xunit.net/docs/getting-started/netcore/cmdline' }],
+    resources: [{ label: 'Moq GitHub', url: 'https://github.com/devlooped/moq', badge: 'code' }],
+    gotchas: ['Never mark a test method async void — xUnit cannot await it, and any thrown exception is silently swallowed.', 'Prefer asserting on state/results over Verify() — interaction-based assertions couple tests to implementation details.'],
+  },
+
+  'unit-testing/testing-your-test-doubles-mock-setup-matches-production-behavior': {
+    apis: ['Mock<T>', 'contract test', 'IUserRepo'],
+    related: [
+      { label: 'Why xUnit Creates a New Instance Per Test — next', route: '/csharp/unit-testing/why-xunit-creates-new-instance-per-test-classfixture' },
+      { label: 'Unit Testing (xUnit & Moq) (overview)', route: '/csharp/unit-testing' },
+      { label: 'Functional C# & Result', route: '/csharp/functional-csharp' },
+    ],
+    tip: 'A passing unit test suite using mocks only proves the code behaves correctly given the mock\'s assumptions — a small set of contract tests, run against both the real implementation and any fakes, catches drift between assumption and reality.',
+    docs: [
+      { label: 'Moq Quickstart', url: 'https://github.com/devlooped/moq/wiki/Quickstart' },
+    ],
+    resources: [
+      { label: 'Contract Testing', url: 'https://martinfowler.com/bliki/ContractTest.html', badge: 'blog' },
+    ],
+    gotchas: [
+      'Two implementations can both compile against the same interface while disagreeing completely on behavior for edge cases (null vs exception) — nothing about the interface itself catches that mismatch.',
+      'Contract tests are a small, targeted addition, not a replacement for everyday mocked unit tests.',
+    ],
+  },
+
+  'unit-testing/why-xunit-creates-new-instance-per-test-classfixture': {
+    apis: ['IClassFixture<T>', 'constructor', 'IDisposable'],
+    related: [
+      { label: 'Testing Your Test Doubles — previous', route: '/csharp/unit-testing/testing-your-test-doubles-mock-setup-matches-production-behavior' },
+      { label: 'TimeProvider and FakeTimeProvider — next', route: '/csharp/unit-testing/timeprovider-faketimeprovider-deterministic-time-dependent-tests' },
+      { label: 'Unit Testing (xUnit & Moq) (overview)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Each test method runs against its own freshly-constructed instance — this eliminates test-order dependence by construction. IClassFixture<T> is the deliberate, explicit exception, sharing one instance across a whole test class only where the performance win is worth the shared-state risk.',
+    docs: [
+      { label: 'Shared Context in xUnit', url: 'https://xunit.net/docs/shared-context' },
+    ],
+    resources: [
+      { label: 'xUnit Documentation', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'xUnit has no [SetUp]/[TearDown] attributes because the constructor and IDisposable.Dispose() already fill that role, once per test, via the language\'s own object lifecycle.',
+      'IClassFixture-shared state IS visible across test methods — one test\'s mutation can affect another, introducing the exact test-order dependence the default per-test-instance model prevents.',
+    ],
+  },
+
+  'unit-testing/timeprovider-faketimeprovider-deterministic-time-dependent-tests': {
+    apis: ['TimeProvider', 'FakeTimeProvider', 'Task.Delay(delay, timeProvider)'],
+    related: [
+      { label: 'Why xUnit Creates a New Instance Per Test — previous', route: '/csharp/unit-testing/why-xunit-creates-new-instance-per-test-classfixture' },
+      { label: 'Unit Testing (xUnit & Moq) (overview)', route: '/csharp/unit-testing' },
+      { label: 'Tasks & Parallel', route: '/csharp/tasks' },
+    ],
+    tip: 'Inject TimeProvider (production uses TimeProvider.System, tests use FakeTimeProvider) instead of calling DateTime.UtcNow directly — Advance(TimeSpan) fast-forwards through expiry checks and Task.Delay-based retries instantly, with no real waiting.',
+    docs: [
+      { label: 'TimeProvider Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.timeprovider' },
+    ],
+    resources: [
+      { label: 'Testing Time-Dependent Code', url: 'https://learn.microsoft.com/en-us/dotnet/standard/datetime/how-to-use-timeprovider', badge: 'docs' },
+    ],
+    gotchas: [
+      'FakeTimeProvider integrates with Task.Delay(delay, timeProvider) and TimeProvider.CreateTimer — not just simple DateTime.UtcNow checks.',
+      'This is the same underlying idea as substituting a controllable TaskCompletionSource for real async operations — both replace real waiting with a fully test-controlled stand-in.',
+    ],
+  },
+
+  'expression-trees': {
+    apis: ['Expression<T>', 'ExpressionVisitor', 'IQueryable<T>'],
+    related: [{ label: 'LINQ', route: '/csharp/linq' }, { label: 'Reflection & Attributes', route: '/csharp/reflection' }, { label: 'Delegates & Events', route: '/csharp/delegates' }],
+    tip: 'Expression<Func<T,bool>> stores a lambda as an inspectable data tree instead of compiled code — this is what lets EF Core translate u => u.Age >= 18 into WHERE age >= 18 in SQL.',
+    docs: [{ label: 'Expression Trees (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/' }],
+    resources: [{ label: 'ExpressionVisitor Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expressionvisitor', badge: 'docs' }],
+    gotchas: ['Calling .AsEnumerable() or .ToList() mid-query drops back to IEnumerable — everything after runs client-side, a silent performance disaster.', 'Only expression lambdas convert to trees — statement bodies, assignments, and async lambdas never compile to Expression<T>.'],
+  },
+
+  'expression-trees/testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result': {
+    apis: ['NodeType', 'ExpressionType', 'MemberExpression'],
+    related: [
+      { label: 'The ParameterExpression Identity Problem — next', route: '/csharp/expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda' },
+      { label: 'Expression Trees (overview)', route: '/csharp/expression-trees' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Compiling and running a dynamically-built tree against in-memory data can pass perfectly while the SAME tree fails EF Core translation — assert on NodeType and operand shape directly to catch this before it reaches production.',
+    docs: [
+      { label: 'Expression Trees (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/expression-trees/' },
+    ],
+    resources: [
+      { label: 'ExpressionType Enum', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expressiontype', badge: 'docs' },
+    ],
+    gotchas: [
+      'A wrong operator (GreaterThanOrEqual instead of GreaterThan) can still pass a compiled/run test if boundary values are never exercised — shape assertions catch it deterministically.',
+      'A lightweight ExpressionVisitor flagging untranslatable node types catches "could not be translated" failures in milliseconds, with no database needed.',
+    ],
+  },
+
+  'expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda': {
+    apis: ['ParameterExpression', 'ExpressionVisitor', 'ReferenceEquals'],
+    related: [
+      { label: 'Testing Dynamic Expression Trees — previous', route: '/csharp/expression-trees/testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result' },
+      { label: 'Captured Variables Are Not ConstantExpression — next', route: '/csharp/expression-trees/captured-variables-not-constantexpression-hidden-closure-class' },
+      { label: 'Expression Trees (overview)', route: '/csharp/expression-trees' },
+    ],
+    tip: 'Two lambdas both named "x" have genuinely different ParameterExpression objects — binding is by reference, not name. Naively AndAlso-combining two predicate bodies produces a tree referencing an undeclared parameter, throwing InvalidOperationException at Compile() time.',
+    docs: [
+      { label: 'ParameterExpression Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.parameterexpression' },
+    ],
+    resources: [
+      { label: 'ExpressionVisitor Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.expressionvisitor', badge: 'docs' },
+    ],
+    gotchas: [
+      'The ParameterReplacerVisitor fix substitutes the actual PARAMETEREXPRESSION OBJECT throughout the tree — it does not touch names at all.',
+      'The final Expression.Lambda call must declare whichever parameter object the rewritten, combined body actually references throughout.',
+    ],
+  },
+
+  'expression-trees/captured-variables-not-constantexpression-hidden-closure-class': {
+    apis: ['MemberExpression', 'closure class', 'FieldInfo'],
+    related: [
+      { label: 'The ParameterExpression Identity Problem — previous', route: '/csharp/expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda' },
+      { label: 'Expression Trees (overview)', route: '/csharp/expression-trees' },
+      { label: 'Reflection & Attributes', route: '/csharp/reflection' },
+    ],
+    tip: 'A captured local variable compiles into a MemberExpression reading a field off a compiler-generated closure class instance — not a plain ConstantExpression. This is exactly why EF Core can treat captured variables as reusable, parameterized query values.',
+    docs: [
+      { label: 'MemberExpression Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.linq.expressions.memberexpression' },
+    ],
+    resources: [
+      { label: 'EF.CompileQuery', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.ef.compilequery', badge: 'docs' },
+    ],
+    gotchas: [
+      'An ExpressionVisitor overriding only VisitConstant() to find "all literal values" will completely miss captured variables, since they appear as MemberExpression nodes.',
+      'Reading the actual captured value requires reflection — reading the field off the closure instance object, not reading a value directly embedded in the tree.',
+    ],
+  },
+
+  dynamic: {
+    apis: ['dynamic', 'ExpandoObject', 'DynamicObject'],
+    related: [{ label: 'Reflection & Attributes', route: '/csharp/reflection' }, { label: 'Tuples & Anonymous Types', route: '/csharp/tuples' }, { label: 'Expression Trees', route: '/csharp/expression-trees' }],
+    tip: 'dynamic is an interop tool, not a modelling tool — when you control the type, define the type. Reserve it for COM interop, DLR-hosted languages, and bridging third-party objects with no shared interface.',
+    docs: [{ label: 'Using Type dynamic (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/using-type-dynamic' }],
+    resources: [{ label: 'DynamicObject Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject', badge: 'docs' }],
+    gotchas: ['dynamic is not supported under NativeAOT — any dynamic operation throws PlatformNotSupportedException at runtime.', 'Extension methods cannot be resolved on a dynamic operand — dynamicList.Where(...) compiles but throws at runtime.'],
+  },
+
+  'dynamic/testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths': {
+    apis: ['TryGetMember', 'RuntimeBinderException', 'GetDynamicMemberNames'],
+    related: [
+      { label: 'Inside the DLR Call Site — next', route: '/csharp/dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback' },
+      { label: 'dynamic & the DLR (overview)', route: '/csharp/dynamic' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Test a DynamicObject subclass through the real dynamic keyword, not reflection — and assert specifically on RuntimeBinderException for the fail path, since a generic exception check would miss a bug where your override throws the wrong exception type.',
+    docs: [
+      { label: 'DynamicObject Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject' },
+    ],
+    resources: [
+      { label: 'RuntimeBinderException', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.csharp.runtimebinder.runtimebinderexception', badge: 'docs' },
+    ],
+    gotchas: [
+      'GetDynamicMemberNames() has no automatic connection to TryGetMember — a member TryGetMember resolves correctly can still be missing from the exposed name list.',
+      'Testing through dynamic exercises the whole binder pipeline; calling TryGetMember directly via reflection does not.',
+    ],
+  },
+
+  'dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback': {
+    apis: ['CallSite<T>', 'DLR binder', 'Rule cache'],
+    related: [
+      { label: 'Testing DynamicObject Wrappers — previous', route: '/csharp/dynamic/testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths' },
+      { label: 'Anonymous Types as dynamic — next', route: '/csharp/dynamic/anonymous-types-as-dynamic-assembly-boundary-hidden-cost' },
+      { label: 'dynamic & the DLR (overview)', route: '/csharp/dynamic' },
+    ],
+    tip: 'A call site\'s performance depends on how many DISTINCT runtime types it has ever seen, not their relative frequency — monomorphic (one type) is fastest, polymorphic (a small stable set) still benefits from caching, megamorphic (endless new types) gets no benefit at all.',
+    docs: [
+      { label: 'Dynamic Language Runtime Overview', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/advanced-topics/interop/dynamic-language-runtime-overview' },
+    ],
+    resources: [
+      { label: 'CallSiteBinder Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.callsitebinder', badge: 'docs' },
+    ],
+    gotchas: [
+      'A heavily skewed but only-two-type split (95%/5%) stays comfortably polymorphic — degradation depends on the count of distinct types, not their frequency.',
+      'For genuinely megamorphic workloads, explicit interfaces or expression trees compile down to something faster than dynamic dispatch.',
+    ],
+  },
+
+  'dynamic/anonymous-types-as-dynamic-assembly-boundary-hidden-cost': {
+    apis: ['anonymous type', 'RuntimeBinderException', 'ExpandoObject'],
+    related: [
+      { label: 'Inside the DLR Call Site — previous', route: '/csharp/dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback' },
+      { label: 'dynamic & the DLR (overview)', route: '/csharp/dynamic' },
+      { label: 'Tuples & Anonymous Types', route: '/csharp/tuples' },
+    ],
+    tip: 'Returning an anonymous type as dynamic works around the method-boundary restriction, but the DLR binder can fail to resolve a property specifically when the caller lives in a DIFFERENT assembly — the same source code works in one assembly layout and throws RuntimeBinderException in another.',
+    docs: [
+      { label: 'Anonymous Types (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/anonymous-types' },
+    ],
+    resources: [
+      { label: 'ExpandoObject Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.dynamic.expandoobject', badge: 'docs' },
+    ],
+    gotchas: [
+      'Unit tests living in the same assembly as the library under test never exercise this cross-assembly failure mode at all — it can stay dormant through a fully green test suite.',
+      'A named public record eliminates the risk entirely — its properties are accessible from any assembly with no dynamic binder involved.',
+    ],
+  },
+
+  'source-generators': {
+    apis: ['IIncrementalGenerator', 'ForAttributeWithMetadataName', 'RegisterSourceOutput'],
+    related: [{ label: 'Reflection & Attributes', route: '/csharp/reflection' }, { label: 'Regular Expressions', route: '/csharp/regex' }, { label: 'I/O & Serialization', route: '/csharp/io-serialization' }],
+    tip: 'Extract a small, equatable data model early in the pipeline, before the first .Select() that produces cached output — symbols and syntax nodes hold references to the entire compilation and defeat caching.',
+    docs: [{ label: 'Source Generators (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview' }],
+    resources: [{ label: 'Incremental Generators Cookbook', url: 'https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.cookbook.md', badge: 'docs' }],
+    gotchas: ['Always use IIncrementalGenerator, never the deprecated V1 ISourceGenerator — V1 regenerates everything on every keystroke.', 'A slow predicate in ForAttributeWithMetadataName makes every keypress slow, since it runs on every syntax node, not just ones with your attribute.'],
+  },
+
+  'source-generators/testing-source-generators-in-memory-pipeline-snapshotting-output': {
+    apis: ['CSharpGeneratorDriver', 'GeneratorDriverRunResult', 'Verify'],
+    related: [
+      { label: 'Why Symbols Defeat Incremental Caching — next', route: '/csharp/source-generators/why-symbols-defeat-incremental-caching-leak-compilation' },
+      { label: 'Source Generators (overview)', route: '/csharp/source-generators' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'CSharpGeneratorDriver.RunGeneratorsAndUpdateCompilation runs your generator against an in-memory Compilation, letting you assert on the exact generated source text as a fast unit test — no real project build needed.',
+    docs: [
+      { label: 'Unit Testing Generators', url: 'https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md#unit-testing-of-generators' },
+    ],
+    resources: [
+      { label: 'Verify Snapshot Testing', url: 'https://github.com/VerifyTests/Verify', badge: 'code' },
+    ],
+    gotchas: [
+      'A generator that silently produces incorrect code on bad input is far harder to debug than one that reports a diagnostic — test that ReportDiagnostic actually fires for malformed attribute usage.',
+      'Snapshot testing (Verify) fits generated source text specifically better than dozens of brittle Assert.Contains substring checks.',
+    ],
+  },
+
+  'source-generators/why-symbols-defeat-incremental-caching-leak-compilation': {
+    apis: ['INamedTypeSymbol', 'SymbolEqualityComparer', 'record'],
+    related: [
+      { label: 'Testing Source Generators — previous', route: '/csharp/source-generators/testing-source-generators-in-memory-pipeline-snapshotting-output' },
+      { label: 'Debugging a Source Generator — next', route: '/csharp/source-generators/debugging-source-generator-debugger-launch-technique' },
+      { label: 'Source Generators (overview)', route: '/csharp/source-generators' },
+    ],
+    tip: 'A symbol holds a reference to its owning Compilation, which transitively holds every SyntaxTree and full source text — retaining one symbol past the first .Select() stage leaks the whole compilation and defeats value-equality caching.',
+    docs: [
+      { label: 'Incremental Generators', url: 'https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md' },
+    ],
+    resources: [
+      { label: 'INamedTypeSymbol Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol', badge: 'docs' },
+    ],
+    gotchas: [
+      'A model containing even ONE syntax node or symbol field still defeats caching, regardless of how many other fields are genuinely simple values — record equality is only as good as its weakest field.',
+      'Symbols from two different Compilation snapshots representing the "same" logical type generally do not compare as equal, defeating the incremental engine\'s cache-hit check.',
+    ],
+  },
+
+  'source-generators/debugging-source-generator-debugger-launch-technique': {
+    apis: ['Debugger.Launch()', 'VBCSCompiler', 'IIncrementalGenerator'],
+    related: [
+      { label: 'Why Symbols Defeat Incremental Caching — previous', route: '/csharp/source-generators/why-symbols-defeat-incremental-caching-leak-compilation' },
+      { label: 'Source Generators (overview)', route: '/csharp/source-generators' },
+      { label: 'Reflection & Attributes', route: '/csharp/reflection' },
+    ],
+    tip: 'A generator runs inside the C# compiler process, not your application — a normal debug session never hits its breakpoints. Debugger.Launch() as the first line of Initialize() prompts to attach a debugger directly to the compiler process during the next build.',
+    docs: [
+      { label: 'Debug Source Generators', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview#debug-source-generators' },
+    ],
+    resources: [
+      { label: 'Debugger.Launch Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.debugger.launch', badge: 'docs' },
+    ],
+    gotchas: [
+      'An unconditional Debugger.Launch() call prompts a debugger-attach dialog on EVERY build — guard it behind an environment variable or #if so ordinary builds stay uninterrupted.',
+      'EmitCompilerGeneratedFiles only shows the final generated text — it does not let you step through the generator\'s own transform/emit logic.',
+    ],
+  },
+
+  'span-memory': {
+    apis: ['Span<T>', 'Memory<T>', 'ArrayPool<T>'],
+    related: [{ label: 'Arrays', route: '/csharp/arrays' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }, { label: 'Strings, DateTime & Math', route: '/csharp/strings-datetime' }],
+    tip: 'Span<T> is a ref struct living exclusively on the stack — a pointer and length representing a contiguous slice with no heap allocation. It cannot be a class field, boxed, used across await, or stored in arrays.',
+    docs: [{ label: 'Memory and Span (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/memory-and-spans/' }],
+    resources: [{ label: 'Span<T> Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.span-1', badge: 'docs' }],
+    gotchas: ['Span<T> cannot cross await boundaries — use Memory<T> in APIs that need to store or await the data, calling .Span for synchronous processing.', 'Always return rented ArrayPool arrays — forgetting leaks the buffer back to the GC path and defeats the purpose.'],
+  },
+
+  'span-memory/testing-methods-accepting-span-cannot-wrap-call-in-lambda': {
+    apis: ['Assert.Throws', 'ref struct capture', 'CS8175'],
+    related: [
+      { label: 'What Is Actually Inside a Span<T> — next', route: '/csharp/span-memory/whats-actually-inside-span-ref-field-fast-restricted' },
+      { label: 'Span<T> & Memory<T> (overview)', route: '/csharp/span-memory' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A Span<T> local variable declared outside a lambda cannot be captured inside it — Assert.Throws(() => method(mySpan)) is a compile error if mySpan is captured; construct the span inline inside the lambda, or use a plain try/catch instead.',
+    docs: [
+      { label: 'ref struct Types', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/ref-struct' },
+    ],
+    resources: [
+      { label: 'xUnit Assert.Throws', url: 'https://xunit.net/docs/comparisons', badge: 'docs' },
+    ],
+    gotchas: [
+      'Capturing an ordinary reference-type local (like a string) in a lambda is unaffected — only ref struct locals trigger the restriction.',
+      'Constructing the span fresh inside the lambda body (e.g. "text".AsSpan()) compiles fine, since nothing is captured from an outer scope.',
+    ],
+  },
+
+  'span-memory/whats-actually-inside-span-ref-field-fast-restricted': {
+    apis: ['ref field', 'managed pointer', 'stackalloc'],
+    related: [
+      { label: 'Testing Methods That Accept Span<T> — previous', route: '/csharp/span-memory/testing-methods-accepting-span-cannot-wrap-call-in-lambda' },
+      { label: 'ArrayPool Rent Returns Dirty Memory — next', route: '/csharp/span-memory/arraypool-rent-returns-dirty-memory-stale-data-leak' },
+      { label: 'Span<T> & Memory<T> (overview)', route: '/csharp/span-memory' },
+    ],
+    tip: 'Span<T> internally stores a ref field — a genuine managed pointer that can reference the middle of an array or stack memory. Every one of its restrictions (no class fields, no boxing, no await, no arrays) follows from the CLR not supporting ref fields in ordinary heap-tracked storage.',
+    docs: [
+      { label: 'Span<T> Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.span-1' },
+    ],
+    resources: [
+      { label: 'Write Safe Efficient Code', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/write-safe-efficient-code', badge: 'docs' },
+    ],
+    gotchas: [
+      'Writing through a Span<T> mutates the ORIGINAL array directly — proving no copy was ever made, unlike Substring which genuinely allocates.',
+      'Memory<T> avoids all these restrictions by storing an ordinary object reference plus start/length instead of a ref field, at the cost of needing .Span for actual access.',
+    ],
+  },
+
+  'span-memory/arraypool-rent-returns-dirty-memory-stale-data-leak': {
+    apis: ['ArrayPool<T>.Rent', 'clearArray', 'Return'],
+    related: [
+      { label: 'What Is Actually Inside a Span<T> — previous', route: '/csharp/span-memory/whats-actually-inside-span-ref-field-fast-restricted' },
+      { label: 'Span<T> & Memory<T> (overview)', route: '/csharp/span-memory' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'ArrayPool<T>.Rent does not clear the array by default — a rented buffer can contain a previous, unrelated caller\'s real data. Use Return(array, clearArray: true) specifically when the buffer held sensitive data.',
+    docs: [
+      { label: 'ArrayPool<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.buffers.arraypool-1' },
+    ],
+    resources: [
+      { label: 'ArrayPool.Return Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.buffers.arraypool-1.return', badge: 'docs' },
+    ],
+    gotchas: [
+      'Tracking "actual length" separately (the main page\'s own recommendation) prevents reading garbage beyond what THIS caller wrote — it does nothing to stop a LATER caller from seeing THIS caller\'s leftover data if never cleared.',
+      'Clearing has a real performance cost — apply it deliberately for buffers holding sensitive data, not reflexively for every rent/return cycle.',
+    ],
+  },
+
+  'di-dotnet': {
+    apis: ['IServiceCollection', 'IServiceProvider', 'ValidateOnBuild'],
+    related: [{ label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }, { label: 'Interfaces', route: '/csharp/interfaces' }],
+    tip: 'ValidateOnBuild and ValidateScopes are both enabled by default in ASP.NET Core Development environment — they catch missing registrations and captive dependencies at startup, but are disabled outside Development for performance, so the same bugs fail silently in production.',
+    docs: [{ label: 'Dependency Injection (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection' }],
+    resources: [{ label: 'DependencyInjection Source', url: 'https://github.com/dotnet/runtime/tree/main/src/libraries/Microsoft.Extensions.DependencyInjection', badge: 'code' }],
+    gotchas: ['A singleton depending on a scoped service captures it forever unless IServiceScopeFactory is used to create a proper child scope.', 'Injecting a single T when multiple implementations are registered silently resolves to only the last one registered.'],
+  },
+
+  'di-dotnet/testing-di-container-configuration-every-registration-resolves': {
+    apis: ['BuildServiceProvider', 'ServiceDescriptor', 'GetService'],
+    related: [
+      { label: 'How ValidateScopes Catches Captive Dependencies — next', route: '/csharp/di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope' },
+      { label: 'Dependency Injection in .NET (overview)', route: '/csharp/di-dotnet' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A unit test can build a real ServiceProvider from the SAME registration method Program.cs calls, then iterate every ServiceDescriptor and call GetService on each — proving every registration resolves, without starting the full host.',
+    docs: [
+      { label: 'Dependency Injection Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines' },
+    ],
+    resources: [
+      { label: 'ServiceProviderOptions Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovideroptions', badge: 'docs' },
+    ],
+    gotchas: [
+      'BuildServiceProvider succeeding only performs structural checks — it does not necessarily construct every registered type.',
+      'Validation at real startup only runs when the host actually starts — a fast unit test suite never exercises it unless it builds a real ServiceProvider itself.',
+    ],
+  },
+
+  'di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope': {
+    apis: ['ValidateScopes', 'IServiceScopeFactory', 'CreateScope'],
+    related: [
+      { label: 'Testing Your DI Container Configuration — previous', route: '/csharp/di-dotnet/testing-di-container-configuration-every-registration-resolves' },
+      { label: 'Multiple Implementations, Single T Injection — next', route: '/csharp/di-dotnet/multiple-implementations-single-t-injection-returns-last' },
+      { label: 'Dependency Injection in .NET (overview)', route: '/csharp/di-dotnet' },
+    ],
+    tip: 'A singleton is constructed once, resolved from the root scope — if its constructor requires a scoped service, that scoped instance is resolved directly in the root scope too, exactly the condition ValidateScopes throws on.',
+    docs: [
+      { label: 'Scoped Service Validation', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines#scope-validation' },
+    ],
+    resources: [
+      { label: 'IServiceScopeFactory Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory', badge: 'docs' },
+    ],
+    gotchas: [
+      'A scoped service depending on another scoped service never trips ValidateScopes — both resolve within the same proper child scope.',
+      'Disabling ValidateScopes outside Development does not fix the captive dependency bug — it only stops throwing on it.',
+    ],
+  },
+
+  'di-dotnet/multiple-implementations-single-t-injection-returns-last': {
+    apis: ['IEnumerable<T>', 'TryAddScoped', 'keyed services'],
+    related: [
+      { label: 'How ValidateScopes Catches Captive Dependencies — previous', route: '/csharp/di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope' },
+      { label: 'Dependency Injection in .NET (overview)', route: '/csharp/di-dotnet' },
+      { label: 'Interfaces', route: '/csharp/interfaces' },
+    ],
+    tip: 'Requesting a plain T when multiple implementations are registered silently resolves to the LAST one registered, with no error — request IEnumerable<T> to get every implementation, or use TryAddScoped/keyed services to make a single choice explicit.',
+    docs: [
+      { label: 'Multiple Implementations of an Interface', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines#registering-multiple-implementations' },
+    ],
+    resources: [
+      { label: 'Scrutor (Assembly Scanning)', url: 'https://github.com/khellang/Scrutor', badge: 'code' },
+    ],
+    gotchas: [
+      'Registration order from assembly scanning (Scrutor, plugin loaders) is not guaranteed to match source-code order, making "last wins" unpredictable across builds.',
+      'A single-T consumer and an IEnumerable<T> consumer see completely different results from the exact same registrations.',
+    ],
+  },
+
+  'json-advanced': {
+    apis: ['JsonSerializer', 'JsonConverter<T>', 'JsonSerializerContext'],
+    related: [{ label: 'Attributes', route: '/csharp/attributes' }, { label: 'Generics', route: '/csharp/generics' }, { label: 'Source Generators', route: '/csharp/source-generators' }],
+    tip: 'Create JsonSerializerOptions once as a static/singleton instance — it builds an internal reflection cache on first use, and attempting to mutate it afterward throws InvalidOperationException.',
+    docs: [{ label: 'System.Text.Json Overview', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/overview' }],
+    resources: [{ label: 'System.Text.Json Source', url: 'https://github.com/dotnet/runtime/tree/main/src/libraries/System.Text.Json', badge: 'code' }],
+    gotchas: ['A round-trip test (serialize then deserialize) can hide a converter bug where Read and Write share the same wrong assumption.', 'Each closed generic instantiation needs its own [JsonSerializable] — PagedResult<Product> does not cover PagedResult<Order>.'],
+  },
+
+  'json-advanced/testing-custom-jsonconverter-round-trips-exact-json-shape': {
+    apis: ['JsonConverter<T>.Write', 'Utf8JsonWriter', 'ArrayBufferWriter<byte>'],
+    related: [
+      { label: 'Every Generic Instantiation Needs Its Own JsonSerializable — next', route: '/csharp/json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen' },
+      { label: 'System.Text.Json Advanced (overview)', route: '/csharp/json-advanced' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A round-trip test only proves Read can undo whatever Write produced. Assert the exact JSON string Write emits, and separately test Read against a hand-written JSON literal, to catch a bug shared by both methods.',
+    docs: [
+      { label: 'Write Custom Converters', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/converters-how-to' },
+    ],
+    resources: [
+      { label: 'JsonConverter<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonconverter-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'Asserting object equality after a round trip proves far less than asserting the exact JSON string produced.',
+      'A converter\'s Write/Read methods can be tested directly against Utf8JsonWriter/Utf8JsonReader, without going through JsonSerializer at all.',
+    ],
+  },
+
+  'json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen': {
+    apis: ['[JsonSerializable]', 'JsonSerializerContext', 'JsonTypeInfo<T>'],
+    related: [
+      { label: 'Testing Custom JsonConverter Round-Trips — previous', route: '/csharp/json-advanced/testing-custom-jsonconverter-round-trips-exact-json-shape' },
+      { label: 'Unknown Discriminator Values Throw at Deserialize — next', route: '/csharp/json-advanced/unknown-type-discriminator-throws-jsonexception-not-forward-compatible' },
+      { label: 'System.Text.Json Advanced (overview)', route: '/csharp/json-advanced' },
+    ],
+    tip: 'PagedResult<Product> and PagedResult<Order> are completely unrelated types to the source generator — every closed generic instantiation used anywhere in the app needs its own explicit [JsonSerializable] entry.',
+    docs: [
+      { label: 'Source Generation Modes', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/source-generation-modes' },
+    ],
+    resources: [
+      { label: 'JsonSerializerContext Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonserializercontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'A missing registration compiles fine and only throws NotSupportedException at runtime when that exact type is actually serialized.',
+      'A reflection-fallback resolver chained after the source-generated context can mask a missing registration in normal dev builds — only a trimmed Native AOT build has no fallback left.',
+    ],
+  },
+
+  'json-advanced/unknown-type-discriminator-throws-jsonexception-not-forward-compatible': {
+    apis: ['[JsonPolymorphic]', '[JsonDerivedType]', 'JsonException'],
+    related: [
+      { label: 'Every Generic Instantiation Needs Its Own JsonSerializable — previous', route: '/csharp/json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen' },
+      { label: 'System.Text.Json Advanced (overview)', route: '/csharp/json-advanced' },
+      { label: 'Messaging & Kafka', route: '/messaging' },
+    ],
+    tip: 'An unrecognized $type discriminator throws JsonException for the ENTIRE deserialize call, not just the one unrecognized element — this makes polymorphic JSON a rolling-deployment hazard unless a fallback converter is used.',
+    docs: [
+      { label: 'Polymorphic Type Discriminators', url: 'https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism' },
+    ],
+    resources: [
+      { label: 'JsonDerivedTypeAttribute Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization.jsonderivedtypeattribute', badge: 'docs' },
+    ],
+    gotchas: [
+      'Newer readers can always read older data (discriminators are additive) — but older readers cannot read a genuinely new discriminator value, since it did not exist when they were compiled.',
+      'A custom converter with an explicit fallback case is the only way to degrade gracefully instead of throwing on an unrecognized discriminator.',
+    ],
+  },
+
+  'unsafe-pointers': {
+    apis: ['unsafe', 'fixed', 'stackalloc', 'NativeMemory'],
+    related: [{ label: 'Span<T> & Memory<T>', route: '/csharp/span-memory' }, { label: 'Structs', route: '/csharp/structs' }, { label: 'GC & IDisposable', route: '/csharp/gc-disposable' }],
+    tip: 'Prefer Span<T> and MemoryMarshal for most high-performance scenarios — they cover 90% of what unsafe pointers are used for, with bounds checking and no unsafe keyword needed.',
+    docs: [{ label: 'Unsafe Code (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/unsafe-code' }],
+    resources: [{ label: 'NativeMemory Class Source', url: 'https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Runtime/InteropServices/NativeMemory.cs', badge: 'code' }],
+    gotchas: ['A pinned object blocks GC compaction for everything around it, not just itself — fragmenting the heap over many or long-lived pins.', 'stackalloc inside a loop accumulates on the same stack frame instead of freeing between iterations, risking an uncatchable StackOverflowException.'],
+  },
+
+  'unsafe-pointers/testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws': {
+    apis: ['ObjectDisposedException', 'IDisposable', 'Record.Exception'],
+    related: [
+      { label: 'Why a Pinned Object Fragments the Heap — next', route: '/csharp/unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors' },
+      { label: 'Unsafe Code & Pointers (overview)', route: '/csharp/unsafe-pointers' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'You cannot unit test pointer arithmetic directly, but you can and must test the safety contract of a wrapper around it: idempotent Dispose, use-after-dispose throws, and correct observable state.',
+    docs: [
+      { label: 'Implement a Dispose Method', url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose' },
+    ],
+    resources: [
+      { label: 'ObjectDisposedException Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.objectdisposedexception', badge: 'docs' },
+    ],
+    gotchas: [
+      'A double-free of native memory is undefined behaviour at the allocator level — it may not throw a catchable .NET exception at all, unlike a typical logic bug.',
+      'No unit test can directly prove a native memory leak was avoided — that requires a memory profiler observing actual process memory.',
+    ],
+  },
+
+  'unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors': {
+    apis: ['fixed', 'GCHandle.Alloc', 'GCHandleType.Pinned'],
+    related: [
+      { label: 'Testing the Safe Wrapper Pattern — previous', route: '/csharp/unsafe-pointers/testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws' },
+      { label: 'stackalloc Inside a Loop Never Frees Between Iterations — next', route: '/csharp/unsafe-pointers/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow' },
+      { label: 'Unsafe Code & Pointers (overview)', route: '/csharp/unsafe-pointers' },
+    ],
+    tip: '.NET\'s compacting GC slides survivors together to keep the heap contiguous — a pinned object cannot move, splitting what would be one free region into several fragmented ones around it.',
+    docs: [
+      { label: 'Fundamentals of Garbage Collection', url: 'https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals' },
+    ],
+    resources: [
+      { label: 'GCHandle Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.gchandle', badge: 'docs' },
+    ],
+    gotchas: [
+      'A single short-lived pin has negligible cost — the real damage comes from many pins accumulating in a hot loop, or a long-lived pin held across an entire operation.',
+      'NativeMemory and stackalloc never need pinning at all — they are never on the GC heap in the first place.',
+    ],
+  },
+
+  'unsafe-pointers/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow': {
+    apis: ['stackalloc', 'Span<T>', 'StackOverflowException'],
+    related: [
+      { label: 'Why a Pinned Object Fragments the Heap — previous', route: '/csharp/unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors' },
+      { label: 'Unsafe Code & Pointers (overview)', route: '/csharp/unsafe-pointers' },
+      { label: 'Span<T> & Memory<T>', route: '/csharp/span-memory' },
+    ],
+    tip: 'A method\'s stack frame does not shrink between loop iterations — stackalloc inside a loop body accumulates stack usage for the whole call, unlike a heap allocation which becomes GC-eligible each iteration.',
+    docs: [
+      { label: 'stackalloc Expression', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/stackalloc' },
+    ],
+    resources: [
+      { label: 'StackOverflowException Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.stackoverflowexception', badge: 'docs' },
+    ],
+    gotchas: [
+      'StackOverflowException cannot be caught by any try/catch — it terminates the process immediately.',
+      'Recursion multiplies stackalloc\'d bytes by recursion depth, not loop iteration count — a small per-call size can still overflow at deep enough nesting.',
+    ],
+  },
+
+  'native-aot': {
+    apis: ['PublishAot', '[DynamicallyAccessedMembers]', '[LibraryImport]'],
+    related: [{ label: 'System.Text.Json Advanced', route: '/csharp/json-advanced' }, { label: 'Reflection', route: '/csharp/reflection' }, { label: 'Unsafe Code & Pointers', route: '/csharp/unsafe-pointers' }],
+    tip: 'Set IsAotCompatible=true to run the trimmer\'s static reachability analysis during a normal, fast dotnet build — catching most trim-incompatible patterns without paying the multi-minute native compilation cost.',
+    docs: [{ label: 'Native AOT Deployment (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/' }],
+    resources: [{ label: 'dotnet/runtime AOT Docs', url: 'https://github.com/dotnet/runtime/blob/main/docs/design/coreclr/botr/readytorun-overview.md', badge: 'code' }],
+    gotchas: ['A clean trim-analysis build does not guarantee a full AOT publish succeeds — ILC checks genuinely different things.', '[DynamicallyAccessedMembers] must be re-declared at every level of a call chain that forwards a generic type parameter.'],
+  },
+
+  'native-aot/testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors': {
+    apis: ['IsAotCompatible', 'TreatWarningsAsErrors', 'IL2026'],
+    related: [
+      { label: 'DynamicallyAccessedMembers Must Be Re-Declared at Every Level — next', route: '/csharp/native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain' },
+      { label: 'Native AOT (overview)', route: '/csharp/native-aot' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'IsAotCompatible=true runs the same trim analysis a full AOT publish depends on, but during a normal, fast dotnet build — turning trim-incompatible code into a build failure on every commit instead of a slow, occasional discovery.',
+    docs: [
+      { label: 'Prepare Libraries for Trimming', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/prepare-libraries-for-trimming' },
+    ],
+    resources: [
+      { label: 'Trimming Options Reference', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trimming-options', badge: 'docs' },
+    ],
+    gotchas: [
+      'A full AOT publish takes minutes — never use it as the everyday feedback loop for catching trim mistakes.',
+      'IsAotCompatible is a strong first filter, not a full substitute for periodically running the real AOT publish.',
+    ],
+  },
+
+  'native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain': {
+    apis: ['[DynamicallyAccessedMembers]', 'IL2091', 'DynamicallyAccessedMemberTypes'],
+    related: [
+      { label: 'Testing AOT Compatibility Fast — previous', route: '/csharp/native-aot/testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors' },
+      { label: 'Clean Trim Analysis Can Still Fail a Full AOT Publish — next', route: '/csharp/native-aot/clean-trim-analysis-still-fails-full-aot-publish-different-checks' },
+      { label: 'Native AOT (overview)', route: '/csharp/native-aot' },
+    ],
+    tip: 'The trimmer analyzes each method definition independently — every intermediate wrapper method that forwards a generic type parameter toward a reflection call must re-declare the same [DynamicallyAccessedMembers] annotation, or an IL2091 warning fires at that specific method.',
+    docs: [
+      { label: 'DynamicallyAccessedMembersAttribute Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.dynamicallyaccessedmembersattribute' },
+    ],
+    resources: [
+      { label: 'Trimmer Warning Codes', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trimming-options#trim-warnings', badge: 'docs' },
+    ],
+    gotchas: [
+      'A correctly annotated outermost call site does not fix warnings at unannotated intermediate methods further down the chain.',
+      'JIT-run code works fine despite missing annotations, since JIT never trims anything — the warnings exist specifically for a future Native AOT publish.',
+    ],
+  },
+
+  'native-aot/clean-trim-analysis-still-fails-full-aot-publish-different-checks': {
+    apis: ['ILC', 'PublishAot', 'Reflection.Emit'],
+    related: [
+      { label: 'DynamicallyAccessedMembers Must Be Re-Declared at Every Level — previous', route: '/csharp/native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain' },
+      { label: 'Native AOT (overview)', route: '/csharp/native-aot' },
+      { label: 'System.Text.Json Advanced', route: '/csharp/json-advanced' },
+    ],
+    tip: 'Trim analysis and the actual ILC native compiler check different things — a library can be genuinely trim-clean while still containing a code path (like Reflection.Emit-based dynamic codegen) that ILC simply cannot compile to native code.',
+    docs: [
+      { label: 'Native AOT Compatibility', url: 'https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/#limitations-of-native-aot-deployment' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime ILC Source', url: 'https://github.com/dotnet/runtime/tree/main/src/coreclr/tools/aot/ILCompiler', badge: 'code' },
+    ],
+    gotchas: [
+      'A package\'s IsAotCompatible=true metadata reflects the author\'s own test matrix — a rarely-used configuration flag can activate an untested code path.',
+      'A full AOT publish remains a necessary, periodic gate even after trim analysis passes cleanly — it is the only stage that actually invokes ILC.',
+    ],
+  },
+
+  'benchmarkdotnet': {
+    apis: ['[Benchmark]', '[MemoryDiagnoser]', 'BenchmarkRunner.Run'],
+    related: [{ label: 'Span<T> & Memory<T>', route: '/csharp/span-memory' }, { label: 'LINQ', route: '/csharp/linq' }, { label: 'Native AOT', route: '/csharp/native-aot' }],
+    tip: 'Always run benchmarks in Release mode — Debug builds disable inlining and other JIT optimisations, making the numbers meaningless for production performance.',
+    docs: [{ label: 'BenchmarkDotNet Documentation', url: 'https://benchmarkdotnet.org/articles/overview.html' }],
+    resources: [{ label: 'BenchmarkDotNet Source', url: 'https://github.com/dotnet/BenchmarkDotNet', badge: 'code' }],
+    gotchas: ['A single averaged Mean can hide a bimodal distribution — a fast path and a slow path bundled into one benchmark.', 'BenchmarkRunner.Run generates and launches a separate isolated child process per job — it does not call your methods in-process.'],
+  },
+
+  'benchmarkdotnet/catching-performance-regression-ci-committed-baseline-not-eyeballing': {
+    apis: ['JsonExporter', 'BenchmarkDotNet.Artifacts', 'StdDev'],
+    related: [
+      { label: 'Why BDN Runs Benchmarks in an Isolated Process — next', route: '/csharp/benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process' },
+      { label: 'BenchmarkDotNet (overview)', route: '/csharp/benchmarkdotnet' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Export BDN results as JSON, commit them as a baseline, and diff a fresh CI run against it with a meaningful tolerance — an exact-match comparison fails constantly on natural run-to-run variance.',
+    docs: [
+      { label: 'BenchmarkDotNet Exporters', url: 'https://benchmarkdotnet.org/articles/configs/exporters.html' },
+    ],
+    resources: [
+      { label: 'PerfDotNet Regression Tools', url: 'https://github.com/dotnet/BenchmarkDotNet/issues?q=regression', badge: 'docs' },
+    ],
+    gotchas: [
+      'A flat percentage tolerance is proportionally tighter for very fast, nanosecond-scale benchmarks than for slower ones — noise is roughly constant in absolute terms.',
+      'Never auto-update the committed baseline on every CI run — that would silently accept every regression as the new normal.',
+    ],
+  },
+
+  'benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process': {
+    apis: ['BenchmarkRunner.Run', 'RuntimeMoniker', '[SimpleJob]'],
+    related: [
+      { label: 'Catching Regressions in CI — previous', route: '/csharp/benchmarkdotnet/catching-performance-regression-ci-committed-baseline-not-eyeballing' },
+      { label: 'When Mean Lies: Bimodal Distributions — next', route: '/csharp/benchmarkdotnet/when-mean-lies-bimodal-distribution-hides-two-performance-paths' },
+      { label: 'BenchmarkDotNet (overview)', route: '/csharp/benchmarkdotnet' },
+    ],
+    tip: 'BDN generates a minimal C# project per job configuration, compiles it, and launches it as a separate child process — this is exactly why multi-runtime comparisons in one run are possible at all.',
+    docs: [
+      { label: 'How BenchmarkDotNet Works', url: 'https://benchmarkdotnet.org/articles/guides/how-it-works.html' },
+    ],
+    resources: [
+      { label: 'BenchmarkDotNet Toolchains', url: 'https://benchmarkdotnet.org/articles/configs/toolchains.html', badge: 'docs' },
+    ],
+    gotchas: [
+      'A single BenchmarkRunner.Run call can take tens of seconds by itself, from the generate-compile-launch pipeline alone — never embed it in a routine unit test suite.',
+      'Process isolation exists specifically so JIT tiering state and GC pressure from one benchmark cannot contaminate the next.',
+    ],
+  },
+
+  'benchmarkdotnet/when-mean-lies-bimodal-distribution-hides-two-performance-paths': {
+    apis: ['StatisticColumn.Min', 'StatisticColumn.Max', 'MultimodalDistribution'],
+    related: [
+      { label: 'Why BDN Runs Benchmarks in an Isolated Process — previous', route: '/csharp/benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process' },
+      { label: 'BenchmarkDotNet (overview)', route: '/csharp/benchmarkdotnet' },
+      { label: 'Span<T> & Memory<T>', route: '/csharp/span-memory' },
+    ],
+    tip: 'When a benchmark bundles a fast path (cache hit) and a slow path (cache miss) into one method, the Mean is a weighted average no individual call ever exhibits — add Min/Max/percentile columns, or split into two explicitly-labeled benchmarks.',
+    docs: [
+      { label: 'BenchmarkDotNet Statistics', url: 'https://benchmarkdotnet.org/articles/guides/statistics.html' },
+    ],
+    resources: [
+      { label: 'BenchmarkDotNet Columns Reference', url: 'https://benchmarkdotnet.org/articles/configs/columns.html', badge: 'docs' },
+    ],
+    gotchas: [
+      'A moderate StdDev does not rule out a bimodal distribution — it can look reasonable even when two very different clusters exist.',
+      'Splitting a benchmark into separate, explicitly-labeled methods per code path usually produces more genuinely useful numbers than one averaged benchmark.',
+    ],
+  },
+
+  'pinvoke': {
+    apis: ['[LibraryImport]', 'SafeHandle', 'Marshal.GetLastPInvokeError'],
+    related: [{ label: 'Unsafe Code & Pointers', route: '/csharp/unsafe-pointers' }, { label: 'Structs', route: '/csharp/structs' }, { label: 'Native AOT', route: '/csharp/native-aot' }],
+    tip: 'Prefer [LibraryImport] over [DllImport] — source-generated marshalling is AOT-safe and produces compile-time errors for unsupported signatures rather than runtime failures.',
+    docs: [{ label: 'Platform Invoke (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke' }],
+    resources: [{ label: 'runtime Interop Source', url: 'https://github.com/dotnet/runtime/tree/main/src/libraries/System.Runtime.InteropServices', badge: 'code' }],
+    gotchas: ['Blittable types are only pinned in place (zero copy); non-blittable types need a full allocate-convert-copy-free cycle.', 'Marshal.GetLastPInvokeError() must be read on the very next line — any intervening call can silently clobber it.'],
+  },
+
+  'pinvoke/testing-code-calling-pinvoke-wrapping-native-calls-behind-interface': {
+    apis: ['IFileSystemInterop', 'Moq', 'SafeHandle'],
+    related: [
+      { label: 'Why Blittable Types Skip Marshalling Entirely — next', route: '/csharp/pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle' },
+      { label: 'P/Invoke & Native Interop (overview)', route: '/csharp/pinvoke' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Wrap a static P/Invoke class behind a thin interface — business logic depends on the interface (mockable in tests), while a separate, explicitly-tagged integration test suite verifies the real native call.',
+    docs: [
+      { label: 'Mock Native Dependencies', url: 'https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices' },
+    ],
+    resources: [
+      { label: 'Moq Documentation', url: 'https://github.com/devlooped/moq', badge: 'code' },
+    ],
+    gotchas: [
+      'Interface-wrapping does not test the native call itself — a genuine integration test suite is still needed for that.',
+      'A test calling a real native library directly, even if it runs fast, is still an integration test by nature.',
+    ],
+  },
+
+  'pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle': {
+    apis: ['Marshal.SizeOf', 'fixed', 'blittable types'],
+    related: [
+      { label: 'Testing P/Invoke Code — previous', route: '/csharp/pinvoke/testing-code-calling-pinvoke-wrapping-native-calls-behind-interface' },
+      { label: 'SetLastError Can Be Silently Clobbered — next', route: '/csharp/pinvoke/setlasterror-silently-clobbered-by-pinvoke-call-in-between' },
+      { label: 'P/Invoke & Native Interop (overview)', route: '/csharp/pinvoke' },
+    ],
+    tip: 'A blittable type has an identical byte layout in managed and native memory — the marshaller only needs to pin it in place. A non-blittable type has no native equivalent to pin, requiring a full allocate-convert-copy-free cycle instead.',
+    docs: [
+      { label: 'Blittable and Non-Blittable Types', url: 'https://learn.microsoft.com/en-us/dotnet/framework/interop/blittable-and-non-blittable-types' },
+    ],
+    resources: [
+      { label: 'Marshal Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal', badge: 'docs' },
+    ],
+    gotchas: [
+      'An array of a fully blittable struct is itself blittable — it gets the same single-pin, zero-copy treatment as a primitive array.',
+      'Marshal.SizeOf throws for genuinely non-blittable types — a reliable way to test blittability at runtime.',
+    ],
+  },
+
+  'pinvoke/setlasterror-silently-clobbered-by-pinvoke-call-in-between': {
+    apis: ['Marshal.GetLastPInvokeError', 'SetLastError', 'GetLastError'],
+    related: [
+      { label: 'Why Blittable Types Skip Marshalling Entirely — previous', route: '/csharp/pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle' },
+      { label: 'P/Invoke & Native Interop (overview)', route: '/csharp/pinvoke' },
+      { label: 'Unsafe Code & Pointers', route: '/csharp/unsafe-pointers' },
+    ],
+    tip: 'The last error is thread-local OS state overwritten by essentially every SetLastError-marked native call — including calls hidden inside framework code. Capture it on the literal next line after the P/Invoke call, before any other code runs.',
+    docs: [
+      { label: 'Marshal.GetLastPInvokeError Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.marshal.getlastpinvokeerror' },
+    ],
+    resources: [
+      { label: 'SetLastError in P/Invoke', url: 'https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke#setlasterror-and-error-handling', badge: 'docs' },
+    ],
+    gotchas: [
+      'A seemingly-unrelated logging call, or even a property getter, can internally route through its own native call and clobber the cached error first.',
+      'Capture the error unconditionally as the very next statement — never after constructing a log message or exception text.',
+    ],
+  },
+
+  'dotnet-cli': {
+    apis: ['global.json', 'packages.lock.json', 'dotnet tool restore'],
+    related: [{ label: 'Native AOT', route: '/csharp/native-aot' }, { label: 'BenchmarkDotNet', route: '/csharp/benchmarkdotnet' }, { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' }],
+    tip: 'Commit global.json to pin the SDK version and packages.lock.json for reproducible restores — but verify reproducibility against a genuinely clean NuGet cache, not just a warm one.',
+    docs: [{ label: '.NET CLI Overview (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/' }],
+    resources: [{ label: 'dotnet/sdk Source', url: 'https://github.com/dotnet/sdk', badge: 'code' }],
+    gotchas: ['A restore that "passes" on a warm NuGet cache proves little — clear the cache first to genuinely test reproducibility.', 'An ordinary local dotnet build does not use --locked-mode and can silently rewrite the committed lock file.'],
+  },
+
+  'dotnet-cli/verifying-build-reproducible-simulating-clean-machine-restore-lock-file': {
+    apis: ['dotnet nuget locals', 'packages.lock.json', '--locked-mode'],
+    related: [
+      { label: 'How rollForward Picks an SDK Version — next', route: '/csharp/dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm' },
+      { label: '.NET CLI & Tooling (overview)', route: '/csharp/dotnet-cli' },
+      { label: 'Native AOT', route: '/csharp/native-aot' },
+    ],
+    tip: 'Run "dotnet nuget locals all --clear" before "dotnet restore --locked-mode" to genuinely simulate a fresh machine — a restore that only ever ran against a warm cache proves little about real reproducibility.',
+    docs: [
+      { label: 'dotnet nuget locals Command', url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-nuget-locals' },
+    ],
+    resources: [
+      { label: 'NuGet Lock Files', url: 'https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#locking-dependencies', badge: 'docs' },
+    ],
+    gotchas: [
+      'A clean-cache restore check is genuinely slow — run it periodically (weekly, pre-release), not on every commit.',
+      'CI reusing a persistent NuGet cache between runs can mask a lock file that would fail on a truly fresh machine.',
+    ],
+  },
+
+  'dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm': {
+    apis: ['global.json', 'rollForward', 'dotnet --list-sdks'],
+    related: [
+      { label: 'Verifying True Reproducibility — previous', route: '/csharp/dotnet-cli/verifying-build-reproducible-simulating-clean-machine-restore-lock-file' },
+      { label: 'Local Builds Can Silently Drift From the Lock File — next', route: '/csharp/dotnet-cli/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file' },
+      { label: '.NET CLI & Tooling (overview)', route: '/csharp/dotnet-cli' },
+    ],
+    tip: 'SDK versions encode a feature band digit (major.minor.SBBpp) — rollForward: "latestMinor" finds the highest feature band actually installed on the current machine, then the highest patch within it.',
+    docs: [
+      { label: 'global.json SDK Resolution', url: 'https://learn.microsoft.com/en-us/dotnet/core/tools/global-json' },
+    ],
+    resources: [
+      { label: '.NET SDK Versioning', url: 'https://learn.microsoft.com/en-us/dotnet/core/versions/', badge: 'docs' },
+    ],
+    gotchas: [
+      'rollForward cannot select a feature band that is not installed on the current machine — it is constrained to what actually exists there.',
+      '"feature" and "latestMinor" encode genuinely different resolution policies, not interchangeable names for the same behavior.',
+    ],
+  },
+
+  'dotnet-cli/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file': {
+    apis: ['RestoreLockedMode', 'NU1004', '--force-evaluate'],
+    related: [
+      { label: 'How rollForward Picks an SDK Version — previous', route: '/csharp/dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm' },
+      { label: '.NET CLI & Tooling (overview)', route: '/csharp/dotnet-cli' },
+      { label: 'Native AOT', route: '/csharp/native-aot' },
+    ],
+    tip: 'An ordinary local "dotnet build" triggers an implicit restore that does NOT use --locked-mode — it can silently rewrite packages.lock.json. Set RestoreLockedMode=true in Directory.Build.props to close this gap.',
+    docs: [
+      { label: 'Package Reference Locking', url: 'https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#locking-dependencies' },
+    ],
+    resources: [
+      { label: 'NU1004 Error Reference', url: 'https://learn.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu1004', badge: 'docs' },
+    ],
+    gotchas: [
+      'An NU1004 failure can be triggered by an external feed change (a new compatible package version becoming available), not just the developer\'s own commits.',
+      '"dotnet restore --force-evaluate" is the deliberate escape hatch for intentionally updating a locked dependency.',
+    ],
+  },
+
   'whats-new-9-10': {
     apis: ['record', 'init', 'with', 'global using', 'file-scoped namespace', 'record struct'],
     related: [{ label: 'Records & Structs', route: '/csharp/records' }, { label: 'Pattern Matching', route: '/csharp/pattern-matching' }, { label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }],
@@ -5710,6 +9280,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'C# 9 What\'s New', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9' }, { label: 'C# 10 What\'s New', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10' }],
     resources: [{ label: '.NET 6 Release Notes', url: 'https://devblogs.microsoft.com/dotnet/announcing-net-6/', badge: 'blog' }],
     gotchas: ['Top-level programs (C# 9) only work in one file per project — the entry point file.', 'Pattern matching improvements in C# 9 (and, or, not) are only available with the C# 9 or higher language version.'],
+  },
+
+  'whats-new-9-10/testing-record-equality-collection-properties-not-list-reference-trap': {
+    apis: ['record', 'List<T>', 'ImmutableArray<T>'],
+    related: [
+      { label: 'What the Compiler Actually Generates for Type-Sensitive Equality — next', route: '/csharp/whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive' },
+      { label: "What's New in C# 9 & 10 (overview)", route: '/csharp/whats-new-9-10' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A test that assigns a record to a second variable never constructs a second object — it always trivially passes. Only separately-constructed instances with equal-content nested collections actually exercise the List<T> reference-equality gotcha.',
+    docs: [
+      { label: 'Records (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records' },
+    ],
+    resources: [
+      { label: 'ImmutableArray<T> Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'Comparing a record to itself via simple variable assignment proves nothing about the equality implementation.',
+      'A regression test documenting List<T>\'s reference-equality behavior prevents a future "fix" from silently changing behavior other code depends on.',
+    ],
+  },
+
+  'whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive': {
+    apis: ['EqualityContract', 'virtual Equals', 'sealed record'],
+    related: [
+      { label: 'Testing Record Equality With Collections — previous', route: '/csharp/whats-new-9-10/testing-record-equality-collection-properties-not-list-reference-trap' },
+      { label: 'Records as Dictionary Keys Can Silently Break — next', route: '/csharp/whats-new-9-10/records-as-dictionary-keys-break-when-reference-property-mutated' },
+      { label: "What's New in C# 9 & 10 (overview)", route: '/csharp/whats-new-9-10' },
+    ],
+    tip: 'The generated Equals method checks the virtual EqualityContract property FIRST — if the runtime types differ, it short-circuits and returns false before any property is ever compared.',
+    docs: [
+      { label: 'Record Equality (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/records#value-equality' },
+    ],
+    resources: [
+      { label: 'sharplab.io (Decompile Records)', url: 'https://sharplab.io/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Casting two records to a common base type before comparing them does not bypass type-sensitivity — EqualityContract is virtual and still resolves to each object\'s real runtime type.',
+      'Sealing a record lets the compiler optimize the generated equality code, since no derived type could ever cause EqualityContract to differ.',
+    ],
+  },
+
+  'whats-new-9-10/records-as-dictionary-keys-break-when-reference-property-mutated': {
+    apis: ['GetHashCode', 'Dictionary<TKey,TValue>', 'ImmutableArray<T>'],
+    related: [
+      { label: 'What the Compiler Actually Generates for Type-Sensitive Equality — previous', route: '/csharp/whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive' },
+      { label: "What's New in C# 9 & 10 (overview)", route: '/csharp/whats-new-9-10' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'init only prevents reassigning a property — if that property references a genuinely mutable object, mutating it after the record is used as a Dictionary key silently changes the effective hash code, breaking lookups.',
+    docs: [
+      { label: 'Dictionary<TKey,TValue> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2' },
+    ],
+    resources: [
+      { label: 'GetHashCode Guidelines', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.object.gethashcode#notes-to-inheritors', badge: 'docs' },
+    ],
+    gotchas: [
+      'Enumerating .Keys directly (which ignores hashing) can quickly confirm a "missing" entry is still physically present in the dictionary.',
+      'List<T> happens to avoid this specific bug (object-identity hashing), but only at the cost of the separate reference-equality gotcha covered earlier in this topic.',
+    ],
   },
 
   'whats-new-11-12': {
@@ -5721,6 +9351,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: ['required members must be set in an object initializer — they cannot be set after construction.', 'Raw string literals (""") must start and end with the same number of quotes (minimum 3).'],
   },
 
+  'whats-new-11-12/testing-generic-math-across-numeric-types-one-suite-every-inumber-implementation': {
+    apis: ['INumber<T>', 'xUnit [Theory]', 'generic test base class'],
+    related: [
+      { label: 'How static abstract Members Actually Dispatch — next', route: '/csharp/whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization' },
+      { label: "What's New in C# 11 & 12 (overview)", route: '/csharp/whats-new-11-12' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A shared generic test base class (constrained the same way as the production code, e.g. where T : INumber<T>) lets test CASES be written exactly once and automatically apply to every concrete numeric type.',
+    docs: [
+      { label: 'Generic Math (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/standard/generics/math' },
+    ],
+    resources: [
+      { label: 'xUnit Theory Data', url: 'https://xunit.net/docs/getting-started/netcore/cmdline', badge: 'docs' },
+    ],
+    gotchas: [
+      'Floating-point types can make an exact-equality assertion flaky in a way int/decimal never would — override just the comparison mechanism per type when needed.',
+      'Type-specific edge cases (integer truncation, decimal precision) belong in that type\'s own dedicated test, not the shared base class.',
+    ],
+  },
+
+  'whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization': {
+    apis: ['static abstract', 'INumber<T>', 'JIT specialization'],
+    related: [
+      { label: 'Testing Generic Math Across Types — previous', route: '/csharp/whats-new-11-12/testing-generic-math-across-numeric-types-one-suite-every-inumber-implementation' },
+      { label: 'Primary Constructor Parameters Captured for Object Lifetime — next', route: '/csharp/whats-new-11-12/primary-constructor-parameter-captured-as-field-object-entire-lifetime' },
+      { label: "What's New in C# 11 & 12 (overview)", route: '/csharp/whats-new-11-12' },
+    ],
+    tip: 'For value-type generic instantiations, the JIT compiles a fully separate, specialized method body per concrete T — T.Zero resolves to a direct call at compile time, with zero vtable dispatch overhead.',
+    docs: [
+      { label: 'Static Abstract Members in Interfaces', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#static-abstract-members-in-interfaces' },
+    ],
+    resources: [
+      { label: 'sharplab.io (Inspect Generated Code)', url: 'https://sharplab.io/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Only value-type generic instantiations get full JIT specialization — reference-type instantiations share one compiled body with ordinary runtime dispatch inside it.',
+      'This is why generic math has no measurable overhead versus hand-written type-specific arithmetic code.',
+    ],
+  },
+
+  'whats-new-11-12/primary-constructor-parameter-captured-as-field-object-entire-lifetime': {
+    apis: ['primary constructor', 'backing field capture', 'IServiceProvider'],
+    related: [
+      { label: 'How static abstract Members Actually Dispatch — previous', route: '/csharp/whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization' },
+      { label: "What's New in C# 11 & 12 (overview)", route: '/csharp/whats-new-11-12' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'A primary constructor parameter referenced ANYWHERE in the type\'s body — even a rarely-called diagnostic method — gets captured as a field for the object\'s entire lifetime, not just during construction.',
+    docs: [
+      { label: 'Primary Constructors (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12#primary-constructors' },
+    ],
+    resources: [
+      { label: 'sharplab.io (Inspect Generated Fields)', url: 'https://sharplab.io/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The compiler re-evaluates which parameters need backing fields on every build — removing all references outside the original transient use removes the capture on the next compile.',
+      'A traditional constructor makes the field-vs-transient decision explicit; a primary constructor makes it implicit, driven purely by incidental references.',
+    ],
+  },
+
   'whats-new-latest': {
     apis: ['params span', 'lock object', 'field keyword', 'partial property', 'extensions (C#14)', 'LINQ CountBy'],
     related: [{ label: 'What\'s New 11 & 12', route: '/csharp/whats-new-11-12' }, { label: 'async / await', route: '/csharp/async' }, { label: 'Collections', route: '/csharp/collections' }],
@@ -5728,6 +9418,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     docs: [{ label: 'C# 13 What\'s New', url: 'https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-13' }, { label: '.NET 10 Blog', url: 'https://devblogs.microsoft.com/dotnet/announcing-dotnet-10/' }, { label: 'C# Language Design', url: 'https://github.com/dotnet/csharplang' }],
     resources: [{ label: '.NET Release Notes', url: 'https://github.com/dotnet/core/tree/main/release-notes', badge: 'docs' }],
     gotchas: ['New language features require updating <LangVersion> in .csproj — they don\'t activate automatically.', 'Some .NET 10/11 APIs are marked [Experimental] — check the docs before using in production.'],
+  },
+
+  'whats-new-latest/testing-time-dependent-code-with-faketimeprovider-without-sleeping': {
+    apis: ['FakeTimeProvider', 'Task.Delay(delay, time, ct)', 'TimeProvider'],
+    related: [
+      { label: 'How Dynamic PGO Actually Re-JITs a Method — next', route: '/csharp/whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement' },
+      { label: "What's New in C# 13+ (overview)", route: '/csharp/whats-new-latest' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Only Task.Delay calls that explicitly pass the TimeProvider as an argument are backed by FakeTimeProvider\'s timers — a plain Task.Delay(delay, ct) always uses the real system clock, regardless of what TimeProvider is injected elsewhere.',
+    docs: [
+      { label: 'Testing Time Dependencies', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/timeprovider-di-testing' },
+    ],
+    resources: [
+      { label: 'Microsoft.Extensions.Time.Testing', url: 'https://www.nuget.org/packages/Microsoft.Extensions.TimeProvider.Testing', badge: 'code' },
+    ],
+    gotchas: [
+      'fake.Advance() fires any timer it passes, synchronously, within the same call — no real wall-clock time elapses.',
+      'A test asserting a delay task is still incomplete after Advance() can be masking a missing TimeProvider argument, not confirming correct behavior.',
+    ],
+  },
+
+  'whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement': {
+    apis: ['Tier 0/Tier 1', 'On-Stack Replacement', 'DOTNET_TieredPGO'],
+    related: [
+      { label: 'Testing With FakeTimeProvider — previous', route: '/csharp/whats-new-latest/testing-time-dependent-code-with-faketimeprovider-without-sleeping' },
+      { label: 'HybridCache Stampede Protection Is Per-Process — next', route: '/csharp/whats-new-latest/hybridcache-stampede-protection-only-coalesces-within-one-process' },
+      { label: "What's New in C# 13+ (overview)", route: '/csharp/whats-new-latest' },
+    ],
+    tip: 'On-Stack Replacement (OSR) can swap a currently-executing method\'s compiled code mid-loop, transplanting its live state into the newly-optimized Tier 1 version — a single long-running call can visibly speed up partway through its own execution.',
+    docs: [
+      { label: 'Tiered Compilation (MS Docs)', url: 'https://learn.microsoft.com/en-us/dotnet/core/runtime-config/compilation' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime PGO Design Docs', url: 'https://github.com/dotnet/runtime/blob/main/docs/design/features/tiered-compilation.md', badge: 'code' },
+    ],
+    gotchas: [
+      'BenchmarkDotNet\'s warmup phase exists partly to let the JIT reach Tier 1 steady-state for the benchmarked method, not just to warm CPU caches.',
+      'Tier 0 code includes profiling instrumentation (call counts, observed types) — this is the real runtime data Dynamic PGO uses for devirtualization at Tier 1.',
+    ],
+  },
+
+  'whats-new-latest/hybridcache-stampede-protection-only-coalesces-within-one-process': {
+    apis: ['HybridCache', 'GetOrCreateAsync', 'RemoveByTagAsync'],
+    related: [
+      { label: 'How Dynamic PGO Actually Re-JITs a Method — previous', route: '/csharp/whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement' },
+      { label: "What's New in C# 13+ (overview)", route: '/csharp/whats-new-latest' },
+      { label: 'Redis', route: '/redis' },
+    ],
+    tip: 'Stampede protection coalesces concurrent factory calls within one process — a scaled-out deployment can still see up to N simultaneous factory calls (one per instance) when the shared L2 cache itself goes cold at the same moment.',
+    docs: [
+      { label: 'HybridCache Library (MS Docs)', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid' },
+    ],
+    resources: [
+      { label: 'HybridCache Source', url: 'https://github.com/dotnet/aspnetcore/tree/main/src/Caching/Hybrid', badge: 'code' },
+    ],
+    gotchas: [
+      'A rolling deployment restarting every instance\'s L1 is usually safe if the shared L2 stays warm — the real risk is L2 itself going cold across the cluster simultaneously.',
+      'Jittered expiration, refresh-ahead background jobs, or an explicit distributed lock are the standard mitigations for genuinely hot, cluster-wide keys.',
+    ],
   },
 
   // ── C# Cheat Sheet ─────────────────────────────────────────────────────────
@@ -7041,6 +10791,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/hosting-startup/testing-environment-branching-without-real-environment-variable': {
+    apis: ['IHostEnvironment', 'IWebHostEnvironment', 'Environments'],
+    related: [
+      { label: 'What builder.Build() Actually Seals — next', route: '/aspnet/hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider' },
+      { label: 'Hosting & Startup (overview)', route: '/aspnet/hosting-startup' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Extract environment-dependent registration decisions into a method taking IHostEnvironment as a parameter — a test can pass a minimal fake implementation with any EnvironmentName, no real environment variable needed.',
+    docs: [
+      { label: 'IHostEnvironment Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostenvironment' },
+    ],
+    resources: [
+      { label: 'Environments Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.environments', badge: 'docs' },
+    ],
+    gotchas: [
+      'Environment.SetEnvironmentVariable in a test mutates process-wide state that can race across parallel test execution.',
+      'IsDevelopment()/IsProduction() are just extension methods comparing EnvironmentName — easy to fake without any real environment variable.',
+    ],
+  },
+
+  'aspnet/hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider': {
+    apis: ['IServiceCollection', 'IServiceProvider', 'ServiceDescriptor'],
+    related: [
+      { label: 'Testing Environment Branching — previous', route: '/aspnet/hosting-startup/testing-environment-branching-without-real-environment-variable' },
+      { label: 'ApplicationStopping Fires Before Requests Finish Draining — next', route: '/aspnet/hosting-startup/applicationstopping-fires-before-in-flight-requests-finish-draining' },
+      { label: 'Hosting & Startup (overview)', route: '/aspnet/hosting-startup' },
+    ],
+    tip: 'builder.Services (IServiceCollection) is a mutable list of ServiceDescriptor entries. Build() compiles it into a completely different object — IServiceProvider — which has no mutation API at all, by design.',
+    docs: [
+      { label: 'Dependency Injection Fundamentals', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection' },
+    ],
+    resources: [
+      { label: 'ServiceDescriptor Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor', badge: 'docs' },
+    ],
+    gotchas: [
+      'There is no code path that lets an already-built IServiceProvider accept new ServiceDescriptor entries after the fact.',
+      'ValidateOnBuild\'s checks run during Build() itself, not at each individual Add*() call, since only Build() sees the complete registration set.',
+    ],
+  },
+
+  'aspnet/hosting-startup/applicationstopping-fires-before-in-flight-requests-finish-draining': {
+    apis: ['IHostApplicationLifetime', 'ApplicationStopping', 'ApplicationStopped'],
+    related: [
+      { label: 'What builder.Build() Actually Seals — previous', route: '/aspnet/hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider' },
+      { label: 'Hosting & Startup (overview)', route: '/aspnet/hosting-startup' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'ApplicationStopping fires at the START of the shutdown sequence, not after requests finish — disposing a shared, request-used resource there races any request still in flight. Defer such disposal to ApplicationStopped.',
+    docs: [
+      { label: 'IHostApplicationLifetime Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostapplicationlifetime' },
+    ],
+    resources: [
+      { label: 'Host Shutdown Documentation', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host#ihostapplicationlifetime', badge: 'docs' },
+    ],
+    gotchas: [
+      'Intermittent ObjectDisposedException failures only during deployments are a classic symptom of disposing a shared resource too early in the shutdown sequence.',
+      'ApplicationStopped fires only after the HTTP server has genuinely finished serving in-flight requests (or the shutdown timeout was hit).',
+    ],
+  },
+
   'aspnet/middleware': {
     apis: ['IMiddleware', 'RequestDelegate', 'Use()', 'Run()', 'Map()', 'IApplicationBuilder'],
     related: [
@@ -7062,6 +10872,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/middleware/testing-custom-middleware-isolation-applicationbuilder-no-kestrel': {
+    apis: ['DefaultHttpContext', 'RequestDelegate', 'ApplicationBuilder'],
+    related: [
+      { label: 'How the Middleware Pipeline Is Actually Built — next', route: '/aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures' },
+      { label: 'Middleware Pipeline (overview)', route: '/aspnet/middleware' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A middleware class is just a plain C# class with an InvokeAsync method — instantiate it directly with a hand-written "next" delegate and a DefaultHttpContext, no Kestrel or WebApplicationFactory needed.',
+    docs: [
+      { label: 'Write Custom Middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write' },
+    ],
+    resources: [
+      { label: 'DefaultHttpContext Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.defaulthttpcontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'DefaultHttpContext needs context.Response.Body explicitly assigned to a real stream (like MemoryStream) before testing middleware that writes response content.',
+      'Testing InvokeAsync in isolation is not the same as verifying the middleware cooperates correctly in a real composed pipeline — build a minimal ApplicationBuilder pipeline for that.',
+    ],
+  },
+
+  'aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures': {
+    apis: ['IApplicationBuilder.Build()', 'RequestDelegate', 'closures'],
+    related: [
+      { label: 'Testing Custom Middleware in Isolation — previous', route: '/aspnet/middleware/testing-custom-middleware-isolation-applicationbuilder-no-kestrel' },
+      { label: 'OnStarting Callbacks Run in LIFO Order — next', route: '/aspnet/middleware/onstarting-callbacks-run-lifo-order-last-registered-fires-first' },
+      { label: 'Middleware Pipeline (overview)', route: '/aspnet/middleware' },
+    ],
+    tip: 'Build() composes middleware from the inside out, in reverse registration order, into ONE deeply-nested RequestDelegate — the "Russian doll" analogy is literally true at the implementation level, not just a mental model.',
+    docs: [
+      { label: 'How Middleware Runs', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/#middleware-order' },
+    ],
+    resources: [
+      { label: 'IApplicationBuilder Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.iapplicationbuilder', badge: 'docs' },
+    ],
+    gotchas: [
+      'There is no per-request loop over a list of middleware — the entire nested call chain is compiled once, at startup.',
+      'A middleware ordering mistake fails based on what HttpContext state a later middleware would have populated, not because of any compiler-detectable error.',
+    ],
+  },
+
+  'aspnet/middleware/onstarting-callbacks-run-lifo-order-last-registered-fires-first': {
+    apis: ['Response.OnStarting', 'LIFO', 'context.Items'],
+    related: [
+      { label: 'How the Middleware Pipeline Is Actually Built — previous', route: '/aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures' },
+      { label: 'Middleware Pipeline (overview)', route: '/aspnet/middleware' },
+      { label: 'Hosting & Startup', route: '/aspnet/hosting-startup' },
+    ],
+    tip: 'OnStarting callbacks fire in LIFO order — the callback registered LAST (closest to the endpoint) runs FIRST, the reverse of what registration order suggests. Store shared values in context.Items before calling next() instead of relying on cross-callback ordering.',
+    docs: [
+      { label: 'HttpResponse.OnStarting Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httpresponse.onstarting' },
+    ],
+    resources: [
+      { label: 'aspnetcore HttpResponse Source', url: 'https://github.com/dotnet/aspnetcore/blob/main/src/Http/Http.Abstractions/src/HttpResponse.cs', badge: 'code' },
+    ],
+    gotchas: [
+      'Reordering unrelated app.Use() calls in Program.cs can silently flip which OnStarting callback fires first, breaking a dependency between two callbacks with no compiler warning.',
+      'This LIFO rule applies only to OnStarting — the rest of the pipeline follows the normal nested "Russian doll" execution order.',
+    ],
+  },
+
   'aspnet/routing': {
     apis: ['MapGet()', 'MapControllers()', '[Route]', 'IRouteConstraint', 'LinkGenerator'],
     related: [
@@ -7080,6 +10950,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Conflicting routes throw AmbiguousMatchException at runtime — more specific templates do NOT automatically win.',
       'Route templates are case-insensitive but URL generation preserves the case of supplied route values.',
+    ],
+  },
+
+  'aspnet/routing/testing-route-precedence-catching-ambiguous-routes-before-production': {
+    apis: ['TestServer', 'AmbiguousMatchException', 'UseTestServer'],
+    related: [
+      { label: 'How Route Precedence Is Actually Computed — next', route: '/aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm' },
+      { label: 'Routing (overview)', route: '/aspnet/routing' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'AmbiguousMatchException is thrown at host startup — a minimal TestServer-backed host with the same route registrations catches route conflicts in CI, long before any real deployment.',
+    docs: [
+      { label: 'Testing Middleware and Routing', url: 'https://learn.microsoft.com/en-us/aspnet/core/test/middleware' },
+    ],
+    resources: [
+      { label: 'TestServer Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.testhost.testserver', badge: 'docs' },
+    ],
+    gotchas: [
+      'A test that only covers a shared registration method can miss routes registered conditionally, directly in Program.cs, outside that method.',
+      'Route ambiguity involving feature-flagged routes requires exercising the specific configuration that enables them, not just the default configuration.',
+    ],
+  },
+
+  'aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm': {
+    apis: ['RouteEndpoint', 'precedence scoring', 'segment matching'],
+    related: [
+      { label: 'Testing Route Precedence — previous', route: '/aspnet/routing/testing-route-precedence-catching-ambiguous-routes-before-production' },
+      { label: 'A Renamed WithName() Silently Breaks LinkGenerator — next', route: '/aspnet/routing/typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check' },
+      { label: 'Routing (overview)', route: '/aspnet/routing' },
+    ],
+    tip: 'Route precedence comparison walks two templates segment-by-segment, left to right — the FIRST position where they differ decides the winner outright, regardless of what either template does at later segments.',
+    docs: [
+      { label: 'Route Template Precedence', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing#route-template-precedence-in-minimal-api-apps' },
+    ],
+    resources: [
+      { label: 'aspnetcore Routing Source', url: 'https://github.com/dotnet/aspnetcore/tree/main/src/Http/Routing', badge: 'code' },
+    ],
+    gotchas: [
+      'Total constraint count across a whole template does not determine precedence — position of the first divergence does.',
+      'Two identically-shaped templates differing only by an added constraint resolve the constrained one as more specific at that position.',
+    ],
+  },
+
+  'aspnet/routing/typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check': {
+    apis: ['WithName()', 'LinkGenerator.GetPathByName', 'IEndpointNameMetadata'],
+    related: [
+      { label: 'How Route Precedence Is Actually Computed — previous', route: '/aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm' },
+      { label: 'Routing (overview)', route: '/aspnet/routing' },
+      { label: 'Middleware Pipeline', route: '/aspnet/middleware' },
+    ],
+    tip: 'WithName() and GetPathByName()/GetUriByName() are connected only by matching string literals — renaming or typo\'ing one without the other compiles and starts cleanly, failing only at runtime by returning null.',
+    docs: [
+      { label: 'LinkGenerator Class', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing#use-linkgenerator' },
+    ],
+    resources: [
+      { label: 'IEndpointNameMetadata Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.routing.iendpointnamemetadata', badge: 'docs' },
+    ],
+    gotchas: [
+      'GetPathByName/GetUriByName return null on a name mismatch, not an exception — the failure is only as loud as whatever the calling code does with that null.',
+      'A broken link with no server-side exception can surface only through indirect signals, like a customer support ticket, days or weeks later.',
     ],
   },
 
@@ -7106,6 +11036,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/configuration/testing-options-validation-actually-rejects-bad-config-not-just-compiles': {
+    apis: ['IValidateOptions<T>', 'ValidateOptionsResult', 'OptionsValidationException'],
+    related: [
+      { label: 'How IOptionsMonitor Actually Detects a File Change — next', route: '/aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation' },
+      { label: 'Configuration & Options (overview)', route: '/aspnet/configuration' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A custom IValidateOptions<T> validator with an inverted condition or typo still compiles and runs — test it directly with hand-constructed good and bad POCOs, not just through real config files.',
+    docs: [
+      { label: 'Options Validation', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/options#options-validation' },
+    ],
+    resources: [
+      { label: 'IValidateOptions Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.options.ivalidateoptions-1', badge: 'docs' },
+    ],
+    gotchas: [
+      'ValidateOnStart() only guarantees validation logic runs at startup — it says nothing about whether that logic is actually correct.',
+      'A validator needs both a known-good-passes test and a known-bad-fails test to confirm its logic, not just one or the other.',
+    ],
+  },
+
+  'aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation': {
+    apis: ['IChangeToken', 'PhysicalFileProvider', 'FileSystemWatcher'],
+    related: [
+      { label: 'Testing Options Validation — previous', route: '/aspnet/configuration/testing-options-validation-actually-rejects-bad-config-not-just-compiles' },
+      { label: 'OnChange Returns an IDisposable That Must Be Disposed — next', route: '/aspnet/configuration/onchange-returns-idisposable-must-be-disposed-or-callback-leaks' },
+      { label: 'Configuration & Options (overview)', route: '/aspnet/configuration' },
+    ],
+    tip: 'Many editors save via write-temp-then-rename, generating multiple file-system events for one logical edit — OnChange firing twice for a single save is expected FileSystemWatcher behavior, not a bug.',
+    docs: [
+      { label: 'IChangeToken Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.primitives.ichangetoken' },
+    ],
+    resources: [
+      { label: 'FileSystemWatcher Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.io.filesystemwatcher', badge: 'docs' },
+    ],
+    gotchas: [
+      'A value-comparison debounce inside the OnChange callback addresses the root cause more reliably than a time-based debounce.',
+      'IChangeToken is one-shot — IOptionsMonitor re-subscribes a new token after every fire internally.',
+    ],
+  },
+
+  'aspnet/configuration/onchange-returns-idisposable-must-be-disposed-or-callback-leaks': {
+    apis: ['OnChange()', 'IDisposable', 'gcroot'],
+    related: [
+      { label: 'How IOptionsMonitor Actually Detects a File Change — previous', route: '/aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation' },
+      { label: 'Configuration & Options (overview)', route: '/aspnet/configuration' },
+      { label: 'GC & IDisposable', route: '/csharp/gc-disposable' },
+    ],
+    tip: 'IOptionsMonitor is a Singleton — a Scoped service that registers an OnChange callback without disposing the returned handle leaks one subscriber entry (and everything its closure captures) per instance, for the process lifetime.',
+    docs: [
+      { label: 'IOptionsMonitor Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.options.ioptionsmonitor-1' },
+    ],
+    resources: [
+      { label: 'dotnet-gcdump (Leak Diagnosis)', url: 'https://learn.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-gcdump', badge: 'docs' },
+    ],
+    gotchas: [
+      'A gcroot trace on a leaked Scoped instance tracing back to a Singleton IOptionsMonitor is the unambiguous signature of this exact leak.',
+      'This is the same underlying leak shape as an un-unsubscribed .NET event handler — a long-lived publisher holding a short-lived subscriber alive.',
+    ],
+  },
+
   'aspnet/dependency-injection': {
     apis: ['AddSingleton()', 'AddScoped()', 'AddTransient()', 'IServiceProvider', 'ActivatorUtilities'],
     related: [
@@ -7125,6 +11115,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Injecting a Scoped service into a Singleton creates a captive dependency — the scoped service lives as long as the singleton.',
       'IServiceProvider.GetService<T>() returns null for unregistered types — use GetRequiredService<T>() to throw instead.',
+    ],
+  },
+
+  'aspnet/dependency-injection/testing-servicescopefactory-backgroundservice-genuinely-fresh-scope': {
+    apis: ['IServiceScopeFactory', 'CreateScope()', 'BackgroundService'],
+    related: [
+      { label: 'CreateAsyncScope() vs CreateScope() Internally — next', route: '/aspnet/dependency-injection/createasyncscope-vs-createscope' },
+      { label: 'Dependency Injection (overview)', route: '/aspnet/dependency-injection' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Prove "fresh scope per iteration" by comparing a marker Guid set at construction across two separate scope-creation calls, not by trusting a code comment — a refactor that hoists scope creation outside a loop compiles cleanly and passes ValidateOnBuild.',
+    docs: [
+      { label: 'IServiceScopeFactory Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicescopefactory' },
+    ],
+    resources: [
+      { label: 'BackgroundService Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.backgroundservice', badge: 'docs' },
+    ],
+    gotchas: [
+      'Neither ValidateOnBuild nor ValidateScopes can catch a scope accidentally created outside a loop — that is a runtime control-flow mistake, not a registration-time one.',
+      'Testing a real BackgroundService\'s per-iteration behavior needs a testability seam (an event or virtual method) since ExecuteAsync\'s loop body is otherwise opaque to test code.',
+    ],
+  },
+
+  'aspnet/dependency-injection/createasyncscope-vs-createscope': {
+    apis: ['CreateAsyncScope()', 'IAsyncDisposable', 'AsyncServiceScope'],
+    related: [
+      { label: 'Testing a Fresh Scope Per BackgroundService Iteration — previous', route: '/aspnet/dependency-injection/testing-servicescopefactory-backgroundservice-genuinely-fresh-scope' },
+      { label: 'ActivatorUtilities Bypasses ValidateOnBuild — next', route: '/aspnet/dependency-injection/activatorutilities-bypasses-validateonbuild' },
+      { label: 'Dependency Injection (overview)', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'A Scoped service that implements ONLY IAsyncDisposable (no synchronous IDisposable) disposed from a synchronous CreateScope() forces the container to block the thread via DisposeAsync().GetAwaiter().GetResult() — CreateAsyncScope() avoids this entirely.',
+    docs: [
+      { label: 'IAsyncDisposable Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.iasyncdisposable' },
+    ],
+    resources: [
+      { label: 'AsyncServiceScope Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.asyncservicescope', badge: 'docs' },
+    ],
+    gotchas: [
+      'A type implementing BOTH IDisposable and IAsyncDisposable (like EF Core\'s DbContext) never hits the blocking fallback — a synchronous scope simply calls its synchronous Dispose() path directly.',
+      'The blocking fallback is silent — it does not throw, it just blocks a thread-pool thread for the duration of the async cleanup.',
+    ],
+  },
+
+  'aspnet/dependency-injection/activatorutilities-bypasses-validateonbuild': {
+    apis: ['ActivatorUtilities.CreateInstance<T>()', 'ValidateOnBuild', 'IServiceProvider'],
+    related: [
+      { label: 'CreateAsyncScope() vs CreateScope() Internally — previous', route: '/aspnet/dependency-injection/createasyncscope-vs-createscope' },
+      { label: 'Dependency Injection (overview)', route: '/aspnet/dependency-injection' },
+      { label: 'Middleware Pipeline', route: '/aspnet/middleware' },
+    ],
+    tip: 'ValidateOnBuild only walks types REGISTERED in the container — a type constructed exclusively via ActivatorUtilities.CreateInstance<T>() is invisible to that walk, so a missing constructor dependency only throws the first time that exact call site runs.',
+    docs: [
+      { label: 'ActivatorUtilities Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.activatorutilities' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A dedicated activation smoke test that calls ActivatorUtilities.CreateInstance<T>() for every known plugin type catches this gap in a fast unit test instead of production traffic.',
+      'Other tests exercising different plugins or endpoints provide zero coverage for this — each ActivatorUtilities call site is an independent gap.',
     ],
   },
 
@@ -7150,6 +11200,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/logging/testing-structured-log-properties-with-fake-logger': {
+    apis: ['ILogger<T>.Log<TState>()', 'IReadOnlyList<KeyValuePair<string,object>>', 'FormattedLogValues'],
+    related: [
+      { label: 'How BeginScope Propagates Ambient Context — next', route: '/aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal' },
+      { label: 'Logging & Diagnostics (overview)', route: '/aspnet/logging' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A hand-written fake ILogger<T> that captures the IReadOnlyList<KeyValuePair<string,object>> state passed to Log<TState>() lets a test assert the exact structured property name and value — a rendered message string alone can look correct while the property name is silently wrong.',
+    docs: [
+      { label: 'ILogger Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      '[LoggerMessage] source-generated methods call the same underlying ILogger.Log<TState>() method — the same fake logger tests both approaches identically.',
+      'A template/argument mismatch (like a typo\'d holder name) compiles cleanly and renders a correct-looking message while the structured property is wrong.',
+    ],
+  },
+
+  'aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal': {
+    apis: ['AsyncLocal<T>', 'ExecutionContext', 'LoggerExternalScopeProvider'],
+    related: [
+      { label: 'Testing Structured Log Properties — previous', route: '/aspnet/logging/testing-structured-log-properties-with-fake-logger' },
+      { label: 'Reusing an EventId Across LoggerMessage Methods — next', route: '/aspnet/logging/reusing-eventid-across-loggermessage-methods-compiles-cleanly' },
+      { label: 'Logging & Diagnostics (overview)', route: '/aspnet/logging' },
+    ],
+    tip: 'BeginScope\'s ambient properties flow via AsyncLocal<T> riding on ExecutionContext, which the runtime automatically copies into every await continuation and Task.Run — a fire-and-forget Task.Run started inside a scope captures a snapshot that outlives the scope\'s own disposal.',
+    docs: [
+      { label: 'AsyncLocal<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.asynclocal-1' },
+    ],
+    resources: [
+      { label: 'ExecutionContext Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.threading.executioncontext', badge: 'docs' },
+    ],
+    gotchas: [
+      'AsyncLocal propagation is a COPY at capture time, not a live reference — disposing the outer scope has zero effect on an already-detached fire-and-forget task.',
+      'A background worker should establish its own explicit scope from data passed directly to it, rather than relying on whatever ambient scope happened to be active at Task.Run() time.',
+    ],
+  },
+
+  'aspnet/logging/reusing-eventid-across-loggermessage-methods-compiles-cleanly': {
+    apis: ['EventId', 'EventId.Name', '[LoggerMessage(EventId=...)]'],
+    related: [
+      { label: 'How BeginScope Propagates Ambient Context — previous', route: '/aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal' },
+      { label: 'Logging & Diagnostics (overview)', route: '/aspnet/logging' },
+      { label: 'Middleware Pipeline', route: '/aspnet/middleware' },
+    ],
+    tip: 'The [LoggerMessage] source generator validates each attribute independently — it has no visibility into EventId values assigned elsewhere, so two unrelated log methods in different classes can share the same numeric EventId with zero compiler warnings.',
+    docs: [
+      { label: 'EventId Struct', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.eventid' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A dashboard or alert keying on the bare numeric EventId.Id silently blends two unrelated events together if they ever collide — always set EventName too, since most sinks index it as an independent disambiguator.',
+      'A reflection-based CI test that scans every [LoggerMessage] attribute for duplicate EventIds without distinct EventNames catches this automatically, without relying on manual code review.',
+    ],
+  },
+
   'aspnet/static-files': {
     apis: ['UseStaticFiles()', 'StaticFileOptions', 'IFormFile', 'IWebHostEnvironment', 'FileStreamResult'],
     related: [
@@ -7168,6 +11278,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'UseStaticFiles() must be called before UseRouting() — otherwise the router claims the path first.',
       'IFormFile.FileName is untrusted user input — never use it as a filesystem path without sanitization.',
+    ],
+  },
+
+  'aspnet/static-files/testing-magic-number-validation-fake-byte-streams': {
+    apis: ['MemoryStream', 'Stream.ReadExactlyAsync()', 'Span<byte>.SequenceEqual()'],
+    related: [
+      { label: 'How UseStaticFiles Computes ETag — next', route: '/aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache' },
+      { label: 'Static Files & Uploads (overview)', route: '/aspnet/static-files' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Magic-number validation only reads the first few bytes of a stream — a MemoryStream wrapping a hand-built byte array covers every edge case (valid, spoofed, partial-match, too-short) with no real image files needed on disk.',
+    docs: [
+      { label: 'Stream.ReadExactlyAsync', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.io.stream.readexactlyasync' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A magic-number check proves a file BEGINS with the correct signature — it says nothing about a polyglot file with malicious content appended after a valid header.',
+      'Always rewind the stream position after reading the header bytes, or the caller\'s subsequent save/copy operation silently skips the first few bytes of the file.',
+    ],
+  },
+
+  'aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache': {
+    apis: ['FileInfo.LastWriteTimeUtc', 'ETag', 'If-None-Match'],
+    related: [
+      { label: 'Testing Magic Number Validation — previous', route: '/aspnet/static-files/testing-magic-number-validation-fake-byte-streams' },
+      { label: 'StartsWith Path Traversal Guard Bypass — next', route: '/aspnet/static-files/startswith-path-traversal-guard-sibling-directory-bypass' },
+      { label: 'Static Files & Uploads (overview)', route: '/aspnet/static-files' },
+    ],
+    tip: 'The built-in ETag is a weak validator derived from file length and LastWriteTimeUtc, not content bytes — a deployment step that resets file timestamps (zip extraction, git checkout) busts every client\'s cache even when content never changed.',
+    docs: [
+      { label: 'HTTP Caching Middleware', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/middleware' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Content-hash-based custom ETags are immune to timestamp resets but require reading the entire file — cache the computed hash rather than recomputing it on every request.',
+      'Files with content-hashed URLs (app.a1b2c3d4.js) sidestep this entirely, since long-TTL caching means the client never sends a conditional request within the TTL window.',
+    ],
+  },
+
+  'aspnet/static-files/startswith-path-traversal-guard-sibling-directory-bypass': {
+    apis: ['string.StartsWith()', 'Path.GetFullPath()', 'Path.DirectorySeparatorChar'],
+    related: [
+      { label: 'How UseStaticFiles Computes ETag — previous', route: '/aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache' },
+      { label: 'Static Files & Uploads (overview)', route: '/aspnet/static-files' },
+      { label: 'Security & Auth', route: '/security' },
+    ],
+    tip: 'string.StartsWith(uploadRoot) is a raw character-prefix comparison with no awareness of directory boundaries — a sibling folder like "uploads-backup" passes the check since it shares the same character prefix as "uploads".',
+    docs: [
+      { label: 'Path.GetFullPath Method', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.io.path.getfullpath' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The fix is appending the directory separator to the expected root before comparing — this turns a character-prefix check into a genuine directory-boundary check.',
+      'Even a correctly separator-aware check cannot detect a symbolic link inside the allowed directory resolving outside it — that requires resolving the canonical path or restricting write access to the upload directory.',
     ],
   },
 
@@ -7193,6 +11363,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/controllers/testing-actionresult-catches-null-returns-200-ok-bug': {
+    apis: ['ActionResult<T>.Result', 'ActionResult<T>.Value', 'NotFoundResult'],
+    related: [
+      { label: 'How Binding Source Inference Decides FromBody vs FromQuery — next', route: '/aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery' },
+      { label: 'Controllers & Actions (overview)', route: '/aspnet/controllers' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Calling a controller action directly and asserting response.Result is a specific NotFoundResult (not just checking .Value is null) is what actually distinguishes an explicit 404 from the buggy bare-null-return case producing 200 OK.',
+    docs: [
+      { label: 'ActionResult<T> Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A direct method-call unit test never exercises the actual HTTP translation layer — an integration test with WebApplicationFactory is still needed to prove the real status code a client receives.',
+      'The compiler allows returning null from an ActionResult<T> action with zero warnings, which is exactly why this bug needs a dedicated test rather than relying on code review alone.',
+    ],
+  },
+
+  'aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery': {
+    apis: ['ModelMetadata.IsComplexType', 'TypeConverter.CanConvertFrom()', '[FromQuery]'],
+    related: [
+      { label: 'Testing the Null-Return 200 OK Bug — previous', route: '/aspnet/controllers/testing-actionresult-catches-null-returns-200-ok-bug' },
+      { label: 'CreatedAtAction’s Runtime Failure Mode — next', route: '/aspnet/controllers/createdataction-throws-runtime-despite-nameof-safety' },
+      { label: 'Controllers & Actions (overview)', route: '/aspnet/controllers' },
+    ],
+    tip: 'A type counts as "simple" (infers to FromQuery) only if it has a registered TypeConverter that can convert from a string — a record with a single string property has no such converter and infers to FromBody despite looking simple.',
+    docs: [
+      { label: 'Model Binding in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/models/model-binding' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Guid, DateTime, decimal, and every enum type infer correctly to FromQuery, since .NET registers a TypeConverter for each automatically — but records and classes never get one just because their properties are simple.',
+      'An explicit [FromQuery] attribute completely bypasses the simple/complex inference check — it is the only reliable fix for a record-shaped query parameter.',
+    ],
+  },
+
+  'aspnet/controllers/createdataction-throws-runtime-despite-nameof-safety': {
+    apis: ['CreatedAtAction()', 'IUrlHelper', 'nameof()'],
+    related: [
+      { label: 'How Binding Source Inference Decides FromBody vs FromQuery — previous', route: '/aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery' },
+      { label: 'Controllers & Actions (overview)', route: '/aspnet/controllers' },
+      { label: 'Routing', route: '/aspnet/routing' },
+    ],
+    tip: 'nameof(GetById) only guarantees the method name compiles — a route template change on the target action (like adding a version segment) still compiles cleanly and throws InvalidOperationException at runtime the first time the routeValues no longer satisfy the new route.',
+    docs: [
+      { label: 'IUrlHelper Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iurlhelper' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'This failure only surfaces on the first real request that hits the affected code path — a unit test calling the action method directly never exercises IUrlHelper\'s actual route resolution.',
+      'An integration test using WebApplicationFactory that asserts on the real HTTP status code (and ideally follows the returned Location header) is the only reliable way to catch this before production.',
+    ],
+  },
+
   'aspnet/minimal-apis': {
     apis: ['app.MapGet()', 'TypedResults', 'Results<T1,T2>', 'IEndpointFilter', 'RouteGroupBuilder'],
     related: [
@@ -7212,6 +11442,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'DataAnnotations on DTOs are NOT validated automatically — add an IEndpointFilter or use .NET 9 AddValidation().',
       'Lambda handlers prevent Native AOT — use static method groups or named delegates for AOT-compatible apps.',
+    ],
+  },
+
+  'aspnet/minimal-apis/testing-endpoint-filter-isolation-no-test-server': {
+    apis: ['IEndpointFilter', 'EndpointFilterInvocationContext', 'EndpointFilterDelegate'],
+    related: [
+      { label: 'A Forgotten DI Registration Silently Falls Through — next', route: '/aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding' },
+      { label: 'Minimal APIs (overview)', route: '/aspnet/minimal-apis' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A fake next delegate that records whether it was called lets a test prove short-circuit behavior directly — a filter with an inverted condition can return a correct-looking result while still accidentally letting an invalid request reach the handler.',
+    docs: [
+      { label: 'IEndpointFilter Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.iendpointfilter' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Testing filters in isolation proves each filter\'s own logic — it says nothing about ordering or interaction when multiple filters are chained on the same endpoint, which still needs integration coverage.',
+      'Assert on whether the fake next delegate was actually called, not just on the filter\'s returned result type — that is what catches an inverted condition bug.',
+    ],
+  },
+
+  'aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding': {
+    apis: ['IServiceProviderIsService', 'IsService()', '[FromBody] inference'],
+    related: [
+      { label: 'Testing an Endpoint Filter in Isolation — previous', route: '/aspnet/minimal-apis/testing-endpoint-filter-isolation-no-test-server' },
+      { label: 'LinkGenerator’s Silent Null Return — next', route: '/aspnet/minimal-apis/linkgenerator-getpathbyname-returns-null-instead-of-throwing' },
+      { label: 'Minimal APIs (overview)', route: '/aspnet/minimal-apis' },
+    ],
+    tip: 'A handler parameter of an unregistered service type does not throw a DI exception — IsService() returns false and the parameter silently falls through to complex-type-from-body inference, producing a confusing validation error instead.',
+    docs: [
+      { label: 'IServiceProviderIsService Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iserviceproviderisservice' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A controller\'s constructor throws an immediate, unambiguous InvalidOperationException for the exact same missing registration — minimal API handlers give no such clear signal.',
+      'A reflection-based CI check that verifies every service-shaped handler parameter is actually registered in DI catches this class of mistake automatically.',
+    ],
+  },
+
+  'aspnet/minimal-apis/linkgenerator-getpathbyname-returns-null-instead-of-throwing': {
+    apis: ['LinkGenerator', 'GetPathByName()', 'TypedResults.Created()'],
+    related: [
+      { label: 'A Forgotten DI Registration Silently Falls Through — previous', route: '/aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding' },
+      { label: 'Minimal APIs (overview)', route: '/aspnet/minimal-apis' },
+      { label: 'CreatedAtAction’s Runtime Failure Mode', route: '/aspnet/controllers/createdataction-throws-runtime-despite-nameof-safety' },
+    ],
+    tip: 'Unlike CreatedAtAction/IUrlHelper (which throws when route values don\'t match), LinkGenerator.GetPathByName returns null silently — passing that into TypedResults.Created produces a 201 response with a missing Location header.',
+    docs: [
+      { label: 'LinkGenerator Class', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.routing.linkgenerator' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A test asserting only on the 201 status code passes even with this bug — assert explicitly on response.Headers.Location being non-null to catch it.',
+      '.WithName() is purely a runtime string key with no compile-time link to the route template — a later route-template change compiles fine everywhere and only fails at the moment GetPathByName actually runs.',
     ],
   },
 
@@ -7238,6 +11528,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/model-binding/testing-iparsable-tryparse-graceful-failure-daterange': {
+    apis: ['IParsable<T>.TryParse()', 'FormatException', 'IndexOutOfRangeException'],
+    related: [
+      { label: 'How Recursive Nested Validation Walks the Object Graph — next', route: '/aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference' },
+      { label: 'Model Binding & Validation (overview)', route: '/aspnet/model-binding' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A bare catch { } inside TryParse can hide that different malformed inputs throw different exception types internally — enumerate every malformed shape a real query string could contain and prove TryParse never lets an exception escape.',
+    docs: [
+      { label: 'IParsable<TSelf> Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/system.iparsable-1' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Narrowing a blanket catch block to a specific exception type is only safe after confirming every failure path actually throws that same type — otherwise a narrower catch can silently reintroduce an unhandled exception.',
+      'ASP.NET Core\'s binding infrastructure calls TryParse, not Parse — an implementation that lets an exception escape TryParse breaks that contract and can produce an unhandled 500 instead of a 400.',
+    ],
+  },
+
+  'aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference': {
+    apis: ['DefaultObjectValidator', '[ValidateNever]', 'StackOverflowException'],
+    related: [
+      { label: 'Testing IParsable’s TryParse for Graceful Failure — previous', route: '/aspnet/model-binding/testing-iparsable-tryparse-graceful-failure-daterange' },
+      { label: 'FluentValidation’s SetValidator DI Bypass — next', route: '/aspnet/model-binding/fluentvalidation-setvalidator-new-silently-bypasses-di' },
+      { label: 'Model Binding & Validation (overview)', route: '/aspnet/model-binding' },
+    ],
+    tip: 'A genuinely circular object graph (an EF Core entity with both navigation directions populated) sends the recursive validator into infinite recursion — StackOverflowException cannot be caught and crashes the entire process, not just the request.',
+    docs: [
+      { label: 'Model Validation in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/models/validation' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Breaking the cycle at just ONE point (typically the "back" navigation property) with [ValidateNever] is sufficient — it does not need to be applied on both sides of the relationship.',
+      'Using separate DTO types for the API surface (never binding requests directly to EF Core entities with navigation properties) eliminates this risk entirely, since a JSON payload cannot itself express a circular reference.',
+    ],
+  },
+
+  'aspnet/model-binding/fluentvalidation-setvalidator-new-silently-bypasses-di': {
+    apis: ['SetValidator()', 'IValidator<T>', 'AddValidatorsFromAssemblyContaining()'],
+    related: [
+      { label: 'How Recursive Nested Validation Walks the Object Graph — previous', route: '/aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference' },
+      { label: 'Model Binding & Validation (overview)', route: '/aspnet/model-binding' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Calling new ChildValidator() inside a parent validator\'s constructor silently bypasses DI — the moment the child needs a real dependency, a parameterless-constructor workaround can quietly drop the actual business rule.',
+    docs: [
+      { label: 'FluentValidation ASP.NET Core Integration', url: 'https://docs.fluentvalidation.net/en/latest/aspnet.html' },
+    ],
+    resources: [
+      { label: 'FluentValidation', url: 'https://github.com/FluentValidation/FluentValidation', badge: 'code' },
+    ],
+    gotchas: [
+      'Since AddValidatorsFromAssemblyContaining registers validators as Singleton by default, a manually-constructed child validator is created exactly once and reused forever — the same practical effect as a captive dependency.',
+      'Inject IValidator<TChild> as a constructor parameter on the parent validator instead of calling new — this lets SetValidator() receive a properly DI-resolved instance with its own dependencies and intended lifetime respected.',
+    ],
+  },
+
   'aspnet/filters': {
     apis: ['IActionFilter', 'IAsyncActionFilter', 'IExceptionFilter', 'IEndpointFilter', 'ServiceFilterAttribute'],
     related: [
@@ -7257,6 +11607,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Exception filters only catch exceptions from actions and MVC filters — NOT from middleware. Use UseExceptionHandler() for full coverage.',
       '[ServiceFilter] filters must be registered in DI — forgetting causes InvalidOperationException at runtime.',
+    ],
+  },
+
+  'aspnet/filters/testing-filters-execute-in-documented-pipeline-order': {
+    apis: ['ActionExecutionDelegate', 'options.Filters.Add<T>()', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Why next() Runs the Action Even After Result Is Set — next', route: '/aspnet/filters/why-next-runs-action-even-after-context-result-is-set' },
+      { label: 'Filters & Endpoint Filters (overview)', route: '/aspnet/filters' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Testing each filter in isolation proves its own logic — it says nothing about whether multiple registered filters actually nest in the intended order. A shared, request-scoped execution log recorded by every filter is what proves the real sequence.',
+    docs: [
+      { label: 'Filters in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/filters' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A comment like "// outermost" next to a filter registration call is not enforced by the compiler or any test — a reordered registration call breaks the intended nesting silently.',
+      'IEndpointFilter applies to controllers too, via endpoint metadata, and wraps OUTSIDE every IActionFilter — worth proving explicitly if a controller action mixes both filter types.',
+    ],
+  },
+
+  'aspnet/filters/why-next-runs-action-even-after-context-result-is-set': {
+    apis: ['ActionExecutionDelegate', 'context.Result', 'OnActionExecutionAsync'],
+    related: [
+      { label: 'Testing That Filters Execute in the Documented Order — previous', route: '/aspnet/filters/testing-filters-execute-in-documented-pipeline-order' },
+      { label: 'IFilterFactory’s Captive Dependency Risk — next', route: '/aspnet/filters/ifilterfactory-isreusable-silently-recreates-captive-dependency' },
+      { label: 'Filters & Endpoint Filters (overview)', route: '/aspnet/filters' },
+    ],
+    tip: 'next() is simply an unconditional delegate call to whatever comes next in the pipeline — it never checks whether context.Result was already set, which is exactly why short-circuiting requires NOT calling next() at all, not setting Result before calling it.',
+    docs: [
+      { label: 'IAsyncActionFilter Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.filters.iasyncactionfilter' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Calling next() a second time by accident (a copy-paste mistake) re-invokes the action a second time with no built-in duplicate-call detection — dangerous for actions with side effects.',
+      'The short-circuit mechanism is entirely the ABSENCE of a next() call — there is no special "cancel" API, which is why returning early is the correct and only fix.',
+    ],
+  },
+
+  'aspnet/filters/ifilterfactory-isreusable-silently-recreates-captive-dependency': {
+    apis: ['IFilterFactory', 'IsReusable', 'CreateInstance()'],
+    related: [
+      { label: 'Why next() Runs the Action Even After Result Is Set — previous', route: '/aspnet/filters/why-next-runs-action-even-after-context-result-is-set' },
+      { label: 'Filters & Endpoint Filters (overview)', route: '/aspnet/filters' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'IsReusable => true caches the FIRST resolved filter instance for reuse across every subsequent request — if CreateInstance() resolved a Scoped dependency, this recreates the exact captive-dependency bug from the Dependency Injection topic, just via a different mechanism.',
+    docs: [
+      { label: 'IFilterFactory Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.filters.ifilterfactory' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The bug is often invisible on the first request and only manifests once the captured Scoped dependency (like a DbContext) has already been disposed — an intermittent, request-order-dependent failure.',
+      'IsReusable should only be true when CreateInstance() resolves exclusively Singleton-safe dependencies — the same rule that governs whether it is safe to inject a service into an actual DI Singleton.',
     ],
   },
 
@@ -7283,6 +11693,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/error-handling/testing-exceptionhandler-chain-ordering-works-as-documented': {
+    apis: ['IExceptionHandler', 'AddExceptionHandler<T>()', 'TryHandleAsync()'],
+    related: [
+      { label: 'Why the Re-Executed Error Endpoint Must Restore the Status Code — next', route: '/aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code' },
+      { label: 'Error Handling (overview)', route: '/aspnet/error-handling' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Registration order determines evaluation order for IExceptionHandler — an integration test that throws each exception type and asserts on the SPECIFIC response shape is the only thing that proves the chain is ordered correctly, not just documented correctly.',
+    docs: [
+      { label: 'IExceptionHandler Interface', url: 'https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.diagnostics.iexceptionhandler' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A handler checking a BASE exception type still incorrectly claims a MORE DERIVED type\'s exceptions if registered before that derived type\'s own handler — both handlers can be individually correct, yet ordering still produces the wrong result.',
+      'There is no compiler enforcement of IExceptionHandler registration order, unlike C#\'s own catch-block ordering rules for try/catch chains.',
+    ],
+  },
+
+  'aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code': {
+    apis: ['UseStatusCodePagesWithReExecute()', 'IStatusCodeReExecuteFeature', 'Results.Problem(statusCode:)'],
+    related: [
+      { label: 'Testing the IExceptionHandler Chain Ordering — previous', route: '/aspnet/error-handling/testing-exceptionhandler-chain-ordering-works-as-documented' },
+      { label: 'A Handler That Writes Before Returning False Corrupts the Next — next', route: '/aspnet/error-handling/handler-writes-before-returning-false-corrupts-next-handler' },
+      { label: 'Error Handling (overview)', route: '/aspnet/error-handling' },
+    ],
+    tip: 'Re-execution only preserves the original status code as information the error endpoint can read — the actual response status is whatever that endpoint explicitly sets, which is why Results.Problem(statusCode: code) is not decorative.',
+    docs: [
+      { label: 'Handle Errors in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A route parameter binding correctly (e.g. code=404) does NOT guarantee the actual HTTP response status code matches — a handler calling Results.Ok() still sends 200 regardless of what the route value contains.',
+      'A test asserting only on response body content can pass even when the actual response.StatusCode is wrong — assert on both independently.',
+    ],
+  },
+
+  'aspnet/error-handling/handler-writes-before-returning-false-corrupts-next-handler': {
+    apis: ['ctx.Response.StatusCode', 'IExceptionHandler', 'IProblemDetailsService.WriteAsync()'],
+    related: [
+      { label: 'Why the Re-Executed Error Endpoint Must Restore the Status Code — previous', route: '/aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code' },
+      { label: 'Error Handling (overview)', route: '/aspnet/error-handling' },
+      { label: 'Filters & Endpoint Filters', route: '/aspnet/filters' },
+    ],
+    tip: 'HttpContext is a single shared object across the whole handler chain with no snapshot-and-restore mechanism — a handler that sets StatusCode speculatively before deciding to return false leaves that value in place for whatever handler runs next.',
+    docs: [
+      { label: 'Handle Errors in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Decide whether a handler will claim an exception FIRST, using only local variables — only touch ctx.Response (StatusCode, headers, body) AFTER that decision is final.',
+      'A mismatch between response.StatusCode and the ProblemDetails body\'s own Status field is a strong smoke-test signal that an earlier handler touched the response before declining to handle the exception.',
+    ],
+  },
+
   'aspnet/openapi-swagger': {
     apis: ['AddOpenApi()', 'MapOpenApi()', '.WithSummary()', '.WithDescription()', 'TypedResults', 'IOpenApiOperationTransformer'],
     related: [
@@ -7303,6 +11773,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Built-in AddOpenApi() (≥ .NET 9) and Swashbuckle are separate packages — do not install both unless intentional; they generate competing /openapi/*.json endpoints.',
       'Controller XML doc comments require <GenerateDocumentationFile>true</GenerateDocumentationFile> in the .csproj and IncludeXmlComments() in the Swashbuckle config.',
+    ],
+  },
+
+  'aspnet/openapi-swagger/testing-openapi-spec-catches-typedresults-regression-to-iresult': {
+    apis: ['/openapi/v1.json', 'MapOpenApi()', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Why the Generator Inspects the Signature, Not the Body — next', route: '/aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body' },
+      { label: 'OpenAPI & Swagger (overview)', route: '/aspnet/openapi-swagger' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A TypedResults endpoint reverted to bare IResult produces zero build errors and behaves identically at runtime — only the generated spec silently degrades, which is why an integration test fetching /openapi/v1.json and asserting on schema content is the only signal that catches it.',
+    docs: [
+      { label: 'OpenAPI in ASP.NET Core (.NET 9)', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A snapshot-based test comparing the current spec\'s documented response codes per endpoint against a checked-in baseline scales to any number of routes without hand-writing one assertion block per endpoint.',
+      'Ordinary functional tests checking runtime status codes never catch this — the endpoint behaves identically either way; only the spec content differs.',
+    ],
+  },
+
+  'aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body': {
+    apis: ['Results<T1,T2>', 'TypedResults', 'IResult'],
+    related: [
+      { label: 'Testing the Spec Catches a TypedResults Regression — previous', route: '/aspnet/openapi-swagger/testing-openapi-spec-catches-typedresults-regression-to-iresult' },
+      { label: 'Generating Clients Against a Live Server Undermines PR Diffs — next', route: '/aspnet/openapi-swagger/generating-clients-against-live-server-undermines-diffing-prs' },
+      { label: 'OpenAPI & Swagger (overview)', route: '/aspnet/openapi-swagger' },
+    ],
+    tip: 'The OpenAPI generator only reflects on a method\'s DECLARED return type — calling TypedResults.Ok() and TypedResults.NotFound() inside a method still declared as Task<IResult> produces the same undocumented spec as plain Results.Ok(), since both get implicitly widened to IResult at the method boundary.',
+    docs: [
+      { label: 'Minimal APIs and TypedResults', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/responses' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Results<T1,T2> only has implicit conversion operators FROM its own declared type parameters — attempting to return an unrelated IResult type from a Results<T1,T2>-declared method is a genuine compile error, guaranteeing the spec stays complete.',
+      'The fix is changing the METHOD\'S OWN signature to the union type, not just calling TypedResults factory methods somewhere inside the body.',
+    ],
+  },
+
+  'aspnet/openapi-swagger/generating-clients-against-live-server-undermines-diffing-prs': {
+    apis: ['nswag.json', 'fromDocument', 'AddOpenApi()'],
+    related: [
+      { label: 'Why the Generator Inspects the Signature, Not the Body — previous', route: '/aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body' },
+      { label: 'OpenAPI & Swagger (overview)', route: '/aspnet/openapi-swagger' },
+      { label: 'DevOps & CI/CD', route: '/devops' },
+    ],
+    tip: 'Generating a client from a live localhost URL makes the output depend on whatever transient, possibly-uncommitted state happens to be running on a developer\'s machine — generate from a fixed, committed spec file or CI build artifact instead to keep "diff the client in PRs" reliable.',
+    docs: [
+      { label: 'NSwag Documentation', url: 'https://github.com/RicoSuter/NSwag' },
+    ],
+    resources: [
+      { label: 'Microsoft Kiota', url: 'https://github.com/microsoft/kiota', badge: 'code' },
+    ],
+    gotchas: [
+      'Modern .NET tooling can generate the OpenAPI document as a build-time artifact without an actual listening HTTP server, using the same reflection-based process that would otherwise run per-request.',
+      'Two developers on different branches regenerating a client from their own local dev servers can produce spurious, unrelated diff churn in an otherwise small PR.',
     ],
   },
 
@@ -7329,6 +11859,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/api-versioning/testing-versioned-endpoints-return-genuinely-different-shapes': {
+    apis: ['[ApiVersion]', '[MapToApiVersion]', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Why Omitting apiVersion Causes an Ambiguous Match — next', route: '/aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match' },
+      { label: 'API Versioning (overview)', route: '/aspnet/api-versioning' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'An action missing [MapToApiVersion] still returns 200 OK — just with the WRONG version\'s shape. Assert on version-specific fields in the response body, not just the status code, to catch this class of regression.',
+    docs: [
+      { label: 'Asp.Versioning NuGet', url: 'https://www.nuget.org/packages/Asp.Versioning.Mvc' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnet-api-versioning', url: 'https://github.com/dotnet/aspnet-api-versioning', badge: 'code' },
+    ],
+    gotchas: [
+      'A status-code-only test passes even with a v2-only action silently leaking into v1 — the endpoint still returns 200, just with the wrong DTO shape.',
+      'ReportApiVersions and Deprecated=true only affect response HEADERS, not the body — test them with separate, explicit assertions.',
+    ],
+  },
+
+  'aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match': {
+    apis: ['{version:apiVersion}', 'IActionConstraint', 'AmbiguousMatchException'],
+    related: [
+      { label: 'Testing That Versioned Endpoints Return Different Shapes — previous', route: '/aspnet/api-versioning/testing-versioned-endpoints-return-genuinely-different-shapes' },
+      { label: 'What Happens When Combined Version Readers Disagree — next', route: '/aspnet/api-versioning/what-happens-when-combined-version-readers-disagree' },
+      { label: 'API Versioning (overview)', route: '/aspnet/api-versioning' },
+    ],
+    tip: 'Without the :apiVersion constraint, two actions sharing an identical route template throw AmbiguousMatchException (500) on EVERY request to that route, not just wrong-version ones — the constraint is what plugs versioning into routing\'s own tie-breaking mechanism.',
+    docs: [
+      { label: 'API versioning wiki', url: 'https://github.com/dotnet/aspnet-api-versioning/wiki' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnet-api-versioning', url: 'https://github.com/dotnet/aspnet-api-versioning', badge: 'code' },
+    ],
+    gotchas: [
+      'This failure is actually EASIER to catch than a missing [MapToApiVersion] — it throws loudly on the very first manual test, rather than silently returning a plausible-looking wrong response.',
+      '[MapToApiVersion] is versioning-specific metadata the base routing system has no built-in awareness of without the constraint acting as the bridge.',
+    ],
+  },
+
+  'aspnet/api-versioning/what-happens-when-combined-version-readers-disagree': {
+    apis: ['ApiVersionReader.Combine()', 'AmbiguousApiVersionException', 'UrlSegmentApiVersionReader'],
+    related: [
+      { label: 'Why Omitting apiVersion Causes an Ambiguous Match — previous', route: '/aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match' },
+      { label: 'API Versioning (overview)', route: '/aspnet/api-versioning' },
+      { label: 'Routing', route: '/aspnet/routing' },
+    ],
+    tip: '"First match in configuration order" only describes the case where ONE reader finds a value — when a URL segment and a header extract DIFFERENT versions from the same request, Asp.Versioning returns 400 Bad Request rather than silently picking one.',
+    docs: [
+      { label: 'API versioning wiki', url: 'https://github.com/dotnet/aspnet-api-versioning/wiki' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnet-api-versioning', url: 'https://github.com/dotnet/aspnet-api-versioning', badge: 'code' },
+    ],
+    gotchas: [
+      'An API gateway or proxy that injects its own version header independently of a URL segment a caller specified can trigger this conflict entirely by accident.',
+      'Monitor 400 responses specifically tied to AmbiguousApiVersionException — a spike is a strong signal some component in the request path is adding conflicting version info.',
+    ],
+  },
+
   'aspnet/http-clients': {
     apis: ['IHttpClientFactory', 'AddHttpClient<T>()', 'AddStandardResilienceHandler()', 'DelegatingHandler', 'ResiliencePipeline', 'HttpClientHandler'],
     related: [
@@ -7349,6 +11939,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'Never inject a typed client (Transient) into a Singleton service — the handler pool is fine, but any per-request state on the typed client will be shared. Use IServiceScopeFactory for background services.',
       'HttpClient.BaseAddress must end with "/" — relative paths without a trailing slash on the base are silently dropped, resulting in 404s.',
+    ],
+  },
+
+  'aspnet/http-clients/testing-retry-strategy-fires-transient-not-deterministic-errors': {
+    apis: ['ShouldHandle', 'DelegatingHandler', 'AddStandardResilienceHandler()'],
+    related: [
+      { label: 'Why Transient Handlers Are Shared Across a Pool Rotation — next', route: '/aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation' },
+      { label: 'HttpClient & Resilience (overview)', route: '/aspnet/http-clients' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A fake DelegatingHandler that returns a fixed status code and counts its own invocations directly proves how many attempts the pipeline makes — verifying YOUR client\'s actual configured behavior, not just trusting the library\'s documented defaults.',
+    docs: [
+      { label: 'Resilience in .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/resilience/' },
+    ],
+    resources: [
+      { label: 'App-vNext/Polly', url: 'https://github.com/App-vNext/Polly', badge: 'code' },
+    ],
+    gotchas: [
+      'A custom ShouldHandle override can narrow or widen which status codes retry for a SPECIFIC client — test the actual configured pipeline, not just the library defaults.',
+      'Proving a status code explicitly does NOT retry (like TooManyRequests on a payment pipeline) is just as important as proving one does, especially where idempotency matters.',
+    ],
+  },
+
+  'aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation': {
+    apis: ['DelegatingHandler', 'IHttpClientFactory', 'HttpMessageHandler'],
+    related: [
+      { label: 'Testing Retry Strategy Scope — previous', route: '/aspnet/http-clients/testing-retry-strategy-fires-transient-not-deterministic-errors' },
+      { label: 'AddHedging’s Method-Blindness Risk — next', route: '/aspnet/http-clients/addhedging-shared-pipeline-can-hedge-non-idempotent-requests' },
+      { label: 'HttpClient & Resilience (overview)', route: '/aspnet/http-clients' },
+    ],
+    tip: 'For a pooled DelegatingHandler, "Transient" means one instance per ~2-minute pool rotation, not one per HTTP request — a single instance can be concurrently executing thousands of overlapping requests before it is ever replaced.',
+    docs: [
+      { label: 'IHttpClientFactory in .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory' },
+    ],
+    resources: [
+      { label: 'dotnet/extensions', url: 'https://github.com/dotnet/extensions', badge: 'code' },
+    ],
+    gotchas: [
+      'A race condition on a shared instance field only manifests under genuine concurrent load — sequential manual testing never triggers the interleaving that causes it.',
+      'Use local variables (or HttpRequestMessage.Options), never instance fields, for anything request-specific inside a DelegatingHandler.',
+    ],
+  },
+
+  'aspnet/http-clients/addhedging-shared-pipeline-can-hedge-non-idempotent-requests': {
+    apis: ['AddHedging()', 'HttpHedgingStrategyOptions', 'ShouldHandle'],
+    related: [
+      { label: 'Why Transient Handlers Are Shared Across a Pool Rotation — previous', route: '/aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation' },
+      { label: 'HttpClient & Resilience (overview)', route: '/aspnet/http-clients' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'A resilience pipeline attached to a typed client applies to every request that client makes, across every HTTP method — hedging added to speed up a slow read method silently also hedges every write method on the same client unless ShouldHandle filters by request.Method.',
+    docs: [
+      { label: 'Resilience in .NET', url: 'https://learn.microsoft.com/en-us/dotnet/core/resilience/' },
+    ],
+    resources: [
+      { label: 'App-vNext/Polly', url: 'https://github.com/App-vNext/Polly', badge: 'code' },
+    ],
+    gotchas: [
+      'HTTP client-side cancellation of a "losing" hedged request rarely stops server-side processing already underway — the downstream can still fully commit a duplicate non-idempotent write.',
+      'Explicitly restrict hedging to GET/HEAD via ShouldHandle, or split read and write operations into separate typed client registrations.',
     ],
   },
 
@@ -7375,6 +12025,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/grpc/testing-server-streaming-rpc-cancellation-stops-mid-stream': {
+    apis: ['TestServerCallContext', 'IServerStreamWriter<T>', 'CancellationTokenSource'],
+    related: [
+      { label: 'How proto3 optional Tracks Field Presence — next', route: '/aspnet/grpc/how-proto3-optional-actually-tracks-field-presence' },
+      { label: 'gRPC Services (overview)', route: '/aspnet/grpc' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A fake IServerStreamWriter<T> collecting written items, combined with TestServerCallContext\'s own CancellationToken, proves a streaming RPC genuinely stops writing once cancellation fires — not just that it eventually completes.',
+    docs: [
+      { label: 'gRPC for .NET overview', url: 'https://learn.microsoft.com/en-us/aspnet/core/grpc/' },
+    ],
+    resources: [
+      { label: 'grpc/grpc-dotnet', url: 'https://github.com/grpc/grpc-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'Cancelling based on a fixed wall-clock delay tuned against the RPC\'s own artificial per-item delay is timing-fragile — triggering cancellation via a write-count callback on the fake stream writer is more deterministic.',
+      'Test cancellation WHILE the RPC is still running, not after it completes naturally — the whole point is proving it reacts to an in-progress cancellation.',
+    ],
+  },
+
+  'aspnet/grpc/how-proto3-optional-actually-tracks-field-presence': {
+    apis: ['optional', 'oneof', 'HasXxx'],
+    related: [
+      { label: 'Testing Server-Streaming RPC Cancellation — previous', route: '/aspnet/grpc/testing-server-streaming-rpc-cancellation-stops-mid-stream' },
+      { label: 'gRPC-Web CORS Needs Allowed Request Headers — next', route: '/aspnet/grpc/grpc-web-cors-needs-allowed-request-headers-not-exposed' },
+      { label: 'gRPC Services (overview)', route: '/aspnet/grpc' },
+    ],
+    tip: 'proto3 optional is implemented as a hidden single-member oneof, reusing Protobuf\'s existing "which member is set" tracking — this is why an optional field gets a generated HasXxx property but a plain scalar field never does.',
+    docs: [
+      { label: 'gRPC services with C#', url: 'https://learn.microsoft.com/en-us/aspnet/core/grpc/basics' },
+    ],
+    resources: [
+      { label: 'grpc/grpc-dotnet', url: 'https://github.com/grpc/grpc-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'Two separate optional fields do NOT automatically become mutually exclusive — each gets its own independent hidden oneof; use an explicit shared oneof for genuine mutual exclusivity.',
+      'The wire format itself is unchanged by optional — the presence tracking lives entirely in the generated code, not in a new wire representation.',
+    ],
+  },
+
+  'aspnet/grpc/grpc-web-cors-needs-allowed-request-headers-not-exposed': {
+    apis: ['WithHeaders()', 'WithExposedHeaders()', 'CORS preflight'],
+    related: [
+      { label: 'How proto3 optional Tracks Field Presence — previous', route: '/aspnet/grpc/how-proto3-optional-actually-tracks-field-presence' },
+      { label: 'gRPC Services (overview)', route: '/aspnet/grpc' },
+      { label: 'HttpClient & Resilience', route: '/aspnet/http-clients' },
+    ],
+    tip: 'WithExposedHeaders only controls which response headers JavaScript can read — it says nothing about whether the browser is allowed to SEND gRPC-Web\'s own request headers, which requires WithHeaders and is validated separately at CORS preflight time.',
+    docs: [
+      { label: 'gRPC-Web in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/grpc/grpcweb' },
+    ],
+    resources: [
+      { label: 'grpc/grpc-dotnet', url: 'https://github.com/grpc/grpc-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'A failed CORS preflight produces zero server-side log entries — the actual request never leaves the browser, making this failure mode look like a generic, unexplained network error.',
+      'Check the browser\'s Network tab for whether the actual (non-OPTIONS) request even appears before investigating any server-side gRPC code.',
+    ],
+  },
+
   'aspnet/ef-core-basics': {
     apis: ['DbContext', 'DbSet<T>', 'SaveChangesAsync()', 'FindAsync()', 'AsNoTracking()', 'OnModelCreating()'],
     related: [
@@ -7398,6 +12108,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/ef-core-basics/testing-asnotracking-queries-genuinely-arent-tracked-sqlite': {
+    apis: ['ChangeTracker.Entries()', 'AsNoTracking()', 'UseSqlite()'],
+    related: [
+      { label: 'How the Change Tracker Snapshot Produces a Minimal UPDATE — next', route: '/aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update' },
+      { label: 'EF Core Basics (overview)', route: '/aspnet/ef-core-basics' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'A refactor can silently drop AsNoTracking() from a fluent LINQ chain while the query still returns correct data — assert on context.ChangeTracker.Entries().Count() directly, since the returned VALUES look identical either way.',
+    docs: [
+      { label: 'EF Core overview', url: 'https://learn.microsoft.com/en-us/ef/core/' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Change tracking is a core, provider-agnostic EF Core feature — UseSqlite versus UseInMemoryDatabase makes no difference to whether this specific assertion is correct, though SQLite is still the better default for a whole test suite.',
+      'A test checking returned data alone provides zero coverage for a missing AsNoTracking() call — the values are identical either way.',
+    ],
+  },
+
+  'aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update': {
+    apis: ['OriginalValues', 'CurrentValues', 'Entry().Property().IsModified'],
+    related: [
+      { label: 'Testing That AsNoTracking Queries Are Genuinely Untracked — previous', route: '/aspnet/ef-core-basics/testing-asnotracking-queries-genuinely-arent-tracked-sqlite' },
+      { label: 'Reload vs GetDatabaseValuesAsync for Concurrency Recovery — next', route: '/aspnet/ef-core-basics/reload-discards-edit-getdatabasevaluesasync-preserves-it' },
+      { label: 'EF Core Basics (overview)', route: '/aspnet/ef-core-basics' },
+    ],
+    tip: 'SaveChangesAsync compares CurrentValues against a stored OriginalValues snapshot property-by-property — a never-loaded (detached) entity has no such snapshot, which is exactly why context.Update() must conservatively mark every property Modified.',
+    docs: [
+      { label: 'Change Tracking in EF Core', url: 'https://learn.microsoft.com/en-us/ef/core/change-tracking/' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The Attach + explicit IsModified pattern sidesteps the snapshot problem entirely by having the developer directly declare which property changed, rather than asking EF Core to infer it via comparison.',
+      'AsNoTracking() saves memory specifically by skipping the OriginalValues snapshot maintenance this mechanism depends on.',
+    ],
+  },
+
+  'aspnet/ef-core-basics/reload-discards-edit-getdatabasevaluesasync-preserves-it': {
+    apis: ['DbUpdateConcurrencyException', 'Reload()', 'GetDatabaseValuesAsync()'],
+    related: [
+      { label: 'How the Change Tracker Snapshot Produces a Minimal UPDATE — previous', route: '/aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update' },
+      { label: 'EF Core Basics (overview)', route: '/aspnet/ef-core-basics' },
+      { label: 'EF Relationships', route: '/aspnet/ef-relationships' },
+    ],
+    tip: 'Reload() overwrites CurrentValues with the database\'s latest state, discarding the user\'s in-progress edit entirely — OriginalValues.SetValues(await GetDatabaseValuesAsync()) updates only the concurrency baseline, preserving the edit for a genuine retry.',
+    docs: [
+      { label: 'Handling Concurrency Conflicts', url: 'https://learn.microsoft.com/en-us/ef/core/saving/concurrency' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Blindly auto-retrying with SetValues can silently overwrite another user\'s legitimate change if both edits touched the SAME field — compare which properties each edit changed before deciding whether an automatic retry is safe.',
+      'Reload() is the right choice specifically when the UI\'s intent is to show the user the latest state and let them decide, not for an invisible automatic retry.',
+    ],
+  },
+
   'aspnet/ef-relationships': {
     apis: ['HasMany()', 'HasOne()', 'WithMany()', 'WithOne()', 'Include()', 'ThenInclude()', 'OwnsOne()', 'OnDelete()'],
     related: [
@@ -7417,6 +12187,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'context.Update(entity) marks ALL properties Modified — it overwrites every column including ones you did not change. Load-then-mutate is safer for partial updates.',
       'Cascade delete is the default for required relationships — deleting a parent silently deletes all children. Set OnDelete(DeleteBehavior.Restrict) explicitly for important data.',
+    ],
+  },
+
+  'aspnet/ef-relationships/testing-deletebehavior-restrict-genuinely-throws-sqlite': {
+    apis: ['DeleteBehavior.Restrict', 'DbUpdateException', 'UseSqlite()'],
+    related: [
+      { label: 'How Skip Navigations Determine Join-Table INSERT/DELETE — next', route: '/aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete' },
+      { label: 'EF Relationships (overview)', route: '/aspnet/ef-relationships' },
+      { label: 'EF Core Basics', route: '/aspnet/ef-core-basics' },
+    ],
+    tip: 'DeleteBehavior.Restrict relies on the DATABASE\'s own foreign-key enforcement — UseInMemoryDatabase() has no real FK constraint checking at all, so a test using it would give a false-positive pass regardless of what OnDelete behavior is actually configured.',
+    docs: [
+      { label: 'Relationships', url: 'https://learn.microsoft.com/en-us/ef/core/modeling/relationships' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A regression to DeleteBehavior.SetNull also succeeds without throwing, just like Cascade would — assert on what happened to the child row when no exception was thrown, not just whether one was thrown.',
+      'Use UseSqlite (not UseInMemoryDatabase) for any test verifying database-level constraint behavior — foreign keys, unique constraints, cascade rules.',
+    ],
+  },
+
+  'aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete': {
+    apis: ['Include()', 'skip navigation', 'ICollection<T>.Add()/Remove()'],
+    related: [
+      { label: 'Testing That DeleteBehavior.Restrict Genuinely Throws — previous', route: '/aspnet/ef-relationships/testing-deletebehavior-restrict-genuinely-throws-sqlite' },
+      { label: 'Replacing an OwnsMany Collection Deletes and Reinserts Everything — next', route: '/aspnet/ef-relationships/replacing-ownsmany-collection-deletes-reinserts-everything' },
+      { label: 'EF Relationships (overview)', route: '/aspnet/ef-relationships' },
+    ],
+    tip: 'Include() establishes the diffable baseline for a skip navigation, the collection equivalent of OriginalValues for a scalar property — SaveChangesAsync compares that baseline against the current in-memory collection to compute exactly which join-table rows to INSERT or DELETE.',
+    docs: [
+      { label: 'Many-to-Many Relationships', url: 'https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Initializing a collection to an empty list (= []) only prevents a NullReferenceException — it does not give EF Core a genuine baseline reflecting the real, currently-associated entities.',
+      'This is the SAME underlying diffing mechanism as scalar-property change tracking, just applied to collection membership instead of a single value.',
+    ],
+  },
+
+  'aspnet/ef-relationships/replacing-ownsmany-collection-deletes-reinserts-everything': {
+    apis: ['OwnsMany()', '.NET object reference identity', 'value objects'],
+    related: [
+      { label: 'How Skip Navigations Determine Join-Table INSERT/DELETE — previous', route: '/aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete' },
+      { label: 'EF Relationships (overview)', route: '/aspnet/ef-relationships' },
+      { label: 'EF Performance', route: '/aspnet/ef-performance' },
+    ],
+    tip: 'Owned entities have no identity to compare by — mutating the loaded, tracked collection (Add/Remove) preserves .NET reference identity for unchanged entries, but replacing the whole property with a new List<T> breaks that identity entirely, forcing a delete-everything-then-reinsert-everything operation.',
+    docs: [
+      { label: 'Owned Entity Types', url: 'https://learn.microsoft.com/en-us/ef/core/modeling/owned-entities' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Both the efficient diffing pattern and the naive replace-everything pattern produce the identical FINAL collection contents — only inspecting the generated SQL (via LogTo) reveals the difference.',
+      'If matching entries by a stable key across updates seems necessary, that is a signal the type should be a regular entity with its own DbSet, not an owned type.',
     ],
   },
 
@@ -7443,6 +12273,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/ef-performance/testing-executeupdateasync-bypasses-savechanges-interceptors': {
+    apis: ['ISaveChangesInterceptor', 'ExecuteUpdateAsync()', 'AddInterceptors()'],
+    related: [
+      { label: 'What EF.CompileQuery Actually Eliminates — next', route: '/aspnet/ef-performance/what-ef-compilequery-actually-eliminates' },
+      { label: 'EF Performance (overview)', route: '/aspnet/ef-performance' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'ISaveChangesInterceptor is wired specifically into the SaveChangesAsync pipeline — ExecuteUpdateAsync and ExecuteDeleteAsync translate directly to SQL through a separate code path, so a counting interceptor in a test directly proves the bypass rather than trusting the docs.',
+    docs: [
+      { label: 'Bulk operations', url: 'https://learn.microsoft.com/en-us/ef/core/saving/execute-insert-update-delete' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Switching a load-loop-save pattern to ExecuteUpdateAsync for performance silently removes any audit logging or domain-event dispatching that depends on a SaveChanges interceptor — with zero compiler warning.',
+      'A database-level trigger observes every UPDATE regardless of which client-side API produced it — the robust mechanism for requirements that must apply universally.',
+    ],
+  },
+
+  'aspnet/ef-performance/what-ef-compilequery-actually-eliminates': {
+    apis: ['EF.CompileAsyncQuery()', 'query plan cache', 'Expression trees'],
+    related: [
+      { label: 'Testing That ExecuteUpdateAsync Bypasses SaveChanges Interceptors — previous', route: '/aspnet/ef-performance/testing-executeupdateasync-bypasses-savechanges-interceptors' },
+      { label: 'A Captured Reference to a Pooled DbContext Leaks Across Requests — next', route: '/aspnet/ef-performance/captured-reference-pooled-dbcontext-leaks-across-requests' },
+      { label: 'EF Performance (overview)', route: '/aspnet/ef-performance' },
+    ],
+    tip: 'EF Core already caches query plans by expression shape — a repeated call to the same query shape reuses the cached SQL. What EF.CompileQuery actually eliminates is the per-call cache LOOKUP (hashing and comparing the expression tree), not translation that would otherwise repeat.',
+    docs: [
+      { label: 'Compiled queries', url: 'https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics#compiled-queries' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The full 1–5ms translation cost applies only to the FIRST call for a given query shape — subsequent calls pay the smaller (but non-zero) cache-lookup cost, which is what compiled queries remove.',
+      'The benefit scales with call volume — at moderate call counts the database round-trip dwarfs the microsecond-scale lookup savings, matching the main page\'s own "high-frequency" framing.',
+    ],
+  },
+
+  'aspnet/ef-performance/captured-reference-pooled-dbcontext-leaks-across-requests': {
+    apis: ['AddDbContextPool()', 'IDbContextFactory<T>', 'Task.Run()'],
+    related: [
+      { label: 'What EF.CompileQuery Actually Eliminates — previous', route: '/aspnet/ef-performance/what-ef-compilequery-actually-eliminates' },
+      { label: 'EF Performance (overview)', route: '/aspnet/ef-performance' },
+      { label: 'Dependency Injection', route: '/aspnet/dependency-injection' },
+    ],
+    tip: 'Pooled DbContext instances are reset and reused at scope end, not destroyed — a reference captured in a fire-and-forget Task silently continues to function against an instance the pool has already handed to a later, unrelated request, instead of throwing ObjectDisposedException.',
+    docs: [
+      { label: 'DbContext pooling', url: 'https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics#dbcontext-pooling' },
+    ],
+    resources: [
+      { label: 'dotnet/efcore', url: 'https://github.com/dotnet/efcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Capture only primitive values (like an entity ID) in a background Task, and create a fresh context inside it via IDbContextFactory — never the scoped/pooled context itself.',
+      'A test with poolSize: 1 forces deterministic instance reuse, making this cross-request leak directly reproducible instead of relying on production traffic timing.',
+    ],
+  },
+
   'aspnet/caching': {
     apis: ['IMemoryCache', 'GetOrCreateAsync()', 'IDistributedCache', 'AddOutputCache()', 'IOutputCacheStore', 'EvictByTagAsync()'],
     related: [
@@ -7450,7 +12340,7 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       { label: 'Configuration & Options', route: '/aspnet/configuration' },
       { label: 'Dependency Injection',  route: '/aspnet/dependency-injection' },
     ],
-    tip: 'Use GetOrCreateAsync() rather than a get-then-set pattern — it prevents cache stampede by serializing factory execution for the same key under concurrent cache misses.',
+    tip: 'Use GetOrCreateAsync() rather than a get-then-set pattern — but note it does NOT serialize concurrent factory executions; for genuine stampede protection use a per-key lock or HybridCache (.NET 9).',
     docs: [
       { label: 'Caching in .NET',             url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview' },
       { label: 'Output caching middleware',    url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output' },
@@ -7463,6 +12353,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'IMemoryCache is per-process — in a multi-server deployment each pod has its own cache, so a write on server A is invisible to server B until TTL expires. Use IDistributedCache (Redis) for shared state.',
       'Never cache user-specific data without including the user ID in the cache key — omitting it means one user sees another user\'s data.',
+    ],
+  },
+
+  'aspnet/caching/testing-getorcreateasync-concurrent-misses-factory-runs-twice': {
+    apis: ['GetOrCreateAsync()', 'SemaphoreSlim', 'HybridCache'],
+    related: [
+      { label: 'How IMemoryCache Expiry Is Actually Enforced — next', route: '/aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers' },
+      { label: 'Caching (overview)', route: '/aspnet/caching' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'The GetOrCreateAsync extension method has no locking — N concurrent cold misses run N factories, with the entry holding whichever result committed last. A gated concurrency test counting factory invocations proves this directly.',
+    docs: [
+      { label: 'Caching in .NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'A never-cleaned static dictionary of per-key semaphores is its own memory leak for unbounded key spaces — use reference counting, striped locking, or HybridCache instead.',
+      'HybridCache (.NET 9) genuinely has single-flight stampede protection built in — the accurate version of the claim often over-attributed to plain GetOrCreateAsync.',
+    ],
+  },
+
+  'aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers': {
+    apis: ['ExpirationScanFrequency', 'RegisterPostEvictionCallback()', 'SizeLimit'],
+    related: [
+      { label: 'Testing GetOrCreateAsync Under Concurrent Misses — previous', route: '/aspnet/caching/testing-getorcreateasync-concurrent-misses-factory-runs-twice' },
+      { label: 'Write-Invalidate’s Stale-Repopulation Race — next', route: '/aspnet/caching/write-invalidate-stale-repopulation-race-ttl-backstop' },
+      { label: 'Caching (overview)', route: '/aspnet/caching' },
+    ],
+    tip: 'There is no per-entry expiry timer — expired entries are removed on access or by a scan piggy-backed on other cache activity, so a quiet, write-heavy cache can hold expired entries (and their memory) indefinitely.',
+    docs: [
+      { label: 'Memory caching in .NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/memory' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'RegisterPostEvictionCallback fires at eviction, not at nominal TTL — never use it as a scheduling mechanism; use PeriodicTimer in a BackgroundService instead.',
+      'A stale READ is still impossible — TryGetValue checks expiry on every access; only the physical memory reclamation is lazy.',
+    ],
+  },
+
+  'aspnet/caching/write-invalidate-stale-repopulation-race-ttl-backstop': {
+    apis: ['cache.Remove()', 'delayed double-delete', 'versioned keys'],
+    related: [
+      { label: 'How IMemoryCache Expiry Is Actually Enforced — previous', route: '/aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers' },
+      { label: 'Caching (overview)', route: '/aspnet/caching' },
+      { label: 'EF Performance', route: '/aspnet/ef-performance' },
+    ],
+    tip: 'A reader that queried the OLD database value before a write can repopulate the cache AFTER the writer\'s Remove() ran — silently undoing the invalidation for the full TTL, which makes the TTL the correctness backstop, not just memory hygiene.',
+    docs: [
+      { label: 'Caching in .NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Every step of the race succeeds without error — no log entry, no exception, just quietly stale data; sequential tests never catch it, only a deterministically interleaved concurrency test does.',
+      'Delayed double-delete shrinks the stale window cheaply; version-checked population closes it completely — but keep the TTL in every variant as the last line of defense.',
     ],
   },
 
@@ -7487,6 +12437,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     gotchas: [
       'JWT tokens cannot be revoked before expiry unless you maintain a token blocklist. Keep access token lifetimes short (5–15 min) and use refresh tokens for long sessions.',
       'Cookie auth SameSite=Strict blocks the cookie on cross-origin navigations including OAuth redirects. Use SameSite=Lax for OIDC callback flows.',
+    ],
+  },
+
+  'aspnet/authentication/testing-jwt-clockskew-expired-token-still-validates': {
+    apis: ['TokenValidationParameters.ClockSkew', 'JwtSecurityTokenHandler.ValidateToken()', 'IOptionsMonitor<JwtBearerOptions>'],
+    related: [
+      { label: 'Why SetApplicationName Matters With Shared Keys — next', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' },
+      { label: 'Authentication (overview)', route: '/aspnet/authentication' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'The default ClockSkew is 5 minutes — a "15-minute" access token is really accepted for up to 20 minutes unless the ClockSkew line survives every copy-paste; a token minted with exp two minutes in the past still validates under the default.',
+    docs: [
+      { label: 'JWT Bearer authentication', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authentication/configure-jwt-bearer-authentication' },
+    ],
+    resources: [
+      { label: 'AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet', url: 'https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'Pin the production configuration itself: resolve IOptionsMonitor<JwtBearerOptions> from the real DI container in a test and assert on the configured skew — behavioral tests alone never catch the Program.cs regression.',
+      'ClockSkew pads BOTH boundaries: tokens are accepted from (nbf − skew) to (exp + skew) — the nbf side is the availability reason the feature exists.',
+    ],
+  },
+
+  'aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys': {
+    apis: ['SetApplicationName()', 'IDataProtectionProvider', 'PersistKeysToStackExchangeRedis()'],
+    related: [
+      { label: 'Testing JWT ClockSkew — previous', route: '/aspnet/authentication/testing-jwt-clockskew-expired-token-still-validates' },
+      { label: 'JWT Claim-Type Mapping — next', route: '/aspnet/authentication/jwt-claim-type-mapping-sub-becomes-nameidentifier' },
+      { label: 'Authentication (overview)', route: '/aspnet/authentication' },
+    ],
+    tip: 'The application discriminator participates in subkey derivation — two apps on the SAME key ring with different application names still cannot decrypt each other\'s cookies, which is why the multi-pod fix needs both PersistKeys AND SetApplicationName.',
+    docs: [
+      { label: 'Data Protection configuration', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The default discriminator derives from the content root path — identical pods share it by coincidence, and deployment slot swaps or container layout changes silently diverge it, causing mass logouts with a genuinely shared key ring.',
+      'Renaming the cookie SCHEME is a breaking change too — the scheme name is part of the same purpose chain, so a rename invalidates every outstanding cookie.',
+    ],
+  },
+
+  'aspnet/authentication/jwt-claim-type-mapping-sub-becomes-nameidentifier': {
+    apis: ['MapInboundClaims', 'NameClaimType / RoleClaimType', 'ClaimTypes.NameIdentifier'],
+    related: [
+      { label: 'Why SetApplicationName Matters With Shared Keys — previous', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' },
+      { label: 'Authentication (overview)', route: '/aspnet/authentication' },
+      { label: 'Authorization', route: '/aspnet/authorization' },
+    ],
+    tip: 'A legacy inbound map renames compact JWT claim types while building the principal — "sub" becomes ClaimTypes.NameIdentifier, so FindFirst("sub") returns null even though the raw token plainly contains it; the wire token is untouched, only the in-memory principal differs.',
+    docs: [
+      { label: 'Mapping claims from external providers', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/authentication/claims' },
+    ],
+    resources: [
+      { label: 'AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet', url: 'https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'IsInRole() and Identity.Name read whatever RoleClaimType/NameClaimType point at — an external issuer\'s compact "role" and "name" claims match neither default, so [Authorize(Roles=...)] returns 403 despite the role being visibly in User.Claims.',
+      'MapInboundClaims, NameClaimType, RoleClaimType, and the claim types your own /login issues are ONE configuration set — change them together or the mismatch just moves to the other side of the seam.',
     ],
   },
 

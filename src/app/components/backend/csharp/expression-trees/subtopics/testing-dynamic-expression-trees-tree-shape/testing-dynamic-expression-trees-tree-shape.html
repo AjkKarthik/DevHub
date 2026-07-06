@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Expression Trees" topicRoute="/csharp/expression-trees" subtopicLabel="Testing Dynamic Expression Trees" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Dynamically-Built Expression Trees: Asserting on the Tree Shape, Not Just the Compiled Result</h1>
+  <p class="page-subtitle">Compiling and running a dynamically-built tree in-memory can pass perfectly while the same tree fails EF Core's "could not be translated" check. See how to assert on NodeType and operand shape directly to catch this before it reaches production.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 3+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at exactly why the main <a routerLink="/csharp/expression-trees">Expression Trees</a> page's own parameter-substitution note under ExpressionVisitor matters — what actually breaks if you combine two predicates without it.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Expression Trees"
+    topicRoute="/csharp/expression-trees"
+    [next]="{ label: 'The ParameterExpression Identity Problem', route: '/csharp/expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda' }"
+  />
+</div>

@@ -1,0 +1,49 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Bundle Optimization"
+    topicRoute="/angular/bundle-optimization"
+    subtopicLabel="Automated Bundle Budget Enforcement in CI" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Automated Bundle Budget Enforcement in CI</h1>
+  <p class="page-subtitle">
+    A static budget catches one big jump — it misses ten small PRs that each add a modest
+    few KB, quietly bloating the bundle over months.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      A minimal, framework-agnostic <code>check-bundle-size.js</code> script compares the
+      current build against a committed baseline, posting a percentage-based diff as a
+      review signal without blocking the merge.
+    </p>
+    <app-live-playground
+      title="Automated bundle budget enforcement in CI"
+      template="angular-cli"
+      openFile="scripts/check-bundle-size.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      With per-state defer testing, duplicate-dependency detection, and CI trend tracking
+      all covered, head back to the topic overview to see the full measure-then-optimize
+      workflow.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Bundle Optimization"
+    topicRoute="/angular/bundle-optimization"
+    [prev]="{ label: 'Detecting Duplicate Dependencies Across Lazy Chunks', route: '/angular/bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks' }" />
+</div>

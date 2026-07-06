@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="EF Core Performance"
+    topicRoute="/aspnet/ef-performance"
+    subtopicLabel="Compiled Queries' Real Benefit"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">What EF.CompileQuery Actually Eliminates</h1>
+  <p class="page-subtitle">
+    The main page implies every call to an uncompiled query pays full LINQ-to-SQL translation. It
+    doesn't — EF Core already caches query plans by expression shape. Compiled queries eliminate the
+    cache LOOKUP itself, not translation that would otherwise repeat every call.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic corrects and refines the mechanics behind the main page's own compiled-queries
+      guidance. The final subtopic in this set turns to <code>AddDbContextPool()</code> — and a subtler
+      variant of the page's own "don't store state on a pooled DbContext" warning.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="EF Core Performance"
+    topicRoute="/aspnet/ef-performance"
+    [prev]="{ label: 'Testing That ExecuteUpdateAsync Bypasses SaveChanges Interceptors', route: '/aspnet/ef-performance/testing-executeupdateasync-bypasses-savechanges-interceptors' }"
+    [next]="{ label: 'A Captured Reference to a Pooled DbContext Leaks Across Requests', route: '/aspnet/ef-performance/captured-reference-pooled-dbcontext-leaks-across-requests' }"
+  />
+</div>

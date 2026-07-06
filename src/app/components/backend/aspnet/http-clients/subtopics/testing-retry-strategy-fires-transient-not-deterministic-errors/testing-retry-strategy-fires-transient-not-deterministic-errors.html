@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="HttpClient &amp; Resilience"
+    topicRoute="/aspnet/http-clients"
+    subtopicLabel="Testing Retry Strategy Scope"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That Retry Fires for Transient Failures, Not Deterministic Ones</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A describes which status codes retry by default. Here's how to prove that
+    for YOUR specific typed client's actual configuration — with a fake handler that counts invocations,
+    not just trusting documented library defaults.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own retry-scope documentation. The next subtopic goes
+      underneath the page's "register handlers as Transient" rule — explaining exactly what Transient
+      means for a DelegatingHandler, which is not "one instance per request."
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="HttpClient &amp; Resilience"
+    topicRoute="/aspnet/http-clients"
+    [next]="{ label: 'Why Transient DelegatingHandlers Are Shared Across a Pool Rotation', route: '/aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation' }"
+  />
+</div>

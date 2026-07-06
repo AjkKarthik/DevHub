@@ -1,0 +1,50 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="E2E Testing with Playwright"
+    topicRoute="/angular/e2e"
+    subtopicLabel="Visual Regression Testing with Screenshot Comparisons" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Visual Regression Testing with Screenshot Comparisons</h1>
+  <p class="page-subtitle">
+    Every main-topic assertion checks structure and text — none of it catches a purely
+    visual regression. toHaveScreenshot() fills that gap.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="advanced" since="Playwright 1.20+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Open <code>dashboard-visual.spec.ts</code> — full-page, element-scoped, masked,
+      and animation-settled screenshot assertions, plus the config-level defaults in
+      <code>playwright.config.ts</code>.
+    </p>
+    <app-live-playground
+      title="Visual Regression Testing with Screenshot Comparisons"
+      template="angular-cli"
+      openFile="e2e/dashboard-visual.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Visual regressions are one class of failure to catch reliably. The final
+      subtopic covers a different reliability problem — diagnosing and fixing tests
+      that fail intermittently for no obvious reason.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="E2E Testing with Playwright"
+    topicRoute="/angular/e2e"
+    [prev]="{ label: 'Reusing Authentication State Across Tests with storageState', route: '/angular/e2e/reusing-authentication-state-across-tests-with-storagestate' }"
+    [next]="{ label: 'Debugging Flaky Tests: Isolation, Retries, and Sharding', route: '/angular/e2e/debugging-flaky-tests-isolation-retries-and-sharding' }" />
+</div>

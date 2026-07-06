@@ -1,0 +1,40 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="async / await"
+    topicRoute="/csharp/async"
+    subtopicLabel="Testing Async Code: Verifying Cancellation and Task Failure Behavior" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Async Code: Verifying Cancellation and Task Failure Behavior</h1>
+  <p class="page-subtitle">
+    The main topic explains why async void is untestable — here's what a correct async
+    test looks like, and how to verify CancellationToken and Task.WhenAll actually work.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 5" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing verifies async logic works correctly. The next subtopic covers a real
+      C# 8 feature the main topic never mentions — async resource cleanup with
+      IAsyncDisposable and await using.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="async / await"
+    topicRoute="/csharp/async"
+    [next]="{ label: 'IAsyncDisposable and await using: Async Resource Cleanup', route: '/csharp/async/iasyncdisposable-and-await-using-async-resource-cleanup' }" />
+</div>

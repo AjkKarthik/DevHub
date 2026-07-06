@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Model Binding &amp; Validation"
+    topicRoute="/aspnet/model-binding"
+    subtopicLabel="Recursive Validation & Circular References"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How Recursive Nested Validation Walks the Object Graph</h1>
+  <p class="page-subtitle">
+    The main page recommends [ValidateNever] on navigation properties without saying why. A genuinely
+    circular object graph sends the validator into infinite recursion — a StackOverflowException that
+    crashes the whole process, not just the request.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the mechanics behind the main page's own recursive-validation and
+      <code>[ValidateNever]</code> guidance. The final subtopic in this set turns to FluentValidation's
+      <code>SetValidator()</code> — and a DI gotcha hiding inside the page's own child-validator example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Model Binding &amp; Validation"
+    topicRoute="/aspnet/model-binding"
+    [prev]="{ label: 'Testing IParsable TryParse for Graceful Failure', route: '/aspnet/model-binding/testing-iparsable-tryparse-graceful-failure-daterange' }"
+    [next]="{ label: 'FluentValidation SetValidator(new X()) Silently Bypasses DI', route: '/aspnet/model-binding/fluentvalidation-setvalidator-new-silently-bypasses-di' }"
+  />
+</div>

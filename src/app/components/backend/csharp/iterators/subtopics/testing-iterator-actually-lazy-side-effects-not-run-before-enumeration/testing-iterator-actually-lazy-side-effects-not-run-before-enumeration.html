@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Iterators & yield" topicRoute="/csharp/iterators" subtopicLabel="Testing That an Iterator Is Lazy" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing That an Iterator Is Actually Lazy: Asserting Side Effects Haven't Run Before Enumeration</h1>
+  <p class="page-subtitle">The main topic page proves deferred execution by printing console output in a specific order. See a deterministic, automatable way to test the same claim — and to regression-test the eager-validation-wrapper fix directly.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 2+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we go inside the main <a routerLink="/csharp/iterators">Iterators & yield</a> page's own compiler-generated state machine — specifically the surprising rule for when GetEnumerator() returns the SAME object versus a fresh one.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Iterators & yield"
+    topicRoute="/csharp/iterators"
+    [next]="{ label: 'Why GetEnumerator Sometimes Returns Itself', route: '/csharp/iterators/why-getenumerator-sometimes-returns-itself-thread-id-check' }"
+  />
+</div>

@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="gRPC Services"
+    topicRoute="/aspnet/grpc"
+    subtopicLabel="gRPC-Web's CORS Preflight Gap"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">gRPC-Web CORS Needs Allowed Request Headers, Not Just Exposed Ones</h1>
+  <p class="page-subtitle">
+    The main page's own CORS guidance only exposes response headers to the browser. Without also
+    allowing gRPC-Web's own request headers via WithHeaders, the preflight fails silently — no request
+    ever reaches the server, and there's nothing to log.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the gRPC Services deep-dive set: testing streaming cancellation, understanding
+      proto3 optional's real mechanism, and now the CORS preflight gap hiding behind gRPC-Web browser
+      connectivity. This wraps this batch's ASP.NET Core topics — head back to the topic overview to
+      continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="gRPC Services"
+    topicRoute="/aspnet/grpc"
+    [prev]="{ label: 'How proto3 optional Actually Tracks Field Presence', route: '/aspnet/grpc/how-proto3-optional-actually-tracks-field-presence' }"
+  />
+</div>

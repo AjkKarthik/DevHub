@@ -1,0 +1,47 @@
+<div class="ng-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Internationalisation (i18n)"
+    topicRoute="/angular/i18n"
+    subtopicLabel="Testing Components That Use Transloco and Signal-Based i18n" />
+
+  <div class="page-header-icon ng-icon">A</div>
+  <h1 class="page-title">Testing Components That Use Transloco and Signal-Based i18n</h1>
+  <p class="page-subtitle">
+    Asserting a hardcoded English string is fragile in two ways — here's how to test
+    against the same translation source the component reads from, for both approaches.
+  </p>
+
+  <app-page-meta [readingTime]="7" difficulty="intermediate" since="Angular 17+" tech="angular" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ng-section">
+    <h2>See it run</h2>
+    <p>
+      Open <code>greeting.component.spec.ts</code> — the second test proves the DOM
+      actually re-renders on a language change, not just that the signal value changed.
+    </p>
+    <app-live-playground
+      title="Testing Components That Use Transloco and Signal-Based i18n"
+      template="angular-cli"
+      openFile="src/app/greeting.component.spec.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ng-section">
+    <h2>Where this fits</h2>
+    <p>
+      Text translation is only half of internationalisation. The next subtopic covers
+      RTL layout support, which the main topic never mentions at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Internationalisation (i18n)"
+    topicRoute="/angular/i18n"
+    [next]="{ label: 'Building RTL Layout Support with Logical CSS Properties', route: '/angular/i18n/building-rtl-layout-support-with-logical-css-properties' }" />
+</div>

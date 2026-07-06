@@ -1,0 +1,42 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Pattern Matching"
+    topicRoute="/csharp/pattern-matching"
+    subtopicLabel="Testing Exhaustiveness: Catching New Subtypes with Reflection-Based Coverage Tests" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Exhaustiveness: Catching New Subtypes with Reflection-Based Coverage Tests</h1>
+  <p class="page-subtitle">
+    CS8509 guarantees a switch expression handles every subtype — it says nothing about
+    whether that arm is actually tested. This subtopic closes that gap with a
+    self-updating, reflection-based test.
+  </p>
+
+  <app-page-meta [readingTime]="8" difficulty="intermediate" since="C# 8.0 / xUnit" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Compile-time exhaustiveness and test-suite exhaustiveness are two different
+      guarantees — the next subtopics look at what happens when pattern matching meets
+      EF Core's query translation, and how the compiler actually lowers property patterns
+      under the hood.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pattern Matching"
+    topicRoute="/csharp/pattern-matching"
+    [next]="{ label: 'Pattern Matching in EF Core LINQ Queries', route: '/csharp/pattern-matching/pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws' }" />
+</div>

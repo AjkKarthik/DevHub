@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="What's New in C# 11 & 12" topicRoute="/csharp/whats-new-11-12" subtopicLabel="Primary Constructor Capture Lifetime" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">A Primary Constructor Parameter Referenced Anywhere in the Body Gets Captured as a Field for the Object's Entire Lifetime</h1>
+  <p class="page-subtitle">The main topic page's DI example makes primary constructors look like pure syntax sugar. A rarely-called diagnostic method referencing a parameter is enough to silently capture it as a field, keeping whatever it references alive for as long as the object lives.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 12+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the deep dive on <a routerLink="/csharp/whats-new-11-12">What's New in C# 11 &amp; 12</a> — from testing generic math across numeric types, to how static abstract members dispatch, to this primary constructor capture-lifetime gotcha. Return to the topic overview to continue with the next C# topic.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="What's New in C# 11 & 12"
+    topicRoute="/csharp/whats-new-11-12"
+    [prev]="{ label: 'How static abstract Members Actually Dispatch', route: '/csharp/whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization' }"
+  />
+</div>

@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Span<T> & Memory<T>" topicRoute="/csharp/span-memory" subtopicLabel="ArrayPool Rent Returns Dirty Memory" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">ArrayPool&lt;T&gt;.Rent Returns Dirty Memory: The Stale-Data Leak Gotcha and When You Must Clear It</h1>
+  <p class="page-subtitle">The main topic page warns to track a rented array's actual length separately from its full length. It doesn't mention Rent() never zeroes the array by default — a rented buffer can still hold a previous caller's real data.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET Core 1.0+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>This completes the Span&lt;T&gt; &amp; Memory&lt;T&gt; deep dives — from a ref-struct capture gotcha in tests, to the ref-field mechanism behind every restriction, to a genuine information-disclosure risk hiding in ArrayPool's default behavior.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Span<T> & Memory<T>"
+    topicRoute="/csharp/span-memory"
+    [prev]="{ label: 'What Is Actually Inside a Span<T>', route: '/csharp/span-memory/whats-actually-inside-span-ref-field-fast-restricted' }"
+  />
+</div>

@@ -302,6 +302,449 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Building a Reusable Route-Change Focus Management Service', route: '/angular/accessibility/building-a-reusable-route-change-focus-management-service' },
     { label: 'Testing Focus Trap and Restoration in Modals', route: '/angular/accessibility/testing-focus-trap-and-restoration-in-modals' },
   ],
+  'micro-frontends': [
+    { label: 'Testing Cross-MFE Communication with a Mocked Event Bus', route: '/angular/micro-frontends/testing-cross-mfe-communication-with-a-mocked-event-bus' },
+    { label: 'Debugging Duplicate Angular Runtime Issues', route: '/angular/micro-frontends/debugging-duplicate-angular-runtime-issues' },
+    { label: 'CSS Style Isolation with ShadowDom Encapsulation', route: '/angular/micro-frontends/css-style-isolation-with-shadowdom-encapsulation' },
+  ],
+  'angular-devtools': [
+    { label: 'Building a "Why Did This Render?" Debug Helper', route: '/angular/angular-devtools/building-a-why-did-this-render-debug-helper' },
+    { label: 'Safely Enabling DevTools on Staging', route: '/angular/angular-devtools/safely-enabling-devtools-on-staging' },
+    { label: 'Turning a Profiler Finding into a Regression Test', route: '/angular/angular-devtools/turning-a-profiler-finding-into-a-regression-test' },
+  ],
+  'bundle-optimization': [
+    { label: 'Testing @defer Blocks with DeferBlockFixture', route: '/angular/bundle-optimization/testing-defer-blocks-with-deferblockfixture' },
+    { label: 'Detecting Duplicate Dependencies Across Lazy Chunks', route: '/angular/bundle-optimization/detecting-duplicate-dependencies-across-lazy-chunks' },
+    { label: 'Automated Bundle Budget Enforcement in CI', route: '/angular/bundle-optimization/automated-bundle-budget-enforcement-in-ci' },
+  ],
+  'wizard-form': [
+    { label: 'Deep-Linking Wizard Steps with Query Params', route: '/angular/wizard-form/deep-linking-wizard-steps-with-query-params' },
+    { label: 'Angular CDK Stepper vs a Hand-Rolled Wizard', route: '/angular/wizard-form/cdk-stepper-vs-hand-rolled-wizard' },
+    { label: 'Testing Wizard Steps in Isolation', route: '/angular/wizard-form/testing-wizard-steps-in-isolation' },
+  ],
+  'web-workers': [
+    { label: 'Testing Components That Use Web Workers', route: '/angular/web-workers/testing-components-that-use-web-workers' },
+    { label: 'Building a Worker Pool for Parallel Task Dispatch', route: '/angular/web-workers/building-a-worker-pool-for-parallel-task-dispatch' },
+    { label: 'Debugging and Profiling Web Workers in DevTools', route: '/angular/web-workers/debugging-and-profiling-web-workers-in-devtools' },
+  ],
+  'pwa': [
+    { label: 'Testing Update Prompts and Install Banners', route: '/angular/pwa/testing-update-prompts-and-install-banners' },
+    { label: 'Handling Unrecoverable State and Manual Update Checks', route: '/angular/pwa/handling-unrecoverable-state-and-manual-update-checks' },
+    { label: 'SPA Routing Pitfalls: navigationUrls and the App-Shell Fallback', route: '/angular/pwa/spa-routing-pitfalls-navigationurls-and-app-shell-fallback' },
+  ],
+  'i18n': [
+    { label: 'Testing Components That Use Transloco and Signal-Based i18n', route: '/angular/i18n/testing-components-that-use-transloco-and-signal-i18n' },
+    { label: 'Building RTL Layout Support with Logical CSS Properties', route: '/angular/i18n/building-rtl-layout-support-with-logical-css-properties' },
+    { label: 'SSR Locale Detection and Avoiding Hydration Mismatches', route: '/angular/i18n/ssr-locale-detection-and-avoiding-hydration-mismatches' },
+  ],
+  'e2e': [
+    { label: 'Reusing Authentication State Across Tests with storageState', route: '/angular/e2e/reusing-authentication-state-across-tests-with-storagestate' },
+    { label: 'Visual Regression Testing with Screenshot Comparisons', route: '/angular/e2e/visual-regression-testing-with-screenshot-comparisons' },
+    { label: 'Debugging Flaky Tests: Isolation, Retries, and Sharding', route: '/angular/e2e/debugging-flaky-tests-isolation-retries-and-sharding' },
+  ],
+  'harnesses': [
+    { label: 'Composing Nested Harnesses with getChildLoader', route: '/angular/harnesses/composing-nested-harnesses-with-getchildloader' },
+    { label: 'Publishing Harnesses as a Public Testing Entry Point', route: '/angular/harnesses/publishing-harnesses-as-a-librarys-public-testing-entry-point' },
+    { label: 'Debugging Harness Failures: Common Causes and Diagnosis', route: '/angular/harnesses/debugging-harness-failures-common-causes-and-diagnosis' },
+  ],
+  'ssr': [
+    { label: 'Debugging Hydration Mismatches Step by Step', route: '/angular/ssr/debugging-hydration-mismatches-step-by-step' },
+    { label: 'Testing SSR-Safe Components Without a Real Server', route: '/angular/ssr/testing-ssr-safe-components-without-a-real-server' },
+    { label: 'Incremental Hydration Triggers: Interaction, Viewport, and Timer', route: '/angular/ssr/incremental-hydration-triggers-interaction-viewport-and-timer' },
+  ],
+  'basics': [
+    { label: 'Nullable Value Types: int?, HasValue, and Null-Coalescing', route: '/csharp/basics/nullable-value-types-hasvalue-and-null-coalescing-operators' },
+    { label: 'Checked and Unchecked Arithmetic: Detecting Integer Overflow', route: '/csharp/basics/checked-and-unchecked-arithmetic-detecting-integer-overflow' },
+    { label: 'Span<T> and stackalloc: Parsing Without Heap Allocations', route: '/csharp/basics/spant-and-stackalloc-parsing-without-heap-allocations' },
+  ],
+  'oop': [
+    { label: 'Testing Polymorphic Code: Mocking Interfaces and Verifying Virtual Dispatch', route: '/csharp/oop/testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch' },
+    { label: 'Virtual Member Calls from Constructors: An Initialization-Order Footgun', route: '/csharp/oop/virtual-member-calls-from-constructors-an-initialization-order-footgun' },
+    { label: 'Explicit Interface Implementation: Resolving Name Collisions', route: '/csharp/oop/explicit-interface-implementation-resolving-name-collisions' },
+  ],
+  'records': [
+    { label: 'Polymorphic JSON Serialization of Record Hierarchies', route: '/csharp/records/polymorphic-json-serialization-of-record-hierarchies-with-jsonderivedtype' },
+    { label: 'Positional Pattern Matching with Records', route: '/csharp/records/positional-pattern-matching-with-records-deconstruction-in-switch-expressions' },
+    { label: 'Testing Records: Equality, Hash Codes, and Constructor Validation', route: '/csharp/records/testing-records-equality-hash-codes-and-constructor-validation' },
+  ],
+  'generics': [
+    { label: 'Testing Generic Code Across Multiple Type Arguments', route: '/csharp/generics/testing-generic-code-parameterized-tests-across-multiple-type-arguments' },
+    { label: 'Generic Attributes (C# 11): Type-Safe Custom Attributes', route: '/csharp/generics/generic-attributes-c-11-type-safe-custom-attributes' },
+    { label: 'Writing Your Own Static Abstract Interface Members', route: '/csharp/generics/writing-your-own-static-abstract-interface-members' },
+  ],
+  'collections': [
+    { label: 'Writing Custom IEqualityComparer and IComparer Implementations', route: '/csharp/collections/writing-custom-iequalitycomparer-and-icomparer-implementations' },
+    { label: 'FrozenDictionary and FrozenSet: Optimizing for Read-Heavy Lookups', route: '/csharp/collections/frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups' },
+    { label: 'Testing Concurrent Collections: Catching Race Conditions', route: '/csharp/collections/testing-concurrent-collections-catching-race-conditions-in-getoradd' },
+  ],
+  'linq': [
+    { label: 'Writing Custom Lazy LINQ Operators with yield return', route: '/csharp/linq/writing-custom-lazy-linq-operators-with-yield-return' },
+    { label: 'Expression Trees: Why EF Core Needs Expression<Func<T,bool>>', route: '/csharp/linq/expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool' },
+    { label: 'Testing LINQ-Based Repository Methods with EF Core In-Memory', route: '/csharp/linq/testing-linq-based-repository-methods-with-ef-core-in-memory' },
+  ],
+  'async': [
+    { label: 'Testing Async Code: Verifying Cancellation and Task Failure Behavior', route: '/csharp/async/testing-async-code-verifying-cancellation-and-task-failure-behavior' },
+    { label: 'IAsyncDisposable and await using: Async Resource Cleanup', route: '/csharp/async/iasyncdisposable-and-await-using-async-resource-cleanup' },
+    { label: 'Producer/Consumer Pipelines with System.Threading.Channels', route: '/csharp/async/producer-consumer-pipelines-with-system-threading-channels' },
+  ],
+  'null-safety': [
+    { label: 'Enforcing Nullable Warnings as Build Errors', route: '/csharp/null-safety/enforcing-nullable-warnings-as-build-errors' },
+    { label: 'Nullable Reference Types with Generic Type Parameters', route: '/csharp/null-safety/nullable-reference-types-with-generic-type-parameters' },
+    { label: 'required Properties and System.Text.Json Deserialization', route: '/csharp/null-safety/required-properties-and-system-text-json-deserialization' },
+  ],
+  'pattern-matching': [
+    { label: 'Testing Exhaustiveness with Reflection-Based Coverage Tests', route: '/csharp/pattern-matching/testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests' },
+    { label: 'Pattern Matching in EF Core LINQ Queries', route: '/csharp/pattern-matching/pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws' },
+    { label: 'How the Compiler Lowers Property Patterns', route: '/csharp/pattern-matching/how-the-compiler-lowers-property-patterns-repeated-access-and-performance' },
+  ],
+  'exceptions': [
+    { label: 'Testing Exception Filters', route: '/csharp/exceptions/testing-exception-filters-verifying-when-predicate-logic' },
+    { label: 'AppDomain.UnhandledException and TaskScheduler.UnobservedTaskException', route: '/csharp/exceptions/appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception' },
+    { label: 'Why Exceptions Are Slow', route: '/csharp/exceptions/why-exceptions-are-slow-stack-walking-first-chance-exceptions' },
+  ],
+  'delegates': [
+    { label: "Testing Events: Assert.Raises", route: '/csharp/delegates/testing-events-xunit-assert-raises-multicast-behavior' },
+    { label: 'How Delegate Equality Actually Works', route: '/csharp/delegates/how-delegate-equality-actually-works-target-method-pairs' },
+    { label: 'async void Event Handlers', route: '/csharp/delegates/async-void-event-handlers-why-exceptions-vanish' },
+  ],
+  'fields': [
+    { label: 'Testing Field Thread-Safety', route: '/csharp/fields/testing-field-thread-safety-race-conditions-increment-vs-interlocked' },
+    { label: 'Static Field Initialization Order', route: '/csharp/fields/static-field-initialization-order-beforefieldinit' },
+    { label: 'AsyncLocal: Correct Alternative to Static Fields', route: '/csharp/fields/asynclocal-correct-alternative-to-static-fields-for-per-request-state' },
+  ],
+  'methods': [
+    { label: 'Testing Logic Inside Local Functions', route: '/csharp/methods/testing-logic-inside-local-functions-when-to-promote' },
+    { label: 'The in Parameter Defensive-Copy Trap', route: '/csharp/methods/in-parameter-defensive-copy-trap' },
+    { label: 'Caller Info Attributes', route: '/csharp/methods/caller-info-attributes-callermembername-callerlinenumber' },
+  ],
+  'type-conversion': [
+    { label: 'Testing Conversion Operators and Overflow Boundaries', route: '/csharp/type-conversion/testing-conversion-operators-and-overflow-boundaries' },
+    { label: 'User-Defined Conversion Chaining', route: '/csharp/type-conversion/user-defined-conversion-chaining-one-operator-limit' },
+    { label: 'Compile-Time Constant Overflow', route: '/csharp/type-conversion/compile-time-constant-overflow-always-checked' },
+  ],
+  'constructors': [
+    { label: 'Testing Constructor Validation and Chaining', route: '/csharp/constructors/testing-constructor-validation-and-chaining' },
+    { label: 'Primary Constructor Parameter Capture', route: '/csharp/constructors/primary-constructor-parameter-capture-field-vs-fixed' },
+    { label: 'Diagnosing TypeInitializationException', route: '/csharp/constructors/diagnosing-typeinitializationexception-inner-exception' },
+  ],
+  'properties-indexers': [
+    { label: 'Testing Computed Properties and Indexers', route: '/csharp/properties-indexers/testing-computed-properties-and-indexers' },
+    { label: 'init Accessors and readonly Fields', route: '/csharp/properties-indexers/init-accessors-and-readonly-fields-assignment-window' },
+    { label: 'Indexer Initializer Syntax', route: '/csharp/properties-indexers/indexer-initializer-syntax-without-add' },
+  ],
+  'namespaces': [
+    { label: 'Detecting Unused using Directives', route: '/csharp/namespaces/detecting-unused-using-directives-ide0005' },
+    { label: 'extern alias', route: '/csharp/namespaces/extern-alias-resolving-assembly-type-name-collisions' },
+    { label: 'Resolving CS0104 Ambiguous Type References', route: '/csharp/namespaces/resolving-cs0104-ambiguous-using-directives' },
+  ],
+  'inheritance': [
+    { label: 'Testing the Hiding Trap: new vs override', route: '/csharp/inheritance/testing-the-hiding-trap-new-vs-override' },
+    { label: 'How sealed Enables Devirtualization', route: '/csharp/inheritance/how-sealed-enables-devirtualization' },
+    { label: 'Covariant Return Types: The Hidden Bridge Method', route: '/csharp/inheritance/covariant-return-types-hidden-bridge-method' },
+  ],
+  'abstract-interfaces': [
+    { label: 'Testing Default Interface Method Resolution', route: '/csharp/abstract-interfaces/testing-default-interface-method-resolution' },
+    { label: 'Default Interface Method Diamond Problem', route: '/csharp/abstract-interfaces/default-interface-method-diamond-problem' },
+    { label: 'static abstract Members and Generic Constraints', route: '/csharp/abstract-interfaces/static-abstract-members-generic-constraint-requirement' },
+  ],
+  'static-enums': [
+    { label: 'Testing Flags Enums', route: '/csharp/static-enums/testing-flags-enums-reflection-based-power-of-two-guard' },
+    { label: 'Modern Partial Methods (C# 9+)', route: '/csharp/static-enums/modern-partial-methods-return-types-mandatory-implementation' },
+    { label: 'Enum Value Stability', route: '/csharp/static-enums/enum-value-stability-serialization-compatibility' },
+  ],
+  'structures': [
+    { label: 'Testing the Struct-Copy Mutation Trap', route: '/csharp/structures/testing-the-struct-copy-mutation-trap' },
+    { label: 'ref struct Interfaces (C# 13)', route: '/csharp/structures/ref-struct-interfaces-generic-constraint-dispatch' },
+    { label: 'Array vs List vs foreach Struct Mutation', route: '/csharp/structures/array-vs-list-vs-foreach-struct-mutation' },
+  ],
+  'system-object': [
+    { label: 'Testing the Equals/GetHashCode Contract', route: '/csharp/system-object/testing-the-equals-gethashcode-contract' },
+    { label: 'Why GetHashCode Is Never Stable Across Runs', route: '/csharp/system-object/gethashcode-instability-across-process-runs' },
+    { label: 'Record Equality and EqualityContract', route: '/csharp/system-object/record-equality-and-equalitycontract' },
+  ],
+  'extension-methods': [
+    { label: 'Testing for Extension Method Shadowing', route: '/csharp/extension-methods/testing-for-extension-method-shadowing' },
+    { label: 'Resolving Extension Method Ambiguity', route: '/csharp/extension-methods/resolving-extension-method-ambiguity-cs0121' },
+    { label: 'Extension Methods on Structs: this in T', route: '/csharp/extension-methods/extension-methods-on-structs-this-in-t-receiver' },
+  ],
+  'tuples': [
+    { label: 'Testing Tuple-Returning Methods', route: '/csharp/tuples/testing-tuple-returning-methods-deconstruction-assertions' },
+    { label: '8-Element Limit and TRest Chaining', route: '/csharp/tuples/valuetuple-8-element-limit-trest-chaining-mechanism' },
+    { label: 'Renaming a Tuple Field', route: '/csharp/tuples/renaming-tuple-field-breaks-some-callers-not-others' },
+  ],
+  'arrays': [
+    { label: 'Testing Array Equality', route: '/csharp/arrays/testing-array-equality-sequenceequal-not-equals' },
+    { label: 'The Real Cost of Array Covariance', route: '/csharp/arrays/real-cost-of-array-covariance-runtime-type-check-every-store' },
+    { label: 'params Arrays Silently Allocate', route: '/csharp/arrays/params-array-hidden-allocation-every-call-span-fix' },
+  ],
+  'strings-datetime': [
+    { label: 'Testing Culture-Sensitive Code', route: '/csharp/strings-datetime/testing-culture-sensitive-code-turkish-locale-ci-failures' },
+    { label: 'The Interning Boundary', route: '/csharp/strings-datetime/interning-boundary-which-strings-interned-automatically' },
+    { label: 'string.Create and Span<char>', route: '/csharp/strings-datetime/string-create-span-char-allocation-free-building' },
+  ],
+  'io-serialization': [
+    { label: 'Testing File I/O', route: '/csharp/io-serialization/testing-file-io-without-touching-real-filesystem-abstraction' },
+    { label: 'Where the JsonSerializerOptions Cache Lives', route: '/csharp/io-serialization/where-jsonserializeroptions-cache-lives-cold-cache-per-instance' },
+    { label: 'Sync-over-Async File I/O Deadlocks', route: '/csharp/io-serialization/sync-over-async-file-io-deadlocks-result-hangs-forever' },
+  ],
+  'gc-disposable': [
+    { label: 'Testing That Dispose() Was Called', route: '/csharp/gc-disposable/testing-dispose-actually-called-spy-wrapper-double-dispose' },
+    { label: 'Pattern-Based Disposal on ref structs', route: '/csharp/gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable' },
+    { label: 'Disposed but Still Running', route: '/csharp/gc-disposable/disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose' },
+  ],
+  'threading': [
+    { label: 'Testing for Race Conditions', route: '/csharp/threading/testing-race-conditions-stress-testing-concurrent-code' },
+    { label: 'The Old lock Codegen Bug', route: '/csharp/threading/old-lock-codegen-bug-monitor-enter-ref-bool-taken' },
+    { label: 'Lazy Thread-Safety Modes', route: '/csharp/threading/lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free' },
+  ],
+  'tasks': [
+    { label: 'Testing Async Timing Deterministically', route: '/csharp/tasks/testing-async-timing-deterministic-controllable-taskcompletionsource' },
+    { label: 'ValueTask: The One-Await Rule', route: '/csharp/tasks/valuetask-await-once-rule-when-worth-complexity' },
+    { label: 'WhenAll Does Not Start Tasks in Parallel', route: '/csharp/tasks/whenall-doesnt-start-tasks-parallel-just-awaits-running' },
+  ],
+  'reflection': [
+    { label: 'Testing Reflection-Based Code', route: '/csharp/reflection/testing-reflection-code-attribute-discovery-cache-behavior' },
+    { label: 'Beyond Expression Trees', route: '/csharp/reflection/beyond-expression-trees-dynamicmethod-reflection-emit' },
+    { label: 'Generic Type Reflection Traps', route: '/csharp/reflection/generic-type-reflection-traps-generictypedefinition' },
+  ],
+  'iterators': [
+    { label: 'Testing That an Iterator Is Lazy', route: '/csharp/iterators/testing-iterator-actually-lazy-side-effects-not-run-before-enumeration' },
+    { label: 'Why GetEnumerator Sometimes Returns Itself', route: '/csharp/iterators/why-getenumerator-sometimes-returns-itself-thread-id-check' },
+    { label: 'Iterator Exceptions and Stack Traces', route: '/csharp/iterators/iterator-exceptions-stack-traces-movenext-not-call-site' },
+  ],
+  'functional-csharp': [
+    { label: 'Testing Railway-Oriented Pipelines', route: '/csharp/functional-csharp/testing-railway-pipelines-asserting-which-step-failed' },
+    { label: 'Proving Result Is a Genuine Monad', route: '/csharp/functional-csharp/proving-result-genuine-monad-three-monad-laws' },
+    { label: 'Result Equality Traps', route: '/csharp/functional-csharp/result-equality-traps-never-equal-by-default' },
+  ],
+  'regex': [
+    { label: 'Testing Regex Patterns for ReDoS', route: '/csharp/regex/testing-regex-redos-proving-matchtimeout-fires' },
+    { label: 'Inside the Backtracking Engine', route: '/csharp/regex/inside-backtracking-engine-nested-quantifiers-traced-step-by-step' },
+    { label: 'The Unicode Digit Trap', route: '/csharp/regex/unicode-digit-trap-d-matches-more-than-ascii' },
+  ],
+  'channels': [
+    { label: 'Testing Channel-Based Pipelines', route: '/csharp/channels/testing-channel-pipelines-without-mocks-real-channel-test-double' },
+    { label: 'How ReadAllAsync Detects Completion', route: '/csharp/channels/how-readallasync-detects-completion-waittoreadasync-tryread' },
+    { label: 'The Rendezvous Channel', route: '/csharp/channels/rendezvous-channel-capacity-zero-writeasync-waits-for-reader' },
+  ],
+  'unit-testing': [
+    { label: 'Testing Your Test Doubles', route: '/csharp/unit-testing/testing-your-test-doubles-mock-setup-matches-production-behavior' },
+    { label: 'Why xUnit Creates a New Instance Per Test', route: '/csharp/unit-testing/why-xunit-creates-new-instance-per-test-classfixture' },
+    { label: 'TimeProvider and FakeTimeProvider', route: '/csharp/unit-testing/timeprovider-faketimeprovider-deterministic-time-dependent-tests' },
+  ],
+  'expression-trees': [
+    { label: 'Testing Dynamic Expression Trees', route: '/csharp/expression-trees/testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result' },
+    { label: 'The ParameterExpression Identity Problem', route: '/csharp/expression-trees/parameterexpression-identity-problem-andalso-unusable-lambda' },
+    { label: 'Captured Variables Are Not ConstantExpression', route: '/csharp/expression-trees/captured-variables-not-constantexpression-hidden-closure-class' },
+  ],
+  'dynamic': [
+    { label: 'Testing DynamicObject Wrappers', route: '/csharp/dynamic/testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths' },
+    { label: 'Inside the DLR Call Site', route: '/csharp/dynamic/inside-dlr-call-site-rule-cache-slow-path-fallback' },
+    { label: 'Anonymous Types as dynamic', route: '/csharp/dynamic/anonymous-types-as-dynamic-assembly-boundary-hidden-cost' },
+  ],
+  'source-generators': [
+    { label: 'Testing Source Generators', route: '/csharp/source-generators/testing-source-generators-in-memory-pipeline-snapshotting-output' },
+    { label: 'Why Symbols Defeat Incremental Caching', route: '/csharp/source-generators/why-symbols-defeat-incremental-caching-leak-compilation' },
+    { label: 'Debugging a Source Generator', route: '/csharp/source-generators/debugging-source-generator-debugger-launch-technique' },
+  ],
+  'span-memory': [
+    { label: 'Testing Methods That Accept Span<T>', route: '/csharp/span-memory/testing-methods-accepting-span-cannot-wrap-call-in-lambda' },
+    { label: 'What Is Actually Inside a Span<T>', route: '/csharp/span-memory/whats-actually-inside-span-ref-field-fast-restricted' },
+    { label: 'ArrayPool Rent Returns Dirty Memory', route: '/csharp/span-memory/arraypool-rent-returns-dirty-memory-stale-data-leak' },
+  ],
+  'di-dotnet': [
+    { label: 'Testing Your DI Container Configuration', route: '/csharp/di-dotnet/testing-di-container-configuration-every-registration-resolves' },
+    { label: 'How ValidateScopes Catches Captive Dependencies', route: '/csharp/di-dotnet/how-validatescopes-catches-captive-dependency-root-child-scope' },
+    { label: 'Multiple Implementations, Single T Injection', route: '/csharp/di-dotnet/multiple-implementations-single-t-injection-returns-last' },
+  ],
+  'json-advanced': [
+    { label: 'Testing Custom JsonConverter Round-Trips', route: '/csharp/json-advanced/testing-custom-jsonconverter-round-trips-exact-json-shape' },
+    { label: 'Every Generic Instantiation Needs Its Own JsonSerializable', route: '/csharp/json-advanced/generic-instantiation-needs-own-jsonserializable-source-gen' },
+    { label: 'Unknown Discriminator Values Throw at Deserialize', route: '/csharp/json-advanced/unknown-type-discriminator-throws-jsonexception-not-forward-compatible' },
+  ],
+  'unsafe-pointers': [
+    { label: 'Testing the Safe Wrapper Pattern', route: '/csharp/unsafe-pointers/testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws' },
+    { label: 'Why a Pinned Object Fragments the Heap', route: '/csharp/unsafe-pointers/pinned-object-fragments-heap-blocks-gc-compaction-neighbors' },
+    { label: 'stackalloc Inside a Loop Never Frees Between Iterations', route: '/csharp/unsafe-pointers/stackalloc-inside-loop-never-frees-between-iterations-stackoverflow' },
+  ],
+  'native-aot': [
+    { label: 'Testing AOT Compatibility Fast', route: '/csharp/native-aot/testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors' },
+    { label: 'DynamicallyAccessedMembers Must Be Re-Declared at Every Level', route: '/csharp/native-aot/dynamicallyaccessedmembers-redeclared-every-level-call-chain' },
+    { label: 'Clean Trim Analysis Can Still Fail a Full AOT Publish', route: '/csharp/native-aot/clean-trim-analysis-still-fails-full-aot-publish-different-checks' },
+  ],
+  'benchmarkdotnet': [
+    { label: 'Catching Regressions in CI', route: '/csharp/benchmarkdotnet/catching-performance-regression-ci-committed-baseline-not-eyeballing' },
+    { label: 'Why BDN Runs Benchmarks in an Isolated Process', route: '/csharp/benchmarkdotnet/why-bdn-runs-benchmarks-isolated-process-not-in-process' },
+    { label: 'When Mean Lies: Bimodal Distributions', route: '/csharp/benchmarkdotnet/when-mean-lies-bimodal-distribution-hides-two-performance-paths' },
+  ],
+  'pinvoke': [
+    { label: 'Testing P/Invoke Code', route: '/csharp/pinvoke/testing-code-calling-pinvoke-wrapping-native-calls-behind-interface' },
+    { label: 'Why Blittable Types Skip Marshalling Entirely', route: '/csharp/pinvoke/why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle' },
+    { label: 'SetLastError Can Be Silently Clobbered', route: '/csharp/pinvoke/setlasterror-silently-clobbered-by-pinvoke-call-in-between' },
+  ],
+  'dotnet-cli': [
+    { label: 'Verifying True Reproducibility', route: '/csharp/dotnet-cli/verifying-build-reproducible-simulating-clean-machine-restore-lock-file' },
+    { label: 'How rollForward Picks an SDK Version', route: '/csharp/dotnet-cli/how-rollforward-picks-sdk-version-feature-band-matching-algorithm' },
+    { label: 'Local Builds Can Silently Drift From the Lock File', route: '/csharp/dotnet-cli/automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file' },
+  ],
+  'whats-new-9-10': [
+    { label: 'Testing Record Equality With Collections', route: '/csharp/whats-new-9-10/testing-record-equality-collection-properties-not-list-reference-trap' },
+    { label: 'What the Compiler Actually Generates for Type-Sensitive Equality', route: '/csharp/whats-new-9-10/compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive' },
+    { label: 'Records as Dictionary Keys Can Silently Break', route: '/csharp/whats-new-9-10/records-as-dictionary-keys-break-when-reference-property-mutated' },
+  ],
+  'whats-new-11-12': [
+    { label: 'Testing Generic Math Across Types', route: '/csharp/whats-new-11-12/testing-generic-math-across-numeric-types-one-suite-every-inumber-implementation' },
+    { label: 'How static abstract Members Actually Dispatch', route: '/csharp/whats-new-11-12/how-static-abstract-interface-members-dispatch-compile-time-generic-specialization' },
+    { label: 'Primary Constructor Parameters Captured for Object Lifetime', route: '/csharp/whats-new-11-12/primary-constructor-parameter-captured-as-field-object-entire-lifetime' },
+  ],
+  'whats-new-latest': [
+    { label: 'Testing With FakeTimeProvider', route: '/csharp/whats-new-latest/testing-time-dependent-code-with-faketimeprovider-without-sleeping' },
+    { label: 'How Dynamic PGO Actually Re-JITs a Method', route: '/csharp/whats-new-latest/how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement' },
+    { label: 'HybridCache Stampede Protection Is Per-Process', route: '/csharp/whats-new-latest/hybridcache-stampede-protection-only-coalesces-within-one-process' },
+  ],
+  'hosting-startup': [
+    { label: 'Testing Environment Branching', route: '/aspnet/hosting-startup/testing-environment-branching-without-real-environment-variable' },
+    { label: 'What builder.Build() Actually Seals', route: '/aspnet/hosting-startup/what-builder-build-actually-seals-servicecollection-vs-serviceprovider' },
+    { label: 'ApplicationStopping Fires Before Requests Finish Draining', route: '/aspnet/hosting-startup/applicationstopping-fires-before-in-flight-requests-finish-draining' },
+  ],
+  'middleware': [
+    { label: 'Testing Custom Middleware in Isolation', route: '/aspnet/middleware/testing-custom-middleware-isolation-applicationbuilder-no-kestrel' },
+    { label: 'How the Middleware Pipeline Is Actually Built', route: '/aspnet/middleware/how-middleware-pipeline-built-requestdelegate-composition-nested-closures' },
+    { label: 'OnStarting Callbacks Run in LIFO Order', route: '/aspnet/middleware/onstarting-callbacks-run-lifo-order-last-registered-fires-first' },
+  ],
+  // NOTE: keyed 'aspnet-routing', NOT bare 'routing' — the Angular hub
+  // already owns the bare 'routing' key above (its own /angular/routing
+  // subtopics). This is the shared flat SUBTOPICS map's documented
+  // collision risk, hit for real here; resolved by hub-prefixing this
+  // one entry rather than restructuring the whole map.
+  'aspnet-routing': [
+    { label: 'Testing Route Precedence', route: '/aspnet/routing/testing-route-precedence-catching-ambiguous-routes-before-production' },
+    { label: 'How Route Precedence Is Actually Computed', route: '/aspnet/routing/how-route-precedence-actually-computed-segment-scoring-algorithm' },
+    { label: 'A Renamed WithName() Silently Breaks LinkGenerator', route: '/aspnet/routing/typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check' },
+  ],
+  'configuration': [
+    { label: 'Testing Options Validation', route: '/aspnet/configuration/testing-options-validation-actually-rejects-bad-config-not-just-compiles' },
+    { label: 'How IOptionsMonitor Actually Detects a File Change', route: '/aspnet/configuration/how-optionsmonitor-detects-file-change-changetoken-propagation' },
+    { label: 'OnChange Returns an IDisposable That Must Be Disposed', route: '/aspnet/configuration/onchange-returns-idisposable-must-be-disposed-or-callback-leaks' },
+  ],
+  // NOTE: keyed 'aspnet-dependency-injection', NOT bare 'dependency-injection'
+  // — the Blazor hub already owns a route at the same bare slug
+  // ('/blazor/dependency-injection'). No Blazor subtopics exist for it yet,
+  // but pre-emptively hub-prefixing avoids repeating the exact 'routing'
+  // collision hit above the moment Blazor's own DI subtopics are added.
+  'aspnet-dependency-injection': [
+    { label: 'Testing a Fresh Scope Per BackgroundService Iteration', route: '/aspnet/dependency-injection/testing-servicescopefactory-backgroundservice-genuinely-fresh-scope' },
+    { label: 'CreateAsyncScope() vs CreateScope() Internally', route: '/aspnet/dependency-injection/createasyncscope-vs-createscope' },
+    { label: 'ActivatorUtilities Bypasses ValidateOnBuild', route: '/aspnet/dependency-injection/activatorutilities-bypasses-validateonbuild' },
+  ],
+  // NOTE: keyed 'aspnet-logging', NOT bare 'logging' — the Node.js hub
+  // (/node/logging) and the DevOps hub (/devops/logging) already share
+  // this exact bare route slug. Pre-emptively hub-prefixing avoids
+  // repeating the 'routing' collision the moment either of those hubs
+  // gets its own Phase 10 subtopics for logging.
+  'aspnet-logging': [
+    { label: 'Testing Structured Log Properties With a Fake ILogger', route: '/aspnet/logging/testing-structured-log-properties-with-fake-logger' },
+    { label: 'How BeginScope Propagates Ambient Context via AsyncLocal', route: '/aspnet/logging/how-beginscope-propagates-ambient-context-asynclocal' },
+    { label: 'Reusing an EventId Across LoggerMessage Methods', route: '/aspnet/logging/reusing-eventid-across-loggermessage-methods-compiles-cleanly' },
+  ],
+  'static-files': [
+    { label: 'Testing Magic Number Validation With Fake Byte Streams', route: '/aspnet/static-files/testing-magic-number-validation-fake-byte-streams' },
+    { label: 'How UseStaticFiles Computes ETag', route: '/aspnet/static-files/how-usestaticfiles-computes-etag-touching-file-busts-cache' },
+    { label: 'StartsWith Path Traversal Guard Bypass', route: '/aspnet/static-files/startswith-path-traversal-guard-sibling-directory-bypass' },
+  ],
+  'controllers': [
+    { label: 'Testing the Null-Return 200 OK Bug', route: '/aspnet/controllers/testing-actionresult-catches-null-returns-200-ok-bug' },
+    { label: 'How Binding Source Inference Decides FromBody vs FromQuery', route: '/aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery' },
+    { label: 'CreatedAtAction’s Runtime Failure Mode', route: '/aspnet/controllers/createdataction-throws-runtime-despite-nameof-safety' },
+  ],
+  'minimal-apis': [
+    { label: 'Testing an Endpoint Filter in Isolation', route: '/aspnet/minimal-apis/testing-endpoint-filter-isolation-no-test-server' },
+    { label: 'A Forgotten DI Registration Silently Falls Through', route: '/aspnet/minimal-apis/forgotten-di-registration-silently-falls-through-body-binding' },
+    { label: 'LinkGenerator’s Silent Null Return', route: '/aspnet/minimal-apis/linkgenerator-getpathbyname-returns-null-instead-of-throwing' },
+  ],
+  'model-binding': [
+    { label: 'Testing IParsable’s TryParse for Graceful Failure', route: '/aspnet/model-binding/testing-iparsable-tryparse-graceful-failure-daterange' },
+    { label: 'How Recursive Nested Validation Walks the Object Graph', route: '/aspnet/model-binding/how-recursive-nested-validation-walks-object-graph-circular-reference' },
+    { label: 'FluentValidation’s SetValidator DI Bypass', route: '/aspnet/model-binding/fluentvalidation-setvalidator-new-silently-bypasses-di' },
+  ],
+  'filters': [
+    { label: 'Testing That Filters Execute in the Documented Order', route: '/aspnet/filters/testing-filters-execute-in-documented-pipeline-order' },
+    { label: 'Why next() Runs the Action Even After Result Is Set', route: '/aspnet/filters/why-next-runs-action-even-after-context-result-is-set' },
+    { label: 'IFilterFactory’s Captive Dependency Risk', route: '/aspnet/filters/ifilterfactory-isreusable-silently-recreates-captive-dependency' },
+  ],
+  // NOTE: keyed 'aspnet-error-handling', NOT bare 'error-handling' — the
+  // JavaScript, Blazor, Node.js, Go, and GraphQL hubs ALL already own a
+  // route at the same bare slug. Pre-emptively hub-prefixing avoids
+  // repeating the exact 'routing' collision hit earlier the moment any
+  // of those hubs get their own error-handling subtopics.
+  'aspnet-error-handling': [
+    { label: 'Testing the IExceptionHandler Chain Ordering', route: '/aspnet/error-handling/testing-exceptionhandler-chain-ordering-works-as-documented' },
+    { label: 'Why the Re-Executed Error Endpoint Must Restore the Status Code', route: '/aspnet/error-handling/why-reexecuted-error-endpoint-must-explicitly-restore-status-code' },
+    { label: 'A Handler That Writes Before Returning False Corrupts the Next', route: '/aspnet/error-handling/handler-writes-before-returning-false-corrupts-next-handler' },
+  ],
+  'openapi-swagger': [
+    { label: 'Testing the Spec Catches a TypedResults Regression', route: '/aspnet/openapi-swagger/testing-openapi-spec-catches-typedresults-regression-to-iresult' },
+    { label: 'Why the Generator Inspects the Signature, Not the Body', route: '/aspnet/openapi-swagger/why-generator-inspects-signature-not-method-body' },
+    { label: 'Generating Clients Against a Live Server Undermines PR Diffs', route: '/aspnet/openapi-swagger/generating-clients-against-live-server-undermines-diffing-prs' },
+  ],
+  // NOTE: keyed 'aspnet-api-versioning', NOT bare 'api-versioning' — the
+  // API Design hub already owns a route at the same bare slug
+  // (/api-design/api-versioning). Pre-emptively hub-prefixing avoids
+  // repeating the exact 'routing' collision hit earlier the moment that
+  // hub gets its own api-versioning subtopics.
+  'aspnet-api-versioning': [
+    { label: 'Testing That Versioned Endpoints Return Different Shapes', route: '/aspnet/api-versioning/testing-versioned-endpoints-return-genuinely-different-shapes' },
+    { label: 'Why Omitting apiVersion Causes an Ambiguous Match', route: '/aspnet/api-versioning/why-omitting-apiversion-constraint-causes-ambiguous-match' },
+    { label: 'What Happens When Combined Version Readers Disagree', route: '/aspnet/api-versioning/what-happens-when-combined-version-readers-disagree' },
+  ],
+  'http-clients': [
+    { label: 'Testing Retry Strategy Scope', route: '/aspnet/http-clients/testing-retry-strategy-fires-transient-not-deterministic-errors' },
+    { label: 'Why Transient Handlers Are Shared Across a Pool Rotation', route: '/aspnet/http-clients/why-transient-delegatinghandlers-shared-across-pool-rotation' },
+    { label: 'AddHedging’s Method-Blindness Risk', route: '/aspnet/http-clients/addhedging-shared-pipeline-can-hedge-non-idempotent-requests' },
+  ],
+  // NOTE: keyed 'aspnet-grpc', NOT bare 'grpc' — the Go hub already owns
+  // a route at the same bare slug (/go/grpc). Pre-emptively hub-prefixing
+  // avoids repeating the exact 'routing' collision hit earlier the
+  // moment that hub gets its own gRPC subtopics.
+  'aspnet-grpc': [
+    { label: 'Testing Server-Streaming RPC Cancellation', route: '/aspnet/grpc/testing-server-streaming-rpc-cancellation-stops-mid-stream' },
+    { label: 'How proto3 optional Tracks Field Presence', route: '/aspnet/grpc/how-proto3-optional-actually-tracks-field-presence' },
+    { label: 'gRPC-Web CORS Needs Allowed Request Headers', route: '/aspnet/grpc/grpc-web-cors-needs-allowed-request-headers-not-exposed' },
+  ],
+  'ef-core-basics': [
+    { label: 'Testing That AsNoTracking Queries Are Genuinely Untracked', route: '/aspnet/ef-core-basics/testing-asnotracking-queries-genuinely-arent-tracked-sqlite' },
+    { label: 'How the Change Tracker Snapshot Produces a Minimal UPDATE', route: '/aspnet/ef-core-basics/how-change-tracker-snapshot-produces-minimal-update' },
+    { label: 'Reload vs GetDatabaseValuesAsync for Concurrency Recovery', route: '/aspnet/ef-core-basics/reload-discards-edit-getdatabasevaluesasync-preserves-it' },
+  ],
+  'ef-relationships': [
+    { label: 'Testing That DeleteBehavior.Restrict Genuinely Throws', route: '/aspnet/ef-relationships/testing-deletebehavior-restrict-genuinely-throws-sqlite' },
+    { label: 'How Skip Navigations Determine Join-Table INSERT/DELETE', route: '/aspnet/ef-relationships/how-skip-navigations-determine-join-table-insert-delete' },
+    { label: 'Replacing an OwnsMany Collection Deletes and Reinserts Everything', route: '/aspnet/ef-relationships/replacing-ownsmany-collection-deletes-reinserts-everything' },
+  ],
+  'ef-performance': [
+    { label: 'Testing That ExecuteUpdateAsync Bypasses SaveChanges Interceptors', route: '/aspnet/ef-performance/testing-executeupdateasync-bypasses-savechanges-interceptors' },
+    { label: 'What EF.CompileQuery Actually Eliminates', route: '/aspnet/ef-performance/what-ef-compilequery-actually-eliminates' },
+    { label: 'A Captured Reference to a Pooled DbContext Leaks Across Requests', route: '/aspnet/ef-performance/captured-reference-pooled-dbcontext-leaks-across-requests' },
+  ],
+  // NOTE: keyed 'aspnet-caching', NOT bare 'caching' — the Web
+  // Performance, Node.js, and System Design hubs all already own routes
+  // at the same bare slug. Pre-emptively hub-prefixing avoids repeating
+  // the exact 'routing' collision hit earlier the moment any of those
+  // hubs get their own caching subtopics.
+  'aspnet-caching': [
+    { label: 'Testing GetOrCreateAsync Under Concurrent Misses', route: '/aspnet/caching/testing-getorcreateasync-concurrent-misses-factory-runs-twice' },
+    { label: 'How IMemoryCache Expiry Is Actually Enforced', route: '/aspnet/caching/how-imemorycache-expiry-actually-enforced-lazy-not-timers' },
+    { label: 'Write-Invalidate’s Stale-Repopulation Race', route: '/aspnet/caching/write-invalidate-stale-repopulation-race-ttl-backstop' },
+  ],
+  // NOTE: keyed 'aspnet-authentication', NOT bare 'authentication' — the
+  // Blazor hub already owns a route at the same bare slug
+  // (/blazor/authentication). Pre-emptively hub-prefixing avoids
+  // repeating the exact 'routing' collision hit earlier.
+  'aspnet-authentication': [
+    { label: 'Testing JWT ClockSkew — Expired Tokens Still Validate', route: '/aspnet/authentication/testing-jwt-clockskew-expired-token-still-validates' },
+    { label: 'Why SetApplicationName Matters With Shared Keys', route: '/aspnet/authentication/why-setapplicationname-matters-shared-dataprotection-keys' },
+    { label: 'JWT Claim-Type Mapping — sub Becomes NameIdentifier', route: '/aspnet/authentication/jwt-claim-type-mapping-sub-becomes-nameidentifier' },
+  ],
 };
 
 @Component({

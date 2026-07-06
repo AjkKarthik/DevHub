@@ -1,0 +1,41 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Records & Structs"
+    topicRoute="/csharp/structures"
+    subtopicLabel="Array vs List vs foreach Struct Mutation" />
+
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why T[] Indexer Mutation Works But List&lt;T&gt; and foreach Don't for Structs</h1>
+  <p class="page-subtitle">
+    The main topic's copy-mutation trap covers class properties — this subtopic covers
+    three genuinely different container behaviors: arrays grant real addressability,
+    List&lt;T&gt; doesn't, and foreach never does, for any container.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="advanced" since="C# 1.0" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>
+      Testing the copy trap, understanding ref struct's new interface capabilities, and
+      knowing exactly which containers allow in-place struct mutation together complete
+      the practical picture of value-type semantics in real collection code.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Records & Structs"
+    topicRoute="/csharp/structures"
+    [prev]="{ label: 'ref struct Interfaces (C# 13)', route: '/csharp/structures/ref-struct-interfaces-generic-constraint-dispatch' }" />
+</div>

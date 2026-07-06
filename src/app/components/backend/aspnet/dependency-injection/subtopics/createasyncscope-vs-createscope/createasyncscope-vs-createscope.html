@@ -1,0 +1,44 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dependency Injection"
+    topicRoute="/aspnet/dependency-injection"
+    subtopicLabel="CreateAsyncScope() vs CreateScope()"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How CreateAsyncScope() Differs From CreateScope() Internally</h1>
+  <p class="page-subtitle">
+    The main page uses <code>CreateAsyncScope()</code> without explaining why. The answer isn't about
+    resolving services — it's about what happens when the scope itself is torn down, and why a
+    synchronous scope holding an async-only service quietly blocks a thread.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic explains the disposal-time mechanics behind the main page's own
+      <code>IServiceScopeFactory</code> pattern. The last subtopic in this set turns to a completely
+      different corner of the main page — <code>ActivatorUtilities.CreateInstance&lt;T&gt;()</code> — and
+      shows why it silently bypasses the safety net <code>ValidateOnBuild</code> otherwise promises.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dependency Injection"
+    topicRoute="/aspnet/dependency-injection"
+    [prev]="{ label: 'Testing That a BackgroundService Genuinely Gets a Fresh Scope Each Iteration', route: '/aspnet/dependency-injection/testing-servicescopefactory-backgroundservice-genuinely-fresh-scope' }"
+    [next]="{ label: 'ActivatorUtilities.CreateInstance Bypasses ValidateOnBuild Entirely', route: '/aspnet/dependency-injection/activatorutilities-createinstance-bypasses-validateonbuild-entirely' }"
+  />
+</div>

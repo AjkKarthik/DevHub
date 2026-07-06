@@ -1,0 +1,31 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Source Generators" topicRoute="/csharp/source-generators" subtopicLabel="Why Symbols Defeat Incremental Caching" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Why Passing an INamedTypeSymbol Through .Select() Silently Defeats Incremental Caching — And Leaks the Whole Compilation</h1>
+  <p class="page-subtitle">The main topic page warns that symbols hold references to the entire compilation. See the exact mechanism — why symbol equality fails across compilation snapshots, and why record equality is only as good as its weakest field.</p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since=".NET 6+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>The last subtopic covers a practical gap the main <a routerLink="/csharp/source-generators">Source Generators</a> page's own EmitCompilerGeneratedFiles tip doesn't fully close: how to actually step through a generator's logic with a debugger when it runs inside the compiler process.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Source Generators"
+    topicRoute="/csharp/source-generators"
+    [prev]="{ label: 'Testing Source Generators', route: '/csharp/source-generators/testing-source-generators-in-memory-pipeline-snapshotting-output' }"
+    [next]="{ label: 'Debugging a Source Generator', route: '/csharp/source-generators/debugging-source-generator-debugger-launch-technique' }"
+  />
+</div>

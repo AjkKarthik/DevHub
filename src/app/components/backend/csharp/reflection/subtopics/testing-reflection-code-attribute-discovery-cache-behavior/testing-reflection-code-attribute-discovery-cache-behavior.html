@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="Reflection & Attributes" topicRoute="/csharp/reflection" subtopicLabel="Testing Reflection-Based Code" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing Reflection-Based Code: Verifying Attribute Discovery and Cache Behavior Without Rewriting the Scanner</h1>
+  <p class="page-subtitle">The main topic page's own MiniValidator and CsvExporter are demonstrated only by printing output. See how to assert on WHICH members were discovered, and prove a PropertyInfo cache genuinely avoids re-scanning.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="C# 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we go one level deeper than the main <a routerLink="/csharp/reflection">Reflection & Attributes</a> page's own expression-tree compiled delegate — into what Reflection.Emit and DynamicMethod actually add beyond that.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Reflection & Attributes"
+    topicRoute="/csharp/reflection"
+    [next]="{ label: 'Beyond Expression Trees', route: '/csharp/reflection/beyond-expression-trees-dynamicmethod-reflection-emit' }"
+  />
+</div>

@@ -1431,93 +1431,93 @@ off here with a date.
 - [x] `/angular/error-handling-patterns` — Error Handling Patterns (2026-07-03 — 3 subtopics: testing-a-layered-error-handling-system, retry-with-exponential-backoff-and-give-up, recovering-from-component-rendering-errors)
 - [x] `/angular/msw` — Mock Service Worker (MSW) (2026-07-03 — 3 subtopics: testing-auth-interceptor-flows-with-msw, testing-loading-states-with-msw-delay, debugging-unhandled-requests-and-query-param-matching)
 - [x] `/angular/accessibility` — Accessibility (a11y) (2026-07-03 — 3 subtopics: automated-accessibility-testing-with-jest-axe, building-a-reusable-route-change-focus-management-service, testing-focus-trap-and-restoration-in-modals)
-- [ ] `/angular/micro-frontends` — Micro-Frontends
-- [ ] `/angular/angular-devtools` — Angular DevTools
-- [ ] `/angular/bundle-optimization` — Bundle Optimization
-- [ ] `/angular/wizard-form` — Multi-Step Wizard Form
-- [ ] `/angular/web-workers` — Web Workers
-- [ ] `/angular/pwa` — PWA & Service Workers
-- [ ] `/angular/i18n` — Internationalisation (i18n)
-- [ ] `/angular/e2e` — E2E Testing with Playwright
-- [ ] `/angular/harnesses` — Component Harnesses
-- [ ] `/angular/ssr` — SSR & Hydration
+- [x] `/angular/micro-frontends` — Micro-Frontends (2026-07-03 — 3 subtopics: testing-cross-mfe-communication-with-a-mocked-event-bus, debugging-duplicate-angular-runtime-issues, css-style-isolation-with-shadowdom-encapsulation)
+- [x] `/angular/angular-devtools` — Angular DevTools (2026-07-03 — 3 subtopics: building-a-why-did-this-render-debug-helper, safely-enabling-devtools-on-staging, turning-a-profiler-finding-into-a-regression-test)
+- [x] `/angular/bundle-optimization` — Bundle Optimization (2026-07-03 — 3 subtopics: testing-defer-blocks-with-deferblockfixture, detecting-duplicate-dependencies-across-lazy-chunks, automated-bundle-budget-enforcement-in-ci)
+- [x] `/angular/wizard-form` — Multi-Step Wizard Form (2026-07-03 — 3 subtopics: deep-linking-wizard-steps-with-query-params, cdk-stepper-vs-hand-rolled-wizard, testing-wizard-steps-in-isolation)
+- [x] `/angular/web-workers` — Web Workers (2026-07-03 — 3 subtopics: testing-components-that-use-web-workers, building-a-worker-pool-for-parallel-task-dispatch, debugging-and-profiling-web-workers-in-devtools)
+- [x] `/angular/pwa` — PWA & Service Workers (2026-07-03 — 3 subtopics: testing-update-prompts-and-install-banners, handling-unrecoverable-state-and-manual-update-checks, spa-routing-pitfalls-navigationurls-and-app-shell-fallback)
+- [x] `/angular/i18n` — Internationalisation (i18n) (2026-07-03 — 3 subtopics: testing-components-that-use-transloco-and-signal-i18n, building-rtl-layout-support-with-logical-css-properties, ssr-locale-detection-and-avoiding-hydration-mismatches)
+- [x] `/angular/e2e` — E2E Testing with Playwright (2026-07-03 — 3 subtopics: reusing-authentication-state-across-tests-with-storagestate, visual-regression-testing-with-screenshot-comparisons, debugging-flaky-tests-isolation-retries-and-sharding)
+- [x] `/angular/harnesses` — Component Harnesses (2026-07-03 — 3 subtopics: composing-nested-harnesses-with-getchildloader, publishing-harnesses-as-a-librarys-public-testing-entry-point, debugging-harness-failures-common-causes-and-diagnosis)
+- [x] `/angular/ssr` — SSR & Hydration (2026-07-03 — 3 subtopics: debugging-hydration-mismatches-step-by-step, testing-ssr-safe-components-without-a-real-server, incremental-hydration-triggers-interaction-viewport-and-timer)
 
 #### C# — 50 topic pages
 
-- [ ] `/csharp/basics` — Variables & Types
-- [ ] `/csharp/oop` — OOP & Classes
-- [ ] `/csharp/records` — Records & Structs
-- [ ] `/csharp/generics` — Generics
-- [ ] `/csharp/collections` — Collections
-- [ ] `/csharp/linq` — LINQ
-- [ ] `/csharp/async` — async / await
-- [ ] `/csharp/null-safety` — Null Safety
-- [ ] `/csharp/pattern-matching` — Pattern Matching
-- [ ] `/csharp/exceptions` — Exceptions
-- [ ] `/csharp/delegates` — Delegates & Events
-- [ ] `/csharp/fields` — Fields & Constants
-- [ ] `/csharp/methods` — Methods
-- [ ] `/csharp/type-conversion` — Type Conversion
-- [ ] `/csharp/constructors` — Constructors
-- [ ] `/csharp/properties-indexers` — Properties & Indexers
-- [ ] `/csharp/namespaces` — Namespaces & Usings
-- [ ] `/csharp/inheritance` — Inheritance & Overriding
-- [ ] `/csharp/abstract-interfaces` — Abstract Classes & Interfaces
-- [ ] `/csharp/static-enums` — Static Classes, Partial Classes & Enums
-- [ ] `/csharp/structures` — Structures (struct)
-- [ ] `/csharp/system-object` — System.Object
-- [ ] `/csharp/extension-methods` — Extension Methods
-- [ ] `/csharp/tuples` — Tuples & Anonymous Types
-- [ ] `/csharp/arrays` — Arrays
-- [ ] `/csharp/strings-datetime` — Strings, DateTime & Math
-- [ ] `/csharp/io-serialization` — I/O & Serialization
-- [ ] `/csharp/gc-disposable` — GC & IDisposable
-- [ ] `/csharp/threading` — Threading
-- [ ] `/csharp/tasks` — Tasks & Parallel
-- [ ] `/csharp/reflection` — Reflection & Attributes
-- [ ] `/csharp/iterators` — Iterators & yield
-- [ ] `/csharp/functional-csharp` — Functional C# & Result Pattern
-- [ ] `/csharp/regex` — Regular Expressions
-- [ ] `/csharp/channels` — Channels & Producer/Consumer
-- [ ] `/csharp/unit-testing` — Unit Testing (xUnit & Moq)
-- [ ] `/csharp/expression-trees` — Expression Trees
-- [ ] `/csharp/dynamic` — dynamic & the DLR
-- [ ] `/csharp/source-generators` — Source Generators
-- [ ] `/csharp/span-memory` — Span<T> & Memory<T>
-- [ ] `/csharp/di-dotnet` — Dependency Injection in .NET
-- [ ] `/csharp/json-advanced` — System.Text.Json Advanced
-- [ ] `/csharp/unsafe-pointers` — Unsafe Code & Pointers
-- [ ] `/csharp/native-aot` — Native AOT
-- [ ] `/csharp/benchmarkdotnet` — BenchmarkDotNet
-- [ ] `/csharp/pinvoke` — P/Invoke & Native Interop
-- [ ] `/csharp/dotnet-cli` — .NET CLI & Tooling
-- [ ] `/csharp/whats-new-9-10` — What's New in C# 9 & 10
-- [ ] `/csharp/whats-new-11-12` — What's New in C# 11 & 12
-- [ ] `/csharp/whats-new-latest` — What's New in C# 13+ & .NET 10/11
+- [x] `/csharp/basics` — Variables & Types (2026-07-03 — 3 subtopics: nullable-value-types-hasvalue-and-null-coalescing-operators, checked-and-unchecked-arithmetic-detecting-integer-overflow, spant-and-stackalloc-parsing-without-heap-allocations — first C# hub subtopic set; locked the non-Angular "See it run" pattern in CLAUDE.md, code-block + page-meta's .NET Fiddle/SharpLab links replace the StackBlitz playground)
+- [x] `/csharp/oop` — OOP & Classes (2026-07-03 — 3 subtopics: testing-polymorphic-code-mocking-interfaces-and-verifying-virtual-dispatch, virtual-member-calls-from-constructors-an-initialization-order-footgun, explicit-interface-implementation-resolving-name-collisions)
+- [x] `/csharp/records` — Records & Structs (2026-07-03 — 3 subtopics: polymorphic-json-serialization-of-record-hierarchies-with-jsonderivedtype, positional-pattern-matching-with-records-deconstruction-in-switch-expressions, testing-records-equality-hash-codes-and-constructor-validation)
+- [x] `/csharp/generics` — Generics (2026-07-03 — 3 subtopics: testing-generic-code-parameterized-tests-across-multiple-type-arguments, generic-attributes-c-11-type-safe-custom-attributes, writing-your-own-static-abstract-interface-members)
+- [x] `/csharp/collections` — Collections (2026-07-03 — 3 subtopics: writing-custom-iequalitycomparer-and-icomparer-implementations, frozendictionary-and-frozenset-optimizing-for-read-heavy-lookups, testing-concurrent-collections-catching-race-conditions-in-getoradd)
+- [x] `/csharp/linq` — LINQ (2026-07-03 — 3 subtopics: writing-custom-lazy-linq-operators-with-yield-return, expression-trees-why-ef-core-needs-expression-func-t-bool-not-func-t-bool, testing-linq-based-repository-methods-with-ef-core-in-memory)
+- [x] `/csharp/async` — async / await (2026-07-03 — 3 subtopics: testing-async-code-verifying-cancellation-and-task-failure-behavior, iasyncdisposable-and-await-using-async-resource-cleanup, producer-consumer-pipelines-with-system-threading-channels)
+- [x] `/csharp/null-safety` — Null Safety (2026-07-04 — 3 subtopics: enforcing-nullable-warnings-as-build-errors, nullable-reference-types-with-generic-type-parameters, required-properties-and-system-text-json-deserialization)
+- [x] `/csharp/pattern-matching` — Pattern Matching (2026-07-04 — 3 subtopics: testing-exhaustiveness-catching-new-subtypes-with-reflection-based-coverage-tests, pattern-matching-in-ef-core-linq-queries-what-translates-to-sql-and-what-throws, how-the-compiler-lowers-property-patterns-repeated-access-and-performance)
+- [x] `/csharp/exceptions` — Exceptions (2026-07-04 — 3 subtopics: testing-exception-filters-verifying-when-predicate-logic, appdomain-unhandledexception-and-taskscheduler-unobservedtaskexception, why-exceptions-are-slow-stack-walking-first-chance-exceptions)
+- [x] `/csharp/delegates` — Delegates & Events (2026-07-04 — 3 subtopics: testing-events-xunit-assert-raises-multicast-behavior, how-delegate-equality-actually-works-target-method-pairs, async-void-event-handlers-why-exceptions-vanish)
+- [x] `/csharp/fields` — Fields & Constants (2026-07-04 — 3 subtopics: testing-field-thread-safety-race-conditions-increment-vs-interlocked, static-field-initialization-order-beforefieldinit, asynclocal-correct-alternative-to-static-fields-for-per-request-state)
+- [x] `/csharp/methods` — Methods (2026-07-04 — 3 subtopics: testing-logic-inside-local-functions-when-to-promote, in-parameter-defensive-copy-trap, caller-info-attributes-callermembername-callerlinenumber)
+- [x] `/csharp/type-conversion` — Type Conversion (2026-07-04 — 3 subtopics: testing-conversion-operators-and-overflow-boundaries, user-defined-conversion-chaining-one-operator-limit, compile-time-constant-overflow-always-checked)
+- [x] `/csharp/constructors` — Constructors (2026-07-04 — 3 subtopics: testing-constructor-validation-and-chaining, primary-constructor-parameter-capture-field-vs-fixed, diagnosing-typeinitializationexception-inner-exception)
+- [x] `/csharp/properties-indexers` — Properties & Indexers (2026-07-04 — 3 subtopics: testing-computed-properties-and-indexers, init-accessors-and-readonly-fields-assignment-window, indexer-initializer-syntax-without-add)
+- [x] `/csharp/namespaces` — Namespaces & Usings (2026-07-04 — 3 subtopics: detecting-unused-using-directives-ide0005, extern-alias-resolving-assembly-type-name-collisions, resolving-cs0104-ambiguous-using-directives)
+- [x] `/csharp/inheritance` — Inheritance & Overriding (2026-07-04 — 3 subtopics: testing-the-hiding-trap-new-vs-override, how-sealed-enables-devirtualization, covariant-return-types-hidden-bridge-method)
+- [x] `/csharp/abstract-interfaces` — Abstract Classes & Interfaces (2026-07-04 — 3 subtopics: testing-default-interface-method-resolution, default-interface-method-diamond-problem, static-abstract-members-generic-constraint-requirement)
+- [x] `/csharp/static-enums` — Static Classes, Partial Classes & Enums (2026-07-04 — 3 subtopics: testing-flags-enums-reflection-based-power-of-two-guard, modern-partial-methods-return-types-mandatory-implementation, enum-value-stability-serialization-compatibility)
+- [x] `/csharp/structures` — Structures (struct) (2026-07-04 — 3 subtopics: testing-the-struct-copy-mutation-trap, ref-struct-interfaces-generic-constraint-dispatch, array-vs-list-vs-foreach-struct-mutation)
+- [x] `/csharp/system-object` — System.Object (2026-07-04 — 3 subtopics: testing-the-equals-gethashcode-contract, gethashcode-instability-across-process-runs, record-equality-and-equalitycontract)
+- [x] `/csharp/extension-methods` — Extension Methods (2026-07-04 — 3 subtopics: testing-for-extension-method-shadowing, resolving-extension-method-ambiguity-cs0121, extension-methods-on-structs-this-in-t-receiver)
+- [x] `/csharp/tuples` — Tuples & Anonymous Types (2026-07-04 — 3 subtopics: testing-tuple-returning-methods-deconstruction-assertions, valuetuple-8-element-limit-trest-chaining-mechanism, renaming-tuple-field-breaks-some-callers-not-others)
+- [x] `/csharp/arrays` — Arrays (2026-07-04 — 3 subtopics: testing-array-equality-sequenceequal-not-equals, real-cost-of-array-covariance-runtime-type-check-every-store, params-array-hidden-allocation-every-call-span-fix)
+- [x] `/csharp/strings-datetime` — Strings, DateTime & Math (2026-07-04 — 3 subtopics: testing-culture-sensitive-code-turkish-locale-ci-failures, interning-boundary-which-strings-interned-automatically, string-create-span-char-allocation-free-building)
+- [x] `/csharp/io-serialization` — I/O & Serialization (2026-07-04 — 3 subtopics: testing-file-io-without-touching-real-filesystem-abstraction, where-jsonserializeroptions-cache-lives-cold-cache-per-instance, sync-over-async-file-io-deadlocks-result-hangs-forever)
+- [x] `/csharp/gc-disposable` — GC & IDisposable (2026-07-04 — 3 subtopics: testing-dispose-actually-called-spy-wrapper-double-dispose, pattern-based-disposal-ref-structs-cannot-implement-idisposable, disposed-but-still-running-event-handler-fire-and-forget-outlives-dispose)
+- [x] `/csharp/threading` — Threading (2026-07-04 — 3 subtopics: testing-race-conditions-stress-testing-concurrent-code, old-lock-codegen-bug-monitor-enter-ref-bool-taken, lazy-hidden-thread-safety-modes-concurrentdictionary-fix-not-free)
+- [x] `/csharp/tasks` — Tasks & Parallel (2026-07-04 — 3 subtopics: testing-async-timing-deterministic-controllable-taskcompletionsource, valuetask-await-once-rule-when-worth-complexity, whenall-doesnt-start-tasks-parallel-just-awaits-running)
+- [x] `/csharp/reflection` — Reflection & Attributes (2026-07-04 — 3 subtopics: testing-reflection-code-attribute-discovery-cache-behavior, beyond-expression-trees-dynamicmethod-reflection-emit, generic-type-reflection-traps-generictypedefinition)
+- [x] `/csharp/iterators` — Iterators & yield (2026-07-04 — 3 subtopics: testing-iterator-actually-lazy-side-effects-not-run-before-enumeration, why-getenumerator-sometimes-returns-itself-thread-id-check, iterator-exceptions-stack-traces-movenext-not-call-site)
+- [x] `/csharp/functional-csharp` — Functional C# & Result Pattern (2026-07-04 — 3 subtopics: testing-railway-pipelines-asserting-which-step-failed, proving-result-genuine-monad-three-monad-laws, result-equality-traps-never-equal-by-default)
+- [x] `/csharp/regex` — Regular Expressions (2026-07-04 — 3 subtopics: testing-regex-redos-proving-matchtimeout-fires, inside-backtracking-engine-nested-quantifiers-traced-step-by-step, unicode-digit-trap-d-matches-more-than-ascii)
+- [x] `/csharp/channels` — Channels & Producer/Consumer (2026-07-04 — 3 subtopics: testing-channel-pipelines-without-mocks-real-channel-test-double, how-readallasync-detects-completion-waittoreadasync-tryread, rendezvous-channel-capacity-zero-writeasync-waits-for-reader)
+- [x] `/csharp/unit-testing` — Unit Testing (xUnit & Moq) (2026-07-04 — 3 subtopics: testing-your-test-doubles-mock-setup-matches-production-behavior, why-xunit-creates-new-instance-per-test-classfixture, timeprovider-faketimeprovider-deterministic-time-dependent-tests)
+- [x] `/csharp/expression-trees` — Expression Trees (2026-07-04 — 3 subtopics: testing-dynamic-expression-trees-asserting-tree-shape-not-compiled-result, parameterexpression-identity-problem-andalso-unusable-lambda, captured-variables-not-constantexpression-hidden-closure-class)
+- [x] `/csharp/dynamic` — dynamic & the DLR (2026-07-04 — 3 subtopics: testing-dynamicobject-wrappers-trygetmember-fallback-fail-paths, inside-dlr-call-site-rule-cache-slow-path-fallback, anonymous-types-as-dynamic-assembly-boundary-hidden-cost)
+- [x] `/csharp/source-generators` — Source Generators (2026-07-04 — 3 subtopics: testing-source-generators-in-memory-pipeline-snapshotting-output, why-symbols-defeat-incremental-caching-leak-compilation, debugging-source-generator-debugger-launch-technique)
+- [x] `/csharp/span-memory` — Span<T> & Memory<T> (2026-07-04 — 3 subtopics: testing-methods-accepting-span-cannot-wrap-call-in-lambda, whats-actually-inside-span-ref-field-fast-restricted, arraypool-rent-returns-dirty-memory-stale-data-leak)
+- [x] `/csharp/di-dotnet` — Dependency Injection in .NET (2026-07-04 — 3 subtopics: testing-di-container-configuration-every-registration-resolves, how-validatescopes-catches-captive-dependency-root-child-scope, multiple-implementations-single-t-injection-returns-last)
+- [x] `/csharp/json-advanced` — System.Text.Json Advanced (2026-07-04 — 3 subtopics: testing-custom-jsonconverter-round-trips-exact-json-shape, generic-instantiation-needs-own-jsonserializable-source-gen, unknown-type-discriminator-throws-jsonexception-not-forward-compatible)
+- [x] `/csharp/unsafe-pointers` — Unsafe Code & Pointers (2026-07-04 — 3 subtopics: testing-safe-wrapper-dispose-idempotent-use-after-dispose-throws, pinned-object-fragments-heap-blocks-gc-compaction-neighbors, stackalloc-inside-loop-never-frees-between-iterations-stackoverflow)
+- [x] `/csharp/native-aot` — Native AOT (2026-07-04 — 3 subtopics: testing-aot-compatibility-before-slow-publish-treat-trim-warnings-as-errors, dynamicallyaccessedmembers-redeclared-every-level-call-chain, clean-trim-analysis-still-fails-full-aot-publish-different-checks)
+- [x] `/csharp/benchmarkdotnet` — BenchmarkDotNet (2026-07-04 — 3 subtopics: catching-performance-regression-ci-committed-baseline-not-eyeballing, why-bdn-runs-benchmarks-isolated-process-not-in-process, when-mean-lies-bimodal-distribution-hides-two-performance-paths)
+- [x] `/csharp/pinvoke` — P/Invoke & Native Interop (2026-07-04 — 3 subtopics: testing-code-calling-pinvoke-wrapping-native-calls-behind-interface, why-blittable-types-skip-marshalling-pinning-vs-full-marshal-cycle, setlasterror-silently-clobbered-by-pinvoke-call-in-between)
+- [x] `/csharp/dotnet-cli` — .NET CLI & Tooling (2026-07-04 — 3 subtopics: verifying-build-reproducible-simulating-clean-machine-restore-lock-file, how-rollforward-picks-sdk-version-feature-band-matching-algorithm, automatic-restore-doesnt-use-locked-mode-local-builds-drift-from-lock-file)
+- [x] `/csharp/whats-new-9-10` — What's New in C# 9 & 10 (2026-07-04 — 3 subtopics: testing-record-equality-collection-properties-not-list-reference-trap, compiler-generates-equalitycontract-virtual-equals-chain-type-sensitive, records-as-dictionary-keys-break-when-reference-property-mutated)
+- [x] `/csharp/whats-new-11-12` — What's New in C# 11 & 12 (2026-07-04 — 3 subtopics: testing-generic-math-across-numeric-types-one-suite-every-inumber-implementation, how-static-abstract-interface-members-dispatch-compile-time-generic-specialization, primary-constructor-parameter-captured-as-field-object-entire-lifetime)
+- [x] `/csharp/whats-new-latest` — What's New in C# 13+ & .NET 10/11 (2026-07-04 — 3 subtopics: testing-time-dependent-code-with-faketimeprovider-without-sleeping, how-dynamic-pgo-actually-rejits-tiered-compilation-on-stack-replacement, hybridcache-stampede-protection-only-coalesces-within-one-process)
 
 #### ASP.NET Core — 45 topic pages
 
-- [ ] `/aspnet/hosting-startup` — Hosting & Startup
-- [ ] `/aspnet/middleware` — Middleware Pipeline
-- [ ] `/aspnet/routing` — Routing
-- [ ] `/aspnet/configuration` — Configuration & Options
-- [ ] `/aspnet/dependency-injection` — Dependency Injection
-- [ ] `/aspnet/logging` — Logging & Diagnostics
-- [ ] `/aspnet/static-files` — Static Files & Uploads
-- [ ] `/aspnet/controllers` — Controllers & Actions
-- [ ] `/aspnet/minimal-apis` — Minimal APIs
-- [ ] `/aspnet/model-binding` — Model Binding & Validation
-- [ ] `/aspnet/filters` — Filters & Endpoint Filters
-- [ ] `/aspnet/error-handling` — Error Handling
-- [ ] `/aspnet/openapi-swagger` — OpenAPI & Swagger
-- [ ] `/aspnet/api-versioning` — API Versioning
-- [ ] `/aspnet/http-clients` — HttpClient & Resilience
-- [ ] `/aspnet/grpc` — gRPC Services
-- [ ] `/aspnet/ef-core-basics` — EF Core Basics
-- [ ] `/aspnet/ef-relationships` — EF Core Relationships
-- [ ] `/aspnet/ef-performance` — EF Core Performance
-- [ ] `/aspnet/caching` — Caching
-- [ ] `/aspnet/authentication` — Authentication
+- [x] `/aspnet/hosting-startup` — Hosting & Startup (2026-07-04 — 3 subtopics: testing-environment-branching-without-real-environment-variable, what-builder-build-actually-seals-servicecollection-vs-serviceprovider, applicationstopping-fires-before-in-flight-requests-finish-draining)
+- [x] `/aspnet/middleware` — Middleware Pipeline (2026-07-04 — 3 subtopics: testing-custom-middleware-isolation-applicationbuilder-no-kestrel, how-middleware-pipeline-built-requestdelegate-composition-nested-closures, onstarting-callbacks-run-lifo-order-last-registered-fires-first)
+- [x] `/aspnet/routing` — Routing (2026-07-04 — 3 subtopics: testing-route-precedence-catching-ambiguous-routes-before-production, how-route-precedence-actually-computed-segment-scoring-algorithm, typod-renamed-withname-silently-breaks-linkgenerator-no-compile-check)
+- [x] `/aspnet/configuration` — Configuration & Options (2026-07-04 — 3 subtopics: testing-options-validation-actually-rejects-bad-config-not-just-compiles, how-optionsmonitor-detects-file-change-changetoken-propagation, onchange-returns-idisposable-must-be-disposed-or-callback-leaks)
+- [x] `/aspnet/dependency-injection` — Dependency Injection (2026-07-04 — 3 subtopics: testing-servicescopefactory-backgroundservice-genuinely-fresh-scope, createasyncscope-vs-createscope, activatorutilities-bypasses-validateonbuild)
+- [x] `/aspnet/logging` — Logging & Diagnostics (2026-07-04 — 3 subtopics: testing-structured-log-properties-with-fake-logger, how-beginscope-propagates-ambient-context-asynclocal, reusing-eventid-across-loggermessage-methods-compiles-cleanly)
+- [x] `/aspnet/static-files` — Static Files & Uploads (2026-07-04 — 3 subtopics: testing-magic-number-validation-fake-byte-streams, how-usestaticfiles-computes-etag-touching-file-busts-cache, startswith-path-traversal-guard-sibling-directory-bypass)
+- [x] `/aspnet/controllers` — Controllers & Actions (2026-07-04 — 3 subtopics: testing-actionresult-catches-null-returns-200-ok-bug, how-binding-source-inference-decides-frombody-vs-fromquery, createdataction-throws-runtime-despite-nameof-safety)
+- [x] `/aspnet/minimal-apis` — Minimal APIs (2026-07-04 — 3 subtopics: testing-endpoint-filter-isolation-no-test-server, forgotten-di-registration-silently-falls-through-body-binding, linkgenerator-getpathbyname-returns-null-instead-of-throwing)
+- [x] `/aspnet/model-binding` — Model Binding & Validation (2026-07-04 — 3 subtopics: testing-iparsable-tryparse-graceful-failure-daterange, how-recursive-nested-validation-walks-object-graph-circular-reference, fluentvalidation-setvalidator-new-silently-bypasses-di)
+- [x] `/aspnet/filters` — Filters & Endpoint Filters (2026-07-04 — 3 subtopics: testing-filters-execute-in-documented-pipeline-order, why-next-runs-action-even-after-context-result-is-set, ifilterfactory-isreusable-silently-recreates-captive-dependency)
+- [x] `/aspnet/error-handling` — Error Handling (2026-07-04 — 3 subtopics: testing-exceptionhandler-chain-ordering-works-as-documented, why-reexecuted-error-endpoint-must-explicitly-restore-status-code, handler-writes-before-returning-false-corrupts-next-handler)
+- [x] `/aspnet/openapi-swagger` — OpenAPI & Swagger (2026-07-04 — 3 subtopics: testing-openapi-spec-catches-typedresults-regression-to-iresult, why-generator-inspects-signature-not-method-body, generating-clients-against-live-server-undermines-diffing-prs)
+- [x] `/aspnet/api-versioning` — API Versioning (2026-07-04 — 3 subtopics: testing-versioned-endpoints-return-genuinely-different-shapes, why-omitting-apiversion-constraint-causes-ambiguous-match, what-happens-when-combined-version-readers-disagree)
+- [x] `/aspnet/http-clients` — HttpClient & Resilience (2026-07-04 — 3 subtopics: testing-retry-strategy-fires-transient-not-deterministic-errors, why-transient-delegatinghandlers-shared-across-pool-rotation, addhedging-shared-pipeline-can-hedge-non-idempotent-requests)
+- [x] `/aspnet/grpc` — gRPC Services (2026-07-04 — 3 subtopics: testing-server-streaming-rpc-cancellation-stops-mid-stream, how-proto3-optional-actually-tracks-field-presence, grpc-web-cors-needs-allowed-request-headers-not-exposed)
+- [x] `/aspnet/ef-core-basics` — EF Core Basics (2026-07-04 — 3 subtopics: testing-asnotracking-queries-genuinely-arent-tracked-sqlite, how-change-tracker-snapshot-produces-minimal-update, reload-discards-edit-getdatabasevaluesasync-preserves-it)
+- [x] `/aspnet/ef-relationships` — EF Core Relationships (2026-07-04 — 3 subtopics: testing-deletebehavior-restrict-genuinely-throws-sqlite, how-skip-navigations-determine-join-table-insert-delete, replacing-ownsmany-collection-deletes-reinserts-everything)
+- [x] `/aspnet/ef-performance` — EF Core Performance (2026-07-05 — 3 subtopics: testing-executeupdateasync-bypasses-savechanges-interceptors, what-ef-compilequery-actually-eliminates, captured-reference-pooled-dbcontext-leaks-across-requests)
+- [x] `/aspnet/caching` — Caching (2026-07-05 — 3 subtopics: testing-getorcreateasync-concurrent-misses-factory-runs-twice, how-imemorycache-expiry-actually-enforced-lazy-not-timers, write-invalidate-stale-repopulation-race-ttl-backstop)
+- [x] `/aspnet/authentication` — Authentication (2026-07-05 — 3 subtopics: testing-jwt-clockskew-expired-token-still-validates, why-setapplicationname-matters-shared-dataprotection-keys, jwt-claim-type-mapping-sub-becomes-nameidentifier)
 - [ ] `/aspnet/authorization` — Authorization
 - [ ] `/aspnet/cors` — CORS & Security Headers
 - [ ] `/aspnet/rate-limiting` — Rate Limiting

@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Controllers &amp; Actions"
+    topicRoute="/aspnet/controllers"
+    subtopicLabel="Testing the Null-Return 200 OK Bug"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing That ActionResult&lt;T&gt; Catches the Null-Return 200 OK Bug</h1>
+  <p class="page-subtitle">
+    The main page's own Common Mistakes section warns that returning null produces 200 OK instead of
+    404. Here's how to write a test that actually catches a regression back to that bug — not just
+    documentation that warns about it.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="Core 2.1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This subtopic tests the main page's own null-return gotcha. The next subtopic goes underneath
+      <code>[ApiController]</code>'s binding source inference — explaining the actual algorithm that
+      decides <code>[FromBody]</code> vs <code>[FromQuery]</code>, and a surprising case it produces.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Controllers &amp; Actions"
+    topicRoute="/aspnet/controllers"
+    [next]="{ label: 'How Binding Source Inference Actually Decides FromBody vs FromQuery', route: '/aspnet/controllers/how-binding-source-inference-decides-frombody-vs-fromquery' }"
+  />
+</div>

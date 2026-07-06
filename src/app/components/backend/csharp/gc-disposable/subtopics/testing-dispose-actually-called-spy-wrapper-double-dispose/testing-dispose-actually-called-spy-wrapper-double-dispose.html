@@ -1,0 +1,30 @@
+<div class="cs-page subtopic-page">
+  <app-subtopic-eyebrow topicLabel="GC & IDisposable" topicRoute="/csharp/gc-disposable" subtopicLabel="Testing That Dispose() Was Called" />
+  <div class="page-header-icon cs-icon">C#</div>
+  <h1 class="page-title">Testing That Dispose() Actually Gets Called: Spy Wrappers and the Double-Dispose Safety Test</h1>
+  <p class="page-subtitle">The main topic page's own challenge requires Dispose() to flush a resource and be safe to call twice — neither claim is verified there. See how a spy wrapper turns both into direct, assertable tests.</p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since=".NET 1+" tech="csharp" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="cs-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="cs-section">
+    <h2>Where this fits</h2>
+    <p>Next, we look at a genuinely unusual case the main <a routerLink="/csharp/gc-disposable">GC & IDisposable</a> page doesn't cover at all: types that can use a <code>using</code> block WITHOUT implementing <code>IDisposable</code>, because they physically cannot implement any interface.</p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="GC & IDisposable"
+    topicRoute="/csharp/gc-disposable"
+    [next]="{ label: 'Pattern-Based Disposal on ref structs', route: '/csharp/gc-disposable/pattern-based-disposal-ref-structs-cannot-implement-idisposable' }"
+  />
+</div>
