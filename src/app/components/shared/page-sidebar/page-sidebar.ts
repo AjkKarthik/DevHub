@@ -13607,6 +13607,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/output-caching-advanced/testing-tag-eviction-with-fake-outputcachestore': {
+    apis: ['IOutputCacheStore', 'EvictByTagAsync()', 'WebApplicationFactory<T>', 'ConfigureTestServices'],
+    related: [
+      { label: 'Stampede Locking Mechanics — next', route: '/aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures' },
+      { label: 'Output Caching Advanced (overview)', route: '/aspnet/output-caching-advanced' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Replace IOutputCacheStore alone in ConfigureTestServices — AddOutputCache() and UseOutputCache() stay untouched, since the store is a separately swappable dependency.',
+    docs: [
+      { label: 'Output caching in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A typo in an eviction tag name is a silent no-op against a real store — a fake store that records EvictedTags turns that into an immediate, precise assertion failure instead of a vague stale-data symptom.',
+      'Identical response bodies across two GETs do not prove a cache hit — only counting the real backend work (e.g. a repo call counter) distinguishes "served from cache" from "hit the database twice."',
+    ],
+  },
+
+  'aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures': {
+    apis: ['IOutputCacheStore', 'SemaphoreSlim', 'OutputCacheContext'],
+    related: [
+      { label: 'Testing Tag Eviction — previous', route: '/aspnet/output-caching-advanced/testing-tag-eviction-with-fake-outputcachestore' },
+      { label: 'Custom Policy Safety Gaps — next', route: '/aspnet/output-caching-advanced/custom-ioutputcachepolicy-skips-every-built-in-safety-check' },
+      { label: 'Output Caching Advanced (overview)', route: '/aspnet/output-caching-advanced' },
+    ],
+    tip: 'A failed population attempt is never cached — the per-key lock only coalesces CONCURRENT duplicate work at one instant, it is not a circuit breaker against a sustained outage.',
+    docs: [
+      { label: 'Output caching in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'On success, waiters queued behind the lock reuse the now-populated cache entry instead of re-running the handler — that reuse, not the lock itself, is what prevents the thundering herd.',
+      'On failure, every currently-queued request eventually gets its own real retry against a still-broken backend, one at a time — pair output caching with an actual circuit breaker for protection against a sustained outage.',
+    ],
+  },
+
+  'aspnet/output-caching-advanced/custom-ioutputcachepolicy-skips-every-built-in-safety-check': {
+    apis: ['IOutputCachePolicy', 'OutputCacheContext', 'AllowCacheStorage', 'AllowCacheLookup'],
+    related: [
+      { label: 'Stampede Locking Mechanics — previous', route: '/aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures' },
+      { label: 'Output Caching Advanced (overview)', route: '/aspnet/output-caching-advanced' },
+    ],
+    tip: 'EnableOutputCaching only opts a request into the pipeline — AllowCacheStorage and AllowCacheLookup are separate switches, decided as late as ServeResponseAsync once the real status code is known.',
+    docs: [
+      { label: 'Output caching in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Implementing IOutputCachePolicy from scratch gets none of the built-in default policy\'s guards for free — GET/HEAD-only and status-code filtering must be reimplemented explicitly.',
+      'A custom policy with no method guard applied via a named policy to a POST or DELETE endpoint enables caching for that write endpoint — the same bug as caching a write endpoint directly, just harder to spot.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

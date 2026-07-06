@@ -831,6 +831,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ctx.Arguments.OfType() Is Fragile — Use GetArgument by Position', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' },
     { label: 'Nested Group Filters Execute Outside-In Like Middleware', route: '/aspnet/minimal-api-advanced/nested-group-filters-execute-outside-in-like-middleware' },
   ],
+  'output-caching-advanced': [
+    { label: 'Testing Tag Eviction With a Fake IOutputCacheStore', route: '/aspnet/output-caching-advanced/testing-tag-eviction-with-fake-outputcachestore' },
+    { label: 'How Cache Stampede Locking Survives Population Failures', route: '/aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures' },
+    { label: 'Custom IOutputCachePolicy Skips Every Built-In Safety Check', route: '/aspnet/output-caching-advanced/custom-ioutputcachepolicy-skips-every-built-in-safety-check' },
+  ],
 };
 
 @Component({

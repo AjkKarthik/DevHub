@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Output Caching Advanced"
+    topicRoute="/aspnet/output-caching-advanced"
+    subtopicLabel="Testing Tag Eviction"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Tag Eviction With a Fake IOutputCacheStore</h1>
+  <p class="page-subtitle">
+    The main page's own EvictByTagAsync examples are never shown under test. IOutputCacheStore is a
+    3-method interface — a fake in-memory implementation is enough to prove the right tag gets evicted,
+    with no Redis or real distributed cache involved.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="Core 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With eviction correctness covered, the next subtopic digs into the mechanics behind the main page's
+      "first request populates the cache while others wait" stampede-prevention claim — and what actually
+      happens when that populating request fails.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Output Caching Advanced"
+    topicRoute="/aspnet/output-caching-advanced"
+    [next]="{ label: 'How Cache Stampede Locking Survives Population Failures', route: '/aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures' }"
+  />
+</div>

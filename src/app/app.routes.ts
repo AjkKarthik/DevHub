@@ -932,7 +932,12 @@ export const routes: Routes = [
         { path: 'ctx-arguments-oftype-is-fragile-use-getargument-by-position', loadComponent: () => import('./components/backend/aspnet/minimal-api-advanced/subtopics/ctx-arguments-oftype-is-fragile-use-getargument-by-position/ctx-arguments-oftype-is-fragile-use-getargument-by-position').then(m => m.CtxArgumentsOftypeIsFragileUseGetargumentByPositionSubtopic) },
         { path: 'nested-group-filters-execute-outside-in-like-middleware', loadComponent: () => import('./components/backend/aspnet/minimal-api-advanced/subtopics/nested-group-filters-execute-outside-in-like-middleware/nested-group-filters-execute-outside-in-like-middleware').then(m => m.NestedGroupFiltersExecuteOutsideInLikeMiddlewareSubtopic) },
       ] },
-      { path: 'output-caching-advanced',   loadComponent: () => import('./components/backend/aspnet/output-caching-advanced/output-caching-advanced').then(m => m.AspnetOutputCachingAdvanced) },
+      { path: 'output-caching-advanced', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/output-caching-advanced/output-caching-advanced').then(m => m.AspnetOutputCachingAdvanced) },
+        { path: 'testing-tag-eviction-with-fake-outputcachestore', loadComponent: () => import('./components/backend/aspnet/output-caching-advanced/subtopics/testing-tag-eviction-with-fake-outputcachestore/testing-tag-eviction-with-fake-outputcachestore').then(m => m.TestingTagEvictionWithFakeOutputcachestoreSubtopic) },
+        { path: 'how-cache-stampede-locking-survives-population-failures', loadComponent: () => import('./components/backend/aspnet/output-caching-advanced/subtopics/how-cache-stampede-locking-survives-population-failures/how-cache-stampede-locking-survives-population-failures').then(m => m.HowCacheStampedeLockingSurvivesPopulationFailuresSubtopic) },
+        { path: 'custom-ioutputcachepolicy-skips-every-built-in-safety-check', loadComponent: () => import('./components/backend/aspnet/output-caching-advanced/subtopics/custom-ioutputcachepolicy-skips-every-built-in-safety-check/custom-ioutputcachepolicy-skips-every-built-in-safety-check').then(m => m.CustomIoutputcachepolicySkipsEveryBuiltInSafetyCheckSubtopic) },
+      ] },
       { path: 'dapper',                    loadComponent: () => import('./components/backend/aspnet/dapper/dapper').then(m => m.AspnetDapper) },
       { path: 'csrf',                      loadComponent: () => import('./components/backend/aspnet/csrf/csrf').then(m => m.AspnetCsrf) },
       { path: 'feature-flags',             loadComponent: () => import('./components/backend/aspnet/feature-flags/feature-flags').then(m => m.AspnetFeatureFlags) },
