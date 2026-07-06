@@ -1524,7 +1524,7 @@ off here with a date.
 - [x] `/aspnet/web-security` — Web Security Essentials (2026-07-06 — 3 subtopics: testing-antiforgery-token-validation-with-webapplicationfactory, contextual-encoding-html-encode-doesnt-protect-attributes-or-js, missing-separator-in-startswith-check-allows-sibling-directory-bypass)
 - [x] `/aspnet/secrets` — Secrets & Data Protection (2026-07-06 — 3 subtopics: testing-validateonstart-only-fails-fast-via-host-startasync, ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault, pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens)
 - [x] `/aspnet/testing` — Testing ASP.NET Core (2026-07-06 — 3 subtopics: testing-role-based-auth-per-test-without-new-factory-subclass, collection-fixtures-silently-disable-parallelism-for-grouped-classes, singleton-state-in-shared-factory-leaks-across-test-methods)
-- [ ] `/aspnet/background-services` — Background Services
+- [x] `/aspnet/background-services` — Background Services (2026-07-06 — 3 subtopics: testing-periodic-worker-loops-with-faketimeprovider-tick-control, startasync-returns-before-executeasync-actually-completes, channel-writer-never-completed-loses-items-on-graceful-shutdown)
 - [ ] `/aspnet/signalr` — SignalR
 - [ ] `/aspnet/health-checks` — Health Checks & Observability
 - [ ] `/aspnet/deployment` — Deployment & Hosting
