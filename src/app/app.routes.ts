@@ -884,7 +884,12 @@ export const routes: Routes = [
         { path: 'collection-fixtures-silently-disable-parallelism-for-grouped-classes', loadComponent: () => import('./components/backend/aspnet/testing/subtopics/collection-fixtures-silently-disable-parallelism-for-grouped-classes/collection-fixtures-silently-disable-parallelism-for-grouped-classes').then(m => m.CollectionFixturesSilentlyDisableParallelismForGroupedClassesSubtopic) },
         { path: 'singleton-state-in-shared-factory-leaks-across-test-methods', loadComponent: () => import('./components/backend/aspnet/testing/subtopics/singleton-state-in-shared-factory-leaks-across-test-methods/singleton-state-in-shared-factory-leaks-across-test-methods').then(m => m.SingletonStateInSharedFactoryLeaksAcrossTestMethodsSubtopic) },
       ] },
-      { path: 'background-services',  loadComponent: () => import('./components/backend/aspnet/background-services/background-services').then(m => m.AspnetBackgroundServices) },
+      { path: 'background-services', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/background-services/background-services').then(m => m.AspnetBackgroundServices) },
+        { path: 'testing-periodic-worker-loops-with-faketimeprovider-tick-control', loadComponent: () => import('./components/backend/aspnet/background-services/subtopics/testing-periodic-worker-loops-with-faketimeprovider-tick-control/testing-periodic-worker-loops-with-faketimeprovider-tick-control').then(m => m.TestingPeriodicWorkerLoopsWithFaketimeproviderTickControlSubtopic) },
+        { path: 'startasync-returns-before-executeasync-actually-completes', loadComponent: () => import('./components/backend/aspnet/background-services/subtopics/startasync-returns-before-executeasync-actually-completes/startasync-returns-before-executeasync-actually-completes').then(m => m.StartasyncReturnsBeforeExecuteasyncActuallyCompletesSubtopic) },
+        { path: 'channel-writer-never-completed-loses-items-on-graceful-shutdown', loadComponent: () => import('./components/backend/aspnet/background-services/subtopics/channel-writer-never-completed-loses-items-on-graceful-shutdown/channel-writer-never-completed-loses-items-on-graceful-shutdown').then(m => m.ChannelWriterNeverCompletedLosesItemsOnGracefulShutdownSubtopic) },
+      ] },
       { path: 'signalr',              loadComponent: () => import('./components/backend/aspnet/signalr/signalr').then(m => m.AspnetSignalR) },
       { path: 'health-checks',        loadComponent: () => import('./components/backend/aspnet/health-checks/health-checks').then(m => m.AspnetHealthChecks) },
       { path: 'deployment',           loadComponent: () => import('./components/backend/aspnet/deployment/deployment').then(m => m.AspnetDeployment) },

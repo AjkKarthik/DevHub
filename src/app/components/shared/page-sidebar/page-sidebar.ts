@@ -13013,6 +13013,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/background-services/testing-periodic-worker-loops-with-faketimeprovider-tick-control': {
+    apis: ['PeriodicTimer(period, TimeProvider)', 'FakeTimeProvider', 'BackgroundService.StartAsync()'],
+    related: [
+      { label: 'StartAsync/ExecuteAsync Mechanics — next', route: '/aspnet/background-services/startasync-returns-before-executeasync-actually-completes' },
+      { label: 'Background Services (overview)', route: '/aspnet/background-services' },
+      { label: 'Unit Testing (xUnit & Moq)', route: '/csharp/unit-testing' },
+    ],
+    tip: 'Since .NET 8, PeriodicTimer accepts an injectable TimeProvider — pass a FakeTimeProvider and advance it in tests for fully deterministic tick behavior, with zero real elapsed time.',
+    docs: [
+      { label: 'Background tasks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime (Channels)', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'A BackgroundService can be tested directly — call StartAsync/StopAsync on the instance itself, no WebApplicationFactory or host required.',
+      'Advancing a fake clock by one big jump spanning several periods fires exactly ONE tick, not one per elapsed period — PeriodicTimer never catches up on missed ticks.',
+    ],
+  },
+
+  'aspnet/background-services/startasync-returns-before-executeasync-actually-completes': {
+    apis: ['BackgroundService.StartAsync()', 'ExecuteAsync()', 'IHostedService'],
+    related: [
+      { label: 'Testing Periodic Worker Loops — previous', route: '/aspnet/background-services/testing-periodic-worker-loops-with-faketimeprovider-tick-control' },
+      { label: 'Channel Draining at Shutdown — next', route: '/aspnet/background-services/channel-writer-never-completed-loses-items-on-graceful-shutdown' },
+      { label: 'Background Services (overview)', route: '/aspnet/background-services' },
+    ],
+    tip: 'BackgroundService.StartAsync only waits for ExecuteAsync to reach its first genuine, still-pending await — synchronous work (or await on an already-completed Task) runs inline and blocks host startup exactly like code in StartAsync itself.',
+    docs: [
+      { label: 'Background tasks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'await Task.FromResult(...) does not yield control — the compiler continues synchronously for an already-completed Task, so "async-flavored" initialization code gets no non-blocking benefit unless it awaits something genuinely still pending.',
+      'The host calls each hosted service\'s StartAsync sequentially, but for BackgroundService that only means "reach the first real await sequentially" — everything after that point runs concurrently with the next service\'s startup.',
+    ],
+  },
+
+  'aspnet/background-services/channel-writer-never-completed-loses-items-on-graceful-shutdown': {
+    apis: ['Channel<T>.Writer.Complete()', 'IHostApplicationLifetime.ApplicationStopping', 'ReadAllAsync()'],
+    related: [
+      { label: 'StartAsync/ExecuteAsync Mechanics — previous', route: '/aspnet/background-services/startasync-returns-before-executeasync-actually-completes' },
+      { label: 'Background Services (overview)', route: '/aspnet/background-services' },
+      { label: 'Rate Limiting', route: '/aspnet/rate-limiting' },
+    ],
+    tip: 'Without ever calling Writer.Complete(), a channel-backed queue\'s worker loop has only ONE way to exit — stoppingToken cancellation — discarding whatever\'s still buffered on every routine graceful shutdown, not just a crash.',
+    docs: [
+      { label: 'System.Threading.Channels', url: 'https://learn.microsoft.com/en-us/dotnet/core/extensions/channels' },
+    ],
+    resources: [
+      { label: 'dotnet/runtime (Channels)', url: 'https://github.com/dotnet/runtime', badge: 'code' },
+    ],
+    gotchas: [
+      'Calling Complete() alone does not fix the loss if the drain read still uses the same stoppingToken — the read is still cancelled at the same moment shutdown begins, regardless of Complete() having been called.',
+      'ApplicationStopping and a BackgroundService\'s own stoppingToken fire from the same shutdown sequence at essentially the same time — the drain read needs a genuinely separate, uncancelled token to have any chance of finishing.',
+    ],
+  },
+
   'aspnet/signalr': {
     apis: ['AddSignalR()', 'MapHub<T>()', 'Hub', 'IHubContext<T>', 'Clients.All', 'Clients.Caller', 'Groups.AddToGroupAsync()', 'AddStackExchangeRedis()'],
     related: [

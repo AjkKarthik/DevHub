@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Background Services"
+    topicRoute="/aspnet/background-services"
+    subtopicLabel="StartAsync/ExecuteAsync Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">StartAsync Returns Before ExecuteAsync Actually Completes</h1>
+  <p class="page-subtitle">
+    The main page's "sequential StartAsync" fact and its "move init to ExecuteAsync" advice are the same
+    mechanism. StartAsync only waits for ExecuteAsync's first genuine yield point — synchronous work before
+    that point blocks host startup exactly like code in StartAsync would.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the StartAsync/ExecuteAsync boundary pinned down, the final subtopic covers a production
+      correctness gap in the main page's own Channel&lt;T&gt; example — enqueued-but-unprocessed items are
+      silently discarded on a routine graceful shutdown, not just an unexpected crash.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Background Services"
+    topicRoute="/aspnet/background-services"
+    [prev]="{ label: 'Testing Periodic Worker Loops With FakeTimeProvider Tick Control', route: '/aspnet/background-services/testing-periodic-worker-loops-with-faketimeprovider-tick-control' }"
+    [next]="{ label: 'Channel Writer Never Completed Loses Items on Graceful Shutdown', route: '/aspnet/background-services/channel-writer-never-completed-loses-items-on-graceful-shutdown' }"
+  />
+</div>

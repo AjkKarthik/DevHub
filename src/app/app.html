@@ -715,7 +715,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/background-services" routerLinkActive="active"><span class="nl-text">Background Services</span>@if(progress.isDone('aspnet-background-services')){<span class="nl-done">✓</span>}@if(diff('aspnet-background-services');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/background-services" routerLinkActive="active">
+        <span class="nl-text">Background Services</span>
+        @if (progress.isDone('aspnet-background-services')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-background-services'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('background-services')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('background-services')"
+                  (click)="toggleSubtopics('background-services', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('background-services'); as subs) {
+        @if (isSubtopicsExpanded('background-services')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/signalr" routerLinkActive="active"><span class="nl-text">SignalR</span>@if(progress.isDone('aspnet-signalr')){<span class="nl-done">✓</span>}@if(diff('aspnet-signalr');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/health-checks" routerLinkActive="active"><span class="nl-text">Health Checks</span>@if(progress.isDone('aspnet-health-checks')){<span class="nl-done">✓</span>}@if(diff('aspnet-health-checks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/deployment" routerLinkActive="active"><span class="nl-text">Deployment</span>@if(progress.isDone('aspnet-deployment')){<span class="nl-done">✓</span>}@if(diff('aspnet-deployment');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

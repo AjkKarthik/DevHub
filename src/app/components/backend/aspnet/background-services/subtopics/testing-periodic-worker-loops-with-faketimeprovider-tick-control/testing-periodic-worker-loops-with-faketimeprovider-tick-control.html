@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Background Services"
+    topicRoute="/aspnet/background-services"
+    subtopicLabel="Testing Periodic Worker Loops"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Periodic Worker Loops With FakeTimeProvider Tick Control</h1>
+  <p class="page-subtitle">
+    The main page's own PeriodicTimer example has no injectable clock. Since .NET 8, PeriodicTimer accepts a
+    TimeProvider — pass a FakeTimeProvider and drive tick behavior deterministically, calling StartAsync and
+    StopAsync directly with no host at all.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With deterministic tick testing in place, the next subtopic digs into a mechanic the main page states
+      as fact but doesn't explain — why BackgroundService.StartAsync() returns before ExecuteAsync actually
+      finishes, and why that's exactly what makes heavy async initialization safe at the top of the loop.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Background Services"
+    topicRoute="/aspnet/background-services"
+    [next]="{ label: 'StartAsync Returns Before ExecuteAsync Actually Completes', route: '/aspnet/background-services/startasync-returns-before-executeasync-actually-completes' }"
+  />
+</div>

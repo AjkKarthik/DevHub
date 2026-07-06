@@ -785,6 +785,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Collection Fixtures Silently Disable Parallelism for Grouped Classes', route: '/aspnet/testing/collection-fixtures-silently-disable-parallelism-for-grouped-classes' },
     { label: 'Singleton State in a Shared Factory Leaks Across Test Methods', route: '/aspnet/testing/singleton-state-in-shared-factory-leaks-across-test-methods' },
   ],
+  'background-services': [
+    { label: 'Testing Periodic Worker Loops With FakeTimeProvider Tick Control', route: '/aspnet/background-services/testing-periodic-worker-loops-with-faketimeprovider-tick-control' },
+    { label: 'StartAsync Returns Before ExecuteAsync Actually Completes', route: '/aspnet/background-services/startasync-returns-before-executeasync-actually-completes' },
+    { label: 'Channel Writer Never Completed Loses Items on Shutdown', route: '/aspnet/background-services/channel-writer-never-completed-loses-items-on-graceful-shutdown' },
+  ],
 };
 
 @Component({
