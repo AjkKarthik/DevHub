@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dapper &amp; Raw SQL"
+    topicRoute="/aspnet/dapper"
+    subtopicLabel="Connection Close Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How Dapper Decides Whether to Close the Connection It Used</h1>
+  <p class="page-subtitle">
+    The main page states that "Dapper opens and closes the connection automatically" — but only shows the
+    case where the connection starts closed. The actual rule only manages a connection Dapper itself found
+    closed.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the open/close rule pinned down, the final subtopic applies it directly to the main page's own
+      Transactions example — db.Open() runs, but nothing in that method ever calls db.Close().
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dapper &amp; Raw SQL"
+    topicRoute="/aspnet/dapper"
+    [prev]="{ label: 'Testing Dapper Repositories With In-Memory SQLite', route: '/aspnet/dapper/testing-dapper-repositories-with-in-memory-sqlite' }"
+    [next]="{ label: 'TransferAsync Holds Its Connection Open Far Too Long', route: '/aspnet/dapper/transferasync-example-holds-its-connection-open-far-too-long' }"
+  />
+</div>

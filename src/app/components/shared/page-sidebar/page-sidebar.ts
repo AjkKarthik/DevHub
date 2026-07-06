@@ -13666,6 +13666,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/dapper/testing-dapper-repositories-with-in-memory-sqlite': {
+    apis: ['IDbConnection', 'SqliteConnection', 'QueryAsync<T>()', 'ExecuteAsync()'],
+    related: [
+      { label: 'Connection Close Mechanics — next', route: '/aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used' },
+      { label: 'Dapper & Raw SQL (overview)', route: '/aspnet/dapper' },
+      { label: 'EF Core Basics', route: '/aspnet/ef-core-basics' },
+    ],
+    tip: 'Keep the SAME SqliteConnection instance open for the whole test — in-memory SQLite scopes its data to the connection object, not the connection string.',
+    docs: [
+      { label: 'Dapper — GitHub', url: 'https://github.com/DapperLib/Dapper' },
+    ],
+    resources: [
+      { label: 'DapperLib/Dapper', url: 'https://github.com/DapperLib/Dapper', badge: 'code' },
+    ],
+    gotchas: [
+      'A new SqliteConnection(":memory:"), even with an identical connection string, opens a brand-new empty database — the data is scoped to the connection OBJECT, not the string.',
+      'Mocking IDbConnection is awkward since Dapper\'s methods are static extensions — a real in-memory database catches SQL/column bugs a mock never would.',
+    ],
+  },
+
+  'aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used': {
+    apis: ['IDbConnection', 'ConnectionState', 'BeginTransaction()'],
+    related: [
+      { label: 'Testing With In-Memory SQLite — previous', route: '/aspnet/dapper/testing-dapper-repositories-with-in-memory-sqlite' },
+      { label: 'TransferAsync\'s Connection Gap — next', route: '/aspnet/dapper/transferasync-example-holds-its-connection-open-far-too-long' },
+      { label: 'Dapper & Raw SQL (overview)', route: '/aspnet/dapper' },
+    ],
+    tip: 'Dapper only opens and closes a connection it finds CLOSED at call time — a connection that\'s already open when the call runs is left open afterward.',
+    docs: [
+      { label: 'Dapper — GitHub', url: 'https://github.com/DapperLib/Dapper' },
+    ],
+    resources: [
+      { label: 'DapperLib/Dapper', url: 'https://github.com/DapperLib/Dapper', badge: 'code' },
+    ],
+    gotchas: [
+      'BeginTransaction() throws InvalidOperationException on a Closed connection — it has no auto-open behavior of its own, unlike QueryAsync/ExecuteAsync.',
+      'Two closed-connection calls in a row each pay their own full open-and-close cost — Dapper has no memory across calls of what a previous call left the connection in.',
+    ],
+  },
+
+  'aspnet/dapper/transferasync-example-holds-its-connection-open-far-too-long': {
+    apis: ['IDbConnection', 'IDbTransaction', 'db.Close()'],
+    related: [
+      { label: 'Connection Close Mechanics — previous', route: '/aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used' },
+      { label: 'Dapper & Raw SQL (overview)', route: '/aspnet/dapper' },
+    ],
+    tip: 'db.Open() with no matching db.Close() isn\'t a permanent leak — Transient DI disposes it eventually — but it holds a pooled connection open for the rest of the request.',
+    docs: [
+      { label: 'Dapper — GitHub', url: 'https://github.com/DapperLib/Dapper' },
+    ],
+    resources: [
+      { label: 'DapperLib/Dapper', url: 'https://github.com/DapperLib/Dapper', badge: 'code' },
+    ],
+    gotchas: [
+      'using var tx = db.BeginTransaction() disposes only the transaction object, never the connection db.Open() opened.',
+      'Under concurrent load, every request holding a connection open longer than necessary brings the app measurably closer to exhausting the ADO.NET pool.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

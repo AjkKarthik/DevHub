@@ -938,7 +938,12 @@ export const routes: Routes = [
         { path: 'how-cache-stampede-locking-survives-population-failures', loadComponent: () => import('./components/backend/aspnet/output-caching-advanced/subtopics/how-cache-stampede-locking-survives-population-failures/how-cache-stampede-locking-survives-population-failures').then(m => m.HowCacheStampedeLockingSurvivesPopulationFailuresSubtopic) },
         { path: 'custom-ioutputcachepolicy-skips-every-built-in-safety-check', loadComponent: () => import('./components/backend/aspnet/output-caching-advanced/subtopics/custom-ioutputcachepolicy-skips-every-built-in-safety-check/custom-ioutputcachepolicy-skips-every-built-in-safety-check').then(m => m.CustomIoutputcachepolicySkipsEveryBuiltInSafetyCheckSubtopic) },
       ] },
-      { path: 'dapper',                    loadComponent: () => import('./components/backend/aspnet/dapper/dapper').then(m => m.AspnetDapper) },
+      { path: 'dapper', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/dapper/dapper').then(m => m.AspnetDapper) },
+        { path: 'testing-dapper-repositories-with-in-memory-sqlite', loadComponent: () => import('./components/backend/aspnet/dapper/subtopics/testing-dapper-repositories-with-in-memory-sqlite/testing-dapper-repositories-with-in-memory-sqlite').then(m => m.TestingDapperRepositoriesWithInMemorySqliteSubtopic) },
+        { path: 'how-dapper-decides-whether-to-close-the-connection-it-used', loadComponent: () => import('./components/backend/aspnet/dapper/subtopics/how-dapper-decides-whether-to-close-the-connection-it-used/how-dapper-decides-whether-to-close-the-connection-it-used').then(m => m.HowDapperDecidesWhetherToCloseTheConnectionItUsedSubtopic) },
+        { path: 'transferasync-example-holds-its-connection-open-far-too-long', loadComponent: () => import('./components/backend/aspnet/dapper/subtopics/transferasync-example-holds-its-connection-open-far-too-long/transferasync-example-holds-its-connection-open-far-too-long').then(m => m.TransferasyncExampleHoldsItsConnectionOpenFarTooLongSubtopic) },
+      ] },
       { path: 'csrf',                      loadComponent: () => import('./components/backend/aspnet/csrf/csrf').then(m => m.AspnetCsrf) },
       { path: 'feature-flags',             loadComponent: () => import('./components/backend/aspnet/feature-flags/feature-flags').then(m => m.AspnetFeatureFlags) },
       { path: 'localization',              loadComponent: () => import('./components/backend/aspnet/localization/localization').then(m => m.AspnetLocalization) },

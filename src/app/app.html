@@ -622,7 +622,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/dapper" routerLinkActive="active"><span class="nl-text">Dapper &amp; Raw SQL</span>@if(progress.isDone('aspnet-dapper')){<span class="nl-done">✓</span>}@if(diff('aspnet-dapper');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/dapper" routerLinkActive="active">
+        <span class="nl-text">Dapper &amp; Raw SQL</span>
+        @if (progress.isDone('aspnet-dapper')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-dapper'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('dapper')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dapper')"
+                  (click)="toggleSubtopics('dapper', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dapper'); as subs) {
+        @if (isSubtopicsExpanded('dapper')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

@@ -836,6 +836,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How Cache Stampede Locking Survives Population Failures', route: '/aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures' },
     { label: 'Custom IOutputCachePolicy Skips Every Built-In Safety Check', route: '/aspnet/output-caching-advanced/custom-ioutputcachepolicy-skips-every-built-in-safety-check' },
   ],
+  'dapper': [
+    { label: 'Testing Dapper Repositories With In-Memory SQLite', route: '/aspnet/dapper/testing-dapper-repositories-with-in-memory-sqlite' },
+    { label: 'How Dapper Decides Whether to Close the Connection It Used', route: '/aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used' },
+    { label: 'TransferAsync Holds Its Connection Open Far Too Long', route: '/aspnet/dapper/transferasync-example-holds-its-connection-open-far-too-long' },
+  ],
 };
 
 @Component({
