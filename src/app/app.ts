@@ -871,6 +871,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Close Handshake Mechanics: What Actually Ends the Receive Loop', route: '/aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop' },
     { label: 'Receive-Loop Examples Silently Truncate Multi-Frame Messages', route: '/aspnet/websockets/receive-loop-examples-silently-truncate-multi-frame-messages' },
   ],
+  'yarp': [
+    { label: 'Testing YARP Routes and Transforms With LoadFromMemory', route: '/aspnet/yarp/testing-yarp-routes-and-transforms-with-loadfrommemory' },
+    { label: 'Passive Health Checks Don’t Verify Recovery — Just Retry After a Timeout', route: '/aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout' },
+    { label: 'Proxy Pipeline Order Is Not Arbitrary', route: '/aspnet/yarp/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing' },
+  ],
 };
 
 @Component({

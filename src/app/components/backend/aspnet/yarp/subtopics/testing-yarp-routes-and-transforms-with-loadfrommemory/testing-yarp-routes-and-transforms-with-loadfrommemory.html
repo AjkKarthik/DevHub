@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="YARP Reverse Proxy"
+    topicRoute="/aspnet/yarp"
+    subtopicLabel="Testing Routes and Transforms"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing YARP Routes and Transforms With LoadFromMemory</h1>
+  <p class="page-subtitle">
+    None of the main page's own routes, clusters, or transforms are ever tested. LoadFromMemory supplies
+    RouteConfig and ClusterConfig directly in code, and a fake backend that echoes what it received proves
+    a transform genuinely applied.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="intermediate" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing covered, the next subtopic corrects an overstated claim about the main page's own
+      passive health checks — they never actually verify a destination has recovered, they just retry it
+      after a timer.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="YARP Reverse Proxy"
+    topicRoute="/aspnet/yarp"
+    [next]="{ label: 'Passive Health Checks Don’t Verify Recovery — Just Retry After a Timeout', route: '/aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout' }"
+  />
+</div>

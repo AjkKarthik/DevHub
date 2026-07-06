@@ -1028,7 +1028,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/yarp" routerLinkActive="active"><span class="nl-text">YARP Reverse Proxy</span>@if(progress.isDone('aspnet-yarp')){<span class="nl-done">✓</span>}@if(diff('aspnet-yarp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/yarp" routerLinkActive="active">
+        <span class="nl-text">YARP Reverse Proxy</span>
+        @if (progress.isDone('aspnet-yarp')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-yarp'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('yarp')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('yarp')"
+                  (click)="toggleSubtopics('yarp', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('yarp'); as subs) {
+        @if (isSubtopicsExpanded('yarp')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/opentelemetry" routerLinkActive="active"><span class="nl-text">OpenTelemetry</span>@if(progress.isDone('aspnet-opentelemetry')){<span class="nl-done">✓</span>}@if(diff('aspnet-opentelemetry');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

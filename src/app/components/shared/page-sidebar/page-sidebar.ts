@@ -14079,6 +14079,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/yarp/testing-yarp-routes-and-transforms-with-loadfrommemory': {
+    apis: ['LoadFromMemory()', 'RouteConfig', 'ClusterConfig'],
+    related: [
+      { label: 'Passive Health Check Mechanics — next', route: '/aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout' },
+      { label: 'YARP Reverse Proxy (overview)', route: '/aspnet/yarp' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'LoadFromMemory(routes, clusters) supplies config directly in code — pair it with a fake backend that echoes back what it received to prove a transform genuinely applied.',
+    docs: [
+      { label: 'YARP documentation', url: 'https://microsoft.github.io/reverse-proxy/' },
+    ],
+    resources: [
+      { label: 'microsoft/reverse-proxy', url: 'https://github.com/microsoft/reverse-proxy', badge: 'code' },
+    ],
+    gotchas: [
+      'A backend with any catch-all route can return 200 regardless of whether a path-rewriting transform actually applied — assert on what the backend RECEIVED, not the response status alone.',
+      'No appsettings.json is needed for a test — LoadFromMemory exercises the exact same route-matching and transform logic YARP uses in production.',
+    ],
+  },
+
+  'aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout': {
+    apis: ['HealthCheck.Passive', 'ReactivationPeriod', 'HealthCheck.Active'],
+    related: [
+      { label: 'Testing Routes and Transforms — previous', route: '/aspnet/yarp/testing-yarp-routes-and-transforms-with-loadfrommemory' },
+      { label: 'Pipeline Ordering Gotcha — next', route: '/aspnet/yarp/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing' },
+      { label: 'YARP Reverse Proxy (overview)', route: '/aspnet/yarp' },
+    ],
+    tip: 'Passive health checks exclude a destination for a fixed ReactivationPeriod, then unconditionally retry it — they never actually confirm recovery. Only active health checks do that.',
+    docs: [
+      { label: 'YARP documentation', url: 'https://microsoft.github.io/reverse-proxy/' },
+    ],
+    resources: [
+      { label: 'microsoft/reverse-proxy', url: 'https://github.com/microsoft/reverse-proxy', badge: 'code' },
+    ],
+    gotchas: [
+      'A destination still down when its ReactivationPeriod elapses fails the very next real request routed to it — passive checks provide no verified-recovery guarantee.',
+      'Passive and active health checks solve different halves of the problem — configuring one does not make the other redundant.',
+    ],
+  },
+
+  'aspnet/yarp/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing': {
+    apis: ['UseSessionAffinity()', 'UseLoadBalancing()', 'UsePassiveHealthChecks()'],
+    related: [
+      { label: 'Passive Health Check Mechanics — previous', route: '/aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout' },
+      { label: 'YARP Reverse Proxy (overview)', route: '/aspnet/yarp' },
+    ],
+    tip: 'UseSessionAffinity() must run before UseLoadBalancing() — reversing the order silently defeats affinity, since load balancing already picks a destination before affinity can override it.',
+    docs: [
+      { label: 'YARP documentation', url: 'https://microsoft.github.io/reverse-proxy/' },
+    ],
+    resources: [
+      { label: 'microsoft/reverse-proxy', url: 'https://github.com/microsoft/reverse-proxy', badge: 'code' },
+    ],
+    gotchas: [
+      'Custom middleware registered before the built-in proxy stages can only see the matched route and cluster — no destination is selected yet.',
+      'A load-balancing policy can coincidentally pick the same destination across a few manual test requests even when affinity is completely non-functional — only sustained real traffic reveals the bug.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="YARP Reverse Proxy"
+    topicRoute="/aspnet/yarp"
+    subtopicLabel="Pipeline Ordering Gotcha"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Proxy Pipeline Order Is Not Arbitrary</h1>
+  <p class="page-subtitle">
+    UseSessionAffinity(), UseLoadBalancing(), and UsePassiveHealthChecks() must run in that exact order.
+    Swap the first two and session affinity is silently defeated — no error, just a policy that never
+    takes effect.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover YARP end-to-end: proving routes and transforms actually behave
+      as configured under test, understanding that passive health checks only retry blindly rather than
+      confirm recovery, and getting the proxy pipeline's built-in middleware order right so affinity and
+      load balancing actually cooperate.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="YARP Reverse Proxy"
+    topicRoute="/aspnet/yarp"
+    [prev]="{ label: 'Passive Health Checks Don’t Verify Recovery — Just Retry After a Timeout', route: '/aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout' }"
+  />
+</div>

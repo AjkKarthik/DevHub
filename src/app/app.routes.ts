@@ -980,7 +980,12 @@ export const routes: Routes = [
         { path: 'close-handshake-mechanics-what-actually-ends-the-receive-loop', loadComponent: () => import('./components/backend/aspnet/websockets/subtopics/close-handshake-mechanics-what-actually-ends-the-receive-loop/close-handshake-mechanics-what-actually-ends-the-receive-loop').then(m => m.CloseHandshakeMechanicsWhatActuallyEndsTheReceiveLoopSubtopic) },
         { path: 'receive-loop-examples-silently-truncate-multi-frame-messages', loadComponent: () => import('./components/backend/aspnet/websockets/subtopics/receive-loop-examples-silently-truncate-multi-frame-messages/receive-loop-examples-silently-truncate-multi-frame-messages').then(m => m.ReceiveLoopExamplesSilentlyTruncateMultiFrameMessagesSubtopic) },
       ] },
-      { path: 'yarp',                      loadComponent: () => import('./components/backend/aspnet/yarp/yarp').then(m => m.AspnetYarp) },
+      { path: 'yarp', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/yarp/yarp').then(m => m.AspnetYarp) },
+        { path: 'testing-yarp-routes-and-transforms-with-loadfrommemory', loadComponent: () => import('./components/backend/aspnet/yarp/subtopics/testing-yarp-routes-and-transforms-with-loadfrommemory/testing-yarp-routes-and-transforms-with-loadfrommemory').then(m => m.TestingYarpRoutesAndTransformsWithLoadfrommemorySubtopic) },
+        { path: 'passive-health-checks-dont-verify-recovery-just-retry-after-timeout', loadComponent: () => import('./components/backend/aspnet/yarp/subtopics/passive-health-checks-dont-verify-recovery-just-retry-after-timeout/passive-health-checks-dont-verify-recovery-just-retry-after-timeout').then(m => m.PassiveHealthChecksDontVerifyRecoveryJustRetryAfterTimeoutSubtopic) },
+        { path: 'proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing', loadComponent: () => import('./components/backend/aspnet/yarp/subtopics/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing').then(m => m.ProxyPipelineOrderIsNotArbitraryAffinityBeforeLoadBalancingSubtopic) },
+      ] },
       { path: 'opentelemetry',             loadComponent: () => import('./components/backend/aspnet/opentelemetry/opentelemetry').then(m => m.AspnetOpentelemetry) },
       { path: 'cheatsheet',           loadComponent: () => import('./components/backend/aspnet/cheatsheet/cheatsheet').then(m => m.AspnetCheatsheet) },
       { path: 'errors',               loadComponent: () => import('./components/backend/aspnet/errors/errors').then(m => m.AspnetErrors) },

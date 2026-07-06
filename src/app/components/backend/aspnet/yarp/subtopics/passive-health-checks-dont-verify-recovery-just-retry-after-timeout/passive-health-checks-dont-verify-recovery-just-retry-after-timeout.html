@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="YARP Reverse Proxy"
+    topicRoute="/aspnet/yarp"
+    subtopicLabel="Passive Health Check Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Passive Health Checks Don't Verify Recovery — Just Retry After a Timeout</h1>
+  <p class="page-subtitle">
+    "Stops routing until they recover" sounds like YARP confirms recovery. It doesn't — passive checks just
+    exclude a destination for a fixed period, then unconditionally retry it.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since=".NET 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With health-check mechanics clear, the final subtopic returns to the main page's own Middleware
+      Pipeline example — the order UseSessionAffinity(), UseLoadBalancing(), and UsePassiveHealthChecks()
+      are registered in is not arbitrary, and getting it wrong silently defeats session affinity.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="YARP Reverse Proxy"
+    topicRoute="/aspnet/yarp"
+    [prev]="{ label: 'Testing YARP Routes and Transforms With LoadFromMemory', route: '/aspnet/yarp/testing-yarp-routes-and-transforms-with-loadfrommemory' }"
+    [next]="{ label: 'Proxy Pipeline Order Is Not Arbitrary', route: '/aspnet/yarp/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing' }"
+  />
+</div>
