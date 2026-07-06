@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="FluentValidation"
+    topicRoute="/aspnet/fluent-validation"
+    subtopicLabel="Testing MustAsync Rules"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Async MustAsync Rules With FluentValidation.TestHelper</h1>
+  <p class="page-subtitle">
+    The main page's own testing Q&A uses raw Validate() and string-based property checks. TestHelper's
+    expression-based ShouldHaveValidationErrorFor survives renames — and testing the page's own async
+    uniqueness check needs TestValidateAsync, not the synchronous version.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="FluentValidation 9+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing covered, the next subtopic explains a mechanic behind the main page's own Conditional
+      Rules example — why it explicitly passes ApplyConditionTo.CurrentValidator, and what the default
+      behavior would otherwise be.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="FluentValidation"
+    topicRoute="/aspnet/fluent-validation"
+    [next]="{ label: 'Inline When() Defaults to All Validators in the Same RuleFor Chain', route: '/aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain' }"
+  />
+</div>

@@ -478,7 +478,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/fluent-validation" routerLinkActive="active"><span class="nl-text">FluentValidation</span>@if(progress.isDone('aspnet-fluent-validation')){<span class="nl-done">✓</span>}@if(diff('aspnet-fluent-validation');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/fluent-validation" routerLinkActive="active">
+        <span class="nl-text">FluentValidation</span>
+        @if (progress.isDone('aspnet-fluent-validation')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-fluent-validation'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('fluent-validation')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('fluent-validation')"
+                  (click)="toggleSubtopics('fluent-validation', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('fluent-validation'); as subs) {
+        @if (isSubtopicsExpanded('fluent-validation')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/minimal-api-advanced" routerLinkActive="active"><span class="nl-text">Minimal API Advanced</span>@if(progress.isDone('aspnet-minimal-api-advanced')){<span class="nl-done">✓</span>}@if(diff('aspnet-minimal-api-advanced');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

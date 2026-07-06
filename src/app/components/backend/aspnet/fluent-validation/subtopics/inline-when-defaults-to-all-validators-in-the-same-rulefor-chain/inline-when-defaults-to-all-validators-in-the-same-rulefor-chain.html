@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="FluentValidation"
+    topicRoute="/aspnet/fluent-validation"
+    subtopicLabel="Inline When() Default Scope"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Inline When() Defaults to All Validators in the Same RuleFor Chain</h1>
+  <p class="page-subtitle">
+    The main page's own example passes ApplyConditionTo.CurrentValidator without explaining why. The
+    default, AllValidators, retroactively applies a trailing .When() to every rule chained before it — not
+    just the one it appears to follow.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="FluentValidation 5+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With conditional-rule scoping covered, the final subtopic looks at a related contract issue —
+      adding just ONE async MustAsync rule to an otherwise synchronous validator changes what every
+      existing caller of that validator must do, not just the new rule itself.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="FluentValidation"
+    topicRoute="/aspnet/fluent-validation"
+    [prev]="{ label: 'Testing Async MustAsync Rules With FluentValidation.TestHelper', route: '/aspnet/fluent-validation/testing-async-mustasync-rules-with-fluentvalidation-testhelper' }"
+    [next]="{ label: 'Adding One MustAsync Rule Breaks Every Synchronous Validate Caller', route: '/aspnet/fluent-validation/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller' }"
+  />
+</div>

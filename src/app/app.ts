@@ -821,6 +821,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'AddProject Type Parameter Requires a Build, Not Just a Project Reference', route: '/aspnet/aspire/addproject-type-parameter-requires-build-not-just-project-reference' },
     { label: 'OTel Exporter Needs an Endpoint Guard Outside the AppHost', route: '/aspnet/aspire/otel-exporter-needs-endpoint-guard-when-running-outside-apphost' },
   ],
+  'fluent-validation': [
+    { label: 'Testing Async MustAsync Rules With FluentValidation.TestHelper', route: '/aspnet/fluent-validation/testing-async-mustasync-rules-with-fluentvalidation-testhelper' },
+    { label: 'Inline When() Defaults to All Validators in the Same RuleFor Chain', route: '/aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain' },
+    { label: 'Adding One MustAsync Rule Breaks Every Synchronous Validate Caller', route: '/aspnet/fluent-validation/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller' },
+  ],
 };
 
 @Component({

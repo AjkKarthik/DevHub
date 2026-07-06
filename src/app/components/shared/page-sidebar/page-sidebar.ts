@@ -13487,6 +13487,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/fluent-validation/testing-async-mustasync-rules-with-fluentvalidation-testhelper': {
+    apis: ['TestValidateAsync()', 'ShouldHaveValidationErrorFor()', 'MustAsync()'],
+    related: [
+      { label: 'Inline When() Default Scope — next', route: '/aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain' },
+      { label: 'FluentValidation (overview)', route: '/aspnet/fluent-validation' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'FluentValidation.TestHelper\'s expression-based ShouldHaveValidationErrorFor(x => x.Property) survives property renames at compile time — a bare string comparison against PropertyName silently stops matching after a rename.',
+    docs: [
+      { label: 'FluentValidation testing', url: 'https://docs.fluentvalidation.net/en/latest/testing.html' },
+    ],
+    resources: [
+      { label: 'FluentValidation/FluentValidation', url: 'https://github.com/FluentValidation/FluentValidation', badge: 'code' },
+    ],
+    gotchas: [
+      'A validator containing any async rule must be tested with TestValidateAsync(), not the synchronous TestValidate() — calling the wrong one throws at runtime.',
+      'An unconfigured mock returning its library default can make a test pass for the wrong reason — always explicitly configure the mock\'s return value, even when it happens to match the default.',
+    ],
+  },
+
+  'aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain': {
+    apis: ['ApplyConditionTo', '.When()', 'RuleFor()'],
+    related: [
+      { label: 'Testing MustAsync Rules — previous', route: '/aspnet/fluent-validation/testing-async-mustasync-rules-with-fluentvalidation-testhelper' },
+      { label: 'MustAsync Breaks Sync Callers — next', route: '/aspnet/fluent-validation/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller' },
+      { label: 'FluentValidation (overview)', route: '/aspnet/fluent-validation' },
+    ],
+    tip: 'The inline .When() defaults to ApplyConditionTo.AllValidators — it retroactively applies to EVERY rule chained before it in that RuleFor() call, not just the immediately preceding one; pass ApplyConditionTo.CurrentValidator to scope it narrowly.',
+    docs: [
+      { label: 'Conditional validation', url: 'https://docs.fluentvalidation.net/en/latest/conditions.html' },
+    ],
+    resources: [
+      { label: 'FluentValidation/FluentValidation', url: 'https://github.com/FluentValidation/FluentValidation', badge: 'code' },
+    ],
+    gotchas: [
+      'A single .When() call has exactly one scope — there is no way to apply two different conditions to two different subsets of rules within one RuleFor() chain; split into separate RuleFor() calls for that.',
+      'The default scope silently makes earlier, intentionally-unconditional rules (like NotEmpty()) conditional too, with no visible change at those earlier call sites.',
+    ],
+  },
+
+  'aspnet/fluent-validation/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller': {
+    apis: ['Validate()', 'ValidateAsync()', 'MustAsync()'],
+    related: [
+      { label: 'Inline When() Default Scope — previous', route: '/aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain' },
+      { label: 'FluentValidation (overview)', route: '/aspnet/fluent-validation' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Adding even one MustAsync rule to a previously-synchronous validator changes its whole contract — every existing Validate() call site throws InvalidOperationException at runtime, with no compile-time warning.',
+    docs: [
+      { label: 'Async validation', url: 'https://docs.fluentvalidation.net/en/latest/async.html' },
+    ],
+    resources: [
+      { label: 'FluentValidation/FluentValidation', url: 'https://github.com/FluentValidation/FluentValidation', badge: 'code' },
+    ],
+    gotchas: [
+      'Before adding a MustAsync rule to an existing validator, grep the codebase for every Validate() call site on that specific type — each needs to become async, propagating up the call stack.',
+      'A regression test asserting Validate() does not throw synchronously is a deliberate tripwire that fails the moment someone adds an async rule without auditing existing callers.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],
