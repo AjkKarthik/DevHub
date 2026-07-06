@@ -1541,7 +1541,7 @@ off here with a date.
 - [x] `/aspnet/response-compression` — Response Compression (2026-07-07 — 3 subtopics: testing-minimum-size-threshold-and-skip-if-already-encoded, registration-order-only-breaks-ties-among-client-supported-encodings, diagnostic-middleware-must-wrap-compression-not-nest-inside-it)
 - [x] `/aspnet/websockets` — WebSockets (2026-07-07 — 3 subtopics: testing-websocket-endpoints-with-testservers-websocketclient, close-handshake-mechanics-what-actually-ends-the-receive-loop, receive-loop-examples-silently-truncate-multi-frame-messages)
 - [x] `/aspnet/yarp` — YARP Reverse Proxy (2026-07-07 — 3 subtopics: testing-yarp-routes-and-transforms-with-loadfrommemory, passive-health-checks-dont-verify-recovery-just-retry-after-timeout, proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing)
-- [ ] `/aspnet/opentelemetry` — OpenTelemetry
+- [x] `/aspnet/opentelemetry` — OpenTelemetry (2026-07-07 — 3 subtopics: testing-custom-spans-and-metrics-with-activitylistener-and-meterlistener, settag-guards-against-null-not-against-a-sampled-out-span, fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent)
 
 #### SQL — 44 topic pages
 
