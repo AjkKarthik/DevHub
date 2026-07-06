@@ -908,7 +908,12 @@ export const routes: Routes = [
         { path: 'how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip', loadComponent: () => import('./components/backend/aspnet/deployment/subtopics/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip').then(m => m.HowForwardedheadersWalksMultiHopChainsToResolveClientIpSubtopic) },
         { path: 'healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image', loadComponent: () => import('./components/backend/aspnet/deployment/subtopics/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image').then(m => m.HealthcheckCurlInstructionFailsOnMinimalAspnetRuntimeImageSubtopic) },
       ] },
-      { path: 'performance',          loadComponent: () => import('./components/backend/aspnet/performance/performance').then(m => m.AspnetPerformance) },
+      { path: 'performance', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/performance/performance').then(m => m.AspnetPerformance) },
+        { path: 'testing-allocation-regressions-with-getallocatedbytesforthread', loadComponent: () => import('./components/backend/aspnet/performance/subtopics/testing-allocation-regressions-with-getallocatedbytesforthread/testing-allocation-regressions-with-getallocatedbytesforthread').then(m => m.TestingAllocationRegressionsWithGetallocatedbytesforthreadSubtopic) },
+        { path: 'server-gc-heap-count-follows-perceived-not-actual-cpu-limit', loadComponent: () => import('./components/backend/aspnet/performance/subtopics/server-gc-heap-count-follows-perceived-not-actual-cpu-limit/server-gc-heap-count-follows-perceived-not-actual-cpu-limit').then(m => m.ServerGcHeapCountFollowsPerceivedNotActualCpuLimitSubtopic) },
+        { path: 'streaming-query-missing-cancellationtoken-runs-after-disconnect', loadComponent: () => import('./components/backend/aspnet/performance/subtopics/streaming-query-missing-cancellationtoken-runs-after-disconnect/streaming-query-missing-cancellationtoken-runs-after-disconnect').then(m => m.StreamingQueryMissingCancellationtokenRunsAfterDisconnectSubtopic) },
+      ] },
       { path: 'aspire',                    loadComponent: () => import('./components/backend/aspnet/aspire/aspire').then(m => m.AspnetAspire) },
       { path: 'fluent-validation',         loadComponent: () => import('./components/backend/aspnet/fluent-validation/fluent-validation').then(m => m.AspnetFluentValidation) },
       { path: 'minimal-api-advanced',      loadComponent: () => import('./components/backend/aspnet/minimal-api-advanced/minimal-api-advanced').then(m => m.AspnetMinimalApiAdvanced) },

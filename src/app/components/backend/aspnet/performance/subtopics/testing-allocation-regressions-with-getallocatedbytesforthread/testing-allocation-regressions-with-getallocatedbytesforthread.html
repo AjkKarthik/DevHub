@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Performance & Diagnostics"
+    topicRoute="/aspnet/performance"
+    subtopicLabel="Testing Allocation Regressions"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Allocation Regressions With GetAllocatedBytesForCurrentThread</h1>
+  <p class="page-subtitle">
+    BenchmarkDotNet is too slow to run on every commit. GC.GetAllocatedBytesForCurrentThread() gives a fast,
+    CI-friendly allocation gate that catches gross regressions — like the main page's own O(n²) string
+    concatenation example — without full statistical rigor.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET Core 3.0+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With a fast allocation regression gate in place, the next subtopic digs into a container-specific
+      mechanic the main page states as fact without qualifying — how Server GC actually decides how many
+      heaps to create, and why that count can silently mismatch a container's real CPU allocation.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Performance & Diagnostics"
+    topicRoute="/aspnet/performance"
+    [next]="{ label: 'Server GC Heap Count Follows Perceived, Not Actual, CPU Limit', route: '/aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit' }"
+  />
+</div>

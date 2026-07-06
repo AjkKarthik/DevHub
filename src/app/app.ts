@@ -807,6 +807,15 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'How ForwardedHeaders Walks Multi-Hop Chains to Resolve Client IP', route: '/aspnet/deployment/how-forwardedheaders-walks-multi-hop-chains-to-resolve-client-ip' },
     { label: 'HEALTHCHECK curl Instruction Fails on the Minimal ASP.NET Runtime Image', route: '/aspnet/deployment/healthcheck-curl-instruction-fails-on-minimal-aspnet-runtime-image' },
   ],
+  // NOTE: keyed 'aspnet-performance', NOT bare 'performance' — SQL,
+  // HTML, React, Blazor, Node.js, GraphQL, and Service Mesh hubs (plus
+  // an existing bare 'performance' entry at line ~1154) all already
+  // own that bare slug.
+  'aspnet-performance': [
+    { label: 'Testing Allocation Regressions With GetAllocatedBytesForCurrentThread', route: '/aspnet/performance/testing-allocation-regressions-with-getallocatedbytesforthread' },
+    { label: 'Server GC Heap Count Follows Perceived, Not Actual, CPU Limit', route: '/aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit' },
+    { label: 'Streaming Query Missing CancellationToken Runs After Disconnect', route: '/aspnet/performance/streaming-query-missing-cancellationtoken-runs-after-disconnect' },
+  ],
 };
 
 @Component({

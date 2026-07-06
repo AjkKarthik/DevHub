@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Performance & Diagnostics"
+    topicRoute="/aspnet/performance"
+    subtopicLabel="Streaming Query Cancellation Gap"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Streaming Query Missing CancellationToken Keeps Running After Disconnect</h1>
+  <p class="page-subtitle">
+    The main page's own EF Core streaming example never declares a CancellationToken, unlike its manual
+    StreamPrices() example right above it. A mid-export disconnect leaves the query holding a connection-pool
+    slot for its full remaining duration.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 2.1+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Performance &amp; Diagnostics deep-dive set: a fast CI-friendly allocation
+      regression gate, container-aware Server GC sizing, and now the cancellation gap in the main page's own
+      streaming export example. Head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Performance & Diagnostics"
+    topicRoute="/aspnet/performance"
+    [prev]="{ label: 'Server GC Heap Count Follows Perceived, Not Actual, CPU Limit', route: '/aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit' }"
+  />
+</div>

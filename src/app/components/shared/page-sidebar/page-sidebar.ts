@@ -13344,6 +13344,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/performance/testing-allocation-regressions-with-getallocatedbytesforthread': {
+    apis: ['GC.GetAllocatedBytesForCurrentThread()', '[MemoryDiagnoser]', 'GC.Collect()'],
+    related: [
+      { label: 'Server GC in Containers — next', route: '/aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit' },
+      { label: 'Performance & Diagnostics (overview)', route: '/aspnet/performance' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'GC.GetAllocatedBytesForCurrentThread() gives a fast, CI-friendly allocation regression gate — it can\'t replace BenchmarkDotNet\'s statistical timing rigor, but it catches gross allocation regressions in milliseconds, on every commit.',
+    docs: [
+      { label: '.NET diagnostic tools', url: 'https://learn.microsoft.com/en-us/dotnet/core/diagnostics/' },
+    ],
+    resources: [
+      { label: 'dotnet/BenchmarkDotNet', url: 'https://github.com/dotnet/BenchmarkDotNet', badge: 'code' },
+    ],
+    gotchas: [
+      'This technique measures allocations only — it provides zero visibility into pure timing regressions that don\'t change the allocation profile; use it alongside BenchmarkDotNet, not instead of it.',
+      'A GC.Collect() + GC.WaitForPendingFinalizers() call immediately before the "before" snapshot clears background allocations from prior tests without needing full test isolation.',
+    ],
+  },
+
+  'aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit': {
+    apis: ['Environment.ProcessorCount', 'DOTNET_GCHeapCount', 'resources.limits.cpu'],
+    related: [
+      { label: 'Testing Allocation Regressions — previous', route: '/aspnet/performance/testing-allocation-regressions-with-getallocatedbytesforthread' },
+      { label: 'Streaming Cancellation Gap — next', route: '/aspnet/performance/streaming-query-missing-cancellationtoken-runs-after-disconnect' },
+      { label: 'Performance & Diagnostics (overview)', route: '/aspnet/performance' },
+    ],
+    tip: 'Server GC heap count derives from the PERCEIVED processor count — a pod with requests.cpu but no limits.cpu lets the runtime see the host\'s full core count, creating far more heaps (and reserved memory) than the intended CPU allocation.',
+    docs: [
+      { label: 'Performance best practices', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/performance-best-practices' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Kubernetes requests.cpu is a scheduling hint, not an enforced ceiling — only limits.cpu gives the container runtime a hard quota the GC can actually perceive.',
+      'Switching to Workstation GC to avoid this symptom discards Server GC\'s throughput benefit entirely — fixing the missing resource limit (or capping DOTNET_GCHeapCount directly) addresses the root cause instead.',
+    ],
+  },
+
+  'aspnet/performance/streaming-query-missing-cancellationtoken-runs-after-disconnect': {
+    apis: ['CancellationToken', 'WithCancellation()', 'HttpContext.RequestAborted'],
+    related: [
+      { label: 'Server GC in Containers — previous', route: '/aspnet/performance/server-gc-heap-count-follows-perceived-not-actual-cpu-limit' },
+      { label: 'Performance & Diagnostics (overview)', route: '/aspnet/performance' },
+      { label: 'Health Checks & Observability', route: '/aspnet/health-checks' },
+    ],
+    tip: 'A minimal API streaming IAsyncEnumerable<T> from EF Core without declaring a CancellationToken parameter leaves the underlying query with no explicit, immediate cancellation path when the client disconnects mid-export.',
+    docs: [
+      { label: 'Performance best practices', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/performance-best-practices' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'The HTTP response tearing down and the underlying database query actually stopping are two independent events — an uncancelled query keeps holding a connection-pool slot for its full remaining duration.',
+      'Mid-stream disconnects are common specifically for LARGE exports — a user starting one, realizing it will take a while, and navigating away — making this exactly the scenario where the wasted resource cost is highest.',
+    ],
+  },
+
   'aspnet/aspire': {
     apis: ['AddProject<T>()', 'AddRedis()', 'AddPostgres()', 'WithReference()', 'AddServiceDefaults()', 'WithExternalHttpEndpoints()', 'ServiceDiscovery', 'azd up'],
     related: [
