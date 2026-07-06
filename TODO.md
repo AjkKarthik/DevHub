@@ -1535,7 +1535,7 @@ off here with a date.
 - [x] `/aspnet/output-caching-advanced` — Output Caching Advanced (2026-07-06 — 3 subtopics: testing-tag-eviction-with-fake-outputcachestore, how-cache-stampede-locking-survives-population-failures, custom-ioutputcachepolicy-skips-every-built-in-safety-check)
 - [x] `/aspnet/dapper` — Dapper & Raw SQL (2026-07-07 — 3 subtopics: testing-dapper-repositories-with-in-memory-sqlite, how-dapper-decides-whether-to-close-the-connection-it-used, transferasync-example-holds-its-connection-open-far-too-long)
 - [x] `/aspnet/csrf` — Anti-forgery & CSRF (2026-07-07 — 3 subtopics: testing-get-requests-cant-reach-state-changing-endpoints, cookie-token-and-request-token-are-not-the-same-string, manual-validation-middleware-and-useantiforgery-are-redundant-not-layered)
-- [ ] `/aspnet/feature-flags` — Feature Flags
+- [x] `/aspnet/feature-flags` — Feature Flags (2026-07-07 — 3 subtopics: testing-feature-flagged-code-mocking-and-config-override, percentagefilter-re-rolls-on-every-call-not-sticky-per-user, featuregate-multiple-flags-defaults-to-requirementtype-all)
 - [ ] `/aspnet/localization` — Localization & Globalization
 - [ ] `/aspnet/masstransit` — MassTransit
 - [ ] `/aspnet/response-compression` — Response Compression
