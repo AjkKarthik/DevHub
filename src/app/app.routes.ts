@@ -962,7 +962,12 @@ export const routes: Routes = [
         { path: 'resx-fallback-follows-culture-hierarchy-not-just-missing-keys', loadComponent: () => import('./components/backend/aspnet/localization/subtopics/resx-fallback-follows-culture-hierarchy-not-just-missing-keys/resx-fallback-follows-culture-hierarchy-not-just-missing-keys').then(m => m.ResxFallbackFollowsCultureHierarchyNotJustMissingKeysSubtopic) },
         { path: 'culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic', loadComponent: () => import('./components/backend/aspnet/localization/subtopics/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic').then(m => m.CultureCookieEndpointHardcodedListSilentlyRejectsArabicSubtopic) },
       ] },
-      { path: 'masstransit',               loadComponent: () => import('./components/backend/aspnet/masstransit/masstransit').then(m => m.AspnetMasstransit) },
+      { path: 'masstransit', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/masstransit/masstransit').then(m => m.AspnetMasstransit) },
+        { path: 'testing-masstransit-consumers-and-request-reply-with-itestharness', loadComponent: () => import('./components/backend/aspnet/masstransit/subtopics/testing-masstransit-consumers-and-request-reply-with-itestharness/testing-masstransit-consumers-and-request-reply-with-itestharness').then(m => m.TestingMasstransitConsumersAndRequestReplyWithItestharnessSubtopic) },
+        { path: 'usemessageretry-and-usedelayedredelivery-multiply-not-add', loadComponent: () => import('./components/backend/aspnet/masstransit/subtopics/usemessageretry-and-usedelayedredelivery-multiply-not-add/usemessageretry-and-usedelayedredelivery-multiply-not-add').then(m => m.UsemessageretryAndUsedelayedredeliveryMultiplyNotAddSubtopic) },
+        { path: 'send-hardcoded-queue-name-can-silently-point-at-an-empty-queue', loadComponent: () => import('./components/backend/aspnet/masstransit/subtopics/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue').then(m => m.SendHardcodedQueueNameCanSilentlyPointAtAnEmptyQueueSubtopic) },
+      ] },
       { path: 'response-compression',      loadComponent: () => import('./components/backend/aspnet/response-compression/response-compression').then(m => m.AspnetResponseCompression) },
       { path: 'websockets',                loadComponent: () => import('./components/backend/aspnet/websockets/websockets').then(m => m.AspnetWebsockets) },
       { path: 'yarp',                      loadComponent: () => import('./components/backend/aspnet/yarp/yarp').then(m => m.AspnetYarp) },

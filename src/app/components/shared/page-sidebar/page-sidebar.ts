@@ -13902,6 +13902,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/masstransit/testing-masstransit-consumers-and-request-reply-with-itestharness': {
+    apis: ['ITestHarness', 'AddMassTransitTestHarness()', 'IRequestClient<T>'],
+    related: [
+      { label: 'Retry + Redelivery Mechanics — next', route: '/aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add' },
+      { label: 'MassTransit (overview)', route: '/aspnet/masstransit' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Consumed.Any<T>() proves a message arrived; for request-reply, assert on the RESOLVED RESPONSE from IRequestClient<T> instead — a Consumed check alone misses a broken reply.',
+    docs: [
+      { label: 'MassTransit testing documentation', url: 'https://masstransit.io/documentation/concepts/testing' },
+    ],
+    resources: [
+      { label: 'MassTransit/MassTransit', url: 'https://github.com/MassTransit/MassTransit', badge: 'code' },
+    ],
+    gotchas: [
+      'A request-reply test asserting only Consumed<TRequest>() misses a consumer that received the request but never called RespondAsync() or replied with the wrong type.',
+      'AddMassTransitTestHarness() is fully in-memory — no real broker or network connection is needed for either style of test.',
+    ],
+  },
+
+  'aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add': {
+    apis: ['UseMessageRetry()', 'UseDelayedRedelivery()'],
+    related: [
+      { label: 'Testing MassTransit — previous', route: '/aspnet/masstransit/testing-masstransit-consumers-and-request-reply-with-itestharness' },
+      { label: 'Send() Fragile Queue Name — next', route: '/aspnet/masstransit/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue' },
+      { label: 'MassTransit (overview)', route: '/aspnet/masstransit' },
+    ],
+    tip: 'Each redelivery round restarts the FULL immediate-retry cycle from the start — total attempts are a product of both policies, not a sum.',
+    docs: [
+      { label: 'MassTransit retry documentation', url: 'https://masstransit.io/documentation/concepts/exceptions' },
+    ],
+    resources: [
+      { label: 'MassTransit/MassTransit', url: 'https://github.com/MassTransit/MassTransit', badge: 'code' },
+    ],
+    gotchas: [
+      'Stacking 3 immediate retries with 3 redelivery rounds produces up to 4 x 4 = 16 total attempts, not 3 + 3 = 6.',
+      'The worst-case time to the error queue includes the FULL immediate-retry cycle repeated after every redelivery interval, not just the redelivery intervals alone.',
+    ],
+  },
+
+  'aspnet/masstransit/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue': {
+    apis: ['ISendEndpointProvider', 'GetSendEndpoint()', 'ReceiveEndpoint()'],
+    related: [
+      { label: 'Retry + Redelivery Mechanics — previous', route: '/aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add' },
+      { label: 'MassTransit (overview)', route: '/aspnet/masstransit' },
+    ],
+    tip: 'Send() requires an exact queue-name string matching the real consumer\'s endpoint — unlike Publish(), a mismatch is not caught by the compiler or by MassTransit at send time.',
+    docs: [
+      { label: 'MassTransit send documentation', url: 'https://masstransit.io/documentation/concepts/producers' },
+    ],
+    resources: [
+      { label: 'MassTransit/MassTransit', url: 'https://github.com/MassTransit/MassTransit', badge: 'code' },
+    ],
+    gotchas: [
+      'A Send() call to a queue name that matches no real consumer delivers silently into an unconsumed queue — no exception is raised anywhere.',
+      'Sharing one constant between ReceiveEndpoint() registration and every Send() call site eliminates the drift risk entirely — a rename becomes a compile error, not a silent mismatch.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

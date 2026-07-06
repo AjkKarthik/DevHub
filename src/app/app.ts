@@ -856,6 +856,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Resource Fallback Follows Culture Hierarchy, Not Just Missing Keys', route: '/aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys' },
     { label: 'Culture Cookie Endpoint Silently Rejects Arabic', route: '/aspnet/localization/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic' },
   ],
+  'masstransit': [
+    { label: 'Testing MassTransit Consumers and Request-Reply With ITestHarness', route: '/aspnet/masstransit/testing-masstransit-consumers-and-request-reply-with-itestharness' },
+    { label: 'UseMessageRetry and UseDelayedRedelivery Multiply, Not Add', route: '/aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add' },
+    { label: 'Send() Hardcoded Queue Name Can Silently Point at an Empty Queue', route: '/aspnet/masstransit/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue' },
+  ],
 };
 
 @Component({

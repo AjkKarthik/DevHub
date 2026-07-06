@@ -1,0 +1,41 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="MassTransit"
+    topicRoute="/aspnet/masstransit"
+    subtopicLabel="Testing With ITestHarness"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing MassTransit Consumers and Request-Reply With ITestHarness</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A names ITestHarness but shows no code. Testing a plain consumer and testing
+    a request-reply flow require different assertions — a Consumed check alone isn't enough for the latter.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing covered, the next subtopic digs into what actually happens when the main page's own
+      Retry Policy example stacks UseMessageRetry and UseDelayedRedelivery together — the total attempt
+      count multiplies, it doesn't just add.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="MassTransit"
+    topicRoute="/aspnet/masstransit"
+    [next]="{ label: 'UseMessageRetry and UseDelayedRedelivery Multiply, Not Add', route: '/aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add' }"
+  />
+</div>

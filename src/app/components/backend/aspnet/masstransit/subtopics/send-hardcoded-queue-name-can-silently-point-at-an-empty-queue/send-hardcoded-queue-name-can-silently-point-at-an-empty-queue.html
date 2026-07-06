@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="MassTransit"
+    topicRoute="/aspnet/masstransit"
+    subtopicLabel="Send()'s Fragile Queue Name"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Send() Hardcoded Queue Name Can Silently Point at an Empty Queue</h1>
+  <p class="page-subtitle">
+    The main page's own Send() example hardcodes a queue name string that must independently match wherever
+    the real consumer's endpoint actually is. A mismatch isn't a compiler error or an exception — it's a
+    silently unconsumed queue.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover MassTransit end-to-end: testing both plain consumers and
+      request-reply flows correctly, understanding the real total attempt count when retry and redelivery
+      policies stack, and catching a fragile hardcoded queue name in the main page's own Send() example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="MassTransit"
+    topicRoute="/aspnet/masstransit"
+    [prev]="{ label: 'UseMessageRetry and UseDelayedRedelivery Multiply, Not Add', route: '/aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add' }"
+  />
+</div>

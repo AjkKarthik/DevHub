@@ -1,0 +1,41 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="MassTransit"
+    topicRoute="/aspnet/masstransit"
+    subtopicLabel="Retry + Redelivery Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">UseMessageRetry and UseDelayedRedelivery Multiply, Not Add</h1>
+  <p class="page-subtitle">
+    The main page's own Retry Policy tab stacks both policies on the same endpoint. Each redelivery round
+    restarts the FULL immediate-retry cycle — the total attempt count is a product, not a sum.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With retry mechanics clear, the final subtopic returns to the main page's own Send() example — a
+      hardcoded queue name string that can silently point at a queue nobody is actually consuming.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="MassTransit"
+    topicRoute="/aspnet/masstransit"
+    [prev]="{ label: 'Testing MassTransit Consumers and Request-Reply With ITestHarness', route: '/aspnet/masstransit/testing-masstransit-consumers-and-request-reply-with-itestharness' }"
+    [next]="{ label: 'Send() Hardcoded Queue Name Can Silently Point at an Empty Queue', route: '/aspnet/masstransit/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue' }"
+  />
+</div>

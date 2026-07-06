@@ -968,7 +968,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/masstransit" routerLinkActive="active"><span class="nl-text">MassTransit</span>@if(progress.isDone('aspnet-masstransit')){<span class="nl-done">✓</span>}@if(diff('aspnet-masstransit');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/masstransit" routerLinkActive="active">
+        <span class="nl-text">MassTransit</span>
+        @if (progress.isDone('aspnet-masstransit')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-masstransit'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('masstransit')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('masstransit')"
+                  (click)="toggleSubtopics('masstransit', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('masstransit'); as subs) {
+        @if (isSubtopicsExpanded('masstransit')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/aspnet/response-compression" routerLinkActive="active"><span class="nl-text">Response Compression</span>@if(progress.isDone('aspnet-response-compression')){<span class="nl-done">✓</span>}@if(diff('aspnet-response-compression');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/websockets" routerLinkActive="active"><span class="nl-text">WebSockets</span>@if(progress.isDone('aspnet-websockets')){<span class="nl-done">✓</span>}@if(diff('aspnet-websockets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/aspnet/yarp" routerLinkActive="active"><span class="nl-text">YARP Reverse Proxy</span>@if(progress.isDone('aspnet-yarp')){<span class="nl-done">✓</span>}@if(diff('aspnet-yarp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
