@@ -13547,6 +13547,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/minimal-api-advanced/testing-endpoint-filters-without-webapplicationfactory': {
+    apis: ['EndpointFilterInvocationContext.Create()', 'IEndpointFilter', 'EndpointFilterDelegate'],
+    related: [
+      { label: 'ctx.Arguments Fragility — next', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' },
+      { label: 'Minimal API Advanced (overview)', route: '/aspnet/minimal-api-advanced' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'IEndpointFilter.InvokeAsync() is an ordinary interface method — EndpointFilterInvocationContext.Create(httpContext, ...args) constructs the exact context a filter receives, with no host or real HTTP request needed.',
+    docs: [
+      { label: 'Minimal APIs quick reference', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A test asserting a real endpoint returns 400 proves wiring is correct for one scenario — a direct filter test is far cheaper for exhaustively covering the filter\'s own decision logic.',
+      'Neither test type alone catches every failure class — wiring gaps need integration tests, decision-logic edge cases need direct filter tests.',
+    ],
+  },
+
+  'aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position': {
+    apis: ['ctx.Arguments', 'ctx.GetArgument<T>()', 'OfType<T>()'],
+    related: [
+      { label: 'Testing Endpoint Filters — previous', route: '/aspnet/minimal-api-advanced/testing-endpoint-filters-without-webapplicationfactory' },
+      { label: 'Nested Group Filter Ordering — next', route: '/aspnet/minimal-api-advanced/nested-group-filters-execute-outside-in-like-middleware' },
+      { label: 'Minimal API Advanced (overview)', route: '/aspnet/minimal-api-advanced' },
+    ],
+    tip: 'ctx.Arguments.OfType<T>().FirstOrDefault() silently returns the WRONG parameter if a handler ever gains a second parameter of the same or a compatible type — no exception, just wrong validation results.',
+    docs: [
+      { label: 'Minimal APIs quick reference', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'ctx.GetArgument<T>(index) fixes the "new parameter added" case but is not immune to the model\'s own position shifting during a later reorder — a stale index landing on another same-typed parameter fails just as silently.',
+      'Both selection strategies are hidden couplings between the filter and the handler\'s exact signature — only an integration test exercising the real wiring closes the gap completely.',
+    ],
+  },
+
+  'aspnet/minimal-api-advanced/nested-group-filters-execute-outside-in-like-middleware': {
+    apis: ['MapGroup()', 'AddEndpointFilter()', 'RouteGroupBuilder'],
+    related: [
+      { label: 'ctx.Arguments Fragility — previous', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' },
+      { label: 'Minimal API Advanced (overview)', route: '/aspnet/minimal-api-advanced' },
+      { label: 'Filters & Endpoint Filters', route: '/aspnet/filters' },
+    ],
+    tip: 'Filters on nested route groups wrap exactly like middleware — the outer group\'s "before" code runs first, the inner group\'s runs next, then the handler, then the phases unwind in reverse.',
+    docs: [
+      { label: 'Minimal APIs quick reference', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'An outer filter\'s decision to call next() is committed BEFORE an inner filter even starts — it cannot see or react to what the inner filter decides, only what the whole nested chain ultimately returns.',
+      'A short-circuit bug in an OUTER group\'s filter lets execution fall through to EVERY filter and handler nested inside it — the blast radius scales with everything registered beneath it.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],

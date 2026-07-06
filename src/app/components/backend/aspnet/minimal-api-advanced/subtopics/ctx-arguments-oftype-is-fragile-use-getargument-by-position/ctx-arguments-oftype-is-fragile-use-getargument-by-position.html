@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Minimal API Advanced"
+    topicRoute="/aspnet/minimal-api-advanced"
+    subtopicLabel="ctx.Arguments Fragility"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">ctx.Arguments.OfType() Is Fragile — Use GetArgument by Position</h1>
+  <p class="page-subtitle">
+    The main page's own ValidationFilter finds its model via OfType&lt;T&gt;().FirstOrDefault(). Add a
+    second parameter of the same type to the handler and it silently validates the wrong object — no
+    exception, no visible symptom.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With argument-access fragility covered, the final subtopic looks at how filters attached to NESTED
+      route groups actually order themselves — the same wrap-around behavior middleware has, applied one
+      level up at the group hierarchy.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Minimal API Advanced"
+    topicRoute="/aspnet/minimal-api-advanced"
+    [prev]="{ label: 'Testing Endpoint Filters Without WebApplicationFactory', route: '/aspnet/minimal-api-advanced/testing-endpoint-filters-without-webapplicationfactory' }"
+    [next]="{ label: 'Nested Group Filters Execute Outside-In Like Middleware', route: '/aspnet/minimal-api-advanced/nested-group-filters-execute-outside-in-like-middleware' }"
+  />
+</div>

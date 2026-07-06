@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Minimal API Advanced"
+    topicRoute="/aspnet/minimal-api-advanced"
+    subtopicLabel="Nested Group Filter Ordering"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Nested Group Filters Execute Outside-In Like Middleware</h1>
+  <p class="page-subtitle">
+    The main page nests route groups and separately attaches group-level filters, but never combines the
+    two. Filters on nested groups wrap exactly like middleware — outer's "before" runs first, outer's
+    "after" runs last.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the Minimal API Advanced deep-dive set: testing endpoint filters directly, avoiding
+      the OfType&lt;T&gt;() argument-matching trap, and now the wrap-order semantics of filters across
+      nested route groups. Head back to the topic overview to continue exploring.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Minimal API Advanced"
+    topicRoute="/aspnet/minimal-api-advanced"
+    [prev]="{ label: 'ctx.Arguments.OfType() Is Fragile — Use GetArgument by Position', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' }"
+  />
+</div>

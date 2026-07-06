@@ -826,6 +826,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Inline When() Defaults to All Validators in the Same RuleFor Chain', route: '/aspnet/fluent-validation/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain' },
     { label: 'Adding One MustAsync Rule Breaks Every Synchronous Validate Caller', route: '/aspnet/fluent-validation/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller' },
   ],
+  'minimal-api-advanced': [
+    { label: 'Testing Endpoint Filters Without WebApplicationFactory', route: '/aspnet/minimal-api-advanced/testing-endpoint-filters-without-webapplicationfactory' },
+    { label: 'ctx.Arguments.OfType() Is Fragile — Use GetArgument by Position', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' },
+    { label: 'Nested Group Filters Execute Outside-In Like Middleware', route: '/aspnet/minimal-api-advanced/nested-group-filters-execute-outside-in-like-middleware' },
+  ],
 };
 
 @Component({

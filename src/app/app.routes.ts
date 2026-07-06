@@ -926,7 +926,12 @@ export const routes: Routes = [
         { path: 'inline-when-defaults-to-all-validators-in-the-same-rulefor-chain', loadComponent: () => import('./components/backend/aspnet/fluent-validation/subtopics/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain/inline-when-defaults-to-all-validators-in-the-same-rulefor-chain').then(m => m.InlineWhenDefaultsToAllValidatorsInTheSameRuleforChainSubtopic) },
         { path: 'adding-one-mustasync-rule-breaks-every-synchronous-validate-caller', loadComponent: () => import('./components/backend/aspnet/fluent-validation/subtopics/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller/adding-one-mustasync-rule-breaks-every-synchronous-validate-caller').then(m => m.AddingOneMustasyncRuleBreaksEverySynchronousValidateCallerSubtopic) },
       ] },
-      { path: 'minimal-api-advanced',      loadComponent: () => import('./components/backend/aspnet/minimal-api-advanced/minimal-api-advanced').then(m => m.AspnetMinimalApiAdvanced) },
+      { path: 'minimal-api-advanced', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/minimal-api-advanced/minimal-api-advanced').then(m => m.AspnetMinimalApiAdvanced) },
+        { path: 'testing-endpoint-filters-without-webapplicationfactory', loadComponent: () => import('./components/backend/aspnet/minimal-api-advanced/subtopics/testing-endpoint-filters-without-webapplicationfactory/testing-endpoint-filters-without-webapplicationfactory').then(m => m.TestingEndpointFiltersWithoutWebapplicationfactorySubtopic) },
+        { path: 'ctx-arguments-oftype-is-fragile-use-getargument-by-position', loadComponent: () => import('./components/backend/aspnet/minimal-api-advanced/subtopics/ctx-arguments-oftype-is-fragile-use-getargument-by-position/ctx-arguments-oftype-is-fragile-use-getargument-by-position').then(m => m.CtxArgumentsOftypeIsFragileUseGetargumentByPositionSubtopic) },
+        { path: 'nested-group-filters-execute-outside-in-like-middleware', loadComponent: () => import('./components/backend/aspnet/minimal-api-advanced/subtopics/nested-group-filters-execute-outside-in-like-middleware/nested-group-filters-execute-outside-in-like-middleware').then(m => m.NestedGroupFiltersExecuteOutsideInLikeMiddlewareSubtopic) },
+      ] },
       { path: 'output-caching-advanced',   loadComponent: () => import('./components/backend/aspnet/output-caching-advanced/output-caching-advanced').then(m => m.AspnetOutputCachingAdvanced) },
       { path: 'dapper',                    loadComponent: () => import('./components/backend/aspnet/dapper/dapper').then(m => m.AspnetDapper) },
       { path: 'csrf',                      loadComponent: () => import('./components/backend/aspnet/csrf/csrf').then(m => m.AspnetCsrf) },
