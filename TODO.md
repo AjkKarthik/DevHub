@@ -1537,7 +1537,7 @@ off here with a date.
 - [x] `/aspnet/csrf` — Anti-forgery & CSRF (2026-07-07 — 3 subtopics: testing-get-requests-cant-reach-state-changing-endpoints, cookie-token-and-request-token-are-not-the-same-string, manual-validation-middleware-and-useantiforgery-are-redundant-not-layered)
 - [x] `/aspnet/feature-flags` — Feature Flags (2026-07-07 — 3 subtopics: testing-feature-flagged-code-mocking-and-config-override, percentagefilter-re-rolls-on-every-call-not-sticky-per-user, featuregate-multiple-flags-defaults-to-requirementtype-all)
 - [x] `/aspnet/localization` — Localization & Globalization (2026-07-07 — 3 subtopics: testing-localized-responses-fixed-culture-provider-vs-accept-language, resx-fallback-follows-culture-hierarchy-not-just-missing-keys, culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic)
-- [ ] `/aspnet/masstransit` — MassTransit
+- [x] `/aspnet/masstransit` — MassTransit (2026-07-07 — 3 subtopics: testing-masstransit-consumers-and-request-reply-with-itestharness, usemessageretry-and-usedelayedredelivery-multiply-not-add, send-hardcoded-queue-name-can-silently-point-at-an-empty-queue)
 - [ ] `/aspnet/response-compression` — Response Compression
 - [ ] `/aspnet/websockets` — WebSockets
 - [ ] `/aspnet/yarp` — YARP Reverse Proxy
