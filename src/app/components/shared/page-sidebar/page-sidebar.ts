@@ -13178,6 +13178,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/health-checks/testing-health-check-boundary-logic-and-liveness-runs-zero-checks': {
+    apis: ['IHealthCheck.CheckHealthAsync()', 'HealthCheckOptions.Predicate', 'HealthCheckContext'],
+    related: [
+      { label: 'DB Check Pool Contention — next', route: '/aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure' },
+      { label: 'Health Checks & Observability (overview)', route: '/aspnet/health-checks' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Test the EXACT boundary values in a status switch (30, not just 31) — values comfortably clear of a boundary can\'t distinguish a strictly-greater-than comparison from a greater-than-or-equal one.',
+    docs: [
+      { label: 'Health checks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks' },
+    ],
+    resources: [
+      { label: 'xunit/xunit', url: 'https://github.com/xunit/xunit', badge: 'code' },
+    ],
+    gotchas: [
+      'A custom IHealthCheck can be unit tested directly — no WebApplicationFactory or HTTP layer needed, since CheckHealthAsync() is an ordinary interface method.',
+      'Proving liveness genuinely SKIPS registered checks (not just filters them from the response) requires a check that increments a counter or throws, confirming zero invocations on /health/live versus real invocations on /health/ready.',
+    ],
+  },
+
+  'aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure': {
+    apis: ['AddDbContextCheck<T>()', 'CanConnectAsync()', 'ADO.NET connection pool'],
+    related: [
+      { label: 'Testing Boundary Logic — previous', route: '/aspnet/health-checks/testing-health-check-boundary-logic-and-liveness-runs-zero-checks' },
+      { label: 'Degraded Status Code — next', route: '/aspnet/health-checks/degraded-returns-200-by-default-invisible-to-load-balancers' },
+      { label: 'Health Checks & Observability (overview)', route: '/aspnet/health-checks' },
+    ],
+    tip: 'AddDbContextCheck<T>() shares the SAME connection pool as real application traffic — under a DB slowdown, it\'s most likely to fail exactly when removing a pod does the most damage, concentrating pressure onto fewer survivors.',
+    docs: [
+      { label: 'Health checks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks' },
+    ],
+    resources: [
+      { label: 'Xabaril/AspNetCore.Diagnostics.HealthChecks', url: 'https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks', badge: 'code' },
+    ],
+    gotchas: [
+      'A dedicated, isolated connection pool for the health check avoids the cascading risk but can\'t detect application-side pool exhaustion where the database server itself is healthy.',
+      'This is a distinct failure shape from the liveness crash-loop the main page describes — pods get progressively removed from the load balancer rather than restarted, but the root cause (shared finite resource) is analogous.',
+    ],
+  },
+
+  'aspnet/health-checks/degraded-returns-200-by-default-invisible-to-load-balancers': {
+    apis: ['HealthCheckOptions.ResultStatusCodes', 'HealthStatus.Degraded', 'UIResponseWriter'],
+    related: [
+      { label: 'DB Check Pool Contention — previous', route: '/aspnet/health-checks/db-check-connection-pool-contention-causes-cascading-failure' },
+      { label: 'Health Checks & Observability (overview)', route: '/aspnet/health-checks' },
+      { label: 'Observability & SRE', route: '/observability' },
+    ],
+    tip: 'Degraded returns HTTP 200 by default, identical to Healthy — since load balancers route on 2xx-vs-non-2xx status code alone, a Degraded pod gets its normal traffic share; the signal only reaches whatever parses the JSON body.',
+    docs: [
+      { label: 'Health checks in ASP.NET', url: 'https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks' },
+    ],
+    resources: [
+      { label: 'Xabaril/AspNetCore.Diagnostics.HealthChecks', url: 'https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks', badge: 'code' },
+    ],
+    gotchas: [
+      'Mapping Degraded to a non-2xx status code trades a visibility problem for an availability problem — a pod still capable of serving traffic gets fully removed from rotation.',
+      'The correct fix is a separate alerting consumer parsing the response body\'s status field, running alongside normal 200-based load-balancer routing, not instead of it.',
+    ],
+  },
+
   'aspnet/deployment': {
     apis: ['dotnet publish', '--self-contained', 'Dockerfile', 'ForwardedHeaders', 'UseForwardedHeaders()', 'ASPNETCORE_ENVIRONMENT', 'appsettings.{Env}.json', 'PublishAot'],
     related: [

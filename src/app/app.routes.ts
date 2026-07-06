@@ -896,7 +896,12 @@ export const routes: Routes = [
         { path: 'how-groups-and-context-persist-across-transient-hub-instances', loadComponent: () => import('./components/backend/aspnet/signalr/subtopics/how-groups-and-context-persist-across-transient-hub-instances/how-groups-and-context-persist-across-transient-hub-instances').then(m => m.HowGroupsAndContextPersistAcrossTransientHubInstancesSubtopic) },
         { path: 'connection-identity-captured-once-ignores-later-claim-changes', loadComponent: () => import('./components/backend/aspnet/signalr/subtopics/connection-identity-captured-once-ignores-later-claim-changes/connection-identity-captured-once-ignores-later-claim-changes').then(m => m.ConnectionIdentityCapturedOnceIgnoresLaterClaimChangesSubtopic) },
       ] },
-      { path: 'health-checks',        loadComponent: () => import('./components/backend/aspnet/health-checks/health-checks').then(m => m.AspnetHealthChecks) },
+      { path: 'health-checks', children: [
+        { path: '', loadComponent: () => import('./components/backend/aspnet/health-checks/health-checks').then(m => m.AspnetHealthChecks) },
+        { path: 'testing-health-check-boundary-logic-and-liveness-runs-zero-checks', loadComponent: () => import('./components/backend/aspnet/health-checks/subtopics/testing-health-check-boundary-logic-and-liveness-runs-zero-checks/testing-health-check-boundary-logic-and-liveness-runs-zero-checks').then(m => m.TestingHealthCheckBoundaryLogicAndLivenessRunsZeroChecksSubtopic) },
+        { path: 'db-check-connection-pool-contention-causes-cascading-failure', loadComponent: () => import('./components/backend/aspnet/health-checks/subtopics/db-check-connection-pool-contention-causes-cascading-failure/db-check-connection-pool-contention-causes-cascading-failure').then(m => m.DbCheckConnectionPoolContentionCausesCascadingFailureSubtopic) },
+        { path: 'degraded-returns-200-by-default-invisible-to-load-balancers', loadComponent: () => import('./components/backend/aspnet/health-checks/subtopics/degraded-returns-200-by-default-invisible-to-load-balancers/degraded-returns-200-by-default-invisible-to-load-balancers').then(m => m.DegradedReturns200ByDefaultInvisibleToLoadBalancersSubtopic) },
+      ] },
       { path: 'deployment',           loadComponent: () => import('./components/backend/aspnet/deployment/deployment').then(m => m.AspnetDeployment) },
       { path: 'performance',          loadComponent: () => import('./components/backend/aspnet/performance/performance').then(m => m.AspnetPerformance) },
       { path: 'aspire',                    loadComponent: () => import('./components/backend/aspnet/aspire/aspire').then(m => m.AspnetAspire) },
