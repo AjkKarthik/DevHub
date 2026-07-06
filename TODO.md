@@ -1525,7 +1525,7 @@ off here with a date.
 - [x] `/aspnet/secrets` — Secrets & Data Protection (2026-07-06 — 3 subtopics: testing-validateonstart-only-fails-fast-via-host-startasync, ioptionsmonitor-onchange-never-fires-for-env-vars-or-key-vault, pruning-data-protection-keys-invalidates-still-valid-time-limited-tokens)
 - [x] `/aspnet/testing` — Testing ASP.NET Core (2026-07-06 — 3 subtopics: testing-role-based-auth-per-test-without-new-factory-subclass, collection-fixtures-silently-disable-parallelism-for-grouped-classes, singleton-state-in-shared-factory-leaks-across-test-methods)
 - [x] `/aspnet/background-services` — Background Services (2026-07-06 — 3 subtopics: testing-periodic-worker-loops-with-faketimeprovider-tick-control, startasync-returns-before-executeasync-actually-completes, channel-writer-never-completed-loses-items-on-graceful-shutdown)
-- [ ] `/aspnet/signalr` — SignalR
+- [x] `/aspnet/signalr` — SignalR (2026-07-06 — 3 subtopics: testing-hub-methods-with-mocked-clients-groups-and-context, how-groups-and-context-persist-across-transient-hub-instances, connection-identity-captured-once-ignores-later-claim-changes)
 - [ ] `/aspnet/health-checks` — Health Checks & Observability
 - [ ] `/aspnet/deployment` — Deployment & Hosting
 - [ ] `/aspnet/performance` — Performance & Diagnostics
