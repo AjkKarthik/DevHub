@@ -1526,7 +1526,7 @@ off here with a date.
 - [x] `/aspnet/testing` — Testing ASP.NET Core (2026-07-06 — 3 subtopics: testing-role-based-auth-per-test-without-new-factory-subclass, collection-fixtures-silently-disable-parallelism-for-grouped-classes, singleton-state-in-shared-factory-leaks-across-test-methods)
 - [x] `/aspnet/background-services` — Background Services (2026-07-06 — 3 subtopics: testing-periodic-worker-loops-with-faketimeprovider-tick-control, startasync-returns-before-executeasync-actually-completes, channel-writer-never-completed-loses-items-on-graceful-shutdown)
 - [x] `/aspnet/signalr` — SignalR (2026-07-06 — 3 subtopics: testing-hub-methods-with-mocked-clients-groups-and-context, how-groups-and-context-persist-across-transient-hub-instances, connection-identity-captured-once-ignores-later-claim-changes)
-- [ ] `/aspnet/health-checks` — Health Checks & Observability
+- [x] `/aspnet/health-checks` — Health Checks & Observability (2026-07-06 — 3 subtopics: testing-health-check-boundary-logic-and-liveness-runs-zero-checks, db-check-connection-pool-contention-causes-cascading-failure, degraded-returns-200-by-default-invisible-to-load-balancers)
 - [ ] `/aspnet/deployment` — Deployment & Hosting
 - [ ] `/aspnet/performance` — Performance & Diagnostics
 - [ ] `/aspnet/aspire` — .NET Aspire
