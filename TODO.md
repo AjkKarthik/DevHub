@@ -1518,7 +1518,7 @@ off here with a date.
 - [x] `/aspnet/ef-performance` — EF Core Performance (2026-07-05 — 3 subtopics: testing-executeupdateasync-bypasses-savechanges-interceptors, what-ef-compilequery-actually-eliminates, captured-reference-pooled-dbcontext-leaks-across-requests)
 - [x] `/aspnet/caching` — Caching (2026-07-05 — 3 subtopics: testing-getorcreateasync-concurrent-misses-factory-runs-twice, how-imemorycache-expiry-actually-enforced-lazy-not-timers, write-invalidate-stale-repopulation-race-ttl-backstop)
 - [x] `/aspnet/authentication` — Authentication (2026-07-05 — 3 subtopics: testing-jwt-clockskew-expired-token-still-validates, why-setapplicationname-matters-shared-dataprotection-keys, jwt-claim-type-mapping-sub-becomes-nameidentifier)
-- [ ] `/aspnet/authorization` — Authorization
+- [x] `/aspnet/authorization` — Authorization (2026-07-06 — 3 subtopics: testing-multi-handler-or-semantics-fail-veto, how-authorization-middleware-combines-default-fallback-policies, allowanonymous-anywhere-wins-authorize-cannot-override)
 - [ ] `/aspnet/cors` — CORS & Security Headers
 - [ ] `/aspnet/rate-limiting` — Rate Limiting
 - [ ] `/aspnet/web-security` — Web Security Essentials
