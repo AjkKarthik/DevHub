@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Transactions"
+    topicRoute="/sql/transactions"
+    subtopicLabel="Demonstrating Write Skew"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating Write Skew — the One Anomaly Left Without Code</h1>
+  <p class="page-subtitle">
+    Every other concurrency anomaly on the main page gets a code demonstration — write skew is described
+    only in words. Here's the exact isolation-level boundary where it stops happening.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic returns to the main page's own SAVEPOINT code tab — finding that its PostgreSQL
+      example rolls back a genuinely successful insert, unlike its own conditionally-guarded MSSQL counterpart.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Transactions"
+    topicRoute="/sql/transactions"
+    [prev]="{ label: 'Testing the Bank Transfer Pattern', route: '/sql/transactions/testing-that-the-bank-transfer-example-is-already-safe-without-updlock' }"
+    [next]="{ label: 'The PostgreSQL SAVEPOINT Example Rolls Back a Success', route: '/sql/transactions/the-postgresql-savepoint-example-rolls-back-a-successful-insert' }"
+  />
+</div>

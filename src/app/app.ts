@@ -941,6 +941,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Quantifying the Wide Key Cost', route: '/sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes' },
     { label: 'A Claim That Breaks Its Own Rule', route: '/sql/indexes/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule' },
   ],
+  'transactions': [
+    { label: 'Testing the Bank Transfer Pattern', route: '/sql/transactions/testing-that-the-bank-transfer-example-is-already-safe-without-updlock' },
+    { label: 'Demonstrating Write Skew', route: '/sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code' },
+    { label: 'An Unconditional Rollback Bug', route: '/sql/transactions/the-postgresql-savepoint-example-rolls-back-a-successful-insert' },
+  ],
 };
 
 @Component({

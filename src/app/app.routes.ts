@@ -1081,7 +1081,12 @@ export const routes: Routes = [
         { path: 'quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes', loadComponent: () => import('./components/data/sql/indexes/subtopics/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes').then(m => m.QuantifyingWhyAWideClusteredKeyMultipliesStorageAcrossIndexesSubtopic) },
         { path: 'the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule', loadComponent: () => import('./components/data/sql/indexes/subtopics/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule').then(m => m.TheNoSortNeededClaimBreaksItsOwnLeftmostPrefixRuleSubtopic) },
       ] },
-      { path: 'transactions',      loadComponent: () => import('./components/data/sql/transactions/transactions').then(m => m.SqlTransactions) },
+      { path: 'transactions', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/transactions/transactions').then(m => m.SqlTransactions) },
+        { path: 'testing-that-the-bank-transfer-example-is-already-safe-without-updlock', loadComponent: () => import('./components/data/sql/transactions/subtopics/testing-that-the-bank-transfer-example-is-already-safe-without-updlock/testing-that-the-bank-transfer-example-is-already-safe-without-updlock').then(m => m.TestingThatTheBankTransferExampleIsAlreadySafeWithoutUpdlockSubtopic) },
+        { path: 'demonstrating-write-skew-the-one-anomaly-left-without-code', loadComponent: () => import('./components/data/sql/transactions/subtopics/demonstrating-write-skew-the-one-anomaly-left-without-code/demonstrating-write-skew-the-one-anomaly-left-without-code').then(m => m.DemonstratingWriteSkewTheOneAnomalyLeftWithoutCodeSubtopic) },
+        { path: 'the-postgresql-savepoint-example-rolls-back-a-successful-insert', loadComponent: () => import('./components/data/sql/transactions/subtopics/the-postgresql-savepoint-example-rolls-back-a-successful-insert/the-postgresql-savepoint-example-rolls-back-a-successful-insert').then(m => m.ThePostgresqlSavepointExampleRollsBackASuccessfulInsertSubtopic) },
+      ] },
       { path: 'schema-design',     loadComponent: () => import('./components/data/sql/schema-design/schema-design').then(m => m.SqlSchemaDesign) },
       { path: 'stored-procedures', loadComponent: () => import('./components/data/sql/stored-procedures/stored-procedures').then(m => m.SqlStoredProcedures) },
       { path: 'performance',       loadComponent: () => import('./components/data/sql/performance/performance').then(m => m.SqlPerformance) },

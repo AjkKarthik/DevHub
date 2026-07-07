@@ -15187,6 +15187,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['WITH (NOLOCK) / READ UNCOMMITTED reads dirty data — it avoids locks by reading uncommitted, potentially rolled-back rows.', 'Deadlocks are circular lock waits — SQL Server picks one transaction as the victim; always retry on deadlock error 1205.'],
   },
+
+  'sql/transactions/testing-that-the-bank-transfer-example-is-already-safe-without-updlock': {
+    apis: ['self-referencing UPDATE', 'WITH (UPDLOCK)', 'row lock'],
+    related: [
+      { label: 'Demonstrating Write Skew — next', route: '/sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code' },
+      { label: 'Transactions (overview)', route: '/sql/transactions' },
+    ],
+    tip: 'A single self-referencing UPDATE (col = col - x) is already atomic and safe from lost updates — UPDLOCK is only needed to bridge a SEPARATE SELECT and a later UPDATE.',
+    docs: [
+      { label: 'MSSQL Lock Hints', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Adding UPDLOCK defensively to a statement that has no preceding SELECT changes nothing — it was already safe.',
+      'The genuinely at-risk pattern splits the read and the write into two separate statements.',
+    ],
+  },
+
+  'sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code': {
+    apis: ['SERIALIZABLE', 'REPEATABLE READ', 'serialization failure'],
+    related: [
+      { label: 'Testing the Bank Transfer Pattern — previous', route: '/sql/transactions/testing-that-the-bank-transfer-example-is-already-safe-without-updlock' },
+      { label: 'An Unconditional Rollback Bug — next', route: '/sql/transactions/the-postgresql-savepoint-example-rolls-back-a-successful-insert' },
+      { label: 'Transactions (overview)', route: '/sql/transactions' },
+    ],
+    tip: 'Write skew produces no lock conflict and no error under REPEATABLE READ — both transactions individually pass their own check while the combined invariant silently breaks. Only SERIALIZABLE catches it.',
+    docs: [
+      { label: 'PostgreSQL Serializable Isolation', url: 'https://www.postgresql.org/docs/current/transaction-iso.html#XACT-SERIALIZABLE' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A serialization failure appearing after switching to SERIALIZABLE is the isolation level working correctly, not a new bug — the application needs a retry loop.',
+      'Write skew requires two genuinely concurrent transactions to reproduce — it cannot be demonstrated in a single session.',
+    ],
+  },
+
+  'sql/transactions/the-postgresql-savepoint-example-rolls-back-a-successful-insert': {
+    apis: ['SAVEPOINT', 'ROLLBACK TO SAVEPOINT', 'PL/pgSQL EXCEPTION'],
+    related: [
+      { label: 'Demonstrating Write Skew — previous', route: '/sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code' },
+      { label: 'Transactions (overview)', route: '/sql/transactions' },
+    ],
+    tip: 'Plain top-level PostgreSQL SQL has no @@ERROR-style check — conditionally rolling back to a savepoint only on failure requires a PL/pgSQL BEGIN...EXCEPTION WHEN OTHERS THEN...END block.',
+    docs: [
+      { label: 'PostgreSQL PL/pgSQL Error Trapping', url: 'https://www.postgresql.org/docs/current/plpgsql-control-structures.html#PLPGSQL-ERROR-TRAPPING' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An unconditional ROLLBACK TO SAVEPOINT after a "-- may fail" comment discards even a genuinely successful statement.',
+      'PL/pgSQL implicitly creates a savepoint at the start of every BEGIN...EXCEPTION block — no manual SAVEPOINT statement is needed there.',
+    ],
+  },
+
   'sql/schema-design': {
     apis: ['CREATE TABLE', 'PRIMARY KEY', 'FOREIGN KEY', 'UNIQUE', 'CHECK', 'NOT NULL', 'DEFAULT', 'IDENTITY / SERIAL', 'ON DELETE CASCADE', 'ALTER TABLE'],
     related: [{ label: 'Indexes', route: '/sql/indexes' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'JSON Features', route: '/sql/json-features' }],
