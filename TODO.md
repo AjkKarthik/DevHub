@@ -1582,7 +1582,7 @@ off here with a date.
 - [x] `/sql/isolation-levels` — Isolation Levels (2026-07-07 — 3 subtopics: testing-that-the-challenges-serializable-solution-needs-a-retry-loop, snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads, demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi)
 - [x] `/sql/locking` — Locking & Deadlocks (2026-07-08 — 3 subtopics: testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql, demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock, testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique)
 - [x] `/sql/execution-plans` — Execution Plans (2026-07-08 — 3 subtopics: correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence, demonstrating-that-index-scan-is-not-the-desired-mssql-outcome, testing-that-small-tables-seq-scan-despite-a-covering-index)
-- [ ] `/sql/partitioning` — Partitioning
+- [x] `/sql/partitioning` — Partitioning (2026-07-08 — 3 subtopics: testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax, testing-that-truncate-orders-archive-discards-the-data-just-switched-in, demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block)
 - [ ] `/sql/bulk-operations` — Bulk Operations
 - [ ] `/sql/query-store` — Query Store & Performance Statistics
 - [ ] `/sql/statistics` — Statistics & Query Optimizer
