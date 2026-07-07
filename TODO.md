@@ -1549,7 +1549,7 @@ off here with a date.
 - [x] `/sql/data-modeling` — Data Modeling (2026-07-07 — 3 subtopics: testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap, recursive-cte-has-no-cycle-protection-and-dialects-fail-differently, uuid-example-uses-the-exact-pattern-its-own-theory-warns-against)
 - [x] `/sql/normalization` — Normalization (2026-07-07 — 3 subtopics: testing-that-the-ordertotal-trigger-actually-stays-in-sync, why-a-computed-column-cant-replace-the-ordertotal-trigger, challenge-solutions-comment-contradicts-its-own-fk-declaration)
 - [x] `/sql/db-architecture` — Database Architecture (2026-07-07 — 3 subtopics: testing-idle-in-transaction-session-timeout-actually-works, buffer-hit-ratio-query-reads-a-meaningless-raw-counter, dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live)
-- [ ] `/sql/data-types` — Data Types
+- [x] `/sql/data-types` — Data Types (2026-07-07 — 3 subtopics: testing-that-financial-columns-stay-decimal-not-float, implicit-conversion-warning-has-the-risky-direction-backwards, jsonb-set-silently-no-ops-on-a-null-target)
 - [ ] `/sql/basics` — SQL Basics
 - [ ] `/sql/joins` — Joins
 - [ ] `/sql/aggregations` — Aggregations
