@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Schema Design"
+    topicRoute="/sql/schema-design"
+    subtopicLabel="A Caveat the ENUM Recommendation Skips"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The PostgreSQL ENUM Alternative Is Harder to Evolve, Not Easier</h1>
+  <p class="page-subtitle">
+    The main page offers a native ENUM type as a drop-in alternative to CHECK — but a new enum value can't be
+    used in the same transaction that adds it, unlike a CHECK constraint's unrestricted evolvability.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic returns to the CHECK-constrained Orders table from the main page's own Table DDL
+      tab — finding that a later tab's lookup-table recommendation never actually retires that original
+      constraint.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Schema Design"
+    topicRoute="/sql/schema-design"
+    [prev]="{ label: 'Testing the Migration’s Step 1', route: '/sql/schema-design/testing-whether-step-1s-default-actually-backfills-existing-rows' }"
+    [next]="{ label: 'The Lookup-Table Pattern Never Retires the Old CHECK', route: '/sql/schema-design/adding-the-lookup-table-pattern-never-retires-the-original-check' }"
+  />
+</div>

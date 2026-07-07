@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Schema Design"
+    topicRoute="/sql/schema-design"
+    subtopicLabel="Two Tabs, One Column, Two Constraints"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Adding the Lookup-Table Pattern Never Retires the Original CHECK</h1>
+  <p class="page-subtitle">
+    The main page's own lookup-table recommendation, applied to the Orders table from its own Table DDL tab,
+    leaves the original CHECK constraint active — silently blocking the exact flexibility the lookup table
+    was supposed to add.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Schema Design end-to-end: confirming a dialect split in the main
+      page's own migration recipe, correcting an ENUM recommendation that skips a real evolvability caveat,
+      and catching a leftover constraint left active when combining two of the page's own patterns.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Schema Design"
+    topicRoute="/sql/schema-design"
+    [prev]="{ label: 'The PostgreSQL ENUM Alternative Is Harder to Evolve', route: '/sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier' }"
+  />
+</div>

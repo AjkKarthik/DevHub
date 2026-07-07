@@ -15254,6 +15254,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Using VARCHAR(MAX) / TEXT for every string column hurts performance — choose appropriate lengths and use indexes.', 'Cascading deletes can surprise you in production — prefer explicit application-level deletes for critical data.'],
   },
+
+  'sql/schema-design/testing-whether-step-1s-default-actually-backfills-existing-rows': {
+    apis: ['ALTER TABLE ADD COLUMN', 'DEFAULT', 'pg_relation_size'],
+    related: [
+      { label: 'The ENUM Alternative Is Harder to Evolve — next', route: '/sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier' },
+      { label: 'Schema Design (overview)', route: '/sql/schema-design' },
+    ],
+    tip: 'PostgreSQL 11+ optimizes ADD COLUMN ... DEFAULT constant by recording the default in the catalog — existing rows read it back without a physical rewrite. MSSQL has no equivalent; existing rows genuinely stay NULL.',
+    docs: [
+      { label: 'PostgreSQL ALTER TABLE', url: 'https://www.postgresql.org/docs/current/sql-altertable.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Running a batch backfill UPDATE against PostgreSQL 11+ after ADD COLUMN ... DEFAULT triggers exactly the table rewrite the optimization exists to avoid.',
+      'The same 3-step migration recipe is not uniformly necessary across both dialects a page covers.',
+    ],
+  },
+
+  'sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier': {
+    apis: ['CREATE TYPE ... AS ENUM', 'ALTER TYPE ... ADD VALUE', 'CHECK constraint'],
+    related: [
+      { label: 'Testing the Migration’s Step 1 — previous', route: '/sql/schema-design/testing-whether-step-1s-default-actually-backfills-existing-rows' },
+      { label: 'The Lookup-Table Pattern Never Retires the Old CHECK — next', route: '/sql/schema-design/adding-the-lookup-table-pattern-never-retires-the-original-check' },
+      { label: 'Schema Design (overview)', route: '/sql/schema-design' },
+    ],
+    tip: 'A newly added ENUM value cannot be used in the same transaction that added it, even in PostgreSQL 12+ — a CHECK constraint has no such restriction.',
+    docs: [
+      { label: 'PostgreSQL ENUM Types', url: 'https://www.postgresql.org/docs/current/datatype-enum.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A native database type isn\'t automatically the more flexible choice — for evolving value sets, CHECK constraints are more practical than ENUM.',
+      'Adding and using a new enum value requires two separate deploy transactions, not one.',
+    ],
+  },
+
+  'sql/schema-design/adding-the-lookup-table-pattern-never-retires-the-original-check': {
+    apis: ['CHECK constraint', 'FOREIGN KEY', 'DROP CONSTRAINT'],
+    related: [
+      { label: 'The ENUM Alternative Is Harder to Evolve — previous', route: '/sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier' },
+      { label: 'Schema Design (overview)', route: '/sql/schema-design' },
+    ],
+    tip: 'Adding an FK-to-lookup-table pattern to a column that already has a CHECK constraint leaves BOTH active — drop the old CHECK first, or new lookup rows get silently rejected.',
+    docs: [
+      { label: 'MSSQL ALTER TABLE DROP CONSTRAINT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The CHECK constraint violation error names the OLD constraint, not the new FK — the error message correctly identifies the blocker but not that it should have been removed.',
+      'Two individually-correct patterns from the same reference page can conflict when combined — verify the combination, not just each piece alone.',
+    ],
+  },
+
   'sql/stored-procedures': {
     apis: ['CREATE PROCEDURE', 'EXEC / CALL', '@param IN/OUT', 'RETURN', 'TRY/CATCH', 'RAISERROR / RAISE', 'CREATE FUNCTION', 'TABLE-VALUED FUNCTION', 'DECLARE', 'SET'],
     related: [{ label: 'Transactions', route: '/sql/transactions' }, { label: 'Performance', route: '/sql/performance' }, { label: 'Schema Design', route: '/sql/schema-design' }],

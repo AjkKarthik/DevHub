@@ -1087,7 +1087,12 @@ export const routes: Routes = [
         { path: 'demonstrating-write-skew-the-one-anomaly-left-without-code', loadComponent: () => import('./components/data/sql/transactions/subtopics/demonstrating-write-skew-the-one-anomaly-left-without-code/demonstrating-write-skew-the-one-anomaly-left-without-code').then(m => m.DemonstratingWriteSkewTheOneAnomalyLeftWithoutCodeSubtopic) },
         { path: 'the-postgresql-savepoint-example-rolls-back-a-successful-insert', loadComponent: () => import('./components/data/sql/transactions/subtopics/the-postgresql-savepoint-example-rolls-back-a-successful-insert/the-postgresql-savepoint-example-rolls-back-a-successful-insert').then(m => m.ThePostgresqlSavepointExampleRollsBackASuccessfulInsertSubtopic) },
       ] },
-      { path: 'schema-design',     loadComponent: () => import('./components/data/sql/schema-design/schema-design').then(m => m.SqlSchemaDesign) },
+      { path: 'schema-design', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/schema-design/schema-design').then(m => m.SqlSchemaDesign) },
+        { path: 'testing-whether-step-1s-default-actually-backfills-existing-rows', loadComponent: () => import('./components/data/sql/schema-design/subtopics/testing-whether-step-1s-default-actually-backfills-existing-rows/testing-whether-step-1s-default-actually-backfills-existing-rows').then(m => m.TestingWhetherStep1sDefaultActuallyBackfillsExistingRowsSubtopic) },
+        { path: 'the-postgresql-enum-alternative-is-harder-to-evolve-not-easier', loadComponent: () => import('./components/data/sql/schema-design/subtopics/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier').then(m => m.ThePostgresqlEnumAlternativeIsHarderToEvolveNotEasierSubtopic) },
+        { path: 'adding-the-lookup-table-pattern-never-retires-the-original-check', loadComponent: () => import('./components/data/sql/schema-design/subtopics/adding-the-lookup-table-pattern-never-retires-the-original-check/adding-the-lookup-table-pattern-never-retires-the-original-check').then(m => m.AddingTheLookupTablePatternNeverRetiresTheOriginalCheckSubtopic) },
+      ] },
       { path: 'stored-procedures', loadComponent: () => import('./components/data/sql/stored-procedures/stored-procedures').then(m => m.SqlStoredProcedures) },
       { path: 'performance',       loadComponent: () => import('./components/data/sql/performance/performance').then(m => m.SqlPerformance) },
       { path: 'json-features',            loadComponent: () => import('./components/data/sql/json-features/json-features').then(m => m.SqlJsonFeatures) },

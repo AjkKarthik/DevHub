@@ -946,6 +946,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Demonstrating Write Skew', route: '/sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code' },
     { label: 'An Unconditional Rollback Bug', route: '/sql/transactions/the-postgresql-savepoint-example-rolls-back-a-successful-insert' },
   ],
+  'schema-design': [
+    { label: 'Testing the Migration’s Step 1', route: '/sql/schema-design/testing-whether-step-1s-default-actually-backfills-existing-rows' },
+    { label: 'The ENUM Alternative Is Harder to Evolve', route: '/sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier' },
+    { label: 'The Lookup-Table Pattern Never Retires the Old CHECK', route: '/sql/schema-design/adding-the-lookup-table-pattern-never-retires-the-original-check' },
+  ],
 };
 
 @Component({
