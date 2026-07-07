@@ -1171,7 +1171,12 @@ export const routes: Routes = [
         { path: 'demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code', loadComponent: () => import('./components/data/sql/views/subtopics/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code').then(m => m.DemonstratingThatLeftSsn0InTheMaskingExampleIsDeadCodeSubtopic) },
         { path: 'demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view', loadComponent: () => import('./components/data/sql/views/subtopics/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view').then(m => m.DemonstratingAnInsteadOfInsertTriggerForAMultiTableJoinViewSubtopic) },
       ] },
-      { path: 'sequences',               loadComponent: () => import('./components/data/sql/sequences/sequences').then(m => m.SqlSequences) },
+      { path: 'sequences', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/sequences/sequences').then(m => m.SqlSequences) },
+        { path: 'correcting-the-peek-next-value-answer-when-cache-is-greater-than-one', loadComponent: () => import('./components/data/sql/sequences/subtopics/correcting-the-peek-next-value-answer-when-cache-is-greater-than-one/correcting-the-peek-next-value-answer-when-cache-is-greater-than-one').then(m => m.CorrectingThePeekNextValueAnswerWhenCacheIsGreaterThanOneSubtopic) },
+        { path: 'demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger', loadComponent: () => import('./components/data/sql/sequences/subtopics/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger').then(m => m.DemonstratingTheScopeIdentityVsIdentityDivergenceWithATriggerSubtopic) },
+        { path: 'testing-that-committed-sequence-ids-can-appear-out-of-order', loadComponent: () => import('./components/data/sql/sequences/subtopics/testing-that-committed-sequence-ids-can-appear-out-of-order/testing-that-committed-sequence-ids-can-appear-out-of-order').then(m => m.TestingThatCommittedSequenceIdsCanAppearOutOfOrderSubtopic) },
+      ] },
       { path: 'temp-tables',             loadComponent: () => import('./components/data/sql/temp-tables/temp-tables').then(m => m.SqlTempTables) },
       { path: 'computed-columns',        loadComponent: () => import('./components/data/sql/computed-columns/computed-columns').then(m => m.SqlComputedColumns) },
       { path: 'stored-functions',        loadComponent: () => import('./components/data/sql/stored-functions/stored-functions').then(m => m.SqlStoredFunctions) },

@@ -1019,6 +1019,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Dead LEFT(ssn, 0) in the Masking Example', route: '/sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code' },
     { label: 'An INSTEAD OF INSERT Trigger, Demonstrated', route: '/sql/views/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view' },
   ],
+  'sequences': [
+    { label: 'Correcting the ‘Peek Next Value’ Answer', route: '/sql/sequences/correcting-the-peek-next-value-answer-when-cache-is-greater-than-one' },
+    { label: 'SCOPE_IDENTITY() vs @@IDENTITY, Demonstrated', route: '/sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger' },
+    { label: 'Testing Out-of-Order Sequence Commits', route: '/sql/sequences/testing-that-committed-sequence-ids-can-appear-out-of-order' },
+  ],
 };
 
 @Component({

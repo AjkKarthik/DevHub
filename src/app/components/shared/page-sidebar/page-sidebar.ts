@@ -16184,6 +16184,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/sequences': {
+    apis: ['IDENTITY', 'SEQUENCE', 'nextval()', 'SCOPE_IDENTITY()', 'RETURNING'],
+    related: [{ label: 'Constraints', route: '/sql/constraints' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'Sequences allocate values outside any transaction — a rolled-back or slow-to-commit transaction creates gaps and out-of-order visibility, never silent duplicates.',
+    docs: [{ label: 'MSSQL IDENTITY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql' }, { label: 'PostgreSQL Sequences', url: 'https://www.postgresql.org/docs/current/sql-createsequence.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['last_value + increment_by only accurately previews the next nextval() result when CACHE is 1 — with CACHE > 1 it reflects the end of the last reserved block instead.', 'A concurrent transaction with a higher allocated ID can commit and become visible before one with a lower ID — sequence order is allocation order, not commit order.'],
+  },
+
+  'sql/sequences/correcting-the-peek-next-value-answer-when-cache-is-greater-than-one': {
+    apis: ['last_value', 'nextval()', 'CACHE'],
+    related: [
+      { label: 'SCOPE_IDENTITY() vs @@IDENTITY, Demonstrated — next', route: '/sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger' },
+      { label: 'Sequences & Identity (overview)', route: '/sql/sequences' },
+    ],
+    tip: 'With CACHE > 1, one nextval() call reserves an entire block at once — last_value jumps to the END of that block immediately, not the value about to be returned next.',
+    docs: [
+      { label: 'PostgreSQL Sequence Functions', url: 'https://www.postgresql.org/docs/current/functions-sequence.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'There is no reliable way to preview the exact next nextval() value for a session mid-way through an already-reserved CACHE > 1 block.',
+      'The "peek" technique is only accurate for CACHE 1 sequences, at the cost of that sequence\'s reduced throughput.',
+    ],
+  },
+
+  'sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger': {
+    apis: ['SCOPE_IDENTITY()', '@@IDENTITY', 'AFTER INSERT trigger'],
+    related: [
+      { label: 'Correcting the ‘Peek Next Value’ Answer — previous', route: '/sql/sequences/correcting-the-peek-next-value-answer-when-cache-is-greater-than-one' },
+      { label: 'Testing Out-of-Order Sequence Commits — next', route: '/sql/sequences/testing-that-committed-sequence-ids-can-appear-out-of-order' },
+      { label: 'Sequences & Identity (overview)', route: '/sql/sequences' },
+    ],
+    tip: '@@IDENTITY returns the last identity generated ANYWHERE in the session, including by triggers — SCOPE_IDENTITY() stays correctly scoped to the original INSERT.',
+    docs: [
+      { label: 'MSSQL @@IDENTITY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/identity-functions-identity' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This bug is latent — @@IDENTITY works correctly for years until a trigger writing to another IDENTITY-column table is added later.',
+      '@@IDENTITY returns a valid-looking integer with no error, so the wrong ID is only caught through downstream symptoms.',
+    ],
+  },
+
+  'sql/sequences/testing-that-committed-sequence-ids-can-appear-out-of-order': {
+    apis: ['nextval()', 'IDENTITY', 'RETURNING', 'transaction visibility'],
+    related: [
+      { label: 'SCOPE_IDENTITY() vs @@IDENTITY, Demonstrated — previous', route: '/sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger' },
+      { label: 'Sequences & Identity (overview)', route: '/sql/sequences' },
+    ],
+    tip: 'ID allocation order and commit (visibility) order are different — a transaction with a higher ID can become visible before one with a lower ID under concurrency.',
+    docs: [
+      { label: 'PostgreSQL MVCC', url: 'https://www.postgresql.org/docs/current/mvcc.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An incremental sync cursor using "WHERE id > last_max_id_seen" can permanently skip a row that commits slightly late.',
+      'Use a commit-time timestamp or an overlap window for sync cursors instead of the raw sequence/identity value.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
