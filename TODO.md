@@ -1584,7 +1584,7 @@ off here with a date.
 - [x] `/sql/execution-plans` — Execution Plans (2026-07-08 — 3 subtopics: correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence, demonstrating-that-index-scan-is-not-the-desired-mssql-outcome, testing-that-small-tables-seq-scan-despite-a-covering-index)
 - [x] `/sql/partitioning` — Partitioning (2026-07-08 — 3 subtopics: testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax, testing-that-truncate-orders-archive-discards-the-data-just-switched-in, demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block)
 - [x] `/sql/bulk-operations` — Bulk Operations (2026-07-08 — 3 subtopics: testing-that-the-batched-update-example-never-finds-a-matching-row, testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard, correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap)
-- [ ] `/sql/query-store` — Query Store & Performance Statistics
+- [x] `/sql/query-store` — Query Store & Performance Statistics (2026-07-08 — 3 subtopics: testing-that-the-historic-average-includes-the-regressed-interval, testing-that-flush-db-does-not-purge-or-reduce-query-store-storage, demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing)
 - [ ] `/sql/statistics` — Statistics & Query Optimizer
 - [ ] `/sql/full-text-search` — Full-Text Search
 - [ ] `/sql/security` — SQL Security
