@@ -964,6 +964,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Missing Normalization Step', route: '/sql/performance/the-missing-index-impact-score-formula-is-missing-a-100' },
     { label: 'Building the Regression Test', route: '/sql/performance/demonstrating-the-execution-plan-regression-test-the-page-only-describes' },
   ],
+  'json-features': [
+    { label: 'Testing the Merge Operator’s Limits', route: '/sql/json-features/testing-that-merge-silently-wipes-out-nested-keys-instead-of-deep-merging' },
+    { label: 'What Untyped OPENJSON Actually Returns', route: '/sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays' },
+    { label: 'A NULL-Handling Gap in a Partial Index', route: '/sql/json-features/the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows' },
+  ],
 };
 
 @Component({

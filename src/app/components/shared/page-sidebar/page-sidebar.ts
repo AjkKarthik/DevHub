@@ -15455,6 +15455,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['JSON columns cannot be indexed like normal columns without computed columns (SQL Server) or GIN indexes (PostgreSQL).', 'SQL Server stores JSON as NVARCHAR — there is no native JSON type, so validation is at function-call time, not insert time.'],
   },
+
+  'sql/json-features/testing-that-merge-silently-wipes-out-nested-keys-instead-of-deep-merging': {
+    apis: ['|| (jsonb merge)', 'jsonb_set()'],
+    related: [
+      { label: 'What Untyped OPENJSON Actually Returns — next', route: '/sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays' },
+      { label: 'JSON Features (overview)', route: '/sql/json-features' },
+    ],
+    tip: 'The jsonb || operator only merges at the top level — merging a nested key replaces that key\'s entire object wholesale, silently discarding sibling fields not repeated in the replacement.',
+    docs: [
+      { label: 'PostgreSQL JSON Functions', url: 'https://www.postgresql.org/docs/current/functions-json.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Merging a partial nested object into an existing one deletes any sibling fields the replacement doesn\'t repeat.',
+      'The fix extracts the sub-object, merges into IT, then writes it back via jsonb_set() at the parent path.',
+    ],
+  },
+
+  'sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays': {
+    apis: ['OPENJSON()', 'CROSS APPLY', 'WITH (path syntax)'],
+    related: [
+      { label: 'Testing the Merge Operator’s Limits — previous', route: '/sql/json-features/testing-that-merge-silently-wipes-out-nested-keys-instead-of-deep-merging' },
+      { label: 'A NULL-Handling Gap in a Partial Index — next', route: '/sql/json-features/the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows' },
+      { label: 'JSON Features (overview)', route: '/sql/json-features' },
+    ],
+    tip: 'OPENJSON without a WITH clause, over an array of objects, returns each object as a raw JSON text string in "value" — not the individual scalar fields.',
+    docs: [
+      { label: 'MSSQL OPENJSON', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Comparing the untyped "value" column against a scalar (e.g. value = 1) never matches when each array element is an object, not a scalar.',
+      'The WITH-clause path syntax reaches directly into nested fields in one call, avoiding a second nested OPENJSON call.',
+    ],
+  },
+
+  'sql/json-features/the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows': {
+    apis: ['IS DISTINCT FROM', 'partial index', '->>'],
+    related: [
+      { label: 'What Untyped OPENJSON Actually Returns — previous', route: '/sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays' },
+      { label: 'JSON Features (overview)', route: '/sql/json-features' },
+    ],
+    tip: 'payload->>\'key\' returns SQL NULL when the key is missing entirely — NULL != value is UNKNOWN, not TRUE, silently excluding those rows from both the query and any partial index built on the same predicate.',
+    docs: [
+      { label: 'PostgreSQL Comparison Operators', url: 'https://www.postgresql.org/docs/current/functions-comparison.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A partial index and a query sharing the same != predicate share the same NULL-exclusion blind spot — self-consistent, but surprising.',
+      'IS DISTINCT FROM correctly treats NULL as "distinct from" any non-null value, unlike standard !=.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

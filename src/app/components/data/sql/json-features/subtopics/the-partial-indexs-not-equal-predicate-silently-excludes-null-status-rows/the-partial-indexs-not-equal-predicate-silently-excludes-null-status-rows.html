@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="JSON Features"
+    topicRoute="/sql/json-features"
+    subtopicLabel="A NULL-Handling Gap in a Partial Index"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The Partial Index's != Predicate Silently Excludes NULL Status Rows</h1>
+  <p class="page-subtitle">
+    The main page's own "active events" partial index silently drops any row with no status key at all —
+    NULL != 'archived' evaluates to UNKNOWN, not TRUE.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover JSON Features end-to-end: proving the merge operator silently
+      discards nested data, clarifying what OPENJSON's untyped output actually contains for object arrays,
+      and closing a NULL-handling gap in a partial index that silently excludes legitimately active rows.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="JSON Features"
+    topicRoute="/sql/json-features"
+    [prev]="{ label: 'Demonstrating OPENJSON’s Untyped Output for Object Arrays', route: '/sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays' }"
+  />
+</div>

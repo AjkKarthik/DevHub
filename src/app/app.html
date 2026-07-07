@@ -1465,7 +1465,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/json-features"      routerLinkActive="active"><span class="nl-text">JSON Features</span>@if(progress.isDone('sql-json-features')){<span class="nl-done">✓</span>}@if(diff('sql-json-features');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/json-features" routerLinkActive="active">
+        <span class="nl-text">JSON Features</span>
+        @if (progress.isDone('sql-json-features')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-json-features'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('json-features')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('json-features')"
+                  (click)="toggleSubtopics('json-features', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('json-features'); as subs) {
+        @if (isSubtopicsExpanded('json-features')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
