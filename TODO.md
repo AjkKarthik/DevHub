@@ -1553,7 +1553,7 @@ off here with a date.
 - [x] `/sql/basics` — SQL Basics (2026-07-07 — 3 subtopics: distinct-on-and-row-number-examples-have-no-tie-breaker, confirming-not-trusting-the-implicit-conversion-claim, offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination)
 - [x] `/sql/joins` — Joins (2026-07-07 — 3 subtopics: testing-that-the-row-multiplication-fix-actually-prevents-double-counting, year-wrapped-date-filter-fix-still-isnt-sargable, anti-join-self-join-both-tab-has-a-postgresql-only-clause)
 - [x] `/sql/aggregations` — Aggregations (2026-07-07 — 3 subtopics: testing-that-the-count-distinct-alternative-returns-identical-counts, legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters, grouping-sets-omits-the-disambiguation-its-own-theory-warns-about)
-- [ ] `/sql/subqueries` — Subqueries
+- [x] `/sql/subqueries` — Subqueries (2026-07-07 — 3 subtopics: testing-that-the-window-function-rewrite-matches-the-correlated-subquery, the-avoid-this-window-function-in-having-example-doesnt-run-at-all, row-subqueries-and-the-mssql-rewrite-the-page-never-shows)
 - [ ] `/sql/ctes` — CTEs
 - [ ] `/sql/window-functions` — Window Functions
 - [ ] `/sql/indexes` — Indexes
