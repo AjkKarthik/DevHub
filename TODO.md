@@ -1565,7 +1565,7 @@ off here with a date.
 - [x] `/sql/set-operations` — Set Operations (2026-07-07 — 3 subtopics: testing-that-the-schema-comparison-query-misses-type-only-drift, demonstrating-that-intersects-tighter-binding-actually-changes-the-result, confirming-that-except-materialises-both-sets-not-exists-short-circuits)
 - [x] `/sql/null-handling` — NULL Handling (2026-07-07 — 3 subtopics: testing-that-union-treats-two-nulls-as-equal-while-join-doesnt, isnull-can-silently-truncate-a-bigger-reason-than-portability, demonstrating-what-ansi-nulls-off-actually-does-to-comparisons)
 - [x] `/sql/merge` — MERGE / Upsert (2026-07-07 — 3 subtopics: testing-that-the-mssql-merge-duplicate-source-bug-is-real, on-conflict-is-atomic-once-the-partial-index-predicate-matches, concurrent-merge-statements-can-still-race-without-holdlock)
-- [ ] `/sql/string-functions` — String Functions
+- [x] `/sql/string-functions` — String Functions (2026-07-07 — 3 subtopics: testing-that-name-normaliser-returns-null-for-a-null-last-name, demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale, replace-is-case-insensitive-by-default-contradicting-its-own-claim)
 - [ ] `/sql/date-functions` — Date & Time Functions
 - [ ] `/sql/conditional-expressions` — Conditional Expressions
 - [ ] `/sql/math-functions` — Math & Numeric Functions
