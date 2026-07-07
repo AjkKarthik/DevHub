@@ -1064,6 +1064,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DEADLOCK_PRIORITY Doesn’t Prevent the Deadlock', route: '/sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock' },
     { label: 'ORDER BY on UPDATE Is Invalid Syntax', route: '/sql/locking/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique' },
   ],
+  'execution-plans': [
+    { label: 'Correcting the “Scan, Not Seek” Claim', route: '/sql/execution-plans/correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence' },
+    { label: 'Index Scan Is Not the Desired MSSQL Outcome', route: '/sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome' },
+    { label: 'Small Tables Seq Scan Despite a Covering Index', route: '/sql/execution-plans/testing-that-small-tables-seq-scan-despite-a-covering-index' },
+  ],
 };
 
 @Component({

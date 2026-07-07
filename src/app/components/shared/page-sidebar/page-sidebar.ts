@@ -16787,6 +16787,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/execution-plans': {
+    apis: ['SET SHOWPLAN_ALL', 'SET STATISTICS IO', 'EXPLAIN ANALYZE', 'Index Seek vs Index Scan'],
+    related: [{ label: 'Locking & Deadlocks', route: '/sql/locking' }, { label: 'Statistics', route: '/sql/statistics' }, { label: 'Query Store', route: '/sql/query-store' }],
+    tip: '"Index Scan" means opposite things in MSSQL (the inefficient O(n) case) vs PostgreSQL (the efficient case) — MSSQL\'s efficient equivalent is called "Index Seek."',
+    docs: [{ label: 'MSSQL Execution Plans', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans' }, { label: 'PostgreSQL EXPLAIN', url: 'https://www.postgresql.org/docs/current/using-explain.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['SQL Server\'s data type precedence converts the LOWER-precedence side of a comparison — not always the column, so not every type mismatch disables a seek.', 'A cost-based planner will pick Seq Scan over a matching index on a small enough table — an unused index there is correct, not broken.'],
+  },
+
+  'sql/execution-plans/correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence': {
+    apis: ['Data Type Precedence', 'CONVERT_IMPLICIT', 'Seek Predicate'],
+    related: [
+      { label: 'Index Scan Is Not the Desired MSSQL Outcome — next', route: '/sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome' },
+      { label: 'Execution Plans (overview)', route: '/sql/execution-plans' },
+    ],
+    tip: 'int outranks varchar in SQL Server\'s Data Type Precedence order, so an INT column compared to a VARCHAR parameter converts the parameter, not the column — the seek survives.',
+    docs: [
+      { label: 'MSSQL Data Type Precedence', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-type-precedence-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The direction reverses for nvarchar vs varchar — nvarchar outranks varchar, so a VARCHAR COLUMN compared to an NVARCHAR value genuinely does lose its seek.',
+      'CONVERT() explicitly wrapping the column is always unsafe — the precedence rules only help when no explicit conversion function touches the column.',
+    ],
+  },
+
+  'sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome': {
+    apis: ['Index Seek', 'Index Scan', 'Index Only Scan'],
+    related: [
+      { label: 'Correcting the “Scan, Not Seek” Claim — previous', route: '/sql/execution-plans/correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence' },
+      { label: 'Small Tables Seq Scan Despite a Covering Index — next', route: '/sql/execution-plans/testing-that-small-tables-seq-scan-despite-a-covering-index' },
+      { label: 'Execution Plans (overview)', route: '/sql/execution-plans' },
+    ],
+    tip: 'PostgreSQL\'s efficient plan operator is named "Index Scan"/"Index Only Scan"; MSSQL\'s is named "Index Seek" — in MSSQL, "Index Scan" is the inefficient O(n) case the page\'s own theory warns about.',
+    docs: [
+      { label: 'MSSQL Index Seek vs Scan', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The challenge\'s own verification note reuses PostgreSQL terminology for the MSSQL half of its dual-dialect solution.',
+      'Seeing "Index Scan" in an MSSQL plan for a selective query is a warning sign, not a success signal — check for "Index Seek" instead.',
+    ],
+  },
+
+  'sql/execution-plans/testing-that-small-tables-seq-scan-despite-a-covering-index': {
+    apis: ['cost-based optimizer', 'seq_page_cost', 'ANALYZE'],
+    related: [
+      { label: 'Index Scan Is Not the Desired MSSQL Outcome — previous', route: '/sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome' },
+      { label: 'Execution Plans (overview)', route: '/sql/execution-plans' },
+    ],
+    tip: 'PostgreSQL\'s planner is cost-based, not rule-based — a matching index goes unused whenever a Seq Scan is estimated cheaper, which is common on small tables.',
+    docs: [
+      { label: 'PostgreSQL Query Planning', url: 'https://www.postgresql.org/docs/current/planner-optimizer.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The challenge\'s "should now show Index Scan ... no Seq Scan" verification note is implicitly scoped to its own stated 10M-row scenario.',
+      'Testing an index against a small staging table is not a reliable predictor of whether production will use it — plan shape can flip entirely with table size.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

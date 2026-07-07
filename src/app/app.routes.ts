@@ -1225,7 +1225,12 @@ export const routes: Routes = [
         { path: 'demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock', loadComponent: () => import('./components/data/sql/locking/subtopics/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock').then(m => m.DemonstratingThatDeadlockPriorityLowDoesNotPreventTheDeadlockSubtopic) },
         { path: 'testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique', loadComponent: () => import('./components/data/sql/locking/subtopics/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique').then(m => m.TestingThatOrderByOnUpdateIsInvalidSyntaxNotALockTechniqueSubtopic) },
       ] },
-      { path: 'execution-plans',         loadComponent: () => import('./components/data/sql/execution-plans/execution-plans').then(m => m.SqlExecutionPlans) },
+      { path: 'execution-plans', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/execution-plans/execution-plans').then(m => m.SqlExecutionPlans) },
+        { path: 'correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence', loadComponent: () => import('./components/data/sql/execution-plans/subtopics/correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence/correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence').then(m => m.CorrectingTheScanNotSeekClaimForIntVsVarcharPrecedenceSubtopic) },
+        { path: 'demonstrating-that-index-scan-is-not-the-desired-mssql-outcome', loadComponent: () => import('./components/data/sql/execution-plans/subtopics/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome').then(m => m.DemonstratingThatIndexScanIsNotTheDesiredMssqlOutcomeSubtopic) },
+        { path: 'testing-that-small-tables-seq-scan-despite-a-covering-index', loadComponent: () => import('./components/data/sql/execution-plans/subtopics/testing-that-small-tables-seq-scan-despite-a-covering-index/testing-that-small-tables-seq-scan-despite-a-covering-index').then(m => m.TestingThatSmallTablesSeqScanDespiteACoveringIndexSubtopic) },
+      ] },
       { path: 'partitioning',            loadComponent: () => import('./components/data/sql/partitioning/partitioning').then(m => m.SqlPartitioning) },
       { path: 'bulk-operations',         loadComponent: () => import('./components/data/sql/bulk-operations/bulk-operations').then(m => m.SqlBulkOperations) },
       { path: 'query-store',             loadComponent: () => import('./components/data/sql/query-store/query-store').then(m => m.SqlQueryStore) },

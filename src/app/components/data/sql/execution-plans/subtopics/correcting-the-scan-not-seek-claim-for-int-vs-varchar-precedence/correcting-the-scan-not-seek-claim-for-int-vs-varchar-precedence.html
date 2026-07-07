@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Execution Plans"
+    topicRoute="/sql/execution-plans"
+    subtopicLabel="Correcting the &quot;Scan, Not Seek&quot; Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Correcting the "Scan, Not Seek" Claim for INT vs VARCHAR Precedence</h1>
+  <p class="page-subtitle">
+    The main page labels an INT column compared to a VARCHAR parameter as "scan, not seek!" — but data
+    type precedence converts the parameter, not the column, so the seek actually survives.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="SQL Server 2005" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Not every type mismatch is equal — the next subtopic looks at a self-contradiction inside the
+      challenge's own verification note about what a "good" plan looks like.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Execution Plans"
+    topicRoute="/sql/execution-plans"
+    [next]="{ label: 'Index Scan Is Not the Desired MSSQL Outcome', route: '/sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome' }"
+  />
+</div>

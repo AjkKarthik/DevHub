@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Execution Plans"
+    topicRoute="/sql/execution-plans"
+    subtopicLabel="Small Tables Seq Scan Despite a Covering Index"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That Small Tables Seq Scan Despite a Covering Index</h1>
+  <p class="page-subtitle">
+    The challenge's "should now show Index Scan ... no Seq Scan" verification implicitly assumes its own
+    10M-row scenario — on a small table, PostgreSQL's cost-based planner picks Seq Scan instead.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="PostgreSQL 9.x+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the precedence correction and the Index Scan/Seek terminology mix-up, this closes out
+      the theme: the challenge's own verification note holds only under the exact conditions it silently assumes.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Execution Plans"
+    topicRoute="/sql/execution-plans"
+    [prev]="{ label: 'Index Scan Is Not the Desired MSSQL Outcome', route: '/sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome' }"
+  />
+</div>

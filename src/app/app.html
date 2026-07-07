@@ -1586,7 +1586,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/execution-plans"       routerLinkActive="active"><span class="nl-text">Execution Plans</span>@if(progress.isDone('sql-execution-plans')){<span class="nl-done">✓</span>}@if(diff('sql-execution-plans');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/execution-plans" routerLinkActive="active">
+        <span class="nl-text">Execution Plans</span>
+        @if (progress.isDone('sql-execution-plans')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-execution-plans'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('execution-plans')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('execution-plans')"
+                  (click)="toggleSubtopics('execution-plans', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('execution-plans'); as subs) {
+        @if (isSubtopicsExpanded('execution-plans')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/partitioning"          routerLinkActive="active"><span class="nl-text">Partitioning</span>@if(progress.isDone('sql-partitioning')){<span class="nl-done">✓</span>}@if(diff('sql-partitioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/bulk-operations"       routerLinkActive="active"><span class="nl-text">Bulk Operations</span>@if(progress.isDone('sql-bulk-operations')){<span class="nl-done">✓</span>}@if(diff('sql-bulk-operations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/query-store"           routerLinkActive="active"><span class="nl-text">Query Store</span>@if(progress.isDone('sql-query-store')){<span class="nl-done">✓</span>}@if(diff('sql-query-store');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
