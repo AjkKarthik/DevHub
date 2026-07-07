@@ -14852,6 +14852,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['HAVING filters after aggregation; WHERE filters before — you cannot use aggregate aliases in WHERE.', 'COUNT(*) counts rows including NULLs; COUNT(column) counts non-NULL values only.'],
   },
+
+  'sql/aggregations/testing-that-the-count-distinct-alternative-returns-identical-counts': {
+    apis: ['COUNT(DISTINCT)', 'pgTAP', 'tSQLt'],
+    related: [
+      { label: 'The Legacy Pattern’s Hidden Corruption — next', route: '/sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters' },
+      { label: 'Aggregations (overview)', route: '/sql/aggregations' },
+    ],
+    tip: 'A "faster" alternative to COUNT(DISTINCT) is not proven correct just because it runs — compare its result against the original on a small, hand-verifiable fixture.',
+    docs: [
+      { label: 'pgTAP', url: 'https://pgtap.org/documentation.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A dedup CTE that omits the GROUP BY column from its DISTINCT list silently collapses cross-group duplicates, undercounting.',
+      'The resulting wrong count is usually close to correct, not wildly off — easy to miss without an explicit equivalence test.',
+    ],
+  },
+
+  'sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters': {
+    apis: ['FOR XML PATH', 'STUFF()', '.value()', 'STRING_AGG'],
+    related: [
+      { label: 'Testing the COUNT(DISTINCT) Alternative — previous', route: '/sql/aggregations/testing-that-the-count-distinct-alternative-returns-identical-counts' },
+      { label: 'A GROUPING() Gap the Theory Warns About — next', route: '/sql/aggregations/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about' },
+      { label: 'Aggregations (overview)', route: '/sql/aggregations' },
+    ],
+    tip: 'FOR XML PATH genuinely serializes rows as XML — & becomes &amp; before concatenation, and .value() never decodes it back.',
+    docs: [
+      { label: 'MSSQL STRING_AGG', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/string-agg-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Real business names containing "&" (common in company names) are silently corrupted by the legacy FOR XML PATH concatenation trick.',
+      'STRING_AGG (MSSQL 2017+) has no such issue since it never routes data through XML serialization.',
+    ],
+  },
+
+  'sql/aggregations/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about': {
+    apis: ['GROUPING()', 'GROUPING SETS', 'ROLLUP'],
+    related: [
+      { label: 'The Legacy Pattern’s Hidden Corruption — previous', route: '/sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters' },
+      { label: 'Aggregations (overview)', route: '/sql/aggregations' },
+    ],
+    tip: 'Any GROUPING SETS/ROLLUP/CUBE column that can be genuinely NULL in the source data needs a paired GROUPING() column to disambiguate a real NULL from a rolled-up subtotal NULL.',
+    docs: [
+      { label: 'PostgreSQL GROUPING SETS', url: 'https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-GROUPING-SETS' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A genuinely NULL product_name row and a "(region)" subtotal row are indistinguishable in the output without GROUPING(product_name).',
+      'The ambiguity risk applies equally to GROUPING SETS, ROLLUP, and CUBE — it is not specific to ROLLUP alone.',
+    ],
+  },
+
   'sql/subqueries': {
     apis: ['IN (subquery)', 'EXISTS', 'NOT EXISTS', 'ANY / ALL', 'scalar subquery', 'derived table', 'correlated subquery'],
     related: [{ label: 'CTEs', route: '/sql/ctes' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

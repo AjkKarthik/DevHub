@@ -1051,7 +1051,12 @@ export const routes: Routes = [
         { path: 'year-wrapped-date-filter-fix-still-isnt-sargable', loadComponent: () => import('./components/data/sql/joins/subtopics/year-wrapped-date-filter-fix-still-isnt-sargable/year-wrapped-date-filter-fix-still-isnt-sargable').then(m => m.YearWrappedDateFilterFixStillIsntSargableSubtopic) },
         { path: 'anti-join-self-join-both-tab-has-a-postgresql-only-clause', loadComponent: () => import('./components/data/sql/joins/subtopics/anti-join-self-join-both-tab-has-a-postgresql-only-clause/anti-join-self-join-both-tab-has-a-postgresql-only-clause').then(m => m.AntiJoinSelfJoinBothTabHasAPostgresqlOnlyClauseSubtopic) },
       ] },
-      { path: 'aggregations',      loadComponent: () => import('./components/data/sql/aggregations/aggregations').then(m => m.SqlAggregations) },
+      { path: 'aggregations', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/aggregations/aggregations').then(m => m.SqlAggregations) },
+        { path: 'testing-that-the-count-distinct-alternative-returns-identical-counts', loadComponent: () => import('./components/data/sql/aggregations/subtopics/testing-that-the-count-distinct-alternative-returns-identical-counts/testing-that-the-count-distinct-alternative-returns-identical-counts').then(m => m.TestingThatTheCountDistinctAlternativeReturnsIdenticalCountsSubtopic) },
+        { path: 'legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters', loadComponent: () => import('./components/data/sql/aggregations/subtopics/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters').then(m => m.LegacyStuffForXmlPathPatternSilentlyXmlEncodesSpecialCharactersSubtopic) },
+        { path: 'grouping-sets-omits-the-disambiguation-its-own-theory-warns-about', loadComponent: () => import('./components/data/sql/aggregations/subtopics/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about').then(m => m.GroupingSetsOmitsTheDisambiguationItsOwnTheoryWarnsAboutSubtopic) },
+      ] },
       { path: 'subqueries',        loadComponent: () => import('./components/data/sql/subqueries/subqueries').then(m => m.SqlSubqueries) },
       { path: 'ctes',              loadComponent: () => import('./components/data/sql/ctes/ctes').then(m => m.SqlCtes) },
       { path: 'window-functions',  loadComponent: () => import('./components/data/sql/window-functions/window-functions').then(m => m.SqlWindowFunctions) },

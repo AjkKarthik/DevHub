@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Aggregations"
+    topicRoute="/sql/aggregations"
+    subtopicLabel="The Legacy Pattern's Hidden Corruption"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The Legacy STUFF/FOR XML PATH Pattern Silently XML-Encodes Special Characters</h1>
+  <p class="page-subtitle">
+    The main page's own "MSSQL pre-2017 equivalent" pattern routes data through XML serialization —
+    silently turning "&" into "&amp;" in any product or customer name it concatenates.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic moves from string aggregation to the main page's own GROUPING SETS example — which
+      omits the exact GROUPING() disambiguation its own theory section explains is necessary.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Aggregations"
+    topicRoute="/sql/aggregations"
+    [prev]="{ label: 'Testing the COUNT(DISTINCT) Alternative', route: '/sql/aggregations/testing-that-the-count-distinct-alternative-returns-identical-counts' }"
+    [next]="{ label: 'GROUPING SETS Omits Its Own Theory’s Disambiguation Advice', route: '/sql/aggregations/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about' }"
+  />
+</div>

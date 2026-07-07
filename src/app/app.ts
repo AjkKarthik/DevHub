@@ -916,6 +916,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Second, Unfixed Sargability Problem', route: '/sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable' },
     { label: 'The “Both” Label Isn’t Always True', route: '/sql/joins/anti-join-self-join-both-tab-has-a-postgresql-only-clause' },
   ],
+  'aggregations': [
+    { label: 'Testing the COUNT(DISTINCT) Alternative', route: '/sql/aggregations/testing-that-the-count-distinct-alternative-returns-identical-counts' },
+    { label: 'The Legacy Pattern’s Hidden Corruption', route: '/sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters' },
+    { label: 'A GROUPING() Gap the Theory Warns About', route: '/sql/aggregations/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about' },
+  ],
 };
 
 @Component({
