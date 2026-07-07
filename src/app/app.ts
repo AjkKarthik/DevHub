@@ -911,6 +911,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Confirming the Conversion Claim', route: '/sql/basics/confirming-not-trusting-the-implicit-conversion-claim' },
     { label: 'OFFSET Paging Under Concurrent Writes', route: '/sql/basics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination' },
   ],
+  'joins': [
+    { label: 'Testing the Row-Multiplication Fix', route: '/sql/joins/testing-that-the-row-multiplication-fix-actually-prevents-double-counting' },
+    { label: 'A Second, Unfixed Sargability Problem', route: '/sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable' },
+    { label: 'The “Both” Label Isn’t Always True', route: '/sql/joins/anti-join-self-join-both-tab-has-a-postgresql-only-clause' },
+  ],
 };
 
 @Component({

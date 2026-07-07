@@ -1045,7 +1045,12 @@ export const routes: Routes = [
         { path: 'confirming-not-trusting-the-implicit-conversion-claim', loadComponent: () => import('./components/data/sql/basics/subtopics/confirming-not-trusting-the-implicit-conversion-claim/confirming-not-trusting-the-implicit-conversion-claim').then(m => m.ConfirmingNotTrustingTheImplicitConversionClaimSubtopic) },
         { path: 'offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination', loadComponent: () => import('./components/data/sql/basics/subtopics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination').then(m => m.OffsetPaginationSkipsOrDuplicatesRowsWhenDataChangesMidPaginationSubtopic) },
       ] },
-      { path: 'joins',             loadComponent: () => import('./components/data/sql/joins/joins').then(m => m.SqlJoins) },
+      { path: 'joins', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/joins/joins').then(m => m.SqlJoins) },
+        { path: 'testing-that-the-row-multiplication-fix-actually-prevents-double-counting', loadComponent: () => import('./components/data/sql/joins/subtopics/testing-that-the-row-multiplication-fix-actually-prevents-double-counting/testing-that-the-row-multiplication-fix-actually-prevents-double-counting').then(m => m.TestingThatTheRowMultiplicationFixActuallyPreventsDoubleCountingSubtopic) },
+        { path: 'year-wrapped-date-filter-fix-still-isnt-sargable', loadComponent: () => import('./components/data/sql/joins/subtopics/year-wrapped-date-filter-fix-still-isnt-sargable/year-wrapped-date-filter-fix-still-isnt-sargable').then(m => m.YearWrappedDateFilterFixStillIsntSargableSubtopic) },
+        { path: 'anti-join-self-join-both-tab-has-a-postgresql-only-clause', loadComponent: () => import('./components/data/sql/joins/subtopics/anti-join-self-join-both-tab-has-a-postgresql-only-clause/anti-join-self-join-both-tab-has-a-postgresql-only-clause').then(m => m.AntiJoinSelfJoinBothTabHasAPostgresqlOnlyClauseSubtopic) },
+      ] },
       { path: 'aggregations',      loadComponent: () => import('./components/data/sql/aggregations/aggregations').then(m => m.SqlAggregations) },
       { path: 'subqueries',        loadComponent: () => import('./components/data/sql/subqueries/subqueries').then(m => m.SqlSubqueries) },
       { path: 'ctes',              loadComponent: () => import('./components/data/sql/ctes/ctes').then(m => m.SqlCtes) },

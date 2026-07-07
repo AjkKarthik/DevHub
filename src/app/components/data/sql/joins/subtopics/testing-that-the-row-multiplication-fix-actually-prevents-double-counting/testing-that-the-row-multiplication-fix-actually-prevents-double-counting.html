@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Joins"
+    topicRoute="/sql/joins"
+    subtopicLabel="Testing the Row-Multiplication Fix"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Row-Multiplication Fix Actually Prevents Double-Counting</h1>
+  <p class="page-subtitle">
+    The main page's own row-multiplication fixes are never proven to work on a concrete example — a small
+    fixture with a hand-computed expected total catches a regression the moment it's reintroduced.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the row-multiplication fix regression-tested, the next subtopic looks at a different multi-table
+      join example — one where the main page correctly fixes a semantic bug but leaves a separate, unaddressed
+      sargability problem in the exact same line of code.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Joins"
+    topicRoute="/sql/joins"
+    [next]="{ label: 'YEAR()-Wrapped Date Filter Fix Still Isn’t Sargable', route: '/sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable' }"
+  />
+</div>

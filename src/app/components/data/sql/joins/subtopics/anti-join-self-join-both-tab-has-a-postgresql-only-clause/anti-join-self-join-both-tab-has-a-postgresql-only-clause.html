@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Joins"
+    topicRoute="/sql/joins"
+    subtopicLabel="The “Both” Label Isn’t Always True"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The "Anti-join & Self-join (both)" Tab's Self-Join Query Is PostgreSQL-Only</h1>
+  <p class="page-subtitle">
+    The main page's own code tab is labeled to run in both dialects — but its self-join query's
+    ORDER BY ... NULLS LAST clause raises a syntax error against MSSQL.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Joins end-to-end: proving the row-multiplication fix actually
+      prevents double-counted revenue, fixing a sargability problem the main page's own semantic fix left
+      behind, and correcting a "(both)" label that is only true for one of the two dialects it claims to cover.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Joins"
+    topicRoute="/sql/joins"
+    [prev]="{ label: 'YEAR()-Wrapped Date Filter Fix Still Isn’t Sargable', route: '/sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable' }"
+  />
+</div>

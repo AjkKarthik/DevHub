@@ -14785,6 +14785,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Joining on nullable columns: NULL != NULL so rows where the key is NULL are always excluded from INNER JOIN.', 'CROSS JOIN on large tables is O(n×m) — easy to accidentally produce millions of rows.'],
   },
+
+  'sql/joins/testing-that-the-row-multiplication-fix-actually-prevents-double-counting': {
+    apis: ['tSQLt', 'pgTAP', 'CTE pre-aggregation'],
+    related: [
+      { label: 'A Second, Unfixed Sargability Problem — next', route: '/sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable' },
+      { label: 'Joins (overview)', route: '/sql/joins' },
+    ],
+    tip: 'A row-multiplication bug never raises an error and never looks obviously wrong — only a test against a hand-computed expected total on a small fixture can catch it reliably.',
+    docs: [
+      { label: 'pgTAP', url: 'https://pgtap.org/documentation.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The buggy direct-join query runs successfully and returns a plausible-looking, just-too-large number — there is no error to notice.',
+      'A test fixture with a known, hand-computable expected total (not a large production dataset) is what makes the bug unmistakable.',
+    ],
+  },
+
+  'sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable': {
+    apis: ['YEAR()', 'EXTRACT()', 'sargable range predicate'],
+    related: [
+      { label: 'Testing the Row-Multiplication Fix — previous', route: '/sql/joins/testing-that-the-row-multiplication-fix-actually-prevents-double-counting' },
+      { label: 'The “Both” Label Isn’t Always True — next', route: '/sql/joins/anti-join-self-join-both-tab-has-a-postgresql-only-clause' },
+      { label: 'Joins (overview)', route: '/sql/joins' },
+    ],
+    tip: 'Moving a filter into the ON clause fixes the LEFT JOIN semantics; making the predicate sargable is a separate, independent fix — both are usually needed together.',
+    docs: [
+      { label: 'MSSQL Query Tuning', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/query-tuning-fundamentals' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'YEAR(order_date) = 2024 wraps the column in a function — an index on order_date cannot be seeked, only scanned.',
+      'A half-open range (>= start AND < next-start) on the raw column is the sargable fix, in the SAME clause the semantic fix already identified.',
+    ],
+  },
+
+  'sql/joins/anti-join-self-join-both-tab-has-a-postgresql-only-clause': {
+    apis: ['NULLS LAST', 'CASE expression', 'ORDER BY'],
+    related: [
+      { label: 'A Second, Unfixed Sargability Problem — previous', route: '/sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable' },
+      { label: 'Joins (overview)', route: '/sql/joins' },
+    ],
+    tip: 'MSSQL has no NULLS FIRST/LAST syntax at all — simulate it with ORDER BY CASE WHEN col IS NULL THEN 1 ELSE 0 END, col for queries that must run unmodified on both dialects.',
+    docs: [
+      { label: 'PostgreSQL ORDER BY', url: 'https://www.postgresql.org/docs/current/queries-order.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A code tab labeled "(both)" is only as accurate as its least-portable line — verify every clause against both dialects, not just the overall query shape.',
+      'Running a query successfully once, on one dialect, is not evidence it is cross-platform.',
+    ],
+  },
+
   'sql/aggregations': {
     apis: ['GROUP BY', 'HAVING', 'COUNT()', 'SUM()', 'AVG()', 'MIN()', 'MAX()', 'COUNT(*)', 'ROLLUP', 'GROUPING SETS'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Window Functions', route: '/sql/window-functions' }, { label: 'CTEs', route: '/sql/ctes' }],

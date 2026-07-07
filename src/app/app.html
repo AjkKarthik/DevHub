@@ -1218,7 +1218,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/joins"                  routerLinkActive="active"><span class="nl-text">Joins</span>@if(progress.isDone('sql-joins')){<span class="nl-done">✓</span>}@if(diff('sql-joins');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/joins" routerLinkActive="active">
+        <span class="nl-text">Joins</span>
+        @if (progress.isDone('sql-joins')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-joins'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('joins')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('joins')"
+                  (click)="toggleSubtopics('joins', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('joins'); as subs) {
+        @if (isSubtopicsExpanded('joins')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/aggregations"           routerLinkActive="active"><span class="nl-text">Aggregations</span>@if(progress.isDone('sql-aggregations')){<span class="nl-done">✓</span>}@if(diff('sql-aggregations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/set-operations"         routerLinkActive="active"><span class="nl-text">Set Operations</span>@if(progress.isDone('sql-set-operations')){<span class="nl-done">✓</span>}@if(diff('sql-set-operations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/null-handling"          routerLinkActive="active"><span class="nl-text">NULL Handling</span>@if(progress.isDone('sql-null-handling')){<span class="nl-done">✓</span>}@if(diff('sql-null-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
