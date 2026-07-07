@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Locking & Deadlocks"
+    topicRoute="/sql/locking"
+    subtopicLabel="A &quot;Fix&quot; That Isn't One"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That DEADLOCK_PRIORITY LOW Does Not Prevent the Deadlock</h1>
+  <p class="page-subtitle">
+    The main page lists it as "Fix 3" alongside genuine prevention techniques — it only picks the victim.
+    Error 1205 still fires, guaranteed on the LOW-priority session.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the real prevention techniques separated from victim-selection preferences, the final subtopic
+      tests a different Q&amp;A's suggested syntax for controlling lock acquisition order.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Locking & Deadlocks"
+    topicRoute="/sql/locking"
+    [prev]="{ label: 'Testing the Challenge’s PostgreSQL Solution', route: '/sql/locking/testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql' }"
+    [next]="{ label: 'ORDER BY on UPDATE Is Invalid Syntax', route: '/sql/locking/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique' }"
+  />
+</div>

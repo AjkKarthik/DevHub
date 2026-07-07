@@ -1059,6 +1059,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What Actually Protects the Bank Transfer', route: '/sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads' },
     { label: 'READ COMMITTED Blocking Depends on RCSI', route: '/sql/isolation-levels/demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi' },
   ],
+  'locking': [
+    { label: 'Testing the Challenge’s PostgreSQL Solution', route: '/sql/locking/testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql' },
+    { label: 'DEADLOCK_PRIORITY Doesn’t Prevent the Deadlock', route: '/sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock' },
+    { label: 'ORDER BY on UPDATE Is Invalid Syntax', route: '/sql/locking/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique' },
+  ],
 };
 
 @Component({

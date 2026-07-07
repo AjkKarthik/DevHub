@@ -16720,6 +16720,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/locking': {
+    apis: ['WITH (UPDLOCK)', 'FOR UPDATE', 'DEADLOCK_PRIORITY', 'SKIP LOCKED'],
+    related: [{ label: 'Isolation Levels', route: '/sql/isolation-levels' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'PostgreSQL DECLARE/IF/RAISE NOTICE constructs are PL/pgSQL-only — they need a DO $$ ... $$ block or function body to run; they are not valid standalone SQL.',
+    docs: [{ label: 'MSSQL Locking Guide', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide' }, { label: 'PostgreSQL Explicit Locking', url: 'https://www.postgresql.org/docs/current/explicit-locking.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['DEADLOCK_PRIORITY only controls which session is chosen as the victim — it does not prevent the deadlock cycle from forming.', 'UPDATE and DELETE have no ORDER BY clause in either dialect — consistent lock ordering requires separate statements in a fixed sequence, not a clause.'],
+  },
+
+  'sql/locking/testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql': {
+    apis: ['DO $$ ... $$', 'PL/pgSQL', 'DECLARE'],
+    related: [
+      { label: 'DEADLOCK_PRIORITY Doesn’t Prevent the Deadlock — next', route: '/sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock' },
+      { label: 'Locking & Deadlocks (overview)', route: '/sql/locking' },
+    ],
+    tip: 'PostgreSQL\'s top-level DECLARE statement is reserved for cursor declarations — a scalar variable declaration like "DECLARE v_stock INT;" is only valid inside a PL/pgSQL block.',
+    docs: [
+      { label: 'PostgreSQL DO Statement', url: 'https://www.postgresql.org/docs/current/sql-do.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The error reproduces identically with a character-for-character copy — the bug is in the source, not in transcription.',
+      'SELECT ... INTO a variable and IF ... THEN ... END IF are also PL/pgSQL-only, with no standalone-SQL equivalent.',
+    ],
+  },
+
+  'sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock': {
+    apis: ['SET DEADLOCK_PRIORITY', 'error 1205', 'victim selection'],
+    related: [
+      { label: 'Testing the Challenge’s PostgreSQL Solution — previous', route: '/sql/locking/testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql' },
+      { label: 'ORDER BY on UPDATE Is Invalid Syntax — next', route: '/sql/locking/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique' },
+      { label: 'Locking & Deadlocks (overview)', route: '/sql/locking' },
+    ],
+    tip: 'DEADLOCK_PRIORITY LOW guarantees which session is killed when a deadlock occurs — it does not stop the deadlock cycle from forming; error 1205 still fires.',
+    docs: [
+      { label: 'MSSQL SET DEADLOCK_PRIORITY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-deadlock-priority-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Consistent lock ordering and SNAPSHOT isolation genuinely prevent the cycle from forming — DEADLOCK_PRIORITY is a different category of solution entirely.',
+      'A background job with DEADLOCK_PRIORITY LOW will still occasionally see error 1205 — that\'s expected, not a bug.',
+    ],
+  },
+
+  'sql/locking/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique': {
+    apis: ['UPDATE grammar', 'lock acquisition order'],
+    related: [
+      { label: 'DEADLOCK_PRIORITY Doesn’t Prevent the Deadlock — previous', route: '/sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock' },
+      { label: 'Locking & Deadlocks (overview)', route: '/sql/locking' },
+    ],
+    tip: 'UPDATE and DELETE have no ORDER BY clause in either MSSQL or PostgreSQL — "WHERE id IN (...) ORDER BY id" on an UPDATE is a syntax error, not a lock-ordering technique.',
+    docs: [
+      { label: 'MSSQL UPDATE Statement', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/update-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Even on a SELECT (where ORDER BY is valid), it only controls output row order, not internal lock acquisition order.',
+      'The real fix is architectural — separate statements in a consistently-applied sequence across every transaction touching the same resources.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
