@@ -1557,7 +1557,7 @@ off here with a date.
 - [x] `/sql/ctes` — CTEs (2026-07-07 — 3 subtopics: testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain, categorypath-has-no-depth-guard-and-postgresql-wont-save-it, confirming-that-a-twice-referenced-cte-actually-executes-twice)
 - [x] `/sql/window-functions` — Window Functions (2026-07-07 — 3 subtopics: testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap, why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential, confirming-that-identical-over-clauses-really-do-share-a-single-sort)
 - [x] `/sql/indexes` — Indexes (2026-07-07 — 3 subtopics: testing-that-a-filtered-index-actually-gets-used-not-silently-skipped, quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes, the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule)
-- [ ] `/sql/transactions` — Transactions
+- [x] `/sql/transactions` — Transactions (2026-07-07 — 3 subtopics: testing-that-the-bank-transfer-example-is-already-safe-without-updlock, demonstrating-write-skew-the-one-anomaly-left-without-code, the-postgresql-savepoint-example-rolls-back-a-successful-insert)
 - [ ] `/sql/schema-design` — Schema Design
 - [ ] `/sql/stored-procedures` — Stored Procedures
 - [ ] `/sql/performance` — Query Performance
