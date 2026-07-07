@@ -1556,7 +1556,7 @@ off here with a date.
 - [x] `/sql/subqueries` — Subqueries (2026-07-07 — 3 subtopics: testing-that-the-window-function-rewrite-matches-the-correlated-subquery, the-avoid-this-window-function-in-having-example-doesnt-run-at-all, row-subqueries-and-the-mssql-rewrite-the-page-never-shows)
 - [x] `/sql/ctes` — CTEs (2026-07-07 — 3 subtopics: testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain, categorypath-has-no-depth-guard-and-postgresql-wont-save-it, confirming-that-a-twice-referenced-cte-actually-executes-twice)
 - [x] `/sql/window-functions` — Window Functions (2026-07-07 — 3 subtopics: testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap, why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential, confirming-that-identical-over-clauses-really-do-share-a-single-sort)
-- [ ] `/sql/indexes` — Indexes
+- [x] `/sql/indexes` — Indexes (2026-07-07 — 3 subtopics: testing-that-a-filtered-index-actually-gets-used-not-silently-skipped, quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes, the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule)
 - [ ] `/sql/transactions` — Transactions
 - [ ] `/sql/schema-design` — Schema Design
 - [ ] `/sql/stored-procedures` — Stored Procedures
