@@ -1183,7 +1183,12 @@ export const routes: Routes = [
         { path: 'demonstrating-that-table-variables-are-not-rolled-back-by-rollback', loadComponent: () => import('./components/data/sql/temp-tables/subtopics/demonstrating-that-table-variables-are-not-rolled-back-by-rollback/demonstrating-that-table-variables-are-not-rolled-back-by-rollback').then(m => m.DemonstratingThatTableVariablesAreNotRolledBackByRollbackSubtopic) },
         { path: 'demonstrating-that-table-variables-support-inline-non-unique-indexes', loadComponent: () => import('./components/data/sql/temp-tables/subtopics/demonstrating-that-table-variables-support-inline-non-unique-indexes/demonstrating-that-table-variables-support-inline-non-unique-indexes').then(m => m.DemonstratingThatTableVariablesSupportInlineNonUniqueIndexesSubtopic) },
       ] },
-      { path: 'computed-columns',        loadComponent: () => import('./components/data/sql/computed-columns/computed-columns').then(m => m.SqlComputedColumns) },
+      { path: 'computed-columns', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/computed-columns/computed-columns').then(m => m.SqlComputedColumns) },
+        { path: 'testing-that-mssql-computed-columns-can-reference-each-other', loadComponent: () => import('./components/data/sql/computed-columns/subtopics/testing-that-mssql-computed-columns-can-reference-each-other/testing-that-mssql-computed-columns-can-reference-each-other').then(m => m.TestingThatMssqlComputedColumnsCanReferenceEachOtherSubtopic) },
+        { path: 'checksum-is-not-stable-across-sql-server-versions-or-patches', loadComponent: () => import('./components/data/sql/computed-columns/subtopics/checksum-is-not-stable-across-sql-server-versions-or-patches/checksum-is-not-stable-across-sql-server-versions-or-patches').then(m => m.ChecksumIsNotStableAcrossSqlServerVersionsOrPatchesSubtopic) },
+        { path: 'adding-a-stored-generated-column-locks-the-whole-table', loadComponent: () => import('./components/data/sql/computed-columns/subtopics/adding-a-stored-generated-column-locks-the-whole-table/adding-a-stored-generated-column-locks-the-whole-table').then(m => m.AddingAStoredGeneratedColumnLocksTheWholeTableSubtopic) },
+      ] },
       { path: 'stored-functions',        loadComponent: () => import('./components/data/sql/stored-functions/stored-functions').then(m => m.SqlStoredFunctions) },
       { path: 'cursors',                 loadComponent: () => import('./components/data/sql/cursors/cursors').then(m => m.SqlCursors) },
       { path: 'triggers',                loadComponent: () => import('./components/data/sql/triggers/triggers').then(m => m.SqlTriggers) },

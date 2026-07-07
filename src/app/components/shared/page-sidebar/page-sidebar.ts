@@ -16318,6 +16318,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/computed-columns': {
+    apis: ['AS (expr) PERSISTED', 'GENERATED ALWAYS AS ... STORED', 'CHECKSUM', 'HASHBYTES'],
+    related: [{ label: 'Constraints', route: '/sql/constraints' }, { label: 'Indexes', route: '/sql/indexes' }, { label: 'Views', route: '/sql/views' }],
+    tip: 'MSSQL computed columns CAN reference other computed columns — the common claim that they can\'t is incorrect, as long as the dependency graph has no cycles.',
+    docs: [{ label: 'MSSQL Computed Columns', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/specify-computed-columns-in-a-table' }, { label: 'PostgreSQL Generated Columns', url: 'https://www.postgresql.org/docs/current/ddl-generated-columns.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['CHECKSUM() is not guaranteed stable across SQL Server versions/patches — use HASHBYTES with a named algorithm for durable change detection.', 'Adding a STORED generated column to a populated PostgreSQL table is a full table rewrite under AccessExclusiveLock, with no NOT VALID equivalent.'],
+  },
+
+  'sql/computed-columns/testing-that-mssql-computed-columns-can-reference-each-other': {
+    apis: ['AS (expr) PERSISTED', 'computed column chaining'],
+    related: [
+      { label: 'CHECKSUM Is Not Version-Stable — next', route: '/sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches' },
+      { label: 'Computed & Generated Columns (overview)', route: '/sql/computed-columns' },
+    ],
+    tip: 'MSSQL computed columns can reference other computed columns as long as the dependency graph has no cycles — chaining PERSISTED-to-PERSISTED is fully supported.',
+    docs: [
+      { label: 'MSSQL Computed Columns', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/specify-computed-columns-in-a-table' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Duplicating an expression across two computed columns instead of chaining creates a real maintenance risk if the formula is ever revised.',
+      'A claim repeated in both a theory section and a challenge hint is not evidence it was actually tested against the real engine.',
+    ],
+  },
+
+  'sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches': {
+    apis: ['CHECKSUM()', 'HASHBYTES()', 'SHA2_256'],
+    related: [
+      { label: 'Testing MSSQL Computed Column Chaining — previous', route: '/sql/computed-columns/testing-that-mssql-computed-columns-can-reference-each-other' },
+      { label: 'Adding a STORED Column Locks the Whole Table — next', route: '/sql/computed-columns/adding-a-stored-generated-column-locks-the-whole-table' },
+      { label: 'Computed & Generated Columns (overview)', route: '/sql/computed-columns' },
+    ],
+    tip: 'Microsoft documents CHECKSUM\'s output as not guaranteed stable across SQL Server versions — use HASHBYTES with a named cryptographic algorithm for durable row-change detection.',
+    docs: [
+      { label: 'MSSQL CHECKSUM', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/checksum-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Passing SQL Server\'s determinism check (required for PERSISTED) is a weaker guarantee than "stable forever" — it only covers same-input-same-output on one instance/version.',
+      'A change-detection job reprocessing every row after a routine SQL Server patch is a documented symptom of this CHECKSUM instability, not necessarily a pipeline bug.',
+    ],
+  },
+
+  'sql/computed-columns/adding-a-stored-generated-column-locks-the-whole-table': {
+    apis: ['GENERATED ALWAYS AS ... STORED', 'AccessExclusiveLock', 'pg_locks'],
+    related: [
+      { label: 'CHECKSUM Is Not Version-Stable — previous', route: '/sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches' },
+      { label: 'Computed & Generated Columns (overview)', route: '/sql/computed-columns' },
+    ],
+    tip: 'Adding a STORED generated column to a populated table is a full rewrite under AccessExclusiveLock — there is no NOT VALID-style two-phase option like PostgreSQL offers for CHECK constraints.',
+    docs: [
+      { label: 'PostgreSQL Generated Columns', url: 'https://www.postgresql.org/docs/current/ddl-generated-columns.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Reads and writes on the table block for the entire rewrite duration, not just other DDL.',
+      'A batched backfill onto a plain nullable column is the standard workaround for large, populated tables.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

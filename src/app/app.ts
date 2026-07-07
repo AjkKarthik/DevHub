@@ -1029,6 +1029,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Table Variables Survive ROLLBACK', route: '/sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback' },
     { label: 'Table Variables Support Inline Indexes', route: '/sql/temp-tables/demonstrating-that-table-variables-support-inline-non-unique-indexes' },
   ],
+  'computed-columns': [
+    { label: 'Testing MSSQL Computed Column Chaining', route: '/sql/computed-columns/testing-that-mssql-computed-columns-can-reference-each-other' },
+    { label: 'CHECKSUM Is Not Version-Stable', route: '/sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches' },
+    { label: 'Adding a STORED Column Locks the Whole Table', route: '/sql/computed-columns/adding-a-stored-generated-column-locks-the-whole-table' },
+  ],
 };
 
 @Component({

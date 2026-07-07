@@ -1564,7 +1564,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/computed-columns"       routerLinkActive="active"><span class="nl-text">Computed Columns</span>@if(progress.isDone('sql-computed-columns')){<span class="nl-done">✓</span>}@if(diff('sql-computed-columns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/computed-columns" routerLinkActive="active">
+        <span class="nl-text">Computed Columns</span>
+        @if (progress.isDone('sql-computed-columns')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-computed-columns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('computed-columns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('computed-columns')"
+                  (click)="toggleSubtopics('computed-columns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('computed-columns'); as subs) {
+        @if (isSubtopicsExpanded('computed-columns')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
