@@ -1585,7 +1585,7 @@ off here with a date.
 - [x] `/sql/partitioning` — Partitioning (2026-07-08 — 3 subtopics: testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax, testing-that-truncate-orders-archive-discards-the-data-just-switched-in, demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block)
 - [x] `/sql/bulk-operations` — Bulk Operations (2026-07-08 — 3 subtopics: testing-that-the-batched-update-example-never-finds-a-matching-row, testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard, correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap)
 - [x] `/sql/query-store` — Query Store & Performance Statistics (2026-07-08 — 3 subtopics: testing-that-the-historic-average-includes-the-regressed-interval, testing-that-flush-db-does-not-purge-or-reduce-query-store-storage, demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing)
-- [ ] `/sql/statistics` — Statistics & Query Optimizer
+- [x] `/sql/statistics` — Statistics & Query Optimizer (2026-07-08 — 3 subtopics: testing-that-the-challenges-solution-never-flags-which-stats-are-overdue, correcting-the-density-quizs-rows-per-distinct-value-claim, testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage)
 - [ ] `/sql/full-text-search` — Full-Text Search
 - [ ] `/sql/security` — SQL Security
 - [ ] `/sql/connection-pooling` — Connection Pooling
