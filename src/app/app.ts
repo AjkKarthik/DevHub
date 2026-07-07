@@ -896,6 +896,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why a Computed Column Can’t Replace the OrderTotal Trigger', route: '/sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger' },
     { label: 'Challenge Solution Comment Contradicts Its Own FK', route: '/sql/normalization/challenge-solutions-comment-contradicts-its-own-fk-declaration' },
   ],
+  'db-architecture': [
+    { label: 'Testing idle_in_transaction_session_timeout Actually Works', route: '/sql/db-architecture/testing-idle-in-transaction-session-timeout-actually-works' },
+    { label: 'Buffer Hit Ratio Query Reads a Meaningless Raw Counter', route: '/sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter' },
+    { label: 'n_dead_tup Is an Estimate, Not a Live Count', route: '/sql/db-architecture/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live' },
+  ],
 };
 
 @Component({

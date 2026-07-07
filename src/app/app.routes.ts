@@ -1027,7 +1027,12 @@ export const routes: Routes = [
         { path: 'why-a-computed-column-cant-replace-the-ordertotal-trigger', loadComponent: () => import('./components/data/sql/normalization/subtopics/why-a-computed-column-cant-replace-the-ordertotal-trigger/why-a-computed-column-cant-replace-the-ordertotal-trigger').then(m => m.WhyAComputedColumnCantReplaceTheOrdertotalTriggerSubtopic) },
         { path: 'challenge-solutions-comment-contradicts-its-own-fk-declaration', loadComponent: () => import('./components/data/sql/normalization/subtopics/challenge-solutions-comment-contradicts-its-own-fk-declaration/challenge-solutions-comment-contradicts-its-own-fk-declaration').then(m => m.ChallengeSolutionsCommentContradictsItsOwnFkDeclarationSubtopic) },
       ] },
-      { path: 'db-architecture',   loadComponent: () => import('./components/data/sql/db-architecture/db-architecture').then(m => m.SqlDbArchitecture) },
+      { path: 'db-architecture', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/db-architecture/db-architecture').then(m => m.SqlDbArchitecture) },
+        { path: 'testing-idle-in-transaction-session-timeout-actually-works', loadComponent: () => import('./components/data/sql/db-architecture/subtopics/testing-idle-in-transaction-session-timeout-actually-works/testing-idle-in-transaction-session-timeout-actually-works').then(m => m.TestingIdleInTransactionSessionTimeoutActuallyWorksSubtopic) },
+        { path: 'buffer-hit-ratio-query-reads-a-meaningless-raw-counter', loadComponent: () => import('./components/data/sql/db-architecture/subtopics/buffer-hit-ratio-query-reads-a-meaningless-raw-counter/buffer-hit-ratio-query-reads-a-meaningless-raw-counter').then(m => m.BufferHitRatioQueryReadsAMeaninglessRawCounterSubtopic) },
+        { path: 'dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live', loadComponent: () => import('./components/data/sql/db-architecture/subtopics/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live').then(m => m.DeadTupInPgStatUserTablesIsAnEstimateNotLiveSubtopic) },
+      ] },
       { path: 'data-types',        loadComponent: () => import('./components/data/sql/data-types/data-types').then(m => m.SqlDataTypes) },
       { path: 'basics',            loadComponent: () => import('./components/data/sql/basics/basics').then(m => m.SqlBasics) },
       { path: 'joins',             loadComponent: () => import('./components/data/sql/joins/joins').then(m => m.SqlJoins) },

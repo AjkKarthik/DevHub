@@ -14583,6 +14583,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['PostgreSQL VACUUM does not reclaim disk space to the OS — use VACUUM FULL for that (takes an exclusive lock).', 'Stale statistics cause the planner to choose bad plans — run ANALYZE after large bulk loads.'],
   },
+
+  'sql/db-architecture/testing-idle-in-transaction-session-timeout-actually-works': {
+    apis: ['idle_in_transaction_session_timeout', 'pg_stat_activity', 'ALTER ROLE'],
+    related: [
+      { label: 'Buffer Hit Ratio Mechanics — next', route: '/sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter' },
+      { label: 'DB Architecture (overview)', route: '/sql/db-architecture' },
+      { label: 'Transactions', route: '/sql/transactions' },
+    ],
+    tip: 'Per-role and per-database overrides silently take precedence over a global postgresql.conf default — test the setting as the SPECIFIC role that actually connects.',
+    docs: [
+      { label: 'PostgreSQL runtime configuration', url: 'https://www.postgresql.org/docs/current/runtime-config-client.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A manual test using your OWN session only proves the timeout works for your role — a different role with its own ALTER ROLE override can behave completely differently.',
+      'The timeout only fires on IDLE sessions — occasional trivial activity every few minutes never triggers it, even with an open transaction held the whole time.',
+    ],
+  },
+
+  'sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter': {
+    apis: ['sys.dm_os_performance_counters', 'Buffer cache hit ratio base'],
+    related: [
+      { label: 'Testing the Timeout Setting — previous', route: '/sql/db-architecture/testing-idle-in-transaction-session-timeout-actually-works' },
+      { label: 'Dead Tuple Estimate Staleness — next', route: '/sql/db-architecture/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live' },
+      { label: 'DB Architecture (overview)', route: '/sql/db-architecture' },
+    ],
+    tip: '"Buffer cache hit ratio" is a fraction counter — its raw cntr_value must be divided by the paired "Buffer cache hit ratio base" counter to produce an actual percentage.',
+    docs: [
+      { label: 'MSSQL Buffer Pool', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/memory-management-architecture-guide' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Even the correctly-computed ratio is cumulative since server start — a severe recent regression barely moves a ratio averaged over months of prior healthy history.',
+      'Diagnosing a live incident requires sampling the counter pair TWICE and computing the delta over that specific window, not a single snapshot reading.',
+    ],
+  },
+
+  'sql/db-architecture/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live': {
+    apis: ['pg_stat_user_tables', 'pgstattuple'],
+    related: [
+      { label: 'Buffer Hit Ratio Mechanics — previous', route: '/sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter' },
+      { label: 'DB Architecture (overview)', route: '/sql/db-architecture' },
+    ],
+    tip: 'n_live_tup / n_dead_tup are statistics-collector estimates that can reset after a crash or restart — use pgstattuple() for an authoritative, physical-scan-based check.',
+    docs: [
+      { label: 'PostgreSQL pgstattuple', url: 'https://www.postgresql.org/docs/current/pgstattuple.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'dead_pct = 0.0 across every table right after a restart almost always means stale stats, not genuinely zero bloat everywhere.',
+      'pgstattuple is authoritative but expensive (a real heap scan) — reach for it only when the cheap estimate looks suspicious.',
+    ],
+  },
+
   'sql/data-types': {
     apis: ['INT', 'BIGINT', 'DECIMAL', 'VARCHAR', 'NVARCHAR', 'DATETIME2', 'TIMESTAMPTZ', 'UUID', 'BOOLEAN', 'CAST', 'CONVERT', 'TRY_CAST'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' }, { label: 'Schema Design', route: '/sql/schema-design' }],
