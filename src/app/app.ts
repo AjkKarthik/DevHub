@@ -931,6 +931,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'CategoryPath’s Missing Depth Guard', route: '/sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it' },
     { label: 'Confirming the Double-Execution Claim', route: '/sql/ctes/confirming-that-a-twice-referenced-cte-actually-executes-twice' },
   ],
+  'window-functions': [
+    { label: 'Testing the Islands-and-Gaps Pattern', route: '/sql/window-functions/testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap' },
+    { label: 'Why One Frame Fix Matters, the Other Doesn’t', route: '/sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential' },
+    { label: 'Confirming the Shared-Sort Claim', route: '/sql/window-functions/confirming-that-identical-over-clauses-really-do-share-a-single-sort' },
+  ],
 };
 
 @Component({

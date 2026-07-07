@@ -1341,7 +1341,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced Queries</p>
-      <a routerLink="/sql/window-functions" routerLinkActive="active"><span class="nl-text">Window Functions</span>@if(progress.isDone('sql-window-functions')){<span class="nl-done">✓</span>}@if(diff('sql-window-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/window-functions" routerLinkActive="active">
+        <span class="nl-text">Window Functions</span>
+        @if (progress.isDone('sql-window-functions')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-window-functions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('window-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('window-functions')"
+                  (click)="toggleSubtopics('window-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('window-functions'); as subs) {
+        @if (isSubtopicsExpanded('window-functions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/indexes"          routerLinkActive="active"><span class="nl-text">Indexes</span>@if(progress.isDone('sql-indexes')){<span class="nl-done">✓</span>}@if(diff('sql-indexes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/transactions"     routerLinkActive="active"><span class="nl-text">Transactions</span>@if(progress.isDone('sql-transactions')){<span class="nl-done">✓</span>}@if(diff('sql-transactions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

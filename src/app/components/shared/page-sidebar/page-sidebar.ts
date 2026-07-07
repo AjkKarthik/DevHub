@@ -15053,6 +15053,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['LAST_VALUE needs ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING — the default frame stops at the current row.', 'Window functions run after WHERE and GROUP BY — you cannot filter on them in the same query; wrap in a CTE.'],
   },
+
+  'sql/window-functions/testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap': {
+    apis: ['ROW_NUMBER()', 'islands and gaps', 'pgTAP'],
+    related: [
+      { label: 'Why One Frame Fix Matters, the Other Doesn’t — next', route: '/sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential' },
+      { label: 'Window Functions (overview)', route: '/sql/window-functions' },
+    ],
+    tip: 'The islands-and-gaps trick (date minus row number = constant per island) depends entirely on PARTITION BY being correct — a missing partition silently mixes unrelated groups.',
+    docs: [
+      { label: 'PostgreSQL Window Functions', url: 'https://www.postgresql.org/docs/current/tutorial-window.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A missing PARTITION BY in the ROW_NUMBER() step runs without error but silently corrupts every island boundary.',
+      'A fixture with NO gap only proves the pattern doesn\'t over-split — it never proves the pattern correctly detects a real gap.',
+    ],
+  },
+
+  'sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential': {
+    apis: ['FIRST_VALUE()', 'LAST_VALUE()', 'ROWS BETWEEN'],
+    related: [
+      { label: 'Testing the Islands-and-Gaps Pattern — previous', route: '/sql/window-functions/testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap' },
+      { label: 'Confirming the Shared-Sort Claim — next', route: '/sql/window-functions/confirming-that-identical-over-clauses-really-do-share-a-single-sort' },
+      { label: 'Window Functions (overview)', route: '/sql/window-functions' },
+    ],
+    tip: 'FIRST_VALUE\'s natural meaning already matches the default frame; LAST_VALUE\'s natural meaning requires overriding it — the identical-looking explicit frame clause plays a different role for each.',
+    docs: [
+      { label: 'MSSQL Window Frame', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Removing an explicit frame clause is safe for FIRST_VALUE but silently reverts LAST_VALUE to the wrong, per-row result.',
+      'The default frame with ORDER BY always stops at CURRENT ROW — LAST_VALUE needs UNBOUNDED FOLLOWING to see past it.',
+    ],
+  },
+
+  'sql/window-functions/confirming-that-identical-over-clauses-really-do-share-a-single-sort': {
+    apis: ['SET STATISTICS PROFILE', 'EXPLAIN', 'WindowAgg'],
+    related: [
+      { label: 'Why One Frame Fix Matters, the Other Doesn’t — previous', route: '/sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential' },
+      { label: 'Window Functions (overview)', route: '/sql/window-functions' },
+    ],
+    tip: 'Count the distinct Sort/WindowAgg nodes in the execution plan, not the number of window functions — several functions sharing one OVER() clause need only one sort pass.',
+    docs: [
+      { label: 'PostgreSQL EXPLAIN', url: 'https://www.postgresql.org/docs/current/using-explain.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A performance claim about optimizer internals should be checked against a real execution plan, not accepted or dismissed on faith.',
+      'Unifying every window function to one OVER() clause only helps if the plan currently shows more distinct sorts than necessary.',
+    ],
+  },
+
   'sql/indexes': {
     apis: ['CREATE INDEX', 'CREATE CLUSTERED INDEX', 'INCLUDE', 'CREATE UNIQUE INDEX', 'DROP INDEX', 'sys.dm_db_missing_index_details', 'EXPLAIN', 'EXPLAIN ANALYZE'],
     related: [{ label: 'Performance', route: '/sql/performance' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Schema Design', route: '/sql/schema-design' }],

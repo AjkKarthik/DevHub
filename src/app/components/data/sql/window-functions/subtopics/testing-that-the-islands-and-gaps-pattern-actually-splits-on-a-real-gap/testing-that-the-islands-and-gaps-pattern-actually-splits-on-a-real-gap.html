@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Window Functions"
+    topicRoute="/sql/window-functions"
+    subtopicLabel="Testing the Islands-and-Gaps Pattern"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Islands-and-Gaps Pattern Actually Splits on a Real Gap</h1>
+  <p class="page-subtitle">
+    The main page's own consecutive-day grouping trick is never demonstrated against a fixture that actually
+    contains a gap — or against the missing-PARTITION-BY mistake that silently corrupts it.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the islands-and-gaps pattern regression-tested, the next subtopic explains a subtler mechanic —
+      why the main page's own FIRST_VALUE example's explicit frame changes nothing, while the same-looking
+      frame on LAST_VALUE right next to it is essential.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Window Functions"
+    topicRoute="/sql/window-functions"
+    [next]="{ label: 'Why FIRST_VALUE’s Explicit Frame Is a No-Op But LAST_VALUE’s Isn’t', route: '/sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential' }"
+  />
+</div>

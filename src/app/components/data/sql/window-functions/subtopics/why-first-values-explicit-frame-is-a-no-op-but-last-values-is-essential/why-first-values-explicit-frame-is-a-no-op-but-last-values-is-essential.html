@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Window Functions"
+    topicRoute="/sql/window-functions"
+    subtopicLabel="Why One Frame Fix Matters, the Other Doesn’t"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Why FIRST_VALUE's Explicit Frame Is a No-Op But LAST_VALUE's Is Essential</h1>
+  <p class="page-subtitle">
+    The main page's own FIRST_VALUE and LAST_VALUE examples use the identical-looking explicit frame clause —
+    for one function it changes nothing; for the other, it's the entire fix.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic moves from frame mechanics to a different claim the main page makes without
+      demonstrating it — confirming, via an actual execution plan, that identical OVER() clauses really do
+      share a single sort operation.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Window Functions"
+    topicRoute="/sql/window-functions"
+    [prev]="{ label: 'Testing the Islands-and-Gaps Pattern', route: '/sql/window-functions/testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap' }"
+    [next]="{ label: 'Confirming That Identical OVER() Clauses Share a Single Sort', route: '/sql/window-functions/confirming-that-identical-over-clauses-really-do-share-a-single-sort' }"
+  />
+</div>

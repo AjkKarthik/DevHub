@@ -1069,7 +1069,12 @@ export const routes: Routes = [
         { path: 'categorypath-has-no-depth-guard-and-postgresql-wont-save-it', loadComponent: () => import('./components/data/sql/ctes/subtopics/categorypath-has-no-depth-guard-and-postgresql-wont-save-it/categorypath-has-no-depth-guard-and-postgresql-wont-save-it').then(m => m.CategorypathHasNoDepthGuardAndPostgresqlWontSaveItSubtopic) },
         { path: 'confirming-that-a-twice-referenced-cte-actually-executes-twice', loadComponent: () => import('./components/data/sql/ctes/subtopics/confirming-that-a-twice-referenced-cte-actually-executes-twice/confirming-that-a-twice-referenced-cte-actually-executes-twice').then(m => m.ConfirmingThatATwiceReferencedCteActuallyExecutesTwiceSubtopic) },
       ] },
-      { path: 'window-functions',  loadComponent: () => import('./components/data/sql/window-functions/window-functions').then(m => m.SqlWindowFunctions) },
+      { path: 'window-functions', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/window-functions/window-functions').then(m => m.SqlWindowFunctions) },
+        { path: 'testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap', loadComponent: () => import('./components/data/sql/window-functions/subtopics/testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap/testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap').then(m => m.TestingThatTheIslandsAndGapsPatternActuallySplitsOnARealGapSubtopic) },
+        { path: 'why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential', loadComponent: () => import('./components/data/sql/window-functions/subtopics/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential').then(m => m.WhyFirstValuesExplicitFrameIsANoOpButLastValuesIsEssentialSubtopic) },
+        { path: 'confirming-that-identical-over-clauses-really-do-share-a-single-sort', loadComponent: () => import('./components/data/sql/window-functions/subtopics/confirming-that-identical-over-clauses-really-do-share-a-single-sort/confirming-that-identical-over-clauses-really-do-share-a-single-sort').then(m => m.ConfirmingThatIdenticalOverClausesReallyDoShareASingleSortSubtopic) },
+      ] },
       { path: 'indexes',           loadComponent: () => import('./components/data/sql/indexes/indexes').then(m => m.SqlIndexes) },
       { path: 'transactions',      loadComponent: () => import('./components/data/sql/transactions/transactions').then(m => m.SqlTransactions) },
       { path: 'schema-design',     loadComponent: () => import('./components/data/sql/schema-design/schema-design').then(m => m.SqlSchemaDesign) },
