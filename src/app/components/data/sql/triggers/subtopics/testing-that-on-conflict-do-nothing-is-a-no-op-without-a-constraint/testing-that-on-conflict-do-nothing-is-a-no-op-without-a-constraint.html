@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Triggers"
+    topicRoute="/sql/triggers"
+    subtopicLabel="A Second Bug in the Same Trigger"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That ON CONFLICT DO NOTHING Is a No-Op Without a Constraint</h1>
+  <p class="page-subtitle">
+    The challenge asks for duplicate-alert prevention — the PostgreSQL solution's ON CONFLICT DO NOTHING has
+    no unique constraint to detect a conflict against, so it does nothing.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="PostgreSQL 9.5" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With both trigger bugs found, the final subtopic switches to MSSQL to correct a mismatch between what
+      the theory prescribes for cross-table trigger recursion and what actually controls it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Triggers"
+    topicRoute="/sql/triggers"
+    [prev]="{ label: 'Testing the Trigger Subquery Tautology', route: '/sql/triggers/testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology' }"
+    [next]="{ label: 'What Actually Stops Cross-Table Recursion', route: '/sql/triggers/correcting-which-setting-actually-stops-cross-table-trigger-recursion' }"
+  />
+</div>

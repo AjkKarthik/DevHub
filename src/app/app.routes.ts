@@ -1201,7 +1201,12 @@ export const routes: Routes = [
         { path: 'demonstrating-that-fetch-customers-is-not-really-a-refcursor-example', loadComponent: () => import('./components/data/sql/cursors/subtopics/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example').then(m => m.DemonstratingThatFetchCustomersIsNotReallyARefcursorExampleSubtopic) },
         { path: 'demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup', loadComponent: () => import('./components/data/sql/cursors/subtopics/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup').then(m => m.DemonstratingThatTheCursorDiscountExampleIsActuallyAPriceMarkupSubtopic) },
       ] },
-      { path: 'triggers',                loadComponent: () => import('./components/data/sql/triggers/triggers').then(m => m.SqlTriggers) },
+      { path: 'triggers', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/triggers/triggers').then(m => m.SqlTriggers) },
+        { path: 'testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology', loadComponent: () => import('./components/data/sql/triggers/subtopics/testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology/testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology').then(m => m.TestingThatTheChallengesPostgresqlTriggerSubqueryIsATautologySubtopic) },
+        { path: 'testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint', loadComponent: () => import('./components/data/sql/triggers/subtopics/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint').then(m => m.TestingThatOnConflictDoNothingIsANoOpWithoutAConstraintSubtopic) },
+        { path: 'correcting-which-setting-actually-stops-cross-table-trigger-recursion', loadComponent: () => import('./components/data/sql/triggers/subtopics/correcting-which-setting-actually-stops-cross-table-trigger-recursion/correcting-which-setting-actually-stops-cross-table-trigger-recursion').then(m => m.CorrectingWhichSettingActuallyStopsCrossTableTriggerRecursionSubtopic) },
+      ] },
       { path: 'dynamic-sql',             loadComponent: () => import('./components/data/sql/dynamic-sql/dynamic-sql').then(m => m.SqlDynamicSql) },
       { path: 'isolation-levels',        loadComponent: () => import('./components/data/sql/isolation-levels/isolation-levels').then(m => m.SqlIsolationLevels) },
       { path: 'locking',                 loadComponent: () => import('./components/data/sql/locking/locking').then(m => m.SqlLocking) },

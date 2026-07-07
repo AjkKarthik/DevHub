@@ -16519,6 +16519,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/triggers': {
+    apis: ['CREATE TRIGGER', 'inserted / deleted', 'NEW / OLD', 'REFERENCING', 'ON CONFLICT'],
+    related: [{ label: 'Cursors & Row-by-Row Processing', route: '/sql/cursors' }, { label: 'Constraints', route: '/sql/constraints' }, { label: 'Views', route: '/sql/views' }],
+    tip: 'A PostgreSQL STATEMENT-level trigger has no way to see which rows changed unless the CREATE TRIGGER explicitly declares REFERENCING NEW TABLE AS ... — without it, a "filter" subquery can silently become a tautology.',
+    docs: [{ label: 'MSSQL CREATE TRIGGER', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql' }, { label: 'PostgreSQL Triggers', url: 'https://www.postgresql.org/docs/current/plpgsql-trigger.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['ON CONFLICT DO NOTHING is a no-op without a UNIQUE or EXCLUSION constraint for it to detect a conflict against.', 'RECURSIVE_TRIGGERS (database-level) only stops DIRECT same-table recursion — cross-table "A fires B fires A" needs the separate, server-level "nested triggers" option.'],
+  },
+
+  'sql/triggers/testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology': {
+    apis: ['FOR EACH STATEMENT', 'REFERENCING NEW TABLE', 'transition tables'],
+    related: [
+      { label: 'ON CONFLICT DO NOTHING Is a No-Op Here — next', route: '/sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint' },
+      { label: 'Triggers (overview)', route: '/sql/triggers' },
+    ],
+    tip: 'WHERE order_id IN (SELECT DISTINCT order_id FROM order_items) with no outer narrowing matches every row in the table — it filters nothing.',
+    docs: [
+      { label: 'PostgreSQL Trigger Transition Tables', url: 'https://www.postgresql.org/docs/current/plpgsql-trigger.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A STATEMENT-level trigger without REFERENCING transition tables has no built-in way to see which rows the current statement changed.',
+      'The bug scales cost and false-alert risk with total table size, not with the size of the actual UPDATE.',
+    ],
+  },
+
+  'sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint': {
+    apis: ['ON CONFLICT DO NOTHING', 'UNIQUE constraint', 'NOT EXISTS'],
+    related: [
+      { label: 'Testing the Trigger Subquery Tautology — previous', route: '/sql/triggers/testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology' },
+      { label: 'What Actually Stops Cross-Table Recursion — next', route: '/sql/triggers/correcting-which-setting-actually-stops-cross-table-trigger-recursion' },
+      { label: 'Triggers (overview)', route: '/sql/triggers' },
+    ],
+    tip: 'ON CONFLICT DO NOTHING only has an effect when the target table has a UNIQUE or EXCLUSION constraint to detect a conflict against — otherwise it\'s a syntactically valid no-op.',
+    docs: [
+      { label: 'PostgreSQL INSERT ... ON CONFLICT', url: 'https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The clause never raises an error or warning for lacking a backing constraint — testing for duplicates directly is the only way to catch this.',
+      'A SERIAL primary key on a different column (like alert_id) does not make ON CONFLICT DO NOTHING detect duplicates on product_id.',
+    ],
+  },
+
+  'sql/triggers/correcting-which-setting-actually-stops-cross-table-trigger-recursion': {
+    apis: ['RECURSIVE_TRIGGERS', 'nested triggers (sp_configure)'],
+    related: [
+      { label: 'ON CONFLICT DO NOTHING Is a No-Op Here — previous', route: '/sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint' },
+      { label: 'Triggers (overview)', route: '/sql/triggers' },
+    ],
+    tip: 'RECURSIVE_TRIGGERS (database-level) only stops a trigger from re-firing itself on the SAME table — cross-table "A fires B fires A" needs the server-level "nested triggers" sp_configure option instead.',
+    docs: [
+      { label: 'MSSQL nested triggers Server Configuration', url: 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/nested-triggers-server-configuration-option' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Without stopping cross-table recursion, the chain recurses until it hits SQL Server\'s 32-level nesting limit and raises error 217.',
+      'RECURSIVE_TRIGGERS is a per-database ALTER DATABASE setting; "nested triggers" is a per-server sp_configure setting — different scopes entirely.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

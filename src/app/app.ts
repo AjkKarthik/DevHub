@@ -1044,6 +1044,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'fetch_customers Isn’t Really a REFCURSOR', route: '/sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example' },
     { label: 'The “Discount” That’s Actually a Markup', route: '/sql/cursors/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup' },
   ],
+  'triggers': [
+    { label: 'Testing the Trigger Subquery Tautology', route: '/sql/triggers/testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology' },
+    { label: 'ON CONFLICT DO NOTHING Is a No-Op Here', route: '/sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint' },
+    { label: 'What Actually Stops Cross-Table Recursion', route: '/sql/triggers/correcting-which-setting-actually-stops-cross-table-trigger-recursion' },
+  ],
 };
 
 @Component({
