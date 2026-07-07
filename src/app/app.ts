@@ -979,6 +979,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Bigger Reason to Avoid ISNULL', route: '/sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability' },
     { label: 'Demonstrating ANSI_NULLS OFF', route: '/sql/null-handling/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons' },
   ],
+  'merge': [
+    { label: 'Proving the Duplicate-Source Bug', route: '/sql/merge/testing-that-the-mssql-merge-duplicate-source-bug-is-real' },
+    { label: 'ON CONFLICT and Partial Indexes', route: '/sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches' },
+    { label: 'MERGE Can Still Race Without HOLDLOCK', route: '/sql/merge/concurrent-merge-statements-can-still-race-without-holdlock' },
+  ],
 };
 
 @Component({

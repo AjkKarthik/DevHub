@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="MERGE / Upsert"
+    topicRoute="/sql/merge"
+    subtopicLabel="Correcting the Partial-Index Atomicity Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">ON CONFLICT Is Atomic Once the Partial Index Predicate Matches</h1>
+  <p class="page-subtitle">
+    The main page warns that ON CONFLICT "is not truly atomic" with partial indexes — the real mechanic is a
+    deterministic predicate-matching rule, not a concurrency bug.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="PostgreSQL 9.5" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Partial indexes turned out not to be the concurrency risk the main page implied — but the final
+      subtopic shows the main page's opening claim that upsert has "no race condition" isn't quite true for
+      plain MERGE either, unless you add one specific hint.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="MERGE / Upsert"
+    topicRoute="/sql/merge"
+    [prev]="{ label: 'Proving the Duplicate-Source Bug', route: '/sql/merge/testing-that-the-mssql-merge-duplicate-source-bug-is-real' }"
+    [next]="{ label: 'MERGE Can Still Race Without HOLDLOCK', route: '/sql/merge/concurrent-merge-statements-can-still-race-without-holdlock' }"
+  />
+</div>

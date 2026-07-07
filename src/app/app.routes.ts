@@ -1123,7 +1123,12 @@ export const routes: Routes = [
         { path: 'isnull-can-silently-truncate-a-bigger-reason-than-portability', loadComponent: () => import('./components/data/sql/null-handling/subtopics/isnull-can-silently-truncate-a-bigger-reason-than-portability/isnull-can-silently-truncate-a-bigger-reason-than-portability').then(m => m.IsnullCanSilentlyTruncateABiggerReasonThanPortabilitySubtopic) },
         { path: 'demonstrating-what-ansi-nulls-off-actually-does-to-comparisons', loadComponent: () => import('./components/data/sql/null-handling/subtopics/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons').then(m => m.DemonstratingWhatAnsiNullsOffActuallyDoesToComparisonsSubtopic) },
       ] },
-      { path: 'merge',                    loadComponent: () => import('./components/data/sql/merge/merge').then(m => m.SqlMerge) },
+      { path: 'merge', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/merge/merge').then(m => m.SqlMerge) },
+        { path: 'testing-that-the-mssql-merge-duplicate-source-bug-is-real', loadComponent: () => import('./components/data/sql/merge/subtopics/testing-that-the-mssql-merge-duplicate-source-bug-is-real/testing-that-the-mssql-merge-duplicate-source-bug-is-real').then(m => m.TestingThatTheMssqlMergeDuplicateSourceBugIsRealSubtopic) },
+        { path: 'on-conflict-is-atomic-once-the-partial-index-predicate-matches', loadComponent: () => import('./components/data/sql/merge/subtopics/on-conflict-is-atomic-once-the-partial-index-predicate-matches/on-conflict-is-atomic-once-the-partial-index-predicate-matches').then(m => m.OnConflictIsAtomicOnceThePartialIndexPredicateMatchesSubtopic) },
+        { path: 'concurrent-merge-statements-can-still-race-without-holdlock', loadComponent: () => import('./components/data/sql/merge/subtopics/concurrent-merge-statements-can-still-race-without-holdlock/concurrent-merge-statements-can-still-race-without-holdlock').then(m => m.ConcurrentMergeStatementsCanStillRaceWithoutHoldlockSubtopic) },
+      ] },
       { path: 'string-functions',         loadComponent: () => import('./components/data/sql/string-functions/string-functions').then(m => m.SqlStringFunctions) },
       { path: 'date-functions',           loadComponent: () => import('./components/data/sql/date-functions/date-functions').then(m => m.SqlDateFunctions) },
       { path: 'conditional-expressions',  loadComponent: () => import('./components/data/sql/conditional-expressions/conditional-expressions').then(m => m.SqlConditionalExpressions) },

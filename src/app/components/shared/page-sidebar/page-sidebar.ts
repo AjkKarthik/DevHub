@@ -15648,6 +15648,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/merge': {
+    apis: ['MERGE', 'INSERT ... ON CONFLICT', 'EXCLUDED', 'OUTPUT', 'RETURNING'],
+    related: [{ label: 'NULL Handling', route: '/sql/null-handling' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'Always deduplicate the source of an MSSQL MERGE with ROW_NUMBER() — a source with two rows matching the same target key raises error 8672 and aborts the whole statement.',
+    docs: [{ label: 'MSSQL MERGE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/merge-transact-sql' }, { label: 'PostgreSQL INSERT ... ON CONFLICT', url: 'https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A duplicate-matching source row aborts the entire MERGE with error 8672 — it does not silently apply a wrong update.', 'Concurrent MERGE statements for the same key can still race under READ COMMITTED unless the target uses WITH (HOLDLOCK).'],
+  },
+
+  'sql/merge/testing-that-the-mssql-merge-duplicate-source-bug-is-real': {
+    apis: ['MERGE', 'ROW_NUMBER()', 'tSQLt'],
+    related: [
+      { label: 'ON CONFLICT and Partial Indexes — next', route: '/sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches' },
+      { label: 'MERGE / Upsert (overview)', route: '/sql/merge' },
+    ],
+    tip: 'A duplicate-matching source row raises error 8672 and rolls back the entire MERGE — it is a hard, deterministic failure, not silent corruption.',
+    docs: [
+      { label: 'MSSQL MERGE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/merge-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Error 8672 aborts the whole MERGE statement, including matches/inserts already processed for unrelated, non-duplicated rows in the same batch.',
+      'ROW_NUMBER() with a meaningful ORDER BY makes the dedup outcome deterministic — without it, an arbitrary duplicate could be kept.',
+    ],
+  },
+
+  'sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches': {
+    apis: ['ON CONFLICT', 'partial unique index', 'EXCLUDED'],
+    related: [
+      { label: 'Proving the Duplicate-Source Bug — previous', route: '/sql/merge/testing-that-the-mssql-merge-duplicate-source-bug-is-real' },
+      { label: 'MERGE Can Still Race Without HOLDLOCK — next', route: '/sql/merge/concurrent-merge-statements-can-still-race-without-holdlock' },
+      { label: 'MERGE / Upsert (overview)', route: '/sql/merge' },
+    ],
+    tip: 'ON CONFLICT (col) alone only matches a FULL unique index — to target a partial unique index, repeat its exact WHERE predicate in the ON CONFLICT clause.',
+    docs: [
+      { label: 'PostgreSQL Partial Indexes', url: 'https://www.postgresql.org/docs/current/indexes-partial.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The "no unique or exclusion constraint matching the ON CONFLICT specification" error is deterministic — it reproduces identically with zero concurrency.',
+      'ON CONFLICT DO UPDATE is fully atomic against a partial index once the predicate matches — no advisory lock or SERIALIZABLE isolation is needed.',
+    ],
+  },
+
+  'sql/merge/concurrent-merge-statements-can-still-race-without-holdlock': {
+    apis: ['MERGE', 'WITH (HOLDLOCK)', 'READ COMMITTED'],
+    related: [
+      { label: 'ON CONFLICT and Partial Indexes — previous', route: '/sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches' },
+      { label: 'MERGE / Upsert (overview)', route: '/sql/merge' },
+    ],
+    tip: 'MERGE\'s atomicity covers its own branches committing together as one statement — it does not by default serialize against a second concurrent MERGE on the same key. Add WITH (HOLDLOCK) on the target for that.',
+    docs: [
+      { label: 'MSSQL MERGE (HOLDLOCK hint)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/merge-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Without HOLDLOCK, two concurrent MERGE statements can both evaluate WHEN NOT MATCHED as true for the same key and both attempt INSERT, causing a primary-key violation.',
+      'PostgreSQL\'s ON CONFLICT DO UPDATE is race-free against concurrent inserts by default — plain MSSQL MERGE is not, until HOLDLOCK is added.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
