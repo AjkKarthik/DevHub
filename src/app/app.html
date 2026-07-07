@@ -1174,7 +1174,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/data-types"      routerLinkActive="active"><span class="nl-text">Data Types</span>@if(progress.isDone('sql-data-types')){<span class="nl-done">✓</span>}@if(diff('sql-data-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/data-types" routerLinkActive="active">
+        <span class="nl-text">Data Types</span>
+        @if (progress.isDone('sql-data-types')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-data-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('data-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('data-types')"
+                  (click)="toggleSubtopics('data-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('data-types'); as subs) {
+        @if (isSubtopicsExpanded('data-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

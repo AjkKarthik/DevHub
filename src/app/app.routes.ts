@@ -1033,7 +1033,12 @@ export const routes: Routes = [
         { path: 'buffer-hit-ratio-query-reads-a-meaningless-raw-counter', loadComponent: () => import('./components/data/sql/db-architecture/subtopics/buffer-hit-ratio-query-reads-a-meaningless-raw-counter/buffer-hit-ratio-query-reads-a-meaningless-raw-counter').then(m => m.BufferHitRatioQueryReadsAMeaninglessRawCounterSubtopic) },
         { path: 'dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live', loadComponent: () => import('./components/data/sql/db-architecture/subtopics/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live').then(m => m.DeadTupInPgStatUserTablesIsAnEstimateNotLiveSubtopic) },
       ] },
-      { path: 'data-types',        loadComponent: () => import('./components/data/sql/data-types/data-types').then(m => m.SqlDataTypes) },
+      { path: 'data-types', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/data-types/data-types').then(m => m.SqlDataTypes) },
+        { path: 'testing-that-financial-columns-stay-decimal-not-float', loadComponent: () => import('./components/data/sql/data-types/subtopics/testing-that-financial-columns-stay-decimal-not-float/testing-that-financial-columns-stay-decimal-not-float').then(m => m.TestingThatFinancialColumnsStayDecimalNotFloatSubtopic) },
+        { path: 'implicit-conversion-warning-has-the-risky-direction-backwards', loadComponent: () => import('./components/data/sql/data-types/subtopics/implicit-conversion-warning-has-the-risky-direction-backwards/implicit-conversion-warning-has-the-risky-direction-backwards').then(m => m.ImplicitConversionWarningHasTheRiskyDirectionBackwardsSubtopic) },
+        { path: 'jsonb-set-silently-no-ops-on-a-null-target', loadComponent: () => import('./components/data/sql/data-types/subtopics/jsonb-set-silently-no-ops-on-a-null-target/jsonb-set-silently-no-ops-on-a-null-target').then(m => m.JsonbSetSilentlyNoOpsOnANullTargetSubtopic) },
+      ] },
       { path: 'basics',            loadComponent: () => import('./components/data/sql/basics/basics').then(m => m.SqlBasics) },
       { path: 'joins',             loadComponent: () => import('./components/data/sql/joins/joins').then(m => m.SqlJoins) },
       { path: 'aggregations',      loadComponent: () => import('./components/data/sql/aggregations/aggregations').then(m => m.SqlAggregations) },

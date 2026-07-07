@@ -14651,6 +14651,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Never use FLOAT for money — floating-point rounding causes penny errors. Use DECIMAL(19,4).', 'MSSQL VARCHAR is single-byte; use NVARCHAR for Unicode. PostgreSQL VARCHAR is always UTF-8 — the N prefix makes no difference.'],
   },
+
+  'sql/data-types/testing-that-financial-columns-stay-decimal-not-float': {
+    apis: ['tSQLt', 'pgTAP col_type_is()', 'sys.columns', 'sys.types', 'information_schema.columns'],
+    related: [
+      { label: 'Implicit Conversion Direction, Corrected — next', route: '/sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards' },
+      { label: 'Data Types (overview)', route: '/sql/data-types' },
+    ],
+    tip: 'A schema-level type assertion catches a bad migration the moment it runs — even against a brand-new, empty table with zero rows to test arithmetic against.',
+    docs: [
+      { label: 'pgTAP col_type_is()', url: 'https://pgtap.org/documentation.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The main page\'s own CAST(0.1+0.2 AS FLOAT) demonstration proves a general fact about floating-point arithmetic — it never checks what type any actual column in your schema is declared as.',
+      'A type-choice regression can hit a brand-new, empty table with zero rows — a schema-level test catches it immediately; a data-level test cannot, since there\'s no data yet to test against.',
+    ],
+  },
+
+  'sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards': {
+    apis: ['Data type precedence', 'SqlDbType.VarChar', 'sys.dm_exec_query_plan'],
+    related: [
+      { label: 'Testing Financial Columns — previous', route: '/sql/data-types/testing-that-financial-columns-stay-decimal-not-float' },
+      { label: 'jsonb_set() and NULL Targets — next', route: '/sql/data-types/jsonb-set-silently-no-ops-on-a-null-target' },
+      { label: 'Data Types (overview)', route: '/sql/data-types' },
+    ],
+    tip: 'ADO.NET defaults a .NET string parameter to NVARCHAR — comparing it against a VARCHAR column silently forces the COLUMN to convert on every row, defeating the index.',
+    docs: [
+      { label: 'MSSQL Data Type Precedence', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-type-precedence-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NVARCHAR column vs VARCHAR literal converts the cheap literal, not the column — the index seek still works, contrary to what the main page\'s own comment implies.',
+      'VARCHAR column vs NVARCHAR value converts the COLUMN itself for every indexed row — this is the direction that actually defeats an index seek.',
+    ],
+  },
+
+  'sql/data-types/jsonb-set-silently-no-ops-on-a-null-target': {
+    apis: ['jsonb_set()', 'COALESCE', 'jsonb'],
+    related: [
+      { label: 'Implicit Conversion Direction, Corrected — previous', route: '/sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards' },
+      { label: 'Data Types (overview)', route: '/sql/data-types' },
+    ],
+    tip: 'jsonb_set() is a strict function — wrap the target in COALESCE(col, \'{}\'::jsonb) whenever the column is nullable, or a NULL row silently no-ops instead of gaining the new key.',
+    docs: [
+      { label: 'PostgreSQL JSON Functions', url: 'https://www.postgresql.org/docs/current/functions-json.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'jsonb_set(NULL, ...) returns NULL with no error — the UPDATE reports success while silently leaving the column exactly as NULL as before.',
+      'The main page\'s own INSERT example always supplies a full JSON object, masking the failure — it only surfaces for a row where custom_attrs was left at its NULL default.',
+    ],
+  },
+
   'sql/basics': {
     apis: ['SELECT', 'FROM', 'WHERE', 'ORDER BY', 'DISTINCT', 'LIMIT / TOP', 'IS NULL', 'LIKE', 'BETWEEN', 'IN'],
     related: [{ label: 'Joins', route: '/sql/joins' }, { label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Subqueries', route: '/sql/subqueries' }],

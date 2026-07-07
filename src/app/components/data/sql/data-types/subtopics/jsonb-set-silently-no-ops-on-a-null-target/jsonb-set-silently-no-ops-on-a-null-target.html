@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Data Types"
+    topicRoute="/sql/data-types"
+    subtopicLabel="jsonb_set() and NULL Targets"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">jsonb_set() Silently No-Ops on a NULL Target</h1>
+  <p class="page-subtitle">
+    The main page's own JSONB column is declared nullable — and jsonb_set() is a strict function that
+    silently returns NULL instead of building a fresh object when it does.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover data types end-to-end: guarding a financial column's type choice
+      with an automated schema-level test, correcting a real MSSQL implicit-conversion direction the main
+      page gets backwards, and catching a PostgreSQL JSONB update that silently fails on the exact nullable
+      case the schema itself allows.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Data Types"
+    topicRoute="/sql/data-types"
+    [prev]="{ label: 'Implicit Conversion Warning Has the Risky Direction Backwards', route: '/sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards' }"
+  />
+</div>

@@ -901,6 +901,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Buffer Hit Ratio Query Reads a Meaningless Raw Counter', route: '/sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter' },
     { label: 'n_dead_tup Is an Estimate, Not a Live Count', route: '/sql/db-architecture/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live' },
   ],
+  'data-types': [
+    { label: 'Testing That Financial Columns Stay DECIMAL', route: '/sql/data-types/testing-that-financial-columns-stay-decimal-not-float' },
+    { label: 'Implicit Conversion Direction, Corrected', route: '/sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards' },
+    { label: 'jsonb_set() and NULL Targets', route: '/sql/data-types/jsonb-set-silently-no-ops-on-a-null-target' },
+  ],
 };
 
 @Component({

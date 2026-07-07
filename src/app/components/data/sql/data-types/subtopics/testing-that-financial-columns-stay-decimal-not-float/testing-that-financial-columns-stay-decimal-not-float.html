@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Data Types"
+    topicRoute="/sql/data-types"
+    subtopicLabel="Testing Financial Columns Stay DECIMAL"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That Financial Columns Stay DECIMAL, Not FLOAT</h1>
+  <p class="page-subtitle">
+    The main page's own FLOAT precision demonstration proves a fact about floating-point arithmetic —
+    it never checks what type your actual columns are declared as. A schema-level test does.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With a schema-level regression test guarding against financial columns silently becoming FLOAT,
+      the next subtopic corrects a mechanic the main page's own implicit-conversion comment gets backwards —
+      which VARCHAR/NVARCHAR comparison direction actually defeats an index seek.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Data Types"
+    topicRoute="/sql/data-types"
+    [next]="{ label: 'Implicit Conversion Warning Has the Risky Direction Backwards', route: '/sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards' }"
+  />
+</div>
