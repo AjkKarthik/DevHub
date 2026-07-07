@@ -1558,7 +1558,7 @@ off here with a date.
 - [x] `/sql/window-functions` — Window Functions (2026-07-07 — 3 subtopics: testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap, why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential, confirming-that-identical-over-clauses-really-do-share-a-single-sort)
 - [x] `/sql/indexes` — Indexes (2026-07-07 — 3 subtopics: testing-that-a-filtered-index-actually-gets-used-not-silently-skipped, quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes, the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule)
 - [x] `/sql/transactions` — Transactions (2026-07-07 — 3 subtopics: testing-that-the-bank-transfer-example-is-already-safe-without-updlock, demonstrating-write-skew-the-one-anomaly-left-without-code, the-postgresql-savepoint-example-rolls-back-a-successful-insert)
-- [ ] `/sql/schema-design` — Schema Design
+- [x] `/sql/schema-design` — Schema Design (2026-07-07 — 3 subtopics: testing-whether-step-1s-default-actually-backfills-existing-rows, the-postgresql-enum-alternative-is-harder-to-evolve-not-easier, adding-the-lookup-table-pattern-never-retires-the-original-check)
 - [ ] `/sql/stored-procedures` — Stored Procedures
 - [ ] `/sql/performance` — Query Performance
 - [ ] `/sql/json-features` — JSON Features
