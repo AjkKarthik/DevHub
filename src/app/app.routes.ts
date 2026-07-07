@@ -1165,7 +1165,12 @@ export const routes: Routes = [
         { path: 'testing-that-mssql-unique-allows-only-one-null-not-multiple', loadComponent: () => import('./components/data/sql/constraints/subtopics/testing-that-mssql-unique-allows-only-one-null-not-multiple/testing-that-mssql-unique-allows-only-one-null-not-multiple').then(m => m.TestingThatMssqlUniqueAllowsOnlyOneNullNotMultipleSubtopic) },
         { path: 'not-valid-plus-validate-constraint-avoids-the-full-table-lock', loadComponent: () => import('./components/data/sql/constraints/subtopics/not-valid-plus-validate-constraint-avoids-the-full-table-lock/not-valid-plus-validate-constraint-avoids-the-full-table-lock').then(m => m.NotValidPlusValidateConstraintAvoidsTheFullTableLockSubtopic) },
       ] },
-      { path: 'views',                   loadComponent: () => import('./components/data/sql/views/views').then(m => m.SqlViews) },
+      { path: 'views', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/views/views').then(m => m.SqlViews) },
+        { path: 'testing-that-the-mssql-challenge-solution-is-missing-with-check-option', loadComponent: () => import('./components/data/sql/views/subtopics/testing-that-the-mssql-challenge-solution-is-missing-with-check-option/testing-that-the-mssql-challenge-solution-is-missing-with-check-option').then(m => m.TestingThatTheMssqlChallengeSolutionIsMissingWithCheckOptionSubtopic) },
+        { path: 'demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code', loadComponent: () => import('./components/data/sql/views/subtopics/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code').then(m => m.DemonstratingThatLeftSsn0InTheMaskingExampleIsDeadCodeSubtopic) },
+        { path: 'demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view', loadComponent: () => import('./components/data/sql/views/subtopics/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view').then(m => m.DemonstratingAnInsteadOfInsertTriggerForAMultiTableJoinViewSubtopic) },
+      ] },
       { path: 'sequences',               loadComponent: () => import('./components/data/sql/sequences/sequences').then(m => m.SqlSequences) },
       { path: 'temp-tables',             loadComponent: () => import('./components/data/sql/temp-tables/temp-tables').then(m => m.SqlTempTables) },
       { path: 'computed-columns',        loadComponent: () => import('./components/data/sql/computed-columns/computed-columns').then(m => m.SqlComputedColumns) },

@@ -1504,7 +1504,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/views"                  routerLinkActive="active"><span class="nl-text">Views</span>@if(progress.isDone('sql-views')){<span class="nl-done">✓</span>}@if(diff('sql-views');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/views" routerLinkActive="active">
+        <span class="nl-text">Views</span>
+        @if (progress.isDone('sql-views')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-views'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('views')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('views')"
+                  (click)="toggleSubtopics('views', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('views'); as subs) {
+        @if (isSubtopicsExpanded('views')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/sequences"              routerLinkActive="active"><span class="nl-text">Sequences &amp; Identity</span>@if(progress.isDone('sql-sequences')){<span class="nl-done">✓</span>}@if(diff('sql-sequences');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/temp-tables"            routerLinkActive="active"><span class="nl-text">Temp Tables</span>@if(progress.isDone('sql-temp-tables')){<span class="nl-done">✓</span>}@if(diff('sql-temp-tables');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/computed-columns"       routerLinkActive="active"><span class="nl-text">Computed Columns</span>@if(progress.isDone('sql-computed-columns')){<span class="nl-done">✓</span>}@if(diff('sql-computed-columns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

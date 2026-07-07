@@ -1014,6 +1014,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'MSSQL UNIQUE Allows Only One NULL', route: '/sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple' },
     { label: 'NOT VALID Avoids the Full-Table Lock', route: '/sql/constraints/not-valid-plus-validate-constraint-avoids-the-full-table-lock' },
   ],
+  'views': [
+    { label: 'Testing the Challenge’s Cross-Tenant Leak', route: '/sql/views/testing-that-the-mssql-challenge-solution-is-missing-with-check-option' },
+    { label: 'The Dead LEFT(ssn, 0) in the Masking Example', route: '/sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code' },
+    { label: 'An INSTEAD OF INSERT Trigger, Demonstrated', route: '/sql/views/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view' },
+  ],
 };
 
 @Component({

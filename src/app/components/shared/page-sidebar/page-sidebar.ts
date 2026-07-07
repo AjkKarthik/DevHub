@@ -16117,6 +16117,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/views': {
+    apis: ['CREATE VIEW', 'WITH CHECK OPTION', 'MATERIALIZED VIEW', 'INSTEAD OF', 'WITH SCHEMABINDING'],
+    related: [{ label: 'Constraints', route: '/sql/constraints' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Security', route: '/sql/security' }],
+    tip: 'A plain view\'s WHERE clause only filters SELECT output — it does nothing to validate INSERT/UPDATE unless WITH CHECK OPTION is explicitly added.',
+    docs: [{ label: 'MSSQL CREATE VIEW', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql' }, { label: 'PostgreSQL CREATE VIEW', url: 'https://www.postgresql.org/docs/current/sql-createview.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['WITH SCHEMABINDING and WITH CHECK OPTION are fully independent and can be combined — omitting CHECK OPTION is never forced by SCHEMABINDING.', 'A view over a JOIN or aggregate needs an INSTEAD OF trigger to be insertable — the trigger must handle multi-row inserted() correctly, not just the single-row case.'],
+  },
+
+  'sql/views/testing-that-the-mssql-challenge-solution-is-missing-with-check-option': {
+    apis: ['WITH CHECK OPTION', 'SESSION_CONTEXT', 'WITH SCHEMABINDING'],
+    related: [
+      { label: 'The Dead LEFT(ssn, 0) in the Masking Example — next', route: '/sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code' },
+      { label: 'Views (overview)', route: '/sql/views' },
+    ],
+    tip: 'Without WITH CHECK OPTION, a tenant-scoped view\'s WHERE clause filters SELECT but never validates INSERT — a session can silently write rows for a different tenant.',
+    docs: [
+      { label: 'MSSQL CREATE VIEW (WITH CHECK OPTION)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A security pattern verified in one dialect\'s sample code is not evidence the other dialect\'s sample includes the same protection — each needs independent testing.',
+      'WITH SCHEMABINDING does not prevent adding WITH CHECK OPTION to the same view definition.',
+    ],
+  },
+
+  'sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code': {
+    apis: ['LEFT()', 'RIGHT()', 'string concatenation'],
+    related: [
+      { label: 'Testing the Challenge’s Cross-Tenant Leak — previous', route: '/sql/views/testing-that-the-mssql-challenge-solution-is-missing-with-check-option' },
+      { label: 'An INSTEAD OF INSERT Trigger, Demonstrated — next', route: '/sql/views/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view' },
+      { label: 'Views (overview)', route: '/sql/views' },
+    ],
+    tip: 'LEFT(x, 0) always returns an empty string for any input — it contributes nothing to a concatenation and can be deleted with zero change in output.',
+    docs: [
+      { label: 'MSSQL LEFT (Transact-SQL)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Dead code in a masking expression can be proven empirically by comparing output with and without the suspect term across representative inputs.',
+      'This is a clarity issue, not a functional bug — the masking output is correct either way.',
+    ],
+  },
+
+  'sql/views/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view': {
+    apis: ['INSTEAD OF INSERT', 'inserted', 'SCOPE_IDENTITY()', 'OUTPUT'],
+    related: [
+      { label: 'The Dead LEFT(ssn, 0) in the Masking Example — previous', route: '/sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code' },
+      { label: 'Views (overview)', route: '/sql/views' },
+    ],
+    tip: 'SCOPE_IDENTITY() returns only the LAST identity value generated — a trigger relying on it for a multi-row insert misattributes every row except the last.',
+    docs: [
+      { label: 'MSSQL CREATE TRIGGER (INSTEAD OF)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The "inserted" pseudo-table can contain multiple rows — a trigger tested only with single-row inserts can hide a multi-row bug.',
+      'Use OUTPUT to pair each newly generated identity value back to its originating row instead of a single scalar SCOPE_IDENTITY().',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
