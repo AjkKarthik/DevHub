@@ -1575,7 +1575,7 @@ off here with a date.
 - [x] `/sql/sequences` — Sequences & Identity (2026-07-07 — 3 subtopics: correcting-the-peek-next-value-answer-when-cache-is-greater-than-one, demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger, testing-that-committed-sequence-ids-can-appear-out-of-order)
 - [x] `/sql/temp-tables` — Temp Tables & Table Variables (2026-07-07 — 3 subtopics: correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim, demonstrating-that-table-variables-are-not-rolled-back-by-rollback, demonstrating-that-table-variables-support-inline-non-unique-indexes)
 - [x] `/sql/computed-columns` — Computed & Generated Columns (2026-07-07 — 3 subtopics: testing-that-mssql-computed-columns-can-reference-each-other, checksum-is-not-stable-across-sql-server-versions-or-patches, adding-a-stored-generated-column-locks-the-whole-table)
-- [ ] `/sql/stored-functions` — Stored Functions
+- [x] `/sql/stored-functions` — Stored Functions (2026-07-07 — 3 subtopics: correcting-the-search-path-public-pin-in-the-security-definer-example, writing-an-actual-create-aggregate-example-the-quiz-only-describes, demonstrating-that-business-days-depends-on-set-datefirst)
 - [ ] `/sql/cursors` — Cursors & Row-by-Row Processing
 - [ ] `/sql/triggers` — Triggers
 - [ ] `/sql/dynamic-sql` — Dynamic SQL
