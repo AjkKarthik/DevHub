@@ -1147,7 +1147,12 @@ export const routes: Routes = [
         { path: 'testing-that-nullif-count-zero-can-never-actually-fire', loadComponent: () => import('./components/data/sql/conditional-expressions/subtopics/testing-that-nullif-count-zero-can-never-actually-fire/testing-that-nullif-count-zero-can-never-actually-fire').then(m => m.TestingThatNullifCountZeroCanNeverActuallyFireSubtopic) },
         { path: 'nested-iif-where-example-contradicts-its-own-nesting-advice', loadComponent: () => import('./components/data/sql/conditional-expressions/subtopics/nested-iif-where-example-contradicts-its-own-nesting-advice/nested-iif-where-example-contradicts-its-own-nesting-advice').then(m => m.NestedIifWhereExampleContradictsItsOwnNestingAdviceSubtopic) },
       ] },
-      { path: 'math-functions',           loadComponent: () => import('./components/data/sql/math-functions/math-functions').then(m => m.SqlMathFunctions) },
+      { path: 'math-functions', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/math-functions/math-functions').then(m => m.SqlMathFunctions) },
+        { path: 'correcting-the-bankers-rounding-claim-for-postgresql-numeric', loadComponent: () => import('./components/data/sql/math-functions/subtopics/correcting-the-bankers-rounding-claim-for-postgresql-numeric/correcting-the-bankers-rounding-claim-for-postgresql-numeric').then(m => m.CorrectingTheBankersRoundingClaimForPostgresqlNumericSubtopic) },
+        { path: 'testing-that-avg-on-integers-differs-between-postgresql-and-mssql', loadComponent: () => import('./components/data/sql/math-functions/subtopics/testing-that-avg-on-integers-differs-between-postgresql-and-mssql/testing-that-avg-on-integers-differs-between-postgresql-and-mssql').then(m => m.TestingThatAvgOnIntegersDiffersBetweenPostgresqlAndMssqlSubtopic) },
+        { path: 'mssql-tablesample-rows-can-return-far-fewer-rows-than-requested', loadComponent: () => import('./components/data/sql/math-functions/subtopics/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested').then(m => m.MssqlTablesampleRowsCanReturnFarFewerRowsThanRequestedSubtopic) },
+      ] },
       { path: 'pivoting',                 loadComponent: () => import('./components/data/sql/pivoting/pivoting').then(m => m.SqlPivoting) },
       { path: 'constraints',             loadComponent: () => import('./components/data/sql/constraints/constraints').then(m => m.SqlConstraints) },
       { path: 'views',                   loadComponent: () => import('./components/data/sql/views/views').then(m => m.SqlViews) },

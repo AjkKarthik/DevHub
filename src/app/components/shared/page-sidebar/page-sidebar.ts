@@ -15916,6 +15916,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/math-functions': {
+    apis: ['ROUND', 'FLOOR/CEILING', 'TRUNC', 'AVG', 'TABLESAMPLE'],
+    related: [{ label: 'Conditional Expressions', route: '/sql/conditional-expressions' }, { label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Date & Time Functions', route: '/sql/date-functions' }],
+    tip: 'PostgreSQL\'s NUMERIC ROUND() rounds half away from zero, same as MSSQL — banker\'s rounding is not the default for either engine\'s exact-decimal type.',
+    docs: [{ label: 'MSSQL Math Functions', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/mathematical-functions-transact-sql' }, { label: 'PostgreSQL Math Functions', url: 'https://www.postgresql.org/docs/current/functions-math.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['AVG(integer_col) truncates in MSSQL but already returns full-precision NUMERIC in PostgreSQL — the "both dialects" framing only holds for MSSQL.', 'MSSQL TABLESAMPLE is page-based even with ROWS syntax — it can return far fewer rows than requested, including zero on small tables.'],
+  },
+
+  'sql/math-functions/correcting-the-bankers-rounding-claim-for-postgresql-numeric': {
+    apis: ['ROUND', 'NUMERIC', 'DOUBLE PRECISION'],
+    related: [
+      { label: 'Testing AVG on Integers Across Dialects — next', route: '/sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql' },
+      { label: 'Math & Numeric Functions (overview)', route: '/sql/math-functions' },
+    ],
+    tip: 'PostgreSQL\'s ROUND() on NUMERIC rounds half away from zero — ROUND(2.5) returns 3, not 2 — identical to MSSQL, not banker\'s rounding.',
+    docs: [
+      { label: 'PostgreSQL Mathematical Functions', url: 'https://www.postgresql.org/docs/current/functions-math.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Round-half-to-even artifacts can appear for DOUBLE PRECISION in PostgreSQL, but not for the NUMERIC/DECIMAL type recommended for money.',
+      'A straight port of ROUND() calls on DECIMAL/NUMERIC columns from MSSQL to PostgreSQL needs no rounding-method adjustment.',
+    ],
+  },
+
+  'sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql': {
+    apis: ['AVG', 'NUMERIC', 'CAST'],
+    related: [
+      { label: 'Correcting the Banker’s Rounding Claim — previous', route: '/sql/math-functions/correcting-the-bankers-rounding-claim-for-postgresql-numeric' },
+      { label: 'TABLESAMPLE Can Return Far Fewer Rows — next', route: '/sql/math-functions/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested' },
+      { label: 'Math & Numeric Functions (overview)', route: '/sql/math-functions' },
+    ],
+    tip: 'PostgreSQL\'s AVG() on an integer column always returns a full-precision NUMERIC — the AVG(col * 1.0) workaround is a no-op there, only necessary in MSSQL.',
+    docs: [
+      { label: 'PostgreSQL Aggregate Functions', url: 'https://www.postgresql.org/docs/current/functions-aggregate.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'MSSQL AVG(int_col) truncates to an integer result — the SQL standard requires PostgreSQL\'s AVG to avoid this for exact numeric types.',
+      'A dual-dialect codebase can keep the AVG(col * 1.0) workaround universal for consistency, but it isn\'t fixing a real bug on the PostgreSQL side.',
+    ],
+  },
+
+  'sql/math-functions/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested': {
+    apis: ['TABLESAMPLE', 'TOP ... ORDER BY NEWID()'],
+    related: [
+      { label: 'Testing AVG on Integers Across Dialects — previous', route: '/sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql' },
+      { label: 'Math & Numeric Functions (overview)', route: '/sql/math-functions' },
+    ],
+    tip: 'TABLESAMPLE (N ROWS) is converted internally to an estimated PERCENT of data pages — it is not a guaranteed exact row count, and can return zero rows on small tables.',
+    docs: [
+      { label: 'MSSQL TABLESAMPLE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'TABLESAMPLE samples whole 8KB pages, not individual rows — a small table can fit on too few pages for the algorithm to reliably select any.',
+      'Use TOP N ... ORDER BY NEWID() (MSSQL) or ORDER BY RANDOM() LIMIT N (PostgreSQL) when an exact row count is required.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

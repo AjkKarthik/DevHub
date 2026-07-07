@@ -999,6 +999,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Testing the Dead NULLIF(COUNT(*), 0) Guard', route: '/sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire' },
     { label: 'The Nested IIF Contradiction', route: '/sql/conditional-expressions/nested-iif-where-example-contradicts-its-own-nesting-advice' },
   ],
+  'math-functions': [
+    { label: 'Correcting the Banker’s Rounding Claim', route: '/sql/math-functions/correcting-the-bankers-rounding-claim-for-postgresql-numeric' },
+    { label: 'Testing AVG on Integers Across Dialects', route: '/sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql' },
+    { label: 'TABLESAMPLE Can Return Far Fewer Rows', route: '/sql/math-functions/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested' },
+  ],
 };
 
 @Component({
