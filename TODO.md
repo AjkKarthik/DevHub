@@ -1555,7 +1555,7 @@ off here with a date.
 - [x] `/sql/aggregations` — Aggregations (2026-07-07 — 3 subtopics: testing-that-the-count-distinct-alternative-returns-identical-counts, legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters, grouping-sets-omits-the-disambiguation-its-own-theory-warns-about)
 - [x] `/sql/subqueries` — Subqueries (2026-07-07 — 3 subtopics: testing-that-the-window-function-rewrite-matches-the-correlated-subquery, the-avoid-this-window-function-in-having-example-doesnt-run-at-all, row-subqueries-and-the-mssql-rewrite-the-page-never-shows)
 - [x] `/sql/ctes` — CTEs (2026-07-07 — 3 subtopics: testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain, categorypath-has-no-depth-guard-and-postgresql-wont-save-it, confirming-that-a-twice-referenced-cte-actually-executes-twice)
-- [ ] `/sql/window-functions` — Window Functions
+- [x] `/sql/window-functions` — Window Functions (2026-07-07 — 3 subtopics: testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap, why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential, confirming-that-identical-over-clauses-really-do-share-a-single-sort)
 - [ ] `/sql/indexes` — Indexes
 - [ ] `/sql/transactions` — Transactions
 - [ ] `/sql/schema-design` — Schema Design
