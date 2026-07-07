@@ -1587,7 +1587,7 @@ off here with a date.
 - [x] `/sql/query-store` — Query Store & Performance Statistics (2026-07-08 — 3 subtopics: testing-that-the-historic-average-includes-the-regressed-interval, testing-that-flush-db-does-not-purge-or-reduce-query-store-storage, demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing)
 - [x] `/sql/statistics` — Statistics & Query Optimizer (2026-07-08 — 3 subtopics: testing-that-the-challenges-solution-never-flags-which-stats-are-overdue, correcting-the-density-quizs-rows-per-distinct-value-claim, testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage)
 - [x] `/sql/full-text-search` — Full-Text Search (2026-07-08 — 3 subtopics: testing-that-the-challenges-search-vector-goes-stale-for-new-rows, correcting-the-ts-ranks-fixed-0-to-1-range-claim, testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run)
-- [ ] `/sql/security` — SQL Security
+- [x] `/sql/security` — SQL Security (2026-07-08 — 3 subtopics: testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes, testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement, testing-that-an-unset-session-context-silently-returns-zero-rows)
 - [ ] `/sql/connection-pooling` — Connection Pooling
 
 #### TypeScript — 20 topic pages
