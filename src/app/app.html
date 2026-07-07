@@ -1382,7 +1382,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/date-functions"          routerLinkActive="active"><span class="nl-text">Date &amp; Time</span>@if(progress.isDone('sql-date-functions')){<span class="nl-done">✓</span>}@if(diff('sql-date-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/date-functions" routerLinkActive="active">
+        <span class="nl-text">Date &amp; Time</span>
+        @if (progress.isDone('sql-date-functions')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-date-functions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('date-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('date-functions')"
+                  (click)="toggleSubtopics('date-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('date-functions'); as subs) {
+        @if (isSubtopicsExpanded('date-functions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/conditional-expressions" routerLinkActive="active"><span class="nl-text">Conditional Expressions</span>@if(progress.isDone('sql-conditional-expressions')){<span class="nl-done">✓</span>}@if(diff('sql-conditional-expressions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/math-functions"          routerLinkActive="active"><span class="nl-text">Math &amp; Numeric</span>@if(progress.isDone('sql-math-functions')){<span class="nl-done">✓</span>}@if(diff('sql-math-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/pivoting"               routerLinkActive="active"><span class="nl-text">Pivoting & Cross-Tab</span>@if(progress.isDone('sql-pivoting')){<span class="nl-done">✓</span>}@if(diff('sql-pivoting');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

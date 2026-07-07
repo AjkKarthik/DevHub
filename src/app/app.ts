@@ -989,6 +989,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Prefix LIKE Needs Pattern Ops', route: '/sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale' },
     { label: 'REPLACE Is Case-Insensitive by Default', route: '/sql/string-functions/replace-is-case-insensitive-by-default-contradicting-its-own-claim' },
   ],
+  'date-functions': [
+    { label: 'Testing the Monthly Revenue Report for Gaps', route: '/sql/date-functions/testing-that-the-monthly-revenue-report-drops-zero-order-months' },
+    { label: 'GROUP BY DATE_TRUNC Needs an Expression Index', route: '/sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column' },
+    { label: 'AT TIME ZONE’s Automatic DST Adjustment', route: '/sql/date-functions/demonstrating-at-time-zones-automatic-dst-adjustment-across-march' },
+  ],
 };
 
 @Component({

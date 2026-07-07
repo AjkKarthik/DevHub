@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Date & Time Functions"
+    topicRoute="/sql/date-functions"
+    subtopicLabel="Proving the DST Claim With Real Dates"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating AT TIME ZONE's Automatic DST Adjustment Across March</h1>
+  <p class="page-subtitle">
+    The main page states AT TIME ZONE "handles DST automatically" but never shows it — here two UTC
+    timestamps three days apart get different offsets from the exact same expression.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL Server 2016" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Between the missing-months report gap, the mis-attributed index claim, and this proof of DST handling,
+      the same theme keeps surfacing: date/time code that looks obviously correct in prose deserves an
+      actual EXPLAIN plan or a fixture with real edge-case data before it's trusted.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Date & Time Functions"
+    topicRoute="/sql/date-functions"
+    [prev]="{ label: 'GROUP BY DATE_TRUNC Needs an Expression Index', route: '/sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column' }"
+  />
+</div>

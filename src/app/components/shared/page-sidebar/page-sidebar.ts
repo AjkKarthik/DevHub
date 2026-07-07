@@ -15782,6 +15782,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/date-functions': {
+    apis: ['DATEADD', 'DATEDIFF', 'DATE_TRUNC', 'AT TIME ZONE', 'TIMESTAMPTZ'],
+    related: [{ label: 'String Functions', route: '/sql/string-functions' }, { label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Indexes', route: '/sql/indexes' }],
+    tip: 'Always store timestamps in UTC (TIMESTAMPTZ / DATETIMEOFFSET) and convert to local time only at the display or query layer — never store pre-computed local times.',
+    docs: [{ label: 'MSSQL Date/Time Functions', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/date-and-time-data-types-and-functions-transact-sql' }, { label: 'PostgreSQL Date/Time Functions', url: 'https://www.postgresql.org/docs/current/functions-datetime.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['GROUP BY DATE_TRUNC(...) needs an expression index built on that exact expression — a plain index on the raw column is not used by the planner.', 'A monthly report built with plain GROUP BY silently omits months with zero matching rows — use generate_series + LEFT JOIN to guarantee full coverage.'],
+  },
+
+  'sql/date-functions/testing-that-the-monthly-revenue-report-drops-zero-order-months': {
+    apis: ['generate_series', 'LEFT JOIN', 'DATE_TRUNC'],
+    related: [
+      { label: 'GROUP BY DATE_TRUNC Needs an Expression Index — next', route: '/sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column' },
+      { label: 'Date & Time Functions (overview)', route: '/sql/date-functions' },
+    ],
+    tip: 'GROUP BY only emits a row for a month that has at least one matching order — a month with zero orders is silently missing from the result, not shown as revenue = 0.',
+    docs: [
+      { label: 'PostgreSQL generate_series', url: 'https://www.postgresql.org/docs/current/functions-srf.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A "zero revenue" row and a "missing" row look identical on a naive chart but come from completely different query behavior.',
+      'generate_series() + LEFT JOIN is the standard fix for guaranteeing one row per expected period regardless of data sparsity.',
+    ],
+  },
+
+  'sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column': {
+    apis: ['CREATE INDEX (expression)', 'EXPLAIN', 'GroupAggregate'],
+    related: [
+      { label: 'Testing the Monthly Revenue Report for Gaps — previous', route: '/sql/date-functions/testing-that-the-monthly-revenue-report-drops-zero-order-months' },
+      { label: 'AT TIME ZONE’s Automatic DST Adjustment — next', route: '/sql/date-functions/demonstrating-at-time-zones-automatic-dst-adjustment-across-march' },
+      { label: 'Date & Time Functions (overview)', route: '/sql/date-functions' },
+    ],
+    tip: 'A plain index on order_date cannot serve GROUP BY DATE_TRUNC(\'month\', order_date) — build the index directly on the expression: CREATE INDEX ON orders (DATE_TRUNC(\'month\', order_date)).',
+    docs: [
+      { label: 'PostgreSQL Indexes on Expressions', url: 'https://www.postgresql.org/docs/current/indexes-expressional.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'EXPLAIN showing "Seq Scan" for a GROUP BY on a wrapped column means the existing index isn\'t being used at all, regardless of what documentation claims.',
+      'The same wrap-in-a-function rule that prevents WHERE clauses from using a plain index applies identically to GROUP BY.',
+    ],
+  },
+
+  'sql/date-functions/demonstrating-at-time-zones-automatic-dst-adjustment-across-march': {
+    apis: ['AT TIME ZONE', 'America/New_York', 'Eastern Standard Time'],
+    related: [
+      { label: 'GROUP BY DATE_TRUNC Needs an Expression Index — previous', route: '/sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column' },
+      { label: 'Date & Time Functions (overview)', route: '/sql/date-functions' },
+    ],
+    tip: 'Named time zones reference a DST rule set, not a fixed offset — the same AT TIME ZONE expression correctly produces -05:00 in January and -04:00 in July.',
+    docs: [
+      { label: 'MSSQL AT TIME ZONE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/at-time-zone-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Hardcoding a fixed UTC offset (e.g. "always -5") in application code is wrong for roughly 8 months of the year during EDT.',
+      'The DST rule lookup happens per-row, based on each timestamp\'s own date — not the date the query is run.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
