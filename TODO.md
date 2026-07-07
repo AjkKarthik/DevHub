@@ -1545,7 +1545,7 @@ off here with a date.
 
 #### SQL — 44 topic pages
 
-- [ ] `/sql/rdbms-concepts` — RDBMS Concepts
+- [x] `/sql/rdbms-concepts` — RDBMS Concepts (2026-07-07 — 3 subtopics: testing-constraints-with-tsqlt-and-pgtap, plan-cache-pollution-is-about-query-text-not-query-structure, cascade-delete-demo-doesnt-match-the-pages-own-schema)
 - [ ] `/sql/data-modeling` — Data Modeling
 - [ ] `/sql/normalization` — Normalization
 - [ ] `/sql/db-architecture` — Database Architecture
