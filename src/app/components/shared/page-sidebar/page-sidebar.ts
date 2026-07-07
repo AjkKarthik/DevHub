@@ -16452,6 +16452,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/cursors': {
+    apis: ['DECLARE CURSOR', 'FETCH NEXT', '@@FETCH_STATUS', 'REFCURSOR', 'FOR ... LOOP'],
+    related: [{ label: 'Stored Functions', route: '/sql/stored-functions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'CTEs', route: '/sql/ctes' }],
+    tip: 'A LOCAL cursor (the SQL Server default) auto-deallocates when its procedure returns — the "always call DEALLOCATE or leak" warning only strictly applies to GLOBAL cursors.',
+    docs: [{ label: 'MSSQL Cursors', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/declare-cursor-transact-sql' }, { label: 'PostgreSQL Cursors', url: 'https://www.postgresql.org/docs/current/plpgsql-cursors.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A bound CURSOR and a REFCURSOR are different PL/pgSQL constructs — only a REFCURSOR can be returned to a caller for independent, batched fetching.', 'Always trace what a variable actually holds and what a CASE expression\'s multipliers do — names like "discount" can be misleading.'],
+  },
+
+  'sql/cursors/testing-that-local-cursors-auto-deallocate-without-explicit-deallocate': {
+    apis: ['DECLARE CURSOR LOCAL/GLOBAL', 'LOCAL_CURSOR_DEFAULT', 'DEALLOCATE'],
+    related: [
+      { label: 'fetch_customers Isn’t Really a REFCURSOR — next', route: '/sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example' },
+      { label: 'Cursors & Row-by-Row Processing (overview)', route: '/sql/cursors' },
+    ],
+    tip: 'SELECT DATABASEPROPERTYEX(DB_NAME(), \'IsLocalCursorsDefault\') tells you whether a plain DECLARE CURSOR on your database resolves to LOCAL (auto-cleaned) or GLOBAL (leaks without DEALLOCATE).',
+    docs: [
+      { label: 'MSSQL DECLARE CURSOR', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/declare-cursor-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      '"A cursor with the name already exists" on a repeated procedure call is the reproducible symptom of an un-deallocated GLOBAL cursor.',
+      'LOCAL_CURSOR_DEFAULT = TRUE has been the SQL Server out-of-the-box default since SQL Server 2000, but it can be explicitly overridden per database.',
+    ],
+  },
+
+  'sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example': {
+    apis: ['REFCURSOR', 'CURSOR FOR', 'RETURN QUERY'],
+    related: [
+      { label: 'Testing Local Cursor Auto-Deallocation — previous', route: '/sql/cursors/testing-that-local-cursors-auto-deallocate-without-explicit-deallocate' },
+      { label: 'The “Discount” That’s Actually a Markup — next', route: '/sql/cursors/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup' },
+      { label: 'Cursors & Row-by-Row Processing (overview)', route: '/sql/cursors' },
+    ],
+    tip: 'RETURN QUERY collapses a manual FETCH/EXIT WHEN NOT FOUND/RETURN NEXT loop into one line when a function just needs to return a query\'s rows as-is.',
+    docs: [
+      { label: 'PostgreSQL Returning Cursors', url: 'https://www.postgresql.org/docs/current/plpgsql-cursors.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A genuine REFCURSOR use case lets the CALLER fetch in independent batches across separate round trips — a bound cursor\'s lifecycle stays entirely inside one function call.',
+      'Refcursors only live for the duration of the transaction that opened them.',
+    ],
+  },
+
+  'sql/cursors/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup': {
+    apis: ['CASE WHEN', 'WHERE CURRENT OF', 'FOR UPDATE OF'],
+    related: [
+      { label: 'fetch_customers Isn’t Really a REFCURSOR — previous', route: '/sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example' },
+      { label: 'Cursors & Row-by-Row Processing (overview)', route: '/sql/cursors' },
+    ],
+    tip: 'Multipliers above 1.0 (×1.05, ×1.10, ×1.15) increase a price — a genuine discount uses multipliers below 1.0, or price * (1 - pct/100).',
+    docs: [
+      { label: 'MSSQL WHERE CURRENT OF', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/where-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The same page uses "discount" for two functionally opposite operations — a real risk when copying a pattern by name rather than by what it actually computes.',
+      'A variable\'s name is not a reliable guide to what value it holds — trace the actual query and arithmetic instead.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

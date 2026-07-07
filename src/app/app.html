@@ -1482,7 +1482,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/cursors"               routerLinkActive="active"><span class="nl-text">Cursors</span>@if(progress.isDone('sql-cursors')){<span class="nl-done">✓</span>}@if(diff('sql-cursors');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/cursors" routerLinkActive="active">
+        <span class="nl-text">Cursors</span>
+        @if (progress.isDone('sql-cursors')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-cursors'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('cursors')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cursors')"
+                  (click)="toggleSubtopics('cursors', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cursors'); as subs) {
+        @if (isSubtopicsExpanded('cursors')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/triggers"              routerLinkActive="active"><span class="nl-text">Triggers</span>@if(progress.isDone('sql-triggers')){<span class="nl-done">✓</span>}@if(diff('sql-triggers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/dynamic-sql"           routerLinkActive="active"><span class="nl-text">Dynamic SQL</span>@if(progress.isDone('sql-dynamic-sql')){<span class="nl-done">✓</span>}@if(diff('sql-dynamic-sql');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Cursors & Row-by-Row Processing"
+    topicRoute="/sql/cursors"
+    subtopicLabel="The Same Word, Two Opposite Operations"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That the Cursor "Discount" Example Is Actually a Price Markup</h1>
+  <p class="page-subtitle">
+    The main page has a real percentage-discount challenge elsewhere — the cursor example's @discount
+    variable does the mathematical opposite, increasing prices by 5-15%.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      An unconditional warning that turned out to be conditional, a mislabeled REFCURSOR example, and a
+      "discount" that raises prices — three reminders that even well-organized reference material benefits
+      from tracing the actual code rather than trusting labels and comments.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Cursors & Row-by-Row Processing"
+    topicRoute="/sql/cursors"
+    [prev]="{ label: 'fetch_customers Isn’t Really a REFCURSOR', route: '/sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example' }"
+  />
+</div>

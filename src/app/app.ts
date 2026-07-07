@@ -1039,6 +1039,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'A Real CREATE AGGREGATE Example', route: '/sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes' },
     { label: 'Business Days Depends on SET DATEFIRST', route: '/sql/stored-functions/demonstrating-that-business-days-depends-on-set-datefirst' },
   ],
+  'cursors': [
+    { label: 'Testing Local Cursor Auto-Deallocation', route: '/sql/cursors/testing-that-local-cursors-auto-deallocate-without-explicit-deallocate' },
+    { label: 'fetch_customers Isn’t Really a REFCURSOR', route: '/sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example' },
+    { label: 'The “Discount” That’s Actually a Markup', route: '/sql/cursors/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup' },
+  ],
 };
 
 @Component({

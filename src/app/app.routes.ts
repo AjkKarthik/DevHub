@@ -1195,7 +1195,12 @@ export const routes: Routes = [
         { path: 'writing-an-actual-create-aggregate-example-the-quiz-only-describes', loadComponent: () => import('./components/data/sql/stored-functions/subtopics/writing-an-actual-create-aggregate-example-the-quiz-only-describes/writing-an-actual-create-aggregate-example-the-quiz-only-describes').then(m => m.WritingAnActualCreateAggregateExampleTheQuizOnlyDescribesSubtopic) },
         { path: 'demonstrating-that-business-days-depends-on-set-datefirst', loadComponent: () => import('./components/data/sql/stored-functions/subtopics/demonstrating-that-business-days-depends-on-set-datefirst/demonstrating-that-business-days-depends-on-set-datefirst').then(m => m.DemonstratingThatBusinessDaysDependsOnSetDatefirstSubtopic) },
       ] },
-      { path: 'cursors',                 loadComponent: () => import('./components/data/sql/cursors/cursors').then(m => m.SqlCursors) },
+      { path: 'cursors', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/cursors/cursors').then(m => m.SqlCursors) },
+        { path: 'testing-that-local-cursors-auto-deallocate-without-explicit-deallocate', loadComponent: () => import('./components/data/sql/cursors/subtopics/testing-that-local-cursors-auto-deallocate-without-explicit-deallocate/testing-that-local-cursors-auto-deallocate-without-explicit-deallocate').then(m => m.TestingThatLocalCursorsAutoDeallocateWithoutExplicitDeallocateSubtopic) },
+        { path: 'demonstrating-that-fetch-customers-is-not-really-a-refcursor-example', loadComponent: () => import('./components/data/sql/cursors/subtopics/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example').then(m => m.DemonstratingThatFetchCustomersIsNotReallyARefcursorExampleSubtopic) },
+        { path: 'demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup', loadComponent: () => import('./components/data/sql/cursors/subtopics/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup').then(m => m.DemonstratingThatTheCursorDiscountExampleIsActuallyAPriceMarkupSubtopic) },
+      ] },
       { path: 'triggers',                loadComponent: () => import('./components/data/sql/triggers/triggers').then(m => m.SqlTriggers) },
       { path: 'dynamic-sql',             loadComponent: () => import('./components/data/sql/dynamic-sql/dynamic-sql').then(m => m.SqlDynamicSql) },
       { path: 'isolation-levels',        loadComponent: () => import('./components/data/sql/isolation-levels/isolation-levels').then(m => m.SqlIsolationLevels) },
