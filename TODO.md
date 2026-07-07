@@ -1566,7 +1566,7 @@ off here with a date.
 - [x] `/sql/null-handling` — NULL Handling (2026-07-07 — 3 subtopics: testing-that-union-treats-two-nulls-as-equal-while-join-doesnt, isnull-can-silently-truncate-a-bigger-reason-than-portability, demonstrating-what-ansi-nulls-off-actually-does-to-comparisons)
 - [x] `/sql/merge` — MERGE / Upsert (2026-07-07 — 3 subtopics: testing-that-the-mssql-merge-duplicate-source-bug-is-real, on-conflict-is-atomic-once-the-partial-index-predicate-matches, concurrent-merge-statements-can-still-race-without-holdlock)
 - [x] `/sql/string-functions` — String Functions (2026-07-07 — 3 subtopics: testing-that-name-normaliser-returns-null-for-a-null-last-name, demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale, replace-is-case-insensitive-by-default-contradicting-its-own-claim)
-- [ ] `/sql/date-functions` — Date & Time Functions
+- [x] `/sql/date-functions` — Date & Time Functions (2026-07-07 — 3 subtopics: testing-that-the-monthly-revenue-report-drops-zero-order-months, group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column, demonstrating-at-time-zones-automatic-dst-adjustment-across-march)
 - [ ] `/sql/conditional-expressions` — Conditional Expressions
 - [ ] `/sql/math-functions` — Math & Numeric Functions
 - [ ] `/sql/pivoting` — Pivoting & Cross-Tab Queries
