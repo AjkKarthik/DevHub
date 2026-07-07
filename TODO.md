@@ -1586,7 +1586,7 @@ off here with a date.
 - [x] `/sql/bulk-operations` — Bulk Operations (2026-07-08 — 3 subtopics: testing-that-the-batched-update-example-never-finds-a-matching-row, testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard, correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap)
 - [x] `/sql/query-store` — Query Store & Performance Statistics (2026-07-08 — 3 subtopics: testing-that-the-historic-average-includes-the-regressed-interval, testing-that-flush-db-does-not-purge-or-reduce-query-store-storage, demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing)
 - [x] `/sql/statistics` — Statistics & Query Optimizer (2026-07-08 — 3 subtopics: testing-that-the-challenges-solution-never-flags-which-stats-are-overdue, correcting-the-density-quizs-rows-per-distinct-value-claim, testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage)
-- [ ] `/sql/full-text-search` — Full-Text Search
+- [x] `/sql/full-text-search` — Full-Text Search (2026-07-08 — 3 subtopics: testing-that-the-challenges-search-vector-goes-stale-for-new-rows, correcting-the-ts-ranks-fixed-0-to-1-range-claim, testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run)
 - [ ] `/sql/security` — SQL Security
 - [ ] `/sql/connection-pooling` — Connection Pooling
 
