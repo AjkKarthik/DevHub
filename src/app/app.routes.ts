@@ -1117,7 +1117,12 @@ export const routes: Routes = [
         { path: 'demonstrating-that-intersects-tighter-binding-actually-changes-the-result', loadComponent: () => import('./components/data/sql/set-operations/subtopics/demonstrating-that-intersects-tighter-binding-actually-changes-the-result/demonstrating-that-intersects-tighter-binding-actually-changes-the-result').then(m => m.DemonstratingThatIntersectsTighterBindingActuallyChangesTheResultSubtopic) },
         { path: 'confirming-that-except-materialises-both-sets-not-exists-short-circuits', loadComponent: () => import('./components/data/sql/set-operations/subtopics/confirming-that-except-materialises-both-sets-not-exists-short-circuits/confirming-that-except-materialises-both-sets-not-exists-short-circuits').then(m => m.ConfirmingThatExceptMaterialisesBothSetsNotExistsShortCircuitsSubtopic) },
       ] },
-      { path: 'null-handling',            loadComponent: () => import('./components/data/sql/null-handling/null-handling').then(m => m.SqlNullHandling) },
+      { path: 'null-handling', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/null-handling/null-handling').then(m => m.SqlNullHandling) },
+        { path: 'testing-that-union-treats-two-nulls-as-equal-while-join-doesnt', loadComponent: () => import('./components/data/sql/null-handling/subtopics/testing-that-union-treats-two-nulls-as-equal-while-join-doesnt/testing-that-union-treats-two-nulls-as-equal-while-join-doesnt').then(m => m.TestingThatUnionTreatsTwoNullsAsEqualWhileJoinDoesntSubtopic) },
+        { path: 'isnull-can-silently-truncate-a-bigger-reason-than-portability', loadComponent: () => import('./components/data/sql/null-handling/subtopics/isnull-can-silently-truncate-a-bigger-reason-than-portability/isnull-can-silently-truncate-a-bigger-reason-than-portability').then(m => m.IsnullCanSilentlyTruncateABiggerReasonThanPortabilitySubtopic) },
+        { path: 'demonstrating-what-ansi-nulls-off-actually-does-to-comparisons', loadComponent: () => import('./components/data/sql/null-handling/subtopics/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons').then(m => m.DemonstratingWhatAnsiNullsOffActuallyDoesToComparisonsSubtopic) },
+      ] },
       { path: 'merge',                    loadComponent: () => import('./components/data/sql/merge/merge').then(m => m.SqlMerge) },
       { path: 'string-functions',         loadComponent: () => import('./components/data/sql/string-functions/string-functions').then(m => m.SqlStringFunctions) },
       { path: 'date-functions',           loadComponent: () => import('./components/data/sql/date-functions/date-functions').then(m => m.SqlDateFunctions) },

@@ -974,6 +974,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Making Precedence Concrete', route: '/sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result' },
     { label: 'Confirming EXCEPT vs NOT EXISTS Execution', route: '/sql/set-operations/confirming-that-except-materialises-both-sets-not-exists-short-circuits' },
   ],
+  'null-handling': [
+    { label: 'Testing UNION vs JOIN NULL Equality', route: '/sql/null-handling/testing-that-union-treats-two-nulls-as-equal-while-join-doesnt' },
+    { label: 'A Bigger Reason to Avoid ISNULL', route: '/sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability' },
+    { label: 'Demonstrating ANSI_NULLS OFF', route: '/sql/null-handling/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons' },
+  ],
 };
 
 @Component({

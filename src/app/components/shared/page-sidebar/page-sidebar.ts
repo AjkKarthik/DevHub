@@ -15581,6 +15581,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/null-handling': {
+    apis: ['IS NULL', 'COALESCE()', 'ISNULL()', 'NULLIF()'],
+    related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Set Operations', route: '/sql/set-operations' }],
+    tip: 'Never write col = NULL — it always evaluates to UNKNOWN under the standard ANSI_NULLS ON setting. Always use IS NULL / IS NOT NULL.',
+    docs: [{ label: 'T-SQL NULL Handling', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/working-with-null-values' }, { label: 'PostgreSQL NULL', url: 'https://www.postgresql.org/docs/current/functions-comparison.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['NOT IN silently returns zero rows if the subquery contains any NULL — use NOT EXISTS instead.', 'ISNULL\'s result type is fixed by its first argument alone — COALESCE is safer for mismatched types/lengths.'],
+  },
+
+  'sql/null-handling/testing-that-union-treats-two-nulls-as-equal-while-join-doesnt': {
+    apis: ['UNION', 'GROUP BY', 'DISTINCT'],
+    related: [
+      { label: 'A Bigger Reason to Avoid ISNULL — next', route: '/sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability' },
+      { label: 'NULL Handling (overview)', route: '/sql/null-handling' },
+    ],
+    tip: 'Value comparison (=) and grouping/deduplication (UNION, DISTINCT, GROUP BY) use two DIFFERENT NULL-equality rules — both are standard-defined, not contradictory.',
+    docs: [
+      { label: 'PostgreSQL UNION', url: 'https://www.postgresql.org/docs/current/queries-union.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'JOIN\'s a.col = b.col never matches two NULLs — UNION/DISTINCT/GROUP BY treat two NULLs as the same group.',
+      'This is not a bug or inconsistency — it is two intentionally different, standard-defined operations.',
+    ],
+  },
+
+  'sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability': {
+    apis: ['ISNULL()', 'COALESCE()', 'data type precedence'],
+    related: [
+      { label: 'Testing UNION vs JOIN NULL Equality — previous', route: '/sql/null-handling/testing-that-union-treats-two-nulls-as-equal-while-join-doesnt' },
+      { label: 'Demonstrating ANSI_NULLS OFF — next', route: '/sql/null-handling/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons' },
+      { label: 'NULL Handling (overview)', route: '/sql/null-handling' },
+    ],
+    tip: 'ISNULL(a, b) fixes its output type from "a" alone — a NULL, narrow "a" silently truncates a longer "b" value even though "b" is what actually gets returned.',
+    docs: [
+      { label: 'MSSQL ISNULL', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'COALESCE derives its type from ALL arguments via type precedence, avoiding the truncation ISNULL is prone to.',
+      'The truncation happens silently — no error, no warning, just a shortened string.',
+    ],
+  },
+
+  'sql/null-handling/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons': {
+    apis: ['SET ANSI_NULLS', 'sys.sql_modules', 'uses_ansi_nulls'],
+    related: [
+      { label: 'A Bigger Reason to Avoid ISNULL — previous', route: '/sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability' },
+      { label: 'NULL Handling (overview)', route: '/sql/null-handling' },
+    ],
+    tip: 'Stored procedures and views capture ANSI_NULLS at CREATE time, not call time — check sys.sql_modules.uses_ansi_nulls, not your own session\'s current setting.',
+    docs: [
+      { label: 'MSSQL SET ANSI_NULLS', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-ansi-nulls-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The identical query text (WHERE col = NULL) returns opposite result sets depending purely on invisible session state.',
+      'ALTER PROCEDURE does not update the captured ANSI_NULLS setting — only DROP and CREATE does.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

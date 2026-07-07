@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="NULL Handling"
+    topicRoute="/sql/null-handling"
+    subtopicLabel="Reconciling Two NULL-Equality Rules"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That UNION Treats Two NULLs as Equal While JOIN Doesn't</h1>
+  <p class="page-subtitle">
+    The main page's own theory states two adjacent, seemingly contradictory NULL rules — here they're both
+    proven on the same fixture, and the apparent contradiction is resolved.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the two NULL-equality rules reconciled, the next subtopic uncovers a more consequential reason to
+      prefer COALESCE over ISNULL than the main page's own "portability" framing suggests.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NULL Handling"
+    topicRoute="/sql/null-handling"
+    [next]="{ label: 'ISNULL Can Silently Truncate', route: '/sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability' }"
+  />
+</div>
