@@ -1093,7 +1093,12 @@ export const routes: Routes = [
         { path: 'the-postgresql-enum-alternative-is-harder-to-evolve-not-easier', loadComponent: () => import('./components/data/sql/schema-design/subtopics/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier').then(m => m.ThePostgresqlEnumAlternativeIsHarderToEvolveNotEasierSubtopic) },
         { path: 'adding-the-lookup-table-pattern-never-retires-the-original-check', loadComponent: () => import('./components/data/sql/schema-design/subtopics/adding-the-lookup-table-pattern-never-retires-the-original-check/adding-the-lookup-table-pattern-never-retires-the-original-check').then(m => m.AddingTheLookupTablePatternNeverRetiresTheOriginalCheckSubtopic) },
       ] },
-      { path: 'stored-procedures', loadComponent: () => import('./components/data/sql/stored-procedures/stored-procedures').then(m => m.SqlStoredProcedures) },
+      { path: 'stored-procedures', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/stored-procedures/stored-procedures').then(m => m.SqlStoredProcedures) },
+        { path: 'testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls', loadComponent: () => import('./components/data/sql/stored-procedures/subtopics/testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls/testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls').then(m => m.TestingThatUspPlaceorderCanOversellStockUnderConcurrentCallsSubtopic) },
+        { path: 'confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down', loadComponent: () => import('./components/data/sql/stored-procedures/subtopics/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down').then(m => m.ConfirmingThatTheInlineTvfsWhereClauseActuallyGetsPushedDownSubtopic) },
+        { path: 'demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch', loadComponent: () => import('./components/data/sql/stored-procedures/subtopics/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch').then(m => m.DemonstratingThatScopeIdentityIsScopedToTheDynamicBatchSubtopic) },
+      ] },
       { path: 'performance',       loadComponent: () => import('./components/data/sql/performance/performance').then(m => m.SqlPerformance) },
       { path: 'json-features',            loadComponent: () => import('./components/data/sql/json-features/json-features').then(m => m.SqlJsonFeatures) },
       { path: 'set-operations',           loadComponent: () => import('./components/data/sql/set-operations/set-operations').then(m => m.SqlSetOperations) },

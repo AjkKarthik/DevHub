@@ -15321,6 +15321,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Scalar UDFs in SQL Server are row-by-row — they kill query parallelism. Use inline TVFs or rewrite as set-based logic.', 'Procedure plan caching can cause parameter sniffing — OPTION (RECOMPILE) forces a fresh plan per execution.'],
   },
+
+  'sql/stored-procedures/testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls': {
+    apis: ['WITH (UPDLOCK)', 'FOR UPDATE', '@@ROWCOUNT'],
+    related: [
+      { label: 'Confirming the Inline TVF Pushdown Claim — next', route: '/sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down' },
+      { label: 'Stored Procedures (overview)', route: '/sql/stored-procedures' },
+    ],
+    tip: 'Fold a check-then-act pattern into one atomic UPDATE...WHERE, then test @@ROWCOUNT — a separate check SELECT followed by an UPDATE is a race, no matter how safe the UPDATE itself is.',
+    docs: [
+      { label: 'MSSQL Lock Hints', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A self-referencing UPDATE being individually safe from lost updates does not make a preceding, separate check SELECT safe from a stale read.',
+      'This bug is traffic-dependent — it rarely reproduces in low-concurrency manual QA.',
+    ],
+  },
+
+  'sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down': {
+    apis: ['SET SHOWPLAN_XML', 'inline TVF', 'multi-statement TVF'],
+    related: [
+      { label: 'Testing usp_PlaceOrder’s Concurrency — previous', route: '/sql/stored-procedures/testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls' },
+      { label: 'Demonstrating the SCOPE_IDENTITY() Scoping Gap — next', route: '/sql/stored-procedures/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch' },
+      { label: 'Stored Procedures (overview)', route: '/sql/stored-procedures' },
+    ],
+    tip: 'An inline TVF\'s plan should show no separate function-call boundary at all — a multi-statement TVF\'s opaque black-box operator with a fixed cardinality estimate is what "not inlined" actually looks like.',
+    docs: [
+      { label: 'MSSQL Table-Valued Functions', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/user-defined-functions' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Two functions containing textually identical SELECT logic can have wildly different performance purely based on inline vs multi-statement declaration.',
+      'A multi-statement TVF\'s cardinality estimate is a fixed constant, independent of the actual parameter passed in.',
+    ],
+  },
+
+  'sql/stored-procedures/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch': {
+    apis: ['SCOPE_IDENTITY()', 'sp_executesql', 'OUTPUT INTO'],
+    related: [
+      { label: 'Confirming the Inline TVF Pushdown Claim — previous', route: '/sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down' },
+      { label: 'Stored Procedures (overview)', route: '/sql/stored-procedures' },
+    ],
+    tip: 'SCOPE_IDENTITY() called after an sp_executesql call cannot see identities generated inside that dynamic batch — capture the value inside the dynamic string itself, or use OUTPUT INTO.',
+    docs: [
+      { label: 'MSSQL SCOPE_IDENTITY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/scope-identity-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A stale SCOPE_IDENTITY() value from an unrelated earlier insert in the same outer scope can make the bug look like it "usually works" during testing.',
+      '@@IDENTITY sidesteps the scoping issue but reintroduces the well-known trigger-interference unsafety instead.',
+    ],
+  },
+
   'sql/performance': {
     apis: ['EXPLAIN ANALYZE', 'SET STATISTICS IO ON', 'sys.dm_exec_query_stats', 'Index Seek vs Scan', 'Hash Join vs Nested Loop', 'OPTION (RECOMPILE)', 'Query Store'],
     related: [{ label: 'Indexes', route: '/sql/indexes' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Window Functions', route: '/sql/window-functions' }],

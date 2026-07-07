@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Stored Procedures"
+    topicRoute="/sql/stored-procedures"
+    subtopicLabel="Confirming the Pushdown Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Confirming That the Inline TVF's WHERE Clause Actually Gets Pushed Down</h1>
+  <p class="page-subtitle">
+    The main page's own claim about optimizer inlining is stated without evidence — the execution plan
+    confirms it directly, and a multi-statement TVF's opaque plan shows exactly what pushdown looks like
+    when it doesn't happen.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic demonstrates a different claim the main page describes only in words — that
+      SCOPE_IDENTITY() inside sp_executesql is scoped to the dynamic batch and invisible to the outer scope.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Stored Procedures"
+    topicRoute="/sql/stored-procedures"
+    [prev]="{ label: 'Testing usp_PlaceOrder’s Concurrency', route: '/sql/stored-procedures/testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls' }"
+    [next]="{ label: 'Demonstrating That SCOPE_IDENTITY() Is Batch-Scoped', route: '/sql/stored-procedures/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch' }"
+  />
+</div>

@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Stored Procedures"
+    topicRoute="/sql/stored-procedures"
+    subtopicLabel="Testing usp_PlaceOrder's Concurrency"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That usp_PlaceOrder Can Oversell Stock Under Concurrent Calls</h1>
+  <p class="page-subtitle">
+    The main page's own flagship procedure checks stock, then separately decrements it — two concurrent
+    calls can both pass the check and oversell, even though each decrement is individually safe.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the concurrency race confirmed, the next subtopic checks a different claim about the main page's
+      own inline TVF example — whether its WHERE clause really does get pushed down into the function.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Stored Procedures"
+    topicRoute="/sql/stored-procedures"
+    [next]="{ label: 'Confirming the Inline TVF Predicate Pushdown Claim', route: '/sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down' }"
+  />
+</div>

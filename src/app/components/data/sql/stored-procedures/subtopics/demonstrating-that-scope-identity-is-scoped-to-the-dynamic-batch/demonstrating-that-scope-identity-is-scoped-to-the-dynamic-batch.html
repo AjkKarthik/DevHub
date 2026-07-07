@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Stored Procedures"
+    topicRoute="/sql/stored-procedures"
+    subtopicLabel="Demonstrating the Scoping Gap"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That SCOPE_IDENTITY() Is Scoped to the Dynamic Batch</h1>
+  <p class="page-subtitle">
+    The main page's own claim about sp_executesql's scope isolation is stated only in prose — here it's
+    reproduced directly, along with both fixes the page mentions but never shows in code.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Stored Procedures end-to-end: testing a real oversell race in the
+      main page's own flagship procedure, confirming an optimizer inlining claim with an actual execution
+      plan, and reproducing a scoping gap the page only ever describes in words.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Stored Procedures"
+    topicRoute="/sql/stored-procedures"
+    [prev]="{ label: 'Confirming the Inline TVF Predicate Pushdown Claim', route: '/sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down' }"
+  />
+</div>

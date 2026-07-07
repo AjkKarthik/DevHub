@@ -951,6 +951,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The ENUM Alternative Is Harder to Evolve', route: '/sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier' },
     { label: 'The Lookup-Table Pattern Never Retires the Old CHECK', route: '/sql/schema-design/adding-the-lookup-table-pattern-never-retires-the-original-check' },
   ],
+  'stored-procedures': [
+    { label: 'Testing usp_PlaceOrder’s Concurrency', route: '/sql/stored-procedures/testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls' },
+    { label: 'Confirming the Inline TVF Pushdown Claim', route: '/sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down' },
+    { label: 'Demonstrating the SCOPE_IDENTITY() Scoping Gap', route: '/sql/stored-procedures/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch' },
+  ],
 };
 
 @Component({
