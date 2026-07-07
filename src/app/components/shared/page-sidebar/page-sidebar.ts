@@ -15983,6 +15983,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/pivoting': {
+    apis: ['PIVOT', 'UNPIVOT', 'crosstab()', 'CROSS APPLY', 'FILTER (WHERE ...)'],
+    related: [{ label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Conditional Expressions', route: '/sql/conditional-expressions' }, { label: 'Set Operations', route: '/sql/set-operations' }],
+    tip: 'PIVOT groups by every source column that isn\'t the FOR column or the aggregated value — an extra column in the source subquery silently multiplies rows with no error.',
+    docs: [{ label: 'MSSQL PIVOT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/from-using-pivot-and-unpivot' }, { label: 'PostgreSQL crosstab()', url: 'https://www.postgresql.org/docs/current/tablefunc.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['crosstab()\'s 1-argument form silently misaligns columns when a category is missing for a row — always use the 2-argument form with an explicit category query.', 'A CROSS APPLY VALUES unpivot needs every dimension (e.g. month AND metric) tagged explicitly in each row — nothing is inferred from column names.'],
+  },
+
+  'sql/pivoting/demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows': {
+    apis: ['PIVOT', 'implicit GROUP BY'],
+    related: [
+      { label: 'Fixing the CROSS APPLY UNPIVOT Example — next', route: '/sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column' },
+      { label: 'Pivoting & Cross-Tab (overview)', route: '/sql/pivoting' },
+    ],
+    tip: 'PIVOT has no explicit GROUP BY — it automatically groups by every source column that isn\'t the FOR column or the aggregate\'s argument.',
+    docs: [
+      { label: 'MSSQL PIVOT and UNPIVOT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/from-using-pivot-and-unpivot' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An extra column in PIVOT\'s source subquery causes no error — it silently changes the implicit grouping key, producing more rows than expected.',
+      'Keep the source subquery minimal: only the grouping column(s), the FOR column, and the value column.',
+    ],
+  },
+
+  'sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column': {
+    apis: ['CROSS APPLY', 'VALUES'],
+    related: [
+      { label: 'PIVOT’s Invisible Implicit GROUP BY — previous', route: '/sql/pivoting/demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows' },
+      { label: 'Confirming crosstab()’s Safe Two-Argument Form — next', route: '/sql/pivoting/testing-that-crosstabs-two-argument-form-handles-a-missing-month' },
+      { label: 'Pivoting & Cross-Tab (overview)', route: '/sql/pivoting' },
+    ],
+    tip: 'A multi-column CROSS APPLY unpivot needs every dimension (month AND metric) explicitly tagged in each VALUES row — SQL can\'t parse a column name like jan_qty into its parts automatically.',
+    docs: [
+      { label: 'MSSQL APPLY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A SELECT referencing a column that\'s missing from both the base table and the CROSS APPLY alias fails with "Invalid column name," not a silently wrong result.',
+      'The technique itself is sound — the fix is adding month as a third column in both the VALUES rows and the alias list.',
+    ],
+  },
+
+  'sql/pivoting/testing-that-crosstabs-two-argument-form-handles-a-missing-month': {
+    apis: ['crosstab()', 'tablefunc'],
+    related: [
+      { label: 'Fixing the CROSS APPLY UNPIVOT Example — previous', route: '/sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column' },
+      { label: 'Pivoting & Cross-Tab (overview)', route: '/sql/pivoting' },
+    ],
+    tip: 'crosstab()\'s 2-argument form matches values to output columns BY NAME via the category query — immune to gaps in the source data, unlike the risky 1-argument form.',
+    docs: [
+      { label: 'PostgreSQL tablefunc / crosstab()', url: 'https://www.postgresql.org/docs/current/tablefunc.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The 1-argument crosstab(sql) form matches values purely by position — a missing category for one row_name shifts every subsequent value into the wrong column.',
+      'This misalignment only affects rows with gaps in their category data — rows with complete coverage look correct, making the bug easy to miss in testing.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

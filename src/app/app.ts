@@ -1004,6 +1004,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Testing AVG on Integers Across Dialects', route: '/sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql' },
     { label: 'TABLESAMPLE Can Return Far Fewer Rows', route: '/sql/math-functions/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested' },
   ],
+  'pivoting': [
+    { label: 'PIVOT’s Invisible Implicit GROUP BY', route: '/sql/pivoting/demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows' },
+    { label: 'Fixing the CROSS APPLY UNPIVOT Example', route: '/sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column' },
+    { label: 'Confirming crosstab()’s Safe Two-Argument Form', route: '/sql/pivoting/testing-that-crosstabs-two-argument-form-handles-a-missing-month' },
+  ],
 };
 
 @Component({

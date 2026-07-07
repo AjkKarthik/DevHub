@@ -1153,7 +1153,12 @@ export const routes: Routes = [
         { path: 'testing-that-avg-on-integers-differs-between-postgresql-and-mssql', loadComponent: () => import('./components/data/sql/math-functions/subtopics/testing-that-avg-on-integers-differs-between-postgresql-and-mssql/testing-that-avg-on-integers-differs-between-postgresql-and-mssql').then(m => m.TestingThatAvgOnIntegersDiffersBetweenPostgresqlAndMssqlSubtopic) },
         { path: 'mssql-tablesample-rows-can-return-far-fewer-rows-than-requested', loadComponent: () => import('./components/data/sql/math-functions/subtopics/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested').then(m => m.MssqlTablesampleRowsCanReturnFarFewerRowsThanRequestedSubtopic) },
       ] },
-      { path: 'pivoting',                 loadComponent: () => import('./components/data/sql/pivoting/pivoting').then(m => m.SqlPivoting) },
+      { path: 'pivoting', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/pivoting/pivoting').then(m => m.SqlPivoting) },
+        { path: 'demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows', loadComponent: () => import('./components/data/sql/pivoting/subtopics/demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows/demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows').then(m => m.DemonstratingThatPivotsImplicitGroupBySilentlyMultipliesRowsSubtopic) },
+        { path: 'fixing-the-cross-apply-unpivot-examples-missing-month-column', loadComponent: () => import('./components/data/sql/pivoting/subtopics/fixing-the-cross-apply-unpivot-examples-missing-month-column/fixing-the-cross-apply-unpivot-examples-missing-month-column').then(m => m.FixingTheCrossApplyUnpivotExamplesMissingMonthColumnSubtopic) },
+        { path: 'testing-that-crosstabs-two-argument-form-handles-a-missing-month', loadComponent: () => import('./components/data/sql/pivoting/subtopics/testing-that-crosstabs-two-argument-form-handles-a-missing-month/testing-that-crosstabs-two-argument-form-handles-a-missing-month').then(m => m.TestingThatCrosstabsTwoArgumentFormHandlesAMissingMonthSubtopic) },
+      ] },
       { path: 'constraints',             loadComponent: () => import('./components/data/sql/constraints/constraints').then(m => m.SqlConstraints) },
       { path: 'views',                   loadComponent: () => import('./components/data/sql/views/views').then(m => m.SqlViews) },
       { path: 'sequences',               loadComponent: () => import('./components/data/sql/sequences/sequences').then(m => m.SqlSequences) },
