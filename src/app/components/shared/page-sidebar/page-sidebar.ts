@@ -14376,6 +14376,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Circular FK references require deferrable constraints in PostgreSQL or careful insert ordering in MSSQL.', 'ON DELETE CASCADE can silently wipe child rows — prefer explicit deletes in application code for critical data.'],
   },
+
+  'sql/rdbms-concepts/testing-constraints-with-tsqlt-and-pgtap': {
+    apis: ['tSQLt.ExpectException', 'pgTAP throws_ok()', 'ROLLBACK'],
+    related: [
+      { label: 'Plan Cache Mechanics — next', route: '/sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure' },
+      { label: 'RDBMS Concepts (overview)', route: '/sql/rdbms-concepts' },
+      { label: 'Transactions', route: '/sql/transactions' },
+    ],
+    tip: 'tSQLt and pgTAP both automatically roll back everything a test does — even genuinely destructive scenarios like a real CASCADE leave no permanent trace.',
+    docs: [
+      { label: 'tSQLt documentation', url: 'https://tsqlt.org/' },
+      { label: 'pgTAP documentation', url: 'https://pgtap.org/' },
+    ],
+    resources: [
+      { label: 'pgTAP', url: 'https://github.com/theory/pgtap', badge: 'code' },
+    ],
+    gotchas: [
+      'Asserting "some exception occurred" with no specific message pattern lets an unrelated bug (a typo) produce a false-positive pass.',
+      'Asserting on the exact SQLSTATE (pgTAP) or message pattern (tSQLt) is what actually proves the INTENDED constraint fired.',
+    ],
+  },
+
+  'sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure': {
+    apis: ['sys.dm_exec_cached_plans', 'sp_executesql', 'prepared statements'],
+    related: [
+      { label: 'Testing Constraints — previous', route: '/sql/rdbms-concepts/testing-constraints-with-tsqlt-and-pgtap' },
+      { label: 'Cascade Delete Mismatch — next', route: '/sql/rdbms-concepts/cascade-delete-demo-doesnt-match-the-pages-own-schema' },
+      { label: 'RDBMS Concepts (overview)', route: '/sql/rdbms-concepts' },
+    ],
+    tip: 'The plan cache keys entries off a hash of the query\'s EXACT TEXT — two queries differing only in a literal value get two separate, independently-optimized cache entries.',
+    docs: [
+      { label: 'Execution plan caching and reuse', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/query-processing-architecture-guide' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Wrapping a literal-containing string in sp_executesql without an actual parameter placeholder does not fix plan cache pollution — the text is still literal-specific.',
+      'Each new literal-value cache entry also means a full cost-based optimization pass runs again from scratch — the CPU cost compounds the memory cost.',
+    ],
+  },
+
+  'sql/rdbms-concepts/cascade-delete-demo-doesnt-match-the-pages-own-schema': {
+    apis: ['ON DELETE CASCADE', 'ON DELETE RESTRICT', 'ON DELETE NO ACTION'],
+    related: [
+      { label: 'Plan Cache Mechanics — previous', route: '/sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure' },
+      { label: 'RDBMS Concepts (overview)', route: '/sql/rdbms-concepts' },
+    ],
+    tip: 'The main page\'s own DDL declares NO ACTION / RESTRICT, not CASCADE — its own "cascade delete" demo describes a schema variant that was never actually created.',
+    docs: [
+      { label: 'PostgreSQL Constraints', url: 'https://www.postgresql.org/docs/current/ddl-constraints.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NO ACTION and RESTRICT both REJECT the parent delete entirely when child rows exist — nothing is silently skipped or partially applied.',
+      'Always verify the CURRENT constraint declaration a demo assumes, rather than trusting a comment describes the schema shown elsewhere on the same page.',
+    ],
+  },
+
   'sql/data-modeling': {
     apis: ['CREATE TABLE', 'FOREIGN KEY', 'REFERENCES', 'JOIN TABLE', 'ER Diagram'],
     related: [{ label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' }, { label: 'Normalization', route: '/sql/normalization' }, { label: 'Schema Design', route: '/sql/schema-design' }],

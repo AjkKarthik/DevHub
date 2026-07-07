@@ -1094,7 +1094,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/sql/rdbms-concepts"  routerLinkActive="active"><span class="nl-text">RDBMS Concepts</span>@if(progress.isDone('sql-rdbms-concepts')){<span class="nl-done">✓</span>}@if(diff('sql-rdbms-concepts');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/rdbms-concepts" routerLinkActive="active">
+        <span class="nl-text">RDBMS Concepts</span>
+        @if (progress.isDone('sql-rdbms-concepts')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-rdbms-concepts'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('rdbms-concepts')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rdbms-concepts')"
+                  (click)="toggleSubtopics('rdbms-concepts', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rdbms-concepts'); as subs) {
+        @if (isSubtopicsExpanded('rdbms-concepts')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/data-modeling"   routerLinkActive="active"><span class="nl-text">Data Modeling</span>@if(progress.isDone('sql-data-modeling')){<span class="nl-done">✓</span>}@if(diff('sql-data-modeling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/normalization"   routerLinkActive="active"><span class="nl-text">Normalization</span>@if(progress.isDone('sql-normalization')){<span class="nl-done">✓</span>}@if(diff('sql-normalization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/db-architecture" routerLinkActive="active"><span class="nl-text">DB Architecture</span>@if(progress.isDone('sql-db-architecture')){<span class="nl-done">✓</span>}@if(diff('sql-db-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

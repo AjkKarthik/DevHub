@@ -881,6 +881,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SetTag Guards Against Null, Not Against a Sampled-Out Span', route: '/aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span' },
     { label: 'Fire-and-Forget Work Inside a Span Outlives Its Parent', route: '/aspnet/opentelemetry/fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent' },
   ],
+  'rdbms-concepts': [
+    { label: 'Testing Constraints With tSQLt and pgTAP', route: '/sql/rdbms-concepts/testing-constraints-with-tsqlt-and-pgtap' },
+    { label: 'Plan Cache Pollution Is About Query Text, Not Structure', route: '/sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure' },
+    { label: 'Cascade Delete Demo Doesn’t Match the Page’s Own Schema', route: '/sql/rdbms-concepts/cascade-delete-demo-doesnt-match-the-pages-own-schema' },
+  ],
 };
 
 @Component({

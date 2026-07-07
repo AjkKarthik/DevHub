@@ -1,0 +1,43 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="RDBMS Concepts"
+    topicRoute="/sql/rdbms-concepts"
+    subtopicLabel="Cascade Delete Mismatch"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Cascade Delete Demo Doesn't Match the Page's Own Schema</h1>
+  <p class="page-subtitle">
+    The main page's own MSSQL and PostgreSQL DDL declare the Orders → Customers FK as NO ACTION / RESTRICT
+    — not CASCADE. The "cascade delete" demo later on the same page describes a schema variant that was
+    never actually created.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover RDBMS concepts end-to-end: turning ad-hoc constraint checks
+      into repeatable automated tests, understanding exactly why ad-hoc literal queries pollute the plan
+      cache, and catching a real inconsistency between the main page's own schema and its own cascade-delete
+      demo.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="RDBMS Concepts"
+    topicRoute="/sql/rdbms-concepts"
+    [prev]="{ label: 'Plan Cache Pollution Is About Query Text, Not Structure', route: '/sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure' }"
+  />
+</div>

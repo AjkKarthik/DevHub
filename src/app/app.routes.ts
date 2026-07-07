@@ -1009,7 +1009,12 @@ export const routes: Routes = [
     path: 'sql',
     children: [
       { path: '',                  loadComponent: () => import('./components/data/sql/home/home').then(m => m.SqlHome) },
-      { path: 'rdbms-concepts',    loadComponent: () => import('./components/data/sql/rdbms-concepts/rdbms-concepts').then(m => m.SqlRdbmsConcepts) },
+      { path: 'rdbms-concepts', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/rdbms-concepts/rdbms-concepts').then(m => m.SqlRdbmsConcepts) },
+        { path: 'testing-constraints-with-tsqlt-and-pgtap', loadComponent: () => import('./components/data/sql/rdbms-concepts/subtopics/testing-constraints-with-tsqlt-and-pgtap/testing-constraints-with-tsqlt-and-pgtap').then(m => m.TestingConstraintsWithTsqltAndPgtapSubtopic) },
+        { path: 'plan-cache-pollution-is-about-query-text-not-query-structure', loadComponent: () => import('./components/data/sql/rdbms-concepts/subtopics/plan-cache-pollution-is-about-query-text-not-query-structure/plan-cache-pollution-is-about-query-text-not-query-structure').then(m => m.PlanCachePollutionIsAboutQueryTextNotQueryStructureSubtopic) },
+        { path: 'cascade-delete-demo-doesnt-match-the-pages-own-schema', loadComponent: () => import('./components/data/sql/rdbms-concepts/subtopics/cascade-delete-demo-doesnt-match-the-pages-own-schema/cascade-delete-demo-doesnt-match-the-pages-own-schema').then(m => m.CascadeDeleteDemoDoesntMatchThePagesOwnSchemaSubtopic) },
+      ] },
       { path: 'data-modeling',     loadComponent: () => import('./components/data/sql/data-modeling/data-modeling').then(m => m.SqlDataModeling) },
       { path: 'normalization',     loadComponent: () => import('./components/data/sql/normalization/normalization').then(m => m.SqlNormalization) },
       { path: 'db-architecture',   loadComponent: () => import('./components/data/sql/db-architecture/db-architecture').then(m => m.SqlDbArchitecture) },

@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="RDBMS Concepts"
+    topicRoute="/sql/rdbms-concepts"
+    subtopicLabel="Plan Cache Mechanics"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Plan Cache Pollution Is About Query Text, Not Structure</h1>
+  <p class="page-subtitle">
+    Two structurally identical queries differing only in a literal value get two completely separate,
+    independently-optimized plan cache entries — because the cache key is a hash of the exact text.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With plan cache mechanics clear, the final subtopic catches a real inconsistency between the main
+      page's own DDL and its own "cascade delete" demo — the schema declared earlier never actually
+      cascades.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="RDBMS Concepts"
+    topicRoute="/sql/rdbms-concepts"
+    [prev]="{ label: 'Testing Constraints With tSQLt and pgTAP', route: '/sql/rdbms-concepts/testing-constraints-with-tsqlt-and-pgtap' }"
+    [next]="{ label: 'Cascade Delete Demo Doesn’t Match the Page’s Own Schema', route: '/sql/rdbms-concepts/cascade-delete-demo-doesnt-match-the-pages-own-schema' }"
+  />
+</div>

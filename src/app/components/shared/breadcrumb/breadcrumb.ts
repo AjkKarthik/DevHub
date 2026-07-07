@@ -677,6 +677,9 @@ const ASPNET_LABELS: Record<string, string> = {
 
 const SQL_LABELS: Record<string, string> = {
   'rdbms-concepts':    'RDBMS Concepts',
+  'rdbms-concepts/testing-constraints-with-tsqlt-and-pgtap': 'Testing Constraints With tSQLt and pgTAP',
+  'rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure': 'Plan Cache Pollution Is About Query Text, Not Structure',
+  'rdbms-concepts/cascade-delete-demo-doesnt-match-the-pages-own-schema': 'Cascade Delete Demo Doesn\'t Match the Page\'s Own Schema',
   'data-modeling':     'Data Modeling',
   'normalization':     'Normalization',
   'db-architecture':   'DB Architecture',
