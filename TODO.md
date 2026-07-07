@@ -1573,7 +1573,7 @@ off here with a date.
 - [x] `/sql/constraints` — Constraints (2026-07-07 — 3 subtopics: testing-that-on-delete-restrict-is-invalid-t-sql-syntax, testing-that-mssql-unique-allows-only-one-null-not-multiple, not-valid-plus-validate-constraint-avoids-the-full-table-lock)
 - [x] `/sql/views` — Views (2026-07-07 — 3 subtopics: testing-that-the-mssql-challenge-solution-is-missing-with-check-option, demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code, demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view)
 - [x] `/sql/sequences` — Sequences & Identity (2026-07-07 — 3 subtopics: correcting-the-peek-next-value-answer-when-cache-is-greater-than-one, demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger, testing-that-committed-sequence-ids-can-appear-out-of-order)
-- [ ] `/sql/temp-tables` — Temp Tables & Table Variables
+- [x] `/sql/temp-tables` — Temp Tables & Table Variables (2026-07-07 — 3 subtopics: correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim, demonstrating-that-table-variables-are-not-rolled-back-by-rollback, demonstrating-that-table-variables-support-inline-non-unique-indexes)
 - [ ] `/sql/computed-columns` — Computed & Generated Columns
 - [ ] `/sql/stored-functions` — Stored Functions
 - [ ] `/sql/cursors` — Cursors & Row-by-Row Processing
