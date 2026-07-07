@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Full-Text Search"
+    topicRoute="/sql/full-text-search"
+    subtopicLabel="The Challenge's Search Vector Goes Stale"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Challenge's search_vector Goes Stale for New Rows</h1>
+  <p class="page-subtitle">
+    The solution populates search_vector with a one-time UPDATE and no GENERATED ALWAYS AS or trigger —
+    every article inserted afterward is invisible to full-text search entirely.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="intermediate" since="PostgreSQL 8.3+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A stale search index is one failure mode — the next subtopic checks whether the ranking score itself
+      means what the quiz claims it means.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Full-Text Search"
+    topicRoute="/sql/full-text-search"
+    [next]="{ label: 'The ts_rank “0.0 to 1.0” Range Claim', route: '/sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim' }"
+  />
+</div>

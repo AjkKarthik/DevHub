@@ -1089,6 +1089,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Density Quiz’s Rows-Per-Value Claim', route: '/sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim' },
     { label: 'The Stale Stats Query’s Outdated Signal', route: '/sql/statistics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage' },
   ],
+  'full-text-search': [
+    { label: 'The Challenge’s Search Vector Goes Stale', route: '/sql/full-text-search/testing-that-the-challenges-search-vector-goes-stale-for-new-rows' },
+    { label: 'The ts_rank “0.0 to 1.0” Range Claim', route: '/sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim' },
+    { label: 'Stemming Doesn’t Reduce “ran” to “run”', route: '/sql/full-text-search/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run' },
+  ],
 };
 
 @Component({

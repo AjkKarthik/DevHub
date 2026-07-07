@@ -1255,7 +1255,12 @@ export const routes: Routes = [
         { path: 'correcting-the-density-quizs-rows-per-distinct-value-claim', loadComponent: () => import('./components/data/sql/statistics/subtopics/correcting-the-density-quizs-rows-per-distinct-value-claim/correcting-the-density-quizs-rows-per-distinct-value-claim').then(m => m.CorrectingTheDensityQuizsRowsPerDistinctValueClaimSubtopic) },
         { path: 'testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage', loadComponent: () => import('./components/data/sql/statistics/subtopics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage').then(m => m.TestingThatTheStaleStatsQueryRanksByTheOutdatedFlatPercentageSubtopic) },
       ] },
-      { path: 'full-text-search',        loadComponent: () => import('./components/data/sql/full-text-search/full-text-search').then(m => m.SqlFullTextSearch) },
+      { path: 'full-text-search', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/full-text-search/full-text-search').then(m => m.SqlFullTextSearch) },
+        { path: 'testing-that-the-challenges-search-vector-goes-stale-for-new-rows', loadComponent: () => import('./components/data/sql/full-text-search/subtopics/testing-that-the-challenges-search-vector-goes-stale-for-new-rows/testing-that-the-challenges-search-vector-goes-stale-for-new-rows').then(m => m.TestingThatTheChallengesSearchVectorGoesStaleForNewRowsSubtopic) },
+        { path: 'correcting-the-ts-ranks-fixed-0-to-1-range-claim', loadComponent: () => import('./components/data/sql/full-text-search/subtopics/correcting-the-ts-ranks-fixed-0-to-1-range-claim/correcting-the-ts-ranks-fixed-0-to-1-range-claim').then(m => m.CorrectingTheTsRanksFixed0To1RangeClaimSubtopic) },
+        { path: 'testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run', loadComponent: () => import('./components/data/sql/full-text-search/subtopics/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run').then(m => m.TestingThatStemmingDoesNotReduceRanToTheSameTokenAsRunSubtopic) },
+      ] },
       { path: 'security',                loadComponent: () => import('./components/data/sql/security/security').then(m => m.SqlSecurity) },
       { path: 'connection-pooling',      loadComponent: () => import('./components/data/sql/connection-pooling/connection-pooling').then(m => m.SqlConnectionPooling) },
       { path: 'cheatsheet',        loadComponent: () => import('./components/data/sql/cheatsheet/cheatsheet').then(m => m.SqlCheatsheet) },

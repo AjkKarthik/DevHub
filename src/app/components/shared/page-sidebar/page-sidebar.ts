@@ -17122,6 +17122,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/full-text-search': {
+    apis: ['CONTAINS', 'FREETEXT', 'tsvector', 'tsquery', 'ts_rank', 'GIN'],
+    related: [{ label: 'Statistics & Optimizer', route: '/sql/statistics' }, { label: 'Execution Plans', route: '/sql/execution-plans' }, { label: 'Constraints', route: '/sql/constraints' }],
+    tip: 'A tsvector column populated by a one-time UPDATE goes stale the moment a new row is inserted — use GENERATED ALWAYS AS ... STORED or a trigger to keep it current.',
+    docs: [{ label: 'MSSQL Full-Text Search', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/search/full-text-search' }, { label: 'PostgreSQL Text Search', url: 'https://www.postgresql.org/docs/current/textsearch.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['ts_rank has no fixed upper bound by default — a document with many term matches can score well above 1.0.', 'Suffix-stripping stemmers do not normalize irregular verb forms (run/ran) the way a dictionary-based lemmatizer would.'],
+  },
+
+  'sql/full-text-search/testing-that-the-challenges-search-vector-goes-stale-for-new-rows': {
+    apis: ['GENERATED ALWAYS AS STORED', 'tsvector', 'trigger'],
+    related: [
+      { label: 'The ts_rank “0.0 to 1.0” Range Claim — next', route: '/sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim' },
+      { label: 'Full-Text Search (overview)', route: '/sql/full-text-search' },
+    ],
+    tip: 'The challenge\'s solution populates search_vector with a one-time UPDATE and no GENERATED clause or trigger — every row inserted afterward has search_vector = NULL.',
+    docs: [
+      { label: 'PostgreSQL Generated Columns', url: 'https://www.postgresql.org/docs/current/ddl-generated-columns.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The page\'s own separate Q&A already explains the fix (GENERATED ALWAYS AS STORED or a trigger) — the challenge\'s solution just never applies it.',
+      'Testing full-text search only against pre-existing data misses this bug entirely — always test with a row inserted after setup.',
+    ],
+  },
+
+  'sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim': {
+    apis: ['ts_rank', 'ts_rank_cd', 'normalization flag 32'],
+    related: [
+      { label: 'The Challenge’s Search Vector Goes Stale — previous', route: '/sql/full-text-search/testing-that-the-challenges-search-vector-goes-stale-for-new-rows' },
+      { label: 'Stemming Doesn’t Reduce “ran” to “run” — next', route: '/sql/full-text-search/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run' },
+      { label: 'Full-Text Search (overview)', route: '/sql/full-text-search' },
+    ],
+    tip: 'Unlike MSSQL\'s genuinely-bounded 0-1000 RANK, PostgreSQL\'s default ts_rank has no fixed upper bound — pass normalization flag 32 to force a 0..1 result.',
+    docs: [
+      { label: 'PostgreSQL Ranking Search Results', url: 'https://www.postgresql.org/docs/current/textsearch-controls.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'ts_rank scores are meant for relative ranking within one query\'s result set, not as an absolute cross-query percentage.',
+      'A document with many or high-weight term matches can push the default score comfortably past 1.0.',
+    ],
+  },
+
+  'sql/full-text-search/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run': {
+    apis: ['to_tsvector', 'Porter/Snowball stemmer', 'thesaurus'],
+    related: [
+      { label: 'The ts_rank “0.0 to 1.0” Range Claim — previous', route: '/sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim' },
+      { label: 'Full-Text Search (overview)', route: '/sql/full-text-search' },
+    ],
+    tip: 'Suffix-stripping stemmers reduce "runs" to "run" but leave the irregular past tense "ran" as a separate token — a search for one will not match the other.',
+    docs: [
+      { label: 'PostgreSQL Dictionaries', url: 'https://www.postgresql.org/docs/current/textsearch-dictionaries.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Handling irregular verb forms requires a custom thesaurus or dictionary configuration — an extra setup step beyond default stemming.',
+      'A missing search result for a common word is not always an index bug — it can be an inherent stemming limitation.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

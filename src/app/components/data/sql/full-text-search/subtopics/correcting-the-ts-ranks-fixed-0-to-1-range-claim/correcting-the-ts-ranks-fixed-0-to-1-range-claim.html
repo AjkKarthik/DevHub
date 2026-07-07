@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Full-Text Search"
+    topicRoute="/sql/full-text-search"
+    subtopicLabel="The ts_rank “0.0 to 1.0” Range Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Correcting the ts_rank "0.0 to 1.0" Fixed Range Claim</h1>
+  <p class="page-subtitle">
+    Unlike MSSQL's genuinely-bounded 0-1000 RANK, PostgreSQL's default ts_rank has no fixed upper bound —
+    a document with enough term matches can score well above 1.0.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="PostgreSQL 8.3+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A ranking score that isn't bounded the way the quiz claims — the last subtopic tests a theory claim
+      about stemming that turns out to be similarly overstated.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Full-Text Search"
+    topicRoute="/sql/full-text-search"
+    [prev]="{ label: 'The Challenge’s Search Vector Goes Stale', route: '/sql/full-text-search/testing-that-the-challenges-search-vector-goes-stale-for-new-rows' }"
+    [next]="{ label: 'Stemming Doesn’t Reduce “ran” to “run”', route: '/sql/full-text-search/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run' }"
+  />
+</div>
