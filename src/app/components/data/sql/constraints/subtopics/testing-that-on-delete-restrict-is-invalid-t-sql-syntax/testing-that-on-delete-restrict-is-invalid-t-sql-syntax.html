@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Constraints"
+    topicRoute="/sql/constraints"
+    subtopicLabel="Testing the Page's Own First Example"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That ON DELETE RESTRICT Is Invalid T-SQL Syntax</h1>
+  <p class="page-subtitle">
+    The main page's very first CREATE TABLE example uses ON DELETE RESTRICT — valid in PostgreSQL, but a
+    syntax error in SQL Server.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="beginner" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Having fixed a syntax error, the next subtopic checks a Q&amp;A claim about NULL handling in UNIQUE
+      constraints that turns out to be backwards for SQL Server specifically.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Constraints"
+    topicRoute="/sql/constraints"
+    [next]="{ label: 'MSSQL UNIQUE Allows Only One NULL', route: '/sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple' }"
+  />
+</div>

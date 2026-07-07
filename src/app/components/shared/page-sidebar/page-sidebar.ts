@@ -16050,6 +16050,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/constraints': {
+    apis: ['PRIMARY KEY', 'FOREIGN KEY', 'UNIQUE', 'CHECK', 'NOT VALID'],
+    related: [{ label: 'Schema Design', route: '/sql/schema-design' }, { label: 'NULL Handling', route: '/sql/null-handling' }, { label: 'Indexes', route: '/sql/indexes' }],
+    tip: 'SQL Server\'s REFERENCES clause only accepts NO ACTION, CASCADE, SET NULL, SET DEFAULT — RESTRICT is valid ANSI SQL/PostgreSQL syntax but a T-SQL syntax error.',
+    docs: [{ label: 'MSSQL Constraints', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints' }, { label: 'PostgreSQL Constraints', url: 'https://www.postgresql.org/docs/current/ddl-constraints.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['SQL Server\'s UNIQUE constraint treats all NULLs as duplicates, capping a unique column at one NULL — PostgreSQL allows unlimited NULLs by default.', 'A plain ADD CONSTRAINT holds AccessExclusiveLock for its whole validation scan — NOT VALID + VALIDATE CONSTRAINT (PostgreSQL) splits this into a near-instant lock plus a non-blocking scan.'],
+  },
+
+  'sql/constraints/testing-that-on-delete-restrict-is-invalid-t-sql-syntax': {
+    apis: ['ON DELETE', 'NO ACTION', 'REFERENCES'],
+    related: [
+      { label: 'MSSQL UNIQUE Allows Only One NULL — next', route: '/sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple' },
+      { label: 'Constraints (overview)', route: '/sql/constraints' },
+    ],
+    tip: 'T-SQL\'s referential-action clause only accepts NO ACTION, CASCADE, SET NULL, SET DEFAULT — RESTRICT is a parse-time syntax error in SQL Server, though valid in PostgreSQL.',
+    docs: [
+      { label: 'MSSQL REFERENCES (Transact-SQL)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NO ACTION is the T-SQL keyword that provides the same "reject the delete if children exist" behavior PostgreSQL\'s RESTRICT provides.',
+      'This is a genuine dialect gap, not a typo — the rest of the CREATE TABLE statement is otherwise correctly formed.',
+    ],
+  },
+
+  'sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple': {
+    apis: ['UNIQUE', 'filtered index', 'WHERE col IS NOT NULL'],
+    related: [
+      { label: 'Testing ON DELETE RESTRICT in T-SQL — previous', route: '/sql/constraints/testing-that-on-delete-restrict-is-invalid-t-sql-syntax' },
+      { label: 'NOT VALID Avoids the Full-Table Lock — next', route: '/sql/constraints/not-valid-plus-validate-constraint-avoids-the-full-table-lock' },
+      { label: 'Constraints (overview)', route: '/sql/constraints' },
+    ],
+    tip: 'SQL Server\'s UNIQUE constraint treats all NULLs as duplicates of each other — a second NULL insert raises a duplicate-key violation, unlike PostgreSQL which allows unlimited NULLs.',
+    docs: [
+      { label: 'MSSQL Unique Constraints', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This bug is invisible in testing with only one NULL row — it only surfaces once a second NULL is inserted.',
+      'A filtered unique index (WHERE col IS NOT NULL) restores PostgreSQL-style unlimited-NULL behavior in SQL Server.',
+    ],
+  },
+
+  'sql/constraints/not-valid-plus-validate-constraint-avoids-the-full-table-lock': {
+    apis: ['NOT VALID', 'VALIDATE CONSTRAINT', 'pg_locks', 'AccessExclusiveLock'],
+    related: [
+      { label: 'MSSQL UNIQUE Allows Only One NULL — previous', route: '/sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple' },
+      { label: 'Constraints (overview)', route: '/sql/constraints' },
+    ],
+    tip: 'A plain ADD CONSTRAINT holds AccessExclusiveLock for its entire validation scan — NOT VALID commits near-instantly, then VALIDATE CONSTRAINT scans under a non-blocking ShareUpdateExclusiveLock.',
+    docs: [
+      { label: 'PostgreSQL ALTER TABLE', url: 'https://www.postgresql.org/docs/current/sql-altertable.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NOT VALID defers validation, it doesn\'t skip it — new rows are checked immediately, existing rows wait for VALIDATE CONSTRAINT.',
+      'ShareUpdateExclusiveLock blocks other DDL but not SELECT/INSERT/UPDATE/DELETE — confirmed directly via pg_locks and live queries during validation.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

@@ -1159,7 +1159,12 @@ export const routes: Routes = [
         { path: 'fixing-the-cross-apply-unpivot-examples-missing-month-column', loadComponent: () => import('./components/data/sql/pivoting/subtopics/fixing-the-cross-apply-unpivot-examples-missing-month-column/fixing-the-cross-apply-unpivot-examples-missing-month-column').then(m => m.FixingTheCrossApplyUnpivotExamplesMissingMonthColumnSubtopic) },
         { path: 'testing-that-crosstabs-two-argument-form-handles-a-missing-month', loadComponent: () => import('./components/data/sql/pivoting/subtopics/testing-that-crosstabs-two-argument-form-handles-a-missing-month/testing-that-crosstabs-two-argument-form-handles-a-missing-month').then(m => m.TestingThatCrosstabsTwoArgumentFormHandlesAMissingMonthSubtopic) },
       ] },
-      { path: 'constraints',             loadComponent: () => import('./components/data/sql/constraints/constraints').then(m => m.SqlConstraints) },
+      { path: 'constraints', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/constraints/constraints').then(m => m.SqlConstraints) },
+        { path: 'testing-that-on-delete-restrict-is-invalid-t-sql-syntax', loadComponent: () => import('./components/data/sql/constraints/subtopics/testing-that-on-delete-restrict-is-invalid-t-sql-syntax/testing-that-on-delete-restrict-is-invalid-t-sql-syntax').then(m => m.TestingThatOnDeleteRestrictIsInvalidTSqlSyntaxSubtopic) },
+        { path: 'testing-that-mssql-unique-allows-only-one-null-not-multiple', loadComponent: () => import('./components/data/sql/constraints/subtopics/testing-that-mssql-unique-allows-only-one-null-not-multiple/testing-that-mssql-unique-allows-only-one-null-not-multiple').then(m => m.TestingThatMssqlUniqueAllowsOnlyOneNullNotMultipleSubtopic) },
+        { path: 'not-valid-plus-validate-constraint-avoids-the-full-table-lock', loadComponent: () => import('./components/data/sql/constraints/subtopics/not-valid-plus-validate-constraint-avoids-the-full-table-lock/not-valid-plus-validate-constraint-avoids-the-full-table-lock').then(m => m.NotValidPlusValidateConstraintAvoidsTheFullTableLockSubtopic) },
+      ] },
       { path: 'views',                   loadComponent: () => import('./components/data/sql/views/views').then(m => m.SqlViews) },
       { path: 'sequences',               loadComponent: () => import('./components/data/sql/sequences/sequences').then(m => m.SqlSequences) },
       { path: 'temp-tables',             loadComponent: () => import('./components/data/sql/temp-tables/temp-tables').then(m => m.SqlTempTables) },

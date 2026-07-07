@@ -1009,6 +1009,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Fixing the CROSS APPLY UNPIVOT Example', route: '/sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column' },
     { label: 'Confirming crosstab()’s Safe Two-Argument Form', route: '/sql/pivoting/testing-that-crosstabs-two-argument-form-handles-a-missing-month' },
   ],
+  'constraints': [
+    { label: 'Testing ON DELETE RESTRICT in T-SQL', route: '/sql/constraints/testing-that-on-delete-restrict-is-invalid-t-sql-syntax' },
+    { label: 'MSSQL UNIQUE Allows Only One NULL', route: '/sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple' },
+    { label: 'NOT VALID Avoids the Full-Table Lock', route: '/sql/constraints/not-valid-plus-validate-constraint-avoids-the-full-table-lock' },
+  ],
 };
 
 @Component({
