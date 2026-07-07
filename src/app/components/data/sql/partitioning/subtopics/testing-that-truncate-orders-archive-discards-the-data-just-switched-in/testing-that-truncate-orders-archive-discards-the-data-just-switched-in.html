@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Partitioning"
+    topicRoute="/sql/partitioning"
+    subtopicLabel="TRUNCATE Discards the Just-Archived Data"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That TRUNCATE Discards the Data Just Switched In</h1>
+  <p class="page-subtitle">
+    The archival code tab's own TRUNCATE TABLE orders_archive runs immediately after the SWITCH, with no
+    backup or export in between — permanently deleting the month of data it just "archived."
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="SQL Server 2005" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The MSSQL half of the page has a syntax bug and a data-loss bug — the last subtopic checks a
+      documented restriction on the PostgreSQL half's own DETACH CONCURRENTLY statement.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Partitioning"
+    topicRoute="/sql/partitioning"
+    [prev]="{ label: 'Testing the SWITCH Statement’s Target Syntax', route: '/sql/partitioning/testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax' }"
+    [next]="{ label: 'DETACH CONCURRENTLY Can’t Run in a Transaction Block', route: '/sql/partitioning/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block' }"
+  />
+</div>

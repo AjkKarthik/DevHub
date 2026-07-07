@@ -1231,7 +1231,12 @@ export const routes: Routes = [
         { path: 'demonstrating-that-index-scan-is-not-the-desired-mssql-outcome', loadComponent: () => import('./components/data/sql/execution-plans/subtopics/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome').then(m => m.DemonstratingThatIndexScanIsNotTheDesiredMssqlOutcomeSubtopic) },
         { path: 'testing-that-small-tables-seq-scan-despite-a-covering-index', loadComponent: () => import('./components/data/sql/execution-plans/subtopics/testing-that-small-tables-seq-scan-despite-a-covering-index/testing-that-small-tables-seq-scan-despite-a-covering-index').then(m => m.TestingThatSmallTablesSeqScanDespiteACoveringIndexSubtopic) },
       ] },
-      { path: 'partitioning',            loadComponent: () => import('./components/data/sql/partitioning/partitioning').then(m => m.SqlPartitioning) },
+      { path: 'partitioning', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/partitioning/partitioning').then(m => m.SqlPartitioning) },
+        { path: 'testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax', loadComponent: () => import('./components/data/sql/partitioning/subtopics/testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax/testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax').then(m => m.TestingThatSwitchToOrdersArchivePartition1IsInvalidSyntaxSubtopic) },
+        { path: 'testing-that-truncate-orders-archive-discards-the-data-just-switched-in', loadComponent: () => import('./components/data/sql/partitioning/subtopics/testing-that-truncate-orders-archive-discards-the-data-just-switched-in/testing-that-truncate-orders-archive-discards-the-data-just-switched-in').then(m => m.TestingThatTruncateOrdersArchiveDiscardsTheDataJustSwitchedInSubtopic) },
+        { path: 'demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block', loadComponent: () => import('./components/data/sql/partitioning/subtopics/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block').then(m => m.DemonstratingThatDetachConcurrentlyCannotRunInATransactionBlockSubtopic) },
+      ] },
       { path: 'bulk-operations',         loadComponent: () => import('./components/data/sql/bulk-operations/bulk-operations').then(m => m.SqlBulkOperations) },
       { path: 'query-store',             loadComponent: () => import('./components/data/sql/query-store/query-store').then(m => m.SqlQueryStore) },
       { path: 'statistics',              loadComponent: () => import('./components/data/sql/statistics/statistics').then(m => m.SqlStatistics) },

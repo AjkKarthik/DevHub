@@ -16854,6 +16854,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/partitioning': {
+    apis: ['PARTITION BY RANGE/LIST/HASH', 'SWITCH PARTITION', 'ATTACH/DETACH PARTITION'],
+    related: [{ label: 'Execution Plans', route: '/sql/execution-plans' }, { label: 'Bulk Operations', route: '/sql/bulk-operations' }, { label: 'Constraints', route: '/sql/constraints' }],
+    tip: 'A SWITCH target-side "PARTITION n" clause is only valid when the target table is itself partitioned — a plain staging table takes no target partition number.',
+    docs: [{ label: 'MSSQL Partitioned Tables', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/partitions/partitioned-tables-and-indexes' }, { label: 'PostgreSQL Table Partitioning', url: 'https://www.postgresql.org/docs/current/ddl-partitioning.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['TRUNCATE TABLE immediately after a SWITCH, with no backup step in between, permanently deletes the data the SWITCH just moved in.', 'DETACH PARTITION ... CONCURRENTLY cannot run inside a transaction block — a migration tool\'s default BEGIN/COMMIT wrapping will fail on it.'],
+  },
+
+  'sql/partitioning/testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax': {
+    apis: ['ALTER TABLE ... SWITCH', 'error 4982'],
+    related: [
+      { label: 'TRUNCATE Discards the Just-Archived Data — next', route: '/sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in' },
+      { label: 'Partitioning (overview)', route: '/sql/partitioning' },
+    ],
+    tip: 'A target-side "PARTITION n" clause on a SWITCH statement is only valid when the target table is itself built on a partition scheme.',
+    docs: [
+      { label: 'MSSQL ALTER TABLE SWITCH', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A plain, non-partitioned target table omits the target-side PARTITION clause entirely — "TO orders_archive", not "TO orders_archive PARTITION 1".',
+      'Always run reference SQL code tabs end to end in a test database rather than trusting them by inspection.',
+    ],
+  },
+
+  'sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in': {
+    apis: ['TRUNCATE TABLE', 'SWITCH PARTITION'],
+    related: [
+      { label: 'Testing the SWITCH Statement’s Target Syntax — previous', route: '/sql/partitioning/testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax' },
+      { label: 'DETACH CONCURRENTLY in a Transaction Block — next', route: '/sql/partitioning/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block' },
+      { label: 'Partitioning (overview)', route: '/sql/partitioning' },
+    ],
+    tip: 'The archival code tab\'s TRUNCATE TABLE orders_archive runs immediately after the SWITCH, with no backup or export statement anywhere in between.',
+    docs: [
+      { label: 'MSSQL TRUNCATE TABLE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/truncate-table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A comment like "clear after archiving" describes intent, not a guarantee that a backup step actually ran first.',
+      'Persist switched-in data (SELECT INTO a permanent table, export, or backup) before ever truncating a staging archive table.',
+    ],
+  },
+
+  'sql/partitioning/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block': {
+    apis: ['DETACH PARTITION ... CONCURRENTLY', 'transaction block'],
+    related: [
+      { label: 'TRUNCATE Discards the Just-Archived Data — previous', route: '/sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in' },
+      { label: 'Partitioning (overview)', route: '/sql/partitioning' },
+    ],
+    tip: 'ALTER TABLE ... DETACH PARTITION ... CONCURRENTLY cannot run inside a BEGIN ... COMMIT block — it manages its own two-phase, non-blocking transaction internally.',
+    docs: [
+      { label: 'PostgreSQL DETACH PARTITION', url: 'https://www.postgresql.org/docs/current/sql-altertable.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A migration tool that wraps every script in an automatic transaction will fail specifically on this statement, even though every preceding setup statement succeeds.',
+      'The plain (non-CONCURRENTLY) DETACH has no transaction-block restriction, at the cost of a brief, stronger, blocking lock.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

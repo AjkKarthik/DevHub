@@ -1069,6 +1069,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Index Scan Is Not the Desired MSSQL Outcome', route: '/sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome' },
     { label: 'Small Tables Seq Scan Despite a Covering Index', route: '/sql/execution-plans/testing-that-small-tables-seq-scan-despite-a-covering-index' },
   ],
+  'partitioning': [
+    { label: 'Testing the SWITCH Statement’s Target Syntax', route: '/sql/partitioning/testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax' },
+    { label: 'TRUNCATE Discards the Just-Archived Data', route: '/sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in' },
+    { label: 'DETACH CONCURRENTLY in a Transaction Block', route: '/sql/partitioning/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block' },
+  ],
 };
 
 @Component({
