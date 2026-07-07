@@ -1551,7 +1551,7 @@ off here with a date.
 - [x] `/sql/db-architecture` — Database Architecture (2026-07-07 — 3 subtopics: testing-idle-in-transaction-session-timeout-actually-works, buffer-hit-ratio-query-reads-a-meaningless-raw-counter, dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live)
 - [x] `/sql/data-types` — Data Types (2026-07-07 — 3 subtopics: testing-that-financial-columns-stay-decimal-not-float, implicit-conversion-warning-has-the-risky-direction-backwards, jsonb-set-silently-no-ops-on-a-null-target)
 - [x] `/sql/basics` — SQL Basics (2026-07-07 — 3 subtopics: distinct-on-and-row-number-examples-have-no-tie-breaker, confirming-not-trusting-the-implicit-conversion-claim, offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination)
-- [ ] `/sql/joins` — Joins
+- [x] `/sql/joins` — Joins (2026-07-07 — 3 subtopics: testing-that-the-row-multiplication-fix-actually-prevents-double-counting, year-wrapped-date-filter-fix-still-isnt-sargable, anti-join-self-join-both-tab-has-a-postgresql-only-clause)
 - [ ] `/sql/aggregations` — Aggregations
 - [ ] `/sql/subqueries` — Subqueries
 - [ ] `/sql/ctes` — CTEs
