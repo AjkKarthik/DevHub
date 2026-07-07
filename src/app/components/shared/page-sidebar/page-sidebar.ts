@@ -14718,6 +14718,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['SELECT * in production kills index coverage — always name your columns.', 'LIMIT without ORDER BY returns non-deterministic rows — always pair them.'],
   },
+
+  'sql/basics/distinct-on-and-row-number-examples-have-no-tie-breaker': {
+    apis: ['DISTINCT ON', 'ROW_NUMBER()', 'ORDER BY tie-breaker'],
+    related: [
+      { label: 'Confirming the Conversion Claim — next', route: '/sql/basics/confirming-not-trusting-the-implicit-conversion-claim' },
+      { label: 'SQL Basics (overview)', route: '/sql/basics' },
+    ],
+    tip: 'Whenever DISTINCT ON or ROW_NUMBER() picks "the first/most recent row per group," add a unique tie-breaker column (like order_id) to the ORDER BY — otherwise a tie is resolved non-deterministically.',
+    docs: [
+      { label: 'PostgreSQL SELECT DISTINCT', url: 'https://www.postgresql.org/docs/current/sql-select.html#SQL-DISTINCT' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A query plan change (new index, refreshed statistics) can silently flip which tied row DISTINCT ON or ROW_NUMBER() returns — with no error.',
+      'Low-precision timestamp columns make exact ties far more common than they look, especially after bulk imports or batch jobs.',
+    ],
+  },
+
+  'sql/basics/confirming-not-trusting-the-implicit-conversion-claim': {
+    apis: ['SET STATISTICS XML', 'CONVERT_IMPLICIT', 'sys.dm_exec_query_plan'],
+    related: [
+      { label: 'Testing the Tie-Break Gap — previous', route: '/sql/basics/distinct-on-and-row-number-examples-have-no-tie-breaker' },
+      { label: 'OFFSET Paging Under Concurrent Writes — next', route: '/sql/basics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination' },
+      { label: 'SQL Basics (overview)', route: '/sql/basics' },
+    ],
+    tip: 'A query running fast in testing is not evidence it avoided an implicit conversion — capture the plan XML and search for ImplicitConversion="1" to confirm it directly.',
+    docs: [
+      { label: 'MSSQL Data Type Precedence', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-type-precedence-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'MSSQL silently converts a VARCHAR column to match an INT literal — a performance bug with no error.',
+      'PostgreSQL refuses the same comparison outright with "operator does not exist" — a loud error instead of a silent scan.',
+    ],
+  },
+
+  'sql/basics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination': {
+    apis: ['OFFSET / FETCH', 'LIMIT / OFFSET', 'keyset pagination'],
+    related: [
+      { label: 'Confirming the Conversion Claim — previous', route: '/sql/basics/confirming-not-trusting-the-implicit-conversion-claim' },
+      { label: 'SQL Basics (overview)', route: '/sql/basics' },
+    ],
+    tip: 'Keyset pagination is not just faster on deep pages — it is also immune to the row-shifting correctness bug that OFFSET-based paging has under concurrent inserts/deletes.',
+    docs: [
+      { label: 'PostgreSQL LIMIT/OFFSET', url: 'https://www.postgresql.org/docs/current/queries-limit.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A single concurrent insert or delete between two page requests is enough to duplicate or skip a row — no error is ever raised.',
+      'The bug rate scales with traffic, which is why it often surfaces only during business hours and is hard to reproduce in off-hours testing.',
+    ],
+  },
+
   'sql/joins': {
     apis: ['INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'ON', 'USING', 'self-join'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Subqueries', route: '/sql/subqueries' }, { label: 'Aggregations', route: '/sql/aggregations' }],

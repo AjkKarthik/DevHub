@@ -1,0 +1,43 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SQL Basics"
+    topicRoute="/sql/basics"
+    subtopicLabel="Confirming the Conversion Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Confirming (Not Just Trusting) the Implicit Conversion Claim</h1>
+  <p class="page-subtitle">
+    The main page tells you to look for a CONVERT_IMPLICIT warning but never shows what that looks like —
+    and PostgreSQL handles the identical mistake completely differently.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the implicit-conversion claim confirmed against a real plan, the final subtopic returns to the
+      main page's own pagination examples — showing how OFFSET-based paging can skip or duplicate rows when
+      the underlying data changes mid-pagination, a correctness gap the main page frames purely as a
+      performance concern.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SQL Basics"
+    topicRoute="/sql/basics"
+    [prev]="{ label: 'DISTINCT ON and ROW_NUMBER() Have No Tie-Breaker', route: '/sql/basics/distinct-on-and-row-number-examples-have-no-tie-breaker' }"
+    [next]="{ label: 'OFFSET Pagination Skips or Duplicates Rows Mid-Pagination', route: '/sql/basics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination' }"
+  />
+</div>

@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SQL Basics"
+    topicRoute="/sql/basics"
+    subtopicLabel="OFFSET Paging Under Concurrent Writes"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">OFFSET Pagination Skips or Duplicates Rows When Data Changes Mid-Pagination</h1>
+  <p class="page-subtitle">
+    The main page frames keyset pagination purely as a performance fix for deep pages — it also fixes a
+    correctness bug: OFFSET-based paging can show a row twice, or skip it, when data changes between pages.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover SQL Basics end-to-end: proving a "most recent per customer" query
+      is deterministic, confirming an implicit-conversion performance claim against a real execution plan
+      instead of trusting it, and recognizing that keyset pagination is a correctness fix as much as a
+      performance one.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SQL Basics"
+    topicRoute="/sql/basics"
+    [prev]="{ label: 'Confirming the Implicit Conversion Claim', route: '/sql/basics/confirming-not-trusting-the-implicit-conversion-claim' }"
+  />
+</div>

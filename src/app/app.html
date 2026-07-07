@@ -1198,7 +1198,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Core SQL</p>
-      <a routerLink="/sql/basics"                 routerLinkActive="active"><span class="nl-text">SQL Basics</span>@if(progress.isDone('sql-basics')){<span class="nl-done">✓</span>}@if(diff('sql-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/basics" routerLinkActive="active">
+        <span class="nl-text">SQL Basics</span>
+        @if (progress.isDone('sql-basics')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-basics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('sql-basics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sql-basics')"
+                  (click)="toggleSubtopics('sql-basics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sql-basics'); as subs) {
+        @if (isSubtopicsExpanded('sql-basics')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/joins"                  routerLinkActive="active"><span class="nl-text">Joins</span>@if(progress.isDone('sql-joins')){<span class="nl-done">✓</span>}@if(diff('sql-joins');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/aggregations"           routerLinkActive="active"><span class="nl-text">Aggregations</span>@if(progress.isDone('sql-aggregations')){<span class="nl-done">✓</span>}@if(diff('sql-aggregations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/set-operations"         routerLinkActive="active"><span class="nl-text">Set Operations</span>@if(progress.isDone('sql-set-operations')){<span class="nl-done">✓</span>}@if(diff('sql-set-operations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

@@ -906,6 +906,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Implicit Conversion Direction, Corrected', route: '/sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards' },
     { label: 'jsonb_set() and NULL Targets', route: '/sql/data-types/jsonb-set-silently-no-ops-on-a-null-target' },
   ],
+  'sql-basics': [
+    { label: 'Testing the Tie-Break Gap', route: '/sql/basics/distinct-on-and-row-number-examples-have-no-tie-breaker' },
+    { label: 'Confirming the Conversion Claim', route: '/sql/basics/confirming-not-trusting-the-implicit-conversion-claim' },
+    { label: 'OFFSET Paging Under Concurrent Writes', route: '/sql/basics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination' },
+  ],
 };
 
 @Component({

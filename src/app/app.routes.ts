@@ -1039,7 +1039,12 @@ export const routes: Routes = [
         { path: 'implicit-conversion-warning-has-the-risky-direction-backwards', loadComponent: () => import('./components/data/sql/data-types/subtopics/implicit-conversion-warning-has-the-risky-direction-backwards/implicit-conversion-warning-has-the-risky-direction-backwards').then(m => m.ImplicitConversionWarningHasTheRiskyDirectionBackwardsSubtopic) },
         { path: 'jsonb-set-silently-no-ops-on-a-null-target', loadComponent: () => import('./components/data/sql/data-types/subtopics/jsonb-set-silently-no-ops-on-a-null-target/jsonb-set-silently-no-ops-on-a-null-target').then(m => m.JsonbSetSilentlyNoOpsOnANullTargetSubtopic) },
       ] },
-      { path: 'basics',            loadComponent: () => import('./components/data/sql/basics/basics').then(m => m.SqlBasics) },
+      { path: 'basics', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/basics/basics').then(m => m.SqlBasics) },
+        { path: 'distinct-on-and-row-number-examples-have-no-tie-breaker', loadComponent: () => import('./components/data/sql/basics/subtopics/distinct-on-and-row-number-examples-have-no-tie-breaker/distinct-on-and-row-number-examples-have-no-tie-breaker').then(m => m.DistinctOnAndRowNumberExamplesHaveNoTieBreakerSubtopic) },
+        { path: 'confirming-not-trusting-the-implicit-conversion-claim', loadComponent: () => import('./components/data/sql/basics/subtopics/confirming-not-trusting-the-implicit-conversion-claim/confirming-not-trusting-the-implicit-conversion-claim').then(m => m.ConfirmingNotTrustingTheImplicitConversionClaimSubtopic) },
+        { path: 'offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination', loadComponent: () => import('./components/data/sql/basics/subtopics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination').then(m => m.OffsetPaginationSkipsOrDuplicatesRowsWhenDataChangesMidPaginationSubtopic) },
+      ] },
       { path: 'joins',             loadComponent: () => import('./components/data/sql/joins/joins').then(m => m.SqlJoins) },
       { path: 'aggregations',      loadComponent: () => import('./components/data/sql/aggregations/aggregations').then(m => m.SqlAggregations) },
       { path: 'subqueries',        loadComponent: () => import('./components/data/sql/subqueries/subqueries').then(m => m.SqlSubqueries) },
