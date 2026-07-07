@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="String Functions"
+    topicRoute="/sql/string-functions"
+    subtopicLabel="Resolving the REPLACE Case-Sensitivity Contradiction"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">REPLACE Is Case-Insensitive by Default, Contradicting Its Own Claim</h1>
+  <p class="page-subtitle">
+    The main page states elsewhere that MSSQL string comparisons are case-insensitive by default — its own
+    "REPLACE is case-sensitive" line has the exception backwards.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A NULL-propagation bug, a locale-dependent indexing gap, and now a collation-default mix-up — all
+      three show the same lesson: MSSQL and PostgreSQL string behavior depends on server configuration
+      details the main page's prose can only summarize, not replace testing against your own setup.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="String Functions"
+    topicRoute="/sql/string-functions"
+    [prev]="{ label: 'Prefix LIKE Needs Pattern Ops', route: '/sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale' }"
+  />
+</div>

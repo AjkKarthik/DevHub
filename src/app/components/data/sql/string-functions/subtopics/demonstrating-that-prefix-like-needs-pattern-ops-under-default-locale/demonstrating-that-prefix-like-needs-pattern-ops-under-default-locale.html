@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="String Functions"
+    topicRoute="/sql/string-functions"
+    subtopicLabel="The Hidden Condition Behind Prefix LIKE Indexing"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That Prefix LIKE Needs Pattern Ops Under the Default Locale</h1>
+  <p class="page-subtitle">
+    The main page says prefix searches "can use an index" — under PostgreSQL's common locale-aware
+    collations, a plain index doesn't, until it's built with text_pattern_ops.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="PostgreSQL 8.3" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      From a NULL-propagation bug to an indexing gotcha — the final subtopic finds a genuine
+      self-contradiction in the main page's own claims about case sensitivity in MSSQL.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="String Functions"
+    topicRoute="/sql/string-functions"
+    [prev]="{ label: 'Testing the Name Normaliser Against NULLs', route: '/sql/string-functions/testing-that-name-normaliser-returns-null-for-a-null-last-name' }"
+    [next]="{ label: 'REPLACE Is Case-Insensitive by Default', route: '/sql/string-functions/replace-is-case-insensitive-by-default-contradicting-its-own-claim' }"
+  />
+</div>

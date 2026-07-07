@@ -1129,7 +1129,12 @@ export const routes: Routes = [
         { path: 'on-conflict-is-atomic-once-the-partial-index-predicate-matches', loadComponent: () => import('./components/data/sql/merge/subtopics/on-conflict-is-atomic-once-the-partial-index-predicate-matches/on-conflict-is-atomic-once-the-partial-index-predicate-matches').then(m => m.OnConflictIsAtomicOnceThePartialIndexPredicateMatchesSubtopic) },
         { path: 'concurrent-merge-statements-can-still-race-without-holdlock', loadComponent: () => import('./components/data/sql/merge/subtopics/concurrent-merge-statements-can-still-race-without-holdlock/concurrent-merge-statements-can-still-race-without-holdlock').then(m => m.ConcurrentMergeStatementsCanStillRaceWithoutHoldlockSubtopic) },
       ] },
-      { path: 'string-functions',         loadComponent: () => import('./components/data/sql/string-functions/string-functions').then(m => m.SqlStringFunctions) },
+      { path: 'string-functions', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/string-functions/string-functions').then(m => m.SqlStringFunctions) },
+        { path: 'testing-that-name-normaliser-returns-null-for-a-null-last-name', loadComponent: () => import('./components/data/sql/string-functions/subtopics/testing-that-name-normaliser-returns-null-for-a-null-last-name/testing-that-name-normaliser-returns-null-for-a-null-last-name').then(m => m.TestingThatNameNormaliserReturnsNullForANullLastNameSubtopic) },
+        { path: 'demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale', loadComponent: () => import('./components/data/sql/string-functions/subtopics/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale').then(m => m.DemonstratingThatPrefixLikeNeedsPatternOpsUnderDefaultLocaleSubtopic) },
+        { path: 'replace-is-case-insensitive-by-default-contradicting-its-own-claim', loadComponent: () => import('./components/data/sql/string-functions/subtopics/replace-is-case-insensitive-by-default-contradicting-its-own-claim/replace-is-case-insensitive-by-default-contradicting-its-own-claim').then(m => m.ReplaceIsCaseInsensitiveByDefaultContradictingItsOwnClaimSubtopic) },
+      ] },
       { path: 'date-functions',           loadComponent: () => import('./components/data/sql/date-functions/date-functions').then(m => m.SqlDateFunctions) },
       { path: 'conditional-expressions',  loadComponent: () => import('./components/data/sql/conditional-expressions/conditional-expressions').then(m => m.SqlConditionalExpressions) },
       { path: 'math-functions',           loadComponent: () => import('./components/data/sql/math-functions/math-functions').then(m => m.SqlMathFunctions) },

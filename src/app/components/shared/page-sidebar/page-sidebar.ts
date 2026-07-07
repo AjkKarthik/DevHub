@@ -15715,6 +15715,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/string-functions': {
+    apis: ['LEN/LENGTH', 'SUBSTRING', 'CHARINDEX/STRPOS', 'REPLACE', 'LIKE/ILIKE', 'STRING_AGG'],
+    related: [{ label: 'Date & Time Functions', route: '/sql/date-functions' }, { label: 'Conditional Expressions', route: '/sql/conditional-expressions' }, { label: 'Indexes', route: '/sql/indexes' }],
+    tip: 'PostgreSQL\'s || concatenation propagates NULL through the whole expression — MSSQL\'s CONCAT() treats NULL as empty string instead. Guard with COALESCE in PostgreSQL.',
+    docs: [{ label: 'MSSQL String Functions', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/string-functions-transact-sql' }, { label: 'PostgreSQL String Functions', url: 'https://www.postgresql.org/docs/current/functions-string.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A prefix LIKE search only uses a plain PostgreSQL index under the C locale — under locale-aware collations (the common default) it needs a text_pattern_ops index.', 'MSSQL REPLACE follows the input\'s collation — under the default CI collation it is case-insensitive, not case-sensitive.'],
+  },
+
+  'sql/string-functions/testing-that-name-normaliser-returns-null-for-a-null-last-name': {
+    apis: ['|| concatenation', 'COALESCE', 'SUBSTRING'],
+    related: [
+      { label: 'Prefix LIKE Needs Pattern Ops — next', route: '/sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale' },
+      { label: 'String Functions (overview)', route: '/sql/string-functions' },
+    ],
+    tip: 'PostgreSQL\'s || returns NULL if any operand is NULL — a single NULL last_name silently nulls out the entire concatenated full_name expression.',
+    docs: [
+      { label: 'PostgreSQL String Concatenation', url: 'https://www.postgresql.org/docs/current/functions-string.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NULL propagation is expression-scoped, not row-scoped — only expressions that reference the NULL column break; unrelated columns in the same row compute fine.',
+      'COALESCE(x, \'\') around the NULL-able input lets the query degrade gracefully instead of losing the whole result.',
+    ],
+  },
+
+  'sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale': {
+    apis: ['text_pattern_ops', 'LIKE', 'EXPLAIN'],
+    related: [
+      { label: 'Testing the Name Normaliser Against NULLs — previous', route: '/sql/string-functions/testing-that-name-normaliser-returns-null-for-a-null-last-name' },
+      { label: 'REPLACE Is Case-Insensitive by Default — next', route: '/sql/string-functions/replace-is-case-insensitive-by-default-contradicting-its-own-claim' },
+      { label: 'String Functions (overview)', route: '/sql/string-functions' },
+    ],
+    tip: 'Under a locale-aware collation (the common PostgreSQL default), a plain B-tree index does not accelerate LIKE \'abc%\' — build a second index with text_pattern_ops.',
+    docs: [
+      { label: 'PostgreSQL Index Types (Operator Classes)', url: 'https://www.postgresql.org/docs/current/indexes-opclass.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'EXPLAIN showing a Seq Scan for a prefix LIKE query with an existing index usually means a locale/operator-class mismatch, not stale statistics.',
+      'A text_pattern_ops index can coexist with a regular index on the same column — one for LIKE, one for ORDER BY/equality.',
+    ],
+  },
+
+  'sql/string-functions/replace-is-case-insensitive-by-default-contradicting-its-own-claim': {
+    apis: ['REPLACE', 'COLLATE', 'SERVERPROPERTY'],
+    related: [
+      { label: 'Prefix LIKE Needs Pattern Ops — previous', route: '/sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale' },
+      { label: 'String Functions (overview)', route: '/sql/string-functions' },
+    ],
+    tip: 'MSSQL REPLACE follows the collation of its input — under the default CI collation, REPLACE(s, \'abc\', ...) also matches \'ABC\'. Force COLLATE ..._CS_AS for literal case-sensitive matching.',
+    docs: [
+      { label: 'MSSQL Collation and Unicode Support', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/collations/collation-and-unicode-support' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'SQL_Latin1_General_CP1_CI_AS — the standard out-of-the-box SQL Server default — is a CI collation, so REPLACE is case-insensitive unless overridden.',
+      'The same REPLACE call produces different results depending purely on the collation of its input string.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

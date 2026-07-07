@@ -984,6 +984,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ON CONFLICT and Partial Indexes', route: '/sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches' },
     { label: 'MERGE Can Still Race Without HOLDLOCK', route: '/sql/merge/concurrent-merge-statements-can-still-race-without-holdlock' },
   ],
+  'string-functions': [
+    { label: 'Testing the Name Normaliser Against NULLs', route: '/sql/string-functions/testing-that-name-normaliser-returns-null-for-a-null-last-name' },
+    { label: 'Prefix LIKE Needs Pattern Ops', route: '/sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale' },
+    { label: 'REPLACE Is Case-Insensitive by Default', route: '/sql/string-functions/replace-is-case-insensitive-by-default-contradicting-its-own-claim' },
+  ],
 };
 
 @Component({
