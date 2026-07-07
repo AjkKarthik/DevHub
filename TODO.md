@@ -1571,7 +1571,7 @@ off here with a date.
 - [x] `/sql/math-functions` — Math & Numeric Functions (2026-07-07 — 3 subtopics: correcting-the-bankers-rounding-claim-for-postgresql-numeric, testing-that-avg-on-integers-differs-between-postgresql-and-mssql, mssql-tablesample-rows-can-return-far-fewer-rows-than-requested)
 - [x] `/sql/pivoting` — Pivoting & Cross-Tab Queries (2026-07-07 — 3 subtopics: demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows, fixing-the-cross-apply-unpivot-examples-missing-month-column, testing-that-crosstabs-two-argument-form-handles-a-missing-month)
 - [x] `/sql/constraints` — Constraints (2026-07-07 — 3 subtopics: testing-that-on-delete-restrict-is-invalid-t-sql-syntax, testing-that-mssql-unique-allows-only-one-null-not-multiple, not-valid-plus-validate-constraint-avoids-the-full-table-lock)
-- [ ] `/sql/views` — Views
+- [x] `/sql/views` — Views (2026-07-07 — 3 subtopics: testing-that-the-mssql-challenge-solution-is-missing-with-check-option, demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code, demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view)
 - [ ] `/sql/sequences` — Sequences & Identity
 - [ ] `/sql/temp-tables` — Temp Tables & Table Variables
 - [ ] `/sql/computed-columns` — Computed & Generated Columns
