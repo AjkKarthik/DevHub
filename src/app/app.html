@@ -1626,7 +1626,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/bulk-operations"       routerLinkActive="active"><span class="nl-text">Bulk Operations</span>@if(progress.isDone('sql-bulk-operations')){<span class="nl-done">✓</span>}@if(diff('sql-bulk-operations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/bulk-operations" routerLinkActive="active">
+        <span class="nl-text">Bulk Operations</span>
+        @if (progress.isDone('sql-bulk-operations')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-bulk-operations'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('bulk-operations')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('bulk-operations')"
+                  (click)="toggleSubtopics('bulk-operations', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('bulk-operations'); as subs) {
+        @if (isSubtopicsExpanded('bulk-operations')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/query-store"           routerLinkActive="active"><span class="nl-text">Query Store</span>@if(progress.isDone('sql-query-store')){<span class="nl-done">✓</span>}@if(diff('sql-query-store');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/statistics"            routerLinkActive="active"><span class="nl-text">Statistics & Optimizer</span>@if(progress.isDone('sql-statistics')){<span class="nl-done">✓</span>}@if(diff('sql-statistics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/full-text-search"      routerLinkActive="active"><span class="nl-text">Full-Text Search</span>@if(progress.isDone('sql-full-text-search')){<span class="nl-done">✓</span>}@if(diff('sql-full-text-search');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

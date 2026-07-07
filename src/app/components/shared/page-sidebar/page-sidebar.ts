@@ -16921,6 +16921,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/bulk-operations': {
+    apis: ['BULK INSERT', 'bcp', 'COPY', '\\copy', 'TABLOCK', 'staging table'],
+    related: [{ label: 'Partitioning', route: '/sql/partitioning' }, { label: 'Constraints', route: '/sql/constraints' }, { label: 'Execution Plans', route: '/sql/execution-plans' }],
+    tip: 'Two adjacent examples sharing the same WHERE predicate (a batched DELETE followed by a batched UPDATE) are illustrative alternatives, not a two-step pipeline — running both empties the second one\'s target rows.',
+    docs: [{ label: 'MSSQL BULK INSERT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/bulk-insert-transact-sql' }, { label: 'PostgreSQL COPY', url: 'https://www.postgresql.org/docs/current/sql-copy.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A validation query that flags duplicate keys as invalid only protects the data if the actual INSERT step repeats that exact check.', 'A log backup taken right after a BULK_LOGGED load still cannot be restored to an arbitrary point in time within it.'],
+  },
+
+  'sql/bulk-operations/testing-that-the-batched-update-example-never-finds-a-matching-row': {
+    apis: ['DELETE TOP (@n)', 'UPDATE TOP (n)', 'WHILE @@ROWCOUNT'],
+    related: [
+      { label: 'Step 4 Is Missing the Duplicate Guard — next', route: '/sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard' },
+      { label: 'Bulk Operations (overview)', route: '/sql/bulk-operations' },
+    ],
+    tip: 'The batched DELETE and batched UPDATE examples share the identical WHERE predicate — running the DELETE first empties every row the UPDATE loop is looking for.',
+    docs: [
+      { label: 'MSSQL DELETE TOP', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/delete-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A WHILE loop that exits immediately with zero rows affected does not always mean the loop itself is broken — it can mean an earlier statement already removed its target rows.',
+      'Two adjacent code examples under one heading are not automatically safe to run together in sequence.',
+    ],
+  },
+
+  'sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard': {
+    apis: ['INSERT ... SELECT', 'PRIMARY KEY violation', 'TRY_CAST'],
+    related: [
+      { label: 'The Batched UPDATE Example Never Finds a Row — previous', route: '/sql/bulk-operations/testing-that-the-batched-update-example-never-finds-a-matching-row' },
+      { label: 'The BULK_LOGGED Advice’s Restore Gap — next', route: '/sql/bulk-operations/correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap' },
+      { label: 'Bulk Operations (overview)', route: '/sql/bulk-operations' },
+    ],
+    tip: 'Step 3\'s invalid-row query checks for duplicate product_ids, but Step 4\'s INSERT never repeats that check — a duplicate in the source file throws a primary-key violation.',
+    docs: [
+      { label: 'MSSQL INSERT Statement', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A validation query and the actual insert filter can silently drift apart — always re-verify every condition appears in both.',
+      'A single INSERT ... SELECT statement is atomic — one constraint violation terminates the whole batch, not just the offending row.',
+    ],
+  },
+
+  'sql/bulk-operations/correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap': {
+    apis: ['RECOVERY BULK_LOGGED', 'BACKUP LOG', 'STOPAT'],
+    related: [
+      { label: 'Step 4 Is Missing the Duplicate Guard — previous', route: '/sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard' },
+      { label: 'Bulk Operations (overview)', route: '/sql/bulk-operations' },
+    ],
+    tip: 'A log backup that contains a minimally-logged bulk operation cannot be restored to an arbitrary point in time within it — only to its end, or skipped entirely for a later backup.',
+    docs: [
+      { label: 'MSSQL Backup Under Bulk-Logged Recovery', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-sql-server-databases' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      '"The database is recoverable" is not the same claim as "any point in time is restorable" — BULK_LOGGED preserves the former but forfeits the latter for the affected log backup.',
+      'A further, bulk-operation-free log backup taken right after re-establishes normal point-in-time restore capability going forward.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

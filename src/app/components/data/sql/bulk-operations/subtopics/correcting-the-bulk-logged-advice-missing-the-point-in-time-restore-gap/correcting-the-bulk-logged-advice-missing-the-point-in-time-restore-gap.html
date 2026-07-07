@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Bulk Operations"
+    topicRoute="/sql/bulk-operations"
+    subtopicLabel="The BULK_LOGGED Advice’s Restore Gap"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Correcting the BULK_LOGGED Advice That Omits the Point-in-Time Restore Gap</h1>
+  <p class="page-subtitle">
+    "Take a log backup immediately" keeps the backup chain intact — but that specific log backup still can't
+    be restored to an arbitrary point in time, since it contains the minimally-logged bulk operation.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2005+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Two statement-ordering bugs and a recovery-model caveat — together they show why every code example
+      and Q&amp;A recommendation on this page deserves the same scrutiny as the earlier topics' challenges.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Bulk Operations"
+    topicRoute="/sql/bulk-operations"
+    [prev]="{ label: 'The Challenge’s Step 4 Is Missing the Duplicate Guard', route: '/sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard' }"
+  />
+</div>

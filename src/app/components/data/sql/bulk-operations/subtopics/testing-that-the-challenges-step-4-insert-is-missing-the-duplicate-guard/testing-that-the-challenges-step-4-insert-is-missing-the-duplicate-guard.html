@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Bulk Operations"
+    topicRoute="/sql/bulk-operations"
+    subtopicLabel="Step 4 Is Missing the Duplicate Guard"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Challenge's Step 4 INSERT Is Missing the Duplicate Guard</h1>
+  <p class="page-subtitle">
+    Step 3 correctly flags duplicate product_ids as invalid — but Step 4's INSERT never repeats that check,
+    so a duplicate in the source file throws a primary-key violation Step 3 already predicted.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="intermediate" since="SQL Server 2008+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Two concrete bugs in the MSSQL side of this topic — the last subtopic closes with a documented gap
+      in the page's own PostgreSQL/MSSQL recovery-model safety advice.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Bulk Operations"
+    topicRoute="/sql/bulk-operations"
+    [prev]="{ label: 'The Batched UPDATE Example Never Finds a Row', route: '/sql/bulk-operations/testing-that-the-batched-update-example-never-finds-a-matching-row' }"
+    [next]="{ label: 'The BULK_LOGGED Advice’s Point-in-Time Restore Gap', route: '/sql/bulk-operations/correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap' }"
+  />
+</div>

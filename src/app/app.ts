@@ -1074,6 +1074,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'TRUNCATE Discards the Just-Archived Data', route: '/sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in' },
     { label: 'DETACH CONCURRENTLY in a Transaction Block', route: '/sql/partitioning/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block' },
   ],
+  'bulk-operations': [
+    { label: 'The Batched UPDATE Example Never Finds a Row', route: '/sql/bulk-operations/testing-that-the-batched-update-example-never-finds-a-matching-row' },
+    { label: 'Step 4 Is Missing the Duplicate Guard', route: '/sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard' },
+    { label: 'The BULK_LOGGED Advice’s Restore Gap', route: '/sql/bulk-operations/correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap' },
+  ],
 };
 
 @Component({
