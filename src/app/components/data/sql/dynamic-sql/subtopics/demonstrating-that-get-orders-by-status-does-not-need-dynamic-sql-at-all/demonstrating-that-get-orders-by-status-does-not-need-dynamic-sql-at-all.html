@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dynamic SQL"
+    topicRoute="/sql/dynamic-sql"
+    subtopicLabel="Questioning a &quot;Dynamic SQL&quot; Label"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That get_orders_by_status Doesn't Need Dynamic SQL At All</h1>
+  <p class="page-subtitle">
+    Only a VALUE varies between calls, not a table, column, or clause structure — exactly the case the main
+    page's own theory says doesn't warrant EXECUTE.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="PostgreSQL 8.0" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With one example trimmed of unnecessary dynamic SQL, the final subtopic tests whether a different
+      example — usp_SearchOrders — actually has the safety guard its own Q&amp;A says it needs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dynamic SQL"
+    topicRoute="/sql/dynamic-sql"
+    [prev]="{ label: 'search_table Is Injection-Safe, Not Access-Control-Safe', route: '/sql/dynamic-sql/search-table-is-injection-safe-but-not-access-control-safe' }"
+    [next]="{ label: 'Testing usp_SearchOrders for the Full-Scan Risk', route: '/sql/dynamic-sql/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk' }"
+  />
+</div>

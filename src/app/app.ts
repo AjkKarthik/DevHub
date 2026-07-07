@@ -1049,6 +1049,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ON CONFLICT DO NOTHING Is a No-Op Here', route: '/sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint' },
     { label: 'What Actually Stops Cross-Table Recursion', route: '/sql/triggers/correcting-which-setting-actually-stops-cross-table-trigger-recursion' },
   ],
+  'dynamic-sql': [
+    { label: 'search_table Is Injection-Safe, Not Access-Control-Safe', route: '/sql/dynamic-sql/search-table-is-injection-safe-but-not-access-control-safe' },
+    { label: 'get_orders_by_status Doesn’t Need Dynamic SQL', route: '/sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all' },
+    { label: 'Testing usp_SearchOrders for the Full-Scan Risk', route: '/sql/dynamic-sql/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk' },
+  ],
 };
 
 @Component({

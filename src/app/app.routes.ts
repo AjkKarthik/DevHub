@@ -1207,7 +1207,12 @@ export const routes: Routes = [
         { path: 'testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint', loadComponent: () => import('./components/data/sql/triggers/subtopics/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint').then(m => m.TestingThatOnConflictDoNothingIsANoOpWithoutAConstraintSubtopic) },
         { path: 'correcting-which-setting-actually-stops-cross-table-trigger-recursion', loadComponent: () => import('./components/data/sql/triggers/subtopics/correcting-which-setting-actually-stops-cross-table-trigger-recursion/correcting-which-setting-actually-stops-cross-table-trigger-recursion').then(m => m.CorrectingWhichSettingActuallyStopsCrossTableTriggerRecursionSubtopic) },
       ] },
-      { path: 'dynamic-sql',             loadComponent: () => import('./components/data/sql/dynamic-sql/dynamic-sql').then(m => m.SqlDynamicSql) },
+      { path: 'dynamic-sql', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/dynamic-sql/dynamic-sql').then(m => m.SqlDynamicSql) },
+        { path: 'search-table-is-injection-safe-but-not-access-control-safe', loadComponent: () => import('./components/data/sql/dynamic-sql/subtopics/search-table-is-injection-safe-but-not-access-control-safe/search-table-is-injection-safe-but-not-access-control-safe').then(m => m.SearchTableIsInjectionSafeButNotAccessControlSafeSubtopic) },
+        { path: 'demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all', loadComponent: () => import('./components/data/sql/dynamic-sql/subtopics/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all').then(m => m.DemonstratingThatGetOrdersByStatusDoesNotNeedDynamicSqlAtAllSubtopic) },
+        { path: 'testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk', loadComponent: () => import('./components/data/sql/dynamic-sql/subtopics/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk').then(m => m.TestingThatUspSearchordersHasNoGuardAgainstTheFullScanRiskSubtopic) },
+      ] },
       { path: 'isolation-levels',        loadComponent: () => import('./components/data/sql/isolation-levels/isolation-levels').then(m => m.SqlIsolationLevels) },
       { path: 'locking',                 loadComponent: () => import('./components/data/sql/locking/locking').then(m => m.SqlLocking) },
       { path: 'execution-plans',         loadComponent: () => import('./components/data/sql/execution-plans/execution-plans').then(m => m.SqlExecutionPlans) },

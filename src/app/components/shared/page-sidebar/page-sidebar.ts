@@ -16586,6 +16586,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/dynamic-sql': {
+    apis: ['sp_executesql', 'FORMAT()', '%I / %L', 'QUOTENAME', 'EXECUTE ... USING'],
+    related: [{ label: 'Stored Functions', route: '/sql/stored-functions' }, { label: 'Security', route: '/sql/security' }, { label: 'Pivoting & Cross-Tab', route: '/sql/pivoting' }],
+    tip: 'Safe identifier quoting (%I, QUOTENAME) prevents SQL injection — it does not restrict WHICH tables/columns a caller can access. That needs a separate whitelist check.',
+    docs: [{ label: 'MSSQL sp_executesql', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql' }, { label: 'PostgreSQL EXECUTE', url: 'https://www.postgresql.org/docs/current/plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Dynamic SQL is only warranted when table names, column names, or clause structure vary at runtime — filtering by a value alone doesn\'t need EXECUTE.', 'An "all filters optional" search procedure needs an explicit guard (TOP/LIMIT, or require one non-NULL filter) or it silently full-scans when called with none.'],
+  },
+
+  'sql/dynamic-sql/search-table-is-injection-safe-but-not-access-control-safe': {
+    apis: ['FORMAT() %I/%L', 'whitelist validation'],
+    related: [
+      { label: 'get_orders_by_status Doesn’t Need Dynamic SQL — next', route: '/sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all' },
+      { label: 'Dynamic SQL (overview)', route: '/sql/dynamic-sql' },
+    ],
+    tip: 'A generic "search any table by name" function needs an explicit whitelist check — correct %I/%L quoting only prevents injection, not unauthorized access to tables the caller shouldn\'t see.',
+    docs: [
+      { label: 'PostgreSQL SECURITY DEFINER Best Practices', url: 'https://www.postgresql.org/docs/current/sql-createfunction.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Injection-safety and access-control-safety are independent properties — a function can have one without the other.',
+      'The risk is highest when the function is SECURITY DEFINER or exposed to a role broader than the intended target tables.',
+    ],
+  },
+
+  'sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all': {
+    apis: ['EXECUTE ... USING', 'static parameterized SQL'],
+    related: [
+      { label: 'search_table Is Injection-Safe, Not Access-Control-Safe — previous', route: '/sql/dynamic-sql/search-table-is-injection-safe-but-not-access-control-safe' },
+      { label: 'Testing usp_SearchOrders for the Full-Scan Risk — next', route: '/sql/dynamic-sql/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk' },
+      { label: 'Dynamic SQL (overview)', route: '/sql/dynamic-sql' },
+    ],
+    tip: 'When only a VALUE varies between calls (not a table, column, or clause structure), a plain parameterized SELECT is simpler and needs no EXECUTE at all.',
+    docs: [
+      { label: 'PostgreSQL PL/pgSQL Statements', url: 'https://www.postgresql.org/docs/current/plpgsql-statements.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Reaching for EXECUTE out of habit for ordinary value-based filtering adds complexity and reduces tooling support for zero safety benefit.',
+      'Dynamic SQL earns its complexity only when the query STRUCTURE itself needs to vary per call.',
+    ],
+  },
+
+  'sql/dynamic-sql/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk': {
+    apis: ['TOP / LIMIT', 'sp_executesql', 'NULL-defaulted parameters'],
+    related: [
+      { label: 'get_orders_by_status Doesn’t Need Dynamic SQL — previous', route: '/sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all' },
+      { label: 'Dynamic SQL (overview)', route: '/sql/dynamic-sql' },
+    ],
+    tip: 'A procedure with all-optional NULL-defaulted filter parameters is valid to call with zero arguments — without an explicit guard, that silently executes a full unfiltered scan.',
+    docs: [
+      { label: 'MSSQL SELECT TOP', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is an ordinary user interaction (clearing all search filters), not an unusual or malicious input.',
+      'The fix requires both a TOP/LIMIT cap and/or a check that at least one filter is non-NULL, as the page\'s own Q&A recommends.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

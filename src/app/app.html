@@ -1522,7 +1522,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/dynamic-sql"           routerLinkActive="active"><span class="nl-text">Dynamic SQL</span>@if(progress.isDone('sql-dynamic-sql')){<span class="nl-done">✓</span>}@if(diff('sql-dynamic-sql');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/dynamic-sql" routerLinkActive="active">
+        <span class="nl-text">Dynamic SQL</span>
+        @if (progress.isDone('sql-dynamic-sql')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-dynamic-sql'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('dynamic-sql')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dynamic-sql')"
+                  (click)="toggleSubtopics('dynamic-sql', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dynamic-sql'); as subs) {
+        @if (isSubtopicsExpanded('dynamic-sql')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
