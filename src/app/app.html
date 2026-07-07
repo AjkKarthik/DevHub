@@ -1134,7 +1134,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/normalization"   routerLinkActive="active"><span class="nl-text">Normalization</span>@if(progress.isDone('sql-normalization')){<span class="nl-done">✓</span>}@if(diff('sql-normalization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/normalization" routerLinkActive="active">
+        <span class="nl-text">Normalization</span>
+        @if (progress.isDone('sql-normalization')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-normalization'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('normalization')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('normalization')"
+                  (click)="toggleSubtopics('normalization', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('normalization'); as subs) {
+        @if (isSubtopicsExpanded('normalization')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/db-architecture" routerLinkActive="active"><span class="nl-text">DB Architecture</span>@if(progress.isDone('sql-db-architecture')){<span class="nl-done">✓</span>}@if(diff('sql-db-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/data-types"      routerLinkActive="active"><span class="nl-text">Data Types</span>@if(progress.isDone('sql-data-types')){<span class="nl-done">✓</span>}@if(diff('sql-data-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

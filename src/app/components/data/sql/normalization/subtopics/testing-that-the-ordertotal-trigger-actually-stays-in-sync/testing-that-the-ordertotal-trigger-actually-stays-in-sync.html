@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Normalization"
+    topicRoute="/sql/normalization"
+    subtopicLabel="Testing the Sync Trigger"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the OrderTotal Trigger Actually Stays in Sync</h1>
+  <p class="page-subtitle">
+    The main page's own denormalization trigger is never proven to work for all three operations it's
+    declared for. INSERT and UPDATE tests alone would miss a bug specific to the DELETE path.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With trigger correctness covered, the next subtopic explores a native alternative to hand-written
+      triggers — and exactly where that alternative can, and can't, replace the main page's own
+      denormalization examples.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Normalization"
+    topicRoute="/sql/normalization"
+    [next]="{ label: 'Why a Computed Column Can’t Replace the OrderTotal Trigger', route: '/sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger' }"
+  />
+</div>

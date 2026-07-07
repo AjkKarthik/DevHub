@@ -14514,6 +14514,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['2NF only matters for composite primary keys — a single-column PK table is automatically in 2NF.', 'Denormalisation with triggers adds write overhead and complexity — document it and own it.'],
   },
+
+  'sql/normalization/testing-that-the-ordertotal-trigger-actually-stays-in-sync': {
+    apis: ['CREATE TRIGGER', 'AFTER INSERT/UPDATE/DELETE', 'tSQLt / pgTAP'],
+    related: [
+      { label: 'Computed Column Mechanics — next', route: '/sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger' },
+      { label: 'Normalization (overview)', route: '/sql/normalization' },
+      { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' },
+    ],
+    tip: 'Test INSERT, UPDATE, AND DELETE separately — a bug in the DELETE-only path (missing OLD reference) can pass every INSERT/UPDATE test undetected.',
+    docs: [
+      { label: 'tSQLt documentation', url: 'https://tsqlt.org/' },
+      { label: 'pgTAP documentation', url: 'https://pgtap.org/' },
+    ],
+    resources: [
+      { label: 'pgTAP', url: 'https://github.com/theory/pgtap', badge: 'code' },
+    ],
+    gotchas: [
+      'NEW is NULL during a DELETE trigger — a sync trigger that only references NEW.order_id silently stops recalculating when the last row is removed.',
+      'Two out of three trigger-condition tests can stay green even after a DELETE-specific regression ships.',
+    ],
+  },
+
+  'sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger': {
+    apis: ['GENERATED ALWAYS AS ... STORED', 'PERSISTED computed column'],
+    related: [
+      { label: 'Testing the Sync Trigger — previous', route: '/sql/normalization/testing-that-the-ordertotal-trigger-actually-stays-in-sync' },
+      { label: 'Challenge Solution Mismatch — next', route: '/sql/normalization/challenge-solutions-comment-contradicts-its-own-fk-declaration' },
+      { label: 'Normalization (overview)', route: '/sql/normalization' },
+    ],
+    tip: 'Generated columns can only reference same-row values — OrderTotal needs a trigger because it aggregates across OrderLines, but FactSales.Profit (Revenue - Cost) could be a generated column instead.',
+    docs: [
+      { label: 'PostgreSQL generated columns', url: 'https://www.postgresql.org/docs/current/ddl-generated-columns.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The main page\'s own FactSales.Profit column has no sync mechanism at all — it silently trusts the ETL process to compute Revenue - Cost correctly.',
+      'A GENERATED column rejects any INSERT/UPDATE that tries to set its value directly — it can never drift from its expression, by construction.',
+    ],
+  },
+
+  'sql/normalization/challenge-solutions-comment-contradicts-its-own-fk-declaration': {
+    apis: ['ON DELETE CASCADE', 'ON DELETE NO ACTION'],
+    related: [
+      { label: 'Computed Column Mechanics — previous', route: '/sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger' },
+      { label: 'Normalization (overview)', route: '/sql/normalization' },
+    ],
+    tip: 'The challenge solution\'s order_lines FK has no ON DELETE clause (defaults to NO ACTION), but its closing comment claims a CASCADE that was never declared.',
+    docs: [
+      { label: 'PostgreSQL DDL Best Practices', url: 'https://www.postgresql.org/docs/current/ddl.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A solution\'s closing summary comment is still prose written separately from the DDL — verify it against the literal constraint declarations rather than trusting it at face value.',
+      'Both MSSQL and PostgreSQL default to NO ACTION when ON DELETE is omitted — well-defined, just not what this comment describes.',
+    ],
+  },
+
   'sql/db-architecture': {
     apis: ['Buffer Pool', 'WAL / Transaction Log', 'MVCC', 'VACUUM', 'ANALYZE', 'sys.dm_os_buffer_descriptors', 'pg_stat_bgwriter'],
     related: [{ label: 'Transactions', route: '/sql/transactions' }, { label: 'Indexes', route: '/sql/indexes' }, { label: 'Performance', route: '/sql/performance' }],

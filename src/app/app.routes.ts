@@ -1021,7 +1021,12 @@ export const routes: Routes = [
         { path: 'recursive-cte-has-no-cycle-protection-and-dialects-fail-differently', loadComponent: () => import('./components/data/sql/data-modeling/subtopics/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently').then(m => m.RecursiveCteHasNoCycleProtectionAndDialectsFailDifferentlySubtopic) },
         { path: 'uuid-example-uses-the-exact-pattern-its-own-theory-warns-against', loadComponent: () => import('./components/data/sql/data-modeling/subtopics/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against').then(m => m.UuidExampleUsesTheExactPatternItsOwnTheoryWarnsAgainstSubtopic) },
       ] },
-      { path: 'normalization',     loadComponent: () => import('./components/data/sql/normalization/normalization').then(m => m.SqlNormalization) },
+      { path: 'normalization', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/normalization/normalization').then(m => m.SqlNormalization) },
+        { path: 'testing-that-the-ordertotal-trigger-actually-stays-in-sync', loadComponent: () => import('./components/data/sql/normalization/subtopics/testing-that-the-ordertotal-trigger-actually-stays-in-sync/testing-that-the-ordertotal-trigger-actually-stays-in-sync').then(m => m.TestingThatTheOrdertotalTriggerActuallyStaysInSyncSubtopic) },
+        { path: 'why-a-computed-column-cant-replace-the-ordertotal-trigger', loadComponent: () => import('./components/data/sql/normalization/subtopics/why-a-computed-column-cant-replace-the-ordertotal-trigger/why-a-computed-column-cant-replace-the-ordertotal-trigger').then(m => m.WhyAComputedColumnCantReplaceTheOrdertotalTriggerSubtopic) },
+        { path: 'challenge-solutions-comment-contradicts-its-own-fk-declaration', loadComponent: () => import('./components/data/sql/normalization/subtopics/challenge-solutions-comment-contradicts-its-own-fk-declaration/challenge-solutions-comment-contradicts-its-own-fk-declaration').then(m => m.ChallengeSolutionsCommentContradictsItsOwnFkDeclarationSubtopic) },
+      ] },
       { path: 'db-architecture',   loadComponent: () => import('./components/data/sql/db-architecture/db-architecture').then(m => m.SqlDbArchitecture) },
       { path: 'data-types',        loadComponent: () => import('./components/data/sql/data-types/data-types').then(m => m.SqlDataTypes) },
       { path: 'basics',            loadComponent: () => import('./components/data/sql/basics/basics').then(m => m.SqlBasics) },

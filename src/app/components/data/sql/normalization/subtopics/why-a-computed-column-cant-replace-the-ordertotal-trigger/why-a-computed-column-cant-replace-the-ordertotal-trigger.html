@@ -1,0 +1,43 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Normalization"
+    topicRoute="/sql/normalization"
+    subtopicLabel="Computed Column Mechanics"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Why a Computed Column Can't Replace the OrderTotal Trigger</h1>
+  <p class="page-subtitle">
+    Generated/computed columns can only reference same-row values — they can't aggregate across a related
+    table like OrderLines. But the star schema's Profit column IS a same-row expression, and the main page
+    never uses this safer alternative for it.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With denormalization sync mechanisms clear, the final subtopic catches a real inconsistency in the
+      main page's own Challenge solution — its closing comment describes CASCADE behavior that the FK
+      declaration right above it never actually configures.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Normalization"
+    topicRoute="/sql/normalization"
+    [prev]="{ label: 'Testing That the OrderTotal Trigger Actually Stays in Sync', route: '/sql/normalization/testing-that-the-ordertotal-trigger-actually-stays-in-sync' }"
+    [next]="{ label: 'Challenge Solution Comment Contradicts Its Own FK', route: '/sql/normalization/challenge-solutions-comment-contradicts-its-own-fk-declaration' }"
+  />
+</div>

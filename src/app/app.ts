@@ -891,6 +891,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Recursive CTE Has No Cycle Protection', route: '/sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently' },
     { label: 'UUID Example Contradicts the Page’s Own Theory', route: '/sql/data-modeling/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against' },
   ],
+  'normalization': [
+    { label: 'Testing That the OrderTotal Trigger Actually Stays in Sync', route: '/sql/normalization/testing-that-the-ordertotal-trigger-actually-stays-in-sync' },
+    { label: 'Why a Computed Column Can’t Replace the OrderTotal Trigger', route: '/sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger' },
+    { label: 'Challenge Solution Comment Contradicts Its Own FK', route: '/sql/normalization/challenge-solutions-comment-contradicts-its-own-fk-declaration' },
+  ],
 };
 
 @Component({
