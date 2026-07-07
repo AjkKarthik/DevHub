@@ -1445,7 +1445,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/performance"        routerLinkActive="active"><span class="nl-text">Performance</span>@if(progress.isDone('sql-performance')){<span class="nl-done">✓</span>}@if(diff('sql-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/performance" routerLinkActive="active">
+        <span class="nl-text">Performance</span>
+        @if (progress.isDone('sql-performance')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-performance'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('sql-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sql-performance')"
+                  (click)="toggleSubtopics('sql-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sql-performance'); as subs) {
+        @if (isSubtopicsExpanded('sql-performance')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/json-features"      routerLinkActive="active"><span class="nl-text">JSON Features</span>@if(progress.isDone('sql-json-features')){<span class="nl-done">✓</span>}@if(diff('sql-json-features');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

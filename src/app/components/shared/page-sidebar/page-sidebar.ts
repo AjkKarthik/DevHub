@@ -15388,6 +15388,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Functions on indexed columns prevent index seeks: WHERE YEAR(created_at)=2024 scans everything; WHERE created_at >= … uses the index.', 'Implicit type conversions in WHERE (comparing INT column to a VARCHAR parameter) cause full scans.'],
   },
+
+  'sql/performance/testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows': {
+    apis: ['UNION ALL', 'EXCEPT', 'GROUP BY ... HAVING COUNT(*) > 1'],
+    related: [
+      { label: 'A Missing Normalization Step — next', route: '/sql/performance/the-missing-index-impact-score-formula-is-missing-a-100' },
+      { label: 'Query Performance (overview)', route: '/sql/performance' },
+    ],
+    tip: 'UNION ALL never deduplicates — an OR-to-UNION-ALL rewrite needs an explicit exclusion clause on every branch after the first to avoid double-counting overlapping rows.',
+    docs: [
+      { label: 'PostgreSQL UNION', url: 'https://www.postgresql.org/docs/current/queries-union.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'EXCEPT compares DISTINCT row sets — it cannot detect a rewrite that duplicates rows without also losing or gaining any.',
+      'A row-count comparison, not an EXCEPT comparison, is what actually reveals a UNION ALL duplication bug.',
+    ],
+  },
+
+  'sql/performance/the-missing-index-impact-score-formula-is-missing-a-100': {
+    apis: ['sys.dm_db_missing_index_group_stats', 'avg_user_impact'],
+    related: [
+      { label: 'Testing the OR-to-UNION-ALL Rewrite — previous', route: '/sql/performance/testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows' },
+      { label: 'Building the Regression Test — next', route: '/sql/performance/demonstrating-the-execution-plan-regression-test-the-page-only-describes' },
+      { label: 'Query Performance (overview)', route: '/sql/performance' },
+    ],
+    tip: 'avg_user_impact is a 0-100 percentage, not a 0-1 fraction — Microsoft\'s own documented ImpactScore formula divides it by 100 before multiplying.',
+    docs: [
+      { label: 'MSSQL Missing Index DMVs', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-dynamic-management-views/sys-dm-db-missing-index-group-stats-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The missing /100 is a uniform scalar — it doesn\'t change the TOP 20 ranking, only the absolute ImpactScore values shown.',
+      'Comparing ImpactScore values against Microsoft\'s documented examples or another tool requires the correctly-normalized formula.',
+    ],
+  },
+
+  'sql/performance/demonstrating-the-execution-plan-regression-test-the-page-only-describes': {
+    apis: ['EXPLAIN (FORMAT JSON)', 'SET SHOWPLAN_XML', 'jsonb_path_query'],
+    related: [
+      { label: 'A Missing Normalization Step — previous', route: '/sql/performance/the-missing-index-impact-score-formula-is-missing-a-100' },
+      { label: 'Query Performance (overview)', route: '/sql/performance' },
+    ],
+    tip: 'A plan-assertion test only protects the specific query and index combination it was written for — it says nothing about queries or indexes that don\'t have a corresponding test.',
+    docs: [
+      { label: 'PostgreSQL EXPLAIN JSON', url: 'https://www.postgresql.org/docs/current/sql-explain.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A plan-assertion test should be verified against a real, deliberately-triggered regression — otherwise it might be passing for the wrong reason.',
+      'CI coverage gaps (queries without their own test) remain fully unprotected, no matter how well the existing tests are written.',
+    ],
+  },
+
   'sql/json-features': {
     apis: ['JSON_VALUE()', 'JSON_QUERY()', 'OPENJSON()', 'FOR JSON PATH', 'FOR JSON AUTO', 'jsonb', 'jsonb_extract_path()', '->', '->>', '@>', '?'],
     related: [{ label: 'Schema Design', route: '/sql/schema-design' }, { label: 'Performance', route: '/sql/performance' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],

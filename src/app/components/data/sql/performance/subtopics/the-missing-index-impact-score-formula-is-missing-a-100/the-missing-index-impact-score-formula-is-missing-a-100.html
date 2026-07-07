@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Query Performance"
+    topicRoute="/sql/performance"
+    subtopicLabel="A Missing Normalization Step"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The Missing Index Impact Score Formula Is Missing a /100</h1>
+  <p class="page-subtitle">
+    The main page's own ImpactScore formula treats avg_user_impact as a 0-1 fraction, but it's documented as
+    a 0-100 percentage — Microsoft's own guidance divides by 100 first.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic implements the CI-style execution-plan regression test the main page's own tuning
+      workflow describes in prose only — never demonstrated in code anywhere on the page.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Query Performance"
+    topicRoute="/sql/performance"
+    [prev]="{ label: 'Testing the OR-to-UNION-ALL Rewrite', route: '/sql/performance/testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows' }"
+    [next]="{ label: 'Demonstrating the Execution-Plan Regression Test', route: '/sql/performance/demonstrating-the-execution-plan-regression-test-the-page-only-describes' }"
+  />
+</div>

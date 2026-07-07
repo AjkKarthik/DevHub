@@ -1099,7 +1099,12 @@ export const routes: Routes = [
         { path: 'confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down', loadComponent: () => import('./components/data/sql/stored-procedures/subtopics/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down').then(m => m.ConfirmingThatTheInlineTvfsWhereClauseActuallyGetsPushedDownSubtopic) },
         { path: 'demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch', loadComponent: () => import('./components/data/sql/stored-procedures/subtopics/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch').then(m => m.DemonstratingThatScopeIdentityIsScopedToTheDynamicBatchSubtopic) },
       ] },
-      { path: 'performance',       loadComponent: () => import('./components/data/sql/performance/performance').then(m => m.SqlPerformance) },
+      { path: 'performance', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/performance/performance').then(m => m.SqlPerformance) },
+        { path: 'testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows', loadComponent: () => import('./components/data/sql/performance/subtopics/testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows/testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows').then(m => m.TestingThatTheOrToUnionAllRewriteDoesntDuplicateOverlappingRowsSubtopic) },
+        { path: 'the-missing-index-impact-score-formula-is-missing-a-100', loadComponent: () => import('./components/data/sql/performance/subtopics/the-missing-index-impact-score-formula-is-missing-a-100/the-missing-index-impact-score-formula-is-missing-a-100').then(m => m.TheMissingIndexImpactScoreFormulaIsMissingA100Subtopic) },
+        { path: 'demonstrating-the-execution-plan-regression-test-the-page-only-describes', loadComponent: () => import('./components/data/sql/performance/subtopics/demonstrating-the-execution-plan-regression-test-the-page-only-describes/demonstrating-the-execution-plan-regression-test-the-page-only-describes').then(m => m.DemonstratingTheExecutionPlanRegressionTestThePageOnlyDescribesSubtopic) },
+      ] },
       { path: 'json-features',            loadComponent: () => import('./components/data/sql/json-features/json-features').then(m => m.SqlJsonFeatures) },
       { path: 'set-operations',           loadComponent: () => import('./components/data/sql/set-operations/set-operations').then(m => m.SqlSetOperations) },
       { path: 'null-handling',            loadComponent: () => import('./components/data/sql/null-handling/null-handling').then(m => m.SqlNullHandling) },

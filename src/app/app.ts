@@ -956,6 +956,14 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Confirming the Inline TVF Pushdown Claim', route: '/sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down' },
     { label: 'Demonstrating the SCOPE_IDENTITY() Scoping Gap', route: '/sql/stored-procedures/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch' },
   ],
+  // NOTE: keyed 'sql-performance', NOT bare 'performance' — the bare
+  // slug is contested across multiple hubs (see the aspnet-performance
+  // note above); prefixing avoids a future collision.
+  'sql-performance': [
+    { label: 'Testing the OR-to-UNION-ALL Rewrite', route: '/sql/performance/testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows' },
+    { label: 'A Missing Normalization Step', route: '/sql/performance/the-missing-index-impact-score-formula-is-missing-a-100' },
+    { label: 'Building the Regression Test', route: '/sql/performance/demonstrating-the-execution-plan-regression-test-the-page-only-describes' },
+  ],
 };
 
 @Component({
