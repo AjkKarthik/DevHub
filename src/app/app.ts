@@ -1094,6 +1094,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The ts_rank “0.0 to 1.0” Range Claim', route: '/sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim' },
     { label: 'Stemming Doesn’t Reduce “ran” to “run”', route: '/sql/full-text-search/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run' },
   ],
+  'security': [
+    { label: 'No Block Predicate for Writes', route: '/sql/security/testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes' },
+    { label: 'The Audit Trigger Misclassifies MERGE Rows', route: '/sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement' },
+    { label: 'An Unset Session Context Silently Returns Zero', route: '/sql/security/testing-that-an-unset-session-context-silently-returns-zero-rows' },
+  ],
 };
 
 @Component({

@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SQL Security"
+    topicRoute="/sql/security"
+    subtopicLabel="No Block Predicate for Writes"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Challenge's RLS Solution Has No Block Predicate for Writes</h1>
+  <p class="page-subtitle">
+    The MSSQL solution only adds a FILTER PREDICATE — app_user can INSERT or UPDATE a row into another
+    tenant's data; the row just becomes invisible to them afterward, not rejected.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2016+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A missing write guard in the RLS setup — the next subtopic finds a related classification bug in the
+      same challenge's audit trigger.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SQL Security"
+    topicRoute="/sql/security"
+    [next]="{ label: 'The Audit Trigger Misclassifies Rows During MERGE', route: '/sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement' }"
+  />
+</div>

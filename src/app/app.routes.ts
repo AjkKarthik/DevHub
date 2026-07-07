@@ -1261,7 +1261,12 @@ export const routes: Routes = [
         { path: 'correcting-the-ts-ranks-fixed-0-to-1-range-claim', loadComponent: () => import('./components/data/sql/full-text-search/subtopics/correcting-the-ts-ranks-fixed-0-to-1-range-claim/correcting-the-ts-ranks-fixed-0-to-1-range-claim').then(m => m.CorrectingTheTsRanksFixed0To1RangeClaimSubtopic) },
         { path: 'testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run', loadComponent: () => import('./components/data/sql/full-text-search/subtopics/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run').then(m => m.TestingThatStemmingDoesNotReduceRanToTheSameTokenAsRunSubtopic) },
       ] },
-      { path: 'security',                loadComponent: () => import('./components/data/sql/security/security').then(m => m.SqlSecurity) },
+      { path: 'security', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/security/security').then(m => m.SqlSecurity) },
+        { path: 'testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes', loadComponent: () => import('./components/data/sql/security/subtopics/testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes/testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes').then(m => m.TestingThatTheChallengesRlsSolutionHasNoBlockPredicateForWritesSubtopic) },
+        { path: 'testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement', loadComponent: () => import('./components/data/sql/security/subtopics/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement').then(m => m.TestingThatTheAuditTriggerMisclassifiesRowsDuringAMergeStatementSubtopic) },
+        { path: 'testing-that-an-unset-session-context-silently-returns-zero-rows', loadComponent: () => import('./components/data/sql/security/subtopics/testing-that-an-unset-session-context-silently-returns-zero-rows/testing-that-an-unset-session-context-silently-returns-zero-rows').then(m => m.TestingThatAnUnsetSessionContextSilentlyReturnsZeroRowsSubtopic) },
+      ] },
       { path: 'connection-pooling',      loadComponent: () => import('./components/data/sql/connection-pooling/connection-pooling').then(m => m.SqlConnectionPooling) },
       { path: 'cheatsheet',        loadComponent: () => import('./components/data/sql/cheatsheet/cheatsheet').then(m => m.SqlCheatsheet) },
       { path: 'errors',            loadComponent: () => import('./components/data/sql/errors/errors').then(m => m.SqlErrors) },

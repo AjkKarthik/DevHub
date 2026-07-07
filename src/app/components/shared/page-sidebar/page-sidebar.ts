@@ -17189,6 +17189,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/security': {
+    apis: ['GRANT/REVOKE', 'Row-Level Security', 'BLOCK PREDICATE', 'sp_executesql'],
+    related: [{ label: 'Constraints', route: '/sql/constraints' }, { label: 'Triggers', route: '/sql/triggers' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'MSSQL RLS has two separate predicate types — a FILTER predicate hides rows from SELECT, but only a BLOCK predicate stops INSERT/UPDATE from writing rows outside the policy.',
+    docs: [{ label: 'MSSQL Row-Level Security', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/security/row-level-security' }, { label: 'PostgreSQL Row Security Policies', url: 'https://www.postgresql.org/docs/current/ddl-rowsecurity.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A single MERGE statement can fire an AFTER INSERT/UPDATE/DELETE trigger with rows from more than one action type in one execution.', 'A NULL session context value makes a filter predicate exclude every row silently — no error, indistinguishable from a genuinely empty table.'],
+  },
+
+  'sql/security/testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes': {
+    apis: ['ADD BLOCK PREDICATE', 'CREATE SECURITY POLICY', 'WITH CHECK'],
+    related: [
+      { label: 'The Audit Trigger Misclassifies MERGE Rows — next', route: '/sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement' },
+      { label: 'SQL Security (overview)', route: '/sql/security' },
+    ],
+    tip: 'The challenge\'s MSSQL solution only adds a FILTER PREDICATE — app_user can insert or update a row into another tenant\'s data; it just becomes invisible to them afterward.',
+    docs: [
+      { label: 'MSSQL Security Policies', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/security/row-level-security' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'PostgreSQL\'s default policy behavior (USING doubling as WITH CHECK) already blocks this — the two dialects\' solutions in the same challenge end up with different guarantees.',
+      'ADD BLOCK PREDICATE must be added separately for AFTER INSERT and AFTER UPDATE.',
+    ],
+  },
+
+  'sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement': {
+    apis: ['MERGE', 'inserted/deleted', 'FULL JOIN'],
+    related: [
+      { label: 'No Block Predicate for Writes — previous', route: '/sql/security/testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes' },
+      { label: 'An Unset Session Context Silently Returns Zero — next', route: '/sql/security/testing-that-an-unset-session-context-silently-returns-zero-rows' },
+      { label: 'SQL Security (overview)', route: '/sql/security' },
+    ],
+    tip: 'A single MERGE that inserts some rows and deletes others in one execution makes the trigger\'s table-wide EXISTS(inserted) AND EXISTS(deleted) both true, mislabeling every row \'U\'.',
+    docs: [
+      { label: 'MSSQL Trigger inserted/deleted Tables', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/triggers/use-the-inserted-and-deleted-tables' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A per-row classification via the FULL JOIN\'s own i.id/d.id columns fixes it — no need for table-wide EXISTS() checks at all.',
+      'This only manifests with MERGE (or any statement mixing action types) — plain INSERT/UPDATE/DELETE statements never trigger the bug.',
+    ],
+  },
+
+  'sql/security/testing-that-an-unset-session-context-silently-returns-zero-rows': {
+    apis: ['SESSION_CONTEXT', 'sp_set_session_context', 'three-valued logic'],
+    related: [
+      { label: 'The Audit Trigger Misclassifies MERGE Rows — previous', route: '/sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement' },
+      { label: 'SQL Security (overview)', route: '/sql/security' },
+    ],
+    tip: 'A session that never calls sp_set_session_context gets SESSION_CONTEXT = NULL — the filter predicate excludes every row, returning zero results with no error.',
+    docs: [
+      { label: 'MSSQL SESSION_CONTEXT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/session-context-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the safe, fail-closed outcome for the security feature itself — but it is silent, which misleads debugging.',
+      'Guarding tenant-scoped entry points with an explicit NULL-context check turns this into a diagnosable error.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

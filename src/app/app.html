@@ -1706,7 +1706,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/security"              routerLinkActive="active"><span class="nl-text">SQL Security</span>@if(progress.isDone('sql-security')){<span class="nl-done">✓</span>}@if(diff('sql-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/security" routerLinkActive="active">
+        <span class="nl-text">SQL Security</span>
+        @if (progress.isDone('sql-security')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-security'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('security')"
+                  (click)="toggleSubtopics('security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('security'); as subs) {
+        @if (isSubtopicsExpanded('security')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/connection-pooling"    routerLinkActive="active"><span class="nl-text">Connection Pooling</span>@if(progress.isDone('sql-connection-pooling')){<span class="nl-done">✓</span>}@if(diff('sql-connection-pooling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
