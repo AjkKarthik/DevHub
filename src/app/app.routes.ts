@@ -1057,7 +1057,12 @@ export const routes: Routes = [
         { path: 'legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters', loadComponent: () => import('./components/data/sql/aggregations/subtopics/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters').then(m => m.LegacyStuffForXmlPathPatternSilentlyXmlEncodesSpecialCharactersSubtopic) },
         { path: 'grouping-sets-omits-the-disambiguation-its-own-theory-warns-about', loadComponent: () => import('./components/data/sql/aggregations/subtopics/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about').then(m => m.GroupingSetsOmitsTheDisambiguationItsOwnTheoryWarnsAboutSubtopic) },
       ] },
-      { path: 'subqueries',        loadComponent: () => import('./components/data/sql/subqueries/subqueries').then(m => m.SqlSubqueries) },
+      { path: 'subqueries', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/subqueries/subqueries').then(m => m.SqlSubqueries) },
+        { path: 'testing-that-the-window-function-rewrite-matches-the-correlated-subquery', loadComponent: () => import('./components/data/sql/subqueries/subtopics/testing-that-the-window-function-rewrite-matches-the-correlated-subquery/testing-that-the-window-function-rewrite-matches-the-correlated-subquery').then(m => m.TestingThatTheWindowFunctionRewriteMatchesTheCorrelatedSubquerySubtopic) },
+        { path: 'the-avoid-this-window-function-in-having-example-doesnt-run-at-all', loadComponent: () => import('./components/data/sql/subqueries/subtopics/the-avoid-this-window-function-in-having-example-doesnt-run-at-all/the-avoid-this-window-function-in-having-example-doesnt-run-at-all').then(m => m.TheAvoidThisWindowFunctionInHavingExampleDoesntRunAtAllSubtopic) },
+        { path: 'row-subqueries-and-the-mssql-rewrite-the-page-never-shows', loadComponent: () => import('./components/data/sql/subqueries/subtopics/row-subqueries-and-the-mssql-rewrite-the-page-never-shows/row-subqueries-and-the-mssql-rewrite-the-page-never-shows').then(m => m.RowSubqueriesAndTheMssqlRewriteThePageNeverShowsSubtopic) },
+      ] },
       { path: 'ctes',              loadComponent: () => import('./components/data/sql/ctes/ctes').then(m => m.SqlCtes) },
       { path: 'window-functions',  loadComponent: () => import('./components/data/sql/window-functions/window-functions').then(m => m.SqlWindowFunctions) },
       { path: 'indexes',           loadComponent: () => import('./components/data/sql/indexes/indexes').then(m => m.SqlIndexes) },

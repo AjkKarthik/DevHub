@@ -921,6 +921,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Legacy Pattern’s Hidden Corruption', route: '/sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters' },
     { label: 'A GROUPING() Gap the Theory Warns About', route: '/sql/aggregations/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about' },
   ],
+  'subqueries': [
+    { label: 'Testing the Window Function Rewrite', route: '/sql/subqueries/testing-that-the-window-function-rewrite-matches-the-correlated-subquery' },
+    { label: 'The “Avoid This” Example Doesn’t Run At All', route: '/sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all' },
+    { label: 'Row Subqueries and the MSSQL Rewrite', route: '/sql/subqueries/row-subqueries-and-the-mssql-rewrite-the-page-never-shows' },
+  ],
 };
 
 @Component({

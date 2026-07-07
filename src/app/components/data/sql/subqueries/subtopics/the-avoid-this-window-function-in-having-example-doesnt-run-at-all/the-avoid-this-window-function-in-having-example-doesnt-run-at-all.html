@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Subqueries"
+    topicRoute="/sql/subqueries"
+    subtopicLabel="An “Avoid” Note That Undersells a Real Error"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The "Avoid This" Window-Function-in-HAVING Example Doesn't Run At All</h1>
+  <p class="page-subtitle">
+    The main page's own comment frames its window-function-in-HAVING example as a style choice — it's
+    actually invalid SQL that fails to parse in both MSSQL and PostgreSQL.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic looks at the main page's own Quick Reference claim that row subqueries exist and
+      require an MSSQL rewrite — a capability the page mentions but never actually demonstrates in code.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Subqueries"
+    topicRoute="/sql/subqueries"
+    [prev]="{ label: 'Testing the Window Function Rewrite', route: '/sql/subqueries/testing-that-the-window-function-rewrite-matches-the-correlated-subquery' }"
+    [next]="{ label: 'Row Subqueries and the MSSQL Rewrite the Page Never Shows', route: '/sql/subqueries/row-subqueries-and-the-mssql-rewrite-the-page-never-shows' }"
+  />
+</div>

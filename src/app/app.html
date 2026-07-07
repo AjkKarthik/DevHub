@@ -1261,7 +1261,26 @@
       <a routerLink="/sql/set-operations"         routerLinkActive="active"><span class="nl-text">Set Operations</span>@if(progress.isDone('sql-set-operations')){<span class="nl-done">✓</span>}@if(diff('sql-set-operations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/null-handling"          routerLinkActive="active"><span class="nl-text">NULL Handling</span>@if(progress.isDone('sql-null-handling')){<span class="nl-done">✓</span>}@if(diff('sql-null-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/merge"                  routerLinkActive="active"><span class="nl-text">MERGE / Upsert</span>@if(progress.isDone('sql-merge')){<span class="nl-done">✓</span>}@if(diff('sql-merge');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/subqueries"             routerLinkActive="active"><span class="nl-text">Subqueries</span>@if(progress.isDone('sql-subqueries')){<span class="nl-done">✓</span>}@if(diff('sql-subqueries');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/subqueries" routerLinkActive="active">
+        <span class="nl-text">Subqueries</span>
+        @if (progress.isDone('sql-subqueries')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-subqueries'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('subqueries')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('subqueries')"
+                  (click)="toggleSubtopics('subqueries', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('subqueries'); as subs) {
+        @if (isSubtopicsExpanded('subqueries')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/ctes"                   routerLinkActive="active"><span class="nl-text">CTEs</span>@if(progress.isDone('sql-ctes')){<span class="nl-done">✓</span>}@if(diff('sql-ctes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

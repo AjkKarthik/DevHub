@@ -14919,6 +14919,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['A correlated subquery re-runs for every outer row — if it is slow, rewrite as a JOIN or CTE.', 'NOT IN with a NULL in the subquery returns no rows at all — use NOT EXISTS instead.'],
   },
+
+  'sql/subqueries/testing-that-the-window-function-rewrite-matches-the-correlated-subquery': {
+    apis: ['EXCEPT', 'pgTAP', 'tSQLt', 'window functions'],
+    related: [
+      { label: 'The “Avoid This” Example Doesn’t Run At All — next', route: '/sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all' },
+      { label: 'Subqueries (overview)', route: '/sql/subqueries' },
+    ],
+    tip: 'EXCEPT between two result sets is empty only when they are identical — the cleanest way to prove a query rewrite preserved the original\'s meaning.',
+    docs: [
+      { label: 'PostgreSQL EXCEPT', url: 'https://www.postgresql.org/docs/current/queries-union.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A wrong PARTITION BY column in a window-function rewrite can silently drop or add rows while the query still runs successfully.',
+      'A "recommended" rewrite pattern is not a guarantee that any specific application of it is correct — verify with a test, not trust.',
+    ],
+  },
+
+  'sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all': {
+    apis: ['HAVING', 'window functions', 'OVER()'],
+    related: [
+      { label: 'Testing the Window Function Rewrite — previous', route: '/sql/subqueries/testing-that-the-window-function-rewrite-matches-the-correlated-subquery' },
+      { label: 'Row Subqueries and the MSSQL Rewrite — next', route: '/sql/subqueries/row-subqueries-and-the-mssql-rewrite-the-page-never-shows' },
+      { label: 'Subqueries (overview)', route: '/sql/subqueries' },
+    ],
+    tip: 'Window functions are restricted to SELECT and ORDER BY in both dialects — they cannot appear in WHERE, GROUP BY, or HAVING at all, not just as a style discouragement.',
+    docs: [
+      { label: 'PostgreSQL Window Functions', url: 'https://www.postgresql.org/docs/current/tutorial-window.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A comment saying "avoid" can undersell an actual parse/semantic error — verify whether a discouraged pattern even runs before assuming it is just a style choice.',
+      'The fix requires an outer query\'s WHERE, not just moving the condition around within the same SELECT.',
+    ],
+  },
+
+  'sql/subqueries/row-subqueries-and-the-mssql-rewrite-the-page-never-shows': {
+    apis: ['row constructor', 'ROW()', 'correlated scalar subquery'],
+    related: [
+      { label: 'The “Avoid This” Example Doesn’t Run At All — previous', route: '/sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all' },
+      { label: 'Subqueries (overview)', route: '/sql/subqueries' },
+    ],
+    tip: 'MSSQL has no row-constructor comparison syntax — the AND-based rewrite must correlate the second column\'s subquery on the first column\'s already-matched value, not run two independent subqueries.',
+    docs: [
+      { label: 'PostgreSQL Row Constructors', url: 'https://www.postgresql.org/docs/current/functions-comparisons.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Two independent AND-ed scalar subqueries can match a combination that never occurs together in any single real row.',
+      'A feature mentioned in a Quick Reference with no code example is easy to misapply — verify the concrete syntax before using it.',
+    ],
+  },
+
   'sql/ctes': {
     apis: ['WITH name AS (...)', 'multiple CTEs', 'RECURSIVE', 'anchor member', 'recursive member', 'UNION ALL'],
     related: [{ label: 'Subqueries', route: '/sql/subqueries' }, { label: 'Window Functions', route: '/sql/window-functions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
