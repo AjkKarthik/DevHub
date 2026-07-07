@@ -1577,7 +1577,7 @@ off here with a date.
 - [x] `/sql/computed-columns` — Computed & Generated Columns (2026-07-07 — 3 subtopics: testing-that-mssql-computed-columns-can-reference-each-other, checksum-is-not-stable-across-sql-server-versions-or-patches, adding-a-stored-generated-column-locks-the-whole-table)
 - [x] `/sql/stored-functions` — Stored Functions (2026-07-07 — 3 subtopics: correcting-the-search-path-public-pin-in-the-security-definer-example, writing-an-actual-create-aggregate-example-the-quiz-only-describes, demonstrating-that-business-days-depends-on-set-datefirst)
 - [x] `/sql/cursors` — Cursors & Row-by-Row Processing (2026-07-07 — 3 subtopics: testing-that-local-cursors-auto-deallocate-without-explicit-deallocate, demonstrating-that-fetch-customers-is-not-really-a-refcursor-example, demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup)
-- [ ] `/sql/triggers` — Triggers
+- [x] `/sql/triggers` — Triggers (2026-07-07 — 3 subtopics: testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology, testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint, correcting-which-setting-actually-stops-cross-table-trigger-recursion)
 - [ ] `/sql/dynamic-sql` — Dynamic SQL
 - [ ] `/sql/isolation-levels` — Isolation Levels
 - [ ] `/sql/locking` — Locking & Deadlocks
