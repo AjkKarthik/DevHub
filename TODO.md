@@ -1563,7 +1563,7 @@ off here with a date.
 - [x] `/sql/performance` — Query Performance (2026-07-07 — 3 subtopics: testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows, the-missing-index-impact-score-formula-is-missing-a-100, demonstrating-the-execution-plan-regression-test-the-page-only-describes)
 - [x] `/sql/json-features` — JSON Features (2026-07-07 — 3 subtopics: testing-that-merge-silently-wipes-out-nested-keys-instead-of-deep-merging, demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays, the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows)
 - [x] `/sql/set-operations` — Set Operations (2026-07-07 — 3 subtopics: testing-that-the-schema-comparison-query-misses-type-only-drift, demonstrating-that-intersects-tighter-binding-actually-changes-the-result, confirming-that-except-materialises-both-sets-not-exists-short-circuits)
-- [ ] `/sql/null-handling` — NULL Handling
+- [x] `/sql/null-handling` — NULL Handling (2026-07-07 — 3 subtopics: testing-that-union-treats-two-nulls-as-equal-while-join-doesnt, isnull-can-silently-truncate-a-bigger-reason-than-portability, demonstrating-what-ansi-nulls-off-actually-does-to-comparisons)
 - [ ] `/sql/merge` — MERGE / Upsert
 - [ ] `/sql/string-functions` — String Functions
 - [ ] `/sql/date-functions` — Date & Time Functions
