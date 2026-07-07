@@ -1079,6 +1079,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Step 4 Is Missing the Duplicate Guard', route: '/sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard' },
     { label: 'The BULK_LOGGED Advice’s Restore Gap', route: '/sql/bulk-operations/correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap' },
   ],
+  'query-store': [
+    { label: 'The Historic Average Includes the Spike', route: '/sql/query-store/testing-that-the-historic-average-includes-the-regressed-interval' },
+    { label: 'flush_db Does Not Purge Storage', route: '/sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage' },
+    { label: 'Multiple Plans Without Parameter Sniffing', route: '/sql/query-store/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing' },
+  ],
 };
 
 @Component({

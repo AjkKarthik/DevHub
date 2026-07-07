@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Query Store"
+    topicRoute="/sql/query-store"
+    subtopicLabel="Multiple Plans Without Parameter Sniffing"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That Multiple Plans Can Appear Without Any Parameter Sniffing</h1>
+  <p class="page-subtitle">
+    The main page labels every query with plan_count &gt; 1 a "parameter sniffing suspect" — but a
+    literal-only query with zero parameters can accumulate multiple plans from an index rebuild alone.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2016+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A self-referential baseline, a mislabeled remedy, and now an overgeneralized diagnosis — three reasons
+      to verify a Query Store report's own framing before acting on it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Query Store"
+    topicRoute="/sql/query-store"
+    [prev]="{ label: 'flush_db Does Not Purge Storage', route: '/sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage' }"
+  />
+</div>

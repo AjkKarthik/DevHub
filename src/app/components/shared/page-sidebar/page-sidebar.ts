@@ -16988,6 +16988,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/query-store': {
+    apis: ['sys.query_store_runtime_stats', 'sp_query_store_force_plan', 'pg_stat_statements'],
+    related: [{ label: 'Execution Plans', route: '/sql/execution-plans' }, { label: 'Statistics & Optimizer', route: '/sql/statistics' }, { label: 'Bulk Operations', route: '/sql/bulk-operations' }],
+    tip: 'A "historic average" baseline that is never filtered to exclude the value it is being compared against is a self-referential comparison, not a clean one.',
+    docs: [{ label: 'MSSQL Query Store', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store' }, { label: 'PostgreSQL pg_stat_statements', url: 'https://www.postgresql.org/docs/current/pgstatstatements.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['sp_query_store_flush_db persists in-memory data to disk — it does not free storage or resolve a READ_ONLY state caused by MAX_STORAGE_SIZE_MB.', 'Multiple plan_ids per query_id can come from index changes, statistics updates, or SET options — not only parameter sniffing.'],
+  },
+
+  'sql/query-store/testing-that-the-historic-average-includes-the-regressed-interval': {
+    apis: ['AVG() OVER', 'runtime_stats_interval_id', 'CASE WHEN'],
+    related: [
+      { label: 'flush_db Does Not Purge Storage — next', route: '/sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage' },
+      { label: 'Query Store (overview)', route: '/sql/query-store' },
+    ],
+    tip: 'AVG(s.avg_duration) with no filter includes the same latest interval already isolated by the recent_ms CASE expression — the "historic" baseline is contaminated by its own comparison point.',
+    docs: [
+      { label: 'MSSQL Query Store Runtime Stats', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-query-store-runtime-stats-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Excluding the latest interval from the AVG() is a one-line fix, but easy to miss since the query runs without error either way.',
+      'The distortion is worse with a short interval history, where the outlier carries more weight on the average.',
+    ],
+  },
+
+  'sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage': {
+    apis: ['sp_query_store_flush_db', 'current_storage_size_mb', 'QUERY_STORE CLEAR'],
+    related: [
+      { label: 'The Historic Average Includes the Spike — previous', route: '/sql/query-store/testing-that-the-historic-average-includes-the-regressed-interval' },
+      { label: 'Multiple Plans Without Parameter Sniffing — next', route: '/sql/query-store/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing' },
+      { label: 'Query Store (overview)', route: '/sql/query-store' },
+    ],
+    tip: 'sp_query_store_flush_db forces in-memory data to disk — it is a durability operation, not a cleanup one, and cannot resolve a full (READ_ONLY) Query Store.',
+    docs: [
+      { label: 'MSSQL sp_query_store_flush_db', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sys-sp-query-store-flush-db-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Flushing can slightly INCREASE current_storage_size_mb by persisting buffered data, the opposite of freeing space.',
+      'sp_query_store_remove_query, QUERY_STORE CLEAR, or raising MAX_STORAGE_SIZE_MB are the actual remedies for a full Query Store.',
+    ],
+  },
+
+  'sql/query-store/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing': {
+    apis: ['COUNT(DISTINCT plan_id)', 'sql_statement_recompile', 'recompile_cause'],
+    related: [
+      { label: 'flush_db Does Not Purge Storage — previous', route: '/sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage' },
+      { label: 'Query Store (overview)', route: '/sql/query-store' },
+    ],
+    tip: 'A query with zero parameters (pure literals) can still accumulate multiple plan_ids in Query Store — an index rebuild alone forces a recompile with no parameter involved.',
+    docs: [
+      { label: 'MSSQL Recompile Causes', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/extended-events/extended-events' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'COUNT(DISTINCT plan_id) > 1 is evidence a recompile happened, not evidence of WHY — check the actual recompile cause before assuming parameter sniffing.',
+      'Forcing a plan without identifying the recompile cause can mask a legitimate adaptation to genuinely changed data.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
