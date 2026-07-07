@@ -1084,6 +1084,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'flush_db Does Not Purge Storage', route: '/sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage' },
     { label: 'Multiple Plans Without Parameter Sniffing', route: '/sql/query-store/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing' },
   ],
+  'statistics': [
+    { label: 'The Challenge Never Flags What’s Overdue', route: '/sql/statistics/testing-that-the-challenges-solution-never-flags-which-stats-are-overdue' },
+    { label: 'The Density Quiz’s Rows-Per-Value Claim', route: '/sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim' },
+    { label: 'The Stale Stats Query’s Outdated Signal', route: '/sql/statistics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage' },
+  ],
 };
 
 @Component({

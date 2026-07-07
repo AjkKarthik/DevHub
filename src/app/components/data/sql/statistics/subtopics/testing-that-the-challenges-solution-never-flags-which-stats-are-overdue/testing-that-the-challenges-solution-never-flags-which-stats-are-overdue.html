@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Statistics & Optimizer"
+    topicRoute="/sql/statistics"
+    subtopicLabel="The Challenge Never Flags What's Overdue"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Challenge's Solution Never Flags Which Stats Are Overdue</h1>
+  <p class="page-subtitle">
+    The hint describes an exact threshold comparison, and the solution computes that same threshold as a
+    column — but never actually compares it to modification_counter, leaving the reader to eyeball it.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="intermediate" since="SQL Server 2016+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The dynamic threshold formula appears again — this time in one of the page's own reference queries,
+      still not actually applied where the theory says it should be.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Statistics & Optimizer"
+    topicRoute="/sql/statistics"
+    [next]="{ label: 'The Density Quiz’s Rows-Per-Value Claim', route: '/sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim' }"
+  />
+</div>

@@ -1666,7 +1666,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/statistics"            routerLinkActive="active"><span class="nl-text">Statistics & Optimizer</span>@if(progress.isDone('sql-statistics')){<span class="nl-done">✓</span>}@if(diff('sql-statistics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/statistics" routerLinkActive="active">
+        <span class="nl-text">Statistics & Optimizer</span>
+        @if (progress.isDone('sql-statistics')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-statistics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('statistics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('statistics')"
+                  (click)="toggleSubtopics('statistics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('statistics'); as subs) {
+        @if (isSubtopicsExpanded('statistics')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/full-text-search"      routerLinkActive="active"><span class="nl-text">Full-Text Search</span>@if(progress.isDone('sql-full-text-search')){<span class="nl-done">✓</span>}@if(diff('sql-full-text-search');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/security"              routerLinkActive="active"><span class="nl-text">SQL Security</span>@if(progress.isDone('sql-security')){<span class="nl-done">✓</span>}@if(diff('sql-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/connection-pooling"    routerLinkActive="active"><span class="nl-text">Connection Pooling</span>@if(progress.isDone('sql-connection-pooling')){<span class="nl-done">✓</span>}@if(diff('sql-connection-pooling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

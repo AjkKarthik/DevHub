@@ -17055,6 +17055,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/statistics': {
+    apis: ['UPDATE STATISTICS', 'ANALYZE', 'DBCC SHOW_STATISTICS', 'pg_stats'],
+    related: [{ label: 'Query Store', route: '/sql/query-store' }, { label: 'Execution Plans', route: '/sql/execution-plans' }, { label: 'Bulk Operations', route: '/sql/bulk-operations' }],
+    tip: 'Density alone only tells you the reciprocal of distinct-value count — the optimizer\'s actual rows-per-value estimate also needs the table\'s total row count.',
+    docs: [{ label: 'MSSQL Statistics', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/statistics/statistics' }, { label: 'PostgreSQL Planner Statistics', url: 'https://www.postgresql.org/docs/current/planner-stats.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A query that computes a threshold as a column without comparing it to the actual metric hasn\'t answered "is this overdue" — it has only reported two numbers.', 'Ranking staleness by flat percentage instead of the dynamic threshold formula can rank a barely-overdue small table above a severely-overdue large one.'],
+  },
+
+  'sql/statistics/testing-that-the-challenges-solution-never-flags-which-stats-are-overdue': {
+    apis: ['sys.dm_db_stats_properties', 'modification_counter', 'CASE WHEN'],
+    related: [
+      { label: 'The Density Quiz’s Rows-Per-Value Claim — next', route: '/sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim' },
+      { label: 'Statistics & Optimizer (overview)', route: '/sql/statistics' },
+    ],
+    tip: 'The challenge\'s solution computes the dynamic threshold as a column but never compares it to modification_counter — a reader must eyeball each row to find the overdue ones.',
+    docs: [
+      { label: 'MSSQL sys.dm_db_stats_properties', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-dynamic-management-views/sys-dm-db-stats-properties-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A CASE expression comparing modification_counter to the threshold turns a report into an answer — a small, easy-to-miss fix.',
+      'The gap matters most once the query is generalized to a database-wide audit with many rows to review.',
+    ],
+  },
+
+  'sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim': {
+    apis: ['DBCC SHOW_STATISTICS', 'density vector', 'cardinality estimation'],
+    related: [
+      { label: 'The Challenge Never Flags What’s Overdue — previous', route: '/sql/statistics/testing-that-the-challenges-solution-never-flags-which-stats-are-overdue' },
+      { label: 'The Stale Stats Query’s Outdated Signal — next', route: '/sql/statistics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage' },
+      { label: 'Statistics & Optimizer (overview)', route: '/sql/statistics' },
+    ],
+    tip: 'estimated_rows_per_value = density × total_rows — the quiz\'s "0.001 density = 1,000 rows" example silently assumes a 1,000,000-row table.',
+    docs: [
+      { label: 'MSSQL Statistics Density', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/statistics/statistics' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Two tables can report the identical density value and still produce very different rows-per-value estimates, if their total row counts differ.',
+      'Density alone tells you 1/distinct_values — never assume it also tells you a fixed row count without knowing the table size.',
+    ],
+  },
+
+  'sql/statistics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage': {
+    apis: ['pct_modified', 'dynamic threshold', 'sys.dm_db_stats_properties'],
+    related: [
+      { label: 'The Density Quiz’s Rows-Per-Value Claim — previous', route: '/sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim' },
+      { label: 'Statistics & Optimizer (overview)', route: '/sql/statistics' },
+    ],
+    tip: 'Ranking by raw pct_modified can rank a barely-overdue small table above a severely-overdue large one — the page\'s own dynamic threshold formula is the more accurate ranking signal.',
+    docs: [
+      { label: 'MSSQL Auto-Update Statistics', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/statistics/statistics' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The same modification percentage means something very different for a small table versus a large one — that is exactly what the dynamic threshold formula was introduced to fix.',
+      'A query\'s title describing its intent ("find stale statistics") does not guarantee its ORDER BY clause reflects the most accurate available signal.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

@@ -1249,7 +1249,12 @@ export const routes: Routes = [
         { path: 'testing-that-flush-db-does-not-purge-or-reduce-query-store-storage', loadComponent: () => import('./components/data/sql/query-store/subtopics/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage').then(m => m.TestingThatFlushDbDoesNotPurgeOrReduceQueryStoreStorageSubtopic) },
         { path: 'demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing', loadComponent: () => import('./components/data/sql/query-store/subtopics/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing').then(m => m.DemonstratingThatMultiplePlansCanAppearWithoutParameterSniffingSubtopic) },
       ] },
-      { path: 'statistics',              loadComponent: () => import('./components/data/sql/statistics/statistics').then(m => m.SqlStatistics) },
+      { path: 'statistics', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/statistics/statistics').then(m => m.SqlStatistics) },
+        { path: 'testing-that-the-challenges-solution-never-flags-which-stats-are-overdue', loadComponent: () => import('./components/data/sql/statistics/subtopics/testing-that-the-challenges-solution-never-flags-which-stats-are-overdue/testing-that-the-challenges-solution-never-flags-which-stats-are-overdue').then(m => m.TestingThatTheChallengesSolutionNeverFlagsWhichStatsAreOverdueSubtopic) },
+        { path: 'correcting-the-density-quizs-rows-per-distinct-value-claim', loadComponent: () => import('./components/data/sql/statistics/subtopics/correcting-the-density-quizs-rows-per-distinct-value-claim/correcting-the-density-quizs-rows-per-distinct-value-claim').then(m => m.CorrectingTheDensityQuizsRowsPerDistinctValueClaimSubtopic) },
+        { path: 'testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage', loadComponent: () => import('./components/data/sql/statistics/subtopics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage').then(m => m.TestingThatTheStaleStatsQueryRanksByTheOutdatedFlatPercentageSubtopic) },
+      ] },
       { path: 'full-text-search',        loadComponent: () => import('./components/data/sql/full-text-search/full-text-search').then(m => m.SqlFullTextSearch) },
       { path: 'security',                loadComponent: () => import('./components/data/sql/security/security').then(m => m.SqlSecurity) },
       { path: 'connection-pooling',      loadComponent: () => import('./components/data/sql/connection-pooling/connection-pooling').then(m => m.SqlConnectionPooling) },
