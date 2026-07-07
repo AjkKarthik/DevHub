@@ -16653,6 +16653,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/isolation-levels': {
+    apis: ['SET TRANSACTION ISOLATION LEVEL', 'SNAPSHOT', 'SERIALIZABLE', 'RCSI'],
+    related: [{ label: 'Transactions', route: '/sql/transactions' }, { label: 'Locking & Deadlocks', route: '/sql/locking' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'MSSQL SERIALIZABLE blocks concurrent transactions via range locks; PostgreSQL SERIALIZABLE (SSI) lets them proceed and aborts one at commit with a serialization_failure error requiring a retry loop.',
+    docs: [{ label: 'MSSQL Transaction Isolation Levels', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-transaction-isolation-level-transact-sql' }, { label: 'PostgreSQL Transaction Isolation', url: 'https://www.postgresql.org/docs/current/transaction-iso.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['SNAPSHOT\'s bank-transfer safety comes from write-conflict detection (error 3960) on the UPDATE, not from preventing non-repeatable reads on the SELECT.', 'READ COMMITTED blocks or doesn\'t depending entirely on the database-level READ_COMMITTED_SNAPSHOT (RCSI) setting.'],
+  },
+
+  'sql/isolation-levels/testing-that-the-challenges-serializable-solution-needs-a-retry-loop': {
+    apis: ['SERIALIZABLE', 'serialization_failure', 'SQLSTATE 40001'],
+    related: [
+      { label: 'What Actually Protects the Bank Transfer — next', route: '/sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads' },
+      { label: 'Isolation Levels (overview)', route: '/sql/isolation-levels' },
+    ],
+    tip: 'MSSQL SERIALIZABLE blocks the second transaction; PostgreSQL SERIALIZABLE lets both proceed and aborts one with an error — the same "one snippet" solution needs different handling per dialect.',
+    docs: [
+      { label: 'PostgreSQL Serializable Isolation', url: 'https://www.postgresql.org/docs/current/transaction-iso.html#XACT-SERIALIZABLE' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'SERIALIZABLE preventing the double-booking itself is not the same guarantee as SERIALIZABLE preventing an unhandled error from reaching a legitimate user.',
+      'Without a retry loop on PostgreSQL, the losing transaction surfaces a raw serialization_failure error instead of a graceful outcome.',
+    ],
+  },
+
+  'sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads': {
+    apis: ['SNAPSHOT', 'error 3960', 'update conflict detection'],
+    related: [
+      { label: 'Testing the SERIALIZABLE Retry Requirement — previous', route: '/sql/isolation-levels/testing-that-the-challenges-serializable-solution-needs-a-retry-loop' },
+      { label: 'READ COMMITTED Blocking Depends on RCSI — next', route: '/sql/isolation-levels/demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi' },
+      { label: 'Isolation Levels (overview)', route: '/sql/isolation-levels' },
+    ],
+    tip: 'Error 3960 fires when an UPDATE targets a row already modified since the snapshot began — this write-conflict check, not read consistency, is what stops two concurrent deductions.',
+    docs: [
+      { label: 'MSSQL Snapshot Isolation', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A read-only "preview" variant of the same pattern gets snapshot consistency but none of the write-conflict protection, since it never issues the UPDATE that triggers it.',
+      'Error 3960 is SNAPSHOT isolation working as designed, not a sign of misconfiguration.',
+    ],
+  },
+
+  'sql/isolation-levels/demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi': {
+    apis: ['READ_COMMITTED_SNAPSHOT', 'is_read_committed_snapshot_on'],
+    related: [
+      { label: 'What Actually Protects the Bank Transfer — previous', route: '/sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads' },
+      { label: 'Isolation Levels (overview)', route: '/sql/isolation-levels' },
+    ],
+    tip: 'The identical READ COMMITTED SELECT blocks without RCSI and returns immediately with RCSI enabled — check sys.databases.is_read_committed_snapshot_on before assuming which behavior applies.',
+    docs: [
+      { label: 'MSSQL READ_COMMITTED_SNAPSHOT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-set-options' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Non-blocking READ COMMITTED behavior under RCSI still fully avoids dirty reads — it is not a weaker guarantee, just a different mechanism.',
+      'A code example\'s "waits for A to commit" comment implicitly assumes RCSI is off, without ever stating that assumption.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Isolation Levels"
+    topicRoute="/sql/isolation-levels"
+    subtopicLabel="Two Failure Modes Behind One Snippet"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Challenge's SERIALIZABLE Solution Needs a Retry Loop</h1>
+  <p class="page-subtitle">
+    The seat-booking challenge's one dialect-neutral snippet hides a real difference — MSSQL blocks, but
+    PostgreSQL needs the page's own separate retry-loop pattern to avoid a raw error reaching the user.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="PostgreSQL 9.1" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the retry gap closed, the next subtopic looks more closely at how SNAPSHOT isolation actually
+      protects the bank-transfer scenario — the challenge's brief comment undersells the real mechanism.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Isolation Levels"
+    topicRoute="/sql/isolation-levels"
+    [next]="{ label: 'What Actually Protects the Bank Transfer', route: '/sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads' }"
+  />
+</div>

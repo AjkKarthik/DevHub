@@ -1054,6 +1054,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'get_orders_by_status Doesn’t Need Dynamic SQL', route: '/sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all' },
     { label: 'Testing usp_SearchOrders for the Full-Scan Risk', route: '/sql/dynamic-sql/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk' },
   ],
+  'isolation-levels': [
+    { label: 'Testing the SERIALIZABLE Retry Requirement', route: '/sql/isolation-levels/testing-that-the-challenges-serializable-solution-needs-a-retry-loop' },
+    { label: 'What Actually Protects the Bank Transfer', route: '/sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads' },
+    { label: 'READ COMMITTED Blocking Depends on RCSI', route: '/sql/isolation-levels/demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi' },
+  ],
 };
 
 @Component({

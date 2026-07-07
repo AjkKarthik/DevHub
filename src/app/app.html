@@ -1546,7 +1546,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Concurrency & Performance</p>
-      <a routerLink="/sql/isolation-levels"      routerLinkActive="active"><span class="nl-text">Isolation Levels</span>@if(progress.isDone('sql-isolation-levels')){<span class="nl-done">✓</span>}@if(diff('sql-isolation-levels');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/isolation-levels" routerLinkActive="active">
+        <span class="nl-text">Isolation Levels</span>
+        @if (progress.isDone('sql-isolation-levels')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-isolation-levels'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('isolation-levels')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('isolation-levels')"
+                  (click)="toggleSubtopics('isolation-levels', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('isolation-levels'); as subs) {
+        @if (isSubtopicsExpanded('isolation-levels')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/locking"               routerLinkActive="active"><span class="nl-text">Locking &amp; Deadlocks</span>@if(progress.isDone('sql-locking')){<span class="nl-done">✓</span>}@if(diff('sql-locking');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/execution-plans"       routerLinkActive="active"><span class="nl-text">Execution Plans</span>@if(progress.isDone('sql-execution-plans')){<span class="nl-done">✓</span>}@if(diff('sql-execution-plans');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/partitioning"          routerLinkActive="active"><span class="nl-text">Partitioning</span>@if(progress.isDone('sql-partitioning')){<span class="nl-done">✓</span>}@if(diff('sql-partitioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
