@@ -14986,6 +14986,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['CTEs in SQL Server are not always materialised — the optimiser can inline them and run the CTE body multiple times.', 'In PostgreSQL, CTEs are materialised by default (fence) — add NOT MATERIALIZED for optimiser visibility.'],
   },
+
+  'sql/ctes/testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain': {
+    apis: ['MAXRECURSION', 'depth guard', 'tSQLt'],
+    related: [
+      { label: 'CategoryPath’s Missing Depth Guard — next', route: '/sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it' },
+      { label: 'CTEs (overview)', route: '/sql/ctes' },
+    ],
+    tip: 'A manual depth guard (WHERE Depth < N) produces a clean, bounded result on a cycle; relying solely on MAXRECURSION produces a hard error instead — verify which behavior your query actually has.',
+    docs: [
+      { label: 'MSSQL Recursive Queries', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Reporting-line and hierarchy foreign keys (ReportsTo, ParentID) are realistically prone to data-entry cycles — not a hypothetical edge case.',
+      'A depth guard stops a cycle safely but gives no indication that a cycle actually occurred — it just looks like a bounded, plausible result.',
+    ],
+  },
+
+  'sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it': {
+    apis: ['MAXRECURSION default', 'WITH RECURSIVE', 'depth guard'],
+    related: [
+      { label: 'Testing the Depth Guard Against a Cycle — previous', route: '/sql/ctes/testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain' },
+      { label: 'Confirming the Double-Execution Claim — next', route: '/sql/ctes/confirming-that-a-twice-referenced-cte-actually-executes-twice' },
+      { label: 'CTEs (overview)', route: '/sql/ctes' },
+    ],
+    tip: 'MSSQL applies a default MAXRECURSION of 100 to every recursive CTE automatically — PostgreSQL has no equivalent cap at all. Never rely on an accidental default; add an explicit depth guard.',
+    docs: [
+      { label: 'PostgreSQL Recursive Queries', url: 'https://www.postgresql.org/docs/current/queries-with.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A recursive CTE that "just works" in MSSQL without an explicit guard may be surviving purely on the undocumented default MAXRECURSION=100.',
+      'Porting the same unguarded query to PostgreSQL removes that accidental safety net entirely — genuine unbounded recursion on a cycle.',
+    ],
+  },
+
+  'sql/ctes/confirming-that-a-twice-referenced-cte-actually-executes-twice': {
+    apis: ['SET STATISTICS IO', 'logical reads', 'temp table'],
+    related: [
+      { label: 'CategoryPath’s Missing Depth Guard — previous', route: '/sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it' },
+      { label: 'CTEs (overview)', route: '/sql/ctes' },
+    ],
+    tip: 'SET STATISTICS IO ON directly confirms whether a twice-referenced CTE re-scans its base table — compare the logical read count against a single-reference baseline.',
+    docs: [
+      { label: 'MSSQL SET STATISTICS IO', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-statistics-io-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A claim about database internals stated as a plain comment is not evidence — verify with the actual execution plan or IO statistics.',
+      'A temp table materializes the aggregation exactly once, regardless of how many times it is subsequently referenced.',
+    ],
+  },
+
   'sql/window-functions': {
     apis: ['ROW_NUMBER()', 'RANK()', 'DENSE_RANK()', 'NTILE()', 'LAG()', 'LEAD()', 'FIRST_VALUE()', 'LAST_VALUE()', 'OVER()', 'PARTITION BY', 'ROWS BETWEEN'],
     related: [{ label: 'Aggregations', route: '/sql/aggregations' }, { label: 'CTEs', route: '/sql/ctes' }, { label: 'Performance', route: '/sql/performance' }],

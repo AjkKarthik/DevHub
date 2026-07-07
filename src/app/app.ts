@@ -926,6 +926,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The “Avoid This” Example Doesn’t Run At All', route: '/sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all' },
     { label: 'Row Subqueries and the MSSQL Rewrite', route: '/sql/subqueries/row-subqueries-and-the-mssql-rewrite-the-page-never-shows' },
   ],
+  'ctes': [
+    { label: 'Testing the Depth Guard Against a Cycle', route: '/sql/ctes/testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain' },
+    { label: 'CategoryPath’s Missing Depth Guard', route: '/sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it' },
+    { label: 'Confirming the Double-Execution Claim', route: '/sql/ctes/confirming-that-a-twice-referenced-cte-actually-executes-twice' },
+  ],
 };
 
 @Component({

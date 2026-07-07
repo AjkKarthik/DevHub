@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="CTEs"
+    topicRoute="/sql/ctes"
+    subtopicLabel="Confirming the Double-Execution Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Confirming (Not Just Trusting) That a Twice-Referenced CTE Actually Executes Twice</h1>
+  <p class="page-subtitle">
+    The main page's own comment asserts this without evidence — SET STATISTICS IO shows the underlying
+    table's read count roughly doubling, confirming the claim directly.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover CTEs end-to-end: verifying a recursive depth guard's exact
+      behavior against a real cycle, closing a missing-guard gap the main page's own theory already warns
+      about, and confirming a database-internals claim with direct evidence instead of trusting a comment.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="CTEs"
+    topicRoute="/sql/ctes"
+    [prev]="{ label: 'CategoryPath Has No Depth Guard, and PostgreSQL Won’t Save It', route: '/sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it' }"
+  />
+</div>

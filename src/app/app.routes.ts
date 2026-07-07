@@ -1063,7 +1063,12 @@ export const routes: Routes = [
         { path: 'the-avoid-this-window-function-in-having-example-doesnt-run-at-all', loadComponent: () => import('./components/data/sql/subqueries/subtopics/the-avoid-this-window-function-in-having-example-doesnt-run-at-all/the-avoid-this-window-function-in-having-example-doesnt-run-at-all').then(m => m.TheAvoidThisWindowFunctionInHavingExampleDoesntRunAtAllSubtopic) },
         { path: 'row-subqueries-and-the-mssql-rewrite-the-page-never-shows', loadComponent: () => import('./components/data/sql/subqueries/subtopics/row-subqueries-and-the-mssql-rewrite-the-page-never-shows/row-subqueries-and-the-mssql-rewrite-the-page-never-shows').then(m => m.RowSubqueriesAndTheMssqlRewriteThePageNeverShowsSubtopic) },
       ] },
-      { path: 'ctes',              loadComponent: () => import('./components/data/sql/ctes/ctes').then(m => m.SqlCtes) },
+      { path: 'ctes', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/ctes/ctes').then(m => m.SqlCtes) },
+        { path: 'testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain', loadComponent: () => import('./components/data/sql/ctes/subtopics/testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain/testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain').then(m => m.TestingThatTheDepthGuardActuallyStopsACyclicManagerChainSubtopic) },
+        { path: 'categorypath-has-no-depth-guard-and-postgresql-wont-save-it', loadComponent: () => import('./components/data/sql/ctes/subtopics/categorypath-has-no-depth-guard-and-postgresql-wont-save-it/categorypath-has-no-depth-guard-and-postgresql-wont-save-it').then(m => m.CategorypathHasNoDepthGuardAndPostgresqlWontSaveItSubtopic) },
+        { path: 'confirming-that-a-twice-referenced-cte-actually-executes-twice', loadComponent: () => import('./components/data/sql/ctes/subtopics/confirming-that-a-twice-referenced-cte-actually-executes-twice/confirming-that-a-twice-referenced-cte-actually-executes-twice').then(m => m.ConfirmingThatATwiceReferencedCteActuallyExecutesTwiceSubtopic) },
+      ] },
       { path: 'window-functions',  loadComponent: () => import('./components/data/sql/window-functions/window-functions').then(m => m.SqlWindowFunctions) },
       { path: 'indexes',           loadComponent: () => import('./components/data/sql/indexes/indexes').then(m => m.SqlIndexes) },
       { path: 'transactions',      loadComponent: () => import('./components/data/sql/transactions/transactions').then(m => m.SqlTransactions) },

@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="CTEs"
+    topicRoute="/sql/ctes"
+    subtopicLabel="Testing the Depth Guard Against a Cycle"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Depth Guard Actually Stops a Cyclic Manager Chain</h1>
+  <p class="page-subtitle">
+    The main page's own recursive CTE example includes a depth guard and a MAXRECURSION cap — but never
+    demonstrates what each one actually does against a genuine data cycle.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the depth guard's behavior verified, the next subtopic finds a DIFFERENT recursive CTE example on
+      the same page — one with no depth guard at all, and a real cross-dialect safety-net difference that
+      makes the gap more dangerous in PostgreSQL than in MSSQL.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="CTEs"
+    topicRoute="/sql/ctes"
+    [next]="{ label: 'CategoryPath Has No Depth Guard, and PostgreSQL Won’t Save It', route: '/sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it' }"
+  />
+</div>
