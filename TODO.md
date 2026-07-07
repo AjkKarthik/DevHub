@@ -1552,7 +1552,7 @@ off here with a date.
 - [x] `/sql/data-types` — Data Types (2026-07-07 — 3 subtopics: testing-that-financial-columns-stay-decimal-not-float, implicit-conversion-warning-has-the-risky-direction-backwards, jsonb-set-silently-no-ops-on-a-null-target)
 - [x] `/sql/basics` — SQL Basics (2026-07-07 — 3 subtopics: distinct-on-and-row-number-examples-have-no-tie-breaker, confirming-not-trusting-the-implicit-conversion-claim, offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination)
 - [x] `/sql/joins` — Joins (2026-07-07 — 3 subtopics: testing-that-the-row-multiplication-fix-actually-prevents-double-counting, year-wrapped-date-filter-fix-still-isnt-sargable, anti-join-self-join-both-tab-has-a-postgresql-only-clause)
-- [ ] `/sql/aggregations` — Aggregations
+- [x] `/sql/aggregations` — Aggregations (2026-07-07 — 3 subtopics: testing-that-the-count-distinct-alternative-returns-identical-counts, legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters, grouping-sets-omits-the-disambiguation-its-own-theory-warns-about)
 - [ ] `/sql/subqueries` — Subqueries
 - [ ] `/sql/ctes` — CTEs
 - [ ] `/sql/window-functions` — Window Functions
