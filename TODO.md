@@ -1576,7 +1576,7 @@ off here with a date.
 - [x] `/sql/temp-tables` — Temp Tables & Table Variables (2026-07-07 — 3 subtopics: correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim, demonstrating-that-table-variables-are-not-rolled-back-by-rollback, demonstrating-that-table-variables-support-inline-non-unique-indexes)
 - [x] `/sql/computed-columns` — Computed & Generated Columns (2026-07-07 — 3 subtopics: testing-that-mssql-computed-columns-can-reference-each-other, checksum-is-not-stable-across-sql-server-versions-or-patches, adding-a-stored-generated-column-locks-the-whole-table)
 - [x] `/sql/stored-functions` — Stored Functions (2026-07-07 — 3 subtopics: correcting-the-search-path-public-pin-in-the-security-definer-example, writing-an-actual-create-aggregate-example-the-quiz-only-describes, demonstrating-that-business-days-depends-on-set-datefirst)
-- [ ] `/sql/cursors` — Cursors & Row-by-Row Processing
+- [x] `/sql/cursors` — Cursors & Row-by-Row Processing (2026-07-07 — 3 subtopics: testing-that-local-cursors-auto-deallocate-without-explicit-deallocate, demonstrating-that-fetch-customers-is-not-really-a-refcursor-example, demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup)
 - [ ] `/sql/triggers` — Triggers
 - [ ] `/sql/dynamic-sql` — Dynamic SQL
 - [ ] `/sql/isolation-levels` — Isolation Levels
