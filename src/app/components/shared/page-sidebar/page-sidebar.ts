@@ -17256,6 +17256,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/connection-pooling': {
+    apis: ['sys.dm_exec_sessions', 'pg_stat_activity', 'PgBouncer', 'idle_in_transaction_session_timeout'],
+    related: [{ label: 'SQL Security', route: '/sql/security' }, { label: 'Locking & Deadlocks', route: '/sql/locking' }, { label: 'Isolation Levels', route: '/sql/isolation-levels' }],
+    tip: 'sys.dm_exec_sessions has both last_request_start_time and last_request_end_time — use the end time for idle-duration calculations, not the start time.',
+    docs: [{ label: 'MSSQL Connection Pooling', url: 'https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-connection-pooling' }, { label: 'PgBouncer Documentation', url: 'https://www.pgbouncer.org/config.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['SET LOCAL is transaction-scoped and pool-safe under PgBouncer transaction mode — plain SET is the actual hazard.', 'pg_stat_activity has a distinct \'idle in transaction (aborted)\' state that an exact-match filter on \'idle in transaction\' silently misses.'],
+  },
+
+  'sql/connection-pooling/testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column': {
+    apis: ['last_request_start_time', 'last_request_end_time', 'sys.dm_exec_sessions'],
+    related: [
+      { label: 'SET LOCAL Doesn’t Require PgBouncer Session Mode — next', route: '/sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode' },
+      { label: 'Connection Pooling (overview)', route: '/sql/connection-pooling' },
+    ],
+    tip: 'The challenge\'s MSSQL solution measures idle duration from last_request_start_time — for a session whose last query was itself slow, this overstates true idle time by that query\'s duration.',
+    docs: [
+      { label: 'MSSQL sys.dm_exec_sessions', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-dynamic-management-views/sys-dm-exec-sessions-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The PostgreSQL half of the same challenge correctly uses state_change, the direct analogue of last_request_end_time.',
+      'The distortion is worst for exactly the sessions most likely to trigger a false alert — ones whose last query was itself slow.',
+    ],
+  },
+
+  'sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode': {
+    apis: ['SET LOCAL', 'PgBouncer transaction mode', 'plain SET'],
+    related: [
+      { label: 'The MSSQL Idle-in-Tx Proxy’s Wrong Timestamp — previous', route: '/sql/connection-pooling/testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column' },
+      { label: 'The Queries Miss the “Aborted” State — next', route: '/sql/connection-pooling/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state' },
+      { label: 'Connection Pooling (overview)', route: '/sql/connection-pooling' },
+    ],
+    tip: 'SET LOCAL reverts automatically at the transaction boundary — exactly where PgBouncer transaction mode releases the connection, making it pool-safe rather than something requiring session mode.',
+    docs: [
+      { label: 'PostgreSQL SET Command', url: 'https://www.postgresql.org/docs/current/sql-set.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Plain SET (no LOCAL) is the genuine pooling hazard — its effect persists past the transaction and can leak into the next client sharing that server connection.',
+      'Switching to PgBouncer session mode over a misclassified SET LOCAL feature gives up transaction mode\'s connection-sharing efficiency for no benefit.',
+    ],
+  },
+
+  'sql/connection-pooling/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state': {
+    apis: ['idle in transaction (aborted)', 'pg_stat_activity', 'ROLLBACK'],
+    related: [
+      { label: 'SET LOCAL Doesn’t Require PgBouncer Session Mode — previous', route: '/sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode' },
+      { label: 'Connection Pooling (overview)', route: '/sql/connection-pooling' },
+    ],
+    tip: 'A failed statement inside a transaction does not auto-rollback — the session enters \'idle in transaction (aborted)\', which an exact-match filter on \'idle in transaction\' completely misses.',
+    docs: [
+      { label: 'PostgreSQL pg_stat_activity', url: 'https://www.postgresql.org/docs/current/monitoring-stats.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An aborted transaction still holds every lock it acquired before the failing statement — a real, not cosmetic, blocking risk.',
+      'state LIKE \'idle in transaction%\' catches both variants; idle_in_transaction_session_timeout already covers both server-side.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

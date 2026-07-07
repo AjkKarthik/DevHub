@@ -1099,6 +1099,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'The Audit Trigger Misclassifies MERGE Rows', route: '/sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement' },
     { label: 'An Unset Session Context Silently Returns Zero', route: '/sql/security/testing-that-an-unset-session-context-silently-returns-zero-rows' },
   ],
+  'connection-pooling': [
+    { label: 'The MSSQL Idle-in-Tx Proxy’s Wrong Timestamp', route: '/sql/connection-pooling/testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column' },
+    { label: 'SET LOCAL Doesn’t Require PgBouncer Session Mode', route: '/sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode' },
+    { label: 'The Queries Miss the “Aborted” State', route: '/sql/connection-pooling/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state' },
+  ],
 };
 
 @Component({

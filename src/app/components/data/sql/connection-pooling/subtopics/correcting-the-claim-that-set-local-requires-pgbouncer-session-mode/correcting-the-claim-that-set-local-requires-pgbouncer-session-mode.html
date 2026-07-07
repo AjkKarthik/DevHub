@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Connection Pooling"
+    topicRoute="/sql/connection-pooling"
+    subtopicLabel="SET LOCAL Doesn't Need Session Mode"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Correcting the Claim That SET LOCAL Requires PgBouncer Session Mode</h1>
+  <p class="page-subtitle">
+    SET LOCAL is transaction-scoped by PostgreSQL's own design — it automatically reverts exactly when
+    PgBouncer transaction mode releases the connection, making it pool-safe, not pool-unsafe.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="PostgreSQL 8.0+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A misclassified PgBouncer feature — the last subtopic checks whether the page's idle-in-transaction
+      queries actually catch every session state they claim to.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Connection Pooling"
+    topicRoute="/sql/connection-pooling"
+    [prev]="{ label: 'The MSSQL Idle-in-Tx Proxy’s Wrong Timestamp', route: '/sql/connection-pooling/testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column' }"
+    [next]="{ label: 'The Queries Miss the “Aborted” Idle State', route: '/sql/connection-pooling/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state' }"
+  />
+</div>

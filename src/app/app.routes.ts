@@ -1267,7 +1267,12 @@ export const routes: Routes = [
         { path: 'testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement', loadComponent: () => import('./components/data/sql/security/subtopics/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement').then(m => m.TestingThatTheAuditTriggerMisclassifiesRowsDuringAMergeStatementSubtopic) },
         { path: 'testing-that-an-unset-session-context-silently-returns-zero-rows', loadComponent: () => import('./components/data/sql/security/subtopics/testing-that-an-unset-session-context-silently-returns-zero-rows/testing-that-an-unset-session-context-silently-returns-zero-rows').then(m => m.TestingThatAnUnsetSessionContextSilentlyReturnsZeroRowsSubtopic) },
       ] },
-      { path: 'connection-pooling',      loadComponent: () => import('./components/data/sql/connection-pooling/connection-pooling').then(m => m.SqlConnectionPooling) },
+      { path: 'connection-pooling', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/connection-pooling/connection-pooling').then(m => m.SqlConnectionPooling) },
+        { path: 'testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column', loadComponent: () => import('./components/data/sql/connection-pooling/subtopics/testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column/testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column').then(m => m.TestingThatTheIdleInTxProxyUsesTheWrongTimestampColumnSubtopic) },
+        { path: 'correcting-the-claim-that-set-local-requires-pgbouncer-session-mode', loadComponent: () => import('./components/data/sql/connection-pooling/subtopics/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode').then(m => m.CorrectingTheClaimThatSetLocalRequiresPgbouncerSessionModeSubtopic) },
+        { path: 'testing-that-the-idle-in-transaction-queries-miss-the-aborted-state', loadComponent: () => import('./components/data/sql/connection-pooling/subtopics/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state').then(m => m.TestingThatTheIdleInTransactionQueriesMissTheAbortedStateSubtopic) },
+      ] },
       { path: 'cheatsheet',        loadComponent: () => import('./components/data/sql/cheatsheet/cheatsheet').then(m => m.SqlCheatsheet) },
       { path: 'errors',            loadComponent: () => import('./components/data/sql/errors/errors').then(m => m.SqlErrors) },
       { path: 'quiz-practice',     loadComponent: () => import('./components/data/sql/quiz-practice/quiz-practice').then(m => m.SqlQuizPractice) },
