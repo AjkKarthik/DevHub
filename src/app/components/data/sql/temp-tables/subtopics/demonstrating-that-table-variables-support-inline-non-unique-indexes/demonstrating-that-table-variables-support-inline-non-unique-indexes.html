@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Temp Tables & Table Variables"
+    topicRoute="/sql/temp-tables"
+    subtopicLabel="Filling a Gap in the Indexing Q&A"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That Table Variables Support Inline Non-Unique Indexes</h1>
+  <p class="page-subtitle">
+    The main page's Q&amp;A says table variable indexes only come from PRIMARY KEY or UNIQUE — since SQL
+    Server 2014, inline non-unique indexes are also supported.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2014" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A backwards claim about nested scopes, an undocumented rollback-immunity fact, and an outdated indexing
+      limitation — all three show that table variables and temp tables have accumulated version-specific
+      nuance well past what a single Q&amp;A paragraph can capture.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Temp Tables & Table Variables"
+    topicRoute="/sql/temp-tables"
+    [prev]="{ label: 'Table Variables Survive ROLLBACK', route: '/sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback' }"
+  />
+</div>

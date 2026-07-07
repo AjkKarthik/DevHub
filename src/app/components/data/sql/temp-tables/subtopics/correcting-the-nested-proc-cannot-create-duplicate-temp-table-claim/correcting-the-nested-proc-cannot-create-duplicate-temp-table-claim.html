@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Temp Tables & Table Variables"
+    topicRoute="/sql/temp-tables"
+    subtopicLabel="Correcting the Nested-Proc Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Correcting the "Nested Proc Cannot Create Duplicate Temp Table" Claim</h1>
+  <p class="page-subtitle">
+    The main page's Q&amp;A says a nested procedure can't recreate a #temp table name from the caller — it
+    actually can, silently shadowing the outer table instead of erroring.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the nested-scope shadowing behavior clarified, the next subtopic covers a genuinely useful table
+      variable fact the main page never mentions at all — how they behave under ROLLBACK.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Temp Tables & Table Variables"
+    topicRoute="/sql/temp-tables"
+    [next]="{ label: 'Table Variables Survive ROLLBACK', route: '/sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback' }"
+  />
+</div>

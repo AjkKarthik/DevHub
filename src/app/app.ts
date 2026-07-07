@@ -1024,6 +1024,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SCOPE_IDENTITY() vs @@IDENTITY, Demonstrated', route: '/sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger' },
     { label: 'Testing Out-of-Order Sequence Commits', route: '/sql/sequences/testing-that-committed-sequence-ids-can-appear-out-of-order' },
   ],
+  'temp-tables': [
+    { label: 'Correcting the Nested-Proc Claim', route: '/sql/temp-tables/correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim' },
+    { label: 'Table Variables Survive ROLLBACK', route: '/sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback' },
+    { label: 'Table Variables Support Inline Indexes', route: '/sql/temp-tables/demonstrating-that-table-variables-support-inline-non-unique-indexes' },
+  ],
 };
 
 @Component({

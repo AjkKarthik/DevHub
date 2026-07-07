@@ -1177,7 +1177,12 @@ export const routes: Routes = [
         { path: 'demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger', loadComponent: () => import('./components/data/sql/sequences/subtopics/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger').then(m => m.DemonstratingTheScopeIdentityVsIdentityDivergenceWithATriggerSubtopic) },
         { path: 'testing-that-committed-sequence-ids-can-appear-out-of-order', loadComponent: () => import('./components/data/sql/sequences/subtopics/testing-that-committed-sequence-ids-can-appear-out-of-order/testing-that-committed-sequence-ids-can-appear-out-of-order').then(m => m.TestingThatCommittedSequenceIdsCanAppearOutOfOrderSubtopic) },
       ] },
-      { path: 'temp-tables',             loadComponent: () => import('./components/data/sql/temp-tables/temp-tables').then(m => m.SqlTempTables) },
+      { path: 'temp-tables', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/temp-tables/temp-tables').then(m => m.SqlTempTables) },
+        { path: 'correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim', loadComponent: () => import('./components/data/sql/temp-tables/subtopics/correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim/correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim').then(m => m.CorrectingTheNestedProcCannotCreateDuplicateTempTableClaimSubtopic) },
+        { path: 'demonstrating-that-table-variables-are-not-rolled-back-by-rollback', loadComponent: () => import('./components/data/sql/temp-tables/subtopics/demonstrating-that-table-variables-are-not-rolled-back-by-rollback/demonstrating-that-table-variables-are-not-rolled-back-by-rollback').then(m => m.DemonstratingThatTableVariablesAreNotRolledBackByRollbackSubtopic) },
+        { path: 'demonstrating-that-table-variables-support-inline-non-unique-indexes', loadComponent: () => import('./components/data/sql/temp-tables/subtopics/demonstrating-that-table-variables-support-inline-non-unique-indexes/demonstrating-that-table-variables-support-inline-non-unique-indexes').then(m => m.DemonstratingThatTableVariablesSupportInlineNonUniqueIndexesSubtopic) },
+      ] },
       { path: 'computed-columns',        loadComponent: () => import('./components/data/sql/computed-columns/computed-columns').then(m => m.SqlComputedColumns) },
       { path: 'stored-functions',        loadComponent: () => import('./components/data/sql/stored-functions/stored-functions').then(m => m.SqlStoredFunctions) },
       { path: 'cursors',                 loadComponent: () => import('./components/data/sql/cursors/cursors').then(m => m.SqlCursors) },

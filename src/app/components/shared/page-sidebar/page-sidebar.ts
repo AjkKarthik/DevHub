@@ -16251,6 +16251,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/temp-tables': {
+    apis: ['#temp', '@table', 'TEMP TABLE', 'ON COMMIT DROP'],
+    related: [{ label: 'CTEs', route: '/sql/ctes' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Transactions', route: '/sql/transactions' }],
+    tip: 'A nested procedure creating a #temp table with a name already used by an outer scope does not error — it silently shadows the outer table for the rest of its own scope.',
+    docs: [{ label: 'MSSQL Temporary Tables', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-local-temporary-table' }, { label: 'PostgreSQL Temporary Tables', url: 'https://www.postgresql.org/docs/current/sql-createtable.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['@table variables are NOT rolled back by ROLLBACK TRANSACTION, unlike #temp tables — the standard reason they\'re used for error-logging buffers.', 'Since SQL Server 2014, table variables support inline non-unique indexes, not just implicit PK/UNIQUE-backed ones.'],
+  },
+
+  'sql/temp-tables/correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim': {
+    apis: ['#temp', 'CREATE TABLE', 'scope shadowing'],
+    related: [
+      { label: 'Table Variables Survive ROLLBACK — next', route: '/sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback' },
+      { label: 'Temp Tables & Table Variables (overview)', route: '/sql/temp-tables' },
+    ],
+    tip: 'A nested procedure CAN create a #temp table with a name that collides with an outer scope\'s — it silently shadows the outer table instead of raising an "already exists" error.',
+    docs: [
+      { label: 'MSSQL Temporary Tables (Scope)', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-local-temporary-table' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The nested procedure\'s own tests pass fine — the bug only shows up as missing data in the OUTER scope after the nested call returns.',
+      'The shadowed outer #temp table is completely inaccessible by name for the duration of the nested scope.',
+    ],
+  },
+
+  'sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback': {
+    apis: ['@table', 'ROLLBACK TRANSACTION', 'TRY/CATCH'],
+    related: [
+      { label: 'Correcting the Nested-Proc Claim — previous', route: '/sql/temp-tables/correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim' },
+      { label: 'Table Variables Support Inline Indexes — next', route: '/sql/temp-tables/demonstrating-that-table-variables-support-inline-non-unique-indexes' },
+      { label: 'Temp Tables & Table Variables (overview)', route: '/sql/temp-tables' },
+    ],
+    tip: 'A @table variable\'s data survives a ROLLBACK TRANSACTION that wipes out a #temp table\'s data in the same block — the standard pattern for error-logging buffers.',
+    docs: [
+      { label: 'MSSQL Table Variables', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a separate property from "minimal logging" — rollback immunity and logging volume are unrelated characteristics of table variables.',
+      'The ordering of the diagnostic INSERT relative to ROLLBACK doesn\'t matter for a @table variable — it survives either way.',
+    ],
+  },
+
+  'sql/temp-tables/demonstrating-that-table-variables-support-inline-non-unique-indexes': {
+    apis: ['INDEX (inline)', 'NONCLUSTERED', 'DECLARE @t TABLE'],
+    related: [
+      { label: 'Table Variables Survive ROLLBACK — previous', route: '/sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback' },
+      { label: 'Temp Tables & Table Variables (overview)', route: '/sql/temp-tables' },
+    ],
+    tip: 'Since SQL Server 2014, table variables support inline INDEX declarations for non-unique, non-key columns — not just implicit indexes from PRIMARY KEY/UNIQUE.',
+    docs: [
+      { label: 'MSSQL Table Variable Inline Index Syntax', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A standalone CREATE INDEX after the DECLARE statement is still not possible — inline indexes must be part of the DECLARE @t TABLE (...) statement itself.',
+      'Indexing capability and query-plan statistics are separate concerns — table variables still lack accurate row-count statistics even with an inline index.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
