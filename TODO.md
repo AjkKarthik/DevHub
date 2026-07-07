@@ -1588,7 +1588,7 @@ off here with a date.
 - [x] `/sql/statistics` — Statistics & Query Optimizer (2026-07-08 — 3 subtopics: testing-that-the-challenges-solution-never-flags-which-stats-are-overdue, correcting-the-density-quizs-rows-per-distinct-value-claim, testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage)
 - [x] `/sql/full-text-search` — Full-Text Search (2026-07-08 — 3 subtopics: testing-that-the-challenges-search-vector-goes-stale-for-new-rows, correcting-the-ts-ranks-fixed-0-to-1-range-claim, testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run)
 - [x] `/sql/security` — SQL Security (2026-07-08 — 3 subtopics: testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes, testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement, testing-that-an-unset-session-context-silently-returns-zero-rows)
-- [ ] `/sql/connection-pooling` — Connection Pooling
+- [x] `/sql/connection-pooling` — Connection Pooling (2026-07-08 — 3 subtopics: testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column, correcting-the-claim-that-set-local-requires-pgbouncer-session-mode, testing-that-the-idle-in-transaction-queries-miss-the-aborted-state)
 
 #### TypeScript — 20 topic pages
 
