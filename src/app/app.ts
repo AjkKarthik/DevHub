@@ -886,6 +886,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Plan Cache Pollution Is About Query Text, Not Structure', route: '/sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure' },
     { label: 'Cascade Delete Demo Doesn’t Match the Page’s Own Schema', route: '/sql/rdbms-concepts/cascade-delete-demo-doesnt-match-the-pages-own-schema' },
   ],
+  'data-modeling': [
+    { label: 'Testing the Polymorphic CHECK Constraint', route: '/sql/data-modeling/testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap' },
+    { label: 'Recursive CTE Has No Cycle Protection', route: '/sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently' },
+    { label: 'UUID Example Contradicts the Page’s Own Theory', route: '/sql/data-modeling/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against' },
+  ],
 };
 
 @Component({

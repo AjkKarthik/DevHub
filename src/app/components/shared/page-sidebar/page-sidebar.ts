@@ -14445,6 +14445,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['A Many-to-Many relationship always needs a junction table — you cannot store it in two columns.', 'Avoid storing comma-separated values in a single column — that breaks 1NF and makes queries painful.'],
   },
+
+  'sql/data-modeling/testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap': {
+    apis: ['tSQLt.ExpectException', 'pgTAP throws_ok()', 'CHECK constraint'],
+    related: [
+      { label: 'Recursive CTE Cycle Risk — next', route: '/sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently' },
+      { label: 'Data Modeling (overview)', route: '/sql/data-modeling' },
+      { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' },
+    ],
+    tip: 'A polymorphic "exactly one parent" CHECK needs THREE tests — neither set, both set, and exactly one set — not just the happy path.',
+    docs: [
+      { label: 'tSQLt documentation', url: 'https://tsqlt.org/' },
+      { label: 'pgTAP documentation', url: 'https://pgtap.org/' },
+    ],
+    resources: [
+      { label: 'pgTAP', url: 'https://github.com/theory/pgtap', badge: 'code' },
+    ],
+    gotchas: [
+      'CHECK (a IS NOT NULL OR b IS NOT NULL) means "at least one," not "exactly one" — only a test inserting BOTH set catches this weakening.',
+      'A test suite missing the "both set" case can stay fully green even after this exact regression ships.',
+    ],
+  },
+
+  'sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently': {
+    apis: ['WITH RECURSIVE', 'MAXRECURSION', 'ARRAY[]'],
+    related: [
+      { label: 'Testing the Polymorphic CHECK — previous', route: '/sql/data-modeling/testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap' },
+      { label: 'UUID Theory Contradiction — next', route: '/sql/data-modeling/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against' },
+      { label: 'Data Modeling (overview)', route: '/sql/data-modeling' },
+    ],
+    tip: 'MSSQL hits a recoverable MAXRECURSION error on a cycle; PostgreSQL has no default limit and can loop until it exhausts memory.',
+    docs: [
+      { label: 'PostgreSQL WITH RECURSIVE', url: 'https://www.postgresql.org/docs/current/queries-with.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'MAXRECURSION only turns an infinite loop into an error after 100 levels of wasted work — it never prevents the cyclic data from persisting.',
+      'Track visited IDs and stop the recursive member before re-entering them — this protects both dialects regardless of hierarchy depth.',
+    ],
+  },
+
+  'sql/data-modeling/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against': {
+    apis: ['gen_random_uuid()', 'uuidv7()', 'NEWSEQUENTIALID()'],
+    related: [
+      { label: 'Recursive CTE Cycle Risk — previous', route: '/sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently' },
+      { label: 'Data Modeling (overview)', route: '/sql/data-modeling' },
+    ],
+    tip: 'The page\'s own PostgreSQL example defaults to gen_random_uuid() as the clustered PK — the exact random-UUID pattern its own theory warns fragments the index.',
+    docs: [
+      { label: 'PostgreSQL DDL', url: 'https://www.postgresql.org/docs/current/ddl.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Switching DEFAULT to uuidv7() only affects future inserts — existing rows stay fragmented until an index rebuild or table reorganization.',
+      'Pre-PG17, keep a sequential integer as the clustered PK and use the random UUID only as a secondary UNIQUE column instead.',
+    ],
+  },
+
   'sql/normalization': {
     apis: ['1NF', '2NF', '3NF', 'BCNF', 'Functional Dependency', 'Partial Dependency', 'Transitive Dependency'],
     related: [{ label: 'Data Modeling', route: '/sql/data-modeling' }, { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' }, { label: 'Schema Design', route: '/sql/schema-design' }],

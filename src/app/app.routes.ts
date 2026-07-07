@@ -1015,7 +1015,12 @@ export const routes: Routes = [
         { path: 'plan-cache-pollution-is-about-query-text-not-query-structure', loadComponent: () => import('./components/data/sql/rdbms-concepts/subtopics/plan-cache-pollution-is-about-query-text-not-query-structure/plan-cache-pollution-is-about-query-text-not-query-structure').then(m => m.PlanCachePollutionIsAboutQueryTextNotQueryStructureSubtopic) },
         { path: 'cascade-delete-demo-doesnt-match-the-pages-own-schema', loadComponent: () => import('./components/data/sql/rdbms-concepts/subtopics/cascade-delete-demo-doesnt-match-the-pages-own-schema/cascade-delete-demo-doesnt-match-the-pages-own-schema').then(m => m.CascadeDeleteDemoDoesntMatchThePagesOwnSchemaSubtopic) },
       ] },
-      { path: 'data-modeling',     loadComponent: () => import('./components/data/sql/data-modeling/data-modeling').then(m => m.SqlDataModeling) },
+      { path: 'data-modeling', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/data-modeling/data-modeling').then(m => m.SqlDataModeling) },
+        { path: 'testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap', loadComponent: () => import('./components/data/sql/data-modeling/subtopics/testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap/testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap').then(m => m.TestingThePolymorphicCheckConstraintWithTsqltAndPgtapSubtopic) },
+        { path: 'recursive-cte-has-no-cycle-protection-and-dialects-fail-differently', loadComponent: () => import('./components/data/sql/data-modeling/subtopics/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently').then(m => m.RecursiveCteHasNoCycleProtectionAndDialectsFailDifferentlySubtopic) },
+        { path: 'uuid-example-uses-the-exact-pattern-its-own-theory-warns-against', loadComponent: () => import('./components/data/sql/data-modeling/subtopics/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against').then(m => m.UuidExampleUsesTheExactPatternItsOwnTheoryWarnsAgainstSubtopic) },
+      ] },
       { path: 'normalization',     loadComponent: () => import('./components/data/sql/normalization/normalization').then(m => m.SqlNormalization) },
       { path: 'db-architecture',   loadComponent: () => import('./components/data/sql/db-architecture/db-architecture').then(m => m.SqlDbArchitecture) },
       { path: 'data-types',        loadComponent: () => import('./components/data/sql/data-types/data-types').then(m => m.SqlDataTypes) },

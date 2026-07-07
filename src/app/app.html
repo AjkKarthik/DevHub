@@ -1114,7 +1114,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/data-modeling"   routerLinkActive="active"><span class="nl-text">Data Modeling</span>@if(progress.isDone('sql-data-modeling')){<span class="nl-done">✓</span>}@if(diff('sql-data-modeling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/data-modeling" routerLinkActive="active">
+        <span class="nl-text">Data Modeling</span>
+        @if (progress.isDone('sql-data-modeling')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-data-modeling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('data-modeling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('data-modeling')"
+                  (click)="toggleSubtopics('data-modeling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('data-modeling'); as subs) {
+        @if (isSubtopicsExpanded('data-modeling')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/normalization"   routerLinkActive="active"><span class="nl-text">Normalization</span>@if(progress.isDone('sql-normalization')){<span class="nl-done">✓</span>}@if(diff('sql-normalization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/db-architecture" routerLinkActive="active"><span class="nl-text">DB Architecture</span>@if(progress.isDone('sql-db-architecture')){<span class="nl-done">✓</span>}@if(diff('sql-db-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/data-types"      routerLinkActive="active"><span class="nl-text">Data Types</span>@if(progress.isDone('sql-data-types')){<span class="nl-done">✓</span>}@if(diff('sql-data-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
