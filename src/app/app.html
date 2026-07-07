@@ -1258,7 +1258,26 @@
           </div>
         }
       }
-      <a routerLink="/sql/set-operations"         routerLinkActive="active"><span class="nl-text">Set Operations</span>@if(progress.isDone('sql-set-operations')){<span class="nl-done">✓</span>}@if(diff('sql-set-operations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/set-operations" routerLinkActive="active">
+        <span class="nl-text">Set Operations</span>
+        @if (progress.isDone('sql-set-operations')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-set-operations'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('set-operations')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('set-operations')"
+                  (click)="toggleSubtopics('set-operations', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('set-operations'); as subs) {
+        @if (isSubtopicsExpanded('set-operations')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/sql/null-handling"          routerLinkActive="active"><span class="nl-text">NULL Handling</span>@if(progress.isDone('sql-null-handling')){<span class="nl-done">✓</span>}@if(diff('sql-null-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/merge"                  routerLinkActive="active"><span class="nl-text">MERGE / Upsert</span>@if(progress.isDone('sql-merge')){<span class="nl-done">✓</span>}@if(diff('sql-merge');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/sql/subqueries" routerLinkActive="active">

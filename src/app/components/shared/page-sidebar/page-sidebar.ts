@@ -15514,6 +15514,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/set-operations': {
+    apis: ['UNION', 'UNION ALL', 'INTERSECT', 'EXCEPT'],
+    related: [{ label: 'Subqueries', route: '/sql/subqueries' }, { label: 'Joins', route: '/sql/joins' }, { label: 'JSON Features', route: '/sql/json-features' }],
+    tip: 'UNION ALL is almost always the right default — reach for UNION only when deduplication is semantically required, since it adds a sort/hash step UNION ALL skips entirely.',
+    docs: [{ label: 'T-SQL UNION', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/set-operators-union-transact-sql' }, { label: 'PostgreSQL Set Operations', url: 'https://www.postgresql.org/docs/current/queries-union.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['INTERSECT binds tighter than UNION/EXCEPT — always parenthesize explicitly when mixing them.', 'ORDER BY only applies to the final combined result, and must follow the last SELECT branch.'],
+  },
+
+  'sql/set-operations/testing-that-the-schema-comparison-query-misses-type-only-drift': {
+    apis: ['information_schema.columns', 'EXCEPT', 'data_type'],
+    related: [
+      { label: 'Making Precedence Concrete — next', route: '/sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result' },
+      { label: 'Set Operations (overview)', route: '/sql/set-operations' },
+    ],
+    tip: 'A schema-drift EXCEPT query is only as thorough as its SELECT list — comparing only column_name is structurally blind to type, length, and nullability drift on columns that kept the same name.',
+    docs: [
+      { label: 'information_schema.columns', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-information-schema-views/columns-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Months of "no drift" reports provide zero evidence about attributes the query never actually compares.',
+      'A shrinking VARCHAR length is a genuine data-integrity risk, not a cosmetic difference worth skipping.',
+    ],
+  },
+
+  'sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result': {
+    apis: ['INTERSECT precedence', 'parentheses'],
+    related: [
+      { label: 'Testing the Schema Comparison Query — previous', route: '/sql/set-operations/testing-that-the-schema-comparison-query-misses-type-only-drift' },
+      { label: 'Confirming EXCEPT vs NOT EXISTS Execution — next', route: '/sql/set-operations/confirming-that-except-materialises-both-sets-not-exists-short-circuits' },
+      { label: 'Set Operations (overview)', route: '/sql/set-operations' },
+    ],
+    tip: 'A UNION B INTERSECT C and (A UNION B) INTERSECT C can return genuinely different result sets from identical data — always parenthesize explicitly rather than relying on memorized precedence.',
+    docs: [
+      { label: 'MSSQL Set Operators', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/set-operators-union-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Unparenthesized mixed set operations silently group INTERSECT with its neighboring operand first, overriding simple left-to-right reading.',
+      'No error or warning is raised either way — both forms are valid SQL that just mean different things.',
+    ],
+  },
+
+  'sql/set-operations/confirming-that-except-materialises-both-sets-not-exists-short-circuits': {
+    apis: ['SET STATISTICS IO', 'Anti Semi Join', 'Nested Loops'],
+    related: [
+      { label: 'Making Precedence Concrete — previous', route: '/sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result' },
+      { label: 'Set Operations (overview)', route: '/sql/set-operations' },
+    ],
+    tip: 'EXCEPT\'s cost scales with the total size of BOTH inputs; NOT EXISTS\'s cost scales mainly with the outer set\'s size when the inner side is indexed — the gap widens as the inner table grows, independent of the outer set.',
+    docs: [
+      { label: 'MSSQL Execution Plans', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A query that slows down purely because an UNRELATED table grew is a sign of EXCEPT\'s materialize-both-sides cost, not necessarily a missing index.',
+      'The performance gap is sharpest specifically when the outer set is small/selective and the inner set is large and indexed.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

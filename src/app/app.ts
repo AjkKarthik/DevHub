@@ -969,6 +969,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'What Untyped OPENJSON Actually Returns', route: '/sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays' },
     { label: 'A NULL-Handling Gap in a Partial Index', route: '/sql/json-features/the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows' },
   ],
+  'set-operations': [
+    { label: 'Testing the Schema Comparison Query', route: '/sql/set-operations/testing-that-the-schema-comparison-query-misses-type-only-drift' },
+    { label: 'Making Precedence Concrete', route: '/sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result' },
+    { label: 'Confirming EXCEPT vs NOT EXISTS Execution', route: '/sql/set-operations/confirming-that-except-materialises-both-sets-not-exists-short-circuits' },
+  ],
 };
 
 @Component({
