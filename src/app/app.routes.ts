@@ -1141,7 +1141,12 @@ export const routes: Routes = [
         { path: 'group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column', loadComponent: () => import('./components/data/sql/date-functions/subtopics/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column').then(m => m.GroupByDateTruncStillNeedsAnExpressionIndexNotTheRawColumnSubtopic) },
         { path: 'demonstrating-at-time-zones-automatic-dst-adjustment-across-march', loadComponent: () => import('./components/data/sql/date-functions/subtopics/demonstrating-at-time-zones-automatic-dst-adjustment-across-march/demonstrating-at-time-zones-automatic-dst-adjustment-across-march').then(m => m.DemonstratingAtTimeZonesAutomaticDstAdjustmentAcrossMarchSubtopic) },
       ] },
-      { path: 'conditional-expressions',  loadComponent: () => import('./components/data/sql/conditional-expressions/conditional-expressions').then(m => m.SqlConditionalExpressions) },
+      { path: 'conditional-expressions', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/conditional-expressions/conditional-expressions').then(m => m.SqlConditionalExpressions) },
+        { path: 'case-when-order-is-standard-guaranteed-not-just-typical-behavior', loadComponent: () => import('./components/data/sql/conditional-expressions/subtopics/case-when-order-is-standard-guaranteed-not-just-typical-behavior/case-when-order-is-standard-guaranteed-not-just-typical-behavior').then(m => m.CaseWhenOrderIsStandardGuaranteedNotJustTypicalBehaviorSubtopic) },
+        { path: 'testing-that-nullif-count-zero-can-never-actually-fire', loadComponent: () => import('./components/data/sql/conditional-expressions/subtopics/testing-that-nullif-count-zero-can-never-actually-fire/testing-that-nullif-count-zero-can-never-actually-fire').then(m => m.TestingThatNullifCountZeroCanNeverActuallyFireSubtopic) },
+        { path: 'nested-iif-where-example-contradicts-its-own-nesting-advice', loadComponent: () => import('./components/data/sql/conditional-expressions/subtopics/nested-iif-where-example-contradicts-its-own-nesting-advice/nested-iif-where-example-contradicts-its-own-nesting-advice').then(m => m.NestedIifWhereExampleContradictsItsOwnNestingAdviceSubtopic) },
+      ] },
       { path: 'math-functions',           loadComponent: () => import('./components/data/sql/math-functions/math-functions').then(m => m.SqlMathFunctions) },
       { path: 'pivoting',                 loadComponent: () => import('./components/data/sql/pivoting/pivoting').then(m => m.SqlPivoting) },
       { path: 'constraints',             loadComponent: () => import('./components/data/sql/constraints/constraints').then(m => m.SqlConstraints) },

@@ -15849,6 +15849,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/conditional-expressions': {
+    apis: ['CASE WHEN', 'IIF', 'NULLIF', 'COALESCE', 'FILTER (WHERE ...)'],
+    related: [{ label: 'NULL Handling', route: '/sql/null-handling' }, { label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Date & Time Functions', route: '/sql/date-functions' }],
+    tip: 'CASE WHEN branch order is guaranteed by the SQL standard — unlike WHERE clause AND predicate order, it is always safe to rely on for a divide-by-zero guard.',
+    docs: [{ label: 'MSSQL CASE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/case-transact-sql' }, { label: 'PostgreSQL CASE', url: 'https://www.postgresql.org/docs/current/functions-conditional.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Nesting IIF inside another IIF\'s false branch becomes unreadable fast — use a flat searched CASE for 3+ conditions.', 'NULLIF(COUNT(*), 0) is dead code in a plain GROUP BY query, since COUNT(*) can never be 0 for an emitted group.'],
+  },
+
+  'sql/conditional-expressions/case-when-order-is-standard-guaranteed-not-just-typical-behavior': {
+    apis: ['CASE WHEN', 'NULLIF', 'WHERE ... AND'],
+    related: [
+      { label: 'Testing the Dead NULLIF(COUNT(*), 0) Guard — next', route: '/sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire' },
+      { label: 'Conditional Expressions (overview)', route: '/sql/conditional-expressions' },
+    ],
+    tip: 'CASE WHEN\'s sequential, first-match branch evaluation is part of the SQL standard\'s definition — unlike WHERE clause AND predicate order, which the optimizer is free to reorder.',
+    docs: [
+      { label: 'MSSQL CASE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/case-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A WHERE clause divide-by-zero guard via AND-ed predicates is NOT reliable — wrap the division itself in NULLIF or CASE instead.',
+      'This guarantee is specific to CASE\'s own WHEN branches, not a general SQL evaluation-order rule.',
+    ],
+  },
+
+  'sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire': {
+    apis: ['NULLIF', 'COUNT(*)', 'GROUP BY'],
+    related: [
+      { label: 'Confirming CASE’s Guaranteed Evaluation Order — previous', route: '/sql/conditional-expressions/case-when-order-is-standard-guaranteed-not-just-typical-behavior' },
+      { label: 'The Nested IIF Contradiction — next', route: '/sql/conditional-expressions/nested-iif-where-example-contradicts-its-own-nesting-advice' },
+      { label: 'Conditional Expressions (overview)', route: '/sql/conditional-expressions' },
+    ],
+    tip: 'GROUP BY only emits a row for a group with at least one matching row — COUNT(*) can never be 0 for an emitted group, making a plain NULLIF(COUNT(*), 0) guard dead code in that query shape.',
+    docs: [
+      { label: 'PostgreSQL Aggregate Functions', url: 'https://www.postgresql.org/docs/current/functions-aggregate.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The same NULLIF(COUNT(*), 0) guard becomes load-bearing the moment the query is rewritten with a LEFT JOIN against a generated calendar that CAN produce zero-count groups.',
+      'Dead defensive code isn\'t automatically a bug — it can be a harmless habit copied from a genuinely necessary pattern elsewhere.',
+    ],
+  },
+
+  'sql/conditional-expressions/nested-iif-where-example-contradicts-its-own-nesting-advice': {
+    apis: ['IIF', 'CASE WHEN'],
+    related: [
+      { label: 'Testing the Dead NULLIF(COUNT(*), 0) Guard — previous', route: '/sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire' },
+      { label: 'Conditional Expressions (overview)', route: '/sql/conditional-expressions' },
+    ],
+    tip: 'Nesting IIF inside another IIF\'s false branch adds a level of nesting per condition — a searched CASE keeps every branch at the same flat indentation level regardless of how many are added.',
+    docs: [
+      { label: 'MSSQL IIF', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/logical-functions-iif-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'IIF is a two-branch shorthand — the moment a third condition is needed, switch to CASE rather than nesting another IIF.',
+      'A WHERE clause is the worst place for hard-to-verify nested conditionals, since a mistake silently changes which rows are returned.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

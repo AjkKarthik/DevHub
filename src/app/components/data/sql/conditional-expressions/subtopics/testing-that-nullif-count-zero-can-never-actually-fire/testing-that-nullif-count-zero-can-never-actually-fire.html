@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Conditional Expressions"
+    topicRoute="/sql/conditional-expressions"
+    subtopicLabel="Testing a Defensive Guard for Reachability"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That NULLIF(COUNT(*), 0) Can Never Actually Fire</h1>
+  <p class="page-subtitle">
+    The challenge solution's fulfilment-rate guard looks like real divide-by-zero protection — GROUP BY's own
+    mechanics prove it can never actually trigger, in that specific query.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Having found a harmless dead guard, the final subtopic finds a real self-contradiction — a code example
+      on the main page doing exactly what its own Q&amp;A a few sections later says to avoid.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Conditional Expressions"
+    topicRoute="/sql/conditional-expressions"
+    [prev]="{ label: 'Confirming CASE’s Guaranteed Evaluation Order', route: '/sql/conditional-expressions/case-when-order-is-standard-guaranteed-not-just-typical-behavior' }"
+    [next]="{ label: 'The Nested IIF Contradiction', route: '/sql/conditional-expressions/nested-iif-where-example-contradicts-its-own-nesting-advice' }"
+  />
+</div>

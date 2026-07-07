@@ -994,6 +994,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'GROUP BY DATE_TRUNC Needs an Expression Index', route: '/sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column' },
     { label: 'AT TIME ZONE’s Automatic DST Adjustment', route: '/sql/date-functions/demonstrating-at-time-zones-automatic-dst-adjustment-across-march' },
   ],
+  'conditional-expressions': [
+    { label: 'Confirming CASE’s Guaranteed Evaluation Order', route: '/sql/conditional-expressions/case-when-order-is-standard-guaranteed-not-just-typical-behavior' },
+    { label: 'Testing the Dead NULLIF(COUNT(*), 0) Guard', route: '/sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire' },
+    { label: 'The Nested IIF Contradiction', route: '/sql/conditional-expressions/nested-iif-where-example-contradicts-its-own-nesting-advice' },
+  ],
 };
 
 @Component({

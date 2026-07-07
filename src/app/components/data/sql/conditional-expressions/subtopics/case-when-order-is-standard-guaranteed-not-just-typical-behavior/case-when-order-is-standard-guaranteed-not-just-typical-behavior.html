@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Conditional Expressions"
+    topicRoute="/sql/conditional-expressions"
+    subtopicLabel="Confirming CASE's Guaranteed Evaluation Order"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">CASE WHEN Order Is Standard Guaranteed, Not Just Typical Behavior</h1>
+  <p class="page-subtitle">
+    The main page hedges CASE's branch order as "most engines do it in practice" — it's actually part of the
+    SQL standard, unlike WHERE clause AND predicate order, which genuinely isn't.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With CASE's evaluation guarantee confirmed, the next subtopic checks a piece of "defensive" code in the
+      main page's own challenge solution — NULLIF(COUNT(*), 0) — to see whether it can ever actually fire.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Conditional Expressions"
+    topicRoute="/sql/conditional-expressions"
+    [next]="{ label: 'Testing the Dead NULLIF(COUNT(*), 0) Guard', route: '/sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire' }"
+  />
+</div>
