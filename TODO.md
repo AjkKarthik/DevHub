@@ -1580,7 +1580,7 @@ off here with a date.
 - [x] `/sql/triggers` — Triggers (2026-07-07 — 3 subtopics: testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology, testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint, correcting-which-setting-actually-stops-cross-table-trigger-recursion)
 - [x] `/sql/dynamic-sql` — Dynamic SQL (2026-07-07 — 3 subtopics: search-table-is-injection-safe-but-not-access-control-safe, demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all, testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk)
 - [x] `/sql/isolation-levels` — Isolation Levels (2026-07-07 — 3 subtopics: testing-that-the-challenges-serializable-solution-needs-a-retry-loop, snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads, demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi)
-- [ ] `/sql/locking` — Locking & Deadlocks
+- [x] `/sql/locking` — Locking & Deadlocks (2026-07-08 — 3 subtopics: testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql, demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock, testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique)
 - [ ] `/sql/execution-plans` — Execution Plans
 - [ ] `/sql/partitioning` — Partitioning
 - [ ] `/sql/bulk-operations` — Bulk Operations
