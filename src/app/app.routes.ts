@@ -1075,7 +1075,12 @@ export const routes: Routes = [
         { path: 'why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential', loadComponent: () => import('./components/data/sql/window-functions/subtopics/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential').then(m => m.WhyFirstValuesExplicitFrameIsANoOpButLastValuesIsEssentialSubtopic) },
         { path: 'confirming-that-identical-over-clauses-really-do-share-a-single-sort', loadComponent: () => import('./components/data/sql/window-functions/subtopics/confirming-that-identical-over-clauses-really-do-share-a-single-sort/confirming-that-identical-over-clauses-really-do-share-a-single-sort').then(m => m.ConfirmingThatIdenticalOverClausesReallyDoShareASingleSortSubtopic) },
       ] },
-      { path: 'indexes',           loadComponent: () => import('./components/data/sql/indexes/indexes').then(m => m.SqlIndexes) },
+      { path: 'indexes', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/indexes/indexes').then(m => m.SqlIndexes) },
+        { path: 'testing-that-a-filtered-index-actually-gets-used-not-silently-skipped', loadComponent: () => import('./components/data/sql/indexes/subtopics/testing-that-a-filtered-index-actually-gets-used-not-silently-skipped/testing-that-a-filtered-index-actually-gets-used-not-silently-skipped').then(m => m.TestingThatAFilteredIndexActuallyGetsUsedNotSilentlySkippedSubtopic) },
+        { path: 'quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes', loadComponent: () => import('./components/data/sql/indexes/subtopics/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes').then(m => m.QuantifyingWhyAWideClusteredKeyMultipliesStorageAcrossIndexesSubtopic) },
+        { path: 'the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule', loadComponent: () => import('./components/data/sql/indexes/subtopics/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule').then(m => m.TheNoSortNeededClaimBreaksItsOwnLeftmostPrefixRuleSubtopic) },
+      ] },
       { path: 'transactions',      loadComponent: () => import('./components/data/sql/transactions/transactions').then(m => m.SqlTransactions) },
       { path: 'schema-design',     loadComponent: () => import('./components/data/sql/schema-design/schema-design').then(m => m.SqlSchemaDesign) },
       { path: 'stored-procedures', loadComponent: () => import('./components/data/sql/stored-procedures/stored-procedures').then(m => m.SqlStoredProcedures) },

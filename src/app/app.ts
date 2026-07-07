@@ -936,6 +936,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Why One Frame Fix Matters, the Other Doesn’t', route: '/sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential' },
     { label: 'Confirming the Shared-Sort Claim', route: '/sql/window-functions/confirming-that-identical-over-clauses-really-do-share-a-single-sort' },
   ],
+  'indexes': [
+    { label: 'Testing Filtered Index Usage', route: '/sql/indexes/testing-that-a-filtered-index-actually-gets-used-not-silently-skipped' },
+    { label: 'Quantifying the Wide Key Cost', route: '/sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes' },
+    { label: 'A Claim That Breaks Its Own Rule', route: '/sql/indexes/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule' },
+  ],
 };
 
 @Component({

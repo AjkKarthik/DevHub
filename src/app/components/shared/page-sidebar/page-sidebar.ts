@@ -15120,6 +15120,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Too many indexes slow down INSERT/UPDATE/DELETE — every write must update all indexes on the table.', 'SQL Server only uses one clustered index per table — choose the column most used in range queries (usually a sequential key).'],
   },
+
+  'sql/indexes/testing-that-a-filtered-index-actually-gets-used-not-silently-skipped': {
+    apis: ['sys.dm_db_index_usage_stats', 'filtered index', 'partial index'],
+    related: [
+      { label: 'Quantifying the Wide Key Cost — next', route: '/sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes' },
+      { label: 'Indexes (overview)', route: '/sql/indexes' },
+    ],
+    tip: 'A filtered/partial index is only used when the optimiser can PROVE the query\'s predicate is satisfied — an IN-list or parameterized value often silently defeats that proof.',
+    docs: [
+      { label: 'MSSQL Filtered Indexes', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/indexes/create-filtered-indexes' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A parameterized WHERE clause frequently prevents the optimiser from proving a filtered index\'s predicate is satisfied, silently falling back to a scan.',
+      'sys.dm_db_index_usage_stats is the direct way to confirm usage — do not assume from the CREATE INDEX statement alone.',
+    ],
+  },
+
+  'sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes': {
+    apis: ['UNIQUEIDENTIFIER', 'row locator', 'sys.dm_db_index_physical_stats'],
+    related: [
+      { label: 'Testing Filtered Index Usage — previous', route: '/sql/indexes/testing-that-a-filtered-index-actually-gets-used-not-silently-skipped' },
+      { label: 'A Claim That Breaks Its Own Rule — next', route: '/sql/indexes/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule' },
+      { label: 'Indexes (overview)', route: '/sql/indexes' },
+    ],
+    tip: 'Every non-clustered index carries the FULL clustered key as its row locator — a wide clustered key\'s extra bytes are duplicated across every index on the table, not stored just once.',
+    docs: [
+      { label: 'MSSQL Clustered Index Design', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A GUID clustered key doesn\'t just cost 8 extra bytes per row once — it costs 8 bytes per row, per non-clustered index, plus extra B-tree navigation overhead.',
+      'A GUID can still be fully usable as a business key via a separate non-clustered UNIQUE index, without widening the clustered key.',
+    ],
+  },
+
+  'sql/indexes/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule': {
+    apis: ['leftmost prefix rule', 'ORDER BY elimination', 'Sort operator'],
+    related: [
+      { label: 'Quantifying the Wide Key Cost — previous', route: '/sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes' },
+      { label: 'Indexes (overview)', route: '/sql/indexes' },
+    ],
+    tip: 'A composite index (A, B, C) only delivers pre-sorted-by-C output within a single value of B — a query filtering only on A still needs an explicit Sort across multiple B groups.',
+    docs: [
+      { label: 'MSSQL Composite Index Design', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A "no Sort operator needed" comment should be checked against the actual execution plan — it can be wrong even when it directly follows the index definition in the same reference material.',
+      'The genuinely sort-eliminating query needs an equality predicate on every middle key column, not just the leading one.',
+    ],
+  },
+
   'sql/transactions': {
     apis: ['BEGIN TRANSACTION', 'COMMIT', 'ROLLBACK', 'SAVEPOINT', 'SET TRANSACTION ISOLATION LEVEL', 'READ COMMITTED', 'SERIALIZABLE', 'SNAPSHOT', 'SELECT ... FOR UPDATE', 'WITH (NOLOCK)'],
     related: [{ label: 'Performance', route: '/sql/performance' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Indexes', route: '/sql/indexes' }],
