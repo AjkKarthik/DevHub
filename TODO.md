@@ -1560,7 +1560,7 @@ off here with a date.
 - [x] `/sql/transactions` — Transactions (2026-07-07 — 3 subtopics: testing-that-the-bank-transfer-example-is-already-safe-without-updlock, demonstrating-write-skew-the-one-anomaly-left-without-code, the-postgresql-savepoint-example-rolls-back-a-successful-insert)
 - [x] `/sql/schema-design` — Schema Design (2026-07-07 — 3 subtopics: testing-whether-step-1s-default-actually-backfills-existing-rows, the-postgresql-enum-alternative-is-harder-to-evolve-not-easier, adding-the-lookup-table-pattern-never-retires-the-original-check)
 - [x] `/sql/stored-procedures` — Stored Procedures (2026-07-07 — 3 subtopics: testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls, confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down, demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch)
-- [ ] `/sql/performance` — Query Performance
+- [x] `/sql/performance` — Query Performance (2026-07-07 — 3 subtopics: testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows, the-missing-index-impact-score-formula-is-missing-a-100, demonstrating-the-execution-plan-regression-test-the-page-only-describes)
 - [ ] `/sql/json-features` — JSON Features
 - [ ] `/sql/set-operations` — Set Operations
 - [ ] `/sql/null-handling` — NULL Handling
