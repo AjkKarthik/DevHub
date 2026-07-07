@@ -1546,7 +1546,7 @@ off here with a date.
 #### SQL — 44 topic pages
 
 - [x] `/sql/rdbms-concepts` — RDBMS Concepts (2026-07-07 — 3 subtopics: testing-constraints-with-tsqlt-and-pgtap, plan-cache-pollution-is-about-query-text-not-query-structure, cascade-delete-demo-doesnt-match-the-pages-own-schema)
-- [ ] `/sql/data-modeling` — Data Modeling
+- [x] `/sql/data-modeling` — Data Modeling (2026-07-07 — 3 subtopics: testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap, recursive-cte-has-no-cycle-protection-and-dialects-fail-differently, uuid-example-uses-the-exact-pattern-its-own-theory-warns-against)
 - [ ] `/sql/normalization` — Normalization
 - [ ] `/sql/db-architecture` — Database Architecture
 - [ ] `/sql/data-types` — Data Types
