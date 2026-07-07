@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Stored Functions"
+    topicRoute="/sql/stored-functions"
+    subtopicLabel="Writing the Code the Quiz Only Described"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Writing an Actual CREATE AGGREGATE Example the Quiz Only Describes</h1>
+  <p class="page-subtitle">
+    The quiz names SFUNC, STYPE, and FINALFUNC in a sentence — here's real, runnable code for a custom
+    PRODUCT() aggregate, plus where FINALFUNC actually becomes necessary.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="PostgreSQL 7.0" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With a real custom aggregate now working, the final subtopic returns to MSSQL to check a specific
+      dialect-portability caveat in the page's own business-days function.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Stored Functions"
+    topicRoute="/sql/stored-functions"
+    [prev]="{ label: 'Correcting the search_path Pin', route: '/sql/stored-functions/correcting-the-search-path-public-pin-in-the-security-definer-example' }"
+    [next]="{ label: 'Business Days Depends on SET DATEFIRST', route: '/sql/stored-functions/demonstrating-that-business-days-depends-on-set-datefirst' }"
+  />
+</div>

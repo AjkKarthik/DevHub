@@ -16385,6 +16385,73 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'sql/stored-functions': {
+    apis: ['CREATE FUNCTION', 'LANGUAGE plpgsql', 'SECURITY DEFINER', 'CREATE AGGREGATE'],
+    related: [{ label: 'Views', route: '/sql/views' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Security', route: '/sql/security' }],
+    tip: 'SECURITY DEFINER functions should pin search_path to an empty string, not "public" — PostgreSQL\'s own docs warn that public is often writable, defeating the search_path pin as a hijacking defense.',
+    docs: [{ label: 'MSSQL CREATE FUNCTION', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql' }, { label: 'PostgreSQL CREATE FUNCTION', url: 'https://www.postgresql.org/docs/current/sql-createfunction.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A custom PostgreSQL aggregate needs SFUNC/STYPE at minimum — FINALFUNC is only required when the running state isn\'t already the final answer.', 'MSSQL DATEDIFF(WEEK, ...) and DATEPART(WEEKDAY, ...) both depend on @@DATEFIRST — a function built on them can return different results across environments with different default languages.'],
+  },
+
+  'sql/stored-functions/correcting-the-search-path-public-pin-in-the-security-definer-example': {
+    apis: ['SECURITY DEFINER', 'SET search_path', 'schema qualification'],
+    related: [
+      { label: 'A Real CREATE AGGREGATE Example — next', route: '/sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes' },
+      { label: 'Stored Functions (overview)', route: '/sql/stored-functions' },
+    ],
+    tip: 'PostgreSQL\'s own docs recommend SET search_path = \'\' (empty) for SECURITY DEFINER functions, not a fixed schema like public, which is often writable by ordinary users.',
+    docs: [
+      { label: 'PostgreSQL Writing SECURITY DEFINER Functions Safely', url: 'https://www.postgresql.org/docs/current/sql-createfunction.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Pinning search_path to a fixed value is necessary but not sufficient — the fixed value must not include any schema an attacker can write to.',
+      'search_path = \'\' forces every object reference to be explicitly schema-qualified, closing the attack surface rather than relocating it.',
+    ],
+  },
+
+  'sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes': {
+    apis: ['CREATE AGGREGATE', 'SFUNC', 'STYPE', 'FINALFUNC'],
+    related: [
+      { label: 'Correcting the search_path Pin — previous', route: '/sql/stored-functions/correcting-the-search-path-public-pin-in-the-security-definer-example' },
+      { label: 'Business Days Depends on SET DATEFIRST — next', route: '/sql/stored-functions/demonstrating-that-business-days-depends-on-set-datefirst' },
+      { label: 'Stored Functions (overview)', route: '/sql/stored-functions' },
+    ],
+    tip: 'A custom aggregate behaves exactly like SUM/AVG/COUNT once defined — usable in GROUP BY, HAVING, and window function OVER clauses with no special calling syntax.',
+    docs: [
+      { label: 'PostgreSQL CREATE AGGREGATE', url: 'https://www.postgresql.org/docs/current/sql-createaggregate.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'FINALFUNC is optional — only needed when the running STATE isn\'t already the final output (like AVG needing a final division).',
+      'Aggregates like MEDIAN need a growable STYPE (e.g. an array) rather than a small fixed-size running summary.',
+    ],
+  },
+
+  'sql/stored-functions/demonstrating-that-business-days-depends-on-set-datefirst': {
+    apis: ['DATEDIFF(WEEK, ...)', 'DATEPART(WEEKDAY, ...)', '@@DATEFIRST'],
+    related: [
+      { label: 'A Real CREATE AGGREGATE Example — previous', route: '/sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes' },
+      { label: 'Stored Functions (overview)', route: '/sql/stored-functions' },
+    ],
+    tip: 'DATEDIFF(WEEK, ...) and DATEPART(WEEKDAY, ...) both depend on the session\'s @@DATEFIRST setting — the same function and inputs can return different results across environments.',
+    docs: [
+      { label: 'MSSQL SET DATEFIRST', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-datefirst-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      '@@DATEFIRST is set implicitly by a login\'s default LANGUAGE, which commonly differs across dev, CI, and production without explicit configuration.',
+      'A fixed-reference calculation like DATEDIFF(DAY, 0, d) % 7 avoids the dependency entirely, unlike DATEDIFF(WEEK, ...) or DATEPART(WEEKDAY, ...).',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

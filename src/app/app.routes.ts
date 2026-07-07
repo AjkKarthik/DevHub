@@ -1189,7 +1189,12 @@ export const routes: Routes = [
         { path: 'checksum-is-not-stable-across-sql-server-versions-or-patches', loadComponent: () => import('./components/data/sql/computed-columns/subtopics/checksum-is-not-stable-across-sql-server-versions-or-patches/checksum-is-not-stable-across-sql-server-versions-or-patches').then(m => m.ChecksumIsNotStableAcrossSqlServerVersionsOrPatchesSubtopic) },
         { path: 'adding-a-stored-generated-column-locks-the-whole-table', loadComponent: () => import('./components/data/sql/computed-columns/subtopics/adding-a-stored-generated-column-locks-the-whole-table/adding-a-stored-generated-column-locks-the-whole-table').then(m => m.AddingAStoredGeneratedColumnLocksTheWholeTableSubtopic) },
       ] },
-      { path: 'stored-functions',        loadComponent: () => import('./components/data/sql/stored-functions/stored-functions').then(m => m.SqlStoredFunctions) },
+      { path: 'stored-functions', children: [
+        { path: '', loadComponent: () => import('./components/data/sql/stored-functions/stored-functions').then(m => m.SqlStoredFunctions) },
+        { path: 'correcting-the-search-path-public-pin-in-the-security-definer-example', loadComponent: () => import('./components/data/sql/stored-functions/subtopics/correcting-the-search-path-public-pin-in-the-security-definer-example/correcting-the-search-path-public-pin-in-the-security-definer-example').then(m => m.CorrectingTheSearchPathPublicPinInTheSecurityDefinerExampleSubtopic) },
+        { path: 'writing-an-actual-create-aggregate-example-the-quiz-only-describes', loadComponent: () => import('./components/data/sql/stored-functions/subtopics/writing-an-actual-create-aggregate-example-the-quiz-only-describes/writing-an-actual-create-aggregate-example-the-quiz-only-describes').then(m => m.WritingAnActualCreateAggregateExampleTheQuizOnlyDescribesSubtopic) },
+        { path: 'demonstrating-that-business-days-depends-on-set-datefirst', loadComponent: () => import('./components/data/sql/stored-functions/subtopics/demonstrating-that-business-days-depends-on-set-datefirst/demonstrating-that-business-days-depends-on-set-datefirst').then(m => m.DemonstratingThatBusinessDaysDependsOnSetDatefirstSubtopic) },
+      ] },
       { path: 'cursors',                 loadComponent: () => import('./components/data/sql/cursors/cursors').then(m => m.SqlCursors) },
       { path: 'triggers',                loadComponent: () => import('./components/data/sql/triggers/triggers').then(m => m.SqlTriggers) },
       { path: 'dynamic-sql',             loadComponent: () => import('./components/data/sql/dynamic-sql/dynamic-sql').then(m => m.SqlDynamicSql) },

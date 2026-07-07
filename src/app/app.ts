@@ -1034,6 +1034,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'CHECKSUM Is Not Version-Stable', route: '/sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches' },
     { label: 'Adding a STORED Column Locks the Whole Table', route: '/sql/computed-columns/adding-a-stored-generated-column-locks-the-whole-table' },
   ],
+  'stored-functions': [
+    { label: 'Correcting the search_path Pin', route: '/sql/stored-functions/correcting-the-search-path-public-pin-in-the-security-definer-example' },
+    { label: 'A Real CREATE AGGREGATE Example', route: '/sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes' },
+    { label: 'Business Days Depends on SET DATEFIRST', route: '/sql/stored-functions/demonstrating-that-business-days-depends-on-set-datefirst' },
+  ],
 };
 
 @Component({
