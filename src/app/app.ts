@@ -1154,6 +1154,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'StringKeys Excludes an Optional String', route: '/typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property' },
     { label: 'OptionalToNullable Detects Implicit undefined', route: '/typescript/mapped-types/testing-that-optionaltonullable-detects-implicit-undefined' },
   ],
+  'conditional-types': [
+    { label: 'Equals Can’t Distinguish any From unknown', route: '/typescript/conditional-types/testing-that-equals-cannot-distinguish-any-from-unknown' },
+    { label: 'Head of an Empty Tuple Hides undefined', route: '/typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never' },
+    { label: 'MyReturnType Rejects a Class Constructor', route: '/typescript/conditional-types/testing-that-myreturntype-rejects-a-class-constructor' },
+  ],
 };
 
 @Component({

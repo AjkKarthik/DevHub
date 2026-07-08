@@ -1430,7 +1430,12 @@ export const routes: Routes = [
       { path: 'testing-that-stringkeys-excludes-an-optional-string-property', loadComponent: () => import('./components/frontend/typescript/mapped-types/subtopics/testing-that-stringkeys-excludes-an-optional-string-property/testing-that-stringkeys-excludes-an-optional-string-property').then(m => m.TestingThatStringkeysExcludesAnOptionalStringPropertySubtopic) },
       { path: 'testing-that-optionaltonullable-detects-implicit-undefined', loadComponent: () => import('./components/frontend/typescript/mapped-types/subtopics/testing-that-optionaltonullable-detects-implicit-undefined/testing-that-optionaltonullable-detects-implicit-undefined').then(m => m.TestingThatOptionaltonullableDetectsImplicitUndefinedSubtopic) },
     ] },
-    { path: 'conditional-types',       loadComponent: () => import('./components/frontend/typescript/conditional-types/conditional-types').then(m => m.TsConditionalTypes) },
+    { path: 'conditional-types', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/conditional-types/conditional-types').then(m => m.TsConditionalTypes) },
+      { path: 'testing-that-equals-cannot-distinguish-any-from-unknown', loadComponent: () => import('./components/frontend/typescript/conditional-types/subtopics/testing-that-equals-cannot-distinguish-any-from-unknown/testing-that-equals-cannot-distinguish-any-from-unknown').then(m => m.TestingThatEqualsCannotDistinguishAnyFromUnknownSubtopic) },
+      { path: 'testing-that-head-of-an-empty-tuple-hides-undefined-behind-never', loadComponent: () => import('./components/frontend/typescript/conditional-types/subtopics/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never').then(m => m.TestingThatHeadOfAnEmptyTupleHidesUndefinedBehindNeverSubtopic) },
+      { path: 'testing-that-myreturntype-rejects-a-class-constructor', loadComponent: () => import('./components/frontend/typescript/conditional-types/subtopics/testing-that-myreturntype-rejects-a-class-constructor/testing-that-myreturntype-rejects-a-class-constructor').then(m => m.TestingThatMyreturntypeRejectsAClassConstructorSubtopic) },
+    ] },
     { path: 'template-literal-types',  loadComponent: () => import('./components/frontend/typescript/template-literal-types/template-literal-types').then(m => m.TsTemplateLiteralTypes) },
     { path: 'classes',                 loadComponent: () => import('./components/frontend/typescript/classes/classes').then(m => m.TsClasses) },
     { path: 'decorators',              loadComponent: () => import('./components/frontend/typescript/decorators/decorators').then(m => m.TsDecorators) },

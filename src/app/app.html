@@ -2237,7 +2237,26 @@
           </div>
         }
       }
-      <a routerLink="/typescript/conditional-types"       routerLinkActive="active"><span class="nl-text">Conditional Types</span>@if(progress.isDone('ts-conditional-types')){<span class="nl-done">✓</span>}@if(diff('ts-conditional-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/conditional-types" routerLinkActive="active">
+        <span class="nl-text">Conditional Types</span>
+        @if (progress.isDone('ts-conditional-types')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-conditional-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('conditional-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('conditional-types')"
+                  (click)="toggleSubtopics('conditional-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('conditional-types'); as subs7) {
+        @if (isSubtopicsExpanded('conditional-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs7; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/typescript/template-literal-types"  routerLinkActive="active"><span class="nl-text">Template Literal Types</span>@if(progress.isDone('ts-template-literal-types')){<span class="nl-done">✓</span>}@if(diff('ts-template-literal-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

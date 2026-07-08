@@ -10519,6 +10519,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/conditional-types/testing-that-equals-cannot-distinguish-any-from-unknown': {
+    apis: ['Equals<A,B>', 'IsAny<T>', 'bidirectional assignability'],
+    related: [
+      { label: 'Head of an Empty Tuple Hides undefined — next', route: '/typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never' },
+      { label: 'Conditional Types (overview)', route: '/typescript/conditional-types' },
+    ],
+    tip: 'any breaks Equals against every type it is compared with, not just string — Equals<any, unknown> is also true. Combine with IsAny<T> for a genuinely accurate type-equality check.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'any is bidirectionally assignable with virtually everything — any bidirectional-assignability-based equality check will misreport it as equal to its comparison target.',
+      'IsAny<T> = 0 extends (1 & T) ? true : false is the standard trick to detect any specifically.',
+    ],
+  },
+
+  'typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never': {
+    apis: ['never (bottom type)', 'infer', 'unsound generic return type'],
+    related: [
+      { label: 'Equals Can’t Distinguish any From unknown — previous', route: '/typescript/conditional-types/testing-that-equals-cannot-distinguish-any-from-unknown' },
+      { label: 'MyReturnType Rejects a Class Constructor — next', route: '/typescript/conditional-types/testing-that-myreturntype-rejects-a-class-constructor' },
+      { label: 'Conditional Types (overview)', route: '/typescript/conditional-types' },
+    ],
+    tip: 'Head<[]> = never is correct at the type level, but never is a bottom type — silently assignable to string with zero errors, letting a real undefined slip through a fully-typed function.',
+    docs: [
+      { label: 'never Type (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/functions.html#never' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'never being technically correct at the type level does not stop it from being assignable to any other declared type at the call site.',
+      'Any conditional or infer-based return type that can resolve to never for an edge-case input is potentially exposed to this pattern.',
+    ],
+  },
+
+  'typescript/conditional-types/testing-that-myreturntype-rejects-a-class-constructor': {
+    apis: ['construct signature', 'call signature', 'InstanceType<T>'],
+    related: [
+      { label: 'Head of an Empty Tuple Hides undefined — previous', route: '/typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never' },
+      { label: 'Conditional Types (overview)', route: '/typescript/conditional-types' },
+    ],
+    tip: 'typeof SomeClass has a construct signature (new (...args) => T), not a call signature — it fails MyReturnType\'s extends check the same way a plain non-function does. Use InstanceType<typeof SomeClass> instead.',
+    docs: [
+      { label: 'InstanceType (TS Utility Types)', url: 'https://www.typescriptlang.org/docs/handbook/utility-types.html#instancetypetype' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A class superficially "looks callable" via new, but construct signatures and call signatures are structurally distinct in TypeScript.',
+      'InstanceType<T> is the purpose-built utility for extracting a class\'s instance type — ReturnType-style utilities are not a substitute.',
+    ],
+  },
+
   'typescript/template-literal-types': {
     apis: ['`${T}${U}`', 'Uppercase<S>', 'Lowercase<S>', 'Capitalize<S>', 'Uncapitalize<S>', 'infer in template'],
     related: [
