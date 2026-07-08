@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Generic Patterns"
+    topicRoute="/typescript/generic-patterns"
+    subtopicLabel="Pipeline Skips pipe() Entirely" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Pipeline Skips pipe() Entirely and Still Type-Checks</h1>
+  <p class="page-subtitle">
+    The challenge's Pipeline claims compile-time enforcement of compatible step types — but its public
+    constructor lets you skip .pipe() altogether and get a fully type-checked lie.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="TypeScript 2.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Build a Pipeline the intended way through <code>.pipe()</code>, then construct one directly with both
+      type arguments and zero steps — and compare what <code>typeof</code> actually reports.
+    </p>
+    <app-live-playground
+      title="Bypassing .pipe() — testing Pipeline's constructor escape hatch"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This tests the challenge's own compile-time-safety claim against its full public API, not just the
+      intended <code>.pipe()</code> call path — before moving on to two more generic patterns from the theory.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generic Patterns"
+    topicRoute="/typescript/generic-patterns"
+    [next]="{ label: 'FunctionKeys Drops Optional Methods', route: '/typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result' }" />
+</div>

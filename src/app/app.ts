@@ -1139,6 +1139,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'getInstance Returns the Same Object', route: '/typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t' },
     { label: 'getOrSet Avoids the Falsy-Value Trap', route: '/typescript/generics/testing-that-getorset-avoids-the-falsy-value-cache-trap' },
   ],
+  'generic-patterns': [
+    { label: 'Pipeline Skips pipe() Entirely', route: '/typescript/generic-patterns/testing-that-pipeline-skips-pipe-entirely-and-still-type-checks' },
+    { label: 'FunctionKeys Drops Optional Methods', route: '/typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result' },
+    { label: 'QueryBuilder Builds With Zero Fields', route: '/typescript/generic-patterns/testing-that-querybuilder-builds-successfully-with-zero-fields-set' },
+  ],
 };
 
 @Component({

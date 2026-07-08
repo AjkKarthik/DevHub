@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Generic Patterns"
+    topicRoute="/typescript/generic-patterns"
+    subtopicLabel="QueryBuilder Builds With Zero Fields" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That QueryBuilder Builds Successfully With Zero Fields Set</h1>
+  <p class="page-subtitle">
+    The theory section describes a builder that "prevents calling build() before all required fields are
+    set" — the page's actual, literal QueryBuilder code makes no such guarantee.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 2.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Call the main page's own Common Mistake #3 QueryBuilder with zero <code>.set()</code> calls before
+      <code>.build()</code> — and check whether it compiles.
+    </p>
+    <app-live-playground
+      title="Zero-field build() — testing QueryBuilder's actual guarantees"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the generic patterns topic by separating the theory section's aspirational builder
+      description from the page's actual, literal, testable QueryBuilder code.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generic Patterns"
+    topicRoute="/typescript/generic-patterns"
+    [prev]="{ label: 'FunctionKeys Drops Optional Methods', route: '/typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result' }" />
+</div>

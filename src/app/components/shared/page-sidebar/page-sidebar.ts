@@ -10278,6 +10278,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/generic-patterns/testing-that-pipeline-skips-pipe-entirely-and-still-type-checks': {
+    apis: ['constructor overload', 'type parameter default', 'unsound generics'],
+    related: [
+      { label: 'FunctionKeys Drops Optional Methods — next', route: '/typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result' },
+      { label: 'Generic Patterns (overview)', route: '/typescript/generic-patterns' },
+    ],
+    tip: 'new Pipeline<string, number>() with no .pipe() calls compiles fine — the public constructor has no relation between its type parameters and the (type-erased) steps array.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A fluent chain being individually type-safe does not make the whole class type-safe — the constructor is also part of the public surface.',
+      'The fix is a private constructor plus a static factory method, closing off direct construction entirely.',
+    ],
+  },
+
+  'typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result': {
+    apis: ['NonNullable<T>', 'optional property (?)', 'conditional type'],
+    related: [
+      { label: 'Pipeline Skips pipe() Entirely — previous', route: '/typescript/generic-patterns/testing-that-pipeline-skips-pipe-entirely-and-still-type-checks' },
+      { label: 'QueryBuilder Builds With Zero Fields — next', route: '/typescript/generic-patterns/testing-that-querybuilder-builds-successfully-with-zero-fields-set' },
+      { label: 'Generic Patterns (overview)', route: '/typescript/generic-patterns' },
+    ],
+    tip: 'An optional method\'s indexed-access type includes | undefined, which fails a bare function-type extends check — wrap with NonNullable<T[K]> to include optional methods.',
+    docs: [
+      { label: 'Conditional Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A union only extends a type if every member does — undefined never extends a function type, so the whole optional property fails.',
+      'This affects any conditional-type-based key filter, not just this one FunctionKeys example.',
+    ],
+  },
+
+  'typescript/generic-patterns/testing-that-querybuilder-builds-successfully-with-zero-fields-set': {
+    apis: ['default type parameter', 'Record<string, never>', 'accumulator builder'],
+    related: [
+      { label: 'FunctionKeys Drops Optional Methods — previous', route: '/typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result' },
+      { label: 'Generic Patterns (overview)', route: '/typescript/generic-patterns' },
+    ],
+    tip: 'The page\'s actual, literal QueryBuilder code correctly rejects accessing an unset field, but never gates build() itself on any field being set — that stronger guarantee belongs to a different, undemonstrated phantom-type pattern.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Type accumulation (tracking which fields exist) and required-field enforcement (gating build() itself) are independent features.',
+      'Prose describing a pattern and literal, tested code implementing it are not always the same example on a given page.',
+    ],
+  },
+
   'typescript/utility-types': {
     apis: ['Partial<T>', 'Required<T>', 'Readonly<T>', 'Pick<T,K>', 'Omit<T,K>', 'Record<K,V>', 'Extract<T,U>', 'Exclude<T,U>', 'NonNullable<T>', 'ReturnType<F>', 'Parameters<F>'],
     related: [
