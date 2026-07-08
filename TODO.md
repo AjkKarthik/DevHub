@@ -1604,7 +1604,7 @@ off here with a date.
 - [x] `/typescript/mapped-types` — Mapped Types (2026-07-08 — 3 subtopics: testing-that-eventhandlers-wrongly-includes-online, testing-that-stringkeys-excludes-an-optional-string-property, testing-that-optionaltonullable-detects-implicit-undefined — hit a NEW single-brace escaping gotcha, see CLAUDE.md)
 - [x] `/typescript/conditional-types` — Conditional Types (2026-07-08 — 3 subtopics: testing-that-equals-cannot-distinguish-any-from-unknown, testing-that-head-of-an-empty-tuple-hides-undefined-behind-never, testing-that-myreturntype-rejects-a-class-constructor)
 - [x] `/typescript/template-literal-types` — Template Literal Types (2026-07-08 — 3 subtopics: testing-that-a-let-variable-widens-handlername-to-plain-string, testing-that-dotpath-hits-infinite-recursion-on-self-reference, testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product)
-- [ ] `/typescript/classes` — Classes & Visibility
+- [x] `/typescript/classes` — Classes & Visibility (2026-07-08 — 3 subtopics: testing-that-typescript-private-is-still-included-in-json-stringify, testing-that-getstates-object-freeze-doesnt-stop-mutating-items, testing-that-object-create-bypasses-appconfigs-private-constructor)
 - [ ] `/typescript/decorators` — Decorators
 - [ ] `/typescript/tsconfig` — tsconfig Deep Dive
 - [ ] `/typescript/modules` — Module System & Namespaces
