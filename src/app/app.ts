@@ -1104,6 +1104,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'SET LOCAL Doesn’t Require PgBouncer Session Mode', route: '/sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode' },
     { label: 'The Queries Miss the “Aborted” State', route: '/sql/connection-pooling/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state' },
   ],
+  'ts-basics': [
+    { label: 'Excess Property Checking at Call Sites', route: '/typescript/basics/testing-that-excess-property-checking-applies-to-function-arguments-too' },
+    { label: 'The Exhaustiveness Check’s Exact Error', route: '/typescript/basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added' },
+    { label: 'The “Fixed” Example Still Uses as any', route: '/typescript/basics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any' },
+  ],
 };
 
 @Component({

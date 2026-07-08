@@ -2024,7 +2024,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/typescript/basics"           routerLinkActive="active"><span class="nl-text">TS Fundamentals</span>@if(progress.isDone('ts-basics')){<span class="nl-done">✓</span>}@if(diff('ts-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/basics" routerLinkActive="active">
+        <span class="nl-text">TS Fundamentals</span>
+        @if (progress.isDone('ts-basics')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-basics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ts-basics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ts-basics')"
+                  (click)="toggleSubtopics('ts-basics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ts-basics'); as subs) {
+        @if (isSubtopicsExpanded('ts-basics')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/typescript/primitive-types"  routerLinkActive="active"><span class="nl-text">Primitive &amp; Literal Types</span>@if(progress.isDone('ts-primitive-types')){<span class="nl-done">✓</span>}@if(diff('ts-primitive-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/typescript/strict-migration" routerLinkActive="active"><span class="nl-text">Strict Mode &amp; Migration</span>@if(progress.isDone('ts-strict-migration')){<span class="nl-done">✓</span>}@if(diff('ts-strict-migration');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

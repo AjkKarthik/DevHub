@@ -1370,7 +1370,12 @@ export const routes: Routes = [
   ] },
   { path: 'typescript',    children: [
     { path: '', loadComponent: () => import('./components/frontend/typescript/home/home').then(m => m.TypeScriptHome) },
-    { path: 'basics',                  loadComponent: () => import('./components/frontend/typescript/basics/basics').then(m => m.TsBasics) },
+    { path: 'basics', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/basics/basics').then(m => m.TsBasics) },
+      { path: 'testing-that-excess-property-checking-applies-to-function-arguments-too', loadComponent: () => import('./components/frontend/typescript/basics/subtopics/testing-that-excess-property-checking-applies-to-function-arguments-too/testing-that-excess-property-checking-applies-to-function-arguments-too').then(m => m.TestingThatExcessPropertyCheckingAppliesToFunctionArgumentsTooSubtopic) },
+      { path: 'demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added', loadComponent: () => import('./components/frontend/typescript/basics/subtopics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added').then(m => m.DemonstratingTheExactCompilerErrorWhenANewShapeVariantIsAddedSubtopic) },
+      { path: 'testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any', loadComponent: () => import('./components/frontend/typescript/basics/subtopics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any').then(m => m.TestingThatTheFixedAnyVsUnknownExampleStillUsesAsAnySubtopic) },
+    ] },
     { path: 'primitive-types',         loadComponent: () => import('./components/frontend/typescript/primitive-types/primitive-types').then(m => m.TsPrimitiveTypes) },
     { path: 'interfaces-types',        loadComponent: () => import('./components/frontend/typescript/interfaces-types/interfaces-types').then(m => m.TsInterfacesTypes) },
     { path: 'unions',                  loadComponent: () => import('./components/frontend/typescript/unions/unions').then(m => m.TsUnions) },

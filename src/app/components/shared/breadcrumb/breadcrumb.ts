@@ -865,6 +865,9 @@ const SQL_LABELS: Record<string, string> = {
 
 const TYPESCRIPT_LABELS: Record<string, string> = {
   'basics':                   'TS Fundamentals',
+  'basics/testing-that-excess-property-checking-applies-to-function-arguments-too': 'Excess Property Checking at Call Sites',
+  'basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added': 'The Exhaustiveness Check’s Exact Error',
+  'basics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any': 'The “Fixed” Example Still Uses as any',
   'primitive-types':          'Primitive & Literal Types',
   'interfaces-types':         'Interfaces & Type Aliases',
   'unions':                   'Union & Intersection Types',

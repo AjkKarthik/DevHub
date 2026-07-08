@@ -9712,6 +9712,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/basics/testing-that-excess-property-checking-applies-to-function-arguments-too': {
+    apis: ['excess property checking', 'fresh object literal', 'structural typing'],
+    related: [
+      { label: 'The Exhaustiveness Check’s Exact Error — next', route: '/typescript/basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added' },
+      { label: 'TS Fundamentals (overview)', route: '/typescript/basics' },
+    ],
+    tip: 'Excess property checking fires on any FRESH object literal checked against a target type — assignment, function arguments, and return statements are all covered, not just assignment.',
+    docs: [
+      { label: 'TypeScript Handbook — Object Types', url: 'https://www.typescriptlang.org/docs/handbook/2/objects.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Routing an object through a variable first defeats the check — this is intentional, not a loophole.',
+      'This is exactly how a typo\'d property name in a function call argument gets caught immediately.',
+    ],
+  },
+
+  'typescript/basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added': {
+    apis: ['never', 'exhaustiveness checking', 'discriminated union'],
+    related: [
+      { label: 'Excess Property Checking at Call Sites — previous', route: '/typescript/basics/testing-that-excess-property-checking-applies-to-function-arguments-too' },
+      { label: 'The “Fixed” Example Still Uses as any — next', route: '/typescript/basics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any' },
+      { label: 'TS Fundamentals (overview)', route: '/typescript/basics' },
+    ],
+    tip: 'The exhaustiveness error appears on the const _exhaustive: never = s; line specifically, naming the exact unhandled union member — not a generic "incomplete switch" warning.',
+    docs: [
+      { label: 'TypeScript Handbook — Narrowing', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Recognizing "is not assignable to type \'never\'" immediately tells you a switch is missing a case, even before finding which one.',
+      'Passing the exhaustiveness check only guarantees coverage, not that each case\'s logic is correct.',
+    ],
+  },
+
+  'typescript/basics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any': {
+    apis: ['unknown', 'as any', 'type guard'],
+    related: [
+      { label: 'The Exhaustiveness Check’s Exact Error — previous', route: '/typescript/basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added' },
+      { label: 'TS Fundamentals (overview)', route: '/typescript/basics' },
+    ],
+    tip: 'A cast to `as any` anywhere inside a narrowing chain disables type checking for that expression only — the outer parameter still being typed unknown does not protect it.',
+    docs: [
+      { label: 'TypeScript Handbook — unknown', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A "right"/"fixed" code example is not automatically free of the exact mistake it is illustrating — verify it directly.',
+      'Casting to a narrow interface with unknown-typed fields catches the same typo an as any cast would silently hide.',
+    ],
+  },
+
   'typescript/primitive-types': {
     apis: ['string', 'number', 'boolean', 'null', 'undefined', 'void', 'never', 'unknown', 'any', 'bigint', 'symbol'],
     related: [
