@@ -1617,7 +1617,7 @@ off here with a date.
 
 - [x] `/react/basics` — React Fundamentals (2026-07-08 — 3 subtopics: testing-that-batching-applies-to-native-event-listeners-not-just-onclick, testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend, testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render — first React hub topic; piloted the `create-react-app` StackBlitz template (see CLAUDE.md); SUBTOPICS map key hub-prefixed to 'react-basics' due to collision with existing bare 'basics' key from /csharp/basics)
 - [x] `/react/hooks-core` — Core Hooks (2026-07-08 — 3 subtopics: testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects, testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined [folder renamed to `usecontext-defaultvalue-undefined-provider` — hit the 260-char path limit at git-add time], testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop — SUBTOPICS map key left bare ('hooks-core'), collision-free)
-- [ ] `/react/hooks-advanced` — Advanced Hooks
+- [x] `/react/hooks-advanced` — Advanced Hooks (2026-07-08 — 3 subtopics: testing-that-usereducers-lazy-init-is-strictmode-double-invoked-too, testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering, testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances — all 3 folders named short from the start to stay under the 260-char path limit; SUBTOPICS map key left bare ('hooks-advanced'), collision-free)
 - [ ] `/react/forms` — Forms & Validation
 - [ ] `/react/context` — Context API
 - [ ] `/react/state-management` — State Management
