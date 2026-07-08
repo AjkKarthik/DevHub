@@ -11678,6 +11678,72 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/hooks-advanced/testing-that-usereducers-lazy-init-is-strictmode-double-invoked-too': {
+    apis: ['useReducer(reducer, arg, init)', 'StrictMode'],
+    related: [
+      { label: 'Advanced Hooks (overview)', route: '/react/hooks-advanced' },
+      { label: 'Context Selector Memo',     route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' },
+      { label: 'StrictMode Lazy Initializer', route: '/react/hooks-core/testing-that-strictmode-double-invokes-the-lazy-initializer-not-just-effects' },
+    ],
+    tip: 'useReducer(reducer, arg, init) is React-documented as equivalent to useState(() => init(arg)) — that equivalence extends to StrictMode double-invoking init() on mount too.',
+    docs: [
+      { label: 'React Docs — useReducer', url: 'https://react.dev/reference/react/useReducer' },
+      { label: 'React Docs — StrictMode',  url: 'https://react.dev/reference/react/StrictMode' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Only the second call\'s result is kept as real state — the resulting state value is correct either way.',
+      'This only matters if init() has an observable side effect beyond its return value.',
+      'Production builds never double-invoke — this is development-only behavior.',
+    ],
+  },
+
+  'react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering': {
+    apis: ['useContext()', 'useMemo()', 'Context.Provider'],
+    related: [
+      { label: 'Advanced Hooks (overview)', route: '/react/hooks-advanced' },
+      { label: 'useReducer Lazy Init StrictMode', route: '/react/hooks-advanced/testing-that-usereducers-lazy-init-is-strictmode-double-invoked-too' },
+      { label: 'Module-Level Hook Leak',    route: '/react/hooks-advanced/testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances' },
+    ],
+    tip: 'useContext re-renders its calling component on any Provider value change, before useMemo ever runs — memoizing a derived value only stabilizes that value\'s reference, not the render count.',
+    docs: [
+      { label: 'React Docs — useContext', url: 'https://react.dev/reference/react/useContext' },
+      { label: 'React Docs — useMemo',    url: 'https://react.dev/reference/react/useMemo' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'A memoized derived value IS useful for a memoized child or a dependency array — just not for the calling component\'s own render count.',
+      'Actually reducing re-render frequency requires splitting the context by update frequency or a selector library.',
+      'This is easy to misread from a comment like "stable when only X changes" — stable refers to the reference, not the render.',
+    ],
+  },
+
+  'react/hooks-advanced/testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances': {
+    apis: ['useState()', 'useEffect()', 'custom hooks'],
+    related: [
+      { label: 'Advanced Hooks (overview)', route: '/react/hooks-advanced' },
+      { label: 'Context Selector Memo',     route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' },
+      { label: 'Custom Hooks (Core Hooks)', route: '/react/hooks-core' },
+    ],
+    tip: 'State isolation between custom hook instances comes from useState/useReducer/useRef attaching to the calling component\'s own Fiber node — not from the "use" naming convention itself.',
+    docs: [
+      { label: 'React Docs — Reusing Logic with Custom Hooks', url: 'https://react.dev/learn/reusing-logic-with-custom-hooks' },
+      { label: 'React Docs — useState',                        url: 'https://react.dev/reference/react/useState' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'A hook that calls a React hook internally is not automatically safe — isolation applies per piece of state, not per function.',
+      'Module-level state inside a custom hook is a common shortcut for a cache or singleton pattern that silently breaks isolation.',
+      'This passes any "starts with use" lint check while behaving nothing like a normal isolated hook.',
+    ],
+  },
+
   'react/forms': {
     apis: ['controlled input', 'useRef for uncontrolled', 'React Hook Form', 'zodResolver', 'useFieldArray'],
     related: [

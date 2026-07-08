@@ -2509,7 +2509,26 @@
           </div>
         }
       }
-      <a routerLink="/react/hooks-advanced" routerLinkActive="active"><span class="nl-text">Advanced Hooks</span>@if(progress.isDone('react-hooks-advanced')){<span class="nl-done">✓</span>}@if(diff('react-hooks-advanced');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/hooks-advanced" routerLinkActive="active">
+        <span class="nl-text">Advanced Hooks</span>
+        @if (progress.isDone('react-hooks-advanced')) {<span class="nl-done">✓</span>}
+        @if (diff('react-hooks-advanced'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('hooks-advanced')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('hooks-advanced')"
+                  (click)="toggleSubtopics('hooks-advanced', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('hooks-advanced'); as reactHooksAdvSubs) {
+        @if (isSubtopicsExpanded('hooks-advanced')) {
+          <div class="nav-subtopics">
+            @for (s of reactHooksAdvSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

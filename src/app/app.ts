@@ -1214,6 +1214,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'useContext’s defaultValue Is Skipped by an Explicit undefined Provider', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' },
     { label: 'Functional Update Fixes Stale State, Not a Stale Prop', route: '/react/hooks-core/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop' },
   ],
+  'hooks-advanced': [
+    { label: 'useReducer’s Lazy Init Is StrictMode Double-Invoked Too', route: '/react/hooks-advanced/testing-that-usereducers-lazy-init-is-strictmode-double-invoked-too' },
+    { label: 'Memoizing a Context Selector Doesn’t Stop the Consumer Re-rendering', route: '/react/hooks-advanced/testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering' },
+    { label: 'A Module-Level Variable Leaks State Across Custom Hook Instances', route: '/react/hooks-advanced/testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances' },
+  ],
 };
 
 @Component({

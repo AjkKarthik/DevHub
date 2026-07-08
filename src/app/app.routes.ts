@@ -1507,7 +1507,12 @@ export const routes: Routes = [
       { path: 'testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined', loadComponent: () => import('./components/frontend/react/hooks-core/subtopics/usecontext-defaultvalue-undefined-provider/usecontext-defaultvalue-undefined-provider').then(m => m.UsecontextDefaultvalueUndefinedProviderSubtopic) },
       { path: 'testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop', loadComponent: () => import('./components/frontend/react/hooks-core/subtopics/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop/testing-that-a-functional-update-fixes-stale-state-but-not-a-stale-prop').then(m => m.TestingThatAFunctionalUpdateFixesStaleStateButNotAStalePropSubtopic) },
     ]},
-    { path: 'hooks-advanced', loadComponent: () => import('./components/frontend/react/hooks-advanced/hooks-advanced').then(m => m.ReactHooksAdvanced) },
+    { path: 'hooks-advanced', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/hooks-advanced/hooks-advanced').then(m => m.ReactHooksAdvanced) },
+      { path: 'testing-that-usereducers-lazy-init-is-strictmode-double-invoked-too', loadComponent: () => import('./components/frontend/react/hooks-advanced/subtopics/usereducer-lazy-init-strictmode/usereducer-lazy-init-strictmode').then(m => m.UsereducerLazyInitStrictmodeSubtopic) },
+      { path: 'testing-that-memoizing-a-context-selector-doesnt-stop-the-consumer-rerendering', loadComponent: () => import('./components/frontend/react/hooks-advanced/subtopics/context-selector-memo-still-rerenders/context-selector-memo-still-rerenders').then(m => m.ContextSelectorMemoStillRerendersSubtopic) },
+      { path: 'testing-that-a-module-level-variable-leaks-state-across-custom-hook-instances', loadComponent: () => import('./components/frontend/react/hooks-advanced/subtopics/module-level-var-leaks-across-hook-instances/module-level-var-leaks-across-hook-instances').then(m => m.ModuleLevelVarLeaksAcrossHookInstancesSubtopic) },
+    ]},
     { path: 'forms',          loadComponent: () => import('./components/frontend/react/forms/forms').then(m => m.ReactForms) },
     { path: 'context',          loadComponent: () => import('./components/frontend/react/context/context').then(m => m.ReactContext) },
     { path: 'state-management', loadComponent: () => import('./components/frontend/react/state-management/state-management').then(m => m.ReactStateManagement) },
