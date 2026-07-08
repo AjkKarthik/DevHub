@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Enums &amp; Tuples"
+    topicRoute="/typescript/enums-tuples"
+    subtopicLabel="const enum Doesn’t Actually Throw Here" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That const enum Import Doesn't Actually Throw in This Playground</h1>
+  <p class="page-subtitle">
+    The main page's Common Mistake claims importing a const enum across files throws a runtime error — that
+    failure needs a per-file transpiler, and this whole-program playground isn't one.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="TypeScript 1.4+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Export a <code>const enum</code> from <code>lib.ts</code>, import it in <code>index.ts</code> — the
+      exact structure from the main page's Common Mistake #3 — and check whether it throws.
+    </p>
+    <app-live-playground
+      title="const enum across two files — testing the isolatedModules claim"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This narrows the main page's Common Mistake #3 to its actual precondition — a per-file transpiler,
+      not just "importing a const enum from another file" — before moving on to the tuple type-inference gap.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Enums &amp; Tuples"
+    topicRoute="/typescript/enums-tuples"
+    [prev]="{ label: 'Direction[42] Returns Undefined', route: '/typescript/enums-tuples/testing-that-direction-42-returns-undefined-not-a-name' }"
+    [next]="{ label: 'minMax Without a Return Type Becomes an Array', route: '/typescript/enums-tuples/testing-that-minmax-without-return-type-becomes-an-array' }" />
+</div>

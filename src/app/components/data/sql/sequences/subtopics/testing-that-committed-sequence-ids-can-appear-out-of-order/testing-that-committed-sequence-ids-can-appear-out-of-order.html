@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Sequences & Identity"
+    topicRoute="/sql/sequences"
+    subtopicLabel="Reproducing the Out-of-Order Commit Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That Committed Sequence IDs Can Appear Out of Order</h1>
+  <p class="page-subtitle">
+    The main page's Q&amp;A says concurrent commits can arrive out of ID order — here it's reproduced with
+    two real sessions, plus the sync-cursor bug this quietly causes.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="PostgreSQL 6.0" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A misleading peek technique, a trigger scope bug, and now a genuine out-of-order commit hazard — all
+      three show why sequences and identity columns need to be understood as allocation mechanisms, not
+      guarantees about insertion or commit order.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Sequences & Identity"
+    topicRoute="/sql/sequences"
+    [prev]="{ label: 'SCOPE_IDENTITY() vs @@IDENTITY, Demonstrated', route: '/sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger' }"
+  />
+</div>

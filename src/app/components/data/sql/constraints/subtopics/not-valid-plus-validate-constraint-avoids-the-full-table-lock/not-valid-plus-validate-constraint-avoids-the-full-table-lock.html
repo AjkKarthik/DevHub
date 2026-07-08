@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Constraints"
+    topicRoute="/sql/constraints"
+    subtopicLabel="Proving the Zero-Downtime Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">NOT VALID + VALIDATE CONSTRAINT Avoids the Full-Table Lock</h1>
+  <p class="page-subtitle">
+    The main page's quiz explanation says NOT VALID enables "zero-downtime" constraint additions — here's the
+    actual lock comparison that proves it.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="PostgreSQL 9.1" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A broken first example, a backwards NULL-handling claim, and a lock-behavior claim now proven with real
+      pg_locks output — testing each of the main page's dialect-specific and PostgreSQL-specific claims
+      individually turned out to matter more than trusting the prose.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Constraints"
+    topicRoute="/sql/constraints"
+    [prev]="{ label: 'MSSQL UNIQUE Allows Only One NULL', route: '/sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple' }"
+  />
+</div>

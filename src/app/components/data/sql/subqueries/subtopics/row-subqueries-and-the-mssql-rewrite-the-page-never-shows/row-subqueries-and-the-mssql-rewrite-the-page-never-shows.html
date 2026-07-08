@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Subqueries"
+    topicRoute="/sql/subqueries"
+    subtopicLabel="A Feature Mentioned, Never Shown"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Row Subqueries and the MSSQL Rewrite the Page Never Shows</h1>
+  <p class="page-subtitle">
+    The main page's own Quick Reference says row subqueries need an MSSQL "AND conditions" rewrite — but
+    none of its six code tabs actually show either syntax.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Subqueries end-to-end: proving a recommended window-function
+      rewrite is actually equivalent, correcting an "avoid this" example that is really an invalid query, and
+      finally demonstrating the one Quick Reference feature the main page names but never shows in code.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Subqueries"
+    topicRoute="/sql/subqueries"
+    [prev]="{ label: 'The “Avoid This” Example Doesn’t Run At All', route: '/sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all' }"
+  />
+</div>

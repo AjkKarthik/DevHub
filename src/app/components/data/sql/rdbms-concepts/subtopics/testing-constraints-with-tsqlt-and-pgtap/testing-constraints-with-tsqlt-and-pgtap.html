@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="RDBMS Concepts"
+    topicRoute="/sql/rdbms-concepts"
+    subtopicLabel="Testing Constraints"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing Constraints With tSQLt and pgTAP</h1>
+  <p class="page-subtitle">
+    The main page's own integrity violations are ad-hoc snippets with a comment describing the expected
+    error. tSQLt (MSSQL) and pgTAP (PostgreSQL) turn them into repeatable, automatically-rolled-back tests.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With constraint testing covered, the next subtopic digs into how the main page's own "plan cache
+      pollution" claim actually works — it's about the query's exact TEXT, not its logical structure.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="RDBMS Concepts"
+    topicRoute="/sql/rdbms-concepts"
+    [next]="{ label: 'Plan Cache Pollution Is About Query Text, Not Structure', route: '/sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure' }"
+  />
+</div>

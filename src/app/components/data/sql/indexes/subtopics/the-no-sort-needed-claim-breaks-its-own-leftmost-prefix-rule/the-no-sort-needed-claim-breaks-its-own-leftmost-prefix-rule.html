@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Indexes"
+    topicRoute="/sql/indexes"
+    subtopicLabel="A Claim That Breaks Its Own Rule"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The "No Sort Needed" Claim Breaks Its Own Leftmost-Prefix Rule</h1>
+  <p class="page-subtitle">
+    The main page's own ORDER BY elimination example skips the Status column its own composite index
+    requires — contradicting the leftmost-prefix rule taught earlier on the same page.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Indexes end-to-end: confirming when a filtered index is actually
+      used versus silently skipped, putting real numbers on the storage cost of a wide clustered key, and
+      catching an inconsistency between the main page's own claim and its own composite-index rule.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Indexes"
+    topicRoute="/sql/indexes"
+    [prev]="{ label: 'Quantifying the Wide Key Cost', route: '/sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes' }"
+  />
+</div>

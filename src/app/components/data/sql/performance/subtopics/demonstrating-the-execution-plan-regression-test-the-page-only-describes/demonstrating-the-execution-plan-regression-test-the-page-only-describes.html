@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Query Performance"
+    topicRoute="/sql/performance"
+    subtopicLabel="Building the Regression Test"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating the Execution-Plan Regression Test the Page Only Describes</h1>
+  <p class="page-subtitle">
+    The main page's own tuning workflow names this CI technique in one sentence and never shows it — here
+    it's actually built, and proven to catch a real regression.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Query Performance end-to-end: proving a UNION ALL rewrite doesn't
+      silently duplicate rows, correcting a DMV formula against Microsoft's own documented version, and
+      building the CI regression test the main page only ever names.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Query Performance"
+    topicRoute="/sql/performance"
+    [prev]="{ label: 'The Missing Index Impact Score Formula Is Missing a /100', route: '/sql/performance/the-missing-index-impact-score-formula-is-missing-a-100' }"
+  />
+</div>

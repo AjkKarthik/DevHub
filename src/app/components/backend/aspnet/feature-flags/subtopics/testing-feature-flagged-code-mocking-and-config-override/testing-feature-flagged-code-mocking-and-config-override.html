@@ -1,0 +1,41 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Feature Flags"
+    topicRoute="/aspnet/feature-flags"
+    subtopicLabel="Testing Feature-Flagged Code"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Feature-Flagged Code: Mocking vs Config Override</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A names two testing techniques — mocking IFeatureManager, and overriding
+    configuration — but shows code for neither. The two are not interchangeable.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing covered, the next subtopic digs into a mechanics gap in the main page's own
+      PercentageFilter description — it re-rolls independently on every call, with no memory of a prior
+      result for the same user.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Feature Flags"
+    topicRoute="/aspnet/feature-flags"
+    [next]="{ label: 'PercentageFilter Re-Rolls on Every Call — Not Sticky Per User', route: '/aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user' }"
+  />
+</div>

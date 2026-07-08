@@ -1,0 +1,49 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="TypeScript Fundamentals"
+    topicRoute="/typescript/basics"
+    subtopicLabel="The Exhaustiveness Check’s Exact Error" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Demonstrating the Exact Compiler Error When a New Shape Variant Is Added</h1>
+  <p class="page-subtitle">
+    The main page explains exhaustiveness checking in words but never shows the actual error message —
+    here's exactly what TypeScript reports, and exactly where, when a switch falls out of sync with a union.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="beginner" since="TypeScript 2.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Add a "triangle" variant to the Shape union below without updating the switch, and watch the exact
+      compiler error appear on the <code>_exhaustive</code> line.
+    </p>
+    <app-live-playground
+      title="Exhaustiveness checking — the exact error"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the same <code>never</code> type the main page introduces as "a type with no values" — the
+      exhaustiveness pattern is simply the most common practical use of that definition: if narrowing a
+      union down to nothing still leaves something over, the compiler tells you exactly what and where.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="TypeScript Fundamentals"
+    topicRoute="/typescript/basics"
+    [prev]="{ label: 'Excess Property Checking at Call Sites', route: '/typescript/basics/testing-that-excess-property-checking-applies-to-function-arguments-too' }"
+    [next]="{ label: 'The “Fixed” any-vs-unknown Example Still Uses as any', route: '/typescript/basics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any' }" />
+</div>

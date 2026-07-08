@@ -1,0 +1,43 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Data Modeling"
+    topicRoute="/sql/data-modeling"
+    subtopicLabel="UUID Theory Contradiction"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">UUID Example Contradicts the Page's Own Theory</h1>
+  <p class="page-subtitle">
+    The main page's own theory warns that random UUIDs fragment the clustered index. Its own PostgreSQL
+    code tab defaults event_id to gen_random_uuid() — the exact pattern being warned against — with only a
+    comment suggesting the fix.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover data modeling end-to-end: proving the polymorphic CHECK
+      constraint truly enforces "exactly one parent," protecting a self-referencing hierarchy against
+      cycles, and catching a real contradiction between the main page's own key-strategy theory and its
+      own code example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Data Modeling"
+    topicRoute="/sql/data-modeling"
+    [prev]="{ label: 'Recursive CTE Has No Cycle Protection', route: '/sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently' }"
+  />
+</div>

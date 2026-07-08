@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Generics Fundamentals"
+    topicRoute="/typescript/generics"
+    subtopicLabel="getOrSet Avoids the Falsy-Value Trap" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That getOrSet Avoids the Falsy-Value Cache Trap</h1>
+  <p class="page-subtitle">
+    The challenge solution's getOrSet checks has(key), not the value's truthiness — that one choice is what
+    keeps a cached 0 or empty string from being silently recomputed.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 2.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Cache a genuinely falsy value with the challenge solution's own <code>Cache&lt;TMap&gt;</code>, then
+      compare against a naive truthiness-based <code>getOrSet</code> to see the bug it avoids.
+    </p>
+    <app-live-playground
+      title="has() vs truthiness — testing getOrSet with a falsy cached value"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the generics topic by verifying the challenge solution actually delivers what a
+      correct cache promises — not just type safety, but correctness for the full range of legitimate values.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generics Fundamentals"
+    topicRoute="/typescript/generics"
+    [prev]="{ label: 'getInstance Returns the Same Object', route: '/typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t' }" />
+</div>

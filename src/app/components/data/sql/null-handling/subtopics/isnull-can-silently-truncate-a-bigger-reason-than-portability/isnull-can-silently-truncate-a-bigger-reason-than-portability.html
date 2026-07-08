@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="NULL Handling"
+    topicRoute="/sql/null-handling"
+    subtopicLabel="A Bigger Reason to Avoid ISNULL"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">ISNULL Can Silently Truncate — a Bigger Reason Than Portability</h1>
+  <p class="page-subtitle">
+    The main page's own reason to prefer COALESCE is portability — ISNULL's output type is fixed by its
+    first argument alone, silently truncating a longer fallback value even when it's the one being returned.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic demonstrates a claim the main page's own Q&amp;A only describes in prose — exactly
+      what SET ANSI_NULLS OFF does to NULL comparisons, and why the setting is dangerous specifically because
+      it's invisible in the query text itself.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NULL Handling"
+    topicRoute="/sql/null-handling"
+    [prev]="{ label: 'Testing UNION vs JOIN NULL Equality', route: '/sql/null-handling/testing-that-union-treats-two-nulls-as-equal-while-join-doesnt' }"
+    [next]="{ label: 'Demonstrating ANSI_NULLS OFF', route: '/sql/null-handling/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons' }"
+  />
+</div>

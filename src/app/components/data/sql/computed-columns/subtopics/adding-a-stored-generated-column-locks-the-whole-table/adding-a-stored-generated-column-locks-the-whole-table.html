@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Computed & Generated Columns"
+    topicRoute="/sql/computed-columns"
+    subtopicLabel="An Operational Cost the Page Never Mentions"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Adding a STORED Generated Column Locks the Whole Table</h1>
+  <p class="page-subtitle">
+    The main page's JSON path example looks like a simple ALTER TABLE — on a populated table it's a full
+    rewrite under an AccessExclusiveLock, with no NOT VALID equivalent.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="PostgreSQL 12" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A restriction that didn't actually exist, a hash function that isn't as durable as it looks, and an
+      ALTER TABLE with a hidden lock — three claims the main page states in passing, each worth a closer,
+      independently verified look before trusting them in production.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Computed & Generated Columns"
+    topicRoute="/sql/computed-columns"
+    [prev]="{ label: 'CHECKSUM Is Not Version-Stable', route: '/sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches' }"
+  />
+</div>

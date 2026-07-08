@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Set Operations"
+    topicRoute="/sql/set-operations"
+    subtopicLabel="Testing the Schema Comparison Query"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Schema Comparison Query Misses Type-Only Drift</h1>
+  <p class="page-subtitle">
+    The main page's own EXCEPT-based schema drift detector only compares column names — a column shrinking
+    from VARCHAR(100) to VARCHAR(50) under the same name is completely invisible to it.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the schema comparison gap confirmed, the next subtopic makes the INTERSECT precedence rule
+      concrete — proving the unparenthesized and explicitly parenthesized forms can genuinely diverge, not
+      just differ syntactically.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Set Operations"
+    topicRoute="/sql/set-operations"
+    [next]="{ label: 'Demonstrating That INTERSECT’s Tighter Binding Changes the Result', route: '/sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result' }"
+  />
+</div>

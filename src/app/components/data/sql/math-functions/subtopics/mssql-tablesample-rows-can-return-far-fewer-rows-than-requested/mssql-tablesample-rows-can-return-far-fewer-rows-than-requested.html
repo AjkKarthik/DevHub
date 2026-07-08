@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Math & Numeric Functions"
+    topicRoute="/sql/math-functions"
+    subtopicLabel="Demonstrating TABLESAMPLE's Real Row-Count Behavior"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">MSSQL TABLESAMPLE ROWS Can Return Far Fewer Rows Than Requested</h1>
+  <p class="page-subtitle">
+    The main page implies PostgreSQL's page-based sampling is the "approximate" one — MSSQL's TABLESAMPLE
+    (N ROWS) is also page-based, and can return zero rows on small tables.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2005" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Between banker's rounding, AVG on integers, and now TABLESAMPLE — three separate "both dialects behave
+      the same way" assumptions on this page turned out to need a closer, dialect-specific look.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Math & Numeric Functions"
+    topicRoute="/sql/math-functions"
+    [prev]="{ label: 'Testing AVG on Integers Across Dialects', route: '/sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql' }"
+  />
+</div>

@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dapper &amp; Raw SQL"
+    topicRoute="/aspnet/dapper"
+    subtopicLabel="TransferAsync's Connection Gap"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">TransferAsync Holds Its Connection Open Far Too Long</h1>
+  <p class="page-subtitle">
+    The main page's own Transactions example calls db.Open() but never db.Close(). It isn't a permanent
+    leak — Transient DI will dispose it eventually — but it holds a pooled connection open far longer
+    than the transfer itself actually needs.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Dapper end-to-end: proving repository behavior under test with
+      in-memory SQLite, understanding exactly when Dapper manages a connection's lifecycle versus when the
+      caller must, and applying that rule to catch a real gap in the main page's own transaction example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dapper &amp; Raw SQL"
+    topicRoute="/aspnet/dapper"
+    [prev]="{ label: 'How Dapper Decides Whether to Close the Connection It Used', route: '/aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used' }"
+  />
+</div>

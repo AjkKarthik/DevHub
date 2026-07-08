@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Template Literal Types"
+    topicRoute="/typescript/template-literal-types"
+    subtopicLabel="DotPath Hits Infinite Recursion on Self-Reference" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That DotPath Hits Infinite Recursion on a Self-Referencing Type</h1>
+  <p class="page-subtitle">
+    The main page's DotPath only demonstrates finite nesting — applying it to a self-referencing category
+    tree hits TypeScript's excessively-deep recursion limit instead.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="TypeScript 4.1+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Apply the main page's own <code>DotPath&lt;T&gt;</code> to a <code>Category</code> interface whose
+      <code>children</code> field refers back to <code>Category</code> itself.
+    </p>
+    <app-live-playground
+      title="Self-referencing types and recursive conditionals — testing DotPath"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's QnA note about DotPath's performance cost on deep types to its actual
+      failure mode on genuinely infinite (self-referencing) ones, before checking the challenge's own gap.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Template Literal Types"
+    topicRoute="/typescript/template-literal-types"
+    [prev]="{ label: 'let Widens HandlerName to Plain string', route: '/typescript/template-literal-types/testing-that-a-let-variable-widens-handlername-to-plain-string' }"
+    [next]="{ label: 'A Single as Cast Defeats CSSVarName', route: '/typescript/template-literal-types/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product' }" />
+</div>

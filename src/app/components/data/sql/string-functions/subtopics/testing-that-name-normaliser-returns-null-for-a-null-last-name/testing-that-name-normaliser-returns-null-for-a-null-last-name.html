@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="String Functions"
+    topicRoute="/sql/string-functions"
+    subtopicLabel="Testing the Name Normaliser Against NULLs"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Name Normaliser Returns NULL for a NULL Last Name</h1>
+  <p class="page-subtitle">
+    The main page's challenge solution is never run against messy data — here it meets a NULL last_name and
+    the entire full_name column silently disappears.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="PostgreSQL 8.0" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      NULL propagation broke a query the main page presented as correct — the next subtopic examines a
+      different kind of gap: the main page's blanket claim that a prefix LIKE search "can use an index."
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="String Functions"
+    topicRoute="/sql/string-functions"
+    [next]="{ label: 'Prefix LIKE Needs Pattern Ops', route: '/sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale' }"
+  />
+</div>

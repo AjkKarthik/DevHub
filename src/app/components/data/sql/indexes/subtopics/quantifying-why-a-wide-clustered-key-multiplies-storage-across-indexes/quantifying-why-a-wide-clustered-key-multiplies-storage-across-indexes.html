@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Indexes"
+    topicRoute="/sql/indexes"
+    subtopicLabel="Quantifying the Wide Key Cost"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Quantifying Why a Wide Clustered Key Multiplies Storage Across Every Non-Clustered Index</h1>
+  <p class="page-subtitle">
+    The main page's own theory states the rule — keep the clustered key narrow — but never puts a number on
+    why a GUID clustered key costs so much more than it first appears to.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic returns to the main page's own composite-index example — finding a claim that
+      contradicts the leftmost-prefix rule the same page teaches just paragraphs earlier.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Indexes"
+    topicRoute="/sql/indexes"
+    [prev]="{ label: 'Testing Filtered Index Usage', route: '/sql/indexes/testing-that-a-filtered-index-actually-gets-used-not-silently-skipped' }"
+    [next]="{ label: 'The “No Sort Needed” Claim Breaks Its Own Rule', route: '/sql/indexes/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule' }"
+  />
+</div>

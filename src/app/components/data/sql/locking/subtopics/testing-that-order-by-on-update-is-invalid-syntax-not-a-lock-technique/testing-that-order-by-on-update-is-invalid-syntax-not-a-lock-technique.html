@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Locking & Deadlocks"
+    topicRoute="/sql/locking"
+    subtopicLabel="Testing a Q&amp;A's Literal Suggestion"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">ORDER BY on UPDATE Is Invalid Syntax, Not a Lock-Ordering Technique</h1>
+  <p class="page-subtitle">
+    The Q&amp;A suggests "WHERE id IN (1, 5, 9) ORDER BY id" for lock ordering — UPDATE's grammar has no
+    ORDER BY clause in either dialect, and the real technique is architectural, not syntactic.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A challenge solution that couldn't run, a "fix" that only picks a victim, and a Q&amp;A suggesting
+      syntax that doesn't exist — all three came from actually running the page's own code and instructions
+      rather than trusting them at face value.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Locking & Deadlocks"
+    topicRoute="/sql/locking"
+    [prev]="{ label: 'DEADLOCK_PRIORITY Doesn’t Prevent the Deadlock', route: '/sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock' }"
+  />
+</div>

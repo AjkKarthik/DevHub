@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="WebSockets"
+    topicRoute="/aspnet/websockets"
+    subtopicLabel="Multi-Frame Truncation Gap"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Receive-Loop Examples Silently Truncate Multi-Frame Messages</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A explains EndOfMessage in prose, but every receive-loop code tab — Echo, JSON
+    Messaging, Broadcast — processes after a single ReceiveAsync call, never checking it.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover WebSockets end-to-end: testing both message exchange and the
+      closing handshake correctly, understanding what actually ends the receive loop versus what completes
+      the handshake, and fixing a message-framing gap present across every one of the main page's own
+      receive-loop examples.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="WebSockets"
+    topicRoute="/aspnet/websockets"
+    [prev]="{ label: 'Close Handshake Mechanics: What Actually Ends the Receive Loop', route: '/aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop' }"
+  />
+</div>

@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Conditional Types"
+    topicRoute="/typescript/conditional-types"
+    subtopicLabel="Equals Can’t Distinguish any From unknown" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Equals Cannot Distinguish any From unknown</h1>
+  <p class="page-subtitle">
+    The main page's own comment already flags Equals&lt;string, any&gt; as true — this pushes further and
+    checks any against unknown, one of the most carefully distinguished type pairs in TypeScript.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="TypeScript 2.8+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Run the main page's own <code>Equals&lt;A, B&gt;</code> against <code>any</code> and
+      <code>unknown</code>, then compare against a fixed version using the page's own
+      <code>IsAny&lt;T&gt;</code>.
+    </p>
+    <app-live-playground
+      title="any vs unknown — testing Equals's bidirectional assignability check"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own "any is special" warning to a second, more surprising type pair,
+      before testing a different bottom-type quirk in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Conditional Types"
+    topicRoute="/typescript/conditional-types"
+    [next]="{ label: 'Head of an Empty Tuple Hides undefined', route: '/typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never' }" />
+</div>

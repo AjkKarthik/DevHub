@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Partitioning"
+    topicRoute="/sql/partitioning"
+    subtopicLabel="Testing the SWITCH Statement's Target Syntax"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That "TO orders_archive PARTITION 1" Is Invalid Syntax</h1>
+  <p class="page-subtitle">
+    The main page's own archival example switches into a target that was never built on a partition
+    scheme — naming a target-side partition number fails with a specific, reproducible error.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="SQL Server 2005" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Fixing the syntax gets the SWITCH to run — but the very next statement in the same code tab
+      has its own, more damaging problem.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Partitioning"
+    topicRoute="/sql/partitioning"
+    [next]="{ label: 'TRUNCATE Discards the Data Just Switched In', route: '/sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in' }"
+  />
+</div>

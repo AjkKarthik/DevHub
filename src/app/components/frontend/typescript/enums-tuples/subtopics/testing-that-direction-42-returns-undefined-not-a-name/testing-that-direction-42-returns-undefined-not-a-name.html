@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Enums &amp; Tuples"
+    topicRoute="/typescript/enums-tuples"
+    subtopicLabel="Direction[42] Returns Undefined" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Direction[42] Returns Undefined, Not a Name</h1>
+  <p class="page-subtitle">
+    Numeric enums are "open" (any number is assignable) AND generate a reverse mapping — so does indexing
+    with an out-of-range number give you a name back? It doesn't.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Assign an out-of-range number to a numeric enum variable (TypeScript allows it), then reverse-map it —
+      and check whether a bitwise-flag combination fares any better.
+    </p>
+    <app-live-playground
+      title="Numeric enum reverse mapping — testing the boundary of Direction[n]"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This refines the main page's "reverse mapping" and "open type" claims from two separate sections —
+      combining them shows the reverse mapping is narrower than either claim alone suggests.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Enums &amp; Tuples"
+    topicRoute="/typescript/enums-tuples"
+    [next]="{ label: 'const enum Doesn’t Actually Throw Here', route: '/typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground' }" />
+</div>

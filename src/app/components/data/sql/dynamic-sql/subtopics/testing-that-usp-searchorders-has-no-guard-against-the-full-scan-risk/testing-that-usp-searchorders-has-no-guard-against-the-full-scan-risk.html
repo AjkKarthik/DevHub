@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dynamic SQL"
+    topicRoute="/sql/dynamic-sql"
+    subtopicLabel="A Risk Named But Never Guarded Against"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That usp_SearchOrders Has No Guard Against the Full-Scan Risk</h1>
+  <p class="page-subtitle">
+    The page's own Q&amp;A warns that an all-NULL filter call degenerates to a full table scan — the
+    published usp_SearchOrders procedure never implements the guard the Q&amp;A recommends.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A quoting-vs-authorization mix-up, an unnecessary use of EXECUTE, and a documented risk left unguarded
+      in the actual code — three reminders that a page's prose and its code examples need to be checked
+      against each other, not just against the database.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dynamic SQL"
+    topicRoute="/sql/dynamic-sql"
+    [prev]="{ label: 'get_orders_by_status Doesn’t Need Dynamic SQL', route: '/sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all' }"
+  />
+</div>

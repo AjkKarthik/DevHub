@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Transactions"
+    topicRoute="/sql/transactions"
+    subtopicLabel="Testing the Bank Transfer Pattern"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Bank Transfer Example Is Already Safe Without UPDLOCK</h1>
+  <p class="page-subtitle">
+    The main page's own bank-transfer UPDATE looks like it could need explicit locking — a self-referencing
+    UPDATE is already atomic, unlike the SELECT-then-UPDATE pattern shown later on the same page.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the bank-transfer pattern's safety confirmed, the next subtopic demonstrates write skew — the one
+      concurrency anomaly the main page describes only in words, never in code.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Transactions"
+    topicRoute="/sql/transactions"
+    [next]="{ label: 'Demonstrating Write Skew — the One Anomaly Left Without Code', route: '/sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code' }"
+  />
+</div>

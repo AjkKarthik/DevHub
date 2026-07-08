@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SQL Basics"
+    topicRoute="/sql/basics"
+    subtopicLabel="Testing the Tie-Break Gap"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">DISTINCT ON and ROW_NUMBER() Examples Have No Tie-Breaker</h1>
+  <p class="page-subtitle">
+    The main page's own "most recent order per customer" queries order only by order_date — a genuine
+    tie between two orders makes the result unspecified, and a plan change can silently flip it.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the tie-break gap fixed, the next subtopic moves from data determinism to a performance claim —
+      confirming, rather than just trusting, that the main page's implicit conversion warning actually shows
+      up in a real execution plan.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SQL Basics"
+    topicRoute="/sql/basics"
+    [next]="{ label: 'Confirming the Implicit Conversion Claim', route: '/sql/basics/confirming-not-trusting-the-implicit-conversion-claim' }"
+  />
+</div>

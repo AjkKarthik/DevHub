@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Data Types"
+    topicRoute="/sql/data-types"
+    subtopicLabel="Implicit Conversion Direction, Corrected"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The Implicit Conversion Warning Has the Risky Direction Backwards</h1>
+  <p class="page-subtitle">
+    The main page's own comment calls "NVARCHAR column vs VARCHAR literal" the bad case. Per SQL Server's
+    data type precedence rules, that direction is actually fine — the real risk runs the other way.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the correct implicit-conversion direction established, the final subtopic moves to PostgreSQL and
+      the main page's own JSONB update example — which silently no-ops on exactly the kind of row the page's
+      own schema declares as valid.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Data Types"
+    topicRoute="/sql/data-types"
+    [prev]="{ label: 'Testing That Financial Columns Stay DECIMAL', route: '/sql/data-types/testing-that-financial-columns-stay-decimal-not-float' }"
+    [next]="{ label: 'jsonb_set() Silently No-Ops on a NULL Target', route: '/sql/data-types/jsonb-set-silently-no-ops-on-a-null-target' }"
+  />
+</div>

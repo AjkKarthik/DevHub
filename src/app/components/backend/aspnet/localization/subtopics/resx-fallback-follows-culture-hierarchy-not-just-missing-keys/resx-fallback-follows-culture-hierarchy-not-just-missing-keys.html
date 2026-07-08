@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Localization &amp; Globalization"
+    topicRoute="/aspnet/localization"
+    subtopicLabel="Resource Fallback Hierarchy"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Resource Fallback Follows Culture Hierarchy, Not Just Missing Keys</h1>
+  <p class="page-subtitle">
+    The main page's own resource files only ever use neutral cultures like fr.resx — never region-specific
+    ones like fr-FR.resx. That works because .NET falls back through the culture hierarchy automatically.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With resource fallback mechanics clear, the final subtopic catches a real inconsistency between two
+      of the main page's own code tabs — its Culture Cookie endpoint silently rejects the one culture its
+      RTL section was built specifically to support.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Localization &amp; Globalization"
+    topicRoute="/aspnet/localization"
+    [prev]="{ label: 'Testing Localized Responses: Fixed Provider vs Accept-Language', route: '/aspnet/localization/testing-localized-responses-fixed-culture-provider-vs-accept-language' }"
+    [next]="{ label: 'Culture Cookie Endpoint Silently Rejects Arabic', route: '/aspnet/localization/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic' }"
+  />
+</div>

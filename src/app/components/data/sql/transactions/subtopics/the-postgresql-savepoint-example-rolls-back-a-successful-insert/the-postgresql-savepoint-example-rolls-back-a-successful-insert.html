@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Transactions"
+    topicRoute="/sql/transactions"
+    subtopicLabel="An Unconditional Rollback Bug"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The PostgreSQL SAVEPOINT Example Rolls Back a Successful Insert</h1>
+  <p class="page-subtitle">
+    The main page's MSSQL SAVEPOINT example correctly gates the rollback behind an error check — its
+    PostgreSQL counterpart, in the same code tab, rolls back unconditionally every time.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Transactions end-to-end: confirming which UPDATE patterns
+      genuinely need explicit locking, demonstrating the one anomaly the main page never shows in code, and
+      catching an unconditional rollback that would silently discard successful work in production.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Transactions"
+    topicRoute="/sql/transactions"
+    [prev]="{ label: 'Demonstrating Write Skew — the One Anomaly Left Without Code', route: '/sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code' }"
+  />
+</div>

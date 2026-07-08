@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Cursors & Row-by-Row Processing"
+    topicRoute="/sql/cursors"
+    subtopicLabel="Testing an Unconditional Warning"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That LOCAL Cursors Auto-Deallocate Without Explicit DEALLOCATE</h1>
+  <p class="page-subtitle">
+    The main page's Q&amp;A warns that skipping DEALLOCATE always leaks — it depends entirely on an unstated
+    LOCAL vs GLOBAL scope none of the page's own examples specify.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With DEALLOCATE's real condition clarified, the next subtopic checks the PostgreSQL "REFCURSOR" code
+      tab against what it actually demonstrates.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Cursors & Row-by-Row Processing"
+    topicRoute="/sql/cursors"
+    [next]="{ label: 'fetch_customers Isn’t Really a REFCURSOR', route: '/sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example' }"
+  />
+</div>

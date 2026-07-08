@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Subqueries"
+    topicRoute="/sql/subqueries"
+    subtopicLabel="Testing the Window Function Rewrite"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Window Function Rewrite Matches the Correlated Subquery</h1>
+  <p class="page-subtitle">
+    The main page's own performance rewrite is never proven to return the same rows as the correlated
+    subquery it replaces — an EXCEPT-based test against a small fixture catches a silent divergence.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the window-function rewrite regression-tested, the next subtopic looks at the main page's own
+      "avoid this" window-function-in-HAVING example — which turns out to not run at all, in either dialect.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Subqueries"
+    topicRoute="/sql/subqueries"
+    [next]="{ label: 'The “Avoid This” Example Doesn’t Run At All', route: '/sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all' }"
+  />
+</div>

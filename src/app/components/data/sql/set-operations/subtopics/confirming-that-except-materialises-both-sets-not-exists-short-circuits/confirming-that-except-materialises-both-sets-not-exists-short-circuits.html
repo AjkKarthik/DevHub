@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Set Operations"
+    topicRoute="/sql/set-operations"
+    subtopicLabel="Confirming the EXCEPT vs NOT EXISTS Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Confirming That EXCEPT Materialises Both Sets While NOT EXISTS Short-Circuits</h1>
+  <p class="page-subtitle">
+    The main page's own quiz answer states this as fact with no evidence — SET STATISTICS IO and the actual
+    execution plans confirm it directly, including exactly when the gap matters most.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Set Operations end-to-end: closing a gap in the main page's own
+      schema-drift detector, proving the INTERSECT precedence rule has real consequences, and confirming a
+      performance claim with actual evidence instead of trusting a memorized quiz answer.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Set Operations"
+    topicRoute="/sql/set-operations"
+    [prev]="{ label: 'Demonstrating That INTERSECT’s Tighter Binding Changes the Result', route: '/sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result' }"
+  />
+</div>

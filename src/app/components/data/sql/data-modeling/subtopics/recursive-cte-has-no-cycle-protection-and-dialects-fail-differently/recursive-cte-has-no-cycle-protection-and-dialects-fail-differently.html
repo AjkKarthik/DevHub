@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Data Modeling"
+    topicRoute="/sql/data-modeling"
+    subtopicLabel="Recursive CTE Cycle Risk"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Recursive CTE Has No Cycle Protection — and Dialects Fail Differently</h1>
+  <p class="page-subtitle">
+    The main page's own hierarchy query has no cycle guard. MSSQL hits a recoverable MAXRECURSION error;
+    PostgreSQL has no default limit at all and can loop until it exhausts memory.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With cycle protection covered, the final subtopic catches a real inconsistency between the main
+      page's own UUID theory and its own code example — the PostgreSQL DDL uses the exact random-UUID
+      pattern the theory warns against.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Data Modeling"
+    topicRoute="/sql/data-modeling"
+    [prev]="{ label: 'Testing the Polymorphic CHECK Constraint', route: '/sql/data-modeling/testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap' }"
+    [next]="{ label: 'UUID Example Contradicts the Page’s Own Theory', route: '/sql/data-modeling/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against' }"
+  />
+</div>

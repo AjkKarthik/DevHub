@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Pivoting & Cross-Tab"
+    topicRoute="/sql/pivoting"
+    subtopicLabel="Fixing a Query That Doesn't Run"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Fixing the CROSS APPLY UNPIVOT Example's Missing Month Column</h1>
+  <p class="page-subtitle">
+    The main page's Q&amp;A example for multi-column UNPIVOT references a "month" column that neither the
+    source table nor its own CROSS APPLY provides — it doesn't run as written.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL Server 2005" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Having fixed a query that couldn't run at all, the final subtopic confirms something the main page's
+      crosstab() example gets quietly right — its choice of the safer two-argument form.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pivoting & Cross-Tab"
+    topicRoute="/sql/pivoting"
+    [prev]="{ label: 'PIVOT’s Invisible Implicit GROUP BY', route: '/sql/pivoting/demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows' }"
+    [next]="{ label: 'Confirming crosstab()’s Safe Two-Argument Form', route: '/sql/pivoting/testing-that-crosstabs-two-argument-form-handles-a-missing-month' }"
+  />
+</div>

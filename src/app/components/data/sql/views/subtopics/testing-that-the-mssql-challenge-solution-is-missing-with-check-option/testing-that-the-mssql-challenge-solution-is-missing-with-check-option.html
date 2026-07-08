@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Views"
+    topicRoute="/sql/views"
+    subtopicLabel="Testing the Challenge's Cross-Tenant Leak"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the MSSQL Challenge Solution Is Missing WITH CHECK OPTION</h1>
+  <p class="page-subtitle">
+    The challenge asks for WITH CHECK OPTION to scope inserts by tenant — the PostgreSQL solution has it, the
+    MSSQL solution doesn't, and the gap is a real cross-tenant write leak.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Having found a security gap in a challenge solution, the next subtopic finds a smaller but similar
+      issue — dead code sitting inside the page's own data-masking example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Views"
+    topicRoute="/sql/views"
+    [next]="{ label: 'The Dead LEFT(ssn, 0) in the Masking Example', route: '/sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code' }"
+  />
+</div>

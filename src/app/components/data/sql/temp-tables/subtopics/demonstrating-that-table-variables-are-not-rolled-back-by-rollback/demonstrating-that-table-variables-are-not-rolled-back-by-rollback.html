@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Temp Tables & Table Variables"
+    topicRoute="/sql/temp-tables"
+    subtopicLabel="A Fact the Page Never Mentions"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That Table Variables Are Not Rolled Back by ROLLBACK</h1>
+  <p class="page-subtitle">
+    The main page never mentions this at all — a @table variable's data survives a ROLLBACK TRANSACTION that
+    wipes out a #temp table's data in the exact same block.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With rollback behavior covered, the final subtopic fills a gap in the page's own indexing Q&amp;A —
+      table variables support more than just PRIMARY KEY/UNIQUE-backed indexes.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Temp Tables & Table Variables"
+    topicRoute="/sql/temp-tables"
+    [prev]="{ label: 'Correcting the Nested-Proc Claim', route: '/sql/temp-tables/correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim' }"
+    [next]="{ label: 'Table Variables Support Inline Indexes', route: '/sql/temp-tables/demonstrating-that-table-variables-support-inline-non-unique-indexes' }"
+  />
+</div>

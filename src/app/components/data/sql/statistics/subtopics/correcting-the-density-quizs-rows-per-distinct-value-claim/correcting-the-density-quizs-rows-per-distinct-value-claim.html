@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Statistics & Optimizer"
+    topicRoute="/sql/statistics"
+    subtopicLabel="The Density Quiz’s Rows-Per-Value Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Correcting the Density Quiz's Rows-Per-Distinct-Value Claim</h1>
+  <p class="page-subtitle">
+    "A density of 0.001 means about 1,000 rows per distinct value" only holds for a table with exactly
+    1,000,000 rows — the real formula needs density AND total row count.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="SQL Server 7.0+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A quiz explanation that silently assumes a specific table size — the last subtopic returns to the
+      page's own reference queries for a related staleness-ranking gap.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Statistics & Optimizer"
+    topicRoute="/sql/statistics"
+    [prev]="{ label: 'The Challenge Never Flags What’s Overdue', route: '/sql/statistics/testing-that-the-challenges-solution-never-flags-which-stats-are-overdue' }"
+    [next]="{ label: 'The Stale Stats Query Ranks by an Outdated Signal', route: '/sql/statistics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage' }"
+  />
+</div>

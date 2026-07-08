@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="CTEs"
+    topicRoute="/sql/ctes"
+    subtopicLabel="A Missing Guard, an Asymmetric Risk"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">CategoryPath Has No Depth Guard, and PostgreSQL Won't Save It</h1>
+  <p class="page-subtitle">
+    The main page's own CategoryPath example skips the depth guard its Employee example uses — and MSSQL's
+    accidental default MAXRECURSION cap won't be there to save you in PostgreSQL.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic moves from recursion safety to a different claim on the same page — confirming,
+      rather than just trusting, that a CTE referenced twice in SQL Server actually executes twice.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="CTEs"
+    topicRoute="/sql/ctes"
+    [prev]="{ label: 'Testing the Depth Guard Against a Cycle', route: '/sql/ctes/testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain' }"
+    [next]="{ label: 'Confirming a Twice-Referenced CTE Actually Executes Twice', route: '/sql/ctes/confirming-that-a-twice-referenced-cte-actually-executes-twice' }"
+  />
+</div>

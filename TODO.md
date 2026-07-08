@@ -1532,78 +1532,78 @@ off here with a date.
 - [x] `/aspnet/aspire` — .NET Aspire (2026-07-06 — 3 subtopics: testing-apphost-topology-with-distributedapplicationtestingbuilder, addproject-type-parameter-requires-build-not-just-project-reference, otel-exporter-needs-endpoint-guard-when-running-outside-apphost)
 - [x] `/aspnet/fluent-validation` — FluentValidation (2026-07-06 — 3 subtopics: testing-async-mustasync-rules-with-fluentvalidation-testhelper, inline-when-defaults-to-all-validators-in-the-same-rulefor-chain, adding-one-mustasync-rule-breaks-every-synchronous-validate-caller)
 - [x] `/aspnet/minimal-api-advanced` — Minimal API Advanced (2026-07-06 — 3 subtopics: testing-endpoint-filters-without-webapplicationfactory, ctx-arguments-oftype-is-fragile-use-getargument-by-position, nested-group-filters-execute-outside-in-like-middleware)
-- [ ] `/aspnet/output-caching-advanced` — Output Caching Advanced
-- [ ] `/aspnet/dapper` — Dapper & Raw SQL
-- [ ] `/aspnet/csrf` — Anti-forgery & CSRF
-- [ ] `/aspnet/feature-flags` — Feature Flags
-- [ ] `/aspnet/localization` — Localization & Globalization
-- [ ] `/aspnet/masstransit` — MassTransit
-- [ ] `/aspnet/response-compression` — Response Compression
-- [ ] `/aspnet/websockets` — WebSockets
-- [ ] `/aspnet/yarp` — YARP Reverse Proxy
-- [ ] `/aspnet/opentelemetry` — OpenTelemetry
+- [x] `/aspnet/output-caching-advanced` — Output Caching Advanced (2026-07-06 — 3 subtopics: testing-tag-eviction-with-fake-outputcachestore, how-cache-stampede-locking-survives-population-failures, custom-ioutputcachepolicy-skips-every-built-in-safety-check)
+- [x] `/aspnet/dapper` — Dapper & Raw SQL (2026-07-07 — 3 subtopics: testing-dapper-repositories-with-in-memory-sqlite, how-dapper-decides-whether-to-close-the-connection-it-used, transferasync-example-holds-its-connection-open-far-too-long)
+- [x] `/aspnet/csrf` — Anti-forgery & CSRF (2026-07-07 — 3 subtopics: testing-get-requests-cant-reach-state-changing-endpoints, cookie-token-and-request-token-are-not-the-same-string, manual-validation-middleware-and-useantiforgery-are-redundant-not-layered)
+- [x] `/aspnet/feature-flags` — Feature Flags (2026-07-07 — 3 subtopics: testing-feature-flagged-code-mocking-and-config-override, percentagefilter-re-rolls-on-every-call-not-sticky-per-user, featuregate-multiple-flags-defaults-to-requirementtype-all)
+- [x] `/aspnet/localization` — Localization & Globalization (2026-07-07 — 3 subtopics: testing-localized-responses-fixed-culture-provider-vs-accept-language, resx-fallback-follows-culture-hierarchy-not-just-missing-keys, culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic)
+- [x] `/aspnet/masstransit` — MassTransit (2026-07-07 — 3 subtopics: testing-masstransit-consumers-and-request-reply-with-itestharness, usemessageretry-and-usedelayedredelivery-multiply-not-add, send-hardcoded-queue-name-can-silently-point-at-an-empty-queue)
+- [x] `/aspnet/response-compression` — Response Compression (2026-07-07 — 3 subtopics: testing-minimum-size-threshold-and-skip-if-already-encoded, registration-order-only-breaks-ties-among-client-supported-encodings, diagnostic-middleware-must-wrap-compression-not-nest-inside-it)
+- [x] `/aspnet/websockets` — WebSockets (2026-07-07 — 3 subtopics: testing-websocket-endpoints-with-testservers-websocketclient, close-handshake-mechanics-what-actually-ends-the-receive-loop, receive-loop-examples-silently-truncate-multi-frame-messages)
+- [x] `/aspnet/yarp` — YARP Reverse Proxy (2026-07-07 — 3 subtopics: testing-yarp-routes-and-transforms-with-loadfrommemory, passive-health-checks-dont-verify-recovery-just-retry-after-timeout, proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing)
+- [x] `/aspnet/opentelemetry` — OpenTelemetry (2026-07-07 — 3 subtopics: testing-custom-spans-and-metrics-with-activitylistener-and-meterlistener, settag-guards-against-null-not-against-a-sampled-out-span, fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent)
 
 #### SQL — 44 topic pages
 
-- [ ] `/sql/rdbms-concepts` — RDBMS Concepts
-- [ ] `/sql/data-modeling` — Data Modeling
-- [ ] `/sql/normalization` — Normalization
-- [ ] `/sql/db-architecture` — Database Architecture
-- [ ] `/sql/data-types` — Data Types
-- [ ] `/sql/basics` — SQL Basics
-- [ ] `/sql/joins` — Joins
-- [ ] `/sql/aggregations` — Aggregations
-- [ ] `/sql/subqueries` — Subqueries
-- [ ] `/sql/ctes` — CTEs
-- [ ] `/sql/window-functions` — Window Functions
-- [ ] `/sql/indexes` — Indexes
-- [ ] `/sql/transactions` — Transactions
-- [ ] `/sql/schema-design` — Schema Design
-- [ ] `/sql/stored-procedures` — Stored Procedures
-- [ ] `/sql/performance` — Query Performance
-- [ ] `/sql/json-features` — JSON Features
-- [ ] `/sql/set-operations` — Set Operations
-- [ ] `/sql/null-handling` — NULL Handling
-- [ ] `/sql/merge` — MERGE / Upsert
-- [ ] `/sql/string-functions` — String Functions
-- [ ] `/sql/date-functions` — Date & Time Functions
-- [ ] `/sql/conditional-expressions` — Conditional Expressions
-- [ ] `/sql/math-functions` — Math & Numeric Functions
-- [ ] `/sql/pivoting` — Pivoting & Cross-Tab Queries
-- [ ] `/sql/constraints` — Constraints
-- [ ] `/sql/views` — Views
-- [ ] `/sql/sequences` — Sequences & Identity
-- [ ] `/sql/temp-tables` — Temp Tables & Table Variables
-- [ ] `/sql/computed-columns` — Computed & Generated Columns
-- [ ] `/sql/stored-functions` — Stored Functions
-- [ ] `/sql/cursors` — Cursors & Row-by-Row Processing
-- [ ] `/sql/triggers` — Triggers
-- [ ] `/sql/dynamic-sql` — Dynamic SQL
-- [ ] `/sql/isolation-levels` — Isolation Levels
-- [ ] `/sql/locking` — Locking & Deadlocks
-- [ ] `/sql/execution-plans` — Execution Plans
-- [ ] `/sql/partitioning` — Partitioning
-- [ ] `/sql/bulk-operations` — Bulk Operations
-- [ ] `/sql/query-store` — Query Store & Performance Statistics
-- [ ] `/sql/statistics` — Statistics & Query Optimizer
-- [ ] `/sql/full-text-search` — Full-Text Search
-- [ ] `/sql/security` — SQL Security
-- [ ] `/sql/connection-pooling` — Connection Pooling
+- [x] `/sql/rdbms-concepts` — RDBMS Concepts (2026-07-07 — 3 subtopics: testing-constraints-with-tsqlt-and-pgtap, plan-cache-pollution-is-about-query-text-not-query-structure, cascade-delete-demo-doesnt-match-the-pages-own-schema)
+- [x] `/sql/data-modeling` — Data Modeling (2026-07-07 — 3 subtopics: testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap, recursive-cte-has-no-cycle-protection-and-dialects-fail-differently, uuid-example-uses-the-exact-pattern-its-own-theory-warns-against)
+- [x] `/sql/normalization` — Normalization (2026-07-07 — 3 subtopics: testing-that-the-ordertotal-trigger-actually-stays-in-sync, why-a-computed-column-cant-replace-the-ordertotal-trigger, challenge-solutions-comment-contradicts-its-own-fk-declaration)
+- [x] `/sql/db-architecture` — Database Architecture (2026-07-07 — 3 subtopics: testing-idle-in-transaction-session-timeout-actually-works, buffer-hit-ratio-query-reads-a-meaningless-raw-counter, dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live)
+- [x] `/sql/data-types` — Data Types (2026-07-07 — 3 subtopics: testing-that-financial-columns-stay-decimal-not-float, implicit-conversion-warning-has-the-risky-direction-backwards, jsonb-set-silently-no-ops-on-a-null-target)
+- [x] `/sql/basics` — SQL Basics (2026-07-07 — 3 subtopics: distinct-on-and-row-number-examples-have-no-tie-breaker, confirming-not-trusting-the-implicit-conversion-claim, offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination)
+- [x] `/sql/joins` — Joins (2026-07-07 — 3 subtopics: testing-that-the-row-multiplication-fix-actually-prevents-double-counting, year-wrapped-date-filter-fix-still-isnt-sargable, anti-join-self-join-both-tab-has-a-postgresql-only-clause)
+- [x] `/sql/aggregations` — Aggregations (2026-07-07 — 3 subtopics: testing-that-the-count-distinct-alternative-returns-identical-counts, legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters, grouping-sets-omits-the-disambiguation-its-own-theory-warns-about)
+- [x] `/sql/subqueries` — Subqueries (2026-07-07 — 3 subtopics: testing-that-the-window-function-rewrite-matches-the-correlated-subquery, the-avoid-this-window-function-in-having-example-doesnt-run-at-all, row-subqueries-and-the-mssql-rewrite-the-page-never-shows)
+- [x] `/sql/ctes` — CTEs (2026-07-07 — 3 subtopics: testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain, categorypath-has-no-depth-guard-and-postgresql-wont-save-it, confirming-that-a-twice-referenced-cte-actually-executes-twice)
+- [x] `/sql/window-functions` — Window Functions (2026-07-07 — 3 subtopics: testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap, why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential, confirming-that-identical-over-clauses-really-do-share-a-single-sort)
+- [x] `/sql/indexes` — Indexes (2026-07-07 — 3 subtopics: testing-that-a-filtered-index-actually-gets-used-not-silently-skipped, quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes, the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule)
+- [x] `/sql/transactions` — Transactions (2026-07-07 — 3 subtopics: testing-that-the-bank-transfer-example-is-already-safe-without-updlock, demonstrating-write-skew-the-one-anomaly-left-without-code, the-postgresql-savepoint-example-rolls-back-a-successful-insert)
+- [x] `/sql/schema-design` — Schema Design (2026-07-07 — 3 subtopics: testing-whether-step-1s-default-actually-backfills-existing-rows, the-postgresql-enum-alternative-is-harder-to-evolve-not-easier, adding-the-lookup-table-pattern-never-retires-the-original-check)
+- [x] `/sql/stored-procedures` — Stored Procedures (2026-07-07 — 3 subtopics: testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls, confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down, demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch)
+- [x] `/sql/performance` — Query Performance (2026-07-07 — 3 subtopics: testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows, the-missing-index-impact-score-formula-is-missing-a-100, demonstrating-the-execution-plan-regression-test-the-page-only-describes)
+- [x] `/sql/json-features` — JSON Features (2026-07-07 — 3 subtopics: testing-that-merge-silently-wipes-out-nested-keys-instead-of-deep-merging, demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays, the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows)
+- [x] `/sql/set-operations` — Set Operations (2026-07-07 — 3 subtopics: testing-that-the-schema-comparison-query-misses-type-only-drift, demonstrating-that-intersects-tighter-binding-actually-changes-the-result, confirming-that-except-materialises-both-sets-not-exists-short-circuits)
+- [x] `/sql/null-handling` — NULL Handling (2026-07-07 — 3 subtopics: testing-that-union-treats-two-nulls-as-equal-while-join-doesnt, isnull-can-silently-truncate-a-bigger-reason-than-portability, demonstrating-what-ansi-nulls-off-actually-does-to-comparisons)
+- [x] `/sql/merge` — MERGE / Upsert (2026-07-07 — 3 subtopics: testing-that-the-mssql-merge-duplicate-source-bug-is-real, on-conflict-is-atomic-once-the-partial-index-predicate-matches, concurrent-merge-statements-can-still-race-without-holdlock)
+- [x] `/sql/string-functions` — String Functions (2026-07-07 — 3 subtopics: testing-that-name-normaliser-returns-null-for-a-null-last-name, demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale, replace-is-case-insensitive-by-default-contradicting-its-own-claim)
+- [x] `/sql/date-functions` — Date & Time Functions (2026-07-07 — 3 subtopics: testing-that-the-monthly-revenue-report-drops-zero-order-months, group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column, demonstrating-at-time-zones-automatic-dst-adjustment-across-march)
+- [x] `/sql/conditional-expressions` — Conditional Expressions (2026-07-07 — 3 subtopics: case-when-order-is-standard-guaranteed-not-just-typical-behavior, testing-that-nullif-count-zero-can-never-actually-fire, nested-iif-where-example-contradicts-its-own-nesting-advice)
+- [x] `/sql/math-functions` — Math & Numeric Functions (2026-07-07 — 3 subtopics: correcting-the-bankers-rounding-claim-for-postgresql-numeric, testing-that-avg-on-integers-differs-between-postgresql-and-mssql, mssql-tablesample-rows-can-return-far-fewer-rows-than-requested)
+- [x] `/sql/pivoting` — Pivoting & Cross-Tab Queries (2026-07-07 — 3 subtopics: demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows, fixing-the-cross-apply-unpivot-examples-missing-month-column, testing-that-crosstabs-two-argument-form-handles-a-missing-month)
+- [x] `/sql/constraints` — Constraints (2026-07-07 — 3 subtopics: testing-that-on-delete-restrict-is-invalid-t-sql-syntax, testing-that-mssql-unique-allows-only-one-null-not-multiple, not-valid-plus-validate-constraint-avoids-the-full-table-lock)
+- [x] `/sql/views` — Views (2026-07-07 — 3 subtopics: testing-that-the-mssql-challenge-solution-is-missing-with-check-option, demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code, demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view)
+- [x] `/sql/sequences` — Sequences & Identity (2026-07-07 — 3 subtopics: correcting-the-peek-next-value-answer-when-cache-is-greater-than-one, demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger, testing-that-committed-sequence-ids-can-appear-out-of-order)
+- [x] `/sql/temp-tables` — Temp Tables & Table Variables (2026-07-07 — 3 subtopics: correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim, demonstrating-that-table-variables-are-not-rolled-back-by-rollback, demonstrating-that-table-variables-support-inline-non-unique-indexes)
+- [x] `/sql/computed-columns` — Computed & Generated Columns (2026-07-07 — 3 subtopics: testing-that-mssql-computed-columns-can-reference-each-other, checksum-is-not-stable-across-sql-server-versions-or-patches, adding-a-stored-generated-column-locks-the-whole-table)
+- [x] `/sql/stored-functions` — Stored Functions (2026-07-07 — 3 subtopics: correcting-the-search-path-public-pin-in-the-security-definer-example, writing-an-actual-create-aggregate-example-the-quiz-only-describes, demonstrating-that-business-days-depends-on-set-datefirst)
+- [x] `/sql/cursors` — Cursors & Row-by-Row Processing (2026-07-07 — 3 subtopics: testing-that-local-cursors-auto-deallocate-without-explicit-deallocate, demonstrating-that-fetch-customers-is-not-really-a-refcursor-example, demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup)
+- [x] `/sql/triggers` — Triggers (2026-07-07 — 3 subtopics: testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology, testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint, correcting-which-setting-actually-stops-cross-table-trigger-recursion)
+- [x] `/sql/dynamic-sql` — Dynamic SQL (2026-07-07 — 3 subtopics: search-table-is-injection-safe-but-not-access-control-safe, demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all, testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk)
+- [x] `/sql/isolation-levels` — Isolation Levels (2026-07-07 — 3 subtopics: testing-that-the-challenges-serializable-solution-needs-a-retry-loop, snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads, demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi)
+- [x] `/sql/locking` — Locking & Deadlocks (2026-07-08 — 3 subtopics: testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql, demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock, testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique)
+- [x] `/sql/execution-plans` — Execution Plans (2026-07-08 — 3 subtopics: correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence, demonstrating-that-index-scan-is-not-the-desired-mssql-outcome, testing-that-small-tables-seq-scan-despite-a-covering-index)
+- [x] `/sql/partitioning` — Partitioning (2026-07-08 — 3 subtopics: testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax, testing-that-truncate-orders-archive-discards-the-data-just-switched-in, demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block)
+- [x] `/sql/bulk-operations` — Bulk Operations (2026-07-08 — 3 subtopics: testing-that-the-batched-update-example-never-finds-a-matching-row, testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard, correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap)
+- [x] `/sql/query-store` — Query Store & Performance Statistics (2026-07-08 — 3 subtopics: testing-that-the-historic-average-includes-the-regressed-interval, testing-that-flush-db-does-not-purge-or-reduce-query-store-storage, demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing)
+- [x] `/sql/statistics` — Statistics & Query Optimizer (2026-07-08 — 3 subtopics: testing-that-the-challenges-solution-never-flags-which-stats-are-overdue, correcting-the-density-quizs-rows-per-distinct-value-claim, testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage)
+- [x] `/sql/full-text-search` — Full-Text Search (2026-07-08 — 3 subtopics: testing-that-the-challenges-search-vector-goes-stale-for-new-rows, correcting-the-ts-ranks-fixed-0-to-1-range-claim, testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run)
+- [x] `/sql/security` — SQL Security (2026-07-08 — 3 subtopics: testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes, testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement, testing-that-an-unset-session-context-silently-returns-zero-rows)
+- [x] `/sql/connection-pooling` — Connection Pooling (2026-07-08 — 3 subtopics: testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column, correcting-the-claim-that-set-local-requires-pgbouncer-session-mode, testing-that-the-idle-in-transaction-queries-miss-the-aborted-state)
 
 #### TypeScript — 20 topic pages
 
-- [ ] `/typescript/basics` — TypeScript Fundamentals
-- [ ] `/typescript/primitive-types` — Primitive & Literal Types
-- [ ] `/typescript/interfaces-types` — Interfaces & Type Aliases
-- [ ] `/typescript/unions` — Union & Intersection Types
-- [ ] `/typescript/narrowing` — Type Guards & Narrowing
-- [ ] `/typescript/enums-tuples` — Enums & Tuples
-- [ ] `/typescript/generics` — Generics Fundamentals
-- [ ] `/typescript/generic-patterns` — Generic Patterns
-- [ ] `/typescript/utility-types` — Utility Types
-- [ ] `/typescript/mapped-types` — Mapped Types
-- [ ] `/typescript/conditional-types` — Conditional Types
-- [ ] `/typescript/template-literal-types` — Template Literal Types
+- [x] `/typescript/basics` — TypeScript Fundamentals (2026-07-08 — 3 subtopics: testing-that-excess-property-checking-applies-to-function-arguments-too, demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added, testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any — first TypeScript hub topic; discovered and fixed a pre-existing site-wide CSS bug affecting all 132 SQL subtopic pages (see Current Work note below); SUBTOPICS map key hub-prefixed to 'ts-basics' due to collision with existing bare 'basics' key from /csharp/basics)
+- [x] `/typescript/primitive-types` — Primitive & Literal Types (2026-07-08 — 3 subtopics: testing-that-as-consts-readonly-is-compile-time-only-not-runtime, testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port, testing-that-throw-fail-cannot-appear-in-an-expression-position)
+- [x] `/typescript/interfaces-types` — Interfaces & Type Aliases (2026-07-08 — 3 subtopics: testing-that-pluginregistry-never-verifies-name-matches-its-key, testing-that-window-merging-needs-declare-global-in-a-module-file, testing-that-conflicting-merged-properties-are-a-compile-error)
+- [x] `/typescript/unions` — Union & Intersection Types (2026-07-08 — 3 subtopics: testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing, testing-that-the-safe-isuser-fix-still-uses-as-any-twice, testing-that-the-assertion-function-example-never-actually-runs)
+- [x] `/typescript/narrowing` — Type Guards & Narrowing (2026-07-08 — 3 subtopics: testing-that-narrowing-survives-an-unrelated-function-call, testing-that-array-isarray-narrows-to-any-and-loses-element-safety, testing-that-greet-with-an-empty-string-does-not-say-hello-stranger)
+- [x] `/typescript/enums-tuples` — Enums & Tuples (2026-07-08 — 3 subtopics: testing-that-direction-42-returns-undefined-not-a-name, testing-that-const-enum-import-doesnt-throw-in-this-playground, testing-that-minmax-without-return-type-becomes-an-array)
+- [x] `/typescript/generics` — Generics Fundamentals (2026-07-08 — 3 subtopics: testing-that-memoize-collapses-nan-and-null-into-the-same-result, testing-that-getinstance-returns-the-same-object-across-different-t, testing-that-getorset-avoids-the-falsy-value-cache-trap — SUBTOPICS map key hub-prefixed to 'ts-generics' due to collision with existing bare 'generics' key from /csharp/generics)
+- [x] `/typescript/generic-patterns` — Generic Patterns (2026-07-08 — 3 subtopics: testing-that-pipeline-skips-pipe-entirely-and-still-type-checks, testing-that-functionkeys-drops-optional-methods-from-the-result, testing-that-querybuilder-builds-successfully-with-zero-fields-set)
+- [x] `/typescript/utility-types` — Utility Types (2026-07-08 — 3 subtopics: testing-that-partial-record-of-literal-keys-is-safely-optional, testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to, testing-that-distributiveomit-preserves-per-member-narrowing)
+- [x] `/typescript/mapped-types` — Mapped Types (2026-07-08 — 3 subtopics: testing-that-eventhandlers-wrongly-includes-online, testing-that-stringkeys-excludes-an-optional-string-property, testing-that-optionaltonullable-detects-implicit-undefined — hit a NEW single-brace escaping gotcha, see CLAUDE.md)
+- [x] `/typescript/conditional-types` — Conditional Types (2026-07-08 — 3 subtopics: testing-that-equals-cannot-distinguish-any-from-unknown, testing-that-head-of-an-empty-tuple-hides-undefined-behind-never, testing-that-myreturntype-rejects-a-class-constructor)
+- [x] `/typescript/template-literal-types` — Template Literal Types (2026-07-08 — 3 subtopics: testing-that-a-let-variable-widens-handlername-to-plain-string, testing-that-dotpath-hits-infinite-recursion-on-self-reference, testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product)
 - [ ] `/typescript/classes` — Classes & Visibility
 - [ ] `/typescript/decorators` — Decorators
 - [ ] `/typescript/tsconfig` — tsconfig Deep Dive

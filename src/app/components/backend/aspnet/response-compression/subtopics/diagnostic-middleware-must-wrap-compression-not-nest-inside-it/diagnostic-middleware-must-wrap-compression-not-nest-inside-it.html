@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Response Compression"
+    topicRoute="/aspnet/response-compression"
+    subtopicLabel="Diagnostic Middleware Ordering"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Diagnostic Middleware Must Wrap Compression, Not Nest Inside It</h1>
+  <p class="page-subtitle">
+    The main page's own Verify Compression snippet never shows where it's registered relative to
+    UseResponseCompression(). Placed after it, the snippet reads an empty header on every request — even
+    genuinely compressed ones.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover response compression end-to-end: proving the size threshold
+      and skip-if-encoded behaviors under test, understanding exactly what "first matching provider" means
+      for clients that don't support the preferred encoding, and correctly ordering a diagnostic middleware
+      around compression rather than inside it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Response Compression"
+    topicRoute="/aspnet/response-compression"
+    [prev]="{ label: 'Registration Order Only Breaks Ties Among Supported Encodings', route: '/aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings' }"
+  />
+</div>

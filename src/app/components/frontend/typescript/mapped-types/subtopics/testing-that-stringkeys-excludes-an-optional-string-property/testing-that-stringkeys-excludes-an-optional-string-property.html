@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Mapped Types"
+    topicRoute="/typescript/mapped-types"
+    subtopicLabel="StringKeys Excludes an Optional String" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That StringKeys Excludes an Optional String Property</h1>
+  <p class="page-subtitle">
+    The main page's StringKeys only tests required string properties — an optional nickname?: string gets
+    silently dropped, the same gap as the earlier FunctionKeys finding.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="TypeScript 4.1+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Add one optional string property to the main page's own <code>Mixed</code> interface and check whether
+      <code>StringKeys&lt;Mixed&gt;</code> still includes it.
+    </p>
+    <app-live-playground
+      title="Optional properties and value-type filters — testing StringKeys"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This confirms the earlier FunctionKeys gap is a pervasive pattern across every value-type filter on
+      this page, before checking a third mapped type that DOES handle optionality correctly.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Mapped Types"
+    topicRoute="/typescript/mapped-types"
+    [prev]="{ label: 'EventHandlers Wrongly Includes online', route: '/typescript/mapped-types/testing-that-eventhandlers-wrongly-includes-online' }"
+    [next]="{ label: 'OptionalToNullable Detects Implicit undefined', route: '/typescript/mapped-types/testing-that-optionaltonullable-detects-implicit-undefined' }" />
+</div>

@@ -1,0 +1,43 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="DB Architecture"
+    topicRoute="/sql/db-architecture"
+    subtopicLabel="Buffer Hit Ratio Mechanics"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Buffer Hit Ratio Query Reads a Meaningless Raw Counter</h1>
+  <p class="page-subtitle">
+    "Buffer cache hit ratio" is a fraction counter — its raw value is only the numerator. The main page's
+    own MSSQL query never joins the paired base counter, so the number it returns isn't a percentage at
+    all.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the MSSQL counter mechanics clear, the final subtopic looks at the PostgreSQL side of the same
+      diagnostic theme — the main page's own bloat query reads statistics estimates that can silently go
+      stale after a restart.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DB Architecture"
+    topicRoute="/sql/db-architecture"
+    [prev]="{ label: 'Testing idle_in_transaction_session_timeout Actually Works', route: '/sql/db-architecture/testing-idle-in-transaction-session-timeout-actually-works' }"
+    [next]="{ label: 'n_dead_tup Is an Estimate, Not a Live Count', route: '/sql/db-architecture/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live' }"
+  />
+</div>

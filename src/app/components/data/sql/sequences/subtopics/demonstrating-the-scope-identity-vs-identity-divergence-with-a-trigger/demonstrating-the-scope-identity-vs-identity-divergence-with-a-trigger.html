@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Sequences & Identity"
+    topicRoute="/sql/sequences"
+    subtopicLabel="Writing the Trigger Scenario the Page Only Describes"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating the SCOPE_IDENTITY() vs @@IDENTITY Divergence With a Trigger</h1>
+  <p class="page-subtitle">
+    The main page explains the two functions diverge when a trigger fires — here's the actual trigger, and
+    the exact moment @@IDENTITY starts returning the wrong table's ID.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      From a scoping bug to a concurrency question — the final subtopic checks whether committed sequence IDs
+      can actually appear out of order, exactly as the page's own Q&amp;A claims.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Sequences & Identity"
+    topicRoute="/sql/sequences"
+    [prev]="{ label: 'Correcting the ‘Peek Next Value’ Answer', route: '/sql/sequences/correcting-the-peek-next-value-answer-when-cache-is-greater-than-one' }"
+    [next]="{ label: 'Testing Out-of-Order Sequence Commits', route: '/sql/sequences/testing-that-committed-sequence-ids-can-appear-out-of-order' }"
+  />
+</div>

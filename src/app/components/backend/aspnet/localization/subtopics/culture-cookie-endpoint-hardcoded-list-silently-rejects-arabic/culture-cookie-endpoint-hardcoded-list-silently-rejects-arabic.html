@@ -1,0 +1,41 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Localization &amp; Globalization"
+    topicRoute="/aspnet/localization"
+    subtopicLabel="Culture Cookie's Missing Arabic"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Culture Cookie Endpoint Silently Rejects Arabic</h1>
+  <p class="page-subtitle">
+    The main page's own Setup tab lists "ar" as a supported culture and builds a whole RTL section for it —
+    but the Culture Cookie tab validates against a separate hardcoded array that leaves Arabic out.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover localization end-to-end: testing both negotiation and
+      translation correctness, understanding how resource fallback resolves regions without dedicated
+      files, and catching a real drift between two of the main page's own hardcoded culture lists.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Localization &amp; Globalization"
+    topicRoute="/aspnet/localization"
+    [prev]="{ label: 'Resource Fallback Follows Culture Hierarchy, Not Just Missing Keys', route: '/aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys' }"
+  />
+</div>

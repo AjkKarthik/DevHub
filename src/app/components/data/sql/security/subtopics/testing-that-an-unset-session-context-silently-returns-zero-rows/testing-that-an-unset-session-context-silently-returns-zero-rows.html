@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SQL Security"
+    topicRoute="/sql/security"
+    subtopicLabel="Unset Session Context Silently Returns Zero"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That an Unset Session Context Silently Returns Zero Rows</h1>
+  <p class="page-subtitle">
+    Forgetting to call sp_set_session_context leaves the filter predicate comparing tenant_id to NULL —
+    every row is excluded, with no error, looking identical to a genuinely empty table.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="SQL Server 2016+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A missing write guard, a trigger misclassification, and a silent empty-result failure mode — three
+      reasons to test a multi-tenant security setup beyond its documented happy path.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SQL Security"
+    topicRoute="/sql/security"
+    [prev]="{ label: 'The Audit Trigger Misclassifies Rows During MERGE', route: '/sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement' }"
+  />
+</div>

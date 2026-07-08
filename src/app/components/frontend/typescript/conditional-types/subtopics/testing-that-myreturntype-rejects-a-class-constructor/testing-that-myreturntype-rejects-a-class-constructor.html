@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Conditional Types"
+    topicRoute="/typescript/conditional-types"
+    subtopicLabel="MyReturnType Rejects a Class Constructor" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That MyReturnType Rejects a Class Constructor</h1>
+  <p class="page-subtitle">
+    The main page's R6 example rejects a plain non-function — this tests whether a "callable" class
+    constructor fares any better, or fails the same call-signature check.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="TypeScript 2.8+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Run the main page's own <code>MyReturnType&lt;T&gt;</code> against <code>typeof Widget</code>, then
+      compare it against the purpose-built <code>InstanceType&lt;typeof Widget&gt;</code>.
+    </p>
+    <app-live-playground
+      title="Construct signatures vs call signatures — testing MyReturnType on a class"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the conditional types topic by extending the main page's own R6 rejection case to a
+      genuinely callable-looking type that still fails for the same structural reason.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Conditional Types"
+    topicRoute="/typescript/conditional-types"
+    [prev]="{ label: 'Head of an Empty Tuple Hides undefined', route: '/typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never' }" />
+</div>

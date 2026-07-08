@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="JSON Features"
+    topicRoute="/sql/json-features"
+    subtopicLabel="Testing the Merge Operator's Limits"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That || Silently Wipes Out Nested Keys Instead of Deep-Merging</h1>
+  <p class="page-subtitle">
+    The main page's own theory mentions the merge operator only works at the top level — but never
+    demonstrates the actual data loss that happens when a nested key gets merged anyway.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the merge operator's nested-key limitation confirmed, the next subtopic demonstrates what
+      OPENJSON's untyped output actually looks like for an array of objects — a case the main page's own
+      example never shows.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="JSON Features"
+    topicRoute="/sql/json-features"
+    [next]="{ label: 'Demonstrating OPENJSON’s Untyped Output for Object Arrays', route: '/sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays' }"
+  />
+</div>

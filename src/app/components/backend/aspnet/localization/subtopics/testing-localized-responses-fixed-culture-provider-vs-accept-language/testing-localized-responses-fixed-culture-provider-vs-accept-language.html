@@ -1,0 +1,41 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Localization &amp; Globalization"
+    topicRoute="/aspnet/localization"
+    subtopicLabel="Testing Localized Responses"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Localized Responses: Fixed Provider vs Accept-Language</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A names two testing techniques — a real Accept-Language header, and a fixed
+    custom culture provider — but shows code for neither. They test different layers and aren't
+    interchangeable.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With testing covered, the next subtopic digs into how .resx resource fallback actually resolves a
+      region like fr-FR, even when no region-specific resource file was ever created for it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Localization &amp; Globalization"
+    topicRoute="/aspnet/localization"
+    [next]="{ label: 'Resource Fallback Follows Culture Hierarchy, Not Just Missing Keys', route: '/aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys' }"
+  />
+</div>

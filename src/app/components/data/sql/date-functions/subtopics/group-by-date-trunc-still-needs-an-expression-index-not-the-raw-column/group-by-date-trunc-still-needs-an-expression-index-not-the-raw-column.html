@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Date & Time Functions"
+    topicRoute="/sql/date-functions"
+    subtopicLabel="Resolving a Self-Contradicting Index Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">GROUP BY DATE_TRUNC Still Needs an Expression Index, Not the Raw Column's</h1>
+  <p class="page-subtitle">
+    The main page's own Q&amp;A contradicts its neighboring warning about wrapping columns in functions —
+    EXPLAIN shows exactly which one is right.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="PostgreSQL 7.1" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Indexing sorted out, the final subtopic turns to a claim the main page only ever describes in prose —
+      that AT TIME ZONE "handles DST automatically" — and proves it with two concrete dates.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Date & Time Functions"
+    topicRoute="/sql/date-functions"
+    [prev]="{ label: 'Testing the Monthly Revenue Report for Gaps', route: '/sql/date-functions/testing-that-the-monthly-revenue-report-drops-zero-order-months' }"
+    [next]="{ label: 'AT TIME ZONE’s Automatic DST Adjustment', route: '/sql/date-functions/demonstrating-at-time-zones-automatic-dst-adjustment-across-march' }"
+  />
+</div>

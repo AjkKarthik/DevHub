@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Type Guards & Narrowing"
+    topicRoute="/typescript/narrowing"
+    subtopicLabel="Array.isArray Narrows to any[]" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Array.isArray Narrows to any[] and Loses Element Safety</h1>
+  <p class="page-subtitle">
+    The main page correctly states Array.isArray narrows to any[] — but never shows the consequence: every
+    element becomes any, silently reintroducing unchecked access unknown was supposed to prevent.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Compare an unsafe version that stops at <code>Array.isArray</code> against the main page's own full
+      example, which adds a second narrowing step for the array's elements.
+    </p>
+    <app-live-playground
+      title="Array.isArray — testing what any[] actually protects"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This completes the main page's own brief mention of <code>Array.isArray</code>'s return type — narrowing
+      the container is not the same as narrowing its contents.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Type Guards & Narrowing"
+    topicRoute="/typescript/narrowing"
+    [prev]="{ label: 'Narrowing Survives an Unrelated Call', route: '/typescript/narrowing/testing-that-narrowing-survives-an-unrelated-function-call' }"
+    [next]="{ label: 'greet with an empty string doesn’t say hello, stranger', route: '/typescript/narrowing/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger' }" />
+</div>

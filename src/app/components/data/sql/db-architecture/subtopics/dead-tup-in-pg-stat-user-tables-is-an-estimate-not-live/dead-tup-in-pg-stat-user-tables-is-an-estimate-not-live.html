@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="DB Architecture"
+    topicRoute="/sql/db-architecture"
+    subtopicLabel="Dead Tuple Estimate Staleness"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">n_dead_tup Is an Estimate, Not a Live Count</h1>
+  <p class="page-subtitle">
+    The main page's own PostgreSQL bloat query reads a statistics-collector estimate that can reset to zero
+    after a crash or restart, silently under-reporting real bloat until the next VACUUM or ANALYZE.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover DB architecture end-to-end: verifying a critical safety setting
+      actually protects every role that connects, correcting a real MSSQL counter-reading bug in the main
+      page's own diagnostic query, and knowing when a PostgreSQL bloat estimate needs an authoritative,
+      physical-scan-based second opinion.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DB Architecture"
+    topicRoute="/sql/db-architecture"
+    [prev]="{ label: 'Buffer Hit Ratio Query Reads a Meaningless Raw Counter', route: '/sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter' }"
+  />
+</div>

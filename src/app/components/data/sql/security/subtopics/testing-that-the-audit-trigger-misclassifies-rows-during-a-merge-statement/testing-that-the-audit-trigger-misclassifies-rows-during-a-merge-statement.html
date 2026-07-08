@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="SQL Security"
+    topicRoute="/sql/security"
+    subtopicLabel="The Audit Trigger Misclassifies MERGE Rows"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Audit Trigger Misclassifies Rows During a MERGE Statement</h1>
+  <p class="page-subtitle">
+    The trigger's table-wide EXISTS(inserted)/EXISTS(deleted) checks label every row 'U' when a single MERGE
+    both inserts and deletes different rows in one execution — none of them were actually updated.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2008+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A write-side gap and a trigger misclassification — the last subtopic checks what happens when the
+      RLS session context itself is never set at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="SQL Security"
+    topicRoute="/sql/security"
+    [prev]="{ label: 'No Block Predicate for Writes', route: '/sql/security/testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes' }"
+    [next]="{ label: 'An Unset Session Context Silently Returns Zero Rows', route: '/sql/security/testing-that-an-unset-session-context-silently-returns-zero-rows' }"
+  />
+</div>

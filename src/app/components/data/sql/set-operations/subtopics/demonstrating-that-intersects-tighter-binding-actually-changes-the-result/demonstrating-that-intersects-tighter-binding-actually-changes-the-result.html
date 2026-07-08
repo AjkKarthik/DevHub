@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Set Operations"
+    topicRoute="/sql/set-operations"
+    subtopicLabel="Making Precedence Concrete"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That INTERSECT's Tighter Binding Actually Changes the Result</h1>
+  <p class="page-subtitle">
+    The main page's own precedence rule is shown only as syntax — here it's proven with a small fixture
+    where the unparenthesized and parenthesized forms return genuinely different rows.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic confirms a different claim from the main page's own quiz — that EXCEPT materialises
+      both sets while NOT EXISTS can short-circuit — by capturing actual execution plans and IO statistics
+      instead of trusting the stated answer.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Set Operations"
+    topicRoute="/sql/set-operations"
+    [prev]="{ label: 'Testing the Schema Comparison Query', route: '/sql/set-operations/testing-that-the-schema-comparison-query-misses-type-only-drift' }"
+    [next]="{ label: 'Confirming EXCEPT vs NOT EXISTS Execution', route: '/sql/set-operations/confirming-that-except-materialises-both-sets-not-exists-short-circuits' }"
+  />
+</div>

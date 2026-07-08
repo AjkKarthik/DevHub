@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="WebSockets"
+    topicRoute="/aspnet/websockets"
+    subtopicLabel="Close Handshake Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Close Handshake Mechanics: What Actually Ends the Receive Loop</h1>
+  <p class="page-subtitle">
+    The manual Close-message check inside the receive loop isn't primarily what ends the loop — the outer
+    while condition would do that on its own. Its real job is triggering the CloseAsync() call that
+    completes the handshake.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With close-handshake mechanics clear, the final subtopic looks at a different gap in the same
+      receive-loop pattern — every one of the main page's own examples assumes a single ReceiveAsync call
+      captures a whole message, silently truncating anything sent across multiple frames.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="WebSockets"
+    topicRoute="/aspnet/websockets"
+    [prev]="{ label: 'Testing WebSocket Endpoints With TestServer’s WebSocketClient', route: '/aspnet/websockets/testing-websocket-endpoints-with-testservers-websocketclient' }"
+    [next]="{ label: 'Receive-Loop Examples Silently Truncate Multi-Frame Messages', route: '/aspnet/websockets/receive-loop-examples-silently-truncate-multi-frame-messages' }"
+  />
+</div>

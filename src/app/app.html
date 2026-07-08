@@ -292,8 +292,46 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/feature-flags" routerLinkActive="active"><span class="nl-text">Feature Flags</span>@if(progress.isDone('aspnet-feature-flags')){<span class="nl-done">✓</span>}@if(diff('aspnet-feature-flags');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/aspnet/localization" routerLinkActive="active"><span class="nl-text">Localization</span>@if(progress.isDone('aspnet-localization')){<span class="nl-done">✓</span>}@if(diff('aspnet-localization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/feature-flags" routerLinkActive="active">
+        <span class="nl-text">Feature Flags</span>
+        @if (progress.isDone('aspnet-feature-flags')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-feature-flags'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('feature-flags')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('feature-flags')"
+                  (click)="toggleSubtopics('feature-flags', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('feature-flags'); as subs) {
+        @if (isSubtopicsExpanded('feature-flags')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/aspnet/localization" routerLinkActive="active">
+        <span class="nl-text">Localization</span>
+        @if (progress.isDone('aspnet-localization')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-localization'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('localization')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('localization')"
+                  (click)="toggleSubtopics('localization', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('localization'); as subs) {
+        @if (isSubtopicsExpanded('localization')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -602,8 +640,46 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/output-caching-advanced" routerLinkActive="active"><span class="nl-text">Output Caching Advanced</span>@if(progress.isDone('aspnet-output-caching-advanced')){<span class="nl-done">✓</span>}@if(diff('aspnet-output-caching-advanced');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/aspnet/dapper" routerLinkActive="active"><span class="nl-text">Dapper &amp; Raw SQL</span>@if(progress.isDone('aspnet-dapper')){<span class="nl-done">✓</span>}@if(diff('aspnet-dapper');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/output-caching-advanced" routerLinkActive="active">
+        <span class="nl-text">Output Caching Advanced</span>
+        @if (progress.isDone('aspnet-output-caching-advanced')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-output-caching-advanced'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('output-caching-advanced')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('output-caching-advanced')"
+                  (click)="toggleSubtopics('output-caching-advanced', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('output-caching-advanced'); as subs) {
+        @if (isSubtopicsExpanded('output-caching-advanced')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/aspnet/dapper" routerLinkActive="active">
+        <span class="nl-text">Dapper &amp; Raw SQL</span>
+        @if (progress.isDone('aspnet-dapper')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-dapper'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('dapper')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dapper')"
+                  (click)="toggleSubtopics('dapper', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dapper'); as subs) {
+        @if (isSubtopicsExpanded('dapper')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -728,7 +804,26 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/csrf" routerLinkActive="active"><span class="nl-text">Anti-forgery &amp; CSRF</span>@if(progress.isDone('aspnet-csrf')){<span class="nl-done">✓</span>}@if(diff('aspnet-csrf');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/csrf" routerLinkActive="active">
+        <span class="nl-text">Anti-forgery &amp; CSRF</span>
+        @if (progress.isDone('aspnet-csrf')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-csrf'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('csrf')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('csrf')"
+                  (click)="toggleSubtopics('csrf', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('csrf'); as subs) {
+        @if (isSubtopicsExpanded('csrf')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -873,11 +968,106 @@
           </div>
         }
       }
-      <a routerLink="/aspnet/masstransit" routerLinkActive="active"><span class="nl-text">MassTransit</span>@if(progress.isDone('aspnet-masstransit')){<span class="nl-done">✓</span>}@if(diff('aspnet-masstransit');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/aspnet/response-compression" routerLinkActive="active"><span class="nl-text">Response Compression</span>@if(progress.isDone('aspnet-response-compression')){<span class="nl-done">✓</span>}@if(diff('aspnet-response-compression');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/aspnet/websockets" routerLinkActive="active"><span class="nl-text">WebSockets</span>@if(progress.isDone('aspnet-websockets')){<span class="nl-done">✓</span>}@if(diff('aspnet-websockets');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/aspnet/yarp" routerLinkActive="active"><span class="nl-text">YARP Reverse Proxy</span>@if(progress.isDone('aspnet-yarp')){<span class="nl-done">✓</span>}@if(diff('aspnet-yarp');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/aspnet/opentelemetry" routerLinkActive="active"><span class="nl-text">OpenTelemetry</span>@if(progress.isDone('aspnet-opentelemetry')){<span class="nl-done">✓</span>}@if(diff('aspnet-opentelemetry');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/aspnet/masstransit" routerLinkActive="active">
+        <span class="nl-text">MassTransit</span>
+        @if (progress.isDone('aspnet-masstransit')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-masstransit'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('masstransit')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('masstransit')"
+                  (click)="toggleSubtopics('masstransit', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('masstransit'); as subs) {
+        @if (isSubtopicsExpanded('masstransit')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/aspnet/response-compression" routerLinkActive="active">
+        <span class="nl-text">Response Compression</span>
+        @if (progress.isDone('aspnet-response-compression')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-response-compression'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('response-compression')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('response-compression')"
+                  (click)="toggleSubtopics('response-compression', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('response-compression'); as subs) {
+        @if (isSubtopicsExpanded('response-compression')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/aspnet/websockets" routerLinkActive="active">
+        <span class="nl-text">WebSockets</span>
+        @if (progress.isDone('aspnet-websockets')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-websockets'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspnet-websockets')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspnet-websockets')"
+                  (click)="toggleSubtopics('aspnet-websockets', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspnet-websockets'); as subs) {
+        @if (isSubtopicsExpanded('aspnet-websockets')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/aspnet/yarp" routerLinkActive="active">
+        <span class="nl-text">YARP Reverse Proxy</span>
+        @if (progress.isDone('aspnet-yarp')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-yarp'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('yarp')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('yarp')"
+                  (click)="toggleSubtopics('yarp', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('yarp'); as subs) {
+        @if (isSubtopicsExpanded('yarp')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/aspnet/opentelemetry" routerLinkActive="active">
+        <span class="nl-text">OpenTelemetry</span>
+        @if (progress.isDone('aspnet-opentelemetry')) {<span class="nl-done">✓</span>}
+        @if (diff('aspnet-opentelemetry'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aspnet-opentelemetry')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aspnet-opentelemetry')"
+                  (click)="toggleSubtopics('aspnet-opentelemetry', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aspnet-opentelemetry'); as subs) {
+        @if (isSubtopicsExpanded('aspnet-opentelemetry')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -904,74 +1094,910 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/sql/rdbms-concepts"  routerLinkActive="active"><span class="nl-text">RDBMS Concepts</span>@if(progress.isDone('sql-rdbms-concepts')){<span class="nl-done">✓</span>}@if(diff('sql-rdbms-concepts');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/data-modeling"   routerLinkActive="active"><span class="nl-text">Data Modeling</span>@if(progress.isDone('sql-data-modeling')){<span class="nl-done">✓</span>}@if(diff('sql-data-modeling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/normalization"   routerLinkActive="active"><span class="nl-text">Normalization</span>@if(progress.isDone('sql-normalization')){<span class="nl-done">✓</span>}@if(diff('sql-normalization');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/db-architecture" routerLinkActive="active"><span class="nl-text">DB Architecture</span>@if(progress.isDone('sql-db-architecture')){<span class="nl-done">✓</span>}@if(diff('sql-db-architecture');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/data-types"      routerLinkActive="active"><span class="nl-text">Data Types</span>@if(progress.isDone('sql-data-types')){<span class="nl-done">✓</span>}@if(diff('sql-data-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/rdbms-concepts" routerLinkActive="active">
+        <span class="nl-text">RDBMS Concepts</span>
+        @if (progress.isDone('sql-rdbms-concepts')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-rdbms-concepts'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('rdbms-concepts')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('rdbms-concepts')"
+                  (click)="toggleSubtopics('rdbms-concepts', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('rdbms-concepts'); as subs) {
+        @if (isSubtopicsExpanded('rdbms-concepts')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/data-modeling" routerLinkActive="active">
+        <span class="nl-text">Data Modeling</span>
+        @if (progress.isDone('sql-data-modeling')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-data-modeling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('data-modeling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('data-modeling')"
+                  (click)="toggleSubtopics('data-modeling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('data-modeling'); as subs) {
+        @if (isSubtopicsExpanded('data-modeling')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/normalization" routerLinkActive="active">
+        <span class="nl-text">Normalization</span>
+        @if (progress.isDone('sql-normalization')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-normalization'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('normalization')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('normalization')"
+                  (click)="toggleSubtopics('normalization', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('normalization'); as subs) {
+        @if (isSubtopicsExpanded('normalization')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/db-architecture" routerLinkActive="active">
+        <span class="nl-text">DB Architecture</span>
+        @if (progress.isDone('sql-db-architecture')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-db-architecture'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('db-architecture')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('db-architecture')"
+                  (click)="toggleSubtopics('db-architecture', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('db-architecture'); as subs) {
+        @if (isSubtopicsExpanded('db-architecture')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/data-types" routerLinkActive="active">
+        <span class="nl-text">Data Types</span>
+        @if (progress.isDone('sql-data-types')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-data-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('data-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('data-types')"
+                  (click)="toggleSubtopics('data-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('data-types'); as subs) {
+        @if (isSubtopicsExpanded('data-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Core SQL</p>
-      <a routerLink="/sql/basics"                 routerLinkActive="active"><span class="nl-text">SQL Basics</span>@if(progress.isDone('sql-basics')){<span class="nl-done">✓</span>}@if(diff('sql-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/joins"                  routerLinkActive="active"><span class="nl-text">Joins</span>@if(progress.isDone('sql-joins')){<span class="nl-done">✓</span>}@if(diff('sql-joins');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/aggregations"           routerLinkActive="active"><span class="nl-text">Aggregations</span>@if(progress.isDone('sql-aggregations')){<span class="nl-done">✓</span>}@if(diff('sql-aggregations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/set-operations"         routerLinkActive="active"><span class="nl-text">Set Operations</span>@if(progress.isDone('sql-set-operations')){<span class="nl-done">✓</span>}@if(diff('sql-set-operations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/null-handling"          routerLinkActive="active"><span class="nl-text">NULL Handling</span>@if(progress.isDone('sql-null-handling')){<span class="nl-done">✓</span>}@if(diff('sql-null-handling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/merge"                  routerLinkActive="active"><span class="nl-text">MERGE / Upsert</span>@if(progress.isDone('sql-merge')){<span class="nl-done">✓</span>}@if(diff('sql-merge');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/subqueries"             routerLinkActive="active"><span class="nl-text">Subqueries</span>@if(progress.isDone('sql-subqueries')){<span class="nl-done">✓</span>}@if(diff('sql-subqueries');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/ctes"                   routerLinkActive="active"><span class="nl-text">CTEs</span>@if(progress.isDone('sql-ctes')){<span class="nl-done">✓</span>}@if(diff('sql-ctes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/basics" routerLinkActive="active">
+        <span class="nl-text">SQL Basics</span>
+        @if (progress.isDone('sql-basics')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-basics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('sql-basics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sql-basics')"
+                  (click)="toggleSubtopics('sql-basics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sql-basics'); as subs) {
+        @if (isSubtopicsExpanded('sql-basics')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/joins" routerLinkActive="active">
+        <span class="nl-text">Joins</span>
+        @if (progress.isDone('sql-joins')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-joins'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('joins')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('joins')"
+                  (click)="toggleSubtopics('joins', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('joins'); as subs) {
+        @if (isSubtopicsExpanded('joins')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/aggregations" routerLinkActive="active">
+        <span class="nl-text">Aggregations</span>
+        @if (progress.isDone('sql-aggregations')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-aggregations'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('aggregations')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('aggregations')"
+                  (click)="toggleSubtopics('aggregations', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('aggregations'); as subs) {
+        @if (isSubtopicsExpanded('aggregations')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/set-operations" routerLinkActive="active">
+        <span class="nl-text">Set Operations</span>
+        @if (progress.isDone('sql-set-operations')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-set-operations'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('set-operations')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('set-operations')"
+                  (click)="toggleSubtopics('set-operations', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('set-operations'); as subs) {
+        @if (isSubtopicsExpanded('set-operations')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/null-handling" routerLinkActive="active">
+        <span class="nl-text">NULL Handling</span>
+        @if (progress.isDone('sql-null-handling')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-null-handling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('null-handling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('null-handling')"
+                  (click)="toggleSubtopics('null-handling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('null-handling'); as subs) {
+        @if (isSubtopicsExpanded('null-handling')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/merge" routerLinkActive="active">
+        <span class="nl-text">MERGE / Upsert</span>
+        @if (progress.isDone('sql-merge')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-merge'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('merge')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('merge')"
+                  (click)="toggleSubtopics('merge', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('merge'); as subs) {
+        @if (isSubtopicsExpanded('merge')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/subqueries" routerLinkActive="active">
+        <span class="nl-text">Subqueries</span>
+        @if (progress.isDone('sql-subqueries')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-subqueries'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('subqueries')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('subqueries')"
+                  (click)="toggleSubtopics('subqueries', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('subqueries'); as subs) {
+        @if (isSubtopicsExpanded('subqueries')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/ctes" routerLinkActive="active">
+        <span class="nl-text">CTEs</span>
+        @if (progress.isDone('sql-ctes')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-ctes'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ctes')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ctes')"
+                  (click)="toggleSubtopics('ctes', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ctes'); as subs) {
+        @if (isSubtopicsExpanded('ctes')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Functions</p>
-      <a routerLink="/sql/string-functions"        routerLinkActive="active"><span class="nl-text">String Functions</span>@if(progress.isDone('sql-string-functions')){<span class="nl-done">✓</span>}@if(diff('sql-string-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/date-functions"          routerLinkActive="active"><span class="nl-text">Date &amp; Time</span>@if(progress.isDone('sql-date-functions')){<span class="nl-done">✓</span>}@if(diff('sql-date-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/conditional-expressions" routerLinkActive="active"><span class="nl-text">Conditional Expressions</span>@if(progress.isDone('sql-conditional-expressions')){<span class="nl-done">✓</span>}@if(diff('sql-conditional-expressions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/math-functions"          routerLinkActive="active"><span class="nl-text">Math &amp; Numeric</span>@if(progress.isDone('sql-math-functions')){<span class="nl-done">✓</span>}@if(diff('sql-math-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/pivoting"               routerLinkActive="active"><span class="nl-text">Pivoting & Cross-Tab</span>@if(progress.isDone('sql-pivoting')){<span class="nl-done">✓</span>}@if(diff('sql-pivoting');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/stored-functions"       routerLinkActive="active"><span class="nl-text">Stored Functions</span>@if(progress.isDone('sql-stored-functions')){<span class="nl-done">✓</span>}@if(diff('sql-stored-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/cursors"               routerLinkActive="active"><span class="nl-text">Cursors</span>@if(progress.isDone('sql-cursors')){<span class="nl-done">✓</span>}@if(diff('sql-cursors');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/triggers"              routerLinkActive="active"><span class="nl-text">Triggers</span>@if(progress.isDone('sql-triggers')){<span class="nl-done">✓</span>}@if(diff('sql-triggers');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/dynamic-sql"           routerLinkActive="active"><span class="nl-text">Dynamic SQL</span>@if(progress.isDone('sql-dynamic-sql')){<span class="nl-done">✓</span>}@if(diff('sql-dynamic-sql');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/string-functions" routerLinkActive="active">
+        <span class="nl-text">String Functions</span>
+        @if (progress.isDone('sql-string-functions')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-string-functions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('string-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('string-functions')"
+                  (click)="toggleSubtopics('string-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('string-functions'); as subs) {
+        @if (isSubtopicsExpanded('string-functions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/date-functions" routerLinkActive="active">
+        <span class="nl-text">Date &amp; Time</span>
+        @if (progress.isDone('sql-date-functions')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-date-functions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('date-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('date-functions')"
+                  (click)="toggleSubtopics('date-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('date-functions'); as subs) {
+        @if (isSubtopicsExpanded('date-functions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/conditional-expressions" routerLinkActive="active">
+        <span class="nl-text">Conditional Expressions</span>
+        @if (progress.isDone('sql-conditional-expressions')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-conditional-expressions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('conditional-expressions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('conditional-expressions')"
+                  (click)="toggleSubtopics('conditional-expressions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('conditional-expressions'); as subs) {
+        @if (isSubtopicsExpanded('conditional-expressions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/math-functions" routerLinkActive="active">
+        <span class="nl-text">Math &amp; Numeric</span>
+        @if (progress.isDone('sql-math-functions')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-math-functions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('math-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('math-functions')"
+                  (click)="toggleSubtopics('math-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('math-functions'); as subs) {
+        @if (isSubtopicsExpanded('math-functions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/pivoting" routerLinkActive="active">
+        <span class="nl-text">Pivoting & Cross-Tab</span>
+        @if (progress.isDone('sql-pivoting')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-pivoting'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('pivoting')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('pivoting')"
+                  (click)="toggleSubtopics('pivoting', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('pivoting'); as subs) {
+        @if (isSubtopicsExpanded('pivoting')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/stored-functions" routerLinkActive="active">
+        <span class="nl-text">Stored Functions</span>
+        @if (progress.isDone('sql-stored-functions')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-stored-functions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('stored-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('stored-functions')"
+                  (click)="toggleSubtopics('stored-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('stored-functions'); as subs) {
+        @if (isSubtopicsExpanded('stored-functions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/cursors" routerLinkActive="active">
+        <span class="nl-text">Cursors</span>
+        @if (progress.isDone('sql-cursors')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-cursors'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('cursors')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('cursors')"
+                  (click)="toggleSubtopics('cursors', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('cursors'); as subs) {
+        @if (isSubtopicsExpanded('cursors')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/triggers" routerLinkActive="active">
+        <span class="nl-text">Triggers</span>
+        @if (progress.isDone('sql-triggers')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-triggers'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('triggers')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('triggers')"
+                  (click)="toggleSubtopics('triggers', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('triggers'); as subs) {
+        @if (isSubtopicsExpanded('triggers')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/dynamic-sql" routerLinkActive="active">
+        <span class="nl-text">Dynamic SQL</span>
+        @if (progress.isDone('sql-dynamic-sql')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-dynamic-sql'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('dynamic-sql')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('dynamic-sql')"
+                  (click)="toggleSubtopics('dynamic-sql', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('dynamic-sql'); as subs) {
+        @if (isSubtopicsExpanded('dynamic-sql')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Concurrency & Performance</p>
-      <a routerLink="/sql/isolation-levels"      routerLinkActive="active"><span class="nl-text">Isolation Levels</span>@if(progress.isDone('sql-isolation-levels')){<span class="nl-done">✓</span>}@if(diff('sql-isolation-levels');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/locking"               routerLinkActive="active"><span class="nl-text">Locking &amp; Deadlocks</span>@if(progress.isDone('sql-locking')){<span class="nl-done">✓</span>}@if(diff('sql-locking');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/execution-plans"       routerLinkActive="active"><span class="nl-text">Execution Plans</span>@if(progress.isDone('sql-execution-plans')){<span class="nl-done">✓</span>}@if(diff('sql-execution-plans');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/partitioning"          routerLinkActive="active"><span class="nl-text">Partitioning</span>@if(progress.isDone('sql-partitioning')){<span class="nl-done">✓</span>}@if(diff('sql-partitioning');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/bulk-operations"       routerLinkActive="active"><span class="nl-text">Bulk Operations</span>@if(progress.isDone('sql-bulk-operations')){<span class="nl-done">✓</span>}@if(diff('sql-bulk-operations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/query-store"           routerLinkActive="active"><span class="nl-text">Query Store</span>@if(progress.isDone('sql-query-store')){<span class="nl-done">✓</span>}@if(diff('sql-query-store');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/statistics"            routerLinkActive="active"><span class="nl-text">Statistics & Optimizer</span>@if(progress.isDone('sql-statistics')){<span class="nl-done">✓</span>}@if(diff('sql-statistics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/full-text-search"      routerLinkActive="active"><span class="nl-text">Full-Text Search</span>@if(progress.isDone('sql-full-text-search')){<span class="nl-done">✓</span>}@if(diff('sql-full-text-search');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/security"              routerLinkActive="active"><span class="nl-text">SQL Security</span>@if(progress.isDone('sql-security')){<span class="nl-done">✓</span>}@if(diff('sql-security');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/connection-pooling"    routerLinkActive="active"><span class="nl-text">Connection Pooling</span>@if(progress.isDone('sql-connection-pooling')){<span class="nl-done">✓</span>}@if(diff('sql-connection-pooling');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/isolation-levels" routerLinkActive="active">
+        <span class="nl-text">Isolation Levels</span>
+        @if (progress.isDone('sql-isolation-levels')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-isolation-levels'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('isolation-levels')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('isolation-levels')"
+                  (click)="toggleSubtopics('isolation-levels', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('isolation-levels'); as subs) {
+        @if (isSubtopicsExpanded('isolation-levels')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/locking" routerLinkActive="active">
+        <span class="nl-text">Locking &amp; Deadlocks</span>
+        @if (progress.isDone('sql-locking')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-locking'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('locking')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('locking')"
+                  (click)="toggleSubtopics('locking', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('locking'); as subs) {
+        @if (isSubtopicsExpanded('locking')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/execution-plans" routerLinkActive="active">
+        <span class="nl-text">Execution Plans</span>
+        @if (progress.isDone('sql-execution-plans')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-execution-plans'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('execution-plans')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('execution-plans')"
+                  (click)="toggleSubtopics('execution-plans', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('execution-plans'); as subs) {
+        @if (isSubtopicsExpanded('execution-plans')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/partitioning" routerLinkActive="active">
+        <span class="nl-text">Partitioning</span>
+        @if (progress.isDone('sql-partitioning')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-partitioning'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('partitioning')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('partitioning')"
+                  (click)="toggleSubtopics('partitioning', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('partitioning'); as subs) {
+        @if (isSubtopicsExpanded('partitioning')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/bulk-operations" routerLinkActive="active">
+        <span class="nl-text">Bulk Operations</span>
+        @if (progress.isDone('sql-bulk-operations')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-bulk-operations'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('bulk-operations')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('bulk-operations')"
+                  (click)="toggleSubtopics('bulk-operations', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('bulk-operations'); as subs) {
+        @if (isSubtopicsExpanded('bulk-operations')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/query-store" routerLinkActive="active">
+        <span class="nl-text">Query Store</span>
+        @if (progress.isDone('sql-query-store')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-query-store'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('query-store')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('query-store')"
+                  (click)="toggleSubtopics('query-store', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('query-store'); as subs) {
+        @if (isSubtopicsExpanded('query-store')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/statistics" routerLinkActive="active">
+        <span class="nl-text">Statistics & Optimizer</span>
+        @if (progress.isDone('sql-statistics')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-statistics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('statistics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('statistics')"
+                  (click)="toggleSubtopics('statistics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('statistics'); as subs) {
+        @if (isSubtopicsExpanded('statistics')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/full-text-search" routerLinkActive="active">
+        <span class="nl-text">Full-Text Search</span>
+        @if (progress.isDone('sql-full-text-search')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-full-text-search'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('full-text-search')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('full-text-search')"
+                  (click)="toggleSubtopics('full-text-search', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('full-text-search'); as subs) {
+        @if (isSubtopicsExpanded('full-text-search')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/security" routerLinkActive="active">
+        <span class="nl-text">SQL Security</span>
+        @if (progress.isDone('sql-security')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-security'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('security')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('security')"
+                  (click)="toggleSubtopics('security', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('security'); as subs) {
+        @if (isSubtopicsExpanded('security')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/connection-pooling" routerLinkActive="active">
+        <span class="nl-text">Connection Pooling</span>
+        @if (progress.isDone('sql-connection-pooling')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-connection-pooling'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('connection-pooling')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('connection-pooling')"
+                  (click)="toggleSubtopics('connection-pooling', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('connection-pooling'); as subs) {
+        @if (isSubtopicsExpanded('connection-pooling')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Schema & Objects</p>
-      <a routerLink="/sql/constraints"            routerLinkActive="active"><span class="nl-text">Constraints</span>@if(progress.isDone('sql-constraints')){<span class="nl-done">✓</span>}@if(diff('sql-constraints');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/views"                  routerLinkActive="active"><span class="nl-text">Views</span>@if(progress.isDone('sql-views')){<span class="nl-done">✓</span>}@if(diff('sql-views');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/sequences"              routerLinkActive="active"><span class="nl-text">Sequences &amp; Identity</span>@if(progress.isDone('sql-sequences')){<span class="nl-done">✓</span>}@if(diff('sql-sequences');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/temp-tables"            routerLinkActive="active"><span class="nl-text">Temp Tables</span>@if(progress.isDone('sql-temp-tables')){<span class="nl-done">✓</span>}@if(diff('sql-temp-tables');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/computed-columns"       routerLinkActive="active"><span class="nl-text">Computed Columns</span>@if(progress.isDone('sql-computed-columns')){<span class="nl-done">✓</span>}@if(diff('sql-computed-columns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/constraints" routerLinkActive="active">
+        <span class="nl-text">Constraints</span>
+        @if (progress.isDone('sql-constraints')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-constraints'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('constraints')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('constraints')"
+                  (click)="toggleSubtopics('constraints', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('constraints'); as subs) {
+        @if (isSubtopicsExpanded('constraints')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/views" routerLinkActive="active">
+        <span class="nl-text">Views</span>
+        @if (progress.isDone('sql-views')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-views'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('views')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('views')"
+                  (click)="toggleSubtopics('views', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('views'); as subs) {
+        @if (isSubtopicsExpanded('views')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/sequences" routerLinkActive="active">
+        <span class="nl-text">Sequences &amp; Identity</span>
+        @if (progress.isDone('sql-sequences')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-sequences'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('sequences')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sequences')"
+                  (click)="toggleSubtopics('sequences', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sequences'); as subs) {
+        @if (isSubtopicsExpanded('sequences')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/temp-tables" routerLinkActive="active">
+        <span class="nl-text">Temp Tables</span>
+        @if (progress.isDone('sql-temp-tables')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-temp-tables'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('temp-tables')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('temp-tables')"
+                  (click)="toggleSubtopics('temp-tables', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('temp-tables'); as subs) {
+        @if (isSubtopicsExpanded('temp-tables')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/computed-columns" routerLinkActive="active">
+        <span class="nl-text">Computed Columns</span>
+        @if (progress.isDone('sql-computed-columns')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-computed-columns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('computed-columns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('computed-columns')"
+                  (click)="toggleSubtopics('computed-columns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('computed-columns'); as subs) {
+        @if (isSubtopicsExpanded('computed-columns')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced Queries</p>
-      <a routerLink="/sql/window-functions" routerLinkActive="active"><span class="nl-text">Window Functions</span>@if(progress.isDone('sql-window-functions')){<span class="nl-done">✓</span>}@if(diff('sql-window-functions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/indexes"          routerLinkActive="active"><span class="nl-text">Indexes</span>@if(progress.isDone('sql-indexes')){<span class="nl-done">✓</span>}@if(diff('sql-indexes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/transactions"     routerLinkActive="active"><span class="nl-text">Transactions</span>@if(progress.isDone('sql-transactions')){<span class="nl-done">✓</span>}@if(diff('sql-transactions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/window-functions" routerLinkActive="active">
+        <span class="nl-text">Window Functions</span>
+        @if (progress.isDone('sql-window-functions')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-window-functions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('window-functions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('window-functions')"
+                  (click)="toggleSubtopics('window-functions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('window-functions'); as subs) {
+        @if (isSubtopicsExpanded('window-functions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/indexes" routerLinkActive="active">
+        <span class="nl-text">Indexes</span>
+        @if (progress.isDone('sql-indexes')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-indexes'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('indexes')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('indexes')"
+                  (click)="toggleSubtopics('indexes', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('indexes'); as subs) {
+        @if (isSubtopicsExpanded('indexes')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/transactions" routerLinkActive="active">
+        <span class="nl-text">Transactions</span>
+        @if (progress.isDone('sql-transactions')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-transactions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('transactions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('transactions')"
+                  (click)="toggleSubtopics('transactions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('transactions'); as subs) {
+        @if (isSubtopicsExpanded('transactions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Design & Operations</p>
-      <a routerLink="/sql/schema-design"      routerLinkActive="active"><span class="nl-text">Schema Design</span>@if(progress.isDone('sql-schema-design')){<span class="nl-done">✓</span>}@if(diff('sql-schema-design');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/stored-procedures"  routerLinkActive="active"><span class="nl-text">Stored Procedures</span>@if(progress.isDone('sql-stored-procedures')){<span class="nl-done">✓</span>}@if(diff('sql-stored-procedures');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/performance"        routerLinkActive="active"><span class="nl-text">Performance</span>@if(progress.isDone('sql-performance')){<span class="nl-done">✓</span>}@if(diff('sql-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/sql/json-features"      routerLinkActive="active"><span class="nl-text">JSON Features</span>@if(progress.isDone('sql-json-features')){<span class="nl-done">✓</span>}@if(diff('sql-json-features');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/sql/schema-design" routerLinkActive="active">
+        <span class="nl-text">Schema Design</span>
+        @if (progress.isDone('sql-schema-design')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-schema-design'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('schema-design')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('schema-design')"
+                  (click)="toggleSubtopics('schema-design', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('schema-design'); as subs) {
+        @if (isSubtopicsExpanded('schema-design')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/stored-procedures" routerLinkActive="active">
+        <span class="nl-text">Stored Procedures</span>
+        @if (progress.isDone('sql-stored-procedures')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-stored-procedures'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('stored-procedures')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('stored-procedures')"
+                  (click)="toggleSubtopics('stored-procedures', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('stored-procedures'); as subs) {
+        @if (isSubtopicsExpanded('stored-procedures')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/performance" routerLinkActive="active">
+        <span class="nl-text">Performance</span>
+        @if (progress.isDone('sql-performance')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-performance'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('sql-performance')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('sql-performance')"
+                  (click)="toggleSubtopics('sql-performance', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('sql-performance'); as subs) {
+        @if (isSubtopicsExpanded('sql-performance')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/sql/json-features" routerLinkActive="active">
+        <span class="nl-text">JSON Features</span>
+        @if (progress.isDone('sql-json-features')) {<span class="nl-done">✓</span>}
+        @if (diff('sql-json-features'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('json-features')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('json-features')"
+                  (click)="toggleSubtopics('json-features', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('json-features'); as subs) {
+        @if (isSubtopicsExpanded('json-features')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
@@ -998,31 +2024,259 @@
 
     <div class="nav-group">
       <p class="nav-group-label">Foundations</p>
-      <a routerLink="/typescript/basics"           routerLinkActive="active"><span class="nl-text">TS Fundamentals</span>@if(progress.isDone('ts-basics')){<span class="nl-done">✓</span>}@if(diff('ts-basics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/typescript/primitive-types"  routerLinkActive="active"><span class="nl-text">Primitive &amp; Literal Types</span>@if(progress.isDone('ts-primitive-types')){<span class="nl-done">✓</span>}@if(diff('ts-primitive-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/basics" routerLinkActive="active">
+        <span class="nl-text">TS Fundamentals</span>
+        @if (progress.isDone('ts-basics')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-basics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ts-basics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ts-basics')"
+                  (click)="toggleSubtopics('ts-basics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ts-basics'); as subs) {
+        @if (isSubtopicsExpanded('ts-basics')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/typescript/primitive-types" routerLinkActive="active">
+        <span class="nl-text">Primitive &amp; Literal Types</span>
+        @if (progress.isDone('ts-primitive-types')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-primitive-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('primitive-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('primitive-types')"
+                  (click)="toggleSubtopics('primitive-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('primitive-types'); as subs) {
+        @if (isSubtopicsExpanded('primitive-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/typescript/strict-migration" routerLinkActive="active"><span class="nl-text">Strict Mode &amp; Migration</span>@if(progress.isDone('ts-strict-migration')){<span class="nl-done">✓</span>}@if(diff('ts-strict-migration');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Type System</p>
-      <a routerLink="/typescript/interfaces-types" routerLinkActive="active"><span class="nl-text">Interfaces &amp; Types</span>@if(progress.isDone('ts-interfaces-types')){<span class="nl-done">✓</span>}@if(diff('ts-interfaces-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/typescript/unions"           routerLinkActive="active"><span class="nl-text">Union &amp; Intersection</span>@if(progress.isDone('ts-unions')){<span class="nl-done">✓</span>}@if(diff('ts-unions');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/typescript/narrowing"        routerLinkActive="active"><span class="nl-text">Type Guards &amp; Narrowing</span>@if(progress.isDone('ts-narrowing')){<span class="nl-done">✓</span>}@if(diff('ts-narrowing');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/typescript/enums-tuples"     routerLinkActive="active"><span class="nl-text">Enums &amp; Tuples</span>@if(progress.isDone('ts-enums-tuples')){<span class="nl-done">✓</span>}@if(diff('ts-enums-tuples');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/interfaces-types" routerLinkActive="active">
+        <span class="nl-text">Interfaces &amp; Types</span>
+        @if (progress.isDone('ts-interfaces-types')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-interfaces-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('interfaces-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('interfaces-types')"
+                  (click)="toggleSubtopics('interfaces-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('interfaces-types'); as subs) {
+        @if (isSubtopicsExpanded('interfaces-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/typescript/unions" routerLinkActive="active">
+        <span class="nl-text">Union &amp; Intersection</span>
+        @if (progress.isDone('ts-unions')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-unions'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('unions')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('unions')"
+                  (click)="toggleSubtopics('unions', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('unions'); as subs) {
+        @if (isSubtopicsExpanded('unions')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/typescript/narrowing" routerLinkActive="active">
+        <span class="nl-text">Type Guards &amp; Narrowing</span>
+        @if (progress.isDone('ts-narrowing')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-narrowing'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('narrowing')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('narrowing')"
+                  (click)="toggleSubtopics('narrowing', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('narrowing'); as subs) {
+        @if (isSubtopicsExpanded('narrowing')) {
+          <div class="nav-subtopics">
+            @for (s of subs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/typescript/enums-tuples" routerLinkActive="active">
+        <span class="nl-text">Enums &amp; Tuples</span>
+        @if (progress.isDone('ts-enums-tuples')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-enums-tuples'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('enums-tuples')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('enums-tuples')"
+                  (click)="toggleSubtopics('enums-tuples', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('enums-tuples'); as subs2) {
+        @if (isSubtopicsExpanded('enums-tuples')) {
+          <div class="nav-subtopics">
+            @for (s of subs2; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Generics</p>
-      <a routerLink="/typescript/generics"         routerLinkActive="active"><span class="nl-text">Generics Fundamentals</span>@if(progress.isDone('ts-generics')){<span class="nl-done">✓</span>}@if(diff('ts-generics');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/typescript/generic-patterns" routerLinkActive="active"><span class="nl-text">Generic Patterns</span>@if(progress.isDone('ts-generic-patterns')){<span class="nl-done">✓</span>}@if(diff('ts-generic-patterns');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/typescript/utility-types"    routerLinkActive="active"><span class="nl-text">Utility Types</span>@if(progress.isDone('ts-utility-types')){<span class="nl-done">✓</span>}@if(diff('ts-utility-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/generics" routerLinkActive="active">
+        <span class="nl-text">Generics Fundamentals</span>
+        @if (progress.isDone('ts-generics')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-generics'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('ts-generics')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('ts-generics')"
+                  (click)="toggleSubtopics('ts-generics', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('ts-generics'); as subs3) {
+        @if (isSubtopicsExpanded('ts-generics')) {
+          <div class="nav-subtopics">
+            @for (s of subs3; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/typescript/generic-patterns" routerLinkActive="active">
+        <span class="nl-text">Generic Patterns</span>
+        @if (progress.isDone('ts-generic-patterns')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-generic-patterns'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('generic-patterns')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('generic-patterns')"
+                  (click)="toggleSubtopics('generic-patterns', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('generic-patterns'); as subs4) {
+        @if (isSubtopicsExpanded('generic-patterns')) {
+          <div class="nav-subtopics">
+            @for (s of subs4; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/typescript/utility-types" routerLinkActive="active">
+        <span class="nl-text">Utility Types</span>
+        @if (progress.isDone('ts-utility-types')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-utility-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('utility-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('utility-types')"
+                  (click)="toggleSubtopics('utility-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('utility-types'); as subs5) {
+        @if (isSubtopicsExpanded('utility-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs5; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">
       <p class="nav-group-label">Advanced Types</p>
-      <a routerLink="/typescript/mapped-types"            routerLinkActive="active"><span class="nl-text">Mapped Types</span>@if(progress.isDone('ts-mapped-types')){<span class="nl-done">✓</span>}@if(diff('ts-mapped-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/typescript/conditional-types"       routerLinkActive="active"><span class="nl-text">Conditional Types</span>@if(progress.isDone('ts-conditional-types')){<span class="nl-done">✓</span>}@if(diff('ts-conditional-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
-      <a routerLink="/typescript/template-literal-types"  routerLinkActive="active"><span class="nl-text">Template Literal Types</span>@if(progress.isDone('ts-template-literal-types')){<span class="nl-done">✓</span>}@if(diff('ts-template-literal-types');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/mapped-types" routerLinkActive="active">
+        <span class="nl-text">Mapped Types</span>
+        @if (progress.isDone('ts-mapped-types')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-mapped-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('mapped-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('mapped-types')"
+                  (click)="toggleSubtopics('mapped-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('mapped-types'); as subs6) {
+        @if (isSubtopicsExpanded('mapped-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs6; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/typescript/conditional-types" routerLinkActive="active">
+        <span class="nl-text">Conditional Types</span>
+        @if (progress.isDone('ts-conditional-types')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-conditional-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('conditional-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('conditional-types')"
+                  (click)="toggleSubtopics('conditional-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('conditional-types'); as subs7) {
+        @if (isSubtopicsExpanded('conditional-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs7; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
+      <a routerLink="/typescript/template-literal-types" routerLinkActive="active">
+        <span class="nl-text">Template Literal Types</span>
+        @if (progress.isDone('ts-template-literal-types')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-template-literal-types'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('template-literal-types')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('template-literal-types')"
+                  (click)="toggleSubtopics('template-literal-types', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('template-literal-types'); as subs8) {
+        @if (isSubtopicsExpanded('template-literal-types')) {
+          <div class="nav-subtopics">
+            @for (s of subs8; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
     </div>
 
     <div class="nav-group">

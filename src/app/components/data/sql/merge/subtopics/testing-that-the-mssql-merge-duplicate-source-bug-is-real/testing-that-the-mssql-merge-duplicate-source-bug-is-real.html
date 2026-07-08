@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="MERGE / Upsert"
+    topicRoute="/sql/merge"
+    subtopicLabel="Proving the Duplicate-Source Bug and Its Fix"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the MSSQL MERGE Duplicate-Source Bug Is Real</h1>
+  <p class="page-subtitle">
+    The main page warns about MERGE's duplicate-source behavior and offers a "safe" deduplicated fix — here
+    both halves are proven with tSQLt instead of taken on faith.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL Server 2008" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Now that the duplicate-source bug is confirmed, the next subtopic checks an opposite kind of claim on
+      the main page — that PostgreSQL's ON CONFLICT "is not truly atomic in all cases with partial indexes."
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="MERGE / Upsert"
+    topicRoute="/sql/merge"
+    [next]="{ label: 'ON CONFLICT and Partial Indexes', route: '/sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches' }"
+  />
+</div>

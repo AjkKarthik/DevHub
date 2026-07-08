@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Execution Plans"
+    topicRoute="/sql/execution-plans"
+    subtopicLabel="Index Scan Is Not the Desired MSSQL Outcome"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That "Index Scan" Is Not the Desired MSSQL Outcome</h1>
+  <p class="page-subtitle">
+    The challenge's verification note says a good plan "should now show Index Scan" — but the page's own
+    theory section defines MSSQL's Index Scan as the O(n) case; the actual goal is called Index Seek.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2005" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Terminology aside, the last subtopic tests whether a perfect covering index is even enough to change
+      the plan at all — on a small enough table, the planner may not bother.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Execution Plans"
+    topicRoute="/sql/execution-plans"
+    [prev]="{ label: 'Correcting the &quot;Scan, Not Seek&quot; Claim', route: '/sql/execution-plans/correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence' }"
+    [next]="{ label: 'Small Tables Seq Scan Despite a Covering Index', route: '/sql/execution-plans/testing-that-small-tables-seq-scan-despite-a-covering-index' }"
+  />
+</div>

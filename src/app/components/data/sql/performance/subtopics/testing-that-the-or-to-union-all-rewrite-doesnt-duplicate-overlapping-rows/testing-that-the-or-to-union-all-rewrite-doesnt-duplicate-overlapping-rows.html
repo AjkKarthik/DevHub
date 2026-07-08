@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Query Performance"
+    topicRoute="/sql/performance"
+    subtopicLabel="Testing the OR-to-UNION-ALL Rewrite"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the OR-to-UNION-ALL Rewrite Doesn't Duplicate Overlapping Rows</h1>
+  <p class="page-subtitle">
+    The main page's own rewrite correctly excludes the overlap case in its second branch — but never proves
+    why, or shows what silently breaks when that exclusion is forgotten.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the UNION ALL rewrite's correctness confirmed, the next subtopic checks a different claim on the
+      same page — a DMV formula for ranking missing indexes that's missing a normalization step Microsoft's
+      own documentation includes.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Query Performance"
+    topicRoute="/sql/performance"
+    [next]="{ label: 'The Missing Index Impact Score Formula Is Missing a /100', route: '/sql/performance/the-missing-index-impact-score-formula-is-missing-a-100' }"
+  />
+</div>

@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Locking & Deadlocks"
+    topicRoute="/sql/locking"
+    subtopicLabel="A Solution That Doesn't Run As Written"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Challenge's PostgreSQL Solution Is Not Valid Standalone SQL</h1>
+  <p class="page-subtitle">
+    Copied character-for-character, the challenge's DECLARE/IF/RAISE NOTICE block fails with a syntax error —
+    it needed the same DO $$ ... $$ wrapper the page uses correctly elsewhere.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="intermediate" since="PostgreSQL 9.1" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With a broken solution fixed, the next subtopic checks a "fix" listed alongside genuine deadlock
+      prevention techniques — does it actually prevent anything?
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Locking & Deadlocks"
+    topicRoute="/sql/locking"
+    [next]="{ label: 'DEADLOCK_PRIORITY Doesn’t Prevent the Deadlock', route: '/sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock' }"
+  />
+</div>

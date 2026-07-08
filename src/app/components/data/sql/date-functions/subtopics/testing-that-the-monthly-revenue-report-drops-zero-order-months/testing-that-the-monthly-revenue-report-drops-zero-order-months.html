@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Date & Time Functions"
+    topicRoute="/sql/date-functions"
+    subtopicLabel="Testing the Monthly Revenue Report for Gaps"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Monthly Revenue Report Drops Zero-Order Months</h1>
+  <p class="page-subtitle">
+    The main page's "last 12 months" challenge solution is never run against a dataset with a quiet month —
+    here it silently returns 11 rows instead of 12.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="PostgreSQL 8.4" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the missing-month gap fixed, the next subtopic checks a performance claim the main page makes
+      about the exact GROUP BY DATE_TRUNC pattern this report relies on.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Date & Time Functions"
+    topicRoute="/sql/date-functions"
+    [next]="{ label: 'GROUP BY DATE_TRUNC Needs an Expression Index', route: '/sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column' }"
+  />
+</div>

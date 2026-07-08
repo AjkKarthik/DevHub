@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Feature Flags"
+    topicRoute="/aspnet/feature-flags"
+    subtopicLabel="RequirementType Default Gap"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">FeatureGate With Multiple Flags Defaults to RequirementType.All</h1>
+  <p class="page-subtitle">
+    The main page's own "Analytics" example explicitly writes RequirementType.Any. Drop that one argument
+    and the overload silently defaults to RequirementType.All — opposite semantics, with no compiler
+    warning.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover feature flags end-to-end: testing both the business-logic and
+      routing layers correctly, understanding PercentageFilter's true per-call randomness, and catching a
+      silent RequirementType default that inverts the main page's own worked example.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Feature Flags"
+    topicRoute="/aspnet/feature-flags"
+    [prev]="{ label: 'PercentageFilter Re-Rolls on Every Call — Not Sticky Per User', route: '/aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user' }"
+  />
+</div>

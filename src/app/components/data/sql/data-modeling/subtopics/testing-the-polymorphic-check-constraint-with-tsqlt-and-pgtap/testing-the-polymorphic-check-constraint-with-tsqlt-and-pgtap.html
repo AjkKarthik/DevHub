@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Data Modeling"
+    topicRoute="/sql/data-modeling"
+    subtopicLabel="Testing the Polymorphic CHECK"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing the Polymorphic CHECK Constraint With tSQLt and pgTAP</h1>
+  <p class="page-subtitle">
+    The main page's own "exactly one parent" CHECK is never verified under test. A single happy-path test
+    isn't enough — both invalid states need their own test too.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With constraint testing covered, the next subtopic digs into a real gap in the main page's own
+      recursive CTE example — it has no protection against a cyclic self-reference, and the two dialects
+      fail very differently when one occurs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Data Modeling"
+    topicRoute="/sql/data-modeling"
+    [next]="{ label: 'Recursive CTE Has No Cycle Protection', route: '/sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently' }"
+  />
+</div>

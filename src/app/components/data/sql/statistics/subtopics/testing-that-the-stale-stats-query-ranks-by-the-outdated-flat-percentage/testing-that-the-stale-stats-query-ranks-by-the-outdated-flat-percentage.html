@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Statistics & Optimizer"
+    topicRoute="/sql/statistics"
+    subtopicLabel="The Stale Stats Query’s Outdated Signal"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Stale Stats Query Ranks by the Outdated Flat Percentage</h1>
+  <p class="page-subtitle">
+    The page's own theory says the flat 20% threshold is outdated for large tables — but its "Find tables
+    with stale statistics" query still sorts by raw percentage, ranking urgency backwards.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2016+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A threshold formula the page teaches twice but never fully applies in its own reference queries — a
+      recurring theme worth checking on any statistics-freshness query before trusting its ranking.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Statistics & Optimizer"
+    topicRoute="/sql/statistics"
+    [prev]="{ label: 'The Density Quiz’s Rows-Per-Value Claim', route: '/sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim' }"
+  />
+</div>

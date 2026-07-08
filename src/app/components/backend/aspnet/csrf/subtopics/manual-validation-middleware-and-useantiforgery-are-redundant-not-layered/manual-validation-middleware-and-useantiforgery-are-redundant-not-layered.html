@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Anti-forgery &amp; CSRF"
+    topicRoute="/aspnet/csrf"
+    subtopicLabel="Middleware Redundancy"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Manual Validation Middleware and UseAntiforgery() Are Redundant</h1>
+  <p class="page-subtitle">
+    The main page's "Manual Validation" and ".NET 8+" tabs solve the exact same problem. Registering both
+    together isn't layered protection — whichever runs first in the pipeline determines the actual failure
+    response, and the other's error handling becomes dead code.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since=".NET 8+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover CSRF end-to-end: testing that verb-level routing (not
+      antiforgery) is what actually blocks the classic GET-based attack, understanding the real matched-pair
+      mechanics behind the double-submit pattern, and avoiding a redundant-middleware trap when combining
+      the main page's own two protection styles.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Anti-forgery &amp; CSRF"
+    topicRoute="/aspnet/csrf"
+    [prev]="{ label: 'Cookie Token and Request Token Are Not the Same String', route: '/aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string' }"
+  />
+</div>

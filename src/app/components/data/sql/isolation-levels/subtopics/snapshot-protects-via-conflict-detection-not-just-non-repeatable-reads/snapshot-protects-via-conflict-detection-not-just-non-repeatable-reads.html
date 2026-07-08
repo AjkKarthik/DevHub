@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Isolation Levels"
+    topicRoute="/sql/isolation-levels"
+    subtopicLabel="What Actually Protects the Bank Transfer"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">SNAPSHOT Protects the Bank Transfer via Conflict Detection, Not Just Read Consistency</h1>
+  <p class="page-subtitle">
+    The challenge credits "prevents non-repeatable read" — the mechanism that actually stops the race is
+    error 3960's write-conflict check, which only fires on the UPDATE, not the SELECT.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL Server 2005" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With SNAPSHOT's real mechanism clarified, the final subtopic checks a claim about default READ
+      COMMITTED blocking behavior against a database-level setting the page discusses separately.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Isolation Levels"
+    topicRoute="/sql/isolation-levels"
+    [prev]="{ label: 'Testing the SERIALIZABLE Retry Requirement', route: '/sql/isolation-levels/testing-that-the-challenges-serializable-solution-needs-a-retry-loop' }"
+    [next]="{ label: 'READ COMMITTED Blocking Depends on RCSI', route: '/sql/isolation-levels/demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi' }"
+  />
+</div>

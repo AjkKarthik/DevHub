@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Math & Numeric Functions"
+    topicRoute="/sql/math-functions"
+    subtopicLabel="Testing the AVG Truncation Claim Per Dialect"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That AVG on Integers Differs Between PostgreSQL and MSSQL</h1>
+  <p class="page-subtitle">
+    The main page's "AVG of 1,2,3 is 2, not 2.0" trap is real in MSSQL — PostgreSQL's AVG already returns full
+    decimal precision on an integer column.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Rounding and averaging both turned out to have dialect-specific nuance — the final subtopic examines a
+      row-count claim for MSSQL's TABLESAMPLE that also doesn't mean what its name suggests.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Math & Numeric Functions"
+    topicRoute="/sql/math-functions"
+    [prev]="{ label: 'Correcting the Banker’s Rounding Claim', route: '/sql/math-functions/correcting-the-bankers-rounding-claim-for-postgresql-numeric' }"
+    [next]="{ label: 'TABLESAMPLE Can Return Far Fewer Rows', route: '/sql/math-functions/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested' }"
+  />
+</div>

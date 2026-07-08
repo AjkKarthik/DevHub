@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Computed & Generated Columns"
+    topicRoute="/sql/computed-columns"
+    subtopicLabel="A Durability Assumption the Page Never States"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">CHECKSUM Is Not Stable Across SQL Server Versions or Patches</h1>
+  <p class="page-subtitle">
+    The main page's row_hash change-detection example uses CHECKSUM() — Microsoft's own docs warn its output
+    can change between SQL Server versions, breaking exactly that use case.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      From a chaining restriction that didn't hold up to a hash function that doesn't hold up across upgrades
+      — the final subtopic checks a locking implication the page's PostgreSQL JSON example never mentions.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Computed & Generated Columns"
+    topicRoute="/sql/computed-columns"
+    [prev]="{ label: 'Testing MSSQL Computed Column Chaining', route: '/sql/computed-columns/testing-that-mssql-computed-columns-can-reference-each-other' }"
+    [next]="{ label: 'Adding a STORED Column Locks the Whole Table', route: '/sql/computed-columns/adding-a-stored-generated-column-locks-the-whole-table' }"
+  />
+</div>

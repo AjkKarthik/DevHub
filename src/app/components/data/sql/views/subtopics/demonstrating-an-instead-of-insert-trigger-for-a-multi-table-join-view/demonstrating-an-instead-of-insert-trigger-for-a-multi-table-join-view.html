@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Views"
+    topicRoute="/sql/views"
+    subtopicLabel="Writing the Trigger the Page Only Describes"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating an INSTEAD OF INSERT Trigger for a Multi-Table Join View</h1>
+  <p class="page-subtitle">
+    The main page names "a view joining customers and addresses" with an INSTEAD OF INSERT trigger as its own
+    example — here's the actual code, plus the multi-row bug a naive version hits.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A cross-tenant write leak, a piece of dead masking code, and a trigger pattern finally written out in
+      full — all three came from pushing past the main page's prose and code samples to see what actually
+      runs.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Views"
+    topicRoute="/sql/views"
+    [prev]="{ label: 'The Dead LEFT(ssn, 0) in the Masking Example', route: '/sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code' }"
+  />
+</div>

@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Primitive & Literal Types"
+    topicRoute="/typescript/primitive-types"
+    subtopicLabel="throw fail(...) Isn’t an Expression" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That "throw fail(...)" Cannot Appear in an Expression Position</h1>
+  <p class="page-subtitle">
+    The main page says throwing functions "can appear in any position" using the phrase "throw fail('msg')"
+    — but throw is a statement, not an expression, and that literal phrasing doesn't even parse.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="ES5+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Uncomment the ternary using <code>throw fail(...)</code> and read the exact syntax error, then compare
+      against the working pattern that actually makes <code>never</code> usable in any expression position.
+    </p>
+    <app-live-playground
+      title="never in expression position — testing the exact wording"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this closes out the theme for this topic: a compile-time-only
+      guarantee, an incomplete narrowing example, and now a prose claim that describes invalid syntax — all
+      three hold up to more scrutiny once tested directly in a live environment.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Primitive & Literal Types"
+    topicRoute="/typescript/primitive-types"
+    [prev]="{ label: 'Narrowing to object Isn’t Enough', route: '/typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port' }" />
+</div>

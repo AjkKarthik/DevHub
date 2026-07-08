@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dapper &amp; Raw SQL"
+    topicRoute="/aspnet/dapper"
+    subtopicLabel="Testing With In-Memory SQLite"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Testing Dapper Repositories With In-Memory SQLite</h1>
+  <p class="page-subtitle">
+    The main page's own repository methods are never shown under test. An in-memory SQLite connection
+    fully implements IDbConnection — running the repository's real SQL against a real (if temporary)
+    database, with no mocking framework involved.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With a testable repository in place, the next subtopic uses this same in-memory SQLite technique to
+      pin down exactly how Dapper decides whether to close the connection it was given — a rule the main
+      page states but never fully explains.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dapper &amp; Raw SQL"
+    topicRoute="/aspnet/dapper"
+    [next]="{ label: 'How Dapper Decides Whether to Close the Connection It Used', route: '/aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used' }"
+  />
+</div>

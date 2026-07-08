@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Bulk Operations"
+    topicRoute="/sql/bulk-operations"
+    subtopicLabel="The Batched UPDATE Example Never Finds a Row"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Batched UPDATE Example Never Finds a Matching Row</h1>
+  <p class="page-subtitle">
+    The batched DELETE and batched UPDATE examples share the exact same WHERE predicate — running the code
+    tab top-to-bottom, the DELETE loop empties every row the UPDATE loop is looking for.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="intermediate" since="SQL Server 2008+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A statement-ordering issue in the MSSQL examples — the next subtopic finds a similar problem in the
+      challenge's own PostgreSQL solution.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Bulk Operations"
+    topicRoute="/sql/bulk-operations"
+    [next]="{ label: 'The Challenge’s Step 4 Is Missing the Duplicate Guard', route: '/sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard' }"
+  />
+</div>

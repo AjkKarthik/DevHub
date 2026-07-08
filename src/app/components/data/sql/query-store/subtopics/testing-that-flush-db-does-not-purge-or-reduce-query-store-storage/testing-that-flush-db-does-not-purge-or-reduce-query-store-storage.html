@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Query Store"
+    topicRoute="/sql/query-store"
+    subtopicLabel="flush_db Does Not Purge Storage"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That flush_db Does Not Purge or Reduce Query Store Storage</h1>
+  <p class="page-subtitle">
+    The Q&amp;A lists sp_query_store_flush_db as a "purge old data" option for a full Query Store — but the
+    page's own earlier comment already describes it as a disk-flush, not a cleanup operation.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="intermediate" since="SQL Server 2016+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A mislabeled remedy for a full Query Store — the last subtopic checks whether "multiple plans" always
+      means parameter sniffing, as the earlier code tab's comment implies.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Query Store"
+    topicRoute="/sql/query-store"
+    [prev]="{ label: 'The Historic Average Includes the Spike', route: '/sql/query-store/testing-that-the-historic-average-includes-the-regressed-interval' }"
+    [next]="{ label: 'Multiple Plans Can Appear Without Parameter Sniffing', route: '/sql/query-store/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing' }"
+  />
+</div>

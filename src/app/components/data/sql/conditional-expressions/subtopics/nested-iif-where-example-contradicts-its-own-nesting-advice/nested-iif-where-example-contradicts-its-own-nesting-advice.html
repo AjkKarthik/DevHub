@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Conditional Expressions"
+    topicRoute="/sql/conditional-expressions"
+    subtopicLabel="Resolving the Nested-IIF Self-Contradiction"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">The Nested IIF WHERE Example Contradicts Its Own Nesting Advice</h1>
+  <p class="page-subtitle">
+    The main page's own code tab nests an IIF inside another IIF's false branch — its own Q&amp;A, a few
+    sections later, says never to do exactly that.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="beginner" since="SQL Server 2012" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A standard-guaranteed evaluation order, a dead defensive guard, and a self-contradicting code example —
+      all three came from actually running or re-reading the main page's own material closely rather than
+      taking any of its claims and code samples at face value.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Conditional Expressions"
+    topicRoute="/sql/conditional-expressions"
+    [prev]="{ label: 'Testing the Dead NULLIF(COUNT(*), 0) Guard', route: '/sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire' }"
+  />
+</div>

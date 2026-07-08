@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="MERGE / Upsert"
+    topicRoute="/sql/merge"
+    subtopicLabel="Correcting the 'No Race Condition' Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Concurrent MERGE Statements Can Still Race Without HOLDLOCK</h1>
+  <p class="page-subtitle">
+    The main page's opening theory claims database-native upsert has "no race condition" — plain MSSQL MERGE
+    under READ COMMITTED needs one specific table hint to actually earn that guarantee.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL Server 2008" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Between the duplicate-source bug, the partial-index predicate rule, and this HOLDLOCK gap, MERGE and
+      ON CONFLICT each turn out to have one sharp edge the main page's prose glosses over — all three are
+      worth keeping in mind together whenever upsert is used for anything running concurrently.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="MERGE / Upsert"
+    topicRoute="/sql/merge"
+    [prev]="{ label: 'ON CONFLICT and Partial Indexes', route: '/sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches' }"
+  />
+</div>

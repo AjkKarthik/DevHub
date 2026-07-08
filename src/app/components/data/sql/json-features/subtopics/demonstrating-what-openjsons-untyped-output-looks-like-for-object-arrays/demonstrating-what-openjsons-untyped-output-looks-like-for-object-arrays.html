@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="JSON Features"
+    topicRoute="/sql/json-features"
+    subtopicLabel="What Untyped OPENJSON Actually Returns"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating What OPENJSON's Untyped Output Looks Like for Object Arrays</h1>
+  <p class="page-subtitle">
+    The main page's own untyped OPENJSON example only shows a flat scalar object — the more common, more
+    confusing case of an array of objects is never demonstrated.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic returns to PostgreSQL's partial index example — finding that its != predicate
+      silently excludes rows with no status key at all, both from the index and from equivalent direct queries.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="JSON Features"
+    topicRoute="/sql/json-features"
+    [prev]="{ label: 'Testing the Merge Operator’s Limits', route: '/sql/json-features/testing-that-merge-silently-wipes-out-nested-keys-instead-of-deep-merging' }"
+    [next]="{ label: 'The Partial Index’s != Predicate Excludes NULL Status Rows', route: '/sql/json-features/the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows' }"
+  />
+</div>

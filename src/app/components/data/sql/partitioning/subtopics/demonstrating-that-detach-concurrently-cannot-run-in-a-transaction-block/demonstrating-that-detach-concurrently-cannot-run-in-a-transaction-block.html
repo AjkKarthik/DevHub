@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Partitioning"
+    topicRoute="/sql/partitioning"
+    subtopicLabel="DETACH CONCURRENTLY in a Transaction Block"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That DETACH CONCURRENTLY Can't Run in a Transaction Block</h1>
+  <p class="page-subtitle">
+    The challenge's solution presents DETACH PARTITION ... CONCURRENTLY as the last line of one unbroken
+    script — but PostgreSQL documents this specific form as unable to run inside BEGIN ... COMMIT.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="PostgreSQL 14+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Between an invalid target-partition clause, a data-destroying TRUNCATE, and an undocumented
+      transaction-block restriction, this topic's own examples need more scrutiny than their comments suggest.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Partitioning"
+    topicRoute="/sql/partitioning"
+    [prev]="{ label: 'TRUNCATE Discards the Just-Archived Data', route: '/sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in' }"
+  />
+</div>

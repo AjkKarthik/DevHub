@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Isolation Levels"
+    topicRoute="/sql/isolation-levels"
+    subtopicLabel="Reconciling Two Sections of the Same Page"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That READ COMMITTED Blocking Behavior Depends on RCSI</h1>
+  <p class="page-subtitle">
+    The dirty-read demo says READ COMMITTED "waits for A to commit" — the page's own RCSI section describes
+    the opposite behavior for the same isolation level name, and both are correct under different settings.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL Server 2005" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A missing retry loop, an undersold protection mechanism, and now a configuration-dependent claim
+      presented as universal — three reminders that isolation-level behavior is rarely as simple as one
+      example's comment suggests.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Isolation Levels"
+    topicRoute="/sql/isolation-levels"
+    [prev]="{ label: 'What Actually Protects the Bank Transfer', route: '/sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads' }"
+  />
+</div>

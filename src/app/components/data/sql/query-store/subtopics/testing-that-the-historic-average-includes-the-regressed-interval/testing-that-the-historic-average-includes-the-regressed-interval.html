@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Query Store"
+    topicRoute="/sql/query-store"
+    subtopicLabel="The Historic Average Includes the Spike"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Historic Average Includes the Regressed Interval</h1>
+  <p class="page-subtitle">
+    The challenge's regression query compares a query's latest interval against its own "historic average" —
+    but that average is never filtered to exclude the very interval it's being compared against.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2016+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A self-referential baseline in the regression query — the next subtopic finds a mismatch between what
+      a Q&amp;A recommends and what that same procedure was already documented to actually do.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Query Store"
+    topicRoute="/sql/query-store"
+    [next]="{ label: 'flush_db Does Not Purge Query Store Storage', route: '/sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage' }"
+  />
+</div>

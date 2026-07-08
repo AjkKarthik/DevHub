@@ -9712,6 +9712,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/basics/testing-that-excess-property-checking-applies-to-function-arguments-too': {
+    apis: ['excess property checking', 'fresh object literal', 'structural typing'],
+    related: [
+      { label: 'The Exhaustiveness Check’s Exact Error — next', route: '/typescript/basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added' },
+      { label: 'TS Fundamentals (overview)', route: '/typescript/basics' },
+    ],
+    tip: 'Excess property checking fires on any FRESH object literal checked against a target type — assignment, function arguments, and return statements are all covered, not just assignment.',
+    docs: [
+      { label: 'TypeScript Handbook — Object Types', url: 'https://www.typescriptlang.org/docs/handbook/2/objects.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Routing an object through a variable first defeats the check — this is intentional, not a loophole.',
+      'This is exactly how a typo\'d property name in a function call argument gets caught immediately.',
+    ],
+  },
+
+  'typescript/basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added': {
+    apis: ['never', 'exhaustiveness checking', 'discriminated union'],
+    related: [
+      { label: 'Excess Property Checking at Call Sites — previous', route: '/typescript/basics/testing-that-excess-property-checking-applies-to-function-arguments-too' },
+      { label: 'The “Fixed” Example Still Uses as any — next', route: '/typescript/basics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any' },
+      { label: 'TS Fundamentals (overview)', route: '/typescript/basics' },
+    ],
+    tip: 'The exhaustiveness error appears on the const _exhaustive: never = s; line specifically, naming the exact unhandled union member — not a generic "incomplete switch" warning.',
+    docs: [
+      { label: 'TypeScript Handbook — Narrowing', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Recognizing "is not assignable to type \'never\'" immediately tells you a switch is missing a case, even before finding which one.',
+      'Passing the exhaustiveness check only guarantees coverage, not that each case\'s logic is correct.',
+    ],
+  },
+
+  'typescript/basics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any': {
+    apis: ['unknown', 'as any', 'type guard'],
+    related: [
+      { label: 'The Exhaustiveness Check’s Exact Error — previous', route: '/typescript/basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added' },
+      { label: 'TS Fundamentals (overview)', route: '/typescript/basics' },
+    ],
+    tip: 'A cast to `as any` anywhere inside a narrowing chain disables type checking for that expression only — the outer parameter still being typed unknown does not protect it.',
+    docs: [
+      { label: 'TypeScript Handbook — unknown', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A "right"/"fixed" code example is not automatically free of the exact mistake it is illustrating — verify it directly.',
+      'Casting to a narrow interface with unknown-typed fields catches the same typo an as any cast would silently hide.',
+    ],
+  },
+
   'typescript/primitive-types': {
     apis: ['string', 'number', 'boolean', 'null', 'undefined', 'void', 'never', 'unknown', 'any', 'bigint', 'symbol'],
     related: [
@@ -9732,6 +9790,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'void and undefined are subtly different — void means "I don\'t care about the return value"; undefined means it literally returns undefined.',
       'never is the bottom type — functions that always throw or loop infinitely have return type never; a union with never collapses.',
       'Literal types are inferred from const: const x = "admin" has type "admin", not string; let x = "admin" has type string.',
+    ],
+  },
+
+  'typescript/primitive-types/testing-that-as-consts-readonly-is-compile-time-only-not-runtime': {
+    apis: ['as const', 'readonly', 'Object.freeze'],
+    related: [
+      { label: 'Narrowing to object Isn’t Enough — next', route: '/typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port' },
+      { label: 'Primitive & Literal Types (overview)', route: '/typescript/primitive-types' },
+    ],
+    tip: 'as const is a compile-time-only annotation — the underlying JS object is never frozen; use Object.freeze() for a genuine runtime guarantee.',
+    docs: [
+      { label: 'TypeScript const Assertions', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Any code path that bypasses the type checker (as any, untyped JS) can mutate an as const object with no error.',
+      'A code comment saying "Readonly — no mutation allowed" describes what the compiler enforces on your code, not the value itself.',
+    ],
+  },
+
+  'typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port': {
+    apis: ['typeof', 'in operator', 'type guard'],
+    related: [
+      { label: 'as const Is Compile-Time Only — previous', route: '/typescript/primitive-types/testing-that-as-consts-readonly-is-compile-time-only-not-runtime' },
+      { label: 'throw fail(...) Isn’t an Expression — next', route: '/typescript/primitive-types/testing-that-throw-fail-cannot-appear-in-an-expression-position' },
+      { label: 'Primitive & Literal Types (overview)', route: '/typescript/primitive-types' },
+    ],
+    tip: 'Narrowing unknown to the built-in object type gives you NO known properties — accessing any specific property still needs its own further narrowing step.',
+    docs: [
+      { label: 'TypeScript Narrowing', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A mistake-block "right" example that never actually accesses the property it claims to protect can hide an incomplete fix.',
+      'An `in` check or a type guard function is the minimal addition needed beyond typeof === \'object\'.',
+    ],
+  },
+
+  'typescript/primitive-types/testing-that-throw-fail-cannot-appear-in-an-expression-position': {
+    apis: ['never', 'throw statement', 'expression position'],
+    related: [
+      { label: 'Narrowing to object Isn’t Enough — previous', route: '/typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port' },
+      { label: 'Primitive & Literal Types (overview)', route: '/typescript/primitive-types' },
+    ],
+    tip: 'throw is a statement, not an expression — a never-typed function call (no throw keyword) is what can actually appear in any expression position.',
+    docs: [
+      { label: 'MDN throw statement', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      '"throw fail(\'msg\')" inside a ternary or other expression position is a syntax error, not a type error.',
+      'A function that throws internally needs no throw keyword at its own call sites — the exception propagates automatically.',
     ],
   },
 
@@ -9758,6 +9874,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/interfaces-types/testing-that-pluginregistry-never-verifies-name-matches-its-key': {
+    apis: ['generic constraint', 'keyof', 'Map'],
+    related: [
+      { label: 'Window Merging Needs declare global — next', route: '/typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file' },
+      { label: 'Interfaces & Type Aliases (overview)', route: '/typescript/interfaces-types' },
+    ],
+    tip: 'register<K extends keyof TMap & string>(plugin: TMap[K]) checks the plugin\'s SHAPE, not whether plugin.name actually equals K — the two can silently diverge at runtime.',
+    docs: [
+      { label: 'TypeScript Generics', url: 'https://www.typescriptlang.org/docs/handbook/2/generics.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A generic type parameter can never inspect or constrain a specific runtime string value inside its own argument.',
+      'The registry\'s type safety depends on a convention (plugin.name matches its key) that nothing structurally enforces.',
+    ],
+  },
+
+  'typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file': {
+    apis: ['declare global', 'module scope', 'top-level import/export'],
+    related: [
+      { label: 'PluginRegistry’s Unverified Name/Key Assumption — previous', route: '/typescript/interfaces-types/testing-that-pluginregistry-never-verifies-name-matches-its-key' },
+      { label: 'Conflicting Merges Are a Compile Error — next', route: '/typescript/interfaces-types/testing-that-conflicting-merged-properties-are-a-compile-error' },
+      { label: 'Interfaces & Type Aliases (overview)', route: '/typescript/interfaces-types' },
+    ],
+    tip: 'Any top-level import/export makes a file a module — a plain interface Window {...} then merges with that module\'s own scope, not the real global Window, unless wrapped in declare global.',
+    docs: [
+      { label: 'TypeScript Modules', url: 'https://www.typescriptlang.org/docs/handbook/2/modules.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This compiles with zero errors either way — the absence of an error does not confirm the merge actually reached the global type.',
+      'Almost every real-world TypeScript file is a module by default, making declare global the practically-needed pattern.',
+    ],
+  },
+
+  'typescript/interfaces-types/testing-that-conflicting-merged-properties-are-a-compile-error': {
+    apis: ['declaration merging', 'interface', 'type conflict'],
+    related: [
+      { label: 'Window Merging Needs declare global — previous', route: '/typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file' },
+      { label: 'Interfaces & Type Aliases (overview)', route: '/typescript/interfaces-types' },
+    ],
+    tip: 'Two same-named interfaces merge fine on disjoint or identical properties — but a genuine type conflict on a shared property name is a compile error, not a silent resolution.',
+    docs: [
+      { label: 'TypeScript Declaration Merging', url: 'https://www.typescriptlang.org/docs/handbook/declaration-merging.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'TypeScript never lets the "last declaration win" for a conflicting property — it refuses to compile instead.',
+      'This protects multi-file augmentation of the same interface from silent, order-dependent type conflicts.',
+    ],
+  },
+
   'typescript/unions': {
     apis: ['|', '&', 'discriminated union', 'in operator', 'typeof', 'instanceof', 'satisfies'],
     related: [
@@ -9781,6 +9955,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/unions/testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing': {
+    apis: ['bigint', 'Boolean()', 'truthiness narrowing'],
+    related: [
+      { label: 'The “Safe” isUser Fix Still Uses as any — next', route: '/typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice' },
+      { label: 'Union & Intersection Types (overview)', route: '/typescript/unions' },
+    ],
+    tip: '0n (BigInt zero) is falsy, exactly like 0 — the main page\'s own list of falsy values omits it, even while warning specifically about the 0 pitfall.',
+    docs: [
+      { label: 'MDN BigInt', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'bigint is commonly used for large IDs beyond Number.MAX_SAFE_INTEGER — a genuine zero ID is a realistic value to accidentally treat as absent.',
+      'The fix is identical to the main page\'s own advice for plain 0: use !== null instead of bare truthiness.',
+    ],
+  },
+
+  'typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice': {
+    apis: ['type predicate', 'as any', 'in operator narrowing'],
+    related: [
+      { label: 'BigInt Zero Is Falsy Too — previous', route: '/typescript/unions/testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing' },
+      { label: 'The Assertion Function Example Doesn’t Run — next', route: '/typescript/unions/testing-that-the-assertion-function-example-never-actually-runs' },
+      { label: 'Union & Intersection Types (overview)', route: '/typescript/unions' },
+    ],
+    tip: 'After \'id\' in val narrows val, val.id is directly accessible with no cast — (val as any).id is unnecessary and lets a property-name typo compile silently.',
+    docs: [
+      { label: 'TypeScript Type Predicates', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'TypeScript trusts a type predicate\'s return value unconditionally — a wrong implementation (or a typo hidden behind as any) silently corrupts types for every caller.',
+      'The main page\'s own "wrong" example crashes with "Cannot read properties of undefined" — this subtopic reproduces that exact error.',
+    ],
+  },
+
+  'typescript/unions/testing-that-the-assertion-function-example-never-actually-runs': {
+    apis: ['asserts x is T', 'Cannot find name', 'unknown'],
+    related: [
+      { label: 'The “Safe” isUser Fix Still Uses as any — previous', route: '/typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice' },
+      { label: 'Union & Intersection Types (overview)', route: '/typescript/unions' },
+    ],
+    tip: 'The main page\'s assertion function example calls fetchData(), which is never defined anywhere — copied as-is, it fails to compile with "Cannot find name" before ever exercising the assertion.',
+    docs: [
+      { label: 'TypeScript Assertion Functions', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      '"Cannot find name" is a name-resolution error, unrelated to type narrowing — always check what category an error actually belongs to.',
+      'An assertion function narrows a variable for all subsequent code in scope, with no if statement needed — unlike a type predicate, which only narrows inside the branch that calls it.',
+    ],
+  },
+
   'typescript/narrowing': {
     apis: ['typeof', 'instanceof', 'in', 'x is T (type predicate)', 'asserts x is T', 'satisfies never', 'Array.isArray()'],
     related: [
@@ -9800,6 +10032,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Type predicates (x is T) are unsafe — TypeScript trusts your return value; returning true on the wrong branch corrupts the type.',
       'typeof null === "object" — always check null separately before checking for an object type.',
       'The in operator narrows to the intersection that contains the key — not just the branch that definitely has it.',
+    ],
+  },
+
+  'typescript/narrowing/testing-that-narrowing-survives-an-unrelated-function-call': {
+    apis: ['control flow analysis', 'closures', 'let narrowing'],
+    related: [
+      { label: 'Array.isArray Narrows to any[] — next', route: '/typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety' },
+      { label: 'Type Guards & Narrowing (overview)', route: '/typescript/narrowing' },
+    ],
+    tip: 'An unrelated function call that never references the narrowed variable does not invalidate its narrowing — only referencing it inside a nested closure does.',
+    docs: [
+      { label: 'TypeScript Narrowing', url: 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'JavaScript gives a called function no mechanism to reach into the caller\'s local variables and reassign them.',
+      'The fix inside a closure is simply re-checking the condition at that point, not restructuring the surrounding code.',
+    ],
+  },
+
+  'typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety': {
+    apis: ['Array.isArray', 'any[]', 'element narrowing'],
+    related: [
+      { label: 'Narrowing Survives an Unrelated Call — previous', route: '/typescript/narrowing/testing-that-narrowing-survives-an-unrelated-function-call' },
+      { label: 'greet(‘’) Doesn’t Say Hello, Stranger — next', route: '/typescript/narrowing/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger' },
+      { label: 'Type Guards & Narrowing (overview)', route: '/typescript/narrowing' },
+    ],
+    tip: 'Array.isArray(x) narrows x to any[] — every element is any, not unknown, so element access is completely unchecked without a further narrowing step.',
+    docs: [
+      { label: 'TypeScript lib.es5.d.ts', url: 'https://github.com/microsoft/TypeScript/blob/main/src/lib/es5.d.ts' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Confirming a value is an array does not confirm anything about its elements — a second narrowing pass (e.g. filter with a type predicate) is needed for element safety.',
+      'Code compiling cleanly after Array.isArray does not mean the elements have been validated.',
+    ],
+  },
+
+  'typescript/narrowing/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger': {
+    apis: ['&&', '??', 'nullish coalescing'],
+    related: [
+      { label: 'Array.isArray Narrows to any[] — previous', route: '/typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety' },
+      { label: 'Type Guards & Narrowing (overview)', route: '/typescript/narrowing' },
+    ],
+    tip: '&& returns its own falsy left operand unchanged — for a falsy STRING like "", that means ?? (which only catches null/undefined) never fires.',
+    docs: [
+      { label: 'MDN Nullish Coalescing', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Two individually-accurate comments about && and ?? don\'t reveal what happens when they\'re chained together for a falsy-but-defined value.',
+      'A plain ternary on truthiness (name ? ... : fallback) sidesteps this specific gap entirely.',
     ],
   },
 
@@ -9826,6 +10116,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/enums-tuples/testing-that-direction-42-returns-undefined-not-a-name': {
+    apis: ['numeric enum', 'reverse mapping', 'bitwise flags'],
+    related: [
+      { label: 'const enum Doesn’t Actually Throw Here — next', route: '/typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground' },
+      { label: 'Enums & Tuples (overview)', route: '/typescript/enums-tuples' },
+    ],
+    tip: 'The reverse mapping only contains entries for numbers actually assigned to declared members — an out-of-range or bitwise-combined number reverse-maps to undefined.',
+    docs: [
+      { label: 'TypeScript Enums (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/enums.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A numeric enum accepting any number and a numeric enum having a reverse mapping are two independent mechanisms, not one.',
+      'Combined bitwise-flag values (Read | Write) are never individually assigned to a member, so they never reverse-map to a name.',
+    ],
+  },
+
+  'typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground': {
+    apis: ['const enum', 'isolatedModules', 'per-file transpilation'],
+    related: [
+      { label: 'Direction[42] Returns Undefined — previous', route: '/typescript/enums-tuples/testing-that-direction-42-returns-undefined-not-a-name' },
+      { label: 'minMax Without a Return Type — next', route: '/typescript/enums-tuples/testing-that-minmax-without-return-type-becomes-an-array' },
+      { label: 'Enums & Tuples (overview)', route: '/typescript/enums-tuples' },
+    ],
+    tip: 'A whole-program compiler (plain tsc, or this playground) can inline a const enum imported from another file — the runtime-error failure needs a per-file transpiler like esbuild, Babel, or SWC.',
+    docs: [
+      { label: 'isolatedModules (TSConfig Reference)', url: 'https://www.typescriptlang.org/tsconfig/#isolatedModules' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The failure requires BOTH a multi-file structure AND a per-file transpiler in the build pipeline — either alone is not enough.',
+      'isolatedModules only controls whether TypeScript itself warns at compile time; the runtime failure depends on what actually transpiles the JS that ships.',
+    ],
+  },
+
+  'typescript/enums-tuples/testing-that-minmax-without-return-type-becomes-an-array': {
+    apis: ['tuple type', 'return type annotation', 'array inference'],
+    related: [
+      { label: 'const enum Doesn’t Actually Throw Here — previous', route: '/typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground' },
+      { label: 'Enums & Tuples (overview)', route: '/typescript/enums-tuples' },
+    ],
+    tip: 'Destructuring the first two elements works identically whether minMax returns a tuple or an inferred array — the difference only shows up when indexing past position 1.',
+    docs: [
+      { label: 'Tuple Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'TypeScript infers T[] from an array literal by default, regardless of how many elements are written — fixed-length tuples require an explicit annotation or as const.',
+      'An inferred number[] return type turns an out-of-bounds access from a compile-time error into a silent runtime undefined.',
+    ],
+  },
+
   'typescript/generics': {
     apis: ['<T>', '<T extends U>', 'default type parameter', 'keyof T', 'T[K]', 'generic function', 'generic interface'],
     related: [
@@ -9846,6 +10194,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'T extends string means T could be a string literal subtype, not just string — be careful in conditional types.',
       'Generic defaults (T = unknown) kick in only when T cannot be inferred — explicit default does not prevent inference.',
       'Using typeof param inside a generic function gives the generic type T, not the concrete type at the call site.',
+    ],
+  },
+
+  'typescript/generics/testing-that-memoize-collapses-nan-and-null-into-the-same-result': {
+    apis: ['JSON.stringify', 'Map cache key', 'NaN serialization'],
+    related: [
+      { label: 'getInstance Returns the Same Object — next', route: '/typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t' },
+      { label: 'Generics Fundamentals (overview)', route: '/typescript/generics' },
+    ],
+    tip: 'JSON.stringify(NaN) and JSON.stringify(null) both produce "null" — a memoize cache keyed by JSON.stringify(args) silently collides those two distinct values.',
+    docs: [
+      { label: 'MDN JSON.stringify', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A generic function\'s type signature being fully preserved says nothing about whether its runtime cache-key strategy is collision-free.',
+      'undefined inside an array, functions, and symbols all serialize similarly to null — the same collision class extends beyond just NaN.',
+    ],
+  },
+
+  'typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t': {
+    apis: ['static getInstance<T>()', 'type assertion (as)', 'generic erasure'],
+    related: [
+      { label: 'memoize Collapses NaN and null — previous', route: '/typescript/generics/testing-that-memoize-collapses-nan-and-null-into-the-same-result' },
+      { label: 'getOrSet Avoids the Falsy-Value Trap — next', route: '/typescript/generics/testing-that-getorset-avoids-the-falsy-value-cache-trap' },
+      { label: 'Generics Fundamentals (overview)', route: '/typescript/generics' },
+    ],
+    tip: 'Registry.getInstance<string>() and Registry.getInstance<number>() return the literal same object — the ??= singleton runs once, and the as Registry<T> cast has zero runtime effect.',
+    docs: [
+      { label: 'Type Assertions (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A generic type parameter on a singleton accessor provides zero runtime partitioning between different "typed" call sites.',
+      'Data written through one typed view of a shared singleton is visible, unconverted, through any other typed view.',
+    ],
+  },
+
+  'typescript/generics/testing-that-getorset-avoids-the-falsy-value-cache-trap': {
+    apis: ['Map.has()', 'truthiness check', 'falsy cache value'],
+    related: [
+      { label: 'getInstance Returns the Same Object — previous', route: '/typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t' },
+      { label: 'Generics Fundamentals (overview)', route: '/typescript/generics' },
+    ],
+    tip: 'The challenge solution checks has(key), not the cached value\'s truthiness — that is what keeps a legitimately cached 0 or "" from being silently recomputed.',
+    docs: [
+      { label: 'MDN Map.prototype.has()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/has' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'if (this.get(key)) and if (this.has(key)) look interchangeable but diverge for any falsy-but-cached value.',
+      'Falsy-but-valid cache values (0, "", false) are common in practice, not a rare edge case.',
     ],
   },
 
@@ -9872,6 +10278,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/generic-patterns/testing-that-pipeline-skips-pipe-entirely-and-still-type-checks': {
+    apis: ['constructor overload', 'type parameter default', 'unsound generics'],
+    related: [
+      { label: 'FunctionKeys Drops Optional Methods — next', route: '/typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result' },
+      { label: 'Generic Patterns (overview)', route: '/typescript/generic-patterns' },
+    ],
+    tip: 'new Pipeline<string, number>() with no .pipe() calls compiles fine — the public constructor has no relation between its type parameters and the (type-erased) steps array.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A fluent chain being individually type-safe does not make the whole class type-safe — the constructor is also part of the public surface.',
+      'The fix is a private constructor plus a static factory method, closing off direct construction entirely.',
+    ],
+  },
+
+  'typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result': {
+    apis: ['NonNullable<T>', 'optional property (?)', 'conditional type'],
+    related: [
+      { label: 'Pipeline Skips pipe() Entirely — previous', route: '/typescript/generic-patterns/testing-that-pipeline-skips-pipe-entirely-and-still-type-checks' },
+      { label: 'QueryBuilder Builds With Zero Fields — next', route: '/typescript/generic-patterns/testing-that-querybuilder-builds-successfully-with-zero-fields-set' },
+      { label: 'Generic Patterns (overview)', route: '/typescript/generic-patterns' },
+    ],
+    tip: 'An optional method\'s indexed-access type includes | undefined, which fails a bare function-type extends check — wrap with NonNullable<T[K]> to include optional methods.',
+    docs: [
+      { label: 'Conditional Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A union only extends a type if every member does — undefined never extends a function type, so the whole optional property fails.',
+      'This affects any conditional-type-based key filter, not just this one FunctionKeys example.',
+    ],
+  },
+
+  'typescript/generic-patterns/testing-that-querybuilder-builds-successfully-with-zero-fields-set': {
+    apis: ['default type parameter', 'Record<string, never>', 'accumulator builder'],
+    related: [
+      { label: 'FunctionKeys Drops Optional Methods — previous', route: '/typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result' },
+      { label: 'Generic Patterns (overview)', route: '/typescript/generic-patterns' },
+    ],
+    tip: 'The page\'s actual, literal QueryBuilder code correctly rejects accessing an unset field, but never gates build() itself on any field being set — that stronger guarantee belongs to a different, undemonstrated phantom-type pattern.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Type accumulation (tracking which fields exist) and required-field enforcement (gating build() itself) are independent features.',
+      'Prose describing a pattern and literal, tested code implementing it are not always the same example on a given page.',
+    ],
+  },
+
   'typescript/utility-types': {
     apis: ['Partial<T>', 'Required<T>', 'Readonly<T>', 'Pick<T,K>', 'Omit<T,K>', 'Record<K,V>', 'Extract<T,U>', 'Exclude<T,U>', 'NonNullable<T>', 'ReturnType<F>', 'Parameters<F>'],
     related: [
@@ -9892,6 +10356,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Partial and Required are shallow — nested objects are unaffected; write a DeepPartial recursive type for full depth.',
       'Omit<T, K> on a union type may not work as expected — each union member is processed independently.',
       'Record<K, V> with a union K creates a required entry for every member — use Partial<Record<K, V>> for optional entries.',
+    ],
+  },
+
+  'typescript/utility-types/testing-that-partial-record-of-literal-keys-is-safely-optional': {
+    apis: ['Record<string, T>', 'index signature', 'optional property'],
+    related: [
+      { label: 'ViewDTO’s tags Array Can Still Be Pushed To — next', route: '/typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to' },
+      { label: 'Utility Types (overview)', route: '/typescript/utility-types' },
+    ],
+    tip: 'Record<string, T> is an index signature with no per-key presence tracking, but Partial<Record<LiteralUnion, T>> produces real optional properties — the two look similar but have different safety.',
+    docs: [
+      { label: 'TSConfig noUncheckedIndexedAccess', url: 'https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'noUncheckedIndexedAccess only affects index-signature access — optional properties are already safely typed without it.',
+      'A literal union key turns Record into individual mapped properties, not an index signature.',
+    ],
+  },
+
+  'typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to': {
+    apis: ['Readonly<T>', 'ReadonlyArray<T>', 'shallow immutability'],
+    related: [
+      { label: 'Partial Record of Literal Keys Is Safe — previous', route: '/typescript/utility-types/testing-that-partial-record-of-literal-keys-is-safely-optional' },
+      { label: 'DistributiveOmit Preserves Narrowing — next', route: '/typescript/utility-types/testing-that-distributiveomit-preserves-per-member-narrowing' },
+      { label: 'Utility Types (overview)', route: '/typescript/utility-types' },
+    ],
+    tip: 'Readonly<T> blocks reassigning a property but not mutating what it points to — an array-typed property stays fully mutable via .push()/.splice() unless the source type itself uses readonly T[].',
+    docs: [
+      { label: 'Utility Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the same shallowness category as the page\'s own "Partial is shallow" mistake, just for Readonly instead.',
+      'Readonly<T> performs no copying — mutations through array methods are visible on every reference to the same object.',
+    ],
+  },
+
+  'typescript/utility-types/testing-that-distributiveomit-preserves-per-member-narrowing': {
+    apis: ['distributive conditional type', 'in operator', 'DistributiveOmit'],
+    related: [
+      { label: 'ViewDTO’s tags Array Can Still Be Pushed To — previous', route: '/typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to' },
+      { label: 'Utility Types (overview)', route: '/typescript/utility-types' },
+    ],
+    tip: 'DistributiveOmit removes the discriminant field but each union member keeps its own distinct remaining keys — narrowing with the "in" operator on those keys still works fine.',
+    docs: [
+      { label: 'Distributive Conditional Types', url: 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Narrowing does not require a dedicated discriminant property — any structurally-distinguishing key works with the in operator.',
+      'A distributive conditional over a union produces a genuine per-member union, not a merged shape.',
     ],
   },
 
@@ -9917,6 +10439,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/mapped-types/testing-that-eventhandlers-wrongly-includes-online': {
+    apis: ['key remapping (as)', 'template literal type', 'key-name filter'],
+    related: [
+      { label: 'StringKeys Excludes an Optional String — next', route: '/typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property' },
+      { label: 'Mapped Types (overview)', route: '/typescript/mapped-types' },
+    ],
+    tip: 'EventHandlers<T> filters purely by key name (on${string}) — a boolean property named "online" passes the pattern exactly like a real handler, since it never checks T[K] at all.',
+    docs: [
+      { label: 'Key Remapping (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Filtering by key name and filtering by value type answer genuinely different questions — combine both when you need a real handler check.',
+      'A pattern like on${string} matches "online" and "onboarded" just as readily as "onClick".',
+    ],
+  },
+
+  'typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property': {
+    apis: ['NonNullable<T>', 'optional property (?)', 'extends check'],
+    related: [
+      { label: 'EventHandlers Wrongly Includes online — previous', route: '/typescript/mapped-types/testing-that-eventhandlers-wrongly-includes-online' },
+      { label: 'OptionalToNullable Detects Implicit undefined — next', route: '/typescript/mapped-types/testing-that-optionaltonullable-detects-implicit-undefined' },
+      { label: 'Mapped Types (overview)', route: '/typescript/mapped-types' },
+    ],
+    tip: 'StringKeys<T> checks T[K] extends string directly — an optional string property\'s T[K] includes | undefined, which fails that check and gets silently dropped.',
+    docs: [
+      { label: 'Conditional Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the same underlying mechanic as the FunctionKeys gap on the Generic Patterns page — it affects any "filter by value type" mapped type, not just one utility.',
+      'NonNullable<T[K]> before the extends check is the general fix for this whole category of filter.',
+    ],
+  },
+
+  'typescript/mapped-types/testing-that-optionaltonullable-detects-implicit-undefined': {
+    apis: ['undefined extends T[K]', 'optional property (?)', 'indexed access type'],
+    related: [
+      { label: 'StringKeys Excludes an Optional String — previous', route: '/typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property' },
+      { label: 'Mapped Types (overview)', route: '/typescript/mapped-types' },
+    ],
+    tip: 'OptionalToNullable checks undefined extends T[K] (is undefined a member?) rather than T[K] extends X (does the whole type match?) — the reversed direction is exactly what correctly detects optional properties.',
+    docs: [
+      { label: 'Mapped Types (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/mapped-types.html' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This mapped type does NOT have the same optional-property gap as EventHandlers or StringKeys — the direction of the extends check matters.',
+      'A required property\'s indexed-access type never includes undefined unless explicitly written that way.',
+    ],
+  },
+
   'typescript/conditional-types': {
     apis: ['T extends U ? X : Y', 'infer P', 'distributive conditional', 'NonNullable<T>', 'Awaited<T>', 'ReturnType<F>'],
     related: [
@@ -9939,6 +10519,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/conditional-types/testing-that-equals-cannot-distinguish-any-from-unknown': {
+    apis: ['Equals<A,B>', 'IsAny<T>', 'bidirectional assignability'],
+    related: [
+      { label: 'Head of an Empty Tuple Hides undefined — next', route: '/typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never' },
+      { label: 'Conditional Types (overview)', route: '/typescript/conditional-types' },
+    ],
+    tip: 'any breaks Equals against every type it is compared with, not just string — Equals<any, unknown> is also true. Combine with IsAny<T> for a genuinely accurate type-equality check.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'any is bidirectionally assignable with virtually everything — any bidirectional-assignability-based equality check will misreport it as equal to its comparison target.',
+      'IsAny<T> = 0 extends (1 & T) ? true : false is the standard trick to detect any specifically.',
+    ],
+  },
+
+  'typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never': {
+    apis: ['never (bottom type)', 'infer', 'unsound generic return type'],
+    related: [
+      { label: 'Equals Can’t Distinguish any From unknown — previous', route: '/typescript/conditional-types/testing-that-equals-cannot-distinguish-any-from-unknown' },
+      { label: 'MyReturnType Rejects a Class Constructor — next', route: '/typescript/conditional-types/testing-that-myreturntype-rejects-a-class-constructor' },
+      { label: 'Conditional Types (overview)', route: '/typescript/conditional-types' },
+    ],
+    tip: 'Head<[]> = never is correct at the type level, but never is a bottom type — silently assignable to string with zero errors, letting a real undefined slip through a fully-typed function.',
+    docs: [
+      { label: 'never Type (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/functions.html#never' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'never being technically correct at the type level does not stop it from being assignable to any other declared type at the call site.',
+      'Any conditional or infer-based return type that can resolve to never for an edge-case input is potentially exposed to this pattern.',
+    ],
+  },
+
+  'typescript/conditional-types/testing-that-myreturntype-rejects-a-class-constructor': {
+    apis: ['construct signature', 'call signature', 'InstanceType<T>'],
+    related: [
+      { label: 'Head of an Empty Tuple Hides undefined — previous', route: '/typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never' },
+      { label: 'Conditional Types (overview)', route: '/typescript/conditional-types' },
+    ],
+    tip: 'typeof SomeClass has a construct signature (new (...args) => T), not a call signature — it fails MyReturnType\'s extends check the same way a plain non-function does. Use InstanceType<typeof SomeClass> instead.',
+    docs: [
+      { label: 'InstanceType (TS Utility Types)', url: 'https://www.typescriptlang.org/docs/handbook/utility-types.html#instancetypetype' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A class superficially "looks callable" via new, but construct signatures and call signatures are structurally distinct in TypeScript.',
+      'InstanceType<T> is the purpose-built utility for extracting a class\'s instance type — ReturnType-style utilities are not a substitute.',
+    ],
+  },
+
   'typescript/template-literal-types': {
     apis: ['`${T}${U}`', 'Uppercase<S>', 'Lowercase<S>', 'Capitalize<S>', 'Uncapitalize<S>', 'infer in template'],
     related: [
@@ -9958,6 +10596,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
       'Large string unions in template literals create exponentially large union types — can significantly slow compilation.',
       'infer in template literal types cannot match across arbitrary word boundaries — use a chained conditional to extract parts.',
       'Intrinsic string manipulation (Uppercase, Capitalize) only works on string literal types, not runtime strings.',
+    ],
+  },
+
+  'typescript/template-literal-types/testing-that-a-let-variable-widens-handlername-to-plain-string': {
+    apis: ['let widening', 'const literal inference', 'generic type inference'],
+    related: [
+      { label: 'DotPath Hits Infinite Recursion on Self-Reference — next', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' },
+      { label: 'Template Literal Types (overview)', route: '/typescript/template-literal-types' },
+    ],
+    tip: 'A let variable initialized with a string literal widens to plain string — passing it into a generic template-literal-returning function silently collapses the return type to the broad form.',
+    docs: [
+      { label: 'Literal Inference (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/type-inference.html#literal-inference' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This happens silently — no error anywhere in the chain flags the loss of specificity.',
+      'const keeps the literal type; let widens to the general primitive type.',
+    ],
+  },
+
+  'typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference': {
+    apis: ['recursive conditional type', 'ts2589', 'self-referencing interface'],
+    related: [
+      { label: 'let Widens HandlerName to Plain string — previous', route: '/typescript/template-literal-types/testing-that-a-let-variable-widens-handlername-to-plain-string' },
+      { label: 'A Single as Cast Defeats CSSVarName — next', route: '/typescript/template-literal-types/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product' },
+      { label: 'Template Literal Types (overview)', route: '/typescript/template-literal-types' },
+    ],
+    tip: 'DotPath<T> has no base case for a self-referencing interface — TypeScript eventually reports "Type instantiation is excessively deep and possibly infinite" (ts2589) instead of resolving or looping forever.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'TypeScript has no cycle detection here — only a maximum instantiation depth that eventually triggers the error.',
+      'Any hand-written recursive conditional/mapped type applied to a self-referencing interface shares this risk.',
+    ],
+  },
+
+  'typescript/template-literal-types/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product': {
+    apis: ['type assertion (as)', 'compile-time-only types', 'runtime validation'],
+    related: [
+      { label: 'DotPath Hits Infinite Recursion on Self-Reference — previous', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' },
+      { label: 'Template Literal Types (overview)', route: '/typescript/template-literal-types' },
+    ],
+    tip: 'typedVar never reads from the real theme object at runtime — a single "as ThemeVar" cast bypasses the entire nine-token CSSVarName cross-product with zero remaining protection.',
+    docs: [
+      { label: 'Type Assertions (Handbook)', url: 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a structural property of all compile-time-only type safety, not a flaw specific to this challenge\'s implementation.',
+      'Untrusted string values (user input, API responses) flowing through an as cast get zero protection from even the most elaborate type.',
     ],
   },
 
@@ -13607,6 +14303,596 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'aspnet/output-caching-advanced/testing-tag-eviction-with-fake-outputcachestore': {
+    apis: ['IOutputCacheStore', 'EvictByTagAsync()', 'WebApplicationFactory<T>', 'ConfigureTestServices'],
+    related: [
+      { label: 'Stampede Locking Mechanics — next', route: '/aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures' },
+      { label: 'Output Caching Advanced (overview)', route: '/aspnet/output-caching-advanced' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Replace IOutputCacheStore alone in ConfigureTestServices — AddOutputCache() and UseOutputCache() stay untouched, since the store is a separately swappable dependency.',
+    docs: [
+      { label: 'Output caching in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A typo in an eviction tag name is a silent no-op against a real store — a fake store that records EvictedTags turns that into an immediate, precise assertion failure instead of a vague stale-data symptom.',
+      'Identical response bodies across two GETs do not prove a cache hit — only counting the real backend work (e.g. a repo call counter) distinguishes "served from cache" from "hit the database twice."',
+    ],
+  },
+
+  'aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures': {
+    apis: ['IOutputCacheStore', 'SemaphoreSlim', 'OutputCacheContext'],
+    related: [
+      { label: 'Testing Tag Eviction — previous', route: '/aspnet/output-caching-advanced/testing-tag-eviction-with-fake-outputcachestore' },
+      { label: 'Custom Policy Safety Gaps — next', route: '/aspnet/output-caching-advanced/custom-ioutputcachepolicy-skips-every-built-in-safety-check' },
+      { label: 'Output Caching Advanced (overview)', route: '/aspnet/output-caching-advanced' },
+    ],
+    tip: 'A failed population attempt is never cached — the per-key lock only coalesces CONCURRENT duplicate work at one instant, it is not a circuit breaker against a sustained outage.',
+    docs: [
+      { label: 'Output caching in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'On success, waiters queued behind the lock reuse the now-populated cache entry instead of re-running the handler — that reuse, not the lock itself, is what prevents the thundering herd.',
+      'On failure, every currently-queued request eventually gets its own real retry against a still-broken backend, one at a time — pair output caching with an actual circuit breaker for protection against a sustained outage.',
+    ],
+  },
+
+  'aspnet/output-caching-advanced/custom-ioutputcachepolicy-skips-every-built-in-safety-check': {
+    apis: ['IOutputCachePolicy', 'OutputCacheContext', 'AllowCacheStorage', 'AllowCacheLookup'],
+    related: [
+      { label: 'Stampede Locking Mechanics — previous', route: '/aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures' },
+      { label: 'Output Caching Advanced (overview)', route: '/aspnet/output-caching-advanced' },
+    ],
+    tip: 'EnableOutputCaching only opts a request into the pipeline — AllowCacheStorage and AllowCacheLookup are separate switches, decided as late as ServeResponseAsync once the real status code is known.',
+    docs: [
+      { label: 'Output caching in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Implementing IOutputCachePolicy from scratch gets none of the built-in default policy\'s guards for free — GET/HEAD-only and status-code filtering must be reimplemented explicitly.',
+      'A custom policy with no method guard applied via a named policy to a POST or DELETE endpoint enables caching for that write endpoint — the same bug as caching a write endpoint directly, just harder to spot.',
+    ],
+  },
+
+  'aspnet/dapper/testing-dapper-repositories-with-in-memory-sqlite': {
+    apis: ['IDbConnection', 'SqliteConnection', 'QueryAsync<T>()', 'ExecuteAsync()'],
+    related: [
+      { label: 'Connection Close Mechanics — next', route: '/aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used' },
+      { label: 'Dapper & Raw SQL (overview)', route: '/aspnet/dapper' },
+      { label: 'EF Core Basics', route: '/aspnet/ef-core-basics' },
+    ],
+    tip: 'Keep the SAME SqliteConnection instance open for the whole test — in-memory SQLite scopes its data to the connection object, not the connection string.',
+    docs: [
+      { label: 'Dapper — GitHub', url: 'https://github.com/DapperLib/Dapper' },
+    ],
+    resources: [
+      { label: 'DapperLib/Dapper', url: 'https://github.com/DapperLib/Dapper', badge: 'code' },
+    ],
+    gotchas: [
+      'A new SqliteConnection(":memory:"), even with an identical connection string, opens a brand-new empty database — the data is scoped to the connection OBJECT, not the string.',
+      'Mocking IDbConnection is awkward since Dapper\'s methods are static extensions — a real in-memory database catches SQL/column bugs a mock never would.',
+    ],
+  },
+
+  'aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used': {
+    apis: ['IDbConnection', 'ConnectionState', 'BeginTransaction()'],
+    related: [
+      { label: 'Testing With In-Memory SQLite — previous', route: '/aspnet/dapper/testing-dapper-repositories-with-in-memory-sqlite' },
+      { label: 'TransferAsync\'s Connection Gap — next', route: '/aspnet/dapper/transferasync-example-holds-its-connection-open-far-too-long' },
+      { label: 'Dapper & Raw SQL (overview)', route: '/aspnet/dapper' },
+    ],
+    tip: 'Dapper only opens and closes a connection it finds CLOSED at call time — a connection that\'s already open when the call runs is left open afterward.',
+    docs: [
+      { label: 'Dapper — GitHub', url: 'https://github.com/DapperLib/Dapper' },
+    ],
+    resources: [
+      { label: 'DapperLib/Dapper', url: 'https://github.com/DapperLib/Dapper', badge: 'code' },
+    ],
+    gotchas: [
+      'BeginTransaction() throws InvalidOperationException on a Closed connection — it has no auto-open behavior of its own, unlike QueryAsync/ExecuteAsync.',
+      'Two closed-connection calls in a row each pay their own full open-and-close cost — Dapper has no memory across calls of what a previous call left the connection in.',
+    ],
+  },
+
+  'aspnet/dapper/transferasync-example-holds-its-connection-open-far-too-long': {
+    apis: ['IDbConnection', 'IDbTransaction', 'db.Close()'],
+    related: [
+      { label: 'Connection Close Mechanics — previous', route: '/aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used' },
+      { label: 'Dapper & Raw SQL (overview)', route: '/aspnet/dapper' },
+    ],
+    tip: 'db.Open() with no matching db.Close() isn\'t a permanent leak — Transient DI disposes it eventually — but it holds a pooled connection open for the rest of the request.',
+    docs: [
+      { label: 'Dapper — GitHub', url: 'https://github.com/DapperLib/Dapper' },
+    ],
+    resources: [
+      { label: 'DapperLib/Dapper', url: 'https://github.com/DapperLib/Dapper', badge: 'code' },
+    ],
+    gotchas: [
+      'using var tx = db.BeginTransaction() disposes only the transaction object, never the connection db.Open() opened.',
+      'Under concurrent load, every request holding a connection open longer than necessary brings the app measurably closer to exhausting the ADO.NET pool.',
+    ],
+  },
+
+  'aspnet/csrf/testing-get-requests-cant-reach-state-changing-endpoints': {
+    apis: ['MapGet()', 'MapDelete()', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Token-Pair Mechanics — next', route: '/aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string' },
+      { label: 'Anti-forgery & CSRF (overview)', route: '/aspnet/csrf' },
+      { label: 'Web Security Essentials', route: '/aspnet/web-security' },
+    ],
+    tip: 'A 404 on GET proves a route does not exist at all — that is a routing guarantee, not an antiforgery one. Assert the specific status code, not just "not successful."',
+    docs: [
+      { label: 'Prevent CSRF attacks in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Antiforgery only ever runs for the verbs it is wired to (POST/PUT/PATCH/DELETE) — a GET route pointed at the same handler bypasses it entirely, not because a token check failed.',
+      'A 404 (no route), a 400 (failed antiforgery), and a 405 (wrong method) are all "not successful" — assert the SPECIFIC status code to tell them apart.',
+    ],
+  },
+
+  'aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string': {
+    apis: ['IAntiforgery', 'GetAndStoreTokens()', 'AntiforgeryTokenSet'],
+    related: [
+      { label: 'Testing GET Cannot Change State — previous', route: '/aspnet/csrf/testing-get-requests-cant-reach-state-changing-endpoints' },
+      { label: 'Middleware Redundancy — next', route: '/aspnet/csrf/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered' },
+      { label: 'Anti-forgery & CSRF (overview)', route: '/aspnet/csrf' },
+    ],
+    tip: 'The cookie token and the request token are two DIFFERENT cryptographically related values — not one shared string compared twice.',
+    docs: [
+      { label: 'Prevent CSRF attacks in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Presenting the cookie token as the request token fails validation — knowing one does not let an attacker derive or substitute the other.',
+      'A token "living in a cookie only" is dangerous because it removes the second channel entirely, not because it duplicates one exposed secret.',
+    ],
+  },
+
+  'aspnet/csrf/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered': {
+    apis: ['UseAntiforgery()', 'IAntiforgery', 'ValidateRequestAsync()', 'AntiforgeryValidationException'],
+    related: [
+      { label: 'Token-Pair Mechanics — previous', route: '/aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string' },
+      { label: 'Anti-forgery & CSRF (overview)', route: '/aspnet/csrf' },
+    ],
+    tip: 'Registering both UseAntiforgery() and a custom validation middleware is not layered protection — whichever runs first wins on failure, and the other becomes dead code.',
+    docs: [
+      { label: 'Prevent CSRF attacks in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Whichever middleware runs first short-circuits the pipeline on failure — the second one\'s ValidateRequestAsync() call never executes for a failing request.',
+      'To customize the failure response without double-validating, wrap app.UseAntiforgery() in a try/catch middleware registered just before it, rather than replacing it entirely.',
+    ],
+  },
+
+  'aspnet/feature-flags/testing-feature-flagged-code-mocking-and-config-override': {
+    apis: ['IFeatureManager', 'IsEnabledAsync()', 'WebApplicationFactory<T>', 'ConfigureAppConfiguration()'],
+    related: [
+      { label: 'PercentageFilter Mechanics — next', route: '/aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user' },
+      { label: 'Feature Flags (overview)', route: '/aspnet/feature-flags' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Mock IFeatureManager to test branching logic; override FeatureManagement config in a WebApplicationFactory to test that [FeatureGate] itself is wired correctly.',
+    docs: [
+      { label: 'Feature flags in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core' },
+    ],
+    resources: [
+      { label: 'microsoft/FeatureManagement-Dotnet', url: 'https://github.com/microsoft/FeatureManagement-Dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'An IFeatureManager mock can never catch a typo\'d flag name — IFeatureManager silently returns false for any unrecognized flag, with no error raised.',
+      '[FeatureGate] is evaluated by the action-filter pipeline reading real configuration — proving it works requires a real WebApplicationFactory, not a mock.',
+    ],
+  },
+
+  'aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user': {
+    apis: ['PercentageFilter', 'TargetingFilter', 'ITargetingContextAccessor'],
+    related: [
+      { label: 'Testing Feature Flags — previous', route: '/aspnet/feature-flags/testing-feature-flagged-code-mocking-and-config-override' },
+      { label: 'RequirementType Default Gap — next', route: '/aspnet/feature-flags/featuregate-multiple-flags-defaults-to-requirementtype-all' },
+      { label: 'Feature Flags (overview)', route: '/aspnet/feature-flags' },
+    ],
+    tip: 'PercentageFilter re-rolls independently on every IsEnabledAsync call — the same user can get a different answer on their very next request.',
+    docs: [
+      { label: 'Feature flags in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core' },
+    ],
+    resources: [
+      { label: 'microsoft/FeatureManagement-Dotnet', url: 'https://github.com/microsoft/FeatureManagement-Dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'A multi-step flow checking the same flag at each step can flip a user between old and new UI mid-session — decide once and reuse the result instead.',
+      'TargetingFilter is sticky per user because it is driven by stable identity/group inputs, not randomness — unlike PercentageFilter.',
+    ],
+  },
+
+  'aspnet/feature-flags/featuregate-multiple-flags-defaults-to-requirementtype-all': {
+    apis: ['FeatureGateAttribute', 'RequirementType'],
+    related: [
+      { label: 'PercentageFilter Mechanics — previous', route: '/aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user' },
+      { label: 'Feature Flags (overview)', route: '/aspnet/feature-flags' },
+    ],
+    tip: '[FeatureGate("A", "B")] with no leading RequirementType argument defaults to RequirementType.All — requiring BOTH flags, not either one.',
+    docs: [
+      { label: 'Feature flags in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core' },
+    ],
+    resources: [
+      { label: 'microsoft/FeatureManagement-Dotnet', url: 'https://github.com/microsoft/FeatureManagement-Dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'The requirement type is a silent default, not a compiler error — its absence is easier to overlook in review than a wrong flag name.',
+      'An endpoint 404ing more than expected can be a missing RequirementType.Any, not a misconfigured flag.',
+    ],
+  },
+
+  'aspnet/localization/testing-localized-responses-fixed-culture-provider-vs-accept-language': {
+    apis: ['IRequestCultureProvider', 'RequestLocalizationOptions', 'WebApplicationFactory<T>'],
+    related: [
+      { label: 'Resource Fallback Hierarchy — next', route: '/aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys' },
+      { label: 'Localization & Globalization (overview)', route: '/aspnet/localization' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Accept-Language tests prove negotiation AND translation together; a fixed custom IRequestCultureProvider isolates translation correctness alone.',
+    docs: [
+      { label: 'Globalization and localization in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A fixed-culture-provider test clears opts.RequestCultureProviders entirely — it cannot catch a real negotiation-pipeline regression like wrong middleware ordering.',
+      'An unsupported Accept-Language value falls back to the default culture silently in a properly configured app — it does not throw.',
+    ],
+  },
+
+  'aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys': {
+    apis: ['IStringLocalizer<T>', 'CultureInfo', 'ResourceManager'],
+    related: [
+      { label: 'Testing Localized Responses — previous', route: '/aspnet/localization/testing-localized-responses-fixed-culture-provider-vs-accept-language' },
+      { label: 'Culture Cookie\'s Missing Arabic — next', route: '/aspnet/localization/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic' },
+      { label: 'Localization & Globalization (overview)', route: '/aspnet/localization' },
+    ],
+    tip: 'A region like fr-FR falls back through its parent culture fr, then the default — no fr-FR.resx file needs to exist for this to work.',
+    docs: [
+      { label: 'Globalization and localization in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Copying every key into a new region-specific resx file (instead of only the keys that differ) freezes a snapshot that silently drifts from future neutral-file updates.',
+      'Missing-key fallback and missing-file fallback resolve via the exact same culture-hierarchy walk — they are not different mechanisms.',
+    ],
+  },
+
+  'aspnet/localization/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic': {
+    apis: ['CookieRequestCultureProvider', 'IOptions<RequestLocalizationOptions>'],
+    related: [
+      { label: 'Resource Fallback Hierarchy — previous', route: '/aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys' },
+      { label: 'Localization & Globalization (overview)', route: '/aspnet/localization' },
+    ],
+    tip: 'Validate culture cookie input against IOptions<RequestLocalizationOptions>.SupportedUICultures instead of a second hardcoded array — one list, no drift.',
+    docs: [
+      { label: 'Globalization and localization in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A hardcoded culture-validation array with no link to the real SupportedUICultures configuration will silently drift out of sync as cultures are added.',
+      'A 400 from this kind of endpoint does not always mean the app lacks support for that culture — the endpoint\'s own list may just be stale.',
+    ],
+  },
+
+  'aspnet/masstransit/testing-masstransit-consumers-and-request-reply-with-itestharness': {
+    apis: ['ITestHarness', 'AddMassTransitTestHarness()', 'IRequestClient<T>'],
+    related: [
+      { label: 'Retry + Redelivery Mechanics — next', route: '/aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add' },
+      { label: 'MassTransit (overview)', route: '/aspnet/masstransit' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'Consumed.Any<T>() proves a message arrived; for request-reply, assert on the RESOLVED RESPONSE from IRequestClient<T> instead — a Consumed check alone misses a broken reply.',
+    docs: [
+      { label: 'MassTransit testing documentation', url: 'https://masstransit.io/documentation/concepts/testing' },
+    ],
+    resources: [
+      { label: 'MassTransit/MassTransit', url: 'https://github.com/MassTransit/MassTransit', badge: 'code' },
+    ],
+    gotchas: [
+      'A request-reply test asserting only Consumed<TRequest>() misses a consumer that received the request but never called RespondAsync() or replied with the wrong type.',
+      'AddMassTransitTestHarness() is fully in-memory — no real broker or network connection is needed for either style of test.',
+    ],
+  },
+
+  'aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add': {
+    apis: ['UseMessageRetry()', 'UseDelayedRedelivery()'],
+    related: [
+      { label: 'Testing MassTransit — previous', route: '/aspnet/masstransit/testing-masstransit-consumers-and-request-reply-with-itestharness' },
+      { label: 'Send() Fragile Queue Name — next', route: '/aspnet/masstransit/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue' },
+      { label: 'MassTransit (overview)', route: '/aspnet/masstransit' },
+    ],
+    tip: 'Each redelivery round restarts the FULL immediate-retry cycle from the start — total attempts are a product of both policies, not a sum.',
+    docs: [
+      { label: 'MassTransit retry documentation', url: 'https://masstransit.io/documentation/concepts/exceptions' },
+    ],
+    resources: [
+      { label: 'MassTransit/MassTransit', url: 'https://github.com/MassTransit/MassTransit', badge: 'code' },
+    ],
+    gotchas: [
+      'Stacking 3 immediate retries with 3 redelivery rounds produces up to 4 x 4 = 16 total attempts, not 3 + 3 = 6.',
+      'The worst-case time to the error queue includes the FULL immediate-retry cycle repeated after every redelivery interval, not just the redelivery intervals alone.',
+    ],
+  },
+
+  'aspnet/masstransit/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue': {
+    apis: ['ISendEndpointProvider', 'GetSendEndpoint()', 'ReceiveEndpoint()'],
+    related: [
+      { label: 'Retry + Redelivery Mechanics — previous', route: '/aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add' },
+      { label: 'MassTransit (overview)', route: '/aspnet/masstransit' },
+    ],
+    tip: 'Send() requires an exact queue-name string matching the real consumer\'s endpoint — unlike Publish(), a mismatch is not caught by the compiler or by MassTransit at send time.',
+    docs: [
+      { label: 'MassTransit send documentation', url: 'https://masstransit.io/documentation/concepts/producers' },
+    ],
+    resources: [
+      { label: 'MassTransit/MassTransit', url: 'https://github.com/MassTransit/MassTransit', badge: 'code' },
+    ],
+    gotchas: [
+      'A Send() call to a queue name that matches no real consumer delivers silently into an unconsumed queue — no exception is raised anywhere.',
+      'Sharing one constant between ReceiveEndpoint() registration and every Send() call site eliminates the drift risk entirely — a rename becomes a compile error, not a silent mismatch.',
+    ],
+  },
+
+  'aspnet/response-compression/testing-minimum-size-threshold-and-skip-if-already-encoded': {
+    apis: ['AddResponseCompression()', 'ResponseCompressionOptions', 'Content-Encoding'],
+    related: [
+      { label: 'Registration Order Mechanics — next', route: '/aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings' },
+      { label: 'Response Compression (overview)', route: '/aspnet/response-compression' },
+      { label: 'Output Caching Advanced', route: '/aspnet/output-caching-advanced' },
+    ],
+    tip: 'Tiny responses are skipped below a minimum-size threshold, and responses with an existing Content-Encoding header are never recompressed — both are testable, falsifiable claims.',
+    docs: [
+      { label: 'Response compression in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/response-compression' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Every compression format adds its own framing overhead — for tiny payloads, that overhead can exceed the savings, making the compressed response LARGER than the original.',
+      'An endpoint that manually sets Content-Encoding causes the middleware to skip its own compression entirely, preventing double-encoding.',
+    ],
+  },
+
+  'aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings': {
+    apis: ['BrotliCompressionProvider', 'GzipCompressionProvider', 'Accept-Encoding'],
+    related: [
+      { label: 'Testing Threshold Behaviors — previous', route: '/aspnet/response-compression/testing-minimum-size-threshold-and-skip-if-already-encoded' },
+      { label: 'Diagnostic Middleware Ordering — next', route: '/aspnet/response-compression/diagnostic-middleware-must-wrap-compression-not-nest-inside-it' },
+      { label: 'Response Compression (overview)', route: '/aspnet/response-compression' },
+    ],
+    tip: 'Registration order is only a tie-breaker among encodings the client actually declared in Accept-Encoding — it never overrides a client that doesn\'t support the preferred provider.',
+    docs: [
+      { label: 'Response compression in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/response-compression' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Removing Gzip because "Brotli is registered first" breaks every client that supports gzip but not Brotli — their responses go uncompressed instead of falling back.',
+      'A client sending no Accept-Encoding header at all always gets an uncompressed response, regardless of how many providers are configured.',
+    ],
+  },
+
+  'aspnet/response-compression/diagnostic-middleware-must-wrap-compression-not-nest-inside-it': {
+    apis: ['UseResponseCompression()', 'HttpContext.Response'],
+    related: [
+      { label: 'Registration Order Mechanics — previous', route: '/aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings' },
+      { label: 'Response Compression (overview)', route: '/aspnet/response-compression' },
+    ],
+    tip: 'A middleware reading Content-Encoding after next() only sees the finalized header if it is registered BEFORE (outside) UseResponseCompression(), not after.',
+    docs: [
+      { label: 'Response compression in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/performance/response-compression' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A diagnostic middleware registered AFTER UseResponseCompression() reads an empty Content-Encoding on every request, even genuinely compressed ones.',
+      'DevTools showing the correct Content-Encoding on the real response is conclusive proof compression works — a silent diagnostic logger points to a middleware-ordering bug, not a config bug.',
+    ],
+  },
+
+  'aspnet/websockets/testing-websocket-endpoints-with-testservers-websocketclient': {
+    apis: ['TestServer.CreateWebSocketClient()', 'WebSocket', 'CloseAsync()'],
+    related: [
+      { label: 'Close Handshake Mechanics — next', route: '/aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop' },
+      { label: 'WebSockets (overview)', route: '/aspnet/websockets' },
+      { label: 'SignalR', route: '/aspnet/signalr' },
+    ],
+    tip: 'HttpClient can\'t open a WebSocket at all — use TestServer.CreateWebSocketClient() to connect a real in-memory WebSocket for testing.',
+    docs: [
+      { label: 'WebSockets in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/websockets' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'An echo-only test never proves the closing handshake works — forgetting CloseAsync() on the server leaves the client waiting for a reply that never comes.',
+      'CreateWebSocketClient() connects directly to the in-memory TestServer — no real socket or port is involved.',
+    ],
+  },
+
+  'aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop': {
+    apis: ['WebSocketState', 'CloseAsync()', 'ReceiveAsync()'],
+    related: [
+      { label: 'Testing WebSockets — previous', route: '/aspnet/websockets/testing-websocket-endpoints-with-testservers-websocketclient' },
+      { label: 'Multi-Frame Truncation Gap — next', route: '/aspnet/websockets/receive-loop-examples-silently-truncate-multi-frame-messages' },
+      { label: 'WebSockets (overview)', route: '/aspnet/websockets' },
+    ],
+    tip: 'ws.State already transitions to CloseReceived before your code checks MessageType — the manual CloseAsync() call exists to complete the handshake, not to end the loop.',
+    docs: [
+      { label: 'WebSockets in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/websockets' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'Removing the Close-message check doesn\'t hang the server loop — the outer while(State==Open) exits fine — but the peer never receives a close frame back.',
+      'The framework sets ws.State to CloseReceived as part of processing the incoming close frame, before your code ever calls CloseAsync().',
+    ],
+  },
+
+  'aspnet/websockets/receive-loop-examples-silently-truncate-multi-frame-messages': {
+    apis: ['ReceiveAsync()', 'WebSocketReceiveResult.EndOfMessage', 'MemoryStream'],
+    related: [
+      { label: 'Close Handshake Mechanics — previous', route: '/aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop' },
+      { label: 'WebSockets (overview)', route: '/aspnet/websockets' },
+    ],
+    tip: 'Fragmentation is the SENDER\'s choice, not the server\'s — always accumulate until EndOfMessage is true instead of processing after one ReceiveAsync call.',
+    docs: [
+      { label: 'WebSockets in ASP.NET Core', url: 'https://learn.microsoft.com/en-us/aspnet/core/fundamentals/websockets' },
+    ],
+    resources: [
+      { label: 'dotnet/aspnetcore', url: 'https://github.com/dotnet/aspnetcore', badge: 'code' },
+    ],
+    gotchas: [
+      'A message fitting comfortably in the receive buffer can still arrive across multiple frames — buffer size has no bearing on whether a sender chooses to fragment.',
+      'Non-browser clients, large payloads, and proxies can all fragment messages a typical browser wouldn\'t, making single-ReceiveAsync code a latent bug, not a theoretical one.',
+    ],
+  },
+
+  'aspnet/yarp/testing-yarp-routes-and-transforms-with-loadfrommemory': {
+    apis: ['LoadFromMemory()', 'RouteConfig', 'ClusterConfig'],
+    related: [
+      { label: 'Passive Health Check Mechanics — next', route: '/aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout' },
+      { label: 'YARP Reverse Proxy (overview)', route: '/aspnet/yarp' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'LoadFromMemory(routes, clusters) supplies config directly in code — pair it with a fake backend that echoes back what it received to prove a transform genuinely applied.',
+    docs: [
+      { label: 'YARP documentation', url: 'https://microsoft.github.io/reverse-proxy/' },
+    ],
+    resources: [
+      { label: 'microsoft/reverse-proxy', url: 'https://github.com/microsoft/reverse-proxy', badge: 'code' },
+    ],
+    gotchas: [
+      'A backend with any catch-all route can return 200 regardless of whether a path-rewriting transform actually applied — assert on what the backend RECEIVED, not the response status alone.',
+      'No appsettings.json is needed for a test — LoadFromMemory exercises the exact same route-matching and transform logic YARP uses in production.',
+    ],
+  },
+
+  'aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout': {
+    apis: ['HealthCheck.Passive', 'ReactivationPeriod', 'HealthCheck.Active'],
+    related: [
+      { label: 'Testing Routes and Transforms — previous', route: '/aspnet/yarp/testing-yarp-routes-and-transforms-with-loadfrommemory' },
+      { label: 'Pipeline Ordering Gotcha — next', route: '/aspnet/yarp/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing' },
+      { label: 'YARP Reverse Proxy (overview)', route: '/aspnet/yarp' },
+    ],
+    tip: 'Passive health checks exclude a destination for a fixed ReactivationPeriod, then unconditionally retry it — they never actually confirm recovery. Only active health checks do that.',
+    docs: [
+      { label: 'YARP documentation', url: 'https://microsoft.github.io/reverse-proxy/' },
+    ],
+    resources: [
+      { label: 'microsoft/reverse-proxy', url: 'https://github.com/microsoft/reverse-proxy', badge: 'code' },
+    ],
+    gotchas: [
+      'A destination still down when its ReactivationPeriod elapses fails the very next real request routed to it — passive checks provide no verified-recovery guarantee.',
+      'Passive and active health checks solve different halves of the problem — configuring one does not make the other redundant.',
+    ],
+  },
+
+  'aspnet/yarp/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing': {
+    apis: ['UseSessionAffinity()', 'UseLoadBalancing()', 'UsePassiveHealthChecks()'],
+    related: [
+      { label: 'Passive Health Check Mechanics — previous', route: '/aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout' },
+      { label: 'YARP Reverse Proxy (overview)', route: '/aspnet/yarp' },
+    ],
+    tip: 'UseSessionAffinity() must run before UseLoadBalancing() — reversing the order silently defeats affinity, since load balancing already picks a destination before affinity can override it.',
+    docs: [
+      { label: 'YARP documentation', url: 'https://microsoft.github.io/reverse-proxy/' },
+    ],
+    resources: [
+      { label: 'microsoft/reverse-proxy', url: 'https://github.com/microsoft/reverse-proxy', badge: 'code' },
+    ],
+    gotchas: [
+      'Custom middleware registered before the built-in proxy stages can only see the matched route and cluster — no destination is selected yet.',
+      'A load-balancing policy can coincidentally pick the same destination across a few manual test requests even when affinity is completely non-functional — only sustained real traffic reveals the bug.',
+    ],
+  },
+
+  'aspnet/opentelemetry/testing-custom-spans-and-metrics-with-activitylistener-and-meterlistener': {
+    apis: ['ActivityListener', 'MeterListener', 'ActivitySource'],
+    related: [
+      { label: 'SetTag Sampling Gap — next', route: '/aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span' },
+      { label: 'OpenTelemetry (overview)', route: '/aspnet/opentelemetry' },
+      { label: 'Testing ASP.NET Core', route: '/aspnet/testing' },
+    ],
+    tip: 'ActivityListener and MeterListener observe telemetry directly in-process — no exporter, collector, or backend needed to verify custom spans and metrics.',
+    docs: [
+      { label: 'OpenTelemetry .NET documentation', url: 'https://opentelemetry.io/docs/languages/net/' },
+    ],
+    resources: [
+      { label: 'open-telemetry/opentelemetry-dotnet', url: 'https://github.com/open-telemetry/opentelemetry-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'A test\'s ActivityListener can produce a null Activity if its own Sample callback doesn\'t return AllData — the same symptom as an unregistered ActivitySource, a different test-specific cause.',
+      'MeterListener\'s measurement event callback captures every measurement a matching instrument records — no metrics-exporting pipeline needed.',
+    ],
+  },
+
+  'aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span': {
+    apis: ['Activity.IsAllDataRequested', 'Activity.SetTag()', 'ActivitySamplingResult'],
+    related: [
+      { label: 'Testing Spans and Metrics — previous', route: '/aspnet/opentelemetry/testing-custom-spans-and-metrics-with-activitylistener-and-meterlistener' },
+      { label: 'Fire-and-Forget Span Gotcha — next', route: '/aspnet/opentelemetry/fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent' },
+      { label: 'OpenTelemetry (overview)', route: '/aspnet/opentelemetry' },
+    ],
+    tip: 'activity?.SetTag(...) guards against a null Activity, not against IsAllDataRequested == false — guard expensive tag computations with an explicit check instead.',
+    docs: [
+      { label: 'OpenTelemetry .NET documentation', url: 'https://opentelemetry.io/docs/languages/net/' },
+    ],
+    resources: [
+      { label: 'open-telemetry/opentelemetry-dotnet', url: 'https://github.com/open-telemetry/opentelemetry-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'A non-null Activity with IsAllDataRequested false still propagates trace context, but its attributes are discarded — SetTag still computes whatever value it\'s given.',
+      'Only guard tags whose VALUE is expensive to compute — the guard itself has a cost comparable to a cheap property-access tag.',
+    ],
+  },
+
+  'aspnet/opentelemetry/fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent': {
+    apis: ['Activity.Current', 'ActivitySource.StartActivity()'],
+    related: [
+      { label: 'SetTag Sampling Gap — previous', route: '/aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span' },
+      { label: 'OpenTelemetry (overview)', route: '/aspnet/opentelemetry' },
+    ],
+    tip: 'A fire-and-forget task started inside a using activity block inherits the parent span as context — but the parent is disposed the instant the enclosing method returns.',
+    docs: [
+      { label: 'OpenTelemetry .NET documentation', url: 'https://opentelemetry.io/docs/languages/net/' },
+    ],
+    resources: [
+      { label: 'open-telemetry/opentelemetry-dotnet', url: 'https://github.com/open-telemetry/opentelemetry-dotnet', badge: 'code' },
+    ],
+    gotchas: [
+      'Activity.Current flows through async continuations, including into fire-and-forget calls, unless explicitly cleared before starting detached work.',
+      'The fix is to give genuinely detached background work its OWN independent trace, not to skip creating a span for it entirely.',
+    ],
+  },
+
   // ── ASP.NET Core Reference ───────────────────────────────────────────────────
   'aspnet/cheatsheet': {
     apis: ['app.Use()', 'app.MapGet()', 'builder.Services.Add*()', 'AddAuthentication()', 'DbContextOptions', 'IHttpClientFactory'],
@@ -13786,6 +15072,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Circular FK references require deferrable constraints in PostgreSQL or careful insert ordering in MSSQL.', 'ON DELETE CASCADE can silently wipe child rows — prefer explicit deletes in application code for critical data.'],
   },
+
+  'sql/rdbms-concepts/testing-constraints-with-tsqlt-and-pgtap': {
+    apis: ['tSQLt.ExpectException', 'pgTAP throws_ok()', 'ROLLBACK'],
+    related: [
+      { label: 'Plan Cache Mechanics — next', route: '/sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure' },
+      { label: 'RDBMS Concepts (overview)', route: '/sql/rdbms-concepts' },
+      { label: 'Transactions', route: '/sql/transactions' },
+    ],
+    tip: 'tSQLt and pgTAP both automatically roll back everything a test does — even genuinely destructive scenarios like a real CASCADE leave no permanent trace.',
+    docs: [
+      { label: 'tSQLt documentation', url: 'https://tsqlt.org/' },
+      { label: 'pgTAP documentation', url: 'https://pgtap.org/' },
+    ],
+    resources: [
+      { label: 'pgTAP', url: 'https://github.com/theory/pgtap', badge: 'code' },
+    ],
+    gotchas: [
+      'Asserting "some exception occurred" with no specific message pattern lets an unrelated bug (a typo) produce a false-positive pass.',
+      'Asserting on the exact SQLSTATE (pgTAP) or message pattern (tSQLt) is what actually proves the INTENDED constraint fired.',
+    ],
+  },
+
+  'sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure': {
+    apis: ['sys.dm_exec_cached_plans', 'sp_executesql', 'prepared statements'],
+    related: [
+      { label: 'Testing Constraints — previous', route: '/sql/rdbms-concepts/testing-constraints-with-tsqlt-and-pgtap' },
+      { label: 'Cascade Delete Mismatch — next', route: '/sql/rdbms-concepts/cascade-delete-demo-doesnt-match-the-pages-own-schema' },
+      { label: 'RDBMS Concepts (overview)', route: '/sql/rdbms-concepts' },
+    ],
+    tip: 'The plan cache keys entries off a hash of the query\'s EXACT TEXT — two queries differing only in a literal value get two separate, independently-optimized cache entries.',
+    docs: [
+      { label: 'Execution plan caching and reuse', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/query-processing-architecture-guide' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Wrapping a literal-containing string in sp_executesql without an actual parameter placeholder does not fix plan cache pollution — the text is still literal-specific.',
+      'Each new literal-value cache entry also means a full cost-based optimization pass runs again from scratch — the CPU cost compounds the memory cost.',
+    ],
+  },
+
+  'sql/rdbms-concepts/cascade-delete-demo-doesnt-match-the-pages-own-schema': {
+    apis: ['ON DELETE CASCADE', 'ON DELETE RESTRICT', 'ON DELETE NO ACTION'],
+    related: [
+      { label: 'Plan Cache Mechanics — previous', route: '/sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure' },
+      { label: 'RDBMS Concepts (overview)', route: '/sql/rdbms-concepts' },
+    ],
+    tip: 'The main page\'s own DDL declares NO ACTION / RESTRICT, not CASCADE — its own "cascade delete" demo describes a schema variant that was never actually created.',
+    docs: [
+      { label: 'PostgreSQL Constraints', url: 'https://www.postgresql.org/docs/current/ddl-constraints.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NO ACTION and RESTRICT both REJECT the parent delete entirely when child rows exist — nothing is silently skipped or partially applied.',
+      'Always verify the CURRENT constraint declaration a demo assumes, rather than trusting a comment describes the schema shown elsewhere on the same page.',
+    ],
+  },
+
   'sql/data-modeling': {
     apis: ['CREATE TABLE', 'FOREIGN KEY', 'REFERENCES', 'JOIN TABLE', 'ER Diagram'],
     related: [{ label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' }, { label: 'Normalization', route: '/sql/normalization' }, { label: 'Schema Design', route: '/sql/schema-design' }],
@@ -13794,6 +15141,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['A Many-to-Many relationship always needs a junction table — you cannot store it in two columns.', 'Avoid storing comma-separated values in a single column — that breaks 1NF and makes queries painful.'],
   },
+
+  'sql/data-modeling/testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap': {
+    apis: ['tSQLt.ExpectException', 'pgTAP throws_ok()', 'CHECK constraint'],
+    related: [
+      { label: 'Recursive CTE Cycle Risk — next', route: '/sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently' },
+      { label: 'Data Modeling (overview)', route: '/sql/data-modeling' },
+      { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' },
+    ],
+    tip: 'A polymorphic "exactly one parent" CHECK needs THREE tests — neither set, both set, and exactly one set — not just the happy path.',
+    docs: [
+      { label: 'tSQLt documentation', url: 'https://tsqlt.org/' },
+      { label: 'pgTAP documentation', url: 'https://pgtap.org/' },
+    ],
+    resources: [
+      { label: 'pgTAP', url: 'https://github.com/theory/pgtap', badge: 'code' },
+    ],
+    gotchas: [
+      'CHECK (a IS NOT NULL OR b IS NOT NULL) means "at least one," not "exactly one" — only a test inserting BOTH set catches this weakening.',
+      'A test suite missing the "both set" case can stay fully green even after this exact regression ships.',
+    ],
+  },
+
+  'sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently': {
+    apis: ['WITH RECURSIVE', 'MAXRECURSION', 'ARRAY[]'],
+    related: [
+      { label: 'Testing the Polymorphic CHECK — previous', route: '/sql/data-modeling/testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap' },
+      { label: 'UUID Theory Contradiction — next', route: '/sql/data-modeling/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against' },
+      { label: 'Data Modeling (overview)', route: '/sql/data-modeling' },
+    ],
+    tip: 'MSSQL hits a recoverable MAXRECURSION error on a cycle; PostgreSQL has no default limit and can loop until it exhausts memory.',
+    docs: [
+      { label: 'PostgreSQL WITH RECURSIVE', url: 'https://www.postgresql.org/docs/current/queries-with.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'MAXRECURSION only turns an infinite loop into an error after 100 levels of wasted work — it never prevents the cyclic data from persisting.',
+      'Track visited IDs and stop the recursive member before re-entering them — this protects both dialects regardless of hierarchy depth.',
+    ],
+  },
+
+  'sql/data-modeling/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against': {
+    apis: ['gen_random_uuid()', 'uuidv7()', 'NEWSEQUENTIALID()'],
+    related: [
+      { label: 'Recursive CTE Cycle Risk — previous', route: '/sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently' },
+      { label: 'Data Modeling (overview)', route: '/sql/data-modeling' },
+    ],
+    tip: 'The page\'s own PostgreSQL example defaults to gen_random_uuid() as the clustered PK — the exact random-UUID pattern its own theory warns fragments the index.',
+    docs: [
+      { label: 'PostgreSQL DDL', url: 'https://www.postgresql.org/docs/current/ddl.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Switching DEFAULT to uuidv7() only affects future inserts — existing rows stay fragmented until an index rebuild or table reorganization.',
+      'Pre-PG17, keep a sequential integer as the clustered PK and use the random UUID only as a secondary UNIQUE column instead.',
+    ],
+  },
+
   'sql/normalization': {
     apis: ['1NF', '2NF', '3NF', 'BCNF', 'Functional Dependency', 'Partial Dependency', 'Transitive Dependency'],
     related: [{ label: 'Data Modeling', route: '/sql/data-modeling' }, { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' }, { label: 'Schema Design', route: '/sql/schema-design' }],
@@ -13802,6 +15210,67 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['2NF only matters for composite primary keys — a single-column PK table is automatically in 2NF.', 'Denormalisation with triggers adds write overhead and complexity — document it and own it.'],
   },
+
+  'sql/normalization/testing-that-the-ordertotal-trigger-actually-stays-in-sync': {
+    apis: ['CREATE TRIGGER', 'AFTER INSERT/UPDATE/DELETE', 'tSQLt / pgTAP'],
+    related: [
+      { label: 'Computed Column Mechanics — next', route: '/sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger' },
+      { label: 'Normalization (overview)', route: '/sql/normalization' },
+      { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' },
+    ],
+    tip: 'Test INSERT, UPDATE, AND DELETE separately — a bug in the DELETE-only path (missing OLD reference) can pass every INSERT/UPDATE test undetected.',
+    docs: [
+      { label: 'tSQLt documentation', url: 'https://tsqlt.org/' },
+      { label: 'pgTAP documentation', url: 'https://pgtap.org/' },
+    ],
+    resources: [
+      { label: 'pgTAP', url: 'https://github.com/theory/pgtap', badge: 'code' },
+    ],
+    gotchas: [
+      'NEW is NULL during a DELETE trigger — a sync trigger that only references NEW.order_id silently stops recalculating when the last row is removed.',
+      'Two out of three trigger-condition tests can stay green even after a DELETE-specific regression ships.',
+    ],
+  },
+
+  'sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger': {
+    apis: ['GENERATED ALWAYS AS ... STORED', 'PERSISTED computed column'],
+    related: [
+      { label: 'Testing the Sync Trigger — previous', route: '/sql/normalization/testing-that-the-ordertotal-trigger-actually-stays-in-sync' },
+      { label: 'Challenge Solution Mismatch — next', route: '/sql/normalization/challenge-solutions-comment-contradicts-its-own-fk-declaration' },
+      { label: 'Normalization (overview)', route: '/sql/normalization' },
+    ],
+    tip: 'Generated columns can only reference same-row values — OrderTotal needs a trigger because it aggregates across OrderLines, but FactSales.Profit (Revenue - Cost) could be a generated column instead.',
+    docs: [
+      { label: 'PostgreSQL generated columns', url: 'https://www.postgresql.org/docs/current/ddl-generated-columns.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The main page\'s own FactSales.Profit column has no sync mechanism at all — it silently trusts the ETL process to compute Revenue - Cost correctly.',
+      'A GENERATED column rejects any INSERT/UPDATE that tries to set its value directly — it can never drift from its expression, by construction.',
+    ],
+  },
+
+  'sql/normalization/challenge-solutions-comment-contradicts-its-own-fk-declaration': {
+    apis: ['ON DELETE CASCADE', 'ON DELETE NO ACTION'],
+    related: [
+      { label: 'Computed Column Mechanics — previous', route: '/sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger' },
+      { label: 'Normalization (overview)', route: '/sql/normalization' },
+    ],
+    tip: 'The challenge solution\'s order_lines FK has no ON DELETE clause (defaults to NO ACTION), but its closing comment claims a CASCADE that was never declared.',
+    docs: [
+      { label: 'PostgreSQL DDL Best Practices', url: 'https://www.postgresql.org/docs/current/ddl.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A solution\'s closing summary comment is still prose written separately from the DDL — verify it against the literal constraint declarations rather than trusting it at face value.',
+      'Both MSSQL and PostgreSQL default to NO ACTION when ON DELETE is omitted — well-defined, just not what this comment describes.',
+    ],
+  },
+
   'sql/db-architecture': {
     apis: ['Buffer Pool', 'WAL / Transaction Log', 'MVCC', 'VACUUM', 'ANALYZE', 'sys.dm_os_buffer_descriptors', 'pg_stat_bgwriter'],
     related: [{ label: 'Transactions', route: '/sql/transactions' }, { label: 'Indexes', route: '/sql/indexes' }, { label: 'Performance', route: '/sql/performance' }],
@@ -13810,6 +15279,66 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['PostgreSQL VACUUM does not reclaim disk space to the OS — use VACUUM FULL for that (takes an exclusive lock).', 'Stale statistics cause the planner to choose bad plans — run ANALYZE after large bulk loads.'],
   },
+
+  'sql/db-architecture/testing-idle-in-transaction-session-timeout-actually-works': {
+    apis: ['idle_in_transaction_session_timeout', 'pg_stat_activity', 'ALTER ROLE'],
+    related: [
+      { label: 'Buffer Hit Ratio Mechanics — next', route: '/sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter' },
+      { label: 'DB Architecture (overview)', route: '/sql/db-architecture' },
+      { label: 'Transactions', route: '/sql/transactions' },
+    ],
+    tip: 'Per-role and per-database overrides silently take precedence over a global postgresql.conf default — test the setting as the SPECIFIC role that actually connects.',
+    docs: [
+      { label: 'PostgreSQL runtime configuration', url: 'https://www.postgresql.org/docs/current/runtime-config-client.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A manual test using your OWN session only proves the timeout works for your role — a different role with its own ALTER ROLE override can behave completely differently.',
+      'The timeout only fires on IDLE sessions — occasional trivial activity every few minutes never triggers it, even with an open transaction held the whole time.',
+    ],
+  },
+
+  'sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter': {
+    apis: ['sys.dm_os_performance_counters', 'Buffer cache hit ratio base'],
+    related: [
+      { label: 'Testing the Timeout Setting — previous', route: '/sql/db-architecture/testing-idle-in-transaction-session-timeout-actually-works' },
+      { label: 'Dead Tuple Estimate Staleness — next', route: '/sql/db-architecture/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live' },
+      { label: 'DB Architecture (overview)', route: '/sql/db-architecture' },
+    ],
+    tip: '"Buffer cache hit ratio" is a fraction counter — its raw cntr_value must be divided by the paired "Buffer cache hit ratio base" counter to produce an actual percentage.',
+    docs: [
+      { label: 'MSSQL Buffer Pool', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/memory-management-architecture-guide' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Even the correctly-computed ratio is cumulative since server start — a severe recent regression barely moves a ratio averaged over months of prior healthy history.',
+      'Diagnosing a live incident requires sampling the counter pair TWICE and computing the delta over that specific window, not a single snapshot reading.',
+    ],
+  },
+
+  'sql/db-architecture/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live': {
+    apis: ['pg_stat_user_tables', 'pgstattuple'],
+    related: [
+      { label: 'Buffer Hit Ratio Mechanics — previous', route: '/sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter' },
+      { label: 'DB Architecture (overview)', route: '/sql/db-architecture' },
+    ],
+    tip: 'n_live_tup / n_dead_tup are statistics-collector estimates that can reset after a crash or restart — use pgstattuple() for an authoritative, physical-scan-based check.',
+    docs: [
+      { label: 'PostgreSQL pgstattuple', url: 'https://www.postgresql.org/docs/current/pgstattuple.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'dead_pct = 0.0 across every table right after a restart almost always means stale stats, not genuinely zero bloat everywhere.',
+      'pgstattuple is authoritative but expensive (a real heap scan) — reach for it only when the cheap estimate looks suspicious.',
+    ],
+  },
+
   'sql/data-types': {
     apis: ['INT', 'BIGINT', 'DECIMAL', 'VARCHAR', 'NVARCHAR', 'DATETIME2', 'TIMESTAMPTZ', 'UUID', 'BOOLEAN', 'CAST', 'CONVERT', 'TRY_CAST'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'RDBMS Concepts', route: '/sql/rdbms-concepts' }, { label: 'Schema Design', route: '/sql/schema-design' }],
@@ -13818,6 +15347,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Never use FLOAT for money — floating-point rounding causes penny errors. Use DECIMAL(19,4).', 'MSSQL VARCHAR is single-byte; use NVARCHAR for Unicode. PostgreSQL VARCHAR is always UTF-8 — the N prefix makes no difference.'],
   },
+
+  'sql/data-types/testing-that-financial-columns-stay-decimal-not-float': {
+    apis: ['tSQLt', 'pgTAP col_type_is()', 'sys.columns', 'sys.types', 'information_schema.columns'],
+    related: [
+      { label: 'Implicit Conversion Direction, Corrected — next', route: '/sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards' },
+      { label: 'Data Types (overview)', route: '/sql/data-types' },
+    ],
+    tip: 'A schema-level type assertion catches a bad migration the moment it runs — even against a brand-new, empty table with zero rows to test arithmetic against.',
+    docs: [
+      { label: 'pgTAP col_type_is()', url: 'https://pgtap.org/documentation.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The main page\'s own CAST(0.1+0.2 AS FLOAT) demonstration proves a general fact about floating-point arithmetic — it never checks what type any actual column in your schema is declared as.',
+      'A type-choice regression can hit a brand-new, empty table with zero rows — a schema-level test catches it immediately; a data-level test cannot, since there\'s no data yet to test against.',
+    ],
+  },
+
+  'sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards': {
+    apis: ['Data type precedence', 'SqlDbType.VarChar', 'sys.dm_exec_query_plan'],
+    related: [
+      { label: 'Testing Financial Columns — previous', route: '/sql/data-types/testing-that-financial-columns-stay-decimal-not-float' },
+      { label: 'jsonb_set() and NULL Targets — next', route: '/sql/data-types/jsonb-set-silently-no-ops-on-a-null-target' },
+      { label: 'Data Types (overview)', route: '/sql/data-types' },
+    ],
+    tip: 'ADO.NET defaults a .NET string parameter to NVARCHAR — comparing it against a VARCHAR column silently forces the COLUMN to convert on every row, defeating the index.',
+    docs: [
+      { label: 'MSSQL Data Type Precedence', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-type-precedence-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NVARCHAR column vs VARCHAR literal converts the cheap literal, not the column — the index seek still works, contrary to what the main page\'s own comment implies.',
+      'VARCHAR column vs NVARCHAR value converts the COLUMN itself for every indexed row — this is the direction that actually defeats an index seek.',
+    ],
+  },
+
+  'sql/data-types/jsonb-set-silently-no-ops-on-a-null-target': {
+    apis: ['jsonb_set()', 'COALESCE', 'jsonb'],
+    related: [
+      { label: 'Implicit Conversion Direction, Corrected — previous', route: '/sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards' },
+      { label: 'Data Types (overview)', route: '/sql/data-types' },
+    ],
+    tip: 'jsonb_set() is a strict function — wrap the target in COALESCE(col, \'{}\'::jsonb) whenever the column is nullable, or a NULL row silently no-ops instead of gaining the new key.',
+    docs: [
+      { label: 'PostgreSQL JSON Functions', url: 'https://www.postgresql.org/docs/current/functions-json.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'jsonb_set(NULL, ...) returns NULL with no error — the UPDATE reports success while silently leaving the column exactly as NULL as before.',
+      'The main page\'s own INSERT example always supplies a full JSON object, masking the failure — it only surfaces for a row where custom_attrs was left at its NULL default.',
+    ],
+  },
+
   'sql/basics': {
     apis: ['SELECT', 'FROM', 'WHERE', 'ORDER BY', 'DISTINCT', 'LIMIT / TOP', 'IS NULL', 'LIKE', 'BETWEEN', 'IN'],
     related: [{ label: 'Joins', route: '/sql/joins' }, { label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Subqueries', route: '/sql/subqueries' }],
@@ -13826,6 +15414,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['SELECT * in production kills index coverage — always name your columns.', 'LIMIT without ORDER BY returns non-deterministic rows — always pair them.'],
   },
+
+  'sql/basics/distinct-on-and-row-number-examples-have-no-tie-breaker': {
+    apis: ['DISTINCT ON', 'ROW_NUMBER()', 'ORDER BY tie-breaker'],
+    related: [
+      { label: 'Confirming the Conversion Claim — next', route: '/sql/basics/confirming-not-trusting-the-implicit-conversion-claim' },
+      { label: 'SQL Basics (overview)', route: '/sql/basics' },
+    ],
+    tip: 'Whenever DISTINCT ON or ROW_NUMBER() picks "the first/most recent row per group," add a unique tie-breaker column (like order_id) to the ORDER BY — otherwise a tie is resolved non-deterministically.',
+    docs: [
+      { label: 'PostgreSQL SELECT DISTINCT', url: 'https://www.postgresql.org/docs/current/sql-select.html#SQL-DISTINCT' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A query plan change (new index, refreshed statistics) can silently flip which tied row DISTINCT ON or ROW_NUMBER() returns — with no error.',
+      'Low-precision timestamp columns make exact ties far more common than they look, especially after bulk imports or batch jobs.',
+    ],
+  },
+
+  'sql/basics/confirming-not-trusting-the-implicit-conversion-claim': {
+    apis: ['SET STATISTICS XML', 'CONVERT_IMPLICIT', 'sys.dm_exec_query_plan'],
+    related: [
+      { label: 'Testing the Tie-Break Gap — previous', route: '/sql/basics/distinct-on-and-row-number-examples-have-no-tie-breaker' },
+      { label: 'OFFSET Paging Under Concurrent Writes — next', route: '/sql/basics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination' },
+      { label: 'SQL Basics (overview)', route: '/sql/basics' },
+    ],
+    tip: 'A query running fast in testing is not evidence it avoided an implicit conversion — capture the plan XML and search for ImplicitConversion="1" to confirm it directly.',
+    docs: [
+      { label: 'MSSQL Data Type Precedence', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-type-precedence-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'MSSQL silently converts a VARCHAR column to match an INT literal — a performance bug with no error.',
+      'PostgreSQL refuses the same comparison outright with "operator does not exist" — a loud error instead of a silent scan.',
+    ],
+  },
+
+  'sql/basics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination': {
+    apis: ['OFFSET / FETCH', 'LIMIT / OFFSET', 'keyset pagination'],
+    related: [
+      { label: 'Confirming the Conversion Claim — previous', route: '/sql/basics/confirming-not-trusting-the-implicit-conversion-claim' },
+      { label: 'SQL Basics (overview)', route: '/sql/basics' },
+    ],
+    tip: 'Keyset pagination is not just faster on deep pages — it is also immune to the row-shifting correctness bug that OFFSET-based paging has under concurrent inserts/deletes.',
+    docs: [
+      { label: 'PostgreSQL LIMIT/OFFSET', url: 'https://www.postgresql.org/docs/current/queries-limit.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A single concurrent insert or delete between two page requests is enough to duplicate or skip a row — no error is ever raised.',
+      'The bug rate scales with traffic, which is why it often surfaces only during business hours and is hard to reproduce in off-hours testing.',
+    ],
+  },
+
   'sql/joins': {
     apis: ['INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'ON', 'USING', 'self-join'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Subqueries', route: '/sql/subqueries' }, { label: 'Aggregations', route: '/sql/aggregations' }],
@@ -13834,6 +15481,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Joining on nullable columns: NULL != NULL so rows where the key is NULL are always excluded from INNER JOIN.', 'CROSS JOIN on large tables is O(n×m) — easy to accidentally produce millions of rows.'],
   },
+
+  'sql/joins/testing-that-the-row-multiplication-fix-actually-prevents-double-counting': {
+    apis: ['tSQLt', 'pgTAP', 'CTE pre-aggregation'],
+    related: [
+      { label: 'A Second, Unfixed Sargability Problem — next', route: '/sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable' },
+      { label: 'Joins (overview)', route: '/sql/joins' },
+    ],
+    tip: 'A row-multiplication bug never raises an error and never looks obviously wrong — only a test against a hand-computed expected total on a small fixture can catch it reliably.',
+    docs: [
+      { label: 'pgTAP', url: 'https://pgtap.org/documentation.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The buggy direct-join query runs successfully and returns a plausible-looking, just-too-large number — there is no error to notice.',
+      'A test fixture with a known, hand-computable expected total (not a large production dataset) is what makes the bug unmistakable.',
+    ],
+  },
+
+  'sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable': {
+    apis: ['YEAR()', 'EXTRACT()', 'sargable range predicate'],
+    related: [
+      { label: 'Testing the Row-Multiplication Fix — previous', route: '/sql/joins/testing-that-the-row-multiplication-fix-actually-prevents-double-counting' },
+      { label: 'The “Both” Label Isn’t Always True — next', route: '/sql/joins/anti-join-self-join-both-tab-has-a-postgresql-only-clause' },
+      { label: 'Joins (overview)', route: '/sql/joins' },
+    ],
+    tip: 'Moving a filter into the ON clause fixes the LEFT JOIN semantics; making the predicate sargable is a separate, independent fix — both are usually needed together.',
+    docs: [
+      { label: 'MSSQL Query Tuning', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/query-tuning-fundamentals' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'YEAR(order_date) = 2024 wraps the column in a function — an index on order_date cannot be seeked, only scanned.',
+      'A half-open range (>= start AND < next-start) on the raw column is the sargable fix, in the SAME clause the semantic fix already identified.',
+    ],
+  },
+
+  'sql/joins/anti-join-self-join-both-tab-has-a-postgresql-only-clause': {
+    apis: ['NULLS LAST', 'CASE expression', 'ORDER BY'],
+    related: [
+      { label: 'A Second, Unfixed Sargability Problem — previous', route: '/sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable' },
+      { label: 'Joins (overview)', route: '/sql/joins' },
+    ],
+    tip: 'MSSQL has no NULLS FIRST/LAST syntax at all — simulate it with ORDER BY CASE WHEN col IS NULL THEN 1 ELSE 0 END, col for queries that must run unmodified on both dialects.',
+    docs: [
+      { label: 'PostgreSQL ORDER BY', url: 'https://www.postgresql.org/docs/current/queries-order.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A code tab labeled "(both)" is only as accurate as its least-portable line — verify every clause against both dialects, not just the overall query shape.',
+      'Running a query successfully once, on one dialect, is not evidence it is cross-platform.',
+    ],
+  },
+
   'sql/aggregations': {
     apis: ['GROUP BY', 'HAVING', 'COUNT()', 'SUM()', 'AVG()', 'MIN()', 'MAX()', 'COUNT(*)', 'ROLLUP', 'GROUPING SETS'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Window Functions', route: '/sql/window-functions' }, { label: 'CTEs', route: '/sql/ctes' }],
@@ -13842,6 +15548,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['HAVING filters after aggregation; WHERE filters before — you cannot use aggregate aliases in WHERE.', 'COUNT(*) counts rows including NULLs; COUNT(column) counts non-NULL values only.'],
   },
+
+  'sql/aggregations/testing-that-the-count-distinct-alternative-returns-identical-counts': {
+    apis: ['COUNT(DISTINCT)', 'pgTAP', 'tSQLt'],
+    related: [
+      { label: 'The Legacy Pattern’s Hidden Corruption — next', route: '/sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters' },
+      { label: 'Aggregations (overview)', route: '/sql/aggregations' },
+    ],
+    tip: 'A "faster" alternative to COUNT(DISTINCT) is not proven correct just because it runs — compare its result against the original on a small, hand-verifiable fixture.',
+    docs: [
+      { label: 'pgTAP', url: 'https://pgtap.org/documentation.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A dedup CTE that omits the GROUP BY column from its DISTINCT list silently collapses cross-group duplicates, undercounting.',
+      'The resulting wrong count is usually close to correct, not wildly off — easy to miss without an explicit equivalence test.',
+    ],
+  },
+
+  'sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters': {
+    apis: ['FOR XML PATH', 'STUFF()', '.value()', 'STRING_AGG'],
+    related: [
+      { label: 'Testing the COUNT(DISTINCT) Alternative — previous', route: '/sql/aggregations/testing-that-the-count-distinct-alternative-returns-identical-counts' },
+      { label: 'A GROUPING() Gap the Theory Warns About — next', route: '/sql/aggregations/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about' },
+      { label: 'Aggregations (overview)', route: '/sql/aggregations' },
+    ],
+    tip: 'FOR XML PATH genuinely serializes rows as XML — & becomes &amp; before concatenation, and .value() never decodes it back.',
+    docs: [
+      { label: 'MSSQL STRING_AGG', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/string-agg-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Real business names containing "&" (common in company names) are silently corrupted by the legacy FOR XML PATH concatenation trick.',
+      'STRING_AGG (MSSQL 2017+) has no such issue since it never routes data through XML serialization.',
+    ],
+  },
+
+  'sql/aggregations/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about': {
+    apis: ['GROUPING()', 'GROUPING SETS', 'ROLLUP'],
+    related: [
+      { label: 'The Legacy Pattern’s Hidden Corruption — previous', route: '/sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters' },
+      { label: 'Aggregations (overview)', route: '/sql/aggregations' },
+    ],
+    tip: 'Any GROUPING SETS/ROLLUP/CUBE column that can be genuinely NULL in the source data needs a paired GROUPING() column to disambiguate a real NULL from a rolled-up subtotal NULL.',
+    docs: [
+      { label: 'PostgreSQL GROUPING SETS', url: 'https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-GROUPING-SETS' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A genuinely NULL product_name row and a "(region)" subtotal row are indistinguishable in the output without GROUPING(product_name).',
+      'The ambiguity risk applies equally to GROUPING SETS, ROLLUP, and CUBE — it is not specific to ROLLUP alone.',
+    ],
+  },
+
   'sql/subqueries': {
     apis: ['IN (subquery)', 'EXISTS', 'NOT EXISTS', 'ANY / ALL', 'scalar subquery', 'derived table', 'correlated subquery'],
     related: [{ label: 'CTEs', route: '/sql/ctes' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],
@@ -13850,6 +15615,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['A correlated subquery re-runs for every outer row — if it is slow, rewrite as a JOIN or CTE.', 'NOT IN with a NULL in the subquery returns no rows at all — use NOT EXISTS instead.'],
   },
+
+  'sql/subqueries/testing-that-the-window-function-rewrite-matches-the-correlated-subquery': {
+    apis: ['EXCEPT', 'pgTAP', 'tSQLt', 'window functions'],
+    related: [
+      { label: 'The “Avoid This” Example Doesn’t Run At All — next', route: '/sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all' },
+      { label: 'Subqueries (overview)', route: '/sql/subqueries' },
+    ],
+    tip: 'EXCEPT between two result sets is empty only when they are identical — the cleanest way to prove a query rewrite preserved the original\'s meaning.',
+    docs: [
+      { label: 'PostgreSQL EXCEPT', url: 'https://www.postgresql.org/docs/current/queries-union.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A wrong PARTITION BY column in a window-function rewrite can silently drop or add rows while the query still runs successfully.',
+      'A "recommended" rewrite pattern is not a guarantee that any specific application of it is correct — verify with a test, not trust.',
+    ],
+  },
+
+  'sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all': {
+    apis: ['HAVING', 'window functions', 'OVER()'],
+    related: [
+      { label: 'Testing the Window Function Rewrite — previous', route: '/sql/subqueries/testing-that-the-window-function-rewrite-matches-the-correlated-subquery' },
+      { label: 'Row Subqueries and the MSSQL Rewrite — next', route: '/sql/subqueries/row-subqueries-and-the-mssql-rewrite-the-page-never-shows' },
+      { label: 'Subqueries (overview)', route: '/sql/subqueries' },
+    ],
+    tip: 'Window functions are restricted to SELECT and ORDER BY in both dialects — they cannot appear in WHERE, GROUP BY, or HAVING at all, not just as a style discouragement.',
+    docs: [
+      { label: 'PostgreSQL Window Functions', url: 'https://www.postgresql.org/docs/current/tutorial-window.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A comment saying "avoid" can undersell an actual parse/semantic error — verify whether a discouraged pattern even runs before assuming it is just a style choice.',
+      'The fix requires an outer query\'s WHERE, not just moving the condition around within the same SELECT.',
+    ],
+  },
+
+  'sql/subqueries/row-subqueries-and-the-mssql-rewrite-the-page-never-shows': {
+    apis: ['row constructor', 'ROW()', 'correlated scalar subquery'],
+    related: [
+      { label: 'The “Avoid This” Example Doesn’t Run At All — previous', route: '/sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all' },
+      { label: 'Subqueries (overview)', route: '/sql/subqueries' },
+    ],
+    tip: 'MSSQL has no row-constructor comparison syntax — the AND-based rewrite must correlate the second column\'s subquery on the first column\'s already-matched value, not run two independent subqueries.',
+    docs: [
+      { label: 'PostgreSQL Row Constructors', url: 'https://www.postgresql.org/docs/current/functions-comparisons.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Two independent AND-ed scalar subqueries can match a combination that never occurs together in any single real row.',
+      'A feature mentioned in a Quick Reference with no code example is easy to misapply — verify the concrete syntax before using it.',
+    ],
+  },
+
   'sql/ctes': {
     apis: ['WITH name AS (...)', 'multiple CTEs', 'RECURSIVE', 'anchor member', 'recursive member', 'UNION ALL'],
     related: [{ label: 'Subqueries', route: '/sql/subqueries' }, { label: 'Window Functions', route: '/sql/window-functions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
@@ -13858,6 +15682,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['CTEs in SQL Server are not always materialised — the optimiser can inline them and run the CTE body multiple times.', 'In PostgreSQL, CTEs are materialised by default (fence) — add NOT MATERIALIZED for optimiser visibility.'],
   },
+
+  'sql/ctes/testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain': {
+    apis: ['MAXRECURSION', 'depth guard', 'tSQLt'],
+    related: [
+      { label: 'CategoryPath’s Missing Depth Guard — next', route: '/sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it' },
+      { label: 'CTEs (overview)', route: '/sql/ctes' },
+    ],
+    tip: 'A manual depth guard (WHERE Depth < N) produces a clean, bounded result on a cycle; relying solely on MAXRECURSION produces a hard error instead — verify which behavior your query actually has.',
+    docs: [
+      { label: 'MSSQL Recursive Queries', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Reporting-line and hierarchy foreign keys (ReportsTo, ParentID) are realistically prone to data-entry cycles — not a hypothetical edge case.',
+      'A depth guard stops a cycle safely but gives no indication that a cycle actually occurred — it just looks like a bounded, plausible result.',
+    ],
+  },
+
+  'sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it': {
+    apis: ['MAXRECURSION default', 'WITH RECURSIVE', 'depth guard'],
+    related: [
+      { label: 'Testing the Depth Guard Against a Cycle — previous', route: '/sql/ctes/testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain' },
+      { label: 'Confirming the Double-Execution Claim — next', route: '/sql/ctes/confirming-that-a-twice-referenced-cte-actually-executes-twice' },
+      { label: 'CTEs (overview)', route: '/sql/ctes' },
+    ],
+    tip: 'MSSQL applies a default MAXRECURSION of 100 to every recursive CTE automatically — PostgreSQL has no equivalent cap at all. Never rely on an accidental default; add an explicit depth guard.',
+    docs: [
+      { label: 'PostgreSQL Recursive Queries', url: 'https://www.postgresql.org/docs/current/queries-with.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A recursive CTE that "just works" in MSSQL without an explicit guard may be surviving purely on the undocumented default MAXRECURSION=100.',
+      'Porting the same unguarded query to PostgreSQL removes that accidental safety net entirely — genuine unbounded recursion on a cycle.',
+    ],
+  },
+
+  'sql/ctes/confirming-that-a-twice-referenced-cte-actually-executes-twice': {
+    apis: ['SET STATISTICS IO', 'logical reads', 'temp table'],
+    related: [
+      { label: 'CategoryPath’s Missing Depth Guard — previous', route: '/sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it' },
+      { label: 'CTEs (overview)', route: '/sql/ctes' },
+    ],
+    tip: 'SET STATISTICS IO ON directly confirms whether a twice-referenced CTE re-scans its base table — compare the logical read count against a single-reference baseline.',
+    docs: [
+      { label: 'MSSQL SET STATISTICS IO', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-statistics-io-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A claim about database internals stated as a plain comment is not evidence — verify with the actual execution plan or IO statistics.',
+      'A temp table materializes the aggregation exactly once, regardless of how many times it is subsequently referenced.',
+    ],
+  },
+
   'sql/window-functions': {
     apis: ['ROW_NUMBER()', 'RANK()', 'DENSE_RANK()', 'NTILE()', 'LAG()', 'LEAD()', 'FIRST_VALUE()', 'LAST_VALUE()', 'OVER()', 'PARTITION BY', 'ROWS BETWEEN'],
     related: [{ label: 'Aggregations', route: '/sql/aggregations' }, { label: 'CTEs', route: '/sql/ctes' }, { label: 'Performance', route: '/sql/performance' }],
@@ -13866,6 +15749,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['LAST_VALUE needs ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING — the default frame stops at the current row.', 'Window functions run after WHERE and GROUP BY — you cannot filter on them in the same query; wrap in a CTE.'],
   },
+
+  'sql/window-functions/testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap': {
+    apis: ['ROW_NUMBER()', 'islands and gaps', 'pgTAP'],
+    related: [
+      { label: 'Why One Frame Fix Matters, the Other Doesn’t — next', route: '/sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential' },
+      { label: 'Window Functions (overview)', route: '/sql/window-functions' },
+    ],
+    tip: 'The islands-and-gaps trick (date minus row number = constant per island) depends entirely on PARTITION BY being correct — a missing partition silently mixes unrelated groups.',
+    docs: [
+      { label: 'PostgreSQL Window Functions', url: 'https://www.postgresql.org/docs/current/tutorial-window.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A missing PARTITION BY in the ROW_NUMBER() step runs without error but silently corrupts every island boundary.',
+      'A fixture with NO gap only proves the pattern doesn\'t over-split — it never proves the pattern correctly detects a real gap.',
+    ],
+  },
+
+  'sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential': {
+    apis: ['FIRST_VALUE()', 'LAST_VALUE()', 'ROWS BETWEEN'],
+    related: [
+      { label: 'Testing the Islands-and-Gaps Pattern — previous', route: '/sql/window-functions/testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap' },
+      { label: 'Confirming the Shared-Sort Claim — next', route: '/sql/window-functions/confirming-that-identical-over-clauses-really-do-share-a-single-sort' },
+      { label: 'Window Functions (overview)', route: '/sql/window-functions' },
+    ],
+    tip: 'FIRST_VALUE\'s natural meaning already matches the default frame; LAST_VALUE\'s natural meaning requires overriding it — the identical-looking explicit frame clause plays a different role for each.',
+    docs: [
+      { label: 'MSSQL Window Frame', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Removing an explicit frame clause is safe for FIRST_VALUE but silently reverts LAST_VALUE to the wrong, per-row result.',
+      'The default frame with ORDER BY always stops at CURRENT ROW — LAST_VALUE needs UNBOUNDED FOLLOWING to see past it.',
+    ],
+  },
+
+  'sql/window-functions/confirming-that-identical-over-clauses-really-do-share-a-single-sort': {
+    apis: ['SET STATISTICS PROFILE', 'EXPLAIN', 'WindowAgg'],
+    related: [
+      { label: 'Why One Frame Fix Matters, the Other Doesn’t — previous', route: '/sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential' },
+      { label: 'Window Functions (overview)', route: '/sql/window-functions' },
+    ],
+    tip: 'Count the distinct Sort/WindowAgg nodes in the execution plan, not the number of window functions — several functions sharing one OVER() clause need only one sort pass.',
+    docs: [
+      { label: 'PostgreSQL EXPLAIN', url: 'https://www.postgresql.org/docs/current/using-explain.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A performance claim about optimizer internals should be checked against a real execution plan, not accepted or dismissed on faith.',
+      'Unifying every window function to one OVER() clause only helps if the plan currently shows more distinct sorts than necessary.',
+    ],
+  },
+
   'sql/indexes': {
     apis: ['CREATE INDEX', 'CREATE CLUSTERED INDEX', 'INCLUDE', 'CREATE UNIQUE INDEX', 'DROP INDEX', 'sys.dm_db_missing_index_details', 'EXPLAIN', 'EXPLAIN ANALYZE'],
     related: [{ label: 'Performance', route: '/sql/performance' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Schema Design', route: '/sql/schema-design' }],
@@ -13874,6 +15816,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Too many indexes slow down INSERT/UPDATE/DELETE — every write must update all indexes on the table.', 'SQL Server only uses one clustered index per table — choose the column most used in range queries (usually a sequential key).'],
   },
+
+  'sql/indexes/testing-that-a-filtered-index-actually-gets-used-not-silently-skipped': {
+    apis: ['sys.dm_db_index_usage_stats', 'filtered index', 'partial index'],
+    related: [
+      { label: 'Quantifying the Wide Key Cost — next', route: '/sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes' },
+      { label: 'Indexes (overview)', route: '/sql/indexes' },
+    ],
+    tip: 'A filtered/partial index is only used when the optimiser can PROVE the query\'s predicate is satisfied — an IN-list or parameterized value often silently defeats that proof.',
+    docs: [
+      { label: 'MSSQL Filtered Indexes', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/indexes/create-filtered-indexes' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A parameterized WHERE clause frequently prevents the optimiser from proving a filtered index\'s predicate is satisfied, silently falling back to a scan.',
+      'sys.dm_db_index_usage_stats is the direct way to confirm usage — do not assume from the CREATE INDEX statement alone.',
+    ],
+  },
+
+  'sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes': {
+    apis: ['UNIQUEIDENTIFIER', 'row locator', 'sys.dm_db_index_physical_stats'],
+    related: [
+      { label: 'Testing Filtered Index Usage — previous', route: '/sql/indexes/testing-that-a-filtered-index-actually-gets-used-not-silently-skipped' },
+      { label: 'A Claim That Breaks Its Own Rule — next', route: '/sql/indexes/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule' },
+      { label: 'Indexes (overview)', route: '/sql/indexes' },
+    ],
+    tip: 'Every non-clustered index carries the FULL clustered key as its row locator — a wide clustered key\'s extra bytes are duplicated across every index on the table, not stored just once.',
+    docs: [
+      { label: 'MSSQL Clustered Index Design', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A GUID clustered key doesn\'t just cost 8 extra bytes per row once — it costs 8 bytes per row, per non-clustered index, plus extra B-tree navigation overhead.',
+      'A GUID can still be fully usable as a business key via a separate non-clustered UNIQUE index, without widening the clustered key.',
+    ],
+  },
+
+  'sql/indexes/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule': {
+    apis: ['leftmost prefix rule', 'ORDER BY elimination', 'Sort operator'],
+    related: [
+      { label: 'Quantifying the Wide Key Cost — previous', route: '/sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes' },
+      { label: 'Indexes (overview)', route: '/sql/indexes' },
+    ],
+    tip: 'A composite index (A, B, C) only delivers pre-sorted-by-C output within a single value of B — a query filtering only on A still needs an explicit Sort across multiple B groups.',
+    docs: [
+      { label: 'MSSQL Composite Index Design', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A "no Sort operator needed" comment should be checked against the actual execution plan — it can be wrong even when it directly follows the index definition in the same reference material.',
+      'The genuinely sort-eliminating query needs an equality predicate on every middle key column, not just the leading one.',
+    ],
+  },
+
   'sql/transactions': {
     apis: ['BEGIN TRANSACTION', 'COMMIT', 'ROLLBACK', 'SAVEPOINT', 'SET TRANSACTION ISOLATION LEVEL', 'READ COMMITTED', 'SERIALIZABLE', 'SNAPSHOT', 'SELECT ... FOR UPDATE', 'WITH (NOLOCK)'],
     related: [{ label: 'Performance', route: '/sql/performance' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Indexes', route: '/sql/indexes' }],
@@ -13882,6 +15883,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['WITH (NOLOCK) / READ UNCOMMITTED reads dirty data — it avoids locks by reading uncommitted, potentially rolled-back rows.', 'Deadlocks are circular lock waits — SQL Server picks one transaction as the victim; always retry on deadlock error 1205.'],
   },
+
+  'sql/transactions/testing-that-the-bank-transfer-example-is-already-safe-without-updlock': {
+    apis: ['self-referencing UPDATE', 'WITH (UPDLOCK)', 'row lock'],
+    related: [
+      { label: 'Demonstrating Write Skew — next', route: '/sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code' },
+      { label: 'Transactions (overview)', route: '/sql/transactions' },
+    ],
+    tip: 'A single self-referencing UPDATE (col = col - x) is already atomic and safe from lost updates — UPDLOCK is only needed to bridge a SEPARATE SELECT and a later UPDATE.',
+    docs: [
+      { label: 'MSSQL Lock Hints', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Adding UPDLOCK defensively to a statement that has no preceding SELECT changes nothing — it was already safe.',
+      'The genuinely at-risk pattern splits the read and the write into two separate statements.',
+    ],
+  },
+
+  'sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code': {
+    apis: ['SERIALIZABLE', 'REPEATABLE READ', 'serialization failure'],
+    related: [
+      { label: 'Testing the Bank Transfer Pattern — previous', route: '/sql/transactions/testing-that-the-bank-transfer-example-is-already-safe-without-updlock' },
+      { label: 'An Unconditional Rollback Bug — next', route: '/sql/transactions/the-postgresql-savepoint-example-rolls-back-a-successful-insert' },
+      { label: 'Transactions (overview)', route: '/sql/transactions' },
+    ],
+    tip: 'Write skew produces no lock conflict and no error under REPEATABLE READ — both transactions individually pass their own check while the combined invariant silently breaks. Only SERIALIZABLE catches it.',
+    docs: [
+      { label: 'PostgreSQL Serializable Isolation', url: 'https://www.postgresql.org/docs/current/transaction-iso.html#XACT-SERIALIZABLE' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A serialization failure appearing after switching to SERIALIZABLE is the isolation level working correctly, not a new bug — the application needs a retry loop.',
+      'Write skew requires two genuinely concurrent transactions to reproduce — it cannot be demonstrated in a single session.',
+    ],
+  },
+
+  'sql/transactions/the-postgresql-savepoint-example-rolls-back-a-successful-insert': {
+    apis: ['SAVEPOINT', 'ROLLBACK TO SAVEPOINT', 'PL/pgSQL EXCEPTION'],
+    related: [
+      { label: 'Demonstrating Write Skew — previous', route: '/sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code' },
+      { label: 'Transactions (overview)', route: '/sql/transactions' },
+    ],
+    tip: 'Plain top-level PostgreSQL SQL has no @@ERROR-style check — conditionally rolling back to a savepoint only on failure requires a PL/pgSQL BEGIN...EXCEPTION WHEN OTHERS THEN...END block.',
+    docs: [
+      { label: 'PostgreSQL PL/pgSQL Error Trapping', url: 'https://www.postgresql.org/docs/current/plpgsql-control-structures.html#PLPGSQL-ERROR-TRAPPING' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An unconditional ROLLBACK TO SAVEPOINT after a "-- may fail" comment discards even a genuinely successful statement.',
+      'PL/pgSQL implicitly creates a savepoint at the start of every BEGIN...EXCEPTION block — no manual SAVEPOINT statement is needed there.',
+    ],
+  },
+
   'sql/schema-design': {
     apis: ['CREATE TABLE', 'PRIMARY KEY', 'FOREIGN KEY', 'UNIQUE', 'CHECK', 'NOT NULL', 'DEFAULT', 'IDENTITY / SERIAL', 'ON DELETE CASCADE', 'ALTER TABLE'],
     related: [{ label: 'Indexes', route: '/sql/indexes' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'JSON Features', route: '/sql/json-features' }],
@@ -13890,6 +15950,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Using VARCHAR(MAX) / TEXT for every string column hurts performance — choose appropriate lengths and use indexes.', 'Cascading deletes can surprise you in production — prefer explicit application-level deletes for critical data.'],
   },
+
+  'sql/schema-design/testing-whether-step-1s-default-actually-backfills-existing-rows': {
+    apis: ['ALTER TABLE ADD COLUMN', 'DEFAULT', 'pg_relation_size'],
+    related: [
+      { label: 'The ENUM Alternative Is Harder to Evolve — next', route: '/sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier' },
+      { label: 'Schema Design (overview)', route: '/sql/schema-design' },
+    ],
+    tip: 'PostgreSQL 11+ optimizes ADD COLUMN ... DEFAULT constant by recording the default in the catalog — existing rows read it back without a physical rewrite. MSSQL has no equivalent; existing rows genuinely stay NULL.',
+    docs: [
+      { label: 'PostgreSQL ALTER TABLE', url: 'https://www.postgresql.org/docs/current/sql-altertable.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Running a batch backfill UPDATE against PostgreSQL 11+ after ADD COLUMN ... DEFAULT triggers exactly the table rewrite the optimization exists to avoid.',
+      'The same 3-step migration recipe is not uniformly necessary across both dialects a page covers.',
+    ],
+  },
+
+  'sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier': {
+    apis: ['CREATE TYPE ... AS ENUM', 'ALTER TYPE ... ADD VALUE', 'CHECK constraint'],
+    related: [
+      { label: 'Testing the Migration’s Step 1 — previous', route: '/sql/schema-design/testing-whether-step-1s-default-actually-backfills-existing-rows' },
+      { label: 'The Lookup-Table Pattern Never Retires the Old CHECK — next', route: '/sql/schema-design/adding-the-lookup-table-pattern-never-retires-the-original-check' },
+      { label: 'Schema Design (overview)', route: '/sql/schema-design' },
+    ],
+    tip: 'A newly added ENUM value cannot be used in the same transaction that added it, even in PostgreSQL 12+ — a CHECK constraint has no such restriction.',
+    docs: [
+      { label: 'PostgreSQL ENUM Types', url: 'https://www.postgresql.org/docs/current/datatype-enum.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A native database type isn\'t automatically the more flexible choice — for evolving value sets, CHECK constraints are more practical than ENUM.',
+      'Adding and using a new enum value requires two separate deploy transactions, not one.',
+    ],
+  },
+
+  'sql/schema-design/adding-the-lookup-table-pattern-never-retires-the-original-check': {
+    apis: ['CHECK constraint', 'FOREIGN KEY', 'DROP CONSTRAINT'],
+    related: [
+      { label: 'The ENUM Alternative Is Harder to Evolve — previous', route: '/sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier' },
+      { label: 'Schema Design (overview)', route: '/sql/schema-design' },
+    ],
+    tip: 'Adding an FK-to-lookup-table pattern to a column that already has a CHECK constraint leaves BOTH active — drop the old CHECK first, or new lookup rows get silently rejected.',
+    docs: [
+      { label: 'MSSQL ALTER TABLE DROP CONSTRAINT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The CHECK constraint violation error names the OLD constraint, not the new FK — the error message correctly identifies the blocker but not that it should have been removed.',
+      'Two individually-correct patterns from the same reference page can conflict when combined — verify the combination, not just each piece alone.',
+    ],
+  },
+
   'sql/stored-procedures': {
     apis: ['CREATE PROCEDURE', 'EXEC / CALL', '@param IN/OUT', 'RETURN', 'TRY/CATCH', 'RAISERROR / RAISE', 'CREATE FUNCTION', 'TABLE-VALUED FUNCTION', 'DECLARE', 'SET'],
     related: [{ label: 'Transactions', route: '/sql/transactions' }, { label: 'Performance', route: '/sql/performance' }, { label: 'Schema Design', route: '/sql/schema-design' }],
@@ -13898,6 +16017,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Scalar UDFs in SQL Server are row-by-row — they kill query parallelism. Use inline TVFs or rewrite as set-based logic.', 'Procedure plan caching can cause parameter sniffing — OPTION (RECOMPILE) forces a fresh plan per execution.'],
   },
+
+  'sql/stored-procedures/testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls': {
+    apis: ['WITH (UPDLOCK)', 'FOR UPDATE', '@@ROWCOUNT'],
+    related: [
+      { label: 'Confirming the Inline TVF Pushdown Claim — next', route: '/sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down' },
+      { label: 'Stored Procedures (overview)', route: '/sql/stored-procedures' },
+    ],
+    tip: 'Fold a check-then-act pattern into one atomic UPDATE...WHERE, then test @@ROWCOUNT — a separate check SELECT followed by an UPDATE is a race, no matter how safe the UPDATE itself is.',
+    docs: [
+      { label: 'MSSQL Lock Hints', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A self-referencing UPDATE being individually safe from lost updates does not make a preceding, separate check SELECT safe from a stale read.',
+      'This bug is traffic-dependent — it rarely reproduces in low-concurrency manual QA.',
+    ],
+  },
+
+  'sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down': {
+    apis: ['SET SHOWPLAN_XML', 'inline TVF', 'multi-statement TVF'],
+    related: [
+      { label: 'Testing usp_PlaceOrder’s Concurrency — previous', route: '/sql/stored-procedures/testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls' },
+      { label: 'Demonstrating the SCOPE_IDENTITY() Scoping Gap — next', route: '/sql/stored-procedures/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch' },
+      { label: 'Stored Procedures (overview)', route: '/sql/stored-procedures' },
+    ],
+    tip: 'An inline TVF\'s plan should show no separate function-call boundary at all — a multi-statement TVF\'s opaque black-box operator with a fixed cardinality estimate is what "not inlined" actually looks like.',
+    docs: [
+      { label: 'MSSQL Table-Valued Functions', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/user-defined-functions' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Two functions containing textually identical SELECT logic can have wildly different performance purely based on inline vs multi-statement declaration.',
+      'A multi-statement TVF\'s cardinality estimate is a fixed constant, independent of the actual parameter passed in.',
+    ],
+  },
+
+  'sql/stored-procedures/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch': {
+    apis: ['SCOPE_IDENTITY()', 'sp_executesql', 'OUTPUT INTO'],
+    related: [
+      { label: 'Confirming the Inline TVF Pushdown Claim — previous', route: '/sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down' },
+      { label: 'Stored Procedures (overview)', route: '/sql/stored-procedures' },
+    ],
+    tip: 'SCOPE_IDENTITY() called after an sp_executesql call cannot see identities generated inside that dynamic batch — capture the value inside the dynamic string itself, or use OUTPUT INTO.',
+    docs: [
+      { label: 'MSSQL SCOPE_IDENTITY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/scope-identity-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A stale SCOPE_IDENTITY() value from an unrelated earlier insert in the same outer scope can make the bug look like it "usually works" during testing.',
+      '@@IDENTITY sidesteps the scoping issue but reintroduces the well-known trigger-interference unsafety instead.',
+    ],
+  },
+
   'sql/performance': {
     apis: ['EXPLAIN ANALYZE', 'SET STATISTICS IO ON', 'sys.dm_exec_query_stats', 'Index Seek vs Scan', 'Hash Join vs Nested Loop', 'OPTION (RECOMPILE)', 'Query Store'],
     related: [{ label: 'Indexes', route: '/sql/indexes' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Window Functions', route: '/sql/window-functions' }],
@@ -13906,6 +16084,65 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['Functions on indexed columns prevent index seeks: WHERE YEAR(created_at)=2024 scans everything; WHERE created_at >= … uses the index.', 'Implicit type conversions in WHERE (comparing INT column to a VARCHAR parameter) cause full scans.'],
   },
+
+  'sql/performance/testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows': {
+    apis: ['UNION ALL', 'EXCEPT', 'GROUP BY ... HAVING COUNT(*) > 1'],
+    related: [
+      { label: 'A Missing Normalization Step — next', route: '/sql/performance/the-missing-index-impact-score-formula-is-missing-a-100' },
+      { label: 'Query Performance (overview)', route: '/sql/performance' },
+    ],
+    tip: 'UNION ALL never deduplicates — an OR-to-UNION-ALL rewrite needs an explicit exclusion clause on every branch after the first to avoid double-counting overlapping rows.',
+    docs: [
+      { label: 'PostgreSQL UNION', url: 'https://www.postgresql.org/docs/current/queries-union.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'EXCEPT compares DISTINCT row sets — it cannot detect a rewrite that duplicates rows without also losing or gaining any.',
+      'A row-count comparison, not an EXCEPT comparison, is what actually reveals a UNION ALL duplication bug.',
+    ],
+  },
+
+  'sql/performance/the-missing-index-impact-score-formula-is-missing-a-100': {
+    apis: ['sys.dm_db_missing_index_group_stats', 'avg_user_impact'],
+    related: [
+      { label: 'Testing the OR-to-UNION-ALL Rewrite — previous', route: '/sql/performance/testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows' },
+      { label: 'Building the Regression Test — next', route: '/sql/performance/demonstrating-the-execution-plan-regression-test-the-page-only-describes' },
+      { label: 'Query Performance (overview)', route: '/sql/performance' },
+    ],
+    tip: 'avg_user_impact is a 0-100 percentage, not a 0-1 fraction — Microsoft\'s own documented ImpactScore formula divides it by 100 before multiplying.',
+    docs: [
+      { label: 'MSSQL Missing Index DMVs', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-dynamic-management-views/sys-dm-db-missing-index-group-stats-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The missing /100 is a uniform scalar — it doesn\'t change the TOP 20 ranking, only the absolute ImpactScore values shown.',
+      'Comparing ImpactScore values against Microsoft\'s documented examples or another tool requires the correctly-normalized formula.',
+    ],
+  },
+
+  'sql/performance/demonstrating-the-execution-plan-regression-test-the-page-only-describes': {
+    apis: ['EXPLAIN (FORMAT JSON)', 'SET SHOWPLAN_XML', 'jsonb_path_query'],
+    related: [
+      { label: 'A Missing Normalization Step — previous', route: '/sql/performance/the-missing-index-impact-score-formula-is-missing-a-100' },
+      { label: 'Query Performance (overview)', route: '/sql/performance' },
+    ],
+    tip: 'A plan-assertion test only protects the specific query and index combination it was written for — it says nothing about queries or indexes that don\'t have a corresponding test.',
+    docs: [
+      { label: 'PostgreSQL EXPLAIN JSON', url: 'https://www.postgresql.org/docs/current/sql-explain.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A plan-assertion test should be verified against a real, deliberately-triggered regression — otherwise it might be passing for the wrong reason.',
+      'CI coverage gaps (queries without their own test) remain fully unprotected, no matter how well the existing tests are written.',
+    ],
+  },
+
   'sql/json-features': {
     apis: ['JSON_VALUE()', 'JSON_QUERY()', 'OPENJSON()', 'FOR JSON PATH', 'FOR JSON AUTO', 'jsonb', 'jsonb_extract_path()', '->', '->>', '@>', '?'],
     related: [{ label: 'Schema Design', route: '/sql/schema-design' }, { label: 'Performance', route: '/sql/performance' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
@@ -13914,6 +16151,1874 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
     gotchas: ['JSON columns cannot be indexed like normal columns without computed columns (SQL Server) or GIN indexes (PostgreSQL).', 'SQL Server stores JSON as NVARCHAR — there is no native JSON type, so validation is at function-call time, not insert time.'],
   },
+
+  'sql/json-features/testing-that-merge-silently-wipes-out-nested-keys-instead-of-deep-merging': {
+    apis: ['|| (jsonb merge)', 'jsonb_set()'],
+    related: [
+      { label: 'What Untyped OPENJSON Actually Returns — next', route: '/sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays' },
+      { label: 'JSON Features (overview)', route: '/sql/json-features' },
+    ],
+    tip: 'The jsonb || operator only merges at the top level — merging a nested key replaces that key\'s entire object wholesale, silently discarding sibling fields not repeated in the replacement.',
+    docs: [
+      { label: 'PostgreSQL JSON Functions', url: 'https://www.postgresql.org/docs/current/functions-json.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Merging a partial nested object into an existing one deletes any sibling fields the replacement doesn\'t repeat.',
+      'The fix extracts the sub-object, merges into IT, then writes it back via jsonb_set() at the parent path.',
+    ],
+  },
+
+  'sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays': {
+    apis: ['OPENJSON()', 'CROSS APPLY', 'WITH (path syntax)'],
+    related: [
+      { label: 'Testing the Merge Operator’s Limits — previous', route: '/sql/json-features/testing-that-merge-silently-wipes-out-nested-keys-instead-of-deep-merging' },
+      { label: 'A NULL-Handling Gap in a Partial Index — next', route: '/sql/json-features/the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows' },
+      { label: 'JSON Features (overview)', route: '/sql/json-features' },
+    ],
+    tip: 'OPENJSON without a WITH clause, over an array of objects, returns each object as a raw JSON text string in "value" — not the individual scalar fields.',
+    docs: [
+      { label: 'MSSQL OPENJSON', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Comparing the untyped "value" column against a scalar (e.g. value = 1) never matches when each array element is an object, not a scalar.',
+      'The WITH-clause path syntax reaches directly into nested fields in one call, avoiding a second nested OPENJSON call.',
+    ],
+  },
+
+  'sql/json-features/the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows': {
+    apis: ['IS DISTINCT FROM', 'partial index', '->>'],
+    related: [
+      { label: 'What Untyped OPENJSON Actually Returns — previous', route: '/sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays' },
+      { label: 'JSON Features (overview)', route: '/sql/json-features' },
+    ],
+    tip: 'payload->>\'key\' returns SQL NULL when the key is missing entirely — NULL != value is UNKNOWN, not TRUE, silently excluding those rows from both the query and any partial index built on the same predicate.',
+    docs: [
+      { label: 'PostgreSQL Comparison Operators', url: 'https://www.postgresql.org/docs/current/functions-comparison.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A partial index and a query sharing the same != predicate share the same NULL-exclusion blind spot — self-consistent, but surprising.',
+      'IS DISTINCT FROM correctly treats NULL as "distinct from" any non-null value, unlike standard !=.',
+    ],
+  },
+
+  'sql/set-operations': {
+    apis: ['UNION', 'UNION ALL', 'INTERSECT', 'EXCEPT'],
+    related: [{ label: 'Subqueries', route: '/sql/subqueries' }, { label: 'Joins', route: '/sql/joins' }, { label: 'JSON Features', route: '/sql/json-features' }],
+    tip: 'UNION ALL is almost always the right default — reach for UNION only when deduplication is semantically required, since it adds a sort/hash step UNION ALL skips entirely.',
+    docs: [{ label: 'T-SQL UNION', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/set-operators-union-transact-sql' }, { label: 'PostgreSQL Set Operations', url: 'https://www.postgresql.org/docs/current/queries-union.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['INTERSECT binds tighter than UNION/EXCEPT — always parenthesize explicitly when mixing them.', 'ORDER BY only applies to the final combined result, and must follow the last SELECT branch.'],
+  },
+
+  'sql/set-operations/testing-that-the-schema-comparison-query-misses-type-only-drift': {
+    apis: ['information_schema.columns', 'EXCEPT', 'data_type'],
+    related: [
+      { label: 'Making Precedence Concrete — next', route: '/sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result' },
+      { label: 'Set Operations (overview)', route: '/sql/set-operations' },
+    ],
+    tip: 'A schema-drift EXCEPT query is only as thorough as its SELECT list — comparing only column_name is structurally blind to type, length, and nullability drift on columns that kept the same name.',
+    docs: [
+      { label: 'information_schema.columns', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-information-schema-views/columns-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Months of "no drift" reports provide zero evidence about attributes the query never actually compares.',
+      'A shrinking VARCHAR length is a genuine data-integrity risk, not a cosmetic difference worth skipping.',
+    ],
+  },
+
+  'sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result': {
+    apis: ['INTERSECT precedence', 'parentheses'],
+    related: [
+      { label: 'Testing the Schema Comparison Query — previous', route: '/sql/set-operations/testing-that-the-schema-comparison-query-misses-type-only-drift' },
+      { label: 'Confirming EXCEPT vs NOT EXISTS Execution — next', route: '/sql/set-operations/confirming-that-except-materialises-both-sets-not-exists-short-circuits' },
+      { label: 'Set Operations (overview)', route: '/sql/set-operations' },
+    ],
+    tip: 'A UNION B INTERSECT C and (A UNION B) INTERSECT C can return genuinely different result sets from identical data — always parenthesize explicitly rather than relying on memorized precedence.',
+    docs: [
+      { label: 'MSSQL Set Operators', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/set-operators-union-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Unparenthesized mixed set operations silently group INTERSECT with its neighboring operand first, overriding simple left-to-right reading.',
+      'No error or warning is raised either way — both forms are valid SQL that just mean different things.',
+    ],
+  },
+
+  'sql/set-operations/confirming-that-except-materialises-both-sets-not-exists-short-circuits': {
+    apis: ['SET STATISTICS IO', 'Anti Semi Join', 'Nested Loops'],
+    related: [
+      { label: 'Making Precedence Concrete — previous', route: '/sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result' },
+      { label: 'Set Operations (overview)', route: '/sql/set-operations' },
+    ],
+    tip: 'EXCEPT\'s cost scales with the total size of BOTH inputs; NOT EXISTS\'s cost scales mainly with the outer set\'s size when the inner side is indexed — the gap widens as the inner table grows, independent of the outer set.',
+    docs: [
+      { label: 'MSSQL Execution Plans', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A query that slows down purely because an UNRELATED table grew is a sign of EXCEPT\'s materialize-both-sides cost, not necessarily a missing index.',
+      'The performance gap is sharpest specifically when the outer set is small/selective and the inner set is large and indexed.',
+    ],
+  },
+
+  'sql/null-handling': {
+    apis: ['IS NULL', 'COALESCE()', 'ISNULL()', 'NULLIF()'],
+    related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Set Operations', route: '/sql/set-operations' }],
+    tip: 'Never write col = NULL — it always evaluates to UNKNOWN under the standard ANSI_NULLS ON setting. Always use IS NULL / IS NOT NULL.',
+    docs: [{ label: 'T-SQL NULL Handling', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/working-with-null-values' }, { label: 'PostgreSQL NULL', url: 'https://www.postgresql.org/docs/current/functions-comparison.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['NOT IN silently returns zero rows if the subquery contains any NULL — use NOT EXISTS instead.', 'ISNULL\'s result type is fixed by its first argument alone — COALESCE is safer for mismatched types/lengths.'],
+  },
+
+  'sql/null-handling/testing-that-union-treats-two-nulls-as-equal-while-join-doesnt': {
+    apis: ['UNION', 'GROUP BY', 'DISTINCT'],
+    related: [
+      { label: 'A Bigger Reason to Avoid ISNULL — next', route: '/sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability' },
+      { label: 'NULL Handling (overview)', route: '/sql/null-handling' },
+    ],
+    tip: 'Value comparison (=) and grouping/deduplication (UNION, DISTINCT, GROUP BY) use two DIFFERENT NULL-equality rules — both are standard-defined, not contradictory.',
+    docs: [
+      { label: 'PostgreSQL UNION', url: 'https://www.postgresql.org/docs/current/queries-union.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'JOIN\'s a.col = b.col never matches two NULLs — UNION/DISTINCT/GROUP BY treat two NULLs as the same group.',
+      'This is not a bug or inconsistency — it is two intentionally different, standard-defined operations.',
+    ],
+  },
+
+  'sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability': {
+    apis: ['ISNULL()', 'COALESCE()', 'data type precedence'],
+    related: [
+      { label: 'Testing UNION vs JOIN NULL Equality — previous', route: '/sql/null-handling/testing-that-union-treats-two-nulls-as-equal-while-join-doesnt' },
+      { label: 'Demonstrating ANSI_NULLS OFF — next', route: '/sql/null-handling/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons' },
+      { label: 'NULL Handling (overview)', route: '/sql/null-handling' },
+    ],
+    tip: 'ISNULL(a, b) fixes its output type from "a" alone — a NULL, narrow "a" silently truncates a longer "b" value even though "b" is what actually gets returned.',
+    docs: [
+      { label: 'MSSQL ISNULL', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'COALESCE derives its type from ALL arguments via type precedence, avoiding the truncation ISNULL is prone to.',
+      'The truncation happens silently — no error, no warning, just a shortened string.',
+    ],
+  },
+
+  'sql/null-handling/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons': {
+    apis: ['SET ANSI_NULLS', 'sys.sql_modules', 'uses_ansi_nulls'],
+    related: [
+      { label: 'A Bigger Reason to Avoid ISNULL — previous', route: '/sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability' },
+      { label: 'NULL Handling (overview)', route: '/sql/null-handling' },
+    ],
+    tip: 'Stored procedures and views capture ANSI_NULLS at CREATE time, not call time — check sys.sql_modules.uses_ansi_nulls, not your own session\'s current setting.',
+    docs: [
+      { label: 'MSSQL SET ANSI_NULLS', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-ansi-nulls-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The identical query text (WHERE col = NULL) returns opposite result sets depending purely on invisible session state.',
+      'ALTER PROCEDURE does not update the captured ANSI_NULLS setting — only DROP and CREATE does.',
+    ],
+  },
+
+  'sql/merge': {
+    apis: ['MERGE', 'INSERT ... ON CONFLICT', 'EXCLUDED', 'OUTPUT', 'RETURNING'],
+    related: [{ label: 'NULL Handling', route: '/sql/null-handling' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'Always deduplicate the source of an MSSQL MERGE with ROW_NUMBER() — a source with two rows matching the same target key raises error 8672 and aborts the whole statement.',
+    docs: [{ label: 'MSSQL MERGE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/merge-transact-sql' }, { label: 'PostgreSQL INSERT ... ON CONFLICT', url: 'https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A duplicate-matching source row aborts the entire MERGE with error 8672 — it does not silently apply a wrong update.', 'Concurrent MERGE statements for the same key can still race under READ COMMITTED unless the target uses WITH (HOLDLOCK).'],
+  },
+
+  'sql/merge/testing-that-the-mssql-merge-duplicate-source-bug-is-real': {
+    apis: ['MERGE', 'ROW_NUMBER()', 'tSQLt'],
+    related: [
+      { label: 'ON CONFLICT and Partial Indexes — next', route: '/sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches' },
+      { label: 'MERGE / Upsert (overview)', route: '/sql/merge' },
+    ],
+    tip: 'A duplicate-matching source row raises error 8672 and rolls back the entire MERGE — it is a hard, deterministic failure, not silent corruption.',
+    docs: [
+      { label: 'MSSQL MERGE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/merge-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Error 8672 aborts the whole MERGE statement, including matches/inserts already processed for unrelated, non-duplicated rows in the same batch.',
+      'ROW_NUMBER() with a meaningful ORDER BY makes the dedup outcome deterministic — without it, an arbitrary duplicate could be kept.',
+    ],
+  },
+
+  'sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches': {
+    apis: ['ON CONFLICT', 'partial unique index', 'EXCLUDED'],
+    related: [
+      { label: 'Proving the Duplicate-Source Bug — previous', route: '/sql/merge/testing-that-the-mssql-merge-duplicate-source-bug-is-real' },
+      { label: 'MERGE Can Still Race Without HOLDLOCK — next', route: '/sql/merge/concurrent-merge-statements-can-still-race-without-holdlock' },
+      { label: 'MERGE / Upsert (overview)', route: '/sql/merge' },
+    ],
+    tip: 'ON CONFLICT (col) alone only matches a FULL unique index — to target a partial unique index, repeat its exact WHERE predicate in the ON CONFLICT clause.',
+    docs: [
+      { label: 'PostgreSQL Partial Indexes', url: 'https://www.postgresql.org/docs/current/indexes-partial.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The "no unique or exclusion constraint matching the ON CONFLICT specification" error is deterministic — it reproduces identically with zero concurrency.',
+      'ON CONFLICT DO UPDATE is fully atomic against a partial index once the predicate matches — no advisory lock or SERIALIZABLE isolation is needed.',
+    ],
+  },
+
+  'sql/merge/concurrent-merge-statements-can-still-race-without-holdlock': {
+    apis: ['MERGE', 'WITH (HOLDLOCK)', 'READ COMMITTED'],
+    related: [
+      { label: 'ON CONFLICT and Partial Indexes — previous', route: '/sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches' },
+      { label: 'MERGE / Upsert (overview)', route: '/sql/merge' },
+    ],
+    tip: 'MERGE\'s atomicity covers its own branches committing together as one statement — it does not by default serialize against a second concurrent MERGE on the same key. Add WITH (HOLDLOCK) on the target for that.',
+    docs: [
+      { label: 'MSSQL MERGE (HOLDLOCK hint)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/merge-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Without HOLDLOCK, two concurrent MERGE statements can both evaluate WHEN NOT MATCHED as true for the same key and both attempt INSERT, causing a primary-key violation.',
+      'PostgreSQL\'s ON CONFLICT DO UPDATE is race-free against concurrent inserts by default — plain MSSQL MERGE is not, until HOLDLOCK is added.',
+    ],
+  },
+
+  'sql/string-functions': {
+    apis: ['LEN/LENGTH', 'SUBSTRING', 'CHARINDEX/STRPOS', 'REPLACE', 'LIKE/ILIKE', 'STRING_AGG'],
+    related: [{ label: 'Date & Time Functions', route: '/sql/date-functions' }, { label: 'Conditional Expressions', route: '/sql/conditional-expressions' }, { label: 'Indexes', route: '/sql/indexes' }],
+    tip: 'PostgreSQL\'s || concatenation propagates NULL through the whole expression — MSSQL\'s CONCAT() treats NULL as empty string instead. Guard with COALESCE in PostgreSQL.',
+    docs: [{ label: 'MSSQL String Functions', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/string-functions-transact-sql' }, { label: 'PostgreSQL String Functions', url: 'https://www.postgresql.org/docs/current/functions-string.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A prefix LIKE search only uses a plain PostgreSQL index under the C locale — under locale-aware collations (the common default) it needs a text_pattern_ops index.', 'MSSQL REPLACE follows the input\'s collation — under the default CI collation it is case-insensitive, not case-sensitive.'],
+  },
+
+  'sql/string-functions/testing-that-name-normaliser-returns-null-for-a-null-last-name': {
+    apis: ['|| concatenation', 'COALESCE', 'SUBSTRING'],
+    related: [
+      { label: 'Prefix LIKE Needs Pattern Ops — next', route: '/sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale' },
+      { label: 'String Functions (overview)', route: '/sql/string-functions' },
+    ],
+    tip: 'PostgreSQL\'s || returns NULL if any operand is NULL — a single NULL last_name silently nulls out the entire concatenated full_name expression.',
+    docs: [
+      { label: 'PostgreSQL String Concatenation', url: 'https://www.postgresql.org/docs/current/functions-string.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NULL propagation is expression-scoped, not row-scoped — only expressions that reference the NULL column break; unrelated columns in the same row compute fine.',
+      'COALESCE(x, \'\') around the NULL-able input lets the query degrade gracefully instead of losing the whole result.',
+    ],
+  },
+
+  'sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale': {
+    apis: ['text_pattern_ops', 'LIKE', 'EXPLAIN'],
+    related: [
+      { label: 'Testing the Name Normaliser Against NULLs — previous', route: '/sql/string-functions/testing-that-name-normaliser-returns-null-for-a-null-last-name' },
+      { label: 'REPLACE Is Case-Insensitive by Default — next', route: '/sql/string-functions/replace-is-case-insensitive-by-default-contradicting-its-own-claim' },
+      { label: 'String Functions (overview)', route: '/sql/string-functions' },
+    ],
+    tip: 'Under a locale-aware collation (the common PostgreSQL default), a plain B-tree index does not accelerate LIKE \'abc%\' — build a second index with text_pattern_ops.',
+    docs: [
+      { label: 'PostgreSQL Index Types (Operator Classes)', url: 'https://www.postgresql.org/docs/current/indexes-opclass.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'EXPLAIN showing a Seq Scan for a prefix LIKE query with an existing index usually means a locale/operator-class mismatch, not stale statistics.',
+      'A text_pattern_ops index can coexist with a regular index on the same column — one for LIKE, one for ORDER BY/equality.',
+    ],
+  },
+
+  'sql/string-functions/replace-is-case-insensitive-by-default-contradicting-its-own-claim': {
+    apis: ['REPLACE', 'COLLATE', 'SERVERPROPERTY'],
+    related: [
+      { label: 'Prefix LIKE Needs Pattern Ops — previous', route: '/sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale' },
+      { label: 'String Functions (overview)', route: '/sql/string-functions' },
+    ],
+    tip: 'MSSQL REPLACE follows the collation of its input — under the default CI collation, REPLACE(s, \'abc\', ...) also matches \'ABC\'. Force COLLATE ..._CS_AS for literal case-sensitive matching.',
+    docs: [
+      { label: 'MSSQL Collation and Unicode Support', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/collations/collation-and-unicode-support' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'SQL_Latin1_General_CP1_CI_AS — the standard out-of-the-box SQL Server default — is a CI collation, so REPLACE is case-insensitive unless overridden.',
+      'The same REPLACE call produces different results depending purely on the collation of its input string.',
+    ],
+  },
+
+  'sql/date-functions': {
+    apis: ['DATEADD', 'DATEDIFF', 'DATE_TRUNC', 'AT TIME ZONE', 'TIMESTAMPTZ'],
+    related: [{ label: 'String Functions', route: '/sql/string-functions' }, { label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Indexes', route: '/sql/indexes' }],
+    tip: 'Always store timestamps in UTC (TIMESTAMPTZ / DATETIMEOFFSET) and convert to local time only at the display or query layer — never store pre-computed local times.',
+    docs: [{ label: 'MSSQL Date/Time Functions', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/date-and-time-data-types-and-functions-transact-sql' }, { label: 'PostgreSQL Date/Time Functions', url: 'https://www.postgresql.org/docs/current/functions-datetime.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['GROUP BY DATE_TRUNC(...) needs an expression index built on that exact expression — a plain index on the raw column is not used by the planner.', 'A monthly report built with plain GROUP BY silently omits months with zero matching rows — use generate_series + LEFT JOIN to guarantee full coverage.'],
+  },
+
+  'sql/date-functions/testing-that-the-monthly-revenue-report-drops-zero-order-months': {
+    apis: ['generate_series', 'LEFT JOIN', 'DATE_TRUNC'],
+    related: [
+      { label: 'GROUP BY DATE_TRUNC Needs an Expression Index — next', route: '/sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column' },
+      { label: 'Date & Time Functions (overview)', route: '/sql/date-functions' },
+    ],
+    tip: 'GROUP BY only emits a row for a month that has at least one matching order — a month with zero orders is silently missing from the result, not shown as revenue = 0.',
+    docs: [
+      { label: 'PostgreSQL generate_series', url: 'https://www.postgresql.org/docs/current/functions-srf.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A "zero revenue" row and a "missing" row look identical on a naive chart but come from completely different query behavior.',
+      'generate_series() + LEFT JOIN is the standard fix for guaranteeing one row per expected period regardless of data sparsity.',
+    ],
+  },
+
+  'sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column': {
+    apis: ['CREATE INDEX (expression)', 'EXPLAIN', 'GroupAggregate'],
+    related: [
+      { label: 'Testing the Monthly Revenue Report for Gaps — previous', route: '/sql/date-functions/testing-that-the-monthly-revenue-report-drops-zero-order-months' },
+      { label: 'AT TIME ZONE’s Automatic DST Adjustment — next', route: '/sql/date-functions/demonstrating-at-time-zones-automatic-dst-adjustment-across-march' },
+      { label: 'Date & Time Functions (overview)', route: '/sql/date-functions' },
+    ],
+    tip: 'A plain index on order_date cannot serve GROUP BY DATE_TRUNC(\'month\', order_date) — build the index directly on the expression: CREATE INDEX ON orders (DATE_TRUNC(\'month\', order_date)).',
+    docs: [
+      { label: 'PostgreSQL Indexes on Expressions', url: 'https://www.postgresql.org/docs/current/indexes-expressional.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'EXPLAIN showing "Seq Scan" for a GROUP BY on a wrapped column means the existing index isn\'t being used at all, regardless of what documentation claims.',
+      'The same wrap-in-a-function rule that prevents WHERE clauses from using a plain index applies identically to GROUP BY.',
+    ],
+  },
+
+  'sql/date-functions/demonstrating-at-time-zones-automatic-dst-adjustment-across-march': {
+    apis: ['AT TIME ZONE', 'America/New_York', 'Eastern Standard Time'],
+    related: [
+      { label: 'GROUP BY DATE_TRUNC Needs an Expression Index — previous', route: '/sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column' },
+      { label: 'Date & Time Functions (overview)', route: '/sql/date-functions' },
+    ],
+    tip: 'Named time zones reference a DST rule set, not a fixed offset — the same AT TIME ZONE expression correctly produces -05:00 in January and -04:00 in July.',
+    docs: [
+      { label: 'MSSQL AT TIME ZONE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/at-time-zone-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Hardcoding a fixed UTC offset (e.g. "always -5") in application code is wrong for roughly 8 months of the year during EDT.',
+      'The DST rule lookup happens per-row, based on each timestamp\'s own date — not the date the query is run.',
+    ],
+  },
+
+  'sql/conditional-expressions': {
+    apis: ['CASE WHEN', 'IIF', 'NULLIF', 'COALESCE', 'FILTER (WHERE ...)'],
+    related: [{ label: 'NULL Handling', route: '/sql/null-handling' }, { label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Date & Time Functions', route: '/sql/date-functions' }],
+    tip: 'CASE WHEN branch order is guaranteed by the SQL standard — unlike WHERE clause AND predicate order, it is always safe to rely on for a divide-by-zero guard.',
+    docs: [{ label: 'MSSQL CASE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/case-transact-sql' }, { label: 'PostgreSQL CASE', url: 'https://www.postgresql.org/docs/current/functions-conditional.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Nesting IIF inside another IIF\'s false branch becomes unreadable fast — use a flat searched CASE for 3+ conditions.', 'NULLIF(COUNT(*), 0) is dead code in a plain GROUP BY query, since COUNT(*) can never be 0 for an emitted group.'],
+  },
+
+  'sql/conditional-expressions/case-when-order-is-standard-guaranteed-not-just-typical-behavior': {
+    apis: ['CASE WHEN', 'NULLIF', 'WHERE ... AND'],
+    related: [
+      { label: 'Testing the Dead NULLIF(COUNT(*), 0) Guard — next', route: '/sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire' },
+      { label: 'Conditional Expressions (overview)', route: '/sql/conditional-expressions' },
+    ],
+    tip: 'CASE WHEN\'s sequential, first-match branch evaluation is part of the SQL standard\'s definition — unlike WHERE clause AND predicate order, which the optimizer is free to reorder.',
+    docs: [
+      { label: 'MSSQL CASE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/case-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A WHERE clause divide-by-zero guard via AND-ed predicates is NOT reliable — wrap the division itself in NULLIF or CASE instead.',
+      'This guarantee is specific to CASE\'s own WHEN branches, not a general SQL evaluation-order rule.',
+    ],
+  },
+
+  'sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire': {
+    apis: ['NULLIF', 'COUNT(*)', 'GROUP BY'],
+    related: [
+      { label: 'Confirming CASE’s Guaranteed Evaluation Order — previous', route: '/sql/conditional-expressions/case-when-order-is-standard-guaranteed-not-just-typical-behavior' },
+      { label: 'The Nested IIF Contradiction — next', route: '/sql/conditional-expressions/nested-iif-where-example-contradicts-its-own-nesting-advice' },
+      { label: 'Conditional Expressions (overview)', route: '/sql/conditional-expressions' },
+    ],
+    tip: 'GROUP BY only emits a row for a group with at least one matching row — COUNT(*) can never be 0 for an emitted group, making a plain NULLIF(COUNT(*), 0) guard dead code in that query shape.',
+    docs: [
+      { label: 'PostgreSQL Aggregate Functions', url: 'https://www.postgresql.org/docs/current/functions-aggregate.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The same NULLIF(COUNT(*), 0) guard becomes load-bearing the moment the query is rewritten with a LEFT JOIN against a generated calendar that CAN produce zero-count groups.',
+      'Dead defensive code isn\'t automatically a bug — it can be a harmless habit copied from a genuinely necessary pattern elsewhere.',
+    ],
+  },
+
+  'sql/conditional-expressions/nested-iif-where-example-contradicts-its-own-nesting-advice': {
+    apis: ['IIF', 'CASE WHEN'],
+    related: [
+      { label: 'Testing the Dead NULLIF(COUNT(*), 0) Guard — previous', route: '/sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire' },
+      { label: 'Conditional Expressions (overview)', route: '/sql/conditional-expressions' },
+    ],
+    tip: 'Nesting IIF inside another IIF\'s false branch adds a level of nesting per condition — a searched CASE keeps every branch at the same flat indentation level regardless of how many are added.',
+    docs: [
+      { label: 'MSSQL IIF', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/logical-functions-iif-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'IIF is a two-branch shorthand — the moment a third condition is needed, switch to CASE rather than nesting another IIF.',
+      'A WHERE clause is the worst place for hard-to-verify nested conditionals, since a mistake silently changes which rows are returned.',
+    ],
+  },
+
+  'sql/math-functions': {
+    apis: ['ROUND', 'FLOOR/CEILING', 'TRUNC', 'AVG', 'TABLESAMPLE'],
+    related: [{ label: 'Conditional Expressions', route: '/sql/conditional-expressions' }, { label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Date & Time Functions', route: '/sql/date-functions' }],
+    tip: 'PostgreSQL\'s NUMERIC ROUND() rounds half away from zero, same as MSSQL — banker\'s rounding is not the default for either engine\'s exact-decimal type.',
+    docs: [{ label: 'MSSQL Math Functions', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/mathematical-functions-transact-sql' }, { label: 'PostgreSQL Math Functions', url: 'https://www.postgresql.org/docs/current/functions-math.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['AVG(integer_col) truncates in MSSQL but already returns full-precision NUMERIC in PostgreSQL — the "both dialects" framing only holds for MSSQL.', 'MSSQL TABLESAMPLE is page-based even with ROWS syntax — it can return far fewer rows than requested, including zero on small tables.'],
+  },
+
+  'sql/math-functions/correcting-the-bankers-rounding-claim-for-postgresql-numeric': {
+    apis: ['ROUND', 'NUMERIC', 'DOUBLE PRECISION'],
+    related: [
+      { label: 'Testing AVG on Integers Across Dialects — next', route: '/sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql' },
+      { label: 'Math & Numeric Functions (overview)', route: '/sql/math-functions' },
+    ],
+    tip: 'PostgreSQL\'s ROUND() on NUMERIC rounds half away from zero — ROUND(2.5) returns 3, not 2 — identical to MSSQL, not banker\'s rounding.',
+    docs: [
+      { label: 'PostgreSQL Mathematical Functions', url: 'https://www.postgresql.org/docs/current/functions-math.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Round-half-to-even artifacts can appear for DOUBLE PRECISION in PostgreSQL, but not for the NUMERIC/DECIMAL type recommended for money.',
+      'A straight port of ROUND() calls on DECIMAL/NUMERIC columns from MSSQL to PostgreSQL needs no rounding-method adjustment.',
+    ],
+  },
+
+  'sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql': {
+    apis: ['AVG', 'NUMERIC', 'CAST'],
+    related: [
+      { label: 'Correcting the Banker’s Rounding Claim — previous', route: '/sql/math-functions/correcting-the-bankers-rounding-claim-for-postgresql-numeric' },
+      { label: 'TABLESAMPLE Can Return Far Fewer Rows — next', route: '/sql/math-functions/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested' },
+      { label: 'Math & Numeric Functions (overview)', route: '/sql/math-functions' },
+    ],
+    tip: 'PostgreSQL\'s AVG() on an integer column always returns a full-precision NUMERIC — the AVG(col * 1.0) workaround is a no-op there, only necessary in MSSQL.',
+    docs: [
+      { label: 'PostgreSQL Aggregate Functions', url: 'https://www.postgresql.org/docs/current/functions-aggregate.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'MSSQL AVG(int_col) truncates to an integer result — the SQL standard requires PostgreSQL\'s AVG to avoid this for exact numeric types.',
+      'A dual-dialect codebase can keep the AVG(col * 1.0) workaround universal for consistency, but it isn\'t fixing a real bug on the PostgreSQL side.',
+    ],
+  },
+
+  'sql/math-functions/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested': {
+    apis: ['TABLESAMPLE', 'TOP ... ORDER BY NEWID()'],
+    related: [
+      { label: 'Testing AVG on Integers Across Dialects — previous', route: '/sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql' },
+      { label: 'Math & Numeric Functions (overview)', route: '/sql/math-functions' },
+    ],
+    tip: 'TABLESAMPLE (N ROWS) is converted internally to an estimated PERCENT of data pages — it is not a guaranteed exact row count, and can return zero rows on small tables.',
+    docs: [
+      { label: 'MSSQL TABLESAMPLE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'TABLESAMPLE samples whole 8KB pages, not individual rows — a small table can fit on too few pages for the algorithm to reliably select any.',
+      'Use TOP N ... ORDER BY NEWID() (MSSQL) or ORDER BY RANDOM() LIMIT N (PostgreSQL) when an exact row count is required.',
+    ],
+  },
+
+  'sql/pivoting': {
+    apis: ['PIVOT', 'UNPIVOT', 'crosstab()', 'CROSS APPLY', 'FILTER (WHERE ...)'],
+    related: [{ label: 'Aggregations', route: '/sql/aggregations' }, { label: 'Conditional Expressions', route: '/sql/conditional-expressions' }, { label: 'Set Operations', route: '/sql/set-operations' }],
+    tip: 'PIVOT groups by every source column that isn\'t the FOR column or the aggregated value — an extra column in the source subquery silently multiplies rows with no error.',
+    docs: [{ label: 'MSSQL PIVOT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/from-using-pivot-and-unpivot' }, { label: 'PostgreSQL crosstab()', url: 'https://www.postgresql.org/docs/current/tablefunc.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['crosstab()\'s 1-argument form silently misaligns columns when a category is missing for a row — always use the 2-argument form with an explicit category query.', 'A CROSS APPLY VALUES unpivot needs every dimension (e.g. month AND metric) tagged explicitly in each row — nothing is inferred from column names.'],
+  },
+
+  'sql/pivoting/demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows': {
+    apis: ['PIVOT', 'implicit GROUP BY'],
+    related: [
+      { label: 'Fixing the CROSS APPLY UNPIVOT Example — next', route: '/sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column' },
+      { label: 'Pivoting & Cross-Tab (overview)', route: '/sql/pivoting' },
+    ],
+    tip: 'PIVOT has no explicit GROUP BY — it automatically groups by every source column that isn\'t the FOR column or the aggregate\'s argument.',
+    docs: [
+      { label: 'MSSQL PIVOT and UNPIVOT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/from-using-pivot-and-unpivot' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An extra column in PIVOT\'s source subquery causes no error — it silently changes the implicit grouping key, producing more rows than expected.',
+      'Keep the source subquery minimal: only the grouping column(s), the FOR column, and the value column.',
+    ],
+  },
+
+  'sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column': {
+    apis: ['CROSS APPLY', 'VALUES'],
+    related: [
+      { label: 'PIVOT’s Invisible Implicit GROUP BY — previous', route: '/sql/pivoting/demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows' },
+      { label: 'Confirming crosstab()’s Safe Two-Argument Form — next', route: '/sql/pivoting/testing-that-crosstabs-two-argument-form-handles-a-missing-month' },
+      { label: 'Pivoting & Cross-Tab (overview)', route: '/sql/pivoting' },
+    ],
+    tip: 'A multi-column CROSS APPLY unpivot needs every dimension (month AND metric) explicitly tagged in each VALUES row — SQL can\'t parse a column name like jan_qty into its parts automatically.',
+    docs: [
+      { label: 'MSSQL APPLY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A SELECT referencing a column that\'s missing from both the base table and the CROSS APPLY alias fails with "Invalid column name," not a silently wrong result.',
+      'The technique itself is sound — the fix is adding month as a third column in both the VALUES rows and the alias list.',
+    ],
+  },
+
+  'sql/pivoting/testing-that-crosstabs-two-argument-form-handles-a-missing-month': {
+    apis: ['crosstab()', 'tablefunc'],
+    related: [
+      { label: 'Fixing the CROSS APPLY UNPIVOT Example — previous', route: '/sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column' },
+      { label: 'Pivoting & Cross-Tab (overview)', route: '/sql/pivoting' },
+    ],
+    tip: 'crosstab()\'s 2-argument form matches values to output columns BY NAME via the category query — immune to gaps in the source data, unlike the risky 1-argument form.',
+    docs: [
+      { label: 'PostgreSQL tablefunc / crosstab()', url: 'https://www.postgresql.org/docs/current/tablefunc.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The 1-argument crosstab(sql) form matches values purely by position — a missing category for one row_name shifts every subsequent value into the wrong column.',
+      'This misalignment only affects rows with gaps in their category data — rows with complete coverage look correct, making the bug easy to miss in testing.',
+    ],
+  },
+
+  'sql/constraints': {
+    apis: ['PRIMARY KEY', 'FOREIGN KEY', 'UNIQUE', 'CHECK', 'NOT VALID'],
+    related: [{ label: 'Schema Design', route: '/sql/schema-design' }, { label: 'NULL Handling', route: '/sql/null-handling' }, { label: 'Indexes', route: '/sql/indexes' }],
+    tip: 'SQL Server\'s REFERENCES clause only accepts NO ACTION, CASCADE, SET NULL, SET DEFAULT — RESTRICT is valid ANSI SQL/PostgreSQL syntax but a T-SQL syntax error.',
+    docs: [{ label: 'MSSQL Constraints', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints' }, { label: 'PostgreSQL Constraints', url: 'https://www.postgresql.org/docs/current/ddl-constraints.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['SQL Server\'s UNIQUE constraint treats all NULLs as duplicates, capping a unique column at one NULL — PostgreSQL allows unlimited NULLs by default.', 'A plain ADD CONSTRAINT holds AccessExclusiveLock for its whole validation scan — NOT VALID + VALIDATE CONSTRAINT (PostgreSQL) splits this into a near-instant lock plus a non-blocking scan.'],
+  },
+
+  'sql/constraints/testing-that-on-delete-restrict-is-invalid-t-sql-syntax': {
+    apis: ['ON DELETE', 'NO ACTION', 'REFERENCES'],
+    related: [
+      { label: 'MSSQL UNIQUE Allows Only One NULL — next', route: '/sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple' },
+      { label: 'Constraints (overview)', route: '/sql/constraints' },
+    ],
+    tip: 'T-SQL\'s referential-action clause only accepts NO ACTION, CASCADE, SET NULL, SET DEFAULT — RESTRICT is a parse-time syntax error in SQL Server, though valid in PostgreSQL.',
+    docs: [
+      { label: 'MSSQL REFERENCES (Transact-SQL)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NO ACTION is the T-SQL keyword that provides the same "reject the delete if children exist" behavior PostgreSQL\'s RESTRICT provides.',
+      'This is a genuine dialect gap, not a typo — the rest of the CREATE TABLE statement is otherwise correctly formed.',
+    ],
+  },
+
+  'sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple': {
+    apis: ['UNIQUE', 'filtered index', 'WHERE col IS NOT NULL'],
+    related: [
+      { label: 'Testing ON DELETE RESTRICT in T-SQL — previous', route: '/sql/constraints/testing-that-on-delete-restrict-is-invalid-t-sql-syntax' },
+      { label: 'NOT VALID Avoids the Full-Table Lock — next', route: '/sql/constraints/not-valid-plus-validate-constraint-avoids-the-full-table-lock' },
+      { label: 'Constraints (overview)', route: '/sql/constraints' },
+    ],
+    tip: 'SQL Server\'s UNIQUE constraint treats all NULLs as duplicates of each other — a second NULL insert raises a duplicate-key violation, unlike PostgreSQL which allows unlimited NULLs.',
+    docs: [
+      { label: 'MSSQL Unique Constraints', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This bug is invisible in testing with only one NULL row — it only surfaces once a second NULL is inserted.',
+      'A filtered unique index (WHERE col IS NOT NULL) restores PostgreSQL-style unlimited-NULL behavior in SQL Server.',
+    ],
+  },
+
+  'sql/constraints/not-valid-plus-validate-constraint-avoids-the-full-table-lock': {
+    apis: ['NOT VALID', 'VALIDATE CONSTRAINT', 'pg_locks', 'AccessExclusiveLock'],
+    related: [
+      { label: 'MSSQL UNIQUE Allows Only One NULL — previous', route: '/sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple' },
+      { label: 'Constraints (overview)', route: '/sql/constraints' },
+    ],
+    tip: 'A plain ADD CONSTRAINT holds AccessExclusiveLock for its entire validation scan — NOT VALID commits near-instantly, then VALIDATE CONSTRAINT scans under a non-blocking ShareUpdateExclusiveLock.',
+    docs: [
+      { label: 'PostgreSQL ALTER TABLE', url: 'https://www.postgresql.org/docs/current/sql-altertable.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'NOT VALID defers validation, it doesn\'t skip it — new rows are checked immediately, existing rows wait for VALIDATE CONSTRAINT.',
+      'ShareUpdateExclusiveLock blocks other DDL but not SELECT/INSERT/UPDATE/DELETE — confirmed directly via pg_locks and live queries during validation.',
+    ],
+  },
+
+  'sql/views': {
+    apis: ['CREATE VIEW', 'WITH CHECK OPTION', 'MATERIALIZED VIEW', 'INSTEAD OF', 'WITH SCHEMABINDING'],
+    related: [{ label: 'Constraints', route: '/sql/constraints' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Security', route: '/sql/security' }],
+    tip: 'A plain view\'s WHERE clause only filters SELECT output — it does nothing to validate INSERT/UPDATE unless WITH CHECK OPTION is explicitly added.',
+    docs: [{ label: 'MSSQL CREATE VIEW', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql' }, { label: 'PostgreSQL CREATE VIEW', url: 'https://www.postgresql.org/docs/current/sql-createview.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['WITH SCHEMABINDING and WITH CHECK OPTION are fully independent and can be combined — omitting CHECK OPTION is never forced by SCHEMABINDING.', 'A view over a JOIN or aggregate needs an INSTEAD OF trigger to be insertable — the trigger must handle multi-row inserted() correctly, not just the single-row case.'],
+  },
+
+  'sql/views/testing-that-the-mssql-challenge-solution-is-missing-with-check-option': {
+    apis: ['WITH CHECK OPTION', 'SESSION_CONTEXT', 'WITH SCHEMABINDING'],
+    related: [
+      { label: 'The Dead LEFT(ssn, 0) in the Masking Example — next', route: '/sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code' },
+      { label: 'Views (overview)', route: '/sql/views' },
+    ],
+    tip: 'Without WITH CHECK OPTION, a tenant-scoped view\'s WHERE clause filters SELECT but never validates INSERT — a session can silently write rows for a different tenant.',
+    docs: [
+      { label: 'MSSQL CREATE VIEW (WITH CHECK OPTION)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-view-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A security pattern verified in one dialect\'s sample code is not evidence the other dialect\'s sample includes the same protection — each needs independent testing.',
+      'WITH SCHEMABINDING does not prevent adding WITH CHECK OPTION to the same view definition.',
+    ],
+  },
+
+  'sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code': {
+    apis: ['LEFT()', 'RIGHT()', 'string concatenation'],
+    related: [
+      { label: 'Testing the Challenge’s Cross-Tenant Leak — previous', route: '/sql/views/testing-that-the-mssql-challenge-solution-is-missing-with-check-option' },
+      { label: 'An INSTEAD OF INSERT Trigger, Demonstrated — next', route: '/sql/views/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view' },
+      { label: 'Views (overview)', route: '/sql/views' },
+    ],
+    tip: 'LEFT(x, 0) always returns an empty string for any input — it contributes nothing to a concatenation and can be deleted with zero change in output.',
+    docs: [
+      { label: 'MSSQL LEFT (Transact-SQL)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Dead code in a masking expression can be proven empirically by comparing output with and without the suspect term across representative inputs.',
+      'This is a clarity issue, not a functional bug — the masking output is correct either way.',
+    ],
+  },
+
+  'sql/views/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view': {
+    apis: ['INSTEAD OF INSERT', 'inserted', 'SCOPE_IDENTITY()', 'OUTPUT'],
+    related: [
+      { label: 'The Dead LEFT(ssn, 0) in the Masking Example — previous', route: '/sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code' },
+      { label: 'Views (overview)', route: '/sql/views' },
+    ],
+    tip: 'SCOPE_IDENTITY() returns only the LAST identity value generated — a trigger relying on it for a multi-row insert misattributes every row except the last.',
+    docs: [
+      { label: 'MSSQL CREATE TRIGGER (INSTEAD OF)', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The "inserted" pseudo-table can contain multiple rows — a trigger tested only with single-row inserts can hide a multi-row bug.',
+      'Use OUTPUT to pair each newly generated identity value back to its originating row instead of a single scalar SCOPE_IDENTITY().',
+    ],
+  },
+
+  'sql/sequences': {
+    apis: ['IDENTITY', 'SEQUENCE', 'nextval()', 'SCOPE_IDENTITY()', 'RETURNING'],
+    related: [{ label: 'Constraints', route: '/sql/constraints' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'Sequences allocate values outside any transaction — a rolled-back or slow-to-commit transaction creates gaps and out-of-order visibility, never silent duplicates.',
+    docs: [{ label: 'MSSQL IDENTITY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql' }, { label: 'PostgreSQL Sequences', url: 'https://www.postgresql.org/docs/current/sql-createsequence.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['last_value + increment_by only accurately previews the next nextval() result when CACHE is 1 — with CACHE > 1 it reflects the end of the last reserved block instead.', 'A concurrent transaction with a higher allocated ID can commit and become visible before one with a lower ID — sequence order is allocation order, not commit order.'],
+  },
+
+  'sql/sequences/correcting-the-peek-next-value-answer-when-cache-is-greater-than-one': {
+    apis: ['last_value', 'nextval()', 'CACHE'],
+    related: [
+      { label: 'SCOPE_IDENTITY() vs @@IDENTITY, Demonstrated — next', route: '/sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger' },
+      { label: 'Sequences & Identity (overview)', route: '/sql/sequences' },
+    ],
+    tip: 'With CACHE > 1, one nextval() call reserves an entire block at once — last_value jumps to the END of that block immediately, not the value about to be returned next.',
+    docs: [
+      { label: 'PostgreSQL Sequence Functions', url: 'https://www.postgresql.org/docs/current/functions-sequence.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'There is no reliable way to preview the exact next nextval() value for a session mid-way through an already-reserved CACHE > 1 block.',
+      'The "peek" technique is only accurate for CACHE 1 sequences, at the cost of that sequence\'s reduced throughput.',
+    ],
+  },
+
+  'sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger': {
+    apis: ['SCOPE_IDENTITY()', '@@IDENTITY', 'AFTER INSERT trigger'],
+    related: [
+      { label: 'Correcting the ‘Peek Next Value’ Answer — previous', route: '/sql/sequences/correcting-the-peek-next-value-answer-when-cache-is-greater-than-one' },
+      { label: 'Testing Out-of-Order Sequence Commits — next', route: '/sql/sequences/testing-that-committed-sequence-ids-can-appear-out-of-order' },
+      { label: 'Sequences & Identity (overview)', route: '/sql/sequences' },
+    ],
+    tip: '@@IDENTITY returns the last identity generated ANYWHERE in the session, including by triggers — SCOPE_IDENTITY() stays correctly scoped to the original INSERT.',
+    docs: [
+      { label: 'MSSQL @@IDENTITY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/identity-functions-identity' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This bug is latent — @@IDENTITY works correctly for years until a trigger writing to another IDENTITY-column table is added later.',
+      '@@IDENTITY returns a valid-looking integer with no error, so the wrong ID is only caught through downstream symptoms.',
+    ],
+  },
+
+  'sql/sequences/testing-that-committed-sequence-ids-can-appear-out-of-order': {
+    apis: ['nextval()', 'IDENTITY', 'RETURNING', 'transaction visibility'],
+    related: [
+      { label: 'SCOPE_IDENTITY() vs @@IDENTITY, Demonstrated — previous', route: '/sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger' },
+      { label: 'Sequences & Identity (overview)', route: '/sql/sequences' },
+    ],
+    tip: 'ID allocation order and commit (visibility) order are different — a transaction with a higher ID can become visible before one with a lower ID under concurrency.',
+    docs: [
+      { label: 'PostgreSQL MVCC', url: 'https://www.postgresql.org/docs/current/mvcc.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An incremental sync cursor using "WHERE id > last_max_id_seen" can permanently skip a row that commits slightly late.',
+      'Use a commit-time timestamp or an overlap window for sync cursors instead of the raw sequence/identity value.',
+    ],
+  },
+
+  'sql/temp-tables': {
+    apis: ['#temp', '@table', 'TEMP TABLE', 'ON COMMIT DROP'],
+    related: [{ label: 'CTEs', route: '/sql/ctes' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Transactions', route: '/sql/transactions' }],
+    tip: 'A nested procedure creating a #temp table with a name already used by an outer scope does not error — it silently shadows the outer table for the rest of its own scope.',
+    docs: [{ label: 'MSSQL Temporary Tables', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-local-temporary-table' }, { label: 'PostgreSQL Temporary Tables', url: 'https://www.postgresql.org/docs/current/sql-createtable.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['@table variables are NOT rolled back by ROLLBACK TRANSACTION, unlike #temp tables — the standard reason they\'re used for error-logging buffers.', 'Since SQL Server 2014, table variables support inline non-unique indexes, not just implicit PK/UNIQUE-backed ones.'],
+  },
+
+  'sql/temp-tables/correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim': {
+    apis: ['#temp', 'CREATE TABLE', 'scope shadowing'],
+    related: [
+      { label: 'Table Variables Survive ROLLBACK — next', route: '/sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback' },
+      { label: 'Temp Tables & Table Variables (overview)', route: '/sql/temp-tables' },
+    ],
+    tip: 'A nested procedure CAN create a #temp table with a name that collides with an outer scope\'s — it silently shadows the outer table instead of raising an "already exists" error.',
+    docs: [
+      { label: 'MSSQL Temporary Tables (Scope)', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-local-temporary-table' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The nested procedure\'s own tests pass fine — the bug only shows up as missing data in the OUTER scope after the nested call returns.',
+      'The shadowed outer #temp table is completely inaccessible by name for the duration of the nested scope.',
+    ],
+  },
+
+  'sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback': {
+    apis: ['@table', 'ROLLBACK TRANSACTION', 'TRY/CATCH'],
+    related: [
+      { label: 'Correcting the Nested-Proc Claim — previous', route: '/sql/temp-tables/correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim' },
+      { label: 'Table Variables Support Inline Indexes — next', route: '/sql/temp-tables/demonstrating-that-table-variables-support-inline-non-unique-indexes' },
+      { label: 'Temp Tables & Table Variables (overview)', route: '/sql/temp-tables' },
+    ],
+    tip: 'A @table variable\'s data survives a ROLLBACK TRANSACTION that wipes out a #temp table\'s data in the same block — the standard pattern for error-logging buffers.',
+    docs: [
+      { label: 'MSSQL Table Variables', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is a separate property from "minimal logging" — rollback immunity and logging volume are unrelated characteristics of table variables.',
+      'The ordering of the diagnostic INSERT relative to ROLLBACK doesn\'t matter for a @table variable — it survives either way.',
+    ],
+  },
+
+  'sql/temp-tables/demonstrating-that-table-variables-support-inline-non-unique-indexes': {
+    apis: ['INDEX (inline)', 'NONCLUSTERED', 'DECLARE @t TABLE'],
+    related: [
+      { label: 'Table Variables Survive ROLLBACK — previous', route: '/sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback' },
+      { label: 'Temp Tables & Table Variables (overview)', route: '/sql/temp-tables' },
+    ],
+    tip: 'Since SQL Server 2014, table variables support inline INDEX declarations for non-unique, non-key columns — not just implicit indexes from PRIMARY KEY/UNIQUE.',
+    docs: [
+      { label: 'MSSQL Table Variable Inline Index Syntax', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A standalone CREATE INDEX after the DECLARE statement is still not possible — inline indexes must be part of the DECLARE @t TABLE (...) statement itself.',
+      'Indexing capability and query-plan statistics are separate concerns — table variables still lack accurate row-count statistics even with an inline index.',
+    ],
+  },
+
+  'sql/computed-columns': {
+    apis: ['AS (expr) PERSISTED', 'GENERATED ALWAYS AS ... STORED', 'CHECKSUM', 'HASHBYTES'],
+    related: [{ label: 'Constraints', route: '/sql/constraints' }, { label: 'Indexes', route: '/sql/indexes' }, { label: 'Views', route: '/sql/views' }],
+    tip: 'MSSQL computed columns CAN reference other computed columns — the common claim that they can\'t is incorrect, as long as the dependency graph has no cycles.',
+    docs: [{ label: 'MSSQL Computed Columns', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/specify-computed-columns-in-a-table' }, { label: 'PostgreSQL Generated Columns', url: 'https://www.postgresql.org/docs/current/ddl-generated-columns.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['CHECKSUM() is not guaranteed stable across SQL Server versions/patches — use HASHBYTES with a named algorithm for durable change detection.', 'Adding a STORED generated column to a populated PostgreSQL table is a full table rewrite under AccessExclusiveLock, with no NOT VALID equivalent.'],
+  },
+
+  'sql/computed-columns/testing-that-mssql-computed-columns-can-reference-each-other': {
+    apis: ['AS (expr) PERSISTED', 'computed column chaining'],
+    related: [
+      { label: 'CHECKSUM Is Not Version-Stable — next', route: '/sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches' },
+      { label: 'Computed & Generated Columns (overview)', route: '/sql/computed-columns' },
+    ],
+    tip: 'MSSQL computed columns can reference other computed columns as long as the dependency graph has no cycles — chaining PERSISTED-to-PERSISTED is fully supported.',
+    docs: [
+      { label: 'MSSQL Computed Columns', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/tables/specify-computed-columns-in-a-table' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Duplicating an expression across two computed columns instead of chaining creates a real maintenance risk if the formula is ever revised.',
+      'A claim repeated in both a theory section and a challenge hint is not evidence it was actually tested against the real engine.',
+    ],
+  },
+
+  'sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches': {
+    apis: ['CHECKSUM()', 'HASHBYTES()', 'SHA2_256'],
+    related: [
+      { label: 'Testing MSSQL Computed Column Chaining — previous', route: '/sql/computed-columns/testing-that-mssql-computed-columns-can-reference-each-other' },
+      { label: 'Adding a STORED Column Locks the Whole Table — next', route: '/sql/computed-columns/adding-a-stored-generated-column-locks-the-whole-table' },
+      { label: 'Computed & Generated Columns (overview)', route: '/sql/computed-columns' },
+    ],
+    tip: 'Microsoft documents CHECKSUM\'s output as not guaranteed stable across SQL Server versions — use HASHBYTES with a named cryptographic algorithm for durable row-change detection.',
+    docs: [
+      { label: 'MSSQL CHECKSUM', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/checksum-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Passing SQL Server\'s determinism check (required for PERSISTED) is a weaker guarantee than "stable forever" — it only covers same-input-same-output on one instance/version.',
+      'A change-detection job reprocessing every row after a routine SQL Server patch is a documented symptom of this CHECKSUM instability, not necessarily a pipeline bug.',
+    ],
+  },
+
+  'sql/computed-columns/adding-a-stored-generated-column-locks-the-whole-table': {
+    apis: ['GENERATED ALWAYS AS ... STORED', 'AccessExclusiveLock', 'pg_locks'],
+    related: [
+      { label: 'CHECKSUM Is Not Version-Stable — previous', route: '/sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches' },
+      { label: 'Computed & Generated Columns (overview)', route: '/sql/computed-columns' },
+    ],
+    tip: 'Adding a STORED generated column to a populated table is a full rewrite under AccessExclusiveLock — there is no NOT VALID-style two-phase option like PostgreSQL offers for CHECK constraints.',
+    docs: [
+      { label: 'PostgreSQL Generated Columns', url: 'https://www.postgresql.org/docs/current/ddl-generated-columns.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Reads and writes on the table block for the entire rewrite duration, not just other DDL.',
+      'A batched backfill onto a plain nullable column is the standard workaround for large, populated tables.',
+    ],
+  },
+
+  'sql/stored-functions': {
+    apis: ['CREATE FUNCTION', 'LANGUAGE plpgsql', 'SECURITY DEFINER', 'CREATE AGGREGATE'],
+    related: [{ label: 'Views', route: '/sql/views' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'Security', route: '/sql/security' }],
+    tip: 'SECURITY DEFINER functions should pin search_path to an empty string, not "public" — PostgreSQL\'s own docs warn that public is often writable, defeating the search_path pin as a hijacking defense.',
+    docs: [{ label: 'MSSQL CREATE FUNCTION', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-function-transact-sql' }, { label: 'PostgreSQL CREATE FUNCTION', url: 'https://www.postgresql.org/docs/current/sql-createfunction.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A custom PostgreSQL aggregate needs SFUNC/STYPE at minimum — FINALFUNC is only required when the running state isn\'t already the final answer.', 'MSSQL DATEDIFF(WEEK, ...) and DATEPART(WEEKDAY, ...) both depend on @@DATEFIRST — a function built on them can return different results across environments with different default languages.'],
+  },
+
+  'sql/stored-functions/correcting-the-search-path-public-pin-in-the-security-definer-example': {
+    apis: ['SECURITY DEFINER', 'SET search_path', 'schema qualification'],
+    related: [
+      { label: 'A Real CREATE AGGREGATE Example — next', route: '/sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes' },
+      { label: 'Stored Functions (overview)', route: '/sql/stored-functions' },
+    ],
+    tip: 'PostgreSQL\'s own docs recommend SET search_path = \'\' (empty) for SECURITY DEFINER functions, not a fixed schema like public, which is often writable by ordinary users.',
+    docs: [
+      { label: 'PostgreSQL Writing SECURITY DEFINER Functions Safely', url: 'https://www.postgresql.org/docs/current/sql-createfunction.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Pinning search_path to a fixed value is necessary but not sufficient — the fixed value must not include any schema an attacker can write to.',
+      'search_path = \'\' forces every object reference to be explicitly schema-qualified, closing the attack surface rather than relocating it.',
+    ],
+  },
+
+  'sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes': {
+    apis: ['CREATE AGGREGATE', 'SFUNC', 'STYPE', 'FINALFUNC'],
+    related: [
+      { label: 'Correcting the search_path Pin — previous', route: '/sql/stored-functions/correcting-the-search-path-public-pin-in-the-security-definer-example' },
+      { label: 'Business Days Depends on SET DATEFIRST — next', route: '/sql/stored-functions/demonstrating-that-business-days-depends-on-set-datefirst' },
+      { label: 'Stored Functions (overview)', route: '/sql/stored-functions' },
+    ],
+    tip: 'A custom aggregate behaves exactly like SUM/AVG/COUNT once defined — usable in GROUP BY, HAVING, and window function OVER clauses with no special calling syntax.',
+    docs: [
+      { label: 'PostgreSQL CREATE AGGREGATE', url: 'https://www.postgresql.org/docs/current/sql-createaggregate.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'FINALFUNC is optional — only needed when the running STATE isn\'t already the final output (like AVG needing a final division).',
+      'Aggregates like MEDIAN need a growable STYPE (e.g. an array) rather than a small fixed-size running summary.',
+    ],
+  },
+
+  'sql/stored-functions/demonstrating-that-business-days-depends-on-set-datefirst': {
+    apis: ['DATEDIFF(WEEK, ...)', 'DATEPART(WEEKDAY, ...)', '@@DATEFIRST'],
+    related: [
+      { label: 'A Real CREATE AGGREGATE Example — previous', route: '/sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes' },
+      { label: 'Stored Functions (overview)', route: '/sql/stored-functions' },
+    ],
+    tip: 'DATEDIFF(WEEK, ...) and DATEPART(WEEKDAY, ...) both depend on the session\'s @@DATEFIRST setting — the same function and inputs can return different results across environments.',
+    docs: [
+      { label: 'MSSQL SET DATEFIRST', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-datefirst-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      '@@DATEFIRST is set implicitly by a login\'s default LANGUAGE, which commonly differs across dev, CI, and production without explicit configuration.',
+      'A fixed-reference calculation like DATEDIFF(DAY, 0, d) % 7 avoids the dependency entirely, unlike DATEDIFF(WEEK, ...) or DATEPART(WEEKDAY, ...).',
+    ],
+  },
+
+  'sql/cursors': {
+    apis: ['DECLARE CURSOR', 'FETCH NEXT', '@@FETCH_STATUS', 'REFCURSOR', 'FOR ... LOOP'],
+    related: [{ label: 'Stored Functions', route: '/sql/stored-functions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }, { label: 'CTEs', route: '/sql/ctes' }],
+    tip: 'A LOCAL cursor (the SQL Server default) auto-deallocates when its procedure returns — the "always call DEALLOCATE or leak" warning only strictly applies to GLOBAL cursors.',
+    docs: [{ label: 'MSSQL Cursors', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/declare-cursor-transact-sql' }, { label: 'PostgreSQL Cursors', url: 'https://www.postgresql.org/docs/current/plpgsql-cursors.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A bound CURSOR and a REFCURSOR are different PL/pgSQL constructs — only a REFCURSOR can be returned to a caller for independent, batched fetching.', 'Always trace what a variable actually holds and what a CASE expression\'s multipliers do — names like "discount" can be misleading.'],
+  },
+
+  'sql/cursors/testing-that-local-cursors-auto-deallocate-without-explicit-deallocate': {
+    apis: ['DECLARE CURSOR LOCAL/GLOBAL', 'LOCAL_CURSOR_DEFAULT', 'DEALLOCATE'],
+    related: [
+      { label: 'fetch_customers Isn’t Really a REFCURSOR — next', route: '/sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example' },
+      { label: 'Cursors & Row-by-Row Processing (overview)', route: '/sql/cursors' },
+    ],
+    tip: 'SELECT DATABASEPROPERTYEX(DB_NAME(), \'IsLocalCursorsDefault\') tells you whether a plain DECLARE CURSOR on your database resolves to LOCAL (auto-cleaned) or GLOBAL (leaks without DEALLOCATE).',
+    docs: [
+      { label: 'MSSQL DECLARE CURSOR', url: 'https://learn.microsoft.com/en-us/sql/t-sql/language-elements/declare-cursor-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      '"A cursor with the name already exists" on a repeated procedure call is the reproducible symptom of an un-deallocated GLOBAL cursor.',
+      'LOCAL_CURSOR_DEFAULT = TRUE has been the SQL Server out-of-the-box default since SQL Server 2000, but it can be explicitly overridden per database.',
+    ],
+  },
+
+  'sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example': {
+    apis: ['REFCURSOR', 'CURSOR FOR', 'RETURN QUERY'],
+    related: [
+      { label: 'Testing Local Cursor Auto-Deallocation — previous', route: '/sql/cursors/testing-that-local-cursors-auto-deallocate-without-explicit-deallocate' },
+      { label: 'The “Discount” That’s Actually a Markup — next', route: '/sql/cursors/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup' },
+      { label: 'Cursors & Row-by-Row Processing (overview)', route: '/sql/cursors' },
+    ],
+    tip: 'RETURN QUERY collapses a manual FETCH/EXIT WHEN NOT FOUND/RETURN NEXT loop into one line when a function just needs to return a query\'s rows as-is.',
+    docs: [
+      { label: 'PostgreSQL Returning Cursors', url: 'https://www.postgresql.org/docs/current/plpgsql-cursors.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A genuine REFCURSOR use case lets the CALLER fetch in independent batches across separate round trips — a bound cursor\'s lifecycle stays entirely inside one function call.',
+      'Refcursors only live for the duration of the transaction that opened them.',
+    ],
+  },
+
+  'sql/cursors/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup': {
+    apis: ['CASE WHEN', 'WHERE CURRENT OF', 'FOR UPDATE OF'],
+    related: [
+      { label: 'fetch_customers Isn’t Really a REFCURSOR — previous', route: '/sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example' },
+      { label: 'Cursors & Row-by-Row Processing (overview)', route: '/sql/cursors' },
+    ],
+    tip: 'Multipliers above 1.0 (×1.05, ×1.10, ×1.15) increase a price — a genuine discount uses multipliers below 1.0, or price * (1 - pct/100).',
+    docs: [
+      { label: 'MSSQL WHERE CURRENT OF', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/where-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The same page uses "discount" for two functionally opposite operations — a real risk when copying a pattern by name rather than by what it actually computes.',
+      'A variable\'s name is not a reliable guide to what value it holds — trace the actual query and arithmetic instead.',
+    ],
+  },
+
+  'sql/triggers': {
+    apis: ['CREATE TRIGGER', 'inserted / deleted', 'NEW / OLD', 'REFERENCING', 'ON CONFLICT'],
+    related: [{ label: 'Cursors & Row-by-Row Processing', route: '/sql/cursors' }, { label: 'Constraints', route: '/sql/constraints' }, { label: 'Views', route: '/sql/views' }],
+    tip: 'A PostgreSQL STATEMENT-level trigger has no way to see which rows changed unless the CREATE TRIGGER explicitly declares REFERENCING NEW TABLE AS ... — without it, a "filter" subquery can silently become a tautology.',
+    docs: [{ label: 'MSSQL CREATE TRIGGER', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql' }, { label: 'PostgreSQL Triggers', url: 'https://www.postgresql.org/docs/current/plpgsql-trigger.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['ON CONFLICT DO NOTHING is a no-op without a UNIQUE or EXCLUSION constraint for it to detect a conflict against.', 'RECURSIVE_TRIGGERS (database-level) only stops DIRECT same-table recursion — cross-table "A fires B fires A" needs the separate, server-level "nested triggers" option.'],
+  },
+
+  'sql/triggers/testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology': {
+    apis: ['FOR EACH STATEMENT', 'REFERENCING NEW TABLE', 'transition tables'],
+    related: [
+      { label: 'ON CONFLICT DO NOTHING Is a No-Op Here — next', route: '/sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint' },
+      { label: 'Triggers (overview)', route: '/sql/triggers' },
+    ],
+    tip: 'WHERE order_id IN (SELECT DISTINCT order_id FROM order_items) with no outer narrowing matches every row in the table — it filters nothing.',
+    docs: [
+      { label: 'PostgreSQL Trigger Transition Tables', url: 'https://www.postgresql.org/docs/current/plpgsql-trigger.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A STATEMENT-level trigger without REFERENCING transition tables has no built-in way to see which rows the current statement changed.',
+      'The bug scales cost and false-alert risk with total table size, not with the size of the actual UPDATE.',
+    ],
+  },
+
+  'sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint': {
+    apis: ['ON CONFLICT DO NOTHING', 'UNIQUE constraint', 'NOT EXISTS'],
+    related: [
+      { label: 'Testing the Trigger Subquery Tautology — previous', route: '/sql/triggers/testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology' },
+      { label: 'What Actually Stops Cross-Table Recursion — next', route: '/sql/triggers/correcting-which-setting-actually-stops-cross-table-trigger-recursion' },
+      { label: 'Triggers (overview)', route: '/sql/triggers' },
+    ],
+    tip: 'ON CONFLICT DO NOTHING only has an effect when the target table has a UNIQUE or EXCLUSION constraint to detect a conflict against — otherwise it\'s a syntactically valid no-op.',
+    docs: [
+      { label: 'PostgreSQL INSERT ... ON CONFLICT', url: 'https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The clause never raises an error or warning for lacking a backing constraint — testing for duplicates directly is the only way to catch this.',
+      'A SERIAL primary key on a different column (like alert_id) does not make ON CONFLICT DO NOTHING detect duplicates on product_id.',
+    ],
+  },
+
+  'sql/triggers/correcting-which-setting-actually-stops-cross-table-trigger-recursion': {
+    apis: ['RECURSIVE_TRIGGERS', 'nested triggers (sp_configure)'],
+    related: [
+      { label: 'ON CONFLICT DO NOTHING Is a No-Op Here — previous', route: '/sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint' },
+      { label: 'Triggers (overview)', route: '/sql/triggers' },
+    ],
+    tip: 'RECURSIVE_TRIGGERS (database-level) only stops a trigger from re-firing itself on the SAME table — cross-table "A fires B fires A" needs the server-level "nested triggers" sp_configure option instead.',
+    docs: [
+      { label: 'MSSQL nested triggers Server Configuration', url: 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/nested-triggers-server-configuration-option' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Without stopping cross-table recursion, the chain recurses until it hits SQL Server\'s 32-level nesting limit and raises error 217.',
+      'RECURSIVE_TRIGGERS is a per-database ALTER DATABASE setting; "nested triggers" is a per-server sp_configure setting — different scopes entirely.',
+    ],
+  },
+
+  'sql/dynamic-sql': {
+    apis: ['sp_executesql', 'FORMAT()', '%I / %L', 'QUOTENAME', 'EXECUTE ... USING'],
+    related: [{ label: 'Stored Functions', route: '/sql/stored-functions' }, { label: 'Security', route: '/sql/security' }, { label: 'Pivoting & Cross-Tab', route: '/sql/pivoting' }],
+    tip: 'Safe identifier quoting (%I, QUOTENAME) prevents SQL injection — it does not restrict WHICH tables/columns a caller can access. That needs a separate whitelist check.',
+    docs: [{ label: 'MSSQL sp_executesql', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql' }, { label: 'PostgreSQL EXECUTE', url: 'https://www.postgresql.org/docs/current/plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['Dynamic SQL is only warranted when table names, column names, or clause structure vary at runtime — filtering by a value alone doesn\'t need EXECUTE.', 'An "all filters optional" search procedure needs an explicit guard (TOP/LIMIT, or require one non-NULL filter) or it silently full-scans when called with none.'],
+  },
+
+  'sql/dynamic-sql/search-table-is-injection-safe-but-not-access-control-safe': {
+    apis: ['FORMAT() %I/%L', 'whitelist validation'],
+    related: [
+      { label: 'get_orders_by_status Doesn’t Need Dynamic SQL — next', route: '/sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all' },
+      { label: 'Dynamic SQL (overview)', route: '/sql/dynamic-sql' },
+    ],
+    tip: 'A generic "search any table by name" function needs an explicit whitelist check — correct %I/%L quoting only prevents injection, not unauthorized access to tables the caller shouldn\'t see.',
+    docs: [
+      { label: 'PostgreSQL SECURITY DEFINER Best Practices', url: 'https://www.postgresql.org/docs/current/sql-createfunction.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Injection-safety and access-control-safety are independent properties — a function can have one without the other.',
+      'The risk is highest when the function is SECURITY DEFINER or exposed to a role broader than the intended target tables.',
+    ],
+  },
+
+  'sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all': {
+    apis: ['EXECUTE ... USING', 'static parameterized SQL'],
+    related: [
+      { label: 'search_table Is Injection-Safe, Not Access-Control-Safe — previous', route: '/sql/dynamic-sql/search-table-is-injection-safe-but-not-access-control-safe' },
+      { label: 'Testing usp_SearchOrders for the Full-Scan Risk — next', route: '/sql/dynamic-sql/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk' },
+      { label: 'Dynamic SQL (overview)', route: '/sql/dynamic-sql' },
+    ],
+    tip: 'When only a VALUE varies between calls (not a table, column, or clause structure), a plain parameterized SELECT is simpler and needs no EXECUTE at all.',
+    docs: [
+      { label: 'PostgreSQL PL/pgSQL Statements', url: 'https://www.postgresql.org/docs/current/plpgsql-statements.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Reaching for EXECUTE out of habit for ordinary value-based filtering adds complexity and reduces tooling support for zero safety benefit.',
+      'Dynamic SQL earns its complexity only when the query STRUCTURE itself needs to vary per call.',
+    ],
+  },
+
+  'sql/dynamic-sql/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk': {
+    apis: ['TOP / LIMIT', 'sp_executesql', 'NULL-defaulted parameters'],
+    related: [
+      { label: 'get_orders_by_status Doesn’t Need Dynamic SQL — previous', route: '/sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all' },
+      { label: 'Dynamic SQL (overview)', route: '/sql/dynamic-sql' },
+    ],
+    tip: 'A procedure with all-optional NULL-defaulted filter parameters is valid to call with zero arguments — without an explicit guard, that silently executes a full unfiltered scan.',
+    docs: [
+      { label: 'MSSQL SELECT TOP', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is an ordinary user interaction (clearing all search filters), not an unusual or malicious input.',
+      'The fix requires both a TOP/LIMIT cap and/or a check that at least one filter is non-NULL, as the page\'s own Q&A recommends.',
+    ],
+  },
+
+  'sql/isolation-levels': {
+    apis: ['SET TRANSACTION ISOLATION LEVEL', 'SNAPSHOT', 'SERIALIZABLE', 'RCSI'],
+    related: [{ label: 'Transactions', route: '/sql/transactions' }, { label: 'Locking & Deadlocks', route: '/sql/locking' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'MSSQL SERIALIZABLE blocks concurrent transactions via range locks; PostgreSQL SERIALIZABLE (SSI) lets them proceed and aborts one at commit with a serialization_failure error requiring a retry loop.',
+    docs: [{ label: 'MSSQL Transaction Isolation Levels', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-transaction-isolation-level-transact-sql' }, { label: 'PostgreSQL Transaction Isolation', url: 'https://www.postgresql.org/docs/current/transaction-iso.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['SNAPSHOT\'s bank-transfer safety comes from write-conflict detection (error 3960) on the UPDATE, not from preventing non-repeatable reads on the SELECT.', 'READ COMMITTED blocks or doesn\'t depending entirely on the database-level READ_COMMITTED_SNAPSHOT (RCSI) setting.'],
+  },
+
+  'sql/isolation-levels/testing-that-the-challenges-serializable-solution-needs-a-retry-loop': {
+    apis: ['SERIALIZABLE', 'serialization_failure', 'SQLSTATE 40001'],
+    related: [
+      { label: 'What Actually Protects the Bank Transfer — next', route: '/sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads' },
+      { label: 'Isolation Levels (overview)', route: '/sql/isolation-levels' },
+    ],
+    tip: 'MSSQL SERIALIZABLE blocks the second transaction; PostgreSQL SERIALIZABLE lets both proceed and aborts one with an error — the same "one snippet" solution needs different handling per dialect.',
+    docs: [
+      { label: 'PostgreSQL Serializable Isolation', url: 'https://www.postgresql.org/docs/current/transaction-iso.html#XACT-SERIALIZABLE' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'SERIALIZABLE preventing the double-booking itself is not the same guarantee as SERIALIZABLE preventing an unhandled error from reaching a legitimate user.',
+      'Without a retry loop on PostgreSQL, the losing transaction surfaces a raw serialization_failure error instead of a graceful outcome.',
+    ],
+  },
+
+  'sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads': {
+    apis: ['SNAPSHOT', 'error 3960', 'update conflict detection'],
+    related: [
+      { label: 'Testing the SERIALIZABLE Retry Requirement — previous', route: '/sql/isolation-levels/testing-that-the-challenges-serializable-solution-needs-a-retry-loop' },
+      { label: 'READ COMMITTED Blocking Depends on RCSI — next', route: '/sql/isolation-levels/demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi' },
+      { label: 'Isolation Levels (overview)', route: '/sql/isolation-levels' },
+    ],
+    tip: 'Error 3960 fires when an UPDATE targets a row already modified since the snapshot began — this write-conflict check, not read consistency, is what stops two concurrent deductions.',
+    docs: [
+      { label: 'MSSQL Snapshot Isolation', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A read-only "preview" variant of the same pattern gets snapshot consistency but none of the write-conflict protection, since it never issues the UPDATE that triggers it.',
+      'Error 3960 is SNAPSHOT isolation working as designed, not a sign of misconfiguration.',
+    ],
+  },
+
+  'sql/isolation-levels/demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi': {
+    apis: ['READ_COMMITTED_SNAPSHOT', 'is_read_committed_snapshot_on'],
+    related: [
+      { label: 'What Actually Protects the Bank Transfer — previous', route: '/sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads' },
+      { label: 'Isolation Levels (overview)', route: '/sql/isolation-levels' },
+    ],
+    tip: 'The identical READ COMMITTED SELECT blocks without RCSI and returns immediately with RCSI enabled — check sys.databases.is_read_committed_snapshot_on before assuming which behavior applies.',
+    docs: [
+      { label: 'MSSQL READ_COMMITTED_SNAPSHOT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-set-options' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Non-blocking READ COMMITTED behavior under RCSI still fully avoids dirty reads — it is not a weaker guarantee, just a different mechanism.',
+      'A code example\'s "waits for A to commit" comment implicitly assumes RCSI is off, without ever stating that assumption.',
+    ],
+  },
+
+  'sql/locking': {
+    apis: ['WITH (UPDLOCK)', 'FOR UPDATE', 'DEADLOCK_PRIORITY', 'SKIP LOCKED'],
+    related: [{ label: 'Isolation Levels', route: '/sql/isolation-levels' }, { label: 'Transactions', route: '/sql/transactions' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'PostgreSQL DECLARE/IF/RAISE NOTICE constructs are PL/pgSQL-only — they need a DO $$ ... $$ block or function body to run; they are not valid standalone SQL.',
+    docs: [{ label: 'MSSQL Locking Guide', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide' }, { label: 'PostgreSQL Explicit Locking', url: 'https://www.postgresql.org/docs/current/explicit-locking.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['DEADLOCK_PRIORITY only controls which session is chosen as the victim — it does not prevent the deadlock cycle from forming.', 'UPDATE and DELETE have no ORDER BY clause in either dialect — consistent lock ordering requires separate statements in a fixed sequence, not a clause.'],
+  },
+
+  'sql/locking/testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql': {
+    apis: ['DO $$ ... $$', 'PL/pgSQL', 'DECLARE'],
+    related: [
+      { label: 'DEADLOCK_PRIORITY Doesn’t Prevent the Deadlock — next', route: '/sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock' },
+      { label: 'Locking & Deadlocks (overview)', route: '/sql/locking' },
+    ],
+    tip: 'PostgreSQL\'s top-level DECLARE statement is reserved for cursor declarations — a scalar variable declaration like "DECLARE v_stock INT;" is only valid inside a PL/pgSQL block.',
+    docs: [
+      { label: 'PostgreSQL DO Statement', url: 'https://www.postgresql.org/docs/current/sql-do.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The error reproduces identically with a character-for-character copy — the bug is in the source, not in transcription.',
+      'SELECT ... INTO a variable and IF ... THEN ... END IF are also PL/pgSQL-only, with no standalone-SQL equivalent.',
+    ],
+  },
+
+  'sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock': {
+    apis: ['SET DEADLOCK_PRIORITY', 'error 1205', 'victim selection'],
+    related: [
+      { label: 'Testing the Challenge’s PostgreSQL Solution — previous', route: '/sql/locking/testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql' },
+      { label: 'ORDER BY on UPDATE Is Invalid Syntax — next', route: '/sql/locking/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique' },
+      { label: 'Locking & Deadlocks (overview)', route: '/sql/locking' },
+    ],
+    tip: 'DEADLOCK_PRIORITY LOW guarantees which session is killed when a deadlock occurs — it does not stop the deadlock cycle from forming; error 1205 still fires.',
+    docs: [
+      { label: 'MSSQL SET DEADLOCK_PRIORITY', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/set-deadlock-priority-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Consistent lock ordering and SNAPSHOT isolation genuinely prevent the cycle from forming — DEADLOCK_PRIORITY is a different category of solution entirely.',
+      'A background job with DEADLOCK_PRIORITY LOW will still occasionally see error 1205 — that\'s expected, not a bug.',
+    ],
+  },
+
+  'sql/locking/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique': {
+    apis: ['UPDATE grammar', 'lock acquisition order'],
+    related: [
+      { label: 'DEADLOCK_PRIORITY Doesn’t Prevent the Deadlock — previous', route: '/sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock' },
+      { label: 'Locking & Deadlocks (overview)', route: '/sql/locking' },
+    ],
+    tip: 'UPDATE and DELETE have no ORDER BY clause in either MSSQL or PostgreSQL — "WHERE id IN (...) ORDER BY id" on an UPDATE is a syntax error, not a lock-ordering technique.',
+    docs: [
+      { label: 'MSSQL UPDATE Statement', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/update-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Even on a SELECT (where ORDER BY is valid), it only controls output row order, not internal lock acquisition order.',
+      'The real fix is architectural — separate statements in a consistently-applied sequence across every transaction touching the same resources.',
+    ],
+  },
+
+  'sql/execution-plans': {
+    apis: ['SET SHOWPLAN_ALL', 'SET STATISTICS IO', 'EXPLAIN ANALYZE', 'Index Seek vs Index Scan'],
+    related: [{ label: 'Locking & Deadlocks', route: '/sql/locking' }, { label: 'Statistics', route: '/sql/statistics' }, { label: 'Query Store', route: '/sql/query-store' }],
+    tip: '"Index Scan" means opposite things in MSSQL (the inefficient O(n) case) vs PostgreSQL (the efficient case) — MSSQL\'s efficient equivalent is called "Index Seek."',
+    docs: [{ label: 'MSSQL Execution Plans', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans' }, { label: 'PostgreSQL EXPLAIN', url: 'https://www.postgresql.org/docs/current/using-explain.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['SQL Server\'s data type precedence converts the LOWER-precedence side of a comparison — not always the column, so not every type mismatch disables a seek.', 'A cost-based planner will pick Seq Scan over a matching index on a small enough table — an unused index there is correct, not broken.'],
+  },
+
+  'sql/execution-plans/correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence': {
+    apis: ['Data Type Precedence', 'CONVERT_IMPLICIT', 'Seek Predicate'],
+    related: [
+      { label: 'Index Scan Is Not the Desired MSSQL Outcome — next', route: '/sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome' },
+      { label: 'Execution Plans (overview)', route: '/sql/execution-plans' },
+    ],
+    tip: 'int outranks varchar in SQL Server\'s Data Type Precedence order, so an INT column compared to a VARCHAR parameter converts the parameter, not the column — the seek survives.',
+    docs: [
+      { label: 'MSSQL Data Type Precedence', url: 'https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-type-precedence-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The direction reverses for nvarchar vs varchar — nvarchar outranks varchar, so a VARCHAR COLUMN compared to an NVARCHAR value genuinely does lose its seek.',
+      'CONVERT() explicitly wrapping the column is always unsafe — the precedence rules only help when no explicit conversion function touches the column.',
+    ],
+  },
+
+  'sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome': {
+    apis: ['Index Seek', 'Index Scan', 'Index Only Scan'],
+    related: [
+      { label: 'Correcting the “Scan, Not Seek” Claim — previous', route: '/sql/execution-plans/correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence' },
+      { label: 'Small Tables Seq Scan Despite a Covering Index — next', route: '/sql/execution-plans/testing-that-small-tables-seq-scan-despite-a-covering-index' },
+      { label: 'Execution Plans (overview)', route: '/sql/execution-plans' },
+    ],
+    tip: 'PostgreSQL\'s efficient plan operator is named "Index Scan"/"Index Only Scan"; MSSQL\'s is named "Index Seek" — in MSSQL, "Index Scan" is the inefficient O(n) case the page\'s own theory warns about.',
+    docs: [
+      { label: 'MSSQL Index Seek vs Scan', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/execution-plans' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The challenge\'s own verification note reuses PostgreSQL terminology for the MSSQL half of its dual-dialect solution.',
+      'Seeing "Index Scan" in an MSSQL plan for a selective query is a warning sign, not a success signal — check for "Index Seek" instead.',
+    ],
+  },
+
+  'sql/execution-plans/testing-that-small-tables-seq-scan-despite-a-covering-index': {
+    apis: ['cost-based optimizer', 'seq_page_cost', 'ANALYZE'],
+    related: [
+      { label: 'Index Scan Is Not the Desired MSSQL Outcome — previous', route: '/sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome' },
+      { label: 'Execution Plans (overview)', route: '/sql/execution-plans' },
+    ],
+    tip: 'PostgreSQL\'s planner is cost-based, not rule-based — a matching index goes unused whenever a Seq Scan is estimated cheaper, which is common on small tables.',
+    docs: [
+      { label: 'PostgreSQL Query Planning', url: 'https://www.postgresql.org/docs/current/planner-optimizer.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The challenge\'s "should now show Index Scan ... no Seq Scan" verification note is implicitly scoped to its own stated 10M-row scenario.',
+      'Testing an index against a small staging table is not a reliable predictor of whether production will use it — plan shape can flip entirely with table size.',
+    ],
+  },
+
+  'sql/partitioning': {
+    apis: ['PARTITION BY RANGE/LIST/HASH', 'SWITCH PARTITION', 'ATTACH/DETACH PARTITION'],
+    related: [{ label: 'Execution Plans', route: '/sql/execution-plans' }, { label: 'Bulk Operations', route: '/sql/bulk-operations' }, { label: 'Constraints', route: '/sql/constraints' }],
+    tip: 'A SWITCH target-side "PARTITION n" clause is only valid when the target table is itself partitioned — a plain staging table takes no target partition number.',
+    docs: [{ label: 'MSSQL Partitioned Tables', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/partitions/partitioned-tables-and-indexes' }, { label: 'PostgreSQL Table Partitioning', url: 'https://www.postgresql.org/docs/current/ddl-partitioning.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['TRUNCATE TABLE immediately after a SWITCH, with no backup step in between, permanently deletes the data the SWITCH just moved in.', 'DETACH PARTITION ... CONCURRENTLY cannot run inside a transaction block — a migration tool\'s default BEGIN/COMMIT wrapping will fail on it.'],
+  },
+
+  'sql/partitioning/testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax': {
+    apis: ['ALTER TABLE ... SWITCH', 'error 4982'],
+    related: [
+      { label: 'TRUNCATE Discards the Just-Archived Data — next', route: '/sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in' },
+      { label: 'Partitioning (overview)', route: '/sql/partitioning' },
+    ],
+    tip: 'A target-side "PARTITION n" clause on a SWITCH statement is only valid when the target table is itself built on a partition scheme.',
+    docs: [
+      { label: 'MSSQL ALTER TABLE SWITCH', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A plain, non-partitioned target table omits the target-side PARTITION clause entirely — "TO orders_archive", not "TO orders_archive PARTITION 1".',
+      'Always run reference SQL code tabs end to end in a test database rather than trusting them by inspection.',
+    ],
+  },
+
+  'sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in': {
+    apis: ['TRUNCATE TABLE', 'SWITCH PARTITION'],
+    related: [
+      { label: 'Testing the SWITCH Statement’s Target Syntax — previous', route: '/sql/partitioning/testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax' },
+      { label: 'DETACH CONCURRENTLY in a Transaction Block — next', route: '/sql/partitioning/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block' },
+      { label: 'Partitioning (overview)', route: '/sql/partitioning' },
+    ],
+    tip: 'The archival code tab\'s TRUNCATE TABLE orders_archive runs immediately after the SWITCH, with no backup or export statement anywhere in between.',
+    docs: [
+      { label: 'MSSQL TRUNCATE TABLE', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/truncate-table-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A comment like "clear after archiving" describes intent, not a guarantee that a backup step actually ran first.',
+      'Persist switched-in data (SELECT INTO a permanent table, export, or backup) before ever truncating a staging archive table.',
+    ],
+  },
+
+  'sql/partitioning/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block': {
+    apis: ['DETACH PARTITION ... CONCURRENTLY', 'transaction block'],
+    related: [
+      { label: 'TRUNCATE Discards the Just-Archived Data — previous', route: '/sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in' },
+      { label: 'Partitioning (overview)', route: '/sql/partitioning' },
+    ],
+    tip: 'ALTER TABLE ... DETACH PARTITION ... CONCURRENTLY cannot run inside a BEGIN ... COMMIT block — it manages its own two-phase, non-blocking transaction internally.',
+    docs: [
+      { label: 'PostgreSQL DETACH PARTITION', url: 'https://www.postgresql.org/docs/current/sql-altertable.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A migration tool that wraps every script in an automatic transaction will fail specifically on this statement, even though every preceding setup statement succeeds.',
+      'The plain (non-CONCURRENTLY) DETACH has no transaction-block restriction, at the cost of a brief, stronger, blocking lock.',
+    ],
+  },
+
+  'sql/bulk-operations': {
+    apis: ['BULK INSERT', 'bcp', 'COPY', '\\copy', 'TABLOCK', 'staging table'],
+    related: [{ label: 'Partitioning', route: '/sql/partitioning' }, { label: 'Constraints', route: '/sql/constraints' }, { label: 'Execution Plans', route: '/sql/execution-plans' }],
+    tip: 'Two adjacent examples sharing the same WHERE predicate (a batched DELETE followed by a batched UPDATE) are illustrative alternatives, not a two-step pipeline — running both empties the second one\'s target rows.',
+    docs: [{ label: 'MSSQL BULK INSERT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/bulk-insert-transact-sql' }, { label: 'PostgreSQL COPY', url: 'https://www.postgresql.org/docs/current/sql-copy.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A validation query that flags duplicate keys as invalid only protects the data if the actual INSERT step repeats that exact check.', 'A log backup taken right after a BULK_LOGGED load still cannot be restored to an arbitrary point in time within it.'],
+  },
+
+  'sql/bulk-operations/testing-that-the-batched-update-example-never-finds-a-matching-row': {
+    apis: ['DELETE TOP (@n)', 'UPDATE TOP (n)', 'WHILE @@ROWCOUNT'],
+    related: [
+      { label: 'Step 4 Is Missing the Duplicate Guard — next', route: '/sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard' },
+      { label: 'Bulk Operations (overview)', route: '/sql/bulk-operations' },
+    ],
+    tip: 'The batched DELETE and batched UPDATE examples share the identical WHERE predicate — running the DELETE first empties every row the UPDATE loop is looking for.',
+    docs: [
+      { label: 'MSSQL DELETE TOP', url: 'https://learn.microsoft.com/en-us/sql/t-sql/queries/delete-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A WHILE loop that exits immediately with zero rows affected does not always mean the loop itself is broken — it can mean an earlier statement already removed its target rows.',
+      'Two adjacent code examples under one heading are not automatically safe to run together in sequence.',
+    ],
+  },
+
+  'sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard': {
+    apis: ['INSERT ... SELECT', 'PRIMARY KEY violation', 'TRY_CAST'],
+    related: [
+      { label: 'The Batched UPDATE Example Never Finds a Row — previous', route: '/sql/bulk-operations/testing-that-the-batched-update-example-never-finds-a-matching-row' },
+      { label: 'The BULK_LOGGED Advice’s Restore Gap — next', route: '/sql/bulk-operations/correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap' },
+      { label: 'Bulk Operations (overview)', route: '/sql/bulk-operations' },
+    ],
+    tip: 'Step 3\'s invalid-row query checks for duplicate product_ids, but Step 4\'s INSERT never repeats that check — a duplicate in the source file throws a primary-key violation.',
+    docs: [
+      { label: 'MSSQL INSERT Statement', url: 'https://learn.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A validation query and the actual insert filter can silently drift apart — always re-verify every condition appears in both.',
+      'A single INSERT ... SELECT statement is atomic — one constraint violation terminates the whole batch, not just the offending row.',
+    ],
+  },
+
+  'sql/bulk-operations/correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap': {
+    apis: ['RECOVERY BULK_LOGGED', 'BACKUP LOG', 'STOPAT'],
+    related: [
+      { label: 'Step 4 Is Missing the Duplicate Guard — previous', route: '/sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard' },
+      { label: 'Bulk Operations (overview)', route: '/sql/bulk-operations' },
+    ],
+    tip: 'A log backup that contains a minimally-logged bulk operation cannot be restored to an arbitrary point in time within it — only to its end, or skipped entirely for a later backup.',
+    docs: [
+      { label: 'MSSQL Backup Under Bulk-Logged Recovery', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-sql-server-databases' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      '"The database is recoverable" is not the same claim as "any point in time is restorable" — BULK_LOGGED preserves the former but forfeits the latter for the affected log backup.',
+      'A further, bulk-operation-free log backup taken right after re-establishes normal point-in-time restore capability going forward.',
+    ],
+  },
+
+  'sql/query-store': {
+    apis: ['sys.query_store_runtime_stats', 'sp_query_store_force_plan', 'pg_stat_statements'],
+    related: [{ label: 'Execution Plans', route: '/sql/execution-plans' }, { label: 'Statistics & Optimizer', route: '/sql/statistics' }, { label: 'Bulk Operations', route: '/sql/bulk-operations' }],
+    tip: 'A "historic average" baseline that is never filtered to exclude the value it is being compared against is a self-referential comparison, not a clean one.',
+    docs: [{ label: 'MSSQL Query Store', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store' }, { label: 'PostgreSQL pg_stat_statements', url: 'https://www.postgresql.org/docs/current/pgstatstatements.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['sp_query_store_flush_db persists in-memory data to disk — it does not free storage or resolve a READ_ONLY state caused by MAX_STORAGE_SIZE_MB.', 'Multiple plan_ids per query_id can come from index changes, statistics updates, or SET options — not only parameter sniffing.'],
+  },
+
+  'sql/query-store/testing-that-the-historic-average-includes-the-regressed-interval': {
+    apis: ['AVG() OVER', 'runtime_stats_interval_id', 'CASE WHEN'],
+    related: [
+      { label: 'flush_db Does Not Purge Storage — next', route: '/sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage' },
+      { label: 'Query Store (overview)', route: '/sql/query-store' },
+    ],
+    tip: 'AVG(s.avg_duration) with no filter includes the same latest interval already isolated by the recent_ms CASE expression — the "historic" baseline is contaminated by its own comparison point.',
+    docs: [
+      { label: 'MSSQL Query Store Runtime Stats', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-query-store-runtime-stats-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Excluding the latest interval from the AVG() is a one-line fix, but easy to miss since the query runs without error either way.',
+      'The distortion is worse with a short interval history, where the outlier carries more weight on the average.',
+    ],
+  },
+
+  'sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage': {
+    apis: ['sp_query_store_flush_db', 'current_storage_size_mb', 'QUERY_STORE CLEAR'],
+    related: [
+      { label: 'The Historic Average Includes the Spike — previous', route: '/sql/query-store/testing-that-the-historic-average-includes-the-regressed-interval' },
+      { label: 'Multiple Plans Without Parameter Sniffing — next', route: '/sql/query-store/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing' },
+      { label: 'Query Store (overview)', route: '/sql/query-store' },
+    ],
+    tip: 'sp_query_store_flush_db forces in-memory data to disk — it is a durability operation, not a cleanup one, and cannot resolve a full (READ_ONLY) Query Store.',
+    docs: [
+      { label: 'MSSQL sp_query_store_flush_db', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sys-sp-query-store-flush-db-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Flushing can slightly INCREASE current_storage_size_mb by persisting buffered data, the opposite of freeing space.',
+      'sp_query_store_remove_query, QUERY_STORE CLEAR, or raising MAX_STORAGE_SIZE_MB are the actual remedies for a full Query Store.',
+    ],
+  },
+
+  'sql/query-store/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing': {
+    apis: ['COUNT(DISTINCT plan_id)', 'sql_statement_recompile', 'recompile_cause'],
+    related: [
+      { label: 'flush_db Does Not Purge Storage — previous', route: '/sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage' },
+      { label: 'Query Store (overview)', route: '/sql/query-store' },
+    ],
+    tip: 'A query with zero parameters (pure literals) can still accumulate multiple plan_ids in Query Store — an index rebuild alone forces a recompile with no parameter involved.',
+    docs: [
+      { label: 'MSSQL Recompile Causes', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/extended-events/extended-events' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'COUNT(DISTINCT plan_id) > 1 is evidence a recompile happened, not evidence of WHY — check the actual recompile cause before assuming parameter sniffing.',
+      'Forcing a plan without identifying the recompile cause can mask a legitimate adaptation to genuinely changed data.',
+    ],
+  },
+
+  'sql/statistics': {
+    apis: ['UPDATE STATISTICS', 'ANALYZE', 'DBCC SHOW_STATISTICS', 'pg_stats'],
+    related: [{ label: 'Query Store', route: '/sql/query-store' }, { label: 'Execution Plans', route: '/sql/execution-plans' }, { label: 'Bulk Operations', route: '/sql/bulk-operations' }],
+    tip: 'Density alone only tells you the reciprocal of distinct-value count — the optimizer\'s actual rows-per-value estimate also needs the table\'s total row count.',
+    docs: [{ label: 'MSSQL Statistics', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/statistics/statistics' }, { label: 'PostgreSQL Planner Statistics', url: 'https://www.postgresql.org/docs/current/planner-stats.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A query that computes a threshold as a column without comparing it to the actual metric hasn\'t answered "is this overdue" — it has only reported two numbers.', 'Ranking staleness by flat percentage instead of the dynamic threshold formula can rank a barely-overdue small table above a severely-overdue large one.'],
+  },
+
+  'sql/statistics/testing-that-the-challenges-solution-never-flags-which-stats-are-overdue': {
+    apis: ['sys.dm_db_stats_properties', 'modification_counter', 'CASE WHEN'],
+    related: [
+      { label: 'The Density Quiz’s Rows-Per-Value Claim — next', route: '/sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim' },
+      { label: 'Statistics & Optimizer (overview)', route: '/sql/statistics' },
+    ],
+    tip: 'The challenge\'s solution computes the dynamic threshold as a column but never compares it to modification_counter — a reader must eyeball each row to find the overdue ones.',
+    docs: [
+      { label: 'MSSQL sys.dm_db_stats_properties', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-dynamic-management-views/sys-dm-db-stats-properties-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A CASE expression comparing modification_counter to the threshold turns a report into an answer — a small, easy-to-miss fix.',
+      'The gap matters most once the query is generalized to a database-wide audit with many rows to review.',
+    ],
+  },
+
+  'sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim': {
+    apis: ['DBCC SHOW_STATISTICS', 'density vector', 'cardinality estimation'],
+    related: [
+      { label: 'The Challenge Never Flags What’s Overdue — previous', route: '/sql/statistics/testing-that-the-challenges-solution-never-flags-which-stats-are-overdue' },
+      { label: 'The Stale Stats Query’s Outdated Signal — next', route: '/sql/statistics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage' },
+      { label: 'Statistics & Optimizer (overview)', route: '/sql/statistics' },
+    ],
+    tip: 'estimated_rows_per_value = density × total_rows — the quiz\'s "0.001 density = 1,000 rows" example silently assumes a 1,000,000-row table.',
+    docs: [
+      { label: 'MSSQL Statistics Density', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/statistics/statistics' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Two tables can report the identical density value and still produce very different rows-per-value estimates, if their total row counts differ.',
+      'Density alone tells you 1/distinct_values — never assume it also tells you a fixed row count without knowing the table size.',
+    ],
+  },
+
+  'sql/statistics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage': {
+    apis: ['pct_modified', 'dynamic threshold', 'sys.dm_db_stats_properties'],
+    related: [
+      { label: 'The Density Quiz’s Rows-Per-Value Claim — previous', route: '/sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim' },
+      { label: 'Statistics & Optimizer (overview)', route: '/sql/statistics' },
+    ],
+    tip: 'Ranking by raw pct_modified can rank a barely-overdue small table above a severely-overdue large one — the page\'s own dynamic threshold formula is the more accurate ranking signal.',
+    docs: [
+      { label: 'MSSQL Auto-Update Statistics', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/statistics/statistics' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The same modification percentage means something very different for a small table versus a large one — that is exactly what the dynamic threshold formula was introduced to fix.',
+      'A query\'s title describing its intent ("find stale statistics") does not guarantee its ORDER BY clause reflects the most accurate available signal.',
+    ],
+  },
+
+  'sql/full-text-search': {
+    apis: ['CONTAINS', 'FREETEXT', 'tsvector', 'tsquery', 'ts_rank', 'GIN'],
+    related: [{ label: 'Statistics & Optimizer', route: '/sql/statistics' }, { label: 'Execution Plans', route: '/sql/execution-plans' }, { label: 'Constraints', route: '/sql/constraints' }],
+    tip: 'A tsvector column populated by a one-time UPDATE goes stale the moment a new row is inserted — use GENERATED ALWAYS AS ... STORED or a trigger to keep it current.',
+    docs: [{ label: 'MSSQL Full-Text Search', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/search/full-text-search' }, { label: 'PostgreSQL Text Search', url: 'https://www.postgresql.org/docs/current/textsearch.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['ts_rank has no fixed upper bound by default — a document with many term matches can score well above 1.0.', 'Suffix-stripping stemmers do not normalize irregular verb forms (run/ran) the way a dictionary-based lemmatizer would.'],
+  },
+
+  'sql/full-text-search/testing-that-the-challenges-search-vector-goes-stale-for-new-rows': {
+    apis: ['GENERATED ALWAYS AS STORED', 'tsvector', 'trigger'],
+    related: [
+      { label: 'The ts_rank “0.0 to 1.0” Range Claim — next', route: '/sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim' },
+      { label: 'Full-Text Search (overview)', route: '/sql/full-text-search' },
+    ],
+    tip: 'The challenge\'s solution populates search_vector with a one-time UPDATE and no GENERATED clause or trigger — every row inserted afterward has search_vector = NULL.',
+    docs: [
+      { label: 'PostgreSQL Generated Columns', url: 'https://www.postgresql.org/docs/current/ddl-generated-columns.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The page\'s own separate Q&A already explains the fix (GENERATED ALWAYS AS STORED or a trigger) — the challenge\'s solution just never applies it.',
+      'Testing full-text search only against pre-existing data misses this bug entirely — always test with a row inserted after setup.',
+    ],
+  },
+
+  'sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim': {
+    apis: ['ts_rank', 'ts_rank_cd', 'normalization flag 32'],
+    related: [
+      { label: 'The Challenge’s Search Vector Goes Stale — previous', route: '/sql/full-text-search/testing-that-the-challenges-search-vector-goes-stale-for-new-rows' },
+      { label: 'Stemming Doesn’t Reduce “ran” to “run” — next', route: '/sql/full-text-search/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run' },
+      { label: 'Full-Text Search (overview)', route: '/sql/full-text-search' },
+    ],
+    tip: 'Unlike MSSQL\'s genuinely-bounded 0-1000 RANK, PostgreSQL\'s default ts_rank has no fixed upper bound — pass normalization flag 32 to force a 0..1 result.',
+    docs: [
+      { label: 'PostgreSQL Ranking Search Results', url: 'https://www.postgresql.org/docs/current/textsearch-controls.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'ts_rank scores are meant for relative ranking within one query\'s result set, not as an absolute cross-query percentage.',
+      'A document with many or high-weight term matches can push the default score comfortably past 1.0.',
+    ],
+  },
+
+  'sql/full-text-search/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run': {
+    apis: ['to_tsvector', 'Porter/Snowball stemmer', 'thesaurus'],
+    related: [
+      { label: 'The ts_rank “0.0 to 1.0” Range Claim — previous', route: '/sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim' },
+      { label: 'Full-Text Search (overview)', route: '/sql/full-text-search' },
+    ],
+    tip: 'Suffix-stripping stemmers reduce "runs" to "run" but leave the irregular past tense "ran" as a separate token — a search for one will not match the other.',
+    docs: [
+      { label: 'PostgreSQL Dictionaries', url: 'https://www.postgresql.org/docs/current/textsearch-dictionaries.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Handling irregular verb forms requires a custom thesaurus or dictionary configuration — an extra setup step beyond default stemming.',
+      'A missing search result for a common word is not always an index bug — it can be an inherent stemming limitation.',
+    ],
+  },
+
+  'sql/security': {
+    apis: ['GRANT/REVOKE', 'Row-Level Security', 'BLOCK PREDICATE', 'sp_executesql'],
+    related: [{ label: 'Constraints', route: '/sql/constraints' }, { label: 'Triggers', route: '/sql/triggers' }, { label: 'Stored Procedures', route: '/sql/stored-procedures' }],
+    tip: 'MSSQL RLS has two separate predicate types — a FILTER predicate hides rows from SELECT, but only a BLOCK predicate stops INSERT/UPDATE from writing rows outside the policy.',
+    docs: [{ label: 'MSSQL Row-Level Security', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/security/row-level-security' }, { label: 'PostgreSQL Row Security Policies', url: 'https://www.postgresql.org/docs/current/ddl-rowsecurity.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['A single MERGE statement can fire an AFTER INSERT/UPDATE/DELETE trigger with rows from more than one action type in one execution.', 'A NULL session context value makes a filter predicate exclude every row silently — no error, indistinguishable from a genuinely empty table.'],
+  },
+
+  'sql/security/testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes': {
+    apis: ['ADD BLOCK PREDICATE', 'CREATE SECURITY POLICY', 'WITH CHECK'],
+    related: [
+      { label: 'The Audit Trigger Misclassifies MERGE Rows — next', route: '/sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement' },
+      { label: 'SQL Security (overview)', route: '/sql/security' },
+    ],
+    tip: 'The challenge\'s MSSQL solution only adds a FILTER PREDICATE — app_user can insert or update a row into another tenant\'s data; it just becomes invisible to them afterward.',
+    docs: [
+      { label: 'MSSQL Security Policies', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/security/row-level-security' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'PostgreSQL\'s default policy behavior (USING doubling as WITH CHECK) already blocks this — the two dialects\' solutions in the same challenge end up with different guarantees.',
+      'ADD BLOCK PREDICATE must be added separately for AFTER INSERT and AFTER UPDATE.',
+    ],
+  },
+
+  'sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement': {
+    apis: ['MERGE', 'inserted/deleted', 'FULL JOIN'],
+    related: [
+      { label: 'No Block Predicate for Writes — previous', route: '/sql/security/testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes' },
+      { label: 'An Unset Session Context Silently Returns Zero — next', route: '/sql/security/testing-that-an-unset-session-context-silently-returns-zero-rows' },
+      { label: 'SQL Security (overview)', route: '/sql/security' },
+    ],
+    tip: 'A single MERGE that inserts some rows and deletes others in one execution makes the trigger\'s table-wide EXISTS(inserted) AND EXISTS(deleted) both true, mislabeling every row \'U\'.',
+    docs: [
+      { label: 'MSSQL Trigger inserted/deleted Tables', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/triggers/use-the-inserted-and-deleted-tables' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'A per-row classification via the FULL JOIN\'s own i.id/d.id columns fixes it — no need for table-wide EXISTS() checks at all.',
+      'This only manifests with MERGE (or any statement mixing action types) — plain INSERT/UPDATE/DELETE statements never trigger the bug.',
+    ],
+  },
+
+  'sql/security/testing-that-an-unset-session-context-silently-returns-zero-rows': {
+    apis: ['SESSION_CONTEXT', 'sp_set_session_context', 'three-valued logic'],
+    related: [
+      { label: 'The Audit Trigger Misclassifies MERGE Rows — previous', route: '/sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement' },
+      { label: 'SQL Security (overview)', route: '/sql/security' },
+    ],
+    tip: 'A session that never calls sp_set_session_context gets SESSION_CONTEXT = NULL — the filter predicate excludes every row, returning zero results with no error.',
+    docs: [
+      { label: 'MSSQL SESSION_CONTEXT', url: 'https://learn.microsoft.com/en-us/sql/t-sql/functions/session-context-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the safe, fail-closed outcome for the security feature itself — but it is silent, which misleads debugging.',
+      'Guarding tenant-scoped entry points with an explicit NULL-context check turns this into a diagnosable error.',
+    ],
+  },
+
+  'sql/connection-pooling': {
+    apis: ['sys.dm_exec_sessions', 'pg_stat_activity', 'PgBouncer', 'idle_in_transaction_session_timeout'],
+    related: [{ label: 'SQL Security', route: '/sql/security' }, { label: 'Locking & Deadlocks', route: '/sql/locking' }, { label: 'Isolation Levels', route: '/sql/isolation-levels' }],
+    tip: 'sys.dm_exec_sessions has both last_request_start_time and last_request_end_time — use the end time for idle-duration calculations, not the start time.',
+    docs: [{ label: 'MSSQL Connection Pooling', url: 'https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-connection-pooling' }, { label: 'PgBouncer Documentation', url: 'https://www.pgbouncer.org/config.html' }],
+    resources: [{ label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' }],
+    gotchas: ['SET LOCAL is transaction-scoped and pool-safe under PgBouncer transaction mode — plain SET is the actual hazard.', 'pg_stat_activity has a distinct \'idle in transaction (aborted)\' state that an exact-match filter on \'idle in transaction\' silently misses.'],
+  },
+
+  'sql/connection-pooling/testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column': {
+    apis: ['last_request_start_time', 'last_request_end_time', 'sys.dm_exec_sessions'],
+    related: [
+      { label: 'SET LOCAL Doesn’t Require PgBouncer Session Mode — next', route: '/sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode' },
+      { label: 'Connection Pooling (overview)', route: '/sql/connection-pooling' },
+    ],
+    tip: 'The challenge\'s MSSQL solution measures idle duration from last_request_start_time — for a session whose last query was itself slow, this overstates true idle time by that query\'s duration.',
+    docs: [
+      { label: 'MSSQL sys.dm_exec_sessions', url: 'https://learn.microsoft.com/en-us/sql/relational-databases/system-dynamic-management-views/sys-dm-exec-sessions-transact-sql' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'The PostgreSQL half of the same challenge correctly uses state_change, the direct analogue of last_request_end_time.',
+      'The distortion is worst for exactly the sessions most likely to trigger a false alert — ones whose last query was itself slow.',
+    ],
+  },
+
+  'sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode': {
+    apis: ['SET LOCAL', 'PgBouncer transaction mode', 'plain SET'],
+    related: [
+      { label: 'The MSSQL Idle-in-Tx Proxy’s Wrong Timestamp — previous', route: '/sql/connection-pooling/testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column' },
+      { label: 'The Queries Miss the “Aborted” State — next', route: '/sql/connection-pooling/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state' },
+      { label: 'Connection Pooling (overview)', route: '/sql/connection-pooling' },
+    ],
+    tip: 'SET LOCAL reverts automatically at the transaction boundary — exactly where PgBouncer transaction mode releases the connection, making it pool-safe rather than something requiring session mode.',
+    docs: [
+      { label: 'PostgreSQL SET Command', url: 'https://www.postgresql.org/docs/current/sql-set.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'Plain SET (no LOCAL) is the genuine pooling hazard — its effect persists past the transaction and can leak into the next client sharing that server connection.',
+      'Switching to PgBouncer session mode over a misclassified SET LOCAL feature gives up transaction mode\'s connection-sharing efficiency for no benefit.',
+    ],
+  },
+
+  'sql/connection-pooling/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state': {
+    apis: ['idle in transaction (aborted)', 'pg_stat_activity', 'ROLLBACK'],
+    related: [
+      { label: 'SET LOCAL Doesn’t Require PgBouncer Session Mode — previous', route: '/sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode' },
+      { label: 'Connection Pooling (overview)', route: '/sql/connection-pooling' },
+    ],
+    tip: 'A failed statement inside a transaction does not auto-rollback — the session enters \'idle in transaction (aborted)\', which an exact-match filter on \'idle in transaction\' completely misses.',
+    docs: [
+      { label: 'PostgreSQL pg_stat_activity', url: 'https://www.postgresql.org/docs/current/monitoring-stats.html' },
+    ],
+    resources: [
+      { label: 'DB Fiddle', url: 'https://dbfiddle.uk/', badge: 'tool' },
+    ],
+    gotchas: [
+      'An aborted transaction still holds every lock it acquired before the failing statement — a real, not cosmetic, blocking risk.',
+      'state LIKE \'idle in transaction%\' catches both variants; idle_in_transaction_session_timeout already covers both server-side.',
+    ],
+  },
+
   'sql/cheatsheet': {
     apis: ['SELECT', 'JOIN', 'GROUP BY', 'WINDOW', 'CTE', 'DDL', 'DML', 'DCL'],
     related: [{ label: 'SQL Basics', route: '/sql/basics' }, { label: 'Joins', route: '/sql/joins' }, { label: 'Window Functions', route: '/sql/window-functions' }],

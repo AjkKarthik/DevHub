@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Constraints"
+    topicRoute="/sql/constraints"
+    subtopicLabel="Correcting the UNIQUE NULL-Handling Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That MSSQL UNIQUE Allows Only One NULL, Not Multiple</h1>
+  <p class="page-subtitle">
+    The main page says MSSQL allows multiple NULLs in a UNIQUE column "the same" as PostgreSQL — SQL Server
+    actually caps it at exactly one.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With two dialect-specific corrections done, the final subtopic confirms a PostgreSQL-only technique the
+      page only describes in prose — the actual locking difference between a plain ADD CONSTRAINT and the
+      NOT VALID + VALIDATE CONSTRAINT pattern.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Constraints"
+    topicRoute="/sql/constraints"
+    [prev]="{ label: 'Testing ON DELETE RESTRICT in T-SQL', route: '/sql/constraints/testing-that-on-delete-restrict-is-invalid-t-sql-syntax' }"
+    [next]="{ label: 'NOT VALID Avoids the Full-Table Lock', route: '/sql/constraints/not-valid-plus-validate-constraint-avoids-the-full-table-lock' }"
+  />
+</div>

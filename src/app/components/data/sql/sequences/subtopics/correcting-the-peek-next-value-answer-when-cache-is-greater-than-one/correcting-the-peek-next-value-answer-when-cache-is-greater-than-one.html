@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Sequences & Identity"
+    topicRoute="/sql/sequences"
+    subtopicLabel="Correcting the Quiz's Own 'Peek' Answer"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Correcting the "Peek Next Value" Answer When CACHE Is Greater Than One</h1>
+  <p class="page-subtitle">
+    The quiz's recommended technique for previewing a sequence's next value silently assumes CACHE 1 — the
+    page's own CACHE 50 example breaks it.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="PostgreSQL 6.0" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Having corrected a CACHE-related claim, the next subtopic writes out actual trigger code to demonstrate
+      the @@IDENTITY vs SCOPE_IDENTITY() divergence the page only describes in prose.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Sequences & Identity"
+    topicRoute="/sql/sequences"
+    [next]="{ label: 'SCOPE_IDENTITY() vs @@IDENTITY, Demonstrated', route: '/sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger' }"
+  />
+</div>

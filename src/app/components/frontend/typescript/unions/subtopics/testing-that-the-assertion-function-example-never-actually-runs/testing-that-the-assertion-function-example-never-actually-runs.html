@@ -1,0 +1,49 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Union & Intersection Types"
+    topicRoute="/typescript/unions"
+    subtopicLabel="The Assertion Function Example Doesn’t Run" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That the Assertion Function Example Never Actually Runs</h1>
+  <p class="page-subtitle">
+    The main page's asserts val is string example calls a fetchData() that's never defined — copied exactly
+    as written, it fails to compile before the assertion function's own behavior is ever exercised.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 3.7+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Reproduce the exact "Cannot find name" error the main page's example produces, then run a completed,
+      genuinely executable version that exercises both the narrowing and the throwing path.
+    </p>
+    <app-live-playground
+      title="Assertion functions — completing a non-runnable example"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this closes out the theme: a falsy value the page's own
+      list omits, a "safe" fix that isn't fully safe, and now an example that was never actually run before
+      being published — three reasons to execute a reference page's code directly rather than trusting it
+      by inspection.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Union & Intersection Types"
+    topicRoute="/typescript/unions"
+    [prev]="{ label: 'The “Safe” isUser Fix Still Uses as any', route: '/typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice' }" />
+</div>

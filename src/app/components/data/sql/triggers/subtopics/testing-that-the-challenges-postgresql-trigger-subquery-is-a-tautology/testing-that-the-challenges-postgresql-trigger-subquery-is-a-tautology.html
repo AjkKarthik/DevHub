@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Triggers"
+    topicRoute="/sql/triggers"
+    subtopicLabel="Testing the Challenge's Own Subquery"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Challenge's PostgreSQL Trigger Subquery Is a Tautology</h1>
+  <p class="page-subtitle">
+    The low-stock trigger's "affected products" filter checks order_id against the entire order_items table —
+    it matches everything, causing alerts for products the statement never touched.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="PostgreSQL 10" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the over-firing bug fixed, the next subtopic checks a second, independent bug in the exact same
+      trigger — the ON CONFLICT DO NOTHING clause meant to prevent duplicate alerts.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Triggers"
+    topicRoute="/sql/triggers"
+    [next]="{ label: 'ON CONFLICT DO NOTHING Is a No-Op Here', route: '/sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint' }"
+  />
+</div>

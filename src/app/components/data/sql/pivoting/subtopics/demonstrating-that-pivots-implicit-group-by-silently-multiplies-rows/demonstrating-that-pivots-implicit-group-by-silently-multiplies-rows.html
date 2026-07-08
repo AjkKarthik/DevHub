@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Pivoting & Cross-Tab"
+    topicRoute="/sql/pivoting"
+    subtopicLabel="PIVOT's Invisible Implicit GROUP BY"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That PIVOT's Implicit GROUP BY Silently Multiplies Rows</h1>
+  <p class="page-subtitle">
+    The main page's working PIVOT example depends on a rule it never states — one extra column in the source
+    subquery, and the row count silently explodes with no error.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL Server 2005" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With PIVOT's hidden grouping rule exposed, the next subtopic finds a genuine bug in the main page's
+      own CROSS APPLY multi-column UNPIVOT example — a query that's missing the column it needs most.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Pivoting & Cross-Tab"
+    topicRoute="/sql/pivoting"
+    [next]="{ label: 'Fixing the CROSS APPLY UNPIVOT Example', route: '/sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column' }"
+  />
+</div>

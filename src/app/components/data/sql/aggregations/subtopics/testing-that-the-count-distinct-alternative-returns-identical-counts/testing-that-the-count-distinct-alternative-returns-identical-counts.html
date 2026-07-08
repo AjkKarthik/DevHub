@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Aggregations"
+    topicRoute="/sql/aggregations"
+    subtopicLabel="Testing the COUNT(DISTINCT) Alternative"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the COUNT(DISTINCT) Alternative Returns Identical Counts</h1>
+  <p class="page-subtitle">
+    The main page's own "faster" pre-dedup CTE pattern is never proven to return the same result as the
+    COUNT(DISTINCT) it replaces — a missing grouping column in the DISTINCT list silently changes the answer.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the COUNT(DISTINCT) alternative regression-tested, the next subtopic looks at a different legacy
+      pattern from the main page's own STRING_AGG code tab — one that silently corrupts data containing
+      special characters.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Aggregations"
+    topicRoute="/sql/aggregations"
+    [next]="{ label: 'The Legacy FOR XML PATH Pattern XML-Encodes Special Characters', route: '/sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters' }"
+  />
+</div>

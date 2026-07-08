@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="DB Architecture"
+    topicRoute="/sql/db-architecture"
+    subtopicLabel="Testing the Timeout Setting"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing idle_in_transaction_session_timeout Actually Works</h1>
+  <p class="page-subtitle">
+    The main page's own recommendation to set this timeout is never proven to actually terminate a stuck
+    session — and role/database-level overrides can silently defeat a global default.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the timeout setting verified, the next subtopic digs into a real gap in the main page's own
+      MSSQL buffer hit ratio query — it reads a raw counter that isn't actually a percentage at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="DB Architecture"
+    topicRoute="/sql/db-architecture"
+    [next]="{ label: 'Buffer Hit Ratio Query Reads a Meaningless Raw Counter', route: '/sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter' }"
+  />
+</div>

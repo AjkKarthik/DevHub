@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Union & Intersection Types"
+    topicRoute="/typescript/unions"
+    subtopicLabel="BigInt Zero Is Falsy Too" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That BigInt Zero (0n) Is Falsy and Skipped by Truthiness Narrowing</h1>
+  <p class="page-subtitle">
+    The main page's list of falsy values — null, undefined, 0, "", false, NaN — omits one: 0n, the BigInt
+    zero, which is just as easy to accidentally treat as "absent" when it's a genuine value.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="ES2020+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Confirm the classic six falsy values, then test a bigint balance of exactly <code>0n</code> against
+      truthiness narrowing versus an explicit null check.
+    </p>
+    <app-live-playground
+      title="Falsy values — testing the missing 0n"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the exact same pitfall the main page already warns about for plain numbers — the missing
+      piece is that <code>bigint</code>, used for large IDs and precise numeric values, has an identical
+      falsy-zero trap of its own.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Union & Intersection Types"
+    topicRoute="/typescript/unions"
+    [next]="{ label: 'The “Safe” isUser Fix Still Uses as any', route: '/typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice' }" />
+</div>

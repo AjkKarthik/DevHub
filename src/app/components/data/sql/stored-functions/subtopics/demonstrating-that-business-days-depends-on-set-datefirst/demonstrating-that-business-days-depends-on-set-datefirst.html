@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Stored Functions"
+    topicRoute="/sql/stored-functions"
+    subtopicLabel="A Result That Isn't Actually Fixed"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That Business Days Depends on SET DATEFIRST</h1>
+  <p class="page-subtitle">
+    The main page presents fn_business_days('2024-01-01','2024-01-31') → 23 as a fixed fact — the function
+    silently depends on a session setting that varies across environments.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A security fix, a real working example filling a documentation gap, and now a hidden environment
+      dependency — all three came from testing the main page's own code against real execution rather than
+      trusting its stated results.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Stored Functions"
+    topicRoute="/sql/stored-functions"
+    [prev]="{ label: 'A Real CREATE AGGREGATE Example', route: '/sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes' }"
+  />
+</div>

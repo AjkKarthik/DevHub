@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Connection Pooling"
+    topicRoute="/sql/connection-pooling"
+    subtopicLabel="The Queries Miss the “Aborted” State"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Idle-in-Transaction Queries Miss the "Aborted" State</h1>
+  <p class="page-subtitle">
+    Every idle-in-transaction query on the page uses an exact match on 'idle in transaction' — completely
+    missing sessions stuck in 'idle in transaction (aborted)', which hold locks too.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="PostgreSQL 9.x+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A wrong timestamp, a misclassified pooling feature, and now a state filter that misses half its
+      target — three reminders to verify monitoring queries against real, induced failure scenarios.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Connection Pooling"
+    topicRoute="/sql/connection-pooling"
+    [prev]="{ label: 'SET LOCAL Doesn’t Require PgBouncer Session Mode', route: '/sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode' }"
+  />
+</div>

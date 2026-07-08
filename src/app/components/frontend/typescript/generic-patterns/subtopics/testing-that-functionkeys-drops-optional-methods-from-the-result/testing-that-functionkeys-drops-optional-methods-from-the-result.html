@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Generic Patterns"
+    topicRoute="/typescript/generic-patterns"
+    subtopicLabel="FunctionKeys Drops Optional Methods" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That FunctionKeys Drops Optional Methods From the Result</h1>
+  <p class="page-subtitle">
+    The main page's FunctionKeys example only tests required methods — adding one optional method reveals it
+    gets silently excluded from the result.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="advanced" since="TypeScript 2.8+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Add one optional method to the main page's own <code>Service</code> interface and check whether
+      <code>FunctionKeys&lt;Service&gt;</code> still includes it.
+    </p>
+    <app-live-playground
+      title="Optional methods and conditional key filters — testing FunctionKeys"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's Flatten &amp; Conditional Generics example past the one case it never
+      tests — optional properties — before closing out with the builder pattern's own gap.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Generic Patterns"
+    topicRoute="/typescript/generic-patterns"
+    [prev]="{ label: 'Pipeline Skips pipe() Entirely', route: '/typescript/generic-patterns/testing-that-pipeline-skips-pipe-entirely-and-still-type-checks' }"
+    [next]="{ label: 'QueryBuilder Builds With Zero Fields', route: '/typescript/generic-patterns/testing-that-querybuilder-builds-successfully-with-zero-fields-set' }" />
+</div>

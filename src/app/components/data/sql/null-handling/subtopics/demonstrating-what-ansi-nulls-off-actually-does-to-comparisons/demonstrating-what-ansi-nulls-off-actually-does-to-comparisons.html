@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="NULL Handling"
+    topicRoute="/sql/null-handling"
+    subtopicLabel="ANSI_NULLS OFF, Made Concrete"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating What ANSI_NULLS OFF Actually Does to Comparisons</h1>
+  <p class="page-subtitle">
+    The main page's own warning about ANSI_NULLS OFF is prose only — here the identical query text is run
+    under both settings, and a stored procedure's permanently captured setting is confirmed directly.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover NULL Handling end-to-end: reconciling the main page's own two
+      NULL-equality rules, uncovering a more consequential reason to avoid ISNULL than portability, and
+      demonstrating exactly what a legacy session setting can silently do to NULL comparisons.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="NULL Handling"
+    topicRoute="/sql/null-handling"
+    [prev]="{ label: 'ISNULL Can Silently Truncate', route: '/sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability' }"
+  />
+</div>

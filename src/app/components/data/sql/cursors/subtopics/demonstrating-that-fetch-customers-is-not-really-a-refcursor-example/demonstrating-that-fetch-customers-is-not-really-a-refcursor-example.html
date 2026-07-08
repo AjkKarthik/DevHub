@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Cursors & Row-by-Row Processing"
+    topicRoute="/sql/cursors"
+    subtopicLabel="A Label That Doesn't Match Its Code"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That fetch_customers Isn't Really a REFCURSOR Example</h1>
+  <p class="page-subtitle">
+    The main page labels fetch_customers "useful for REFCURSOR" — it's a plain bound cursor, over-engineered
+    for what RETURN QUERY does in one line, with the real REFCURSOR pattern shown here instead.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="PostgreSQL 8.0" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      From a mislabeled cursor pattern, the final subtopic finds a semantic mix-up on the same page — a
+      "discount" variable that actually raises prices, right next to a real percentage-discount challenge.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Cursors & Row-by-Row Processing"
+    topicRoute="/sql/cursors"
+    [prev]="{ label: 'Testing Local Cursor Auto-Deallocation', route: '/sql/cursors/testing-that-local-cursors-auto-deallocate-without-explicit-deallocate' }"
+    [next]="{ label: 'The “Discount” That’s Actually a Markup', route: '/sql/cursors/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup' }"
+  />
+</div>

@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Computed & Generated Columns"
+    topicRoute="/sql/computed-columns"
+    subtopicLabel="Testing a Restriction Stated Twice"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That MSSQL Computed Columns Can Reference Each Other</h1>
+  <p class="page-subtitle">
+    Both the theory and the challenge hint claim MSSQL computed columns can't reference each other — running
+    the exact chained version proves they can.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With chaining confirmed to work, the next subtopic checks a different computed-column example on the
+      page — the CHECKSUM-based row_hash pattern — for a durability assumption it never states.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Computed & Generated Columns"
+    topicRoute="/sql/computed-columns"
+    [next]="{ label: 'CHECKSUM Is Not Version-Stable', route: '/sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches' }"
+  />
+</div>

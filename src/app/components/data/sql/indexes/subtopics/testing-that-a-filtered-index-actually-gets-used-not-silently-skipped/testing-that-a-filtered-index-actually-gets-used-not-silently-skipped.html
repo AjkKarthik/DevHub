@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Indexes"
+    topicRoute="/sql/indexes"
+    subtopicLabel="Testing Filtered Index Usage"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That a Filtered Index Actually Gets Used, Not Silently Skipped</h1>
+  <p class="page-subtitle">
+    The main page's own claim — "the optimiser will use it when it can prove the filter is satisfied" —
+    is never tested against the two realistic cases where that proof fails.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With filtered index usage confirmed via evidence, the next subtopic quantifies a different claim the
+      main page states but never puts a number on — exactly how much extra storage a wide clustered key costs
+      across every non-clustered index.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Indexes"
+    topicRoute="/sql/indexes"
+    [next]="{ label: 'Quantifying the Wide Clustered Key Storage Cost', route: '/sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes' }"
+  />
+</div>

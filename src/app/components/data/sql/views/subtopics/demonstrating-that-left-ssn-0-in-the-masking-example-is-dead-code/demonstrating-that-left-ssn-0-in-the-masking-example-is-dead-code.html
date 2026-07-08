@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Views"
+    topicRoute="/sql/views"
+    subtopicLabel="Spotting Dead Code in a Masking Example"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Demonstrating That LEFT(ssn, 0) in the Masking Example Is Dead Code</h1>
+  <p class="page-subtitle">
+    The main page's data-masking Q&amp;A includes LEFT(ssn, 0) — a function call that always returns an
+    empty string and can be deleted with zero change in output.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="beginner" since="SQL Server 2000" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      From a security gap to a piece of dead code, the final subtopic switches to demonstrating something the
+      page only ever describes in prose — an actual INSTEAD OF trigger for a multi-table join view.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Views"
+    topicRoute="/sql/views"
+    [prev]="{ label: 'Testing the Challenge’s Cross-Tenant Leak', route: '/sql/views/testing-that-the-mssql-challenge-solution-is-missing-with-check-option' }"
+    [next]="{ label: 'An INSTEAD OF INSERT Trigger, Demonstrated', route: '/sql/views/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view' }"
+  />
+</div>

@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Stored Functions"
+    topicRoute="/sql/stored-functions"
+    subtopicLabel="Correcting a Security-Sensitive Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Correcting the search_path = public Pin in the SECURITY DEFINER Example</h1>
+  <p class="page-subtitle">
+    The main page's own code sets search_path = public to "prevent hijacking" — PostgreSQL's own docs
+    recommend an empty search_path instead, for exactly this vulnerability.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="PostgreSQL 8.3" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the security fix corrected, the next subtopic writes the actual working CREATE AGGREGATE code the
+      quiz only describes in general terms.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Stored Functions"
+    topicRoute="/sql/stored-functions"
+    [next]="{ label: 'A Real CREATE AGGREGATE Example', route: '/sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes' }"
+  />
+</div>

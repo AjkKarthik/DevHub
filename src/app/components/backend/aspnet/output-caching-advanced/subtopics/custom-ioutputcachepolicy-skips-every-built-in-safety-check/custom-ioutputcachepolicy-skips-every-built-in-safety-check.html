@@ -1,0 +1,42 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Output Caching Advanced"
+    topicRoute="/aspnet/output-caching-advanced"
+    subtopicLabel="Custom Policy Safety Gaps"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Custom IOutputCachePolicy Skips Every Built-In Safety Check</h1>
+  <p class="page-subtitle">
+    The main page's own "Custom Cache Key" example implements IOutputCachePolicy from scratch — which
+    means it gets none of the framework's built-in GET-only, status-code, or Authorization-header guards
+    for free, and its own code never reimplements them.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="Core 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover output caching end-to-end: proving eviction actually works
+      under test, understanding what stampede-prevention really guarantees (and doesn't), and knowing
+      exactly which safety checks a custom policy must reimplement by hand.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Output Caching Advanced"
+    topicRoute="/aspnet/output-caching-advanced"
+    [prev]="{ label: 'How Cache Stampede Locking Survives Population Failures', route: '/aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures' }"
+  />
+</div>

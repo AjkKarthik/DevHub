@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Output Caching Advanced"
+    topicRoute="/aspnet/output-caching-advanced"
+    subtopicLabel="Stampede Locking Mechanics"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">How Cache Stampede Locking Survives Population Failures</h1>
+  <p class="page-subtitle">
+    The main page states that on a cache miss "the first request populates the cache while others wait" —
+    but never explains what happens when that first request fails, or what the waiters actually get once
+    it succeeds.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since="Core 7+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the locking mechanics covered, the final subtopic returns to the main page's own "Custom Cache
+      Key" example — implementing IOutputCachePolicy from scratch means none of the framework's built-in
+      safety checks apply automatically, and that example's own code has a real gap.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Output Caching Advanced"
+    topicRoute="/aspnet/output-caching-advanced"
+    [prev]="{ label: 'Testing Tag Eviction With a Fake IOutputCacheStore', route: '/aspnet/output-caching-advanced/testing-tag-eviction-with-fake-outputcachestore' }"
+    [next]="{ label: 'Custom IOutputCachePolicy Skips Every Built-In Safety Check', route: '/aspnet/output-caching-advanced/custom-ioutputcachepolicy-skips-every-built-in-safety-check' }"
+  />
+</div>

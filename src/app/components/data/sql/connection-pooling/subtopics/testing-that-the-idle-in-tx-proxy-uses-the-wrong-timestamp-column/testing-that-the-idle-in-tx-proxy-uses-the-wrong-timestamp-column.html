@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Connection Pooling"
+    topicRoute="/sql/connection-pooling"
+    subtopicLabel="The MSSQL Idle-in-Tx Proxy's Wrong Timestamp"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing That the Idle-in-Tx Proxy Uses the Wrong Timestamp Column</h1>
+  <p class="page-subtitle">
+    The challenge's MSSQL solution measures idle duration from last_request_start_time instead of
+    last_request_end_time — overstating idle time by the length of the session's own last query.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="SQL Server 2005+" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      A wrong timestamp column on the MSSQL side — the next subtopic corrects a PgBouncer session-mode
+      claim on the PostgreSQL side of the same page.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Connection Pooling"
+    topicRoute="/sql/connection-pooling"
+    [next]="{ label: 'SET LOCAL Doesn’t Require PgBouncer Session Mode', route: '/sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode' }"
+  />
+</div>

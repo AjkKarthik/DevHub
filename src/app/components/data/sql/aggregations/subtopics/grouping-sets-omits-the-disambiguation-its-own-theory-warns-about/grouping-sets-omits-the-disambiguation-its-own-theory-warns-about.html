@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Aggregations"
+    topicRoute="/sql/aggregations"
+    subtopicLabel="A GROUPING() Gap the Theory Warns About"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">GROUPING SETS Omits the Disambiguation Its Own Theory Warns About</h1>
+  <p class="page-subtitle">
+    The main page's own theory explains why GROUPING() is needed to tell subtotal rows from real NULL data —
+    and its ROLLUP example uses it. Its GROUPING SETS example, right below, doesn't.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Aggregations end-to-end: proving a "faster" COUNT(DISTINCT)
+      alternative is actually equivalent, catching a silent data-corruption bug in a legacy string-concatenation
+      pattern, and closing a GROUPING() disambiguation gap the main page's own theory already explains.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Aggregations"
+    topicRoute="/sql/aggregations"
+    [prev]="{ label: 'The Legacy FOR XML PATH Pattern XML-Encodes Special Characters', route: '/sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters' }"
+  />
+</div>

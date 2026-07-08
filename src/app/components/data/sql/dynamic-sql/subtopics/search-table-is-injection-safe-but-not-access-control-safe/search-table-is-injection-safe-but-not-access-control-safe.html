@@ -1,0 +1,40 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Dynamic SQL"
+    topicRoute="/sql/dynamic-sql"
+    subtopicLabel="Two Different Kinds of &quot;Safe&quot;"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">search_table() Is Injection-Safe But Not Access-Control-Safe</h1>
+  <p class="page-subtitle">
+    The main page's %I/%L quoting is genuinely injection-safe — but with no table whitelist, any caller can
+    read any table by name, exactly the risk the page's own multi-tenant Q&amp;A warns about elsewhere.
+  </p>
+
+  <app-page-meta [readingTime]="14" difficulty="advanced" since="PostgreSQL 9.1" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Having separated injection-safety from access-control-safety, the next subtopic questions whether one
+      of the page's own "dynamic SQL" examples needed dynamic SQL at all.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Dynamic SQL"
+    topicRoute="/sql/dynamic-sql"
+    [next]="{ label: 'get_orders_by_status Doesn’t Need Dynamic SQL', route: '/sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all' }"
+  />
+</div>

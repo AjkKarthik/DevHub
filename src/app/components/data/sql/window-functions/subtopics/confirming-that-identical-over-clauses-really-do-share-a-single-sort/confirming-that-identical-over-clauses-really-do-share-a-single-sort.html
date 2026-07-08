@@ -1,0 +1,42 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Window Functions"
+    topicRoute="/sql/window-functions"
+    subtopicLabel="Confirming the Shared-Sort Claim"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Confirming That Identical OVER() Clauses Really Do Share a Single Sort</h1>
+  <p class="page-subtitle">
+    The main page's own claim about shared sorts is never demonstrated — an execution plan directly confirms
+    it, and shows exactly when a differing OVER() clause adds a second sort pass.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover Window Functions end-to-end: proving a clever consecutive-day
+      grouping trick actually detects a real gap, explaining why an identical-looking frame clause matters
+      for one function but not another, and confirming a sort-sharing performance claim with a real plan
+      instead of trusting it.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Window Functions"
+    topicRoute="/sql/window-functions"
+    [prev]="{ label: 'Why FIRST_VALUE’s Explicit Frame Is a No-Op But LAST_VALUE’s Isn’t', route: '/sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential' }"
+  />
+</div>

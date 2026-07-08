@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Type Guards & Narrowing"
+    topicRoute="/typescript/narrowing"
+    subtopicLabel="greet('') Doesn’t Say Hello, Stranger" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That greet("") Doesn't Actually Say "Hello, Stranger!"</h1>
+  <p class="page-subtitle">
+    The main page's own logical-narrowing example combines && and ?? in a way that lets an empty string
+    slip through unchanged — the individually-accurate comments don't reveal the combined behavior.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="ES2020+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Trace exactly what <code>greet('')</code> returns step by step, then compare two different fixes.
+    </p>
+    <app-live-playground
+      title="greet() — tracing the empty-string edge case"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together with the previous two subtopics, this closes out the theme: narrowing that survives longer
+      than expected, narrowing that provides less protection than expected, and now a logical-operator
+      combination that behaves differently than its own comments suggest for one specific input.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Type Guards & Narrowing"
+    topicRoute="/typescript/narrowing"
+    [prev]="{ label: 'Array.isArray Narrows to any[]', route: '/typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety' }" />
+</div>

@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Enums &amp; Tuples"
+    topicRoute="/typescript/enums-tuples"
+    subtopicLabel="minMax Without a Return Type" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That minMax Without a Return Type Becomes an Array</h1>
+  <p class="page-subtitle">
+    The main page's own minMax function has an explicit tuple return type — remove it, and destructuring
+    still "works," but out-of-bounds access silently stops being a compile error.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Run the main page's <code>minMax</code> function both with and without its <code>: [number, number]</code>
+      return type, then compare what happens when you index past position 1.
+    </p>
+    <app-live-playground
+      title="Explicit tuple return type vs inferred array — testing minMax"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This connects the main page's Tuple Use Cases example directly to its separate Common Mistake #4,
+      closing out the enums-and-tuples topic with the exact protection an explicit tuple annotation buys you.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Enums &amp; Tuples"
+    topicRoute="/typescript/enums-tuples"
+    [prev]="{ label: 'const enum Doesn’t Actually Throw Here', route: '/typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground' }" />
+</div>

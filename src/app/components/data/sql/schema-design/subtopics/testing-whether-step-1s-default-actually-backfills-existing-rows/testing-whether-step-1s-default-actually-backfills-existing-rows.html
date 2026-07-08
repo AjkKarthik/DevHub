@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Schema Design"
+    topicRoute="/sql/schema-design"
+    subtopicLabel="Testing the Migration's Step 1"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Testing Whether Step 1's DEFAULT Actually Backfills Existing Rows</h1>
+  <p class="page-subtitle">
+    The main page's own 3-step NOT NULL migration recipe is presented as dialect-neutral — but Step 2's
+    batch backfill is required in MSSQL and actively wasteful in PostgreSQL 11+.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      With the migration recipe's dialect split confirmed, the next subtopic looks at a different alternative
+      the main page presents without caveats — its PostgreSQL ENUM type recommendation, which turns out to be
+      harder to evolve than the CHECK constraint it's offered as a replacement for.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Schema Design"
+    topicRoute="/sql/schema-design"
+    [next]="{ label: 'The PostgreSQL ENUM Alternative Is Harder to Evolve', route: '/sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier' }"
+  />
+</div>

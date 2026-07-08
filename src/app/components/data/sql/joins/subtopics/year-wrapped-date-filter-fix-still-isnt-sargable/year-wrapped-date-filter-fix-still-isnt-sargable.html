@@ -1,0 +1,41 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Joins"
+    topicRoute="/sql/joins"
+    subtopicLabel="A Second, Unfixed Problem in the Same Line"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">YEAR()-Wrapped Date Filter Fix Still Isn't Sargable</h1>
+  <p class="page-subtitle">
+    The main page's own fix correctly moves the year filter into the ON clause — but the YEAR()/EXTRACT()
+    function wrap in that same line is a separate, unaddressed sargability problem.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="advanced" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      The final subtopic returns to the main page's own anti-join &amp; self-join code tab — labeled to run
+      in "both" dialects, but containing one line that is actually PostgreSQL-only.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Joins"
+    topicRoute="/sql/joins"
+    [prev]="{ label: 'Testing the Row-Multiplication Fix', route: '/sql/joins/testing-that-the-row-multiplication-fix-actually-prevents-double-counting' }"
+    [next]="{ label: 'The “Both” Tab’s Self-Join Query Is PostgreSQL-Only', route: '/sql/joins/anti-join-self-join-both-tab-has-a-postgresql-only-clause' }"
+  />
+</div>

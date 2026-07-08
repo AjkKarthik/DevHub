@@ -831,6 +831,339 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'ctx.Arguments.OfType() Is Fragile — Use GetArgument by Position', route: '/aspnet/minimal-api-advanced/ctx-arguments-oftype-is-fragile-use-getargument-by-position' },
     { label: 'Nested Group Filters Execute Outside-In Like Middleware', route: '/aspnet/minimal-api-advanced/nested-group-filters-execute-outside-in-like-middleware' },
   ],
+  'output-caching-advanced': [
+    { label: 'Testing Tag Eviction With a Fake IOutputCacheStore', route: '/aspnet/output-caching-advanced/testing-tag-eviction-with-fake-outputcachestore' },
+    { label: 'How Cache Stampede Locking Survives Population Failures', route: '/aspnet/output-caching-advanced/how-cache-stampede-locking-survives-population-failures' },
+    { label: 'Custom IOutputCachePolicy Skips Every Built-In Safety Check', route: '/aspnet/output-caching-advanced/custom-ioutputcachepolicy-skips-every-built-in-safety-check' },
+  ],
+  'dapper': [
+    { label: 'Testing Dapper Repositories With In-Memory SQLite', route: '/aspnet/dapper/testing-dapper-repositories-with-in-memory-sqlite' },
+    { label: 'How Dapper Decides Whether to Close the Connection It Used', route: '/aspnet/dapper/how-dapper-decides-whether-to-close-the-connection-it-used' },
+    { label: 'TransferAsync Holds Its Connection Open Far Too Long', route: '/aspnet/dapper/transferasync-example-holds-its-connection-open-far-too-long' },
+  ],
+  'csrf': [
+    { label: 'Testing GET Requests Cannot Reach State-Changing Endpoints', route: '/aspnet/csrf/testing-get-requests-cant-reach-state-changing-endpoints' },
+    { label: 'Cookie Token and Request Token Are Not the Same String', route: '/aspnet/csrf/cookie-token-and-request-token-are-not-the-same-string' },
+    { label: 'Manual Validation Middleware and UseAntiforgery() Are Redundant', route: '/aspnet/csrf/manual-validation-middleware-and-useantiforgery-are-redundant-not-layered' },
+  ],
+  'feature-flags': [
+    { label: 'Testing Feature-Flagged Code: Mocking vs Config Override', route: '/aspnet/feature-flags/testing-feature-flagged-code-mocking-and-config-override' },
+    { label: 'PercentageFilter Re-Rolls on Every Call — Not Sticky Per User', route: '/aspnet/feature-flags/percentagefilter-re-rolls-on-every-call-not-sticky-per-user' },
+    { label: 'FeatureGate With Multiple Flags Defaults to RequirementType.All', route: '/aspnet/feature-flags/featuregate-multiple-flags-defaults-to-requirementtype-all' },
+  ],
+  'localization': [
+    { label: 'Testing Localized Responses: Fixed Provider vs Accept-Language', route: '/aspnet/localization/testing-localized-responses-fixed-culture-provider-vs-accept-language' },
+    { label: 'Resource Fallback Follows Culture Hierarchy, Not Just Missing Keys', route: '/aspnet/localization/resx-fallback-follows-culture-hierarchy-not-just-missing-keys' },
+    { label: 'Culture Cookie Endpoint Silently Rejects Arabic', route: '/aspnet/localization/culture-cookie-endpoint-hardcoded-list-silently-rejects-arabic' },
+  ],
+  'masstransit': [
+    { label: 'Testing MassTransit Consumers and Request-Reply With ITestHarness', route: '/aspnet/masstransit/testing-masstransit-consumers-and-request-reply-with-itestharness' },
+    { label: 'UseMessageRetry and UseDelayedRedelivery Multiply, Not Add', route: '/aspnet/masstransit/usemessageretry-and-usedelayedredelivery-multiply-not-add' },
+    { label: 'Send() Hardcoded Queue Name Can Silently Point at an Empty Queue', route: '/aspnet/masstransit/send-hardcoded-queue-name-can-silently-point-at-an-empty-queue' },
+  ],
+  'response-compression': [
+    { label: 'Testing Minimum Size Threshold and Skip-If-Already-Encoded', route: '/aspnet/response-compression/testing-minimum-size-threshold-and-skip-if-already-encoded' },
+    { label: 'Registration Order Only Breaks Ties Among Supported Encodings', route: '/aspnet/response-compression/registration-order-only-breaks-ties-among-client-supported-encodings' },
+    { label: 'Diagnostic Middleware Must Wrap Compression, Not Nest Inside It', route: '/aspnet/response-compression/diagnostic-middleware-must-wrap-compression-not-nest-inside-it' },
+  ],
+  'aspnet-websockets': [
+    { label: 'Testing WebSocket Endpoints With TestServer’s WebSocketClient', route: '/aspnet/websockets/testing-websocket-endpoints-with-testservers-websocketclient' },
+    { label: 'Close Handshake Mechanics: What Actually Ends the Receive Loop', route: '/aspnet/websockets/close-handshake-mechanics-what-actually-ends-the-receive-loop' },
+    { label: 'Receive-Loop Examples Silently Truncate Multi-Frame Messages', route: '/aspnet/websockets/receive-loop-examples-silently-truncate-multi-frame-messages' },
+  ],
+  'yarp': [
+    { label: 'Testing YARP Routes and Transforms With LoadFromMemory', route: '/aspnet/yarp/testing-yarp-routes-and-transforms-with-loadfrommemory' },
+    { label: 'Passive Health Checks Don’t Verify Recovery — Just Retry After a Timeout', route: '/aspnet/yarp/passive-health-checks-dont-verify-recovery-just-retry-after-timeout' },
+    { label: 'Proxy Pipeline Order Is Not Arbitrary', route: '/aspnet/yarp/proxy-pipeline-order-is-not-arbitrary-affinity-before-load-balancing' },
+  ],
+  'aspnet-opentelemetry': [
+    { label: 'Testing Custom Spans and Metrics With ActivityListener', route: '/aspnet/opentelemetry/testing-custom-spans-and-metrics-with-activitylistener-and-meterlistener' },
+    { label: 'SetTag Guards Against Null, Not Against a Sampled-Out Span', route: '/aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span' },
+    { label: 'Fire-and-Forget Work Inside a Span Outlives Its Parent', route: '/aspnet/opentelemetry/fire-and-forget-inside-a-span-creates-a-child-that-outlives-its-parent' },
+  ],
+  'rdbms-concepts': [
+    { label: 'Testing Constraints With tSQLt and pgTAP', route: '/sql/rdbms-concepts/testing-constraints-with-tsqlt-and-pgtap' },
+    { label: 'Plan Cache Pollution Is About Query Text, Not Structure', route: '/sql/rdbms-concepts/plan-cache-pollution-is-about-query-text-not-query-structure' },
+    { label: 'Cascade Delete Demo Doesn’t Match the Page’s Own Schema', route: '/sql/rdbms-concepts/cascade-delete-demo-doesnt-match-the-pages-own-schema' },
+  ],
+  'data-modeling': [
+    { label: 'Testing the Polymorphic CHECK Constraint', route: '/sql/data-modeling/testing-the-polymorphic-check-constraint-with-tsqlt-and-pgtap' },
+    { label: 'Recursive CTE Has No Cycle Protection', route: '/sql/data-modeling/recursive-cte-has-no-cycle-protection-and-dialects-fail-differently' },
+    { label: 'UUID Example Contradicts the Page’s Own Theory', route: '/sql/data-modeling/uuid-example-uses-the-exact-pattern-its-own-theory-warns-against' },
+  ],
+  'normalization': [
+    { label: 'Testing That the OrderTotal Trigger Actually Stays in Sync', route: '/sql/normalization/testing-that-the-ordertotal-trigger-actually-stays-in-sync' },
+    { label: 'Why a Computed Column Can’t Replace the OrderTotal Trigger', route: '/sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger' },
+    { label: 'Challenge Solution Comment Contradicts Its Own FK', route: '/sql/normalization/challenge-solutions-comment-contradicts-its-own-fk-declaration' },
+  ],
+  'db-architecture': [
+    { label: 'Testing idle_in_transaction_session_timeout Actually Works', route: '/sql/db-architecture/testing-idle-in-transaction-session-timeout-actually-works' },
+    { label: 'Buffer Hit Ratio Query Reads a Meaningless Raw Counter', route: '/sql/db-architecture/buffer-hit-ratio-query-reads-a-meaningless-raw-counter' },
+    { label: 'n_dead_tup Is an Estimate, Not a Live Count', route: '/sql/db-architecture/dead-tup-in-pg-stat-user-tables-is-an-estimate-not-live' },
+  ],
+  'data-types': [
+    { label: 'Testing That Financial Columns Stay DECIMAL', route: '/sql/data-types/testing-that-financial-columns-stay-decimal-not-float' },
+    { label: 'Implicit Conversion Direction, Corrected', route: '/sql/data-types/implicit-conversion-warning-has-the-risky-direction-backwards' },
+    { label: 'jsonb_set() and NULL Targets', route: '/sql/data-types/jsonb-set-silently-no-ops-on-a-null-target' },
+  ],
+  'sql-basics': [
+    { label: 'Testing the Tie-Break Gap', route: '/sql/basics/distinct-on-and-row-number-examples-have-no-tie-breaker' },
+    { label: 'Confirming the Conversion Claim', route: '/sql/basics/confirming-not-trusting-the-implicit-conversion-claim' },
+    { label: 'OFFSET Paging Under Concurrent Writes', route: '/sql/basics/offset-pagination-skips-or-duplicates-rows-when-data-changes-mid-pagination' },
+  ],
+  'joins': [
+    { label: 'Testing the Row-Multiplication Fix', route: '/sql/joins/testing-that-the-row-multiplication-fix-actually-prevents-double-counting' },
+    { label: 'A Second, Unfixed Sargability Problem', route: '/sql/joins/year-wrapped-date-filter-fix-still-isnt-sargable' },
+    { label: 'The “Both” Label Isn’t Always True', route: '/sql/joins/anti-join-self-join-both-tab-has-a-postgresql-only-clause' },
+  ],
+  'aggregations': [
+    { label: 'Testing the COUNT(DISTINCT) Alternative', route: '/sql/aggregations/testing-that-the-count-distinct-alternative-returns-identical-counts' },
+    { label: 'The Legacy Pattern’s Hidden Corruption', route: '/sql/aggregations/legacy-stuff-for-xml-path-pattern-silently-xml-encodes-special-characters' },
+    { label: 'A GROUPING() Gap the Theory Warns About', route: '/sql/aggregations/grouping-sets-omits-the-disambiguation-its-own-theory-warns-about' },
+  ],
+  'subqueries': [
+    { label: 'Testing the Window Function Rewrite', route: '/sql/subqueries/testing-that-the-window-function-rewrite-matches-the-correlated-subquery' },
+    { label: 'The “Avoid This” Example Doesn’t Run At All', route: '/sql/subqueries/the-avoid-this-window-function-in-having-example-doesnt-run-at-all' },
+    { label: 'Row Subqueries and the MSSQL Rewrite', route: '/sql/subqueries/row-subqueries-and-the-mssql-rewrite-the-page-never-shows' },
+  ],
+  'ctes': [
+    { label: 'Testing the Depth Guard Against a Cycle', route: '/sql/ctes/testing-that-the-depth-guard-actually-stops-a-cyclic-manager-chain' },
+    { label: 'CategoryPath’s Missing Depth Guard', route: '/sql/ctes/categorypath-has-no-depth-guard-and-postgresql-wont-save-it' },
+    { label: 'Confirming the Double-Execution Claim', route: '/sql/ctes/confirming-that-a-twice-referenced-cte-actually-executes-twice' },
+  ],
+  'window-functions': [
+    { label: 'Testing the Islands-and-Gaps Pattern', route: '/sql/window-functions/testing-that-the-islands-and-gaps-pattern-actually-splits-on-a-real-gap' },
+    { label: 'Why One Frame Fix Matters, the Other Doesn’t', route: '/sql/window-functions/why-first-values-explicit-frame-is-a-no-op-but-last-values-is-essential' },
+    { label: 'Confirming the Shared-Sort Claim', route: '/sql/window-functions/confirming-that-identical-over-clauses-really-do-share-a-single-sort' },
+  ],
+  'indexes': [
+    { label: 'Testing Filtered Index Usage', route: '/sql/indexes/testing-that-a-filtered-index-actually-gets-used-not-silently-skipped' },
+    { label: 'Quantifying the Wide Key Cost', route: '/sql/indexes/quantifying-why-a-wide-clustered-key-multiplies-storage-across-indexes' },
+    { label: 'A Claim That Breaks Its Own Rule', route: '/sql/indexes/the-no-sort-needed-claim-breaks-its-own-leftmost-prefix-rule' },
+  ],
+  'transactions': [
+    { label: 'Testing the Bank Transfer Pattern', route: '/sql/transactions/testing-that-the-bank-transfer-example-is-already-safe-without-updlock' },
+    { label: 'Demonstrating Write Skew', route: '/sql/transactions/demonstrating-write-skew-the-one-anomaly-left-without-code' },
+    { label: 'An Unconditional Rollback Bug', route: '/sql/transactions/the-postgresql-savepoint-example-rolls-back-a-successful-insert' },
+  ],
+  'schema-design': [
+    { label: 'Testing the Migration’s Step 1', route: '/sql/schema-design/testing-whether-step-1s-default-actually-backfills-existing-rows' },
+    { label: 'The ENUM Alternative Is Harder to Evolve', route: '/sql/schema-design/the-postgresql-enum-alternative-is-harder-to-evolve-not-easier' },
+    { label: 'The Lookup-Table Pattern Never Retires the Old CHECK', route: '/sql/schema-design/adding-the-lookup-table-pattern-never-retires-the-original-check' },
+  ],
+  'stored-procedures': [
+    { label: 'Testing usp_PlaceOrder’s Concurrency', route: '/sql/stored-procedures/testing-that-usp-placeorder-can-oversell-stock-under-concurrent-calls' },
+    { label: 'Confirming the Inline TVF Pushdown Claim', route: '/sql/stored-procedures/confirming-that-the-inline-tvfs-where-clause-actually-gets-pushed-down' },
+    { label: 'Demonstrating the SCOPE_IDENTITY() Scoping Gap', route: '/sql/stored-procedures/demonstrating-that-scope-identity-is-scoped-to-the-dynamic-batch' },
+  ],
+  // NOTE: keyed 'sql-performance', NOT bare 'performance' — the bare
+  // slug is contested across multiple hubs (see the aspnet-performance
+  // note above); prefixing avoids a future collision.
+  'sql-performance': [
+    { label: 'Testing the OR-to-UNION-ALL Rewrite', route: '/sql/performance/testing-that-the-or-to-union-all-rewrite-doesnt-duplicate-overlapping-rows' },
+    { label: 'A Missing Normalization Step', route: '/sql/performance/the-missing-index-impact-score-formula-is-missing-a-100' },
+    { label: 'Building the Regression Test', route: '/sql/performance/demonstrating-the-execution-plan-regression-test-the-page-only-describes' },
+  ],
+  'json-features': [
+    { label: 'Testing the Merge Operator’s Limits', route: '/sql/json-features/testing-that-merge-silently-wipes-out-nested-keys-instead-of-deep-merging' },
+    { label: 'What Untyped OPENJSON Actually Returns', route: '/sql/json-features/demonstrating-what-openjsons-untyped-output-looks-like-for-object-arrays' },
+    { label: 'A NULL-Handling Gap in a Partial Index', route: '/sql/json-features/the-partial-indexs-not-equal-predicate-silently-excludes-null-status-rows' },
+  ],
+  'set-operations': [
+    { label: 'Testing the Schema Comparison Query', route: '/sql/set-operations/testing-that-the-schema-comparison-query-misses-type-only-drift' },
+    { label: 'Making Precedence Concrete', route: '/sql/set-operations/demonstrating-that-intersects-tighter-binding-actually-changes-the-result' },
+    { label: 'Confirming EXCEPT vs NOT EXISTS Execution', route: '/sql/set-operations/confirming-that-except-materialises-both-sets-not-exists-short-circuits' },
+  ],
+  'null-handling': [
+    { label: 'Testing UNION vs JOIN NULL Equality', route: '/sql/null-handling/testing-that-union-treats-two-nulls-as-equal-while-join-doesnt' },
+    { label: 'A Bigger Reason to Avoid ISNULL', route: '/sql/null-handling/isnull-can-silently-truncate-a-bigger-reason-than-portability' },
+    { label: 'Demonstrating ANSI_NULLS OFF', route: '/sql/null-handling/demonstrating-what-ansi-nulls-off-actually-does-to-comparisons' },
+  ],
+  'merge': [
+    { label: 'Proving the Duplicate-Source Bug', route: '/sql/merge/testing-that-the-mssql-merge-duplicate-source-bug-is-real' },
+    { label: 'ON CONFLICT and Partial Indexes', route: '/sql/merge/on-conflict-is-atomic-once-the-partial-index-predicate-matches' },
+    { label: 'MERGE Can Still Race Without HOLDLOCK', route: '/sql/merge/concurrent-merge-statements-can-still-race-without-holdlock' },
+  ],
+  'string-functions': [
+    { label: 'Testing the Name Normaliser Against NULLs', route: '/sql/string-functions/testing-that-name-normaliser-returns-null-for-a-null-last-name' },
+    { label: 'Prefix LIKE Needs Pattern Ops', route: '/sql/string-functions/demonstrating-that-prefix-like-needs-pattern-ops-under-default-locale' },
+    { label: 'REPLACE Is Case-Insensitive by Default', route: '/sql/string-functions/replace-is-case-insensitive-by-default-contradicting-its-own-claim' },
+  ],
+  'date-functions': [
+    { label: 'Testing the Monthly Revenue Report for Gaps', route: '/sql/date-functions/testing-that-the-monthly-revenue-report-drops-zero-order-months' },
+    { label: 'GROUP BY DATE_TRUNC Needs an Expression Index', route: '/sql/date-functions/group-by-date-trunc-still-needs-an-expression-index-not-the-raw-column' },
+    { label: 'AT TIME ZONE’s Automatic DST Adjustment', route: '/sql/date-functions/demonstrating-at-time-zones-automatic-dst-adjustment-across-march' },
+  ],
+  'conditional-expressions': [
+    { label: 'Confirming CASE’s Guaranteed Evaluation Order', route: '/sql/conditional-expressions/case-when-order-is-standard-guaranteed-not-just-typical-behavior' },
+    { label: 'Testing the Dead NULLIF(COUNT(*), 0) Guard', route: '/sql/conditional-expressions/testing-that-nullif-count-zero-can-never-actually-fire' },
+    { label: 'The Nested IIF Contradiction', route: '/sql/conditional-expressions/nested-iif-where-example-contradicts-its-own-nesting-advice' },
+  ],
+  'math-functions': [
+    { label: 'Correcting the Banker’s Rounding Claim', route: '/sql/math-functions/correcting-the-bankers-rounding-claim-for-postgresql-numeric' },
+    { label: 'Testing AVG on Integers Across Dialects', route: '/sql/math-functions/testing-that-avg-on-integers-differs-between-postgresql-and-mssql' },
+    { label: 'TABLESAMPLE Can Return Far Fewer Rows', route: '/sql/math-functions/mssql-tablesample-rows-can-return-far-fewer-rows-than-requested' },
+  ],
+  'pivoting': [
+    { label: 'PIVOT’s Invisible Implicit GROUP BY', route: '/sql/pivoting/demonstrating-that-pivots-implicit-group-by-silently-multiplies-rows' },
+    { label: 'Fixing the CROSS APPLY UNPIVOT Example', route: '/sql/pivoting/fixing-the-cross-apply-unpivot-examples-missing-month-column' },
+    { label: 'Confirming crosstab()’s Safe Two-Argument Form', route: '/sql/pivoting/testing-that-crosstabs-two-argument-form-handles-a-missing-month' },
+  ],
+  'constraints': [
+    { label: 'Testing ON DELETE RESTRICT in T-SQL', route: '/sql/constraints/testing-that-on-delete-restrict-is-invalid-t-sql-syntax' },
+    { label: 'MSSQL UNIQUE Allows Only One NULL', route: '/sql/constraints/testing-that-mssql-unique-allows-only-one-null-not-multiple' },
+    { label: 'NOT VALID Avoids the Full-Table Lock', route: '/sql/constraints/not-valid-plus-validate-constraint-avoids-the-full-table-lock' },
+  ],
+  'views': [
+    { label: 'Testing the Challenge’s Cross-Tenant Leak', route: '/sql/views/testing-that-the-mssql-challenge-solution-is-missing-with-check-option' },
+    { label: 'The Dead LEFT(ssn, 0) in the Masking Example', route: '/sql/views/demonstrating-that-left-ssn-0-in-the-masking-example-is-dead-code' },
+    { label: 'An INSTEAD OF INSERT Trigger, Demonstrated', route: '/sql/views/demonstrating-an-instead-of-insert-trigger-for-a-multi-table-join-view' },
+  ],
+  'sequences': [
+    { label: 'Correcting the ‘Peek Next Value’ Answer', route: '/sql/sequences/correcting-the-peek-next-value-answer-when-cache-is-greater-than-one' },
+    { label: 'SCOPE_IDENTITY() vs @@IDENTITY, Demonstrated', route: '/sql/sequences/demonstrating-the-scope-identity-vs-identity-divergence-with-a-trigger' },
+    { label: 'Testing Out-of-Order Sequence Commits', route: '/sql/sequences/testing-that-committed-sequence-ids-can-appear-out-of-order' },
+  ],
+  'temp-tables': [
+    { label: 'Correcting the Nested-Proc Claim', route: '/sql/temp-tables/correcting-the-nested-proc-cannot-create-duplicate-temp-table-claim' },
+    { label: 'Table Variables Survive ROLLBACK', route: '/sql/temp-tables/demonstrating-that-table-variables-are-not-rolled-back-by-rollback' },
+    { label: 'Table Variables Support Inline Indexes', route: '/sql/temp-tables/demonstrating-that-table-variables-support-inline-non-unique-indexes' },
+  ],
+  'computed-columns': [
+    { label: 'Testing MSSQL Computed Column Chaining', route: '/sql/computed-columns/testing-that-mssql-computed-columns-can-reference-each-other' },
+    { label: 'CHECKSUM Is Not Version-Stable', route: '/sql/computed-columns/checksum-is-not-stable-across-sql-server-versions-or-patches' },
+    { label: 'Adding a STORED Column Locks the Whole Table', route: '/sql/computed-columns/adding-a-stored-generated-column-locks-the-whole-table' },
+  ],
+  'stored-functions': [
+    { label: 'Correcting the search_path Pin', route: '/sql/stored-functions/correcting-the-search-path-public-pin-in-the-security-definer-example' },
+    { label: 'A Real CREATE AGGREGATE Example', route: '/sql/stored-functions/writing-an-actual-create-aggregate-example-the-quiz-only-describes' },
+    { label: 'Business Days Depends on SET DATEFIRST', route: '/sql/stored-functions/demonstrating-that-business-days-depends-on-set-datefirst' },
+  ],
+  'cursors': [
+    { label: 'Testing Local Cursor Auto-Deallocation', route: '/sql/cursors/testing-that-local-cursors-auto-deallocate-without-explicit-deallocate' },
+    { label: 'fetch_customers Isn’t Really a REFCURSOR', route: '/sql/cursors/demonstrating-that-fetch-customers-is-not-really-a-refcursor-example' },
+    { label: 'The “Discount” That’s Actually a Markup', route: '/sql/cursors/demonstrating-that-the-cursor-discount-example-is-actually-a-price-markup' },
+  ],
+  'triggers': [
+    { label: 'Testing the Trigger Subquery Tautology', route: '/sql/triggers/testing-that-the-challenges-postgresql-trigger-subquery-is-a-tautology' },
+    { label: 'ON CONFLICT DO NOTHING Is a No-Op Here', route: '/sql/triggers/testing-that-on-conflict-do-nothing-is-a-no-op-without-a-constraint' },
+    { label: 'What Actually Stops Cross-Table Recursion', route: '/sql/triggers/correcting-which-setting-actually-stops-cross-table-trigger-recursion' },
+  ],
+  'dynamic-sql': [
+    { label: 'search_table Is Injection-Safe, Not Access-Control-Safe', route: '/sql/dynamic-sql/search-table-is-injection-safe-but-not-access-control-safe' },
+    { label: 'get_orders_by_status Doesn’t Need Dynamic SQL', route: '/sql/dynamic-sql/demonstrating-that-get-orders-by-status-does-not-need-dynamic-sql-at-all' },
+    { label: 'Testing usp_SearchOrders for the Full-Scan Risk', route: '/sql/dynamic-sql/testing-that-usp-searchorders-has-no-guard-against-the-full-scan-risk' },
+  ],
+  'isolation-levels': [
+    { label: 'Testing the SERIALIZABLE Retry Requirement', route: '/sql/isolation-levels/testing-that-the-challenges-serializable-solution-needs-a-retry-loop' },
+    { label: 'What Actually Protects the Bank Transfer', route: '/sql/isolation-levels/snapshot-protects-via-conflict-detection-not-just-non-repeatable-reads' },
+    { label: 'READ COMMITTED Blocking Depends on RCSI', route: '/sql/isolation-levels/demonstrating-that-read-committed-blocking-behavior-depends-on-rcsi' },
+  ],
+  'locking': [
+    { label: 'Testing the Challenge’s PostgreSQL Solution', route: '/sql/locking/testing-that-the-challenges-postgresql-solution-is-not-valid-standalone-sql' },
+    { label: 'DEADLOCK_PRIORITY Doesn’t Prevent the Deadlock', route: '/sql/locking/demonstrating-that-deadlock-priority-low-does-not-prevent-the-deadlock' },
+    { label: 'ORDER BY on UPDATE Is Invalid Syntax', route: '/sql/locking/testing-that-order-by-on-update-is-invalid-syntax-not-a-lock-technique' },
+  ],
+  'execution-plans': [
+    { label: 'Correcting the “Scan, Not Seek” Claim', route: '/sql/execution-plans/correcting-the-scan-not-seek-claim-for-int-vs-varchar-precedence' },
+    { label: 'Index Scan Is Not the Desired MSSQL Outcome', route: '/sql/execution-plans/demonstrating-that-index-scan-is-not-the-desired-mssql-outcome' },
+    { label: 'Small Tables Seq Scan Despite a Covering Index', route: '/sql/execution-plans/testing-that-small-tables-seq-scan-despite-a-covering-index' },
+  ],
+  'partitioning': [
+    { label: 'Testing the SWITCH Statement’s Target Syntax', route: '/sql/partitioning/testing-that-switch-to-orders-archive-partition-1-is-invalid-syntax' },
+    { label: 'TRUNCATE Discards the Just-Archived Data', route: '/sql/partitioning/testing-that-truncate-orders-archive-discards-the-data-just-switched-in' },
+    { label: 'DETACH CONCURRENTLY in a Transaction Block', route: '/sql/partitioning/demonstrating-that-detach-concurrently-cannot-run-in-a-transaction-block' },
+  ],
+  'bulk-operations': [
+    { label: 'The Batched UPDATE Example Never Finds a Row', route: '/sql/bulk-operations/testing-that-the-batched-update-example-never-finds-a-matching-row' },
+    { label: 'Step 4 Is Missing the Duplicate Guard', route: '/sql/bulk-operations/testing-that-the-challenges-step-4-insert-is-missing-the-duplicate-guard' },
+    { label: 'The BULK_LOGGED Advice’s Restore Gap', route: '/sql/bulk-operations/correcting-the-bulk-logged-advice-missing-the-point-in-time-restore-gap' },
+  ],
+  'query-store': [
+    { label: 'The Historic Average Includes the Spike', route: '/sql/query-store/testing-that-the-historic-average-includes-the-regressed-interval' },
+    { label: 'flush_db Does Not Purge Storage', route: '/sql/query-store/testing-that-flush-db-does-not-purge-or-reduce-query-store-storage' },
+    { label: 'Multiple Plans Without Parameter Sniffing', route: '/sql/query-store/demonstrating-that-multiple-plans-can-appear-without-parameter-sniffing' },
+  ],
+  'statistics': [
+    { label: 'The Challenge Never Flags What’s Overdue', route: '/sql/statistics/testing-that-the-challenges-solution-never-flags-which-stats-are-overdue' },
+    { label: 'The Density Quiz’s Rows-Per-Value Claim', route: '/sql/statistics/correcting-the-density-quizs-rows-per-distinct-value-claim' },
+    { label: 'The Stale Stats Query’s Outdated Signal', route: '/sql/statistics/testing-that-the-stale-stats-query-ranks-by-the-outdated-flat-percentage' },
+  ],
+  'full-text-search': [
+    { label: 'The Challenge’s Search Vector Goes Stale', route: '/sql/full-text-search/testing-that-the-challenges-search-vector-goes-stale-for-new-rows' },
+    { label: 'The ts_rank “0.0 to 1.0” Range Claim', route: '/sql/full-text-search/correcting-the-ts-ranks-fixed-0-to-1-range-claim' },
+    { label: 'Stemming Doesn’t Reduce “ran” to “run”', route: '/sql/full-text-search/testing-that-stemming-does-not-reduce-ran-to-the-same-token-as-run' },
+  ],
+  'security': [
+    { label: 'No Block Predicate for Writes', route: '/sql/security/testing-that-the-challenges-rls-solution-has-no-block-predicate-for-writes' },
+    { label: 'The Audit Trigger Misclassifies MERGE Rows', route: '/sql/security/testing-that-the-audit-trigger-misclassifies-rows-during-a-merge-statement' },
+    { label: 'An Unset Session Context Silently Returns Zero', route: '/sql/security/testing-that-an-unset-session-context-silently-returns-zero-rows' },
+  ],
+  'connection-pooling': [
+    { label: 'The MSSQL Idle-in-Tx Proxy’s Wrong Timestamp', route: '/sql/connection-pooling/testing-that-the-idle-in-tx-proxy-uses-the-wrong-timestamp-column' },
+    { label: 'SET LOCAL Doesn’t Require PgBouncer Session Mode', route: '/sql/connection-pooling/correcting-the-claim-that-set-local-requires-pgbouncer-session-mode' },
+    { label: 'The Queries Miss the “Aborted” State', route: '/sql/connection-pooling/testing-that-the-idle-in-transaction-queries-miss-the-aborted-state' },
+  ],
+  'ts-basics': [
+    { label: 'Excess Property Checking at Call Sites', route: '/typescript/basics/testing-that-excess-property-checking-applies-to-function-arguments-too' },
+    { label: 'The Exhaustiveness Check’s Exact Error', route: '/typescript/basics/demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added' },
+    { label: 'The “Fixed” Example Still Uses as any', route: '/typescript/basics/testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any' },
+  ],
+  'primitive-types': [
+    { label: 'as const Is Compile-Time Only', route: '/typescript/primitive-types/testing-that-as-consts-readonly-is-compile-time-only-not-runtime' },
+    { label: 'Narrowing to object Isn’t Enough', route: '/typescript/primitive-types/testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port' },
+    { label: 'throw fail(...) Isn’t an Expression', route: '/typescript/primitive-types/testing-that-throw-fail-cannot-appear-in-an-expression-position' },
+  ],
+  'interfaces-types': [
+    { label: 'PluginRegistry’s Unverified Name/Key Assumption', route: '/typescript/interfaces-types/testing-that-pluginregistry-never-verifies-name-matches-its-key' },
+    { label: 'Window Merging Needs declare global', route: '/typescript/interfaces-types/testing-that-window-merging-needs-declare-global-in-a-module-file' },
+    { label: 'Conflicting Merges Are a Compile Error', route: '/typescript/interfaces-types/testing-that-conflicting-merged-properties-are-a-compile-error' },
+  ],
+  'unions': [
+    { label: 'BigInt Zero Is Falsy Too', route: '/typescript/unions/testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing' },
+    { label: 'The “Safe” isUser Fix Still Uses as any', route: '/typescript/unions/testing-that-the-safe-isuser-fix-still-uses-as-any-twice' },
+    { label: 'The Assertion Function Example Doesn’t Run', route: '/typescript/unions/testing-that-the-assertion-function-example-never-actually-runs' },
+  ],
+  'narrowing': [
+    { label: 'Narrowing Survives an Unrelated Call', route: '/typescript/narrowing/testing-that-narrowing-survives-an-unrelated-function-call' },
+    { label: 'Array.isArray Narrows to any[]', route: '/typescript/narrowing/testing-that-array-isarray-narrows-to-any-and-loses-element-safety' },
+    { label: 'greet(‘’) Doesn’t Say Hello, Stranger', route: '/typescript/narrowing/testing-that-greet-with-an-empty-string-does-not-say-hello-stranger' },
+  ],
+  'enums-tuples': [
+    { label: 'Direction[42] Returns Undefined', route: '/typescript/enums-tuples/testing-that-direction-42-returns-undefined-not-a-name' },
+    { label: 'const enum Doesn’t Actually Throw Here', route: '/typescript/enums-tuples/testing-that-const-enum-import-doesnt-throw-in-this-playground' },
+    { label: 'minMax Without a Return Type', route: '/typescript/enums-tuples/testing-that-minmax-without-return-type-becomes-an-array' },
+  ],
+  'ts-generics': [
+    { label: 'memoize Collapses NaN and null', route: '/typescript/generics/testing-that-memoize-collapses-nan-and-null-into-the-same-result' },
+    { label: 'getInstance Returns the Same Object', route: '/typescript/generics/testing-that-getinstance-returns-the-same-object-across-different-t' },
+    { label: 'getOrSet Avoids the Falsy-Value Trap', route: '/typescript/generics/testing-that-getorset-avoids-the-falsy-value-cache-trap' },
+  ],
+  'generic-patterns': [
+    { label: 'Pipeline Skips pipe() Entirely', route: '/typescript/generic-patterns/testing-that-pipeline-skips-pipe-entirely-and-still-type-checks' },
+    { label: 'FunctionKeys Drops Optional Methods', route: '/typescript/generic-patterns/testing-that-functionkeys-drops-optional-methods-from-the-result' },
+    { label: 'QueryBuilder Builds With Zero Fields', route: '/typescript/generic-patterns/testing-that-querybuilder-builds-successfully-with-zero-fields-set' },
+  ],
+  'utility-types': [
+    { label: 'Partial Record of Literal Keys Is Safe', route: '/typescript/utility-types/testing-that-partial-record-of-literal-keys-is-safely-optional' },
+    { label: 'ViewDTO’s tags Array Can Still Be Pushed To', route: '/typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to' },
+    { label: 'DistributiveOmit Preserves Narrowing', route: '/typescript/utility-types/testing-that-distributiveomit-preserves-per-member-narrowing' },
+  ],
+  'mapped-types': [
+    { label: 'EventHandlers Wrongly Includes online', route: '/typescript/mapped-types/testing-that-eventhandlers-wrongly-includes-online' },
+    { label: 'StringKeys Excludes an Optional String', route: '/typescript/mapped-types/testing-that-stringkeys-excludes-an-optional-string-property' },
+    { label: 'OptionalToNullable Detects Implicit undefined', route: '/typescript/mapped-types/testing-that-optionaltonullable-detects-implicit-undefined' },
+  ],
+  'conditional-types': [
+    { label: 'Equals Can’t Distinguish any From unknown', route: '/typescript/conditional-types/testing-that-equals-cannot-distinguish-any-from-unknown' },
+    { label: 'Head of an Empty Tuple Hides undefined', route: '/typescript/conditional-types/testing-that-head-of-an-empty-tuple-hides-undefined-behind-never' },
+    { label: 'MyReturnType Rejects a Class Constructor', route: '/typescript/conditional-types/testing-that-myreturntype-rejects-a-class-constructor' },
+  ],
+  'template-literal-types': [
+    { label: 'let Widens HandlerName to Plain string', route: '/typescript/template-literal-types/testing-that-a-let-variable-widens-handlername-to-plain-string' },
+    { label: 'DotPath Hits Infinite Recursion on Self-Reference', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' },
+    { label: 'A Single as Cast Defeats CSSVarName', route: '/typescript/template-literal-types/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product' },
+  ],
 };
 
 @Component({

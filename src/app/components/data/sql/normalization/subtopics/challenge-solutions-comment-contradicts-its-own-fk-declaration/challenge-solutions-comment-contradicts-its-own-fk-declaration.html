@@ -1,0 +1,43 @@
+<div class="sq-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Normalization"
+    topicRoute="/sql/normalization"
+    subtopicLabel="Challenge Solution Mismatch"
+  />
+  <div class="page-header-icon sq-icon">SQL</div>
+  <h1 class="page-title">Challenge Solution Comment Contradicts Its Own FK Declaration</h1>
+  <p class="page-subtitle">
+    The main page's own challenge solution declares order_lines' FK with no ON DELETE clause at all — but
+    its closing comment claims deleting an order cascades. Running the schema exactly as written rejects
+    the delete instead.
+  </p>
+
+  <app-page-meta [readingTime]="13" difficulty="intermediate" since="SQL-92" tech="sql" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="sq-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="sq-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover normalization end-to-end: proving a denormalization sync
+      trigger genuinely works across all three write operations, knowing when a native generated column
+      can replace hand-written sync logic, and catching a real contradiction between a challenge
+      solution's own DDL and its closing summary comment.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Normalization"
+    topicRoute="/sql/normalization"
+    [prev]="{ label: 'Why a Computed Column Can’t Replace the OrderTotal Trigger', route: '/sql/normalization/why-a-computed-column-cant-replace-the-ordertotal-trigger' }"
+  />
+</div>

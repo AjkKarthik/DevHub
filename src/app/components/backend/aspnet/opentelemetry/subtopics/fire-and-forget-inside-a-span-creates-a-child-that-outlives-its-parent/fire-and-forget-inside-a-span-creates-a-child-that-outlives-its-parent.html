@@ -1,0 +1,43 @@
+<div class="asp-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="OpenTelemetry"
+    topicRoute="/aspnet/opentelemetry"
+    subtopicLabel="Fire-and-Forget Span Gotcha"
+  />
+  <div class="page-header-icon asp-icon">ASP</div>
+  <h1 class="page-title">Fire-and-Forget Work Inside a Span Outlives Its Parent</h1>
+  <p class="page-subtitle">
+    The main page's own Custom Spans example safely awaits all child work inside the using block. Add a
+    natural fire-and-forget background task, and its child span keeps running after the parent has already
+    ended.
+  </p>
+
+  <app-page-meta [readingTime]="15" difficulty="advanced" since=".NET 6+" tech="aspnet" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="asp-section">
+    <h2>Code Examples</h2>
+    <app-code-block [tabs]="codeTabs" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="asp-section">
+    <h2>Where this fits</h2>
+    <p>
+      Together, these three subtopics cover OpenTelemetry end-to-end: verifying custom spans and metrics
+      genuinely record what the code intends, understanding the sampling states a null-conditional SetTag
+      call doesn't fully guard against, and keeping fire-and-forget background work from producing a
+      confusing, parent-outliving trace shape.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="OpenTelemetry"
+    topicRoute="/aspnet/opentelemetry"
+    [prev]="{ label: 'SetTag Guards Against Null, Not Against a Sampled-Out Span', route: '/aspnet/opentelemetry/settag-guards-against-null-not-against-a-sampled-out-span' }"
+  />
+</div>

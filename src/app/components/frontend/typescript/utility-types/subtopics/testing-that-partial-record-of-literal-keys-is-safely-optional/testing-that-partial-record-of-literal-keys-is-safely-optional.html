@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Utility Types"
+    topicRoute="/typescript/utility-types"
+    subtopicLabel="Partial Record of Literal Keys Is Safe" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Partial&lt;Record&gt; of Literal Keys Is Safely Optional</h1>
+  <p class="page-subtitle">
+    Common Mistake #3 shows Record&lt;string, User&gt; has an unsafe access hole — does the page's own
+    Partial&lt;Record&lt;LiteralUnion, V&gt;&gt; HandlerMap have the same gap?
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 2.1+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Compare the main page's unsafe <code>Record&lt;string, User&gt;</code> example against its own
+      literal-key <code>Partial&lt;Record&lt;...&gt;&gt;</code> HandlerMap side by side.
+    </p>
+    <app-live-playground
+      title="Index signatures vs literal-key Partial — testing Record's two shapes"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This clarifies exactly which of the main page's two Record examples the noUncheckedIndexedAccess
+      advice actually applies to, before testing a second, unrelated shallowness gap.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Utility Types"
+    topicRoute="/typescript/utility-types"
+    [next]="{ label: 'ViewDTO’s Readonly tags Can Still Be Pushed To', route: '/typescript/utility-types/testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to' }" />
+</div>
