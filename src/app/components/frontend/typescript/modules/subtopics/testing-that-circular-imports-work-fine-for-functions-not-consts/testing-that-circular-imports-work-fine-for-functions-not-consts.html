@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Module System &amp; Namespaces"
+    topicRoute="/typescript/modules"
+    subtopicLabel="Circular Imports Work Fine for Functions" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That Circular Imports Work Fine for Functions, Not Consts</h1>
+  <p class="page-subtitle">
+    The main page's circular-import failure uses top-level const values — the identical circular structure
+    between two hoisted functions never hits the "undefined" problem at all.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="ES2015+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Build a genuine circular import between two functions that call each other, and compare against the
+      main page's own const-based failure case.
+    </p>
+    <app-live-playground
+      title="Hoisting and module timing — testing circular function imports"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This narrows the main page's own circular-import warning to its actual precondition — a top-level
+      value read, not circular imports in general — before checking a related barrel-import consequence.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Module System &amp; Namespaces"
+    topicRoute="/typescript/modules"
+    [next]="{ label: 'A Barrel Import Runs Every File’s Side Effects', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' }" />
+</div>

@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Module System &amp; Namespaces"
+    topicRoute="/typescript/modules"
+    subtopicLabel="export type Strips the Value From a Class" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That export type Strips the Value, Even for a Class</h1>
+  <p class="page-subtitle">
+    The main page's export type examples all re-export plain interfaces — applied to a class instead, the
+    constructor itself becomes unusable through that specific re-export path.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="advanced" since="TypeScript 3.8+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Re-export a class through <code>export type</code>, then compare constructing an instance through that
+      barrel against importing the class directly.
+    </p>
+    <app-live-playground
+      title="Type facet vs value facet — testing export type on a class"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This closes out the modules topic by extending the page's own export type examples to a case (a class)
+      where the type-only restriction has a genuinely visible, testable consequence.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Module System &amp; Namespaces"
+    topicRoute="/typescript/modules"
+    [prev]="{ label: 'A Barrel Import Runs Every File’s Side Effects', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' }" />
+</div>

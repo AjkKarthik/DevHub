@@ -2345,7 +2345,26 @@
           </div>
         }
       }
-      <a routerLink="/typescript/modules"         routerLinkActive="active"><span class="nl-text">Module System</span>@if(progress.isDone('ts-modules')){<span class="nl-done">✓</span>}@if(diff('ts-modules');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/modules" routerLinkActive="active">
+        <span class="nl-text">Module System</span>
+        @if (progress.isDone('ts-modules')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-modules'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('modules')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('modules')"
+                  (click)="toggleSubtopics('modules', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('modules'); as subs12) {
+        @if (isSubtopicsExpanded('modules')) {
+          <div class="nav-subtopics">
+            @for (s of subs12; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/typescript/declarations"    routerLinkActive="active"><span class="nl-text">Declaration Files</span>@if(progress.isDone('ts-declarations')){<span class="nl-done">✓</span>}@if(diff('ts-declarations');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/typescript/frameworks"      routerLinkActive="active"><span class="nl-text">TS with Frameworks</span>@if(progress.isDone('ts-frameworks')){<span class="nl-done">✓</span>}@if(diff('ts-frameworks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/typescript/ts-performance"  routerLinkActive="active"><span class="nl-text">TS Performance</span>@if(progress.isDone('ts-performance')){<span class="nl-done">✓</span>}@if(diff('ts-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>

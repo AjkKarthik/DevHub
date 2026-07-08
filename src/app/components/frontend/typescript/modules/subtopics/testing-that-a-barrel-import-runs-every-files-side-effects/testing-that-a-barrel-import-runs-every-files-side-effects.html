@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Module System &amp; Namespaces"
+    topicRoute="/typescript/modules"
+    subtopicLabel="Barrel Imports Run Every File’s Side Effects" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That a Barrel Import Runs Every File's Side Effects</h1>
+  <p class="page-subtitle">
+    The main page warns barrels slow compilation — importing just one name from the barrel also executes
+    every re-exported file's top-level code, including files you never touch.
+  </p>
+
+  <app-page-meta [readingTime]="11" difficulty="intermediate" since="ES2015+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Import a single name from the main page's own <code>utils</code> barrel, and watch whether an unrelated
+      file's console.log fires anyway.
+    </p>
+    <app-live-playground
+      title="Module graph evaluation — testing barrel import side effects"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This adds a runtime consequence the main page's barrel warning never mentions, before checking a
+      subtler export type gap in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Module System &amp; Namespaces"
+    topicRoute="/typescript/modules"
+    [prev]="{ label: 'Circular Imports Work Fine for Functions', route: '/typescript/modules/testing-that-circular-imports-work-fine-for-functions-not-consts' }"
+    [next]="{ label: 'export type Strips the Value, Even for a Class', route: '/typescript/modules/testing-that-export-type-strips-the-value-even-for-a-class' }" />
+</div>

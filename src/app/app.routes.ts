@@ -1460,7 +1460,12 @@ export const routes: Routes = [
       { path: 'testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access', loadComponent: () => import('./components/frontend/typescript/tsconfig/subtopics/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access').then(m => m.TestingThatNouncheckedindexedaccessDoesntAffectTupleAccessSubtopic) },
       { path: 'testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax', loadComponent: () => import('./components/frontend/typescript/tsconfig/subtopics/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax').then(m => m.TestingThatStrictfunctiontypesDoesntApplyToMethodSyntaxSubtopic) },
     ] },
-    { path: 'modules',                 loadComponent: () => import('./components/frontend/typescript/modules/modules').then(m => m.TsModules) },
+    { path: 'modules', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/modules/modules').then(m => m.TsModules) },
+      { path: 'testing-that-circular-imports-work-fine-for-functions-not-consts', loadComponent: () => import('./components/frontend/typescript/modules/subtopics/testing-that-circular-imports-work-fine-for-functions-not-consts/testing-that-circular-imports-work-fine-for-functions-not-consts').then(m => m.TestingThatCircularImportsWorkFineForFunctionsNotConstsSubtopic) },
+      { path: 'testing-that-a-barrel-import-runs-every-files-side-effects', loadComponent: () => import('./components/frontend/typescript/modules/subtopics/testing-that-a-barrel-import-runs-every-files-side-effects/testing-that-a-barrel-import-runs-every-files-side-effects').then(m => m.TestingThatABarrelImportRunsEveryFilesSideEffectsSubtopic) },
+      { path: 'testing-that-export-type-strips-the-value-even-for-a-class', loadComponent: () => import('./components/frontend/typescript/modules/subtopics/testing-that-export-type-strips-the-value-even-for-a-class/testing-that-export-type-strips-the-value-even-for-a-class').then(m => m.TestingThatExportTypeStripsTheValueEvenForAClassSubtopic) },
+    ] },
     { path: 'declarations',            loadComponent: () => import('./components/frontend/typescript/declarations/declarations').then(m => m.TsDeclarations) },
     { path: 'frameworks',              loadComponent: () => import('./components/frontend/typescript/frameworks/frameworks').then(m => m.TsFrameworks) },
     { path: 'strict-migration',        loadComponent: () => import('./components/frontend/typescript/strict-migration/strict-migration').then(m => m.TsStrictMigration) },

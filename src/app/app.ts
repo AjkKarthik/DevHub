@@ -1179,6 +1179,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'noUncheckedIndexedAccess Doesn’t Affect Tuples', route: '/typescript/tsconfig/testing-that-nouncheckedindexedaccess-doesnt-affect-tuple-access' },
     { label: 'strictFunctionTypes Doesn’t Apply to Methods', route: '/typescript/tsconfig/testing-that-strictfunctiontypes-doesnt-apply-to-method-syntax' },
   ],
+  'modules': [
+    { label: 'Circular Imports Work Fine for Functions', route: '/typescript/modules/testing-that-circular-imports-work-fine-for-functions-not-consts' },
+    { label: 'A Barrel Import Runs Every File’s Side Effects', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' },
+    { label: 'export type Strips the Value, Even for a Class', route: '/typescript/modules/testing-that-export-type-strips-the-value-even-for-a-class' },
+  ],
 };
 
 @Component({

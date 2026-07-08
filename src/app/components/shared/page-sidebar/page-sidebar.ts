@@ -10924,6 +10924,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/modules/testing-that-circular-imports-work-fine-for-functions-not-consts': {
+    apis: ['function hoisting', 'live bindings', 'module evaluation order'],
+    related: [
+      { label: 'A Barrel Import Runs Every File’s Side Effects — next', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' },
+      { label: 'Module System (overview)', route: '/typescript/modules' },
+    ],
+    tip: 'Circular imports only break when one module reads a value from the other at top-level, module-evaluation time — function declarations, hoisted and only called later, sidestep the problem entirely.',
+    docs: [
+      { label: 'MDN import declaration', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The "extract to a third module" fix is specifically needed for circular value dependencies, not circular function dependencies.',
+      'ES module bindings are live references, but a hoisted function exists before any top-level code in its module has run.',
+    ],
+  },
+
+  'typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects': {
+    apis: ['module graph evaluation', 'export * from', 'tree-shaking'],
+    related: [
+      { label: 'Circular Imports Work Fine for Functions — previous', route: '/typescript/modules/testing-that-circular-imports-work-fine-for-functions-not-consts' },
+      { label: 'export type Strips the Value, Even for a Class — next', route: '/typescript/modules/testing-that-export-type-strips-the-value-even-for-a-class' },
+      { label: 'Module System (overview)', route: '/typescript/modules' },
+    ],
+    tip: 'Importing one name from a barrel forces the JS engine to evaluate every re-exported file in full — any top-level side effect in an unrelated file fires regardless of what you actually use.',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Tree-shaking is a build-time bundle optimization — it does not change what runs during ordinary dev-mode module evaluation.',
+      'This is a runtime cost separate from the main page\'s own compile-speed warning about deep barrel chains.',
+    ],
+  },
+
+  'typescript/modules/testing-that-export-type-strips-the-value-even-for-a-class': {
+    apis: ['export type', 'type facet vs value facet', 'import type'],
+    related: [
+      { label: 'A Barrel Import Runs Every File’s Side Effects — previous', route: '/typescript/modules/testing-that-a-barrel-import-runs-every-files-side-effects' },
+      { label: 'Module System (overview)', route: '/typescript/modules' },
+    ],
+    tip: 'export type { Vector } strips the value facet from that specific re-export — a class re-exported this way can be used as a type but not constructed with new through that import path.',
+    docs: [
+      { label: 'TypeScript 3.8 Release Notes', url: 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'The restriction is scoped to the specific import path — the same class remains fully constructible through any ordinary import.',
+      'This is invisible for plain interfaces (which only ever had a type facet) but very real for classes.',
+    ],
+  },
+
   'typescript/declarations': {
     apis: ['declare', '.d.ts', 'declare module', 'declare global', '@types/xxx', 'DefinitelyTyped', 'module augmentation'],
     related: [
