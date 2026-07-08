@@ -701,6 +701,61 @@ Confirmed via direct file inspection before the pilot (`/typescript/basics`, 202
    run-it link). Icon content stays `TS`. **`.ts-page`'s wrapper rule is NOT global — see the
    max-width gotcha above; every TypeScript subtopic `.scss` must include it.**
 
+### React hub subtopic wiring — first JS-framework hub; a real StackBlitz template gap
+
+Confirmed via direct file inspection and a live browser pilot before the first subtopic set
+(`/react/basics`, 2026-07-08):
+1. **`app.ts`'s flat `SUBTOPICS` map had a real bare-key collision**: React's first topic
+   slug, `basics`, was already taken by `/csharp/basics`. Hub-prefixed to `'react-basics'`,
+   per the established pattern — the three nav-accordion helper calls in `app.html`
+   (`subtopicsOf`/`isSubtopicsExpanded`/`toggleSubtopics`) all use `'react-basics'` too, not
+   the bare slug. Always grep the bare slug (unquoted AND quoted) before adding a new hub's
+   first SUBTOPICS entry — this is now the THIRD hub in a row (TS, and now React) whose first
+   topic slug happened to be `basics`, already taken by C#.
+2. Progress/search keys are `react-` PREFIXED (`react-basics`), confirmed via existing nav
+   markup. `SIDEBAR_MAP` keys are FULL-PATH PREFIXED (`'react/basics'`, confirmed the base
+   entry already existed) — subtopic composite keys follow suit: `'react/basics/<slug>'`.
+   Breadcrumb `REACT_LABELS` uses bare keys (`'basics'`) with bare composite subtopic keys
+   (`'basics/<slug>'`), same generic pattern every hub shares.
+3. Theme: `$accent: #0ea5e9`, `$tint: #f0f9ff`, `.react-page`/`.react-icon`/`.react-section`
+   CSS classes, icon content `⚛` at `font-size: 1.8rem` (not text — see the icon pattern
+   rules above), `tech="react"` in `app-page-meta`. **`.react-page`'s wrapper rule is NOT
+   global** (confirmed absent from `src/styles.scss`, same situation as SQL/TypeScript) —
+   every React subtopic `.scss` must include the full `.react-page { max-width: 860px;
+   margin: 0 auto; }` rule, not just `.subtopic-page`'s padding.
+4. **React runs natively in the browser, so its subtopics use `app-live-playground` fully
+   — but with a StackBlitz template neither Angular's nor TypeScript's own subtopic recipes
+   cover.** `PROJECT_TEMPLATES` (from `@stackblitz/sdk`'s own type definitions,
+   `node_modules/@stackblitz/sdk/types/constants.d.ts`) is a fixed union: `"angular-cli" |
+   "create-react-app" | "html" | "javascript" | "node" | "polymer" | "typescript" | "vue"`
+   — there is no `"react-ts"` or similar; **`"create-react-app"` is the correct template**
+   for a plain-JS React demo. Confirmed working end-to-end in a live pilot (StackBlitz editor
+   loaded with the correct file tree, no import-error banner) with this minimum file set in
+   `liveDemoFiles`:
+   ```
+   package.json      — { dependencies: { react, react-dom, react-scripts }, scripts: { start } }
+   public/index.html — <div id="root"></div>
+   src/index.js       — createRoot(document.getElementById('root')).render(<App />)
+   src/App.js         — the actual demo component
+   ```
+   Unlike the TypeScript-hub `'typescript'` template (which only strictly needed
+   `index.html` + `index.ts`), the `create-react-app` template needs the FULL CRA-shaped
+   file set including an explicit `package.json` — omitting it was not tested but is not
+   worth risking given how cheap it is to include. `openFile` should point at `src/App.js`
+   (the file readers actually care about), not `src/index.js` or `public/index.html`.
+5. React demo files are `.js`, not `.ts`/`.tsx` — the main React hub's own topic-page code
+   examples use `language: 'typescript'` (TSX) for the static `<app-code-block>` tabs, but
+   the LIVE playground demos use plain JS to avoid needing TypeScript-specific CRA
+   dependencies (`@types/react`, a `tsconfig.json`, etc.) that were never verified to work
+   with this template. If a future React subtopic genuinely needs TypeScript in the live
+   demo, verify a `.tsx` + `tsconfig.json` file set in this same template works before
+   assuming it does — this was not tested in the pilot.
+6. React subtopics can lean on ACTUAL RUNTIME behavior in a way most TypeScript-hub
+   subtopics couldn't (those were largely static compile-error demonstrations) — e.g. a
+   render-count `useRef` counter displayed in the UI, or typing into an input and clicking a
+   button to observe a real DOM consequence. Prefer this where the main page's own claim is
+   about runtime behavior (batching, reconciliation, memoization) rather than type-checking.
+
 ## Current state (update when it changes!)
 
 - **Angular hub**: 58 trackable topics + 10 practice/reference pages (68 cards). Feature-complete.

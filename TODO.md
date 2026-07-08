@@ -1615,7 +1615,7 @@ off here with a date.
 
 #### React — 17 topic pages
 
-- [ ] `/react/basics` — React Fundamentals
+- [x] `/react/basics` — React Fundamentals (2026-07-08 — 3 subtopics: testing-that-batching-applies-to-native-event-listeners-not-just-onclick, testing-that-index-keys-leave-stale-text-in-an-uncontrolled-input-after-prepend, testing-that-react-memo-alone-doesnt-stop-a-fresh-object-prop-re-render — first React hub topic; piloted the `create-react-app` StackBlitz template (see CLAUDE.md); SUBTOPICS map key hub-prefixed to 'react-basics' due to collision with existing bare 'basics' key from /csharp/basics)
 - [ ] `/react/hooks-core` — Core Hooks
 - [ ] `/react/hooks-advanced` — Advanced Hooks
 - [ ] `/react/forms` — Forms & Validation
