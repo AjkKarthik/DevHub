@@ -1,0 +1,48 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Context API"
+    topicRoute="/react/context"
+    subtopicLabel="A Mega-Context Re-renders Consumers of Unrelated Fields" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That a Mega-Context Re-renders Consumers of Completely Unrelated Fields</h1>
+  <p class="page-subtitle">
+    Mistake #3 states that a single combined context re-renders every consumer on any change — this makes
+    that exact claim visible with a render counter on a component that never reads the field that changed.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="React 16.3+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      A single shared context object holding <code>theme</code> and <code>notifications</code>, with a
+      consumer that only ever reads <code>theme</code>.
+    </p>
+    <app-live-playground
+      title="Mega-context re-renders — an unrelated field changing"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This makes the main page's own Mistake #3 warning directly observable, before checking a related
+      placement gotcha in the Toast Container challenge in the final subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Context API"
+    topicRoute="/react/context"
+    [prev]="{ label: 'createContext’s Numeric Default Works With Zero Providers', route: '/react/context/testing-that-createcontexts-numeric-default-works-with-zero-providers' }"
+    [next]="{ label: 'A Toast Container Outside the Provider Can’t Access Notifications', route: '/react/context/testing-that-a-toast-container-outside-the-provider-cant-access-notifications' }" />
+</div>

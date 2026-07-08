@@ -1,0 +1,49 @@
+<div class="react-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Context API"
+    topicRoute="/react/context"
+    subtopicLabel="A Toast Container Outside the Provider Can’t Access Notifications" />
+
+  <div class="page-header-icon react-icon">⚛</div>
+  <h1 class="page-title">Testing That a Toast Container Outside the Provider Can't Access Notifications</h1>
+  <p class="page-subtitle">
+    The main page's own theory advice — "Provider goes as low as possible" — is easy to misread as
+    "infrastructure components belong outside the Provider." This checks what actually happens if a toast
+    container follows that misreading.
+  </p>
+
+  <app-page-meta [readingTime]="9" difficulty="intermediate" since="React 16.3+" tech="react" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="react-section">
+    <h2>See it run</h2>
+    <p>
+      The challenge's own <code>ToastContainer</code> placement rendered correctly inside the Provider,
+      with a commented-out sibling version to compare.
+    </p>
+    <app-live-playground
+      title="ToastContainer placement — inside vs outside the Provider"
+      template="create-react-app"
+      openFile="src/App.js"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="react-section">
+    <h2>Where this fits</h2>
+    <p>
+      This is the last of three subtopics testing the exact boundaries of the main page's own context
+      claims — a default value's design intent, a mega-context's real blast radius, and now what
+      "as low as possible" actually means for infrastructure components.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Context API"
+    topicRoute="/react/context"
+    [prev]="{ label: 'A Mega-Context Re-renders Consumers of Unrelated Fields', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' }" />
+</div>

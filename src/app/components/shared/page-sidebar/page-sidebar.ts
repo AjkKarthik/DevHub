@@ -11855,6 +11855,70 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'react/context/testing-that-createcontexts-numeric-default-works-with-zero-providers': {
+    apis: ['createContext()', 'useContext()'],
+    related: [
+      { label: 'Context API (overview)', route: '/react/context' },
+      { label: 'Mega-Context Re-renders', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' },
+      { label: 'useContext defaultValue (Core Hooks)', route: '/react/hooks-core/testing-that-usecontexts-defaultvalue-is-skipped-by-a-provider-passing-undefined' },
+    ],
+    tip: 'A context\'s default value is a design choice, not a fixed behavior — a real usable value (like 0 for nesting depth) works fine with zero Providers; null is only an error sentinel because the consuming hook treats it as one.',
+    docs: [
+      { label: 'React Docs — createContext', url: 'https://react.dev/reference/react/createContext' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'createContext behaves identically either way — the difference is entirely in the consuming code\'s guard, not the API.',
+      'Mixing conventions within one app is fine as long as each context\'s intent is clear from its default value.',
+      'A throwing custom hook is only appropriate when the default truly can never be a legitimate value.',
+    ],
+  },
+
+  'react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields': {
+    apis: ['useContext()', 'Context.Provider', 'Object.is'],
+    related: [
+      { label: 'Context API (overview)', route: '/react/context' },
+      { label: 'Numeric Default vs Sentinel', route: '/react/context/testing-that-createcontexts-numeric-default-works-with-zero-providers' },
+      { label: 'Toast Container Placement', route: '/react/context/testing-that-a-toast-container-outside-the-provider-cant-access-notifications' },
+    ],
+    tip: 'useContext subscribes to the whole value object, not to individual destructured fields — splitting contexts by concern is the only real fix.',
+    docs: [
+      { label: 'React Docs — useContext', url: 'https://react.dev/reference/react/useContext' },
+      { label: 'React Docs — Scaling Up with Reducer and Context', url: 'https://react.dev/learn/scaling-up-with-reducer-and-context' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      'Destructuring only the fields you need is cosmetic — it does not narrow the subscription.',
+      'The mechanism is the same for a single consumer or hundreds — it\'s about blast radius, not a threshold.',
+      'Wrapping the mega-context value in useMemo does not help if the object genuinely changes on every relevant update.',
+    ],
+  },
+
+  'react/context/testing-that-a-toast-container-outside-the-provider-cant-access-notifications': {
+    apis: ['useContext()', 'Context.Provider', 'component tree'],
+    related: [
+      { label: 'Context API (overview)', route: '/react/context' },
+      { label: 'Mega-Context Re-renders', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' },
+      { label: 'Advanced Hooks', route: '/react/hooks-advanced' },
+    ],
+    tip: 'useContext only finds Providers by walking up the render tree — a sibling in JSX, however close in the source, is not an ancestor and shares no context.',
+    docs: [
+      { label: 'React Docs — Passing Data Deeply with Context', url: 'https://react.dev/learn/passing-data-deeply-with-context' },
+    ],
+    resources: [
+      { label: 'facebook/react', url: 'https://github.com/facebook/react', badge: 'code' },
+    ],
+    gotchas: [
+      '"Provider goes as low as possible" is about narrowing scope within the app tree, not excluding dependent infrastructure components.',
+      'Any component reading the context must render inside the Provider\'s own subtree, full stop.',
+      'This is exactly why the original Notification System challenge places ToastContainer next to {children}, not outside the Provider.',
+    ],
+  },
+
   'react/state-management': {
     apis: ['useState', 'useReducer', 'Zustand create()', 'Jotai atom()', 'RTK createSlice'],
     related: [

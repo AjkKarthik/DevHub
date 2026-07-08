@@ -1224,6 +1224,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'refine()’s path Option Only Flags confirm, Not password Too', route: '/react/forms/testing-that-refines-path-option-only-flags-confirm-not-password-too' },
     { label: 'Real-Time Validation Mode Reintroduces Per-Keystroke Re-renders', route: '/react/forms/testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf' },
   ],
+  'context': [
+    { label: 'createContext’s Numeric Default Works With Zero Providers', route: '/react/context/testing-that-createcontexts-numeric-default-works-with-zero-providers' },
+    { label: 'A Mega-Context Re-renders Consumers of Unrelated Fields', route: '/react/context/testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields' },
+    { label: 'A Toast Container Outside the Provider Can’t Access Notifications', route: '/react/context/testing-that-a-toast-container-outside-the-provider-cant-access-notifications' },
+  ],
 };
 
 @Component({

@@ -2552,7 +2552,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">State &amp; Routing</p>
-      <a routerLink="/react/context"           routerLinkActive="active"><span class="nl-text">Context API</span>@if(progress.isDone('react-context')){<span class="nl-done">✓</span>}@if(diff('react-context');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/react/context" routerLinkActive="active">
+        <span class="nl-text">Context API</span>
+        @if (progress.isDone('react-context')) {<span class="nl-done">✓</span>}
+        @if (diff('react-context'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('context')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('context')"
+                  (click)="toggleSubtopics('context', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('context'); as reactContextSubs) {
+        @if (isSubtopicsExpanded('context')) {
+          <div class="nav-subtopics">
+            @for (s of reactContextSubs; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/react/state-management"  routerLinkActive="active"><span class="nl-text">State Management</span>@if(progress.isDone('react-state-management')){<span class="nl-done">✓</span>}@if(diff('react-state-management');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
       <a routerLink="/react/router"            routerLinkActive="active"><span class="nl-text">React Router</span>@if(progress.isDone('react-router')){<span class="nl-done">✓</span>}@if(diff('react-router');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>

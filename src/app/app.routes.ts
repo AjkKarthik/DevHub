@@ -1519,7 +1519,12 @@ export const routes: Routes = [
       { path: 'testing-that-refines-path-option-only-flags-confirm-not-password-too', loadComponent: () => import('./components/frontend/react/forms/subtopics/refine-path-only-flags-confirm/refine-path-only-flags-confirm').then(m => m.RefinePathOnlyFlagsConfirmSubtopic) },
       { path: 'testing-that-real-time-validation-mode-reintroduces-per-keystroke-rerenders-in-rhf', loadComponent: () => import('./components/frontend/react/forms/subtopics/rhf-onchange-mode-reintroduces-rerenders/rhf-onchange-mode-reintroduces-rerenders').then(m => m.RhfOnchangeModeReintroducesRerendersSubtopic) },
     ]},
-    { path: 'context',          loadComponent: () => import('./components/frontend/react/context/context').then(m => m.ReactContext) },
+    { path: 'context', children: [
+      { path: '', loadComponent: () => import('./components/frontend/react/context/context').then(m => m.ReactContext) },
+      { path: 'testing-that-createcontexts-numeric-default-works-with-zero-providers', loadComponent: () => import('./components/frontend/react/context/subtopics/createcontext-zero-real-default-vs-null-sentinel/createcontext-zero-real-default-vs-null-sentinel').then(m => m.CreatecontextZeroRealDefaultVsNullSentinelSubtopic) },
+      { path: 'testing-that-a-mega-context-re-renders-consumers-of-unrelated-fields', loadComponent: () => import('./components/frontend/react/context/subtopics/mega-context-rerenders-unrelated-consumers/mega-context-rerenders-unrelated-consumers').then(m => m.MegaContextRerendersUnrelatedConsumersSubtopic) },
+      { path: 'testing-that-a-toast-container-outside-the-provider-cant-access-notifications', loadComponent: () => import('./components/frontend/react/context/subtopics/toast-container-outside-provider-cant-access/toast-container-outside-provider-cant-access').then(m => m.ToastContainerOutsideProviderCantAccessSubtopic) },
+    ]},
     { path: 'state-management', loadComponent: () => import('./components/frontend/react/state-management/state-management').then(m => m.ReactStateManagement) },
     { path: 'router',           loadComponent: () => import('./components/frontend/react/router/router').then(m => m.ReactRouter) },
     { path: 'tanstack-query',   loadComponent: () => import('./components/frontend/react/tanstack-query/tanstack-query').then(m => m.ReactTanstackQuery) },
