@@ -2281,7 +2281,26 @@
 
     <div class="nav-group">
       <p class="nav-group-label">OOP</p>
-      <a routerLink="/typescript/classes"     routerLinkActive="active"><span class="nl-text">Classes &amp; Visibility</span>@if(progress.isDone('ts-classes')){<span class="nl-done">✓</span>}@if(diff('ts-classes');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/classes" routerLinkActive="active">
+        <span class="nl-text">Classes &amp; Visibility</span>
+        @if (progress.isDone('ts-classes')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-classes'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('classes')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('classes')"
+                  (click)="toggleSubtopics('classes', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('classes'); as subs9) {
+        @if (isSubtopicsExpanded('classes')) {
+          <div class="nav-subtopics">
+            @for (s of subs9; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/typescript/decorators"  routerLinkActive="active"><span class="nl-text">Decorators</span>@if(progress.isDone('ts-decorators')){<span class="nl-done">✓</span>}@if(diff('ts-decorators');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

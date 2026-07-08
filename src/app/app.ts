@@ -1164,6 +1164,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'DotPath Hits Infinite Recursion on Self-Reference', route: '/typescript/template-literal-types/testing-that-dotpath-hits-infinite-recursion-on-self-reference' },
     { label: 'A Single as Cast Defeats CSSVarName', route: '/typescript/template-literal-types/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product' },
   ],
+  'classes': [
+    { label: 'private Still Leaks Via JSON.stringify', route: '/typescript/classes/testing-that-typescript-private-is-still-included-in-json-stringify' },
+    { label: 'getState’s Object.freeze Doesn’t Stop Array Mutation', route: '/typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items' },
+    { label: 'Object.create Bypasses the Private Constructor', route: '/typescript/classes/testing-that-object-create-bypasses-appconfigs-private-constructor' },
+  ],
 };
 
 @Component({

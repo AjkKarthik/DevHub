@@ -1,0 +1,48 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Classes &amp; Visibility"
+    topicRoute="/typescript/classes"
+    subtopicLabel="getState’s Object.freeze Doesn’t Stop Array Mutation" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That getState's Object.freeze Doesn't Stop Mutating items</h1>
+  <p class="page-subtitle">
+    The challenge's getState() wraps its result in Object.freeze — but the frozen wrapper shares the exact
+    same items array as the store's real internal state, unprotected.
+  </p>
+
+  <app-page-meta [readingTime]="12" difficulty="advanced" since="TypeScript 3.8+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Push onto <code>getState().items</code> directly, bypassing <code>setState()</code>, and check both
+      whether it throws and whether subscribers get notified.
+    </p>
+    <app-live-playground
+      title="Shallow Object.freeze — testing the challenge's own CartStore"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This tests the challenge's own state-protection claim against its actual runtime behavior, before
+      checking a related private-constructor bypass in the next subtopic.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Classes &amp; Visibility"
+    topicRoute="/typescript/classes"
+    [prev]="{ label: 'private Still Leaks Via JSON.stringify', route: '/typescript/classes/testing-that-typescript-private-is-still-included-in-json-stringify' }"
+    [next]="{ label: 'Object.create Bypasses AppConfig’s Private Constructor', route: '/typescript/classes/testing-that-object-create-bypasses-appconfigs-private-constructor' }" />
+</div>

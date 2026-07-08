@@ -10679,6 +10679,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/classes/testing-that-typescript-private-is-still-included-in-json-stringify': {
+    apis: ['JSON.stringify', 'Object.keys', '#privateField'],
+    related: [
+      { label: 'getState’s Object.freeze Doesn’t Stop Array Mutation — next', route: '/typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items' },
+      { label: 'Classes & Visibility (overview)', route: '/typescript/classes' },
+    ],
+    tip: 'TS private compiles to an ordinary enumerable property — JSON.stringify, Object.keys, and spread all see it exactly like a public field, no cast required to leak it.',
+    docs: [
+      { label: 'MDN Private Class Fields', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'No explicit cast is needed for this leak — ordinary API-response serialization code triggers it.',
+      '# fields are genuinely invisible to JSON.stringify, Object.keys, and spread, unlike TS private.',
+    ],
+  },
+
+  'typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items': {
+    apis: ['Object.freeze', 'shallow copy', 'spread operator'],
+    related: [
+      { label: 'private Still Leaks Via JSON.stringify — previous', route: '/typescript/classes/testing-that-typescript-private-is-still-included-in-json-stringify' },
+      { label: 'Object.create Bypasses the Private Constructor — next', route: '/typescript/classes/testing-that-object-create-bypasses-appconfigs-private-constructor' },
+      { label: 'Classes & Visibility (overview)', route: '/typescript/classes' },
+    ],
+    tip: 'Object.freeze({ ...state }) only locks the top-level wrapper — nested arrays like items are the same reference as the live internal state, fully mutable and bypassing setState entirely.',
+    docs: [
+      { label: 'MDN Object.freeze()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'Mutating the array directly skips setState entirely — subscribers never get notified, silently going stale.',
+      'A correct fix needs a deep freeze or defensively-copied nested values, not just a frozen wrapper.',
+    ],
+  },
+
+  'typescript/classes/testing-that-object-create-bypasses-appconfigs-private-constructor': {
+    apis: ['Object.create', 'private constructor', 'prototype chain'],
+    related: [
+      { label: 'getState’s Object.freeze Doesn’t Stop Array Mutation — previous', route: '/typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items' },
+      { label: 'Classes & Visibility (overview)', route: '/typescript/classes' },
+    ],
+    tip: 'Object.create(AppConfig.prototype) never calls the constructor at all — parameter properties like env are never assigned, producing a malformed instance that still passes instanceof.',
+    docs: [
+      { label: 'MDN Object.create()', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is the same private-is-erased-at-runtime pattern already shown for fields, applied to constructors instead.',
+      'Module-scoped singletons (a non-exported variable) have no equivalent bypass, unlike a private constructor.',
+    ],
+  },
+
   'typescript/decorators': {
     apis: ['@decorator', 'ClassDecorator', 'MethodDecorator', 'PropertyDecorator', 'ParameterDecorator', 'DecoratorContext (TS 5)', 'experimentalDecorators'],
     related: [

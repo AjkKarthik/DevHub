@@ -1442,7 +1442,12 @@ export const routes: Routes = [
       { path: 'testing-that-dotpath-hits-infinite-recursion-on-self-reference', loadComponent: () => import('./components/frontend/typescript/template-literal-types/subtopics/testing-that-dotpath-hits-infinite-recursion-on-self-reference/testing-that-dotpath-hits-infinite-recursion-on-self-reference').then(m => m.TestingThatDotpathHitsInfiniteRecursionOnSelfReferenceSubtopic) },
       { path: 'testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product', loadComponent: () => import('./components/frontend/typescript/template-literal-types/subtopics/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product/testing-that-a-single-as-cast-defeats-the-cssvarname-cross-product').then(m => m.TestingThatASingleAsCastDefeatsTheCssvarnameCrossProductSubtopic) },
     ] },
-    { path: 'classes',                 loadComponent: () => import('./components/frontend/typescript/classes/classes').then(m => m.TsClasses) },
+    { path: 'classes', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/classes/classes').then(m => m.TsClasses) },
+      { path: 'testing-that-typescript-private-is-still-included-in-json-stringify', loadComponent: () => import('./components/frontend/typescript/classes/subtopics/testing-that-typescript-private-is-still-included-in-json-stringify/testing-that-typescript-private-is-still-included-in-json-stringify').then(m => m.TestingThatTypescriptPrivateIsStillIncludedInJsonStringifySubtopic) },
+      { path: 'testing-that-getstates-object-freeze-doesnt-stop-mutating-items', loadComponent: () => import('./components/frontend/typescript/classes/subtopics/testing-that-getstates-object-freeze-doesnt-stop-mutating-items/testing-that-getstates-object-freeze-doesnt-stop-mutating-items').then(m => m.TestingThatGetstatesObjectFreezeDoesntStopMutatingItemsSubtopic) },
+      { path: 'testing-that-object-create-bypasses-appconfigs-private-constructor', loadComponent: () => import('./components/frontend/typescript/classes/subtopics/testing-that-object-create-bypasses-appconfigs-private-constructor/testing-that-object-create-bypasses-appconfigs-private-constructor').then(m => m.TestingThatObjectCreateBypassesAppconfigsPrivateConstructorSubtopic) },
+    ] },
     { path: 'decorators',              loadComponent: () => import('./components/frontend/typescript/decorators/decorators').then(m => m.TsDecorators) },
     { path: 'tsconfig',                loadComponent: () => import('./components/frontend/typescript/tsconfig/tsconfig').then(m => m.TsTsconfig) },
     { path: 'modules',                 loadComponent: () => import('./components/frontend/typescript/modules/modules').then(m => m.TsModules) },

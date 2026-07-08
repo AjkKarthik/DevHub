@@ -1,0 +1,47 @@
+<div class="ts-page subtopic-page">
+  <app-subtopic-eyebrow
+    topicLabel="Classes &amp; Visibility"
+    topicRoute="/typescript/classes"
+    subtopicLabel="private Still Leaks Via JSON.stringify" />
+
+  <div class="page-header-icon ts-icon">TS</div>
+  <h1 class="page-title">Testing That TypeScript private Is Still Included in JSON.stringify</h1>
+  <p class="page-subtitle">
+    The main page's Common Mistake shows one bypass — an explicit "as any" cast. This tests a bypass that
+    needs no cast at all: ordinary JSON.stringify.
+  </p>
+
+  <app-page-meta [readingTime]="10" difficulty="intermediate" since="TypeScript 1.0+" tech="typescript" />
+
+  <app-theory-block [sections]="theory" />
+
+  <section class="ts-section">
+    <h2>See it run</h2>
+    <p>
+      Serialize the same shape twice — once with TypeScript's <code>private</code>, once with JavaScript's
+      <code>#</code> — and compare what actually ends up in the JSON.
+    </p>
+    <app-live-playground
+      title="private vs # under JSON.stringify — testing the real leak surface"
+      template="typescript"
+      openFile="index.ts"
+      [files]="liveDemoFiles" />
+  </section>
+
+  <app-try-it [exercise]="exercise" />
+
+  <app-misconceptions [items]="misconceptions" />
+
+  <section class="ts-section">
+    <h2>Where this fits</h2>
+    <p>
+      This extends the main page's own Common Mistake #1 to the everyday code path (serialization) most
+      likely to actually leak private data, without requiring any explicit cast.
+    </p>
+  </section>
+
+  <app-subtopic-nav
+    topicLabel="Classes &amp; Visibility"
+    topicRoute="/typescript/classes"
+    [next]="{ label: 'getState’s Object.freeze Doesn’t Stop Mutating items', route: '/typescript/classes/testing-that-getstates-object-freeze-doesnt-stop-mutating-items' }" />
+</div>
