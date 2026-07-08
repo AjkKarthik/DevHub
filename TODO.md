@@ -1611,7 +1611,7 @@ off here with a date.
 - [x] `/typescript/declarations` — Declaration Files (d.ts) (2026-07-08 — 3 subtopics: testing-that-interface-and-type-alias-with-the-same-name-conflict, testing-that-declaration-merging-ignores-generic-parameter-names, testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js)
 - [x] `/typescript/frameworks` — TypeScript with Frameworks (2026-07-08 — 3 subtopics: testing-that-counterreducers-explicit-return-type-catches-gaps, testing-that-apiresponse-still-requires-data-on-an-error-status, testing-that-settimeouts-return-type-depends-on-node-types)
 - [x] `/typescript/strict-migration` — Strict Mode & Migration (2026-07-08 — 3 subtopics: testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses, testing-that-noimplicitany-doesnt-restrict-explicit-any, testing-that-a-leaf-modules-untyped-import-leaks-any)
-- [ ] `/typescript/ts-performance` — TypeScript Performance
+- [x] `/typescript/ts-performance` — TypeScript Performance (2026-07-08 — 3 subtopics: testing-that-deeppartials-depth-counter-makes-deep-fields-required, testing-that-forgetting-as-const-collapses-the-color-union-to-string, testing-that-skiplibcheck-only-skips-d-ts-extension-not-content — **TypeScript hub Phase 10 rollout complete: 20/20 topics done**)
 
 #### React — 17 topic pages
 
