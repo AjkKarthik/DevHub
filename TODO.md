@@ -1595,7 +1595,7 @@ off here with a date.
 - [x] `/typescript/basics` — TypeScript Fundamentals (2026-07-08 — 3 subtopics: testing-that-excess-property-checking-applies-to-function-arguments-too, demonstrating-the-exact-compiler-error-when-a-new-shape-variant-is-added, testing-that-the-fixed-any-vs-unknown-example-still-uses-as-any — first TypeScript hub topic; discovered and fixed a pre-existing site-wide CSS bug affecting all 132 SQL subtopic pages (see Current Work note below); SUBTOPICS map key hub-prefixed to 'ts-basics' due to collision with existing bare 'basics' key from /csharp/basics)
 - [x] `/typescript/primitive-types` — Primitive & Literal Types (2026-07-08 — 3 subtopics: testing-that-as-consts-readonly-is-compile-time-only-not-runtime, testing-that-narrowing-to-object-still-isnt-enough-to-access-cfg-port, testing-that-throw-fail-cannot-appear-in-an-expression-position)
 - [x] `/typescript/interfaces-types` — Interfaces & Type Aliases (2026-07-08 — 3 subtopics: testing-that-pluginregistry-never-verifies-name-matches-its-key, testing-that-window-merging-needs-declare-global-in-a-module-file, testing-that-conflicting-merged-properties-are-a-compile-error)
-- [ ] `/typescript/unions` — Union & Intersection Types
+- [x] `/typescript/unions` — Union & Intersection Types (2026-07-08 — 3 subtopics: testing-that-bigint-zero-is-falsy-and-skipped-by-truthiness-narrowing, testing-that-the-safe-isuser-fix-still-uses-as-any-twice, testing-that-the-assertion-function-example-never-actually-runs)
 - [ ] `/typescript/narrowing` — Type Guards & Narrowing
 - [ ] `/typescript/enums-tuples` — Enums & Tuples
 - [ ] `/typescript/generics` — Generics Fundamentals
