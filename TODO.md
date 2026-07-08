@@ -1602,7 +1602,7 @@ off here with a date.
 - [x] `/typescript/generic-patterns` — Generic Patterns (2026-07-08 — 3 subtopics: testing-that-pipeline-skips-pipe-entirely-and-still-type-checks, testing-that-functionkeys-drops-optional-methods-from-the-result, testing-that-querybuilder-builds-successfully-with-zero-fields-set)
 - [x] `/typescript/utility-types` — Utility Types (2026-07-08 — 3 subtopics: testing-that-partial-record-of-literal-keys-is-safely-optional, testing-that-viewdtos-readonly-tags-array-can-still-be-pushed-to, testing-that-distributiveomit-preserves-per-member-narrowing)
 - [x] `/typescript/mapped-types` — Mapped Types (2026-07-08 — 3 subtopics: testing-that-eventhandlers-wrongly-includes-online, testing-that-stringkeys-excludes-an-optional-string-property, testing-that-optionaltonullable-detects-implicit-undefined — hit a NEW single-brace escaping gotcha, see CLAUDE.md)
-- [ ] `/typescript/conditional-types` — Conditional Types
+- [x] `/typescript/conditional-types` — Conditional Types (2026-07-08 — 3 subtopics: testing-that-equals-cannot-distinguish-any-from-unknown, testing-that-head-of-an-empty-tuple-hides-undefined-behind-never, testing-that-myreturntype-rejects-a-class-constructor)
 - [ ] `/typescript/template-literal-types` — Template Literal Types
 - [ ] `/typescript/classes` — Classes & Visibility
 - [ ] `/typescript/decorators` — Decorators
