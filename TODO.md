@@ -1610,7 +1610,7 @@ off here with a date.
 - [x] `/typescript/modules` — Module System & Namespaces (2026-07-08 — 3 subtopics: testing-that-circular-imports-work-fine-for-functions-not-consts, testing-that-a-barrel-import-runs-every-files-side-effects, testing-that-export-type-strips-the-value-even-for-a-class — SUBTOPICS map key left bare ('modules'); JS/Node.js/Go/Terraform hubs also route to 'modules' — MUST hub-prefix if any of them add subtopics to their own modules topic later)
 - [x] `/typescript/declarations` — Declaration Files (d.ts) (2026-07-08 — 3 subtopics: testing-that-interface-and-type-alias-with-the-same-name-conflict, testing-that-declaration-merging-ignores-generic-parameter-names, testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js)
 - [x] `/typescript/frameworks` — TypeScript with Frameworks (2026-07-08 — 3 subtopics: testing-that-counterreducers-explicit-return-type-catches-gaps, testing-that-apiresponse-still-requires-data-on-an-error-status, testing-that-settimeouts-return-type-depends-on-node-types)
-- [ ] `/typescript/strict-migration` — Strict Mode & Migration
+- [x] `/typescript/strict-migration` — Strict Mode & Migration (2026-07-08 — 3 subtopics: testing-that-ts-expect-error-doesnt-check-which-error-it-suppresses, testing-that-noimplicitany-doesnt-restrict-explicit-any, testing-that-a-leaf-modules-untyped-import-leaks-any)
 - [ ] `/typescript/ts-performance` — TypeScript Performance
 
 #### React — 17 topic pages
