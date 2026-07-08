@@ -1189,6 +1189,11 @@ const SUBTOPICS: Record<string, SubtopicNavEntry[]> = {
     { label: 'Merging Ignores Generic Parameter Names', route: '/typescript/declarations/testing-that-declaration-merging-ignores-generic-parameter-names' },
     { label: 'A Hand-Written .d.ts Doesn’t Verify the Real JS', route: '/typescript/declarations/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js' },
   ],
+  'frameworks': [
+    { label: 'counterReducer’s Return Type Catches Gaps', route: '/typescript/frameworks/testing-that-counterreducers-explicit-return-type-catches-gaps' },
+    { label: 'ApiResponse Still Requires data on Error', route: '/typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status' },
+    { label: 'setTimeout’s Return Type Depends on Node Types', route: '/typescript/frameworks/testing-that-settimeouts-return-type-depends-on-node-types' },
+  ],
 };
 
 @Component({

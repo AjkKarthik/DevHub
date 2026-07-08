@@ -2385,7 +2385,26 @@
           </div>
         }
       }
-      <a routerLink="/typescript/frameworks"      routerLinkActive="active"><span class="nl-text">TS with Frameworks</span>@if(progress.isDone('ts-frameworks')){<span class="nl-done">✓</span>}@if(diff('ts-frameworks');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
+      <a routerLink="/typescript/frameworks" routerLinkActive="active">
+        <span class="nl-text">TS with Frameworks</span>
+        @if (progress.isDone('ts-frameworks')) {<span class="nl-done">✓</span>}
+        @if (diff('ts-frameworks'); as d) {<span class="nl-dot" [class]="'nl-dot--' + d"></span>}
+        @if (subtopicsOf('frameworks')) {
+          <button type="button" class="nav-subtopics-toggle" [class.open]="isSubtopicsExpanded('frameworks')"
+                  (click)="toggleSubtopics('frameworks', $event)" aria-label="Toggle subtopics">›</button>
+        }
+      </a>
+      @if (subtopicsOf('frameworks'); as subs14) {
+        @if (isSubtopicsExpanded('frameworks')) {
+          <div class="nav-subtopics">
+            @for (s of subs14; track s.route) {
+              <a [routerLink]="s.route" routerLinkActive="active" class="nav-subtopic-link">
+                <span class="nl-text">{{ s.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      }
       <a routerLink="/typescript/ts-performance"  routerLinkActive="active"><span class="nl-text">TS Performance</span>@if(progress.isDone('ts-performance')){<span class="nl-done">✓</span>}@if(diff('ts-performance');as d){<span class="nl-dot" [class]="'nl-dot--'+d"></span>}</a>
     </div>
 

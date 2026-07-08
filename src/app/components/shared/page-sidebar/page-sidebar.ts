@@ -11090,6 +11090,64 @@ export const SIDEBAR_MAP: Record<string, SidebarData> = {
     ],
   },
 
+  'typescript/frameworks/testing-that-counterreducers-explicit-return-type-catches-gaps': {
+    apis: ['explicit return type', 'discriminated union', 'switch exhaustiveness'],
+    related: [
+      { label: 'ApiResponse Still Requires data on Error — next', route: '/typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status' },
+      { label: 'TS with Frameworks (overview)', route: '/typescript/frameworks' },
+    ],
+    tip: 'The reducer\'s explicit : number return type is what catches a newly-added, unhandled action — remove the annotation and the same gap becomes silent (return type widens to include undefined).',
+    docs: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'No satisfies never pattern is needed here — the explicit return type alone provides the exhaustiveness check.',
+      'Removing the annotation silently removes this protection, since the inferred type just widens.',
+    ],
+  },
+
+  'typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status': {
+    apis: ['discriminated union', 'flat interface', 'z.discriminatedUnion'],
+    related: [
+      { label: 'counterReducer’s Return Type Catches Gaps — previous', route: '/typescript/frameworks/testing-that-counterreducers-explicit-return-type-catches-gaps' },
+      { label: 'setTimeout’s Return Type Depends on Node Types — next', route: '/typescript/frameworks/testing-that-settimeouts-return-type-depends-on-node-types' },
+      { label: 'TS with Frameworks (overview)', route: '/typescript/frameworks' },
+    ],
+    tip: 'ApiResponse<T> is one flat interface, not a genuine discriminated union — an "error" status response still needs a meaningless placeholder value for data, since nothing connects status to data\'s optionality.',
+    docs: [
+      { label: 'Zod discriminatedUnion', url: 'https://zod.dev/?id=discriminated-unions' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'A status-like field alone does not give a type discriminated-union narrowing — the type needs to genuinely be a union of separate shapes.',
+      'The page\'s own Zod section shows the correct pattern (discriminatedUnion) right next to this un-discriminated example.',
+    ],
+  },
+
+  'typescript/frameworks/testing-that-settimeouts-return-type-depends-on-node-types': {
+    apis: ['ReturnType<typeof setTimeout>', 'lib.dom.d.ts', '@types/node'],
+    related: [
+      { label: 'ApiResponse Still Requires data on Error — previous', route: '/typescript/frameworks/testing-that-apiresponse-still-requires-data-on-an-error-status' },
+      { label: 'TS with Frameworks (overview)', route: '/typescript/frameworks' },
+    ],
+    tip: 'setTimeout resolves to lib.dom\'s number in a browser project but to NodeJS.Timeout if @types/node is present anywhere in scope — the same code\'s type can silently diverge from its actual runtime value.',
+    docs: [
+      { label: 'TSConfig Reference', url: 'https://www.typescriptlang.org/tsconfig/#types' },
+    ],
+    resources: [
+      { label: 'TypeScript Playground', url: 'https://www.typescriptlang.org/play', badge: 'tool' },
+    ],
+    gotchas: [
+      'This is exactly why the main page uses ReturnType<typeof setTimeout> instead of a hardcoded type — though that indirection only stays self-consistent, not necessarily runtime-accurate.',
+      '@types/node pulled in for build tooling (Vite config, test setup) can affect global types project-wide, even for browser-only files.',
+    ],
+  },
+
   'typescript/strict-migration': {
     apis: ['strict', 'noImplicitAny', 'strictNullChecks', 'allowJs', 'checkJs', '--noEmit', 'ts-migrate'],
     related: [

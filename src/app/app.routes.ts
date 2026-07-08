@@ -1472,7 +1472,12 @@ export const routes: Routes = [
       { path: 'testing-that-declaration-merging-ignores-generic-parameter-names', loadComponent: () => import('./components/frontend/typescript/declarations/subtopics/testing-that-declaration-merging-ignores-generic-parameter-names/testing-that-declaration-merging-ignores-generic-parameter-names').then(m => m.TestingThatDeclarationMergingIgnoresGenericParameterNamesSubtopic) },
       { path: 'testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js', loadComponent: () => import('./components/frontend/typescript/declarations/subtopics/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js/testing-that-a-hand-written-d-ts-doesnt-verify-the-real-js').then(m => m.TestingThatAHandWrittenDTsDoesntVerifyTheRealJsSubtopic) },
     ] },
-    { path: 'frameworks',              loadComponent: () => import('./components/frontend/typescript/frameworks/frameworks').then(m => m.TsFrameworks) },
+    { path: 'frameworks', children: [
+      { path: '', loadComponent: () => import('./components/frontend/typescript/frameworks/frameworks').then(m => m.TsFrameworks) },
+      { path: 'testing-that-counterreducers-explicit-return-type-catches-gaps', loadComponent: () => import('./components/frontend/typescript/frameworks/subtopics/testing-that-counterreducers-explicit-return-type-catches-gaps/testing-that-counterreducers-explicit-return-type-catches-gaps').then(m => m.TestingThatCounterreducersExplicitReturnTypeCatchesGapsSubtopic) },
+      { path: 'testing-that-apiresponse-still-requires-data-on-an-error-status', loadComponent: () => import('./components/frontend/typescript/frameworks/subtopics/testing-that-apiresponse-still-requires-data-on-an-error-status/testing-that-apiresponse-still-requires-data-on-an-error-status').then(m => m.TestingThatApiresponseStillRequiresDataOnAnErrorStatusSubtopic) },
+      { path: 'testing-that-settimeouts-return-type-depends-on-node-types', loadComponent: () => import('./components/frontend/typescript/frameworks/subtopics/testing-that-settimeouts-return-type-depends-on-node-types/testing-that-settimeouts-return-type-depends-on-node-types').then(m => m.TestingThatSettimeoutsReturnTypeDependsOnNodeTypesSubtopic) },
+    ] },
     { path: 'strict-migration',        loadComponent: () => import('./components/frontend/typescript/strict-migration/strict-migration').then(m => m.TsStrictMigration) },
     { path: 'ts-performance',          loadComponent: () => import('./components/frontend/typescript/ts-performance/ts-performance').then(m => m.TsPerformance) },
     { path: 'cheatsheet',              loadComponent: () => import('./components/frontend/typescript/cheatsheet/cheatsheet').then(m => m.TsCheatsheet) },
