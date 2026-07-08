@@ -460,6 +460,21 @@ to the topic page, not its subtopics.
   page: use Angular's OWN interpolation with single-character string literals to render the
   braces — `{{ '{' }}{{ '{' }} {{ '}' }}{{ '}' }}` produces the literal visual text `{{ }}` at
   runtime. Needed on any subtopic that is itself ABOUT interpolation syntax.
+- **A single literal `{...}` pair (not `{{ }}`) in ordinary prose text — e.g. describing a
+  TypeScript template literal type like `on${string}` in a `<p>` or `<h1>`— also fails the
+  build**, even though it's not `{{ }}` interpolation syntax. Confirmed via a real build
+  failure (`NG5002: Unexpected character "EOF" (Do you have an unescaped "{" in your
+  template? Use "{{ '{' }}") to escape it.)"`) writing a subtopic ABOUT a template-literal-type
+  utility (`/typescript/mapped-types`'s `EventHandlers<T>` example, whose type is
+  `on${string}`) — Angular's HTML parser treats a bare `{` as a potential ICU-expansion start
+  regardless of whether a matching `}` appears later on the same text node. **Fix: HTML-entity
+  escape the braces directly** — `&#123;` for `{` and `&#125;` for `}` (optionally `&#36;` for
+  `$` too, though `$` alone is never the trigger) — e.g. `on&#36;&#123;string&#125;`. This is
+  a DIFFERENT fix from the `{{ }}` case above (which needs Angular's own `{{ '{' }}`
+  interpolation trick, since HTML entities decode too late for the interpolation lexer) —
+  single braces use HTML entities; double braces need the interpolation trick. Grep for a
+  bare `{` in prose text (not inside a bound attribute expression) before building any
+  subtopic whose main page uses template literal types.
 - **`${` inside a nested playground code string is a live double-escaping trap.** The
   `PlaygroundFile.content` fields are themselves TS template literals inside the subtopic's
   real `.ts` source file. If the nested playground code needs a literal `$` immediately
